@@ -1,0 +1,3 @@
+# Use one procedural Review State vocabulary
+
+Evidence, Annotation, Scientific Statement, Causal Link, Scientific Edge, Publication Relation, Research Line Membership, atomic Learning Path structured content, and Controlled Term governance use `unreviewed | reviewed`, each with entity-specific requirements. Eligible Humans may self-review editorial structured records, while Agent drafts require Human review; Material Changes reset the affected membership or whole atomic path to `unreviewed`. Editorial prose is governed by Reader Entity Visibility Approval rather than another Review State; lifecycle and disposition remain separate axes.

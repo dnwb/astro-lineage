@@ -1,0 +1,3 @@
+# Establish document authority order
+
+Project authority descends from PROJECT_CONTEXT to CONTEXT to ADRs to the V0.1 Execution Spec to `.planning` artifacts and finally to investigation evidence. Authority is scope-aware: PROJECT_CONTEXT owns product intent, CONTEXT owns domain language, ADRs own durable trade-offs, and the Execution Spec owns the executable V0.1 contract. The legacy MVP spec is superseded after its valid requirements are migrated, preventing historical schema sketches, exploratory findings, domain meaning, implementation contracts, and temporary plans from silently overriding one another.

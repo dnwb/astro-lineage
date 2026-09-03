@@ -1,0 +1,3 @@
+# Keep learning order path-local
+
+Reading order is represented by Pedagogical Transitions inside a specific Learning Path, not by Scientific Edges or a global next-read property on a Work. A path contains a duplicate-free Work sequence and exactly one reasoned transition per adjacent pair; its structured content is reviewed atomically, and a visible path contains at least two visible Works. Eligible Human creators may self-review the path, while Agent-created paths require Human review; changing entries, order, transition endpoints, or reasons resets the whole path and invalidates its visibility approval. Different teaching contexts may therefore order the same Works differently without fragmentary publication or scientific-graph confusion.

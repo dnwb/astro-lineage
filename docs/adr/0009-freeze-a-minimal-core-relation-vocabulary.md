@@ -1,0 +1,3 @@
+# Freeze a minimal core relation vocabulary
+
+The first version freezes seven directed Core Relations: builds_on, extends, tests, constrains, challenges, replaces_assumption, and corrects. Each uses `source Work → relation → target Work`, with `replaces_assumption` covering replacement or removal of a named assumption or approximation. Generalizes is represented by extends, and inverse display labels such as provides-method-for are derived rather than persisted. A new relation must demonstrate a Scientific Delta that these seven cannot express, prioritizing reproducible judgments between curators over maximum expressive breadth.

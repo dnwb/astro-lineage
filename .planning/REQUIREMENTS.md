@@ -1,0 +1,179 @@
+# High-Energy Transient Reading Radar — V0.1 Requirements
+
+Status of this register: **Pending implementation**  
+Scope: the five-Work V0.1 vertical slice.  
+Derivation rule: this register is a planning representation of the authoritative sources; it does not add domain entities, relations, or policy.
+
+## Source key
+
+- **PC** — `PROJECT_CONTEXT.md` (product purpose, audience, durable boundaries, and Research Line themes).
+- **CTX** — `CONTEXT.md` (canonical domain glossary and vocabulary).
+- **E** — `V0.1_EXECUTION_SPEC.md` (normative executable contract; section numbers below refer to that file).
+- **ADR** — `docs/adr/<number>-*.md` (accepted durable decisions; the number is the stable decision reference).
+
+## Requirement register
+
+Each requirement has a stable ID. “Acceptance” states observable conditions that must be demonstrated; it is not an implementation prescription. All requirements start as `Pending` until the corresponding evidence is recorded in the traceability matrix.
+
+### Product and scope
+
+| ID | Requirement | Acceptance | Sources | Status |
+|---|---|---|---|---|
+| V01-PROD-001 | The product shall provide an internal scientific reading and knowledge-navigation system for high-energy transient astrophysics organized around physical causality and research lineage. | A reader can use the curated system to understand why a Work matters, its problem and assumptions, its scientific delta, and relevant reading context; it is not presented as an arXiv mirror, ADS/Zotero replacement, publication list, news site, AI-summary site, or generic paper search engine. | PC §§1, 3, 8, 15, 22; CTX `Paper Graph`, `Research Line`, `Learning Path` | Pending |
+| V01-PROD-002 | V0.1 shall validate the domain model and end-to-end architecture with exactly the five selected real fixture Works, rather than claim launch-scale coverage. | The canonical fixture set contains Arnett 1982; Bromberg et al. 2011; Zhu et al. 2021; Liu et al. 2025 / TransFit; and Long & Yu 2026, selected for structural-risk coverage. | E §§1, 7, 8; ADR 0031, 0044 | Pending |
+| V01-PROD-003 | Every major domain structure shall satisfy the invariant `Stored + Validated + Rendered`. | The coverage matrix records a canonical stored representation, successful applicable validation, and rendered evidence for every required structure. | E §§1, 6; ADR 0055 | Pending |
+| V01-PROD-004 | V0.1 shall remain within the accepted static-first technology and scope boundary. | The delivered slice uses Astro, TypeScript, YAML structured records, and Markdown prose; deferred or excluded capabilities (including Pagefind, unneeded MDX, database/CMS, editor UI, ingestion, recommendations, semantic search, accounts, application actor administration, complex graph infrastructure, and external deployment) are absent from the V0.1 acceptance claim. | E §§2, 13; ADR 0038, 0057 | Pending |
+
+### Canonical content and identity
+
+| ID | Requirement | Acceptance | Sources | Status |
+|---|---|---|---|---|
+| V01-CONT-001 | `content/` shall be the sole closed-world root for canonical production content. | Canonical discovery scans only `content/`; every permitted file, directory, name, and extension matches the declared layout, and an unknown entry produces a structural error. | E §3; ADR 0078 | Pending |
+| V01-CONT-002 | Canonical content shall use the declared concern-oriented layout and complete Work bundles. | Each Work contains `work.yaml`, `versions.yaml`, `evidence.yaml`, `annotations.yaml`, `statements.yaml`, `physical-account.yaml`, and `reading.md`; empty concerns are explicit valid collections, missing files fail structurally, and Scientific Edges remain one-file-per-Edge. Ontology axes and the Method Taxonomy use their declared file granularity. | E §3; ADR 0036, 0041 | Pending |
+| V01-CONT-003 | Small canonical records shall be authoritative and aggregate indexes shall be derived artifacts. | Reader-facing reverse indexes and other aggregates are reproducible from `content/`, live under the Git-ignored root-level `generated/`, are never manually edited, and are never scanned as canonical input. | E §3; ADR 0035, 0048 | Pending |
+| V01-CONT-004 | One global manifest shall govern schema and release canonicalization. | `manifest.yaml` contains only the global `schema_version`, `canonicalization_version`, and immutable named `visibility_profile_id`; concern files have no independent schema versions, unsupported versions fail explicitly, and migrations are explicit tested transformations. | E §3; ADR 0061, 0064 | Pending |
+| V01-CONT-005 | Canonical and visibility digests shall be deterministic semantic SHA-256 digests under a versioned canonicalization procedure. | Reports record the canonicalization version and canonical-content digest; visibility digests use the same procedure but the approved reader projection, include required cross-file dependencies, and exclude generated files, caches, fixtures, approvals, stored digests, Reader State, hidden records, and non-rendered governance metadata. | E §3; ADR 0064, 0071 | Pending |
+| V01-CONT-006 | Domain IDs shall be immutable, namespaced, human-readable, and domain-opaque. | Namespace and uniqueness are validated; corrections use existing IDs, and no validator or renderer derives authorship, dates, titles, classifications, or other domain facts from an ID string. | E `Identifier Invariant`; CTX `External Version Identity`; ADR 0042 | Pending |
+| V01-CONT-007 | Concern-file ownership shall be persisted and cross-checked against bundle placement. | Every Work-local YAML envelope carries its `work_id`, every editorial file repeats its bundle ID in the directory, YAML, and Markdown frontmatter as applicable, nested records inherit ownership, and mismatches fail validation. | E §3; ADR 0069 | Pending |
+
+### Work, Version, and publication identity
+
+| ID | Requirement | Acceptance | Sources | Status |
+|---|---|---|---|---|
+| V01-WORK-001 | The model shall distinguish an intellectually continuous Work from its public Versions. | Work identity follows continuity of the core research contribution; arXiv revisions and journal manifestations remain Versions, scientific relationships target Works, and Version-specific metadata and evidence remain attached to exact Versions. | PC §4; CTX `Work`, `Version`, `Paper Graph`, `Publication Graph`; E §3; ADR 0001, 0002, 0005 | Pending |
+| V01-WORK-002 | Work-level preferred-version selection shall be explicit and provenance-bearing. | Every Work with a Version stores one `preferred_version_id`, a reason, and Curation Provenance; reader citation/display metadata derives from it, but changing it does not change Work identity or migrate Evidence. | E §3; ADR 0066 | Pending |
+| V01-WORK-003 | Version bibliographic identity shall be explicit, normalized, precise, and Version-local. | Version authors remain ordered and Version-local; release dates use `{ value, precision }` with strict Gregorian year/month/day precision and no fabricated precision; `Version.kind` is `arxiv_revision \| journal_manifestation`; arXiv identities use a normalized base ID plus positive revision number, DOIs use canonical lowercase form without a prefix, ORCIDs use canonical checksum-valid form, all are separate from internal IDs and access URLs, and no global Person identity is required. | E §3; CTX `Version Kind`, `Release Date`, `External Version Identity`; ADR 0068, 0070, 0075 | Pending |
+| V01-WORK-004 | V0.1 shall implement the minimal Publication Graph separately from the Scientific Paper Graph. | The concern-file `work_id` is the canonical Version-to-Work `belongs_to` expression; explicit same-Work arXiv `revises` has increasing revision number, noncontradictory comparable dates, and an acyclic graph; explicitly justified same-Work arXiv-to-journal `published_as` has source kind/target kind constraints, is not auto-derived, and does not assert textual identity. Publication Relations carry `source_asserted \| curator_matched`, Bibliographic Provenance, Curation Provenance, and Review State under bibliographic rules; erratum/retraction relations are not required. | E §3; CTX `Publication Relations`, `Publication Relation Basis`; ADR 0037, 0070, 0073 | Pending |
+| V01-WORK-005 | Bibliographic facts and publication correspondences shall use independent Bibliographic Provenance, without requiring source snapshots in V0.1. | Every stored non-derived Version bibliographic fact has field-level provenance mapping from record-relative RFC 6901 paths to reusable Work-local Bibliographic Source IDs. Each source is an immutable retrieval attestation with `id`, provider (`ads \| arxiv \| crossref \| publisher`), upstream record ID, source URL, and UTC retrieval time; Publication Relations reference source IDs, and checksums occur only for genuinely preserved snapshots. | E §§3, 10; CTX `Bibliographic Provenance`, `Bibliographic Source`; ADR 0054, 0072 | Pending |
+| V01-WORK-006 | Bibliographic discrepancies and refresh history shall be explicit and append-only. | Conflicting source values are preserved as discrepancy records; Human resolution events retain selected value, reason, and Curation Provenance, current state is derived, re-retrieval creates a new Source ID without overwriting old provenance, and unresolved reader-relevant discrepancies block visibility. Publication Relation `source_asserted` requires an authoritative source connecting both endpoints; `curator_matched` requires a normalized reason and at least two meaningful sources covering both endpoints. | E §3; CTX `Bibliographic Discrepancy`, `Publication Relation Basis`; ADR 0072, 0073 | Pending |
+
+### Scientific graph and Work-local scientific structure
+
+| ID | Requirement | Acceptance | Sources | Status |
+|---|---|---|---|---|
+| V01-SCI-001 | A Scientific Edge shall be a first-class Work-to-Work scientific assertion composed of relation, reason, and provenance. | Each stored Edge identifies source Work, target Work, typed relation, reason, Evidence Provenance, and Curation Provenance; it is inspectable as an assertion rather than a bare related-work label. | PC §§4, 9; CTX `Edge`, `Paper Graph`; E §3; ADR 0003, 0005 | Pending |
+| V01-SCI-002 | Scientific Edges shall use the frozen directed seven-relation vocabulary and represent distinct Scientific Deltas only. | Relations are `builds_on`, `extends`, `tests`, `constrains`, `challenges`, `replaces_assumption`, and `corrects`, always `source Work → relation → target Work`; multiple Edges for a Work pair are allowed only for distinct deltas, while weaker entailed relations are not persisted. | CTX `Core Relation`; E §3; ADR 0009, 0010 | Pending |
+| V01-SCI-003 | Edge basis and review shall distinguish explicit assertions from curator inference. | An Explicit Edge may be self-reviewed by its eligible Human creator with concrete Version Evidence; an Inferred Edge has normalized reason, bilateral Evidence from both endpoint Works, and independent review by a distinct eligible Human; material changes to relation, reason, or Evidence reset review. | CTX `Assertion Basis`, `Independent Review`; E §§3, 8, 9; ADR 0006, 0007, 0053 | Pending |
+| V01-SCI-004 | Edge Review State and Disposition shall remain orthogonal and presentation shall be derived from both. | Review State is `unreviewed \| reviewed`; Disposition is `active \| contested \| superseded \| withdrawn`; contested is not withdrawn and is not a positive ranking signal by default, while historical states remain inspectable. | CTX `Review State`, `Disposition`, `Edge Presentation`; E §3; ADR 0008, 0011 | Pending |
+| V01-SCI-005 | Evidence shall be reusable, Version-specific, and locator-based. | Every Evidence record belongs to the same Work as its concrete Version, stores a stable source reference and typed locator, and may include an excerpt only as verification aid; Annotations, Statements, Causal Links, and Edges reference Evidence IDs rather than duplicate locators. Human-created Evidence may self-review; Agent-created Evidence needs a Human gate before reader-facing use. | CTX `Evidence`, `Evidence Provenance`; E §§3, 9; ADR 0046, 0047 | Pending |
+| V01-SCI-006 | Scientific Statements shall be lazy Work-local referential anchors with preserved Version attestations. | Statements use `assumption \| claim \| prediction \| result`, may be explicit or inferred under their evidence/review rules, use canonical semantic paraphrases rather than excerpts, may be referenced by Edge endpoints, and create a new identity for semantic changes while preserving historical attestations. Lifecycle is `maintained \| superseded \| withdrawn`, independent of Review State. | CTX `Scientific Statement`, `Statement Basis`, `Statement Lifecycle`; E §3; ADR 0023, 0024, 0027 | Pending |
+| V01-SCI-007 | A Work-local Physical Account shall instantiate a composable Causal Scaffold as a DAG separate from Paper Graph Edges. | Causal stages refer to controlled Annotations and links; they support missing nodes, branching, convergence, and multiple messengers; no taxonomy ordering creates an implicit Scientific Edge; the account is Work-local and acyclic. | PC §§2, 10; CTX `Causal Scaffold`, `Physical Account`; E §3; ADR 0015, 0022 | Pending |
+| V01-SCI-008 | Physical Account arrows shall be first-class Causal Links with independent governance. | Causal Links use only `drives`, `enables`, `transforms_into`, `produces`, or `modulates`; they may carry reason, Evidence, explicit/inferred origin, Interpretive Risk, and Review State under rules separate from Scientific Edges. Explicit links default to interpretive risk with a concrete locator and creator self-review; inferred links default to synthetic risk, require Evidence and independent review, cannot be descriptive, and substantive edits reset review. | CTX `Causal Link`, `Causal Link Relations`; E §3; ADR 0025, 0026, 0029 | Pending |
+
+### Physics Ontology, methods, and controlled vocabulary
+
+| ID | Requirement | Acceptance | Sources | Status |
+|---|---|---|---|---|
+| V01-ONTO-001 | Physics Ontology shall consist of exactly 16 schema-level axes, each answering one ontological question. | The fixed IDs are `progenitor_system`, `central_object`, `energy_reservoir`, `energy_transfer`, `outflow`, `environment`, `dynamics`, `energy_dissipation`, `particle_interaction`, `emission_process`, `transport_process`, `phenomenon`, `messenger`, `photon_band`, `observable`, and `inference_target`; axes do not mix objects, processes, mechanisms, or observables, `central_object` may be absent, and `observable` remains distinct from `inference_target`. Adding, removing, merging, or semantically changing an axis requires an explicit schema migration. | CTX `Physics Ontology Axes`; E §3; ADR 0013, 0014, 0079 | Pending |
+| V01-ONTO-002 | Every Ontology Axis assignment shall use an explicit assessment state with correct value cardinality. | State is one of `present`, `unknown`, `not_applicable`, or `not_assessed`; `present` requires values and all other states forbid values; `unknown` means assessed but indeterminate, `not_applicable` means inapplicable, and `not_assessed` is curation debt. It is forbidden for all 16 axes on every visible Work and on the five V0.1 fixture Works under the fixture profile. | CTX `Axis Assessment`; E `Knowledge-completeness Invariant`; ADR 0062, 0065 | Pending |
+| V01-ONTO-003 | Ontology assignments shall be first-class Annotations governed by axis defaults and explicit risk escalation. | Each Annotation has canonical concept identity and Curation Provenance; Interpretive Risk is only `descriptive \| interpretive \| synthetic`, follows the axis default unless reasonedly escalated, and is never silently downgraded. Descriptive requires provenance (Evidence optional, self-review allowed), interpretive requires reason plus a located Version Evidence, and synthetic requires normalized reason, multiple Evidence references, and independent review. Canonical Processes keep one identity while Work-local assignments may carry justified Functional Roles. | CTX `Annotation`, `Interpretive Risk`, `Risk Escalation`, `Canonical Process`; E §3; ADR 0016, 0018, 0021, 0028 | Pending |
+| V01-ONTO-004 | Method Taxonomy shall remain separate from Physics Ontology and use Method Family → Canonical Technique. | The taxonomy stores controlled Method Families and concrete Canonical Techniques in its V0.1 file; a Work may use multiple families, modeling character remains distinct from techniques, and each visible Work has at least one reviewed Method Annotation to an active technique with its own `explicit \| inferred` basis and Version-specific Evidence. Inferred assignments require normalized reason and distinct Human review; material semantic changes reset review. | CTX `Method Taxonomy`, `Method Annotation`; E §3; ADR 0013, 0020 | Pending |
+| V01-ONTO-005 | Physics, method-family, and technique terms shall use the full Controlled Term lifecycle and activation governance. | Terms move `proposed → active → deprecated`; IDs are immutable, labels/aliases may change, activation has definition, examples, counterexamples, boundary notes, applicable roles, and independent Human review; deprecation has a reason and a successor only for genuine semantic replacement; historical references are preserved. | CTX `Controlled Term`, `Term Status`, `Successor Term`; E §3, §9; ADR 0019 | Pending |
+
+### Editorial context and visibility
+
+| ID | Requirement | Acceptance | Sources | Status |
+|---|---|---|---|---|
+| V01-EDIT-001 | Editorial context shall remain separate from Physics Ontology, Method Taxonomy, and Scientific Edges. | Research Lines, Reading Roles, Editorial Anchors, and Learning Paths organize reader navigation without asserting scientific classification; the six durable themes are Central Engines & Engine-powered Transients, Relativistic Jets & GRBs, Explosive Transients & CSM Interaction, Pulsar Winds & High-energy Binaries, Magnetar Bursts & FRB Environments, and Dense-environment & Multi-messenger Transients. Work bundles do not duplicate editorial relations, and generated reverse indexes serve only as derived consumption views. | PC §§6, 8, 14; CTX `Editorial Layer`; E §3; ADR 0004, 0013 | Pending |
+| V01-EDIT-002 | Research Line Memberships shall be context-local, independently reviewed, and constrained per Work–Line pair. | There is at most one membership per Work–Research Line pair; each membership has a non-empty deduplicated role set from `foundation \| review \| method \| group_lineage \| frontier \| opportunity`; the `method` role is not a Method Taxonomy assignment; a visible Work has exactly one global Editorial Anchor membership and at least one membership; draft secondary memberships stay outside reader projection; role/endpoint/anchor material changes reset membership review. | CTX `Research Line Membership`, `Reading Role`, `Editorial Anchor`; E §3; ADR 0004 | Pending |
+| V01-EDIT-003 | Learning Paths shall own a duplicate-free ordered Work sequence and its adjacent pedagogical transitions. | A path with N entries has exactly N−1 transitions, each connects adjacent entries and has a normalized reason; structured content is reviewed atomically, editorial prose is governed by entity-level Visibility Approval, changes to entries/order/endpoints/reasons reset the path, and a visible path has at least two entries. | PC §8; CTX `Learning Path`, `Pedagogical Transition`; E §3; ADR 0012 | Pending |
+| V01-EDIT-004 | Reader Entities shall use the explicit draft/visible lifecycle and governed review rules. | Works, Research Lines, and Learning Paths each have `draft \| visible`, use the same immutable named Visibility Profile with entity-specific clauses, and have a profile-bound Visibility Digest and Human Visibility Approval; Human-created editorial records may self-review when eligible, Agent-created records require Human review, and material editorial changes reset review or invalidate approval as specified. | CTX `Reader Entity`, `Reader State`, `Visibility Profile`; E §§3, 9; ADR 0067, 0074, 0076 | Pending |
+| V01-EDIT-005 | A Work may become visible only after satisfying every Work clause of the V0.1 Visibility Profile. | The final visible Work has a valid Version and provenance-bearing Preferred Version, renderable reading prose, all 16 axes assessed, a reviewed active-technique Method Annotation, compliant reader-exposed Evidence/review, and an eligible Human release approval; draft status relaxes readiness but never correctness. | E §3; ADR 0065, 0067, 0071 | Pending |
+| V01-EDIT-006 | Cross-entity visibility shall be checked against the final repository snapshot. | A visible Work anchors to a visible Research Line; a visible Research Line has at least one reviewed membership to a visible Work; a visible Learning Path references only visible Works; mutually dependent entities may enter visible state in one change set with separate valid approvals, without a Release Batch entity or transient exception. | E §3; ADR 0004, 0012, 0067 | Pending |
+| V01-EDIT-007 | Visibility approval shall bind to approved reader content, not mutable release machinery or generated indexes. | Approval history is append-only and valid only when profile ID, current direct-from-`content/` reader projection digest, and eligible Human reviewer match, with a canonical UTC approval time recorded; stale mismatches are build-blocking and never silently mutate Reader State; hidden unreviewed records are excluded from all reader-facing layers, including Provenance Detail. | CTX `Visibility Digest`, `Visibility Approval`; E §§3, 6; ADR 0064, 0071 | Pending |
+
+### Curation governance and validation
+
+| ID | Requirement | Acceptance | Sources | Status |
+|---|---|---|---|---|
+| V01-GOV-001 | Governed records shall use one procedural Review State vocabulary, separate from lifecycle and disposition. | Evidence, Annotations, Statements, Causal Links, Scientific Edges, Publication Relations, memberships, paths, and Controlled Terms use `unreviewed \| reviewed` under entity-specific policies; lifecycle and Edge Disposition remain separate; curation events use canonical UTC RFC 3339 timestamps. | CTX `Review State`, `Material Change`; E §§3, 9; ADR 0006, 0074, 0076 | Pending |
+| V01-GOV-002 | Curation actors shall come from a global immutable Actor Registry with temporally evaluated capabilities. | Each actor has immutable ID, `human \| agent` kind, display label, and explicit grants/revocations for exactly `draft_records`, `review_records`, `independent_scientific_review`, `activate_controlled_terms`, and `approve_visibility`; V0.1 agents receive only `draft_records`, Human grants are explicit, authorization is evaluated at action time, and no credentials are stored or inferred. | E §9; CTX `Curation Actor`, `Actor Capability`; ADR 0052, 0076 | Pending |
+| V01-GOV-003 | Human-only review gates shall prevent automation from bypassing Evidence and independent review boundaries. | Agent-created production records remain unreviewed until an eligible Human gate; Inferred scientific or method assertions and Controlled Term activation have distinct eligible Human review as required; two different Agents never satisfy production independence. | E §§1, 3, 9; ADR 0007, 0029, 0052 | Pending |
+| V01-VAL-001 | Validation shall have structural, referential, and semantic build-blocking layers. | Local shape, reference existence, and cross-record invariants (including Evidence, lifecycle, DAG, publication, and editorial rules) are each checked; a validation error blocks the build and local schema validation does not replace semantic checks. | E §4; ADR 0030, 0034 | Pending |
+| V01-VAL-002 | Diagnostics shall be stable structured contracts and reports shall be emitted for human and machine consumers. | Every diagnostic contains `severity`, `code`, `dataset`, `file`, `record_id`, `field_path`, `message`, and `related_ids`; field paths use record-relative RFC 6901 JSON Pointer; tests assert codes/context rather than prose; ignored `validation/report.json` and `validation/report.md` are emitted even on failure and record schema, canonicalization, validator, profile, and canonical-content digest metadata. | E §§3, 4, 6; ADR 0043, 0049 | Pending |
+| V01-VAL-003 | Validation shall accumulate reliable diagnostics without avoidable cascades. | Severity semantics are `error` (blocks), `warning` (valid actionable debt), and `info` (valid state/statistics); invalid records are quarantined from dependent passes, valid records continue, each pass reports `complete \| partial \| skipped`, and reports are written before non-zero exit. | E §4; ADR 0050, 0051 | Pending |
+| V01-VAL-004 | Production validation, tests, builds, and CI shall be fully offline with respect to external sources. | Verification uses canonical records and URL/identifier syntax without fetching providers or papers; source refresh is a separate explicit workflow, no V0.1 refresh automation or command is required, and snapshot/checksum requirements are not silently introduced. | E §§4, 10; ADR 0054, 0077 | Pending |
+
+### Reader consumption and acceptance evidence
+
+| ID | Requirement | Acceptance | Sources | Status |
+|---|---|---|---|---|
+| V01-READ-001 | V0.1 shall expose the frozen reader route set keyed by immutable Work IDs. | The routes are `/`, `/papers`, `/papers/[work-id]`, `/research-lines/[id]`, and `/learning-paths/[id]`; draft Works, Research Lines, and Learning Paths have no ordinary reader-facing routes or indexes, a standalone Research Map is not required, and no public validation route is added. | E §§5, 6; ADR 0039, 0057 | Pending |
+| V01-READ-002 | V0.1 shall provide the three inspection layers and render every major structure through an academic, information-dense, responsive, low-noise reading experience. | Reader View prioritizes Paper title, Scientific Takeaway, scientific structure, and reason-to-read, with core content present in generated HTML without client-side JavaScript; Provenance Detail reveals reasons, Evidence, locators, and relevant review context on demand; Validation Report presents governance and invariant results; the coverage matrix records real fixture-based rendered evidence for every major domain structure. | PC §21; E §6; ADR 0040, 0055 | Pending |
+
+### Fixtures, verification, and delivery boundary
+
+| ID | Requirement | Acceptance | Sources | Status |
+|---|---|---|---|---|
+| V01-QA-001 | V0.1 production fixtures shall prove structural-risk coverage without manufacturing scientific relations. | The five real Works are present; inclusion does not pre-approve candidate Edges; at least one real reviewed Explicit Scientific Edge and one real reviewed Inferred Scientific Edge have Version-specific Evidence, with bilateral Evidence and independent Human review for the inferred Edge; unsupported relation enum values may have valid production count zero and counts report that state. | E §8; ADR 0044, 0045, 0053 | Pending |
+| V01-QA-002 | Synthetic validation fixtures shall be isolated from production content and indexes. | Valid and invalid synthetic datasets live only under `tests/fixtures/valid` or `tests/fixtures/invalid/<invariant-name>`; production loaders never scan them, invalid fixtures assert exact diagnostic codes, and fixture records never affect production counts, routes, indexes, or pages. | E §11; ADR 0048 | Pending |
+| V01-QA-003 | V0.1 shall freeze the verification command, report, and contributor-documentation contract. | `npm run validate`, `npm run test`, `npm run check`, `npm run build`, and `npm run verify` exist with their declared responsibilities; direct production build remains validation-gated; `npm run verify` is the single V0.1 local completion proof; validation emits both reports on success or failure; and the README documents setup, those commands, and governed Work, Research Line, and Learning Path changes. | E §6, §12; ADR 0043, 0056 | Pending |
+| V01-QA-004 | V0.1 completion shall require an independent clean-environment CI pass without requiring external deployment. | The project has an independent `/home/long/axvdaily` Git boundary, local `npm run verify = 0`, and a real remote CI run that reproduces verification in a clean environment; remote creation remains separate from local initialization and CI does not deploy the site. | E §§13, 14; ADR 0057, 0058, 0059 | Pending |
+
+### Authority migration
+
+| ID | Requirement | Acceptance | Sources | Status |
+|---|---|---|---|---|
+| V01-MIG-001 | Implementation planning shall begin only after the authority migration chain is complete. | The execution spec is final; valid legacy requirements are reconciled into authoritative documents; `spec_mvp_v0.1.md` is marked Superseded; investigation documents remain non-normative evidence; `.planning/PROJECT.md`, `REQUIREMENTS.md`, `ROADMAP.md`, and `STATE.md` are derived from the authority order; and cross-document consistency is verified. | E §15; ADR 0032, 0060, 0080 | Complete |
+
+## Traceability matrix
+
+The matrix is intentionally initialized with no implementation evidence. During each phase, update only `Status`, `Evidence`, and (when applicable) `Verified at`; keep the requirement ID and source mapping stable. A requirement is complete only when its acceptance evidence is named here.
+
+| ID | Acceptance gate / evidence to record | Status | Verified at |
+|---|---|---|---|
+| V01-PROD-001 | Product review of reader-facing purpose and non-product boundaries | Pending | — |
+| V01-PROD-002 | Fixture manifest and five-Work content review | Pending | — |
+| V01-PROD-003 | Completed Stored + Validated + Rendered coverage matrix | Pending | — |
+| V01-PROD-004 | Scope audit against V0.1 stack and exclusions | Pending | — |
+| V01-CONT-001 | Closed-world loader test with unknown-entry failure | Pending | — |
+| V01-CONT-002 | Canonical layout and complete-bundle structural validation | Pending | — |
+| V01-CONT-003 | Reproducible generated-index check and loader isolation | Pending | — |
+| V01-CONT-004 | Manifest/schema/profile validation and migration test | Pending | — |
+| V01-CONT-005 | Deterministic digest fixtures and projection-difference test | Pending | — |
+| V01-CONT-006 | ID syntax/uniqueness and opaque-ID regression tests | Pending | — |
+| V01-CONT-007 | Bundle ownership mismatch diagnostics and valid ownership fixtures | Pending | — |
+| V01-WORK-001 | Work/Version identity fixture and cross-version evidence check | Pending | — |
+| V01-WORK-002 | Preferred Version provenance and display projection fixture | Pending | — |
+| V01-WORK-003 | Metadata normalization/date precision/external identity tests | Pending | — |
+| V01-WORK-004 | Publication Graph semantic fixtures for belongs_to/revises/published_as | Pending | — |
+| V01-WORK-005 | Field-level bibliographic provenance and snapshot-policy fixture | Pending | — |
+| V01-WORK-006 | Discrepancy append-only resolution and visibility-blocking fixture | Pending | — |
+| V01-SCI-001 | Stored Edge reader/provenance rendering fixture | Pending | — |
+| V01-SCI-002 | Seven-relation direction, delta, and duplicate-edge fixtures | Pending | — |
+| V01-SCI-003 | Real explicit/inferred Edge evidence and review-gate fixtures | Pending | — |
+| V01-SCI-004 | Orthogonal Review State/Disposition presentation fixtures | Pending | — |
+| V01-SCI-005 | Version-bound typed-locator and Evidence reuse fixtures | Pending | — |
+| V01-SCI-006 | Lazy statement identity and historical attestation fixtures | Pending | — |
+| V01-SCI-007 | Physical Account DAG branching/convergence fixture | Pending | — |
+| V01-SCI-008 | Causal Link vocabulary and separate-governance fixture | Pending | — |
+| V01-ONTO-001 | Exact 16-axis schema identity and migration guard | Pending | — |
+| V01-ONTO-002 | Four assessment states, value cardinality, and fixture coverage tests | Pending | — |
+| V01-ONTO-003 | Axis default/escalation and risk-specific Evidence/review fixtures | Pending | — |
+| V01-ONTO-004 | Active technique Method Annotation and explicit/inferred review fixture | Pending | — |
+| V01-ONTO-005 | Controlled Term lifecycle/activation/deprecation governance fixtures | Pending | — |
+| V01-EDIT-001 | Separation invariant across ontology, methods, and editorial relations | Pending | — |
+| V01-EDIT-002 | Membership cardinality, roles, anchor, and material-reset fixtures | Pending | — |
+| V01-EDIT-003 | Duplicate-free path and exact adjacent-transition fixtures | Pending | — |
+| V01-EDIT-004 | Reader Entity lifecycle, profile, and editorial review fixtures | Pending | — |
+| V01-EDIT-005 | Work visibility-profile acceptance fixture | Pending | — |
+| V01-EDIT-006 | Final-snapshot cross-entity visibility fixture | Pending | — |
+| V01-EDIT-007 | Direct-content digest, stale approval, and hidden-record exclusion fixtures | Pending | — |
+| V01-GOV-001 | Review vocabulary/lifecycle separation and UTC timestamp validation | Pending | — |
+| V01-GOV-002 | Actor capability-at-action-time authorization fixtures | Pending | — |
+| V01-GOV-003 | Human-only and agent-independence gate fixtures | Pending | — |
+| V01-VAL-001 | Three validation-layer failures block build | Pending | — |
+| V01-VAL-002 | Structured diagnostic schema, JSON Pointer, and dual reports | Pending | — |
+| V01-VAL-003 | Accumulation, quarantine, pass status, and no-cascade fixtures | Pending | — |
+| V01-VAL-004 | Offline verification and no-refresh dependency check | Pending | — |
+| V01-READ-001 | Frozen routes and draft exclusion smoke test | Pending | — |
+| V01-READ-002 | Three inspection layers and coverage-matrix render checks | Pending | — |
+| V01-QA-001 | Five-Work fixture audit and real Edge acceptance checks | Pending | — |
+| V01-QA-002 | Synthetic fixture root isolation and exact-code tests | Pending | — |
+| V01-QA-003 | Five command contract and verify-gate run | Pending | — |
+| V01-QA-004 | Local verify plus clean remote CI evidence, no deployment claim | Pending | — |
+| V01-MIG-001 | `docs/migrations/v0.1-authority-migration.md`; independent authority audit; 51/51 register-to-matrix and ADR-reference checks | Complete | 2026-09-03 |
+
+### Completion rule
+
+The V0.1 requirements register is complete only when every row is no longer `Pending`, its evidence is recorded in this matrix, the coverage matrix is complete, local `npm run verify` exits `0`, and the required clean-environment remote CI run passes. A discovered discrepancy must be classified against the authority order before changing a requirement; it must not silently expand the domain model.

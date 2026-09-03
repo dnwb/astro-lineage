@@ -1,0 +1,3 @@
+# Govern Publication Relations separately
+
+Publication Relations use `source_asserted | curator_matched` as their basis and carry Bibliographic Provenance, Curation Provenance, and Review State rather than Scientific Edge evidence rules. Source-asserted relations require one authoritative source explicitly connecting both endpoints; curator-matched relations require a normalized reason and at least two meaningful bibliographic sources covering both endpoints. Agent-created relations require a Human gate before reader-facing display, Human creators may self-review, and semantic changes to endpoints, relation, basis, reason, or provenance reset review while formatting-only changes do not.

@@ -1,0 +1,3 @@
+# Use an explicit Reader lifecycle
+
+Works, Research Lines, and Learning Paths are independent Reader Entities, each with draft or visible Reader State, an entity-local reader-facing digest, and Human approval under the named V0.1 Visibility Profile. A visible Work anchors to a visible Line, a visible Line contains a reviewed membership to a visible Work, and a visible Path references only visible Works. These mutually dependent invariants are evaluated against the final repository snapshot, so cross-entity publication may occur atomically in one change set without a Release Batch or transient exception. Draft relaxes readiness but never correctness and has no ordinary route or index; hidden records stay outside every reader-facing layer.

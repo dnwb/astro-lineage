@@ -1,0 +1,3 @@
+# Bind visibility approval to reader content
+
+Human visibility approval for Works, Research Lines, and Learning Paths binds to one immutable named Visibility Profile with entity-specific clauses and a deterministic Reader-Entity-local semantic SHA-256 of approved reader-facing canonical content, including cross-file dependencies, using the shared canonicalization version. The projection is computed directly from canonical `content/`; generated indexes are never digest inputs. Approvals, stored or generated digests, Reader State, hidden records, and non-rendered governance metadata are excluded to prevent self-reference. Each Reader Entity preserves its own append-only approvals; reader-visible changes invalidate approval while hidden-only changes do not.

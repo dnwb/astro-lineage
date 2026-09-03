@@ -4,17 +4,20 @@
 
 ## Current position
 
-- **Stage:** ready for Phase 1 implementation planning
-- **Status:** authority migration complete
-- **Implementation:** not started
+- **Stage:** Phase 1 — repository and canonical content foundation
+- **Status:** Ticket 01 complete
+- **Implementation:** started; independent repository and bootstrap application
+  established
 - **Decision frontier:** closed through Q151; no open domain-model decision is
   blocking migration
-- **Next execution-planning action after migration:** `/gsd-plan-phase 1`
+- **Next execution action:** Ticket 02,
+  `.scratch/v0.1-vertical-slice/issues/02-build-empty-stored-validated-rendered-walking-skeleton.md`
 
 The repository has completed specification, governance, and authority
-migration, but implementation has not started. Repository initialization,
-canonical content creation, code, remote setup, and CI setup remain future
-implementation work rather than migration failures.
+migration. Ticket 01 established the independent Git boundary, locked
+Astro/TypeScript/YAML/Markdown bootstrap, stable npm command names, static
+reader-facing product framing, and bootstrap tests. Canonical content, remote
+setup, and CI setup remain later-ticket work rather than migration failures.
 
 ## Authority and migration state
 
@@ -92,26 +95,26 @@ CI remain fully offline; external deployment and source refresh are deferred.
 
 ## Next action
 
-Begin Phase 1 implementation planning with:
+Continue the approved local ticket frontier with:
 
 ```text
-/gsd-plan-phase 1
+.scratch/v0.1-vertical-slice/issues/02-build-empty-stored-validated-rendered-walking-skeleton.md
 ```
 
-That planning step may decompose the accepted requirements but may not extend
-the closed domain model. A newly discovered semantic choice must first be
-classified under the migration rule above.
+The ticket may implement accepted requirements but may not extend the closed
+domain model. A newly discovered semantic choice must first be classified
+under the migration rule above.
 
 ## Blockers and constraints
 
-There is no remaining authority-migration blocker. Missing repository setup,
-canonical content, source code, tests, README, remote CI, and the independent
-project Git boundary are expected Phase 1–5 work. A genuinely new semantic
+There is no remaining authority-migration blocker. Canonical content, README,
+remote CI, and later reader surfaces remain expected Phase 1–5 work. The local
+repository intentionally has no remote in Ticket 01. A genuinely new semantic
 choice must be escalated as a new decision rather than hidden in `.planning`
 prose.
 
 ## Session continuity
 
-Resume with `/gsd-plan-phase 1`. Read the four `.planning` documents first,
-preserve requirement IDs, and update traceability only when phase evidence is
-verified.
+Resume with Ticket 02 from the approved local frontier. Read the four
+`.planning` documents first, preserve requirement IDs, and update traceability
+only when phase evidence is verified.

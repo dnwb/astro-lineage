@@ -1,0 +1,28 @@
+---
+import ProductBoundary from "../copy/product-boundary.md";
+import { loadSiteConfig } from "../lib/site-config";
+import "../styles/global.css";
+
+const site = loadSiteConfig();
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta
+      name="description"
+      content="A scientific reading and knowledge-navigation system for high-energy transient astrophysics."
+    />
+    <title>{site.title}</title>
+  </head>
+  <body>
+    <main>
+      <p class="eyebrow">{site.eyebrow}</p>
+      <h1>{site.title}</h1>
+      <ProductBoundary />
+      <p class="status">Implementation frontier: repository foundation.</p>
+    </main>
+  </body>
+</html>

@@ -1,11 +1,12 @@
 # High-Energy Transient Reading Radar — V0.1 Roadmap
 
-> Status: authority migration complete; ready for Phase 1 planning (2026-09-03)
+> Status: authority migration complete; Phase 1 execution underway, with
+> Ticket 01 complete and Ticket 02 next (2026-09-03)
 >
 > This is the high-level delivery map derived from `PROJECT_CONTEXT.md`,
 > `CONTEXT.md`, the ADR set, and `V0.1_EXECUTION_SPEC.md`. It is not a
-> detailed implementation plan. Detailed execution planning starts only after
-> authority migration is complete.
+> detailed implementation plan. Detailed execution follows the approved local
+> ticket frontier established after authority migration.
 
 ## Outcome and completion gates
 
@@ -77,11 +78,15 @@ explicitly Superseded; the migration ledger covers legacy §§0–18 with no
 genuinely new decision; and the independent consistency audit found no
 unexplained conflict.
 
-After this gate, the next execution-planning action is:
+After this gate, execution proceeds from the approved local ticket frontier:
 
 ```text
-/gsd-plan-phase 1
+.scratch/v0.1-vertical-slice/issues/
 ```
+
+The frontier begins with Ticket 01 and advances through the lowest-numbered
+open, unblocked ticket. Tickets may decompose accepted requirements but may not
+extend the closed domain model.
 
 ## Phase 1 — Repository and canonical content foundation
 

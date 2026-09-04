@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { cp, mkdtemp, mkdir, readFile, writeFile } from "node:fs/promises";
+import { chmod, cp, mkdtemp, mkdir, readFile, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { test } from "node:test";
@@ -253,6 +253,36 @@ test("canonical reading I/O errors are diagnosed instead of becoming empty prose
   const result = await validateCanonicalContent(contentRoot);
   assert.equal(result.valid, false);
   assert(result.diagnostics.some(({ code }) => code === "STRUCTURE_CANONICAL_READ_ERROR"));
+});
+
+test("editorial reading I/O errors preserve an absent reading value", async () => {
+  for (const [collection, metadataFile, property] of [
+    ["research-lines", "line.yaml", "researchLines"],
+    ["learning-paths", "path.yaml", "learningPaths"],
+  ]) {
+    const { contentRoot } = await copyContent();
+    const bundleRoot = join(contentRoot, collection, "bundle-with-unreadable-reading");
+    const readingPath = join(bundleRoot, "reading.md");
+    await mkdir(bundleRoot, { recursive: true });
+    await writeFile(join(bundleRoot, metadataFile), "{}\n");
+    await writeFile(readingPath, "This prose cannot be read.\n");
+    await chmod(readingPath, 0o000);
+
+    try {
+      const snapshot = await loadCanonicalContent(contentRoot);
+      const diagnostic = snapshot.discovery.diagnostics.find(
+        ({ code, file }) =>
+          code === "STRUCTURE_CANONICAL_READ_ERROR" &&
+          file === `content/${collection}/bundle-with-unreadable-reading/reading.md`,
+      );
+
+      assert(diagnostic);
+      assert.equal(snapshot[property][0].reading, undefined);
+      assert.equal(Object.hasOwn(snapshot[property][0], "reading"), false);
+    } finally {
+      await chmod(readingPath, 0o644);
+    }
+  }
 });
 
 test("semantic content digests ignore YAML formatting and line-ending changes", async () => {

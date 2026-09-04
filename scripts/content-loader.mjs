@@ -590,7 +590,16 @@ export async function loadCanonicalContent(contentRoot = new URL("../content/", 
 
   const researchLines = [];
   for (const bundle of discovery.researchLines) {
-    researchLines.push({
+    const readingPath = bundle.files["reading.md"];
+    const reading = readingPath
+      ? await readText(
+          readingPath,
+          discovery.diagnostics,
+          relativeContentPath(discovery.root, readingPath),
+          bundle.id,
+        )
+      : undefined;
+    const researchLine = {
       id: bundle.id,
       line: bundle.files["line.yaml"]
         ? await readYaml(
@@ -600,20 +609,25 @@ export async function loadCanonicalContent(contentRoot = new URL("../content/", 
             {},
           )
         : {},
-      reading: bundle.files["reading.md"]
-        ? (await readText(
-            bundle.files["reading.md"],
-            discovery.diagnostics,
-            relativeContentPath(discovery.root, bundle.files["reading.md"]),
-            bundle.id,
-          )) ?? ""
-        : "",
-    });
+    };
+    if (reading !== undefined) {
+      researchLine.reading = reading;
+    }
+    researchLines.push(researchLine);
   }
 
   const learningPaths = [];
   for (const bundle of discovery.learningPaths) {
-    learningPaths.push({
+    const readingPath = bundle.files["reading.md"];
+    const reading = readingPath
+      ? await readText(
+          readingPath,
+          discovery.diagnostics,
+          relativeContentPath(discovery.root, readingPath),
+          bundle.id,
+        )
+      : undefined;
+    const learningPath = {
       id: bundle.id,
       path: bundle.files["path.yaml"]
         ? await readYaml(
@@ -623,15 +637,11 @@ export async function loadCanonicalContent(contentRoot = new URL("../content/", 
             {},
           )
         : {},
-      reading: bundle.files["reading.md"]
-        ? (await readText(
-            bundle.files["reading.md"],
-            discovery.diagnostics,
-            relativeContentPath(discovery.root, bundle.files["reading.md"]),
-            bundle.id,
-          )) ?? ""
-        : "",
-    });
+    };
+    if (reading !== undefined) {
+      learningPath.reading = reading;
+    }
+    learningPaths.push(learningPath);
   }
 
   return {

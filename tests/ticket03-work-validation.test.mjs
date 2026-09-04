@@ -19,6 +19,18 @@ async function copyContent() {
   const temporaryRoot = await mkdtemp(join(tmpdir(), "axvdaily-ticket03-"));
   const contentRoot = join(temporaryRoot, "content");
   await cp(productionContent, contentRoot, { recursive: true });
+  const workPath = join(contentRoot, "works", "work:arnett-1982", "work.yaml");
+  const linePath = join(contentRoot, "research-lines", "research-line:central-engines", "line.yaml");
+  const work = parse(await readFile(workPath, "utf8"));
+  const line = parse(await readFile(linePath, "utf8"));
+  work.reader_state = "draft";
+  work.visibility_approvals = [];
+  line.reader_state = "draft";
+  line.visibility_approvals = [];
+  await Promise.all([
+    writeFile(workPath, stringify(work), "utf8"),
+    writeFile(linePath, stringify(line), "utf8"),
+  ]);
   return { temporaryRoot, contentRoot };
 }
 
@@ -29,7 +41,7 @@ async function readWork(contentRoot) {
   return { workRoot, work, versions };
 }
 
-test("Arnett is stored as one complete draft Work with a provenance-bearing Preferred Version", async () => {
+test("Arnett is stored as one complete Work with a provenance-bearing Preferred Version", async () => {
   const snapshot = await loadCanonicalContent(productionContent);
   const result = await validateCanonicalContent(productionContent);
   const work = snapshot.works.find(({ id }) => id === "work:arnett-1982");
@@ -38,7 +50,7 @@ test("Arnett is stored as one complete draft Work with a provenance-bearing Pref
   assert.deepEqual(Object.keys(work.files).sort(), [...WORK_CONCERN_FILES].sort());
   assert.equal(result.valid, true);
   assert.equal(work.files["work.yaml"].work_id, "work:arnett-1982");
-  assert.equal(work.files["work.yaml"].reader_state, "draft");
+  assert.equal(work.files["work.yaml"].reader_state, "visible");
   assert.equal(
     work.files["work.yaml"].preferred_version.version_id,
     "version:arnett-1982-journal",
@@ -140,7 +152,7 @@ test("Version-local ORCID values use the ISO 7064 MOD 11-2 checksum", async () =
 
 test("bibliographic discrepancy state is derived from append-only resolution events", async () => {
   const { contentRoot } = await copyContent();
-  const { workRoot, versions } = await readWork(contentRoot);
+  const { workRoot, work, versions } = await readWork(contentRoot);
   const [adsSource, secondAdsSource] = versions.bibliographic_sources;
   const discrepancy = {
     id: "discrepancy:arnett-title",
@@ -155,6 +167,9 @@ test("bibliographic discrepancy state is derived from append-only resolution eve
     resolution_events: [],
   };
   versions.bibliographic_discrepancies = [discrepancy];
+  work.reader_state = "draft";
+  work.visibility_approvals = [];
+  await writeFile(join(workRoot, "work.yaml"), stringify(work), "utf8");
   await writeFile(join(workRoot, "versions.yaml"), stringify(versions), "utf8");
 
   const unresolved = await validateCanonicalContent(contentRoot);
@@ -266,6 +281,9 @@ test("an unresolved reader-relevant discrepancy blocks visibility but remains va
       resolution_events: [],
     },
   ];
+  work.reader_state = "draft";
+  work.visibility_approvals = [];
+  await writeFile(join(workRoot, "work.yaml"), stringify(work), "utf8");
   await writeFile(join(workRoot, "versions.yaml"), stringify(versions), "utf8");
 
   const draftResult = await validateCanonicalContent(contentRoot);
@@ -277,19 +295,16 @@ test("an unresolved reader-relevant discrepancy blocks visibility but remains va
   assert(visibleResult.diagnostics.some(({ code }) => code === "BIB_DISCREPANCY_BLOCKS_VISIBILITY"));
 });
 
-test("validation inventory counts the draft Arnett Work without making it visible", async () => {
+test("validation inventory retains the Arnett Work after its later visibility transition", async () => {
   const snapshot = await loadCanonicalContent(productionContent);
   const result = await validateCanonicalContent(productionContent);
   assert(snapshot.works.some(({ id }) => id === "work:arnett-1982"));
-  assert.deepEqual(result.work_inventory, [
-    {
-      work_id: "work:arnett-1982",
-      reader_state: "draft",
-      validation_status: "valid",
-      scientific_statements: 4,
-      causal_stages: 6,
-      causal_links: 6,
-      scientific_account_validation_status: "valid",
-    },
-  ]);
+  const inventory = result.work_inventory.find(({ work_id }) => work_id === "work:arnett-1982");
+  assert(inventory);
+  assert.equal(inventory.reader_state, "visible");
+  assert.equal(inventory.validation_status, "valid");
+  assert.equal(inventory.scientific_statements, 4);
+  assert.equal(inventory.causal_stages, 6);
+  assert.equal(inventory.causal_links, 6);
+  assert.equal(inventory.scientific_account_validation_status, "valid");
 });

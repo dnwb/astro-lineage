@@ -1,9 +1,13 @@
 work_id: work:arnett-1982
-reader_state: draft
+reader_state: visible
 preferred_version:
   version_id: version:arnett-1982-journal
   reason: The journal manifestation is the stable DOI-era bibliographic representation for this Work.
   curation_provenance:
     actor_id: actor:human-curator
     recorded_at: 2026-09-04T03:24:00Z
-visibility_approvals: []
+visibility_approvals:
+  - profile_id: v0.1-default
+    visibility_digest: 0e6409b98527e75f07a47eed300fa928a407a0814338c4304efe6ccd104b8fec
+    actor_id: actor:human-curator
+    approved_at: 2026-09-04T07:30:00Z

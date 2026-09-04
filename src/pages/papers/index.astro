@@ -3,11 +3,15 @@ import { loadCanonicalContent } from "../../../scripts/content-loader.mjs";
 import "../../styles/global.css";
 
 const snapshot = await loadCanonicalContent(new URL("../../../content/", import.meta.url));
-const visibleWorks = snapshot.works.filter((work) => {
-  const files = work.files as Record<string, unknown>;
-  const workRecord = files["work.yaml"] as { reader_state?: string } | undefined;
-  return workRecord?.reader_state === "visible";
-});
+const visibleWorks = snapshot.works.map((work) => {
+  const files = work.files as Record<string, any>;
+  const workRecord = files["work.yaml"] as { reader_state?: string; preferred_version?: { version_id?: string } };
+  const versionsRecord = files["versions.yaml"] as { versions?: Array<{ id?: string; title?: string }> };
+  const preferred = versionsRecord.versions?.find(
+    (version) => version.id === workRecord.preferred_version?.version_id,
+  );
+  return { id: work.id, readerState: workRecord.reader_state, title: preferred?.title ?? work.id };
+}).filter((work) => work.readerState === "visible");
 ---
 
 <!doctype html>
@@ -31,7 +35,7 @@ const visibleWorks = snapshot.works.filter((work) => {
         ) : (
           <ul class="paper-list">
             {visibleWorks.map((work) => (
-              <li><a href={`/papers/${work.id}/`}>{work.id}</a></li>
+              <li><a href={`/papers/${work.id}/`}>{work.title}</a></li>
             ))}
           </ul>
         )

@@ -1,0 +1,30 @@
+line_id: research-line:central-engines
+reader_state: visible
+title: Central Engines and Engine-powered Transients
+scientific_question: What powers luminous transients, and how is stored energy transferred into observable emission?
+physical_structure:
+  - energy_reservoir
+  - energy_transfer
+  - transport_process
+  - observable
+memberships:
+  - id: membership:central-engines-arnett-1982
+    work_id: work:arnett-1982
+    reading_roles:
+      - foundation
+    editorial_anchor: true
+    curation_provenance:
+      actor_id: actor:human-curator
+      recorded_at: 2026-09-04T07:10:00Z
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: 2026-09-04T07:20:00Z
+    review_binding:
+      canonicalization_version: v1
+      semantic_digest: 3060c844eac674913c35a2b560e504a0abc19c19d25f93a1e74b02f78a0f9679
+visibility_approvals:
+  - profile_id: v0.1-default
+    visibility_digest: c27a83af7592b4097c96e027db3931298c33154c89541cb549730c0788fd9705
+    actor_id: actor:human-curator
+    approved_at: 2026-09-04T07:31:00Z

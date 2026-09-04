@@ -1,0 +1,78 @@
+---
+import { loadCanonicalContent } from "../../../scripts/content-loader.mjs";
+import { projectResearchLineForReader } from "../../../scripts/reader-projection.mjs";
+import "../../styles/global.css";
+
+type AnyRecord = Record<string, any>;
+type ResearchLineBundle = { id: string; line: AnyRecord };
+type MembershipView = { membership: AnyRecord; title: string };
+
+export async function getStaticPaths() {
+  const snapshot = await loadCanonicalContent(new URL("../../../content/", import.meta.url));
+  const visibleLines = (snapshot.researchLines as ResearchLineBundle[]).filter(
+    (line) => line.line.reader_state === "visible",
+  );
+  return visibleLines.map((line) => ({ params: { id: line.id }, props: { lineId: line.id } }));
+}
+
+const { lineId } = Astro.props;
+const snapshot = await loadCanonicalContent(new URL("../../../content/", import.meta.url));
+const researchLine = projectResearchLineForReader(snapshot, lineId) as AnyRecord | null;
+if (!researchLine) {
+  throw new Error(`Visible Research Line not found: ${lineId}`);
+}
+
+const memberships: MembershipView[] = (researchLine.memberships ?? []).map(
+  (membership: AnyRecord) => ({
+    membership,
+    title: membership.work?.title ?? membership.work_id,
+  }),
+);
+const readingParagraphs = String(researchLine.reading ?? "")
+  .replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n/u, "")
+  .trim()
+  .split(/\r?\n\s*\r?\n/u)
+  .map((paragraph) => paragraph.replace(/^#+\s+/u, "").replace(/\r?\n/gu, " "))
+  .filter(Boolean);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={researchLine.scientific_question} />
+    <title>{researchLine.title} · High-Energy Transient Reading Radar</title>
+  </head>
+  <body>
+    <main>
+      <p class="eyebrow"><a href="/">High-Energy Transient Reading Radar</a></p>
+      <h1>{researchLine.title}</h1>
+      <p>{researchLine.scientific_question}</p>
+
+      <section>
+        <h2>Reader View</h2>
+        {readingParagraphs.map((paragraph) => <p>{paragraph}</p>)}
+      </section>
+
+      <section>
+        <h2>Physical Structure</h2>
+        <ul>{(researchLine.physical_structure ?? []).map((item: string) => <li>{item}</li>)}</ul>
+      </section>
+
+      <section>
+        <h2>Works in this Research Line</h2>
+        <ul>
+          {memberships.map(({ membership, title }: MembershipView) => (
+            <li>
+              <a href={`/papers/${membership.work_id}/`}>{title}</a>
+              {` — ${membership.reading_roles.join(", ")}`}
+              {membership.editorial_anchor ? " — Editorial Anchor" : ""}
+              {membership.reason ? ` — ${membership.reason}` : ""}
+            </li>
+          ))}
+        </ul>
+      </section>
+    </main>
+  </body>
+</html>

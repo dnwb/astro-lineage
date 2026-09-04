@@ -5,15 +5,16 @@
 ## Current position
 
 - **Stage:** Phase 2 — domain records and five-Work vertical slice
-- **Status:** Tickets 01–04 complete
-- **Implementation:** Draft Arnett now exercises governed Actors,
+- **Status:** Tickets 01–05 complete
+- **Implementation:** Visible Arnett now exercises governed Actors,
   capability-at-action-time authorization, 16 assessed Physics axes,
   controlled vocabulary, reusable Version-bound Evidence, a reviewed Method
-  Annotation, Work-local Scientific Statements, and an acyclic Physical Account
+  Annotation, Work-local Scientific Statements, an acyclic Physical Account,
+  Human-gated visibility, and reviewed Research Line membership
 - **Decision frontier:** closed through Q151; no open domain-model decision is
   blocking migration
-- **Next execution action:** Ticket 05,
-  `.scratch/v0.1-vertical-slice/issues/05-publish-first-visible-work-and-research-line.md`
+- **Next execution action:** Ticket 06,
+  `.scratch/v0.1-vertical-slice/issues/06-add-bromberg-publication-graph-slice.md`
 
 The repository has completed specification, governance, and authority
 migration. Ticket 01 established the independent Git boundary and bootstrap
@@ -24,8 +25,11 @@ DOI-era Version, reusable immutable bibliographic retrieval attestations,
 field-level provenance, Preferred Version provenance, and strict draft
 exclusion. Ticket 04 completes the governed Actor, Evidence, Ontology,
 Controlled Term, Interpretive Risk, Method Annotation, Scientific Statement,
-and Work-local Causal Link slice. Visible reader entities, the remaining Works,
-remote setup, and CI remain later work.
+and Work-local Causal Link slice. Ticket 05 publishes Arnett and its first
+Research Line atomically with separate Human approvals, canonical reader
+digests, a reproducible reverse index, reader routes, and no-cascade visibility
+validation. The remaining Works, Learning Path, remote setup, and CI remain
+later work.
 
 ## Authority and migration state
 
@@ -106,7 +110,7 @@ CI remain fully offline; external deployment and source refresh are deferred.
 Continue the approved local ticket frontier with:
 
 ```text
-.scratch/v0.1-vertical-slice/issues/05-publish-first-visible-work-and-research-line.md
+.scratch/v0.1-vertical-slice/issues/06-add-bromberg-publication-graph-slice.md
 ```
 
 The ticket may implement accepted requirements but may not extend the closed
@@ -115,14 +119,14 @@ under the migration rule above.
 
 ## Blockers and constraints
 
-There is no remaining authority-migration blocker. Canonical content, README,
-remote CI, and later reader surfaces remain expected Phase 1–5 work. The local
-repository intentionally has no remote in Ticket 01. A genuinely new semantic
-choice must be escalated as a new decision rather than hidden in `.planning`
-prose.
+There is no remaining authority-migration blocker. The remaining four fixture
+Works, Learning Path, README, remote CI, and final reader closure remain
+expected Phase 2–5 work. The local repository intentionally has no remote in
+Ticket 01. A genuinely new semantic choice must be escalated as a new decision
+rather than hidden in `.planning` prose.
 
 ## Session continuity
 
-Resume with Ticket 05 from the approved local frontier. Read the four `.planning`
+Resume with Ticket 06 from the approved local frontier. Read the four `.planning`
 documents first, preserve requirement IDs, and update traceability only when
 ticket evidence is verified.

@@ -14,7 +14,11 @@ import {
   VALID_VISIBILITY_PROFILE_IDS,
   loadCanonicalContent,
 } from "./content-loader.mjs";
-import { computeCanonicalContentDigest } from "./content-digest.mjs";
+import { canonicalizeYaml, computeCanonicalContentDigest } from "./content-digest.mjs";
+import {
+  projectResearchLineForReader,
+  projectWorkForReader,
+} from "./reader-projection.mjs";
 
 export const VALIDATOR_VERSION = "v0.1";
 const PROJECT_ROOT = fileURLToPath(new URL("../", import.meta.url));
@@ -46,6 +50,14 @@ const ASSESSMENT_STATES = Object.freeze([
 const TERM_STATUSES = Object.freeze(["proposed", "active", "deprecated"]);
 const REVIEW_STATES = Object.freeze(["unreviewed", "reviewed"]);
 const ASSERTION_BASES = Object.freeze(["explicit", "inferred"]);
+const READING_ROLES = Object.freeze([
+  "foundation",
+  "review",
+  "method",
+  "group_lineage",
+  "frontier",
+  "opportunity",
+]);
 const STATEMENT_KINDS = Object.freeze(["assumption", "claim", "prediction", "result"]);
 const STATEMENT_LIFECYCLES = Object.freeze(["maintained", "superseded", "withdrawn"]);
 const CAUSAL_LINK_RELATIONS = Object.freeze([
@@ -184,6 +196,40 @@ const STRUCTURAL_DIAGNOSTIC_CODES = new Set([
   "CAUSAL_LINK_RISK_INVALID",
   "WORK_ID_INVALID",
   "WORK_READER_STATE_INVALID",
+  "WORK_PREFERRED_VERSION_WITHOUT_VERSIONS",
+  "WORK_PREFERRED_VERSION_INVALID",
+  "WORK_PREFERRED_VERSION_REASON_INVALID",
+  "WORK_ID_DIRECTORY_MISMATCH",
+  "WORK_CONCERN_OWNERSHIP_MISMATCH",
+  "WORK_READING_FRONTMATTER_INVALID",
+  "WORK_READING_OWNERSHIP_MISMATCH",
+  "WORK_READING_EMPTY",
+  "STRUCTURE_WORK_COLLECTION_INVALID",
+  // Editorial bundle identity, membership shape, and role contracts.
+  "RESEARCH_LINE_INVALID_SHAPE",
+  "RESEARCH_LINE_ID_INVALID",
+  "RESEARCH_LINE_ID_DIRECTORY_MISMATCH",
+  "RESEARCH_LINE_READER_STATE_INVALID",
+  "RESEARCH_LINE_TITLE_INVALID",
+  "RESEARCH_LINE_QUESTION_INVALID",
+  "RESEARCH_LINE_PHYSICAL_STRUCTURE_INVALID",
+  "RESEARCH_LINE_READING_FRONTMATTER_INVALID",
+  "RESEARCH_LINE_READING_OWNERSHIP_MISMATCH",
+  "RESEARCH_LINE_READING_EMPTY",
+  "RESEARCH_LINE_MEMBERSHIPS_INVALID",
+  "RESEARCH_LINE_MEMBERSHIP_INVALID_SHAPE",
+  "RESEARCH_LINE_MEMBERSHIP_ID_INVALID",
+  "RESEARCH_LINE_MEMBERSHIP_ID_DUPLICATE",
+  "RESEARCH_LINE_MEMBERSHIP_WORK_ID_INVALID",
+  "READING_ROLE_REQUIRED",
+  "READING_ROLE_INVALID",
+  "READING_ROLE_DUPLICATE",
+  "EDITORIAL_ANCHOR_INVALID",
+  "VISIBILITY_APPROVALS_INVALID",
+  "VISIBILITY_APPROVAL_INVALID_SHAPE",
+  "VISIBILITY_APPROVAL_PROFILE_INVALID",
+  "VISIBILITY_APPROVAL_DIGEST_INVALID",
+  "VISIBILITY_APPROVAL_TIMESTAMP_INVALID",
 ]);
 
 function isStructuralDiagnostic({ code = "" }) {
@@ -1994,6 +2040,692 @@ function extractWorkReadingFrontmatter(reading) {
   }
 }
 
+function extractEditorialReadingFrontmatter(reading, field) {
+  if (typeof reading !== "string" || !reading.startsWith("---")) {
+    return null;
+  }
+  const match = reading.match(/^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/u);
+  if (!match) {
+    return null;
+  }
+  try {
+    const frontmatter = parseYaml(match[1]);
+    return isObject(frontmatter) && typeof frontmatter[field] === "string"
+      ? frontmatter
+      : null;
+  } catch {
+    return null;
+  }
+}
+
+function normalizeEditorialReason(value) {
+  return typeof value === "string"
+    ? value.trim().replace(/\s+/gu, " ")
+    : value ?? null;
+}
+
+/**
+ * A membership's review binding covers only its semantic assertion.  The
+ * record ID is stable identity; both relationship endpoints are semantic.
+ * Role ordering is set-like and therefore canonicalized before hashing.
+ */
+export function researchLineMembershipSemanticDigest(membership, lineId = null) {
+  const semanticProjection = {
+    line_id: lineId,
+    work_id: membership?.work_id ?? null,
+    reading_roles: Array.isArray(membership?.reading_roles)
+      ? membership.reading_roles
+        .filter((role) => typeof role === "string")
+        .sort((left, right) => Buffer.from(left).compare(Buffer.from(right)))
+      : membership?.reading_roles ?? null,
+    editorial_anchor: membership?.editorial_anchor === true,
+    reason: normalizeEditorialReason(membership?.reason),
+  };
+  return createHash("sha256")
+    .update(JSON.stringify(semanticProjection), "utf8")
+    .digest("hex");
+}
+
+function validateMembershipReviewBinding(membership, lineId, details, diagnostics) {
+  if (membership?.review_state !== "reviewed") {
+    return true;
+  }
+  const binding = membership.review_binding;
+  if (!isObject(binding)) {
+    addDiagnostic(diagnostics, {
+      ...details,
+      code: "MEMBERSHIP_REVIEW_BINDING_REQUIRED",
+      fieldPath: `${details.fieldPath}/review_binding`,
+      message: "A reviewed Research Line Membership requires a semantic review binding.",
+    });
+    return false;
+  }
+  let valid = true;
+  if (binding.canonicalization_version !== CANONICALIZATION_VERSION) {
+    addDiagnostic(diagnostics, {
+      ...details,
+      code: "MEMBERSHIP_REVIEW_BINDING_VERSION_INVALID",
+      fieldPath: `${details.fieldPath}/review_binding/canonicalization_version`,
+      message: "Membership review binding uses an unsupported canonicalization version.",
+      relatedIds: [CANONICALIZATION_VERSION],
+    });
+    valid = false;
+  }
+  const expectedDigest = researchLineMembershipSemanticDigest(membership, lineId);
+  if (binding.semantic_digest !== expectedDigest) {
+    addDiagnostic(diagnostics, {
+      ...details,
+      code: "MEMBERSHIP_REVIEW_BINDING_STALE",
+      fieldPath: `${details.fieldPath}/review_binding/semantic_digest`,
+      message: "Reviewed Research Line Membership semantic fields no longer match its review binding.",
+    });
+    valid = false;
+  }
+  return valid;
+}
+
+/**
+ * Visibility digests use the same canonical YAML mapping procedure as the
+ * global content digest, but hash the reader projection for one entity.  The
+ * projection itself owns filtering of hidden records and release metadata.
+ */
+export function computeReaderVisibilityDigest(snapshot, entityType, entityId) {
+  const projection = entityType === "work"
+    ? projectWorkForReader(snapshot, entityId)
+    : entityType === "research_line"
+      ? projectResearchLineForReader(snapshot, entityId)
+      : null;
+  if (projection === null) {
+    return null;
+  }
+  return createHash("sha256")
+    .update(canonicalizeYaml(projection), "utf8")
+    .digest("hex");
+}
+
+function validateVisibilityApprovals(
+  record,
+  entity,
+  details,
+  manifest,
+  actorsById,
+  currentDigest,
+  diagnostics,
+) {
+  const approvals = record?.visibility_approvals;
+  const visible = record?.reader_state === "visible";
+  if (approvals !== undefined && !Array.isArray(approvals)) {
+    addDiagnostic(diagnostics, {
+      ...details,
+      code: "VISIBILITY_APPROVALS_INVALID",
+      fieldPath: "/visibility_approvals",
+      message: "Visibility approvals must be an append-only array.",
+    });
+    return { valid: false, status: "skipped" };
+  }
+
+  let currentApproval = false;
+  let approvalsValid = true;
+  for (const [index, approval] of (approvals ?? []).entries()) {
+    const approvalDetails = {
+      ...details,
+      recordId: entity.id,
+      fieldPath: `/visibility_approvals/${index}`,
+    };
+    if (!isObject(approval)) {
+      addDiagnostic(diagnostics, {
+        ...approvalDetails,
+        code: "VISIBILITY_APPROVAL_INVALID_SHAPE",
+        message: "Every Visibility Approval must be a mapping.",
+      });
+      approvalsValid = false;
+      continue;
+    }
+    let approvalValid = true;
+    if (typeof approval.profile_id !== "string" || approval.profile_id.length === 0) {
+      addDiagnostic(diagnostics, {
+        ...approvalDetails,
+        code: "VISIBILITY_APPROVAL_PROFILE_INVALID",
+        fieldPath: `${approvalDetails.fieldPath}/profile_id`,
+        message: "Visibility Approval profile_id must be a non-empty string.",
+        relatedIds: typeof manifest?.visibility_profile_id === "string"
+          ? [manifest.visibility_profile_id]
+          : [],
+      });
+      approvalValid = false;
+      approvalsValid = false;
+    }
+    if (
+      typeof approval.visibility_digest !== "string" ||
+      !/^[0-9a-f]{64}$/u.test(approval.visibility_digest)
+    ) {
+      addDiagnostic(diagnostics, {
+        ...approvalDetails,
+        code: "VISIBILITY_APPROVAL_DIGEST_INVALID",
+        fieldPath: `${approvalDetails.fieldPath}/visibility_digest`,
+        message: "Visibility Approval visibility_digest must be a lowercase SHA-256 digest.",
+      });
+      approvalValid = false;
+      approvalsValid = false;
+    }
+    const approvalActor = actorsById?.get(approval.actor_id);
+    if (typeof approval.actor_id !== "string" || !approvalActor) {
+      addDiagnostic(diagnostics, {
+        ...approvalDetails,
+        code: "VISIBILITY_APPROVAL_ACTOR_INVALID",
+        fieldPath: `${approvalDetails.fieldPath}/actor_id`,
+        message: "Visibility Approval requires an existing Actor Registry actor.",
+        relatedIds: typeof approval.actor_id === "string" ? [approval.actor_id] : [],
+      });
+      approvalValid = false;
+      approvalsValid = false;
+    } else if (approvalActor.kind !== "human") {
+      addDiagnostic(diagnostics, {
+        ...approvalDetails,
+        code: "VISIBILITY_APPROVAL_HUMAN_REQUIRED",
+        fieldPath: `${approvalDetails.fieldPath}/actor_id`,
+        message: "Visibility Approval requires a Human reviewer.",
+        relatedIds: [approval.actor_id],
+      });
+      approvalValid = false;
+      approvalsValid = false;
+    }
+    if (
+      !validateUtcTimestamp(
+        approval.approved_at,
+        {
+          ...approvalDetails,
+          code: "VISIBILITY_APPROVAL_TIMESTAMP_INVALID",
+          fieldPath: `${approvalDetails.fieldPath}/approved_at`,
+          message: "Visibility Approval approved_at must be a UTC RFC 3339 timestamp.",
+        },
+        diagnostics,
+      )
+    ) {
+      approvalValid = false;
+      approvalsValid = false;
+    }
+    if (
+      approvalValid &&
+      approvalActor &&
+      approvalActor.kind === "human" &&
+      !requireActorCapability(
+        { actor_id: approval.actor_id, recorded_at: approval.approved_at },
+        actorsById,
+        "approve_visibility",
+        {
+          ...approvalDetails,
+          fieldPath: `${approvalDetails.fieldPath}`,
+        },
+        diagnostics,
+        "VISIBILITY_APPROVAL_CAPABILITY_REQUIRED",
+      )
+    ) {
+      approvalValid = false;
+      approvalsValid = false;
+    }
+    if (
+      visible &&
+      approvalValid &&
+      approval.profile_id === manifest?.visibility_profile_id &&
+      approval.visibility_digest === currentDigest
+    ) {
+      currentApproval = true;
+    }
+  }
+
+  if (visible && !currentApproval && approvalsValid) {
+    addDiagnostic(diagnostics, {
+      ...details,
+      code: approvals?.length ? "VISIBILITY_APPROVAL_STALE" : "VISIBILITY_APPROVAL_REQUIRED",
+      fieldPath: "/visibility_approvals",
+      message: approvals?.length
+        ? "No Visibility Approval matches the current reader-facing digest and release profile."
+        : "A visible Reader Entity requires a Human Visibility Approval.",
+    });
+  }
+  return {
+    valid: approvalsValid && currentApproval,
+    status: !approvalsValid
+      ? "skipped"
+      : visible
+        ? (currentApproval ? "approved" : approvals?.length ? "stale" : "unapproved")
+        : "hidden",
+  };
+}
+
+function validateResearchLines(snapshot, actorsById, diagnostics) {
+  const worksById = new Map(snapshot.works.map((work) => [work.id, work]));
+  const pairOwners = new Map();
+  const membershipIds = new Set();
+  const memberships = [];
+  const invalidLineIds = new Set();
+  const invalidWorkIds = new Set();
+
+  for (const researchLine of snapshot.researchLines) {
+    const line = researchLine.line;
+    const file = `content/research-lines/${researchLine.id}/line.yaml`;
+    const details = { file, recordId: researchLine.id };
+    if (!isObject(line) || hasParseDiagnostic(diagnostics, file)) {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "RESEARCH_LINE_INVALID_SHAPE",
+        fieldPath: null,
+        message: "A Research Line record must be a YAML mapping.",
+      });
+      invalidLineIds.add(researchLine.id);
+      continue;
+    }
+
+    validateNamespacedId(line.line_id, "research-line", {
+      ...details,
+      code: "RESEARCH_LINE_ID_INVALID",
+      fieldPath: "/line_id",
+      message: "Research Line IDs must use the research-line: namespace.",
+    }, diagnostics);
+    if (line.line_id !== researchLine.id) {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "RESEARCH_LINE_ID_DIRECTORY_MISMATCH",
+        fieldPath: "/line_id",
+        message: "line.yaml line_id must match its bundle directory ID.",
+        relatedIds: [researchLine.id],
+      });
+    }
+    if (!READER_STATES.includes(line.reader_state)) {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "RESEARCH_LINE_READER_STATE_INVALID",
+        fieldPath: "/reader_state",
+        message: "Research Line reader_state must be draft or visible.",
+        relatedIds: READER_STATES,
+      });
+    }
+    if (typeof line.title !== "string" || line.title.trim() === "") {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "RESEARCH_LINE_TITLE_INVALID",
+        fieldPath: "/title",
+        message: "Research Lines require a non-empty title.",
+      });
+    }
+    if (typeof line.scientific_question !== "string" || line.scientific_question.trim() === "") {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "RESEARCH_LINE_QUESTION_INVALID",
+        fieldPath: "/scientific_question",
+        message: "Research Lines require a non-empty scientific question.",
+      });
+    }
+    if (!Array.isArray(line.physical_structure) || line.physical_structure.some((item) => typeof item !== "string" || item.trim() === "")) {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "RESEARCH_LINE_PHYSICAL_STRUCTURE_INVALID",
+        fieldPath: "/physical_structure",
+        message: "Research Line physical_structure must be an array of non-empty axis references.",
+      });
+    }
+
+    const readingFile = `content/research-lines/${researchLine.id}/reading.md`;
+    const frontmatter = extractEditorialReadingFrontmatter(researchLine.reading, "line_id");
+    if (!frontmatter) {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "RESEARCH_LINE_READING_FRONTMATTER_INVALID",
+        file: readingFile,
+        fieldPath: "/line_id",
+        message: "Research Line reading.md must begin with YAML frontmatter containing line_id.",
+      });
+    } else if (frontmatter.line_id !== researchLine.id) {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "RESEARCH_LINE_READING_OWNERSHIP_MISMATCH",
+        file: readingFile,
+        fieldPath: "/line_id",
+        message: "Research Line reading.md line_id must match its bundle directory ID.",
+        relatedIds: [researchLine.id],
+      });
+    }
+    if (typeof researchLine.reading !== "string" || researchLine.reading.trim() === "") {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "RESEARCH_LINE_READING_EMPTY",
+        file: readingFile,
+        fieldPath: null,
+        message: "Research Line reading.md must contain reader-facing prose.",
+      });
+    }
+
+    if (!Array.isArray(line.memberships)) {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "RESEARCH_LINE_MEMBERSHIPS_INVALID",
+        fieldPath: "/memberships",
+        message: "Research Lines require an explicit memberships array.",
+      });
+      invalidLineIds.add(researchLine.id);
+      continue;
+    }
+
+    const lineStructurallyValid = !diagnostics.some(
+      (diagnostic) =>
+        diagnostic.file?.startsWith(`content/research-lines/${researchLine.id}/`) &&
+        diagnostic.record_id === researchLine.id &&
+        isStructuralDiagnostic(diagnostic),
+    );
+    for (const [index, membership] of line.memberships.entries()) {
+      const diagnosticStart = diagnostics.length;
+      const membershipDetails = {
+        file,
+        recordId: membership?.id ?? researchLine.id,
+        fieldPath: `/memberships/${index}`,
+      };
+      if (!isObject(membership)) {
+        addDiagnostic(diagnostics, {
+          ...membershipDetails,
+          code: "RESEARCH_LINE_MEMBERSHIP_INVALID_SHAPE",
+          message: "Research Line Memberships must be mappings.",
+        });
+        invalidLineIds.add(researchLine.id);
+        continue;
+      }
+      validateNamespacedId(membership.id, "membership", {
+        ...membershipDetails,
+        code: "RESEARCH_LINE_MEMBERSHIP_ID_INVALID",
+        fieldPath: `${membershipDetails.fieldPath}/id`,
+        message: "Research Line Membership IDs must use the membership: namespace.",
+      }, diagnostics);
+      if (membershipIds.has(membership.id)) {
+        addDiagnostic(diagnostics, {
+          ...membershipDetails,
+          code: "RESEARCH_LINE_MEMBERSHIP_ID_DUPLICATE",
+          fieldPath: `${membershipDetails.fieldPath}/id`,
+          message: `Research Line Membership ID is duplicated: ${membership.id}.`,
+        });
+      }
+      membershipIds.add(membership.id);
+
+      if (!validateNamespacedId(membership.work_id, "work", {
+        ...membershipDetails,
+        code: "RESEARCH_LINE_MEMBERSHIP_WORK_ID_INVALID",
+        fieldPath: `${membershipDetails.fieldPath}/work_id`,
+        message: "Research Line Membership work_id must use the work: namespace.",
+      }, diagnostics) || !worksById.has(membership.work_id)) {
+        if (typeof membership.work_id === "string" && !worksById.has(membership.work_id)) {
+          addDiagnostic(diagnostics, {
+            ...membershipDetails,
+            code: "REFERENTIAL_WORK_MISSING",
+            fieldPath: `${membershipDetails.fieldPath}/work_id`,
+            message: `Research Line Membership Work does not exist: ${membership.work_id}.`,
+            relatedIds: [membership.work_id],
+          });
+        }
+      }
+
+      if (!Array.isArray(membership.reading_roles) || membership.reading_roles.length === 0) {
+        addDiagnostic(diagnostics, {
+          ...membershipDetails,
+          code: "READING_ROLE_REQUIRED",
+          fieldPath: `${membershipDetails.fieldPath}/reading_roles`,
+          message: "Research Line Memberships require a non-empty Reading Role set.",
+        });
+      } else {
+        const roles = new Set();
+        for (const [roleIndex, role] of membership.reading_roles.entries()) {
+          if (!READING_ROLES.includes(role)) {
+            addDiagnostic(diagnostics, {
+              ...membershipDetails,
+              code: "READING_ROLE_INVALID",
+              fieldPath: `${membershipDetails.fieldPath}/reading_roles/${roleIndex}`,
+              message: `Reading Role is not in the frozen V0.1 vocabulary: ${role}.`,
+              relatedIds: READING_ROLES,
+            });
+          }
+          if (roles.has(role)) {
+            addDiagnostic(diagnostics, {
+              ...membershipDetails,
+              code: "READING_ROLE_DUPLICATE",
+              fieldPath: `${membershipDetails.fieldPath}/reading_roles/${roleIndex}`,
+              message: `Reading Role is duplicated on this membership: ${role}.`,
+              relatedIds: [role],
+            });
+          }
+          roles.add(role);
+        }
+      }
+      if (typeof membership.editorial_anchor !== "boolean") {
+        addDiagnostic(diagnostics, {
+          ...membershipDetails,
+          code: "EDITORIAL_ANCHOR_INVALID",
+          fieldPath: `${membershipDetails.fieldPath}/editorial_anchor`,
+          message: "Research Line Membership editorial_anchor must be boolean.",
+        });
+      }
+
+      const pairKey = `${researchLine.id}\0${membership.work_id}`;
+      if (pairOwners.has(pairKey)) {
+        addDiagnostic(diagnostics, {
+          ...membershipDetails,
+          code: "RESEARCH_LINE_MEMBERSHIP_PAIR_DUPLICATE",
+          fieldPath: `${membershipDetails.fieldPath}/work_id`,
+          message: "A Work–Research Line pair may have at most one membership.",
+          relatedIds: [pairOwners.get(pairKey), membership.id].filter(Boolean),
+        });
+      } else {
+        pairOwners.set(pairKey, membership.id);
+      }
+
+      const membershipStructurallyValid = lineStructurallyValid && !diagnostics
+        .slice(diagnosticStart)
+        .some(isStructuralDiagnostic);
+      if (membershipStructurallyValid) {
+        validateGovernedRecord(membership, actorsById, membershipDetails, diagnostics);
+        validateMembershipReviewBinding(membership, researchLine.id, membershipDetails, diagnostics);
+        memberships.push({ researchLine, membership, index });
+      } else {
+        invalidLineIds.add(researchLine.id);
+        if (typeof membership.work_id === "string") {
+          invalidWorkIds.add(membership.work_id);
+        }
+      }
+    }
+    if (!lineStructurallyValid) {
+      invalidLineIds.add(researchLine.id);
+      for (const membership of line.memberships) {
+        if (typeof membership?.work_id === "string") {
+          invalidWorkIds.add(membership.work_id);
+        }
+      }
+    }
+  }
+
+  return { memberships, invalidLineIds, invalidWorkIds };
+}
+
+function validateFinalSnapshotVisibility(snapshot, actorsById, diagnostics, editorialState) {
+  const { memberships, invalidLineIds, invalidWorkIds } = editorialState;
+  const visibilityByWorkId = new Map();
+  const visibilityByLineId = new Map();
+  const visibleWorks = new Set(
+    snapshot.works
+      .filter((work) =>
+        work.files["work.yaml"]?.reader_state === "visible" &&
+        !invalidWorkIds.has(work.id))
+      .map((work) => work.id),
+  );
+  const visibleLines = new Set(
+    snapshot.researchLines
+      .filter((line) =>
+        line.line?.reader_state === "visible" &&
+        !invalidLineIds.has(line.id))
+      .map((line) => line.id),
+  );
+  const activeTechniqueIds = new Set(
+    (Array.isArray(snapshot.methods?.techniques) ? snapshot.methods.techniques : [])
+      .filter((technique) => technique?.status === "active")
+      .map((technique) => technique.id),
+  );
+
+  for (const work of snapshot.works) {
+    const record = work.files["work.yaml"];
+    if (!isObject(record)) {
+      continue;
+    }
+    const details = { file: `content/works/${work.id}/work.yaml`, recordId: work.id };
+    const workPath = `content/works/${work.id}`;
+    const structurallyInvalid = invalidWorkIds.has(work.id) || diagnostics.some(
+      (diagnostic) =>
+        diagnostic.file?.startsWith(`${workPath}/`) && isStructuralDiagnostic(diagnostic),
+    );
+    if (structurallyInvalid) {
+      visibilityByWorkId.set(work.id, { visibility_digest: null, visibility_status: "skipped" });
+      continue;
+    }
+    const digest = computeReaderVisibilityDigest(snapshot, "work", work.id);
+    const approval = validateVisibilityApprovals(
+      record,
+      work,
+      details,
+      snapshot.manifest,
+      actorsById,
+      digest,
+      diagnostics,
+    );
+    visibilityByWorkId.set(work.id, { visibility_digest: digest, visibility_status: approval.status });
+
+    if (record.reader_state !== "visible") {
+      continue;
+    }
+    const versions = work.files["versions.yaml"]?.versions;
+    if (!Array.isArray(versions) || versions.length === 0) {
+      addDiagnostic(diagnostics, { ...details, code: "VISIBLE_WORK_VERSION_REQUIRED", fieldPath: "/reader_state", message: "A visible Work requires at least one Version." });
+    }
+    if (typeof work.files["reading.md"] !== "string" || work.files["reading.md"].trim() === "") {
+      addDiagnostic(diagnostics, { ...details, code: "VISIBLE_WORK_READING_REQUIRED", fieldPath: "/reader_state", message: "A visible Work requires renderable reading prose." });
+    }
+    const annotations = work.files["annotations.yaml"]?.annotations;
+    const assessedAxes = new Set(
+      (Array.isArray(annotations) ? annotations : [])
+        .filter((annotation) => annotation?.assessment?.state && annotation.assessment.state !== "not_assessed")
+        .map((annotation) => annotation.axis),
+    );
+    if (AXIS_IDS.some((axisId) => !assessedAxes.has(axisId))) {
+      addDiagnostic(diagnostics, { ...details, code: "VISIBLE_WORK_AXIS_COVERAGE_INCOMPLETE", fieldPath: "/reader_state", message: "A visible V0.1 Work requires all 16 Physics axes to be assessed." });
+    }
+    const methods = work.files["annotations.yaml"]?.method_annotations;
+    if (!(Array.isArray(methods) && methods.some((method) =>
+      method?.review_state === "reviewed" && activeTechniqueIds.has(method.technique_id)))) {
+      addDiagnostic(diagnostics, { ...details, code: "VISIBLE_WORK_METHOD_REQUIRED", fieldPath: "/reader_state", message: "A visible Work requires a reviewed active technique-level Method Annotation." });
+    }
+
+    const workMemberships = memberships.filter(({ membership }) => membership.work_id === work.id);
+    if (workMemberships.length === 0) {
+      addDiagnostic(diagnostics, { ...details, code: "VISIBLE_WORK_MEMBERSHIP_REQUIRED", fieldPath: "/reader_state", message: "A visible Work requires at least one Research Line Membership." });
+    }
+    const anchors = workMemberships.filter(({ membership }) => membership.editorial_anchor === true);
+    if (anchors.length !== 1) {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "EDITORIAL_ANCHOR_CARDINALITY_INVALID",
+        fieldPath: "/reader_state",
+        message: "A visible Work requires exactly one global Editorial Anchor membership.",
+        relatedIds: anchors.map(({ membership }) => membership.id).filter(Boolean),
+      });
+    } else {
+      const anchor = anchors[0];
+      if (!visibleLines.has(anchor.researchLine.id)) {
+        addDiagnostic(diagnostics, {
+          ...details,
+          code: "VISIBLE_WORK_ANCHOR_LINE_NOT_VISIBLE",
+          fieldPath: "/reader_state",
+          message: "A visible Work's Editorial Anchor must belong to a visible Research Line.",
+          relatedIds: [anchor.researchLine.id],
+        });
+      }
+      if (anchor.membership.review_state !== "reviewed") {
+        addDiagnostic(diagnostics, {
+          ...details,
+          code: "VISIBLE_WORK_ANCHOR_MEMBERSHIP_NOT_REVIEWED",
+          fieldPath: "/reader_state",
+          message: "A visible Work's Editorial Anchor membership must be reviewed.",
+          relatedIds: [anchor.membership.id].filter(Boolean),
+        });
+      }
+    }
+  }
+
+  for (const researchLine of snapshot.researchLines) {
+    const record = researchLine.line;
+    if (!isObject(record)) {
+      continue;
+    }
+    const details = { file: `content/research-lines/${researchLine.id}/line.yaml`, recordId: researchLine.id };
+    const linePath = `content/research-lines/${researchLine.id}`;
+    const structurallyInvalid = invalidLineIds.has(researchLine.id) || diagnostics.some(
+      (diagnostic) =>
+        diagnostic.file?.startsWith(`${linePath}/`) && isStructuralDiagnostic(diagnostic),
+    );
+    if (structurallyInvalid) {
+      visibilityByLineId.set(researchLine.id, { visibility_digest: null, visibility_status: "skipped" });
+      continue;
+    }
+    const digest = computeReaderVisibilityDigest(snapshot, "research_line", researchLine.id);
+    const approval = validateVisibilityApprovals(
+      record,
+      researchLine,
+      details,
+      snapshot.manifest,
+      actorsById,
+      digest,
+      diagnostics,
+    );
+    visibilityByLineId.set(researchLine.id, { visibility_digest: digest, visibility_status: approval.status });
+    if (record.reader_state !== "visible") {
+      continue;
+    }
+    const eligible = memberships.filter(
+      ({ researchLine: owner, membership }) =>
+        owner.id === researchLine.id &&
+        membership.review_state === "reviewed" &&
+        visibleWorks.has(membership.work_id),
+    );
+    if (eligible.length === 0) {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "VISIBLE_RESEARCH_LINE_MEMBERSHIP_REQUIRED",
+        fieldPath: "/memberships",
+        message: "A visible Research Line requires at least one reviewed membership to a visible Work.",
+      });
+    }
+  }
+
+  const researchLineInventory = deriveResearchLineInventory(
+    snapshot,
+    diagnostics,
+    visibilityByLineId,
+  );
+  return { visibilityByWorkId, researchLineInventory };
+}
+
+function deriveResearchLineInventory(snapshot, diagnostics, visibilityByLineId = new Map()) {
+  return snapshot.researchLines
+    .map((researchLine) => {
+      const path = `content/research-lines/${researchLine.id}`;
+      const visibility = visibilityByLineId.get(researchLine.id) ?? {};
+      return {
+        line_id: researchLine.id,
+        reader_state: researchLine.line?.reader_state ?? null,
+        validation_status: diagnostics.some(({ file, record_id, severity }) =>
+          severity === "error" && (file === path || file?.startsWith(`${path}/`) || record_id === researchLine.id))
+          ? "invalid"
+          : "valid",
+        memberships: Array.isArray(researchLine.line?.memberships) ? researchLine.line.memberships.length : 0,
+        ...visibility,
+      };
+    })
+    .sort((left, right) => Buffer.from(left.line_id).compare(Buffer.from(right.line_id)));
+}
+
 function validateEvidenceLocator(locator, details, diagnostics) {
   if (!isObject(locator)) {
     addDiagnostic(diagnostics, {
@@ -3687,7 +4419,11 @@ function scientificAccountDependencyError(work, diagnostics) {
   });
 }
 
-function deriveWorkInventory(snapshot, diagnostics, { actorRegistryValid = true } = {}) {
+function deriveWorkInventory(
+  snapshot,
+  diagnostics,
+  { actorRegistryValid = true, visibilityByWorkId = new Map() } = {},
+) {
   return [...snapshot.works]
     .sort((left, right) => Buffer.from(left.id).compare(Buffer.from(right.id)))
     .map((work) => {
@@ -3708,10 +4444,13 @@ function deriveWorkInventory(snapshot, diagnostics, { actorRegistryValid = true 
       const hasGovernedScientificAccountRecords =
         (Array.isArray(statements) && statements.length > 0) ||
         (Array.isArray(account?.links) && account.links.length > 0);
+      const visibility = visibilityByWorkId.get(work.id) ?? {};
+      const readerState = work.files["work.yaml"]?.reader_state ?? null;
       return {
         work_id: work.id,
-        reader_state: work.files["work.yaml"]?.reader_state ?? null,
-        validation_status: workDiagnostics.some(({ severity }) => severity === "error")
+        reader_state: readerState,
+        validation_status: workDiagnostics.some(({ severity }) => severity === "error") ||
+          (readerState === "visible" && visibility.visibility_status !== "approved")
           ? "invalid"
           : "valid",
         scientific_statements: Array.isArray(statements) ? statements.length : 0,
@@ -3723,6 +4462,7 @@ function deriveWorkInventory(snapshot, diagnostics, { actorRegistryValid = true 
           (actorRegistryValid === false && hasGovernedScientificAccountRecords)
           ? "invalid"
           : "valid",
+        ...visibility,
       };
     });
 }
@@ -3735,6 +4475,11 @@ export async function validateCanonicalContent(
   const actorRegistryValid = !hasParseDiagnostic(diagnostics, "content/actors.yaml")
     && validateActors(snapshot.actors, diagnostics);
   const actorsById = actorRegistryValid ? actorMap(snapshot.actors) : null;
+  let editorialState = {
+    memberships: [],
+    invalidLineIds: new Set(),
+    invalidWorkIds: new Set(),
+  };
   let controlledTermEntries = [];
   if (!hasParseDiagnostic(diagnostics, "content/manifest.yaml")) {
     validateManifest(snapshot.manifest, diagnostics);
@@ -3769,12 +4514,29 @@ export async function validateCanonicalContent(
       }
     }
     validateWorkRecords(snapshot, actorsById, axisById, termsById, diagnostics);
+    editorialState = validateResearchLines(snapshot, actorsById, diagnostics);
   }
   validateRecordEnvelopes(snapshot, diagnostics);
 
+  const manifestSupportsVisibility =
+    !hasParseDiagnostic(diagnostics, "content/manifest.yaml") &&
+    isObject(snapshot.manifest) &&
+    VALID_CANONICALIZATION_VERSIONS.includes(snapshot.manifest.canonicalization_version) &&
+    VALID_VISIBILITY_PROFILE_IDS.includes(snapshot.manifest.visibility_profile_id);
+  const visibilityState = actorRegistryValid && manifestSupportsVisibility
+    ? validateFinalSnapshotVisibility(snapshot, actorsById, diagnostics, editorialState)
+    : {
+      visibilityByWorkId: new Map(),
+      researchLineInventory: deriveResearchLineInventory(snapshot, diagnostics),
+    };
+  const { visibilityByWorkId, researchLineInventory } = visibilityState;
+
   const canonicalContentDigest = await computeCanonicalContentDigest(snapshot.discovery.root);
   const manifest = snapshot.manifest;
-  const workInventory = deriveWorkInventory(snapshot, diagnostics, { actorRegistryValid });
+  const workInventory = deriveWorkInventory(snapshot, diagnostics, {
+    actorRegistryValid,
+    visibilityByWorkId,
+  });
   const accountStatusByWorkId = new Map(
     workInventory.map((work) => [work.work_id, work.scientific_account_validation_status]),
   );
@@ -3822,6 +4584,7 @@ export async function validateCanonicalContent(
     scientific_accounts: snapshot.works.map((work) =>
       scientificAccountInspection(work, accountStatusByWorkId.get(work.id) ?? "invalid")),
     work_inventory: workInventory,
+    research_line_inventory: researchLineInventory,
     diagnostics,
   };
   return report;
@@ -3875,12 +4638,24 @@ export function renderValidationMarkdown(report) {
     "",
     "## Work Inventory",
     "",
-    "| Work ID | Reader State | Validation | Statements | Stages | Links | Scientific Account |",
-    "| --- | --- | --- | ---: | ---: | ---: | --- |",
+    "| Work ID | Reader State | Visibility | Visibility Digest | Validation | Statements | Stages | Links | Scientific Account |",
+    "| --- | --- | --- | --- | --- | ---: | ---: | ---: | --- |",
   );
   for (const work of report.work_inventory ?? []) {
     lines.push(
-      `| ${markdownCell(work.work_id)} | ${markdownCell(work.reader_state)} | ${markdownCell(work.validation_status)} | ${markdownCell(work.scientific_statements)} | ${markdownCell(work.causal_stages)} | ${markdownCell(work.causal_links)} | ${markdownCell(work.scientific_account_validation_status)} |`,
+      `| ${markdownCell(work.work_id)} | ${markdownCell(work.reader_state)} | ${markdownCell(work.visibility_status)} | ${markdownCell(work.visibility_digest)} | ${markdownCell(work.validation_status)} | ${markdownCell(work.scientific_statements)} | ${markdownCell(work.causal_stages)} | ${markdownCell(work.causal_links)} | ${markdownCell(work.scientific_account_validation_status)} |`,
+    );
+  }
+  lines.push(
+    "",
+    "## Research Line Inventory",
+    "",
+    "| Research Line ID | Reader State | Visibility | Visibility Digest | Validation | Memberships |",
+    "| --- | --- | --- | --- | --- | ---: |",
+  );
+  for (const line of report.research_line_inventory ?? []) {
+    lines.push(
+      `| ${markdownCell(line.line_id)} | ${markdownCell(line.reader_state)} | ${markdownCell(line.visibility_status)} | ${markdownCell(line.visibility_digest)} | ${markdownCell(line.validation_status)} | ${markdownCell(line.memberships)} |`,
     );
   }
   lines.push(

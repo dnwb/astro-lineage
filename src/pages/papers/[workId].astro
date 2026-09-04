@@ -1,0 +1,175 @@
+---
+import { loadCanonicalContent } from "../../../scripts/content-loader.mjs";
+import { readEditorialIndex } from "../../../scripts/editorial-index.mjs";
+import {
+  projectResearchLineForReader,
+  projectWorkForReader,
+} from "../../../scripts/reader-projection.mjs";
+import "../../styles/global.css";
+
+type AnyRecord = Record<string, any>;
+type WorkBundle = { id: string; files: AnyRecord };
+
+export async function getStaticPaths() {
+  const snapshot = await loadCanonicalContent(new URL("../../../content/", import.meta.url));
+  const visibleWorks = (snapshot.works as WorkBundle[]).filter(
+    (work) => work.files["work.yaml"]?.reader_state === "visible",
+  );
+  return visibleWorks.map((work) => ({ params: { workId: work.id }, props: { workId: work.id } }));
+}
+
+const { workId } = Astro.props;
+const snapshot = await loadCanonicalContent(new URL("../../../content/", import.meta.url));
+const work = projectWorkForReader(snapshot, workId) as AnyRecord | null;
+if (!work) {
+  throw new Error(`Visible Work not found: ${workId}`);
+}
+
+const versions = work.versions ?? [];
+const preferredVersion = versions.find(
+  (version: AnyRecord) => version.id === work.preferred_version_id,
+);
+const statements = work.statements ?? [];
+const physicalAccount = work.physical_account ?? { stages: [], links: [] };
+const reviewedLinks = physicalAccount.links ?? [];
+const reverseIndex = await readEditorialIndex() as Record<string, AnyRecord[]>;
+const lineMemberships = (reverseIndex[workId] ?? []).map((membership) => ({
+  ...membership,
+  line: projectResearchLineForReader(snapshot, membership.line_id),
+}));
+const readingParagraphs = String(work.reading ?? "")
+  .replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n/u, "")
+  .trim()
+  .split(/\r?\n\s*\r?\n/u)
+  .map((paragraph) => paragraph.replace(/^#+\s+/u, "").replace(/\r?\n/gu, " "))
+  .filter(Boolean);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={`Scientific Reader View for ${preferredVersion?.title ?? workId}.`} />
+    <title>{preferredVersion?.title ?? workId} · High-Energy Transient Reading Radar</title>
+  </head>
+  <body>
+    <main>
+      <p class="eyebrow"><a href="/papers">Papers</a></p>
+      <h1>{preferredVersion?.title ?? workId}</h1>
+
+      <section>
+        <h2>Preferred Version</h2>
+        <p>{preferredVersion?.authors?.map((author: AnyRecord) => author.display_name).join(", ")} ({preferredVersion?.release_date?.value})</p>
+        <p>
+          {preferredVersion?.journal?.name} {preferredVersion?.journal?.volume}, {preferredVersion?.journal?.first_page}.
+          {preferredVersion?.doi ? ` DOI: ${preferredVersion.doi}.` : ""}
+        </p>
+        <p>{work.preferred_version?.reason}</p>
+        <ul>
+          {(preferredVersion?.access_urls ?? []).map((access: AnyRecord) => (
+            <li><a href={access.url}>{access.kind}</a></li>
+          ))}
+        </ul>
+      </section>
+
+      <section>
+        <h2>Reader View</h2>
+        {readingParagraphs.map((paragraph) => <p>{paragraph}</p>)}
+      </section>
+
+      <section>
+        <h2>Physics Ontology</h2>
+        <dl>
+          {(work.annotations ?? []).map((annotation: AnyRecord) => (
+            <>
+              <dt>{annotation.axis}</dt>
+              <dd>
+                {annotation.assessment?.state}
+                {(annotation.assessment?.values ?? []).length > 0
+                  ? `: ${annotation.assessment.values.map((value: AnyRecord) => value.term_id).join(", ")}`
+                  : ""}
+                {annotation.interpretive_risk ? `; risk: ${annotation.interpretive_risk}` : ""}
+                {annotation.reason ? `; ${annotation.reason}` : ""}
+              </dd>
+            </>
+          ))}
+        </dl>
+      </section>
+
+      <section>
+        <h2>Methods</h2>
+        <ul>
+          {(work.method_annotations ?? []).map((annotation: AnyRecord) => (
+            <li>
+              {annotation.technique_id} ({annotation.basis})
+              {annotation.reason ? ` — ${annotation.reason}` : ""}
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section>
+        <h2>Scientific Statements</h2>
+        <ul>
+          {statements.map((statement: AnyRecord) => (
+            <li>
+              <strong>{statement.kind}</strong>: {statement.canonical_text}
+              {statement.reason ? ` — ${statement.reason}` : ""}
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section>
+        <h2>Physical Account</h2>
+        <ol>
+          {(physicalAccount.stages ?? []).map((stage: AnyRecord) => <li>{stage.label}</li>)}
+        </ol>
+        <ul>
+          {reviewedLinks.map((link: AnyRecord) => (
+            <li>{link.source_stage_id} <strong>{link.relation}</strong> {link.target_stage_id}: {link.reason}</li>
+          ))}
+        </ul>
+      </section>
+
+      <section>
+        <h2>Research Lines</h2>
+        <ul>
+          {lineMemberships.map((membership: AnyRecord) => (
+            <li>
+              <a href={`/research-lines/${membership.line_id}/`}>{membership.line?.title}</a>
+              {membership.editorial_anchor ? " — Editorial Anchor" : ""}
+              {` (${membership.reading_roles.join(", ")})`}
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section>
+        <h2>Scientific Edges</h2>
+        {(work.scientific_edges ?? []).length === 0 ? (
+          <p>No reviewed reader-visible Scientific Edges are stored for this Work.</p>
+        ) : (
+          <ul>
+            {work.scientific_edges.map((edge: AnyRecord) => (
+              <li>{edge.source_work_id} <strong>{edge.relation}</strong> {edge.target_work_id}</li>
+            ))}
+          </ul>
+        )}
+      </section>
+
+      <details>
+        <summary>Provenance Detail</summary>
+        <ul>
+          {(work.evidence ?? []).map((evidence: AnyRecord) => (
+            <li>
+              <strong>{evidence.id}</strong> — {evidence.version_id}; {evidence.locator?.type}, page {evidence.locator?.page}: “{evidence.excerpt}”
+              {evidence.source_url ? <> — <a href={evidence.source_url}>source</a></> : ""}
+            </li>
+          ))}
+        </ul>
+      </details>
+    </main>
+  </body>
+</html>

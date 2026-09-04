@@ -33,7 +33,7 @@ async function copyContent() {
   return { temporaryRoot, contentRoot };
 }
 
-test("the production snapshot keeps the frozen canonical layout with the first draft Work", async () => {
+test("the production snapshot keeps the frozen canonical layout with the first visible Work and Research Line", async () => {
   const snapshot = await loadCanonicalContent(productionContent);
 
   assert.deepEqual(snapshot.manifest, {
@@ -44,7 +44,8 @@ test("the production snapshot keeps the frozen canonical layout with the first d
   assert.equal(snapshot.works.length, 1);
   assert.equal(snapshot.works[0].id, "work:arnett-1982");
   assert.deepEqual(snapshot.scientificEdges, []);
-  assert.deepEqual(snapshot.researchLines, []);
+  assert.equal(snapshot.researchLines.length, 1);
+  assert.equal(snapshot.researchLines[0].id, "research-line:central-engines");
   assert.deepEqual(snapshot.learningPaths, []);
   assert.deepEqual(snapshot.axes.map((axis) => axis.id), AXIS_IDS);
   assert.deepEqual(
@@ -55,7 +56,7 @@ test("the production snapshot keeps the frozen canonical layout with the first d
     snapshot.methods.techniques.map(({ id }) => id),
     ["technique:reduction-to-quadrature"],
   );
-  assert.equal(snapshot.discovery.files.length, 26);
+  assert.equal(snapshot.discovery.files.length, 28);
   assert(snapshot.discovery.files.every((file) => !file.startsWith("generated/")));
 });
 

@@ -8,7 +8,7 @@ annotations:
         - term_id: term:near-chandrasekhar-carbon-ignition
         - term_id: term:evolved-helium-star-collapse
     interpretive_risk: descriptive
-    evidence_ids: [evidence:arnett-alternative-models]
+    evidence_ids: [evidence:arnett-model-classes]
     curation_provenance:
       actor_id: actor:agent-curator
       recorded_at: "2026-09-04T04:20:00Z"
@@ -51,7 +51,7 @@ annotations:
       values:
         - term_id: term:radioactive-decay-energy-release
     interpretive_risk: descriptive
-    evidence_ids: [evidence:arnett-decay-heating]
+    evidence_ids: [evidence:arnett-decay-chain]
     curation_provenance:
       actor_id: actor:agent-curator
       recorded_at: "2026-09-04T04:20:30Z"
@@ -124,7 +124,7 @@ annotations:
       values:
         - term_id: term:electron-capture-positron-emission
     interpretive_risk: descriptive
-    evidence_ids: [evidence:arnett-decay-heating]
+    evidence_ids: [evidence:arnett-decay-chain]
     curation_provenance:
       actor_id: actor:agent-curator
       recorded_at: "2026-09-04T04:21:20Z"
@@ -139,7 +139,7 @@ annotations:
       values:
         - term_id: term:blackbody-spectrum-approximation
     interpretive_risk: descriptive
-    evidence_ids: [evidence:arnett-photometric-bands]
+    evidence_ids: [evidence:arnett-blackbody-spectrum]
     curation_provenance:
       actor_id: actor:agent-curator
       recorded_at: "2026-09-04T04:21:30Z"
@@ -184,7 +184,7 @@ annotations:
       values:
         - term_id: term:photons
     interpretive_risk: descriptive
-    evidence_ids: [evidence:arnett-photometric-bands]
+    evidence_ids: [evidence:arnett-photon-transparency]
     curation_provenance:
       actor_id: actor:agent-curator
       recorded_at: "2026-09-04T04:22:00Z"
@@ -201,7 +201,7 @@ annotations:
         - term_id: term:b-band
         - term_id: term:v-band
     interpretive_risk: descriptive
-    evidence_ids: [evidence:arnett-photometric-bands]
+    evidence_ids: [evidence:arnett-ubv]
     curation_provenance:
       actor_id: actor:agent-curator
       recorded_at: "2026-09-04T04:22:10Z"
@@ -217,7 +217,7 @@ annotations:
         - term_id: term:measured-magnitudes
         - term_id: term:light-curves
     interpretive_risk: descriptive
-    evidence_ids: [evidence:arnett-photometric-bands]
+    evidence_ids: [evidence:arnett-photometric-bands, evidence:arnett-ubv]
     curation_provenance:
       actor_id: actor:agent-curator
       recorded_at: "2026-09-04T04:22:20Z"

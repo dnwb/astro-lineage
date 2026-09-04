@@ -92,6 +92,21 @@ evidence:
     review_provenance:
       actor_id: actor:human-curator
       recorded_at: "2026-09-04T04:17:30Z"
+  - id: evidence:arnett-decay-chain
+    version_id: version:arnett-1982-journal
+    source_url: https://articles.adsabs.harvard.edu/pdf/1982ApJ...253..785A
+    locator:
+      type: section
+      page: 790
+      section: IV(a)
+    excerpt: "Nickel-56 decays to 56Co by electron capture with a 6.10 day half-life. The 56Co then decays to 56Fe by electron capture (81%) and positron emission (19%)."
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-09-04T04:12:40Z"
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: "2026-09-04T04:17:40Z"
   - id: evidence:arnett-alternative-models
     version_id: version:arnett-1982-journal
     source_url: https://articles.adsabs.harvard.edu/pdf/1982ApJ...253..785A
@@ -107,6 +122,21 @@ evidence:
     review_provenance:
       actor_id: actor:human-curator
       recorded_at: "2026-09-04T04:18:00Z"
+  - id: evidence:arnett-model-classes
+    version_id: version:arnett-1982-journal
+    source_url: https://articles.adsabs.harvard.edu/pdf/1982ApJ...253..785A
+    locator:
+      type: section
+      page: 791
+      section: IV(b)
+    excerpt: "The first three models may be taken to represent the result of degenerate ignition of 12C in a core near the Chandrasekhar limiting mass. ... The last two models may be taken to represent the results of core collapse of an evolved helium star."
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-09-04T04:13:10Z"
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: "2026-09-04T04:18:10Z"
   - id: evidence:arnett-photometric-bands
     version_id: version:arnett-1982-journal
     source_url: https://articles.adsabs.harvard.edu/pdf/1982ApJ...253..785A
@@ -122,6 +152,51 @@ evidence:
     review_provenance:
       actor_id: actor:human-curator
       recorded_at: "2026-09-04T04:18:30Z"
+  - id: evidence:arnett-blackbody-spectrum
+    version_id: version:arnett-1982-journal
+    source_url: https://articles.adsabs.harvard.edu/pdf/1982ApJ...253..785A
+    locator:
+      type: section
+      page: 792
+      section: IV(d)
+    excerpt: "we introduce the hypothetical construct of a 'blackbody supernova.' In this construct the radiation escaping has a blackbody spectrum corresponding to the temperature of the photosphere."
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-09-04T04:13:40Z"
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: "2026-09-04T04:18:40Z"
+  - id: evidence:arnett-ubv
+    version_id: version:arnett-1982-journal
+    source_url: https://articles.adsabs.harvard.edu/pdf/1982ApJ...253..785A
+    locator:
+      type: section
+      page: 793
+      section: IV(d)
+    excerpt: "These phi_U, phi_B, and phi_V represent U, B, and V magnitudes of our 'blackbody supernova' at D = 1 Mpc."
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-09-04T04:13:50Z"
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: "2026-09-04T04:18:50Z"
+  - id: evidence:arnett-photon-transparency
+    version_id: version:arnett-1982-journal
+    source_url: https://articles.adsabs.harvard.edu/pdf/1982ApJ...253..785A
+    locator:
+      type: section
+      page: 792
+      section: IV(d)
+    excerpt: "Not only does the expanding supernova become transparent to gamma-rays, but also to thermal photons."
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-09-04T04:14:00Z"
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: "2026-09-04T04:19:00Z"
   - id: evidence:arnett-intrinsic-luminosity
     version_id: version:arnett-1982-journal
     source_url: https://articles.adsabs.harvard.edu/pdf/1982ApJ...253..785A
@@ -132,8 +207,8 @@ evidence:
     excerpt: "the velocity scale may be used to infer the intrinsic luminosity more accurately."
     curation_provenance:
       actor_id: actor:agent-curator
-      recorded_at: "2026-09-04T04:14:00Z"
+      recorded_at: "2026-09-04T04:14:10Z"
     review_state: reviewed
     review_provenance:
       actor_id: actor:human-curator
-      recorded_at: "2026-09-04T04:19:00Z"
+      recorded_at: "2026-09-04T04:19:10Z"

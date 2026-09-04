@@ -237,6 +237,7 @@ function validateActors(actors, diagnostics) {
     return false;
   }
 
+  let valid = true;
   const seen = new Set();
   for (const [index, actor] of actors.actors.entries()) {
     if (!isObject(actor)) {
@@ -247,6 +248,7 @@ function validateActors(actors, diagnostics) {
         fieldPath: `/actors/${index}`,
         message: "Every actor registry entry must be a mapping.",
       });
+      valid = false;
       continue;
     }
     const actorId = actor.id;
@@ -257,6 +259,7 @@ function validateActors(actors, diagnostics) {
       fieldPath: `/actors/${index}/id`,
       message: "Actor IDs must use the actor: namespace.",
     }, diagnostics)) {
+      valid = false;
       continue;
     }
     if (seen.has(actorId)) {
@@ -267,6 +270,7 @@ function validateActors(actors, diagnostics) {
         fieldPath: `/actors/${index}/id`,
         message: `Actor ID is duplicated: ${actorId}.`,
       });
+      valid = false;
     }
     seen.add(actorId);
     if (!ACTOR_KINDS.includes(actor.kind)) {
@@ -278,6 +282,7 @@ function validateActors(actors, diagnostics) {
         message: "Actor kind must be human or agent.",
         relatedIds: ACTOR_KINDS,
       });
+      valid = false;
     }
     if (typeof actor.label !== "string" || actor.label.trim() === "") {
       addDiagnostic(diagnostics, {
@@ -287,6 +292,7 @@ function validateActors(actors, diagnostics) {
         fieldPath: `/actors/${index}/label`,
         message: "Every actor requires a non-empty display label.",
       });
+      valid = false;
     }
     if (!Array.isArray(actor.capability_events)) {
       addDiagnostic(diagnostics, {
@@ -296,6 +302,7 @@ function validateActors(actors, diagnostics) {
         fieldPath: `/actors/${index}/capability_events`,
         message: "Actor capability_events must be an append-only array.",
       });
+      valid = false;
     } else {
       for (const [capabilityIndex, capabilityEvent] of actor.capability_events.entries()) {
         if (!isObject(capabilityEvent)) {
@@ -307,6 +314,7 @@ function validateActors(actors, diagnostics) {
             message: "Every actor capability event must be a mapping.",
             relatedIds: ACTOR_CAPABILITIES,
           });
+          valid = false;
           continue;
         }
         if (!ACTOR_CAPABILITIES.includes(capabilityEvent.capability)) {
@@ -318,6 +326,7 @@ function validateActors(actors, diagnostics) {
             message: `Actor capability is not in the frozen V0.1 vocabulary: ${capabilityEvent.capability}.`,
             relatedIds: ACTOR_CAPABILITIES,
           });
+          valid = false;
         }
         if (
           actor.kind === "agent" &&
@@ -331,6 +340,7 @@ function validateActors(actors, diagnostics) {
             message: "V0.1 Agent actors may receive only draft_records.",
             relatedIds: ["draft_records"],
           });
+          valid = false;
         }
         if (!["grant", "revoke"].includes(capabilityEvent.action)) {
           addDiagnostic(diagnostics, {
@@ -341,6 +351,7 @@ function validateActors(actors, diagnostics) {
             message: "Actor capability action must be grant or revoke.",
             relatedIds: ["grant", "revoke"],
           });
+          valid = false;
         }
         if (typeof capabilityEvent.reason !== "string" || capabilityEvent.reason.trim() === "") {
           addDiagnostic(diagnostics, {
@@ -350,18 +361,21 @@ function validateActors(actors, diagnostics) {
             fieldPath: `/actors/${index}/capability_events/${capabilityIndex}/reason`,
             message: "Every actor capability event requires a reason.",
           });
+          valid = false;
         }
-        validateUtcTimestamp(capabilityEvent.effective_at, {
+        if (!validateUtcTimestamp(capabilityEvent.effective_at, {
           code: "ACTOR_CAPABILITY_EFFECTIVE_AT_INVALID",
           file: "content/actors.yaml",
           recordId: actorId,
           fieldPath: `/actors/${index}/capability_events/${capabilityIndex}/effective_at`,
           message: "Actor capability effective_at must be a UTC RFC 3339 timestamp.",
-        }, diagnostics);
+        }, diagnostics)) {
+          valid = false;
+        }
       }
     }
   }
-  return true;
+  return valid;
 }
 
 function validateAxes(axes, actorsById, diagnostics) {
@@ -1017,7 +1031,7 @@ function methodAnnotationSemanticDigest(annotation) {
     basis: annotation.basis ?? null,
     reason: normalizeMethodReason(annotation.reason),
     evidence_ids: Array.isArray(annotation.evidence_ids)
-      ? annotation.evidence_ids
+      ? [...annotation.evidence_ids].sort()
       : annotation.evidence_ids ?? null,
   };
   return createHash("sha256")

@@ -298,6 +298,39 @@ test("an invalid Actor Registry reports its root error without actor-dependent c
   assert.equal(result.valid, false);
 });
 
+test("invalid Actor children quarantine actor-dependent governance checks", async () => {
+  const mutations = [
+    {
+      rootCode: "ACTOR_KIND_INVALID",
+      apply(actors) {
+        actors.actors[0].kind = "service";
+      },
+    },
+    {
+      rootCode: "ACTOR_CAPABILITY_EVENTS_INVALID",
+      apply(actors) {
+        actors.actors[0].capability_events = null;
+      },
+    },
+  ];
+
+  for (const { rootCode, apply } of mutations) {
+    const { contentRoot } = await copyContent();
+    const actorsPath = join(contentRoot, "actors.yaml");
+    const actors = parse(await readFile(actorsPath, "utf8"));
+    apply(actors);
+    await writeFile(actorsPath, stringify(actors));
+
+    const result = await validateCanonicalContent(contentRoot);
+    const codes = result.diagnostics.map(({ code }) => code);
+
+    assert(codes.includes(rootCode));
+    assert(!codes.includes("REFERENTIAL_ACTOR_MISSING"));
+    assert(!codes.some((code) => code.startsWith("CURATION_")));
+    assert(!codes.includes("METHOD_REVIEWED_TECHNIQUE_REQUIRED"));
+  }
+});
+
 test("duplicate Controlled Terms emit one global root-cause diagnostic", async () => {
   const { contentRoot } = await copyContent();
   const axisPath = join(contentRoot, "ontology", "axes", "energy_reservoir.yaml");
@@ -457,6 +490,28 @@ test("reviewed Method Annotation bindings reject material edits but ignore forma
   assert(!formattingOnly.diagnostics.some(({ code }) => code === "METHOD_REVIEW_BINDING_STALE"));
 });
 
+test("Method review binding treats Evidence references as an unordered set", async () => {
+  const { contentRoot } = await copyContent();
+  const { workRoot, annotations } = await readArnett(contentRoot);
+  const method = annotations.method_annotations[0];
+  method.evidence_ids = [
+    "evidence:arnett-abstract",
+    "evidence:arnett-reduction-quadrature",
+  ];
+  method.review_binding.semantic_digest = "4849b2426f3784707b9638ef012f9740c63d33245c87f9e4208cde3dc584b4f1";
+  await writeFile(join(workRoot, "annotations.yaml"), stringify(annotations));
+
+  const ordered = await validateCanonicalContent(contentRoot);
+  assert.equal(ordered.valid, true);
+
+  method.evidence_ids.reverse();
+  await writeFile(join(workRoot, "annotations.yaml"), stringify(annotations));
+  const reordered = await validateCanonicalContent(contentRoot);
+
+  assert.equal(reordered.valid, true);
+  assert(!reordered.diagnostics.some(({ code }) => code === "METHOD_REVIEW_BINDING_STALE"));
+});
+
 test("required Interpretive Annotation reasons reject whitespace-only values", async () => {
   const { contentRoot } = await copyContent();
   const { workRoot, annotations } = await readArnett(contentRoot);
@@ -503,4 +558,17 @@ test("Arnett Evidence excerpts retain source text rather than curator synthesis"
     excerpts.get("evidence:arnett-alternative-models"),
     "It is impossible to distinguish between thermonuclear and collapse models.",
   );
+  assert.match(
+    excerpts.get("evidence:arnett-model-classes"),
+    /degenerate ignition of 12C.*core collapse of an evolved helium star/u,
+  );
+  assert.match(
+    excerpts.get("evidence:arnett-decay-chain"),
+    /electron capture.*positron emission/u,
+  );
+  assert.match(
+    excerpts.get("evidence:arnett-blackbody-spectrum"),
+    /hypothetical construct.*blackbody spectrum/u,
+  );
+  assert.match(excerpts.get("evidence:arnett-ubv"), /U, B, and V magnitudes/u);
 });

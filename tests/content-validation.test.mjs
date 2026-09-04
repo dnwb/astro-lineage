@@ -7,6 +7,7 @@ import { parse, stringify } from "yaml";
 
 import {
   AXIS_IDS,
+  AXIS_QUESTIONS,
   WORK_CONCERN_FILES,
   discoverCanonicalContent,
   loadCanonicalContent,
@@ -53,7 +54,9 @@ test("the empty production snapshot has the frozen canonical layout", async () =
 
 test("closed-world discovery rejects unknown production entries", async () => {
   const { contentRoot } = await copyContent();
+  const digestBefore = await computeCanonicalContentDigest(contentRoot);
   await writeFile(join(contentRoot, "README.txt"), "not canonical\n");
+  await writeFile(join(contentRoot, "scientific-edges", "edge.txt"), "not yaml\n");
 
   const discovery = await discoverCanonicalContent(contentRoot);
   const diagnostic = discovery.diagnostics.find(
@@ -64,6 +67,21 @@ test("closed-world discovery rejects unknown production entries", async () => {
   assert.equal(diagnostic.dataset, "production");
   assert.equal(diagnostic.file, "content/README.txt");
   assert.equal(diagnostic.field_path, null);
+  assert.equal(discovery.files.includes("content/README.txt"), false);
+  assert.equal(discovery.files.includes("content/scientific-edges/edge.txt"), false);
+
+  const digestAfter = await computeCanonicalContentDigest(contentRoot);
+  assert.equal(digestAfter, digestBefore);
+  assert.deepEqual(Object.keys(diagnostic).sort(), [
+    "code",
+    "dataset",
+    "field_path",
+    "file",
+    "message",
+    "record_id",
+    "related_ids",
+    "severity",
+  ]);
 });
 
 test("production discovery does not scan generated artifacts or test fixtures", async () => {
@@ -122,6 +140,119 @@ test("a malformed YAML document is quarantined without manifest cascades", async
   const codes = result.diagnostics.map(({ code }) => code);
 
   assert.deepEqual(codes, ["STRUCTURE_YAML_PARSE_ERROR"]);
+  assert.equal(result.canonical_content_digest, null);
+});
+
+test("malformed YAML reports an unavailable digest instead of hashing raw source", async () => {
+  const { temporaryRoot, contentRoot } = await copyContent();
+  await writeFile(join(contentRoot, "manifest.yaml"), "schema_version: [\n");
+
+  const report = await runValidation({ contentRoot, outputRoot: temporaryRoot });
+  const reportJson = JSON.parse(
+    await readFile(join(temporaryRoot, "validation/report.json"), "utf8"),
+  );
+  const reportMarkdown = await readFile(join(temporaryRoot, "validation/report.md"), "utf8");
+
+  assert.equal(report.canonical_content_digest, null);
+  assert.equal(reportJson.canonical_content_digest, null);
+  assert.match(reportMarkdown, /Canonical content digest: `unavailable`/);
+});
+
+test("manifest failure reports preserve invalid and missing metadata values", async () => {
+  const invalid = await copyContent();
+  await writeFile(
+    join(invalid.contentRoot, "manifest.yaml"),
+    "schema_version: v0.1\ncanonicalization_version: v9\nvisibility_profile_id: v9-profile\n",
+  );
+  const invalidReport = await validateCanonicalContent(invalid.contentRoot);
+
+  assert.equal(invalidReport.canonicalization_version, "v9");
+  assert.equal(invalidReport.visibility_profile_id, "v9-profile");
+
+  const missing = await copyContent();
+  await writeFile(join(missing.contentRoot, "manifest.yaml"), "schema_version: v0.1\n");
+  const missingReport = await validateCanonicalContent(missing.contentRoot);
+
+  assert.equal(missingReport.canonicalization_version, null);
+  assert.equal(missingReport.visibility_profile_id, null);
+});
+
+test("editorial bundle metadata and reading prose must be regular files", async () => {
+  for (const [collection, metadataFile] of [
+    ["research-lines", "line.yaml"],
+    ["learning-paths", "path.yaml"],
+  ]) {
+    const { contentRoot } = await copyContent();
+    const bundleRoot = join(contentRoot, collection, "bundle-example");
+    await mkdir(join(bundleRoot, metadataFile), { recursive: true });
+    await mkdir(join(bundleRoot, "reading.md"), { recursive: true });
+
+    const discovery = await discoverCanonicalContent(contentRoot);
+    const diagnostics = discovery.diagnostics.filter(
+      ({ code, file }) =>
+        code === "STRUCTURE_EDITORIAL_EXPECTED_FILE" &&
+        file.startsWith(`content/${collection}/bundle-example/`),
+    );
+
+    assert.deepEqual(
+      diagnostics.map(({ file }) => file).sort(),
+      [
+        `content/${collection}/bundle-example/${metadataFile}`,
+        `content/${collection}/bundle-example/reading.md`,
+      ].sort(),
+    );
+    assert.equal(
+      discovery.files.some((file) => file.startsWith(`content/${collection}/bundle-example/`)),
+      false,
+    );
+  }
+});
+
+test("Physics Ontology axis questions are frozen schema-level contracts", async () => {
+  const { contentRoot } = await copyContent();
+  const axisPath = join(contentRoot, "ontology", "axes", "central_object.yaml");
+  const axis = parse(await readFile(axisPath, "utf8"));
+  axis.question = "A different question";
+  await writeFile(axisPath, stringify(axis));
+
+  const result = await validateCanonicalContent(contentRoot);
+  const diagnostic = result.diagnostics.find(
+    ({ code }) => code === "STRUCTURE_AXIS_QUESTION_MISMATCH",
+  );
+
+  assert(diagnostic);
+  assert.equal(diagnostic.record_id, "central_object");
+  assert.equal(diagnostic.field_path, "/question");
+  assert.deepEqual(diagnostic.related_ids, []);
+  assert.equal(AXIS_QUESTIONS.central_object !== axis.question, true);
+});
+
+test("canonical reading I/O errors are diagnosed instead of becoming empty prose", async () => {
+  const { contentRoot } = await copyContent();
+  const workRoot = join(contentRoot, "works", "work-with-directory-reading");
+  await mkdir(workRoot, { recursive: true });
+  for (const fileName of WORK_CONCERN_FILES) {
+    const filePath = join(workRoot, fileName);
+    if (fileName === "reading.md") {
+      await mkdir(filePath);
+    } else {
+      await writeFile(filePath, "{}\n");
+    }
+  }
+
+  const snapshot = await loadCanonicalContent(contentRoot);
+  const diagnostic = snapshot.discovery.diagnostics.find(
+    ({ code, file }) =>
+      code === "STRUCTURE_CANONICAL_READ_ERROR" &&
+      file === "content/works/work-with-directory-reading/reading.md",
+  );
+
+  assert(diagnostic);
+  assert.equal(snapshot.works[0].files["reading.md"], undefined);
+
+  const result = await validateCanonicalContent(contentRoot);
+  assert.equal(result.valid, false);
+  assert(result.diagnostics.some(({ code }) => code === "STRUCTURE_CANONICAL_READ_ERROR"));
 });
 
 test("semantic content digests ignore YAML formatting and line-ending changes", async () => {

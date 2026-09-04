@@ -33,13 +33,7 @@ export function canonicalizeMarkdown(source) {
 
 export function canonicalizeText(relativePath, source) {
   if (extname(relativePath) === ".yaml") {
-    try {
-      return canonicalizeYaml(source);
-    } catch {
-      // Invalid source is reported by the validator. A deterministic raw
-      // fallback still lets a failing report carry a useful digest.
-      return String(source);
-    }
+    return canonicalizeYaml(source);
   }
   if (extname(relativePath) === ".md") {
     return canonicalizeMarkdown(source);
@@ -56,7 +50,14 @@ export async function computeCanonicalContentDigest(contentRoot) {
       ? relativePath.slice("content/".length)
       : basename(relativePath);
     const source = await readFile(join(discovery.root, fileName), "utf8");
-    const canonical = canonicalizeText(relativePath, source);
+    let canonical;
+    try {
+      canonical = canonicalizeText(relativePath, source);
+    } catch {
+      // Invalid canonical input has no semantic digest. The validator keeps
+      // the parse diagnostic and writes a report with a null digest.
+      return null;
+    }
     const pathBytes = Buffer.from(relativePath, "utf8");
     const contentBytes = Buffer.from(canonical, "utf8");
 

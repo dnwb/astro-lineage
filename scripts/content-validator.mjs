@@ -2,13 +2,13 @@ import { mkdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 
+import { createDiagnostic as makeDiagnostic } from "./diagnostic.mjs";
 import {
   AXIS_IDS,
-  CANONICALIZATION_VERSION,
+  AXIS_QUESTIONS,
   VALID_CANONICALIZATION_VERSIONS,
   VALID_SCHEMA_VERSIONS,
   VALID_VISIBILITY_PROFILE_IDS,
-  VISIBILITY_PROFILE_ID,
   loadCanonicalContent,
 } from "./content-loader.mjs";
 import { computeCanonicalContentDigest } from "./content-digest.mjs";
@@ -30,26 +30,6 @@ function isObject(value) {
 
 function pointerSegment(value) {
   return String(value).replaceAll("~", "~0").replaceAll("/", "~1");
-}
-
-function makeDiagnostic({
-  code,
-  file,
-  recordId = null,
-  fieldPath = null,
-  message,
-  relatedIds = [],
-}) {
-  return {
-    severity: "error",
-    code,
-    dataset: "production",
-    file,
-    record_id: recordId,
-    field_path: fieldPath,
-    message,
-    related_ids: relatedIds,
-  };
 }
 
 function addDiagnostic(diagnostics, details) {
@@ -194,6 +174,15 @@ function validateAxes(axes, diagnostics) {
         relatedIds: AXIS_IDS,
       });
     }
+    if (AXIS_QUESTIONS[axis.id] && axis.question !== AXIS_QUESTIONS[axis.id]) {
+      addDiagnostic(diagnostics, {
+        code: "STRUCTURE_AXIS_QUESTION_MISMATCH",
+        file,
+        recordId: axis.id,
+        fieldPath: "/question",
+        message: "Physics Ontology axis question does not match its frozen schema-level contract.",
+      });
+    }
     for (const field of ["label", "question"]) {
       if (typeof axis[field] !== "string" || axis[field].trim() === "") {
         addDiagnostic(diagnostics, {
@@ -323,13 +312,8 @@ export async function validateCanonicalContent(
     validator_version: VALIDATOR_VERSION,
     schema_version: typeof manifest.schema_version === "string" ? manifest.schema_version : null,
     canonicalization_version:
-      typeof manifest.canonicalization_version === "string"
-        ? manifest.canonicalization_version
-        : CANONICALIZATION_VERSION,
-    visibility_profile_id:
-      typeof manifest.visibility_profile_id === "string"
-        ? manifest.visibility_profile_id
-        : VISIBILITY_PROFILE_ID,
+      manifest.canonicalization_version ?? null,
+    visibility_profile_id: manifest.visibility_profile_id ?? null,
     canonical_content_digest: canonicalContentDigest,
     passes: determinePasses(diagnostics, snapshot.discovery),
     statistics: {
@@ -358,7 +342,7 @@ export function renderValidationMarkdown(report) {
     `- Schema: ${report.schema_version ?? "unavailable"}`,
     `- Canonicalization: ${report.canonicalization_version}`,
     `- Visibility profile: ${report.visibility_profile_id}`,
-    `- Canonical content digest: \`${report.canonical_content_digest}\``,
+    `- Canonical content digest: \`${report.canonical_content_digest ?? "unavailable"}\``,
     "",
     "## Stored + Validated + Rendered",
     "",

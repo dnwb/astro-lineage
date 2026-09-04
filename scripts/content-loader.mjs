@@ -3,6 +3,8 @@ import { fileURLToPath } from "node:url";
 import { basename, extname, isAbsolute, join, relative, resolve } from "node:path";
 import { parse } from "yaml";
 
+import { createDiagnostic as diagnostic } from "./diagnostic.mjs";
+
 export const SCHEMA_VERSION = "v0.1";
 export const CANONICALIZATION_VERSION = "v1";
 export const VISIBILITY_PROFILE_ID = "v0.1-default";
@@ -30,6 +32,32 @@ export const AXIS_IDS = Object.freeze([
   "observable",
   "inference_target",
 ]);
+
+export const AXIS_QUESTIONS = Object.freeze({
+  progenitor_system:
+    "What physical system or object configuration gives rise to the modeled event or source?",
+  central_object: "What physical object carries the central engine, when one exists?",
+  energy_reservoir: "What form or store of energy is available to power the modeled system?",
+  energy_transfer: "By what process does energy leave its reservoir or enter the evolving system?",
+  outflow:
+    "What moving material, radiation, or field-dominated component carries energy or matter through the modeled system?",
+  environment: "What surrounding material or field configuration interacts with the source or outflow?",
+  dynamics:
+    "What macroscopic evolution, propagation, or interaction governs the modeled system and its components?",
+  energy_dissipation:
+    "Where does macroscopic or field energy become thermal or non-thermal particle energy?",
+  particle_interaction:
+    "Which microscopic particle reactions transform particle species or distributions?",
+  emission_process: "Which physical process produces an observable messenger?",
+  transport_process:
+    "Which propagation, absorption, scattering, diffusion, or escape process alters a messenger before observation?",
+  phenomenon: "What observational event or source class does the Work address?",
+  messenger: "What physical carrier transports information from the source to the observer?",
+  photon_band: "Which electromagnetic band describes the photon observation?",
+  observable: "What form of measurement is actually recorded?",
+  inference_target:
+    "What physical quantity, property, or hypothesis does the Work attempt to infer?",
+});
 
 export const WORK_CONCERN_FILES = Object.freeze([
   "work.yaml",
@@ -70,19 +98,6 @@ function sortBytewise(values) {
 function relativeContentPath(contentRoot, absolutePath) {
   const relativePath = relative(contentRoot, absolutePath).split("\\").join("/");
   return relativePath ? `content/${relativePath}` : "content";
-}
-
-function diagnostic({ code, file, recordId = null, fieldPath = null, message, relatedIds = [] }) {
-  return {
-    severity: "error",
-    code,
-    dataset: "production",
-    file,
-    record_id: recordId,
-    field_path: fieldPath,
-    message,
-    related_ids: relatedIds,
-  };
 }
 
 async function directoryEntries(directory) {
@@ -129,9 +144,6 @@ async function inspectRoot(contentRoot, result) {
         entry.name,
         entry.isDirectory() ? "directory" : "file",
       );
-      if (entry.isFile()) {
-        result.files.push(relativeContentPath(contentRoot, join(contentRoot, entry.name)));
-      }
     }
   }
 
@@ -225,9 +237,6 @@ async function inspectWorkBundles(contentRoot, directory, result) {
     const absolutePath = join(directory, entry.name);
     if (!entry.isDirectory()) {
       addUnknownEntry(result.diagnostics, contentRoot, absolutePath, entry.name, "Work collection entry");
-      if (entry.isFile()) {
-        result.files.push(relativeContentPath(contentRoot, absolutePath));
-      }
       continue;
     }
 
@@ -237,7 +246,9 @@ async function inspectWorkBundles(contentRoot, directory, result) {
       const child = files.find((entry) => entry.name === name);
       const childPath = join(absolutePath, name);
       if (child.isFile()) {
-        result.files.push(relativeContentPath(contentRoot, childPath));
+        if (WORK_CONCERN_FILES.includes(name)) {
+          result.files.push(relativeContentPath(contentRoot, childPath));
+        }
       } else {
         addUnknownEntry(result.diagnostics, contentRoot, childPath, name, "Work bundle entry");
       }
@@ -279,9 +290,6 @@ async function inspectScientificEdges(contentRoot, directory, result) {
     const absolutePath = join(directory, entry.name);
     if (!entry.isFile() || extname(entry.name) !== ".yaml" || !YAML_FILE.test(entry.name)) {
       addUnknownEntry(result.diagnostics, contentRoot, absolutePath, entry.name, "Scientific Edge entry");
-      if (entry.isFile()) {
-        result.files.push(relativeContentPath(contentRoot, absolutePath));
-      }
       continue;
     }
     result.files.push(relativeContentPath(contentRoot, absolutePath));
@@ -331,9 +339,6 @@ async function inspectOntology(contentRoot, directory, result) {
     const absolutePath = join(axesDirectory, entry.name);
     if (!entry.isFile() || !AXIS_IDS.includes(basename(entry.name, ".yaml")) || extname(entry.name) !== ".yaml") {
       addUnknownEntry(result.diagnostics, contentRoot, absolutePath, entry.name, "Physics Ontology axis entry");
-      if (entry.isFile()) {
-        result.files.push(relativeContentPath(contentRoot, absolutePath));
-      }
     } else {
       result.files.push(relativeContentPath(contentRoot, absolutePath));
       result.axes.push({ id: basename(entry.name, ".yaml"), path: absolutePath });
@@ -388,17 +393,35 @@ async function inspectEditorialBundles(contentRoot, directory, metadataFile, pro
     const absolutePath = join(directory, entry.name);
     if (!entry.isDirectory()) {
       addUnknownEntry(result.diagnostics, contentRoot, absolutePath, entry.name, "editorial collection entry");
-      if (entry.isFile()) {
-        result.files.push(relativeContentPath(contentRoot, absolutePath));
-      }
       continue;
     }
     const bundleEntries = await directoryEntries(absolutePath);
     const names = bundleEntries?.map(({ name }) => name) ?? [];
     for (const child of bundleEntries ?? []) {
       const childPath = join(absolutePath, child.name);
-      if (child.isFile()) {
+      if (child.isFile() && [metadataFile, "reading.md"].includes(child.name)) {
         result.files.push(relativeContentPath(contentRoot, childPath));
+      } else if (child.name !== metadataFile && child.name !== "reading.md") {
+        addUnknownEntry(
+          result.diagnostics,
+          contentRoot,
+          childPath,
+          child.name,
+          "editorial bundle entry",
+        );
+      }
+    }
+    for (const name of [metadataFile, "reading.md"]) {
+      const entry = bundleEntries?.find((candidate) => candidate.name === name);
+      if (entry && !entry.isFile()) {
+        result.diagnostics.push(
+          diagnostic({
+            code: "STRUCTURE_EDITORIAL_EXPECTED_FILE",
+            file: relativeContentPath(contentRoot, join(absolutePath, name)),
+            recordId: entry.name,
+            message: `Editorial bundle entry ${name} must be a regular file.`,
+          }),
+        );
       }
     }
     if (!names.includes(metadataFile) || !names.includes("reading.md") || names.length !== 2) {
@@ -416,10 +439,14 @@ async function inspectEditorialBundles(contentRoot, directory, metadataFile, pro
       id: entry.name,
       directory: absolutePath,
       files: Object.fromEntries(
-        [metadataFile, "reading.md"].filter((name) => names.includes(name)).map((name) => [
-          name,
-          join(absolutePath, name),
-        ]),
+        [metadataFile, "reading.md"]
+          .filter(
+            (name) =>
+              bundleEntries?.some(
+                (entry) => entry.name === name && entry.isFile(),
+              ),
+          )
+          .map((name) => [name, join(absolutePath, name)]),
       ),
     });
   }
@@ -467,10 +494,18 @@ async function readYaml(path, file, diagnostics, fallback) {
   }
 }
 
-async function readText(path, fallback = "") {
+async function readText(path, diagnostics, file, recordId, fallback = undefined) {
   try {
     return await readFile(path, "utf8");
-  } catch {
+  } catch (error) {
+    diagnostics.push(
+      diagnostic({
+        code: "STRUCTURE_CANONICAL_READ_ERROR",
+        file,
+        recordId,
+        message: `Could not read canonical content: ${error.message}`,
+      }),
+    );
     return fallback;
   }
 }
@@ -518,14 +553,24 @@ export async function loadCanonicalContent(contentRoot = new URL("../content/", 
       if (!path) {
         continue;
       }
-      files[fileName] = fileName.endsWith(".md")
-        ? await readText(path)
-        : await readYaml(
-            path,
-            relativeContentPath(discovery.root, path),
-            discovery.diagnostics,
-            {},
-          );
+      if (fileName.endsWith(".md")) {
+        const text = await readText(
+          path,
+          discovery.diagnostics,
+          relativeContentPath(discovery.root, path),
+          bundle.id,
+        );
+        if (text !== undefined) {
+          files[fileName] = text;
+        }
+      } else {
+        files[fileName] = await readYaml(
+          path,
+          relativeContentPath(discovery.root, path),
+          discovery.diagnostics,
+          {},
+        );
+      }
     }
     works.push({ id: bundle.id, files });
   }
@@ -555,7 +600,14 @@ export async function loadCanonicalContent(contentRoot = new URL("../content/", 
             {},
           )
         : {},
-      reading: bundle.files["reading.md"] ? await readText(bundle.files["reading.md"]) : "",
+      reading: bundle.files["reading.md"]
+        ? (await readText(
+            bundle.files["reading.md"],
+            discovery.diagnostics,
+            relativeContentPath(discovery.root, bundle.files["reading.md"]),
+            bundle.id,
+          )) ?? ""
+        : "",
     });
   }
 
@@ -571,7 +623,14 @@ export async function loadCanonicalContent(contentRoot = new URL("../content/", 
             {},
           )
         : {},
-      reading: bundle.files["reading.md"] ? await readText(bundle.files["reading.md"]) : "",
+      reading: bundle.files["reading.md"]
+        ? (await readText(
+            bundle.files["reading.md"],
+            discovery.diagnostics,
+            relativeContentPath(discovery.root, bundle.files["reading.md"]),
+            bundle.id,
+          )) ?? ""
+        : "",
     });
   }
 

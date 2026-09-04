@@ -78,12 +78,119 @@ const PROCESS_AXES = Object.freeze([
 ]);
 
 const STRUCTURAL_DIAGNOSTIC_CODES = new Set([
+  // Local record identity, shape, type, and controlled-value failures.
+  "ACTOR_ID_DUPLICATE",
+  "ACTOR_ID_INVALID",
+  "ACTOR_KIND_INVALID",
+  "ACTOR_LABEL_INVALID",
+  "ACTOR_CAPABILITY_EVENTS_INVALID",
+  "ACTOR_CAPABILITY_EVENT_INVALID",
+  "ACTOR_CAPABILITY_INVALID",
+  "ACTOR_CAPABILITY_ACTION_INVALID",
+  "ACTOR_CAPABILITY_REASON_INVALID",
+  "ACTOR_CAPABILITY_EFFECTIVE_AT_INVALID",
+  "TERM_ID_DUPLICATE",
+  "TERM_ID_INVALID",
+  "TERM_INVALID_SHAPE",
+  "TERM_LABEL_INVALID",
+  "TERM_STATUS_INVALID",
+  "TERM_ALIASES_INVALID",
+  "TERM_DEFINITION_REQUIRED",
+  "TERM_FUNCTIONAL_ROLES_REQUIRED",
+  "TERM_FUNCTIONAL_ROLES_INVALID",
+  "TERM_FUNCTIONAL_ROLE_INVALID",
+  "TERM_SUCCESSOR_INVALID",
+  "METHOD_TECHNIQUE_FAMILY_REQUIRED",
+  "METHOD_ANNOTATION_INVALID_SHAPE",
+  "METHOD_ANNOTATION_ID_INVALID",
+  "METHOD_ANNOTATION_BASIS_INVALID",
+  "VERSION_COLLECTION_INVALID",
+  "VERSION_ID_DUPLICATE",
+  "VERSION_ID_INVALID",
+  "VERSION_INVALID_SHAPE",
+  "VERSION_KIND_INVALID",
+  "BIB_TITLE_INVALID",
+  "BIB_AUTHORS_INVALID",
+  "BIB_AUTHOR_DISPLAY_NAME_INVALID",
+  "BIB_ORCID_INVALID",
+  "BIB_DOI_MISSING",
+  "BIB_DOI_NOT_NORMALIZED",
+  "BIB_RELEASE_DATE_INVALID",
+  "BIB_ACCESS_URLS_INVALID",
+  "BIB_ACCESS_URL_INVALID",
+  "BIB_FIELD_PROVENANCE_INVALID_SHAPE",
+  "BIB_FIELD_PROVENANCE_POINTER_INVALID",
+  "BIB_SOURCE_COLLECTION_INVALID",
+  "BIB_SOURCE_ID_DUPLICATE",
+  "BIB_SOURCE_ID_INVALID",
+  "BIB_SOURCE_INVALID_SHAPE",
+  "BIB_SOURCE_PROVIDER_INVALID",
+  "BIB_SOURCE_RECORD_ID_INVALID",
+  "BIB_SOURCE_RETRIEVED_AT_INVALID",
+  "BIB_SOURCE_URL_INVALID",
+  "BIB_DISCREPANCIES_INVALID_SHAPE",
+  "BIB_DISCREPANCY_INVALID_SHAPE",
+  "BIB_DISCREPANCY_ID_INVALID",
+  "BIB_DISCREPANCY_ID_DUPLICATE",
+  "BIB_DISCREPANCY_FIELD_INVALID",
+  "BIB_DISCREPANCY_SOURCES_INVALID",
+  "BIB_DISCREPANCY_SOURCES_DUPLICATE",
+  "BIB_DISCREPANCY_VALUES_INVALID",
+  "BIB_DISCREPANCY_VALUE_INVALID",
+  "BIB_DISCREPANCY_VALUE_SOURCE_DUPLICATE",
+  "BIB_DISCREPANCY_RESOLUTION_HISTORY_INVALID",
+  "BIB_DISCREPANCY_RESOLUTION_INVALID",
+  "EVIDENCE_ID_DUPLICATE",
+  "EVIDENCE_ID_INVALID",
+  "EVIDENCE_INVALID_SHAPE",
+  "EVIDENCE_LOCATOR_INVALID",
+  "EVIDENCE_LOCATOR_TYPE_INVALID",
+  "EVIDENCE_LOCATOR_PAGE_INVALID",
+  "EVIDENCE_LOCATOR_COMPONENT_INVALID",
+  "EVIDENCE_SOURCE_REFERENCE_INVALID",
+  "EVIDENCE_EXCERPT_INVALID",
+  "EVIDENCE_REFERENCES_INVALID",
+  "EVIDENCE_REFERENCE_DUPLICATE",
   "ANNOTATION_ASSESSMENT_INVALID",
   "ANNOTATION_VALUES_INVALID",
   "ANNOTATION_VALUE_INVALID",
+  "ANNOTATION_ID_DUPLICATE",
+  "ANNOTATION_ID_INVALID",
+  "ANNOTATION_INVALID_SHAPE",
+  "ANNOTATION_AXIS_DUPLICATE",
+  "ANNOTATION_VALUE_DUPLICATE",
+  "ANNOTATION_RISK_INVALID",
+  "STATEMENT_ID_DUPLICATE",
+  "STATEMENT_ID_INVALID",
+  "STATEMENT_INVALID_SHAPE",
+  "STATEMENT_KIND_INVALID",
+  "STATEMENT_BASIS_INVALID",
+  "STATEMENT_LIFECYCLE_INVALID",
+  "STATEMENT_CANONICAL_TEXT_INVALID",
+  "STATEMENT_REASON_INVALID",
   "STATEMENT_ATTESTATIONS_INVALID",
   "STATEMENT_ATTESTATIONS_REQUIRED",
+  "STATEMENT_ATTESTATION_INVALID_SHAPE",
+  "CAUSAL_STAGE_COLLECTION_INVALID",
+  "CAUSAL_STAGE_ID_DUPLICATE",
+  "CAUSAL_STAGE_ID_INVALID",
+  "CAUSAL_STAGE_INVALID_SHAPE",
+  "CAUSAL_LINK_COLLECTION_INVALID",
+  "CAUSAL_LINK_ID_DUPLICATE",
+  "CAUSAL_LINK_ID_INVALID",
+  "CAUSAL_LINK_INVALID_SHAPE",
+  "CAUSAL_LINK_RELATION_INVALID",
+  "CAUSAL_LINK_ORIGIN_INVALID",
+  "CAUSAL_LINK_RISK_INVALID",
+  "WORK_ID_INVALID",
+  "WORK_READER_STATE_INVALID",
 ]);
+
+function isStructuralDiagnostic({ code = "" }) {
+  return code.startsWith("STRUCTURE_") ||
+    code.startsWith("MANIFEST_") ||
+    STRUCTURAL_DIAGNOSTIC_CODES.has(code);
+}
 
 function actorMap(actors) {
   if (actors instanceof Map) {
@@ -3419,21 +3526,16 @@ function hasParseDiagnostic(diagnostics, file) {
 }
 
 function determinePasses(diagnostics, discovery) {
-  const isStructural = ({ code }) =>
-    code.startsWith("STRUCTURE_") ||
-    code.startsWith("MANIFEST_") ||
-    STRUCTURAL_DIAGNOSTIC_CODES.has(code) ||
-    /(?:INVALID_SHAPE|COLLECTION_INVALID)$/u.test(code);
-  const isReferential = ({ code }) => code.startsWith("REFERENTIAL_");
-  const structural = diagnostics.some(isStructural);
+  const isReferential = ({ code = "" }) => code.startsWith("REFERENTIAL_");
+  const structural = diagnostics.some(isStructuralDiagnostic);
   const referential = diagnostics.some(isReferential);
   const semantic = diagnostics.some(
-    (item) => !isStructural(item) && !isReferential(item),
+    (item) => !isStructuralDiagnostic(item) && !isReferential(item),
   );
   return {
     structural: {
       status: structural ? "partial" : "complete",
-      diagnostic_count: diagnostics.filter(isStructural).length,
+      diagnostic_count: diagnostics.filter(isStructuralDiagnostic).length,
     },
     referential: {
       status: structural ? "skipped" : referential ? "partial" : "complete",
@@ -3442,7 +3544,7 @@ function determinePasses(diagnostics, discovery) {
     semantic: {
       status: structural ? "skipped" : semantic ? "partial" : "complete",
       diagnostic_count: diagnostics.filter(
-        (item) => !isStructural(item) && !isReferential(item),
+        (item) => !isStructuralDiagnostic(item) && !isReferential(item),
       ).length,
     },
     discovery: {
@@ -3492,6 +3594,7 @@ function resolveScientificAccountEvidence(evidenceIds, evidenceById) {
         id: evidenceId,
         evidence_id: evidenceId,
         version_id: evidence?.version_id ?? null,
+        source_url: evidence?.source_url ?? null,
         locator: evidence?.locator ?? null,
       };
     }),
@@ -3509,13 +3612,17 @@ function scientificAccountInspection(work, validationStatus) {
     ? work.files["statements.yaml"].statements
     : [];
   const account = work.files["physical-account.yaml"];
+  const stages = Array.isArray(account?.stages) ? account.stages : [];
   const links = Array.isArray(account?.links) ? account.links : [];
   return {
     work_id: work.id,
     validation_status: validationStatus,
     statements: statements.filter(isObject).map((statement) => ({
       id: statement.id ?? null,
+      kind: statement.kind ?? null,
       basis: statement.basis ?? null,
+      lifecycle: statement.lifecycle ?? null,
+      canonical_text: statement.canonical_text ?? null,
       reason: statement.reason ?? null,
       review_state: statement.review_state ?? null,
       curation_provenance: statement.curation_provenance ?? null,
@@ -3535,9 +3642,16 @@ function scientificAccountInspection(work, validationStatus) {
         evidenceById,
       ),
     })),
+    stages: stages.filter(isObject).map((stage) => ({
+      id: stage.id ?? null,
+      annotation_id: stage.annotation_id ?? null,
+      label: stage.label ?? null,
+    })),
     links: links.filter(isObject).map((link) => ({
       id: link.id ?? null,
+      relation: link.relation ?? null,
       origin: link.origin ?? null,
+      interpretive_risk: link.interpretive_risk ?? null,
       reason: link.reason ?? null,
       review_state: link.review_state ?? null,
       curation_provenance: link.curation_provenance ?? null,
@@ -3573,7 +3687,7 @@ function scientificAccountDependencyError(work, diagnostics) {
   });
 }
 
-function deriveWorkInventory(snapshot, diagnostics) {
+function deriveWorkInventory(snapshot, diagnostics, { actorRegistryValid = true } = {}) {
   return [...snapshot.works]
     .sort((left, right) => Buffer.from(left.id).compare(Buffer.from(right.id)))
     .map((work) => {
@@ -3591,6 +3705,9 @@ function deriveWorkInventory(snapshot, diagnostics) {
           file === `${workPath}/statements.yaml` ||
           file === `${workPath}/physical-account.yaml`,
       );
+      const hasGovernedScientificAccountRecords =
+        (Array.isArray(statements) && statements.length > 0) ||
+        (Array.isArray(account?.links) && account.links.length > 0);
       return {
         work_id: work.id,
         reader_state: work.files["work.yaml"]?.reader_state ?? null,
@@ -3602,7 +3719,8 @@ function deriveWorkInventory(snapshot, diagnostics) {
         causal_links: Array.isArray(account?.links) ? account.links.length : 0,
         scientific_account_validation_status: scientificAccountDiagnostics.some(
           ({ severity }) => severity === "error",
-        ) || scientificAccountDependencyError(work, diagnostics)
+        ) || scientificAccountDependencyError(work, diagnostics) ||
+          (actorRegistryValid === false && hasGovernedScientificAccountRecords)
           ? "invalid"
           : "valid",
       };
@@ -3656,7 +3774,7 @@ export async function validateCanonicalContent(
 
   const canonicalContentDigest = await computeCanonicalContentDigest(snapshot.discovery.root);
   const manifest = snapshot.manifest;
-  const workInventory = deriveWorkInventory(snapshot, diagnostics);
+  const workInventory = deriveWorkInventory(snapshot, diagnostics, { actorRegistryValid });
   const accountStatusByWorkId = new Map(
     workInventory.map((work) => [work.work_id, work.scientific_account_validation_status]),
   );
@@ -3718,12 +3836,13 @@ function scientificAccountEvidenceCell(evidence) {
     .map((item) => {
       const evidenceId = item.id ?? item.evidence_id ?? "";
       const versionId = item.version_id ?? "unavailable";
+      const sourceUrl = item.source_url ?? "source_url=unavailable";
       const locator = item.locator && typeof item.locator === "object"
         ? Object.entries(item.locator)
           .map(([key, value]) => `${key}=${value}`)
           .join(", ")
         : "locator=unavailable";
-      return `${evidenceId} (${versionId}; ${locator})`;
+      return `${evidenceId} (${versionId}; ${locator}; source_url=${sourceUrl})`;
     })
     .join("; ");
 }
@@ -3770,13 +3889,27 @@ export function renderValidationMarkdown(report) {
     "",
     "### Statements",
     "",
-    "| Work ID | Statement ID | Basis | Review | Evidence (Version / Locator) | Reason | Curation Actor | Review Actor |",
-    "| --- | --- | --- | --- | --- | --- | --- | --- |",
+    "| Work ID | Statement ID | Kind | Basis | Lifecycle | Review | Canonical Text | Evidence (Version / Locator / Source) | Reason | Curation Actor | Curation Time | Review Actor | Review Time |",
+    "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
   );
   for (const account of report.scientific_accounts ?? []) {
     for (const statement of account.statements ?? []) {
       lines.push(
-        `| ${markdownCell(account.work_id)} | ${markdownCell(statement.id)} | ${markdownCell(statement.basis)} | ${markdownCell(statement.review_state)} | ${markdownCell(scientificAccountEvidenceCell(statement.evidence))} | ${markdownCell(statement.reason)} | ${markdownCell(statement.curation_provenance?.actor_id)} | ${markdownCell(statement.review_provenance?.actor_id)} |`,
+        `| ${markdownCell(account.work_id)} | ${markdownCell(statement.id)} | ${markdownCell(statement.kind)} | ${markdownCell(statement.basis)} | ${markdownCell(statement.lifecycle)} | ${markdownCell(statement.review_state)} | ${markdownCell(statement.canonical_text)} | ${markdownCell(scientificAccountEvidenceCell(statement.evidence))} | ${markdownCell(statement.reason)} | ${markdownCell(statement.curation_provenance?.actor_id)} | ${markdownCell(statement.curation_provenance?.recorded_at)} | ${markdownCell(statement.review_provenance?.actor_id)} | ${markdownCell(statement.review_provenance?.recorded_at)} |`,
+      );
+    }
+  }
+  lines.push(
+    "",
+    "### Causal Stages",
+    "",
+    "| Work ID | Stage ID | Annotation ID | Label |",
+    "| --- | --- | --- | --- |",
+  );
+  for (const account of report.scientific_accounts ?? []) {
+    for (const stage of account.stages ?? []) {
+      lines.push(
+        `| ${markdownCell(account.work_id)} | ${markdownCell(stage.id)} | ${markdownCell(stage.annotation_id)} | ${markdownCell(stage.label)} |`,
       );
     }
   }
@@ -3784,13 +3917,13 @@ export function renderValidationMarkdown(report) {
     "",
     "### Causal Links",
     "",
-    "| Work ID | Causal Link ID | Origin | Source Stage | Target Stage | Review | Evidence (Version / Locator) | Reason | Curation Actor | Review Actor |",
-    "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
+    "| Work ID | Causal Link ID | Relation | Origin | Interpretive Risk | Source Stage | Target Stage | Review | Evidence (Version / Locator / Source) | Reason | Curation Actor | Curation Time | Review Actor | Review Time |",
+    "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
   );
   for (const account of report.scientific_accounts ?? []) {
     for (const link of account.links ?? []) {
       lines.push(
-        `| ${markdownCell(account.work_id)} | ${markdownCell(link.id)} | ${markdownCell(link.origin)} | ${markdownCell(link.source_stage_id)} | ${markdownCell(link.target_stage_id)} | ${markdownCell(link.review_state)} | ${markdownCell(scientificAccountEvidenceCell(link.evidence))} | ${markdownCell(link.reason)} | ${markdownCell(link.curation_provenance?.actor_id)} | ${markdownCell(link.review_provenance?.actor_id)} |`,
+        `| ${markdownCell(account.work_id)} | ${markdownCell(link.id)} | ${markdownCell(link.relation)} | ${markdownCell(link.origin)} | ${markdownCell(link.interpretive_risk)} | ${markdownCell(link.source_stage_id)} | ${markdownCell(link.target_stage_id)} | ${markdownCell(link.review_state)} | ${markdownCell(scientificAccountEvidenceCell(link.evidence))} | ${markdownCell(link.reason)} | ${markdownCell(link.curation_provenance?.actor_id)} | ${markdownCell(link.curation_provenance?.recorded_at)} | ${markdownCell(link.review_provenance?.actor_id)} | ${markdownCell(link.review_provenance?.recorded_at)} |`,
       );
     }
   }

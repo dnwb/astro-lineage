@@ -26,6 +26,13 @@ if (!work) {
 }
 
 const versions = work.versions ?? [];
+const bibliographicSources = (work.bibliographic_sources ?? []) as AnyRecord[];
+const bibliographicSourcesById = new Map(
+  bibliographicSources
+    .filter((source: AnyRecord) => typeof source?.id === "string")
+    .map((source: AnyRecord) => [source.id, source]),
+);
+const publicationRelations = work.publication_relations ?? [];
 const preferredVersion = versions.find(
   (version: AnyRecord) => version.id === work.preferred_version_id,
 );
@@ -161,6 +168,44 @@ const readingParagraphs = String(work.reading ?? "")
 
       <details>
         <summary>Provenance Detail</summary>
+        <h3>Versions</h3>
+        <ul>
+          {versions.map((version: AnyRecord) => (
+            <li>
+              <strong>{version.kind}</strong>: {version.title} ({version.id}); release date {version.release_date?.value}
+              {version.arxiv_id ? `; arXiv ${version.arxiv_id}v${version.arxiv_revision}` : ""}
+              {version.doi ? `; DOI ${version.doi}` : ""}
+              {version.journal?.name ? `; ${version.journal.name} ${version.journal.volume ?? ""}, ${version.journal.first_page ?? ""}` : ""}
+            </li>
+          ))}
+        </ul>
+        <h3>Publication Relations</h3>
+        {publicationRelations.length === 0 ? (
+          <p>No reviewed Publication Relations are stored for this Work.</p>
+        ) : (
+          <ul>
+            {publicationRelations.map((relation: AnyRecord) => {
+              const sources = (relation.bibliographic_source_ids ?? [])
+                .map((sourceId: string) => bibliographicSourcesById.get(sourceId))
+                .filter((source: AnyRecord | undefined): source is AnyRecord => source !== undefined);
+              return (
+                <li>
+                  {relation.source_version_id} <strong>{relation.relation}</strong> {relation.target_version_id}
+                  {relation.basis ? ` (${relation.basis})` : ""}: {relation.reason}
+                  <ul>
+                    <li>
+                      Bibliographic Provenance:
+                      {sources.length === 0 ? " unavailable" : ""}
+                      {sources.map((source: AnyRecord) => (
+                        <span> {source.id} ({source.provider}, {source.record_id}, retrieved {source.retrieved_at}){source.source_url ? <> — <a href={source.source_url}>source</a></> : ""}</span>
+                      ))}
+                    </li>
+                  </ul>
+                </li>
+              );
+            })}
+          </ul>
+        )}
         <ul>
           {(work.evidence ?? []).map((evidence: AnyRecord) => (
             <li>

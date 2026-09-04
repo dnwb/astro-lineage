@@ -3,6 +3,28 @@ label: Outflow
 question: What moving material, radiation, or field-dominated component carries energy or matter through the modeled system?
 default_risk: descriptive
 terms:
+  - id: term:relativistic-hydrodynamic-jet
+    label: Relativistic hydrodynamic jet
+    aliases: [unmagnetized relativistic jet]
+    status: active
+    definition: A directed relativistic outflow whose modeled dynamics are governed primarily by hydrodynamic rather than magnetic stresses.
+    examples: [The injected jet followed through collimated and uncollimated propagation regimes.]
+    counterexamples: [A dynamically magnetized jet for which magnetic stresses prevent the modeled collimation shock.]
+    boundary_notes: This is the jet outflow; the cocoon is stored as a separate outflow component.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T09:20:00Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T09:21:00Z" }
+  - id: term:jet-cocoon
+    label: Jet cocoon
+    aliases: [pressured cocoon]
+    status: active
+    definition: Shocked jet and ambient material flowing around the jet head and forming a pressured envelope around the jet.
+    examples: [The cocoon inflated by energy and matter leaving the shocked jet head.]
+    counterexamples: [The unshocked relativistic jet spine.]
+    boundary_notes: Treat the cocoon as a Work-local outflow component, not as the external ambient medium.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T09:20:00Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T09:21:00Z" }
   - id: term:expanding-ejecta
     label: Expanding ejecta
     aliases: [supernova ejecta]

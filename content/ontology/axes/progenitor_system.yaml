@@ -3,6 +3,17 @@ label: Progenitor system
 question: What physical system or object configuration gives rise to the modeled event or source?
 default_risk: descriptive
 terms:
+  - id: term:massive-star-collapsar-system
+    label: Massive-star collapsar system
+    aliases: [collapsar progenitor]
+    status: active
+    definition: A massive-star collapse system in which a central engine launches a relativistic jet through the stellar envelope.
+    examples: [A GRB jet propagating through a compact Wolf-Rayet progenitor.]
+    counterexamples: [An AGN jet propagating through a galactic halo.]
+    boundary_notes: This term identifies the stellar progenitor application, not every environment to which the jet model applies.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T09:20:00Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T09:21:00Z" }
   - id: term:near-chandrasekhar-carbon-ignition
     label: Near-Chandrasekhar carbon ignition
     aliases: [degenerate carbon ignition]

@@ -13,6 +13,7 @@ import {
 
 const productionContent = new URL("../content/", import.meta.url);
 const arnettId = "work:arnett-1982";
+const brombergId = "work:bromberg-2011";
 const journalVersionId = "version:arnett-1982-journal";
 const statementsFile = `content/works/${arnettId}/statements.yaml`;
 const accountFile = `content/works/${arnettId}/physical-account.yaml`;
@@ -22,15 +23,20 @@ async function copyContent() {
   const contentRoot = join(temporaryRoot, "content");
   await cp(productionContent, contentRoot, { recursive: true });
   const workPath = join(contentRoot, "works", arnettId, "work.yaml");
+  const brombergWorkPath = join(contentRoot, "works", brombergId, "work.yaml");
   const linePath = join(contentRoot, "research-lines", "research-line:central-engines", "line.yaml");
   const work = parse(await readFile(workPath, "utf8"));
+  const brombergWork = parse(await readFile(brombergWorkPath, "utf8"));
   const line = parse(await readFile(linePath, "utf8"));
   work.reader_state = "draft";
   work.visibility_approvals = [];
+  brombergWork.reader_state = "draft";
+  brombergWork.visibility_approvals = [];
   line.reader_state = "draft";
   line.visibility_approvals = [];
   await Promise.all([
     writeFile(workPath, stringify(work), "utf8"),
+    writeFile(brombergWorkPath, stringify(brombergWork), "utf8"),
     writeFile(linePath, stringify(line), "utf8"),
   ]);
   return { contentRoot };
@@ -403,15 +409,27 @@ test("reviewed Causal Link bindings ignore reason whitespace and Evidence order 
 test("validation reports expose stored scientific-account counts and status without creating Paper Graph Edges", async () => {
   const snapshot = await loadCanonicalContent(productionContent);
   const result = await validateCanonicalContent(productionContent);
-  const work = snapshot.works.find(({ id }) => id === arnettId);
+  const expectedCounts = snapshot.works.reduce((counts, { files }) => ({
+    scientific_statements: counts.scientific_statements + (files["statements.yaml"]?.statements.length ?? 0),
+    causal_stages: counts.causal_stages + (files["physical-account.yaml"]?.stages.length ?? 0),
+    causal_links: counts.causal_links + (files["physical-account.yaml"]?.links.length ?? 0),
+  }), {
+    scientific_statements: 0,
+    causal_stages: 0,
+    causal_links: 0,
+  });
+  const arnettWork = snapshot.works.find(({ id }) => id === arnettId);
+  assert(arnettWork);
+  const arnettInventory = result.work_inventory.find(({ work_id: workId }) => workId === arnettId);
+  assert(arnettInventory);
 
-  assert.equal(result.statistics.scientific_statements, work.files["statements.yaml"].statements.length);
-  assert.equal(result.statistics.causal_stages, work.files["physical-account.yaml"].stages.length);
-  assert.equal(result.statistics.causal_links, work.files["physical-account.yaml"].links.length);
-  assert.equal(result.work_inventory[0].scientific_statements, result.statistics.scientific_statements);
-  assert.equal(result.work_inventory[0].causal_stages, result.statistics.causal_stages);
-  assert.equal(result.work_inventory[0].causal_links, result.statistics.causal_links);
-  assert.equal(result.work_inventory[0].scientific_account_validation_status, "valid");
+  assert.equal(result.statistics.scientific_statements, expectedCounts.scientific_statements);
+  assert.equal(result.statistics.causal_stages, expectedCounts.causal_stages);
+  assert.equal(result.statistics.causal_links, expectedCounts.causal_links);
+  assert.equal(arnettInventory.scientific_statements, arnettWork.files["statements.yaml"].statements.length);
+  assert.equal(arnettInventory.causal_stages, arnettWork.files["physical-account.yaml"].stages.length);
+  assert.equal(arnettInventory.causal_links, arnettWork.files["physical-account.yaml"].links.length);
+  assert.equal(arnettInventory.scientific_account_validation_status, "valid");
   assert.deepEqual(snapshot.scientificEdges, []);
 });
 

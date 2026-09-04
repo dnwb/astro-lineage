@@ -3,6 +3,18 @@ label: Energy transfer
 question: By what process does energy leave its reservoir or enter the evolving system?
 default_risk: descriptive
 terms:
+  - id: term:relativistic-jet-injection
+    label: Relativistic jet injection
+    aliases: [engine-to-jet injection]
+    status: active
+    definition: Transfer of engine-supplied energy into a directed relativistic hydrodynamic jet at its injection boundary.
+    examples: [A jet of luminosity L_j injected at an initial opening angle.]
+    counterexamples: [Shock heating at the jet head after the jet has been injected.]
+    boundary_notes: Keep injection distinct from the jet outflow and from later shock dissipation.
+    allowed_functional_roles: [energy_dissipation]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T09:20:00Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T09:21:00Z" }
   - id: term:radioactive-decay-energy-release
     label: Radioactive decay energy release
     aliases: [radioactive decay powering]

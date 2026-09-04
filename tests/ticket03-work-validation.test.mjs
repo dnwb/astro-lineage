@@ -20,15 +20,20 @@ async function copyContent() {
   const contentRoot = join(temporaryRoot, "content");
   await cp(productionContent, contentRoot, { recursive: true });
   const workPath = join(contentRoot, "works", "work:arnett-1982", "work.yaml");
+  const brombergWorkPath = join(contentRoot, "works", "work:bromberg-2011", "work.yaml");
   const linePath = join(contentRoot, "research-lines", "research-line:central-engines", "line.yaml");
   const work = parse(await readFile(workPath, "utf8"));
+  const brombergWork = parse(await readFile(brombergWorkPath, "utf8"));
   const line = parse(await readFile(linePath, "utf8"));
   work.reader_state = "draft";
   work.visibility_approvals = [];
+  brombergWork.reader_state = "draft";
+  brombergWork.visibility_approvals = [];
   line.reader_state = "draft";
   line.visibility_approvals = [];
   await Promise.all([
     writeFile(workPath, stringify(work), "utf8"),
+    writeFile(brombergWorkPath, stringify(brombergWork), "utf8"),
     writeFile(linePath, stringify(line), "utf8"),
   ]);
   return { temporaryRoot, contentRoot };

@@ -1,0 +1,74 @@
+work_id: work:bromberg-2011
+evidence:
+  - id: evidence:bromberg-abstract
+    version_id: version:bromberg-2011-arxiv-v1
+    source_url: https://arxiv.org/abs/1107.1326v1
+    locator: { type: section, section: Abstract }
+    excerpt: We present here a self consistent, analytic model that follows the evolution of the jet and its cocoon, and describes their interaction.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T09:22:00Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T09:23:00Z" }
+  - id: evidence:bromberg-system
+    version_id: version:bromberg-2011-arxiv-v1
+    source_url: https://arxiv.org/abs/1107.1326v1
+    locator: { type: section, section: A schematic description of the system }
+    excerpt: Consider an un-magnetized, sufficiently fast relativistic jet with a luminosity L_j, injected at a fixed opening angle theta_0, into the surrounding medium.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T09:22:10Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T09:23:10Z" }
+  - id: evidence:bromberg-head-cocoon
+    version_id: version:bromberg-2011-arxiv-v1
+    source_url: https://arxiv.org/abs/1107.1326v1
+    locator: { type: section, section: A schematic description of the system }
+    excerpt: Matter that enters the head through the shocks is heated and flows sideways since its pressure is higher than that of the surrounding matter. This leads to the formation of a pressured cocoon around the jet.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T09:22:20Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T09:23:20Z" }
+  - id: evidence:bromberg-collimation-feedback
+    version_id: version:bromberg-2011-arxiv-v1
+    source_url: https://arxiv.org/abs/1107.1326v1
+    locator: { type: section, section: A schematic description of the system }
+    excerpt: If the cocoon's pressure is sufficiently high, it collimates the jet and reduces its opening angle. This changes the jet's propagation velocity and the energy flow into the cocoon.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T09:22:30Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T09:23:30Z" }
+  - id: evidence:bromberg-regimes
+    version_id: version:bromberg-2011-arxiv-v1
+    source_url: https://arxiv.org/abs/1107.1326v1
+    locator: { type: section, section: Summary }
+    excerpt: The jet's evolution can be classified into two regimes, a collimated and an un-collimated, according to the strength of interaction of the jet with the ambient medium.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T09:22:40Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T09:23:40Z" }
+  - id: evidence:bromberg-collimation-condition
+    version_id: version:bromberg-2011-arxiv-v1
+    source_url: https://arxiv.org/abs/1107.1326v1
+    locator: { type: equation, section: Jet collimation in astrophysical environments, equation: "27" }
+    excerpt: When tilde L is below the injection-angle threshold, the jet is collimated and its opening angle is smaller than the injection angle.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T09:22:50Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T09:23:50Z" }
+  - id: evidence:bromberg-grb-breakout
+    version_id: version:bromberg-2011-arxiv-v1
+    source_url: https://arxiv.org/abs/1107.1326v1
+    locator: { type: section, section: Jet collimation in astrophysical environments }
+    excerpt: GRB jets are collimated before they breakout. Since the observed luminosity is orders of magnitude higher than the external confinement limits, the jet becomes un-collimated after breakout.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T09:23:00Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T09:24:00Z" }
+  - id: evidence:bromberg-observables
+    version_id: version:bromberg-2011-arxiv-v1
+    source_url: https://arxiv.org/abs/1107.1326v1
+    locator: { type: section, section: Jet collimation in astrophysical environments }
+    excerpt: Once the jet breaks out its opening angle can be measured, for example by identifying a jet break in the afterglow lightcurve.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T09:23:10Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T09:24:10Z" }
+  - id: evidence:bromberg-magnetization
+    version_id: version:bromberg-2011-arxiv-v1
+    source_url: https://arxiv.org/abs/1107.1326v1
+    locator: { type: section, section: Summary }
+    excerpt: We assume that the magnetic fields in the jet, in the region where the jet undergoes the collimation and above, are dynamically unimportant and therefore can be ignored.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T09:23:20Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T09:24:20Z" }

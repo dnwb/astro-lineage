@@ -3,6 +3,17 @@ label: Energy reservoir
 question: What form or store of energy is available to power the modeled system?
 default_risk: descriptive
 terms:
+  - id: term:central-engine-jet-power
+    label: Central-engine jet power
+    aliases: [jet luminosity reservoir]
+    status: active
+    definition: Energy supplied by an inner compact-object engine and available to power a relativistic jet.
+    examples: [The jet luminosity used as an initial parameter in an analytic jet-cocoon model.]
+    counterexamples: [Cocoon pressure, which is a state produced by deposited jet energy.]
+    boundary_notes: The term names the available engine-supplied power, not the transfer process or outflow itself.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T09:20:00Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T09:21:00Z" }
   - id: term:radioactive-decay-energy
     label: Radioactive decay energy
     aliases: [radioactive energy]

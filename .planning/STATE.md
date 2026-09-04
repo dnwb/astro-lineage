@@ -5,16 +5,18 @@
 ## Current position
 
 - **Stage:** Phase 2 — domain records and five-Work vertical slice
-- **Status:** Tickets 01–05 complete
-- **Implementation:** Visible Arnett now exercises governed Actors,
+- **Status:** Tickets 01–06 complete
+- **Implementation:** Visible Arnett and Bromberg now exercise governed Actors,
   capability-at-action-time authorization, 16 assessed Physics axes,
-  controlled vocabulary, reusable Version-bound Evidence, a reviewed Method
-  Annotation, Work-local Scientific Statements, an acyclic Physical Account,
-  Human-gated visibility, and reviewed Research Line membership
+  controlled vocabulary, reusable Version-bound Evidence, reviewed Method
+  Annotations, Work-local Scientific Statements and causal DAGs, Human-gated
+  visibility, reviewed Research Line memberships, distinct arXiv/journal
+  Versions, and a real reviewed `published_as` relation with Bibliographic
+  Provenance
 - **Decision frontier:** closed through Q151; no open domain-model decision is
   blocking migration
-- **Next execution action:** Ticket 06,
-  `.scratch/v0.1-vertical-slice/issues/06-add-bromberg-publication-graph-slice.md`
+- **Next execution action:** Ticket 07,
+  `.scratch/v0.1-vertical-slice/issues/07-add-zhu-multi-messenger-and-cross-context-slice.md`
 
 The repository has completed specification, governance, and authority
 migration. Ticket 01 established the independent Git boundary and bootstrap
@@ -29,7 +31,11 @@ and Work-local Causal Link slice. Ticket 05 publishes Arnett and its first
 Research Line atomically with separate Human approvals, canonical reader
 digests, a reproducible reverse index, reader routes, and no-cascade visibility
 validation. The remaining Works, Learning Path, remote setup, and CI remain
-later work.
+later work. Ticket 06 adds the visible Bromberg Work with separately identified
+arXiv v1 and journal Versions, a real source-asserted `published_as`
+correspondence, strict offline Publication Graph validation,
+branching/converging causal structure, and reader-visible Bibliographic
+Provenance.
 
 ## Authority and migration state
 
@@ -110,7 +116,7 @@ CI remain fully offline; external deployment and source refresh are deferred.
 Continue the approved local ticket frontier with:
 
 ```text
-.scratch/v0.1-vertical-slice/issues/06-add-bromberg-publication-graph-slice.md
+.scratch/v0.1-vertical-slice/issues/07-add-zhu-multi-messenger-and-cross-context-slice.md
 ```
 
 The ticket may implement accepted requirements but may not extend the closed
@@ -127,6 +133,6 @@ rather than hidden in `.planning` prose.
 
 ## Session continuity
 
-Resume with Ticket 06 from the approved local frontier. Read the four `.planning`
+Resume with Ticket 07 from the approved local frontier. Read the four `.planning`
 documents first, preserve requirement IDs, and update traceability only when
 ticket evidence is verified.

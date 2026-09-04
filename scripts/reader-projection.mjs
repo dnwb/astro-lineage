@@ -18,7 +18,6 @@ const NON_RENDERED_FIELDS = new Set([
   "curation_provenance",
   "review_provenance",
   "field_sources",
-  "bibliographic_sources",
   "bibliographic_discrepancies",
   "resolution_history",
 ]);
@@ -422,6 +421,21 @@ function projectPublicationRelations(work) {
   );
 }
 
+function projectBibliographicSources(work, publicationRelations) {
+  const envelope = versionsRecord(work);
+  const sourceIds = new Set(
+    publicationRelations.flatMap((relation) =>
+      Array.isArray(relation?.bibliographic_source_ids)
+        ? relation.bibliographic_source_ids
+        : []),
+  );
+  return sortRecords(
+    (Array.isArray(envelope.bibliographic_sources) ? envelope.bibliographic_sources : [])
+      .filter((source) => isObject(source) && typeof source.id === "string" && sourceIds.has(source.id))
+      .map(projectValue),
+  );
+}
+
 /**
  * Return the Work reader projection, or null when the Work is not visible.
  * The helper accepts either an immutable Work ID or the loader's Work record.
@@ -437,6 +451,8 @@ export function projectWorkForReader(snapshot, workOrId) {
   const physicsAnnotations = projectPhysicsAnnotations(work);
   const methodAnnotations = projectMethodAnnotations(work);
   const statements = projectStatements(work);
+  const publicationRelations = projectPublicationRelations(work);
+  const bibliographicSources = projectBibliographicSources(work, publicationRelations);
   const visibleAnnotationIds = new Set([
     ...physicsAnnotations,
     ...methodAnnotations,
@@ -459,7 +475,8 @@ export function projectWorkForReader(snapshot, workOrId) {
   return projectValue({
     ...metadata,
     versions: sortRecords((Array.isArray(versions.versions) ? versions.versions : []).map(projectValue)),
-    publication_relations: projectPublicationRelations(work),
+    publication_relations: publicationRelations,
+    bibliographic_sources: bibliographicSources,
     reading: normalizeMarkdown(work.files?.["reading.md"] ?? ""),
     annotations: restrictEvidenceIds(physicsAnnotations, visibleEvidenceIds),
     method_annotations: restrictEvidenceIds(methodAnnotations, visibleEvidenceIds),

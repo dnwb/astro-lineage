@@ -3,6 +3,18 @@ label: Energy dissipation
 question: Where does macroscopic or field energy become thermal or non-thermal particle energy?
 default_risk: descriptive
 terms:
+  - id: term:jet-head-shock-heating
+    label: Jet-head shock heating
+    aliases: [head-shock dissipation]
+    status: active
+    definition: Conversion of directed jet and ambient-medium kinetic energy into thermal energy at forward and reverse shocks in the jet head.
+    examples: [Shocked head material heating and flowing sideways into the cocoon.]
+    counterexamples: [Bulk energy transport by the unshocked jet before it reaches the head.]
+    boundary_notes: This is a macroscopic dissipation process and does not specify microscopic particle acceleration.
+    allowed_functional_roles: [energy_dissipation]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T09:20:00Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T09:21:00Z" }
   - id: term:decay-deposition-heating
     label: Decay deposition and heating
     aliases: [radioactive deposition]

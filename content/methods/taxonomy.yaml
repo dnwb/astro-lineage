@@ -17,6 +17,19 @@ method_families:
       actor_id: actor:human-curator
       recorded_at: "2026-09-04T04:05:00Z"
 techniques:
+  - id: technique:coupled-pressure-balance-model
+    label: Coupled pressure-balance model
+    aliases: [analytic jet-cocoon closure]
+    status: active
+    family_ids:
+      - method-family:analytical-modeling
+    definition: An analytic technique that closes jet-head ram pressure, cocoon pressure and expansion, and collimation-shock geometry as a coupled evolving system.
+    examples: [A time-dependent jet-cocoon model solved from jet luminosity, injection angle, and ambient density profile.]
+    counterexamples: [A hydrodynamic simulation used only as an external comparison to the analytic solution.]
+    boundary_notes: The technique is more specific than the broad analytical-modeling family and does not mean every semi-analytic jet model uses this closure.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T09:20:00Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T09:21:00Z" }
   - id: technique:reduction-to-quadrature
     label: Reduction to quadrature
     aliases: [quadrature solution]

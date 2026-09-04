@@ -197,8 +197,11 @@ test("malformed visibility approvals quarantine the entity without derived diagn
 test("Research Line Membership pairs and visible Work anchors are unique", async () => {
   const { contentRoot } = await copyContent();
   const records = await readVisibleRecords(contentRoot);
-  records.line.memberships.push(structuredClone(records.line.memberships[0]));
-  records.line.memberships[1].id = "membership:central-engines-arnett-duplicate";
+  const targetMembership = records.line.memberships.find(({ work_id }) => work_id === workId);
+  assert(targetMembership, `missing target membership for ${workId}`);
+  const duplicateMembership = structuredClone(targetMembership);
+  duplicateMembership.id = "membership:central-engines-arnett-duplicate";
+  records.line.memberships.push(duplicateMembership);
   await writeFile(join(records.lineRoot, "line.yaml"), stringify(records.line), "utf8");
 
   const result = await validateCanonicalContent(contentRoot);
@@ -267,9 +270,10 @@ test("final-snapshot visibility requires a visible anchored pair", async () => {
       "VISIBLE_WORK_ANCHOR_LINE_NOT_VISIBLE",
     ],
     [
-      ({ work }) => {
+      ({ work, line }) => {
         work.reader_state = "draft";
         work.visibility_approvals = [];
+        line.memberships = line.memberships.filter(({ work_id }) => work_id === workId);
       },
       "VISIBLE_RESEARCH_LINE_MEMBERSHIP_REQUIRED",
     ],

@@ -2,4 +2,15 @@ id: environment
 label: Environment
 question: What surrounding material or field configuration interacts with the source or outflow?
 default_risk: descriptive
-terms: []
+terms:
+  - id: term:external-ambient-medium
+    label: External ambient medium
+    aliases: [ambient density profile]
+    status: active
+    definition: Matter external to a jet whose density and ram pressure govern jet-head propagation and cocoon expansion.
+    examples: [A stellar envelope, stellar wind, interstellar medium, or galactic halo traversed by a jet.]
+    counterexamples: [The jet cocoon, which is produced by the jet-medium interaction.]
+    boundary_notes: Specific environments may vary; the canonical identity captures their shared dynamical role.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T09:20:00Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T09:21:00Z" }

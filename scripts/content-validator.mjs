@@ -32,6 +32,8 @@ const MANIFEST_FIELDS = Object.freeze([
 const RISK_LEVELS = Object.freeze(["descriptive", "interpretive", "synthetic"]);
 const BIBLIOGRAPHIC_PROVIDERS = Object.freeze(["ads", "arxiv", "crossref", "publisher"]);
 const VERSION_KINDS = Object.freeze(["arxiv_revision", "journal_manifestation"]);
+const PUBLICATION_RELATIONS = Object.freeze(["revises", "published_as"]);
+const PUBLICATION_RELATION_BASES = Object.freeze(["source_asserted", "curator_matched"]);
 const READER_STATES = Object.freeze(["draft", "visible"]);
 const ACTOR_KINDS = Object.freeze(["human", "agent"]);
 const ACTOR_CAPABILITIES = Object.freeze([
@@ -67,6 +69,8 @@ const CAUSAL_LINK_RELATIONS = Object.freeze([
   "produces",
   "modulates",
 ]);
+const ARXIV_MODERN_ID = /^\d{4}\.\d{4,5}$/u;
+const ARXIV_LEGACY_ID = /^[a-z][a-z0-9-]*(?:\.[a-z0-9-]+)?\/\d{7}$/u;
 const FUNCTIONAL_ROLES = Object.freeze([
   "energy_dissipation",
   "particle_interaction",
@@ -121,12 +125,19 @@ const STRUCTURAL_DIAGNOSTIC_CODES = new Set([
   "VERSION_ID_INVALID",
   "VERSION_INVALID_SHAPE",
   "VERSION_KIND_INVALID",
+  "BIB_ARXIV_ID_MISSING",
+  "BIB_ARXIV_ID_INVALID",
+  "BIB_ARXIV_ID_NOT_NORMALIZED",
+  "BIB_ARXIV_REVISION_INVALID",
   "BIB_TITLE_INVALID",
   "BIB_AUTHORS_INVALID",
   "BIB_AUTHOR_DISPLAY_NAME_INVALID",
   "BIB_ORCID_INVALID",
   "BIB_DOI_MISSING",
   "BIB_DOI_NOT_NORMALIZED",
+  "BIB_PUBLISHER_ID_INVALID",
+  "BIB_PUBLISHER_ID_MISSING",
+  "BIB_PUBLISHER_ID_REASON_INVALID",
   "BIB_RELEASE_DATE_INVALID",
   "BIB_ACCESS_URLS_INVALID",
   "BIB_ACCESS_URL_INVALID",
@@ -230,6 +241,17 @@ const STRUCTURAL_DIAGNOSTIC_CODES = new Set([
   "VISIBILITY_APPROVAL_PROFILE_INVALID",
   "VISIBILITY_APPROVAL_DIGEST_INVALID",
   "VISIBILITY_APPROVAL_TIMESTAMP_INVALID",
+  // Publication Graph record identity and local relation shape.
+  "PUBLICATION_RELATION_COLLECTION_INVALID",
+  "PUBLICATION_RELATION_INVALID_SHAPE",
+  "PUBLICATION_RELATION_ID_INVALID",
+  "PUBLICATION_RELATION_ID_DUPLICATE",
+  "PUBLICATION_RELATION_INVALID",
+  "PUBLICATION_RELATION_ENDPOINT_INVALID",
+  "PUBLICATION_RELATION_BASIS_INVALID",
+  "PUBLICATION_RELATION_BIBLIOGRAPHIC_SOURCES_INVALID",
+  "PUBLICATION_RELATION_BIBLIOGRAPHIC_SOURCE_ID_INVALID",
+  "PUBLICATION_RELATION_BIBLIOGRAPHIC_SOURCE_DUPLICATE",
 ]);
 
 function isStructuralDiagnostic({ code = "" }) {
@@ -1195,7 +1217,7 @@ function referenceWasCreatedAfterDeprecation(record, term) {
     && referenceTime >= deprecationTime;
 }
 
-function methodAnnotationSemanticDigest(annotation) {
+export function methodAnnotationSemanticDigest(annotation) {
   const semanticProjection = {
     technique_id: annotation.technique_id ?? null,
     basis: annotation.basis ?? null,
@@ -1603,6 +1625,119 @@ function validateBibliographicSource(source, index, sourceIds, details, diagnost
   }
 }
 
+/*
+ * ArXiv identity is deliberately kept separate from access URLs and the
+ * immutable internal Version ID. Publication Graph identity uses only the
+ * frozen canonical arxiv_id + arxiv_revision fields.
+ */
+function arxivIdentityDescriptor(version, index) {
+  return {
+    baseId: version?.arxiv_id,
+    basePath: `/versions/${index}/arxiv_id`,
+    revision: version?.arxiv_revision,
+    revisionPath: `/versions/${index}/arxiv_revision`,
+    hasBase: isObject(version) && Object.hasOwn(version, "arxiv_id"),
+    hasRevision: isObject(version) && Object.hasOwn(version, "arxiv_revision"),
+  };
+}
+
+function canonicalArxivBaseStatus(value) {
+  if (typeof value !== "string" || value.trim() === "") {
+    return "invalid";
+  }
+  if (
+    value !== value.trim() ||
+    /^arxiv:/iu.test(value) ||
+    /v\d+$/iu.test(value)
+  ) {
+    return "not_normalized";
+  }
+  return ARXIV_MODERN_ID.test(value) || ARXIV_LEGACY_ID.test(value)
+    ? "valid"
+    : "invalid";
+}
+
+function validateArxivIdentity(version, index, details, diagnostics) {
+  const identity = arxivIdentityDescriptor(version, index);
+  let valid = true;
+  if (!identity.hasBase) {
+    addDiagnostic(diagnostics, {
+      ...details,
+      code: "BIB_ARXIV_ID_MISSING",
+      fieldPath: identity.basePath,
+      message: "An arxiv_revision requires a canonical arXiv base identifier.",
+    });
+    valid = false;
+  } else {
+    const status = canonicalArxivBaseStatus(identity.baseId);
+    if (status === "not_normalized") {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "BIB_ARXIV_ID_NOT_NORMALIZED",
+        fieldPath: identity.basePath,
+        message: "ArXiv base identifiers must omit the arXiv prefix, revision suffix, and surrounding whitespace.",
+      });
+      valid = false;
+    } else if (status !== "valid") {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "BIB_ARXIV_ID_INVALID",
+        fieldPath: identity.basePath,
+        message: "ArXiv base identifier must use canonical modern or legacy form.",
+      });
+      valid = false;
+    }
+  }
+  if (!identity.hasRevision || !Number.isInteger(identity.revision) || identity.revision <= 0) {
+    addDiagnostic(diagnostics, {
+      ...details,
+      code: "BIB_ARXIV_REVISION_INVALID",
+      fieldPath: identity.revisionPath,
+      message: "ArXiv revision must be a positive integer separate from the base identifier.",
+    });
+    valid = false;
+  }
+  return valid;
+}
+
+function publisherIdentityDescriptor(version) {
+  const value = version?.publisher_identifier;
+  return {
+    value: isObject(value) ? value.value : undefined,
+    valuePath: "/publisher_identifier/value",
+    reason: isObject(value) ? value.reason : undefined,
+    reasonPath: "/publisher_identifier/reason",
+    present: isObject(version) && Object.hasOwn(version, "publisher_identifier"),
+  };
+}
+
+function validatePublisherIdentity(version, index, details, diagnostics) {
+  const identity = publisherIdentityDescriptor(version);
+  if (!identity.present) {
+    return false;
+  }
+  let valid = true;
+  if (typeof identity.value !== "string" || identity.value.trim() === "") {
+    addDiagnostic(diagnostics, {
+      ...details,
+      code: "BIB_PUBLISHER_ID_INVALID",
+      fieldPath: `/versions/${index}${identity.valuePath}`,
+      message: "A DOI-less journal manifestation requires a non-empty stable publisher identifier.",
+    });
+    valid = false;
+  }
+  if (typeof identity.reason !== "string" || identity.reason.trim() === "") {
+    addDiagnostic(diagnostics, {
+      ...details,
+      code: "BIB_PUBLISHER_ID_REASON_INVALID",
+      fieldPath: `/versions/${index}${identity.reasonPath}`,
+      message: "A stable publisher identifier requires a non-empty recorded reason.",
+    });
+    valid = false;
+  }
+  return valid;
+}
+
 function validateVersionBibliography(version, index, sourceIds, details, diagnostics) {
   if (!isObject(version)) {
     addDiagnostic(diagnostics, {
@@ -1672,6 +1807,9 @@ function validateVersionBibliography(version, index, sourceIds, details, diagnos
     fieldPath: `/versions/${index}`,
   }, diagnostics);
 
+  if (version.kind === "arxiv_revision") {
+    validateArxivIdentity(version, index, versionDetails, diagnostics);
+  }
   if (version.kind === "journal_manifestation") {
     if (typeof version.doi === "string") {
       if (version.doi.trim() !== version.doi || /^doi:/iu.test(version.doi) || version.doi !== version.doi.toLowerCase() || !DOI.test(version.doi)) {
@@ -1682,13 +1820,15 @@ function validateVersionBibliography(version, index, sourceIds, details, diagnos
           message: "DOI must be lowercase, prefix-free, and free of surrounding whitespace.",
         });
       }
-    } else {
+    } else if (!publisherIdentityDescriptor(version).present) {
       addDiagnostic(diagnostics, {
         ...versionDetails,
         code: "BIB_DOI_MISSING",
         fieldPath: `/versions/${index}/doi`,
         message: "A journal manifestation requires a DOI or an explicitly justified stable publisher identifier.",
       });
+    } else {
+      validatePublisherIdentity(version, index, versionDetails, diagnostics);
     }
   }
   if (version.access_urls !== undefined) {
@@ -2023,6 +2163,579 @@ function validateBibliographicDiscrepancies(
       });
     }
   });
+}
+
+function publicationRelationSourceDescriptor(relation) {
+  return {
+    ids: relation?.bibliographic_source_ids,
+    fieldPath: "/bibliographic_source_ids",
+  };
+}
+
+function sourceCoversVersionIdentity(source, version) {
+  if (!source || !isObject(version) || !isObject(version.field_sources)) {
+    return false;
+  }
+  const identityPointers = version.kind === "arxiv_revision"
+    ? ["/arxiv_id", "/arxiv_revision"]
+    : typeof version.doi === "string"
+      ? ["/doi"]
+      : ["/publisher_identifier/value"];
+  return identityPointers.every((pointer) =>
+    Array.isArray(version.field_sources[pointer]) &&
+    version.field_sources[pointer].includes(source.id));
+}
+
+function sourceConnectsVersions(source, sourceVersion, targetVersion) {
+  if (!source || !sourceVersion || !targetVersion) {
+    return false;
+  }
+  return sourceCoversVersionIdentity(source, sourceVersion) &&
+    sourceCoversVersionIdentity(source, targetVersion);
+}
+
+function normalizedPartialDate(releaseDate) {
+  if (!isObject(releaseDate) || typeof releaseDate.value !== "string") {
+    return null;
+  }
+  const { value, precision } = releaseDate;
+  if (!Object.hasOwn(DATE_VALUES, precision) && precision !== "day") {
+    return null;
+  }
+  if (precision === "year" && !/^\d{4}$/u.test(value)) {
+    return null;
+  }
+  if (precision === "month" && !/^\d{4}-\d{2}$/u.test(value)) {
+    return null;
+  }
+  if (precision === "day" && !/^\d{4}-\d{2}-\d{2}$/u.test(value)) {
+    return null;
+  }
+  if (precision === "day" && !isValidGregorianDate(value)) {
+    return null;
+  }
+  const parts = value.split("-").map(Number);
+  return {
+    precision,
+    year: parts[0],
+    month: parts[1],
+    day: parts[2],
+  };
+}
+
+/*
+ * Return -1 only when source is definitely before target, 1 only when it is
+ * definitely after target, and 0 when the partial dates cannot be compared
+ * at their shared precision.  Equal year/month values are not contradictions
+ * because a partial date does not fabricate day precision.
+ */
+function comparePartialReleaseDates(sourceVersion, targetVersion) {
+  const sourceDate = normalizedPartialDate(sourceVersion?.release_date);
+  const targetDate = normalizedPartialDate(targetVersion?.release_date);
+  if (!sourceDate || !targetDate) {
+    return 0;
+  }
+  if (sourceDate.year !== targetDate.year) {
+    return sourceDate.year < targetDate.year ? -1 : 1;
+  }
+  if (sourceDate.month !== undefined && targetDate.month !== undefined && sourceDate.month !== targetDate.month) {
+    return sourceDate.month < targetDate.month ? -1 : 1;
+  }
+  if (sourceDate.day !== undefined && targetDate.day !== undefined && sourceDate.day !== targetDate.day) {
+    return sourceDate.day < targetDate.day ? -1 : 1;
+  }
+  return 0;
+}
+
+function arxivIdentityValue(version) {
+  const identity = arxivIdentityDescriptor(version, 0);
+  if (
+    !identity.hasBase ||
+    canonicalArxivBaseStatus(identity.baseId) !== "valid" ||
+    !identity.hasRevision ||
+    !Number.isInteger(identity.revision) ||
+    identity.revision <= 0
+  ) {
+    return null;
+  }
+  return {
+    base_id: identity.baseId,
+    revision: identity.revision,
+  };
+}
+
+function normalizePublicationReason(value) {
+  return typeof value === "string"
+    ? value.trim().replace(/\s+/gu, " ")
+    : value ?? null;
+}
+
+/**
+ * Semantic review bindings exclude curation/review metadata and formatting
+ * details.  Bibliographic source references are set-like for the binding,
+ * while relation endpoint direction and relation/basis values are semantic.
+ */
+export function publicationRelationSemanticDigest(relation) {
+  const sourceIds = publicationRelationSourceDescriptor(relation).ids;
+  const semanticProjection = {
+    source_version_id: relation?.source_version_id ?? null,
+    target_version_id: relation?.target_version_id ?? null,
+    relation: relation?.relation ?? null,
+    basis: relation?.basis ?? null,
+    reason: normalizePublicationReason(relation?.reason),
+    bibliographic_source_ids: Array.isArray(sourceIds)
+      ? [...sourceIds].sort((left, right) => Buffer.from(String(left)).compare(Buffer.from(String(right))))
+      : sourceIds ?? null,
+  };
+  return createHash("sha256")
+    .update(JSON.stringify(semanticProjection), "utf8")
+    .digest("hex");
+}
+
+function validatePublicationRelationReviewBinding(relation, details, diagnostics) {
+  if (relation.review_state !== "reviewed") {
+    return true;
+  }
+  const binding = relation.review_binding;
+  if (!isObject(binding)) {
+    addDiagnostic(diagnostics, {
+      ...details,
+      code: "PUBLICATION_RELATION_REVIEW_BINDING_REQUIRED",
+      fieldPath: `${details.fieldPath}/review_binding`,
+      message: "A reviewed Publication Relation requires a semantic review binding.",
+    });
+    return false;
+  }
+  let valid = true;
+  if (binding.canonicalization_version !== CANONICALIZATION_VERSION) {
+    addDiagnostic(diagnostics, {
+      ...details,
+      code: "PUBLICATION_RELATION_REVIEW_BINDING_VERSION_INVALID",
+      fieldPath: `${details.fieldPath}/review_binding/canonicalization_version`,
+      message: "Publication Relation review binding uses an unsupported canonicalization version.",
+      relatedIds: [CANONICALIZATION_VERSION],
+    });
+    valid = false;
+  }
+  const expectedDigest = publicationRelationSemanticDigest(relation);
+  if (binding.semantic_digest !== expectedDigest) {
+    addDiagnostic(diagnostics, {
+      ...details,
+      code: "PUBLICATION_RELATION_REVIEW_BINDING_STALE",
+      fieldPath: `${details.fieldPath}/review_binding/semantic_digest`,
+      message: "Reviewed Publication Relation semantic fields no longer match its review binding.",
+    });
+    valid = false;
+  }
+  return valid;
+}
+
+function validatePublicationRelations(
+  versionsEnvelope,
+  versionsById,
+  sourceIds,
+  actorsById,
+  details,
+  diagnostics,
+) {
+  const relations = versionsEnvelope.publication_relations;
+  if (!Array.isArray(relations)) {
+    addDiagnostic(diagnostics, {
+      ...details,
+      code: "PUBLICATION_RELATION_COLLECTION_INVALID",
+      fieldPath: "/publication_relations",
+      message: "versions.yaml must contain a publication_relations array.",
+    });
+    return;
+  }
+
+  const sourcesById = new Map(
+    (Array.isArray(versionsEnvelope.bibliographic_sources)
+      ? versionsEnvelope.bibliographic_sources
+      : [])
+      .filter((source) => isObject(source) && typeof source.id === "string")
+      .map((source) => [source.id, source]),
+  );
+  const versionIdCounts = new Map();
+  for (const version of versionsEnvelope.versions ?? []) {
+    if (isObject(version) && typeof version.id === "string") {
+      versionIdCounts.set(version.id, (versionIdCounts.get(version.id) ?? 0) + 1);
+    }
+  }
+  const seenIds = new Set();
+  const revisionEdges = [];
+  const incomingPublishedAs = new Map();
+
+  for (const [index, relation] of relations.entries()) {
+    const relationDetails = {
+      ...details,
+      recordId: relation?.id ?? details.recordId,
+      fieldPath: `/publication_relations/${index}`,
+    };
+    if (!isObject(relation)) {
+      addDiagnostic(diagnostics, {
+        ...relationDetails,
+        code: "PUBLICATION_RELATION_INVALID_SHAPE",
+        message: "Publication Relations must be mappings.",
+      });
+      continue;
+    }
+
+    let structurallyValid = true;
+    if (!validateNamespacedId(relation.id, "publication-relation", {
+      ...relationDetails,
+      code: "PUBLICATION_RELATION_ID_INVALID",
+      fieldPath: `${relationDetails.fieldPath}/id`,
+      message: "Publication Relation IDs must use the publication-relation: namespace.",
+    }, diagnostics)) {
+      structurallyValid = false;
+    }
+    if (seenIds.has(relation.id)) {
+      addDiagnostic(diagnostics, {
+        ...relationDetails,
+        code: "PUBLICATION_RELATION_ID_DUPLICATE",
+        fieldPath: `${relationDetails.fieldPath}/id`,
+        message: `Publication Relation ID is duplicated: ${relation.id}.`,
+      });
+      structurallyValid = false;
+    }
+    seenIds.add(relation.id);
+
+    if (!PUBLICATION_RELATIONS.includes(relation.relation)) {
+      addDiagnostic(diagnostics, {
+        ...relationDetails,
+        code: "PUBLICATION_RELATION_INVALID",
+        fieldPath: `${relationDetails.fieldPath}/relation`,
+        message: "Publication Relation relation must be revises or published_as.",
+        relatedIds: PUBLICATION_RELATIONS,
+      });
+      structurallyValid = false;
+    }
+    if (!PUBLICATION_RELATION_BASES.includes(relation.basis)) {
+      addDiagnostic(diagnostics, {
+        ...relationDetails,
+        code: "PUBLICATION_RELATION_BASIS_INVALID",
+        fieldPath: `${relationDetails.fieldPath}/basis`,
+        message: "Publication Relation basis must be source_asserted or curator_matched.",
+        relatedIds: PUBLICATION_RELATION_BASES,
+      });
+      structurallyValid = false;
+    }
+
+    const endpointIds = {
+      source: relation.source_version_id,
+      target: relation.target_version_id,
+    };
+    for (const side of ["source", "target"]) {
+      if (typeof endpointIds[side] !== "string" || endpointIds[side].trim() === "") {
+        addDiagnostic(diagnostics, {
+          ...relationDetails,
+          code: "PUBLICATION_RELATION_ENDPOINT_INVALID",
+          fieldPath: `${relationDetails.fieldPath}/${side}_version_id`,
+          message: `Publication Relation ${side} endpoint must be a Version ID string.`,
+        });
+        structurallyValid = false;
+      }
+    }
+
+    const sourceDescriptor = publicationRelationSourceDescriptor(relation);
+    const declaredSourceIds = sourceDescriptor.ids;
+    if (!Array.isArray(declaredSourceIds) || declaredSourceIds.length === 0) {
+      addDiagnostic(diagnostics, {
+        ...relationDetails,
+        code: "PUBLICATION_RELATION_BIBLIOGRAPHIC_SOURCES_INVALID",
+        fieldPath: `${relationDetails.fieldPath}${sourceDescriptor.fieldPath}`,
+        message: "Publication Relations require a non-empty array of Bibliographic Source IDs.",
+      });
+      structurallyValid = false;
+    }
+    const relationSourceSet = new Set();
+    if (Array.isArray(declaredSourceIds)) {
+      for (const [sourceIndex, sourceId] of declaredSourceIds.entries()) {
+        if (typeof sourceId !== "string" || sourceId.trim() === "") {
+          addDiagnostic(diagnostics, {
+            ...relationDetails,
+            code: "PUBLICATION_RELATION_BIBLIOGRAPHIC_SOURCE_ID_INVALID",
+            fieldPath: `${relationDetails.fieldPath}${sourceDescriptor.fieldPath}/${sourceIndex}`,
+            message: "Publication Relation Bibliographic Source IDs must be non-empty strings.",
+          });
+          structurallyValid = false;
+          continue;
+        }
+        if (relationSourceSet.has(sourceId)) {
+          addDiagnostic(diagnostics, {
+            ...relationDetails,
+            code: "PUBLICATION_RELATION_BIBLIOGRAPHIC_SOURCE_DUPLICATE",
+            fieldPath: `${relationDetails.fieldPath}${sourceDescriptor.fieldPath}/${sourceIndex}`,
+            message: `A Publication Relation cannot repeat a Bibliographic Source ID: ${sourceId}.`,
+            relatedIds: [sourceId],
+          });
+          structurallyValid = false;
+        }
+        relationSourceSet.add(sourceId);
+        if (!sourceIds.has(sourceId)) {
+          addDiagnostic(diagnostics, {
+            ...relationDetails,
+            code: "REFERENTIAL_BIB_SOURCE_MISSING",
+            fieldPath: `${relationDetails.fieldPath}${sourceDescriptor.fieldPath}/${sourceIndex}`,
+            message: `Bibliographic Source does not exist: ${sourceId}.`,
+            relatedIds: [sourceId],
+          });
+        }
+      }
+    }
+
+    const requiresReason = relation.relation === "published_as" || relation.basis === "curator_matched";
+    if (
+      requiresReason &&
+      (typeof relation.reason !== "string" || relation.reason.trim() === "")
+    ) {
+      addDiagnostic(diagnostics, {
+        ...relationDetails,
+        code: "PUBLICATION_RELATION_REASON_REQUIRED",
+        fieldPath: `${relationDetails.fieldPath}/reason`,
+        message: "This Publication Relation requires a non-empty normalized reason.",
+      });
+    } else if (relation.reason !== undefined &&
+      (typeof relation.reason !== "string" || relation.reason.trim() === "")) {
+      addDiagnostic(diagnostics, {
+        ...relationDetails,
+        code: "PUBLICATION_RELATION_REASON_INVALID",
+        fieldPath: `${relationDetails.fieldPath}/reason`,
+        message: "A Publication Relation reason must be a non-empty string when supplied.",
+      });
+    } else if (
+      typeof relation.reason === "string" &&
+      relation.reason !== normalizePublicationReason(relation.reason)
+    ) {
+      addDiagnostic(diagnostics, {
+        ...relationDetails,
+        code: "PUBLICATION_RELATION_REASON_NOT_NORMALIZED",
+        fieldPath: `${relationDetails.fieldPath}/reason`,
+        message: "Publication Relation reason must be stored in normalized whitespace form.",
+      });
+    }
+
+    if (!structurallyValid) {
+      continue;
+    }
+    const sourceVersion = versionsById.get(endpointIds.source);
+    const targetVersion = versionsById.get(endpointIds.target);
+    if (!sourceVersion) {
+      addDiagnostic(diagnostics, {
+        ...relationDetails,
+        code: "REFERENTIAL_VERSION_MISSING",
+        fieldPath: `${relationDetails.fieldPath}/source_version_id`,
+        message: `Publication Relation source Version does not exist: ${endpointIds.source}.`,
+        relatedIds: [endpointIds.source],
+      });
+    }
+    if (!targetVersion) {
+      addDiagnostic(diagnostics, {
+        ...relationDetails,
+        code: "REFERENTIAL_VERSION_MISSING",
+        fieldPath: `${relationDetails.fieldPath}/target_version_id`,
+        message: `Publication Relation target Version does not exist: ${endpointIds.target}.`,
+        relatedIds: [endpointIds.target],
+      });
+    }
+
+    const endpointsAvailable = isObject(sourceVersion) &&
+      isObject(targetVersion) &&
+      versionIdCounts.get(endpointIds.source) === 1 &&
+      versionIdCounts.get(endpointIds.target) === 1 &&
+      isNamespacedId(endpointIds.source, "version") &&
+      isNamespacedId(endpointIds.target, "version") &&
+      VERSION_KINDS.includes(sourceVersion.kind) &&
+      VERSION_KINDS.includes(targetVersion.kind);
+    const relationSourceRecords = (Array.isArray(declaredSourceIds) ? declaredSourceIds : [])
+      .map((sourceId) => sourcesById.get(sourceId))
+      .filter((source) => isObject(source) && BIBLIOGRAPHIC_PROVIDERS.includes(source.provider));
+    const allSourcesExist = Array.isArray(declaredSourceIds) &&
+      declaredSourceIds.length > 0 &&
+      declaredSourceIds.every((sourceId) => sourceIds.has(sourceId));
+
+    if (endpointsAvailable) {
+      if (relation.relation === "revises") {
+        if (sourceVersion.kind !== "arxiv_revision" || targetVersion.kind !== "arxiv_revision") {
+          addDiagnostic(diagnostics, {
+            ...relationDetails,
+            code: "PUBLICATION_RELATION_ENDPOINT_KIND_INVALID",
+            fieldPath: `${relationDetails.fieldPath}/relation`,
+            message: "A revises relation requires arxiv_revision source and target Versions.",
+            relatedIds: ["arxiv_revision"],
+          });
+        }
+        const sourceIdentity = arxivIdentityValue(sourceVersion);
+        const targetIdentity = arxivIdentityValue(targetVersion);
+        const graphEdgeEligible = sourceVersion.kind === "arxiv_revision" &&
+          targetVersion.kind === "arxiv_revision" &&
+          sourceIdentity && targetIdentity;
+        if (sourceIdentity && targetIdentity && sourceIdentity.base_id !== targetIdentity.base_id) {
+          addDiagnostic(diagnostics, {
+            ...relationDetails,
+            code: "PUBLICATION_REVISES_IDENTITY_MISMATCH",
+            fieldPath: `${relationDetails.fieldPath}/target_version_id`,
+            message: "A revises relation requires the same canonical arXiv base identifier at both endpoints.",
+            relatedIds: [sourceIdentity.base_id, targetIdentity.base_id],
+          });
+        }
+        if (sourceIdentity && targetIdentity && sourceIdentity.revision <= targetIdentity.revision) {
+          addDiagnostic(diagnostics, {
+            ...relationDetails,
+            code: "PUBLICATION_REVISES_REVISION_ORDER_INVALID",
+            fieldPath: `${relationDetails.fieldPath}/source_version_id`,
+            message: "A revises relation must point from a higher to a lower arXiv revision number.",
+            relatedIds: [String(sourceIdentity.revision), String(targetIdentity.revision)],
+          });
+        }
+        if (comparePartialReleaseDates(sourceVersion, targetVersion) < 0) {
+          addDiagnostic(diagnostics, {
+            ...relationDetails,
+            code: "PUBLICATION_REVISES_DATE_ORDER_INVALID",
+            fieldPath: `${relationDetails.fieldPath}/source_version_id`,
+            message: "Comparable release dates must not place the later arXiv revision before its target.",
+            relatedIds: [endpointIds.source, endpointIds.target],
+          });
+        }
+        // Revision-number/date contradictions are independently reported, but
+        // remain graph-eligible so a hostile reverse edge cannot hide a real
+        // Publication Graph cycle behind one semantic diagnostic.
+        if (graphEdgeEligible) {
+          revisionEdges.push({
+            source: endpointIds.source,
+            target: endpointIds.target,
+            relationId: relation.id,
+          });
+        }
+      } else if (relation.relation === "published_as") {
+        if (sourceVersion.kind !== "arxiv_revision" || targetVersion.kind !== "journal_manifestation") {
+          addDiagnostic(diagnostics, {
+            ...relationDetails,
+            code: "PUBLICATION_RELATION_ENDPOINT_KIND_INVALID",
+            fieldPath: `${relationDetails.fieldPath}/relation`,
+            message: "A published_as relation requires an arxiv_revision source and journal_manifestation target.",
+            relatedIds: ["arxiv_revision", "journal_manifestation"],
+          });
+        } else {
+          const prior = incomingPublishedAs.get(endpointIds.target);
+          if (prior) {
+            addDiagnostic(diagnostics, {
+              ...relationDetails,
+              code: "PUBLICATION_PUBLISHED_AS_CARDINALITY_INVALID",
+              fieldPath: `${relationDetails.fieldPath}/target_version_id`,
+              message: "A journal manifestation may have at most one incoming published_as relation.",
+              relatedIds: [prior, relation.id].filter(Boolean),
+            });
+          } else {
+            incomingPublishedAs.set(endpointIds.target, relation.id);
+          }
+        }
+      }
+
+      if (relation.basis === "source_asserted" && allSourcesExist && relationSourceRecords.length > 0) {
+        const sourceAsserted = relationSourceRecords.some((source) =>
+          sourceConnectsVersions(source, sourceVersion, targetVersion),
+        );
+        if (!sourceAsserted) {
+          addDiagnostic(diagnostics, {
+            ...relationDetails,
+            code: "PUBLICATION_SOURCE_ASSERTION_COVERAGE_INVALID",
+            fieldPath: `${relationDetails.fieldPath}${sourceDescriptor.fieldPath}`,
+            message: "A source_asserted relation requires an authoritative Bibliographic Source explicitly connecting both endpoint Versions.",
+            relatedIds: [endpointIds.source, endpointIds.target],
+          });
+        }
+      }
+      if (relation.basis === "curator_matched" && allSourcesExist) {
+        const distinctSources = [...new Set(declaredSourceIds)];
+        if (distinctSources.length < 2) {
+          addDiagnostic(diagnostics, {
+            ...relationDetails,
+            code: "PUBLICATION_CURATOR_MATCH_SOURCES_REQUIRED",
+            fieldPath: `${relationDetails.fieldPath}${sourceDescriptor.fieldPath}`,
+            message: "A curator_matched relation requires at least two distinct Bibliographic Sources.",
+          });
+        } else {
+          const sourceCoversSourceEndpoint = distinctSources.some((sourceId) =>
+            sourceCoversVersionIdentity(sourcesById.get(sourceId), sourceVersion),
+          );
+          const sourceCoversTargetEndpoint = distinctSources.some((sourceId) =>
+            sourceCoversVersionIdentity(sourcesById.get(sourceId), targetVersion),
+          );
+          const allSourcesMeaningful = distinctSources.every((sourceId) => {
+            const source = sourcesById.get(sourceId);
+            return sourceCoversVersionIdentity(source, sourceVersion) ||
+              sourceCoversVersionIdentity(source, targetVersion);
+          });
+          if (!sourceCoversSourceEndpoint || !sourceCoversTargetEndpoint || !allSourcesMeaningful) {
+            addDiagnostic(diagnostics, {
+              ...relationDetails,
+              code: "PUBLICATION_CURATOR_MATCH_COVERAGE_INVALID",
+              fieldPath: `${relationDetails.fieldPath}${sourceDescriptor.fieldPath}`,
+              message: "A curator_matched relation requires meaningful Bibliographic Sources covering both endpoint Versions.",
+              relatedIds: [endpointIds.source, endpointIds.target],
+            });
+          }
+        }
+      }
+    }
+
+    validateGovernedRecord(relation, actorsById, relationDetails, diagnostics);
+    if (endpointsAvailable && allSourcesExist) {
+      validatePublicationRelationReviewBinding(relation, relationDetails, diagnostics);
+    }
+  }
+
+  const adjacency = new Map();
+  for (const edge of revisionEdges) {
+    if (!adjacency.has(edge.source)) {
+      adjacency.set(edge.source, []);
+    }
+    adjacency.get(edge.source).push(edge);
+    if (!adjacency.has(edge.target)) {
+      adjacency.set(edge.target, []);
+    }
+  }
+  const visiting = new Set();
+  const visited = new Set();
+  const cycleRelationIds = new Set();
+  function visit(versionId, path = []) {
+    if (visiting.has(versionId)) {
+      for (const edge of path) {
+        cycleRelationIds.add(edge.relationId);
+      }
+      return true;
+    }
+    if (visited.has(versionId)) {
+      return false;
+    }
+    visiting.add(versionId);
+    let cyclic = false;
+    for (const edge of adjacency.get(versionId) ?? []) {
+      if (visit(edge.target, [...path, edge])) {
+        cyclic = true;
+      }
+    }
+    visiting.delete(versionId);
+    visited.add(versionId);
+    return cyclic;
+  }
+  let hasCycle = false;
+  for (const versionId of adjacency.keys()) {
+    if (visit(versionId)) {
+      hasCycle = true;
+    }
+  }
+  if (hasCycle) {
+    addDiagnostic(diagnostics, {
+      ...details,
+      code: "PUBLICATION_GRAPH_CYCLE",
+      fieldPath: "/publication_relations",
+      message: "The Publication Graph revises relations must be acyclic.",
+      relatedIds: [...cycleRelationIds].filter(Boolean),
+    });
+  }
 }
 
 function extractWorkReadingFrontmatter(reading) {
@@ -2747,12 +3460,12 @@ function validateEvidenceLocator(locator, details, diagnostics) {
     });
     valid = false;
   }
-  if (!Number.isInteger(locator.page) || locator.page <= 0) {
+  if (locator.page !== undefined && (!Number.isInteger(locator.page) || locator.page <= 0)) {
     addDiagnostic(diagnostics, {
       ...details,
       code: "EVIDENCE_LOCATOR_PAGE_INVALID",
       fieldPath: `${details.fieldPath ?? ""}/locator/page`,
-      message: "Evidence locators require a positive integer page.",
+      message: "Evidence locator page must be a positive integer when supplied.",
     });
     valid = false;
   }
@@ -2920,7 +3633,7 @@ function normalizeStatementText(value) {
     : value ?? null;
 }
 
-function statementSemanticDigest(statement) {
+export function statementSemanticDigest(statement) {
   const attestations = Array.isArray(statement.attestations)
     ? statement.attestations
       .map((attestation) => ({
@@ -3176,7 +3889,7 @@ function validateStatements(
   }
 }
 
-function causalLinkSemanticDigest(link) {
+export function causalLinkSemanticDigest(link) {
   const semanticProjection = {
     source_stage_id: link.source_stage_id ?? null,
     target_stage_id: link.target_stage_id ?? null,
@@ -4181,6 +4894,17 @@ function validateWorkRecords(
       },
       diagnostics,
     );
+    validatePublicationRelations(
+      versionsEnvelope,
+      versionsById,
+      sourceIds,
+      actorsById,
+      {
+        ...details,
+        file: `content/works/${work.id}/versions.yaml`,
+      },
+      diagnostics,
+    );
 
     const evidenceById = validateEvidenceRecords(
       work,
@@ -4576,6 +5300,14 @@ export async function validateCanonicalContent(
         (count, work) => count + (
           Array.isArray(work.files["physical-account.yaml"]?.links)
             ? work.files["physical-account.yaml"].links.length
+            : 0
+        ),
+        0,
+      ),
+      publication_relations: snapshot.works.reduce(
+        (count, work) => count + (
+          Array.isArray(work.files["versions.yaml"]?.publication_relations)
+            ? work.files["versions.yaml"].publication_relations.length
             : 0
         ),
         0,

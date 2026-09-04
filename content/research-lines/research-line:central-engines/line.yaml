@@ -23,8 +23,28 @@ memberships:
     review_binding:
       canonicalization_version: v1
       semantic_digest: 3060c844eac674913c35a2b560e504a0abc19c19d25f93a1e74b02f78a0f9679
+  - id: membership:central-engines-bromberg-2011
+    work_id: work:bromberg-2011
+    reading_roles:
+      - foundation
+    editorial_anchor: true
+    reason: This Work supplies the foundational jet-head and cocoon dynamics used to organize engine-powered transient reading.
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-04T09:18:00Z
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: 2026-09-04T09:19:00Z
+    review_binding:
+      canonicalization_version: v1
+      semantic_digest: a6dc0be6cdb34660396fea0683a9aad779f3cb649bc6a131351e63582afa8fcb
 visibility_approvals:
   - profile_id: v0.1-default
     visibility_digest: c27a83af7592b4097c96e027db3931298c33154c89541cb549730c0788fd9705
     actor_id: actor:human-curator
     approved_at: 2026-09-04T07:31:00Z
+  - profile_id: v0.1-default
+    visibility_digest: 596d3cc624a7b5b2f9deeeca0f384af93be3f802c5f917837575d08735ad29a0
+    actor_id: actor:human-curator
+    approved_at: 2026-09-04T09:36:00Z

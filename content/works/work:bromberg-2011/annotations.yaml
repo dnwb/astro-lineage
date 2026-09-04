@@ -1,0 +1,145 @@
+work_id: work:bromberg-2011
+annotations:
+  - id: annotation:bromberg-progenitor-system
+    axis: progenitor_system
+    assessment: { state: present, values: [{ term_id: term:massive-star-collapsar-system }] }
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:bromberg-grb-breakout]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T09:25:00Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T09:26:00Z" }
+  - id: annotation:bromberg-central-object
+    axis: central_object
+    assessment: { state: unknown, values: [] }
+    interpretive_risk: descriptive
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T09:25:01Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T09:26:01Z" }
+  - id: annotation:bromberg-energy-reservoir
+    axis: energy_reservoir
+    assessment: { state: present, values: [{ term_id: term:central-engine-jet-power }] }
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:bromberg-system]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T09:25:02Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T09:26:02Z" }
+  - id: annotation:bromberg-energy-transfer
+    axis: energy_transfer
+    assessment: { state: present, values: [{ term_id: term:relativistic-jet-injection }] }
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:bromberg-system]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T09:25:03Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T09:26:03Z" }
+  - id: annotation:bromberg-outflow
+    axis: outflow
+    assessment:
+      state: present
+      values: [{ term_id: term:relativistic-hydrodynamic-jet }, { term_id: term:jet-cocoon }]
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:bromberg-system, evidence:bromberg-head-cocoon]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T09:25:04Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T09:26:04Z" }
+  - id: annotation:bromberg-environment
+    axis: environment
+    assessment: { state: present, values: [{ term_id: term:external-ambient-medium }] }
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:bromberg-system]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T09:25:05Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T09:26:05Z" }
+  - id: annotation:bromberg-dynamics
+    axis: dynamics
+    assessment:
+      state: present
+      values: [{ term_id: term:jet-head-propagation }, { term_id: term:cocoon-pressure-collimation }]
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:bromberg-collimation-feedback, evidence:bromberg-regimes]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T09:25:06Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T09:26:06Z" }
+  - id: annotation:bromberg-energy-dissipation
+    axis: energy_dissipation
+    assessment: { state: present, values: [{ term_id: term:jet-head-shock-heating }] }
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:bromberg-head-cocoon]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T09:25:07Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T09:26:07Z" }
+  - id: annotation:bromberg-particle-interaction
+    axis: particle_interaction
+    assessment: { state: not_applicable, values: [] }
+    interpretive_risk: descriptive
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T09:25:08Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T09:26:08Z" }
+  - id: annotation:bromberg-emission-process
+    axis: emission_process
+    assessment: { state: not_applicable, values: [] }
+    interpretive_risk: descriptive
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T09:25:09Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T09:26:09Z" }
+  - id: annotation:bromberg-transport-process
+    axis: transport_process
+    assessment: { state: present, values: [{ term_id: term:bulk-jet-energy-transport }] }
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:bromberg-system, evidence:bromberg-head-cocoon]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T09:25:10Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T09:26:10Z" }
+  - id: annotation:bromberg-phenomenon
+    axis: phenomenon
+    assessment: { state: present, values: [{ term_id: term:relativistic-jet-propagation }] }
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:bromberg-abstract]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T09:25:11Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T09:26:11Z" }
+  - id: annotation:bromberg-messenger
+    axis: messenger
+    assessment: { state: not_applicable, values: [] }
+    interpretive_risk: descriptive
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T09:25:12Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T09:26:12Z" }
+  - id: annotation:bromberg-photon-band
+    axis: photon_band
+    assessment: { state: not_applicable, values: [] }
+    interpretive_risk: descriptive
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T09:25:13Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T09:26:13Z" }
+  - id: annotation:bromberg-observable
+    axis: observable
+    assessment:
+      state: present
+      values: [{ term_id: term:jet-break-opening-angle }, { term_id: term:observed-jet-luminosity }]
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:bromberg-observables]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T09:25:14Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T09:26:14Z" }
+  - id: annotation:bromberg-inference-target
+    axis: inference_target
+    assessment:
+      state: present
+      values: [{ term_id: term:jet-collimation-regime }, { term_id: term:jet-breakout-time }]
+    interpretive_risk: interpretive
+    risk_escalation:
+      reason: Collimation state and breakout time are inferred by applying the analytic closure to jet and environmental inputs rather than directly measured.
+    evidence_ids: [evidence:bromberg-collimation-condition, evidence:bromberg-grb-breakout]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T09:25:15Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T09:26:15Z" }
+method_annotations:
+  - id: annotation:bromberg-method-pressure-balance
+    technique_id: technique:coupled-pressure-balance-model
+    basis: explicit
+    reason: The source explicitly presents a self-consistent analytic jet-cocoon model closed by ram-pressure, cocoon-pressure, and collimation-shock relations.
+    evidence_ids: [evidence:bromberg-abstract, evidence:bromberg-collimation-feedback]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T09:27:00Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T09:28:00Z" }
+    review_binding: { canonicalization_version: v1, semantic_digest: 636662af68cf831442b5e11eea2099beb68035e0a2311bccd92a37fc7e09951c }

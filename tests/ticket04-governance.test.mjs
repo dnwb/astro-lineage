@@ -18,15 +18,20 @@ async function copyContent() {
   const contentRoot = join(temporaryRoot, "content");
   await cp(productionContent, contentRoot, { recursive: true });
   const workPath = join(contentRoot, "works", "work:arnett-1982", "work.yaml");
+  const brombergWorkPath = join(contentRoot, "works", "work:bromberg-2011", "work.yaml");
   const linePath = join(contentRoot, "research-lines", "research-line:central-engines", "line.yaml");
   const work = parse(await readFile(workPath, "utf8"));
+  const brombergWork = parse(await readFile(brombergWorkPath, "utf8"));
   const line = parse(await readFile(linePath, "utf8"));
   work.reader_state = "draft";
   work.visibility_approvals = [];
+  brombergWork.reader_state = "draft";
+  brombergWork.visibility_approvals = [];
   line.reader_state = "draft";
   line.visibility_approvals = [];
   await Promise.all([
     writeFile(workPath, stringify(work), "utf8"),
+    writeFile(brombergWorkPath, stringify(brombergWork), "utf8"),
     writeFile(linePath, stringify(line), "utf8"),
   ]);
   return { contentRoot };
@@ -209,7 +214,7 @@ test("inferred Method Annotations require a normalized reason and distinct Human
   assert(result.diagnostics.some(({ code }) => code === "METHOD_INFERRED_REASON_REQUIRED"));
 });
 
-test("Evidence requires a typed page locator and exact Work-local Version", async () => {
+test("Evidence permits a typed section locator without fabricated page precision", async () => {
   const { contentRoot } = await copyContent();
   const { workRoot, evidence } = await readArnett(contentRoot);
   evidence.evidence[0].version_id = "version:other-work";
@@ -219,7 +224,7 @@ test("Evidence requires a typed page locator and exact Work-local Version", asyn
   const result = await validateCanonicalContent(contentRoot);
   const codes = new Set(result.diagnostics.map(({ code }) => code));
   assert(codes.has("REFERENTIAL_VERSION_MISSING"));
-  assert(codes.has("EVIDENCE_LOCATOR_PAGE_INVALID"));
+  assert.equal(codes.has("EVIDENCE_LOCATOR_PAGE_INVALID"), false);
 });
 
 test("deprecated Controlled Terms require a reason and preserve optional successor semantics", async () => {

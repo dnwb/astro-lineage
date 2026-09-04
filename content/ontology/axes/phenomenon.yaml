@@ -3,6 +3,17 @@ label: Phenomenon
 question: What observational event or source class does the Work address?
 default_risk: descriptive
 terms:
+  - id: term:relativistic-jet-propagation
+    label: Relativistic jet propagation
+    aliases: [jet-cocoon evolution]
+    status: active
+    definition: Evolution of a relativistic jet, its shocked head, and cocoon while crossing an external medium.
+    examples: [Collimated and uncollimated propagation regimes in stellar, ISM, or halo environments.]
+    counterexamples: [A supernova light curve powered only by radioactive diffusion.]
+    boundary_notes: This phenomenon groups the modeled system without asserting a specific progenitor or messenger.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T09:20:00Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T09:21:00Z" }
   - id: term:type-i-supernova
     label: Type I supernova
     aliases: [Type I SN]

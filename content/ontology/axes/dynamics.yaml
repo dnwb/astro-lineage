@@ -3,6 +3,28 @@ label: Dynamics
 question: What macroscopic evolution, propagation, or interaction governs the modeled system and its components?
 default_risk: descriptive
 terms:
+  - id: term:jet-head-propagation
+    label: Jet-head propagation
+    aliases: [relativistic jet propagation]
+    status: active
+    definition: Macroscopic advance of a shocked jet head through an ambient medium under opposing ram pressures.
+    examples: [Head velocity set by ram-pressure balance across forward and reverse shocks.]
+    counterexamples: [Microscopic particle scattering within shocked plasma.]
+    boundary_notes: This term describes head motion; collimation is a coupled but distinct dynamical response.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T09:20:00Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T09:21:00Z" }
+  - id: term:cocoon-pressure-collimation
+    label: Cocoon-pressure collimation
+    aliases: [hydrodynamic jet collimation]
+    status: active
+    definition: Compression and redirection of a jet by surrounding cocoon pressure, producing a converging collimation shock when confinement is strong.
+    examples: [A jet becoming approximately cylindrical above the convergence point of its collimation shock.]
+    counterexamples: [An uncollimated conical jet whose cocoon pressure is insufficient to converge the shock.]
+    boundary_notes: The canonical process identity is independent of whether a Work assigns it a driving or modulating causal role.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T09:20:00Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T09:21:00Z" }
   - id: term:homologous-expansion
     label: Homologous expansion
     aliases: [homologous ejecta expansion]

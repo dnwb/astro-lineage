@@ -3,6 +3,28 @@ label: Observable
 question: What form of measurement is actually recorded?
 default_risk: descriptive
 terms:
+  - id: term:jet-break-opening-angle
+    label: Jet-break opening angle
+    aliases: [afterglow jet-break angle]
+    status: active
+    definition: A jet opening angle estimated from an identified break in an afterglow light curve.
+    examples: [A late-time GRB jet-break angle used to constrain the injection angle.]
+    counterexamples: [The inferred collimation regime inside the progenitor star.]
+    boundary_notes: Store the measured or observation-derived angle here; physical conditions inferred from it belong to inference_target.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T09:20:00Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T09:21:00Z" }
+  - id: term:observed-jet-luminosity
+    label: Observed jet luminosity
+    aliases: [beaming-corrected jet luminosity]
+    status: active
+    definition: Luminosity attributed observationally to a jet and used as an input to a physical regime assessment.
+    examples: [A GRB jet luminosity corrected using a representative beaming angle.]
+    counterexamples: [The model-inferred cocoon pressure.]
+    boundary_notes: This term describes the measured input form, not the engine energy reservoir or inferred jet state.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T09:20:00Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T09:21:00Z" }
   - id: term:measured-magnitudes
     label: Measured magnitudes
     aliases: [photometric magnitudes]

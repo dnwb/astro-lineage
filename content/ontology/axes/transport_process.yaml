@@ -3,6 +3,18 @@ label: Transport process
 question: Which propagation, absorption, scattering, diffusion, or escape process alters a messenger before observation?
 default_risk: descriptive
 terms:
+  - id: term:bulk-jet-energy-transport
+    label: Bulk jet energy transport
+    aliases: [directed jet power transport]
+    status: active
+    definition: Advection of energy from the inner engine to the jet head by the bulk relativistic jet flow.
+    examples: [A relativistic jet carrying luminosity L_j into its shocked head.]
+    counterexamples: [Photon diffusion through expanding supernova ejecta.]
+    boundary_notes: This is macroscopic flow transport, separate from injection at the engine and dissipation at shocks.
+    allowed_functional_roles: [transport_process]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T09:20:00Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T09:21:00Z" }
   - id: term:radiative-diffusion-escape
     label: Radiative diffusion and escape
     aliases: [photon diffusion]

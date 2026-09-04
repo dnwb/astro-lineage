@@ -3,6 +3,28 @@ label: Inference target
 question: What physical quantity, property, or hypothesis does the Work attempt to infer?
 default_risk: descriptive
 terms:
+  - id: term:jet-collimation-regime
+    label: Jet collimation regime
+    aliases: [collimated or uncollimated state]
+    status: active
+    definition: The modeled dynamical state in which cocoon pressure either does or does not substantially collimate a jet.
+    examples: [Inferring that a GRB jet is collimated inside its progenitor and uncollimated after breakout.]
+    counterexamples: [A directly measured afterglow jet-break angle.]
+    boundary_notes: The regime is inferred through the model and must not be stored as an observable.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T09:20:00Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T09:21:00Z" }
+  - id: term:jet-breakout-time
+    label: Jet breakout time
+    aliases: [jet boundary-crossing time]
+    status: active
+    definition: The model-derived time required for a jet head to reach and cross a finite outer boundary such as a stellar surface.
+    examples: [Breakout time inferred from jet injection and ambient-density parameters.]
+    counterexamples: [The arXiv release date of a paper.]
+    boundary_notes: This is a physical inference target, not a publication timestamp or direct observable.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T09:20:00Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T09:21:00Z" }
   - id: term:intrinsic-luminosity
     label: Intrinsic luminosity
     aliases: [bolometric luminosity]

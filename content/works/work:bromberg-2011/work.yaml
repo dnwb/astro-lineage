@@ -1,0 +1,17 @@
+work_id: work:bromberg-2011
+reader_state: visible
+preferred_version:
+  version_id: version:bromberg-2011-journal
+  reason: The journal manifestation is the stable DOI-era bibliographic representation for this Work.
+  curation_provenance:
+    actor_id: actor:agent-curator
+    recorded_at: 2026-09-04T09:15:00Z
+visibility_approvals:
+  - profile_id: v0.1-default
+    visibility_digest: d6be6cdd0b7c1ee90c859798abb40e775ce73b2f2e88178868614e8cb230deff
+    actor_id: actor:human-curator
+    approved_at: 2026-09-04T09:35:00Z
+  - profile_id: v0.1-default
+    visibility_digest: f1524d15acebc5f501fa9730c65f83c570d6604a5f48709663944d9534313ba1
+    actor_id: actor:human-curator
+    approved_at: 2026-09-04T09:41:00Z

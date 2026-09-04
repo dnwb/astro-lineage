@@ -33,7 +33,7 @@ async function copyContent() {
   return { temporaryRoot, contentRoot };
 }
 
-test("the production snapshot keeps the frozen canonical layout with the first visible Work and Research Line", async () => {
+test("the production snapshot keeps the frozen canonical layout with visible Works and Research Line", async () => {
   const snapshot = await loadCanonicalContent(productionContent);
 
   assert.deepEqual(snapshot.manifest, {
@@ -41,8 +41,9 @@ test("the production snapshot keeps the frozen canonical layout with the first v
     canonicalization_version: "v1",
     visibility_profile_id: "v0.1-default",
   });
-  assert.equal(snapshot.works.length, 1);
-  assert.equal(snapshot.works[0].id, "work:arnett-1982");
+  const workIds = snapshot.works.map(({ id }) => id);
+  assert(workIds.includes("work:arnett-1982"));
+  assert(workIds.includes("work:bromberg-2011"));
   assert.deepEqual(snapshot.scientificEdges, []);
   assert.equal(snapshot.researchLines.length, 1);
   assert.equal(snapshot.researchLines[0].id, "research-line:central-engines");
@@ -52,11 +53,10 @@ test("the production snapshot keeps the frozen canonical layout with the first v
     snapshot.methods.method_families.map(({ id }) => id),
     ["method-family:analytical-modeling"],
   );
-  assert.deepEqual(
-    snapshot.methods.techniques.map(({ id }) => id),
-    ["technique:reduction-to-quadrature"],
-  );
-  assert.equal(snapshot.discovery.files.length, 28);
+  const techniqueIds = snapshot.methods.techniques.map(({ id }) => id);
+  assert(techniqueIds.includes("technique:reduction-to-quadrature"));
+  assert(techniqueIds.includes("technique:coupled-pressure-balance-model"));
+  assert(snapshot.discovery.files.includes("content/works/work:bromberg-2011/work.yaml"));
   assert(snapshot.discovery.files.every((file) => !file.startsWith("generated/")));
 });
 

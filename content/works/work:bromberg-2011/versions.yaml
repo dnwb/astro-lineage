@@ -1,0 +1,104 @@
+work_id: work:bromberg-2011
+versions:
+  - id: version:bromberg-2011-arxiv-v1
+    kind: arxiv_revision
+    title: The propagation of relativistic jets in external media
+    authors:
+      - display_name: Omer Bromberg
+      - display_name: Ehud Nakar
+      - display_name: Tsvi Piran
+      - display_name: Re'em Sari
+    release_date:
+      value: "2011-07-07"
+      precision: day
+    arxiv_id: "1107.1326"
+    arxiv_revision: 1
+    access_urls:
+      - kind: arxiv
+        url: https://arxiv.org/abs/1107.1326v1
+    field_sources:
+      /title: [source:arxiv-bromberg-2011-20260904-091405z, source:ads-bromberg-2011-20260904-091405z]
+      /authors/0/display_name: [source:arxiv-bromberg-2011-20260904-091405z, source:ads-bromberg-2011-20260904-091405z]
+      /authors/1/display_name: [source:arxiv-bromberg-2011-20260904-091405z, source:ads-bromberg-2011-20260904-091405z]
+      /authors/2/display_name: [source:arxiv-bromberg-2011-20260904-091405z, source:ads-bromberg-2011-20260904-091405z]
+      /authors/3/display_name: [source:arxiv-bromberg-2011-20260904-091405z, source:ads-bromberg-2011-20260904-091405z]
+      /release_date/value: [source:arxiv-bromberg-2011-20260904-091405z]
+      /release_date/precision: [source:arxiv-bromberg-2011-20260904-091405z]
+      /arxiv_id: [source:arxiv-bromberg-2011-20260904-091405z, source:ads-bromberg-2011-20260904-091405z]
+      /arxiv_revision: [source:arxiv-bromberg-2011-20260904-091405z]
+      /access_urls/0/kind: [source:arxiv-bromberg-2011-20260904-091405z]
+      /access_urls/0/url: [source:arxiv-bromberg-2011-20260904-091405z]
+  - id: version:bromberg-2011-journal
+    kind: journal_manifestation
+    title: The Propagation of Relativistic Jets in External Media
+    authors:
+      - display_name: Bromberg, Omer
+      - display_name: Nakar, Ehud
+      - display_name: Piran, Tsvi
+      - display_name: Sari, Re'em
+    release_date:
+      value: "2011-10-04"
+      precision: day
+    doi: 10.1088/0004-637x/740/2/100
+    journal:
+      name: The Astrophysical Journal
+      volume: "740"
+      issue: "2"
+      first_page: "100"
+    access_urls:
+      - kind: ads
+        url: https://ui.adsabs.harvard.edu/abs/2011ApJ...740..100B/abstract
+      - kind: doi
+        url: https://doi.org/10.1088/0004-637x/740/2/100
+    field_sources:
+      /title: [source:ads-bromberg-2011-20260904-091405z, source:arxiv-bromberg-2011-20260904-091405z, source:crossref-bromberg-2011-20260904-091405z]
+      /authors/0/display_name: [source:ads-bromberg-2011-20260904-091405z, source:arxiv-bromberg-2011-20260904-091405z, source:crossref-bromberg-2011-20260904-091405z]
+      /authors/1/display_name: [source:ads-bromberg-2011-20260904-091405z, source:arxiv-bromberg-2011-20260904-091405z, source:crossref-bromberg-2011-20260904-091405z]
+      /authors/2/display_name: [source:ads-bromberg-2011-20260904-091405z, source:arxiv-bromberg-2011-20260904-091405z, source:crossref-bromberg-2011-20260904-091405z]
+      /authors/3/display_name: [source:ads-bromberg-2011-20260904-091405z, source:arxiv-bromberg-2011-20260904-091405z, source:crossref-bromberg-2011-20260904-091405z]
+      /release_date/value: [source:crossref-bromberg-2011-20260904-091405z]
+      /release_date/precision: [source:crossref-bromberg-2011-20260904-091405z]
+      /doi: [source:ads-bromberg-2011-20260904-091405z, source:arxiv-bromberg-2011-20260904-091405z, source:crossref-bromberg-2011-20260904-091405z]
+      /journal/name: [source:ads-bromberg-2011-20260904-091405z, source:crossref-bromberg-2011-20260904-091405z]
+      /journal/volume: [source:ads-bromberg-2011-20260904-091405z, source:crossref-bromberg-2011-20260904-091405z]
+      /journal/issue: [source:crossref-bromberg-2011-20260904-091405z]
+      /journal/first_page: [source:ads-bromberg-2011-20260904-091405z, source:crossref-bromberg-2011-20260904-091405z]
+      /access_urls/0/kind: [source:ads-bromberg-2011-20260904-091405z]
+      /access_urls/0/url: [source:ads-bromberg-2011-20260904-091405z]
+      /access_urls/1/kind: [source:crossref-bromberg-2011-20260904-091405z]
+      /access_urls/1/url: [source:crossref-bromberg-2011-20260904-091405z]
+bibliographic_sources:
+  - id: source:ads-bromberg-2011-20260904-091405z
+    provider: ads
+    record_id: 2011ApJ...740..100B
+    source_url: https://ui.adsabs.harvard.edu/abs/2011ApJ...740..100B/abstract
+    retrieved_at: 2026-09-04T09:14:05Z
+  - id: source:arxiv-bromberg-2011-20260904-091405z
+    provider: arxiv
+    record_id: "1107.1326"
+    source_url: https://export.arxiv.org/api/query?id_list=1107.1326
+    retrieved_at: 2026-09-04T09:14:05Z
+  - id: source:crossref-bromberg-2011-20260904-091405z
+    provider: crossref
+    record_id: 10.1088/0004-637x/740/2/100
+    source_url: https://api.crossref.org/works/10.1088/0004-637X/740/2/100
+    retrieved_at: 2026-09-04T09:14:05Z
+publication_relations:
+  - id: publication-relation:bromberg-2011-arxiv-v1-published-as-journal
+    source_version_id: version:bromberg-2011-arxiv-v1
+    target_version_id: version:bromberg-2011-journal
+    relation: published_as
+    basis: source_asserted
+    reason: The arXiv record explicitly supplies the journal DOI and links this revision to the journal manifestation.
+    bibliographic_source_ids: [source:arxiv-bromberg-2011-20260904-091405z]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-04T09:16:00Z
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: 2026-09-04T09:17:00Z
+    review_binding:
+      canonicalization_version: v1
+      semantic_digest: 8364e2557306d0a6cf926fdf1676c6e7403d24c88f52c916074dbce9cdcef910
+bibliographic_discrepancies: []

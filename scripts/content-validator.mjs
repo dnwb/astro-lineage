@@ -141,9 +141,9 @@ function validateAxes(axes, diagnostics) {
   }
 
   const seen = new Set();
-  for (const [index, axis] of axes.entries()) {
-    const fallbackId = AXIS_IDS[index] ?? `axis-${index + 1}`;
-    const axisId = isObject(axis) && typeof axis.id === "string" ? axis.id : fallbackId;
+  for (const entry of axes) {
+    const axisId = entry.id;
+    const axis = entry.value;
     const file = `content/ontology/axes/${axisId}.yaml`;
     if (!isObject(axis)) {
       addDiagnostic(diagnostics, {
@@ -164,7 +164,7 @@ function validateAxes(axes, diagnostics) {
       });
     }
     seen.add(axis.id);
-    if (axis.id !== fallbackId || !AXIS_IDS.includes(axis.id)) {
+    if (axis.id !== axisId || !AXIS_IDS.includes(axis.id)) {
       addDiagnostic(diagnostics, {
         code: "STRUCTURE_AXIS_ID_MISMATCH",
         file,
@@ -214,6 +214,10 @@ function validateAxes(axes, diagnostics) {
       });
     }
   }
+}
+
+export function isValidationValid(diagnostics) {
+  return !diagnostics.some(({ severity }) => severity === "error");
 }
 
 function validateMethods(methods, diagnostics) {
@@ -308,7 +312,7 @@ export async function validateCanonicalContent(
   const manifest = snapshot.manifest;
   const report = {
     dataset: "production",
-    valid: diagnostics.length === 0,
+    valid: isValidationValid(diagnostics),
     validator_version: VALIDATOR_VERSION,
     schema_version: typeof manifest.schema_version === "string" ? manifest.schema_version : null,
     canonicalization_version:

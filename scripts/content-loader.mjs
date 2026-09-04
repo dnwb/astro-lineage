@@ -528,12 +528,15 @@ export async function loadCanonicalContent(contentRoot = new URL("../content/", 
   const axes = [];
   for (const axis of discovery.axes) {
     axes.push(
-      await readYaml(
-        axis.path,
-        `content/ontology/axes/${axis.id}.yaml`,
-        discovery.diagnostics,
-        {},
-      ),
+      {
+        id: axis.id,
+        value: await readYaml(
+          axis.path,
+          `content/ontology/axes/${axis.id}.yaml`,
+          discovery.diagnostics,
+          {},
+        ),
+      },
     );
   }
   const methods = discovery.methodsPath
@@ -648,7 +651,7 @@ export async function loadCanonicalContent(contentRoot = new URL("../content/", 
     discovery,
     manifest: manifest && typeof manifest === "object" ? manifest : {},
     actors: actors && typeof actors === "object" ? actors : {},
-    axes: axes.filter((axis) => axis && typeof axis === "object"),
+    axes,
     methods: methods && typeof methods === "object" ? methods : {},
     works,
     scientificEdges,

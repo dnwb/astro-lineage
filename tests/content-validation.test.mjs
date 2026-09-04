@@ -5,6 +5,7 @@ import { join } from "node:path";
 import { test } from "node:test";
 import { parse, stringify } from "yaml";
 
+import { createDiagnostic } from "../scripts/diagnostic.mjs";
 import {
   AXIS_IDS,
   AXIS_QUESTIONS,
@@ -18,6 +19,7 @@ import {
 } from "../scripts/content-digest.mjs";
 import {
   runValidation,
+  isValidationValid,
   validateCanonicalContent,
   writeValidationReports,
 } from "../scripts/content-validator.mjs";
@@ -225,6 +227,48 @@ test("Physics Ontology axis questions are frozen schema-level contracts", async 
   assert.equal(diagnostic.field_path, "/question");
   assert.deepEqual(diagnostic.related_ids, []);
   assert.equal(AXIS_QUESTIONS.central_object !== axis.question, true);
+});
+
+test("a scalar axis record keeps its declared filename identity without cascades", async () => {
+  const { contentRoot } = await copyContent();
+  const axisPath = join(contentRoot, "ontology", "axes", "central_object.yaml");
+  await writeFile(axisPath, "scalar-axis-record\n");
+
+  const snapshot = await loadCanonicalContent(contentRoot);
+  const loadedAxis = snapshot.axes.find(({ id }) => id === "central_object");
+  assert(loadedAxis);
+  assert.equal(loadedAxis.value, "scalar-axis-record");
+
+  const result = await validateCanonicalContent(contentRoot);
+  assert.deepEqual(
+    result.diagnostics
+      .filter(({ file }) => file === "content/ontology/axes/central_object.yaml")
+      .map(({ code }) => code),
+    ["STRUCTURE_AXIS_INVALID_SHAPE"],
+  );
+});
+
+test("only error diagnostics make a validation result invalid", () => {
+  const base = {
+    code: "TEST_DIAGNOSTIC",
+    file: "tests/fixture.yaml",
+    message: "test",
+  };
+
+  assert.equal(
+    isValidationValid([
+      createDiagnostic({ ...base, severity: "warning" }),
+      createDiagnostic({ ...base, severity: "info" }),
+    ]),
+    true,
+  );
+  assert.equal(
+    isValidationValid([
+      createDiagnostic({ ...base, severity: "warning" }),
+      createDiagnostic({ ...base, severity: "error" }),
+    ]),
+    false,
+  );
 });
 
 test("canonical reading I/O errors are diagnosed instead of becoming empty prose", async () => {

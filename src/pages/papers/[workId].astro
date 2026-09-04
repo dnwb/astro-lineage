@@ -50,6 +50,22 @@ const readingParagraphs = String(work.reading ?? "")
   .split(/\r?\n\s*\r?\n/u)
   .map((paragraph) => paragraph.replace(/^#+\s+/u, "").replace(/\r?\n/gu, " "))
   .filter(Boolean);
+
+function describeLocator(locator: AnyRecord | undefined) {
+  if (!locator?.type) {
+    return "locator unavailable";
+  }
+  const parts = [String(locator.type)];
+  for (const key of ["section", "equation", "table", "figure", "paragraph"]) {
+    if (locator[key] !== undefined) {
+      parts.push(`${key} ${locator[key]}`);
+    }
+  }
+  if (locator.page !== undefined) {
+    parts.push(`page ${locator.page}`);
+  }
+  return parts.join("; ");
+}
 ---
 
 <!doctype html>
@@ -209,8 +225,11 @@ const readingParagraphs = String(work.reading ?? "")
         <ul>
           {(work.evidence ?? []).map((evidence: AnyRecord) => (
             <li>
-              <strong>{evidence.id}</strong> — {evidence.version_id}; {evidence.locator?.type}, page {evidence.locator?.page}: “{evidence.excerpt}”
+              <strong>{evidence.id}</strong> — {evidence.version_id}; {describeLocator(evidence.locator)}: “{evidence.excerpt}”
               {evidence.source_url ? <> — <a href={evidence.source_url}>source</a></> : ""}
+              {evidence.review_context?.status
+                ? `; ${evidence.review_context.status} by ${evidence.review_context.reviewer_actor_id} at ${evidence.review_context.reviewed_at}`
+                : ""}
             </li>
           ))}
         </ul>

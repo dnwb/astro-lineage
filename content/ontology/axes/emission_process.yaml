@@ -20,4 +20,28 @@ terms:
     review_state: reviewed
     review_provenance:
       actor_id: actor:human-curator
-      recorded_at: "2026-09-04T04:05:00Z"
+      recorded_at: "2026-09-04T12:30:31Z"
+  - id: term:hadronic-neutrino-production
+    label: Hadronic neutrino production
+    aliases: [meson-decay neutrino emission]
+    status: active
+    definition: Production of neutrinos through decay chains initiated by hadronic proton interactions.
+    examples: [High-energy neutrinos from pion and kaon decay in a choked jet.]
+    counterexamples: [The neutrino messenger after production and escape.]
+    boundary_notes: Use for the emission role; retain the canonical microscopic reactions on particle_interaction.
+    allowed_functional_roles: [emission_process]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T10:15:06Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
+  - id: term:cocoon-shock-breakout
+    label: Cocoon shock breakout
+    aliases: [cocoon breakout emission]
+    status: active
+    definition: Electromagnetic emission produced when an energized jet cocoon reaches and crosses a confining medium boundary.
+    examples: [A soft low-luminosity gamma-ray transient from a cocoon breaking out of an AGN disk.]
+    counterexamples: [Gamma-ray trapping before photons escape the disk.]
+    boundary_notes: This term names the emission process, not its photon band or measured transient form.
+    allowed_functional_roles: [emission_process]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T10:15:07Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }

@@ -14,7 +14,7 @@ terms:
     allowed_functional_roles: [transport_process]
     curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T09:20:00Z" }
     review_state: reviewed
-    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T09:21:00Z" }
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
   - id: term:radiative-diffusion-escape
     label: Radiative diffusion and escape
     aliases: [photon diffusion]
@@ -32,4 +32,28 @@ terms:
     review_state: reviewed
     review_provenance:
       actor_id: actor:human-curator
-      recorded_at: "2026-09-04T04:05:00Z"
+      recorded_at: "2026-09-04T12:30:31Z"
+  - id: term:neutrino-escape
+    label: Neutrino escape
+    aliases: [free-streaming neutrino transport]
+    status: active
+    definition: Propagation of produced neutrinos out of the dense source environment toward the observer.
+    examples: [High-energy neutrinos escaping a choked GRB inside an AGN disk.]
+    counterexamples: [Meson decay that produces the neutrino.]
+    boundary_notes: Transport begins after production and does not redefine the neutrino messenger.
+    allowed_functional_roles: [transport_process]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T10:15:08Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
+  - id: term:gamma-ray-trapping-and-degradation
+    label: Gamma-ray trapping and degradation
+    aliases: [photon reprocessing in dense gas]
+    status: active
+    definition: Absorption and energy degradation that suppress direct escape of high-energy photons through dense material.
+    examples: [Gamma rays trapped and degraded inside an AGN accretion disk.]
+    counterexamples: [Cocoon shock breakout emission at the disk boundary.]
+    boundary_notes: This term describes photon transport and attenuation, not photon production or band identity.
+    allowed_functional_roles: [transport_process]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T10:15:09Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }

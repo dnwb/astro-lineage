@@ -13,7 +13,7 @@ terms:
     boundary_notes: Store the measured or observation-derived angle here; physical conditions inferred from it belong to inference_target.
     curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T09:20:00Z" }
     review_state: reviewed
-    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T09:21:00Z" }
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
   - id: term:observed-jet-luminosity
     label: Observed jet luminosity
     aliases: [beaming-corrected jet luminosity]
@@ -24,7 +24,7 @@ terms:
     boundary_notes: This term describes the measured input form, not the engine energy reservoir or inferred jet state.
     curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T09:20:00Z" }
     review_state: reviewed
-    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T09:21:00Z" }
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
   - id: term:measured-magnitudes
     label: Measured magnitudes
     aliases: [photometric magnitudes]
@@ -41,7 +41,7 @@ terms:
     review_state: reviewed
     review_provenance:
       actor_id: actor:human-curator
-      recorded_at: "2026-09-04T04:05:00Z"
+      recorded_at: "2026-09-04T12:30:31Z"
   - id: term:light-curves
     label: Light curves
     aliases: [time-dependent photometry]
@@ -58,4 +58,37 @@ terms:
     review_state: reviewed
     review_provenance:
       actor_id: actor:human-curator
-      recorded_at: "2026-09-04T04:05:00Z"
+      recorded_at: "2026-09-04T12:30:31Z"
+  - id: term:all-flavor-neutrino-fluence
+    label: All-flavor neutrino fluence
+    aliases: [neutrino spectral fluence]
+    status: active
+    definition: Energy-dependent time-integrated neutrino flux summed over neutrino flavors as an observable signal form.
+    examples: [The single-event all-flavor fluence plotted for a choked GRB.]
+    counterexamples: [The hadronic reaction that produced the neutrinos.]
+    boundary_notes: This term names the signal form, not an inferred source parameter.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T10:15:15Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
+  - id: term:detected-neutrino-count
+    label: Detected neutrino event count
+    aliases: [neutrino detection count]
+    status: active
+    definition: The discrete count form recorded by a neutrino detector after applying its response to an incident signal.
+    examples: [An expected IceCube event count calculated by effective-area folding.]
+    counterexamples: [The source's expected physical neutrino yield before detector response.]
+    boundary_notes: The ontology term describes the measurable form; a model-predicted value remains a prediction.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T10:15:16Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
+  - id: term:shock-breakout-photon-transient
+    label: Shock-breakout photon transient
+    aliases: [cocoon breakout transient]
+    status: active
+    definition: A time-localized electromagnetic signal measured from cocoon shock breakout.
+    examples: [A soft low-luminosity gamma-ray transient from an AGN-disk cocoon.]
+    counterexamples: [The cocoon shock-breakout emission mechanism.]
+    boundary_notes: This term names the measurable signal form, not its band or production mechanism.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T10:15:17Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }

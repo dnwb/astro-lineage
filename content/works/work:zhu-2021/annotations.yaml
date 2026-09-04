@@ -1,0 +1,142 @@
+work_id: work:zhu-2021
+annotations:
+  - id: annotation:zhu-progenitor-system
+    axis: progenitor_system
+    assessment: { state: present, values: [{ term_id: term:gamma-ray-burst-progenitor-system }] }
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:zhu-jet-choking]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T10:05:00Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
+  - id: annotation:zhu-central-object
+    axis: central_object
+    assessment: { state: unknown, values: [] }
+    interpretive_risk: descriptive
+    reason: The Work considers both long and short GRB channels and does not assign one common central-object identity.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T10:05:01Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
+  - id: annotation:zhu-energy-reservoir
+    axis: energy_reservoir
+    assessment: { state: present, values: [{ term_id: term:central-engine-jet-power }] }
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:zhu-jet-choking]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T10:05:02Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
+  - id: annotation:zhu-energy-transfer
+    axis: energy_transfer
+    assessment: { state: present, values: [{ term_id: term:relativistic-jet-injection }] }
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:zhu-jet-choking]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T10:05:03Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
+  - id: annotation:zhu-outflow
+    axis: outflow
+    assessment: { state: present, values: [{ term_id: term:relativistic-hydrodynamic-jet }, { term_id: term:jet-cocoon }] }
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:zhu-jet-choking, evidence:zhu-electromagnetic-counterpart]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T10:05:04Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
+  - id: annotation:zhu-environment
+    axis: environment
+    assessment: { state: present, values: [{ term_id: term:agn-accretion-disk }] }
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:zhu-jet-choking]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T10:05:05Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
+  - id: annotation:zhu-dynamics
+    axis: dynamics
+    assessment: { state: present, values: [{ term_id: term:jet-stalling-and-choking }] }
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:zhu-jet-choking]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T10:05:06Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
+  - id: annotation:zhu-energy-dissipation
+    axis: energy_dissipation
+    assessment: { state: present, values: [{ term_id: term:reverse-shock-particle-acceleration }] }
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:zhu-reverse-shock]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T10:05:07Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
+  - id: annotation:zhu-particle-interaction
+    axis: particle_interaction
+    assessment: { state: present, values: [{ term_id: term:hadronic-pp-pgamma-interactions }, { term_id: term:meson-muon-decay-chain }] }
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:zhu-hadronic-processes, evidence:zhu-meson-decay]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T10:05:08Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
+  - id: annotation:zhu-emission-process
+    axis: emission_process
+    assessment: { state: present, values: [{ term_id: term:hadronic-neutrino-production }, { term_id: term:cocoon-shock-breakout }] }
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:zhu-meson-decay, evidence:zhu-electromagnetic-counterpart]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T10:05:09Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
+  - id: annotation:zhu-transport-process
+    axis: transport_process
+    assessment: { state: present, values: [{ term_id: term:neutrino-escape }, { term_id: term:gamma-ray-trapping-and-degradation }] }
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:zhu-neutrino-fluence, evidence:zhu-electromagnetic-counterpart]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T10:05:10Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
+  - id: annotation:zhu-phenomenon
+    axis: phenomenon
+    assessment: { state: present, values: [{ term_id: term:choked-grb-in-agn-disk }] }
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:zhu-jet-choking]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T10:05:11Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
+  - id: annotation:zhu-messenger
+    axis: messenger
+    assessment: { state: present, values: [{ term_id: term:neutrinos }, { term_id: term:photons }, { term_id: term:gravitational-waves }] }
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:zhu-neutrino-fluence, evidence:zhu-electromagnetic-counterpart, evidence:zhu-gw-neutrino]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T10:05:12Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
+  - id: annotation:zhu-photon-band
+    axis: photon_band
+    assessment: { state: present, values: [{ term_id: term:gamma-ray-band }, { term_id: term:optical-band }] }
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:zhu-electromagnetic-counterpart]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T10:05:13Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
+  - id: annotation:zhu-observable
+    axis: observable
+    assessment: { state: present, values: [{ term_id: term:all-flavor-neutrino-fluence }, { term_id: term:detected-neutrino-count }, { term_id: term:shock-breakout-photon-transient }] }
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:zhu-neutrino-fluence, evidence:zhu-detector-folding, evidence:zhu-electromagnetic-counterpart]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T10:05:14Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
+  - id: annotation:zhu-inference-target
+    axis: inference_target
+    assessment: { state: present, values: [{ term_id: term:jet-choking-condition }, { term_id: term:expected-neutrino-yield }] }
+    interpretive_risk: interpretive
+    risk_escalation:
+      reason: Choking state and expected yield are model-derived physical results rather than directly measured quantities.
+    evidence_ids: [evidence:zhu-jet-choking, evidence:zhu-detector-folding]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T10:05:15Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
+method_annotations:
+  - id: annotation:zhu-method-detector-folding
+    technique_id: technique:detector-effective-area-folding
+    basis: explicit
+    reason: Equation 6 explicitly folds the calculated neutrino flux with detector effective area to obtain an expected event count.
+    evidence_ids: [evidence:zhu-detector-folding]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T10:07:00Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
+    review_binding: { canonicalization_version: v1, semantic_digest: c6c448ce9139a8e18a94573f742254c6a11cf06cd21ec888f78672d05d3d0301 }

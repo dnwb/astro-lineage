@@ -13,4 +13,15 @@ terms:
     boundary_notes: Specific environments may vary; the canonical identity captures their shared dynamical role.
     curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T09:20:00Z" }
     review_state: reviewed
-    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T09:21:00Z" }
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
+  - id: term:agn-accretion-disk
+    label: AGN accretion disk
+    aliases: [active-galactic-nucleus disk]
+    status: active
+    definition: Dense gas in an active-galactic-nucleus accretion disk that surrounds and interacts with an embedded transient source and its outflow.
+    examples: [Disk gas whose scale height and density choke an embedded GRB jet.]
+    counterexamples: [The relativistic jet launched by the embedded source.]
+    boundary_notes: This term names the surrounding medium, not the central engine or the jet.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T10:15:01Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }

@@ -14,7 +14,7 @@ terms:
     allowed_functional_roles: [energy_dissipation]
     curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T09:20:00Z" }
     review_state: reviewed
-    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T09:21:00Z" }
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
   - id: term:decay-deposition-heating
     label: Decay deposition and heating
     aliases: [radioactive deposition]
@@ -32,4 +32,16 @@ terms:
     review_state: reviewed
     review_provenance:
       actor_id: actor:human-curator
-      recorded_at: "2026-09-04T04:05:00Z"
+      recorded_at: "2026-09-04T12:30:31Z"
+  - id: term:reverse-shock-particle-acceleration
+    label: Reverse-shock particle acceleration
+    aliases: [jet reverse-shock acceleration]
+    status: active
+    definition: Conversion of bulk jet energy at a reverse shock into a nonthermal particle population.
+    examples: [Acceleration of protons at the reverse shock of a choked GRB jet.]
+    counterexamples: [A proton-proton collision after acceleration, which is a particle interaction.]
+    boundary_notes: This term records macroscopic dissipation into nonthermal particles, not the later microscopic reaction.
+    allowed_functional_roles: [energy_dissipation]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T10:15:03Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }

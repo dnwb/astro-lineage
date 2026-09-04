@@ -19,7 +19,7 @@ terms:
     review_state: reviewed
     review_provenance:
       actor_id: actor:human-curator
-      recorded_at: "2026-09-04T04:05:00Z"
+      recorded_at: "2026-09-04T12:30:31Z"
   - id: term:b-band
     label: B band
     aliases: [blue band]
@@ -36,7 +36,7 @@ terms:
     review_state: reviewed
     review_provenance:
       actor_id: actor:human-curator
-      recorded_at: "2026-09-04T04:05:00Z"
+      recorded_at: "2026-09-04T12:30:31Z"
   - id: term:v-band
     label: V band
     aliases: [visual band]
@@ -53,4 +53,26 @@ terms:
     review_state: reviewed
     review_provenance:
       actor_id: actor:human-curator
-      recorded_at: "2026-09-04T04:05:00Z"
+      recorded_at: "2026-09-04T12:30:31Z"
+  - id: term:gamma-ray-band
+    label: Gamma-ray band
+    aliases: [gamma rays]
+    status: active
+    definition: The high-energy electromagnetic band used to describe a photon signal or its attenuation.
+    examples: [A soft gamma-ray transient from cocoon shock breakout.]
+    counterexamples: [Photons as the messenger class.]
+    boundary_notes: This is a photon band, not a messenger or measured fluence.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T10:15:13Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
+  - id: term:optical-band
+    label: Optical band
+    aliases: [visible-light band]
+    status: active
+    definition: The electromagnetic band covering visible-light photon observations.
+    examples: [An optical counterpart considered among electromagnetic signatures.]
+    counterexamples: [A neutrino fluence.]
+    boundary_notes: Use only for photon-band identity; measured light curves remain observables.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T10:15:14Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }

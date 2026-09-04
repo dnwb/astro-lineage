@@ -13,7 +13,7 @@ terms:
     boundary_notes: This term describes head motion; collimation is a coupled but distinct dynamical response.
     curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T09:20:00Z" }
     review_state: reviewed
-    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T09:21:00Z" }
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
   - id: term:cocoon-pressure-collimation
     label: Cocoon-pressure collimation
     aliases: [hydrodynamic jet collimation]
@@ -24,7 +24,7 @@ terms:
     boundary_notes: The canonical process identity is independent of whether a Work assigns it a driving or modulating causal role.
     curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T09:20:00Z" }
     review_state: reviewed
-    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T09:21:00Z" }
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
   - id: term:homologous-expansion
     label: Homologous expansion
     aliases: [homologous ejecta expansion]
@@ -41,4 +41,15 @@ terms:
     review_state: reviewed
     review_provenance:
       actor_id: actor:human-curator
-      recorded_at: "2026-09-04T04:05:00Z"
+      recorded_at: "2026-09-04T12:30:31Z"
+  - id: term:jet-stalling-and-choking
+    label: Jet stalling and choking
+    aliases: [choked-jet dynamics]
+    status: active
+    definition: Macroscopic jet evolution in which the jet head stalls before crossing the confining medium.
+    examples: [A GRB jet whose stalling radius is smaller than the AGN-disk scale height.]
+    counterexamples: [A jet that reaches the medium boundary and breaks out.]
+    boundary_notes: The dynamics describe the modeled state; the criterion inferred for a specific Work belongs to inference_target.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T10:15:02Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }

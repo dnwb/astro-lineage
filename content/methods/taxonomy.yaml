@@ -15,7 +15,7 @@ method_families:
     review_state: reviewed
     review_provenance:
       actor_id: actor:human-curator
-      recorded_at: "2026-09-04T04:05:00Z"
+      recorded_at: "2026-09-04T12:30:31Z"
 techniques:
   - id: technique:coupled-pressure-balance-model
     label: Coupled pressure-balance model
@@ -29,7 +29,7 @@ techniques:
     boundary_notes: The technique is more specific than the broad analytical-modeling family and does not mean every semi-analytic jet model uses this closure.
     curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T09:20:00Z" }
     review_state: reviewed
-    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T09:21:00Z" }
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
   - id: technique:reduction-to-quadrature
     label: Reduction to quadrature
     aliases: [quadrature solution]
@@ -48,4 +48,17 @@ techniques:
     review_state: reviewed
     review_provenance:
       actor_id: actor:human-curator
-      recorded_at: "2026-09-04T04:05:00Z"
+      recorded_at: "2026-09-04T12:30:31Z"
+  - id: technique:detector-effective-area-folding
+    label: Detector effective-area folding
+    aliases: [effective-area convolution]
+    status: active
+    family_ids:
+      - method-family:analytical-modeling
+    definition: A concrete calculation that integrates a predicted incident flux against a detector effective area to obtain an expected event count.
+    examples: [Folding a neutrino flux with IceCube effective area.]
+    counterexamples: [Describing a model as semi-analytic without calculating detector response.]
+    boundary_notes: The technique is detector-facing and does not itself specify the source emission model.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T10:15:20Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }

@@ -13,7 +13,7 @@ terms:
     boundary_notes: The regime is inferred through the model and must not be stored as an observable.
     curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T09:20:00Z" }
     review_state: reviewed
-    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T09:21:00Z" }
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
   - id: term:jet-breakout-time
     label: Jet breakout time
     aliases: [jet boundary-crossing time]
@@ -24,7 +24,7 @@ terms:
     boundary_notes: This is a physical inference target, not a publication timestamp or direct observable.
     curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T09:20:00Z" }
     review_state: reviewed
-    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T09:21:00Z" }
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
   - id: term:intrinsic-luminosity
     label: Intrinsic luminosity
     aliases: [bolometric luminosity]
@@ -41,4 +41,26 @@ terms:
     review_state: reviewed
     review_provenance:
       actor_id: actor:human-curator
-      recorded_at: "2026-09-04T04:05:00Z"
+      recorded_at: "2026-09-04T12:30:31Z"
+  - id: term:jet-choking-condition
+    label: Jet choking condition
+    aliases: [jet stalling criterion]
+    status: active
+    definition: The model-derived comparison determining whether a jet stalls before crossing its confining environment.
+    examples: [Inferring choking when the jet stalling radius is smaller than the AGN-disk scale height.]
+    counterexamples: [A directly measured photon transient.]
+    boundary_notes: This is an inferred physical state, not an observable or the general jet-choking dynamics term.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T10:15:18Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
+  - id: term:expected-neutrino-yield
+    label: Expected source neutrino yield
+    aliases: [model neutrino yield]
+    status: active
+    definition: A source-level neutrino output inferred from a physical production model before detector response.
+    examples: [The modeled neutrino output used to derive a fluence and expected detected event count.]
+    counterexamples: [A detector's recorded neutrino event count.]
+    boundary_notes: Keep the inferred source output separate from fluence and detector-count observable forms.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T10:15:19Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }

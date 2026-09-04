@@ -20,4 +20,28 @@ terms:
     review_state: reviewed
     review_provenance:
       actor_id: actor:human-curator
-      recorded_at: "2026-09-04T04:05:00Z"
+      recorded_at: "2026-09-04T12:30:31Z"
+  - id: term:hadronic-pp-pgamma-interactions
+    label: Hadronic proton-proton and photomeson interactions
+    aliases: [pp and p-gamma interactions]
+    status: active
+    definition: Microscopic collisions of energetic protons with gas or radiation fields that produce secondary mesons.
+    examples: [Proton-proton cooling at lower energy and photomeson cooling above approximately TeV energy.]
+    counterexamples: [Reverse-shock acceleration, which supplies the energetic protons.]
+    boundary_notes: The canonical interactions are independent of their downstream neutrino-production role.
+    allowed_functional_roles: [particle_interaction]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T10:15:04Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
+  - id: term:meson-muon-decay-chain
+    label: Meson-muon decay chain
+    aliases: [pion-kaon-muon decay]
+    status: active
+    definition: Decay of charged pions and kaons through muons into neutrinos and other daughter particles.
+    examples: [Charged-meson decay producing high-energy neutrinos after hadronic interactions.]
+    counterexamples: [Propagation of an already produced neutrino to the observer.]
+    boundary_notes: This is a particle-species transformation, not a messenger or transport classification.
+    allowed_functional_roles: [particle_interaction, emission_process]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T10:15:05Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }

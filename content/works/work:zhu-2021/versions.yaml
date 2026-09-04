@@ -1,0 +1,51 @@
+work_id: work:zhu-2021
+versions:
+  - id: version:zhu-2021-arxiv-v3
+    kind: arxiv_revision
+    title: High-energy Neutrinos from Choked Gamma-Ray Bursts in Active Galactic Nucleus Accretion Disks
+    authors:
+      - display_name: Jin-Ping Zhu
+      - display_name: Kai Wang
+      - display_name: Bing Zhang
+      - display_name: Yuan-Pei Yang
+      - display_name: Yun-Wei Yu
+      - display_name: He Gao
+    release_date:
+      value: "2021-03-28"
+      precision: day
+    arxiv_id: "2103.00789"
+    arxiv_revision: 3
+    access_urls:
+      - kind: arxiv
+        url: https://arxiv.org/abs/2103.00789v3
+      - kind: ads
+        url: https://ui.adsabs.harvard.edu/abs/2021ApJ...911L..19Z/abstract
+    field_sources:
+      /title: [source:arxiv-zhu-2021-20260904-095500z]
+      /authors/0/display_name: [source:arxiv-zhu-2021-20260904-095500z, source:ads-zhu-2021-20260904-095500z]
+      /authors/1/display_name: [source:arxiv-zhu-2021-20260904-095500z, source:ads-zhu-2021-20260904-095500z]
+      /authors/2/display_name: [source:arxiv-zhu-2021-20260904-095500z, source:ads-zhu-2021-20260904-095500z]
+      /authors/3/display_name: [source:arxiv-zhu-2021-20260904-095500z, source:ads-zhu-2021-20260904-095500z]
+      /authors/4/display_name: [source:arxiv-zhu-2021-20260904-095500z, source:ads-zhu-2021-20260904-095500z]
+      /authors/5/display_name: [source:arxiv-zhu-2021-20260904-095500z, source:ads-zhu-2021-20260904-095500z]
+      /release_date/value: [source:arxiv-zhu-2021-20260904-095500z]
+      /release_date/precision: [source:arxiv-zhu-2021-20260904-095500z]
+      /arxiv_id: [source:arxiv-zhu-2021-20260904-095500z, source:ads-zhu-2021-20260904-095500z]
+      /arxiv_revision: [source:arxiv-zhu-2021-20260904-095500z]
+      /access_urls/0/kind: [source:arxiv-zhu-2021-20260904-095500z]
+      /access_urls/0/url: [source:arxiv-zhu-2021-20260904-095500z]
+      /access_urls/1/kind: [source:ads-zhu-2021-20260904-095500z]
+      /access_urls/1/url: [source:ads-zhu-2021-20260904-095500z]
+bibliographic_sources:
+  - id: source:arxiv-zhu-2021-20260904-095500z
+    provider: arxiv
+    record_id: "2103.00789"
+    source_url: https://export.arxiv.org/api/query?id_list=2103.00789
+    retrieved_at: 2026-09-04T09:55:00Z
+  - id: source:ads-zhu-2021-20260904-095500z
+    provider: ads
+    record_id: 2021ApJ...911L..19Z
+    source_url: https://ui.adsabs.harvard.edu/abs/2021ApJ...911L..19Z/abstract
+    retrieved_at: 2026-09-04T09:55:00Z
+publication_relations: []
+bibliographic_discrepancies: []

@@ -1,0 +1,149 @@
+work_id: work:zhu-2021
+stages:
+  - { id: stage:zhu-jet-injection, annotation_id: annotation:zhu-energy-transfer, label: Relativistic GRB jet injection }
+  - { id: stage:zhu-choked-jet, annotation_id: annotation:zhu-dynamics, label: Jet stalling and choking in the dense disk }
+  - { id: stage:zhu-reverse-shock, annotation_id: annotation:zhu-energy-dissipation, label: Reverse-shock proton acceleration }
+  - { id: stage:zhu-pp-interaction, annotation_id: annotation:zhu-particle-interaction, label: Proton-proton interaction branch }
+  - { id: stage:zhu-pgamma-interaction, annotation_id: annotation:zhu-particle-interaction, label: Photomeson interaction branch }
+  - { id: stage:zhu-meson-decay, annotation_id: annotation:zhu-particle-interaction, label: Meson and muon decay convergence }
+  - { id: stage:zhu-neutrino-emission, annotation_id: annotation:zhu-emission-process, label: High-energy-neutrino production }
+  - { id: stage:zhu-neutrino-messenger, annotation_id: annotation:zhu-messenger, label: Escaping neutrino messenger }
+  - { id: stage:zhu-neutrino-observable, annotation_id: annotation:zhu-observable, label: Neutrino fluence and detector event count }
+  - { id: stage:zhu-cocoon-breakout, annotation_id: annotation:zhu-emission-process, label: Cocoon shock-breakout branch }
+  - { id: stage:zhu-photon-messenger, annotation_id: annotation:zhu-messenger, label: Photon messenger }
+  - { id: stage:zhu-gamma-band, annotation_id: annotation:zhu-photon-band, label: Soft gamma-ray photon band }
+  - { id: stage:zhu-photon-observable, annotation_id: annotation:zhu-observable, label: Shock-breakout photon transient }
+  - { id: stage:zhu-gw-messenger, annotation_id: annotation:zhu-messenger, label: Predicted short-GRB gravitational-wave counterpart }
+links:
+  - id: causal-link:zhu-injection-drives-choking
+    source_stage_id: stage:zhu-jet-injection
+    target_stage_id: stage:zhu-choked-jet
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: The injected GRB jet stalls far below the AGN-disk scale height and is therefore choked.
+    evidence_ids: [evidence:zhu-jet-choking]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T10:11:00Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
+    review_binding: { canonicalization_version: v1, semantic_digest: 59b74e4669aec9e7ecbe803203bdaba23be69e998aec607e36b3121c98fce75d }
+  - id: causal-link:zhu-choking-produces-reverse-shock
+    source_stage_id: stage:zhu-choked-jet
+    target_stage_id: stage:zhu-reverse-shock
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: The choked jet develops a shocked head whose reverse shock accelerates nonthermal protons.
+    evidence_ids: [evidence:zhu-reverse-shock]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T10:11:10Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
+    review_binding: { canonicalization_version: v1, semantic_digest: d7cdde3ce132cb683d8a1e060a9ceafb179520ff1ca9ff3691709a876d05c90f }
+  - id: causal-link:zhu-reverse-shock-enables-pp
+    source_stage_id: stage:zhu-reverse-shock
+    target_stage_id: stage:zhu-pp-interaction
+    relation: enables
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Reverse-shock acceleration supplies protons whose lower-energy cooling is dominated by proton-proton interactions.
+    evidence_ids: [evidence:zhu-reverse-shock, evidence:zhu-hadronic-processes]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T10:11:20Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
+    review_binding: { canonicalization_version: v1, semantic_digest: 9ce3648561a61390dd46dbdb52880268f2967511d839c2236be27f934d8aa61b }
+  - id: causal-link:zhu-reverse-shock-enables-pgamma
+    source_stage_id: stage:zhu-reverse-shock
+    target_stage_id: stage:zhu-pgamma-interaction
+    relation: enables
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: At higher proton energies the accelerated population undergoes photomeson interactions.
+    evidence_ids: [evidence:zhu-reverse-shock, evidence:zhu-hadronic-processes]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T10:11:30Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
+    review_binding: { canonicalization_version: v1, semantic_digest: b24bc1fc2c8c0201b74aae4cbf8a363f6bf06b513f6792e8f677c5482807b7bb }
+  - id: causal-link:zhu-pp-produces-mesons
+    source_stage_id: stage:zhu-pp-interaction
+    target_stage_id: stage:zhu-meson-decay
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Proton-proton interactions feed the charged-meson decay channel.
+    evidence_ids: [evidence:zhu-hadronic-processes, evidence:zhu-meson-decay]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T10:11:40Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
+    review_binding: { canonicalization_version: v1, semantic_digest: 52bf94e4ffc0a18070d6f2ad409b88d4a4813634d4a47a104d0b62496ba5baac }
+  - id: causal-link:zhu-pgamma-produces-mesons
+    source_stage_id: stage:zhu-pgamma-interaction
+    target_stage_id: stage:zhu-meson-decay
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Photomeson interactions feed the same charged-meson decay channel at higher proton energies.
+    evidence_ids: [evidence:zhu-hadronic-processes, evidence:zhu-meson-decay]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T10:11:50Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
+    review_binding: { canonicalization_version: v1, semantic_digest: 9193d24c805e4477b1f9f4d90b722bcc7c73007b7fba783d47cacfdfeca9352b }
+  - id: causal-link:zhu-mesons-produce-neutrinos
+    source_stage_id: stage:zhu-meson-decay
+    target_stage_id: stage:zhu-neutrino-emission
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Charged pions and kaons decay through muons and produce high-energy neutrinos.
+    evidence_ids: [evidence:zhu-meson-decay]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T10:12:00Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
+    review_binding: { canonicalization_version: v1, semantic_digest: 7867ad2ecd82ff978c8fcc62e451ca81bb885e44436c48ba1ce6cf5d05b3becc }
+  - id: causal-link:zhu-neutrino-emission-produces-messenger
+    source_stage_id: stage:zhu-neutrino-emission
+    target_stage_id: stage:zhu-neutrino-messenger
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: The hadronic decay channel produces an escaping high-energy-neutrino messenger.
+    evidence_ids: [evidence:zhu-meson-decay, evidence:zhu-neutrino-fluence]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T10:12:10Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
+    review_binding: { canonicalization_version: v1, semantic_digest: 473ff75d7ae9d93c96a21ed9daf9ba1fd0f847fab14552ff3003104e5a80df18 }
+  - id: causal-link:zhu-neutrino-messenger-enables-observable
+    source_stage_id: stage:zhu-neutrino-messenger
+    target_stage_id: stage:zhu-neutrino-observable
+    relation: enables
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: The modeled neutrino fluence is folded with detector effective area to obtain the expected detected count.
+    evidence_ids: [evidence:zhu-neutrino-fluence, evidence:zhu-detector-folding]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T10:12:20Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
+    review_binding: { canonicalization_version: v1, semantic_digest: dd2b9125c7192ef3c5055b46adad4b28ae10a2f0d8e7dc43b11fd9b484626a56 }
+  - id: causal-link:zhu-choking-produces-cocoon-breakout
+    source_stage_id: stage:zhu-choked-jet
+    target_stage_id: stage:zhu-cocoon-breakout
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Energy deposited by the choked jet inflates a cocoon whose breakout can produce a soft photon counterpart.
+    evidence_ids: [evidence:zhu-electromagnetic-counterpart]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T10:12:30Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
+    review_binding: { canonicalization_version: v1, semantic_digest: d1a566113e99938603b9b06a688f0f172d53d36bd4cade8a6503469d800b969f }
+  - id: causal-link:zhu-breakout-produces-photons
+    source_stage_id: stage:zhu-cocoon-breakout
+    target_stage_id: stage:zhu-photon-messenger
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Cocoon shock breakout produces an electromagnetic photon counterpart.
+    evidence_ids: [evidence:zhu-electromagnetic-counterpart]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T10:12:40Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
+    review_binding: { canonicalization_version: v1, semantic_digest: 0a3a3382e056a336f22bf4168f7f94df6de071530506291c18721fd8f2043359 }

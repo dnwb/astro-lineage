@@ -1,0 +1,33 @@
+work_id: work:zhu-2021
+reader_state: visible
+preferred_version:
+  version_id: version:zhu-2021-arxiv-v3
+  reason: The exact curated arXiv revision is the evidence-bearing representation used throughout this V0.1 slice.
+  curation_provenance:
+    actor_id: actor:agent-curator
+    recorded_at: 2026-09-04T10:00:00Z
+visibility_approvals:
+  - profile_id: v0.1-default
+    visibility_digest: 6dde5ac8057bc1eedff3927c43b906a4c6abb0dd0bb901abecaeefc5c6bbd013
+    actor_id: actor:human-curator
+    approved_at: 2026-09-04T10:30:00Z
+  - profile_id: v0.1-default
+    visibility_digest: efecc569898c5920d1f4eb4c76af524196ef9522aa4fae9e1cdbd9765c9895e3
+    actor_id: actor:human-curator
+    approved_at: 2026-09-04T10:35:00Z
+  - profile_id: v0.1-default
+    visibility_digest: ce901301574496b2a10b4f2c2fd069beff1b8984ca746d0f49f465b96d26cf69
+    actor_id: actor:human-curator
+    approved_at: 2026-09-04T10:45:20Z
+  - profile_id: v0.1-default
+    visibility_digest: d7cd21f058501b5edde555cb9a697dc8a729d29cff165933eba78c2c8bc3a810
+    actor_id: actor:human-curator
+    approved_at: 2026-09-04T10:46:20Z
+  - profile_id: v0.1-default
+    visibility_digest: cb2f8e8083dee9d9917106354e38d1da9a42ff3c4e61df14ba9c907ee6c3794f
+    actor_id: actor:human-curator
+    approved_at: 2026-09-04T12:31:00Z
+  - profile_id: v0.1-default
+    visibility_digest: 2267c53092a06a882a144fc4081fcbc8521a8b39e4332ac87d89ccdde82e96f1
+    actor_id: actor:human-curator
+    approved_at: 2026-09-04T12:32:02Z

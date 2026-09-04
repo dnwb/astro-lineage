@@ -28,21 +28,36 @@ async function copyContent() {
   const versionsPath = join(workRoot, "versions.yaml");
   const workPath = join(workRoot, "work.yaml");
   const brombergWorkPath = join(contentRoot, "works", brombergWorkId, "work.yaml");
+  const zhuWorkPath = join(contentRoot, "works", "work:zhu-2021", "work.yaml");
   const linePath = join(contentRoot, "research-lines", "research-line:central-engines", "line.yaml");
+  const denseLinePath = join(
+    contentRoot,
+    "research-lines",
+    "research-line:dense-environment-multimessenger",
+    "line.yaml",
+  );
   const versions = parse(await readFile(versionsPath, "utf8"));
   const work = parse(await readFile(workPath, "utf8"));
   const brombergWork = parse(await readFile(brombergWorkPath, "utf8"));
+  const zhuWork = parse(await readFile(zhuWorkPath, "utf8"));
   const line = parse(await readFile(linePath, "utf8"));
+  const denseLine = parse(await readFile(denseLinePath, "utf8"));
   work.reader_state = "draft";
   work.visibility_approvals = [];
   brombergWork.reader_state = "draft";
   brombergWork.visibility_approvals = [];
+  zhuWork.reader_state = "draft";
+  zhuWork.visibility_approvals = [];
   line.reader_state = "draft";
   line.visibility_approvals = [];
+  denseLine.reader_state = "draft";
+  denseLine.visibility_approvals = [];
   await Promise.all([
     writeFile(workPath, stringify(work), "utf8"),
     writeFile(brombergWorkPath, stringify(brombergWork), "utf8"),
+    writeFile(zhuWorkPath, stringify(zhuWork), "utf8"),
     writeFile(linePath, stringify(line), "utf8"),
+    writeFile(denseLinePath, stringify(denseLine), "utf8"),
   ]);
   return { temporaryRoot, contentRoot, workRoot, versions, versionsPath };
 }

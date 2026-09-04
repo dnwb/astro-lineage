@@ -32,7 +32,7 @@ links:
     evidence_ids: [evidence:bromberg-system]
     curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T09:31:00Z" }
     review_state: reviewed
-    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T09:32:00Z" }
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
     review_binding: { canonicalization_version: v1, semantic_digest: 6d6c389fc15497c5377305e541de0f1eb260861919321c3a85db5e96c4bc6dcb }
   - id: causal-link:bromberg-jet-produces-head
     source_stage_id: stage:bromberg-relativistic-jet
@@ -44,7 +44,7 @@ links:
     evidence_ids: [evidence:bromberg-head-cocoon]
     curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T09:31:10Z" }
     review_state: reviewed
-    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T09:32:10Z" }
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
     review_binding: { canonicalization_version: v1, semantic_digest: b12d32b05b75a6eb0103fe84a0edc27290bca12716e05bbc56e371236631336e }
   - id: causal-link:bromberg-head-produces-cocoon
     source_stage_id: stage:bromberg-shocked-head
@@ -56,7 +56,7 @@ links:
     evidence_ids: [evidence:bromberg-head-cocoon]
     curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T09:31:20Z" }
     review_state: reviewed
-    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T09:32:20Z" }
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
     review_binding: { canonicalization_version: v1, semantic_digest: 7328164f532810c5093687e4965863fc67a187d70dbb1e882b03259b5a7a073d }
   - id: causal-link:bromberg-cocoon-drives-collimation
     source_stage_id: stage:bromberg-cocoon-pressure
@@ -68,7 +68,7 @@ links:
     evidence_ids: [evidence:bromberg-collimation-feedback, evidence:bromberg-regimes]
     curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T09:31:30Z" }
     review_state: reviewed
-    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T09:32:30Z" }
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
     review_binding: { canonicalization_version: v1, semantic_digest: f652c6d395c9d27c6b9ab5fc4b92eaaa0682a2ed03ce52f11e674e0cc698564b }
   - id: causal-link:bromberg-cocoon-modulates-uncollimated
     source_stage_id: stage:bromberg-cocoon-pressure
@@ -80,7 +80,7 @@ links:
     evidence_ids: [evidence:bromberg-regimes]
     curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T09:31:40Z" }
     review_state: reviewed
-    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T09:32:40Z" }
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
     review_binding: { canonicalization_version: v1, semantic_digest: 3235fb5543e72d253ad4bd506363d2999ba0a9771a487146f0a84c96135e4312 }
   - id: causal-link:bromberg-collimated-modulates-head
     source_stage_id: stage:bromberg-collimated-regime
@@ -92,7 +92,7 @@ links:
     evidence_ids: [evidence:bromberg-collimation-feedback]
     curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T09:31:50Z" }
     review_state: reviewed
-    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T09:32:50Z" }
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
     review_binding: { canonicalization_version: v1, semantic_digest: 88bcf3dc3206b9fe0ef64d6015ae48c0cc46fb96e607ec25ff479a47bb7cef45 }
   - id: causal-link:bromberg-uncollimated-modulates-head
     source_stage_id: stage:bromberg-uncollimated-regime
@@ -104,5 +104,5 @@ links:
     evidence_ids: [evidence:bromberg-regimes]
     curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T09:32:00Z" }
     review_state: reviewed
-    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T09:33:00Z" }
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
     review_binding: { canonicalization_version: v1, semantic_digest: 328ce481b5bb77131fd38de88477acbb0b82cfc6a0f8ec5a343b1e06f6252ac2 }

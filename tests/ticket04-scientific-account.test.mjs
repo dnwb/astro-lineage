@@ -24,20 +24,35 @@ async function copyContent() {
   await cp(productionContent, contentRoot, { recursive: true });
   const workPath = join(contentRoot, "works", arnettId, "work.yaml");
   const brombergWorkPath = join(contentRoot, "works", brombergId, "work.yaml");
+  const zhuWorkPath = join(contentRoot, "works", "work:zhu-2021", "work.yaml");
   const linePath = join(contentRoot, "research-lines", "research-line:central-engines", "line.yaml");
+  const denseLinePath = join(
+    contentRoot,
+    "research-lines",
+    "research-line:dense-environment-multimessenger",
+    "line.yaml",
+  );
   const work = parse(await readFile(workPath, "utf8"));
   const brombergWork = parse(await readFile(brombergWorkPath, "utf8"));
+  const zhuWork = parse(await readFile(zhuWorkPath, "utf8"));
   const line = parse(await readFile(linePath, "utf8"));
+  const denseLine = parse(await readFile(denseLinePath, "utf8"));
   work.reader_state = "draft";
   work.visibility_approvals = [];
   brombergWork.reader_state = "draft";
   brombergWork.visibility_approvals = [];
+  zhuWork.reader_state = "draft";
+  zhuWork.visibility_approvals = [];
   line.reader_state = "draft";
   line.visibility_approvals = [];
+  denseLine.reader_state = "draft";
+  denseLine.visibility_approvals = [];
   await Promise.all([
     writeFile(workPath, stringify(work), "utf8"),
     writeFile(brombergWorkPath, stringify(brombergWork), "utf8"),
+    writeFile(zhuWorkPath, stringify(zhuWork), "utf8"),
     writeFile(linePath, stringify(line), "utf8"),
+    writeFile(denseLinePath, stringify(denseLine), "utf8"),
   ]);
   return { contentRoot };
 }
@@ -607,7 +622,7 @@ test("validation reports project scientific-account evidence and provenance into
   assert.equal(statement.curation_provenance.actor_id, "actor:agent-curator");
   assert.equal(statement.curation_provenance.recorded_at, "2026-09-04T04:31:00Z");
   assert.equal(statement.review_provenance.actor_id, "actor:human-curator");
-  assert.equal(statement.review_provenance.recorded_at, "2026-09-04T04:36:00Z");
+  assert.equal(statement.review_provenance.recorded_at, "2026-09-04T12:30:31Z");
 
   assert.equal(account.stages.length, 6);
   assert.deepEqual(account.stages[0], {
@@ -630,7 +645,7 @@ test("validation reports project scientific-account evidence and provenance into
   assert.equal(link.curation_provenance.actor_id, "actor:agent-curator");
   assert.equal(link.curation_provenance.recorded_at, "2026-09-04T05:10:20Z");
   assert.equal(link.review_provenance.actor_id, "actor:human-curator");
-  assert.equal(link.review_provenance.recorded_at, "2026-09-04T05:20:20Z");
+  assert.equal(link.review_provenance.recorded_at, "2026-09-04T12:30:31Z");
 
   const markdown = renderValidationMarkdown(result);
   assert.match(markdown, /## Scientific Account Provenance/);
@@ -645,7 +660,7 @@ test("validation reports project scientific-account evidence and provenance into
   assert.match(markdown, /stage:arnett-radioactive-decay \| annotation:arnett-particle-interaction \| Radioactive decay chain/);
   assert.match(markdown, /causal-link:arnett-heating-to-optical-light/);
   assert.match(markdown, /\| drives \| inferred \| synthetic \|/);
-  assert.match(markdown, /2026-09-04T05:20:20Z/);
+  assert.match(markdown, /2026-09-04T12:30:31Z/);
   assert.match(markdown, /actor:human-curator/);
 
   const markdownLines = markdown.split("\n");

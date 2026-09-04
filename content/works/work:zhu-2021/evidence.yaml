@@ -1,0 +1,66 @@
+work_id: work:zhu-2021
+evidence:
+  - id: evidence:zhu-jet-choking
+    version_id: version:zhu-2021-arxiv-v3
+    source_url: https://arxiv.org/abs/2103.00789v3
+    locator: { type: section, section: Jet Dynamics in AGN Accretion Disks }
+    excerpt: Because r_stall is much smaller than H, both LGRB and SGRB jets can be easily choked in an AGN accretion disk.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T10:02:00Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
+  - id: evidence:zhu-reverse-shock
+    version_id: version:zhu-2021-arxiv-v3
+    source_url: https://arxiv.org/abs/2103.00789v3
+    locator: { type: section, section: Jet Dynamics in AGN Accretion Disks }
+    excerpt: The interacted protons in our calculations are accelerated from the reverse shock.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T10:02:10Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
+  - id: evidence:zhu-hadronic-processes
+    version_id: version:zhu-2021-arxiv-v3
+    source_url: https://arxiv.org/abs/2103.00789v3
+    locator: { type: section, section: Neutrino Production }
+    excerpt: Low-energy neutrinos are dominated by pp interactions, and the neutrino spectrum above approximately 1 TeV mainly attributes to p-gamma interactions.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T10:02:20Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
+  - id: evidence:zhu-meson-decay
+    version_id: version:zhu-2021-arxiv-v3
+    source_url: https://arxiv.org/abs/2103.00789v3
+    locator: { type: section, section: Neutrino Production }
+    excerpt: Pions and kaons created through pp and p-gamma processes decay into muons and muon neutrinos; the intermediate muons then decay to muon neutrinos, electron neutrinos and electrons.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T10:02:30Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
+  - id: evidence:zhu-neutrino-fluence
+    version_id: version:zhu-2021-arxiv-v3
+    source_url: https://arxiv.org/abs/2103.00789v3
+    locator: { type: figure, section: Neutrino Bursts Detection, figure: "3" }
+    excerpt: Figure 3 shows the all-flavor fluence of a single burst at a luminosity distance of 100 Mpc.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T10:02:40Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
+  - id: evidence:zhu-detector-folding
+    version_id: version:zhu-2021-arxiv-v3
+    source_url: https://arxiv.org/abs/2103.00789v3
+    locator: { type: equation, section: Neutrino Bursts Detection, equation: "6" }
+    excerpt: The expected number of muon neutrinos from an on-axis GRB event detectable by IceCube and IceCube-Gen2 can be calculated by integrating the neutrino flux with the effective area of the detector.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T10:02:50Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
+  - id: evidence:zhu-electromagnetic-counterpart
+    version_id: version:zhu-2021-arxiv-v3
+    source_url: https://arxiv.org/abs/2103.00789v3
+    locator: { type: section, section: Discussion }
+    excerpt: Most gamma-ray photons would be trapped and degraded in energy before escaping the disk; nonetheless, cocoon shock breakout can potentially produce low-luminosity gamma-ray emission.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T10:03:00Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
+  - id: evidence:zhu-gw-neutrino
+    version_id: version:zhu-2021-arxiv-v3
+    source_url: https://arxiv.org/abs/2103.00789v3
+    locator: { type: section, section: Discussion }
+    excerpt: Choked SGRBs in AGN disks are emitters of electromagnetic, neutrino and GW signals.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T10:03:10Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }

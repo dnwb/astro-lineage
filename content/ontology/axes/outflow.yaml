@@ -13,7 +13,7 @@ terms:
     boundary_notes: This is the jet outflow; the cocoon is stored as a separate outflow component.
     curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T09:20:00Z" }
     review_state: reviewed
-    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T09:21:00Z" }
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
   - id: term:jet-cocoon
     label: Jet cocoon
     aliases: [pressured cocoon]
@@ -24,7 +24,7 @@ terms:
     boundary_notes: Treat the cocoon as a Work-local outflow component, not as the external ambient medium.
     curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T09:20:00Z" }
     review_state: reviewed
-    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T09:21:00Z" }
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
   - id: term:expanding-ejecta
     label: Expanding ejecta
     aliases: [supernova ejecta]
@@ -41,4 +41,4 @@ terms:
     review_state: reviewed
     review_provenance:
       actor_id: actor:human-curator
-      recorded_at: "2026-09-04T04:05:00Z"
+      recorded_at: "2026-09-04T12:30:31Z"

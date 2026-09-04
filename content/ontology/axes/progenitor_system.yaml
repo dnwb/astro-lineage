@@ -13,7 +13,7 @@ terms:
     boundary_notes: This term identifies the stellar progenitor application, not every environment to which the jet model applies.
     curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T09:20:00Z" }
     review_state: reviewed
-    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T09:21:00Z" }
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
   - id: term:near-chandrasekhar-carbon-ignition
     label: Near-Chandrasekhar carbon ignition
     aliases: [degenerate carbon ignition]
@@ -30,7 +30,7 @@ terms:
     review_state: reviewed
     review_provenance:
       actor_id: actor:human-curator
-      recorded_at: "2026-09-04T04:05:00Z"
+      recorded_at: "2026-09-04T12:30:31Z"
   - id: term:evolved-helium-star-collapse
     label: Evolved helium-star collapse
     aliases: [helium-star collapse]
@@ -47,4 +47,15 @@ terms:
     review_state: reviewed
     review_provenance:
       actor_id: actor:human-curator
-      recorded_at: "2026-09-04T04:05:20Z"
+      recorded_at: "2026-09-04T12:30:31Z"
+  - id: term:gamma-ray-burst-progenitor-system
+    label: Gamma-ray-burst progenitor system
+    aliases: [GRB progenitor channel]
+    status: active
+    definition: A stellar-collapse or compact-merger system capable of launching a relativistic gamma-ray-burst jet.
+    examples: [Long- and short-GRB source channels considered inside an AGN accretion disk.]
+    counterexamples: [The AGN accretion disk surrounding the source, which belongs to the environment axis.]
+    boundary_notes: This umbrella term does not collapse the distinct long- and short-GRB progenitor channels into one physical object.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T10:15:00Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }

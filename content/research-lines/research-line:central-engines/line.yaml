@@ -14,12 +14,12 @@ memberships:
       - foundation
     editorial_anchor: true
     curation_provenance:
-      actor_id: actor:human-curator
+      actor_id: actor:agent-curator
       recorded_at: 2026-09-04T07:10:00Z
     review_state: reviewed
     review_provenance:
       actor_id: actor:human-curator
-      recorded_at: 2026-09-04T07:20:00Z
+      recorded_at: "2026-09-04T12:30:31Z"
     review_binding:
       canonicalization_version: v1
       semantic_digest: 3060c844eac674913c35a2b560e504a0abc19c19d25f93a1e74b02f78a0f9679
@@ -35,10 +35,27 @@ memberships:
     review_state: reviewed
     review_provenance:
       actor_id: actor:human-curator
-      recorded_at: 2026-09-04T09:19:00Z
+      recorded_at: "2026-09-04T12:30:31Z"
     review_binding:
       canonicalization_version: v1
       semantic_digest: a6dc0be6cdb34660396fea0683a9aad779f3cb649bc6a131351e63582afa8fcb
+  - id: membership:central-engines-zhu-2021
+    work_id: work:zhu-2021
+    reading_roles:
+      - frontier
+      - group_lineage
+    editorial_anchor: false
+    reason: This Work extends central-engine reading into an embedded dense environment where jet energy is redirected into multiple messenger channels.
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-04T10:20:00Z
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: "2026-09-04T12:30:31Z"
+    review_binding:
+      canonicalization_version: v1
+      semantic_digest: 069b13acc82bfdc22e361a6a90b10bbda4334a545fe515407a7e28e8d785b451
 visibility_approvals:
   - profile_id: v0.1-default
     visibility_digest: c27a83af7592b4097c96e027db3931298c33154c89541cb549730c0788fd9705
@@ -48,3 +65,11 @@ visibility_approvals:
     visibility_digest: 596d3cc624a7b5b2f9deeeca0f384af93be3f802c5f917837575d08735ad29a0
     actor_id: actor:human-curator
     approved_at: 2026-09-04T09:36:00Z
+  - profile_id: v0.1-default
+    visibility_digest: 125751f91bb29600da8d63d9cbcf02f2f7fc5df06e500dcd7d332bf1498b06b6
+    actor_id: actor:human-curator
+    approved_at: 2026-09-04T10:31:00Z
+  - profile_id: v0.1-default
+    visibility_digest: 8aabc6481426eac10d84eeb9fde9744688ca981b9b891fb1f8905f1b6b56a856
+    actor_id: actor:human-curator
+    approved_at: 2026-09-04T12:31:01Z

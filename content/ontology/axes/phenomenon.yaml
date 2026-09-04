@@ -13,7 +13,7 @@ terms:
     boundary_notes: This phenomenon groups the modeled system without asserting a specific progenitor or messenger.
     curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T09:20:00Z" }
     review_state: reviewed
-    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T09:21:00Z" }
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
   - id: term:type-i-supernova
     label: Type I supernova
     aliases: [Type I SN]
@@ -30,4 +30,15 @@ terms:
     review_state: reviewed
     review_provenance:
       actor_id: actor:human-curator
-      recorded_at: "2026-09-04T04:05:00Z"
+      recorded_at: "2026-09-04T12:30:31Z"
+  - id: term:choked-grb-in-agn-disk
+    label: Choked GRB in an AGN disk
+    aliases: [AGN-disk choked gamma-ray burst]
+    status: active
+    definition: A gamma-ray-burst source whose relativistic jet is stopped within the dense gas of an active-galactic-nucleus accretion disk.
+    examples: [A long or short GRB embedded in an AGN disk with a stalling radius below the disk scale height.]
+    counterexamples: [A freely escaping GRB jet outside a dense confining disk.]
+    boundary_notes: The phenomenon groups the event context without identifying a single progenitor channel or messenger.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T10:15:10Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }

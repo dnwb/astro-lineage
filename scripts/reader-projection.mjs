@@ -310,7 +310,14 @@ function projectEvidence(work, evidenceIds) {
         evidenceIds.has(evidence.id) &&
         reviewed(evidence),
       )
-      .map(projectValue),
+      .map((evidence) => ({
+        ...projectValue(evidence),
+        review_context: {
+          status: evidence.review_state,
+          reviewer_actor_id: evidence.review_provenance?.actor_id ?? null,
+          reviewed_at: evidence.review_provenance?.recorded_at ?? null,
+        },
+      })),
   );
 }
 

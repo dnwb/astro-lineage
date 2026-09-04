@@ -5,18 +5,18 @@
 ## Current position
 
 - **Stage:** Phase 2 — domain records and five-Work vertical slice
-- **Status:** Tickets 01–06 complete
+- **Status:** Tickets 01–07 complete
 - **Implementation:** Visible Arnett and Bromberg now exercise governed Actors,
   capability-at-action-time authorization, 16 assessed Physics axes,
   controlled vocabulary, reusable Version-bound Evidence, reviewed Method
   Annotations, Work-local Scientific Statements and causal DAGs, Human-gated
   visibility, reviewed Research Line memberships, distinct arXiv/journal
-  Versions, and a real reviewed `published_as` relation with Bibliographic
-  Provenance
+  Versions, a real reviewed `published_as` relation with Bibliographic
+  Provenance, and Zhu's visible multi-messenger/cross-context slice
 - **Decision frontier:** closed through Q151; no open domain-model decision is
   blocking migration
-- **Next execution action:** Ticket 07,
-  `.scratch/v0.1-vertical-slice/issues/07-add-zhu-multi-messenger-and-cross-context-slice.md`
+- **Next execution action:** Ticket 08,
+  `.scratch/v0.1-vertical-slice/issues/08-add-transfit-method-and-inference-target-slice.md`
 
 The repository has completed specification, governance, and authority
 migration. Ticket 01 established the independent Git boundary and bootstrap
@@ -35,7 +35,11 @@ later work. Ticket 06 adds the visible Bromberg Work with separately identified
 arXiv v1 and journal Versions, a real source-asserted `published_as`
 correspondence, strict offline Publication Graph validation,
 branching/converging causal structure, and reader-visible Bibliographic
-Provenance.
+Provenance. Ticket 07 adds Zhu et al. 2021 with exact arXiv-v3 Evidence,
+three distinct messenger identities, separate photon-band/observable/inference
+assignments, a branching and converging Physical Account, one Editorial Anchor,
+and one reviewed secondary Research Line Membership consumed through the
+generated reverse index.
 
 ## Authority and migration state
 
@@ -116,7 +120,7 @@ CI remain fully offline; external deployment and source refresh are deferred.
 Continue the approved local ticket frontier with:
 
 ```text
-.scratch/v0.1-vertical-slice/issues/07-add-zhu-multi-messenger-and-cross-context-slice.md
+.scratch/v0.1-vertical-slice/issues/08-add-transfit-method-and-inference-target-slice.md
 ```
 
 The ticket may implement accepted requirements but may not extend the closed
@@ -125,14 +129,14 @@ under the migration rule above.
 
 ## Blockers and constraints
 
-There is no remaining authority-migration blocker. The remaining four fixture
-Works, Learning Path, README, remote CI, and final reader closure remain
+There is no remaining authority-migration blocker. The remaining two fixture
+Works, Scientific Edges, Learning Path, README, remote CI, and final reader closure remain
 expected Phase 2–5 work. The local repository intentionally has no remote in
 Ticket 01. A genuinely new semantic choice must be escalated as a new decision
 rather than hidden in `.planning` prose.
 
 ## Session continuity
 
-Resume with Ticket 07 from the approved local frontier. Read the four `.planning`
+Resume with Ticket 08 from the approved local frontier. Read the four `.planning`
 documents first, preserve requirement IDs, and update traceability only when
 ticket evidence is verified.

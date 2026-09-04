@@ -1,0 +1,38 @@
+work_id: work:zhu-2021
+statements:
+  - id: statement:zhu-disk-chokes-grb-jets
+    kind: claim
+    basis: explicit
+    lifecycle: maintained
+    canonical_text: Dense AGN accretion-disk material can choke long- and short-GRB jets before they cross the disk scale height.
+    attestations:
+      - version_id: version:zhu-2021-arxiv-v3
+        evidence_ids: [evidence:zhu-jet-choking]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T10:09:00Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
+    review_binding: { canonicalization_version: v1, semantic_digest: e1469f75d1e5d38bad9ab36627d1b72171fb507c8d03d8d021df5df32df06412 }
+  - id: statement:zhu-hadronic-neutrino-fluence
+    kind: result
+    basis: explicit
+    lifecycle: maintained
+    canonical_text: Reverse-shock-accelerated protons undergo proton-proton and photomeson interactions whose meson-decay products yield an all-flavor high-energy-neutrino fluence.
+    attestations:
+      - version_id: version:zhu-2021-arxiv-v3
+        evidence_ids: [evidence:zhu-reverse-shock, evidence:zhu-hadronic-processes, evidence:zhu-meson-decay, evidence:zhu-neutrino-fluence]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T10:09:10Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
+    review_binding: { canonicalization_version: v1, semantic_digest: 09a69f7ec425d3cdded2e95f94daa51ee17a7981719df6eb93c30df83bb36fe6 }
+  - id: statement:zhu-multimessenger-counterparts
+    kind: prediction
+    basis: explicit
+    lifecycle: maintained
+    canonical_text: Choked GRBs in AGN disks may be accompanied by a neutrino burst, a cocoon shock-breakout photon signal, and for the short-GRB channel a gravitational-wave counterpart.
+    attestations:
+      - version_id: version:zhu-2021-arxiv-v3
+        evidence_ids: [evidence:zhu-electromagnetic-counterpart, evidence:zhu-gw-neutrino]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T10:09:20Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
+    review_binding: { canonicalization_version: v1, semantic_digest: 41baef5d7ecd897ef78be5d1f2b249f7b146f6e46bcc2e947f96a6cbd5289455 }

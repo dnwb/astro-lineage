@@ -3260,17 +3260,20 @@ function validateFinalSnapshotVisibility(snapshot, actorsById, diagnostics, edit
   const visibilityByWorkId = new Map();
   const visibilityByLineId = new Map();
   const visibleWorks = new Set(
+    // A quarantined child membership still names a visible Work endpoint.
+    // Keep endpoint candidates intact so an unrelated visible Research Line
+    // does not acquire a derived membership failure.
     snapshot.works
-      .filter((work) =>
-        work.files["work.yaml"]?.reader_state === "visible" &&
-        !invalidWorkIds.has(work.id))
+      .filter((work) => work.files["work.yaml"]?.reader_state === "visible")
       .map((work) => work.id),
   );
   const visibleLines = new Set(
+    // Likewise, retain a visible line endpoint while its malformed child is
+    // quarantined; otherwise valid anchor memberships would cascade into
+    // VISIBLE_WORK_ANCHOR_LINE_NOT_VISIBLE diagnostics.
     snapshot.researchLines
       .filter((line) =>
-        line.line?.reader_state === "visible" &&
-        !invalidLineIds.has(line.id))
+        line.line?.reader_state === "visible")
       .map((line) => line.id),
   );
   const activeTechniqueIds = new Set(

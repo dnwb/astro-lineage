@@ -1,0 +1,37 @@
+line_id: research-line:dense-environment-multimessenger
+reader_state: visible
+title: Dense Environments and Multi-messenger Transients
+scientific_question: How do dense environments reshape transient outflows and redistribute their energy across neutrino, photon, and gravitational-wave channels?
+physical_structure:
+  - environment
+  - dynamics
+  - particle_interaction
+  - messenger
+  - observable
+memberships:
+  - id: membership:dense-environment-multimessenger-zhu-2021
+    work_id: work:zhu-2021
+    reading_roles:
+      - foundation
+      - frontier
+    editorial_anchor: true
+    reason: This Work supplies the V0.1 foundation for tracing an embedded choked jet into distinct neutrino, photon, and gravitational-wave branches.
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-04T10:20:10Z
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: "2026-09-04T12:30:31Z"
+    review_binding:
+      canonicalization_version: v1
+      semantic_digest: e24a4939f47c78a1ffad6d165e0eb33f5dd005956dbeadb5712ef0d520e07d4f
+visibility_approvals:
+  - profile_id: v0.1-default
+    visibility_digest: a2b97a738f5739e992fea964ab973b026b156ba9eca78f6c505a2e9cf4e54e10
+    actor_id: actor:human-curator
+    approved_at: 2026-09-04T10:31:10Z
+  - profile_id: v0.1-default
+    visibility_digest: d0275907abe27e026a5bbe4b693fec861052e61e9f702e0a827b6a47db85eb50
+    actor_id: actor:human-curator
+    approved_at: 2026-09-04T12:31:02Z

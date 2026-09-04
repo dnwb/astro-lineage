@@ -68,7 +68,7 @@ test("Ticket 05 publishes Arnett and one Research Line atomically with independe
   assert.deepEqual(membership.reading_roles, ["foundation"]);
   assert.equal(membership.editorial_anchor, true);
   assert.equal(membership.review_state, "reviewed");
-  assert.equal(membership.curation_provenance.actor_id, "actor:human-curator");
+  assert.equal(membership.curation_provenance.actor_id, "actor:agent-curator");
   assert.equal(membership.review_provenance.actor_id, "actor:human-curator");
   assert.match(membership.review_binding.semantic_digest, /^[0-9a-f]{64}$/u);
 

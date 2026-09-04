@@ -19,4 +19,26 @@ terms:
     review_state: reviewed
     review_provenance:
       actor_id: actor:human-curator
-      recorded_at: "2026-09-04T04:05:00Z"
+      recorded_at: "2026-09-04T12:30:31Z"
+  - id: term:neutrinos
+    label: Neutrinos
+    aliases: [high-energy neutrinos]
+    status: active
+    definition: Weakly interacting particles that carry source information from a production region to a distant observer.
+    examples: [High-energy neutrinos escaping a choked GRB in a dense AGN disk.]
+    counterexamples: [Neutrino fluence, which is an observable form.]
+    boundary_notes: Messenger identifies the carrier; energy distribution and event counts belong to observable.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T10:15:11Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
+  - id: term:gravitational-waves
+    label: Gravitational waves
+    aliases: [GW]
+    status: active
+    definition: Propagating spacetime disturbances carrying information from a compact dynamical source.
+    examples: [A predicted compact-merger counterpart to a short GRB in an AGN disk.]
+    counterexamples: [Gamma rays, which are a photon band carried by photons.]
+    boundary_notes: Store the messenger identity independently of whether a particular Work models its spectrum or detection.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T10:15:12Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }

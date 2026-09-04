@@ -1,3 +1,133 @@
 work_id: work:arnett-1982
-stages: []
-links: []
+stages:
+  - id: stage:arnett-radioactive-decay
+    annotation_id: annotation:arnett-particle-interaction
+    label: Radioactive decay chain
+  - id: stage:arnett-decay-heating
+    annotation_id: annotation:arnett-energy-dissipation
+    label: Decay-energy deposition and heating
+  - id: stage:arnett-radiative-diffusion
+    annotation_id: annotation:arnett-transport-process
+    label: Radiative diffusion and escape
+  - id: stage:arnett-thermal-transparency
+    annotation_id: annotation:arnett-transport-process
+    label: Thermal-photon transparency
+  - id: stage:arnett-modeled-optical-light
+    annotation_id: annotation:arnett-observable
+    label: Modeled optical light curve
+  - id: stage:arnett-ubv-magnitudes
+    annotation_id: annotation:arnett-photon-band
+    label: U B V magnitudes
+links:
+  - id: causal-link:arnett-radioactive-optical-light
+    source_stage_id: stage:arnett-thermal-transparency
+    target_stage_id: stage:arnett-modeled-optical-light
+    relation: modulates
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Thermal-photon transparency changes the escape of radiation represented by the modeled optical light curve.
+    evidence_ids: [evidence:arnett-photon-transparency]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-09-04T05:10:00Z"
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: "2026-09-04T05:20:00Z"
+    review_binding:
+      canonicalization_version: v1
+      semantic_digest: 77b6a818f1f0e546ef6616f40a1fcf70fc07cb77efb93a26a7b5348a8472caff
+  - id: causal-link:arnett-decay-produces-heating
+    source_stage_id: stage:arnett-radioactive-decay
+    target_stage_id: stage:arnett-decay-heating
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: The cited decay chain supplies the decay energy available to heat the ejecta matter.
+    evidence_ids: [evidence:arnett-decay-chain, evidence:arnett-decay-heating]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-09-04T05:10:10Z"
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: "2026-09-04T05:20:10Z"
+    review_binding:
+      canonicalization_version: v1
+      semantic_digest: ee34708ee33ed7fff63c5d2763460eaaac6a2938d401874a2cdc387fcc667a56
+  - id: causal-link:arnett-heating-to-optical-light
+    source_stage_id: stage:arnett-decay-heating
+    target_stage_id: stage:arnett-modeled-optical-light
+    relation: drives
+    origin: inferred
+    interpretive_risk: synthetic
+    reason: Combining the documented radioactive heating, diffusion balance at maximum light, and optical-band output supports a Work-local account in which radioactive heating drives the modeled optical light curve through transport.
+    evidence_ids:
+      - evidence:arnett-decay-heating
+      - evidence:arnett-radioactive-diffusion
+      - evidence:arnett-maximum-light
+      - evidence:arnett-ubv
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-09-04T05:10:20Z"
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: "2026-09-04T05:20:20Z"
+    review_binding:
+      canonicalization_version: v1
+      semantic_digest: 2839d9151c3e665dda640b48a1b360c64bf423081d018152bfa07b654d850122
+  - id: causal-link:arnett-heating-enables-diffusion
+    source_stage_id: stage:arnett-decay-heating
+    target_stage_id: stage:arnett-radiative-diffusion
+    relation: enables
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Deposited decay energy enters the radiative-diffusion account used to model the light curve.
+    evidence_ids: [evidence:arnett-radioactive-diffusion]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-09-04T05:10:30Z"
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: "2026-09-04T05:20:30Z"
+    review_binding:
+      canonicalization_version: v1
+      semantic_digest: 82fdf67eab5fc21fe5e8d16dbec09a40429c44f099ec05f0468b43a1c8c739ff
+  - id: causal-link:arnett-diffusion-produces-optical-light
+    source_stage_id: stage:arnett-radiative-diffusion
+    target_stage_id: stage:arnett-modeled-optical-light
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: The diffusion loss and radioactive input define the modeled luminosity at maximum light.
+    evidence_ids: [evidence:arnett-radioactive-diffusion, evidence:arnett-maximum-light]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-09-04T05:10:40Z"
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: "2026-09-04T05:20:40Z"
+    review_binding:
+      canonicalization_version: v1
+      semantic_digest: a32a78cefeca8ad9a3f23c7ac4cf5fcfc3284768d489d6bfcd18b6167ad77b0d
+  - id: causal-link:arnett-optical-light-to-ubv
+    source_stage_id: stage:arnett-modeled-optical-light
+    target_stage_id: stage:arnett-ubv-magnitudes
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: The modeled blackbody light output is represented in the U, B, and V magnitude bands.
+    evidence_ids: [evidence:arnett-ubv]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-09-04T05:10:50Z"
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: "2026-09-04T05:20:50Z"
+    review_binding:
+      canonicalization_version: v1
+      semantic_digest: 2753da1d497bdac8f21456a3dfa514ee8451b832f7c7788de8ce49a57b49b8c6

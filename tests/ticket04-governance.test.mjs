@@ -46,10 +46,6 @@ test("Ticket 04A production slice has governed actors, 16 assessments, evidence,
     [...new Set(agent.capability_events.map(({ capability }) => capability))],
     ["draft_records"],
   );
-  assert.equal(work.files["statements.yaml"].statements.length, 0);
-  assert.equal(work.files["physical-account.yaml"].stages.length, 0);
-  assert.equal(work.files["physical-account.yaml"].links.length, 0);
-
   const annotations = work.files["annotations.yaml"].annotations;
   assert.equal(annotations.length, AXIS_IDS.length);
   assert.deepEqual(

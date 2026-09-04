@@ -286,6 +286,10 @@ test("validation inventory counts the draft Arnett Work without making it visibl
       work_id: "work:arnett-1982",
       reader_state: "draft",
       validation_status: "valid",
+      scientific_statements: 4,
+      causal_stages: 6,
+      causal_links: 6,
+      scientific_account_validation_status: "valid",
     },
   ]);
 });

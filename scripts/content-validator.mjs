@@ -46,6 +46,15 @@ const ASSESSMENT_STATES = Object.freeze([
 const TERM_STATUSES = Object.freeze(["proposed", "active", "deprecated"]);
 const REVIEW_STATES = Object.freeze(["unreviewed", "reviewed"]);
 const ASSERTION_BASES = Object.freeze(["explicit", "inferred"]);
+const STATEMENT_KINDS = Object.freeze(["assumption", "claim", "prediction", "result"]);
+const STATEMENT_LIFECYCLES = Object.freeze(["maintained", "superseded", "withdrawn"]);
+const CAUSAL_LINK_RELATIONS = Object.freeze([
+  "drives",
+  "enables",
+  "transforms_into",
+  "produces",
+  "modulates",
+]);
 const FUNCTIONAL_ROLES = Object.freeze([
   "energy_dissipation",
   "particle_interaction",
@@ -2049,6 +2058,648 @@ function validateEvidenceReferences(
   return valid;
 }
 
+function normalizeStatementText(value) {
+  return typeof value === "string"
+    ? value.trim().replace(/\s+/gu, " ")
+    : value ?? null;
+}
+
+function statementSemanticDigest(statement) {
+  const attestations = Array.isArray(statement.attestations)
+    ? statement.attestations
+      .map((attestation) => ({
+        version_id: attestation?.version_id ?? null,
+        evidence_ids: Array.isArray(attestation?.evidence_ids)
+          ? [...attestation.evidence_ids].sort()
+          : attestation?.evidence_ids ?? null,
+      }))
+      .sort((left, right) => {
+        const leftKey = JSON.stringify(left);
+        const rightKey = JSON.stringify(right);
+        return leftKey < rightKey ? -1 : leftKey > rightKey ? 1 : 0;
+      })
+    : statement.attestations ?? null;
+  const semanticProjection = {
+    kind: statement.kind ?? null,
+    basis: statement.basis ?? null,
+    lifecycle: statement.lifecycle ?? null,
+    canonical_text: normalizeStatementText(statement.canonical_text),
+    reason: normalizeStatementText(statement.reason),
+    attestations,
+  };
+  return createHash("sha256")
+    .update(JSON.stringify(semanticProjection), "utf8")
+    .digest("hex");
+}
+
+function validateStatementReviewBinding(statement, details, diagnostics) {
+  if (statement.review_state !== "reviewed") {
+    return true;
+  }
+  const binding = statement.review_binding;
+  if (!isObject(binding)) {
+    addDiagnostic(diagnostics, {
+      ...details,
+      code: "STATEMENT_REVIEW_BINDING_REQUIRED",
+      fieldPath: `${details.fieldPath}/review_binding`,
+      message: "A reviewed Scientific Statement requires a semantic review binding.",
+    });
+    return false;
+  }
+  let valid = true;
+  if (binding.canonicalization_version !== CANONICALIZATION_VERSION) {
+    addDiagnostic(diagnostics, {
+      ...details,
+      code: "STATEMENT_REVIEW_BINDING_VERSION_INVALID",
+      fieldPath: `${details.fieldPath}/review_binding/canonicalization_version`,
+      message: "Statement review binding uses an unsupported canonicalization version.",
+      relatedIds: [CANONICALIZATION_VERSION],
+    });
+    valid = false;
+  }
+  const expectedDigest = statementSemanticDigest(statement);
+  if (binding.semantic_digest !== expectedDigest) {
+    addDiagnostic(diagnostics, {
+      ...details,
+      code: "STATEMENT_REVIEW_BINDING_STALE",
+      fieldPath: `${details.fieldPath}/review_binding`,
+      message: "Reviewed Scientific Statement semantic fields no longer match its review binding.",
+    });
+    valid = false;
+  }
+  return valid;
+}
+
+function validateStatements(
+  work,
+  versionsById,
+  evidenceById,
+  actorsById,
+  diagnostics,
+) {
+  const file = `content/works/${work.id}/statements.yaml`;
+  const envelope = work.files["statements.yaml"];
+  if (!isObject(envelope) || !Array.isArray(envelope.statements)) {
+    return;
+  }
+
+  const seenIds = new Set();
+  for (const [index, statement] of envelope.statements.entries()) {
+    const details = {
+      file,
+      recordId: statement?.id ?? work.id,
+      fieldPath: `/statements/${index}`,
+    };
+    if (!isObject(statement)) {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "STATEMENT_INVALID_SHAPE",
+        message: "Scientific Statements must be mappings.",
+      });
+      continue;
+    }
+
+    validateNamespacedId(statement.id, "statement", {
+      ...details,
+      code: "STATEMENT_ID_INVALID",
+      fieldPath: `${details.fieldPath}/id`,
+      message: "Scientific Statement IDs must use the statement: namespace.",
+    }, diagnostics);
+    if (seenIds.has(statement.id)) {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "STATEMENT_ID_DUPLICATE",
+        fieldPath: `${details.fieldPath}/id`,
+        message: `Scientific Statement ID is duplicated: ${statement.id}.`,
+      });
+    }
+    seenIds.add(statement.id);
+
+    if (!STATEMENT_KINDS.includes(statement.kind)) {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "STATEMENT_KIND_INVALID",
+        fieldPath: `${details.fieldPath}/kind`,
+        message: "Scientific Statement kind must be assumption, claim, prediction, or result.",
+        relatedIds: STATEMENT_KINDS,
+      });
+    }
+    if (!ASSERTION_BASES.includes(statement.basis)) {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "STATEMENT_BASIS_INVALID",
+        fieldPath: `${details.fieldPath}/basis`,
+        message: "Scientific Statement basis must be explicit or inferred.",
+        relatedIds: ASSERTION_BASES,
+      });
+    }
+    if (!STATEMENT_LIFECYCLES.includes(statement.lifecycle)) {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "STATEMENT_LIFECYCLE_INVALID",
+        fieldPath: `${details.fieldPath}/lifecycle`,
+        message: "Scientific Statement lifecycle must be maintained, superseded, or withdrawn.",
+        relatedIds: STATEMENT_LIFECYCLES,
+      });
+    }
+    if (typeof statement.canonical_text !== "string" || statement.canonical_text.trim() === "") {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "STATEMENT_CANONICAL_TEXT_INVALID",
+        fieldPath: `${details.fieldPath}/canonical_text`,
+        message: "Scientific Statements require a non-empty canonical semantic paraphrase.",
+      });
+    }
+    if (statement.basis === "inferred" &&
+      (typeof statement.reason !== "string" || statement.reason.trim() === "")) {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "STATEMENT_INFERRED_REASON_REQUIRED",
+        fieldPath: `${details.fieldPath}/reason`,
+        message: "Inferred Scientific Statements require a normalized reason.",
+      });
+    } else if (statement.reason !== undefined &&
+      (typeof statement.reason !== "string" || statement.reason.trim() === "")) {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "STATEMENT_REASON_INVALID",
+        fieldPath: `${details.fieldPath}/reason`,
+        message: "A Scientific Statement reason must be a non-empty string when supplied.",
+      });
+    }
+
+    const attestations = statement.attestations;
+    if (!Array.isArray(attestations)) {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "STATEMENT_ATTESTATIONS_INVALID",
+        fieldPath: `${details.fieldPath}/attestations`,
+        message: "Scientific Statements require an attestations array.",
+      });
+    } else if (attestations.length === 0) {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "STATEMENT_ATTESTATIONS_REQUIRED",
+        fieldPath: `${details.fieldPath}/attestations`,
+        message: "Scientific Statements require at least one Version attestation.",
+      });
+    } else {
+      for (const [attestationIndex, attestation] of attestations.entries()) {
+        const attestationDetails = {
+          ...details,
+          fieldPath: `${details.fieldPath}/attestations/${attestationIndex}`,
+        };
+        if (!isObject(attestation)) {
+          addDiagnostic(diagnostics, {
+            ...attestationDetails,
+            code: "STATEMENT_ATTESTATION_INVALID_SHAPE",
+            message: "Statement Attestations must be mappings.",
+          });
+          continue;
+        }
+
+        const versionId = attestation.version_id;
+        if (typeof versionId !== "string" || !versionsById.has(versionId)) {
+          addDiagnostic(diagnostics, {
+            ...attestationDetails,
+            code: "STATEMENT_ATTESTATION_VERSION_MISMATCH",
+            fieldPath: `${attestationDetails.fieldPath}/version_id`,
+            message: "Statement Attestations must reference an existing Version from the same Work.",
+            relatedIds: [...versionsById.keys()],
+          });
+        }
+
+        const evidenceIds = attestation.evidence_ids;
+        validateEvidenceReferences(
+          evidenceIds,
+          evidenceById,
+          attestationDetails,
+          diagnostics,
+          { required: true },
+        );
+
+        if (Array.isArray(evidenceIds)) {
+          for (const [evidenceIndex, evidenceId] of evidenceIds.entries()) {
+            const evidence = evidenceById.get(evidenceId);
+            if (!evidence) {
+              continue;
+            }
+            if (versionsById.has(versionId) && evidence.version_id !== versionId) {
+              addDiagnostic(diagnostics, {
+                ...attestationDetails,
+                code: "STATEMENT_ATTESTATION_EVIDENCE_VERSION_MISMATCH",
+                fieldPath: `${attestationDetails.fieldPath}/evidence_ids/${evidenceIndex}`,
+                message: "Statement Attestation Evidence must reference the attestation Version.",
+                relatedIds: [evidenceId, versionId, evidence.version_id],
+              });
+            }
+            if (typeof statement.canonical_text === "string" &&
+              typeof evidence.excerpt === "string" &&
+              normalizeStatementText(statement.canonical_text) === normalizeStatementText(evidence.excerpt)) {
+              addDiagnostic(diagnostics, {
+                ...details,
+                code: "STATEMENT_CANONICAL_TEXT_EXCERPT_COLLISION",
+                fieldPath: `${details.fieldPath}/canonical_text`,
+                message: "Scientific Statement canonical_text must be a semantic paraphrase rather than an Evidence excerpt.",
+                relatedIds: [evidenceId],
+              });
+            }
+          }
+        }
+      }
+    }
+
+    validateGovernedRecord(
+      statement,
+      actorsById,
+      details,
+      diagnostics,
+      { independentReview: statement.basis === "inferred" },
+    );
+    validateStatementReviewBinding(statement, details, diagnostics);
+  }
+}
+
+function causalLinkSemanticDigest(link) {
+  const semanticProjection = {
+    source_stage_id: link.source_stage_id ?? null,
+    target_stage_id: link.target_stage_id ?? null,
+    relation: link.relation ?? null,
+    origin: link.origin ?? null,
+    interpretive_risk: link.interpretive_risk ?? null,
+    reason: normalizeStatementText(link.reason),
+    evidence_ids: Array.isArray(link.evidence_ids)
+      ? [...link.evidence_ids].sort()
+      : link.evidence_ids ?? null,
+  };
+  return createHash("sha256")
+    .update(JSON.stringify(semanticProjection), "utf8")
+    .digest("hex");
+}
+
+function validateCausalLinkReviewBinding(link, details, diagnostics) {
+  if (link.review_state !== "reviewed") {
+    return true;
+  }
+  const binding = link.review_binding;
+  if (!isObject(binding)) {
+    addDiagnostic(diagnostics, {
+      ...details,
+      code: "CAUSAL_LINK_REVIEW_BINDING_REQUIRED",
+      fieldPath: `${details.fieldPath}/review_binding`,
+      message: "A reviewed Causal Link requires a semantic review binding.",
+    });
+    return false;
+  }
+  let valid = true;
+  if (binding.canonicalization_version !== CANONICALIZATION_VERSION) {
+    addDiagnostic(diagnostics, {
+      ...details,
+      code: "CAUSAL_LINK_REVIEW_BINDING_VERSION_INVALID",
+      fieldPath: `${details.fieldPath}/review_binding/canonicalization_version`,
+      message: "Causal Link review binding uses an unsupported canonicalization version.",
+      relatedIds: [CANONICALIZATION_VERSION],
+    });
+    valid = false;
+  }
+  const expectedDigest = causalLinkSemanticDigest(link);
+  if (binding.semantic_digest !== expectedDigest) {
+    addDiagnostic(diagnostics, {
+      ...details,
+      code: "CAUSAL_LINK_REVIEW_BINDING_STALE",
+      fieldPath: `${details.fieldPath}/review_binding`,
+      message: "Reviewed Causal Link semantic fields no longer match its review binding.",
+    });
+    valid = false;
+  }
+  return valid;
+}
+
+function validatePhysicalAccount(
+  work,
+  versionsById,
+  evidenceById,
+  actorsById,
+  diagnostics,
+) {
+  const file = `content/works/${work.id}/physical-account.yaml`;
+  const envelope = work.files["physical-account.yaml"];
+  if (!isObject(envelope)) {
+    return;
+  }
+
+  const annotationsEnvelope = work.files["annotations.yaml"];
+  const annotationIds = new Set(
+    (Array.isArray(annotationsEnvelope?.annotations) ? annotationsEnvelope.annotations : [])
+      .filter((annotation) => isObject(annotation) && isNamespacedId(annotation.id, "annotation"))
+      .map((annotation) => annotation.id),
+  );
+  const stageIds = new Set();
+  const validStageIds = new Set();
+  const duplicateStageIds = new Set();
+  const stages = envelope.stages;
+  if (!Array.isArray(stages)) {
+    addDiagnostic(diagnostics, {
+      file,
+      recordId: work.id,
+      code: "CAUSAL_STAGE_COLLECTION_INVALID",
+      fieldPath: "/stages",
+      message: "physical-account.yaml must contain a stages array.",
+    });
+  } else {
+    for (const [index, stage] of stages.entries()) {
+      const details = {
+        file,
+        recordId: stage?.id ?? work.id,
+        fieldPath: `/stages/${index}`,
+      };
+      if (!isObject(stage)) {
+        addDiagnostic(diagnostics, {
+          ...details,
+          code: "CAUSAL_STAGE_INVALID_SHAPE",
+          message: "Causal Stages must be mappings.",
+        });
+        continue;
+      }
+
+      let valid = validateNamespacedId(stage.id, "stage", {
+        ...details,
+        code: "CAUSAL_STAGE_ID_INVALID",
+        fieldPath: `${details.fieldPath}/id`,
+        message: "Causal Stage IDs must use the stage: namespace.",
+      }, diagnostics);
+      if (stageIds.has(stage.id)) {
+        addDiagnostic(diagnostics, {
+          ...details,
+          code: "CAUSAL_STAGE_ID_DUPLICATE",
+          fieldPath: `${details.fieldPath}/id`,
+          message: `Causal Stage ID is duplicated: ${stage.id}.`,
+        });
+        duplicateStageIds.add(stage.id);
+        validStageIds.delete(stage.id);
+        valid = false;
+      }
+      stageIds.add(stage.id);
+      if (typeof stage.annotation_id !== "string" || !annotationIds.has(stage.annotation_id)) {
+        addDiagnostic(diagnostics, {
+          ...details,
+          code: "REFERENTIAL_CAUSAL_ANNOTATION_MISSING",
+          fieldPath: `${details.fieldPath}/annotation_id`,
+          message: `Causal Stage Annotation does not exist in this Work: ${stage.annotation_id}.`,
+          relatedIds: [stage.annotation_id],
+        });
+        valid = false;
+      }
+      if (valid && !duplicateStageIds.has(stage.id)) {
+        validStageIds.add(stage.id);
+      }
+    }
+  }
+
+  const links = envelope.links;
+  if (!Array.isArray(links)) {
+    addDiagnostic(diagnostics, {
+      file,
+      recordId: work.id,
+      code: "CAUSAL_LINK_COLLECTION_INVALID",
+      fieldPath: "/links",
+      message: "physical-account.yaml must contain a links array.",
+    });
+    return;
+  }
+
+  const seenLinkIds = new Set();
+  const dagLinks = [];
+  for (const [index, link] of links.entries()) {
+    const details = {
+      file,
+      recordId: link?.id ?? work.id,
+      fieldPath: `/links/${index}`,
+    };
+    if (!isObject(link)) {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "CAUSAL_LINK_INVALID_SHAPE",
+        message: "Causal Links must be mappings.",
+      });
+      continue;
+    }
+
+    let valid = validateNamespacedId(link.id, "causal-link", {
+      ...details,
+      code: "CAUSAL_LINK_ID_INVALID",
+      fieldPath: `${details.fieldPath}/id`,
+      message: "Causal Link IDs must use the causal-link: namespace.",
+    }, diagnostics);
+    let dagEligible = valid;
+    if (seenLinkIds.has(link.id)) {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "CAUSAL_LINK_ID_DUPLICATE",
+        fieldPath: `${details.fieldPath}/id`,
+        message: `Causal Link ID is duplicated: ${link.id}.`,
+      });
+      valid = false;
+      dagEligible = false;
+    }
+    seenLinkIds.add(link.id);
+
+    if (!CAUSAL_LINK_RELATIONS.includes(link.relation)) {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "CAUSAL_LINK_RELATION_INVALID",
+        fieldPath: `${details.fieldPath}/relation`,
+        message: "Causal Link relation is not in the frozen vocabulary.",
+        relatedIds: CAUSAL_LINK_RELATIONS,
+      });
+      valid = false;
+      dagEligible = false;
+    }
+    if (!ASSERTION_BASES.includes(link.origin)) {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "CAUSAL_LINK_ORIGIN_INVALID",
+        fieldPath: `${details.fieldPath}/origin`,
+        message: "Causal Link origin must be explicit or inferred.",
+        relatedIds: ASSERTION_BASES,
+      });
+      valid = false;
+      dagEligible = false;
+    }
+    if (!RISK_LEVELS.includes(link.interpretive_risk)) {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "CAUSAL_LINK_RISK_INVALID",
+        fieldPath: `${details.fieldPath}/interpretive_risk`,
+        message: "Causal Link Interpretive Risk must be descriptive, interpretive, or synthetic.",
+        relatedIds: RISK_LEVELS,
+      });
+      valid = false;
+      dagEligible = false;
+    }
+    if (typeof link.reason !== "string" || link.reason.trim() === "") {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "CAUSAL_LINK_REASON_REQUIRED",
+        fieldPath: `${details.fieldPath}/reason`,
+        message: "Causal Links require a non-empty normalized reason.",
+      });
+      valid = false;
+      dagEligible = false;
+    }
+
+    const sourceExists = typeof link.source_stage_id === "string"
+      && validStageIds.has(link.source_stage_id);
+    const targetExists = typeof link.target_stage_id === "string"
+      && validStageIds.has(link.target_stage_id);
+    if (!sourceExists) {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "REFERENTIAL_CAUSAL_STAGE_MISSING",
+        fieldPath: `${details.fieldPath}/source_stage_id`,
+        message: `Causal Link source Stage does not exist in this Work: ${link.source_stage_id}.`,
+        relatedIds: [link.source_stage_id],
+      });
+      valid = false;
+      dagEligible = false;
+    }
+    if (!targetExists) {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "REFERENTIAL_CAUSAL_STAGE_MISSING",
+        fieldPath: `${details.fieldPath}/target_stage_id`,
+        message: `Causal Link target Stage does not exist in this Work: ${link.target_stage_id}.`,
+        relatedIds: [link.target_stage_id],
+      });
+      valid = false;
+      dagEligible = false;
+    }
+    if (
+      typeof link.source_stage_id === "string" &&
+      typeof link.target_stage_id === "string" &&
+      link.source_stage_id === link.target_stage_id
+    ) {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "CAUSAL_LINK_SELF_LOOP",
+        message: "A Causal Link cannot point from a Stage to itself.",
+        relatedIds: [link.source_stage_id],
+      });
+      valid = false;
+      dagEligible = false;
+    }
+
+    const evidenceValid = validateEvidenceReferences(
+      link.evidence_ids,
+      evidenceById,
+      details,
+      diagnostics,
+      { required: true },
+    );
+    if (!evidenceValid) {
+      valid = false;
+    }
+    if (Array.isArray(link.evidence_ids)) {
+      for (const [evidenceIndex, evidenceId] of link.evidence_ids.entries()) {
+        const evidence = evidenceById.get(evidenceId);
+        if (evidence && !versionsById.has(evidence.version_id)) {
+          addDiagnostic(diagnostics, {
+            ...details,
+            code: "CAUSAL_LINK_EVIDENCE_VERSION_MISMATCH",
+            fieldPath: `${details.fieldPath}/evidence_ids/${evidenceIndex}`,
+            message: "Causal Link Evidence must belong to a Version from this Work.",
+            relatedIds: [evidenceId, evidence.version_id],
+          });
+          valid = false;
+        }
+      }
+    }
+
+    if (link.origin === "explicit" && link.interpretive_risk === "descriptive") {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "CAUSAL_LINK_EXPLICIT_DESCRIPTIVE_FORBIDDEN",
+        fieldPath: `${details.fieldPath}/interpretive_risk`,
+        message: "Explicit Causal Links require at least interpretive risk.",
+      });
+      valid = false;
+    }
+    if (link.origin === "inferred") {
+      if (link.interpretive_risk === "descriptive") {
+        addDiagnostic(diagnostics, {
+          ...details,
+          code: "CAUSAL_LINK_INFERRED_DESCRIPTIVE_FORBIDDEN",
+          fieldPath: `${details.fieldPath}/interpretive_risk`,
+          message: "Inferred Causal Links may not use descriptive risk.",
+        });
+        valid = false;
+      }
+      if (!Array.isArray(link.evidence_ids) || link.evidence_ids.length < 2) {
+        addDiagnostic(diagnostics, {
+          ...details,
+          code: "CAUSAL_LINK_MULTIPLE_EVIDENCE_REQUIRED",
+          fieldPath: `${details.fieldPath}/evidence_ids`,
+          message: "Inferred Causal Links require multiple Evidence records.",
+        });
+        valid = false;
+      }
+    }
+
+    if (!validateGovernedRecord(
+      link,
+      actorsById,
+      details,
+      diagnostics,
+      { independentReview: link.origin === "inferred" },
+    )) {
+      valid = false;
+    }
+    if (!validateCausalLinkReviewBinding(link, details, diagnostics)) {
+      valid = false;
+    }
+
+    // Structural and endpoint failures are quarantined from the DAG pass.
+    // Review/governance failures keep their diagnostics but do not mask a
+    // topological cycle in otherwise well-formed stage endpoints.
+    if (dagEligible && sourceExists && targetExists) {
+      dagLinks.push({ source: link.source_stage_id, target: link.target_stage_id });
+    }
+  }
+
+  const adjacency = new Map([...validStageIds].map((stageId) => [stageId, []]));
+  for (const { source, target } of dagLinks) {
+    adjacency.get(source)?.push(target);
+  }
+  const visiting = new Set();
+  const visited = new Set();
+  function hasCycle(stageId) {
+    if (visiting.has(stageId)) {
+      return true;
+    }
+    if (visited.has(stageId)) {
+      return false;
+    }
+    visiting.add(stageId);
+    for (const target of adjacency.get(stageId) ?? []) {
+      if (hasCycle(target)) {
+        return true;
+      }
+    }
+    visiting.delete(stageId);
+    visited.add(stageId);
+    return false;
+  }
+  if ([...adjacency.keys()].some(hasCycle)) {
+    addDiagnostic(diagnostics, {
+      file,
+      recordId: work.id,
+      code: "CAUSAL_ACCOUNT_CYCLE",
+      fieldPath: "/links",
+      message: "The Work-local Physical Account must be acyclic.",
+    });
+  }
+}
+
 function validatePhysicsAnnotations(
   work,
   axisById,
@@ -2678,6 +3329,20 @@ function validateWorkRecords(
       actorsById,
       diagnostics,
     );
+    validateStatements(
+      work,
+      versionsById,
+      evidenceById,
+      actorsById,
+      diagnostics,
+    );
+    validatePhysicalAccount(
+      work,
+      versionsById,
+      evidenceById,
+      actorsById,
+      diagnostics,
+    );
 
     for (const [fileName, field] of WORK_CONCERN_COLLECTIONS) {
       const value = work.files[fileName];
@@ -2754,11 +3419,18 @@ function deriveWorkInventory(snapshot, diagnostics) {
     .sort((left, right) => Buffer.from(left.id).compare(Buffer.from(right.id)))
     .map((work) => {
       const workPath = `content/works/${work.id}`;
+      const statements = work.files["statements.yaml"]?.statements;
+      const account = work.files["physical-account.yaml"];
       const workDiagnostics = diagnostics.filter(
         ({ file, record_id }) =>
           file === workPath ||
           file?.startsWith(`${workPath}/`) ||
           record_id === work.id,
+      );
+      const scientificAccountDiagnostics = diagnostics.filter(
+        ({ file }) =>
+          file === `${workPath}/statements.yaml` ||
+          file === `${workPath}/physical-account.yaml`,
       );
       return {
         work_id: work.id,
@@ -2766,6 +3438,12 @@ function deriveWorkInventory(snapshot, diagnostics) {
         validation_status: workDiagnostics.some(({ severity }) => severity === "error")
           ? "invalid"
           : "valid",
+        scientific_statements: Array.isArray(statements) ? statements.length : 0,
+        causal_stages: Array.isArray(account?.stages) ? account.stages.length : 0,
+        causal_links: Array.isArray(account?.links) ? account.links.length : 0,
+        scientific_account_validation_status: scientificAccountDiagnostics.some(
+          ({ severity }) => severity === "error",
+        ) ? "invalid" : "valid",
       };
     });
 }
@@ -2833,6 +3511,30 @@ export async function validateCanonicalContent(
       ontology_axes: snapshot.axes.length,
       research_lines: snapshot.researchLines.length,
       learning_paths: snapshot.learningPaths.length,
+      scientific_statements: snapshot.works.reduce(
+        (count, work) => count + (
+          Array.isArray(work.files["statements.yaml"]?.statements)
+            ? work.files["statements.yaml"].statements.length
+            : 0
+        ),
+        0,
+      ),
+      causal_stages: snapshot.works.reduce(
+        (count, work) => count + (
+          Array.isArray(work.files["physical-account.yaml"]?.stages)
+            ? work.files["physical-account.yaml"].stages.length
+            : 0
+        ),
+        0,
+      ),
+      causal_links: snapshot.works.reduce(
+        (count, work) => count + (
+          Array.isArray(work.files["physical-account.yaml"]?.links)
+            ? work.files["physical-account.yaml"].links.length
+            : 0
+        ),
+        0,
+      ),
     },
     work_inventory: deriveWorkInventory(snapshot, diagnostics),
     diagnostics,
@@ -2872,12 +3574,12 @@ export function renderValidationMarkdown(report) {
     "",
     "## Work Inventory",
     "",
-    "| Work ID | Reader State | Validation |",
-    "| --- | --- | --- |",
+    "| Work ID | Reader State | Validation | Statements | Stages | Links | Scientific Account |",
+    "| --- | --- | --- | ---: | ---: | ---: | --- |",
   );
   for (const work of report.work_inventory ?? []) {
     lines.push(
-      `| ${markdownCell(work.work_id)} | ${markdownCell(work.reader_state)} | ${markdownCell(work.validation_status)} |`,
+      `| ${markdownCell(work.work_id)} | ${markdownCell(work.reader_state)} | ${markdownCell(work.validation_status)} | ${markdownCell(work.scientific_statements)} | ${markdownCell(work.causal_stages)} | ${markdownCell(work.causal_links)} | ${markdownCell(work.scientific_account_validation_status)} |`,
     );
   }
   lines.push("", "## Diagnostics", "");

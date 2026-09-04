@@ -220,6 +220,15 @@ export function isValidationValid(diagnostics) {
   return !diagnostics.some(({ severity }) => severity === "error");
 }
 
+export function mergeValidationDiagnostics(report, additionalDiagnostics = []) {
+  const diagnostics = [...report.diagnostics, ...additionalDiagnostics];
+  return {
+    ...report,
+    valid: isValidationValid(diagnostics),
+    diagnostics,
+  };
+}
+
 function validateMethods(methods, diagnostics) {
   if (!isObject(methods)) {
     addDiagnostic(diagnostics, {
@@ -400,8 +409,12 @@ export async function writeValidationReports(
 export async function runValidation({
   contentRoot = CONTENT_ROOT,
   outputRoot = PROJECT_ROOT,
+  additionalDiagnostics = [],
 } = {}) {
-  const report = await validateCanonicalContent(contentRoot);
+  const report = mergeValidationDiagnostics(
+    await validateCanonicalContent(contentRoot),
+    additionalDiagnostics,
+  );
   await writeValidationReports(report, outputRoot);
   return report;
 }

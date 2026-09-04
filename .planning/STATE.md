@@ -5,14 +5,15 @@
 ## Current position
 
 - **Stage:** Phase 2 — domain records and five-Work vertical slice
-- **Status:** Ticket 04 checkpoint 4A complete
-- **Implementation:** Arnett now exercises governed Actors, capability-at-action-time
-  authorization, 16 assessed Physics axes, controlled vocabulary, reusable
-  Version-bound Evidence, and a reviewed Method Annotation while remaining draft
+- **Status:** Tickets 01–04 complete
+- **Implementation:** Draft Arnett now exercises governed Actors,
+  capability-at-action-time authorization, 16 assessed Physics axes,
+  controlled vocabulary, reusable Version-bound Evidence, a reviewed Method
+  Annotation, Work-local Scientific Statements, and an acyclic Physical Account
 - **Decision frontier:** closed through Q151; no open domain-model decision is
   blocking migration
-- **Next execution action:** Ticket 04 checkpoint 4B,
-  `.scratch/v0.1-vertical-slice/issues/04-build-governed-arnett-scientific-account.md`
+- **Next execution action:** Ticket 05,
+  `.scratch/v0.1-vertical-slice/issues/05-publish-first-visible-work-and-research-line.md`
 
 The repository has completed specification, governance, and authority
 migration. Ticket 01 established the independent Git boundary and bootstrap
@@ -21,10 +22,10 @@ deterministic digest, structured validation reports, loader isolation tests,
 and empty reader shells. Ticket 03 adds the draft Arnett 1982 Work with a real
 DOI-era Version, reusable immutable bibliographic retrieval attestations,
 field-level provenance, Preferred Version provenance, and strict draft
-exclusion. Ticket 04 checkpoint 4A adds the governed Actor, Evidence, Ontology,
-Controlled Term, Interpretive Risk, and Method Annotation slice. Statements,
-the Work-local Physical Account, visible reader entities, remote setup, and CI
-remain later work.
+exclusion. Ticket 04 completes the governed Actor, Evidence, Ontology,
+Controlled Term, Interpretive Risk, Method Annotation, Scientific Statement,
+and Work-local Causal Link slice. Visible reader entities, the remaining Works,
+remote setup, and CI remain later work.
 
 ## Authority and migration state
 
@@ -105,7 +106,7 @@ CI remain fully offline; external deployment and source refresh are deferred.
 Continue the approved local ticket frontier with:
 
 ```text
-.scratch/v0.1-vertical-slice/issues/04-build-governed-arnett-scientific-account.md
+.scratch/v0.1-vertical-slice/issues/05-publish-first-visible-work-and-research-line.md
 ```
 
 The ticket may implement accepted requirements but may not extend the closed
@@ -122,6 +123,6 @@ prose.
 
 ## Session continuity
 
-Resume with Ticket 04 checkpoint 4B from the approved local frontier. Read the four
-`.planning` documents first, preserve requirement IDs, and update traceability
-only when phase evidence is verified.
+Resume with Ticket 05 from the approved local frontier. Read the four `.planning`
+documents first, preserve requirement IDs, and update traceability only when
+ticket evidence is verified.

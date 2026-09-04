@@ -58,6 +58,7 @@ test("closed-world discovery rejects unknown production entries", async () => {
   const { contentRoot } = await copyContent();
   const digestBefore = await computeCanonicalContentDigest(contentRoot);
   await writeFile(join(contentRoot, "README.txt"), "not canonical\n");
+  await mkdir(join(contentRoot, "scientific-edges"), { recursive: true });
   await writeFile(join(contentRoot, "scientific-edges", "edge.txt"), "not yaml\n");
 
   const discovery = await discoverCanonicalContent(contentRoot);

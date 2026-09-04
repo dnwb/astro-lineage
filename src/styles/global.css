@@ -47,3 +47,26 @@ p {
   padding-top: 1rem;
   border-top: 1px solid #c9c3b7;
 }
+
+a {
+  color: inherit;
+}
+
+.empty-state {
+  border-top: 1px solid #c9c3b7;
+  padding-top: 1rem;
+}
+
+.browse-link {
+  font-weight: 700;
+}
+
+.paper-list {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.paper-list li {
+  margin: 0.75rem 0;
+  font-size: 1.05rem;
+}

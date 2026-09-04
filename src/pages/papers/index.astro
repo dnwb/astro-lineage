@@ -1,0 +1,41 @@
+---
+import { loadCanonicalContent } from "../../../scripts/content-loader.mjs";
+import "../../styles/global.css";
+
+const snapshot = await loadCanonicalContent(new URL("../../../content/", import.meta.url));
+const visibleWorks = snapshot.works.filter((work) => {
+  const files = work.files as Record<string, unknown>;
+  const workRecord = files["work.yaml"] as { reader_state?: string } | undefined;
+  return workRecord?.reader_state === "visible";
+});
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta
+      name="description"
+      content="The visible Papers in the High-Energy Transient Reading Radar."
+    />
+    <title>Papers · High-Energy Transient Reading Radar</title>
+  </head>
+  <body>
+    <main>
+      <p class="eyebrow"><a href="/">High-Energy Transient Reading Radar</a></p>
+      <h1>Papers</h1>
+      {
+        visibleWorks.length === 0 ? (
+          <p class="empty-state">No Papers are visible in the curated reading radar yet.</p>
+        ) : (
+          <ul class="paper-list">
+            {visibleWorks.map((work) => (
+              <li><a href={`/papers/${work.id}/`}>{work.id}</a></li>
+            ))}
+          </ul>
+        )
+      }
+    </main>
+  </body>
+</html>

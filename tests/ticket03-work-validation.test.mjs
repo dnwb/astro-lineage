@@ -1,5 +1,7 @@
 import assert from "node:assert/strict";
+import { execFileSync } from "node:child_process";
 import { cp, mkdtemp, readFile, writeFile } from "node:fs/promises";
+import { existsSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -9,10 +11,12 @@ import { parse, stringify } from "yaml";
 import { WORK_CONCERN_FILES, loadCanonicalContent } from "../scripts/content-loader.mjs";
 import {
   deriveBibliographicDiscrepancyState,
+  runValidation,
   validateCanonicalContent,
 } from "../scripts/content-validator.mjs";
 
 const productionContent = new URL("../content/", import.meta.url);
+const projectRoot = fileURLToPath(new URL("../", import.meta.url));
 
 async function copyContent() {
   const temporaryRoot = await mkdtemp(join(tmpdir(), "axvdaily-ticket03-"));
@@ -97,6 +101,46 @@ test("ownership, DOI normalization, and date precision are validated as independ
   assert(codes.has("BIB_RELEASE_DATE_INVALID"));
 });
 
+test("unsupported release-date precision is diagnosed and reports remain writable", async () => {
+  const { temporaryRoot, contentRoot } = await copyContent();
+  const { workRoot, versions } = await readWork(contentRoot);
+  versions.versions[0].release_date = { value: "1982", precision: "season" };
+  await writeFile(join(workRoot, "versions.yaml"), stringify(versions), "utf8");
+
+  const result = await runValidation({ contentRoot, outputRoot: temporaryRoot });
+  assert(result.diagnostics.some(({ code }) => code === "BIB_RELEASE_DATE_INVALID"));
+  assert.equal(result.valid, false);
+  assert.match(await readFile(join(temporaryRoot, "validation/report.json"), "utf8"), /BIB_RELEASE_DATE_INVALID/);
+  assert.equal(result.work_inventory[0].validation_status, "invalid");
+});
+
+test("UTC RFC 3339 timestamps reject impossible Gregorian dates", async () => {
+  const { contentRoot } = await copyContent();
+  const { workRoot, versions } = await readWork(contentRoot);
+  versions.bibliographic_sources[0].retrieved_at = "2026-02-31T00:00:00Z";
+  await writeFile(join(workRoot, "versions.yaml"), stringify(versions), "utf8");
+
+  const result = await validateCanonicalContent(contentRoot);
+  assert(result.diagnostics.some(({ code }) => code === "BIB_SOURCE_RETRIEVED_AT_INVALID"));
+});
+
+test("Version-local ORCID values use the ISO 7064 MOD 11-2 checksum", async () => {
+  const { contentRoot } = await copyContent();
+  const { workRoot, versions } = await readWork(contentRoot);
+  const version = versions.versions[0];
+  version.authors[0].orcid = "0000-0002-1825-0097";
+  version.field_sources["/authors/0/orcid"] = [versions.bibliographic_sources[0].id];
+  await writeFile(join(workRoot, "versions.yaml"), stringify(versions), "utf8");
+
+  const valid = await validateCanonicalContent(contentRoot);
+  assert(!valid.diagnostics.some(({ code }) => code === "BIB_ORCID_INVALID"));
+
+  version.authors[0].orcid = "0000-0002-1825-0098";
+  await writeFile(join(workRoot, "versions.yaml"), stringify(versions), "utf8");
+  const invalid = await validateCanonicalContent(contentRoot);
+  assert(invalid.diagnostics.some(({ code }) => code === "BIB_ORCID_INVALID"));
+});
+
 test("bibliographic discrepancy state is derived from append-only resolution events", async () => {
   const { contentRoot } = await copyContent();
   const { workRoot, versions } = await readWork(contentRoot);
@@ -108,7 +152,7 @@ test("bibliographic discrepancy state is derived from append-only resolution eve
     conflicting_source_ids: [adsSource.id, secondAdsSource.id],
     conflicting_values: [
       { source_id: adsSource.id, value: "Type I supernovae. I - Analytic solutions for the early part of the light curve" },
-      { source_id: secondAdsSource.id, value: "Type I supernovae. I - Analytic solutions for the early part of the light curve" },
+      { source_id: secondAdsSource.id, value: "Type I supernovae. I - Analytic solutions for the early light curve" },
     ],
     reader_relevant: true,
     resolution_events: [],
@@ -140,6 +184,74 @@ test("bibliographic discrepancy state is derived from append-only resolution eve
   assert.equal(deriveBibliographicDiscrepancyState(discrepancy).selected_value, discrepancy.resolution_events[0].selected_value);
 });
 
+test("Bibliographic discrepancies require unique declared sources and one value per distinct source", async () => {
+  const { contentRoot } = await copyContent();
+  const { workRoot, versions } = await readWork(contentRoot);
+  const [firstSource, secondSource] = versions.bibliographic_sources;
+  versions.bibliographic_discrepancies = [
+    {
+      id: "discrepancy:arnett-title",
+      version_id: "version:arnett-1982-journal",
+      field_path: "/title",
+      conflicting_source_ids: [firstSource.id, firstSource.id],
+      conflicting_values: [
+        { source_id: firstSource.id, value: "one" },
+        { source_id: secondSource.id, value: "one" },
+      ],
+      reader_relevant: true,
+      resolution_events: [],
+    },
+  ];
+  await writeFile(join(workRoot, "versions.yaml"), stringify(versions), "utf8");
+
+  const result = await validateCanonicalContent(contentRoot);
+  const codes = new Set(result.diagnostics.map(({ code }) => code));
+  assert(codes.has("BIB_DISCREPANCY_SOURCES_DUPLICATE"));
+  assert(codes.has("BIB_DISCREPANCY_VALUES_NOT_DISTINCT"));
+  assert(codes.has("BIB_DISCREPANCY_VALUE_SOURCE_MISMATCH"));
+});
+
+test("Bibliographic discrepancy resolution requires a Human actor", async () => {
+  const { contentRoot } = await copyContent();
+  const { workRoot, versions } = await readWork(contentRoot);
+  const actorsPath = join(contentRoot, "actors.yaml");
+  const actors = parse(await readFile(actorsPath, "utf8"));
+  actors.actors.push({
+    id: "actor:agent-drafter",
+    kind: "agent",
+    label: "V0.1 Agent Drafter",
+    capability_events: [],
+  });
+  versions.bibliographic_discrepancies = [
+    {
+      id: "discrepancy:arnett-title",
+      version_id: "version:arnett-1982-journal",
+      field_path: "/title",
+      conflicting_source_ids: versions.bibliographic_sources.slice(0, 2).map(({ id }) => id),
+      conflicting_values: versions.bibliographic_sources.slice(0, 2).map((source, index) => ({
+        source_id: source.id,
+        value: `title-${index}`,
+      })),
+      reader_relevant: true,
+      resolution_events: [
+        {
+          selected_value: "title-0",
+          reason: "Agent draft resolution for an isolated validator fixture.",
+          provenance: {
+            actor_id: "actor:agent-drafter",
+            recorded_at: "2026-09-04T03:30:00Z",
+          },
+        },
+      ],
+    },
+  ];
+  await writeFile(actorsPath, stringify(actors), "utf8");
+  await writeFile(join(workRoot, "versions.yaml"), stringify(versions), "utf8");
+
+  const result = await validateCanonicalContent(contentRoot);
+  assert(result.diagnostics.some(({ code }) => code === "CURATION_HUMAN_ACTOR_REQUIRED"));
+});
+
 test("an unresolved reader-relevant discrepancy blocks visibility but remains valid draft curation", async () => {
   const { contentRoot } = await copyContent();
   const { workRoot, work, versions } = await readWork(contentRoot);
@@ -149,9 +261,9 @@ test("an unresolved reader-relevant discrepancy blocks visibility but remains va
       version_id: "version:arnett-1982-journal",
       field_path: "/title",
       conflicting_source_ids: versions.bibliographic_sources.slice(0, 2).map(({ id }) => id),
-      conflicting_values: versions.bibliographic_sources.slice(0, 2).map((source) => ({
+      conflicting_values: versions.bibliographic_sources.slice(0, 2).map((source, index) => ({
         source_id: source.id,
-        value: "A conflicting title retained for an isolated validator fixture",
+        value: `A conflicting title ${index} retained for an isolated validator fixture`,
       })),
       reader_relevant: true,
       resolution_events: [],
@@ -168,11 +280,31 @@ test("an unresolved reader-relevant discrepancy blocks visibility but remains va
   assert(visibleResult.diagnostics.some(({ code }) => code === "BIB_DISCREPANCY_BLOCKS_VISIBILITY"));
 });
 
-test("draft Works are absent from the ordinary Paper index", async () => {
+test("validation inventory counts the draft Arnett Work without making it visible", async () => {
   const snapshot = await loadCanonicalContent(productionContent);
-  const visibleWorks = snapshot.works.filter(
-    ({ files }) => files["work.yaml"]?.reader_state === "visible",
-  );
-  assert.deepEqual(visibleWorks, []);
+  const result = await validateCanonicalContent(productionContent);
   assert(snapshot.works.some(({ id }) => id === "work:arnett-1982"));
+  assert.deepEqual(result.work_inventory, [
+    {
+      work_id: "work:arnett-1982",
+      reader_state: "draft",
+      validation_status: "valid",
+    },
+  ]);
+});
+
+test("draft Works are absent from the production Paper index and detail/provenance surfaces", async () => {
+  execFileSync("npm", ["run", "build"], {
+    cwd: projectRoot,
+    encoding: "utf8",
+    stdio: "pipe",
+  });
+
+  const papersHtml = await readFile(join(projectRoot, "dist", "papers", "index.html"), "utf8");
+  assert.doesNotMatch(papersHtml, /work:arnett-1982/);
+  assert.doesNotMatch(papersHtml, /provenance/i);
+  assert.equal(
+    existsSync(join(projectRoot, "dist", "papers", "work:arnett-1982", "index.html")),
+    false,
+  );
 });

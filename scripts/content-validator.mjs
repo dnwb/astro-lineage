@@ -37,6 +37,7 @@ const ACTOR_CAPABILITIES = Object.freeze([
 ]);
 const NAMESPACED_ID = /^[a-z][a-z0-9_-]*:[a-z0-9][a-z0-9._-]*$/u;
 const DOI = /^10\.\d{4,9}\/[\S]+$/iu;
+const ORCID = /^\d{4}-\d{4}-\d{4}-\d{3}[\dX]$/u;
 const RFC3339_UTC =
   /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?Z$/u;
 const DATE_VALUES = Object.freeze({ year: /^\d{4}$/u, month: /^\d{4}-(?:0[1-9]|1[0-2])$/u });
@@ -404,27 +405,46 @@ function validateNamespacedId(value, namespace, details, diagnostics) {
 }
 
 function validateUtcTimestamp(value, details, diagnostics) {
-  if (typeof value !== "string" || !RFC3339_UTC.test(value)) {
+  const structurallyValid = typeof value === "string" && RFC3339_UTC.test(value);
+  const calendarValid = structurallyValid && isValidGregorianDate(value.slice(0, 10));
+  const parsed = structurallyValid ? Date.parse(value) : Number.NaN;
+  if (!calendarValid || !Number.isFinite(parsed)) {
     addDiagnostic(diagnostics, {
       ...details,
       code: details.code ?? "CURATION_TIMESTAMP_INVALID",
-      message: details.message ?? "Curation timestamps must be UTC RFC 3339 values.",
-    });
-    return false;
-  }
-  const parsed = Date.parse(value);
-  if (!Number.isFinite(parsed)) {
-    addDiagnostic(diagnostics, {
-      ...details,
-      code: details.code ?? "CURATION_TIMESTAMP_INVALID",
-      message: details.message ?? "Curation timestamps must be valid UTC dates.",
+      message: details.message ?? "Curation timestamps must be valid UTC RFC 3339 dates.",
     });
     return false;
   }
   return true;
 }
 
-function validateCurationProvenance(provenance, actorsById, details, diagnostics) {
+function isValidGregorianDate(value) {
+  const match = typeof value === "string" && value.match(/^(\d{4})-(\d{2})-(\d{2})$/u);
+  if (!match) {
+    return false;
+  }
+  const [, yearText, monthText, dayText] = match;
+  const year = Number(yearText);
+  const month = Number(monthText);
+  const day = Number(dayText);
+  const date = new Date(0);
+  date.setUTCFullYear(year, month - 1, day);
+  date.setUTCHours(0, 0, 0, 0);
+  return (
+    date.getUTCFullYear() === year &&
+    date.getUTCMonth() === month - 1 &&
+    date.getUTCDate() === day
+  );
+}
+
+function validateCurationProvenance(
+  provenance,
+  actorsById,
+  details,
+  diagnostics,
+  { requiredActorKind } = {},
+) {
   if (!isObject(provenance)) {
     addDiagnostic(diagnostics, {
       ...details,
@@ -455,8 +475,20 @@ function validateCurationProvenance(provenance, actorsById, details, diagnostics
         relatedIds: [provenance.actor_id],
       });
       valid = false;
-    } else if (actor.kind !== "human" && actor.kind !== "agent") {
-      valid = false;
+    } else {
+      if (actor.kind !== "human" && actor.kind !== "agent") {
+        valid = false;
+      }
+      if (requiredActorKind && actor.kind !== requiredActorKind) {
+        addDiagnostic(diagnostics, {
+          ...details,
+          code: "CURATION_HUMAN_ACTOR_REQUIRED",
+          fieldPath: `${details.fieldPath ?? ""}/actor_id`,
+          message: `This curation event requires a ${requiredActorKind} actor.`,
+          relatedIds: [requiredActorKind],
+        });
+        valid = false;
+      }
     }
   }
   if (
@@ -537,7 +569,9 @@ function validateReleaseDate(releaseDate, details, diagnostics) {
   }
   const { value, precision } = releaseDate;
   let valid = true;
-  if (!(precision in DATE_VALUES) && precision !== "day") {
+  const precisionIsKnown =
+    typeof precision === "string" && Object.hasOwn(DATE_VALUES, precision);
+  if (!precisionIsKnown && precision !== "day") {
     addDiagnostic(diagnostics, {
       ...details,
       code: "BIB_RELEASE_DATE_INVALID",
@@ -563,7 +597,7 @@ function validateReleaseDate(releaseDate, details, diagnostics) {
         valid = false;
       }
     }
-  } else if (typeof value === "string" && !DATE_VALUES[precision].test(value)) {
+  } else if (precisionIsKnown && typeof value === "string" && !DATE_VALUES[precision].test(value)) {
     valid = false;
   }
   if (!valid) {
@@ -575,6 +609,21 @@ function validateReleaseDate(releaseDate, details, diagnostics) {
     });
   }
   return valid;
+}
+
+function isValidOrcid(value) {
+  if (typeof value !== "string" || !ORCID.test(value)) {
+    return false;
+  }
+  const digits = value.replaceAll("-", "");
+  let total = 0;
+  for (const digit of digits.slice(0, -1)) {
+    total = (total + Number(digit)) * 2;
+  }
+  const remainder = total % 11;
+  const checkDigit = (12 - remainder) % 11;
+  const expected = checkDigit === 10 ? "X" : String(checkDigit);
+  return digits.at(-1) === expected;
 }
 
 function validateBibliographicSource(source, index, sourceIds, details, diagnostics) {
@@ -655,7 +704,7 @@ function validateBibliographicSource(source, index, sourceIds, details, diagnost
   }
 }
 
-function validateVersionBibliography(version, index, sourceIds, sourcesById, details, diagnostics) {
+function validateVersionBibliography(version, index, sourceIds, details, diagnostics) {
   if (!isObject(version)) {
     addDiagnostic(diagnostics, {
       ...details,
@@ -709,7 +758,7 @@ function validateVersionBibliography(version, index, sourceIds, sourcesById, det
           message: "Every Version-local author requires a non-empty display_name.",
         });
       }
-      if (author?.orcid !== undefined && !/^\d{4}-\d{4}-\d{4}-\d{3}[\dX]$/u.test(author.orcid)) {
+      if (author?.orcid !== undefined && !isValidOrcid(author.orcid)) {
         addDiagnostic(diagnostics, {
           ...versionDetails,
           code: "BIB_ORCID_INVALID",
@@ -814,17 +863,6 @@ function validateVersionBibliography(version, index, sourceIds, sourcesById, det
       });
     }
   }
-  for (const sourceId of sourceIds) {
-    if (!sourcesById.has(sourceId)) {
-      addDiagnostic(diagnostics, {
-        ...versionDetails,
-        code: "REFERENTIAL_BIB_SOURCE_MISSING",
-        fieldPath: `/versions/${index}/field_sources`,
-        message: `Bibliographic Source does not exist: ${sourceId}.`,
-        relatedIds: [sourceId],
-      });
-    }
-  }
 }
 
 export function deriveBibliographicDiscrepancyState(discrepancy) {
@@ -837,6 +875,19 @@ export function deriveBibliographicDiscrepancyState(discrepancy) {
     selected_value: resolutionEvent?.selected_value ?? null,
     resolution_event: resolutionEvent,
   };
+}
+
+function stableValueKey(value) {
+  if (Array.isArray(value)) {
+    return `[${value.map((item) => stableValueKey(item)).join(",")}]`;
+  }
+  if (isObject(value)) {
+    return `{${Object.keys(value)
+      .sort()
+      .map((key) => `${JSON.stringify(key)}:${stableValueKey(value[key])}`)
+      .join(",")}}`;
+  }
+  return JSON.stringify(value);
 }
 
 function validateBibliographicDiscrepancies(
@@ -909,7 +960,9 @@ function validateBibliographicDiscrepancies(
         message: "Discrepancy field_path must point to a field on the affected Version.",
       });
     }
-    if (!Array.isArray(discrepancy.conflicting_source_ids) || discrepancy.conflicting_source_ids.length < 2) {
+    const declaredSourceIds = discrepancy.conflicting_source_ids;
+    const declaredSourceSet = new Set();
+    if (!Array.isArray(declaredSourceIds) || declaredSourceIds.length < 2) {
       addDiagnostic(diagnostics, {
         ...discrepancyDetails,
         code: "BIB_DISCREPANCY_SOURCES_INVALID",
@@ -917,7 +970,17 @@ function validateBibliographicDiscrepancies(
         message: "A discrepancy must preserve at least two conflicting source IDs.",
       });
     } else {
-      for (const sourceId of discrepancy.conflicting_source_ids) {
+      for (const [sourceIndex, sourceId] of declaredSourceIds.entries()) {
+        if (declaredSourceSet.has(sourceId)) {
+          addDiagnostic(diagnostics, {
+            ...discrepancyDetails,
+            code: "BIB_DISCREPANCY_SOURCES_DUPLICATE",
+            fieldPath: `/bibliographic_discrepancies/${index}/conflicting_source_ids/${sourceIndex}`,
+            message: `A discrepancy cannot declare a conflicting source more than once: ${sourceId}.`,
+            relatedIds: [sourceId],
+          });
+        }
+        declaredSourceSet.add(sourceId);
         if (!sourceIds.has(sourceId)) {
           addDiagnostic(diagnostics, {
             ...discrepancyDetails,
@@ -929,7 +992,8 @@ function validateBibliographicDiscrepancies(
         }
       }
     }
-    if (!Array.isArray(discrepancy.conflicting_values) || discrepancy.conflicting_values.length < 2) {
+    const conflictingValues = discrepancy.conflicting_values;
+    if (!Array.isArray(conflictingValues) || conflictingValues.length < 2) {
       addDiagnostic(diagnostics, {
         ...discrepancyDetails,
         code: "BIB_DISCREPANCY_VALUES_INVALID",
@@ -937,13 +1001,77 @@ function validateBibliographicDiscrepancies(
         message: "A discrepancy must preserve the conflicting values with their source IDs.",
       });
     } else {
-      for (const [valueIndex, conflict] of discrepancy.conflicting_values.entries()) {
+      if (
+        Array.isArray(declaredSourceIds) &&
+        conflictingValues.length !== declaredSourceIds.length
+      ) {
+        addDiagnostic(diagnostics, {
+          ...discrepancyDetails,
+          code: "BIB_DISCREPANCY_VALUE_SOURCE_MISMATCH",
+          fieldPath: `/bibliographic_discrepancies/${index}/conflicting_values`,
+          message: "A discrepancy requires exactly one conflicting value for each declared source.",
+          relatedIds: declaredSourceIds,
+        });
+      }
+      const valueSourceSet = new Set();
+      const valueKeys = new Set();
+      for (const [valueIndex, conflict] of conflictingValues.entries()) {
         if (!isObject(conflict) || typeof conflict.source_id !== "string" || !Object.hasOwn(conflict, "value")) {
           addDiagnostic(diagnostics, {
             ...discrepancyDetails,
             code: "BIB_DISCREPANCY_VALUE_INVALID",
             fieldPath: `/bibliographic_discrepancies/${index}/conflicting_values/${valueIndex}`,
             message: "Each conflicting value requires source_id and value.",
+          });
+          continue;
+        }
+        if (!sourceIds.has(conflict.source_id)) {
+          addDiagnostic(diagnostics, {
+            ...discrepancyDetails,
+            code: "REFERENTIAL_BIB_SOURCE_MISSING",
+            fieldPath: `/bibliographic_discrepancies/${index}/conflicting_values/${valueIndex}/source_id`,
+            message: `Bibliographic Source does not exist: ${conflict.source_id}.`,
+            relatedIds: [conflict.source_id],
+          });
+        }
+        if (!declaredSourceSet.has(conflict.source_id)) {
+          addDiagnostic(diagnostics, {
+            ...discrepancyDetails,
+            code: "BIB_DISCREPANCY_VALUE_SOURCE_MISMATCH",
+            fieldPath: `/bibliographic_discrepancies/${index}/conflicting_values/${valueIndex}/source_id`,
+            message: `Conflicting value source is not one of the declared conflicting sources: ${conflict.source_id}.`,
+            relatedIds: declaredSourceIds ?? [],
+          });
+        }
+        if (valueSourceSet.has(conflict.source_id)) {
+          addDiagnostic(diagnostics, {
+            ...discrepancyDetails,
+            code: "BIB_DISCREPANCY_VALUE_SOURCE_DUPLICATE",
+            fieldPath: `/bibliographic_discrepancies/${index}/conflicting_values/${valueIndex}/source_id`,
+            message: `A discrepancy cannot assign multiple conflicting values to source ${conflict.source_id}.`,
+            relatedIds: [conflict.source_id],
+          });
+        }
+        valueSourceSet.add(conflict.source_id);
+        const valueKey = stableValueKey(conflict.value);
+        if (valueKeys.has(valueKey)) {
+          addDiagnostic(diagnostics, {
+            ...discrepancyDetails,
+            code: "BIB_DISCREPANCY_VALUES_NOT_DISTINCT",
+            fieldPath: `/bibliographic_discrepancies/${index}/conflicting_values/${valueIndex}/value`,
+            message: "A discrepancy must preserve at least two distinct conflicting values.",
+          });
+        }
+        valueKeys.add(valueKey);
+      }
+      for (const sourceId of declaredSourceSet) {
+        if (!valueSourceSet.has(sourceId)) {
+          addDiagnostic(diagnostics, {
+            ...discrepancyDetails,
+            code: "BIB_DISCREPANCY_VALUE_SOURCE_MISMATCH",
+            fieldPath: `/bibliographic_discrepancies/${index}/conflicting_values`,
+            message: `A conflicting value is missing for declared source ${sourceId}.`,
+            relatedIds: [sourceId],
           });
         }
       }
@@ -982,6 +1110,7 @@ function validateBibliographicDiscrepancies(
             fieldPath: `/bibliographic_discrepancies/${index}/resolution_events/${eventIndex}/provenance`,
           },
           diagnostics,
+          { requiredActorKind: "human" },
         );
       });
     }
@@ -1165,7 +1294,6 @@ function validateWorkRecords(snapshot, actorsById, diagnostics) {
       });
     }
     const sourceIds = new Set();
-    const sourcesById = new Map();
     for (const [index, source] of (sources ?? []).entries()) {
       validateBibliographicSource(
         source,
@@ -1177,16 +1305,12 @@ function validateWorkRecords(snapshot, actorsById, diagnostics) {
         },
         diagnostics,
       );
-      if (isObject(source) && typeof source.id === "string") {
-        sourcesById.set(source.id, source);
-      }
     }
     for (const [index, version] of versionsEnvelope.versions.entries()) {
       validateVersionBibliography(
         version,
         index,
         sourceIds,
-        sourcesById,
         {
           ...details,
           file: `content/works/${work.id}/versions.yaml`,
@@ -1325,6 +1449,27 @@ function determinePasses(diagnostics, discovery) {
   };
 }
 
+function deriveWorkInventory(snapshot, diagnostics) {
+  return [...snapshot.works]
+    .sort((left, right) => Buffer.from(left.id).compare(Buffer.from(right.id)))
+    .map((work) => {
+      const workPath = `content/works/${work.id}`;
+      const workDiagnostics = diagnostics.filter(
+        ({ file, record_id }) =>
+          file === workPath ||
+          file?.startsWith(`${workPath}/`) ||
+          record_id === work.id,
+      );
+      return {
+        work_id: work.id,
+        reader_state: work.files["work.yaml"]?.reader_state ?? null,
+        validation_status: workDiagnostics.some(({ severity }) => severity === "error")
+          ? "invalid"
+          : "valid",
+      };
+    });
+}
+
 export async function validateCanonicalContent(
   contentRoot = CONTENT_ROOT,
 ) {
@@ -1362,6 +1507,7 @@ export async function validateCanonicalContent(
       research_lines: snapshot.researchLines.length,
       learning_paths: snapshot.learningPaths.length,
     },
+    work_inventory: deriveWorkInventory(snapshot, diagnostics),
     diagnostics,
   };
   return report;
@@ -1394,6 +1540,18 @@ export function renderValidationMarkdown(report) {
   lines.push("", "## Statistics", "");
   for (const [name, value] of Object.entries(report.statistics)) {
     lines.push(`- ${name}: ${value}`);
+  }
+  lines.push(
+    "",
+    "## Work Inventory",
+    "",
+    "| Work ID | Reader State | Validation |",
+    "| --- | --- | --- |",
+  );
+  for (const work of report.work_inventory ?? []) {
+    lines.push(
+      `| ${markdownCell(work.work_id)} | ${markdownCell(work.reader_state)} | ${markdownCell(work.validation_status)} |`,
+    );
   }
   lines.push("", "## Diagnostics", "");
   if (report.diagnostics.length === 0) {

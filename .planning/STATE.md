@@ -4,21 +4,25 @@
 
 ## Current position
 
-- **Stage:** Phase 1 — repository and canonical content foundation
-- **Status:** Ticket 02 complete
-- **Implementation:** Phase 1 canonical boundary and empty Stored + Validated +
-  Rendered walking skeleton established
+- **Stage:** Phase 2 — domain records and five-Work vertical slice
+- **Status:** Ticket 03 complete
+- **Implementation:** the first real draft Work now exercises Work–Version
+  identity, bibliographic provenance, Preferred Version, discrepancy history,
+  ownership, and reader exclusion
 - **Decision frontier:** closed through Q151; no open domain-model decision is
   blocking migration
-- **Next execution action:** Ticket 03,
-  `.scratch/v0.1-vertical-slice/issues/03-store-and-validate-draft-arnett-work.md`
+- **Next execution action:** Ticket 04 checkpoint 4A,
+  `.scratch/v0.1-vertical-slice/issues/04-build-governed-arnett-scientific-account.md`
 
 The repository has completed specification, governance, and authority
 migration. Ticket 01 established the independent Git boundary and bootstrap
-application. Ticket 02 now provides the closed-world canonical content root,
-empty manifest/ontology/method snapshot, deterministic digest, structured
-validation reports, loader isolation tests, and empty reader shells. Real
-Works, content governance, remote setup, and CI remain later-ticket work.
+application. Ticket 02 provides the closed-world canonical content root,
+deterministic digest, structured validation reports, loader isolation tests,
+and empty reader shells. Ticket 03 adds the draft Arnett 1982 Work with a real
+DOI-era Version, reusable immutable bibliographic retrieval attestations,
+field-level provenance, Preferred Version provenance, and strict draft
+exclusion. Scientific governance, visible reader entities, remote setup, and
+CI remain later-ticket work.
 
 ## Authority and migration state
 
@@ -99,7 +103,7 @@ CI remain fully offline; external deployment and source refresh are deferred.
 Continue the approved local ticket frontier with:
 
 ```text
-.scratch/v0.1-vertical-slice/issues/03-store-and-validate-draft-arnett-work.md
+.scratch/v0.1-vertical-slice/issues/04-build-governed-arnett-scientific-account.md
 ```
 
 The ticket may implement accepted requirements but may not extend the closed
@@ -116,6 +120,6 @@ prose.
 
 ## Session continuity
 
-Resume with Ticket 03 from the approved local frontier. Read the four
+Resume with Ticket 04 checkpoint 4A from the approved local frontier. Read the four
 `.planning` documents first, preserve requirement IDs, and update traceability
 only when phase evidence is verified.

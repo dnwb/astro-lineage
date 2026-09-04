@@ -33,7 +33,7 @@ async function copyContent() {
   return { temporaryRoot, contentRoot };
 }
 
-test("the empty production snapshot has the frozen canonical layout", async () => {
+test("the production snapshot keeps the frozen canonical layout with the first draft Work", async () => {
   const snapshot = await loadCanonicalContent(productionContent);
 
   assert.deepEqual(snapshot.manifest, {
@@ -41,7 +41,8 @@ test("the empty production snapshot has the frozen canonical layout", async () =
     canonicalization_version: "v1",
     visibility_profile_id: "v0.1-default",
   });
-  assert.deepEqual(snapshot.works, []);
+  assert.equal(snapshot.works.length, 1);
+  assert.equal(snapshot.works[0].id, "work:arnett-1982");
   assert.deepEqual(snapshot.scientificEdges, []);
   assert.deepEqual(snapshot.researchLines, []);
   assert.deepEqual(snapshot.learningPaths, []);
@@ -50,7 +51,7 @@ test("the empty production snapshot has the frozen canonical layout", async () =
     method_families: [],
     techniques: [],
   });
-  assert.equal(snapshot.discovery.files.length, 19);
+  assert.equal(snapshot.discovery.files.length, 26);
   assert(snapshot.discovery.files.every((file) => !file.startsWith("generated/")));
 });
 

@@ -1,1 +1,25 @@
-actors: []
+actors:
+  - id: actor:human-curator
+    kind: human
+    label: V0.1 Human Curator
+    capability_events:
+      - capability: draft_records
+        action: grant
+        effective_at: 2026-09-04T03:00:00Z
+        reason: V0.1 curation fixture authoring.
+      - capability: review_records
+        action: grant
+        effective_at: 2026-09-04T03:00:00Z
+        reason: V0.1 human review gate.
+      - capability: independent_scientific_review
+        action: grant
+        effective_at: 2026-09-04T03:00:00Z
+        reason: V0.1 independent scientific review gate.
+      - capability: activate_controlled_terms
+        action: grant
+        effective_at: 2026-09-04T03:00:00Z
+        reason: V0.1 controlled-term governance.
+      - capability: approve_visibility
+        action: grant
+        effective_at: 2026-09-04T03:00:00Z
+        reason: V0.1 visibility release gate.

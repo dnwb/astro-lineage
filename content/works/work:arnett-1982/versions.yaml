@@ -1,0 +1,72 @@
+work_id: work:arnett-1982
+versions:
+  - id: version:arnett-1982-journal
+    kind: journal_manifestation
+    title: Type I supernovae. I - Analytic solutions for the early part of the light curve
+    authors:
+      - display_name: Arnett, W. D.
+    release_date:
+      value: "1982-02"
+      precision: month
+    doi: 10.1086/159681
+    journal:
+      name: The Astrophysical Journal
+      volume: "253"
+      first_page: "785"
+    access_urls:
+      - kind: ads
+        url: https://ui.adsabs.harvard.edu/abs/1982ApJ...253..785A/abstract
+      - kind: doi
+        url: https://doi.org/10.1086/159681
+    field_sources:
+      /title:
+        - source:ads-arnett-1982-20260904-032118z
+        - source:ads-arnett-1982-20260904-032302z
+        - source:crossref-arnett-1982-20260904-032248z
+      /authors/0/display_name:
+        - source:ads-arnett-1982-20260904-032118z
+        - source:crossref-arnett-1982-20260904-032248z
+      /release_date/value:
+        - source:ads-arnett-1982-20260904-032118z
+        - source:crossref-arnett-1982-20260904-032248z
+      /release_date/precision:
+        - source:ads-arnett-1982-20260904-032118z
+        - source:crossref-arnett-1982-20260904-032248z
+      /doi:
+        - source:ads-arnett-1982-20260904-032118z
+        - source:crossref-arnett-1982-20260904-032248z
+      /journal/name:
+        - source:ads-arnett-1982-20260904-032118z
+        - source:crossref-arnett-1982-20260904-032248z
+      /journal/volume:
+        - source:ads-arnett-1982-20260904-032118z
+        - source:crossref-arnett-1982-20260904-032248z
+      /journal/first_page:
+        - source:ads-arnett-1982-20260904-032118z
+        - source:crossref-arnett-1982-20260904-032248z
+      /access_urls/0/kind:
+        - source:ads-arnett-1982-20260904-032118z
+      /access_urls/0/url:
+        - source:ads-arnett-1982-20260904-032118z
+      /access_urls/1/kind:
+        - source:crossref-arnett-1982-20260904-032248z
+      /access_urls/1/url:
+        - source:crossref-arnett-1982-20260904-032248z
+bibliographic_sources:
+  - id: source:ads-arnett-1982-20260904-032118z
+    provider: ads
+    record_id: 1982ApJ...253..785A
+    source_url: https://ui.adsabs.harvard.edu/abs/1982ApJ...253..785A/abstract
+    retrieved_at: 2026-09-04T03:21:18Z
+  - id: source:ads-arnett-1982-20260904-032302z
+    provider: ads
+    record_id: 1982ApJ...253..785A
+    source_url: https://ui.adsabs.harvard.edu/abs/1982ApJ...253..785A/abstract
+    retrieved_at: 2026-09-04T03:23:02Z
+  - id: source:crossref-arnett-1982-20260904-032248z
+    provider: crossref
+    record_id: 10.1086/159681
+    source_url: https://api.crossref.org/works/10.1086/159681
+    retrieved_at: 2026-09-04T03:22:48Z
+publication_relations: []
+bibliographic_discrepancies: []

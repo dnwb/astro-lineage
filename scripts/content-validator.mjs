@@ -92,6 +92,13 @@ const PROCESS_AXES = Object.freeze([
   "emission_process",
   "transport_process",
 ]);
+const V01_FIXTURE_WORK_IDS = new Set([
+  "work:arnett-1982",
+  "work:bromberg-2011",
+  "work:zhu-2021",
+  "work:transfit-2025",
+  "work:long-yu-2026",
+]);
 
 const STRUCTURAL_DIAGNOSTIC_CODES = new Set([
   // Local record identity, shape, type, and controlled-value failures.
@@ -4529,7 +4536,7 @@ function validatePhysicsAnnotations(
       { independentReview: risk === "synthetic" },
     );
   }
-  if (work.id === "work:arnett-1982") {
+  if (V01_FIXTURE_WORK_IDS.has(work.id)) {
     for (const axisId of AXIS_IDS) {
       if (!seenAxes.has(axisId)) {
         addDiagnostic(diagnostics, {
@@ -4537,7 +4544,7 @@ function validatePhysicsAnnotations(
           recordId: work.id,
           code: "ANNOTATION_AXIS_COVERAGE_INCOMPLETE",
           fieldPath: "/annotations",
-          message: `Arnett fixture requires an assessment for axis ${axisId}.`,
+          message: `The V0.1 fixture profile requires an assessment for axis ${axisId}.`,
           relatedIds: [axisId],
         });
       }

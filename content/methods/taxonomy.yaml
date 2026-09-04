@@ -16,6 +16,28 @@ method_families:
     review_provenance:
       actor_id: actor:human-curator
       recorded_at: "2026-09-04T12:30:31Z"
+  - id: method-family:numerical-modeling
+    label: Numerical modeling
+    aliases: [computational modeling]
+    status: active
+    definition: Investigative practice based on numerically solving a discretized physical model.
+    examples: [Solving a time-dependent radiative-diffusion equation on discrete spatial and temporal grids.]
+    counterexamples: [Calling a model semi-analytical without identifying a concrete numerical procedure.]
+    boundary_notes: The family describes the broad computational practice; the discretization and solver belong to a canonical technique.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T13:18:00Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T22:15:06Z" }
+  - id: method-family:model-data-parameter-estimation
+    label: Model-data parameter estimation
+    aliases: [parameter fitting]
+    status: active
+    definition: Investigative practice that compares parameterized model outputs with data to identify parameter choices compatible with the observations.
+    examples: [Fitting model light curves to observed photometry under stated physical priors.]
+    counterexamples: [Numerically evolving a diffusion equation without comparing its output with observations.]
+    boundary_notes: The family does not by itself claim a likelihood analysis, posterior distribution, uncertainty calibration, sampler, optimizer, or numerical forward solver.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T13:18:10Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T22:15:06Z" }
 techniques:
   - id: technique:coupled-pressure-balance-model
     label: Coupled pressure-balance model
@@ -62,3 +84,27 @@ techniques:
     curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T10:15:20Z" }
     review_state: reviewed
     review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
+  - id: technique:crank-nicolson-finite-difference
+    label: Crank-Nicolson finite-difference scheme
+    aliases: [Crank-Nicolson discretization]
+    status: active
+    family_ids: [method-family:numerical-modeling]
+    definition: A time-centered finite-difference technique that advances a discretized evolution equation through an implicit linear solve.
+    examples: [Evolving the TransFit radiative-diffusion equation on uniform grids with a tridiagonal solve at each time step.]
+    counterexamples: [Describing a framework as semi-analytical without specifying its discrete evolution scheme.]
+    boundary_notes: This identifies the concrete numerical technique, not the physical diffusion process or the framework's model character.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T13:18:20Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T22:15:06Z" }
+  - id: technique:forward-model-light-curve-fitting
+    label: Forward-model light-curve fitting
+    aliases: [forward light-curve parameter fitting]
+    status: active
+    family_ids: [method-family:model-data-parameter-estimation]
+    definition: A technique that varies or selects physical model parameters so generated light curves can be compared with observed time-series photometry.
+    examples: [Fitting TransFit outputs to observed bolometric light curves under physical priors.]
+    counterexamples: [Plotting a predicted light curve without a data-comparison and parameter-constraint workflow.]
+    boundary_notes: The technique names the model-data fitting workflow; it does not imply a complete posterior inference, duplicate the numerical solver, encode model character, or contain the fitted physical quantities.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T13:18:30Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T22:15:06Z" }

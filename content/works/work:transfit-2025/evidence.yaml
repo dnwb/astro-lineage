@@ -1,0 +1,114 @@
+work_id: work:transfit-2025
+evidence:
+  - id: evidence:transfit-abstract
+    version_id: version:transfit-2025-arxiv-v1
+    source_url: https://arxiv.org/abs/2505.13825v1
+    locator: { type: section, section: Abstract }
+    excerpt: This paper introduces TransFit, a novel framework that numerically solves a generalized energy conservation equation, explicitly incorporating time-dependent radiative diffusion, continuous radioactive or central engine heating, and ejecta expansion dynamics.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T13:11:00Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T22:15:06Z" }
+  - id: evidence:transfit-physical-model
+    version_id: version:transfit-2025-arxiv-v1
+    source_url: https://arxiv.org/abs/2505.13825v1
+    locator: { type: section, section: Model }
+    excerpt: This deposited energy subsequently radiates by diffusing through the optically thick, expanding ejecta, undergoing adiabatic losses before emerging at the photosphere as observable emission.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T13:11:10Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T22:15:06Z" }
+  - id: evidence:transfit-local-heating-source
+    version_id: version:transfit-2025-arxiv-v1
+    source_url: https://arxiv.org/abs/2505.13825v1
+    locator: { type: section, section: Model }
+    excerpt: Here, the left-hand side represents the time derivative of the energy density, the first term on the right-hand side corresponds to the radial diffusion, and the second term represents a source term accounting for local heating.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T16:01:00Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T22:15:06Z" }
+  - id: evidence:transfit-central-boundary-input
+    version_id: version:transfit-2025-arxiv-v1
+    source_url: https://arxiv.org/abs/2505.13825v1
+    locator: { type: section, section: Boundary Conditions }
+    excerpt: For supernovae with a centrally located energy source, such as magnetar spin-down or fallback accretion, the heating arises from the innermost region of the ejecta. In this scenario, the radiative flux at the inner boundary depends on the central heating rate.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T16:01:10Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T22:15:06Z" }
+  - id: evidence:transfit-density-evolution
+    version_id: version:transfit-2025-arxiv-v1
+    source_url: https://arxiv.org/abs/2505.13825v1
+    locator: { type: section, section: Model }
+    excerpt: Under homologous expansion, the ejecta density is given by rho(r,t) = rho_0 (R_0 / R_max)^3 eta_ej(x), where the factor (R_0 / R_max)^3 accounts for the expansion.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T16:01:15Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T22:15:06Z" }
+  - id: evidence:transfit-optical-depth-evolution
+    version_id: version:transfit-2025-arxiv-v1
+    source_url: https://arxiv.org/abs/2505.13825v1
+    locator: { type: section, section: Initial Conditions }
+    excerpt: Due to the homologous expansion, the optical depth decreases over time according to tau(t) = tau_0 (R_0 / R_max)^2.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T16:01:20Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T22:15:06Z" }
+  - id: evidence:transfit-expansion-energy-conversion
+    version_id: version:transfit-2025-arxiv-v1
+    source_url: https://arxiv.org/abs/2505.13825v1
+    locator: { type: section, section: Initial Conditions }
+    excerpt: During adiabatic, homologous expansion, the thermal energy evolves as E_Th(t) = E_Th,in (R_0 / R_max), gradually converting into kinetic energy.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T16:01:30Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T22:15:06Z" }
+  - id: evidence:transfit-crank-nicolson
+    version_id: version:transfit-2025-arxiv-v1
+    source_url: https://arxiv.org/abs/2505.13825v1
+    locator: { type: section, section: Appendix B - Numerical Implementation of Time-Dependence Radiation Diffusion }
+    excerpt: The Crank-Nicolson scheme is a finite difference method commonly used for numerically solving partial differential equations, especially in heat conduction problems.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T13:11:20Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T22:15:06Z" }
+  - id: evidence:transfit-input-parameters
+    version_id: version:transfit-2025-arxiv-v1
+    source_url: https://arxiv.org/abs/2505.13825v1
+    locator: { type: section, section: Discussion and Conclusions }
+    excerpt: Systematic exploration of ejecta mass, kinetic energy, opacity, initial thermal reservoir, progenitor radius, and Nickel-56 mixing reproduces the qualitative trends seen in detailed simulations.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T13:11:30Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T22:15:06Z" }
+  - id: evidence:transfit-fit-workflow
+    version_id: version:transfit-2025-arxiv-v1
+    source_url: https://arxiv.org/abs/2505.13825v1
+    locator: { type: section, section: Apply TransFit for SN 1993J and SN 2011kl }
+    excerpt: For each case, we compile published bolometric light curves and adopt distance and extinction estimates from the literature before fitting these data with identical priors on key physical parameters—ejecta mass, kinetic energy, opacity, and heating source.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T13:11:40Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T22:15:06Z" }
+  - id: evidence:transfit-fit-results
+    version_id: version:transfit-2025-arxiv-v1
+    source_url: https://arxiv.org/abs/2505.13825v1
+    locator: { type: figure, section: Apply TransFit for SN 1993J and SN 2011kl, figure: "11" }
+    excerpt: "Bolometric light-curve fits for SN 1993J (left) and SN 2011kl (right). Observations (circles with error bars) are compared to three theoretical models: TransFit (solid blue), the Arnett model (dashed orange), and the one-zone model (dotted green)."
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T13:11:50Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T22:15:06Z" }
+  - id: evidence:transfit-discussion-inference
+    version_id: version:transfit-2025-arxiv-v1
+    source_url: https://arxiv.org/abs/2505.13825v1
+    locator: { type: section, section: Discussion and Conclusions }
+    excerpt: These early observations allow us to track the luminosity evolution immediately after shock breakout and to place tight constraints on the progenitor radius, ejecta mass, and initial thermal energy.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T13:12:00Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T22:15:06Z" }
+  - id: evidence:transfit-multiband-output
+    version_id: version:transfit-2025-arxiv-v1
+    source_url: https://arxiv.org/abs/2505.13825v1
+    locator: { type: figure, section: SN 2011kl, figure: "12" }
+    excerpt: "Theoretical light-curve and temperature evolution. Top: Absolute magnitudes in the u, g, r, i, and z bands (offset vertically for clarity) as a function of time."
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T13:12:10Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T22:15:06Z" }
+  - id: evidence:transfit-arnett-law
+    version_id: version:transfit-2025-arxiv-v1
+    source_url: https://arxiv.org/abs/2505.13825v1
+    locator: { type: section, section: Discussion and Conclusions }
+    excerpt: Our results show that when heating is centrally concentrated or spatially stratified, this assumption breaks down and Arnett's Law systematically underestimates peak luminosities.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T13:12:20Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T22:15:06Z" }

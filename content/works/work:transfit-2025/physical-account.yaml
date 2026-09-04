@@ -1,0 +1,134 @@
+work_id: work:transfit-2025
+stages:
+  - { id: stage:transfit-radioactive-reservoir, annotation_id: annotation:transfit-energy-reservoir, label: Radioactive-decay energy reservoir }
+  - { id: stage:transfit-engine-reservoir, annotation_id: annotation:transfit-energy-reservoir, label: Central-engine energy reservoir }
+  - { id: stage:transfit-radioactive-input, annotation_id: annotation:transfit-energy-transfer, label: Distributed or local radioactive heating input }
+  - { id: stage:transfit-engine-input, annotation_id: annotation:transfit-energy-transfer, label: Central-boundary engine energy input }
+  - { id: stage:transfit-radiation-energy-field, annotation_id: annotation:transfit-energy-transfer, label: Ejecta radiation and internal-energy field }
+  - { id: stage:transfit-homologous-expansion, annotation_id: annotation:transfit-dynamics, label: Homologous ejecta expansion }
+  - { id: stage:transfit-density-optical-depth, annotation_id: annotation:transfit-dynamics, label: Density and optical-depth evolution }
+  - { id: stage:transfit-expansion-work, annotation_id: annotation:transfit-energy-transfer, label: Expansion-work energy transfer }
+  - { id: stage:transfit-mechanical-energy, annotation_id: annotation:transfit-dynamics, label: Mechanical and kinetic energy of the ejecta }
+  - { id: stage:transfit-radiative-diffusion, annotation_id: annotation:transfit-transport-process, label: Time-dependent radiative diffusion }
+  - { id: stage:transfit-photospheric-emission, annotation_id: annotation:transfit-emission-process, label: Photospheric photon emission }
+links:
+  - id: causal-link:transfit-radioactivity-drives-local-heating
+    source_stage_id: stage:transfit-radioactive-reservoir
+    target_stage_id: stage:transfit-radioactive-input
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Radioactive decay supplies a time-dependent local or distributed heating source within the ejecta.
+    evidence_ids: [evidence:transfit-abstract, evidence:transfit-local-heating-source]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T13:17:00Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T22:15:06Z" }
+    review_binding: { canonicalization_version: v1, semantic_digest: eef5653c0e226751925d9acb8ddceedafc9f101cea978a0344616c1859a3d0e2 }
+  - id: causal-link:transfit-engine-drives-boundary-input
+    source_stage_id: stage:transfit-engine-reservoir
+    target_stage_id: stage:transfit-engine-input
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: A central engine supplies time-dependent radiative energy through the inner boundary without being modeled as distributed ejecta deposition.
+    evidence_ids: [evidence:transfit-abstract, evidence:transfit-central-boundary-input]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T13:17:10Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T22:15:06Z" }
+    review_binding: { canonicalization_version: v1, semantic_digest: ec812a676fe4026738a0688d9afe4000eefa9598fd7425e37dfc20fd8ff476e2 }
+  - id: causal-link:transfit-radioactive-input-supplies-energy-budget
+    source_stage_id: stage:transfit-radioactive-input
+    target_stage_id: stage:transfit-radiation-energy-field
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: The local radioactive source term supplies the evolving ejecta radiation and internal-energy budget.
+    evidence_ids: [evidence:transfit-local-heating-source, evidence:transfit-physical-model]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T13:17:20Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T22:15:06Z" }
+    review_binding: { canonicalization_version: v1, semantic_digest: 60acbd72800ce86c9746072f100ffe65b71c7ebd2ed0054386f65de6d48db1c1 }
+  - id: causal-link:transfit-engine-input-supplies-energy-budget
+    source_stage_id: stage:transfit-engine-input
+    target_stage_id: stage:transfit-radiation-energy-field
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: The central-boundary radiative flux supplies the same evolving ejecta radiation and internal-energy budget through a spatially distinct input mechanism.
+    evidence_ids: [evidence:transfit-central-boundary-input, evidence:transfit-physical-model]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T13:17:25Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T22:15:06Z" }
+    review_binding: { canonicalization_version: v1, semantic_digest: aea8b306335e2459c605b7cd5dd1b98f527f0b22fbf69e6f034f06a05fdc9bf5 }
+  - id: causal-link:transfit-energy-field-enables-diffusion
+    source_stage_id: stage:transfit-radiation-energy-field
+    target_stage_id: stage:transfit-radiative-diffusion
+    relation: enables
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: The time-dependent radiative-diffusion calculation evolves energy already supplied to the ejecta radiation and internal-energy budget.
+    evidence_ids: [evidence:transfit-physical-model, evidence:transfit-crank-nicolson]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T16:02:00Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T22:15:06Z" }
+    review_binding: { canonicalization_version: v1, semantic_digest: 879aac92f51f04ba1862130545fddacad55373f960c70e7490c53c2fdb58a6f4 }
+  - id: causal-link:transfit-expansion-drives-density-optical-depth
+    source_stage_id: stage:transfit-homologous-expansion
+    target_stage_id: stage:transfit-density-optical-depth
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Homologous expansion lowers the ejecta density and causes its optical depth to decrease with time.
+    evidence_ids: [evidence:transfit-density-evolution, evidence:transfit-optical-depth-evolution]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T16:02:10Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T22:15:06Z" }
+    review_binding: { canonicalization_version: v1, semantic_digest: f7b39a0c85e873d82ea26494f85b6ce18cf7006f65192ea73577539c44d8f39a }
+  - id: causal-link:transfit-optical-depth-modulates-diffusion
+    source_stage_id: stage:transfit-density-optical-depth
+    target_stage_id: stage:transfit-radiative-diffusion
+    relation: modulates
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: The evolving density and optical depth set how radiation diffuses through the expanding ejecta and when it can escape.
+    evidence_ids: [evidence:transfit-physical-model, evidence:transfit-optical-depth-evolution]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T16:02:20Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T22:15:06Z" }
+    review_binding: { canonicalization_version: v1, semantic_digest: b77c865d3484ec5f023bcae2b143658090e305b36935aef6956eebaf48d70acc }
+  - id: causal-link:transfit-energy-field-drives-expansion-work
+    source_stage_id: stage:transfit-radiation-energy-field
+    target_stage_id: stage:transfit-expansion-work
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Internal radiation and thermal energy perform pressure-volume work during homologous expansion.
+    evidence_ids: [evidence:transfit-physical-model, evidence:transfit-expansion-energy-conversion]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T16:02:30Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T22:15:06Z" }
+    review_binding: { canonicalization_version: v1, semantic_digest: 34693aa6bddd3b49762aa78a6adf832000d695fb94dc44c0a419f89d7e1cb13b }
+  - id: causal-link:transfit-expansion-work-produces-mechanical-energy
+    source_stage_id: stage:transfit-expansion-work
+    target_stage_id: stage:transfit-mechanical-energy
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Expansion work transfers thermal or radiation energy into the kinetic-energy budget of the ejecta.
+    evidence_ids: [evidence:transfit-physical-model, evidence:transfit-expansion-energy-conversion]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T16:02:40Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T22:15:06Z" }
+    review_binding: { canonicalization_version: v1, semantic_digest: 5ad5a7e85f3fb76f438c5b8ef6a9e82fe4c327fa3fd04d978ec0215e61c600cd }
+  - id: causal-link:transfit-diffusion-produces-emission
+    source_stage_id: stage:transfit-radiative-diffusion
+    target_stage_id: stage:transfit-photospheric-emission
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Radiative diffusion through optically thick ejecta produces the escaping photospheric emission represented by the model.
+    evidence_ids: [evidence:transfit-physical-model]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T13:17:30Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T22:15:06Z" }
+    review_binding: { canonicalization_version: v1, semantic_digest: 2c94f03f59988299b1070cac9874111ce80076bfee8320122dfb4d343438b71c }

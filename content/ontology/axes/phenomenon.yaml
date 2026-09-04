@@ -42,3 +42,14 @@ terms:
     curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T10:15:10Z" }
     review_state: reviewed
     review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
+  - id: term:transient-light-curve-evolution
+    label: Transient light-curve evolution
+    aliases: [luminous-transient light-curve evolution]
+    status: active
+    definition: Time-dependent brightness evolution of a luminous transient modeled across its rise and decline.
+    examples: [Bolometric and multiband light-curve evolution of supernovae fitted with a diffusion model.]
+    counterexamples: [A numerical discretization used to compute the light curve.]
+    boundary_notes: This is the phenomenon under study, not the measured light-curve form, the transport process, or the fitting technique.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T13:18:40Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T22:15:06Z" }

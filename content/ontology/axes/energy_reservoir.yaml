@@ -31,3 +31,14 @@ terms:
     review_provenance:
       actor_id: actor:human-curator
       recorded_at: "2026-09-04T12:30:31Z"
+  - id: term:central-engine-energy-reservoir
+    label: Central-engine energy reservoir
+    aliases: [engine-supplied transient heating]
+    status: active
+    definition: Energy made available by a central engine to power a transient ejecta system.
+    examples: [Continuous engine heating used as an input to an expanding-ejecta diffusion model.]
+    counterexamples: [Jet power assigned specifically to a relativistic outflow.]
+    boundary_notes: This reservoir does not assume a jet, a deposition geometry, or a particular injection boundary; those belong to energy-transfer assignments.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T13:19:30Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T22:15:06Z" }

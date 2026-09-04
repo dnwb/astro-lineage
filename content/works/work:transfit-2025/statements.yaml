@@ -1,0 +1,44 @@
+work_id: work:transfit-2025
+statements:
+  - id: statement:transfit-time-dependent-diffusion-framework
+    kind: result
+    basis: explicit
+    lifecycle: maintained
+    canonical_text: TransFit numerically solves a generalized energy-conservation problem with time-dependent radiative diffusion, continuous heating, and ejecta expansion.
+    attestations:
+      - version_id: version:transfit-2025-arxiv-v1
+        evidence_ids: [evidence:transfit-abstract, evidence:transfit-crank-nicolson]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T13:16:00Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T22:15:06Z" }
+    review_binding:
+      canonicalization_version: v1
+      semantic_digest: 504c4bfefa3ea14c9d689b4d6558bec5c6c795a3024be3b9b06c15bc3a5407c0
+  - id: statement:transfit-supernova-light-curve-fits
+    kind: result
+    basis: explicit
+    lifecycle: maintained
+    canonical_text: The Work fits observed bolometric light curves of SN 1993J and SN 2011kl with its time-dependent diffusion framework under physical priors.
+    attestations:
+      - version_id: version:transfit-2025-arxiv-v1
+        evidence_ids: [evidence:transfit-fit-workflow, evidence:transfit-fit-results]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T13:16:10Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T22:15:06Z" }
+    review_binding:
+      canonicalization_version: v1
+      semantic_digest: acf3b49ad6d193dd94ee0cb7da5ed6458f1d87c6d8d8ec31ded7b058ec81953a
+  - id: statement:transfit-nonuniform-heating-arnett-law
+    kind: claim
+    basis: explicit
+    lifecycle: maintained
+    canonical_text: Nonuniform heating can cause Arnett's Law to underestimate transient peak luminosity.
+    attestations:
+      - version_id: version:transfit-2025-arxiv-v1
+        evidence_ids: [evidence:transfit-arnett-law]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T13:16:20Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T22:15:06Z" }
+    review_binding:
+      canonicalization_version: v1
+      semantic_digest: 5088eb0172b319418c4fcee98b0b2d98943124f59e79370894ffcf01e0c1c753

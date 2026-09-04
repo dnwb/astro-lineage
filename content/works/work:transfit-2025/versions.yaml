@@ -1,0 +1,44 @@
+work_id: work:transfit-2025
+versions:
+  - id: version:transfit-2025-arxiv-v1
+    kind: arxiv_revision
+    title: "TransFit: An Efficient Framework for Transient Light-Curve Fitting with Time-Dependent Radiative Diffusion"
+    authors:
+      - display_name: Liang-Duan Liu
+      - display_name: Yu-Hao Zhang
+      - display_name: Yun-Wei Yu
+      - display_name: Ze-Xin Du
+      - display_name: Jing-Yao Li
+      - display_name: Guang-Lei Wu
+      - display_name: Zi-Gao Dai
+    release_date:
+      value: "2025-05-20"
+      precision: day
+    arxiv_id: "2505.13825"
+    arxiv_revision: 1
+    access_urls:
+      - kind: arxiv
+        url: https://arxiv.org/abs/2505.13825v1
+    field_sources:
+      /title: [source:arxiv-transfit-2025-20260904-130845z]
+      /authors/0/display_name: [source:arxiv-transfit-2025-20260904-130845z]
+      /authors/1/display_name: [source:arxiv-transfit-2025-20260904-130845z]
+      /authors/2/display_name: [source:arxiv-transfit-2025-20260904-130845z]
+      /authors/3/display_name: [source:arxiv-transfit-2025-20260904-130845z]
+      /authors/4/display_name: [source:arxiv-transfit-2025-20260904-130845z]
+      /authors/5/display_name: [source:arxiv-transfit-2025-20260904-130845z]
+      /authors/6/display_name: [source:arxiv-transfit-2025-20260904-130845z]
+      /release_date/value: [source:arxiv-transfit-2025-20260904-130845z]
+      /release_date/precision: [source:arxiv-transfit-2025-20260904-130845z]
+      /arxiv_id: [source:arxiv-transfit-2025-20260904-130845z]
+      /arxiv_revision: [source:arxiv-transfit-2025-20260904-130845z]
+      /access_urls/0/kind: [source:arxiv-transfit-2025-20260904-130845z]
+      /access_urls/0/url: [source:arxiv-transfit-2025-20260904-130845z]
+bibliographic_sources:
+  - id: source:arxiv-transfit-2025-20260904-130845z
+    provider: arxiv
+    record_id: "2505.13825"
+    source_url: https://export.arxiv.org/api/query?id_list=2505.13825
+    retrieved_at: 2026-09-04T13:08:45Z
+publication_relations: []
+bibliographic_discrepancies: []

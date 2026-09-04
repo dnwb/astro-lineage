@@ -64,3 +64,36 @@ terms:
     curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T10:15:19Z" }
     review_state: reviewed
     review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
+  - id: term:ejecta-physical-properties
+    label: Ejecta physical properties
+    aliases: [ejecta mass energy and opacity]
+    status: active
+    definition: Model parameters describing ejecta mass, kinetic or thermal energy, density structure, and opacity that are explored or fitted against transient data.
+    examples: [Finding ejecta mass, kinetic energy, and opacity values compatible with an observed transient light curve.]
+    counterexamples: [A measured bolometric light curve used as input to the fit.]
+    boundary_notes: This term identifies model-derived physical properties; it does not assert a full posterior analysis, store fitted values, or describe the measured signal form.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T13:18:50Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T22:15:06Z" }
+  - id: term:progenitor-radius
+    label: Progenitor radius
+    aliases: [initial stellar radius]
+    status: active
+    definition: The pre-expansion source radius treated as a model parameter informed by early transient light-curve evolution.
+    examples: [Finding a progenitor-radius value compatible with early observations in a diffusion-model fit.]
+    counterexamples: [The angular size directly measured in an image.]
+    boundary_notes: This is a model-derived source property, not a claim of posterior inference, a progenitor-system classification, or an observable form.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T13:19:00Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T22:15:06Z" }
+  - id: term:heating-source-parameters
+    label: Heating-source parameters
+    aliases: [radioactive and central-engine heating parameters]
+    status: active
+    definition: Model parameters describing the amplitude, distribution, and time dependence of radioactive or central-engine energy input.
+    examples: [Finding a continuous central-engine heating history compatible with a fitted transient light curve.]
+    counterexamples: [The photon magnitudes recorded by a survey.]
+    boundary_notes: This term names model-derived heating properties without claiming a complete posterior analysis or collapsing the energy reservoir, transfer mechanism, or fitting technique.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T13:19:10Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T22:15:06Z" }

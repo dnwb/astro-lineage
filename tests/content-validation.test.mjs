@@ -33,7 +33,7 @@ async function copyContent() {
   return { temporaryRoot, contentRoot };
 }
 
-test("the production snapshot keeps the frozen canonical layout with visible Works and Research Line", async () => {
+test("the production snapshot keeps the frozen canonical layout across canonical Works", async () => {
   const snapshot = await loadCanonicalContent(productionContent);
 
   assert.deepEqual(snapshot.manifest, {
@@ -45,24 +45,32 @@ test("the production snapshot keeps the frozen canonical layout with visible Wor
   assert(workIds.includes("work:arnett-1982"));
   assert(workIds.includes("work:bromberg-2011"));
   assert(workIds.includes("work:zhu-2021"));
+  assert(workIds.includes("work:transfit-2025"));
   assert.deepEqual(snapshot.scientificEdges, []);
   assert.deepEqual(
     snapshot.researchLines.map(({ id }) => id),
     [
       "research-line:central-engines",
       "research-line:dense-environment-multimessenger",
+      "research-line:explosive-transients-csm",
     ],
   );
   assert.deepEqual(snapshot.learningPaths, []);
   assert.deepEqual(snapshot.axes.map((axis) => axis.id), AXIS_IDS);
   assert.deepEqual(
     snapshot.methods.method_families.map(({ id }) => id),
-    ["method-family:analytical-modeling"],
+    [
+      "method-family:analytical-modeling",
+      "method-family:numerical-modeling",
+      "method-family:model-data-parameter-estimation",
+    ],
   );
   const techniqueIds = snapshot.methods.techniques.map(({ id }) => id);
   assert(techniqueIds.includes("technique:reduction-to-quadrature"));
   assert(techniqueIds.includes("technique:coupled-pressure-balance-model"));
   assert(techniqueIds.includes("technique:detector-effective-area-folding"));
+  assert(techniqueIds.includes("technique:crank-nicolson-finite-difference"));
+  assert(techniqueIds.includes("technique:forward-model-light-curve-fitting"));
   assert(snapshot.discovery.files.includes("content/works/work:bromberg-2011/work.yaml"));
   assert(snapshot.discovery.files.every((file) => !file.startsWith("generated/")));
 });

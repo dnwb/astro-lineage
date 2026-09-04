@@ -1,0 +1,31 @@
+line_id: research-line:explosive-transients-csm
+reader_state: visible
+title: Explosive Transients and CSM Interaction
+scientific_question: How is explosive-ejecta energy transferred into radiation, including through expansion, diffusion, and circumstellar interaction?
+physical_structure:
+  - outflow
+  - energy_transfer
+  - energy_dissipation
+  - transport_process
+  - observable
+  - inference_target
+memberships:
+  - id: membership:explosive-transients-csm-transfit-2025
+    work_id: work:transfit-2025
+    reading_roles:
+      - method
+    editorial_anchor: true
+    reason: This Work provides a reusable time-dependent diffusion and light-curve fitting method for explosive transients, without requiring every application to include CSM interaction.
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-04T13:19:30Z
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T22:15:06Z" }
+    review_binding:
+      canonicalization_version: v1
+      semantic_digest: 1c2e2d4762eceafd5d3409ba75f5fb0639d9cce4bdb31e8b6775ed50858ad8d1
+visibility_approvals:
+  - profile_id: v0.1-default
+    visibility_digest: 0f9eaeaa2a50124f217382aa3529d10760a22f0df79706f98aae044a31732501
+    actor_id: actor:human-curator
+    approved_at: "2026-09-04T22:15:06Z"

@@ -1,0 +1,178 @@
+work_id: work:transfit-2025
+annotations:
+  - id: annotation:transfit-progenitor-system
+    axis: progenitor_system
+    assessment: { state: unknown, values: [] }
+    interpretive_risk: descriptive
+    reason: The Work fits progenitor-sensitive light curves but does not establish one progenitor-system identity across its transient applications.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T13:13:00Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T22:15:06Z" }
+  - id: annotation:transfit-central-object
+    axis: central_object
+    assessment: { state: unknown, values: [] }
+    interpretive_risk: descriptive
+    reason: Radioactive and central-engine heating are alternative inputs, and the Work does not determine one central-object identity.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T13:13:10Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T22:15:06Z" }
+  - id: annotation:transfit-energy-reservoir
+    axis: energy_reservoir
+    assessment:
+      state: present
+      values:
+        - { term_id: term:radioactive-decay-energy }
+        - { term_id: term:central-engine-energy-reservoir }
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:transfit-abstract, evidence:transfit-physical-model]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T13:13:20Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T22:15:06Z" }
+  - id: annotation:transfit-energy-transfer
+    axis: energy_transfer
+    assessment:
+      state: present
+      values:
+        - { term_id: term:continuous-heating-input }
+        - { term_id: term:expansion-work-energy-transfer }
+    interpretive_risk: descriptive
+    evidence_ids:
+      - evidence:transfit-local-heating-source
+      - evidence:transfit-central-boundary-input
+      - evidence:transfit-expansion-energy-conversion
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T13:13:30Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T22:15:06Z" }
+  - id: annotation:transfit-outflow
+    axis: outflow
+    assessment: { state: present, values: [{ term_id: term:expanding-ejecta }] }
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:transfit-physical-model]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T13:13:40Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T22:15:06Z" }
+  - id: annotation:transfit-environment
+    axis: environment
+    assessment: { state: unknown, values: [] }
+    interpretive_risk: descriptive
+    reason: The Work does not determine one external circumsource environment across the modeled transients.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T13:13:50Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T22:15:06Z" }
+  - id: annotation:transfit-dynamics
+    axis: dynamics
+    assessment: { state: present, values: [{ term_id: term:homologous-expansion }] }
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:transfit-abstract, evidence:transfit-physical-model]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T13:14:00Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T22:15:06Z" }
+  - id: annotation:transfit-energy-dissipation
+    axis: energy_dissipation
+    assessment: { state: not_applicable, values: [] }
+    interpretive_risk: descriptive
+    reason: The scoped account represents expansion work as energy transfer and does not assign a separate macroscopic dissipation process.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T13:14:10Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T22:15:06Z" }
+  - id: annotation:transfit-particle-interaction
+    axis: particle_interaction
+    assessment: { state: not_applicable, values: [] }
+    interpretive_risk: descriptive
+    reason: This numerical light-curve slice does not require a curated microscopic particle-interaction identity.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T13:14:20Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T22:15:06Z" }
+  - id: annotation:transfit-emission-process
+    axis: emission_process
+    assessment: { state: present, values: [{ term_id: term:blackbody-spectrum-approximation }] }
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:transfit-physical-model, evidence:transfit-multiband-output]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T13:14:30Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T22:15:06Z" }
+  - id: annotation:transfit-transport-process
+    axis: transport_process
+    assessment: { state: present, values: [{ term_id: term:radiative-diffusion-escape }] }
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:transfit-abstract, evidence:transfit-crank-nicolson]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T13:14:40Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T22:15:06Z" }
+  - id: annotation:transfit-phenomenon
+    axis: phenomenon
+    assessment: { state: present, values: [{ term_id: term:transient-light-curve-evolution }] }
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:transfit-abstract, evidence:transfit-fit-workflow]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T13:14:50Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T22:15:06Z" }
+  - id: annotation:transfit-messenger
+    axis: messenger
+    assessment: { state: present, values: [{ term_id: term:photons }] }
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:transfit-physical-model, evidence:transfit-multiband-output]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T13:15:00Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T22:15:06Z" }
+  - id: annotation:transfit-photon-band
+    axis: photon_band
+    assessment: { state: present, values: [{ term_id: term:optical-band }] }
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:transfit-multiband-output]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T13:15:10Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T22:15:06Z" }
+  - id: annotation:transfit-observable
+    axis: observable
+    assessment: { state: present, values: [{ term_id: term:light-curves }] }
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:transfit-fit-workflow, evidence:transfit-fit-results]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T13:15:20Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T22:15:06Z" }
+  - id: annotation:transfit-inference-target
+    axis: inference_target
+    assessment:
+      state: present
+      values:
+        - { term_id: term:ejecta-physical-properties }
+        - { term_id: term:progenitor-radius }
+        - { term_id: term:heating-source-parameters }
+    interpretive_risk: interpretive
+    risk_escalation:
+      reason: The target quantities are model-derived and require separating fitted physical parameters from measured light curves.
+    reason: The Work uses observed light curves and physical priors to constrain ejecta, progenitor-radius, and heating-source parameters without asserting a complete posterior analysis.
+    evidence_ids:
+      - evidence:transfit-input-parameters
+      - evidence:transfit-fit-workflow
+      - evidence:transfit-discussion-inference
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T13:15:30Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T22:15:06Z" }
+method_annotations:
+  - id: annotation:transfit-method-crank-nicolson
+    technique_id: technique:crank-nicolson-finite-difference
+    basis: explicit
+    reason: Appendix B explicitly identifies the Crank-Nicolson finite-difference scheme used to evolve the discretized diffusion equation.
+    evidence_ids: [evidence:transfit-crank-nicolson]
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T13:20:00Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T22:15:06Z" }
+    review_binding:
+      canonicalization_version: v1
+      semantic_digest: 949020fa4f53f87b0a6807e7e0ffa721db9129c8c9659e317ab3f0bbf3a3ddf2
+  - id: annotation:transfit-method-forward-fitting
+    technique_id: technique:forward-model-light-curve-fitting
+    basis: inferred
+    reason: The Work compares parameterized TransFit outputs with compiled observed bolometric light curves under stated physical priors and reports fitted parameter choices; this supports the curator-inferred technique label without asserting a particular likelihood, posterior, or sampler.
+    evidence_ids:
+      - evidence:transfit-fit-workflow
+      - evidence:transfit-fit-results
+      - evidence:transfit-discussion-inference
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T13:20:10Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T22:15:06Z" }
+    review_binding:
+      canonicalization_version: v1
+      semantic_digest: d525a28bc99fd07c443561d23c94ebd604d600a2a13cc13436c83388d0161bd6

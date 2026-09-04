@@ -33,3 +33,25 @@ terms:
     review_provenance:
       actor_id: actor:human-curator
       recorded_at: "2026-09-04T12:30:31Z"
+  - id: term:continuous-heating-input
+    label: Continuous heating input
+    aliases: [time-dependent ejecta heating input]
+    status: active
+    definition: Time-dependent energy input supplying the ejecta radiation or internal-energy budget, including distributed radioactive deposition and central-boundary engine input.
+    examples: [A local radioactive heating source distributed through ejecta; radiative energy supplied through an inner boundary by a central engine.]
+    counterexamples: [Radiative diffusion that transports energy after it has entered the ejecta energy budget.]
+    boundary_notes: Radioactive decay may act as distributed or local heating deposition, whereas central-engine power may enter as an inner-boundary radiative flux. The shared term asserts continuous input without treating these spatial mechanisms as identical, and remains distinct from the energy reservoir, expansion work, later radiation transport, and observed luminosity.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T13:19:40Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T22:15:06Z" }
+  - id: term:expansion-work-energy-transfer
+    label: Expansion-work energy transfer
+    aliases: [pressure-volume work]
+    status: active
+    definition: Transfer of internal radiation or thermal energy into mechanical expansion through pressure-volume work.
+    examples: [Internal energy doing work as supernova ejecta expand during a radiative-diffusion calculation.]
+    counterexamples: [Irreversible shock heating classified as macroscopic energy dissipation.]
+    boundary_notes: Expansion work transfers energy between internal and bulk mechanical forms; it is not classified here as dissipation or microscopic particle interaction.
+    curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T13:19:50Z" }
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T22:15:06Z" }

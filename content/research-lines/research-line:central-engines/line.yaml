@@ -56,6 +56,20 @@ memberships:
     review_binding:
       canonicalization_version: v1
       semantic_digest: 069b13acc82bfdc22e361a6a90b10bbda4334a545fe515407a7e28e8d785b451
+  - id: membership:central-engines-transfit-2025
+    work_id: work:transfit-2025
+    reading_roles:
+      - method
+    editorial_anchor: false
+    reason: This Work supplies a concrete numerical workflow for connecting central-engine heating to transient light curves, while its broader explosive-transient methods context remains the Editorial Anchor.
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-04T13:19:20Z
+    review_state: reviewed
+    review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T22:15:06Z" }
+    review_binding:
+      canonicalization_version: v1
+      semantic_digest: 4ed4d94516bb0cbc8f0fe2bd8e6b3f94ba979720cdcead7e7466c16c1df152ba
 visibility_approvals:
   - profile_id: v0.1-default
     visibility_digest: c27a83af7592b4097c96e027db3931298c33154c89541cb549730c0788fd9705
@@ -73,3 +87,7 @@ visibility_approvals:
     visibility_digest: 8aabc6481426eac10d84eeb9fde9744688ca981b9b891fb1f8905f1b6b56a856
     actor_id: actor:human-curator
     approved_at: 2026-09-04T12:31:01Z
+  - profile_id: v0.1-default
+    visibility_digest: 1a2e8c35fd391b1f1fb7605e666839d319e6197faf7144cf1cd3d2f4abeee16a
+    actor_id: actor:human-curator
+    approved_at: "2026-09-04T22:15:06Z"

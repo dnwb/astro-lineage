@@ -77,6 +77,14 @@ const PROCESS_AXES = Object.freeze([
   "transport_process",
 ]);
 
+const STRUCTURAL_DIAGNOSTIC_CODES = new Set([
+  "ANNOTATION_ASSESSMENT_INVALID",
+  "ANNOTATION_VALUES_INVALID",
+  "ANNOTATION_VALUE_INVALID",
+  "STATEMENT_ATTESTATIONS_INVALID",
+  "STATEMENT_ATTESTATIONS_REQUIRED",
+]);
+
 function actorMap(actors) {
   if (actors instanceof Map) {
     return actors;
@@ -1177,6 +1185,15 @@ function validateGovernedRecord(
         code: "REVIEW_PROVENANCE_WITHOUT_REVIEW",
         fieldPath: `${details.fieldPath ?? ""}/review_provenance`,
         message: "An unreviewed record cannot carry review provenance.",
+      });
+      valid = false;
+    }
+    if (record?.review_binding !== undefined) {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "REVIEW_BINDING_WITHOUT_REVIEW",
+        fieldPath: `${details.fieldPath ?? ""}/review_binding`,
+        message: "An unreviewed record cannot carry a semantic review binding.",
       });
       valid = false;
     }
@@ -2381,6 +2398,7 @@ function validatePhysicalAccount(
   evidenceById,
   actorsById,
   diagnostics,
+  annotationState = { available: true, annotationIds: new Set() },
 ) {
   const file = `content/works/${work.id}/physical-account.yaml`;
   const envelope = work.files["physical-account.yaml"];
@@ -2388,12 +2406,8 @@ function validatePhysicalAccount(
     return;
   }
 
-  const annotationsEnvelope = work.files["annotations.yaml"];
-  const annotationIds = new Set(
-    (Array.isArray(annotationsEnvelope?.annotations) ? annotationsEnvelope.annotations : [])
-      .filter((annotation) => isObject(annotation) && isNamespacedId(annotation.id, "annotation"))
-      .map((annotation) => annotation.id),
-  );
+  const annotationIds = annotationState.annotationIds ?? new Set();
+  let topologyAvailable = annotationState.available !== false;
   const stageIds = new Set();
   const validStageIds = new Set();
   const duplicateStageIds = new Set();
@@ -2406,6 +2420,7 @@ function validatePhysicalAccount(
       fieldPath: "/stages",
       message: "physical-account.yaml must contain a stages array.",
     });
+    topologyAvailable = false;
   } else {
     for (const [index, stage] of stages.entries()) {
       const details = {
@@ -2419,6 +2434,7 @@ function validatePhysicalAccount(
           code: "CAUSAL_STAGE_INVALID_SHAPE",
           message: "Causal Stages must be mappings.",
         });
+        topologyAvailable = false;
         continue;
       }
 
@@ -2428,6 +2444,9 @@ function validatePhysicalAccount(
         fieldPath: `${details.fieldPath}/id`,
         message: "Causal Stage IDs must use the stage: namespace.",
       }, diagnostics);
+      if (!valid) {
+        topologyAvailable = false;
+      }
       if (stageIds.has(stage.id)) {
         addDiagnostic(diagnostics, {
           ...details,
@@ -2438,9 +2457,13 @@ function validatePhysicalAccount(
         duplicateStageIds.add(stage.id);
         validStageIds.delete(stage.id);
         valid = false;
+        topologyAvailable = false;
       }
       stageIds.add(stage.id);
-      if (typeof stage.annotation_id !== "string" || !annotationIds.has(stage.annotation_id)) {
+      if (
+        annotationState.available !== false &&
+        (typeof stage.annotation_id !== "string" || !annotationIds.has(stage.annotation_id))
+      ) {
         addDiagnostic(diagnostics, {
           ...details,
           code: "REFERENTIAL_CAUSAL_ANNOTATION_MISSING",
@@ -2548,31 +2571,35 @@ function validatePhysicalAccount(
       dagEligible = false;
     }
 
-    const sourceExists = typeof link.source_stage_id === "string"
-      && validStageIds.has(link.source_stage_id);
-    const targetExists = typeof link.target_stage_id === "string"
-      && validStageIds.has(link.target_stage_id);
-    if (!sourceExists) {
-      addDiagnostic(diagnostics, {
-        ...details,
-        code: "REFERENTIAL_CAUSAL_STAGE_MISSING",
-        fieldPath: `${details.fieldPath}/source_stage_id`,
-        message: `Causal Link source Stage does not exist in this Work: ${link.source_stage_id}.`,
-        relatedIds: [link.source_stage_id],
-      });
-      valid = false;
-      dagEligible = false;
-    }
-    if (!targetExists) {
-      addDiagnostic(diagnostics, {
-        ...details,
-        code: "REFERENTIAL_CAUSAL_STAGE_MISSING",
-        fieldPath: `${details.fieldPath}/target_stage_id`,
-        message: `Causal Link target Stage does not exist in this Work: ${link.target_stage_id}.`,
-        relatedIds: [link.target_stage_id],
-      });
-      valid = false;
-      dagEligible = false;
+    let sourceExists = false;
+    let targetExists = false;
+    if (topologyAvailable) {
+      sourceExists = typeof link.source_stage_id === "string"
+        && validStageIds.has(link.source_stage_id);
+      targetExists = typeof link.target_stage_id === "string"
+        && validStageIds.has(link.target_stage_id);
+      if (!sourceExists) {
+        addDiagnostic(diagnostics, {
+          ...details,
+          code: "REFERENTIAL_CAUSAL_STAGE_MISSING",
+          fieldPath: `${details.fieldPath}/source_stage_id`,
+          message: `Causal Link source Stage does not exist in this Work: ${link.source_stage_id}.`,
+          relatedIds: [link.source_stage_id],
+        });
+        valid = false;
+        dagEligible = false;
+      }
+      if (!targetExists) {
+        addDiagnostic(diagnostics, {
+          ...details,
+          code: "REFERENTIAL_CAUSAL_STAGE_MISSING",
+          fieldPath: `${details.fieldPath}/target_stage_id`,
+          message: `Causal Link target Stage does not exist in this Work: ${link.target_stage_id}.`,
+          relatedIds: [link.target_stage_id],
+        });
+        valid = false;
+        dagEligible = false;
+      }
     }
     if (
       typeof link.source_stage_id === "string" &&
@@ -2661,7 +2688,7 @@ function validatePhysicalAccount(
     // Structural and endpoint failures are quarantined from the DAG pass.
     // Review/governance failures keep their diagnostics but do not mask a
     // topological cycle in otherwise well-formed stage endpoints.
-    if (dagEligible && sourceExists && targetExists) {
+    if (topologyAvailable && dagEligible && sourceExists && targetExists) {
       dagLinks.push({ source: link.source_stage_id, target: link.target_stage_id });
     }
   }
@@ -2711,8 +2738,9 @@ function validatePhysicsAnnotations(
   const file = `content/works/${work.id}/annotations.yaml`;
   const envelope = work.files["annotations.yaml"];
   if (!isObject(envelope) || !Array.isArray(envelope.annotations)) {
-    return;
+    return { available: false, annotationIds: new Set() };
   }
+  let structurallyAvailable = true;
   const seenIds = new Set();
   const seenAxes = new Set();
   for (const [index, annotation] of envelope.annotations.entries()) {
@@ -2724,6 +2752,7 @@ function validatePhysicsAnnotations(
         fieldPath: `/annotations/${index}`,
         message: "Physics Annotations must be mappings.",
       });
+      structurallyAvailable = false;
       continue;
     }
     const details = {
@@ -2737,6 +2766,7 @@ function validatePhysicsAnnotations(
       fieldPath: `${details.fieldPath}/id`,
       message: "Annotation IDs must use the annotation: namespace.",
     }, diagnostics)) {
+      structurallyAvailable = false;
       continue;
     }
     if (seenIds.has(annotation.id)) {
@@ -2746,6 +2776,7 @@ function validatePhysicsAnnotations(
         fieldPath: `${details.fieldPath}/id`,
         message: `Annotation ID is duplicated: ${annotation.id}.`,
       });
+      structurallyAvailable = false;
     }
     seenIds.add(annotation.id);
     const axis = axisById.get(annotation.axis);
@@ -2777,6 +2808,7 @@ function validatePhysicsAnnotations(
         message: "Annotation assessment requires one of the four explicit states.",
         relatedIds: ASSESSMENT_STATES,
       });
+      structurallyAvailable = false;
     } else {
       if (!Array.isArray(assessment.values)) {
         addDiagnostic(diagnostics, {
@@ -2785,6 +2817,7 @@ function validatePhysicsAnnotations(
           fieldPath: `${details.fieldPath}/assessment/values`,
           message: "Annotation assessment values must be an array.",
         });
+        structurallyAvailable = false;
       } else {
         if (assessment.state === "present" && assessment.values.length === 0) {
           addDiagnostic(diagnostics, {
@@ -2812,6 +2845,7 @@ function validatePhysicsAnnotations(
               fieldPath: `${details.fieldPath}/assessment/values/${valueIndex}`,
               message: "Each Annotation value requires a term_id.",
             });
+            structurallyAvailable = false;
             continue;
           }
           if (valueIds.has(termId)) {
@@ -2965,6 +2999,7 @@ function validatePhysicsAnnotations(
       }
     }
   }
+  return { available: structurallyAvailable, annotationIds: seenIds };
 }
 
 function validateMethodAnnotations(
@@ -3314,7 +3349,7 @@ function validateWorkRecords(
       actorsById,
       diagnostics,
     );
-    validatePhysicsAnnotations(
+    const physicsAnnotationState = validatePhysicsAnnotations(
       work,
       axisById,
       termsById,
@@ -3342,6 +3377,7 @@ function validateWorkRecords(
       evidenceById,
       actorsById,
       diagnostics,
+      physicsAnnotationState,
     );
 
     for (const [fileName, field] of WORK_CONCERN_COLLECTIONS) {
@@ -3384,7 +3420,10 @@ function hasParseDiagnostic(diagnostics, file) {
 
 function determinePasses(diagnostics, discovery) {
   const isStructural = ({ code }) =>
-    code.startsWith("STRUCTURE_") || code.startsWith("MANIFEST_");
+    code.startsWith("STRUCTURE_") ||
+    code.startsWith("MANIFEST_") ||
+    STRUCTURAL_DIAGNOSTIC_CODES.has(code) ||
+    /(?:INVALID_SHAPE|COLLECTION_INVALID)$/u.test(code);
   const isReferential = ({ code }) => code.startsWith("REFERENTIAL_");
   const structural = diagnostics.some(isStructural);
   const referential = diagnostics.some(isReferential);
@@ -3412,6 +3451,126 @@ function determinePasses(diagnostics, discovery) {
       diagnostic_count: discovery.diagnostics.length,
     },
   };
+}
+
+function scientificAccountEvidenceIds(work) {
+  const evidenceIds = new Set();
+  const statements = work.files["statements.yaml"]?.statements;
+  if (Array.isArray(statements)) {
+    for (const statement of statements) {
+      const attestations = Array.isArray(statement?.attestations)
+        ? statement.attestations
+        : [];
+      for (const attestation of attestations) {
+        const attestationEvidenceIds = Array.isArray(attestation?.evidence_ids)
+          ? attestation.evidence_ids
+          : [];
+        for (const evidenceId of attestationEvidenceIds) {
+          evidenceIds.add(evidenceId);
+        }
+      }
+    }
+  }
+  const links = work.files["physical-account.yaml"]?.links;
+  if (Array.isArray(links)) {
+    for (const link of links) {
+      for (const evidenceId of link?.evidence_ids ?? []) {
+        evidenceIds.add(evidenceId);
+      }
+    }
+  }
+  return evidenceIds;
+}
+
+function resolveScientificAccountEvidence(evidenceIds, evidenceById) {
+  const ids = [...new Set(Array.isArray(evidenceIds) ? evidenceIds : [])];
+  return {
+    evidence_ids: ids,
+    evidence: ids.map((evidenceId) => {
+      const evidence = evidenceById.get(evidenceId);
+      return {
+        id: evidenceId,
+        evidence_id: evidenceId,
+        version_id: evidence?.version_id ?? null,
+        locator: evidence?.locator ?? null,
+      };
+    }),
+  };
+}
+
+function scientificAccountInspection(work, validationStatus) {
+  const evidenceEnvelope = work.files["evidence.yaml"];
+  const evidenceById = new Map(
+    (Array.isArray(evidenceEnvelope?.evidence) ? evidenceEnvelope.evidence : [])
+      .filter((evidence) => isObject(evidence) && typeof evidence.id === "string")
+      .map((evidence) => [evidence.id, evidence]),
+  );
+  const statements = Array.isArray(work.files["statements.yaml"]?.statements)
+    ? work.files["statements.yaml"].statements
+    : [];
+  const account = work.files["physical-account.yaml"];
+  const links = Array.isArray(account?.links) ? account.links : [];
+  return {
+    work_id: work.id,
+    validation_status: validationStatus,
+    statements: statements.filter(isObject).map((statement) => ({
+      id: statement.id ?? null,
+      basis: statement.basis ?? null,
+      reason: statement.reason ?? null,
+      review_state: statement.review_state ?? null,
+      curation_provenance: statement.curation_provenance ?? null,
+      review_provenance: statement.review_provenance ?? null,
+      attestations: Array.isArray(statement.attestations)
+        ? statement.attestations.map((attestation) => ({
+          version_id: attestation?.version_id ?? null,
+          evidence_ids: Array.isArray(attestation?.evidence_ids)
+            ? [...attestation.evidence_ids]
+            : [],
+        }))
+        : [],
+      ...resolveScientificAccountEvidence(
+        (Array.isArray(statement.attestations) ? statement.attestations : [])
+          .flatMap((attestation) =>
+            Array.isArray(attestation?.evidence_ids) ? attestation.evidence_ids : []),
+        evidenceById,
+      ),
+    })),
+    links: links.filter(isObject).map((link) => ({
+      id: link.id ?? null,
+      origin: link.origin ?? null,
+      reason: link.reason ?? null,
+      review_state: link.review_state ?? null,
+      curation_provenance: link.curation_provenance ?? null,
+      review_provenance: link.review_provenance ?? null,
+      source_stage_id: link.source_stage_id ?? null,
+      target_stage_id: link.target_stage_id ?? null,
+      ...resolveScientificAccountEvidence(link.evidence_ids, evidenceById),
+    })),
+  };
+}
+
+function scientificAccountDependencyError(work, diagnostics) {
+  const workPath = `content/works/${work.id}`;
+  const evidenceIds = scientificAccountEvidenceIds(work);
+  const annotationIds = new Set(
+    (Array.isArray(work.files["physical-account.yaml"]?.stages)
+      ? work.files["physical-account.yaml"].stages
+      : [])
+      .filter(isObject)
+      .map((stage) => stage.annotation_id),
+  );
+  return diagnostics.some(({ file, record_id, severity }) => {
+    if (severity !== "error") {
+      return false;
+    }
+    if (file === `${workPath}/evidence.yaml`) {
+      return record_id === work.id || evidenceIds.has(record_id);
+    }
+    if (file === `${workPath}/annotations.yaml`) {
+      return record_id === work.id || annotationIds.has(record_id);
+    }
+    return false;
+  });
 }
 
 function deriveWorkInventory(snapshot, diagnostics) {
@@ -3443,7 +3602,9 @@ function deriveWorkInventory(snapshot, diagnostics) {
         causal_links: Array.isArray(account?.links) ? account.links.length : 0,
         scientific_account_validation_status: scientificAccountDiagnostics.some(
           ({ severity }) => severity === "error",
-        ) ? "invalid" : "valid",
+        ) || scientificAccountDependencyError(work, diagnostics)
+          ? "invalid"
+          : "valid",
       };
     });
 }
@@ -3495,6 +3656,10 @@ export async function validateCanonicalContent(
 
   const canonicalContentDigest = await computeCanonicalContentDigest(snapshot.discovery.root);
   const manifest = snapshot.manifest;
+  const workInventory = deriveWorkInventory(snapshot, diagnostics);
+  const accountStatusByWorkId = new Map(
+    workInventory.map((work) => [work.work_id, work.scientific_account_validation_status]),
+  );
   const report = {
     dataset: "production",
     valid: isValidationValid(diagnostics),
@@ -3536,7 +3701,9 @@ export async function validateCanonicalContent(
         0,
       ),
     },
-    work_inventory: deriveWorkInventory(snapshot, diagnostics),
+    scientific_accounts: snapshot.works.map((work) =>
+      scientificAccountInspection(work, accountStatusByWorkId.get(work.id) ?? "invalid")),
+    work_inventory: workInventory,
     diagnostics,
   };
   return report;
@@ -3544,6 +3711,21 @@ export async function validateCanonicalContent(
 
 function markdownCell(value) {
   return String(value ?? "").replaceAll("|", "\\|").replaceAll("\n", " ");
+}
+
+function scientificAccountEvidenceCell(evidence) {
+  return (evidence ?? [])
+    .map((item) => {
+      const evidenceId = item.id ?? item.evidence_id ?? "";
+      const versionId = item.version_id ?? "unavailable";
+      const locator = item.locator && typeof item.locator === "object"
+        ? Object.entries(item.locator)
+          .map(([key, value]) => `${key}=${value}`)
+          .join(", ")
+        : "locator=unavailable";
+      return `${evidenceId} (${versionId}; ${locator})`;
+    })
+    .join("; ");
 }
 
 export function renderValidationMarkdown(report) {
@@ -3581,6 +3763,36 @@ export function renderValidationMarkdown(report) {
     lines.push(
       `| ${markdownCell(work.work_id)} | ${markdownCell(work.reader_state)} | ${markdownCell(work.validation_status)} | ${markdownCell(work.scientific_statements)} | ${markdownCell(work.causal_stages)} | ${markdownCell(work.causal_links)} | ${markdownCell(work.scientific_account_validation_status)} |`,
     );
+  }
+  lines.push(
+    "",
+    "## Scientific Account Provenance",
+    "",
+    "### Statements",
+    "",
+    "| Work ID | Statement ID | Basis | Review | Evidence (Version / Locator) | Reason | Curation Actor | Review Actor |",
+    "| --- | --- | --- | --- | --- | --- | --- | --- |",
+  );
+  for (const account of report.scientific_accounts ?? []) {
+    for (const statement of account.statements ?? []) {
+      lines.push(
+        `| ${markdownCell(account.work_id)} | ${markdownCell(statement.id)} | ${markdownCell(statement.basis)} | ${markdownCell(statement.review_state)} | ${markdownCell(scientificAccountEvidenceCell(statement.evidence))} | ${markdownCell(statement.reason)} | ${markdownCell(statement.curation_provenance?.actor_id)} | ${markdownCell(statement.review_provenance?.actor_id)} |`,
+      );
+    }
+  }
+  lines.push(
+    "",
+    "### Causal Links",
+    "",
+    "| Work ID | Causal Link ID | Origin | Source Stage | Target Stage | Review | Evidence (Version / Locator) | Reason | Curation Actor | Review Actor |",
+    "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
+  );
+  for (const account of report.scientific_accounts ?? []) {
+    for (const link of account.links ?? []) {
+      lines.push(
+        `| ${markdownCell(account.work_id)} | ${markdownCell(link.id)} | ${markdownCell(link.origin)} | ${markdownCell(link.source_stage_id)} | ${markdownCell(link.target_stage_id)} | ${markdownCell(link.review_state)} | ${markdownCell(scientificAccountEvidenceCell(link.evidence))} | ${markdownCell(link.reason)} | ${markdownCell(link.curation_provenance?.actor_id)} | ${markdownCell(link.review_provenance?.actor_id)} |`,
+      );
+    }
   }
   lines.push("", "## Diagnostics", "");
   if (report.diagnostics.length === 0) {

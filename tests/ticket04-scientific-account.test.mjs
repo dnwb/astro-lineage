@@ -6,7 +6,10 @@ import { test } from "node:test";
 import { parse, stringify } from "yaml";
 
 import { loadCanonicalContent } from "../scripts/content-loader.mjs";
-import { validateCanonicalContent } from "../scripts/content-validator.mjs";
+import {
+  renderValidationMarkdown,
+  validateCanonicalContent,
+} from "../scripts/content-validator.mjs";
 
 const productionContent = new URL("../content/", import.meta.url);
 const arnettId = "work:arnett-1982";
@@ -240,6 +243,50 @@ test("Statement Evidence and attestation ordering are formatting-only changes", 
   assert(!codes(result).has("STATEMENT_REVIEW_BINDING_STALE"));
 });
 
+test("Statement semantic evolution preserves the prior identity and creates a new unreviewed Statement", async () => {
+  const { contentRoot } = await copyContent();
+  const { workRoot, statements } = await readArnett(contentRoot);
+  const prior = findStatement(statements, "statement:arnett-analytic-light-curve-solutions");
+  const evolved = structuredClone(prior);
+  evolved.id = "statement:arnett-analytic-light-curve-solutions-expanded";
+  evolved.canonical_text = `${prior.canonical_text} The later semantic formulation also addresses transparency.`;
+  evolved.review_state = "unreviewed";
+  evolved.curation_provenance.recorded_at = "2026-09-04T06:00:00Z";
+  delete evolved.review_provenance;
+  delete evolved.review_binding;
+  statements.statements.push(evolved);
+  await writeArnett(workRoot, "statements.yaml", statements);
+
+  const result = await validateCanonicalContent(contentRoot);
+  assert.equal(result.valid, true);
+  assert(statements.statements.some(({ id }) => id === prior.id));
+  assert(statements.statements.some(({ id }) => id === evolved.id));
+});
+
+test("unreviewed governed records cannot retain prior review bindings", async () => {
+  for (const [fileName, select] of [
+    ["statements.yaml", ({ statements }) => statements.statements[0]],
+    ["physical-account.yaml", ({ account }) => account.links[0]],
+  ]) {
+    const { contentRoot } = await copyContent();
+    const records = await readArnett(contentRoot);
+    const record = select(records);
+    record.review_state = "unreviewed";
+    delete record.review_provenance;
+    await writeArnett(
+      records.workRoot,
+      fileName,
+      fileName === "statements.yaml" ? records.statements : records.account,
+    );
+
+    const result = await validateCanonicalContent(contentRoot);
+    diagnosticFor(result, "REVIEW_BINDING_WITHOUT_REVIEW", {
+      file: `content/works/${arnettId}/${fileName}`,
+      record_id: record.id,
+    });
+  }
+});
+
 test("Causal Links enforce frozen relations, local endpoints, and non-cascading DAG diagnostics", async () => {
   const { contentRoot } = await copyContent();
   const { workRoot, account } = await readArnett(contentRoot);
@@ -354,4 +401,102 @@ test("validation reports expose stored scientific-account counts and status with
   assert.equal(result.work_inventory[0].causal_links, result.statistics.causal_links);
   assert.equal(result.work_inventory[0].scientific_account_validation_status, "valid");
   assert.deepEqual(snapshot.scientificEdges, []);
+});
+
+test("malformed Annotation and Causal Stage records quarantine dependent checks and pass metadata", async () => {
+  for (const [fileName, mutate, expectedCode] of [
+    [
+      "annotations.yaml",
+      ({ account, annotations }) => {
+        const annotationId = account.stages[0].annotation_id;
+        const annotation = annotations.annotations.find(({ id }) => id === annotationId);
+        assert(annotation);
+        annotation.assessment.values = "not-an-array";
+      },
+      "ANNOTATION_VALUES_INVALID",
+    ],
+    [
+      "physical-account.yaml",
+      ({ account }) => {
+        account.stages[0] = null;
+      },
+      "CAUSAL_STAGE_INVALID_SHAPE",
+    ],
+  ]) {
+    const { contentRoot } = await copyContent();
+    const records = await readArnett(contentRoot);
+    mutate(records);
+    await writeArnett(records.workRoot, fileName, fileName === "annotations.yaml"
+      ? records.annotations
+      : records.account);
+
+    const result = await validateCanonicalContent(contentRoot);
+    assert.equal(result.valid, false);
+    assert.equal(result.passes.structural.status, "partial");
+    assert.equal(result.passes.structural.diagnostic_count, 1);
+    assert.equal(result.passes.referential.status, "skipped");
+    assert.equal(result.passes.referential.diagnostic_count, 0);
+    assert.equal(result.passes.semantic.status, "skipped");
+    assert.equal(result.passes.semantic.diagnostic_count, 0);
+    assert.equal(result.work_inventory[0].scientific_account_validation_status, "invalid");
+    assert.equal(result.diagnostics.filter(({ code }) => code === expectedCode).length, 1);
+    assert(!codes(result).has("REFERENTIAL_CAUSAL_STAGE_MISSING"));
+    assert(!codes(result).has("CAUSAL_ACCOUNT_CYCLE"));
+  }
+});
+
+test("invalid locator on Evidence referenced by the scientific account invalidates its account status", async () => {
+  const { contentRoot } = await copyContent();
+  const { workRoot, evidence } = await readArnett(contentRoot);
+  const referenced = evidence.evidence.find(({ id }) => id === "evidence:arnett-abstract");
+  assert(referenced);
+  referenced.locator.page = 0;
+  await writeArnett(workRoot, "evidence.yaml", evidence);
+
+  const result = await validateCanonicalContent(contentRoot);
+  const diagnostic = diagnosticFor(result, "EVIDENCE_LOCATOR_PAGE_INVALID", {
+    file: `content/works/${arnettId}/evidence.yaml`,
+    record_id: referenced.id,
+    field_path: "/evidence/0/locator/page",
+  });
+  assert(diagnostic);
+  assert.equal(result.work_inventory[0].scientific_account_validation_status, "invalid");
+  assert.equal(result.scientific_accounts[0].statements[0].evidence[0].locator.page, 0);
+});
+
+test("validation reports project scientific-account evidence and provenance into JSON and Markdown views", async () => {
+  const result = await validateCanonicalContent(productionContent);
+  const account = result.scientific_accounts.find(({ work_id: workId }) => workId === arnettId);
+  assert(account);
+  assert.equal(account.validation_status, "valid");
+
+  const statement = account.statements.find(({ id }) =>
+    id === "statement:arnett-radioactive-optical-account");
+  assert(statement);
+  assert.equal(statement.basis, "inferred");
+  assert.equal(statement.review_state, "reviewed");
+  assert.equal(statement.evidence_ids.length, 3);
+  assert(statement.evidence.every(({ version_id, locator }) =>
+    version_id === journalVersionId && locator && typeof locator.type === "string"));
+  assert.equal(statement.curation_provenance.actor_id, "actor:agent-curator");
+  assert.equal(statement.review_provenance.actor_id, "actor:human-curator");
+
+  const link = account.links.find(({ id }) => id === "causal-link:arnett-heating-to-optical-light");
+  assert(link);
+  assert.equal(link.origin, "inferred");
+  assert.equal(link.source_stage_id, "stage:arnett-decay-heating");
+  assert.equal(link.target_stage_id, "stage:arnett-modeled-optical-light");
+  assert(link.evidence.some(({ id }) => id === "evidence:arnett-ubv"));
+  assert.equal(link.curation_provenance.actor_id, "actor:agent-curator");
+  assert.equal(link.review_provenance.actor_id, "actor:human-curator");
+
+  const markdown = renderValidationMarkdown(result);
+  assert.match(markdown, /## Scientific Account Provenance/);
+  assert.match(markdown, /### Statements/);
+  assert.match(markdown, /### Causal Links/);
+  assert.match(markdown, /statement:arnett-radioactive-optical-account/);
+  assert.match(markdown, /evidence:arnett-radioactive-diffusion \(version:arnett-1982-journal;/);
+  assert.match(markdown, /type=equation, page=786, section=II\(b\)/);
+  assert.match(markdown, /causal-link:arnett-heating-to-optical-light/);
+  assert.match(markdown, /actor:human-curator/);
 });

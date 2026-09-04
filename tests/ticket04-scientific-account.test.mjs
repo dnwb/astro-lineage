@@ -617,4 +617,15 @@ test("validation reports project scientific-account evidence and provenance into
   assert.match(markdown, /\| drives \| inferred \| synthetic \|/);
   assert.match(markdown, /2026-09-04T05:20:20Z/);
   assert.match(markdown, /actor:human-curator/);
+
+  const markdownLines = markdown.split("\n");
+  for (const headerPrefix of ["| Work ID | Statement ID |", "| Work ID | Causal Link ID |"]) {
+    const headerIndex = markdownLines.findIndex((line) => line.startsWith(headerPrefix));
+    assert(headerIndex >= 0, `missing Markdown table header ${headerPrefix}`);
+    const widths = markdownLines
+      .slice(headerIndex, headerIndex + 3)
+      .map((line) => line.split("|").length - 2);
+    assert.equal(widths[1], widths[0], `${headerPrefix} delimiter width`);
+    assert.equal(widths[2], widths[0], `${headerPrefix} data width`);
+  }
 });

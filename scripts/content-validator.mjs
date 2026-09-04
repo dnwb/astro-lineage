@@ -3836,7 +3836,7 @@ function scientificAccountEvidenceCell(evidence) {
     .map((item) => {
       const evidenceId = item.id ?? item.evidence_id ?? "";
       const versionId = item.version_id ?? "unavailable";
-      const sourceUrl = item.source_url ?? "source_url=unavailable";
+      const sourceUrl = item.source_url ?? "unavailable";
       const locator = item.locator && typeof item.locator === "object"
         ? Object.entries(item.locator)
           .map(([key, value]) => `${key}=${value}`)
@@ -3890,7 +3890,7 @@ export function renderValidationMarkdown(report) {
     "### Statements",
     "",
     "| Work ID | Statement ID | Kind | Basis | Lifecycle | Review | Canonical Text | Evidence (Version / Locator / Source) | Reason | Curation Actor | Curation Time | Review Actor | Review Time |",
-    "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
+    "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
   );
   for (const account of report.scientific_accounts ?? []) {
     for (const statement of account.statements ?? []) {
@@ -3918,7 +3918,7 @@ export function renderValidationMarkdown(report) {
     "### Causal Links",
     "",
     "| Work ID | Causal Link ID | Relation | Origin | Interpretive Risk | Source Stage | Target Stage | Review | Evidence (Version / Locator / Source) | Reason | Curation Actor | Curation Time | Review Actor | Review Time |",
-    "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
+    "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
   );
   for (const account of report.scientific_accounts ?? []) {
     for (const link of account.links ?? []) {

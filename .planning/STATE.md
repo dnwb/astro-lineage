@@ -116,6 +116,6 @@ prose.
 
 ## Session continuity
 
-Resume with Ticket 02 from the approved local frontier. Read the four
+Resume with Ticket 03 from the approved local frontier. Read the four
 `.planning` documents first, preserve requirement IDs, and update traceability
 only when phase evidence is verified.

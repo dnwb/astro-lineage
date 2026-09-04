@@ -126,11 +126,11 @@ The matrix is intentionally initialized with no implementation evidence. During 
 | V01-PROD-002 | Fixture manifest and five-Work content review | Pending | — |
 | V01-PROD-003 | Completed Stored + Validated + Rendered coverage matrix | Pending | — |
 | V01-PROD-004 | Scope audit against V0.1 stack and exclusions | Pending | — |
-| V01-CONT-001 | Closed-world loader test with unknown-entry failure | Pending | — |
-| V01-CONT-002 | Canonical layout and complete-bundle structural validation | Pending | — |
-| V01-CONT-003 | Reproducible generated-index check and loader isolation | Pending | — |
-| V01-CONT-004 | Manifest/schema/profile validation and migration test | Pending | — |
-| V01-CONT-005 | Deterministic digest fixtures and projection-difference test | Pending | — |
+| V01-CONT-001 | Closed-world loader test with unknown-entry failure | Complete — Ticket 02 closed-world discovery test | 2026-09-04 |
+| V01-CONT-002 | Canonical layout and complete-bundle structural validation | Complete — Ticket 02 empty layout and incomplete-bundle test | 2026-09-04 |
+| V01-CONT-003 | Reproducible generated-index check and loader isolation | Partial — Ticket 02 proves loader isolation; generated-index reproduction remains | 2026-09-04 |
+| V01-CONT-004 | Manifest/schema/profile validation and migration test | Partial — Ticket 02 proves manifest contract and unsupported-version failure; migration transformation remains | 2026-09-04 |
+| V01-CONT-005 | Deterministic digest fixtures and projection-difference test | Partial — Ticket 02 proves canonical YAML/Markdown digest; visibility projection difference remains | 2026-09-04 |
 | V01-CONT-006 | ID syntax/uniqueness and opaque-ID regression tests | Pending | — |
 | V01-CONT-007 | Bundle ownership mismatch diagnostics and valid ownership fixtures | Pending | — |
 | V01-WORK-001 | Work/Version identity fixture and cross-version evidence check | Pending | — |
@@ -147,7 +147,7 @@ The matrix is intentionally initialized with no implementation evidence. During 
 | V01-SCI-006 | Lazy statement identity and historical attestation fixtures | Pending | — |
 | V01-SCI-007 | Physical Account DAG branching/convergence fixture | Pending | — |
 | V01-SCI-008 | Causal Link vocabulary and separate-governance fixture | Pending | — |
-| V01-ONTO-001 | Exact 16-axis schema identity and migration guard | Pending | — |
+| V01-ONTO-001 | Exact 16-axis schema identity and migration guard | Partial — Ticket 02 freezes axis IDs/questions; explicit migration test remains | 2026-09-04 |
 | V01-ONTO-002 | Four assessment states, value cardinality, and fixture coverage tests | Pending | — |
 | V01-ONTO-003 | Axis default/escalation and risk-specific Evidence/review fixtures | Pending | — |
 | V01-ONTO-004 | Active technique Method Annotation and explicit/inferred review fixture | Pending | — |
@@ -163,10 +163,10 @@ The matrix is intentionally initialized with no implementation evidence. During 
 | V01-GOV-002 | Actor capability-at-action-time authorization fixtures | Pending | — |
 | V01-GOV-003 | Human-only and agent-independence gate fixtures | Pending | — |
 | V01-VAL-001 | Three validation-layer failures block build | Pending | — |
-| V01-VAL-002 | Structured diagnostic schema, JSON Pointer, and dual reports | Pending | — |
-| V01-VAL-003 | Accumulation, quarantine, pass status, and no-cascade fixtures | Pending | — |
+| V01-VAL-002 | Structured diagnostic schema, JSON Pointer, and dual reports | Complete — Ticket 02 diagnostic/report tests | 2026-09-04 |
+| V01-VAL-003 | Accumulation, quarantine, pass status, and no-cascade fixtures | Partial — Ticket 02 proves malformed YAML quarantine and pass status; cross-record cases remain | 2026-09-04 |
 | V01-VAL-004 | Offline verification and no-refresh dependency check | Pending | — |
-| V01-READ-001 | Frozen routes and draft exclusion smoke test | Pending | — |
+| V01-READ-001 | Frozen routes and draft exclusion smoke test | Partial — Ticket 02 renders empty `/` and `/papers`; remaining routes/draft exclusion remain | 2026-09-04 |
 | V01-READ-002 | Three inspection layers and coverage-matrix render checks | Pending | — |
 | V01-QA-001 | Five-Work fixture audit and real Edge acceptance checks | Pending | — |
 | V01-QA-002 | Synthetic fixture root isolation and exact-code tests | Pending | — |

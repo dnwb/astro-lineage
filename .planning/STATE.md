@@ -1,23 +1,24 @@
 # High-Energy Transient Reading Radar — Project State
 
-> Updated: 2026-09-03
+> Updated: 2026-09-04
 
 ## Current position
 
 - **Stage:** Phase 1 — repository and canonical content foundation
-- **Status:** Ticket 01 complete
-- **Implementation:** started; independent repository and bootstrap application
-  established
+- **Status:** Ticket 02 complete
+- **Implementation:** Phase 1 canonical boundary and empty Stored + Validated +
+  Rendered walking skeleton established
 - **Decision frontier:** closed through Q151; no open domain-model decision is
   blocking migration
-- **Next execution action:** Ticket 02,
-  `.scratch/v0.1-vertical-slice/issues/02-build-empty-stored-validated-rendered-walking-skeleton.md`
+- **Next execution action:** Ticket 03,
+  `.scratch/v0.1-vertical-slice/issues/03-store-and-validate-draft-arnett-work.md`
 
 The repository has completed specification, governance, and authority
-migration. Ticket 01 established the independent Git boundary, locked
-Astro/TypeScript/YAML/Markdown bootstrap, stable npm command names, static
-reader-facing product framing, and bootstrap tests. Canonical content, remote
-setup, and CI setup remain later-ticket work rather than migration failures.
+migration. Ticket 01 established the independent Git boundary and bootstrap
+application. Ticket 02 now provides the closed-world canonical content root,
+empty manifest/ontology/method snapshot, deterministic digest, structured
+validation reports, loader isolation tests, and empty reader shells. Real
+Works, content governance, remote setup, and CI remain later-ticket work.
 
 ## Authority and migration state
 
@@ -98,7 +99,7 @@ CI remain fully offline; external deployment and source refresh are deferred.
 Continue the approved local ticket frontier with:
 
 ```text
-.scratch/v0.1-vertical-slice/issues/02-build-empty-stored-validated-rendered-walking-skeleton.md
+.scratch/v0.1-vertical-slice/issues/03-store-and-validate-draft-arnett-work.md
 ```
 
 The ticket may implement accepted requirements but may not extend the closed

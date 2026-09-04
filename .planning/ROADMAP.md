@@ -1,7 +1,7 @@
 # High-Energy Transient Reading Radar — V0.1 Roadmap
 
 > Status: authority migration complete; Phase 1 execution underway, with
-> Ticket 01 complete and Ticket 02 next (2026-09-03)
+> Tickets 01–02 complete and Ticket 03 next (2026-09-04)
 >
 > This is the high-level delivery map derived from `PROJECT_CONTEXT.md`,
 > `CONTEXT.md`, the ADR set, and `V0.1_EXECUTION_SPEC.md`. It is not a
@@ -110,7 +110,8 @@ reproducible content/loader foundation.
   production discovery.
 
 **Exit evidence:** canonical files can be discovered deterministically and
-loaded without scanning generated or synthetic roots.
+loaded without scanning generated or synthetic roots; the empty snapshot passes
+the structural, reporting, digest, and reader-shell checks in Ticket 02.
 
 ## Phase 2 — Domain records and five-Work vertical slice
 

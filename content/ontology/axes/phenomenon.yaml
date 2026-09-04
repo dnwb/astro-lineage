@@ -2,4 +2,21 @@ id: phenomenon
 label: Phenomenon
 question: What observational event or source class does the Work address?
 default_risk: descriptive
-terms: []
+terms:
+  - id: term:type-i-supernova
+    label: Type I supernova
+    aliases: [Type I SN]
+    status: active
+    definition: A hydrogen-poor supernova phenomenon class addressed by the Work's analytic light-curve model.
+    examples:
+      - Type I supernova light curves modeled across alternative explosion systems.
+    counterexamples:
+      - A photon band such as U, B, or V, which describes an observation channel.
+    boundary_notes: Use as the phenomenon class without encoding a unique progenitor or engine.
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-09-04T04:00:00Z"
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: "2026-09-04T04:05:00Z"

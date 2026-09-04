@@ -23,3 +23,11 @@ actors:
         action: grant
         effective_at: 2026-09-04T03:00:00Z
         reason: V0.1 visibility release gate.
+  - id: actor:agent-curator
+    kind: agent
+    label: V0.1 Agent Curator
+    capability_events:
+      - capability: draft_records
+        action: grant
+        effective_at: 2026-09-04T03:00:00Z
+        reason: V0.1 agent drafting fixture records; Human gates remain required.

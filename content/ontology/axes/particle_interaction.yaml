@@ -2,4 +2,22 @@ id: particle_interaction
 label: Particle interaction
 question: Which microscopic particle reactions transform particle species or distributions?
 default_risk: descriptive
-terms: []
+terms:
+  - id: term:electron-capture-positron-emission
+    label: Electron capture and positron emission
+    aliases: [Ni-Co-Fe decay chain]
+    status: active
+    definition: Microscopic radioactive decay channels including electron capture and positron emission in the nickel-cobalt-iron chain.
+    examples:
+      - Nickel-56 to cobalt-56 to iron-56 decay with electron capture and positron emission.
+    counterexamples:
+      - Diffusion of photons through ejecta, which is a transport process.
+    boundary_notes: Use for particle reactions and species changes, not for the available decay energy or its macroscopic deposition.
+    allowed_functional_roles: [particle_interaction]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-09-04T04:00:00Z"
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: "2026-09-04T04:05:00Z"

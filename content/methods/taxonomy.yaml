@@ -1,2 +1,38 @@
-method_families: []
-techniques: []
+method_families:
+  - id: method-family:analytical-modeling
+    label: Analytical modeling
+    aliases: [analytic modeling]
+    status: active
+    definition: Investigative practice based on deriving a tractable mathematical model and solving its governing relations.
+    examples:
+      - An analytic light-curve model reduced to a quadrature.
+    counterexamples:
+      - MCMC, which is a concrete inference technique rather than a method family.
+    boundary_notes: The family describes the broad practice; concrete techniques belong in the techniques collection.
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-09-04T04:00:00Z"
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: "2026-09-04T04:05:00Z"
+techniques:
+  - id: technique:reduction-to-quadrature
+    label: Reduction to quadrature
+    aliases: [quadrature solution]
+    status: active
+    family_ids:
+      - method-family:analytical-modeling
+    definition: A concrete technique that reduces the model solution to an explicitly evaluable integral or quadrature.
+    examples:
+      - Analytic supernova light-curve solutions expressed as a quadrature.
+    counterexamples:
+      - Semi-analytic, which describes model character rather than a concrete technique.
+    boundary_notes: Do not infer this technique from the word analytic alone; it requires an explicit reduction to quadrature.
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-09-04T04:00:00Z"
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: "2026-09-04T04:05:00Z"

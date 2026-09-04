@@ -2,4 +2,21 @@ id: outflow
 label: Outflow
 question: What moving material, radiation, or field-dominated component carries energy or matter through the modeled system?
 default_risk: descriptive
-terms: []
+terms:
+  - id: term:expanding-ejecta
+    label: Expanding ejecta
+    aliases: [supernova ejecta]
+    status: active
+    definition: Ejected supernova material that expands and carries radioactive energy through the modeled system.
+    examples:
+      - Homologously expanding Type I supernova ejecta.
+    counterexamples:
+      - The surrounding circumstellar environment, which is not part of this outflow term.
+    boundary_notes: Describe the moving ejecta component without asserting a particular central engine.
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-09-04T04:00:00Z"
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: "2026-09-04T04:05:00Z"

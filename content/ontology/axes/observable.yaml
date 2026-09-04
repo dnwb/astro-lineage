@@ -2,4 +2,38 @@ id: observable
 label: Observable
 question: What form of measurement is actually recorded?
 default_risk: descriptive
-terms: []
+terms:
+  - id: term:measured-magnitudes
+    label: Measured magnitudes
+    aliases: [photometric magnitudes]
+    status: active
+    definition: Photometric magnitude measurements recorded in one or more electromagnetic bands.
+    examples:
+      - U, B, and V magnitudes reported for a Type I supernova light curve.
+    counterexamples:
+      - Intrinsic luminosity inferred from those measurements.
+    boundary_notes: Observable records the measured form and must not contain model-inferred parameters such as effective temperature.
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-09-04T04:00:00Z"
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: "2026-09-04T04:05:00Z"
+  - id: term:light-curves
+    label: Light curves
+    aliases: [time-dependent photometry]
+    status: active
+    definition: Time series of measured brightness or magnitude used to characterize the transient.
+    examples:
+      - B-band and V-band light curves compared with the analytic solution.
+    counterexamples:
+      - A model's intrinsic luminosity output, which is an inference target.
+    boundary_notes: Light curves are actual measurement forms; derived physical parameters remain outside this axis.
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-09-04T04:00:00Z"
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: "2026-09-04T04:05:00Z"

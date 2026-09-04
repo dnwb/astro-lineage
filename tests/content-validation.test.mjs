@@ -47,10 +47,14 @@ test("the production snapshot keeps the frozen canonical layout with the first d
   assert.deepEqual(snapshot.researchLines, []);
   assert.deepEqual(snapshot.learningPaths, []);
   assert.deepEqual(snapshot.axes.map((axis) => axis.id), AXIS_IDS);
-  assert.deepEqual(snapshot.methods, {
-    method_families: [],
-    techniques: [],
-  });
+  assert.deepEqual(
+    snapshot.methods.method_families.map(({ id }) => id),
+    ["method-family:analytical-modeling"],
+  );
+  assert.deepEqual(
+    snapshot.methods.techniques.map(({ id }) => id),
+    ["technique:reduction-to-quadrature"],
+  );
   assert.equal(snapshot.discovery.files.length, 26);
   assert(snapshot.discovery.files.every((file) => !file.startsWith("generated/")));
 });

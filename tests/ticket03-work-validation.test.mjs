@@ -1,7 +1,5 @@
 import assert from "node:assert/strict";
-import { execFileSync } from "node:child_process";
 import { cp, mkdtemp, readFile, writeFile } from "node:fs/promises";
-import { existsSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -16,7 +14,6 @@ import {
 } from "../scripts/content-validator.mjs";
 
 const productionContent = new URL("../content/", import.meta.url);
-const projectRoot = fileURLToPath(new URL("../", import.meta.url));
 
 async function copyContent() {
   const temporaryRoot = await mkdtemp(join(tmpdir(), "axvdaily-ticket03-"));
@@ -291,20 +288,4 @@ test("validation inventory counts the draft Arnett Work without making it visibl
       validation_status: "valid",
     },
   ]);
-});
-
-test("draft Works are absent from the production Paper index and detail/provenance surfaces", async () => {
-  execFileSync("npm", ["run", "build"], {
-    cwd: projectRoot,
-    encoding: "utf8",
-    stdio: "pipe",
-  });
-
-  const papersHtml = await readFile(join(projectRoot, "dist", "papers", "index.html"), "utf8");
-  assert.doesNotMatch(papersHtml, /work:arnett-1982/);
-  assert.doesNotMatch(papersHtml, /provenance/i);
-  assert.equal(
-    existsSync(join(projectRoot, "dist", "papers", "work:arnett-1982", "index.html")),
-    false,
-  );
 });

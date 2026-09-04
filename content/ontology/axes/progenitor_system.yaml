@@ -2,4 +2,21 @@ id: progenitor_system
 label: Progenitor system
 question: What physical system or object configuration gives rise to the modeled event or source?
 default_risk: descriptive
-terms: []
+terms:
+  - id: term:alternative-modeled-systems
+    label: Alternative modeled systems
+    aliases: [modeled progenitor alternatives]
+    status: active
+    definition: A set of explicitly modeled progenitor or initial-system alternatives whose comparison does not select a unique physical progenitor.
+    examples:
+      - Thermonuclear and core-collapse Type I supernova models compared as alternatives.
+    counterexamples:
+      - A claim that one progenitor channel is uniquely established by the Work.
+    boundary_notes: Use for alternatives represented in the model; do not turn a model comparison into a unique progenitor identification.
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-09-04T04:00:00Z"
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: "2026-09-04T04:05:00Z"

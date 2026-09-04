@@ -2,4 +2,22 @@ id: energy_dissipation
 label: Energy dissipation
 question: Where does macroscopic or field energy become thermal or non-thermal particle energy?
 default_risk: descriptive
-terms: []
+terms:
+  - id: term:decay-deposition-heating
+    label: Decay deposition and heating
+    aliases: [radioactive deposition]
+    status: active
+    definition: Deposition of radioactive decay energy in ejecta that heats the modeled material.
+    examples:
+      - Gamma-ray and positron energy deposited to heat Type I supernova ejecta.
+    counterexamples:
+      - The bolometric luminosity inferred from the resulting light curve.
+    boundary_notes: This term names the macroscopic heating role; microscopic decay channels remain separately represented when needed.
+    allowed_functional_roles: [energy_dissipation]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-09-04T04:00:00Z"
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: "2026-09-04T04:05:00Z"

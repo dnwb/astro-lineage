@@ -2,4 +2,21 @@ id: messenger
 label: Messenger
 question: What physical carrier transports information from the source to the observer?
 default_risk: descriptive
-terms: []
+terms:
+  - id: term:photons
+    label: Photons
+    aliases: [electromagnetic photons]
+    status: active
+    definition: Electromagnetic quanta carrying the modeled supernova radiation to the observer.
+    examples:
+      - Optical photons emerging after radiative diffusion through ejecta.
+    counterexamples:
+      - The U, B, and V photon bands, which belong to the photon_band axis.
+    boundary_notes: Messenger identifies the carrier; use photon_band for its electromagnetic band and observable for the measured form.
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-09-04T04:00:00Z"
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: "2026-09-04T04:05:00Z"

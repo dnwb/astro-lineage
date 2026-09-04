@@ -2,4 +2,21 @@ id: dynamics
 label: Dynamics
 question: What macroscopic evolution, propagation, or interaction governs the modeled system and its components?
 default_risk: descriptive
-terms: []
+terms:
+  - id: term:homologous-expansion
+    label: Homologous expansion
+    aliases: [homologous ejecta expansion]
+    status: active
+    definition: Expansion in which ejecta velocity is proportional to radius, used as the macroscopic kinematic structure of the model.
+    examples:
+      - Homologous expansion assumed for the early light-curve solution.
+    counterexamples:
+      - A microscopic nuclear decay channel, which belongs to particle interaction.
+    boundary_notes: This is a macroscopic dynamical assumption and does not by itself identify the progenitor or radiation mechanism.
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-09-04T04:00:00Z"
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: "2026-09-04T04:05:00Z"

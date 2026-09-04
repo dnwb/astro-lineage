@@ -2,4 +2,21 @@ id: inference_target
 label: Inference target
 question: What physical quantity, property, or hypothesis does the Work attempt to infer?
 default_risk: descriptive
-terms: []
+terms:
+  - id: term:intrinsic-luminosity
+    label: Intrinsic luminosity
+    aliases: [bolometric luminosity]
+    status: active
+    definition: The source luminosity property inferred by connecting the modeled radioactive heating and transport to observed light curves.
+    examples:
+      - Intrinsic luminosity inferred from the analytic light-curve solution.
+    counterexamples:
+      - A measured magnitude, which is an observable rather than an inference target.
+    boundary_notes: This term names the quantity being inferred; it does not store a fitted value in the ontology taxonomy.
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-09-04T04:00:00Z"
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: "2026-09-04T04:05:00Z"

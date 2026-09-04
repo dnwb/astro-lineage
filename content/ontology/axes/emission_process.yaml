@@ -2,4 +2,22 @@ id: emission_process
 label: Emission process
 question: Which physical process produces an observable messenger?
 default_risk: descriptive
-terms: []
+terms:
+  - id: term:blackbody-spectrum-approximation
+    label: Blackbody-spectrum approximation
+    aliases: [blackbody construct]
+    status: active
+    definition: An explicitly approximate blackbody spectral construct used to connect modeled luminosity and temperature to a photon spectrum.
+    examples:
+      - A blackbody approximation used for the emergent Type I supernova spectrum.
+    counterexamples:
+      - Effective temperature treated as a directly measured observable rather than a model-dependent quantity.
+    boundary_notes: The term records a modeling approximation, not a claim that the spectrum is exactly blackbody or that temperature is directly observed.
+    allowed_functional_roles: [emission_process]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-09-04T04:00:00Z"
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: "2026-09-04T04:05:00Z"

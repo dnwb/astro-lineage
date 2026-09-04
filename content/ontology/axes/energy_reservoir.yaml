@@ -2,4 +2,21 @@ id: energy_reservoir
 label: Energy reservoir
 question: What form or store of energy is available to power the modeled system?
 default_risk: descriptive
-terms: []
+terms:
+  - id: term:radioactive-decay-energy
+    label: Radioactive decay energy
+    aliases: [radioactive energy]
+    status: active
+    definition: Energy made available to the modeled ejecta by radioactive decay of synthesized nuclei.
+    examples:
+      - Nickel-56 decay energy used to power an early Type I supernova light curve.
+    counterexamples:
+      - The expanding ejecta itself, which is an outflow rather than an energy reservoir.
+    boundary_notes: This term identifies stored available energy, not the later deposition process or an observed luminosity.
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-09-04T04:00:00Z"
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: "2026-09-04T04:05:00Z"

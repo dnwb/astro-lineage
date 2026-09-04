@@ -35,6 +35,94 @@ const ACTOR_CAPABILITIES = Object.freeze([
   "activate_controlled_terms",
   "approve_visibility",
 ]);
+const ASSESSMENT_STATES = Object.freeze([
+  "present",
+  "unknown",
+  "not_applicable",
+  "not_assessed",
+]);
+const TERM_STATUSES = Object.freeze(["proposed", "active", "deprecated"]);
+const REVIEW_STATES = Object.freeze(["unreviewed", "reviewed"]);
+const ASSERTION_BASES = Object.freeze(["explicit", "inferred"]);
+const FUNCTIONAL_ROLES = Object.freeze([
+  "energy_dissipation",
+  "particle_interaction",
+  "emission_process",
+  "transport_process",
+]);
+const LOCATOR_TYPES = Object.freeze([
+  "page",
+  "section",
+  "equation",
+  "table",
+  "figure",
+  "paragraph",
+]);
+const RISK_ORDER = Object.freeze({ descriptive: 0, interpretive: 1, synthetic: 2 });
+const PROCESS_AXES = Object.freeze([
+  "energy_dissipation",
+  "particle_interaction",
+  "emission_process",
+  "transport_process",
+]);
+
+function actorMap(actors) {
+  if (actors instanceof Map) {
+    return actors;
+  }
+  if (!isObject(actors) || !Array.isArray(actors.actors)) {
+    return new Map();
+  }
+  return new Map(
+    actors.actors
+      .filter((actor) => isObject(actor) && typeof actor.id === "string")
+      .map((actor) => [actor.id, actor]),
+  );
+}
+
+/**
+ * Evaluate a capability against the append-only event history at action time.
+ * The function intentionally does not mutate the registry or infer any
+ * capability from an actor's kind or display label.
+ */
+export function evaluateActorCapability(actors, actorId, capability, at) {
+  if (!ACTOR_CAPABILITIES.includes(capability) || !validateUtcTimestampValue(at)) {
+    return false;
+  }
+  const actor = actorMap(actors).get(actorId);
+  if (!actor || !Array.isArray(actor.capability_events)) {
+    return false;
+  }
+  const actionTime = Date.parse(at);
+  let authorized = false;
+  actor.capability_events
+    .map((event, index) => ({ event, index }))
+    .filter(
+      ({ event }) =>
+        isObject(event) &&
+        event.capability === capability &&
+        ["grant", "revoke"].includes(event.action) &&
+        validateUtcTimestampValue(event.effective_at) &&
+        Date.parse(event.effective_at) <= actionTime,
+    )
+    .sort((left, right) => {
+      const byTime = Date.parse(left.event.effective_at) - Date.parse(right.event.effective_at);
+      return byTime || left.index - right.index;
+    })
+    .forEach(({ event }) => {
+      authorized = event.action === "grant";
+    });
+  return authorized;
+}
+
+function validateUtcTimestampValue(value) {
+  return (
+    typeof value === "string" &&
+    RFC3339_UTC.test(value) &&
+    isValidGregorianDate(value.slice(0, 10)) &&
+    Number.isFinite(Date.parse(value))
+  );
+}
 const NAMESPACED_ID = /^[a-z][a-z0-9_-]*:[a-z0-9][a-z0-9._-]*$/u;
 const DOI = /^10\.\d{4,9}\/[\S]+$/iu;
 const ORCID = /^\d{4}-\d{4}-\d{4}-\d{3}[\dX]$/u;
@@ -229,6 +317,19 @@ function validateActors(actors, diagnostics) {
             relatedIds: ACTOR_CAPABILITIES,
           });
         }
+        if (
+          actor.kind === "agent" &&
+          capabilityEvent.capability !== "draft_records"
+        ) {
+          addDiagnostic(diagnostics, {
+            code: "ACTOR_AGENT_CAPABILITY_FORBIDDEN",
+            file: "content/actors.yaml",
+            recordId: actorId,
+            fieldPath: `/actors/${index}/capability_events/${capabilityIndex}/capability`,
+            message: "V0.1 Agent actors may receive only draft_records.",
+            relatedIds: ["draft_records"],
+          });
+        }
         if (!["grant", "revoke"].includes(capabilityEvent.action)) {
           addDiagnostic(diagnostics, {
             code: "ACTOR_CAPABILITY_ACTION_INVALID",
@@ -260,7 +361,7 @@ function validateActors(actors, diagnostics) {
   }
 }
 
-function validateAxes(axes, diagnostics) {
+function validateAxes(axes, actorsById, diagnostics) {
   if (axes.length !== AXIS_IDS.length) {
     addDiagnostic(diagnostics, {
       code: "STRUCTURE_AXIS_SET_INVALID",
@@ -272,6 +373,7 @@ function validateAxes(axes, diagnostics) {
   }
 
   const seen = new Set();
+  const terms = [];
   for (const entry of axes) {
     const axisId = entry.id;
     const axis = entry.value;
@@ -343,8 +445,40 @@ function validateAxes(axes, diagnostics) {
         fieldPath: "/terms",
         message: "Physics Ontology axis terms must be an array.",
       });
+      continue;
+    }
+    for (const [termIndex, term] of axis.terms.entries()) {
+      const validated = validateControlledTerm(
+        term,
+        termIndex,
+        {
+          file,
+          recordId: axis.id,
+          fieldPath: "/terms",
+        },
+        actorsById,
+        diagnostics,
+        {
+          axisId: axis.id,
+          requireFunctionalRoles: PROCESS_AXES.includes(axis.id),
+        },
+      );
+      if (validated?.term) {
+        if (terms.some(({ term: existing }) => existing.id === term.id)) {
+          addDiagnostic(diagnostics, {
+            file,
+            recordId: term.id,
+            code: "TERM_ID_DUPLICATE",
+            fieldPath: `/terms/${termIndex}/id`,
+            message: `Controlled Term ID is duplicated: ${term.id}.`,
+          });
+        }
+        terms.push({ ...validated, file, category: "physics", axisId: axis.id });
+      }
     }
   }
+  validateTermSuccessors(terms, diagnostics);
+  return terms;
 }
 
 export function isValidationValid(diagnostics) {
@@ -360,7 +494,7 @@ export function mergeValidationDiagnostics(report, additionalDiagnostics = []) {
   };
 }
 
-function validateMethods(methods, diagnostics) {
+function validateMethods(methods, actorsById, diagnostics) {
   if (!isObject(methods)) {
     addDiagnostic(diagnostics, {
       code: "STRUCTURE_METHOD_TAXONOMY_INVALID_SHAPE",
@@ -368,8 +502,9 @@ function validateMethods(methods, diagnostics) {
       recordId: "taxonomy",
       message: "The Method Taxonomy must be a mapping.",
     });
-    return;
+    return [];
   }
+  const terms = [];
   for (const field of ["method_families", "techniques"]) {
     if (!Array.isArray(methods[field])) {
       addDiagnostic(diagnostics, {
@@ -381,6 +516,99 @@ function validateMethods(methods, diagnostics) {
       });
     }
   }
+  if (Array.isArray(methods.method_families)) {
+    for (const [index, family] of methods.method_families.entries()) {
+      const validated = validateControlledTerm(
+        family,
+        index,
+        {
+          file: "content/methods/taxonomy.yaml",
+          recordId: "taxonomy",
+          fieldPath: "/method_families",
+        },
+        actorsById,
+        diagnostics,
+        { namespace: "method-family" },
+      );
+      if (validated?.term) {
+        if (terms.some(({ term }) => term.id === family.id)) {
+          addDiagnostic(diagnostics, {
+            code: "TERM_ID_DUPLICATE",
+            file: "content/methods/taxonomy.yaml",
+            recordId: family.id,
+            fieldPath: `/method_families/${index}/id`,
+            message: `Controlled Term ID is duplicated: ${family.id}.`,
+          });
+        }
+        terms.push({
+          ...validated,
+          file: "content/methods/taxonomy.yaml",
+          category: "method_family",
+        });
+      }
+    }
+  }
+  const familyIds = new Set(
+    terms
+      .filter(({ term }) => term.id.startsWith("method-family:"))
+      .map(({ term }) => term.id),
+  );
+  if (Array.isArray(methods.techniques)) {
+    for (const [index, technique] of methods.techniques.entries()) {
+      const validated = validateControlledTerm(
+        technique,
+        index,
+        {
+          file: "content/methods/taxonomy.yaml",
+          recordId: "taxonomy",
+          fieldPath: "/techniques",
+        },
+        actorsById,
+        diagnostics,
+        { namespace: "technique" },
+      );
+      if (validated?.term) {
+        if (terms.some(({ term }) => term.id === technique.id)) {
+          addDiagnostic(diagnostics, {
+            code: "TERM_ID_DUPLICATE",
+            file: "content/methods/taxonomy.yaml",
+            recordId: technique.id,
+            fieldPath: `/techniques/${index}/id`,
+            message: `Controlled Term ID is duplicated: ${technique.id}.`,
+          });
+        }
+        terms.push({
+          ...validated,
+          file: "content/methods/taxonomy.yaml",
+          category: "technique",
+        });
+      }
+      if (!Array.isArray(technique.family_ids) || technique.family_ids.length === 0) {
+        addDiagnostic(diagnostics, {
+          code: "METHOD_TECHNIQUE_FAMILY_REQUIRED",
+          file: "content/methods/taxonomy.yaml",
+          recordId: technique.id ?? "taxonomy",
+          fieldPath: `/techniques/${index}/family_ids`,
+          message: "Every Canonical Technique must belong to one or more Method Families.",
+        });
+      } else {
+        for (const [familyIndex, familyId] of technique.family_ids.entries()) {
+          if (!familyIds.has(familyId)) {
+            addDiagnostic(diagnostics, {
+              code: "REFERENTIAL_METHOD_FAMILY_MISSING",
+              file: "content/methods/taxonomy.yaml",
+              recordId: technique.id ?? "taxonomy",
+              fieldPath: `/techniques/${index}/family_ids/${familyIndex}`,
+              message: `Method Family does not exist: ${familyId}.`,
+              relatedIds: [familyId],
+            });
+          }
+        }
+      }
+    }
+  }
+  validateTermSuccessors(terms, diagnostics);
+  return terms;
 }
 
 function isNamespacedId(value, namespace) {
@@ -417,6 +645,244 @@ function validateUtcTimestamp(value, details, diagnostics) {
     return false;
   }
   return true;
+}
+
+function validateStringArray(value, details, diagnostics, code, label, { required = false } = {}) {
+  if (!Array.isArray(value)) {
+    if (required || value !== undefined) {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code,
+        message: `${label} must be an array of non-empty strings.`,
+      });
+      return false;
+    }
+    return true;
+  }
+  let valid = true;
+  value.forEach((item, index) => {
+    if (typeof item !== "string" || item.trim() === "") {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code,
+        fieldPath: `${details.fieldPath ?? ""}/${index}`,
+        message: `${label} entries must be non-empty strings.`,
+      });
+      valid = false;
+    }
+  });
+  return valid;
+}
+
+function validateControlledTerm(
+  term,
+  index,
+  details,
+  actorsById,
+  diagnostics,
+  { namespace = "term", axisId = null, requireFunctionalRoles = false } = {},
+) {
+  if (!isObject(term)) {
+    addDiagnostic(diagnostics, {
+      ...details,
+      code: "TERM_INVALID_SHAPE",
+      fieldPath: `${details.fieldPath ?? ""}/${index}`,
+      message: "Controlled Terms must be mappings.",
+    });
+    return null;
+  }
+  const termDetails = {
+    ...details,
+    recordId: term.id ?? details.recordId,
+    fieldPath: `${details.fieldPath ?? ""}/${index}`,
+  };
+  let valid = true;
+  if (!validateNamespacedId(term.id, namespace, {
+    ...termDetails,
+    code: "TERM_ID_INVALID",
+    fieldPath: `${termDetails.fieldPath}/id`,
+    message: `Controlled Term IDs must use the ${namespace}: namespace.`,
+  }, diagnostics)) {
+    valid = false;
+  }
+  if (typeof term.label !== "string" || term.label.trim() === "") {
+    addDiagnostic(diagnostics, {
+      ...termDetails,
+      code: "TERM_LABEL_INVALID",
+      fieldPath: `${termDetails.fieldPath}/label`,
+      message: "Controlled Terms require a non-empty label.",
+    });
+    valid = false;
+  }
+  if (!TERM_STATUSES.includes(term.status)) {
+    addDiagnostic(diagnostics, {
+      ...termDetails,
+      code: "TERM_STATUS_INVALID",
+      fieldPath: `${termDetails.fieldPath}/status`,
+      message: "Controlled Term status must be proposed, active, or deprecated.",
+      relatedIds: TERM_STATUSES,
+    });
+    valid = false;
+  }
+  if (!validateStringArray(term.aliases, {
+    ...termDetails,
+    fieldPath: `${termDetails.fieldPath}/aliases`,
+  }, diagnostics, "TERM_ALIASES_INVALID", "Controlled Term aliases")) {
+    valid = false;
+  }
+
+  if (
+    term.status === "active" &&
+    (typeof term.definition !== "string" || term.definition.trim() === "")
+  ) {
+    addDiagnostic(diagnostics, {
+      ...termDetails,
+      code: "TERM_DEFINITION_REQUIRED",
+      fieldPath: `${termDetails.fieldPath}/definition`,
+      message: "An active Controlled Term requires a definition.",
+    });
+    valid = false;
+  }
+  if (term.status === "active") {
+    for (const field of ["examples", "counterexamples"]) {
+      if (!validateStringArray(term[field], {
+        ...termDetails,
+        fieldPath: `${termDetails.fieldPath}/${field}`,
+      }, diagnostics, "TERM_ACTIVATION_EXAMPLES_REQUIRED", `Active Term ${field}`, { required: true })) {
+        valid = false;
+      }
+      if (Array.isArray(term[field]) && term[field].length === 0) {
+        addDiagnostic(diagnostics, {
+          ...termDetails,
+          code: "TERM_ACTIVATION_EXAMPLES_REQUIRED",
+          fieldPath: `${termDetails.fieldPath}/${field}`,
+          message: `Active Controlled Terms require at least one ${field} entry.`,
+        });
+        valid = false;
+      }
+    }
+    if (typeof term.boundary_notes !== "string" || term.boundary_notes.trim() === "") {
+      addDiagnostic(diagnostics, {
+        ...termDetails,
+        code: "TERM_BOUNDARY_NOTES_REQUIRED",
+        fieldPath: `${termDetails.fieldPath}/boundary_notes`,
+        message: "Active Controlled Terms require boundary notes.",
+      });
+      valid = false;
+    }
+    if (requireFunctionalRoles && !Array.isArray(term.allowed_functional_roles)) {
+      addDiagnostic(diagnostics, {
+        ...termDetails,
+        code: "TERM_FUNCTIONAL_ROLES_REQUIRED",
+        fieldPath: `${termDetails.fieldPath}/allowed_functional_roles`,
+        message: "Process terms require an explicit allowed_functional_roles array.",
+      });
+      valid = false;
+    }
+    if (term.allowed_functional_roles !== undefined) {
+      if (!Array.isArray(term.allowed_functional_roles)) {
+        addDiagnostic(diagnostics, {
+          ...termDetails,
+          code: "TERM_FUNCTIONAL_ROLES_INVALID",
+          fieldPath: `${termDetails.fieldPath}/allowed_functional_roles`,
+          message: "allowed_functional_roles must be an array.",
+        });
+        valid = false;
+      } else {
+        for (const [roleIndex, role] of term.allowed_functional_roles.entries()) {
+          if (!FUNCTIONAL_ROLES.includes(role)) {
+            addDiagnostic(diagnostics, {
+              ...termDetails,
+              code: "TERM_FUNCTIONAL_ROLE_INVALID",
+              fieldPath: `${termDetails.fieldPath}/allowed_functional_roles/${roleIndex}`,
+              message: "allowed_functional_roles contains an unknown Functional Role.",
+              relatedIds: FUNCTIONAL_ROLES,
+            });
+            valid = false;
+          }
+        }
+      }
+    }
+    if (
+      !validateGovernedRecord(
+        term,
+        actorsById,
+        termDetails,
+        diagnostics,
+        {
+          independentReview: true,
+          independentReviewCapability: "activate_controlled_terms",
+          reviewCapability: "activate_controlled_terms",
+        },
+      )
+    ) {
+      valid = false;
+    }
+  } else if (term.curation_provenance !== undefined) {
+    if (
+      !validateCurationProvenance(
+        term.curation_provenance,
+        actorsById,
+        {
+          ...termDetails,
+          fieldPath: `${termDetails.fieldPath}/curation_provenance`,
+        },
+        diagnostics,
+      )
+    ) {
+      valid = false;
+    }
+  }
+
+  if (term.status === "deprecated") {
+    if (typeof term.deprecation_reason !== "string" || term.deprecation_reason.trim() === "") {
+      addDiagnostic(diagnostics, {
+        ...termDetails,
+        code: "TERM_DEPRECATION_REASON_REQUIRED",
+        fieldPath: `${termDetails.fieldPath}/deprecation_reason`,
+        message: "Deprecated Controlled Terms require a reason.",
+      });
+      valid = false;
+    }
+    if (term.successor_id !== undefined && typeof term.successor_id !== "string") {
+      addDiagnostic(diagnostics, {
+        ...termDetails,
+        code: "TERM_SUCCESSOR_INVALID",
+        fieldPath: `${termDetails.fieldPath}/successor_id`,
+        message: "A Controlled Term successor_id must be a namespaced ID when supplied.",
+      });
+      valid = false;
+    }
+  }
+  return { term, valid, axisId };
+}
+
+function validateTermSuccessors(terms, diagnostics) {
+  for (const entry of terms) {
+    if (!entry?.term?.successor_id) {
+      continue;
+    }
+    const successor = terms.find(({ term }) => term?.id === entry.term.successor_id);
+    if (!successor) {
+      addDiagnostic(diagnostics, {
+        file: entry.file,
+        recordId: entry.term.id,
+        code: "REFERENTIAL_TERM_SUCCESSOR_MISSING",
+        fieldPath: "/successor_id",
+        message: `Controlled Term successor does not exist: ${entry.term.successor_id}.`,
+        relatedIds: [entry.term.successor_id],
+      });
+    } else if (successor.term.status !== "active") {
+      addDiagnostic(diagnostics, {
+        file: entry.file,
+        recordId: entry.term.id,
+        code: "TERM_SUCCESSOR_NOT_ACTIVE",
+        fieldPath: "/successor_id",
+        message: "A semantic successor must be an active Controlled Term.",
+        relatedIds: [entry.term.successor_id],
+      });
+    }
+  }
 }
 
 function isValidGregorianDate(value) {
@@ -500,6 +966,157 @@ function validateCurationProvenance(
         fieldPath: `${details.fieldPath ?? ""}/recorded_at`,
         message: "Curation Provenance recorded_at must be a UTC RFC 3339 timestamp.",
       },
+      diagnostics,
+    )
+  ) {
+    valid = false;
+  }
+  return valid;
+}
+
+function actorForProvenance(provenance, actorsById) {
+  return isObject(provenance) && typeof provenance.actor_id === "string"
+    ? actorsById.get(provenance.actor_id)
+    : undefined;
+}
+
+function requireActorCapability(
+  provenance,
+  actors,
+  capability,
+  details,
+  diagnostics,
+  code = "CURATION_CAPABILITY_REQUIRED",
+) {
+  const actor = actorForProvenance(provenance, actors);
+  if (!actor || !isObject(provenance)) {
+    return false;
+  }
+  if (!evaluateActorCapability(actors, actor.id, capability, provenance.recorded_at)) {
+    addDiagnostic(diagnostics, {
+      ...details,
+      code,
+      fieldPath: `${details.fieldPath ?? ""}/actor_id`,
+      message: `Actor ${actor.id} did not hold ${capability} at the curation action time.`,
+      relatedIds: [capability],
+    });
+    return false;
+  }
+  return true;
+}
+
+function validateGovernedRecord(
+  record,
+  actorsById,
+  details,
+  diagnostics,
+  {
+    independentReview = false,
+    independentReviewCapability = "independent_scientific_review",
+    reviewCapability = "review_records",
+    reviewRequired = true,
+  } = {},
+) {
+  let valid = true;
+  const creatorProvenance = record?.curation_provenance;
+  if (
+    !validateCurationProvenance(
+      creatorProvenance,
+      actorsById,
+      {
+        ...details,
+        fieldPath: `${details.fieldPath ?? ""}/curation_provenance`,
+      },
+      diagnostics,
+    )
+  ) {
+    valid = false;
+  } else if (
+    !requireActorCapability(
+      creatorProvenance,
+      actorsById,
+      "draft_records",
+      {
+        ...details,
+        fieldPath: `${details.fieldPath ?? ""}/curation_provenance`,
+      },
+      diagnostics,
+    )
+  ) {
+    valid = false;
+  }
+
+  if (!reviewRequired) {
+    return valid;
+  }
+  const reviewState = record?.review_state;
+  if (!REVIEW_STATES.includes(reviewState)) {
+    addDiagnostic(diagnostics, {
+      ...details,
+      code: "REVIEW_STATE_INVALID",
+      fieldPath: `${details.fieldPath ?? ""}/review_state`,
+      message: "Governed records require review_state unreviewed or reviewed.",
+      relatedIds: REVIEW_STATES,
+    });
+    return false;
+  }
+  const reviewProvenance = record?.review_provenance;
+  if (reviewState === "unreviewed") {
+    if (reviewProvenance !== undefined) {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "REVIEW_PROVENANCE_WITHOUT_REVIEW",
+        fieldPath: `${details.fieldPath ?? ""}/review_provenance`,
+        message: "An unreviewed record cannot carry review provenance.",
+      });
+      valid = false;
+    }
+    return valid;
+  }
+
+  const creator = actorForProvenance(creatorProvenance, actorsById);
+  const reviewer = actorForProvenance(reviewProvenance, actorsById);
+  const reviewDetails = {
+    ...details,
+    fieldPath: `${details.fieldPath ?? ""}/review_provenance`,
+  };
+  if (
+    !validateCurationProvenance(
+      reviewProvenance,
+      actorsById,
+      reviewDetails,
+      diagnostics,
+      { requiredActorKind: creator?.kind === "agent" || independentReview ? "human" : undefined },
+    )
+  ) {
+    valid = false;
+  }
+  if (!reviewer) {
+    return false;
+  }
+  if (creator?.kind === "agent" && reviewer.kind !== "human") {
+    addDiagnostic(diagnostics, {
+      ...reviewDetails,
+      code: "CURATION_HUMAN_REVIEW_REQUIRED",
+      message: "Agent-created records require a Human review gate.",
+    });
+    valid = false;
+  }
+  if (independentReview && reviewer.id === creator?.id) {
+    addDiagnostic(diagnostics, {
+      ...reviewDetails,
+      code: "CURATION_INDEPENDENT_REVIEW_REQUIRED",
+      message: "Independent review requires a reviewer distinct from the creator.",
+      relatedIds: creator ? [creator.id] : [],
+    });
+    valid = false;
+  }
+  if (
+    !requireActorCapability(
+      reviewProvenance,
+      actorsById,
+      independentReview ? independentReviewCapability : reviewCapability,
+      reviewDetails,
       diagnostics,
     )
   ) {
@@ -1141,6 +1758,548 @@ function extractWorkReadingFrontmatter(reading) {
   }
 }
 
+function validateEvidenceLocator(locator, details, diagnostics) {
+  if (!isObject(locator)) {
+    addDiagnostic(diagnostics, {
+      ...details,
+      code: "EVIDENCE_LOCATOR_INVALID",
+      fieldPath: `${details.fieldPath ?? ""}/locator`,
+      message: "Evidence requires a typed locator mapping.",
+    });
+    return false;
+  }
+  let valid = true;
+  if (!LOCATOR_TYPES.includes(locator.type)) {
+    addDiagnostic(diagnostics, {
+      ...details,
+      code: "EVIDENCE_LOCATOR_TYPE_INVALID",
+      fieldPath: `${details.fieldPath ?? ""}/locator/type`,
+      message: "Evidence locator type is not supported.",
+      relatedIds: LOCATOR_TYPES,
+    });
+    valid = false;
+  }
+  if (!Number.isInteger(locator.page) || locator.page <= 0) {
+    addDiagnostic(diagnostics, {
+      ...details,
+      code: "EVIDENCE_LOCATOR_PAGE_INVALID",
+      fieldPath: `${details.fieldPath ?? ""}/locator/page`,
+      message: "Evidence locators require a positive integer page.",
+    });
+    valid = false;
+  }
+  const componentByType = {
+    section: "section",
+    equation: "equation",
+    table: "table",
+    figure: "figure",
+    paragraph: "paragraph",
+  };
+  const component = componentByType[locator.type];
+  if (component && (typeof locator[component] !== "string" || locator[component].trim() === "")) {
+    addDiagnostic(diagnostics, {
+      ...details,
+      code: "EVIDENCE_LOCATOR_COMPONENT_INVALID",
+      fieldPath: `${details.fieldPath ?? ""}/locator/${component}`,
+      message: `A ${locator.type} locator requires a non-empty ${component} component.`,
+    });
+    valid = false;
+  }
+  return valid;
+}
+
+function validateEvidenceRecords(work, versionsById, actorsById, diagnostics) {
+  const evidenceEnvelope = work.files["evidence.yaml"];
+  const file = `content/works/${work.id}/evidence.yaml`;
+  const evidenceById = new Map();
+  if (!isObject(evidenceEnvelope) || !Array.isArray(evidenceEnvelope.evidence)) {
+    return evidenceById;
+  }
+  for (const [index, evidence] of evidenceEnvelope.evidence.entries()) {
+    if (!isObject(evidence)) {
+      addDiagnostic(diagnostics, {
+        code: "EVIDENCE_INVALID_SHAPE",
+        file,
+        recordId: work.id,
+        fieldPath: `/evidence/${index}`,
+        message: "Evidence records must be mappings.",
+      });
+      continue;
+    }
+    const details = {
+      file,
+      recordId: evidence.id ?? work.id,
+      fieldPath: `/evidence/${index}`,
+    };
+    if (!validateNamespacedId(evidence.id, "evidence", {
+      ...details,
+      code: "EVIDENCE_ID_INVALID",
+      fieldPath: `${details.fieldPath}/id`,
+      message: "Evidence IDs must use the evidence: namespace.",
+    }, diagnostics)) {
+      continue;
+    }
+    if (evidenceById.has(evidence.id)) {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "EVIDENCE_ID_DUPLICATE",
+        fieldPath: `${details.fieldPath}/id`,
+        message: `Evidence ID is duplicated: ${evidence.id}.`,
+      });
+    }
+    evidenceById.set(evidence.id, evidence);
+    if (!versionsById.has(evidence.version_id)) {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "REFERENTIAL_VERSION_MISSING",
+        fieldPath: `${details.fieldPath}/version_id`,
+        message: `Evidence Version does not exist: ${evidence.version_id}.`,
+        relatedIds: [evidence.version_id],
+      });
+    }
+    if (
+      typeof evidence.source_url !== "string" ||
+      !/^https?:\/\/[^\s]+$/u.test(evidence.source_url)
+    ) {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "EVIDENCE_SOURCE_REFERENCE_INVALID",
+        fieldPath: `${details.fieldPath}/source_url`,
+        message: "Evidence requires a stable HTTP(S) source reference.",
+      });
+    }
+    validateEvidenceLocator(evidence.locator, details, diagnostics);
+    if (typeof evidence.excerpt !== "string" || evidence.excerpt.trim() === "") {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "EVIDENCE_EXCERPT_INVALID",
+        fieldPath: `${details.fieldPath}/excerpt`,
+        message: "Evidence requires a short non-empty excerpt for verification.",
+      });
+    }
+    if (evidence.checksum !== undefined && evidence.snapshot === undefined) {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "EVIDENCE_CHECKSUM_WITHOUT_SNAPSHOT",
+        fieldPath: `${details.fieldPath}/checksum`,
+        message: "An Evidence checksum requires an actually preserved source snapshot.",
+      });
+    }
+    validateGovernedRecord(evidence, actorsById, details, diagnostics);
+  }
+  return evidenceById;
+}
+
+function validateEvidenceReferences(
+  evidenceIds,
+  evidenceById,
+  details,
+  diagnostics,
+  { required = false } = {},
+) {
+  if (!Array.isArray(evidenceIds)) {
+    if (required || evidenceIds !== undefined) {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "EVIDENCE_REFERENCES_INVALID",
+        fieldPath: `${details.fieldPath ?? ""}/evidence_ids`,
+        message: "evidence_ids must be an array of Evidence IDs.",
+      });
+      return false;
+    }
+    return true;
+  }
+  let valid = true;
+  const seen = new Set();
+  if (required && evidenceIds.length === 0) {
+    addDiagnostic(diagnostics, {
+      ...details,
+      code: "EVIDENCE_REQUIRED",
+      fieldPath: `${details.fieldPath ?? ""}/evidence_ids`,
+      message: "This governed record requires at least one Evidence reference.",
+    });
+    valid = false;
+  }
+  for (const [index, evidenceId] of evidenceIds.entries()) {
+    if (seen.has(evidenceId)) {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "EVIDENCE_REFERENCE_DUPLICATE",
+        fieldPath: `${details.fieldPath ?? ""}/evidence_ids/${index}`,
+        message: `An Evidence ID cannot be referenced more than once: ${evidenceId}.`,
+        relatedIds: [evidenceId],
+      });
+      valid = false;
+    }
+    seen.add(evidenceId);
+    if (!evidenceById.has(evidenceId)) {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "REFERENTIAL_EVIDENCE_MISSING",
+        fieldPath: `${details.fieldPath ?? ""}/evidence_ids/${index}`,
+        message: `Evidence does not exist: ${evidenceId}.`,
+        relatedIds: [evidenceId],
+      });
+      valid = false;
+    }
+  }
+  return valid;
+}
+
+function validatePhysicsAnnotations(
+  work,
+  axisById,
+  termsById,
+  evidenceById,
+  actorsById,
+  diagnostics,
+) {
+  const file = `content/works/${work.id}/annotations.yaml`;
+  const envelope = work.files["annotations.yaml"];
+  if (!isObject(envelope) || !Array.isArray(envelope.annotations)) {
+    return;
+  }
+  const seenIds = new Set();
+  const seenAxes = new Set();
+  for (const [index, annotation] of envelope.annotations.entries()) {
+    if (!isObject(annotation)) {
+      addDiagnostic(diagnostics, {
+        code: "ANNOTATION_INVALID_SHAPE",
+        file,
+        recordId: work.id,
+        fieldPath: `/annotations/${index}`,
+        message: "Physics Annotations must be mappings.",
+      });
+      continue;
+    }
+    const details = {
+      file,
+      recordId: annotation.id ?? work.id,
+      fieldPath: `/annotations/${index}`,
+    };
+    if (!validateNamespacedId(annotation.id, "annotation", {
+      ...details,
+      code: "ANNOTATION_ID_INVALID",
+      fieldPath: `${details.fieldPath}/id`,
+      message: "Annotation IDs must use the annotation: namespace.",
+    }, diagnostics)) {
+      continue;
+    }
+    if (seenIds.has(annotation.id)) {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "ANNOTATION_ID_DUPLICATE",
+        fieldPath: `${details.fieldPath}/id`,
+        message: `Annotation ID is duplicated: ${annotation.id}.`,
+      });
+    }
+    seenIds.add(annotation.id);
+    const axis = axisById.get(annotation.axis);
+    if (!axis) {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "REFERENTIAL_AXIS_MISSING",
+        fieldPath: `${details.fieldPath}/axis`,
+        message: `Physics Ontology axis does not exist: ${annotation.axis}.`,
+        relatedIds: [annotation.axis],
+      });
+    }
+    if (seenAxes.has(annotation.axis)) {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "ANNOTATION_AXIS_DUPLICATE",
+        fieldPath: `${details.fieldPath}/axis`,
+        message: `A Work may have only one assessment for axis ${annotation.axis}.`,
+        relatedIds: [annotation.axis],
+      });
+    }
+    seenAxes.add(annotation.axis);
+    const assessment = annotation.assessment;
+    if (!isObject(assessment) || !ASSESSMENT_STATES.includes(assessment.state)) {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "ANNOTATION_ASSESSMENT_INVALID",
+        fieldPath: `${details.fieldPath}/assessment/state`,
+        message: "Annotation assessment requires one of the four explicit states.",
+        relatedIds: ASSESSMENT_STATES,
+      });
+    } else {
+      if (!Array.isArray(assessment.values)) {
+        addDiagnostic(diagnostics, {
+          ...details,
+          code: "ANNOTATION_VALUES_INVALID",
+          fieldPath: `${details.fieldPath}/assessment/values`,
+          message: "Annotation assessment values must be an array.",
+        });
+      } else if (assessment.state === "present" && assessment.values.length === 0) {
+        addDiagnostic(diagnostics, {
+          ...details,
+          code: "ANNOTATION_VALUES_REQUIRED",
+          fieldPath: `${details.fieldPath}/assessment/values`,
+          message: "A present assessment requires one or more values.",
+        });
+      } else if (assessment.state !== "present" && assessment.values.length > 0) {
+        addDiagnostic(diagnostics, {
+          ...details,
+          code: "ANNOTATION_VALUES_FORBIDDEN",
+          fieldPath: `${details.fieldPath}/assessment/values`,
+          message: "Only a present assessment may carry values.",
+        });
+      }
+      const valueIds = new Set();
+      for (const [valueIndex, value] of (assessment.values ?? []).entries()) {
+        const termId = isObject(value) ? value.term_id : undefined;
+        if (typeof termId !== "string") {
+          addDiagnostic(diagnostics, {
+            ...details,
+            code: "ANNOTATION_VALUE_INVALID",
+            fieldPath: `${details.fieldPath}/assessment/values/${valueIndex}`,
+            message: "Each Annotation value requires a term_id.",
+          });
+          continue;
+        }
+        if (valueIds.has(termId)) {
+          addDiagnostic(diagnostics, {
+            ...details,
+            code: "ANNOTATION_VALUE_DUPLICATE",
+            fieldPath: `${details.fieldPath}/assessment/values/${valueIndex}/term_id`,
+            message: `An Annotation cannot repeat a term: ${termId}.`,
+            relatedIds: [termId],
+          });
+        }
+        valueIds.add(termId);
+        const termEntry = termsById.get(termId);
+        if (!termEntry) {
+          addDiagnostic(diagnostics, {
+            ...details,
+            code: "REFERENTIAL_TERM_MISSING",
+            fieldPath: `${details.fieldPath}/assessment/values/${valueIndex}/term_id`,
+            message: `Controlled Term does not exist: ${termId}.`,
+            relatedIds: [termId],
+          });
+        } else {
+          if (termEntry.category !== "physics" || termEntry.axisId !== annotation.axis) {
+            addDiagnostic(diagnostics, {
+              ...details,
+              code: "ANNOTATION_TERM_AXIS_MISMATCH",
+              fieldPath: `${details.fieldPath}/assessment/values/${valueIndex}/term_id`,
+              message: "An Annotation value must reference a term defined on its axis.",
+              relatedIds: [termId, annotation.axis],
+            });
+          }
+          if (termEntry.term.status !== "active") {
+            addDiagnostic(diagnostics, {
+              ...details,
+              code: "ANNOTATION_TERM_NOT_ACTIVE",
+              fieldPath: `${details.fieldPath}/assessment/values/${valueIndex}/term_id`,
+              message: "Current Physics Annotations must reference active terms.",
+              relatedIds: [termId],
+            });
+          }
+        }
+      }
+    }
+    const defaultRisk = axis?.default_risk;
+    const risk = annotation.interpretive_risk ?? defaultRisk;
+    if (!RISK_LEVELS.includes(risk)) {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "ANNOTATION_RISK_INVALID",
+        fieldPath: `${details.fieldPath}/interpretive_risk`,
+        message: "Annotation Interpretive Risk must be descriptive, interpretive, or synthetic.",
+        relatedIds: RISK_LEVELS,
+      });
+    } else if (defaultRisk && RISK_ORDER[risk] < RISK_ORDER[defaultRisk]) {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "ANNOTATION_RISK_DOWNGRADE_FORBIDDEN",
+        fieldPath: `${details.fieldPath}/interpretive_risk`,
+        message: "An Annotation may not downgrade its axis default Interpretive Risk.",
+        relatedIds: [defaultRisk],
+      });
+    } else if (defaultRisk && RISK_ORDER[risk] > RISK_ORDER[defaultRisk]) {
+      if (!isObject(annotation.risk_escalation) || typeof annotation.risk_escalation.reason !== "string" || annotation.risk_escalation.reason.trim() === "") {
+        addDiagnostic(diagnostics, {
+          ...details,
+          code: "ANNOTATION_RISK_ESCALATION_REASON_REQUIRED",
+          fieldPath: `${details.fieldPath}/risk_escalation/reason`,
+          message: "An escalated Annotation risk requires a normalized reason.",
+        });
+      }
+    } else if (annotation.risk_escalation !== undefined) {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "ANNOTATION_RISK_ESCALATION_UNEXPECTED",
+        fieldPath: `${details.fieldPath}/risk_escalation`,
+        message: "Risk escalation metadata is allowed only above the axis default.",
+      });
+    }
+    const evidenceIds = annotation.evidence_ids;
+    if (risk === "interpretive") {
+      if (typeof annotation.reason !== "string" && annotation.risk_escalation?.reason === undefined) {
+        addDiagnostic(diagnostics, {
+          ...details,
+          code: "ANNOTATION_REASON_REQUIRED",
+          fieldPath: `${details.fieldPath}/reason`,
+          message: "Interpretive Annotations require a normalized reason.",
+        });
+      }
+      validateEvidenceReferences(evidenceIds, evidenceById, details, diagnostics, { required: true });
+    } else if (risk === "synthetic") {
+      if (typeof annotation.reason !== "string" || annotation.reason.trim() === "") {
+        addDiagnostic(diagnostics, {
+          ...details,
+          code: "ANNOTATION_REASON_REQUIRED",
+          fieldPath: `${details.fieldPath}/reason`,
+          message: "Synthetic Annotations require a normalized reason.",
+        });
+      }
+      if (!Array.isArray(evidenceIds) || evidenceIds.length < 2) {
+        addDiagnostic(diagnostics, {
+          ...details,
+          code: "ANNOTATION_MULTIPLE_EVIDENCE_REQUIRED",
+          fieldPath: `${details.fieldPath}/evidence_ids`,
+          message: "Synthetic Annotations require multiple Evidence records.",
+        });
+      }
+      validateEvidenceReferences(evidenceIds, evidenceById, details, diagnostics, { required: true });
+    } else {
+      validateEvidenceReferences(evidenceIds, evidenceById, details, diagnostics);
+    }
+    validateGovernedRecord(
+      annotation,
+      actorsById,
+      details,
+      diagnostics,
+      { independentReview: risk === "synthetic" },
+    );
+  }
+  if (work.id === "work:arnett-1982") {
+    for (const axisId of AXIS_IDS) {
+      if (!seenAxes.has(axisId)) {
+        addDiagnostic(diagnostics, {
+          file,
+          recordId: work.id,
+          code: "ANNOTATION_AXIS_COVERAGE_INCOMPLETE",
+          fieldPath: "/annotations",
+          message: `Arnett fixture requires an assessment for axis ${axisId}.`,
+          relatedIds: [axisId],
+        });
+      }
+    }
+    for (const annotation of envelope.annotations) {
+      if (annotation?.assessment?.state === "not_assessed") {
+        addDiagnostic(diagnostics, {
+          file,
+          recordId: annotation.id ?? work.id,
+          code: "ANNOTATION_NOT_ASSESSED_FORBIDDEN",
+          fieldPath: "/assessment/state",
+          message: "The V0.1 fixture profile forbids not_assessed Physics axes.",
+        });
+      }
+    }
+  }
+}
+
+function validateMethodAnnotations(
+  work,
+  termsById,
+  evidenceById,
+  actorsById,
+  diagnostics,
+) {
+  const file = `content/works/${work.id}/annotations.yaml`;
+  const envelope = work.files["annotations.yaml"];
+  if (!isObject(envelope) || !Array.isArray(envelope.method_annotations)) {
+    return;
+  }
+  let reviewedActiveTechnique = false;
+  for (const [index, annotation] of envelope.method_annotations.entries()) {
+    const details = {
+      file,
+      recordId: annotation?.id ?? work.id,
+      fieldPath: `/method_annotations/${index}`,
+    };
+    if (!isObject(annotation)) {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "METHOD_ANNOTATION_INVALID_SHAPE",
+        message: "Method Annotations must be mappings.",
+      });
+      continue;
+    }
+    validateNamespacedId(annotation.id, "annotation", {
+      ...details,
+      code: "METHOD_ANNOTATION_ID_INVALID",
+      fieldPath: `${details.fieldPath}/id`,
+      message: "Method Annotation IDs must use the annotation: namespace.",
+    }, diagnostics);
+    if (annotation.interpretive_risk !== undefined) {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "METHOD_ANNOTATION_RISK_FORBIDDEN",
+        fieldPath: `${details.fieldPath}/interpretive_risk`,
+        message: "Method Annotations do not carry Physics Interpretive Risk.",
+      });
+    }
+    if (!ASSERTION_BASES.includes(annotation.basis)) {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "METHOD_ANNOTATION_BASIS_INVALID",
+        fieldPath: `${details.fieldPath}/basis`,
+        message: "Method Annotation basis must be explicit or inferred.",
+        relatedIds: ASSERTION_BASES,
+      });
+    }
+    const technique = termsById.get(annotation.technique_id);
+    if (!technique || technique.category !== "technique") {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "REFERENTIAL_TECHNIQUE_MISSING",
+        fieldPath: `${details.fieldPath}/technique_id`,
+        message: `Canonical Technique does not exist: ${annotation.technique_id}.`,
+        relatedIds: [annotation.technique_id],
+      });
+    } else if (technique.term.status !== "active") {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "METHOD_TECHNIQUE_NOT_ACTIVE",
+        fieldPath: `${details.fieldPath}/technique_id`,
+        message: "Method Annotations must reference active Canonical Techniques.",
+        relatedIds: [annotation.technique_id],
+      });
+    }
+    validateEvidenceReferences(annotation.evidence_ids, evidenceById, details, diagnostics, { required: true });
+    if (annotation.basis === "inferred" && (typeof annotation.reason !== "string" || annotation.reason.trim() === "")) {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "METHOD_INFERRED_REASON_REQUIRED",
+        fieldPath: `${details.fieldPath}/reason`,
+        message: "Inferred Method Annotations require a normalized reason.",
+      });
+    }
+    validateGovernedRecord(
+      annotation,
+      actorsById,
+      details,
+      diagnostics,
+      { independentReview: annotation.basis === "inferred" },
+    );
+    if (annotation.review_state === "reviewed" && technique?.term.status === "active") {
+      reviewedActiveTechnique = true;
+    }
+  }
+  if (work.id === "work:arnett-1982" && !reviewedActiveTechnique) {
+    addDiagnostic(diagnostics, {
+      file,
+      recordId: work.id,
+      code: "METHOD_REVIEWED_TECHNIQUE_REQUIRED",
+      fieldPath: "/method_annotations",
+      message: "Arnett requires a reviewed Method Annotation to an active technique.",
+    });
+  }
+}
+
 const WORK_CONCERN_COLLECTIONS = Object.freeze([
   ["evidence.yaml", "evidence"],
   ["annotations.yaml", "annotations"],
@@ -1150,7 +2309,13 @@ const WORK_CONCERN_COLLECTIONS = Object.freeze([
   ["physical-account.yaml", "links"],
 ]);
 
-function validateWorkRecords(snapshot, actorsById, diagnostics) {
+function validateWorkRecords(
+  snapshot,
+  actorsById,
+  axisById,
+  termsById,
+  diagnostics,
+) {
   for (const work of snapshot.works) {
     const workFile = `content/works/${work.id}/work.yaml`;
     const workRecord = work.files["work.yaml"];
@@ -1368,6 +2533,28 @@ function validateWorkRecords(snapshot, actorsById, diagnostics) {
       diagnostics,
     );
 
+    const evidenceById = validateEvidenceRecords(
+      work,
+      versionsById,
+      actorsById,
+      diagnostics,
+    );
+    validatePhysicsAnnotations(
+      work,
+      axisById,
+      termsById,
+      evidenceById,
+      actorsById,
+      diagnostics,
+    );
+    validateMethodAnnotations(
+      work,
+      termsById,
+      evidenceById,
+      actorsById,
+      diagnostics,
+    );
+
     for (const [fileName, field] of WORK_CONCERN_COLLECTIONS) {
       const value = work.files[fileName];
       if (!isObject(value) || !Array.isArray(value[field])) {
@@ -1475,6 +2662,8 @@ export async function validateCanonicalContent(
 ) {
   const snapshot = await loadCanonicalContent(contentRoot);
   const diagnostics = [...snapshot.discovery.diagnostics];
+  const actorsById = indexActors(snapshot.actors);
+  let controlledTermEntries = [];
   if (!hasParseDiagnostic(diagnostics, "content/manifest.yaml")) {
     validateManifest(snapshot.manifest, diagnostics);
   }
@@ -1482,9 +2671,33 @@ export async function validateCanonicalContent(
     validateActors(snapshot.actors, diagnostics);
   }
   if (!hasStructuralFailure(snapshot.discovery.diagnostics)) {
-    validateAxes(snapshot.axes, diagnostics);
-    validateMethods(snapshot.methods, diagnostics);
-    validateWorkRecords(snapshot, indexActors(snapshot.actors), diagnostics);
+    controlledTermEntries.push(...validateAxes(snapshot.axes, actorsById, diagnostics));
+    controlledTermEntries.push(...validateMethods(snapshot.methods, actorsById, diagnostics));
+    const controlledTermIds = new Set();
+    for (const entry of controlledTermEntries) {
+      if (controlledTermIds.has(entry.term.id)) {
+        addDiagnostic(diagnostics, {
+          code: "TERM_ID_DUPLICATE",
+          file: entry.file,
+          recordId: entry.term.id,
+          fieldPath: "/id",
+          message: `Controlled Term ID is duplicated across canonical vocabularies: ${entry.term.id}.`,
+        });
+      }
+      controlledTermIds.add(entry.term.id);
+    }
+    const axisById = new Map(
+      snapshot.axes
+        .filter(({ value }) => isObject(value) && typeof value.id === "string")
+        .map(({ id, value }) => [id, value]),
+    );
+    const termsById = new Map();
+    for (const entry of controlledTermEntries) {
+      if (!termsById.has(entry.term.id)) {
+        termsById.set(entry.term.id, entry);
+      }
+    }
+    validateWorkRecords(snapshot, actorsById, axisById, termsById, diagnostics);
   }
   validateRecordEnvelopes(snapshot, diagnostics);
 

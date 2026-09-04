@@ -2,4 +2,22 @@ id: transport_process
 label: Transport process
 question: Which propagation, absorption, scattering, diffusion, or escape process alters a messenger before observation?
 default_risk: descriptive
-terms: []
+terms:
+  - id: term:radiative-diffusion-escape
+    label: Radiative diffusion and escape
+    aliases: [photon diffusion]
+    status: active
+    definition: Transport of radiation through expanding ejecta by diffusion and eventual escape to the observer.
+    examples:
+      - Time-dependent radiative diffusion controlling the rise and decline of a supernova light curve.
+    counterexamples:
+      - Radioactive decay, which supplies and deposits energy before transport.
+    boundary_notes: Keep photon transport distinct from emission and from the luminosity inferred from measurements.
+    allowed_functional_roles: [transport_process]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-09-04T04:00:00Z"
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: "2026-09-04T04:05:00Z"

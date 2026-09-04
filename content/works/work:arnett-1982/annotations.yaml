@@ -1,3 +1,255 @@
 work_id: work:arnett-1982
-annotations: []
-method_annotations: []
+annotations:
+  - id: annotation:arnett-progenitor-system
+    axis: progenitor_system
+    assessment:
+      state: present
+      values:
+        - term_id: term:alternative-modeled-systems
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:arnett-alternative-models]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-09-04T04:20:00Z"
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: "2026-09-04T04:25:00Z"
+  - id: annotation:arnett-central-object
+    axis: central_object
+    assessment:
+      state: unknown
+      values: []
+    interpretive_risk: descriptive
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-09-04T04:20:10Z"
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: "2026-09-04T04:25:10Z"
+  - id: annotation:arnett-energy-reservoir
+    axis: energy_reservoir
+    assessment:
+      state: present
+      values:
+        - term_id: term:radioactive-decay-energy
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:arnett-radioactive-diffusion]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-09-04T04:20:20Z"
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: "2026-09-04T04:25:20Z"
+  - id: annotation:arnett-energy-transfer
+    axis: energy_transfer
+    assessment:
+      state: present
+      values:
+        - term_id: term:radioactive-decay-energy-release
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:arnett-decay-heating]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-09-04T04:20:30Z"
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: "2026-09-04T04:25:30Z"
+  - id: annotation:arnett-outflow
+    axis: outflow
+    assessment:
+      state: present
+      values:
+        - term_id: term:expanding-ejecta
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:arnett-homologous-ejecta]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-09-04T04:20:40Z"
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: "2026-09-04T04:25:40Z"
+  - id: annotation:arnett-environment
+    axis: environment
+    assessment:
+      state: unknown
+      values: []
+    interpretive_risk: descriptive
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-09-04T04:20:50Z"
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: "2026-09-04T04:25:50Z"
+  - id: annotation:arnett-dynamics
+    axis: dynamics
+    assessment:
+      state: present
+      values:
+        - term_id: term:homologous-expansion
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:arnett-homologous-ejecta]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-09-04T04:21:00Z"
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: "2026-09-04T04:26:00Z"
+  - id: annotation:arnett-energy-dissipation
+    axis: energy_dissipation
+    assessment:
+      state: present
+      values:
+        - term_id: term:decay-deposition-heating
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:arnett-decay-heating]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-09-04T04:21:10Z"
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: "2026-09-04T04:26:10Z"
+  - id: annotation:arnett-particle-interaction
+    axis: particle_interaction
+    assessment:
+      state: present
+      values:
+        - term_id: term:electron-capture-positron-emission
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:arnett-decay-heating]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-09-04T04:21:20Z"
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: "2026-09-04T04:26:20Z"
+  - id: annotation:arnett-emission-process
+    axis: emission_process
+    assessment:
+      state: present
+      values:
+        - term_id: term:blackbody-spectrum-approximation
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:arnett-photometric-bands]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-09-04T04:21:30Z"
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: "2026-09-04T04:26:30Z"
+  - id: annotation:arnett-transport-process
+    axis: transport_process
+    assessment:
+      state: present
+      values:
+        - term_id: term:radiative-diffusion-escape
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:arnett-radioactive-diffusion, evidence:arnett-maximum-light]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-09-04T04:21:40Z"
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: "2026-09-04T04:26:40Z"
+  - id: annotation:arnett-phenomenon
+    axis: phenomenon
+    assessment:
+      state: present
+      values:
+        - term_id: term:type-i-supernova
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:arnett-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-09-04T04:21:50Z"
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: "2026-09-04T04:26:50Z"
+  - id: annotation:arnett-messenger
+    axis: messenger
+    assessment:
+      state: present
+      values:
+        - term_id: term:photons
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:arnett-photometric-bands]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-09-04T04:22:00Z"
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: "2026-09-04T04:27:00Z"
+  - id: annotation:arnett-photon-band
+    axis: photon_band
+    assessment:
+      state: present
+      values:
+        - term_id: term:u-band
+        - term_id: term:b-band
+        - term_id: term:v-band
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:arnett-photometric-bands]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-09-04T04:22:10Z"
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: "2026-09-04T04:27:10Z"
+  - id: annotation:arnett-observable
+    axis: observable
+    assessment:
+      state: present
+      values:
+        - term_id: term:measured-magnitudes
+        - term_id: term:light-curves
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:arnett-photometric-bands]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-09-04T04:22:20Z"
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: "2026-09-04T04:27:20Z"
+  - id: annotation:arnett-inference-target
+    axis: inference_target
+    assessment:
+      state: present
+      values:
+        - term_id: term:intrinsic-luminosity
+    interpretive_risk: interpretive
+    risk_escalation:
+      reason: Inferring intrinsic luminosity requires connecting measured light curves to a model-dependent radioactive deposition and transport account.
+    evidence_ids: [evidence:arnett-intrinsic-luminosity]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-09-04T04:22:30Z"
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: "2026-09-04T04:27:30Z"
+method_annotations:
+  - id: annotation:arnett-method-reduction-to-quadrature
+    technique_id: technique:reduction-to-quadrature
+    basis: explicit
+    evidence_ids: [evidence:arnett-reduction-quadrature]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-09-04T04:23:00Z"
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: "2026-09-04T04:28:00Z"

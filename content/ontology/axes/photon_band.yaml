@@ -2,4 +2,55 @@ id: photon_band
 label: Photon band
 question: Which electromagnetic band describes the photon observation?
 default_risk: descriptive
-terms: []
+terms:
+  - id: term:u-band
+    label: U band
+    aliases: [ultraviolet band]
+    status: active
+    definition: The U photometric band used for a modeled or measured electromagnetic light curve.
+    examples:
+      - U-band magnitude in an UBV light curve.
+    counterexamples:
+      - Photons as the messenger identity independent of band.
+    boundary_notes: This is a photon band, not an observable or an inferred physical parameter.
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-09-04T04:00:00Z"
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: "2026-09-04T04:05:00Z"
+  - id: term:b-band
+    label: B band
+    aliases: [blue band]
+    status: active
+    definition: The B photometric band used for a modeled or measured electromagnetic light curve.
+    examples:
+      - B-band magnitude in an UBV light curve.
+    counterexamples:
+      - Intrinsic luminosity inferred from a light curve.
+    boundary_notes: This is a photon band, not a messenger class or an inference result.
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-09-04T04:00:00Z"
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: "2026-09-04T04:05:00Z"
+  - id: term:v-band
+    label: V band
+    aliases: [visual band]
+    status: active
+    definition: The V photometric band used for a modeled or measured electromagnetic light curve.
+    examples:
+      - V-band magnitude in an UBV light curve.
+    counterexamples:
+      - A bolometric luminosity inference, which belongs to inference_target.
+    boundary_notes: This is a photon band, not a model-dependent physical result.
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-09-04T04:00:00Z"
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: "2026-09-04T04:05:00Z"

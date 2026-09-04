@@ -2,4 +2,22 @@ id: energy_transfer
 label: Energy transfer
 question: By what process does energy leave its reservoir or enter the evolving system?
 default_risk: descriptive
-terms: []
+terms:
+  - id: term:radioactive-decay-energy-release
+    label: Radioactive decay energy release
+    aliases: [radioactive decay powering]
+    status: active
+    definition: Release of radioactive decay energy from synthesized nuclei into the evolving supernova system.
+    examples:
+      - Nickel-56 and cobalt-56 decay supplying energy to the ejecta.
+    counterexamples:
+      - Radiative diffusion, which transports energy after deposition rather than releasing the reservoir.
+    boundary_notes: Keep the energy-release process distinct from the radioactive energy reservoir and from deposition or transport.
+    allowed_functional_roles: [energy_dissipation]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-09-04T04:00:00Z"
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: "2026-09-04T04:05:00Z"

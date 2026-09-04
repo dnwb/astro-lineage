@@ -226,6 +226,10 @@ test("deprecated Controlled Terms require a reason and preserve optional success
   assert(missingReason.diagnostics.some(({ code }) => code === "TERM_DEPRECATION_REASON_REQUIRED"));
 
   axis.terms[0].deprecation_reason = "Replaced by a more specific phenomenon term.";
+  axis.terms[0].deprecation_provenance = {
+    actor_id: "actor:human-curator",
+    recorded_at: "2026-09-04T05:00:00Z",
+  };
   axis.terms[0].successor_id = "term:missing-successor";
   await writeFile(axisPath, stringify(axis));
   const missingSuccessor = await validateCanonicalContent(contentRoot);
@@ -246,4 +250,257 @@ test("Agent actors cannot receive a capability beyond draft_records", async () =
 
   const result = await validateCanonicalContent(contentRoot);
   assert(result.diagnostics.some(({ code }) => code === "ACTOR_AGENT_CAPABILITY_FORBIDDEN"));
+});
+
+test("malformed Method children are diagnosed and quarantined from dependent checks", async () => {
+  const { contentRoot } = await copyContent();
+  const methodsPath = join(contentRoot, "methods", "taxonomy.yaml");
+  const methods = parse(await readFile(methodsPath, "utf8"));
+  methods.method_families[0] = { id: "method-family:malformed" };
+  methods.techniques[0] = null;
+  await writeFile(methodsPath, stringify(methods));
+
+  const result = await validateCanonicalContent(contentRoot);
+  const codes = result.diagnostics.map(({ code }) => code);
+
+  assert(codes.includes("TERM_LABEL_INVALID"));
+  assert(codes.includes("TERM_STATUS_INVALID"));
+  assert(codes.includes("TERM_INVALID_SHAPE"));
+  assert(!codes.includes("REFERENTIAL_METHOD_FAMILY_MISSING"));
+  assert.equal(result.valid, false);
+});
+
+test("non-array Annotation assessment values are diagnosed without dependent value cascades", async () => {
+  const { contentRoot } = await copyContent();
+  const { workRoot, annotations } = await readArnett(contentRoot);
+  annotations.annotations[0].assessment.values = { term_id: "term:not-an-array" };
+  await writeFile(join(workRoot, "annotations.yaml"), stringify(annotations));
+
+  const result = await validateCanonicalContent(contentRoot);
+  const codes = result.diagnostics.map(({ code }) => code);
+
+  assert(codes.includes("ANNOTATION_VALUES_INVALID"));
+  assert(!codes.includes("ANNOTATION_VALUE_INVALID"));
+  assert(!codes.includes("REFERENTIAL_TERM_MISSING"));
+  assert.equal(result.valid, false);
+});
+
+test("an invalid Actor Registry reports its root error without actor-dependent cascades", async () => {
+  const { contentRoot } = await copyContent();
+  await writeFile(join(contentRoot, "actors.yaml"), "actors: null\n");
+
+  const result = await validateCanonicalContent(contentRoot);
+  const codes = result.diagnostics.map(({ code }) => code);
+
+  assert(codes.includes("STRUCTURE_ACTORS_COLLECTION_INVALID"));
+  assert(!codes.some((code) => code === "REFERENTIAL_ACTOR_MISSING" || code.startsWith("CURATION_")));
+  assert(codes.includes("METHOD_REVIEWED_TECHNIQUE_REQUIRED") === false);
+  assert.equal(result.valid, false);
+});
+
+test("duplicate Controlled Terms emit one global root-cause diagnostic", async () => {
+  const { contentRoot } = await copyContent();
+  const axisPath = join(contentRoot, "ontology", "axes", "energy_reservoir.yaml");
+  const axis = parse(await readFile(axisPath, "utf8"));
+  axis.terms.push({ ...axis.terms[0] });
+  await writeFile(axisPath, stringify(axis));
+
+  const result = await validateCanonicalContent(contentRoot);
+  const duplicateDiagnostics = result.diagnostics.filter(({ code, record_id }) =>
+    code === "TERM_ID_DUPLICATE" && record_id === axis.terms[0].id,
+  );
+
+  assert.equal(duplicateDiagnostics.length, 1);
+});
+
+test("deprecated Controlled Terms remain valid historical Annotation and Method Annotation references", async () => {
+  const { contentRoot } = await copyContent();
+  const axisPath = join(contentRoot, "ontology", "axes", "energy_reservoir.yaml");
+  const axis = parse(await readFile(axisPath, "utf8"));
+  axis.terms[0].status = "deprecated";
+  axis.terms[0].deprecation_reason = "Retained for historical Version attestations.";
+  axis.terms[0].deprecation_provenance = {
+    actor_id: "actor:human-curator",
+    recorded_at: "2026-09-04T05:00:00Z",
+  };
+  await writeFile(axisPath, stringify(axis));
+
+  const methodsPath = join(contentRoot, "methods", "taxonomy.yaml");
+  const methods = parse(await readFile(methodsPath, "utf8"));
+  methods.techniques[0].status = "deprecated";
+  methods.techniques[0].deprecation_reason = "Retained for the historical method assignment.";
+  methods.techniques[0].deprecation_provenance = {
+    actor_id: "actor:human-curator",
+    recorded_at: "2026-09-04T05:00:10Z",
+  };
+  const successor = {
+    ...methods.techniques[0],
+    id: "technique:successor",
+    label: "Successor technique",
+    status: "active",
+  };
+  delete successor.deprecation_reason;
+  delete successor.deprecation_provenance;
+  methods.techniques.push(successor);
+  await writeFile(methodsPath, stringify(methods));
+
+  const { workRoot, annotations } = await readArnett(contentRoot);
+  annotations.method_annotations.push({
+    ...annotations.method_annotations[0],
+    id: "annotation:arnett-method-successor",
+    technique_id: "technique:successor",
+  });
+  await writeFile(join(workRoot, "annotations.yaml"), stringify(annotations));
+
+  const result = await validateCanonicalContent(contentRoot);
+  const codes = result.diagnostics.map(({ code }) => code);
+
+  assert(!codes.includes("ANNOTATION_TERM_NOT_ACTIVE"));
+  assert(!codes.includes("METHOD_TECHNIQUE_NOT_ACTIVE"));
+});
+
+test("deprecated Controlled Terms reject assignments created after deprecation", async () => {
+  const { contentRoot } = await copyContent();
+  const axisPath = join(contentRoot, "ontology", "axes", "energy_reservoir.yaml");
+  const axis = parse(await readFile(axisPath, "utf8"));
+  axis.terms[0].status = "deprecated";
+  axis.terms[0].deprecation_reason = "Retained only for historical assignments.";
+  axis.terms[0].deprecation_provenance = {
+    actor_id: "actor:human-curator",
+    recorded_at: "2026-09-04T05:00:00Z",
+  };
+  await writeFile(axisPath, stringify(axis));
+
+  const methodsPath = join(contentRoot, "methods", "taxonomy.yaml");
+  const methods = parse(await readFile(methodsPath, "utf8"));
+  methods.techniques[0].status = "deprecated";
+  methods.techniques[0].deprecation_reason = "Retained only for historical assignments.";
+  methods.techniques[0].deprecation_provenance = {
+    actor_id: "actor:human-curator",
+    recorded_at: "2026-09-04T05:00:00Z",
+  };
+  await writeFile(methodsPath, stringify(methods));
+
+  const { workRoot, annotations } = await readArnett(contentRoot);
+  annotations.annotations.find(({ axis: axisId }) => axisId === "energy_reservoir")
+    .curation_provenance.recorded_at = "2026-09-04T05:00:01Z";
+  annotations.method_annotations[0].curation_provenance.recorded_at = "2026-09-04T05:00:01Z";
+  await writeFile(join(workRoot, "annotations.yaml"), stringify(annotations));
+
+  const result = await validateCanonicalContent(contentRoot);
+  const codes = result.diagnostics.map(({ code }) => code);
+
+  assert(codes.includes("ANNOTATION_TERM_DEPRECATED_FOR_NEW_ASSIGNMENT"));
+  assert(codes.includes("METHOD_TECHNIQUE_DEPRECATED_FOR_NEW_ASSIGNMENT"));
+});
+
+test("proposed and deprecated Controlled Terms carry governed lifecycle records", async () => {
+  const { contentRoot } = await copyContent();
+  const axisPath = join(contentRoot, "ontology", "axes", "energy_reservoir.yaml");
+  const axis = parse(await readFile(axisPath, "utf8"));
+  axis.terms[0].status = "proposed";
+  delete axis.terms[0].curation_provenance;
+  delete axis.terms[0].review_state;
+  await writeFile(axisPath, stringify(axis));
+
+  const proposed = await validateCanonicalContent(contentRoot);
+  const proposedCodes = proposed.diagnostics.map(({ code }) => code);
+  assert(proposedCodes.includes("CURATION_PROVENANCE_INVALID_SHAPE"));
+  assert(proposedCodes.includes("REVIEW_STATE_INVALID"));
+
+  axis.terms[0].status = "deprecated";
+  axis.terms[0].curation_provenance = {
+    actor_id: "actor:agent-curator",
+    recorded_at: "2026-09-04T05:01:00Z",
+  };
+  axis.terms[0].review_state = "unreviewed";
+  axis.terms[0].deprecation_reason = "Retained for historical references.";
+  delete axis.terms[0].deprecation_provenance;
+  await writeFile(axisPath, stringify(axis));
+
+  const deprecated = await validateCanonicalContent(contentRoot);
+  assert(deprecated.diagnostics.some(({ code }) => code === "TERM_DEPRECATION_PROVENANCE_REQUIRED"));
+});
+
+test("reviewed Method Annotation bindings reject material edits but ignore formatting-only reason changes", async () => {
+  const mutations = [
+    (annotation) => {
+      annotation.technique_id = "technique:changed";
+    },
+    (annotation) => {
+      annotation.basis = "inferred";
+      annotation.reason = "The source explicitly supports this technique.";
+    },
+    (annotation) => {
+      annotation.reason = "A materially different curation reason.";
+    },
+    (annotation) => {
+      annotation.evidence_ids = ["evidence:arnett-abstract"];
+    },
+  ];
+
+  for (const mutate of mutations) {
+    const { contentRoot } = await copyContent();
+    const { workRoot, annotations } = await readArnett(contentRoot);
+    mutate(annotations.method_annotations[0]);
+    await writeFile(join(workRoot, "annotations.yaml"), stringify(annotations));
+    const result = await validateCanonicalContent(contentRoot);
+    assert(result.diagnostics.some(({ code }) => code === "METHOD_REVIEW_BINDING_STALE"));
+  }
+
+  const { contentRoot } = await copyContent();
+  const { workRoot, annotations } = await readArnett(contentRoot);
+  annotations.method_annotations[0].reason = `  ${annotations.method_annotations[0].reason}  `;
+  await writeFile(join(workRoot, "annotations.yaml"), stringify(annotations));
+  const formattingOnly = await validateCanonicalContent(contentRoot);
+  assert.equal(formattingOnly.valid, true);
+  assert(!formattingOnly.diagnostics.some(({ code }) => code === "METHOD_REVIEW_BINDING_STALE"));
+});
+
+test("required Interpretive Annotation reasons reject whitespace-only values", async () => {
+  const { contentRoot } = await copyContent();
+  const { workRoot, annotations } = await readArnett(contentRoot);
+  const annotation = annotations.annotations.find(({ axis }) => axis === "inference_target");
+  assert(annotation);
+  annotation.reason = "   ";
+  await writeFile(join(workRoot, "annotations.yaml"), stringify(annotations));
+
+  const result = await validateCanonicalContent(contentRoot);
+  assert(result.diagnostics.some(({ code }) => code === "ANNOTATION_REASON_REQUIRED"));
+});
+
+test("Arnett progenitor assessment names both modeled physical configurations", async () => {
+  const snapshot = await loadCanonicalContent(productionContent);
+  const work = snapshot.works.find(({ id }) => id === "work:arnett-1982");
+  const annotation = work.files["annotations.yaml"].annotations.find(
+    ({ axis }) => axis === "progenitor_system",
+  );
+  const termIds = annotation.assessment.values.map(({ term_id }) => term_id);
+
+  assert.deepEqual(new Set(termIds), new Set([
+    "term:near-chandrasekhar-carbon-ignition",
+    "term:evolved-helium-star-collapse",
+  ]));
+  assert(!termIds.includes("term:alternative-modeled-systems"));
+});
+
+test("Arnett Evidence excerpts retain source text rather than curator synthesis", async () => {
+  const snapshot = await loadCanonicalContent(productionContent);
+  const work = snapshot.works.find(({ id }) => id === "work:arnett-1982");
+  const excerpts = new Map(
+    work.files["evidence.yaml"].evidence.map(({ id, excerpt }) => [id, excerpt]),
+  );
+
+  assert.equal(
+    excerpts.get("evidence:arnett-reduction-quadrature"),
+    "The solutions obtained are 'analytic' in the sense that they are expressed in terms of tabulated functions or integrals that are easy to do numerically (reduction to quadrature).",
+  );
+  assert.equal(
+    excerpts.get("evidence:arnett-maximum-light"),
+    "At maximum light the diffusion loss equals the radioactive input.",
+  );
+  assert.equal(
+    excerpts.get("evidence:arnett-alternative-models"),
+    "It is impossible to distinguish between thermonuclear and collapse models.",
+  );
 });

@@ -3,16 +3,16 @@ label: Progenitor system
 question: What physical system or object configuration gives rise to the modeled event or source?
 default_risk: descriptive
 terms:
-  - id: term:alternative-modeled-systems
-    label: Alternative modeled systems
-    aliases: [modeled progenitor alternatives]
+  - id: term:near-chandrasekhar-carbon-ignition
+    label: Near-Chandrasekhar carbon ignition
+    aliases: [degenerate carbon ignition]
     status: active
-    definition: A set of explicitly modeled progenitor or initial-system alternatives whose comparison does not select a unique physical progenitor.
+    definition: A degenerate carbon-rich stellar configuration near the Chandrasekhar mass in which carbon ignition produces a thermonuclear explosion model.
     examples:
-      - Thermonuclear and core-collapse Type I supernova models compared as alternatives.
+      - Degenerate carbon ignition near the Chandrasekhar mass in Arnett's thermonuclear model class.
     counterexamples:
-      - A claim that one progenitor channel is uniquely established by the Work.
-    boundary_notes: Use for alternatives represented in the model; do not turn a model comparison into a unique progenitor identification.
+      - Collapse of an evolved helium star, which is a distinct modeled configuration.
+    boundary_notes: Use for the concrete thermonuclear configuration represented by the Work; do not infer that the Work uniquely identifies it as the physical progenitor.
     curation_provenance:
       actor_id: actor:agent-curator
       recorded_at: "2026-09-04T04:00:00Z"
@@ -20,3 +20,20 @@ terms:
     review_provenance:
       actor_id: actor:human-curator
       recorded_at: "2026-09-04T04:05:00Z"
+  - id: term:evolved-helium-star-collapse
+    label: Evolved helium-star collapse
+    aliases: [helium-star collapse]
+    status: active
+    definition: An evolved helium-star configuration whose collapse produces the ejecta in a collapse explosion model.
+    examples:
+      - Collapse of an evolved helium star in Arnett's collapse model class.
+    counterexamples:
+      - Degenerate carbon ignition near the Chandrasekhar mass, which is a distinct modeled configuration.
+    boundary_notes: Use for the concrete collapse configuration represented by the Work; do not infer that the Work uniquely identifies it as the physical progenitor.
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-09-04T04:00:20Z"
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: "2026-09-04T04:05:20Z"

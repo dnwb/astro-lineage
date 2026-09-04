@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { execFileSync } from "node:child_process";
+import { spawnSync } from "node:child_process";
 import { existsSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import { test } from "node:test";
@@ -7,14 +7,12 @@ import { fileURLToPath } from "node:url";
 
 const projectRoot = fileURLToPath(new URL("..", import.meta.url));
 
-test("the project owns its Git boundary", () => {
-  const gitRoot = execFileSync(
-    "git",
-    ["-C", projectRoot, "rev-parse", "--show-toplevel"],
-    { encoding: "utf8" },
-  ).trim();
+test("the project owns its Git boundary", async () => {
+  const head = await readFile(new URL("../.git/HEAD", import.meta.url), "utf8");
+  const config = await readFile(new URL("../.git/config", import.meta.url), "utf8");
 
-  assert.equal(gitRoot, projectRoot.replace(/\/$/, ""));
+  assert.match(head, /^(ref: refs\/heads\/|[0-9a-f]{40}$)/u);
+  assert.match(config, /^\[core\]$/mu);
 });
 
 test("the public verification commands are stable", async () => {
@@ -29,11 +27,16 @@ test("the public verification commands are stable", async () => {
 });
 
 test("the production build renders the product boundary as static HTML", async () => {
-  execFileSync("npm", ["run", "build"], {
+  const build = spawnSync("npm", ["run", "build"], {
     cwd: projectRoot,
     encoding: "utf8",
-    stdio: "pipe",
+    stdio: ["ignore", "pipe", "pipe"],
   });
+  assert.equal(
+    build.status,
+    0,
+    `production build failed${build.signal ? ` with ${build.signal}` : ""}:\n${build.stderr || build.stdout}`,
+  );
 
   const html = await readFile(new URL("../dist/index.html", import.meta.url), "utf8");
   const papersHtml = await readFile(new URL("../dist/papers/index.html", import.meta.url), "utf8");

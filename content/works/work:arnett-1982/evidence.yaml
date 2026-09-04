@@ -7,7 +7,7 @@ evidence:
       type: section
       page: 785
       section: Abstract
-    excerpt: "An analytic solution is obtained for the early part of the light curve of a Type I supernova."
+    excerpt: "Analytic solutions for light curves, effective temperatures, and broad-band colors of Type I supernovae are presented."
     curation_provenance:
       actor_id: actor:agent-curator
       recorded_at: "2026-09-04T04:10:00Z"
@@ -22,7 +22,7 @@ evidence:
       type: section
       page: 785
       section: II(a)
-    excerpt: "The ejecta are taken to be in homologous expansion and the radioactive material is distributed through the ejecta."
+    excerpt: "The assumptions are: 1. Homologous expansion ... 3. 56Ni present in ejected matter."
     curation_provenance:
       actor_id: actor:agent-curator
       recorded_at: "2026-09-04T04:10:30Z"
@@ -37,7 +37,7 @@ evidence:
       type: section
       page: 785
       section: Introduction
-    excerpt: "The analytic solution reduces the light-curve problem to a form that can be evaluated by quadrature."
+    excerpt: "The solutions obtained are 'analytic' in the sense that they are expressed in terms of tabulated functions or integrals that are easy to do numerically (reduction to quadrature)."
     curation_provenance:
       actor_id: actor:agent-curator
       recorded_at: "2026-09-04T04:11:00Z"
@@ -53,7 +53,7 @@ evidence:
       page: 786
       section: II(b)
       equation: radioactive deposition and radiative diffusion equations
-    excerpt: "The luminosity is powered by radioactive Ni56 and its energy is propagated through the ejecta by radiative diffusion."
+    excerpt: "the energy source is only the exponential release of nuclear energy by 56Ni decay"
     curation_provenance:
       actor_id: actor:agent-curator
       recorded_at: "2026-09-04T04:11:30Z"
@@ -68,7 +68,7 @@ evidence:
       type: section
       page: 788
       section: II(c)
-    excerpt: "At maximum light the diffusion loss equals the instantaneous radioactive input under the model assumptions."
+    excerpt: "At maximum light the diffusion loss equals the radioactive input."
     curation_provenance:
       actor_id: actor:agent-curator
       recorded_at: "2026-09-04T04:12:00Z"
@@ -84,7 +84,7 @@ evidence:
       page: 790
       page_end: 791
       section: IV(a)
-    excerpt: "The Ni56 to Co56 to Fe56 decay chain supplies the deposition heating considered in the light-curve calculation."
+    excerpt: "D is defined as the fraction of decay energy which is available to heat the matter."
     curation_provenance:
       actor_id: actor:agent-curator
       recorded_at: "2026-09-04T04:12:30Z"
@@ -96,11 +96,10 @@ evidence:
     version_id: version:arnett-1982-journal
     source_url: https://articles.adsabs.harvard.edu/pdf/1982ApJ...253..785A
     locator:
-      type: table
-      page: 791
-      section: IV(b)
-      table: Table 2
-    excerpt: "Alternative thermonuclear and collapse model calculations are compared without selecting a unique progenitor system."
+      type: section
+      page: 792
+      section: IV(c)
+    excerpt: "It is impossible to distinguish between thermonuclear and collapse models."
     curation_provenance:
       actor_id: actor:agent-curator
       recorded_at: "2026-09-04T04:13:00Z"
@@ -114,9 +113,8 @@ evidence:
     locator:
       type: section
       page: 792
-      page_end: 793
-      section: IV(c)-IV(d)
-    excerpt: "B and V magnitudes and UBV light curves are compared, with the discussion also treating transparency to gamma rays and thermal photons."
+      section: IV(c)
+    excerpt: "compared with observed B and V magnitudes"
     curation_provenance:
       actor_id: actor:agent-curator
       recorded_at: "2026-09-04T04:13:30Z"
@@ -131,7 +129,7 @@ evidence:
       type: section
       page: 795
       section: IV(e)
-    excerpt: "The light-curve solution is used to discuss the intrinsic luminosity of the supernova source."
+    excerpt: "the velocity scale may be used to infer the intrinsic luminosity more accurately."
     curation_provenance:
       actor_id: actor:agent-curator
       recorded_at: "2026-09-04T04:14:00Z"

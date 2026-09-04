@@ -5,7 +5,8 @@ annotations:
     assessment:
       state: present
       values:
-        - term_id: term:alternative-modeled-systems
+        - term_id: term:near-chandrasekhar-carbon-ignition
+        - term_id: term:evolved-helium-star-collapse
     interpretive_risk: descriptive
     evidence_ids: [evidence:arnett-alternative-models]
     curation_provenance:
@@ -245,6 +246,7 @@ method_annotations:
   - id: annotation:arnett-method-reduction-to-quadrature
     technique_id: technique:reduction-to-quadrature
     basis: explicit
+    reason: The source explicitly presents the light-curve solution in quadrature form.
     evidence_ids: [evidence:arnett-reduction-quadrature]
     curation_provenance:
       actor_id: actor:agent-curator
@@ -253,3 +255,6 @@ method_annotations:
     review_provenance:
       actor_id: actor:human-curator
       recorded_at: "2026-09-04T04:28:00Z"
+    review_binding:
+      canonicalization_version: v1
+      semantic_digest: 4389ac3ba25fc625a5f24a41e44bc78620a4f3aa80504e8b10c8cf6088269a51

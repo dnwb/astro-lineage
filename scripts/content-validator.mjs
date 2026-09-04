@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { mkdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -7,6 +8,7 @@ import { createDiagnostic as makeDiagnostic } from "./diagnostic.mjs";
 import {
   AXIS_IDS,
   AXIS_QUESTIONS,
+  CANONICALIZATION_VERSION,
   VALID_CANONICALIZATION_VERSIONS,
   VALID_SCHEMA_VERSIONS,
   VALID_VISIBILITY_PROFILE_IDS,
@@ -222,7 +224,7 @@ function validateActors(actors, diagnostics) {
       recordId: "actors",
       message: "The actor registry must be a mapping.",
     });
-    return;
+    return false;
   }
   if (!Array.isArray(actors.actors)) {
     addDiagnostic(diagnostics, {
@@ -232,7 +234,7 @@ function validateActors(actors, diagnostics) {
       fieldPath: "/actors",
       message: "The actor registry must contain an actors array.",
     });
-    return;
+    return false;
   }
 
   const seen = new Set();
@@ -359,6 +361,7 @@ function validateActors(actors, diagnostics) {
       }
     }
   }
+  return true;
 }
 
 function validateAxes(axes, actorsById, diagnostics) {
@@ -463,16 +466,7 @@ function validateAxes(axes, actorsById, diagnostics) {
           requireFunctionalRoles: PROCESS_AXES.includes(axis.id),
         },
       );
-      if (validated?.term) {
-        if (terms.some(({ term: existing }) => existing.id === term.id)) {
-          addDiagnostic(diagnostics, {
-            file,
-            recordId: term.id,
-            code: "TERM_ID_DUPLICATE",
-            fieldPath: `/terms/${termIndex}/id`,
-            message: `Controlled Term ID is duplicated: ${term.id}.`,
-          });
-        }
+      if (validated?.term && validated.valid) {
         terms.push({ ...validated, file, category: "physics", axisId: axis.id });
       }
     }
@@ -505,6 +499,7 @@ function validateMethods(methods, actorsById, diagnostics) {
     return [];
   }
   const terms = [];
+  let familyRecordsValid = Array.isArray(methods.method_families);
   for (const field of ["method_families", "techniques"]) {
     if (!Array.isArray(methods[field])) {
       addDiagnostic(diagnostics, {
@@ -530,21 +525,14 @@ function validateMethods(methods, actorsById, diagnostics) {
         diagnostics,
         { namespace: "method-family" },
       );
-      if (validated?.term) {
-        if (terms.some(({ term }) => term.id === family.id)) {
-          addDiagnostic(diagnostics, {
-            code: "TERM_ID_DUPLICATE",
-            file: "content/methods/taxonomy.yaml",
-            recordId: family.id,
-            fieldPath: `/method_families/${index}/id`,
-            message: `Controlled Term ID is duplicated: ${family.id}.`,
-          });
-        }
+      if (validated?.term && validated.valid) {
         terms.push({
           ...validated,
           file: "content/methods/taxonomy.yaml",
           category: "method_family",
         });
+      } else {
+        familyRecordsValid = false;
       }
     }
   }
@@ -567,21 +555,16 @@ function validateMethods(methods, actorsById, diagnostics) {
         diagnostics,
         { namespace: "technique" },
       );
-      if (validated?.term) {
-        if (terms.some(({ term }) => term.id === technique.id)) {
-          addDiagnostic(diagnostics, {
-            code: "TERM_ID_DUPLICATE",
-            file: "content/methods/taxonomy.yaml",
-            recordId: technique.id,
-            fieldPath: `/techniques/${index}/id`,
-            message: `Controlled Term ID is duplicated: ${technique.id}.`,
-          });
-        }
+      const techniqueValid = validated?.term && validated.valid;
+      if (techniqueValid) {
         terms.push({
           ...validated,
           file: "content/methods/taxonomy.yaml",
           category: "technique",
         });
+      }
+      if (!isObject(technique)) {
+        continue;
       }
       if (!Array.isArray(technique.family_ids) || technique.family_ids.length === 0) {
         addDiagnostic(diagnostics, {
@@ -591,7 +574,7 @@ function validateMethods(methods, actorsById, diagnostics) {
           fieldPath: `/techniques/${index}/family_ids`,
           message: "Every Canonical Technique must belong to one or more Method Families.",
         });
-      } else {
+      } else if (techniqueValid && familyRecordsValid) {
         for (const [familyIndex, familyId] of technique.family_ids.entries()) {
           if (!familyIds.has(familyId)) {
             addDiagnostic(diagnostics, {
@@ -803,6 +786,10 @@ function validateControlledTerm(
         }
       }
     }
+  }
+
+  if (TERM_STATUSES.includes(term.status)) {
+    const requiresActivationReview = term.status === "active";
     if (
       !validateGovernedRecord(
         term,
@@ -810,24 +797,14 @@ function validateControlledTerm(
         termDetails,
         diagnostics,
         {
-          independentReview: true,
-          independentReviewCapability: "activate_controlled_terms",
-          reviewCapability: "activate_controlled_terms",
+          independentReview: requiresActivationReview,
+          independentReviewCapability: requiresActivationReview
+            ? "activate_controlled_terms"
+            : "review_records",
+          reviewCapability: requiresActivationReview
+            ? "activate_controlled_terms"
+            : "review_records",
         },
-      )
-    ) {
-      valid = false;
-    }
-  } else if (term.curation_provenance !== undefined) {
-    if (
-      !validateCurationProvenance(
-        term.curation_provenance,
-        actorsById,
-        {
-          ...termDetails,
-          fieldPath: `${termDetails.fieldPath}/curation_provenance`,
-        },
-        diagnostics,
       )
     ) {
       valid = false;
@@ -852,6 +829,43 @@ function validateControlledTerm(
         message: "A Controlled Term successor_id must be a namespaced ID when supplied.",
       });
       valid = false;
+    }
+    if (!isObject(term.deprecation_provenance)) {
+      addDiagnostic(diagnostics, {
+        ...termDetails,
+        code: "TERM_DEPRECATION_PROVENANCE_REQUIRED",
+        fieldPath: `${termDetails.fieldPath}/deprecation_provenance`,
+        message: "Deprecated Controlled Terms require deprecation provenance.",
+      });
+      valid = false;
+    } else {
+      const deprecationDetails = {
+        ...termDetails,
+        fieldPath: `${termDetails.fieldPath}/deprecation_provenance`,
+      };
+      if (
+        !validateCurationProvenance(
+          term.deprecation_provenance,
+          actorsById,
+          deprecationDetails,
+          diagnostics,
+          { requiredActorKind: "human" },
+        )
+      ) {
+        valid = false;
+      }
+      if (
+        !requireActorCapability(
+          term.deprecation_provenance,
+          actorsById,
+          "review_records",
+          deprecationDetails,
+          diagnostics,
+          "TERM_DEPRECATION_CAPABILITY_REQUIRED",
+        )
+      ) {
+        valid = false;
+      }
     }
   }
   return { term, valid, axisId };
@@ -930,8 +944,8 @@ function validateCurationProvenance(
     });
     valid = false;
   } else {
-    const actor = actorsById.get(provenance.actor_id);
-    if (!actor) {
+    const actor = actorsById?.get(provenance.actor_id);
+    if (actorsById && !actor) {
       addDiagnostic(diagnostics, {
         ...details,
         code: "REFERENTIAL_ACTOR_MISSING",
@@ -941,7 +955,7 @@ function validateCurationProvenance(
         relatedIds: [provenance.actor_id],
       });
       valid = false;
-    } else {
+    } else if (actor) {
       if (actor.kind !== "human" && actor.kind !== "agent") {
         valid = false;
       }
@@ -975,9 +989,78 @@ function validateCurationProvenance(
 }
 
 function actorForProvenance(provenance, actorsById) {
-  return isObject(provenance) && typeof provenance.actor_id === "string"
+  return actorsById && isObject(provenance) && typeof provenance.actor_id === "string"
     ? actorsById.get(provenance.actor_id)
     : undefined;
+}
+
+function normalizeMethodReason(value) {
+  return typeof value === "string"
+    ? value.trim().replace(/\s+/gu, " ")
+    : value ?? null;
+}
+
+function referenceWasCreatedAfterDeprecation(record, term) {
+  if (term?.status !== "deprecated") {
+    return false;
+  }
+  const referenceTime = Date.parse(record?.curation_provenance?.recorded_at);
+  const deprecationTime = Date.parse(term?.deprecation_provenance?.recorded_at);
+  return Number.isFinite(referenceTime)
+    && Number.isFinite(deprecationTime)
+    && referenceTime >= deprecationTime;
+}
+
+function methodAnnotationSemanticDigest(annotation) {
+  const semanticProjection = {
+    technique_id: annotation.technique_id ?? null,
+    basis: annotation.basis ?? null,
+    reason: normalizeMethodReason(annotation.reason),
+    evidence_ids: Array.isArray(annotation.evidence_ids)
+      ? annotation.evidence_ids
+      : annotation.evidence_ids ?? null,
+  };
+  return createHash("sha256")
+    .update(JSON.stringify(semanticProjection), "utf8")
+    .digest("hex");
+}
+
+function validateMethodReviewBinding(annotation, details, diagnostics) {
+  if (annotation.review_state !== "reviewed") {
+    return true;
+  }
+  const binding = annotation.review_binding;
+  if (!isObject(binding)) {
+    addDiagnostic(diagnostics, {
+      ...details,
+      code: "METHOD_REVIEW_BINDING_REQUIRED",
+      fieldPath: `${details.fieldPath}/review_binding`,
+      message: "A reviewed Method Annotation requires a semantic review binding.",
+    });
+    return false;
+  }
+  let valid = true;
+  if (binding.canonicalization_version !== CANONICALIZATION_VERSION) {
+    addDiagnostic(diagnostics, {
+      ...details,
+      code: "METHOD_REVIEW_BINDING_VERSION_INVALID",
+      fieldPath: `${details.fieldPath}/review_binding/canonicalization_version`,
+      message: "Method review binding uses an unsupported canonicalization version.",
+      relatedIds: [CANONICALIZATION_VERSION],
+    });
+    valid = false;
+  }
+  const expectedDigest = methodAnnotationSemanticDigest(annotation);
+  if (binding.semantic_digest !== expectedDigest) {
+    addDiagnostic(diagnostics, {
+      ...details,
+      code: "METHOD_REVIEW_BINDING_STALE",
+      fieldPath: `${details.fieldPath}/review_binding/semantic_digest`,
+      message: "Reviewed Method Annotation semantic fields no longer match its review binding.",
+    });
+    valid = false;
+  }
+  return valid;
 }
 
 function requireActorCapability(
@@ -988,6 +1071,9 @@ function requireActorCapability(
   diagnostics,
   code = "CURATION_CAPABILITY_REQUIRED",
 ) {
+  if (!actors) {
+    return true;
+  }
   const actor = actorForProvenance(provenance, actors);
   if (!actor || !isObject(provenance)) {
     return false;
@@ -1090,6 +1176,9 @@ function validateGovernedRecord(
     )
   ) {
     valid = false;
+  }
+  if (!actorsById) {
+    return valid;
   }
   if (!reviewer) {
     return false;
@@ -2031,70 +2120,81 @@ function validatePhysicsAnnotations(
           fieldPath: `${details.fieldPath}/assessment/values`,
           message: "Annotation assessment values must be an array.",
         });
-      } else if (assessment.state === "present" && assessment.values.length === 0) {
-        addDiagnostic(diagnostics, {
-          ...details,
-          code: "ANNOTATION_VALUES_REQUIRED",
-          fieldPath: `${details.fieldPath}/assessment/values`,
-          message: "A present assessment requires one or more values.",
-        });
-      } else if (assessment.state !== "present" && assessment.values.length > 0) {
-        addDiagnostic(diagnostics, {
-          ...details,
-          code: "ANNOTATION_VALUES_FORBIDDEN",
-          fieldPath: `${details.fieldPath}/assessment/values`,
-          message: "Only a present assessment may carry values.",
-        });
-      }
-      const valueIds = new Set();
-      for (const [valueIndex, value] of (assessment.values ?? []).entries()) {
-        const termId = isObject(value) ? value.term_id : undefined;
-        if (typeof termId !== "string") {
+      } else {
+        if (assessment.state === "present" && assessment.values.length === 0) {
           addDiagnostic(diagnostics, {
             ...details,
-            code: "ANNOTATION_VALUE_INVALID",
-            fieldPath: `${details.fieldPath}/assessment/values/${valueIndex}`,
-            message: "Each Annotation value requires a term_id.",
-          });
-          continue;
-        }
-        if (valueIds.has(termId)) {
-          addDiagnostic(diagnostics, {
-            ...details,
-            code: "ANNOTATION_VALUE_DUPLICATE",
-            fieldPath: `${details.fieldPath}/assessment/values/${valueIndex}/term_id`,
-            message: `An Annotation cannot repeat a term: ${termId}.`,
-            relatedIds: [termId],
+            code: "ANNOTATION_VALUES_REQUIRED",
+            fieldPath: `${details.fieldPath}/assessment/values`,
+            message: "A present assessment requires one or more values.",
           });
         }
-        valueIds.add(termId);
-        const termEntry = termsById.get(termId);
-        if (!termEntry) {
+        if (assessment.state !== "present" && assessment.values.length > 0) {
           addDiagnostic(diagnostics, {
             ...details,
-            code: "REFERENTIAL_TERM_MISSING",
-            fieldPath: `${details.fieldPath}/assessment/values/${valueIndex}/term_id`,
-            message: `Controlled Term does not exist: ${termId}.`,
-            relatedIds: [termId],
+            code: "ANNOTATION_VALUES_FORBIDDEN",
+            fieldPath: `${details.fieldPath}/assessment/values`,
+            message: "Only a present assessment may carry values.",
           });
-        } else {
-          if (termEntry.category !== "physics" || termEntry.axisId !== annotation.axis) {
+        }
+        const valueIds = new Set();
+        for (const [valueIndex, value] of assessment.values.entries()) {
+          const termId = isObject(value) ? value.term_id : undefined;
+          if (typeof termId !== "string") {
             addDiagnostic(diagnostics, {
               ...details,
-              code: "ANNOTATION_TERM_AXIS_MISMATCH",
-              fieldPath: `${details.fieldPath}/assessment/values/${valueIndex}/term_id`,
-              message: "An Annotation value must reference a term defined on its axis.",
-              relatedIds: [termId, annotation.axis],
+              code: "ANNOTATION_VALUE_INVALID",
+              fieldPath: `${details.fieldPath}/assessment/values/${valueIndex}`,
+              message: "Each Annotation value requires a term_id.",
             });
+            continue;
           }
-          if (termEntry.term.status !== "active") {
+          if (valueIds.has(termId)) {
             addDiagnostic(diagnostics, {
               ...details,
-              code: "ANNOTATION_TERM_NOT_ACTIVE",
+              code: "ANNOTATION_VALUE_DUPLICATE",
               fieldPath: `${details.fieldPath}/assessment/values/${valueIndex}/term_id`,
-              message: "Current Physics Annotations must reference active terms.",
+              message: `An Annotation cannot repeat a term: ${termId}.`,
               relatedIds: [termId],
             });
+          }
+          valueIds.add(termId);
+          const termEntry = termsById.get(termId);
+          if (!termEntry) {
+            addDiagnostic(diagnostics, {
+              ...details,
+              code: "REFERENTIAL_TERM_MISSING",
+              fieldPath: `${details.fieldPath}/assessment/values/${valueIndex}/term_id`,
+              message: `Controlled Term does not exist: ${termId}.`,
+              relatedIds: [termId],
+            });
+          } else {
+            if (termEntry.category !== "physics" || termEntry.axisId !== annotation.axis) {
+              addDiagnostic(diagnostics, {
+                ...details,
+                code: "ANNOTATION_TERM_AXIS_MISMATCH",
+                fieldPath: `${details.fieldPath}/assessment/values/${valueIndex}/term_id`,
+                message: "An Annotation value must reference a term defined on its axis.",
+                relatedIds: [termId, annotation.axis],
+              });
+            }
+            if (termEntry.term.status === "proposed") {
+              addDiagnostic(diagnostics, {
+                ...details,
+                code: "ANNOTATION_TERM_NOT_ACTIVE",
+                fieldPath: `${details.fieldPath}/assessment/values/${valueIndex}/term_id`,
+                message: "Current Physics Annotations cannot reference proposed terms.",
+                relatedIds: [termId],
+              });
+            } else if (referenceWasCreatedAfterDeprecation(annotation, termEntry.term)) {
+              addDiagnostic(diagnostics, {
+                ...details,
+                code: "ANNOTATION_TERM_DEPRECATED_FOR_NEW_ASSIGNMENT",
+                fieldPath: `${details.fieldPath}/assessment/values/${valueIndex}/term_id`,
+                message: "Deprecated Physics terms may be retained only by historical assignments created before deprecation.",
+                relatedIds: [termId],
+              });
+            }
           }
         }
       }
@@ -2136,7 +2236,8 @@ function validatePhysicsAnnotations(
     }
     const evidenceIds = annotation.evidence_ids;
     if (risk === "interpretive") {
-      if (typeof annotation.reason !== "string" && annotation.risk_escalation?.reason === undefined) {
+      const reason = annotation.reason ?? annotation.risk_escalation?.reason;
+      if (typeof reason !== "string" || reason.trim() === "") {
         addDiagnostic(diagnostics, {
           ...details,
           code: "ANNOTATION_REASON_REQUIRED",
@@ -2260,12 +2361,20 @@ function validateMethodAnnotations(
         message: `Canonical Technique does not exist: ${annotation.technique_id}.`,
         relatedIds: [annotation.technique_id],
       });
-    } else if (technique.term.status !== "active") {
+    } else if (technique.term.status === "proposed") {
       addDiagnostic(diagnostics, {
         ...details,
         code: "METHOD_TECHNIQUE_NOT_ACTIVE",
         fieldPath: `${details.fieldPath}/technique_id`,
         message: "Method Annotations must reference active Canonical Techniques.",
+        relatedIds: [annotation.technique_id],
+      });
+    } else if (referenceWasCreatedAfterDeprecation(annotation, technique.term)) {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "METHOD_TECHNIQUE_DEPRECATED_FOR_NEW_ASSIGNMENT",
+        fieldPath: `${details.fieldPath}/technique_id`,
+        message: "Deprecated Techniques may be retained only by historical Method Annotations created before deprecation.",
         relatedIds: [annotation.technique_id],
       });
     }
@@ -2285,6 +2394,7 @@ function validateMethodAnnotations(
       diagnostics,
       { independentReview: annotation.basis === "inferred" },
     );
+    validateMethodReviewBinding(annotation, details, diagnostics);
     if (annotation.review_state === "reviewed" && technique?.term.status === "active") {
       reviewedActiveTechnique = true;
     }
@@ -2587,17 +2697,6 @@ function validateRecordEnvelopes(snapshot, diagnostics) {
   }
 }
 
-function indexActors(actors) {
-  if (!isObject(actors) || !Array.isArray(actors.actors)) {
-    return new Map();
-  }
-  return new Map(
-    actors.actors
-      .filter((actor) => isObject(actor) && typeof actor.id === "string")
-      .map((actor) => [actor.id, actor]),
-  );
-}
-
 function hasParseDiagnostic(diagnostics, file) {
   return diagnostics.some(
     (item) => item.code === "STRUCTURE_YAML_PARSE_ERROR" && item.file === file,
@@ -2662,20 +2761,20 @@ export async function validateCanonicalContent(
 ) {
   const snapshot = await loadCanonicalContent(contentRoot);
   const diagnostics = [...snapshot.discovery.diagnostics];
-  const actorsById = indexActors(snapshot.actors);
+  const actorRegistryValid = !hasParseDiagnostic(diagnostics, "content/actors.yaml")
+    && validateActors(snapshot.actors, diagnostics);
+  const actorsById = actorRegistryValid ? actorMap(snapshot.actors) : null;
   let controlledTermEntries = [];
   if (!hasParseDiagnostic(diagnostics, "content/manifest.yaml")) {
     validateManifest(snapshot.manifest, diagnostics);
-  }
-  if (!hasParseDiagnostic(diagnostics, "content/actors.yaml")) {
-    validateActors(snapshot.actors, diagnostics);
   }
   if (!hasStructuralFailure(snapshot.discovery.diagnostics)) {
     controlledTermEntries.push(...validateAxes(snapshot.axes, actorsById, diagnostics));
     controlledTermEntries.push(...validateMethods(snapshot.methods, actorsById, diagnostics));
     const controlledTermIds = new Set();
+    const duplicateControlledTermIds = new Set();
     for (const entry of controlledTermEntries) {
-      if (controlledTermIds.has(entry.term.id)) {
+      if (controlledTermIds.has(entry.term.id) && !duplicateControlledTermIds.has(entry.term.id)) {
         addDiagnostic(diagnostics, {
           code: "TERM_ID_DUPLICATE",
           file: entry.file,
@@ -2683,6 +2782,7 @@ export async function validateCanonicalContent(
           fieldPath: "/id",
           message: `Controlled Term ID is duplicated across canonical vocabularies: ${entry.term.id}.`,
         });
+        duplicateControlledTermIds.add(entry.term.id);
       }
       controlledTermIds.add(entry.term.id);
     }

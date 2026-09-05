@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { cp, mkdtemp, readFile, writeFile } from "node:fs/promises";
+import { cp, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { test } from "node:test";
@@ -17,6 +17,7 @@ async function copyContent() {
   const temporaryRoot = await mkdtemp(join(tmpdir(), "axvdaily-ticket04-"));
   const contentRoot = join(temporaryRoot, "content");
   await cp(productionContent, contentRoot, { recursive: true });
+  await rm(join(contentRoot, "learning-paths"), { recursive: true, force: true });
   const workPath = join(contentRoot, "works", "work:arnett-1982", "work.yaml");
   const brombergWorkPath = join(contentRoot, "works", "work:bromberg-2011", "work.yaml");
   const zhuWorkPath = join(contentRoot, "works", "work:zhu-2021", "work.yaml");

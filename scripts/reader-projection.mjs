@@ -122,6 +122,19 @@ function lineRecord(line) {
   return isObject(line?.line) ? line.line : null;
 }
 
+function pathById(snapshot, pathOrId) {
+  const id = typeof pathOrId === "string"
+    ? pathOrId
+    : pathOrId?.id ?? pathOrId?.path_id;
+  return Array.isArray(snapshot?.learningPaths)
+    ? snapshot.learningPaths.find((path) => path?.id === id || path?.path?.path_id === id) ?? null
+    : null;
+}
+
+function pathRecord(path) {
+  return isObject(path?.path) ? path.path : null;
+}
+
 function versionSummary(work) {
   const version = preferredVersion(work);
   const summary = {
@@ -521,6 +534,170 @@ function projectBibliographicSources(work, publicationRelations) {
   );
 }
 
+function pathEntryWorkId(entry) {
+  if (typeof entry === "string") {
+    return entry;
+  }
+  if (!isObject(entry)) {
+    return null;
+  }
+  if (typeof entry.work_id === "string") {
+    return entry.work_id;
+  }
+  if (isObject(entry.work)) {
+    return typeof entry.work.work_id === "string"
+      ? entry.work.work_id
+      : typeof entry.work.id === "string"
+        ? entry.work.id
+        : null;
+  }
+  return null;
+}
+
+function pathTransitionEndpoint(transition, side) {
+  const key = side === "source" ? "source_work_id" : "target_work_id";
+  if (typeof transition?.[key] === "string") {
+    return transition[key];
+  }
+  const objectKey = side === "source" ? "source" : "target";
+  const endpoint = transition?.[objectKey];
+  if (typeof endpoint === "string") {
+    return endpoint;
+  }
+  if (isObject(endpoint)) {
+    return typeof endpoint.work_id === "string"
+      ? endpoint.work_id
+      : typeof endpoint.id === "string"
+        ? endpoint.id
+        : null;
+  }
+  return null;
+}
+
+function projectLearningPathReviewContext(record) {
+  return {
+    status: record?.review_state ?? null,
+    reviewer_actor_id: record?.review_provenance?.actor_id ?? null,
+    reviewed_at: record?.review_provenance?.recorded_at ?? null,
+  };
+}
+
+/**
+ * Return the path's ordered, reader-visible Work entries.  Work order is
+ * pedagogical content and therefore must never be sorted like an aggregate
+ * index.  A malformed or hidden Work is omitted here; the semantic validator
+ * is responsible for rejecting a visible path that names one.
+ */
+function projectLearningPathEntries(snapshot, path, visibleWorkIdsSet) {
+  const record = pathRecord(path);
+  const entries = Array.isArray(record?.entries) ? record.entries : [];
+  return entries
+    .map((entry) => {
+      const workId = pathEntryWorkId(entry);
+      if (!workId || !visibleWorkIdsSet.has(workId)) {
+        return null;
+      }
+      const work = workById(snapshot, workId);
+      if (!work) {
+        return null;
+      }
+      const projected = projectValue(isObject(entry) ? entry : { work_id: workId });
+      projected.work_id = workId;
+      projected.work = versionSummary(work);
+      return projected;
+    })
+    .filter((entry) => entry !== null);
+}
+
+/**
+ * Rebuild transitions in the order of the projected path.  This keeps the
+ * reader projection deterministic even when the canonical transition array
+ * is physically reordered, while preserving the path-local adjacency rule.
+ */
+function projectLearningPathTransitions(record, entries) {
+  const transitions = Array.isArray(record?.transitions) ? record.transitions : [];
+  const transitionByPair = new Map();
+  for (const transition of transitions) {
+    if (!isObject(transition)) {
+      continue;
+    }
+    const sourceWorkId = pathTransitionEndpoint(transition, "source");
+    const targetWorkId = pathTransitionEndpoint(transition, "target");
+    if (!sourceWorkId || !targetWorkId) {
+      continue;
+    }
+    const key = `${sourceWorkId}\0${targetWorkId}`;
+    if (!transitionByPair.has(key)) {
+      transitionByPair.set(key, transition);
+    }
+  }
+
+  const projected = [];
+  for (let index = 0; index < entries.length - 1; index += 1) {
+    const sourceWorkId = entries[index].work_id;
+    const targetWorkId = entries[index + 1].work_id;
+    const transition = transitionByPair.get(`${sourceWorkId}\0${targetWorkId}`);
+    if (!transition) {
+      continue;
+    }
+    const value = projectValue(transition);
+    value.source_work_id = sourceWorkId;
+    value.target_work_id = targetWorkId;
+    if (Object.hasOwn(transition, "reason")) {
+      value.reason = normalizeReason(transition.reason);
+    }
+    projected.push(value);
+  }
+  return projected;
+}
+
+/**
+ * Return the Learning Path reader projection, or null unless the path is a
+ * visible Reader Entity whose structured content was reviewed atomically.
+ * Approval records, release digests, and curation fields stay out of the
+ * canonical reader content; review provenance is exposed only as an
+ * on-demand context object, matching the Work Edge inspection pattern.
+ */
+export function projectLearningPathForReader(snapshot, pathOrId) {
+  const path = pathById(snapshot, pathOrId);
+  const record = pathRecord(path);
+  if (
+    !path ||
+    record?.reader_state !== "visible" ||
+    record?.review_state !== "reviewed"
+  ) {
+    return null;
+  }
+
+  const pathId = path.id ?? record.path_id;
+  const visibleWorks = visibleWorkIds(snapshot);
+  const entries = projectLearningPathEntries(snapshot, path, visibleWorks);
+  const metadata = projectValue(record);
+  delete metadata.entries;
+  delete metadata.transitions;
+
+  const projected = projectValue({
+    ...metadata,
+    path_id: pathId,
+    reading: normalizeMarkdown(path.reading ?? ""),
+    entries,
+    transitions: projectLearningPathTransitions(record, entries),
+  });
+  projected.review_context = projectLearningPathReviewContext(record);
+  return projected;
+}
+
+export const projectVisibleLearningPath = projectLearningPathForReader;
+
+export function projectVisibleLearningPaths(snapshot) {
+  return sortByField(
+    (Array.isArray(snapshot?.learningPaths) ? snapshot.learningPaths : [])
+      .map((path) => projectLearningPathForReader(snapshot, path.id))
+      .filter((path) => path !== null),
+    "path_id",
+  );
+}
+
 /**
  * Return the Work reader projection, or null when the Work is not visible.
  * The helper accepts either an immutable Work ID or the loader's Work record.
@@ -635,6 +812,7 @@ export function projectVisibleSnapshot(snapshot) {
   const researchLines = (Array.isArray(snapshot?.researchLines) ? snapshot.researchLines : [])
     .map((line) => projectResearchLineForReader(snapshot, line.id))
     .filter((line) => line !== null);
+  const learningPaths = projectVisibleLearningPaths(snapshot);
   const scientificEdges = sortRecords(
     readerVisibleScientificEdges(snapshot).map(projectScientificEdge),
   );
@@ -642,6 +820,7 @@ export function projectVisibleSnapshot(snapshot) {
   const projected = projectValue({
     works: sortByField(works, "work_id"),
     research_lines: sortByField(researchLines, "line_id"),
+    learning_paths: learningPaths,
     scientific_edges: scientificEdges,
   });
   projected.scientific_edges = scientificEdges.map((edge) => restoreScientificEdgeReviewState(edge));

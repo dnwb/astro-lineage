@@ -510,6 +510,9 @@ async function readText(path, diagnostics, file, recordId, fallback = undefined)
   }
 }
 
+/**
+ * @param {URL|string} contentRoot
+ */
 export async function loadCanonicalContent(contentRoot = new URL("../content/", import.meta.url)) {
   const discovery = await discoverCanonicalContent(contentRoot);
   const manifestPath = discovery.rootFiles["manifest.yaml"];

@@ -16,6 +16,7 @@ import {
 } from "./content-loader.mjs";
 import { canonicalizeYaml, computeCanonicalContentDigest } from "./content-digest.mjs";
 import {
+  projectLearningPathForReader,
   projectResearchLineForReader,
   projectWorkForReader,
 } from "./reader-projection.mjs";
@@ -263,6 +264,24 @@ const STRUCTURAL_DIAGNOSTIC_CODES = new Set([
   "VISIBILITY_APPROVAL_PROFILE_INVALID",
   "VISIBILITY_APPROVAL_DIGEST_INVALID",
   "VISIBILITY_APPROVAL_TIMESTAMP_INVALID",
+  // Learning Path bundle identity and local shape contracts.
+  "LEARNING_PATH_INVALID_SHAPE",
+  "LEARNING_PATH_ID_INVALID",
+  "LEARNING_PATH_ID_DIRECTORY_MISMATCH",
+  "LEARNING_PATH_READER_STATE_INVALID",
+  "LEARNING_PATH_TITLE_INVALID",
+  "LEARNING_PATH_READING_FRONTMATTER_INVALID",
+  "LEARNING_PATH_READING_OWNERSHIP_MISMATCH",
+  "LEARNING_PATH_READING_EMPTY",
+  "LEARNING_PATH_ENTRIES_INVALID",
+  "LEARNING_PATH_ENTRY_INVALID_SHAPE",
+  "LEARNING_PATH_ENTRY_WORK_ID_INVALID",
+  "LEARNING_PATH_TRANSITIONS_INVALID",
+  "LEARNING_PATH_TRANSITION_INVALID_SHAPE",
+  "LEARNING_PATH_TRANSITION_ENDPOINT_INVALID",
+  "LEARNING_PATH_TRANSITION_REASON_REQUIRED",
+  "LEARNING_PATH_TRANSITION_REASON_INVALID",
+  "LEARNING_PATH_TRANSITION_REASON_NOT_NORMALIZED",
   // Publication Graph record identity and local relation shape.
   "PUBLICATION_RELATION_COLLECTION_INVALID",
   "PUBLICATION_RELATION_INVALID_SHAPE",
@@ -2878,9 +2897,11 @@ function validateMembershipReviewBinding(membership, lineId, details, diagnostic
  */
 export function computeReaderVisibilityDigest(snapshot, entityType, entityId) {
   const projection = entityType === "work"
-    ? projectWorkForReader(snapshot, entityId)
-    : entityType === "research_line"
-      ? projectResearchLineForReader(snapshot, entityId)
+      ? projectWorkForReader(snapshot, entityId)
+      : entityType === "research_line"
+        ? projectResearchLineForReader(snapshot, entityId)
+      : entityType === "learning_path"
+        ? projectLearningPathForReader(snapshot, entityId)
       : null;
   if (projection === null) {
     return null;
@@ -3289,10 +3310,358 @@ function validateResearchLines(snapshot, actorsById, diagnostics) {
   return { memberships, invalidLineIds, invalidWorkIds };
 }
 
+/**
+ * A Learning Path's structured review is atomic. Entries and transitions
+ * retain their array order because order is the meaning of the path; only
+ * transition reason whitespace is normalized for semantic comparison.
+ */
+export function learningPathSemanticDigest(path) {
+  const semanticProjection = {
+    title: normalizeEditorialReason(path?.title),
+    entries: Array.isArray(path?.entries)
+      ? path.entries.map((entry) => ({
+        work_id: entry?.work_id ?? null,
+      }))
+      : path?.entries ?? null,
+    transitions: Array.isArray(path?.transitions)
+      ? path.transitions.map((transition) => ({
+        source_work_id: transition?.source_work_id ?? null,
+        target_work_id: transition?.target_work_id ?? null,
+        reason: normalizeEditorialReason(transition?.reason),
+      }))
+      : path?.transitions ?? null,
+  };
+  return createHash("sha256")
+    .update(JSON.stringify(semanticProjection), "utf8")
+    .digest("hex");
+}
+
+function validateLearningPathReviewBinding(path, details, diagnostics) {
+  if (path?.review_state !== "reviewed") {
+    return true;
+  }
+  const binding = path.review_binding;
+  if (!isObject(binding)) {
+    addDiagnostic(diagnostics, {
+      ...details,
+      code: "LEARNING_PATH_REVIEW_BINDING_REQUIRED",
+      fieldPath: `${details.fieldPath}/review_binding`,
+      message: "A reviewed Learning Path requires an atomic semantic review binding.",
+    });
+    return false;
+  }
+  let valid = true;
+  if (binding.canonicalization_version !== CANONICALIZATION_VERSION) {
+    addDiagnostic(diagnostics, {
+      ...details,
+      code: "LEARNING_PATH_REVIEW_BINDING_VERSION_INVALID",
+      fieldPath: `${details.fieldPath}/review_binding/canonicalization_version`,
+      message: "Learning Path review binding uses an unsupported canonicalization version.",
+      relatedIds: [CANONICALIZATION_VERSION],
+    });
+    valid = false;
+  }
+  const expectedDigest = learningPathSemanticDigest(path);
+  if (binding.semantic_digest !== expectedDigest) {
+    addDiagnostic(diagnostics, {
+      ...details,
+      code: "LEARNING_PATH_REVIEW_BINDING_STALE",
+      fieldPath: `${details.fieldPath}/review_binding/semantic_digest`,
+      message: "Reviewed Learning Path entries or transitions no longer match its review binding.",
+    });
+    valid = false;
+  }
+  return valid;
+}
+
+function validateLearningPaths(snapshot, actorsById, diagnostics) {
+  const worksById = new Map(snapshot.works.map((work) => [work.id, work]));
+  const invalidPathIds = new Set();
+  const learningPaths = [];
+
+  for (const learningPath of snapshot.learningPaths) {
+    const path = learningPath.path;
+    const file = `content/learning-paths/${learningPath.id}/path.yaml`;
+    const details = { file, recordId: learningPath.id, fieldPath: "" };
+    const diagnosticStart = diagnostics.length;
+    if (!isObject(path) || hasParseDiagnostic(diagnostics, file)) {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "LEARNING_PATH_INVALID_SHAPE",
+        fieldPath: null,
+        message: "A Learning Path record must be a YAML mapping.",
+      });
+      invalidPathIds.add(learningPath.id);
+      continue;
+    }
+
+    let structurallyValid = true;
+    if (!validateNamespacedId(path.path_id, "learning-path", {
+      ...details,
+      code: "LEARNING_PATH_ID_INVALID",
+      fieldPath: "/path_id",
+      message: "Learning Path IDs must use the learning-path: namespace.",
+    }, diagnostics)) {
+      structurallyValid = false;
+    }
+    if (path.path_id !== learningPath.id) {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "LEARNING_PATH_ID_DIRECTORY_MISMATCH",
+        fieldPath: "/path_id",
+        message: "path.yaml path_id must match its bundle directory ID.",
+        relatedIds: [learningPath.id],
+      });
+      structurallyValid = false;
+    }
+    if (!READER_STATES.includes(path.reader_state)) {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "LEARNING_PATH_READER_STATE_INVALID",
+        fieldPath: "/reader_state",
+        message: "Learning Path reader_state must be draft or visible.",
+        relatedIds: READER_STATES,
+      });
+      structurallyValid = false;
+    }
+    if (typeof path.title !== "string" || path.title.trim() === "") {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "LEARNING_PATH_TITLE_INVALID",
+        fieldPath: "/title",
+        message: "Learning Paths require a non-empty title.",
+      });
+      structurallyValid = false;
+    }
+
+    const readingFile = `content/learning-paths/${learningPath.id}/reading.md`;
+    const frontmatter = extractEditorialReadingFrontmatter(learningPath.reading, "path_id");
+    if (!frontmatter) {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "LEARNING_PATH_READING_FRONTMATTER_INVALID",
+        file: readingFile,
+        fieldPath: "/path_id",
+        message: "Learning Path reading.md must begin with YAML frontmatter containing path_id.",
+      });
+      structurallyValid = false;
+    } else if (frontmatter.path_id !== learningPath.id) {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "LEARNING_PATH_READING_OWNERSHIP_MISMATCH",
+        file: readingFile,
+        fieldPath: "/path_id",
+        message: "Learning Path reading.md path_id must match its bundle directory ID.",
+        relatedIds: [learningPath.id],
+      });
+      structurallyValid = false;
+    }
+    if (typeof learningPath.reading !== "string" || learningPath.reading.trim() === "") {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "LEARNING_PATH_READING_EMPTY",
+        file: readingFile,
+        fieldPath: null,
+        message: "Learning Path reading.md must contain reader-facing prose.",
+      });
+      structurallyValid = false;
+    }
+
+    const entries = path.entries;
+    if (!Array.isArray(entries)) {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "LEARNING_PATH_ENTRIES_INVALID",
+        fieldPath: "/entries",
+        message: "Learning Paths require an explicit entries array.",
+      });
+      structurallyValid = false;
+    }
+
+    const entryWorkIds = new Set();
+    if (Array.isArray(entries)) {
+      for (const [index, entry] of entries.entries()) {
+        const entryDetails = {
+          ...details,
+          recordId: learningPath.id,
+          fieldPath: `/entries/${index}`,
+        };
+        if (!isObject(entry)) {
+          addDiagnostic(diagnostics, {
+            ...entryDetails,
+            code: "LEARNING_PATH_ENTRY_INVALID_SHAPE",
+            message: "Learning Path entries must be mappings containing work_id.",
+          });
+          structurallyValid = false;
+          continue;
+        }
+        if (!validateNamespacedId(entry.work_id, "work", {
+          ...entryDetails,
+          code: "LEARNING_PATH_ENTRY_WORK_ID_INVALID",
+          fieldPath: `${entryDetails.fieldPath}/work_id`,
+          message: "Learning Path entry work_id must use the work: namespace.",
+        }, diagnostics)) {
+          structurallyValid = false;
+          continue;
+        }
+        if (entryWorkIds.has(entry.work_id)) {
+          addDiagnostic(diagnostics, {
+            ...entryDetails,
+            code: "LEARNING_PATH_ENTRY_DUPLICATE",
+            fieldPath: `${entryDetails.fieldPath}/work_id`,
+            message: `A Learning Path cannot repeat a Work: ${entry.work_id}.`,
+            relatedIds: [entry.work_id],
+          });
+        }
+        entryWorkIds.add(entry.work_id);
+        if (!worksById.has(entry.work_id)) {
+          addDiagnostic(diagnostics, {
+            ...entryDetails,
+            code: "REFERENTIAL_LEARNING_PATH_WORK_MISSING",
+            fieldPath: `${entryDetails.fieldPath}/work_id`,
+            message: `Learning Path Work does not exist: ${entry.work_id}.`,
+            relatedIds: [entry.work_id],
+          });
+        }
+      }
+    }
+
+    const transitions = path.transitions;
+    if (!Array.isArray(transitions)) {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "LEARNING_PATH_TRANSITIONS_INVALID",
+        fieldPath: "/transitions",
+        message: "Learning Paths require an explicit transitions array.",
+      });
+      structurallyValid = false;
+    }
+
+    if (Array.isArray(entries) && Array.isArray(transitions)) {
+      const expectedTransitionCount = Math.max(0, entries.length - 1);
+      if (transitions.length !== expectedTransitionCount) {
+        addDiagnostic(diagnostics, {
+          ...details,
+          code: "LEARNING_PATH_TRANSITION_COUNT_INVALID",
+          fieldPath: "/transitions",
+          message: `A Learning Path with ${entries.length} entries requires exactly ${expectedTransitionCount} transitions.`,
+          relatedIds: [String(expectedTransitionCount)],
+        });
+      }
+    }
+
+    if (Array.isArray(transitions)) {
+      for (const [index, transition] of transitions.entries()) {
+        const transitionDetails = {
+          ...details,
+          recordId: learningPath.id,
+          fieldPath: `/transitions/${index}`,
+        };
+        if (!isObject(transition)) {
+          addDiagnostic(diagnostics, {
+            ...transitionDetails,
+            code: "LEARNING_PATH_TRANSITION_INVALID_SHAPE",
+            message: "Pedagogical Transitions must be mappings.",
+          });
+          structurallyValid = false;
+          continue;
+        }
+        for (const side of ["source", "target"]) {
+          const field = `${side}_work_id`;
+          if (!validateNamespacedId(transition[field], "work", {
+            ...transitionDetails,
+            code: "LEARNING_PATH_TRANSITION_ENDPOINT_INVALID",
+            fieldPath: `${transitionDetails.fieldPath}/${field}`,
+            message: `Pedagogical Transition ${side} endpoint must use the work: namespace.`,
+          }, diagnostics)) {
+            structurallyValid = false;
+          } else if (!worksById.has(transition[field])) {
+            addDiagnostic(diagnostics, {
+              ...transitionDetails,
+              code: "REFERENTIAL_LEARNING_PATH_WORK_MISSING",
+              fieldPath: `${transitionDetails.fieldPath}/${field}`,
+              message: `Pedagogical Transition Work does not exist: ${transition[field]}.`,
+              relatedIds: [transition[field]],
+            });
+          }
+        }
+        if (typeof transition.reason !== "string" || transition.reason.trim() === "") {
+          addDiagnostic(diagnostics, {
+            ...transitionDetails,
+            code: transition.reason === undefined
+              ? "LEARNING_PATH_TRANSITION_REASON_REQUIRED"
+              : "LEARNING_PATH_TRANSITION_REASON_INVALID",
+            fieldPath: `${transitionDetails.fieldPath}/reason`,
+            message: "Every Pedagogical Transition requires a non-empty normalized reason.",
+          });
+          structurallyValid = false;
+        } else if (transition.reason !== normalizeEditorialReason(transition.reason)) {
+          addDiagnostic(diagnostics, {
+            ...transitionDetails,
+            code: "LEARNING_PATH_TRANSITION_REASON_NOT_NORMALIZED",
+            fieldPath: `${transitionDetails.fieldPath}/reason`,
+            message: "Pedagogical Transition reason must use normalized whitespace.",
+          });
+          structurallyValid = false;
+        }
+      }
+    }
+
+    if (Array.isArray(entries) && Array.isArray(transitions) && transitions.length === Math.max(0, entries.length - 1)) {
+      for (const [index, transition] of transitions.entries()) {
+        if (!isObject(transition) || !isObject(entries[index]) || !isObject(entries[index + 1])) {
+          continue;
+        }
+        const expectedSource = entries[index].work_id;
+        const expectedTarget = entries[index + 1].work_id;
+        if (
+          transition.source_work_id !== expectedSource ||
+          transition.target_work_id !== expectedTarget
+        ) {
+          addDiagnostic(diagnostics, {
+            ...details,
+            code: "LEARNING_PATH_TRANSITION_ADJACENCY_INVALID",
+            fieldPath: `/transitions/${index}`,
+            message: "Each Pedagogical Transition must connect the adjacent path entries in order.",
+            relatedIds: [expectedSource, expectedTarget, transition.source_work_id, transition.target_work_id]
+              .filter((value) => typeof value === "string"),
+          });
+        }
+      }
+    }
+
+    if (!structurallyValid) {
+      invalidPathIds.add(learningPath.id);
+      continue;
+    }
+    validateGovernedRecord(path, actorsById, {
+      ...details,
+      fieldPath: "",
+    }, diagnostics);
+    validateLearningPathReviewBinding(path, {
+      ...details,
+      fieldPath: "",
+    }, diagnostics);
+    if (diagnostics.slice(diagnosticStart).some(({ severity }) => severity === "error")) {
+      invalidPathIds.add(learningPath.id);
+      continue;
+    }
+    learningPaths.push({ learningPath, path });
+  }
+
+  return { learningPaths, invalidPathIds };
+}
+
 function validateFinalSnapshotVisibility(snapshot, actorsById, diagnostics, editorialState) {
-  const { memberships, invalidLineIds, invalidWorkIds } = editorialState;
+  const {
+    memberships,
+    invalidLineIds,
+    invalidWorkIds,
+    invalidPathIds = new Set(),
+  } = editorialState;
   const visibilityByWorkId = new Map();
   const visibilityByLineId = new Map();
+  const visibilityByPathId = new Map();
   const visibleWorks = new Set(
     // A quarantined child membership still names a visible Work endpoint.
     // Keep endpoint candidates intact so an unrelated visible Research Line
@@ -3449,12 +3818,89 @@ function validateFinalSnapshotVisibility(snapshot, actorsById, diagnostics, edit
     }
   }
 
+  for (const learningPath of snapshot.learningPaths) {
+    const record = learningPath.path;
+    if (!isObject(record)) {
+      continue;
+    }
+    const details = {
+      file: `content/learning-paths/${learningPath.id}/path.yaml`,
+      recordId: learningPath.id,
+    };
+    const pathRoot = `content/learning-paths/${learningPath.id}`;
+    const structurallyInvalid = invalidPathIds.has(learningPath.id) || diagnostics.some(
+      (diagnostic) =>
+        diagnostic.file?.startsWith(`${pathRoot}/`) && isStructuralDiagnostic(diagnostic),
+    );
+    if (structurallyInvalid) {
+      visibilityByPathId.set(learningPath.id, {
+        visibility_digest: null,
+        visibility_status: "skipped",
+      });
+      continue;
+    }
+    const digest = computeReaderVisibilityDigest(snapshot, "learning_path", learningPath.id);
+    const approval = validateVisibilityApprovals(
+      record,
+      learningPath,
+      details,
+      snapshot.manifest,
+      actorsById,
+      digest,
+      diagnostics,
+    );
+    visibilityByPathId.set(learningPath.id, {
+      visibility_digest: digest,
+      visibility_status: approval.status,
+    });
+    if (record.reader_state !== "visible") {
+      continue;
+    }
+    const entries = record.entries;
+    if (!Array.isArray(entries) || entries.length < 2) {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "VISIBLE_LEARNING_PATH_ENTRIES_REQUIRED",
+        fieldPath: "/entries",
+        message: "A visible Learning Path requires at least two ordered Work entries.",
+      });
+    }
+    if (record.review_state !== "reviewed") {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "VISIBLE_LEARNING_PATH_REVIEW_REQUIRED",
+        fieldPath: "/review_state",
+        message: "A visible Learning Path requires reviewed atomic structured content.",
+      });
+    }
+    for (const [index, entry] of (Array.isArray(entries) ? entries : []).entries()) {
+      if (!isObject(entry) || typeof entry.work_id !== "string") {
+        continue;
+      }
+      const work = snapshot.works.find((candidate) => candidate.id === entry.work_id);
+      if (work && !visibleWorks.has(entry.work_id)) {
+        addDiagnostic(diagnostics, {
+          ...details,
+          code: "VISIBLE_LEARNING_PATH_WORK_NOT_VISIBLE",
+          fieldPath: `/entries/${index}/work_id`,
+          message: "A visible Learning Path may reference only visible Works.",
+          relatedIds: [entry.work_id],
+        });
+      }
+    }
+  }
+
   const researchLineInventory = deriveResearchLineInventory(
     snapshot,
     diagnostics,
     visibilityByLineId,
   );
-  return { visibilityByWorkId, researchLineInventory };
+  const learningPathInventory = deriveLearningPathInventory(
+    snapshot,
+    diagnostics,
+    visibilityByPathId,
+  );
+  return { visibilityByWorkId, researchLineInventory, learningPathInventory };
 }
 
 function deriveResearchLineInventory(snapshot, diagnostics, visibilityByLineId = new Map()) {
@@ -3474,6 +3920,27 @@ function deriveResearchLineInventory(snapshot, diagnostics, visibilityByLineId =
       };
     })
     .sort((left, right) => Buffer.from(left.line_id).compare(Buffer.from(right.line_id)));
+}
+
+function deriveLearningPathInventory(snapshot, diagnostics, visibilityByPathId = new Map()) {
+  return snapshot.learningPaths
+    .map((learningPath) => {
+      const path = `content/learning-paths/${learningPath.id}`;
+      const visibility = visibilityByPathId.get(learningPath.id) ?? {};
+      const record = learningPath.path;
+      return {
+        path_id: learningPath.id,
+        reader_state: record?.reader_state ?? null,
+        validation_status: diagnostics.some(({ file, record_id, severity }) =>
+          severity === "error" && (file === path || file?.startsWith(`${path}/`) || record_id === learningPath.id))
+          ? "invalid"
+          : "valid",
+        entries: Array.isArray(record?.entries) ? record.entries.length : 0,
+        transitions: Array.isArray(record?.transitions) ? record.transitions.length : 0,
+        ...visibility,
+      };
+    })
+    .sort((left, right) => Buffer.from(left.path_id).compare(Buffer.from(right.path_id)));
 }
 
 function validateEvidenceLocator(locator, details, diagnostics) {
@@ -5756,6 +6223,8 @@ export async function validateCanonicalContent(
     memberships: [],
     invalidLineIds: new Set(),
     invalidWorkIds: new Set(),
+    learningPaths: [],
+    invalidPathIds: new Set(),
   };
   let controlledTermEntries = [];
   if (!hasParseDiagnostic(diagnostics, "content/manifest.yaml")) {
@@ -5791,7 +6260,12 @@ export async function validateCanonicalContent(
       }
     }
     validateWorkRecords(snapshot, actorsById, axisById, termsById, diagnostics);
-    editorialState = validateResearchLines(snapshot, actorsById, diagnostics);
+    const researchLineState = validateResearchLines(snapshot, actorsById, diagnostics);
+    const learningPathState = validateLearningPaths(snapshot, actorsById, diagnostics);
+    editorialState = {
+      ...researchLineState,
+      ...learningPathState,
+    };
   }
   validateRecordEnvelopes(snapshot, diagnostics);
 
@@ -5815,8 +6289,13 @@ export async function validateCanonicalContent(
     : {
       visibilityByWorkId: new Map(),
       researchLineInventory: deriveResearchLineInventory(snapshot, diagnostics),
+      learningPathInventory: deriveLearningPathInventory(snapshot, diagnostics),
     };
-  const { visibilityByWorkId, researchLineInventory } = visibilityState;
+  const {
+    visibilityByWorkId,
+    researchLineInventory,
+    learningPathInventory,
+  } = visibilityState;
 
   const canonicalContentDigest = await computeCanonicalContentDigest(snapshot.discovery.root);
   const manifest = snapshot.manifest;
@@ -5888,6 +6367,7 @@ export async function validateCanonicalContent(
     scientific_edges: scientificEdges,
     work_inventory: workInventory,
     research_line_inventory: researchLineInventory,
+    learning_path_inventory: learningPathInventory,
     diagnostics,
   };
   return report;
@@ -5960,6 +6440,18 @@ export function renderValidationMarkdown(report) {
   for (const line of report.research_line_inventory ?? []) {
     lines.push(
       `| ${markdownCell(line.line_id)} | ${markdownCell(line.reader_state)} | ${markdownCell(line.visibility_status)} | ${markdownCell(line.visibility_digest)} | ${markdownCell(line.validation_status)} | ${markdownCell(line.memberships)} |`,
+    );
+  }
+  lines.push(
+    "",
+    "## Learning Path Inventory",
+    "",
+    "| Path ID | Reader State | Visibility | Visibility Digest | Validation | Entries | Transitions |",
+    "| --- | --- | --- | --- | --- | ---: | ---: |",
+  );
+  for (const path of report.learning_path_inventory ?? []) {
+    lines.push(
+      `| ${markdownCell(path.path_id)} | ${markdownCell(path.reader_state)} | ${markdownCell(path.visibility_status)} | ${markdownCell(path.visibility_digest)} | ${markdownCell(path.validation_status)} | ${markdownCell(path.entries)} | ${markdownCell(path.transitions)} |`,
     );
   }
   lines.push(

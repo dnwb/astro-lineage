@@ -61,7 +61,18 @@ test("the production snapshot keeps the frozen canonical layout across canonical
       "research-line:explosive-transients-csm",
     ],
   );
-  assert.deepEqual(snapshot.learningPaths, []);
+  assert.deepEqual(
+    snapshot.learningPaths.map(({ id, path }) => ({
+      id,
+      reader_state: path.reader_state,
+      review_state: path.review_state,
+    })),
+    [{
+      id: "learning-path:embedded-jet-dynamics",
+      reader_state: "visible",
+      review_state: "reviewed",
+    }],
+  );
   assert.deepEqual(snapshot.axes.map((axis) => axis.id), AXIS_IDS);
   assert.deepEqual(
     snapshot.methods.method_families.map(({ id }) => id),

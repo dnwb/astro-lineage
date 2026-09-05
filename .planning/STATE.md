@@ -5,7 +5,7 @@
 ## Current position
 
 - **Stage:** Phase 2 — domain records and five-Work vertical slice
-- **Status:** Tickets 01–10 complete
+- **Status:** Tickets 01–11 complete
 - **Implementation:** Visible Arnett and Bromberg now exercise governed Actors,
   capability-at-action-time authorization, 16 assessed Physics axes,
   controlled vocabulary, reusable Version-bound Evidence, reviewed Method
@@ -24,8 +24,8 @@
   reader-visible inbound/outbound provenance
 - **Decision frontier:** closed through Q151; no open domain-model decision is
   blocking migration
-- **Next execution action:** Ticket 11,
-  `.scratch/v0.1-vertical-slice/issues/11-publish-learning-path-and-pedagogical-transitions.md`
+- **Next execution action:** Ticket 12,
+  `.scratch/v0.1-vertical-slice/issues/12-harden-validator-with-adversarial-fixtures.md`
 
 The repository has completed specification, governance, and authority
 migration. Ticket 01 established the independent Git boundary and bootstrap
@@ -39,7 +39,7 @@ Controlled Term, Interpretive Risk, Method Annotation, Scientific Statement,
 and Work-local Causal Link slice. Ticket 05 publishes Arnett and its first
 Research Line atomically with separate Human approvals, canonical reader
 digests, a reproducible reverse index, reader routes, and no-cascade visibility
-validation. Learning Path, Scientific Edge, remote setup, and CI work remain.
+validation. Remote setup, README, coverage closure, and CI work remain.
 Ticket 06 adds the visible Bromberg Work with separately identified
 arXiv v1 and journal Versions, a real source-asserted `published_as`
 correspondence, strict offline Publication Graph validation,
@@ -64,7 +64,12 @@ TransFit challenge to Arnett's maximum-light balance and an inferred Long & Yu
 extension of Zhu's characteristic-state calculation to trajectory-evolving
 conditions. Both are first-class reviewed assertions with Statement anchors,
 Version-specific Evidence, append-only Human review and visibility approvals,
-and reader-facing inbound/outbound Provenance Detail. A future separate
+and reader-facing inbound/outbound Provenance Detail. Ticket 11 now publishes
+the Human-approved Learning Path `learning-path:embedded-jet-dynamics` as a
+reviewed, visible three-Work sequence (Bromberg → Zhu → Long & Yu) with two
+adjacent path-local Pedagogical Transitions, a profile-bound semantic review
+binding, and a matching `v0.1-default` Visibility Digest; its route and
+homepage index are rendered without client-side JavaScript. A future separate
 `Long & Yu --tests--> Zhu` delta is reserved strictly for trajectory-integrated
 detector-yield validation and is not stored in V0.1 Ticket 10.
 
@@ -147,7 +152,7 @@ CI remain fully offline; external deployment and source refresh are deferred.
 Continue the approved local ticket frontier with:
 
 ```text
-.scratch/v0.1-vertical-slice/issues/10-curate-and-publish-real-scientific-edges.md
+.scratch/v0.1-vertical-slice/issues/12-harden-validator-with-adversarial-fixtures.md
 ```
 
 The ticket may implement accepted requirements but may not extend the closed
@@ -156,14 +161,14 @@ under the migration rule above.
 
 ## Blockers and constraints
 
-There is no remaining authority-migration blocker. Learning Path, README,
-remote CI, and final reader closure remain expected Phase 2–5
-work. The local repository intentionally has no remote in
+There is no remaining authority-migration blocker. README, adversarial
+validator hardening, final reader closure, remote CI, and coverage-matrix work
+remain expected Phase 2–5 work. The local repository intentionally has no remote in
 Ticket 01. A genuinely new semantic choice must be escalated as a new decision
 rather than hidden in `.planning` prose.
 
 ## Session continuity
 
-Resume with Ticket 11 from the approved local frontier. Read the four `.planning`
+Resume with Ticket 12 from the approved local frontier. Read the four `.planning`
 documents first, preserve requirement IDs, and update traceability only when
 ticket evidence is verified.

@@ -1,0 +1,118 @@
+---
+import { loadCanonicalContent } from "../../../scripts/content-loader.mjs";
+import { projectLearningPathForReader } from "../../../scripts/reader-projection.mjs";
+import "../../styles/global.css";
+
+type AnyRecord = Record<string, any>;
+type LearningPathBundle = { id: string; path: AnyRecord };
+
+export async function getStaticPaths() {
+  const snapshot = await loadCanonicalContent(new URL("../../../content/", import.meta.url));
+  return (snapshot.learningPaths as LearningPathBundle[])
+    .map((path) => projectLearningPathForReader(snapshot, path.id))
+    .filter((path) => path !== null)
+    .map((path) => ({ params: { id: path.path_id }, props: { pathId: path.path_id } }));
+}
+
+const { pathId } = Astro.props;
+const snapshot = await loadCanonicalContent(new URL("../../../content/", import.meta.url));
+const learningPath = projectLearningPathForReader(snapshot, pathId) as AnyRecord | null;
+if (!learningPath) {
+  throw new Error(`Visible Learning Path not found: ${pathId}`);
+}
+
+const entries = (learningPath.entries ?? []) as AnyRecord[];
+const transitions = (learningPath.transitions ?? []) as AnyRecord[];
+const steps = entries.map((entry, index) => ({
+  entry,
+  transition: transitions[index] ?? null,
+}));
+const readingParagraphs = String(learningPath.reading ?? "")
+  .replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n/u, "")
+  .trim()
+  .split(/\r?\n\s*\r?\n/u)
+  .map((paragraph) => paragraph.replace(/^#+\s+/u, "").replace(/\r?\n/gu, " "))
+  .filter(Boolean);
+
+function workTitle(entry: AnyRecord) {
+  return entry.work?.title ?? entry.work_id;
+}
+
+function workAuthors(entry: AnyRecord) {
+  return (entry.work?.authors ?? [])
+    .map((author: AnyRecord) => author.display_name)
+    .filter(Boolean)
+    .join(", ");
+}
+
+function workDate(entry: AnyRecord) {
+  return entry.work?.release_date?.value ?? "release date unavailable";
+}
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta
+      name="description"
+      content={`Learning Path: ${learningPath.title ?? pathId}`}
+    />
+    <title>{learningPath.title ?? pathId} · High-Energy Transient Reading Radar</title>
+  </head>
+  <body>
+    <main>
+      <p class="eyebrow"><a href="/">High-Energy Transient Reading Radar</a> · Learning Paths</p>
+      <h1>{learningPath.title ?? pathId}</h1>
+
+      <section>
+        <h2>Reader View</h2>
+        {readingParagraphs.map((paragraph) => <p>{paragraph}</p>)}
+      </section>
+
+      <section>
+        <h2>Reading sequence</h2>
+        <ol>
+          {steps.map(({ entry, transition }) => (
+            <li>
+              <a href={`/papers/${entry.work_id}/`}>{workTitle(entry)}</a>
+              <p>
+                Preferred Version: {entry.work?.preferred_version_id ?? "unavailable"}.
+                {workAuthors(entry) ? ` ${workAuthors(entry)}.` : ""}
+                {` Release date: ${workDate(entry)}.`}
+              </p>
+              {transition ? (
+                <p>
+                  <strong>Why this next:</strong> {transition.reason}
+                </p>
+              ) : null}
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      <details>
+        <summary>Provenance Detail</summary>
+        <h2>Path review</h2>
+        <p>
+          {learningPath.review_context?.status ?? "review status unavailable"}
+          {learningPath.review_context?.reviewer_actor_id
+            ? ` by ${learningPath.review_context.reviewer_actor_id}`
+            : ""}
+          {learningPath.review_context?.reviewed_at
+            ? ` at ${learningPath.review_context.reviewed_at}`
+            : ""}
+        </p>
+        <h3>Pedagogical Transitions</h3>
+        <ul>
+          {transitions.map((transition: AnyRecord) => (
+            <li>
+              {transition.source_work_id} <strong>→</strong> {transition.target_work_id}: {transition.reason}
+            </li>
+          ))}
+        </ul>
+      </details>
+    </main>
+  </body>
+</html>

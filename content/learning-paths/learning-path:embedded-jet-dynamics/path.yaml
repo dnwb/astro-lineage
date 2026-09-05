@@ -1,0 +1,29 @@
+path_id: learning-path:embedded-jet-dynamics
+reader_state: visible
+title: From Jet Propagation to Dynamic Multi-messenger Yields
+entries:
+  - work_id: work:bromberg-2011
+  - work_id: work:zhu-2021
+  - work_id: work:long-yu-2026
+transitions:
+  - source_work_id: work:bromberg-2011
+    target_work_id: work:zhu-2021
+    reason: Use Bromberg et al. to establish jet-head propagation, cocoon collimation, and breakout as a compact dynamical vocabulary before applying that vocabulary to Zhu et al.'s embedded AGN-disk, multi-messenger case.
+  - source_work_id: work:zhu-2021
+    target_work_id: work:long-yu-2026
+    reason: After Zhu et al.'s characteristic-state choked-jet and hadronic-neutrino account, study Long and Yu's trajectory-resolved shock and cooling evolution, including both choking and breakout outcomes.
+curation_provenance:
+  actor_id: actor:agent-curator
+  recorded_at: "2026-09-05T07:46:01Z"
+review_state: reviewed
+review_provenance:
+  actor_id: actor:human-curator
+  recorded_at: "2026-09-05T11:48:58Z"
+review_binding:
+  canonicalization_version: v1
+  semantic_digest: b77f8961c2be07b6d75fa0d9060cf48b9b710dc5c94f3ce60a2ebb48d0df84dd
+visibility_approvals:
+  - profile_id: v0.1-default
+    visibility_digest: 8af71fcbfb79c4fb69b5177c983d894ccd76daeb08953f040e87d734c4f5cfe8
+    actor_id: actor:human-curator
+    approved_at: "2026-09-05T11:48:58Z"

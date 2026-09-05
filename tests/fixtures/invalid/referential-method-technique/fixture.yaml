@@ -1,0 +1,17 @@
+dataset: fixture:invalid-referential-method-technique
+base: canonical-production
+mutation: add-method-with-missing-technique
+expected:
+  valid: false
+  diagnostics:
+    - severity: error
+      code: REFERENTIAL_TECHNIQUE_MISSING
+      file: content/works/work:arnett-1982/annotations.yaml
+      record_id: annotation:t12-missing-technique
+      field_path: /method_annotations/1/technique_id
+      related_ids:
+        - technique:missing
+  passes:
+    structural: complete
+    referential: partial
+    semantic: complete

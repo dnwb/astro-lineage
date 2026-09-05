@@ -1,0 +1,16 @@
+dataset: fixture:invalid-material-reset-editorial
+base: canonical-production
+mutation: edit-reviewed-membership
+expected:
+  valid: false
+  diagnostics:
+    - severity: error
+      code: MEMBERSHIP_REVIEW_BINDING_STALE
+      file: content/research-lines/research-line:central-engines/line.yaml
+      record_id: membership:central-engines-bromberg-2011
+      field_path: /memberships/1/review_binding/semantic_digest
+      related_ids: []
+  passes:
+    structural: complete
+    referential: complete
+    semantic: partial

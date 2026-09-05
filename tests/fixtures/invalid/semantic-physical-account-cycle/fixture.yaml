@@ -1,0 +1,16 @@
+dataset: fixture:invalid-semantic-physical-account-cycle
+base: canonical-production
+mutation: add-cycle-link
+expected:
+  valid: false
+  diagnostics:
+    - severity: error
+      code: CAUSAL_ACCOUNT_CYCLE
+      file: content/works/work:arnett-1982/physical-account.yaml
+      record_id: work:arnett-1982
+      field_path: /links
+      related_ids: []
+  passes:
+    structural: complete
+    referential: complete
+    semantic: partial

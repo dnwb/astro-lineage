@@ -1,0 +1,19 @@
+dataset: fixture:invalid-structural-scientific-edge
+base: canonical-production
+mutation: add-malformed-scientific-edge
+expected:
+  valid: false
+  diagnostics:
+    - severity: error
+      code: SCIENTIFIC_EDGE_INVALID_SHAPE
+      file: content/scientific-edges/edge:t12-malformed.yaml
+      record_id: edge:t12-malformed
+      field_path: null
+      related_ids: []
+  passes:
+    structural: partial
+    referential: skipped
+    semantic: skipped
+  forbidden_codes:
+    - CAUSAL_ACCOUNT_CYCLE
+    - VISIBLE_WORK_MEMBERSHIP_REQUIRED

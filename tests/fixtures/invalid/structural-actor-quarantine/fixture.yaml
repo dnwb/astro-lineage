@@ -1,0 +1,19 @@
+dataset: fixture:invalid-structural-actor-quarantine
+base: canonical-production
+mutation: null-actor-child
+expected:
+  valid: false
+  diagnostics:
+    - severity: error
+      code: STRUCTURE_ACTOR_INVALID_SHAPE
+      file: content/actors.yaml
+      record_id: actors
+      field_path: /actors/0
+      related_ids: []
+  passes:
+    structural: partial
+    referential: skipped
+    semantic: skipped
+  forbidden_code_prefixes:
+    - CURATION_
+    - REFERENTIAL_ACTOR_

@@ -1,0 +1,17 @@
+dataset: fixture:invalid-referential-evidence-ownership
+base: canonical-production
+mutation: add-evidence-with-missing-version
+expected:
+  valid: false
+  diagnostics:
+    - severity: error
+      code: REFERENTIAL_VERSION_MISSING
+      file: content/works/work:arnett-1982/evidence.yaml
+      record_id: evidence:t12-missing-version
+      field_path: /evidence/14/version_id
+      related_ids:
+        - version:missing
+  passes:
+    structural: complete
+    referential: partial
+    semantic: complete

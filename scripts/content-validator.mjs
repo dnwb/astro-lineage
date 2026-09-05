@@ -6213,7 +6213,11 @@ function deriveWorkInventory(
 
 export async function validateCanonicalContent(
   contentRoot = CONTENT_ROOT,
+  { dataset = "production" } = {},
 ) {
+  const reportDataset = typeof dataset === "string" && dataset.trim() !== ""
+    ? dataset
+    : "production";
   const snapshot = await loadCanonicalContent(contentRoot);
   const diagnostics = [...snapshot.discovery.diagnostics];
   const actorRegistryValid = !hasParseDiagnostic(diagnostics, "content/actors.yaml")
@@ -6284,7 +6288,12 @@ export async function validateCanonicalContent(
     isObject(snapshot.manifest) &&
     VALID_CANONICALIZATION_VERSIONS.includes(snapshot.manifest.canonicalization_version) &&
     VALID_VISIBILITY_PROFILE_IDS.includes(snapshot.manifest.visibility_profile_id);
-  const visibilityState = actorRegistryValid && manifestSupportsVisibility
+  // Discovery-level structural failures quarantine the snapshot's dependent
+  // passes.  Do not run final-snapshot visibility with the empty editorial
+  // state produced by that quarantine: doing so would manufacture membership
+  // and anchor errors for otherwise untouched visible Works.
+  const visibilityState = actorRegistryValid && manifestSupportsVisibility &&
+    !hasStructuralFailure(snapshot.discovery.diagnostics)
     ? validateFinalSnapshotVisibility(visibilitySnapshot, actorsById, diagnostics, editorialState)
     : {
       visibilityByWorkId: new Map(),
@@ -6312,9 +6321,17 @@ export async function validateCanonicalContent(
       id: isObject(value) && value.id !== undefined ? value.id : id,
     }))
     .filter((edge) => edge.review_state === "reviewed");
+  // Every validator diagnostic is created through shared helpers while the
+  // passes run.  Rebind the dataset once at the report boundary so isolated
+  // synthetic fixtures can be identified without teaching every pass about
+  // test-only paths or changing production defaults.
+  const reportDiagnostics = diagnostics.map((diagnostic) => ({
+    ...diagnostic,
+    dataset: reportDataset,
+  }));
   const report = {
-    dataset: "production",
-    valid: isValidationValid(diagnostics),
+    dataset: reportDataset,
+    valid: isValidationValid(reportDiagnostics),
     validator_version: VALIDATOR_VERSION,
     schema_version: typeof manifest.schema_version === "string" ? manifest.schema_version : null,
     canonicalization_version:
@@ -6368,7 +6385,7 @@ export async function validateCanonicalContent(
     work_inventory: workInventory,
     research_line_inventory: researchLineInventory,
     learning_path_inventory: learningPathInventory,
-    diagnostics,
+    diagnostics: reportDiagnostics,
   };
   return report;
 }
@@ -6551,9 +6568,10 @@ export async function runValidation({
   contentRoot = CONTENT_ROOT,
   outputRoot = PROJECT_ROOT,
   additionalDiagnostics = [],
+  dataset = "production",
 } = {}) {
   const report = mergeValidationDiagnostics(
-    await validateCanonicalContent(contentRoot),
+    await validateCanonicalContent(contentRoot, { dataset }),
     additionalDiagnostics,
   );
   await writeValidationReports(report, outputRoot);

@@ -1,7 +1,7 @@
 # High-Energy Transient Reading Radar — V0.1 Roadmap
 
 > Status: authority migration complete; Phase 2 execution underway, with
-> Tickets 01–11 complete; Ticket 12 next
+> Tickets 01–12 complete; Ticket 13 next
 > (2026-09-05)
 >
 > This is the high-level delivery map derived from `PROJECT_CONTEXT.md`,

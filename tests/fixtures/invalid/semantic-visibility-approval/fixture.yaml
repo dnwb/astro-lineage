@@ -1,0 +1,16 @@
+dataset: fixture:invalid-semantic-visibility-approval
+base: canonical-production
+mutation: stale-work-approval
+expected:
+  valid: false
+  diagnostics:
+    - severity: error
+      code: VISIBILITY_APPROVAL_STALE
+      file: content/works/work:arnett-1982/work.yaml
+      record_id: work:arnett-1982
+      field_path: /visibility_approvals
+      related_ids: []
+  passes:
+    structural: complete
+    referential: complete
+    semantic: partial

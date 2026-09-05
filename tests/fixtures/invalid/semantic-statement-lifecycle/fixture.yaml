@@ -1,0 +1,19 @@
+dataset: fixture:invalid-semantic-statement-lifecycle
+base: canonical-production
+mutation: add-statement-with-invalid-lifecycle
+expected:
+  valid: false
+  diagnostics:
+    - severity: error
+      code: STATEMENT_LIFECYCLE_INVALID
+      file: content/works/work:arnett-1982/statements.yaml
+      record_id: statement:t12-invalid-lifecycle
+      field_path: /statements/4/lifecycle
+      related_ids:
+        - maintained
+        - superseded
+        - withdrawn
+  passes:
+    structural: partial
+    referential: skipped
+    semantic: skipped

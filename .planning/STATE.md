@@ -5,7 +5,7 @@
 ## Current position
 
 - **Stage:** Phase 2 — domain records and five-Work vertical slice
-- **Status:** Tickets 01–11 complete
+- **Status:** Tickets 01–12 complete
 - **Implementation:** Visible Arnett and Bromberg now exercise governed Actors,
   capability-at-action-time authorization, 16 assessed Physics axes,
   controlled vocabulary, reusable Version-bound Evidence, reviewed Method
@@ -24,8 +24,8 @@
   reader-visible inbound/outbound provenance
 - **Decision frontier:** closed through Q151; no open domain-model decision is
   blocking migration
-- **Next execution action:** Ticket 12,
-  `.scratch/v0.1-vertical-slice/issues/12-harden-validator-with-adversarial-fixtures.md`
+- **Next execution action:** Ticket 13,
+  `.scratch/v0.1-vertical-slice/issues/13-close-reader-experience-and-coverage-matrix.md`
 
 The repository has completed specification, governance, and authority
 migration. Ticket 01 established the independent Git boundary and bootstrap
@@ -69,7 +69,12 @@ the Human-approved Learning Path `learning-path:embedded-jet-dynamics` as a
 reviewed, visible three-Work sequence (Bromberg → Zhu → Long & Yu) with two
 adjacent path-local Pedagogical Transitions, a profile-bound semantic review
 binding, and a matching `v0.1-default` Visibility Digest; its route and
-homepage index are rendered without client-side JavaScript. A future separate
+homepage index are rendered without client-side JavaScript. Ticket 12 adds
+isolated descriptor-driven valid and adversarial validator fixtures,
+deterministic bytewise discovery, structural quarantine/no-cascade visibility
+handling, explicit fixture dataset labels, exact diagnostic-context assertions,
+report determinism, production projection isolation, and offline network
+guards. A future separate
 `Long & Yu --tests--> Zhu` delta is reserved strictly for trajectory-integrated
 detector-yield validation and is not stored in V0.1 Ticket 10.
 
@@ -152,7 +157,7 @@ CI remain fully offline; external deployment and source refresh are deferred.
 Continue the approved local ticket frontier with:
 
 ```text
-.scratch/v0.1-vertical-slice/issues/12-harden-validator-with-adversarial-fixtures.md
+.scratch/v0.1-vertical-slice/issues/13-close-reader-experience-and-coverage-matrix.md
 ```
 
 The ticket may implement accepted requirements but may not extend the closed
@@ -161,14 +166,14 @@ under the migration rule above.
 
 ## Blockers and constraints
 
-There is no remaining authority-migration blocker. README, adversarial
-validator hardening, final reader closure, remote CI, and coverage-matrix work
-remain expected Phase 2–5 work. The local repository intentionally has no remote in
+There is no remaining authority-migration blocker. README, final reader
+closure, remote CI, and coverage-matrix work remain expected Phase 2–5 work.
+The local repository intentionally has no remote in
 Ticket 01. A genuinely new semantic choice must be escalated as a new decision
 rather than hidden in `.planning` prose.
 
 ## Session continuity
 
-Resume with Ticket 12 from the approved local frontier. Read the four `.planning`
+Resume with Ticket 13 from the approved local frontier. Read the four `.planning`
 documents first, preserve requirement IDs, and update traceability only when
 ticket evidence is verified.

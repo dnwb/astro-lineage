@@ -1,0 +1,18 @@
+dataset: fixture:invalid-semantic-publication-graph
+base: canonical-production
+mutation: duplicate-published-as-relation
+expected:
+  valid: false
+  diagnostics:
+    - severity: error
+      code: PUBLICATION_PUBLISHED_AS_CARDINALITY_INVALID
+      file: content/works/work:bromberg-2011/versions.yaml
+      record_id: publication-relation:t12-duplicate-journal
+      field_path: /publication_relations/1/target_version_id
+      related_ids:
+        - publication-relation:bromberg-2011-arxiv-v1-published-as-journal
+        - publication-relation:t12-duplicate-journal
+  passes:
+    structural: complete
+    referential: complete
+    semantic: partial

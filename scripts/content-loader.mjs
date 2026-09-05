@@ -102,7 +102,12 @@ function relativeContentPath(contentRoot, absolutePath) {
 
 async function directoryEntries(directory) {
   try {
-    return await readdir(directory, { withFileTypes: true });
+    const entries = await readdir(directory, { withFileTypes: true });
+    // Filesystem directory enumeration order is not a portable contract.
+    // Canonical discovery feeds diagnostics, reports, and digests, so sort
+    // names once at the boundary using the same bytewise order used by the
+    // canonicalization procedure.
+    return entries.sort((left, right) => Buffer.from(left.name).compare(Buffer.from(right.name)));
   } catch (error) {
     if (error?.code === "ENOENT") {
       return null;

@@ -1,0 +1,17 @@
+dataset: fixture:invalid-semantic-actor-capability
+base: canonical-production
+mutation: grant-agent-review-capability
+expected:
+  valid: false
+  diagnostics:
+    - severity: error
+      code: ACTOR_AGENT_CAPABILITY_FORBIDDEN
+      file: content/actors.yaml
+      record_id: actor:agent-curator
+      field_path: /actors/1/capability_events/0/capability
+      related_ids:
+        - draft_records
+  passes:
+    structural: complete
+    referential: complete
+    semantic: partial

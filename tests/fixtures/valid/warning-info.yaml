@@ -1,0 +1,33 @@
+dataset: fixture:valid-warning-info
+base: canonical-production
+mutation: none
+additional_diagnostics:
+  - severity: warning
+    code: FIXTURE_CURATOR_FOLLOWUP
+    file: tests/fixtures/valid/warning-info.yaml
+    record_id: fixture:valid-warning-info
+    field_path: /follow_up
+    message: A valid fixture may carry actionable curation debt.
+    related_ids: []
+  - severity: info
+    code: FIXTURE_COUNTS_RECORDED
+    file: tests/fixtures/valid/warning-info.yaml
+    record_id: fixture:valid-warning-info
+    field_path: null
+    message: Fixture counts are informational.
+    related_ids: []
+expected:
+  valid: true
+  diagnostics:
+    - severity: warning
+      code: FIXTURE_CURATOR_FOLLOWUP
+      file: tests/fixtures/valid/warning-info.yaml
+      record_id: fixture:valid-warning-info
+      field_path: /follow_up
+      related_ids: []
+    - severity: info
+      code: FIXTURE_COUNTS_RECORDED
+      file: tests/fixtures/valid/warning-info.yaml
+      record_id: fixture:valid-warning-info
+      field_path: null
+      related_ids: []

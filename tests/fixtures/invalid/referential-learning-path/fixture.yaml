@@ -1,0 +1,24 @@
+dataset: fixture:invalid-referential-learning-path
+base: canonical-production
+mutation: add-path-entry-with-missing-work
+expected:
+  valid: false
+  diagnostics:
+    - severity: error
+      code: REFERENTIAL_LEARNING_PATH_WORK_MISSING
+      file: content/learning-paths/learning-path:embedded-jet-dynamics/path.yaml
+      record_id: learning-path:embedded-jet-dynamics
+      field_path: /entries/3/work_id
+      related_ids:
+        - work:missing
+    - severity: error
+      code: REFERENTIAL_LEARNING_PATH_WORK_MISSING
+      file: content/learning-paths/learning-path:embedded-jet-dynamics/path.yaml
+      record_id: learning-path:embedded-jet-dynamics
+      field_path: /transitions/2/target_work_id
+      related_ids:
+        - work:missing
+  passes:
+    structural: complete
+    referential: partial
+    semantic: complete

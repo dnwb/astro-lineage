@@ -1,0 +1,14 @@
+dataset: fixture:valid-baseline
+base: canonical-production
+mutation: none
+expected:
+  valid: true
+  works: 5
+  passes:
+    structural: complete
+    referential: complete
+    semantic: complete
+  metadata:
+    schema_version: v0.1
+    canonicalization_version: v1
+    visibility_profile_id: v0.1-default

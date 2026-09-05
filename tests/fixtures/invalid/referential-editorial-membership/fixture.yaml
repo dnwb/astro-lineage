@@ -1,0 +1,17 @@
+dataset: fixture:invalid-referential-editorial-membership
+base: canonical-production
+mutation: add-membership-with-missing-work
+expected:
+  valid: false
+  diagnostics:
+    - severity: error
+      code: REFERENTIAL_WORK_MISSING
+      file: content/research-lines/research-line:central-engines/line.yaml
+      record_id: membership:t12-missing-work
+      field_path: /memberships/4/work_id
+      related_ids:
+        - work:missing
+  passes:
+    structural: complete
+    referential: partial
+    semantic: complete

@@ -1,0 +1,16 @@
+dataset: fixture:invalid-material-reset-statement
+base: canonical-production
+mutation: edit-reviewed-statement
+expected:
+  valid: false
+  diagnostics:
+    - severity: error
+      code: STATEMENT_REVIEW_BINDING_STALE
+      file: content/works/work:arnett-1982/statements.yaml
+      record_id: statement:arnett-analytic-light-curve-solutions
+      field_path: /statements/0/review_binding
+      related_ids: []
+  passes:
+    structural: complete
+    referential: complete
+    semantic: partial

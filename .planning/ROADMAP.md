@@ -1,7 +1,8 @@
 # High-Energy Transient Reading Radar — V0.1 Roadmap
 
-> Status: authority migration complete; Phase 2 execution underway, with
-> Tickets 01–12 complete; Ticket 13 next
+> Status: authority migration complete; Phase 4 reader closure complete
+> locally, with Phase 5 CI acceptance next; Tickets 01–13 complete; Ticket 14
+> next
 > (2026-09-05)
 >
 > This is the high-level delivery map derived from `PROJECT_CONTEXT.md`,
@@ -168,6 +169,8 @@ reports, and does not create cascading false diagnostics; a valid snapshot
 passes all release and governance gates.
 
 ## Phase 4 — Generated projections and reader surfaces
+
+**Status:** complete for the local Ticket 13 reader slice
 
 **Depends on:** Phase 3
 

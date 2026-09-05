@@ -292,6 +292,15 @@ const mutations = Object.freeze({
       CENTRAL_ENGINES_LINE,
       `research-lines/${CENTRAL_ENGINES_LINE}/line.yaml`,
     );
+    // Hiding Arnett removes the cross-Work Scientific Edge from TransFit's
+    // reader projection in the final snapshot. Refresh that dependent Work's
+    // approval so this fixture isolates the intended Statement binding reset.
+    await refreshVisibilityApproval(
+      contentRoot,
+      "work",
+      "work:transfit-2025",
+      "works/work:transfit-2025/work.yaml",
+    );
   },
 
   "edit-reviewed-membership": async (contentRoot) => {
@@ -356,6 +365,15 @@ const mutations = Object.freeze({
       "learning_path",
       EMBEDDED_JET_PATH,
       `learning-paths/${EMBEDDED_JET_PATH}/path.yaml`,
+    );
+    // Hiding Long & Yu also removes its reviewed Edge from Zhu's reader
+    // projection; refresh that dependent Work so the fixture isolates the
+    // intended final-snapshot path visibility failure.
+    await refreshVisibilityApproval(
+      contentRoot,
+      "work",
+      "work:zhu-2021",
+      "works/work:zhu-2021/work.yaml",
     );
   },
 

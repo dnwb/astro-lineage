@@ -1,13 +1,27 @@
 ---
 import ProductBoundary from "../copy/product-boundary.md";
 import { loadCanonicalContent } from "../../scripts/content-loader.mjs";
-import { projectVisibleLearningPaths } from "../../scripts/reader-projection.mjs";
+import { projectVisibleSnapshot } from "../../scripts/reader-projection.mjs";
 import { loadSiteConfig } from "../lib/site-config";
 import "../styles/global.css";
 
 const site = loadSiteConfig();
 const snapshot = await loadCanonicalContent("content");
-const learningPaths = projectVisibleLearningPaths(snapshot);
+const reader = projectVisibleSnapshot(snapshot) as Record<string, any>;
+const works = (reader.works ?? []) as Record<string, any>[];
+const researchLines = (reader.research_lines ?? []) as Record<string, any>[];
+const learningPaths = (reader.learning_paths ?? []) as Record<string, any>[];
+
+function workTitle(work: Record<string, any>) {
+  return work.versions?.find((version: Record<string, any>) => version.id === work.preferred_version_id)?.title ?? work.work_id;
+}
+
+function workAuthors(work: Record<string, any>) {
+  return work.versions
+    ?.find((version: Record<string, any>) => version.id === work.preferred_version_id)
+    ?.authors?.map((author: Record<string, any>) => author.display_name)
+    .join(", ");
+}
 ---
 
 <!doctype html>
@@ -22,24 +36,54 @@ const learningPaths = projectVisibleLearningPaths(snapshot);
     <title>{site.title}</title>
   </head>
   <body>
-    <main>
+    <main class="site-shell home-page">
       <p class="eyebrow">{site.eyebrow}</p>
       <h1>{site.title}</h1>
       <ProductBoundary />
-      <p><a class="browse-link" href="/papers">Browse the curated Papers</a></p>
-      <section>
-        <h2>Learning Paths</h2>
-        {learningPaths.length === 0 ? (
-          <p class="empty-state">No Learning Paths are visible in the curated reading radar yet.</p>
-        ) : (
+
+      <section class="home-intro panel" aria-labelledby="reading-map-heading">
+        <p class="section-kicker">V0.1 reader map</p>
+        <h2 id="reading-map-heading">Start with the scientific structure</h2>
+        <p>Browse five curated Works, their Research Lines, and the reviewed Learning Path. The map is a static navigation view, not a daily feed or a standalone graph product.</p>
+        <p><a class="browse-link" href="/papers">Browse all curated Papers</a></p>
+      </section>
+
+      <div class="home-grid">
+        <section class="panel" aria-labelledby="works-heading">
+          <p class="section-kicker">Reader entities</p>
+          <h2 id="works-heading">Papers</h2>
           <ul class="paper-list">
-            {learningPaths.map((path) => (
-              <li><a href={`/learning-paths/${path.path_id}/`}>{path.title ?? path.path_id}</a></li>
+            {works.map((work) => (
+              <li>
+                <a href={`/papers/${work.work_id}/`}>{workTitle(work)}</a>
+                {workAuthors(work) ? <small>{workAuthors(work)}</small> : null}
+              </li>
             ))}
           </ul>
-        )}
-      </section>
-      <p class="status">Implementation frontier: repository foundation.</p>
+        </section>
+
+        <section class="panel" aria-labelledby="lines-heading">
+          <p class="section-kicker">Editorial context</p>
+          <h2 id="lines-heading">Research Lines</h2>
+          <ul class="paper-list">
+            {researchLines.map((line) => (
+              <li><a href={`/research-lines/${line.line_id}/`}>{line.title ?? line.line_id}</a><small>{line.scientific_question}</small></li>
+            ))}
+          </ul>
+        </section>
+
+        <section class="panel" aria-labelledby="paths-heading">
+          <p class="section-kicker">Ordered pedagogy</p>
+          <h2 id="paths-heading">Learning Paths</h2>
+          <ul class="paper-list">
+            {learningPaths.map((path) => (
+              <li><a href={`/learning-paths/${path.path_id}/`}>{path.title ?? path.path_id}</a><small>{path.entries?.length ?? 0} Works, {path.transitions?.length ?? 0} transitions</small></li>
+            ))}
+          </ul>
+        </section>
+      </div>
+
+      <p class="status">Five-Work V0.1 reader slice · static, validated, and evidence-aware</p>
     </main>
   </body>
 </html>

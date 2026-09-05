@@ -1,4 +1,5 @@
 ---
+import ReadingProse from "../../components/ReadingProse.astro";
 import { loadCanonicalContent } from "../../../scripts/content-loader.mjs";
 import { readEditorialIndex } from "../../../scripts/editorial-index.mjs";
 import {
@@ -40,29 +41,31 @@ const statements = work.statements ?? [];
 const physicalAccount = work.physical_account ?? { stages: [], links: [] };
 const reviewedLinks = physicalAccount.links ?? [];
 const scientificEdges = (work.scientific_edges ?? []) as AnyRecord[];
-const outboundEdges = scientificEdges.filter((edge) => edge.source_work_id === workId);
-const inboundEdges = scientificEdges.filter((edge) => edge.target_work_id === workId);
 const evidenceRecords = (work.evidence ?? []) as AnyRecord[];
 const evidenceById = new Map(
   evidenceRecords
     .filter((evidence: AnyRecord) => typeof evidence?.id === "string")
     .map((evidence: AnyRecord) => [evidence.id, evidence]),
 );
-const reverseIndex = await readEditorialIndex() as Record<string, AnyRecord[]>;
-const lineMemberships = (reverseIndex[workId] ?? []).map((membership) => ({
+
+// The index is a reproducible convenience projection. Falling back to the
+// already projected memberships keeps a direct Astro build useful even when
+// an ignored generated artifact was removed; npm run build regenerates it.
+let reverseIndex: Record<string, AnyRecord[]> = {};
+try {
+  reverseIndex = await readEditorialIndex() as Record<string, AnyRecord[]>;
+} catch {
+  reverseIndex = {};
+}
+const indexedMemberships = reverseIndex[workId] ?? work.research_lines ?? [];
+const lineMemberships = indexedMemberships.map((membership) => ({
   ...membership,
   line: projectResearchLineForReader(snapshot, membership.line_id),
 }));
-const readingParagraphs = String(work.reading ?? "")
-  .replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n/u, "")
-  .trim()
-  .split(/\r?\n\s*\r?\n/u)
-  .map((paragraph) => paragraph.replace(/^#+\s+/u, "").replace(/\r?\n/gu, " "))
-  .filter(Boolean);
 
 function describeLocator(locator: AnyRecord | undefined) {
   if (!locator?.type) {
-    return "locator unavailable";
+    return "typed locator unavailable";
   }
   const parts = [String(locator.type)];
   for (const key of ["section", "equation", "table", "figure", "paragraph"]) {
@@ -75,6 +78,18 @@ function describeLocator(locator: AnyRecord | undefined) {
   }
   return parts.join("; ");
 }
+
+function reviewContext(value: AnyRecord) {
+  const context = value.review_context;
+  if (!context?.status) {
+    return "review context unavailable";
+  }
+  return `${context.status}${context.reviewer_actor_id ? ` by ${context.reviewer_actor_id}` : ""}${context.reviewed_at ? ` at ${context.reviewed_at}` : ""}`;
+}
+
+function edgeDirection(edge: AnyRecord) {
+  return edge.source_work_id === workId ? "outbound" : "inbound";
+}
 ---
 
 <!doctype html>
@@ -86,142 +101,147 @@ function describeLocator(locator: AnyRecord | undefined) {
     <title>{preferredVersion?.title ?? workId} · High-Energy Transient Reading Radar</title>
   </head>
   <body>
-    <main>
-      <p class="eyebrow"><a href="/papers">Papers</a></p>
-      <h1>{preferredVersion?.title ?? workId}</h1>
+    <main class="site-shell reader-page">
+      <p class="eyebrow"><a href="/papers">Papers</a> · Reader View</p>
+      <header class="reader-header">
+        <p class="record-label">Work ID: {workId}</p>
+        <h1>{preferredVersion?.title ?? workId}</h1>
+        <p class="reader-deck">A curated scientific reading account, with evidence and governance detail available on demand.</p>
+      </header>
 
-      <section>
-        <h2>Preferred Version</h2>
-        <p>{preferredVersion?.authors?.map((author: AnyRecord) => author.display_name).join(", ")} ({preferredVersion?.release_date?.value})</p>
-        <p>
-          {preferredVersion?.journal?.name} {preferredVersion?.journal?.volume}, {preferredVersion?.journal?.first_page}.
-          {preferredVersion?.doi ? ` DOI: ${preferredVersion.doi}.` : ""}
-        </p>
-        <p>{work.preferred_version?.reason}</p>
-        <ul>
-          {(preferredVersion?.access_urls ?? []).map((access: AnyRecord) => (
-            <li><a href={access.url}>{access.kind}</a></li>
-          ))}
-        </ul>
+      <section class="panel citation-panel" aria-labelledby="preferred-version-heading">
+        <div>
+          <p class="section-kicker">Citation</p>
+          <h2 id="preferred-version-heading">Preferred Version</h2>
+          <p>
+            {preferredVersion?.authors?.map((author: AnyRecord) => author.display_name).join(", ")} ({preferredVersion?.release_date?.value})
+          </p>
+          <p>
+            {preferredVersion?.journal?.name} {preferredVersion?.journal?.volume}, {preferredVersion?.journal?.first_page}.
+            {preferredVersion?.doi ? ` DOI: ${preferredVersion.doi}.` : ""}
+          </p>
+        </div>
+        <div class="citation-reason">
+          <p class="section-kicker">Selection reason</p>
+          <p>{work.preferred_version?.reason}</p>
+          <ul class="inline-list">
+            {(preferredVersion?.access_urls ?? []).map((access: AnyRecord) => (
+              <li><a href={access.url}>{access.kind}</a></li>
+            ))}
+          </ul>
+        </div>
       </section>
 
-      <section>
-        <h2>Reader View</h2>
-        {readingParagraphs.map((paragraph) => <p>{paragraph}</p>)}
+      <section class="panel reader-view" aria-labelledby="reader-view-heading">
+        <p class="section-kicker">Inspection layer 1</p>
+        <h2 id="reader-view-heading">Reader View</h2>
+        <p class="layer-intro">Scientific orientation first: what problem the Work addresses, what it assumes, what changes, and why it is worth reading.</p>
+        <ReadingProse source={String(work.reading ?? "")} />
       </section>
 
-      <section>
-        <h2>Physics Ontology</h2>
-        <dl>
-          {(work.annotations ?? []).map((annotation: AnyRecord) => (
-            <>
-              <dt>{annotation.axis}</dt>
-              <dd>
-                {annotation.assessment?.state}
-                {(annotation.assessment?.values ?? []).length > 0
-                  ? `: ${annotation.assessment.values.map((value: AnyRecord) => value.term_id).join(", ")}`
-                  : ""}
-                {annotation.interpretive_risk ? `; risk: ${annotation.interpretive_risk}` : ""}
-                {annotation.reason ? `; ${annotation.reason}` : ""}
-              </dd>
-            </>
-          ))}
-        </dl>
-      </section>
+      <div class="reader-grid">
+        <section class="panel" aria-labelledby="ontology-heading">
+          <p class="section-kicker">Scientific structure</p>
+          <h2 id="ontology-heading">Physics Ontology</h2>
+          <dl class="dense-definitions">
+            {(work.annotations ?? []).map((annotation: AnyRecord) => (
+              <>
+                <dt>{annotation.axis}</dt>
+                <dd>
+                  <span class="state">{annotation.assessment?.state}</span>
+                  {(annotation.assessment?.values ?? []).length > 0
+                    ? `: ${annotation.assessment.values.map((value: AnyRecord) => value.term_id).join(", ")}`
+                    : ""}
+                  {annotation.interpretive_risk ? `; risk: ${annotation.interpretive_risk}` : ""}
+                  {annotation.reason ? `; ${annotation.reason}` : ""}
+                </dd>
+              </>
+            ))}
+          </dl>
+        </section>
 
-      <section>
-        <h2>Methods</h2>
-        <ul>
-          {(work.method_annotations ?? []).map((annotation: AnyRecord) => (
-            <li>
-              {annotation.technique_id} ({annotation.basis})
-              {annotation.reason ? ` — ${annotation.reason}` : ""}
-            </li>
-          ))}
-        </ul>
-      </section>
+        <section class="panel" aria-labelledby="methods-heading">
+          <p class="section-kicker">Scientific structure</p>
+          <h2 id="methods-heading">Methods</h2>
+          <ul class="compact-list">
+            {(work.method_annotations ?? []).map((annotation: AnyRecord) => (
+              <li>
+                <strong>{annotation.technique_id}</strong> <span class="tag">{annotation.basis}</span>
+                {annotation.reason ? ` — ${annotation.reason}` : ""}
+              </li>
+            ))}
+          </ul>
+        </section>
 
-      <section>
-        <h2>Scientific Statements</h2>
-        <ul>
-          {statements.map((statement: AnyRecord) => (
-            <li>
-              <strong>{statement.kind}</strong>: {statement.canonical_text}
-              {statement.reason ? ` — ${statement.reason}` : ""}
-            </li>
-          ))}
-        </ul>
-      </section>
+        <section class="panel" aria-labelledby="statements-heading">
+          <p class="section-kicker">Scientific structure</p>
+          <h2 id="statements-heading">Scientific Statements</h2>
+          <ul class="compact-list">
+            {statements.map((statement: AnyRecord) => (
+              <li>
+                <strong>{statement.kind}</strong>: {statement.canonical_text}
+                {statement.reason ? ` — ${statement.reason}` : ""}
+              </li>
+            ))}
+          </ul>
+        </section>
 
-      <section>
-        <h2>Physical Account</h2>
-        <ol>
-          {(physicalAccount.stages ?? []).map((stage: AnyRecord) => <li>{stage.label}</li>)}
-        </ol>
-        <ul>
-          {reviewedLinks.map((link: AnyRecord) => (
-            <li>{link.source_stage_id} <strong>{link.relation}</strong> {link.target_stage_id}: {link.reason}</li>
-          ))}
-        </ul>
-      </section>
+        <section class="panel account-panel" aria-labelledby="physical-account-heading">
+          <p class="section-kicker">Scientific structure</p>
+          <h2 id="physical-account-heading">Physical Account</h2>
+          <p class="layer-intro">A Work-local causal DAG; it is distinct from the cross-Work Scientific Edge graph.</p>
+          <ol class="account-stages">
+            {(physicalAccount.stages ?? []).map((stage: AnyRecord) => <li><strong>{stage.label}</strong> <span class="record-label">{stage.id}</span></li>)}
+          </ol>
+          <ul class="compact-list causal-links">
+            {reviewedLinks.map((link: AnyRecord) => (
+              <li>{link.source_stage_id} <strong>{link.relation}</strong> {link.target_stage_id}: {link.reason}</li>
+            ))}
+          </ul>
+        </section>
 
-      <section>
-        <h2>Research Lines</h2>
-        <ul>
-          {lineMemberships.map((membership: AnyRecord) => (
-            <li>
-              <a href={`/research-lines/${membership.line_id}/`}>{membership.line?.title}</a>
-              {membership.editorial_anchor ? " — Editorial Anchor" : ""}
-              {` (${membership.reading_roles.join(", ")})`}
-            </li>
-          ))}
-        </ul>
-      </section>
+        <section class="panel" aria-labelledby="research-lines-heading">
+          <p class="section-kicker">Editorial context</p>
+          <h2 id="research-lines-heading">Research Lines</h2>
+          <ul class="compact-list">
+            {lineMemberships.map((membership: AnyRecord) => (
+              <li>
+                <a href={`/research-lines/${membership.line_id}/`}>{membership.line?.title ?? membership.line_id}</a>
+                {membership.editorial_anchor ? " — Editorial Anchor" : ""}
+                {membership.reading_roles?.length ? ` (${membership.reading_roles.join(", ")})` : ""}
+              </li>
+            ))}
+          </ul>
+        </section>
+      </div>
 
-      <section>
-        <h2>Scientific Edges</h2>
+      <section class="panel" aria-labelledby="scientific-delta-heading">
+        <p class="section-kicker">Cross-Work context</p>
+        <h2 id="scientific-delta-heading">Scientific delta</h2>
+        <p class="layer-intro">These directed, reviewed assertions state what a Work changes relative to another Work; absence is reported rather than inferred.</p>
         {scientificEdges.length === 0 ? (
-          <p>No reviewed reader-visible Scientific Edges are stored for this Work.</p>
+          <p class="empty-state">No reviewed reader-visible Scientific Edges are stored for this Work.</p>
         ) : (
-          <>
-            <h3>Outbound assertions</h3>
-            {outboundEdges.length === 0 ? (
-              <p>No outbound assertions.</p>
-            ) : (
-              <ul>
-                {outboundEdges.map((edge: AnyRecord) => (
-                  <li>
-                    {workId} <strong>{edge.relation}</strong>
-                    <a href={`/papers/${edge.target_work_id}/`}> {edge.target_work_id}</a>
-                    {edge.disposition ? ` — Disposition: ${edge.disposition}` : ""}
-                    {edge.reason ? ` — ${edge.reason}` : ""}
-                  </li>
-                ))}
-              </ul>
-            )}
-            <h3>Inbound assertions</h3>
-            {inboundEdges.length === 0 ? (
-              <p>No inbound assertions.</p>
-            ) : (
-              <ul>
-                {inboundEdges.map((edge: AnyRecord) => (
-                  <li>
-                    <a href={`/papers/${edge.source_work_id}/`}>{edge.source_work_id}</a>
-                    <strong> {edge.relation}</strong> {workId}
-                    {edge.disposition ? ` — Disposition: ${edge.disposition}` : ""}
-                    {edge.reason ? ` — ${edge.reason}` : ""}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </>
+          <ul class="compact-list edge-list">
+            {scientificEdges.map((edge: AnyRecord) => (
+              <li>
+                <span class="tag">{edgeDirection(edge)}</span>
+                {edge.source_work_id} <strong>{edge.relation}</strong> {edge.target_work_id}
+                {edge.disposition ? ` — disposition: ${edge.disposition}` : ""}
+                {edge.reason ? ` — ${edge.reason}` : ""}
+                <a class="inline-link" href={`/papers/${edge.source_work_id === workId ? edge.target_work_id : edge.source_work_id}/`}>Read the other Work</a>
+              </li>
+            ))}
+          </ul>
         )}
       </section>
 
-      <details>
+      <details class="panel provenance-detail">
         <summary>Provenance Detail</summary>
+        <p class="layer-intro">Open this layer when you need the concrete Version, typed locator, publication correspondence, or review context behind the reader-facing account.</p>
+
         <h3>Versions</h3>
-        <ul>
+        <ul class="compact-list">
           {versions.map((version: AnyRecord) => (
             <li>
               <strong>{version.kind}</strong>: {version.title} ({version.id}); release date {version.release_date?.value}
@@ -231,11 +251,12 @@ function describeLocator(locator: AnyRecord | undefined) {
             </li>
           ))}
         </ul>
+
         <h3>Publication Relations</h3>
         {publicationRelations.length === 0 ? (
           <p>No reviewed Publication Relations are stored for this Work.</p>
         ) : (
-          <ul>
+          <ul class="compact-list">
             {publicationRelations.map((relation: AnyRecord) => {
               const sources = (relation.bibliographic_source_ids ?? [])
                 .map((sourceId: string) => bibliographicSourcesById.get(sourceId))
@@ -258,20 +279,19 @@ function describeLocator(locator: AnyRecord | undefined) {
             })}
           </ul>
         )}
-        <h3>Scientific Edges</h3>
+
+        <h3>Scientific Edge Evidence</h3>
         {scientificEdges.length === 0 ? (
           <p>No reviewed reader-visible Scientific Edges are stored for this Work.</p>
         ) : (
-          <ul>
+          <ul class="compact-list">
             {scientificEdges.map((edge: AnyRecord) => (
               <li>
                 <strong>{edge.id}</strong>: {edge.source_work_id} <strong>{edge.relation}</strong> {edge.target_work_id}
                 {edge.basis ? `; basis ${edge.basis}` : ""}
                 {edge.disposition ? `; disposition ${edge.disposition}` : ""}
                 {edge.reason ? `; ${edge.reason}` : ""}
-                {edge.review_context?.status
-                  ? `; ${edge.review_context.status} by ${edge.review_context.reviewer_actor_id} at ${edge.review_context.reviewed_at}`
-                  : ""}
+                {edge.review_context?.status ? `; review context: ${reviewContext(edge)}` : ""}
                 <ul>
                   {(edge.evidence_ids ?? []).map((evidenceId: string) => {
                     const evidence = evidenceById.get(evidenceId);
@@ -279,7 +299,7 @@ function describeLocator(locator: AnyRecord | undefined) {
                       <li>
                         <strong>{evidence.id}</strong>
                         {evidence.work_id ? ` (Work ${evidence.work_id})` : ""}
-                        {` — ${evidence.version_id}; ${describeLocator(evidence.locator)}: “${evidence.excerpt}”`}
+                        {` — Version ${evidence.version_id}; typed locator: ${describeLocator(evidence.locator)}; “${evidence.excerpt}”`}
                         {evidence.source_url ? <> — <a href={evidence.source_url}>source</a></> : ""}
                       </li>
                     ) : (
@@ -291,17 +311,16 @@ function describeLocator(locator: AnyRecord | undefined) {
             ))}
           </ul>
         )}
-        <h3>Evidence</h3>
-        <ul>
+
+        <h3>Version Evidence</h3>
+        <ul class="compact-list evidence-list">
           {evidenceRecords.map((evidence: AnyRecord) => (
             <li>
               <strong>{evidence.id}</strong>
               {evidence.work_id ? ` (Work ${evidence.work_id})` : ""}
-              {` — ${evidence.version_id}; ${describeLocator(evidence.locator)}: “${evidence.excerpt}”`}
+              {` — Version ${evidence.version_id}; typed locator: ${describeLocator(evidence.locator)}; “${evidence.excerpt}”`}
               {evidence.source_url ? <> — <a href={evidence.source_url}>source</a></> : ""}
-              {evidence.review_context?.status
-                ? `; ${evidence.review_context.status} by ${evidence.review_context.reviewer_actor_id} at ${evidence.review_context.reviewed_at}`
-                : ""}
+              {evidence.review_context?.status ? `; review context: ${reviewContext(evidence)}` : ""}
             </li>
           ))}
         </ul>

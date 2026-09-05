@@ -17,7 +17,27 @@ messengers; soft gamma rays are a photon band; fluence and detector counts are
 observable forms; jet choking and expected yield remain model-derived
 inference targets.
 
-## Read this for
+## Problem
+
+Can a GRB jet embedded in a dense AGN accretion disk produce a detectable
+multi-messenger signal when the surrounding material chokes the jet before it
+crosses the disk scale height?
+
+## Assumptions
+
+- Reverse-shock-accelerated protons interact through proton-proton and
+  photomeson channels in the disk environment.
+- Fluence and detector counts are model-derived outputs, not measurements of an
+  observed event.
+
+## Scientific delta
+
+This Work carries the embedded-jet problem from disk confinement through
+hadronic interaction branches to neutrino, photon, and short-GRB gravitational-
+wave counterpart predictions. Its cross-context placement is editorial
+context, not a substitute for a scientific Edge.
+
+## Reason to read
 
 - branching proton-proton and photomeson channels that converge on neutrino production;
 - a photon branch in which most gamma rays are degraded but cocoon breakout can remain visible;

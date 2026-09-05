@@ -27,7 +27,27 @@ radiation/internal-energy field. Homologous expansion changes density and
 optical depth, which modulate diffusion. Separately, expansion work transfers
 internal or radiative energy into the mechanical and kinetic-energy budget.
 
-## Read this for
+## Problem
+
+How can transient light curves be fitted with a time-dependent diffusion model
+that remains fast enough for practical exploration while retaining expanding
+ejecta and flexible heating?
+
+## Assumptions
+
+- The model treats observed bolometric light curves as observables and fitted
+  ejecta, progenitor-radius, opacity, and heating parameters as inference
+  targets.
+- A fitted parameter choice is not by itself a complete posterior inference or
+  uncertainty analysis.
+
+## Scientific delta
+
+This Work adds a time-dependent diffusion and fitting layer to simplified
+transient light-curve modeling, while keeping numerical technique, physical
+parameter interpretation, and measured signal forms separate.
+
+## Reason to read
 
 - a time-dependent radiative-diffusion calculation for expanding ejecta;
 - explicit numerical-scheme details in Appendix B;

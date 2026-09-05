@@ -6341,11 +6341,63 @@ export async function validateCanonicalContent(
     passes: determinePasses(diagnostics, snapshot.discovery),
     statistics: {
       works: snapshot.works.length,
+      actors: Array.isArray(snapshot.actors?.actors) ? snapshot.actors.actors.length : 0,
+      versions: snapshot.works.reduce(
+        (count, work) => count + (
+          Array.isArray(work.files["versions.yaml"]?.versions)
+            ? work.files["versions.yaml"].versions.length
+            : 0
+        ),
+        0,
+      ),
+      evidence: snapshot.works.reduce(
+        (count, work) => count + (
+          Array.isArray(work.files["evidence.yaml"]?.evidence)
+            ? work.files["evidence.yaml"].evidence.length
+            : 0
+        ),
+        0,
+      ),
+      physics_annotations: snapshot.works.reduce(
+        (count, work) => count + (
+          Array.isArray(work.files["annotations.yaml"]?.annotations)
+            ? work.files["annotations.yaml"].annotations.length
+            : 0
+        ),
+        0,
+      ),
+      method_annotations: snapshot.works.reduce(
+        (count, work) => count + (
+          Array.isArray(work.files["annotations.yaml"]?.method_annotations)
+            ? work.files["annotations.yaml"].method_annotations.length
+            : 0
+        ),
+        0,
+      ),
       scientific_edges: snapshot.scientificEdges.length,
       scientific_edge_relation_counts: scientificEdgeState.relationCounts,
       ontology_axes: snapshot.axes.length,
+      controlled_terms: controlledTermEntries.length,
       research_lines: snapshot.researchLines.length,
+      research_line_memberships: snapshot.researchLines.reduce(
+        (count, line) => count + (
+          Array.isArray(line.line?.memberships) ? line.line.memberships.length : 0
+        ),
+        0,
+      ),
       learning_paths: snapshot.learningPaths.length,
+      learning_path_entries: snapshot.learningPaths.reduce(
+        (count, path) => count + (
+          Array.isArray(path.path?.entries) ? path.path.entries.length : 0
+        ),
+        0,
+      ),
+      pedagogical_transitions: snapshot.learningPaths.reduce(
+        (count, path) => count + (
+          Array.isArray(path.path?.transitions) ? path.path.transitions.length : 0
+        ),
+        0,
+      ),
       scientific_statements: snapshot.works.reduce(
         (count, work) => count + (
           Array.isArray(work.files["statements.yaml"]?.statements)
@@ -6377,6 +6429,18 @@ export async function validateCanonicalContent(
             : 0
         ),
         0,
+      ),
+      publication_relation_counts: Object.fromEntries(
+        PUBLICATION_RELATIONS.map((relation) => [
+          relation,
+          snapshot.works.reduce((count, work) => count + (
+            Array.isArray(work.files["versions.yaml"]?.publication_relations)
+              ? work.files["versions.yaml"].publication_relations.filter(
+                (candidate) => candidate?.relation === relation,
+              ).length
+              : 0
+          ), 0),
+        ]),
       ),
     },
     scientific_accounts: snapshot.works.map((work) =>

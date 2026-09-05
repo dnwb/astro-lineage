@@ -4,8 +4,8 @@
 
 ## Current position
 
-- **Stage:** Phase 2 — domain records and five-Work vertical slice
-- **Status:** Tickets 01–12 complete
+- **Stage:** Phase 5 — V0.1 verification and CI acceptance
+- **Status:** Tickets 01–13 complete
 - **Implementation:** Visible Arnett and Bromberg now exercise governed Actors,
   capability-at-action-time authorization, 16 assessed Physics axes,
   controlled vocabulary, reusable Version-bound Evidence, reviewed Method
@@ -21,11 +21,14 @@
   publishes one reviewed explicit `TransFit --challenges--> Arnett` Edge and
   one independently Human-reviewed inferred `Long & Yu --extends--> Zhu` Edge,
   with bilateral Version-specific Evidence, distinct Scientific Deltas, and
-  reader-visible inbound/outbound provenance
+  reader-visible inbound/outbound provenance. Ticket 13 closes the static
+  Reader View, Provenance Detail, Validation Report, README, and real-fixture
+  Stored + Validated + Rendered coverage matrix; local verification is complete
+  and the independent clean-environment CI pass remains
 - **Decision frontier:** closed through Q151; no open domain-model decision is
   blocking migration
-- **Next execution action:** Ticket 13,
-  `.scratch/v0.1-vertical-slice/issues/13-close-reader-experience-and-coverage-matrix.md`
+- **Next execution action:** Ticket 14,
+  `.scratch/v0.1-vertical-slice/issues/14-prove-local-verification-and-clean-ci.md`
 
 The repository has completed specification, governance, and authority
 migration. Ticket 01 established the independent Git boundary and bootstrap
@@ -39,7 +42,7 @@ Controlled Term, Interpretive Risk, Method Annotation, Scientific Statement,
 and Work-local Causal Link slice. Ticket 05 publishes Arnett and its first
 Research Line atomically with separate Human approvals, canonical reader
 digests, a reproducible reverse index, reader routes, and no-cascade visibility
-validation. Remote setup, README, coverage closure, and CI work remain.
+validation.
 Ticket 06 adds the visible Bromberg Work with separately identified
 arXiv v1 and journal Versions, a real source-asserted `published_as`
 correspondence, strict offline Publication Graph validation,
@@ -74,7 +77,10 @@ isolated descriptor-driven valid and adversarial validator fixtures,
 deterministic bytewise discovery, structural quarantine/no-cascade visibility
 handling, explicit fixture dataset labels, exact diagnostic-context assertions,
 report determinism, production projection isolation, and offline network
-guards. A future separate
+guards. Ticket 13 then closes the academic reader surfaces across the frozen
+routes, adds the real-fixture Stored + Validated + Rendered coverage matrix,
+expands Validation Report statistics, documents the contributor contract, and
+proves local verification. A future separate
 `Long & Yu --tests--> Zhu` delta is reserved strictly for trajectory-integrated
 detector-yield validation and is not stored in V0.1 Ticket 10.
 
@@ -157,7 +163,7 @@ CI remain fully offline; external deployment and source refresh are deferred.
 Continue the approved local ticket frontier with:
 
 ```text
-.scratch/v0.1-vertical-slice/issues/13-close-reader-experience-and-coverage-matrix.md
+.scratch/v0.1-vertical-slice/issues/14-prove-local-verification-and-clean-ci.md
 ```
 
 The ticket may implement accepted requirements but may not extend the closed
@@ -166,14 +172,15 @@ under the migration rule above.
 
 ## Blockers and constraints
 
-There is no remaining authority-migration blocker. README, final reader
-closure, remote CI, and coverage-matrix work remain expected Phase 2–5 work.
+There is no remaining authority-migration blocker. The remaining V0.1 work is
+the independent clean-environment remote CI pass; it must not be claimed from
+local verification alone.
 The local repository intentionally has no remote in
 Ticket 01. A genuinely new semantic choice must be escalated as a new decision
 rather than hidden in `.planning` prose.
 
 ## Session continuity
 
-Resume with Ticket 13 from the approved local frontier. Read the four `.planning`
+Resume with Ticket 14 from the approved local frontier. Read the four `.planning`
 documents first, preserve requirement IDs, and update traceability only when
 ticket evidence is verified.

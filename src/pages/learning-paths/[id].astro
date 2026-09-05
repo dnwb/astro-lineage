@@ -1,4 +1,5 @@
 ---
+import ReadingProse from "../../components/ReadingProse.astro";
 import { loadCanonicalContent } from "../../../scripts/content-loader.mjs";
 import { projectLearningPathForReader } from "../../../scripts/reader-projection.mjs";
 import "../../styles/global.css";
@@ -27,12 +28,6 @@ const steps = entries.map((entry, index) => ({
   entry,
   transition: transitions[index] ?? null,
 }));
-const readingParagraphs = String(learningPath.reading ?? "")
-  .replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n/u, "")
-  .trim()
-  .split(/\r?\n\s*\r?\n/u)
-  .map((paragraph) => paragraph.replace(/^#+\s+/u, "").replace(/\r?\n/gu, " "))
-  .filter(Boolean);
 
 function workTitle(entry: AnyRecord) {
   return entry.work?.title ?? entry.work_id;
@@ -62,41 +57,48 @@ function workDate(entry: AnyRecord) {
     <title>{learningPath.title ?? pathId} · High-Energy Transient Reading Radar</title>
   </head>
   <body>
-    <main>
-      <p class="eyebrow"><a href="/">High-Energy Transient Reading Radar</a> · Learning Paths</p>
-      <h1>{learningPath.title ?? pathId}</h1>
+    <main class="site-shell reader-page">
+      <p class="eyebrow"><a href="/">High-Energy Transient Reading Radar</a> · Learning Path</p>
+      <header class="reader-header">
+        <p class="record-label">Learning Path ID: {pathId}</p>
+        <h1>{learningPath.title ?? pathId}</h1>
+        <p class="reader-deck">An ordered, reviewed sequence of Works. Transition reasons are path-local pedagogical context, not Scientific Edges.</p>
+      </header>
 
-      <section>
-        <h2>Reader View</h2>
-        {readingParagraphs.map((paragraph) => <p>{paragraph}</p>)}
+      <section class="panel reader-view" aria-labelledby="path-reader-view-heading">
+        <p class="section-kicker">Inspection layer 1</p>
+        <h2 id="path-reader-view-heading">Reader View</h2>
+        <ReadingProse source={String(learningPath.reading ?? "")} />
       </section>
 
-      <section>
-        <h2>Reading sequence</h2>
-        <ol>
-          {steps.map(({ entry, transition }) => (
-            <li>
-              <a href={`/papers/${entry.work_id}/`}>{workTitle(entry)}</a>
-              <p>
-                Preferred Version: {entry.work?.preferred_version_id ?? "unavailable"}.
-                {workAuthors(entry) ? ` ${workAuthors(entry)}.` : ""}
-                {` Release date: ${workDate(entry)}.`}
-              </p>
-              {transition ? (
-                <p>
-                  <strong>Why this next:</strong> {transition.reason}
+      <section class="panel" aria-labelledby="reading-sequence-heading">
+        <p class="section-kicker">Ordered pedagogy</p>
+        <h2 id="reading-sequence-heading">Reading sequence</h2>
+        <ol class="path-sequence">
+          {steps.map(({ entry, transition }, index) => (
+            <li class="path-step">
+              <span class="step-number">{index + 1}</span>
+              <div>
+                <a class="paper-title" href={`/papers/${entry.work_id}/`}>{workTitle(entry)}</a>
+                <p class="step-meta">
+                  Preferred Version: {entry.work?.preferred_version_id ?? "unavailable"}.
+                  {workAuthors(entry) ? ` ${workAuthors(entry)}.` : ""}
+                  {` Release date: ${workDate(entry)}.`}
                 </p>
-              ) : null}
+                {transition ? (
+                  <p class="transition-reason"><strong>Why this next:</strong> {transition.reason}</p>
+                ) : null}
+              </div>
             </li>
           ))}
         </ol>
       </section>
 
-      <details>
+      <details class="panel provenance-detail">
         <summary>Provenance Detail</summary>
         <h2>Path review</h2>
         <p>
-          {learningPath.review_context?.status ?? "review status unavailable"}
+          <span class="tag">{learningPath.review_context?.status ?? "review status unavailable"}</span>
           {learningPath.review_context?.reviewer_actor_id
             ? ` by ${learningPath.review_context.reviewer_actor_id}`
             : ""}
@@ -105,7 +107,7 @@ function workDate(entry: AnyRecord) {
             : ""}
         </p>
         <h3>Pedagogical Transitions</h3>
-        <ul>
+        <ul class="compact-list">
           {transitions.map((transition: AnyRecord) => (
             <li>
               {transition.source_work_id} <strong>→</strong> {transition.target_work_id}: {transition.reason}

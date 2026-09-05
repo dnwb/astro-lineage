@@ -1,17 +1,22 @@
 ---
 import { loadCanonicalContent } from "../../../scripts/content-loader.mjs";
+import { projectVisibleSnapshot } from "../../../scripts/reader-projection.mjs";
 import "../../styles/global.css";
 
 const snapshot = await loadCanonicalContent(new URL("../../../content/", import.meta.url));
-const visibleWorks = snapshot.works.map((work) => {
-  const files = work.files as Record<string, any>;
-  const workRecord = files["work.yaml"] as { reader_state?: string; preferred_version?: { version_id?: string } };
-  const versionsRecord = files["versions.yaml"] as { versions?: Array<{ id?: string; title?: string }> };
-  const preferred = versionsRecord.versions?.find(
-    (version) => version.id === workRecord.preferred_version?.version_id,
-  );
-  return { id: work.id, readerState: workRecord.reader_state, title: preferred?.title ?? work.id };
-}).filter((work) => work.readerState === "visible");
+const reader = projectVisibleSnapshot(snapshot) as Record<string, any>;
+const visibleWorks = (reader.works ?? []) as Record<string, any>[];
+
+function preferred(work: Record<string, any>) {
+  return work.versions?.find((version: Record<string, any>) => version.id === work.preferred_version_id) ?? {};
+}
+
+function authors(work: Record<string, any>) {
+  return (preferred(work).authors ?? [])
+    .map((author: Record<string, any>) => author.display_name)
+    .filter(Boolean)
+    .join(", ");
+}
 ---
 
 <!doctype html>
@@ -26,18 +31,26 @@ const visibleWorks = snapshot.works.map((work) => {
     <title>Papers · High-Energy Transient Reading Radar</title>
   </head>
   <body>
-    <main>
-      <p class="eyebrow"><a href="/">High-Energy Transient Reading Radar</a></p>
+    <main class="site-shell index-page">
+      <p class="eyebrow"><a href="/">High-Energy Transient Reading Radar</a> · Reader index</p>
       <h1>Papers</h1>
+      <p class="layer-intro">Five visible Works, ordered by immutable Work ID. Open a Paper for its scientific account and supporting detail.</p>
       {
         visibleWorks.length === 0 ? (
           <p class="empty-state">No Papers are visible in the curated reading radar yet.</p>
         ) : (
-          <ul class="paper-list">
-            {visibleWorks.map((work) => (
-              <li><a href={`/papers/${work.id}/`}>{work.title}</a></li>
-            ))}
-          </ul>
+          <ol class="paper-index">
+            {visibleWorks.map((work) => {
+              const version = preferred(work);
+              return (
+                <li class="paper-index-item">
+                  <a class="paper-title" href={`/papers/${work.work_id}/`}>{version.title ?? work.work_id}</a>
+                  <small>{authors(work)}{version.release_date?.value ? ` · ${version.release_date.value}` : ""}</small>
+                  <span class="record-label">{work.work_id}</span>
+                </li>
+              );
+            })}
+          </ol>
         )
       }
     </main>

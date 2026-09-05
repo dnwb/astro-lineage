@@ -1,0 +1,30 @@
+---
+import { parseReadingMarkdown } from "../../scripts/reader-markdown.mjs";
+
+interface Props {
+  source: string;
+  class?: string;
+}
+
+type ReadingBlock =
+  | { kind: "heading"; depth: number; text: string }
+  | { kind: "paragraph"; text: string }
+  | { kind: "list"; items: string[] };
+
+const { source, class: className = "reading-prose" } = Astro.props;
+const blocks = parseReadingMarkdown(source) as ReadingBlock[];
+---
+
+<div class={className}>
+  {blocks.map((block) => (
+    block.kind === "heading" ? (
+      block.depth === 2 ? <h2>{block.text}</h2> : <h3>{block.text}</h3>
+    ) : block.kind === "list" ? (
+      <ul class="reading-list">
+        {block.items.map((item) => <li>{item}</li>)}
+      </ul>
+    ) : (
+      <p>{block.text}</p>
+    )
+  ))}
+</div>

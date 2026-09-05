@@ -17,7 +17,26 @@ density, together with the injection angle, controls whether cocoon pressure
 collimates the jet. For the GRB application, the model predicts collimation
 inside the star and loss of that confinement after breakout.
 
-## Read this for
+## Problem
+
+How do a relativistic jet, its shocked head, and its cocoon evolve together in
+an external medium, and when does cocoon pressure collimate the jet?
+
+## Assumptions
+
+- Magnetic fields are dynamically unimportant in the modeled collimation
+  region.
+- The jet, head, cocoon, and ambient medium are treated as coupled components
+  of one analytic propagation account.
+
+## Scientific delta
+
+This Work makes jet propagation and cocoon feedback self-consistent across
+collimated and uncollimated regimes. Its contribution is a physical model of
+propagation; the separate `published_as` record is publication correspondence,
+not scientific lineage.
+
+## Reason to read
 
 - a clean separation of jet, head, cocoon, and ambient-medium roles;
 - a branching physical account for collimated and uncollimated regimes;

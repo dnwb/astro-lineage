@@ -1,11 +1,11 @@
 ---
+import ReadingProse from "../../components/ReadingProse.astro";
 import { loadCanonicalContent } from "../../../scripts/content-loader.mjs";
 import { projectResearchLineForReader } from "../../../scripts/reader-projection.mjs";
 import "../../styles/global.css";
 
 type AnyRecord = Record<string, any>;
 type ResearchLineBundle = { id: string; line: AnyRecord };
-type MembershipView = { membership: AnyRecord; title: string };
 
 export async function getStaticPaths() {
   const snapshot = await loadCanonicalContent(new URL("../../../content/", import.meta.url));
@@ -22,18 +22,7 @@ if (!researchLine) {
   throw new Error(`Visible Research Line not found: ${lineId}`);
 }
 
-const memberships: MembershipView[] = (researchLine.memberships ?? []).map(
-  (membership: AnyRecord) => ({
-    membership,
-    title: membership.work?.title ?? membership.work_id,
-  }),
-);
-const readingParagraphs = String(researchLine.reading ?? "")
-  .replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n/u, "")
-  .trim()
-  .split(/\r?\n\s*\r?\n/u)
-  .map((paragraph) => paragraph.replace(/^#+\s+/u, "").replace(/\r?\n/gu, " "))
-  .filter(Boolean);
+const memberships = (researchLine.memberships ?? []) as AnyRecord[];
 ---
 
 <!doctype html>
@@ -45,30 +34,37 @@ const readingParagraphs = String(researchLine.reading ?? "")
     <title>{researchLine.title} · High-Energy Transient Reading Radar</title>
   </head>
   <body>
-    <main>
-      <p class="eyebrow"><a href="/">High-Energy Transient Reading Radar</a></p>
-      <h1>{researchLine.title}</h1>
-      <p>{researchLine.scientific_question}</p>
+    <main class="site-shell reader-page">
+      <p class="eyebrow"><a href="/">High-Energy Transient Reading Radar</a> · Research Line</p>
+      <header class="reader-header">
+        <p class="record-label">Research Line ID: {lineId}</p>
+        <h1>{researchLine.title}</h1>
+        <p class="reader-deck">{researchLine.scientific_question}</p>
+      </header>
 
-      <section>
-        <h2>Reader View</h2>
-        {readingParagraphs.map((paragraph) => <p>{paragraph}</p>)}
+      <section class="panel reader-view" aria-labelledby="line-reader-view-heading">
+        <p class="section-kicker">Inspection layer 1</p>
+        <h2 id="line-reader-view-heading">Reader View</h2>
+        <ReadingProse source={String(researchLine.reading ?? "")} />
       </section>
 
-      <section>
-        <h2>Physical Structure</h2>
-        <ul>{(researchLine.physical_structure ?? []).map((item: string) => <li>{item}</li>)}</ul>
+      <section class="panel" aria-labelledby="physical-structure-heading">
+        <p class="section-kicker">Scientific structure</p>
+        <h2 id="physical-structure-heading">Physical Structure</h2>
+        <ul class="compact-list">
+          {(researchLine.physical_structure ?? []).map((item: string) => <li>{item}</li>)}
+        </ul>
       </section>
 
-      <section>
-        <h2>Works in this Research Line</h2>
-        <ul>
-          {memberships.map(({ membership, title }: MembershipView) => (
-            <li>
-              <a href={`/papers/${membership.work_id}/`}>{title}</a>
-              {` — ${membership.reading_roles.join(", ")}`}
-              {membership.editorial_anchor ? " — Editorial Anchor" : ""}
-              {membership.reason ? ` — ${membership.reason}` : ""}
+      <section class="panel" aria-labelledby="line-works-heading">
+        <p class="section-kicker">Editorial context</p>
+        <h2 id="line-works-heading">Works in this Research Line</h2>
+        <ul class="paper-index">
+          {memberships.map((membership: AnyRecord) => (
+            <li class="paper-index-item">
+              <a class="paper-title" href={`/papers/${membership.work_id}/`}>{membership.work?.title ?? membership.work_id}</a>
+              <small>{membership.reading_roles?.join(", ") ?? ""}{membership.editorial_anchor ? " · Editorial Anchor" : ""}</small>
+              {membership.reason ? <span>{membership.reason}</span> : null}
             </li>
           ))}
         </ul>

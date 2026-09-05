@@ -1,0 +1,251 @@
+work_id: work:long-yu-2026
+evidence:
+  - id: evidence:long-yu-dynamic-framework
+    version_id: version:long-yu-2026-arxiv-v1
+    source_url: https://arxiv.org/abs/2608.12217v1
+    locator:
+      type: section
+      section: Abstract
+    excerpt: We develop a time-dependent framework that follows jet-head
+      propagation, evolving reverse-shock conditions, and particle cooling until
+      the jet chokes or breaks out.
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-04T23:32:30Z
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: 2026-09-05T04:44:27Z
+  - id: evidence:long-yu-head-propagation
+    version_id: version:long-yu-2026-arxiv-v1
+    source_url: https://arxiv.org/abs/2608.12217v1
+    locator:
+      type: section
+      section: Jet head dynamics and the neutrino production environment
+    excerpt: The head region of a propagating jet is confined by a forward and
+      reverse shock, which propagate into the ambient disk material and the
+      unshocked relativistic jet, respectively.
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-04T23:32:30Z
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: 2026-09-05T04:44:27Z
+  - id: evidence:long-yu-retarded-engine-time
+    version_id: version:long-yu-2026-arxiv-v1
+    source_url: https://arxiv.org/abs/2608.12217v1
+    locator:
+      type: section
+      section: Jet head dynamics and the neutrino production environment
+    excerpt: Thus t is the source-frame propagation time of the jet head, whereas
+      t_e is the retarded engine time reaching the head.
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-04T23:32:30Z
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: 2026-09-05T04:44:27Z
+  - id: evidence:long-yu-engine-clock
+    version_id: version:long-yu-2026-arxiv-v1
+    source_url: https://arxiv.org/abs/2608.12217v1
+    locator:
+      type: section
+      section: Jet head dynamics and the neutrino production environment
+    excerpt: "We define the dimensionless engine-clock ratio R_dur = t_req / t_dur:
+      shock breakout occurs if R_dur ≤ 1, and the jet is choked within the disk
+      if R_dur > 1."
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-04T23:32:30Z
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: 2026-09-05T04:44:27Z
+  - id: evidence:long-yu-collisionless-gate
+    version_id: version:long-yu-2026-arxiv-v1
+    source_url: https://arxiv.org/abs/2608.12217v1
+    locator:
+      type: section
+      section: Jet head dynamics and the neutrino production environment
+    excerpt: We evaluate this condition along the jet-head trajectory and include
+      neutrino production only during stages in which the reverse shock is
+      collisionless.
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-04T23:32:30Z
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: 2026-09-05T04:44:27Z
+  - id: evidence:long-yu-reverse-shock-dissipation
+    version_id: version:long-yu-2026-arxiv-v1
+    source_url: https://arxiv.org/abs/2608.12217v1
+    locator:
+      type: section
+      section: Time-dependent neutrino production
+    excerpt: The factor L_j(1-beta_h) quantifies the instantaneous rate of jet
+      energy processed by the reverse shock.
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-04T23:32:30Z
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: 2026-09-05T04:44:27Z
+  - id: evidence:long-yu-proton-acceleration-cooling
+    version_id: version:long-yu-2026-arxiv-v1
+    source_url: https://arxiv.org/abs/2608.12217v1
+    locator:
+      type: section
+      section: Time-dependent neutrino production
+    excerpt: Protons are accelerated at the reverse shock via first-order Fermi
+      acceleration with an injected power-law spectrum.
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-04T23:32:30Z
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: 2026-09-05T04:44:27Z
+  - id: evidence:long-yu-hadronic-neutrino-production
+    version_id: version:long-yu-2026-arxiv-v1
+    source_url: https://arxiv.org/abs/2608.12217v1
+    locator:
+      type: section
+      section: Time-dependent neutrino production
+    excerpt: Neutrinos are produced through the decay of secondary pions, kaons, and
+      daughter muons.
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-04T23:32:30Z
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: 2026-09-05T04:44:27Z
+  - id: evidence:long-yu-secondary-cooling
+    version_id: version:long-yu-2026-arxiv-v1
+    source_url: https://arxiv.org/abs/2608.12217v1
+    locator:
+      type: section
+      section: Time-dependent neutrino production
+    excerpt: For secondary mesons and muons, cooling prior to decay is accounted for
+      by energy-dependent decay/cooling suppression factors.
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-04T23:32:30Z
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: 2026-09-05T04:44:27Z
+  - id: evidence:long-yu-trajectory-integration
+    version_id: version:long-yu-2026-arxiv-v1
+    source_url: https://arxiv.org/abs/2608.12217v1
+    locator:
+      type: section
+      section: Time-dependent neutrino production
+    excerpt: Crucially, in our framework all local shock conditions, target fields,
+      and particle cooling rates evolve along the jet-head trajectory.
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-04T23:32:30Z
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: 2026-09-05T04:44:27Z
+  - id: evidence:long-yu-stalling-baseline
+    version_id: version:long-yu-2026-arxiv-v1
+    source_url: https://arxiv.org/abs/2608.12217v1
+    locator:
+      type: section
+      section: Time-dependent neutrino production
+    excerpt: For choked jets, we evaluate the stalling-state approximation of ref.
+      Zhu et al. 2021, where shock conditions and cooling efficiencies are fixed
+      at the characteristic stalling radius.
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-04T23:32:30Z
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: 2026-09-05T04:44:27Z
+  - id: evidence:long-yu-stalling-yield-comparison
+    version_id: version:long-yu-2026-arxiv-v1
+    source_url: https://arxiv.org/abs/2608.12217v1
+    locator:
+      type: section
+      section: Time-integrated fluence and detector yield
+    excerpt: For all four choked trajectories, stalling-state approximations
+      reproduce the full time-integrated event counts reliably within
+      approximately 14 percent.
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-04T23:32:30Z
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: 2026-09-05T04:44:27Z
+  - id: evidence:long-yu-hard-tail
+    version_id: version:long-yu-2026-arxiv-v1
+    source_url: https://arxiv.org/abs/2608.12217v1
+    locator:
+      type: section
+      section: Discussion and conclusions
+    excerpt: The representative low-density outer-disk case develops a harder
+      spectrum with an extended tail reaching approximately 10^2 PeV.
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-04T23:32:30Z
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: 2026-09-05T04:44:27Z
+  - id: evidence:long-yu-detector-effective-area
+    version_id: version:long-yu-2026-arxiv-v1
+    source_url: https://arxiv.org/abs/2608.12217v1
+    locator:
+      type: equation
+      section: Time-integrated fluence and detector yield
+      equation: N_det
+    excerpt: To translate the muon-flavor neutrino fluence at Earth into an expected
+      detector event count, we integrate the fluence against the
+      declination-averaged IC86 effective area for muon tracks.
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-04T23:32:30Z
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: 2026-09-05T04:44:27Z
+  - id: evidence:long-yu-model-outputs
+    version_id: version:long-yu-2026-arxiv-v1
+    source_url: https://arxiv.org/abs/2608.12217v1
+    locator:
+      type: section
+      section: Discussion and conclusions
+    excerpt: We evaluated time-resolved neutrino spectra, light curves,
+      time-integrated fluences, and detector yield distributions across the
+      disk-model parameter space.
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-04T23:32:30Z
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: 2026-09-05T04:44:27Z
+  - id: evidence:long-yu-limitations
+    version_id: version:long-yu-2026-arxiv-v1
+    source_url: https://arxiv.org/abs/2608.12217v1
+    locator:
+      type: section
+      section: Discussion and conclusions
+    excerpt: We include neutrinos produced at the reverse shock but not independent
+      cocoon contributions.
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-04T23:32:30Z
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: 2026-09-05T04:44:27Z

@@ -26,6 +26,23 @@ memberships:
     review_binding:
       canonicalization_version: v1
       semantic_digest: e24a4939f47c78a1ffad6d165e0eb33f5dd005956dbeadb5712ef0d520e07d4f
+  - id: membership:dense-environment-multimessenger-long-yu-2026
+    work_id: work:long-yu-2026
+    reading_roles:
+      - frontier
+      - method
+    editorial_anchor: true
+    reason: This Work provides a dynamic-model frontier account of jet propagation and neutrino production in a dense AGN-disk environment.
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-09-04T23:23:40Z"
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: "2026-09-05T04:44:27Z"
+    review_binding:
+      canonicalization_version: v1
+      semantic_digest: 921fc42718c26074b96084616fc6a1d893f126b8b7b74c59384d4d089280b1f8
 visibility_approvals:
   - profile_id: v0.1-default
     visibility_digest: a2b97a738f5739e992fea964ab973b026b156ba9eca78f6c505a2e9cf4e54e10
@@ -35,3 +52,7 @@ visibility_approvals:
     visibility_digest: d0275907abe27e026a5bbe4b693fec861052e61e9f702e0a827b6a47db85eb50
     actor_id: actor:human-curator
     approved_at: 2026-09-04T12:31:02Z
+  - profile_id: v0.1-default
+    visibility_digest: d782f57d4d88632cfd1ba0a852d96ae2dc379194081a487fceb1d1f400292efc
+    actor_id: actor:human-curator
+    approved_at: "2026-09-05T04:44:27Z"

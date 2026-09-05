@@ -21,6 +21,7 @@ async function copyContent() {
   const brombergWorkPath = join(contentRoot, "works", "work:bromberg-2011", "work.yaml");
   const zhuWorkPath = join(contentRoot, "works", "work:zhu-2021", "work.yaml");
   const transfitWorkPath = join(contentRoot, "works", "work:transfit-2025", "work.yaml");
+  const longYuWorkPath = join(contentRoot, "works", "work:long-yu-2026", "work.yaml");
   const linePath = join(contentRoot, "research-lines", "research-line:central-engines", "line.yaml");
   const denseLinePath = join(
     contentRoot,
@@ -38,6 +39,7 @@ async function copyContent() {
   const brombergWork = parse(await readFile(brombergWorkPath, "utf8"));
   const zhuWork = parse(await readFile(zhuWorkPath, "utf8"));
   const transfitWork = parse(await readFile(transfitWorkPath, "utf8"));
+  const longYuWork = parse(await readFile(longYuWorkPath, "utf8"));
   const line = parse(await readFile(linePath, "utf8"));
   const denseLine = parse(await readFile(denseLinePath, "utf8"));
   const explosiveLine = parse(await readFile(explosiveLinePath, "utf8"));
@@ -49,6 +51,8 @@ async function copyContent() {
   zhuWork.visibility_approvals = [];
   transfitWork.reader_state = "draft";
   transfitWork.visibility_approvals = [];
+  longYuWork.reader_state = "draft";
+  longYuWork.visibility_approvals = [];
   line.reader_state = "draft";
   line.visibility_approvals = [];
   denseLine.reader_state = "draft";
@@ -60,6 +64,7 @@ async function copyContent() {
     writeFile(brombergWorkPath, stringify(brombergWork), "utf8"),
     writeFile(zhuWorkPath, stringify(zhuWork), "utf8"),
     writeFile(transfitWorkPath, stringify(transfitWork), "utf8"),
+    writeFile(longYuWorkPath, stringify(longYuWork), "utf8"),
     writeFile(linePath, stringify(line), "utf8"),
     writeFile(denseLinePath, stringify(denseLine), "utf8"),
     writeFile(explosiveLinePath, stringify(explosiveLine), "utf8"),

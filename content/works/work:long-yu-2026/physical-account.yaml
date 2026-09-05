@@ -1,0 +1,264 @@
+work_id: work:long-yu-2026
+stages:
+  - id: stage:long-yu-jet-injection
+    annotation_id: annotation:long-yu-energy-transfer
+    label: Relativistic jet injection
+  - id: stage:long-yu-agn-disk
+    annotation_id: annotation:long-yu-environment
+    label: AGN accretion-disk density environment
+  - id: stage:long-yu-trajectory
+    annotation_id: annotation:long-yu-dynamics
+    label: Time-dependent jet-head trajectory
+  - id: stage:long-yu-choking-breakout
+    annotation_id: annotation:long-yu-dynamics
+    label: Choking or breakout termination of embedded propagation
+  - id: stage:long-yu-reverse-shock-processing
+    annotation_id: annotation:long-yu-energy-dissipation
+    label: Trajectory-dependent reverse-shock energy processing
+  - id: stage:long-yu-collisionless-reverse-shock
+    annotation_id: annotation:long-yu-energy-dissipation
+    label: Collisionless reverse-shock proton acceleration
+  - id: stage:long-yu-pp-interactions
+    annotation_id: annotation:long-yu-particle-interaction
+    label: Proton-proton interaction branch
+  - id: stage:long-yu-pgamma-interactions
+    annotation_id: annotation:long-yu-particle-interaction
+    label: Photomeson interaction branch
+  - id: stage:long-yu-meson-muon-decay
+    annotation_id: annotation:long-yu-particle-interaction
+    label: Meson and muon decay convergence
+  - id: stage:long-yu-neutrino-production
+    annotation_id: annotation:long-yu-emission-process
+    label: Hadronic neutrino production
+  - id: stage:long-yu-neutrino-messenger
+    annotation_id: annotation:long-yu-messenger
+    label: Neutrino messenger
+links:
+  - id: causal-link:long-yu-injection-drives-trajectory
+    source_stage_id: stage:long-yu-jet-injection
+    target_stage_id: stage:long-yu-trajectory
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: The injected relativistic jet power drives the time-dependent jet-head
+      trajectory.
+    evidence_ids:
+      - evidence:long-yu-dynamic-framework
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-04T23:34:40Z
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: 2026-09-05T04:44:27Z
+    review_binding:
+      canonicalization_version: v1
+      semantic_digest: 7427ccccba22a367f6d48362fd66ae6ef11257cb27634392385fc3ae02144531
+  - id: causal-link:long-yu-disk-modulates-trajectory
+    source_stage_id: stage:long-yu-agn-disk
+    target_stage_id: stage:long-yu-trajectory
+    relation: modulates
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: The stratified AGN-disk density sets the local head conditions and
+      modulates the jet-head trajectory.
+    evidence_ids:
+      - evidence:long-yu-head-propagation
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-04T23:34:40Z
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: 2026-09-05T04:44:27Z
+    review_binding:
+      canonicalization_version: v1
+      semantic_digest: 77351492bc8cbc6a742616cc471be3ba37551be0ae5e00258eb400a3068b18e2
+  - id: causal-link:long-yu-trajectory-produces-terminal-state
+    source_stage_id: stage:long-yu-trajectory
+    target_stage_id: stage:long-yu-choking-breakout
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: The propagated head either reaches optical-depth breakout or terminates
+      as a finite-engine choked jet according to the engine clock.
+    evidence_ids:
+      - evidence:long-yu-engine-clock
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-04T23:34:40Z
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: 2026-09-05T04:44:27Z
+    review_binding:
+      canonicalization_version: v1
+      semantic_digest: 48fe31f656722855ec338926ce4bd5629c32f96c83f2fbb33646c9e62cffdea5
+  - id: causal-link:long-yu-trajectory-modulates-reverse-shock-processing
+    source_stage_id: stage:long-yu-trajectory
+    target_stage_id: stage:long-yu-reverse-shock-processing
+    relation: modulates
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: The evolving head velocity changes the instantaneous fraction of jet
+      power processed by the reverse shock along the trajectory.
+    evidence_ids:
+      - evidence:long-yu-reverse-shock-dissipation
+      - evidence:long-yu-trajectory-integration
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-04T23:34:40Z
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: 2026-09-05T04:44:27Z
+    review_binding:
+      canonicalization_version: v1
+      semantic_digest: dc3ba682b79202cc306c30aa30c13da3d23e77cda7eaf1cb586be2b69dc8064c
+  - id: causal-link:long-yu-processing-enables-collisionless-acceleration
+    source_stage_id: stage:long-yu-reverse-shock-processing
+    target_stage_id: stage:long-yu-collisionless-reverse-shock
+    relation: enables
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Reverse-shock processed power supplies nonthermal proton acceleration
+      during the trajectory intervals in which the reverse shock is
+      collisionless.
+    evidence_ids:
+      - evidence:long-yu-reverse-shock-dissipation
+      - evidence:long-yu-collisionless-gate
+      - evidence:long-yu-proton-acceleration-cooling
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-04T23:34:40Z
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: 2026-09-05T04:44:27Z
+    review_binding:
+      canonicalization_version: v1
+      semantic_digest: 45d235ea5fc1764aa96c85422f5f4abb696158d178da2b7319a1fe6d1c26b243
+  - id: causal-link:long-yu-reverse-shock-enables-pp
+    source_stage_id: stage:long-yu-collisionless-reverse-shock
+    target_stage_id: stage:long-yu-pp-interactions
+    relation: enables
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: The collisionless reverse shock supplies the accelerated protons that
+      undergo proton-proton interactions.
+    evidence_ids:
+      - evidence:long-yu-proton-acceleration-cooling
+      - evidence:long-yu-hadronic-neutrino-production
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-04T23:34:40Z
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: 2026-09-05T04:44:27Z
+    review_binding:
+      canonicalization_version: v1
+      semantic_digest: eb567442e4cbd6cb1c3553e8df215fbe8ae8e6fed2335b158c574e90014fad7e
+  - id: causal-link:long-yu-reverse-shock-enables-pgamma
+    source_stage_id: stage:long-yu-collisionless-reverse-shock
+    target_stage_id: stage:long-yu-pgamma-interactions
+    relation: enables
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: The collisionless reverse shock supplies the accelerated protons that
+      undergo photomeson interactions in the target radiation field.
+    evidence_ids:
+      - evidence:long-yu-proton-acceleration-cooling
+      - evidence:long-yu-hadronic-neutrino-production
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-04T23:34:40Z
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: 2026-09-05T04:44:27Z
+    review_binding:
+      canonicalization_version: v1
+      semantic_digest: 7d30efee4b04a7b39319710d2cb0086154b73dc11aa0f1902514775be613841e
+  - id: causal-link:long-yu-pp-produces-decay
+    source_stage_id: stage:long-yu-pp-interactions
+    target_stage_id: stage:long-yu-meson-muon-decay
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Proton-proton interactions generate secondary mesons whose decay chain
+      includes daughter muons.
+    evidence_ids:
+      - evidence:long-yu-hadronic-neutrino-production
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-04T23:34:40Z
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: 2026-09-05T04:44:27Z
+    review_binding:
+      canonicalization_version: v1
+      semantic_digest: 53d40a3074963f7b228dfdd671b2bb8e2a362c02880bc9048b4494f5cd2524d3
+  - id: causal-link:long-yu-pgamma-produces-decay
+    source_stage_id: stage:long-yu-pgamma-interactions
+    target_stage_id: stage:long-yu-meson-muon-decay
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Photomeson interactions generate secondary mesons whose decay chain
+      includes daughter muons.
+    evidence_ids:
+      - evidence:long-yu-hadronic-neutrino-production
+      - evidence:long-yu-secondary-cooling
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-04T23:34:40Z
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: 2026-09-05T04:44:27Z
+    review_binding:
+      canonicalization_version: v1
+      semantic_digest: 7d72de00eb845d29151eafcdb7319bd40792d5fd941e6eddc94ffa6460b33cf6
+  - id: causal-link:long-yu-decay-produces-neutrinos
+    source_stage_id: stage:long-yu-meson-muon-decay
+    target_stage_id: stage:long-yu-neutrino-production
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Meson and daughter-muon decays produce the modeled hadronic neutrino
+      emission.
+    evidence_ids:
+      - evidence:long-yu-hadronic-neutrino-production
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-04T23:34:40Z
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: 2026-09-05T04:44:27Z
+    review_binding:
+      canonicalization_version: v1
+      semantic_digest: c61a04d24973fc45b9eae72ca0a204d73e5d67c39b6cb28cf34d3c6c19993e37
+  - id: causal-link:long-yu-emission-produces-messenger
+    source_stage_id: stage:long-yu-neutrino-production
+    target_stage_id: stage:long-yu-neutrino-messenger
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: The hadronic emission process produces neutrinos that propagate as the
+      reported messenger.
+    evidence_ids:
+      - evidence:long-yu-hadronic-neutrino-production
+      - evidence:long-yu-trajectory-integration
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-04T23:34:40Z
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: 2026-09-05T04:44:27Z
+    review_binding:
+      canonicalization_version: v1
+      semantic_digest: 895e0cd01f868f391cf12653d2feb732d2d97c7bba4cae4ca8158516930b91ac

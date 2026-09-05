@@ -1,0 +1,88 @@
+work_id: work:long-yu-2026
+statements:
+  - id: statement:long-yu-time-dependent-trajectory-framework
+    kind: result
+    basis: explicit
+    lifecycle: maintained
+    canonical_text: The Work follows jet-head propagation, evolving reverse-shock
+      conditions, and particle cooling along a time-dependent trajectory until
+      the jet chokes or breaks out.
+    attestations:
+      - version_id: version:long-yu-2026-arxiv-v1
+        evidence_ids:
+          - evidence:long-yu-dynamic-framework
+          - evidence:long-yu-trajectory-integration
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-04T23:32:57Z
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: 2026-09-05T04:44:27Z
+    review_binding:
+      canonicalization_version: v1
+      semantic_digest: 2607170b93554fc8b93a0a9b67b2754eae69de040512acf6406e4e082c6b9f51
+  - id: statement:long-yu-engine-clock-classification
+    kind: claim
+    basis: explicit
+    lifecycle: maintained
+    canonical_text: The finite-engine engine-clock ratio classifies shock breakout
+      for R_dur ≤ 1 and choking within the disk for R_dur > 1.
+    attestations:
+      - version_id: version:long-yu-2026-arxiv-v1
+        evidence_ids:
+          - evidence:long-yu-engine-clock
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-04T23:32:57Z
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: 2026-09-05T04:44:27Z
+    review_binding:
+      canonicalization_version: v1
+      semantic_digest: ecdf413383e4b24e4741a3a5b09060aeb2233c86982df0cd327785a713de7f98
+  - id: statement:long-yu-collisionless-reverse-shock-gate
+    kind: result
+    basis: explicit
+    lifecycle: maintained
+    canonical_text: Within the scoped calculation, only trajectory stages with a
+      collisionless reverse shock contribute to neutrino production.
+    attestations:
+      - version_id: version:long-yu-2026-arxiv-v1
+        evidence_ids:
+          - evidence:long-yu-collisionless-gate
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-04T23:32:57Z
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: 2026-09-05T04:44:27Z
+    review_binding:
+      canonicalization_version: v1
+      semantic_digest: 8bc9fe849a7fb9a40fb12e61492037039a81171c5f6684ea4393dad69381a776
+  - id: statement:long-yu-stalling-comparison-boundary
+    kind: result
+    basis: explicit
+    lifecycle: maintained
+    canonical_text: For the reported choked cases, the stalling-state approximation
+      reproduces the trajectory-integrated detector-weighted yield to roughly 14
+      percent, whereas breakout single-state estimates can overpredict when
+      dissipation evolves rapidly.
+    attestations:
+      - version_id: version:long-yu-2026-arxiv-v1
+        evidence_ids:
+          - evidence:long-yu-dynamic-framework
+          - evidence:long-yu-stalling-baseline
+          - evidence:long-yu-stalling-yield-comparison
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-04T23:32:57Z
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: 2026-09-05T04:44:27Z
+    review_binding:
+      canonicalization_version: v1
+      semantic_digest: b4c600b99e1143c76d4e6cd434e615831ad876575515b7dab2b5bb988d911740

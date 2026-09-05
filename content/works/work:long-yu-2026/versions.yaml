@@ -1,0 +1,43 @@
+work_id: work:long-yu-2026
+versions:
+  - id: version:long-yu-2026-arxiv-v1
+    kind: arxiv_revision
+    title: "High-energy neutrino signatures of embedded GRB jets in AGN disks: a dynamic jet-propagation framework"
+    authors:
+      - display_name: Wei-Cheng Long
+      - display_name: Yun-Wei Yu
+    release_date:
+      value: "2026-08-12"
+      precision: day
+    arxiv_id: "2608.12217"
+    arxiv_revision: 1
+    access_urls:
+      - kind: arxiv
+        url: https://arxiv.org/abs/2608.12217v1
+      - kind: ads
+        url: https://ui.adsabs.harvard.edu/abs/2026arXiv260812217L/abstract
+    field_sources:
+      /title: [source:arxiv-long-yu-2026-20260904-233658z, source:ads-long-yu-2026-20260904-233631z]
+      /authors/0/display_name: [source:arxiv-long-yu-2026-20260904-233658z, source:ads-long-yu-2026-20260904-233631z]
+      /authors/1/display_name: [source:arxiv-long-yu-2026-20260904-233658z, source:ads-long-yu-2026-20260904-233631z]
+      /release_date/value: [source:arxiv-long-yu-2026-20260904-233658z]
+      /release_date/precision: [source:arxiv-long-yu-2026-20260904-233658z]
+      /arxiv_id: [source:arxiv-long-yu-2026-20260904-233658z, source:ads-long-yu-2026-20260904-233631z]
+      /arxiv_revision: [source:arxiv-long-yu-2026-20260904-233658z]
+      /access_urls/0/kind: [source:arxiv-long-yu-2026-20260904-233658z]
+      /access_urls/0/url: [source:arxiv-long-yu-2026-20260904-233658z]
+      /access_urls/1/kind: [source:ads-long-yu-2026-20260904-233631z]
+      /access_urls/1/url: [source:ads-long-yu-2026-20260904-233631z]
+bibliographic_sources:
+  - id: source:arxiv-long-yu-2026-20260904-233658z
+    provider: arxiv
+    record_id: "2608.12217"
+    source_url: https://export.arxiv.org/api/query?id_list=2608.12217
+    retrieved_at: "2026-09-04T23:36:58Z"
+  - id: source:ads-long-yu-2026-20260904-233631z
+    provider: ads
+    record_id: 2026arXiv260812217L
+    source_url: https://ui.adsabs.harvard.edu/abs/2026arXiv260812217L/abstract
+    retrieved_at: "2026-09-04T23:36:31Z"
+publication_relations: []
+bibliographic_discrepancies: []

@@ -5,7 +5,7 @@
 ## Current position
 
 - **Stage:** Phase 2 — domain records and five-Work vertical slice
-- **Status:** Tickets 01–08 complete
+- **Status:** Tickets 01–09 complete
 - **Implementation:** Visible Arnett and Bromberg now exercise governed Actors,
   capability-at-action-time authorization, 16 assessed Physics axes,
   controlled vocabulary, reusable Version-bound Evidence, reviewed Method
@@ -15,11 +15,13 @@
   Provenance, Zhu's visible multi-messenger/cross-context slice, and the visible
   TransFit method/inference slice with an independently reviewed inferred
   Method Annotation, 16 assessed Physics axes, and separate heating,
-  diffusion-modulation, and expansion-work causal branches
+  diffusion-modulation, and expansion-work causal branches; Long & Yu 2026 now
+  completes the five-Work fixture set with an arXiv-only identity, reviewed
+  dynamic Physical Account, and no fabricated journal or Scientific Edge
 - **Decision frontier:** closed through Q151; no open domain-model decision is
   blocking migration
-- **Next execution action:** Ticket 09,
-  `.scratch/v0.1-vertical-slice/issues/09-add-long-yu-arxiv-only-dynamic-model-slice.md`
+- **Next execution action:** Ticket 10,
+  `.scratch/v0.1-vertical-slice/issues/10-curate-and-publish-real-scientific-edges.md`
 
 The repository has completed specification, governance, and authority
 migration. Ticket 01 established the independent Git boundary and bootstrap
@@ -33,8 +35,8 @@ Controlled Term, Interpretive Risk, Method Annotation, Scientific Statement,
 and Work-local Causal Link slice. Ticket 05 publishes Arnett and its first
 Research Line atomically with separate Human approvals, canonical reader
 digests, a reproducible reverse index, reader routes, and no-cascade visibility
-validation. The remaining fixture Work, Learning Path, remote setup, and CI remain
-later work. Ticket 06 adds the visible Bromberg Work with separately identified
+validation. Learning Path, Scientific Edge, remote setup, and CI work remain.
+Ticket 06 adds the visible Bromberg Work with separately identified
 arXiv v1 and journal Versions, a real source-asserted `published_as`
 correspondence, strict offline Publication Graph validation,
 branching/converging causal structure, and reader-visible Bibliographic
@@ -47,7 +49,12 @@ TransFit, with exact arXiv-v1 Evidence, explicit Crank–Nicolson and independen
 Human-reviewed inferred forward-fitting techniques, a strict Observable versus
 Inference Target separation, and the approved three-branch Work-local causal
 account. Its Explosive Transients anchor and Central Engines secondary context
-are rendered through the generated reverse index.
+are rendered through the generated reverse index. Ticket 09 adds the fifth and
+final fixture Work, Long & Yu 2026, with exact arXiv-v1 identity, all 16 reviewed
+axis assessments, an active Method Annotation, four reviewed Statements, and a
+branching/converging dynamic causal DAG. It reuses the visible dense-environment
+Research Line as its sole Editorial Anchor and adds no journal Version,
+Publication Relation, or Scientific Edge.
 
 ## Authority and migration state
 
@@ -128,7 +135,7 @@ CI remain fully offline; external deployment and source refresh are deferred.
 Continue the approved local ticket frontier with:
 
 ```text
-.scratch/v0.1-vertical-slice/issues/09-add-long-yu-arxiv-only-dynamic-model-slice.md
+.scratch/v0.1-vertical-slice/issues/10-curate-and-publish-real-scientific-edges.md
 ```
 
 The ticket may implement accepted requirements but may not extend the closed
@@ -137,14 +144,14 @@ under the migration rule above.
 
 ## Blockers and constraints
 
-There is no remaining authority-migration blocker. The remaining fixture Work,
-Scientific Edges, Learning Path, README, remote CI, and final reader closure remain
-expected Phase 2–5 work. The local repository intentionally has no remote in
+There is no remaining authority-migration blocker. Scientific Edges, Learning
+Path, README, remote CI, and final reader closure remain expected Phase 2–5
+work. The local repository intentionally has no remote in
 Ticket 01. A genuinely new semantic choice must be escalated as a new decision
 rather than hidden in `.planning` prose.
 
 ## Session continuity
 
-Resume with Ticket 09 from the approved local frontier. Read the four `.planning`
+Resume with Ticket 10 from the approved local frontier. Read the four `.planning`
 documents first, preserve requirement IDs, and update traceability only when
 ticket evidence is verified.

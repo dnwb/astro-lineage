@@ -39,6 +39,15 @@ const preferredVersion = versions.find(
 const statements = work.statements ?? [];
 const physicalAccount = work.physical_account ?? { stages: [], links: [] };
 const reviewedLinks = physicalAccount.links ?? [];
+const scientificEdges = (work.scientific_edges ?? []) as AnyRecord[];
+const outboundEdges = scientificEdges.filter((edge) => edge.source_work_id === workId);
+const inboundEdges = scientificEdges.filter((edge) => edge.target_work_id === workId);
+const evidenceRecords = (work.evidence ?? []) as AnyRecord[];
+const evidenceById = new Map(
+  evidenceRecords
+    .filter((evidence: AnyRecord) => typeof evidence?.id === "string")
+    .map((evidence: AnyRecord) => [evidence.id, evidence]),
+);
 const reverseIndex = await readEditorialIndex() as Record<string, AnyRecord[]>;
 const lineMemberships = (reverseIndex[workId] ?? []).map((membership) => ({
   ...membership,
@@ -171,14 +180,41 @@ function describeLocator(locator: AnyRecord | undefined) {
 
       <section>
         <h2>Scientific Edges</h2>
-        {(work.scientific_edges ?? []).length === 0 ? (
+        {scientificEdges.length === 0 ? (
           <p>No reviewed reader-visible Scientific Edges are stored for this Work.</p>
         ) : (
-          <ul>
-            {work.scientific_edges.map((edge: AnyRecord) => (
-              <li>{edge.source_work_id} <strong>{edge.relation}</strong> {edge.target_work_id}</li>
-            ))}
-          </ul>
+          <>
+            <h3>Outbound assertions</h3>
+            {outboundEdges.length === 0 ? (
+              <p>No outbound assertions.</p>
+            ) : (
+              <ul>
+                {outboundEdges.map((edge: AnyRecord) => (
+                  <li>
+                    {workId} <strong>{edge.relation}</strong>
+                    <a href={`/papers/${edge.target_work_id}/`}> {edge.target_work_id}</a>
+                    {edge.disposition ? ` — Disposition: ${edge.disposition}` : ""}
+                    {edge.reason ? ` — ${edge.reason}` : ""}
+                  </li>
+                ))}
+              </ul>
+            )}
+            <h3>Inbound assertions</h3>
+            {inboundEdges.length === 0 ? (
+              <p>No inbound assertions.</p>
+            ) : (
+              <ul>
+                {inboundEdges.map((edge: AnyRecord) => (
+                  <li>
+                    <a href={`/papers/${edge.source_work_id}/`}>{edge.source_work_id}</a>
+                    <strong> {edge.relation}</strong> {workId}
+                    {edge.disposition ? ` — Disposition: ${edge.disposition}` : ""}
+                    {edge.reason ? ` — ${edge.reason}` : ""}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </>
         )}
       </section>
 
@@ -222,10 +258,46 @@ function describeLocator(locator: AnyRecord | undefined) {
             })}
           </ul>
         )}
+        <h3>Scientific Edges</h3>
+        {scientificEdges.length === 0 ? (
+          <p>No reviewed reader-visible Scientific Edges are stored for this Work.</p>
+        ) : (
+          <ul>
+            {scientificEdges.map((edge: AnyRecord) => (
+              <li>
+                <strong>{edge.id}</strong>: {edge.source_work_id} <strong>{edge.relation}</strong> {edge.target_work_id}
+                {edge.basis ? `; basis ${edge.basis}` : ""}
+                {edge.disposition ? `; disposition ${edge.disposition}` : ""}
+                {edge.reason ? `; ${edge.reason}` : ""}
+                {edge.review_context?.status
+                  ? `; ${edge.review_context.status} by ${edge.review_context.reviewer_actor_id} at ${edge.review_context.reviewed_at}`
+                  : ""}
+                <ul>
+                  {(edge.evidence_ids ?? []).map((evidenceId: string) => {
+                    const evidence = evidenceById.get(evidenceId);
+                    return evidence ? (
+                      <li>
+                        <strong>{evidence.id}</strong>
+                        {evidence.work_id ? ` (Work ${evidence.work_id})` : ""}
+                        {` — ${evidence.version_id}; ${describeLocator(evidence.locator)}: “${evidence.excerpt}”`}
+                        {evidence.source_url ? <> — <a href={evidence.source_url}>source</a></> : ""}
+                      </li>
+                    ) : (
+                      <li>{evidenceId} — Evidence unavailable</li>
+                    );
+                  })}
+                </ul>
+              </li>
+            ))}
+          </ul>
+        )}
+        <h3>Evidence</h3>
         <ul>
-          {(work.evidence ?? []).map((evidence: AnyRecord) => (
+          {evidenceRecords.map((evidence: AnyRecord) => (
             <li>
-              <strong>{evidence.id}</strong> — {evidence.version_id}; {describeLocator(evidence.locator)}: “{evidence.excerpt}”
+              <strong>{evidence.id}</strong>
+              {evidence.work_id ? ` (Work ${evidence.work_id})` : ""}
+              {` — ${evidence.version_id}; ${describeLocator(evidence.locator)}: “${evidence.excerpt}”`}
               {evidence.source_url ? <> — <a href={evidence.source_url}>source</a></> : ""}
               {evidence.review_context?.status
                 ? `; ${evidence.review_context.status} by ${evidence.review_context.reviewer_actor_id} at ${evidence.review_context.reviewed_at}`

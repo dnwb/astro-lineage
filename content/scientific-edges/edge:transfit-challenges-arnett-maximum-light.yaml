@@ -1,0 +1,21 @@
+id: edge:transfit-challenges-arnett-maximum-light
+source_work_id: work:transfit-2025
+source_statement_id: statement:transfit-nonuniform-heating-arnett-law
+relation: challenges
+target_work_id: work:arnett-1982
+target_statement_id: statement:arnett-maximum-light-balance
+basis: explicit
+disposition: active
+reason: Under centrally concentrated or spatially stratified heating, TransFit finds that the self-similar internal-energy-profile assumption underlying the target maximum-light balance breaks down and that Arnett's Law systematically underestimates peak luminosity; the challenge is limited to those heating geometries.
+evidence_ids:
+  - evidence:transfit-arnett-law
+curation_provenance:
+  actor_id: actor:agent-curator
+  recorded_at: 2026-09-05T06:01:26Z
+review_state: reviewed
+review_provenance:
+  actor_id: actor:human-curator
+  recorded_at: 2026-09-05T06:33:47Z
+review_binding:
+  canonicalization_version: v1
+  semantic_digest: 37ef039aa32e69405ff69016306ae179b3702de102b730bd4f43c4851acfd42a

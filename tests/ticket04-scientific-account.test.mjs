@@ -182,7 +182,13 @@ test("4B production Physical Account is Work-local, controlled-Annotation based,
   assert(inferred.evidence_ids.length >= 2);
   assert.equal(inferred.review_state, "reviewed");
   assert.notEqual(inferred.curation_provenance.actor_id, inferred.review_provenance.actor_id);
-  assert.equal(snapshot.scientificEdges.length, 0);
+  assert.deepEqual(
+    snapshot.scientificEdges.map(({ id }) => id).sort(),
+    [
+      "edge:long-yu-extends-zhu-dynamic-trajectory",
+      "edge:transfit-challenges-arnett-maximum-light",
+    ],
+  );
 });
 
 test("Statements reject invalid kind, basis, lifecycle, and cross-Version attestations", async () => {
@@ -465,7 +471,13 @@ test("validation reports expose stored scientific-account counts and status with
   assert.equal(arnettInventory.causal_stages, arnettWork.files["physical-account.yaml"].stages.length);
   assert.equal(arnettInventory.causal_links, arnettWork.files["physical-account.yaml"].links.length);
   assert.equal(arnettInventory.scientific_account_validation_status, "valid");
-  assert.deepEqual(snapshot.scientificEdges, []);
+  assert.deepEqual(
+    snapshot.scientificEdges.map(({ id }) => id).sort(),
+    [
+      "edge:long-yu-extends-zhu-dynamic-trajectory",
+      "edge:transfit-challenges-arnett-maximum-light",
+    ],
+  );
 });
 
 test("malformed Annotation and Causal Stage records quarantine dependent checks and pass metadata", async () => {

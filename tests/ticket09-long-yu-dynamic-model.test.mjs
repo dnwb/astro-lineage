@@ -96,11 +96,13 @@ test("Ticket 09 publishes the approved Long & Yu arXiv-only Work", async () => {
   assert.equal(versions[0].arxiv_id, "2608.12217");
   assert.equal(versions[0].arxiv_revision, 1);
   assert.equal(work.files["versions.yaml"].publication_relations.length, 0);
-  assert.equal(
-    snapshot.scientificEdges.some((edge) =>
-      edgeEndpoint(edge, "source") === workId || edgeEndpoint(edge, "target") === workId),
-    false,
-    "shared topic or Research Line membership must not manufacture a Scientific Edge",
+  const workEdges = snapshot.scientificEdges.filter((edge) =>
+    edgeEndpoint(edge, "source") === workId || edgeEndpoint(edge, "target") === workId,
+  );
+  assert.deepEqual(
+    workEdges.map(({ id }) => id),
+    ["edge:long-yu-extends-zhu-dynamic-trajectory"],
+    "only the approved Scientific Edge is present for Long & Yu",
   );
 
   const evidence = work.files["evidence.yaml"].evidence;
@@ -197,7 +199,8 @@ test("the approved Physical Account keeps dynamics, inference, and detector proj
   assert(projection);
   assert.equal(projection.versions.length, 1);
   assert.deepEqual(projection.publication_relations, []);
-  assert.equal(projection.scientific_edges.length, 0);
+  assert.equal(projection.scientific_edges.length, 1);
+  assert.equal(projection.scientific_edges[0].id, "edge:long-yu-extends-zhu-dynamic-trajectory");
   assert.equal(projection.statements.length, 4);
   assert.equal(projection.physical_account.stages.length, 11);
   assert.equal(projection.physical_account.links.length, 11);

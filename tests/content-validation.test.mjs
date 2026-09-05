@@ -46,7 +46,13 @@ test("the production snapshot keeps the frozen canonical layout across canonical
   assert(workIds.includes("work:bromberg-2011"));
   assert(workIds.includes("work:zhu-2021"));
   assert(workIds.includes("work:transfit-2025"));
-  assert.deepEqual(snapshot.scientificEdges, []);
+  assert.deepEqual(
+    snapshot.scientificEdges.map(({ id }) => id).sort(),
+    [
+      "edge:long-yu-extends-zhu-dynamic-trajectory",
+      "edge:transfit-challenges-arnett-maximum-light",
+    ],
+  );
   assert.deepEqual(
     snapshot.researchLines.map(({ id }) => id),
     [

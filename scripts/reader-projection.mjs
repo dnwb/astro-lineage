@@ -239,24 +239,90 @@ function edgeValue(edge) {
   return isObject(edge?.value) ? edge.value : isObject(edge) ? edge : null;
 }
 
-function projectEdgesForWork(snapshot, workId) {
+function edgeReviewState(edge) {
+  const value = edgeValue(edge);
+  if (Object.hasOwn(value ?? {}, "review_state")) {
+    return value.review_state;
+  }
+  return edge?.review_state;
+}
+
+/**
+ * Scientific Edges are governed records.  Unlike the older projection
+ * helpers, an Edge with no review_state is never reader-visible: the global
+ * Edge file can contain drafts which have not yet reached a review gate.
+ */
+function reviewedScientificEdge(edge) {
+  return isObject(edgeValue(edge)) && edgeReviewState(edge) === "reviewed";
+}
+
+function normalizeReason(value) {
+  return typeof value === "string"
+    ? value.trim().replace(/\s+/gu, " ")
+    : value ?? null;
+}
+
+function projectScientificEdge(edge) {
+  const value = edgeValue(edge);
+  const projected = projectValue(value);
+  projected.id = edge?.id ?? value?.id ?? null;
+  if (Object.hasOwn(value ?? {}, "reason")) {
+    projected.reason = normalizeReason(value.reason);
+  }
+  if (Array.isArray(value?.evidence_ids)) {
+    projected.evidence_ids = sortStringSet(value.evidence_ids);
+  }
+  projected.review_context = {
+    status: edgeReviewState(edge),
+    reviewer_actor_id: value?.review_provenance?.actor_id ?? edge?.review_provenance?.actor_id ?? null,
+    reviewed_at: value?.review_provenance?.recorded_at ?? edge?.review_provenance?.recorded_at ?? null,
+  };
+  return projected;
+}
+
+/**
+ * Edge review state is retained in the aggregate edge inventory for callers
+ * that need to distinguish reviewed records from curation drafts.  Work
+ * projections still expose the richer review_context used by Provenance
+ * Detail; restoring this field after the generic projection keeps all other
+ * governed metadata excluded.
+ */
+function restoreScientificEdgeReviewState(edge) {
+  const projected = projectValue(edge);
+  if (isObject(edge?.review_context) && Object.hasOwn(edge.review_context, "status")) {
+    projected.review_state = edge.review_context.status;
+  }
+  return Object.fromEntries(
+    Object.keys(projected)
+      .sort(bytewiseCompare)
+      .map((key) => [key, projected[key]]),
+  );
+}
+
+function readerVisibleScientificEdges(snapshot) {
   const visibleWorks = visibleWorkIds(snapshot);
+  return (Array.isArray(snapshot?.scientificEdges) ? snapshot.scientificEdges : [])
+    .filter((edge) => {
+      if (!reviewedScientificEdge(edge)) {
+        return false;
+      }
+      const value = edgeValue(edge);
+      const source = edgeEndpoint(value, "source");
+      const target = edgeEndpoint(value, "target");
+      return source && target && visibleWorks.has(source) && visibleWorks.has(target);
+    });
+}
+
+function projectEdgesForWork(snapshot, workId) {
   return sortRecords(
-    (Array.isArray(snapshot?.scientificEdges) ? snapshot.scientificEdges : [])
-      .map((edge) => ({ edge, value: edgeValue(edge) }))
-      .filter(({ value }) => {
-        if (!reviewed(value)) {
-          return false;
-        }
+    readerVisibleScientificEdges(snapshot)
+      .filter((edge) => {
+        const value = edgeValue(edge);
         const source = edgeEndpoint(value, "source");
         const target = edgeEndpoint(value, "target");
-        return source && target && visibleWorks.has(source) && visibleWorks.has(target) &&
-          (source === workId || target === workId);
+        return source === workId || target === workId;
       })
-      .map(({ edge, value }) => ({
-        ...projectValue(value),
-        id: edge.id ?? value.id ?? null,
-      })),
+      .map(projectScientificEdge),
   );
 }
 
@@ -300,25 +366,37 @@ function restrictEvidenceIds(value, visibleEvidenceIds) {
   );
 }
 
-function projectEvidence(work, evidenceIds) {
-  const envelope = work?.files?.["evidence.yaml"];
-  return sortRecords(
-    (Array.isArray(envelope?.evidence) ? envelope.evidence : [])
-      .filter((evidence) =>
-        isObject(evidence) &&
-        typeof evidence.id === "string" &&
-        evidenceIds.has(evidence.id) &&
-        reviewed(evidence),
-      )
-      .map((evidence) => ({
+function projectEvidence(workOrWorks, evidenceIds, ownedEvidenceIds = new Set()) {
+  const works = Array.isArray(workOrWorks) ? workOrWorks : [workOrWorks];
+  const projectedById = new Map();
+  for (const work of works) {
+    const envelope = work?.files?.["evidence.yaml"];
+    const ownerWorkId = work?.id ?? workRecord(work)?.work_id;
+    for (const evidence of Array.isArray(envelope?.evidence) ? envelope.evidence : []) {
+      if (
+        !isObject(evidence) ||
+        typeof evidence.id !== "string" ||
+        !evidenceIds.has(evidence.id) ||
+        !reviewed(evidence) ||
+        projectedById.has(evidence.id)
+      ) {
+        continue;
+      }
+      const projected = {
         ...projectValue(evidence),
         review_context: {
           status: evidence.review_state,
           reviewer_actor_id: evidence.review_provenance?.actor_id ?? null,
           reviewed_at: evidence.review_provenance?.recorded_at ?? null,
         },
-      })),
-  );
+      };
+      if (ownedEvidenceIds.has(evidence.id) && typeof ownerWorkId === "string") {
+        projected.work_id = ownerWorkId;
+      }
+      projectedById.set(evidence.id, projected);
+    }
+  }
+  return sortRecords([...projectedById.values()]);
 }
 
 function projectPhysicsAnnotations(work) {
@@ -470,8 +548,26 @@ export function projectWorkForReader(snapshot, workOrId) {
   collectEvidenceIds(statements, evidenceIds);
   const physicalAccount = projectPhysicalAccount(work, visibleAnnotationIds, evidenceIds);
   const scientificEdges = projectEdgesForWork(snapshot, workId);
+  const edgeEvidenceIds = new Set();
   collectEvidenceIds(scientificEdges, evidenceIds);
-  const evidence = projectEvidence(work, evidenceIds);
+  collectEvidenceIds(scientificEdges, edgeEvidenceIds);
+  const evidenceWorks = [work];
+  const edgeEndpointIds = new Set();
+  for (const edge of scientificEdges) {
+    for (const side of ["source", "target"]) {
+      const endpointId = edgeEndpoint(edge, side);
+      if (typeof endpointId === "string") {
+        edgeEndpointIds.add(endpointId);
+      }
+    }
+  }
+  for (const endpointId of edgeEndpointIds) {
+    const endpointWork = workById(snapshot, endpointId);
+    if (endpointWork && !evidenceWorks.includes(endpointWork)) {
+      evidenceWorks.push(endpointWork);
+    }
+  }
+  const evidence = projectEvidence(evidenceWorks, evidenceIds, edgeEvidenceIds);
   const visibleEvidenceIds = new Set(evidence.map((item) => item.id));
 
   const metadata = projectValue(record);
@@ -479,7 +575,7 @@ export function projectWorkForReader(snapshot, workOrId) {
   metadata.preferred_version_id = preferredVersionId(work);
   metadata.preferred_version = projectValue(record.preferred_version ?? {});
 
-  return projectValue({
+  const projected = projectValue({
     ...metadata,
     versions: sortRecords((Array.isArray(versions.versions) ? versions.versions : []).map(projectValue)),
     publication_relations: publicationRelations,
@@ -493,6 +589,9 @@ export function projectWorkForReader(snapshot, workOrId) {
     research_lines: projectMembershipForWork(snapshot, workId),
     scientific_edges: restrictEvidenceIds(scientificEdges, visibleEvidenceIds),
   });
+  projected.scientific_edges = restrictEvidenceIds(scientificEdges, visibleEvidenceIds)
+    .map((edge) => restoreScientificEdgeReviewState(edge));
+  return projected;
 }
 
 /** Alias for callers that use the visibility terminology in the function name. */
@@ -536,24 +635,15 @@ export function projectVisibleSnapshot(snapshot) {
   const researchLines = (Array.isArray(snapshot?.researchLines) ? snapshot.researchLines : [])
     .map((line) => projectResearchLineForReader(snapshot, line.id))
     .filter((line) => line !== null);
-  const visibleWorks = visibleWorkIds(snapshot);
   const scientificEdges = sortRecords(
-    (Array.isArray(snapshot?.scientificEdges) ? snapshot.scientificEdges : [])
-      .map((edge) => ({ edge, value: edgeValue(edge) }))
-      .filter(({ value }) => {
-        if (!reviewed(value)) {
-          return false;
-        }
-        const source = edgeEndpoint(value, "source");
-        const target = edgeEndpoint(value, "target");
-        return source && target && visibleWorks.has(source) && visibleWorks.has(target);
-      })
-      .map(({ edge, value }) => ({ ...projectValue(value), id: edge.id ?? value.id ?? null })),
+    readerVisibleScientificEdges(snapshot).map(projectScientificEdge),
   );
 
-  return projectValue({
+  const projected = projectValue({
     works: sortByField(works, "work_id"),
     research_lines: sortByField(researchLines, "line_id"),
     scientific_edges: scientificEdges,
   });
+  projected.scientific_edges = scientificEdges.map((edge) => restoreScientificEdgeReviewState(edge));
+  return projected;
 }

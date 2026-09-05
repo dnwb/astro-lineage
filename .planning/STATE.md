@@ -5,7 +5,7 @@
 ## Current position
 
 - **Stage:** Phase 2 — domain records and five-Work vertical slice
-- **Status:** Tickets 01–09 complete
+- **Status:** Tickets 01–10 complete
 - **Implementation:** Visible Arnett and Bromberg now exercise governed Actors,
   capability-at-action-time authorization, 16 assessed Physics axes,
   controlled vocabulary, reusable Version-bound Evidence, reviewed Method
@@ -17,11 +17,15 @@
   Method Annotation, 16 assessed Physics axes, and separate heating,
   diffusion-modulation, and expansion-work causal branches; Long & Yu 2026 now
   completes the five-Work fixture set with an arXiv-only identity, reviewed
-  dynamic Physical Account, and no fabricated journal or Scientific Edge
+  dynamic Physical Account and no fabricated journal manifestation. Ticket 10
+  publishes one reviewed explicit `TransFit --challenges--> Arnett` Edge and
+  one independently Human-reviewed inferred `Long & Yu --extends--> Zhu` Edge,
+  with bilateral Version-specific Evidence, distinct Scientific Deltas, and
+  reader-visible inbound/outbound provenance
 - **Decision frontier:** closed through Q151; no open domain-model decision is
   blocking migration
-- **Next execution action:** Ticket 10,
-  `.scratch/v0.1-vertical-slice/issues/10-curate-and-publish-real-scientific-edges.md`
+- **Next execution action:** Ticket 11,
+  `.scratch/v0.1-vertical-slice/issues/11-publish-learning-path-and-pedagogical-transitions.md`
 
 The repository has completed specification, governance, and authority
 migration. Ticket 01 established the independent Git boundary and bootstrap
@@ -55,6 +59,14 @@ axis assessments, an active Method Annotation, four reviewed Statements, and a
 branching/converging dynamic causal DAG. It reuses the visible dense-environment
 Research Line as its sole Editorial Anchor and adds no journal Version,
 Publication Relation, or Scientific Edge.
+Ticket 10 then adds the minimum trustworthy Paper Graph: a scoped explicit
+TransFit challenge to Arnett's maximum-light balance and an inferred Long & Yu
+extension of Zhu's characteristic-state calculation to trajectory-evolving
+conditions. Both are first-class reviewed assertions with Statement anchors,
+Version-specific Evidence, append-only Human review and visibility approvals,
+and reader-facing inbound/outbound Provenance Detail. A future separate
+`Long & Yu --tests--> Zhu` delta is reserved strictly for trajectory-integrated
+detector-yield validation and is not stored in V0.1 Ticket 10.
 
 ## Authority and migration state
 
@@ -144,14 +156,14 @@ under the migration rule above.
 
 ## Blockers and constraints
 
-There is no remaining authority-migration blocker. Scientific Edges, Learning
-Path, README, remote CI, and final reader closure remain expected Phase 2–5
+There is no remaining authority-migration blocker. Learning Path, README,
+remote CI, and final reader closure remain expected Phase 2–5
 work. The local repository intentionally has no remote in
 Ticket 01. A genuinely new semantic choice must be escalated as a new decision
 rather than hidden in `.planning` prose.
 
 ## Session continuity
 
-Resume with Ticket 10 from the approved local frontier. Read the four `.planning`
+Resume with Ticket 11 from the approved local frontier. Read the four `.planning`
 documents first, preserve requirement IDs, and update traceability only when
 ticket evidence is verified.

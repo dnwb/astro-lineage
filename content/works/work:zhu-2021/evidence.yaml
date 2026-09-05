@@ -64,3 +64,17 @@ evidence:
     curation_provenance: { actor_id: actor:agent-curator, recorded_at: "2026-09-04T10:03:10Z" }
     review_state: reviewed
     review_provenance: { actor_id: actor:human-curator, recorded_at: "2026-09-04T12:30:31Z" }
+  - id: evidence:zhu-characteristic-stalling-state
+    version_id: version:zhu-2021-arxiv-v3
+    source_url: https://arxiv.org/abs/2103.00789v3
+    locator:
+      type: section
+      section: Jet Dynamics in AGN Accretion Disks
+    excerpt: The jet could be choked in the AGN disk when the central engine quenches so that the jet head radius at t_j can be defined as the stalling radius, i.e., r_stall = r_h(t_j).
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-05T06:01:26Z
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: 2026-09-05T06:33:47Z

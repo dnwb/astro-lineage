@@ -62,6 +62,21 @@ const READING_ROLES = Object.freeze([
 ]);
 const STATEMENT_KINDS = Object.freeze(["assumption", "claim", "prediction", "result"]);
 const STATEMENT_LIFECYCLES = Object.freeze(["maintained", "superseded", "withdrawn"]);
+const SCIENTIFIC_EDGE_RELATIONS = Object.freeze([
+  "builds_on",
+  "extends",
+  "tests",
+  "constrains",
+  "challenges",
+  "replaces_assumption",
+  "corrects",
+]);
+const SCIENTIFIC_EDGE_DISPOSITIONS = Object.freeze([
+  "active",
+  "contested",
+  "superseded",
+  "withdrawn",
+]);
 const CAUSAL_LINK_RELATIONS = Object.freeze([
   "drives",
   "enables",
@@ -259,6 +274,18 @@ const STRUCTURAL_DIAGNOSTIC_CODES = new Set([
   "PUBLICATION_RELATION_BIBLIOGRAPHIC_SOURCES_INVALID",
   "PUBLICATION_RELATION_BIBLIOGRAPHIC_SOURCE_ID_INVALID",
   "PUBLICATION_RELATION_BIBLIOGRAPHIC_SOURCE_DUPLICATE",
+  // Scientific Edge record identity, shape, and controlled-value failures.
+  "SCIENTIFIC_EDGE_INVALID_SHAPE",
+  "SCIENTIFIC_EDGE_ID_INVALID",
+  "SCIENTIFIC_EDGE_FILENAME_MISMATCH",
+  "SCIENTIFIC_EDGE_ID_DUPLICATE",
+  "SCIENTIFIC_EDGE_RELATION_INVALID",
+  "SCIENTIFIC_EDGE_BASIS_INVALID",
+  "SCIENTIFIC_EDGE_DISPOSITION_INVALID",
+  "SCIENTIFIC_EDGE_REASON_INVALID",
+  "SCIENTIFIC_EDGE_EVIDENCE_INVALID",
+  "SCIENTIFIC_EDGE_EVIDENCE_DUPLICATE",
+  "SCIENTIFIC_EDGE_ENDPOINT_INVALID",
 ]);
 
 function isStructuralDiagnostic({ code = "" }) {
@@ -3899,6 +3926,522 @@ function validateStatements(
   }
 }
 
+/**
+ * Scientific Edge review bindings cover the assertion itself, but not its
+ * curation/review metadata or independent Disposition axis.  Evidence IDs
+ * are a set-like semantic collection for this purpose, while endpoint and
+ * optional Statement direction remain significant.
+ */
+export function scientificEdgeSemanticDigest(edge) {
+  const semanticProjection = {
+    source_work_id: edge?.source_work_id ?? null,
+    source_statement_id: edge?.source_statement_id ?? null,
+    target_work_id: edge?.target_work_id ?? null,
+    target_statement_id: edge?.target_statement_id ?? null,
+    relation: edge?.relation ?? null,
+    basis: edge?.basis ?? null,
+    reason: normalizeStatementText(edge?.reason),
+    evidence_ids: Array.isArray(edge?.evidence_ids)
+      ? [...edge.evidence_ids].sort((left, right) =>
+        Buffer.from(String(left)).compare(Buffer.from(String(right))))
+      : edge?.evidence_ids ?? null,
+  };
+  return createHash("sha256")
+    .update(JSON.stringify(semanticProjection), "utf8")
+    .digest("hex");
+}
+
+function validateScientificEdgeReviewBinding(edge, details, diagnostics) {
+  if (edge.review_state !== "reviewed") {
+    return true;
+  }
+  const binding = edge.review_binding;
+  if (!isObject(binding)) {
+    addDiagnostic(diagnostics, {
+      ...details,
+      code: "SCIENTIFIC_EDGE_REVIEW_BINDING_REQUIRED",
+      fieldPath: `${details.fieldPath ?? ""}/review_binding`,
+      message: "A reviewed Scientific Edge requires a semantic review binding.",
+    });
+    return false;
+  }
+  let valid = true;
+  if (binding.canonicalization_version !== CANONICALIZATION_VERSION) {
+    addDiagnostic(diagnostics, {
+      ...details,
+      code: "SCIENTIFIC_EDGE_REVIEW_BINDING_VERSION_INVALID",
+      fieldPath: `${details.fieldPath ?? ""}/review_binding/canonicalization_version`,
+      message: "Scientific Edge review binding uses an unsupported canonicalization version.",
+      relatedIds: [CANONICALIZATION_VERSION],
+    });
+    valid = false;
+  }
+  const expectedDigest = scientificEdgeSemanticDigest(edge);
+  if (binding.semantic_digest !== expectedDigest) {
+    addDiagnostic(diagnostics, {
+      ...details,
+      code: "SCIENTIFIC_EDGE_REVIEW_BINDING_STALE",
+      fieldPath: `${details.fieldPath ?? ""}/review_binding/semantic_digest`,
+      message: "Reviewed Scientific Edge semantic fields no longer match its review binding.",
+    });
+    valid = false;
+  }
+  return valid;
+}
+
+function validateScientificEdgeGovernance(edge, actorsById, details, diagnostics) {
+  let valid = true;
+  const reviewState = edge?.review_state;
+
+  // Validate curation authorship for every Edge, then handle the procedural
+  // review state locally so the Edge-specific metadata diagnostic remains
+  // stable without changing the shared governance behavior of other records.
+  const governanceOptions = reviewState === "reviewed"
+    ? { independentReview: edge.basis === "inferred" }
+    : { reviewRequired: false };
+  if (!validateGovernedRecord(edge, actorsById, details, diagnostics, governanceOptions)) {
+    valid = false;
+  }
+
+  if (!REVIEW_STATES.includes(reviewState)) {
+    addDiagnostic(diagnostics, {
+      ...details,
+      code: "REVIEW_STATE_INVALID",
+      fieldPath: `${details.fieldPath ?? ""}/review_state`,
+      message: "Governed Scientific Edges require review_state unreviewed or reviewed.",
+      relatedIds: REVIEW_STATES,
+    });
+    return false;
+  }
+
+  if (reviewState === "unreviewed") {
+    for (const field of ["review_provenance", "review_binding"]) {
+      if (edge[field] !== undefined) {
+        addDiagnostic(diagnostics, {
+          ...details,
+          code: "SCIENTIFIC_EDGE_UNREVIEWED_REVIEW_METADATA",
+          fieldPath: `${details.fieldPath ?? ""}/${field}`,
+          message: "An unreviewed Scientific Edge cannot carry review metadata.",
+        });
+        valid = false;
+      }
+    }
+    return valid;
+  }
+
+  return valid;
+}
+
+function scientificEdgeReferences(snapshot) {
+  const worksById = new Map(
+    (Array.isArray(snapshot?.works) ? snapshot.works : [])
+      .filter((work) => isObject(work) && typeof work.id === "string")
+      .map((work) => [work.id, work]),
+  );
+  const statementOwners = new Map();
+  const statementRecords = new Map();
+  const evidenceOwners = new Map();
+  const evidenceRecords = new Map();
+  for (const work of worksById.values()) {
+    const statements = work.files?.["statements.yaml"]?.statements;
+    for (const statement of Array.isArray(statements) ? statements : []) {
+      if (!isObject(statement) || typeof statement.id !== "string") {
+        continue;
+      }
+      if (!statementOwners.has(statement.id)) {
+        statementOwners.set(statement.id, new Set());
+      }
+      statementOwners.get(statement.id).add(work.id);
+      if (!statementRecords.has(statement.id)) {
+        statementRecords.set(statement.id, []);
+      }
+      statementRecords.get(statement.id).push({ workId: work.id, record: statement });
+    }
+    const evidence = work.files?.["evidence.yaml"]?.evidence;
+    for (const record of Array.isArray(evidence) ? evidence : []) {
+      if (!isObject(record) || typeof record.id !== "string") {
+        continue;
+      }
+      if (!evidenceOwners.has(record.id)) {
+        evidenceOwners.set(record.id, new Set());
+      }
+      evidenceOwners.get(record.id).add(work.id);
+      if (!evidenceRecords.has(record.id)) {
+        evidenceRecords.set(record.id, []);
+      }
+      evidenceRecords.get(record.id).push({ workId: work.id, record });
+    }
+  }
+  return { worksById, statementOwners, statementRecords, evidenceOwners, evidenceRecords };
+}
+
+/**
+ * Validate the global one-file-per-record Scientific Edge collection.  The
+ * returned projection IDs let the visibility pass quarantine records with
+ * any Edge-local failure, preventing malformed global records from changing
+ * an otherwise unrelated Work's reader digest.
+ */
+function validateScientificEdges(snapshot, actorsById, diagnostics) {
+  const fileRecords = Array.isArray(snapshot?.scientificEdges)
+    ? snapshot.scientificEdges
+    : [];
+  const {
+    worksById,
+    statementOwners,
+    statementRecords,
+    evidenceOwners,
+    evidenceRecords,
+  } = scientificEdgeReferences(snapshot);
+  const seenIds = new Map();
+  const seenDeltas = new Map();
+  const projectionEdgeIds = new Set();
+  const relationCounts = Object.fromEntries(
+    SCIENTIFIC_EDGE_RELATIONS.map((relation) => [relation, 0]),
+  );
+
+  for (const entry of fileRecords) {
+    const fileId = entry?.id;
+    const file = `content/scientific-edges/${fileId}.yaml`;
+    const edge = entry?.value;
+    const details = {
+      file,
+      recordId: isObject(edge) && edge.id !== undefined ? edge.id : fileId,
+      fieldPath: null,
+    };
+    const diagnosticStart = diagnostics.length;
+
+    if (!isObject(edge) || hasParseDiagnostic(diagnostics, file)) {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "SCIENTIFIC_EDGE_INVALID_SHAPE",
+        message: "A Scientific Edge record must be a YAML mapping.",
+      });
+      continue;
+    }
+
+    let structurallyValid = true;
+    if (!validateNamespacedId(edge.id, "edge", {
+      ...details,
+      code: "SCIENTIFIC_EDGE_ID_INVALID",
+      fieldPath: "/id",
+      message: "Scientific Edge IDs must use the edge: namespace.",
+    }, diagnostics)) {
+      structurallyValid = false;
+    }
+    if (edge.id !== fileId) {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "SCIENTIFIC_EDGE_FILENAME_MISMATCH",
+        fieldPath: "/id",
+        message: "Scientific Edge id must match its filename stem.",
+        relatedIds: [fileId],
+      });
+      structurallyValid = false;
+    }
+    if (seenIds.has(edge.id)) {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "SCIENTIFIC_EDGE_ID_DUPLICATE",
+        fieldPath: "/id",
+        message: `Scientific Edge ID is duplicated: ${edge.id}.`,
+        relatedIds: [seenIds.get(edge.id), edge.id].filter(Boolean),
+      });
+      structurallyValid = false;
+    } else if (typeof edge.id === "string") {
+      seenIds.set(edge.id, fileId);
+    }
+
+    if (!SCIENTIFIC_EDGE_RELATIONS.includes(edge.relation)) {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "SCIENTIFIC_EDGE_RELATION_INVALID",
+        fieldPath: "/relation",
+        message: "Scientific Edge relation is not in the frozen seven-value vocabulary.",
+        relatedIds: SCIENTIFIC_EDGE_RELATIONS,
+      });
+      structurallyValid = false;
+    }
+    if (!ASSERTION_BASES.includes(edge.basis)) {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "SCIENTIFIC_EDGE_BASIS_INVALID",
+        fieldPath: "/basis",
+        message: "Scientific Edge basis must be explicit or inferred.",
+        relatedIds: ASSERTION_BASES,
+      });
+      structurallyValid = false;
+    }
+    if (!SCIENTIFIC_EDGE_DISPOSITIONS.includes(edge.disposition)) {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "SCIENTIFIC_EDGE_DISPOSITION_INVALID",
+        fieldPath: "/disposition",
+        message: "Scientific Edge disposition must be active, contested, superseded, or withdrawn.",
+        relatedIds: SCIENTIFIC_EDGE_DISPOSITIONS,
+      });
+      structurallyValid = false;
+    }
+    const normalizedReason = normalizeStatementText(edge.reason);
+    if (typeof edge.reason !== "string" || edge.reason.trim() === "") {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "SCIENTIFIC_EDGE_REASON_INVALID",
+        fieldPath: "/reason",
+        message: "Scientific Edges require a non-empty reason.",
+      });
+      structurallyValid = false;
+    }
+
+    const endpointValues = {
+      source: edge.source_work_id,
+      target: edge.target_work_id,
+    };
+    const endpointExists = { source: false, target: false };
+    for (const side of ["source", "target"]) {
+      const workId = endpointValues[side];
+      if (!isNamespacedId(workId, "work")) {
+        addDiagnostic(diagnostics, {
+          ...details,
+          code: "SCIENTIFIC_EDGE_ENDPOINT_INVALID",
+          fieldPath: `/${side}_work_id`,
+          message: `Scientific Edge ${side} endpoint must use the work: namespace.`,
+        });
+        structurallyValid = false;
+        continue;
+      }
+      endpointExists[side] = worksById.has(workId);
+      if (!endpointExists[side]) {
+        addDiagnostic(diagnostics, {
+          ...details,
+          code: "REFERENTIAL_SCIENTIFIC_EDGE_WORK_MISSING",
+          fieldPath: `/${side}_work_id`,
+          message: `Scientific Edge ${side} Work does not exist: ${workId}.`,
+          relatedIds: [workId],
+        });
+      }
+    }
+    if (
+      typeof endpointValues.source === "string" &&
+      typeof endpointValues.target === "string" &&
+      endpointValues.source === endpointValues.target
+    ) {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "SCIENTIFIC_EDGE_SELF_LOOP",
+        fieldPath: "/target_work_id",
+        message: "A Scientific Edge cannot point from a Work to itself.",
+        relatedIds: [endpointValues.source],
+      });
+      structurallyValid = false;
+    }
+
+    for (const side of ["source", "target"]) {
+      const field = `${side}_statement_id`;
+      const statementId = edge[field];
+      if (statementId === undefined) {
+        continue;
+      }
+      if (!isNamespacedId(statementId, "statement")) {
+        addDiagnostic(diagnostics, {
+          ...details,
+          code: "SCIENTIFIC_EDGE_ENDPOINT_INVALID",
+          fieldPath: `/${field}`,
+          message: `Scientific Edge ${side} Statement endpoint must use the statement: namespace.`,
+        });
+        structurallyValid = false;
+        continue;
+      }
+      const owners = statementOwners.get(statementId);
+      if (!owners) {
+        addDiagnostic(diagnostics, {
+          ...details,
+          code: "REFERENTIAL_SCIENTIFIC_EDGE_STATEMENT_MISSING",
+          fieldPath: `/${field}`,
+          message: `Scientific Edge ${side} Statement does not exist: ${statementId}.`,
+          relatedIds: [statementId],
+        });
+      } else if (!owners.has(endpointValues[side])) {
+        addDiagnostic(diagnostics, {
+          ...details,
+          code: "SCIENTIFIC_EDGE_STATEMENT_WORK_MISMATCH",
+          fieldPath: `/${field}`,
+          message: `Scientific Edge ${side} Statement must belong to its ${side} Work.`,
+          relatedIds: [statementId, endpointValues[side]].filter(Boolean),
+        });
+      } else if (
+        edge.review_state === "reviewed" &&
+        statementRecords.get(statementId)?.some(
+          ({ workId, record }) =>
+            workId === endpointValues[side] && record.review_state === "unreviewed",
+        )
+      ) {
+        addDiagnostic(diagnostics, {
+          ...details,
+          code: "SCIENTIFIC_EDGE_STATEMENT_NOT_REVIEWED",
+          fieldPath: `/${field}`,
+          message: "A reviewed Scientific Edge cannot expose an unreviewed Statement endpoint.",
+          relatedIds: [statementId],
+        });
+      }
+    }
+
+    let evidenceReferencesValid = true;
+    const evidenceOwnersById = new Map();
+    if (!Array.isArray(edge.evidence_ids) || edge.evidence_ids.length === 0) {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "SCIENTIFIC_EDGE_EVIDENCE_INVALID",
+        fieldPath: "/evidence_ids",
+        message: "Scientific Edges require a non-empty array of Evidence IDs.",
+      });
+      evidenceReferencesValid = false;
+    } else {
+      const seenEvidence = new Set();
+      for (const [index, evidenceId] of edge.evidence_ids.entries()) {
+        const evidencePath = `/evidence_ids/${index}`;
+        if (typeof evidenceId !== "string" || evidenceId.trim() === "") {
+          addDiagnostic(diagnostics, {
+            ...details,
+            code: "SCIENTIFIC_EDGE_EVIDENCE_INVALID",
+            fieldPath: evidencePath,
+            message: "Scientific Edge Evidence IDs must be non-empty strings.",
+          });
+          evidenceReferencesValid = false;
+          continue;
+        }
+        if (seenEvidence.has(evidenceId)) {
+          addDiagnostic(diagnostics, {
+            ...details,
+            code: "SCIENTIFIC_EDGE_EVIDENCE_DUPLICATE",
+            fieldPath: evidencePath,
+            message: `A Scientific Edge cannot repeat an Evidence ID: ${evidenceId}.`,
+            relatedIds: [evidenceId],
+          });
+          evidenceReferencesValid = false;
+        }
+        seenEvidence.add(evidenceId);
+
+        const owners = evidenceOwners.get(evidenceId);
+        if (!owners) {
+          addDiagnostic(diagnostics, {
+            ...details,
+            code: "REFERENTIAL_SCIENTIFIC_EDGE_EVIDENCE_MISSING",
+            fieldPath: evidencePath,
+            message: `Scientific Edge Evidence does not exist: ${evidenceId}.`,
+            relatedIds: [evidenceId],
+          });
+          evidenceReferencesValid = false;
+          continue;
+        }
+        if (
+          !owners.has(endpointValues.source) &&
+          !owners.has(endpointValues.target)
+        ) {
+          addDiagnostic(diagnostics, {
+            ...details,
+            code: "SCIENTIFIC_EDGE_EVIDENCE_WORK_MISMATCH",
+            fieldPath: evidencePath,
+            message: "Scientific Edge Evidence must belong to its source or target Work.",
+            relatedIds: [evidenceId, endpointValues.source, endpointValues.target].filter(Boolean),
+          });
+          evidenceReferencesValid = false;
+          continue;
+        }
+        evidenceOwnersById.set(evidenceId, owners);
+        if (
+          edge.review_state === "reviewed" &&
+          evidenceRecords.get(evidenceId)?.some(
+            ({ workId, record }) =>
+              (workId === endpointValues.source || workId === endpointValues.target) &&
+              record.review_state === "unreviewed",
+          )
+        ) {
+          addDiagnostic(diagnostics, {
+            ...details,
+            code: "SCIENTIFIC_EDGE_EVIDENCE_NOT_REVIEWED",
+            fieldPath: evidencePath,
+            message: "A reviewed Scientific Edge cannot depend on unreviewed Evidence.",
+            relatedIds: [evidenceId],
+          });
+          evidenceReferencesValid = false;
+        }
+      }
+    }
+
+    if (
+      evidenceReferencesValid &&
+      endpointExists.source &&
+      endpointExists.target &&
+      edge.basis === "explicit" &&
+      ![...evidenceOwnersById.values()].some((owners) => owners.has(endpointValues.source))
+    ) {
+      addDiagnostic(diagnostics, {
+        ...details,
+        code: "SCIENTIFIC_EDGE_SOURCE_EVIDENCE_REQUIRED",
+        fieldPath: "/evidence_ids",
+        message: "An explicit Scientific Edge requires at least one source-Work Evidence record.",
+        relatedIds: [endpointValues.source],
+      });
+      structurallyValid = false;
+    }
+    if (
+      evidenceReferencesValid &&
+      endpointExists.source &&
+      endpointExists.target &&
+      edge.basis === "inferred"
+    ) {
+      const sourceEvidence = [...evidenceOwnersById.values()]
+        .some((owners) => owners.has(endpointValues.source));
+      const targetEvidence = [...evidenceOwnersById.values()]
+        .some((owners) => owners.has(endpointValues.target));
+      if (!sourceEvidence || !targetEvidence) {
+        addDiagnostic(diagnostics, {
+          ...details,
+          code: "SCIENTIFIC_EDGE_BILATERAL_EVIDENCE_REQUIRED",
+          fieldPath: "/evidence_ids",
+          message: "An inferred Scientific Edge requires Evidence from both endpoint Works.",
+          relatedIds: [endpointValues.source, endpointValues.target].filter(Boolean),
+        });
+        structurallyValid = false;
+      }
+    }
+
+    const deltaEligible = structurallyValid &&
+      endpointExists.source && endpointExists.target &&
+      typeof normalizedReason === "string" && normalizedReason !== "";
+    if (deltaEligible) {
+      const deltaKey = `${endpointValues.source}\0${endpointValues.target}\0${normalizedReason}`;
+      if (seenDeltas.has(deltaKey)) {
+        const prior = seenDeltas.get(deltaKey);
+        addDiagnostic(diagnostics, {
+          ...details,
+          code: "SCIENTIFIC_EDGE_DELTA_DUPLICATE",
+          fieldPath: null,
+          message: "Scientific Edge duplicates an existing Scientific Delta for the same directed Work pair.",
+          relatedIds: [prior, edge.id].filter(Boolean),
+        });
+      } else {
+        seenDeltas.set(deltaKey, edge.id);
+      }
+    }
+
+    validateScientificEdgeGovernance(edge, actorsById, details, diagnostics);
+    validateScientificEdgeReviewBinding(edge, details, diagnostics);
+
+    // A record enters the reader projection only when every validation local
+    // to that record succeeded.  This keeps unrelated visible Work digests
+    // independent of malformed global Edge files.
+    const recordDiagnostics = diagnostics.slice(diagnosticStart);
+    if (recordDiagnostics.length === 0) {
+      projectionEdgeIds.add(fileId);
+      if (SCIENTIFIC_EDGE_RELATIONS.includes(edge.relation)) {
+        relationCounts[edge.relation] += 1;
+      }
+    }
+  }
+  return { projectionEdgeIds, relationCounts };
+}
+
 export function causalLinkSemanticDigest(link) {
   const semanticProjection = {
     source_stage_id: link.source_stage_id ?? null,
@@ -5252,13 +5795,23 @@ export async function validateCanonicalContent(
   }
   validateRecordEnvelopes(snapshot, diagnostics);
 
+  // Scientific Edges are global records, so validate them after Work-local
+  // registries have been loaded but before any Work visibility digest is
+  // computed.  Invalid Edge records are quarantined from that dependent pass.
+  const scientificEdgeState = validateScientificEdges(snapshot, actorsById, diagnostics);
+  const visibilitySnapshot = {
+    ...snapshot,
+    scientificEdges: snapshot.scientificEdges.filter(({ id }) =>
+      scientificEdgeState.projectionEdgeIds.has(id)),
+  };
+
   const manifestSupportsVisibility =
     !hasParseDiagnostic(diagnostics, "content/manifest.yaml") &&
     isObject(snapshot.manifest) &&
     VALID_CANONICALIZATION_VERSIONS.includes(snapshot.manifest.canonicalization_version) &&
     VALID_VISIBILITY_PROFILE_IDS.includes(snapshot.manifest.visibility_profile_id);
   const visibilityState = actorRegistryValid && manifestSupportsVisibility
-    ? validateFinalSnapshotVisibility(snapshot, actorsById, diagnostics, editorialState)
+    ? validateFinalSnapshotVisibility(visibilitySnapshot, actorsById, diagnostics, editorialState)
     : {
       visibilityByWorkId: new Map(),
       researchLineInventory: deriveResearchLineInventory(snapshot, diagnostics),
@@ -5274,6 +5827,12 @@ export async function validateCanonicalContent(
   const accountStatusByWorkId = new Map(
     workInventory.map((work) => [work.work_id, work.scientific_account_validation_status]),
   );
+  const scientificEdges = snapshot.scientificEdges
+    .map(({ id, value }) => ({
+      ...(isObject(value) ? value : {}),
+      id: isObject(value) && value.id !== undefined ? value.id : id,
+    }))
+    .filter((edge) => edge.review_state === "reviewed");
   const report = {
     dataset: "production",
     valid: isValidationValid(diagnostics),
@@ -5287,6 +5846,7 @@ export async function validateCanonicalContent(
     statistics: {
       works: snapshot.works.length,
       scientific_edges: snapshot.scientificEdges.length,
+      scientific_edge_relation_counts: scientificEdgeState.relationCounts,
       ontology_axes: snapshot.axes.length,
       research_lines: snapshot.researchLines.length,
       learning_paths: snapshot.learningPaths.length,
@@ -5325,6 +5885,7 @@ export async function validateCanonicalContent(
     },
     scientific_accounts: snapshot.works.map((work) =>
       scientificAccountInspection(work, accountStatusByWorkId.get(work.id) ?? "invalid")),
+    scientific_edges: scientificEdges,
     work_inventory: workInventory,
     research_line_inventory: researchLineInventory,
     diagnostics,
@@ -5374,7 +5935,8 @@ export function renderValidationMarkdown(report) {
   }
   lines.push("", "## Statistics", "");
   for (const [name, value] of Object.entries(report.statistics)) {
-    lines.push(`- ${name}: ${value}`);
+    const rendered = isObject(value) ? JSON.stringify(value) : value;
+    lines.push(`- ${name}: ${rendered}`);
   }
   lines.push(
     "",
@@ -5443,6 +6005,18 @@ export function renderValidationMarkdown(report) {
         `| ${markdownCell(account.work_id)} | ${markdownCell(link.id)} | ${markdownCell(link.relation)} | ${markdownCell(link.origin)} | ${markdownCell(link.interpretive_risk)} | ${markdownCell(link.source_stage_id)} | ${markdownCell(link.target_stage_id)} | ${markdownCell(link.review_state)} | ${markdownCell(scientificAccountEvidenceCell(link.evidence))} | ${markdownCell(link.reason)} | ${markdownCell(link.curation_provenance?.actor_id)} | ${markdownCell(link.curation_provenance?.recorded_at)} | ${markdownCell(link.review_provenance?.actor_id)} | ${markdownCell(link.review_provenance?.recorded_at)} |`,
       );
     }
+  }
+  lines.push(
+    "",
+    "## Scientific Edges",
+    "",
+    "| Edge ID | Source Work | Source Statement | Relation | Target Work | Target Statement | Basis | Disposition | Reason | Evidence IDs | Curation Actor | Curation Time | Review Actor | Review Time |",
+    "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
+  );
+  for (const edge of report.scientific_edges ?? []) {
+    lines.push(
+      `| ${markdownCell(edge.id)} | ${markdownCell(edge.source_work_id)} | ${markdownCell(edge.source_statement_id)} | ${markdownCell(edge.relation)} | ${markdownCell(edge.target_work_id)} | ${markdownCell(edge.target_statement_id)} | ${markdownCell(edge.basis)} | ${markdownCell(edge.disposition)} | ${markdownCell(edge.reason)} | ${markdownCell(Array.isArray(edge.evidence_ids) ? edge.evidence_ids.join(", ") : edge.evidence_ids)} | ${markdownCell(edge.curation_provenance?.actor_id)} | ${markdownCell(edge.curation_provenance?.recorded_at)} | ${markdownCell(edge.review_provenance?.actor_id)} | ${markdownCell(edge.review_provenance?.recorded_at)} |`,
+    );
   }
   lines.push("", "## Diagnostics", "");
   if (report.diagnostics.length === 0) {

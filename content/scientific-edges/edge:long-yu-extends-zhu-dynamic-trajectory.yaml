@@ -1,0 +1,26 @@
+id: edge:long-yu-extends-zhu-dynamic-trajectory
+source_work_id: work:long-yu-2026
+source_statement_id: statement:long-yu-time-dependent-trajectory-framework
+relation: extends
+target_work_id: work:zhu-2021
+target_statement_id: statement:zhu-hadronic-neutrino-fluence
+basis: inferred
+disposition: active
+reason: Long and Yu preserve Zhu et al.'s embedded-GRB reverse-shock and hadronic-neutrino scaffold while expanding the calculation from a characteristic stalling-state evaluation to evolving shock and cooling conditions along complete jet-head trajectories, including both choking and breakout outcomes.
+evidence_ids:
+  - evidence:long-yu-dynamic-framework
+  - evidence:long-yu-stalling-baseline
+  - evidence:long-yu-trajectory-integration
+  - evidence:zhu-characteristic-stalling-state
+  - evidence:zhu-reverse-shock
+  - evidence:zhu-hadronic-processes
+curation_provenance:
+  actor_id: actor:agent-curator
+  recorded_at: 2026-09-05T06:01:26Z
+review_state: reviewed
+review_provenance:
+  actor_id: actor:human-curator
+  recorded_at: 2026-09-05T06:33:47Z
+review_binding:
+  canonicalization_version: v1
+  semantic_digest: 97a1d53b837b350f6a6f4c06b9bd93c0c7d6c6b6a3602b0481f1b4f98b3e1763

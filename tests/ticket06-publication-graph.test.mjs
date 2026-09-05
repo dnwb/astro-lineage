@@ -253,8 +253,14 @@ test("production Bromberg is visible and its publication/scientific structures r
     ({ files }) => files["versions.yaml"]?.publication_relations ?? [],
   );
   assert.equal(productionRelations.filter(({ relation }) => relation === "revises").length, 0);
-  assert.equal(snapshot.scientificEdges.length, 0);
-  assert.equal(result.statistics.scientific_edges, 0);
+  assert.deepEqual(
+    snapshot.scientificEdges.map(({ id }) => id).sort(),
+    [
+      "edge:long-yu-extends-zhu-dynamic-trajectory",
+      "edge:transfit-challenges-arnett-maximum-light",
+    ],
+  );
+  assert.equal(result.statistics.scientific_edges, 2);
 
   assert.equal(annotationsRecord.annotations.length, 16);
   assert.equal(annotationsRecord.method_annotations.length, 1);

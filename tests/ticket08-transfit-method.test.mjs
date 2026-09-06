@@ -12,6 +12,7 @@ import { projectWorkForReader } from "../scripts/reader-projection.mjs";
 
 const productionContent = new URL("../content/", import.meta.url);
 const workId = "work:transfit-2025";
+const workSlug = "transfit-2025";
 const lineId = "research-line:explosive-transients-csm";
 const centralLineId = "research-line:central-engines";
 const reviewTime = "2026-09-04T13:30:00Z";
@@ -185,7 +186,7 @@ test("the Human-reviewed Work renders Method and inference structure separately"
 
 test("inferred Method review is independent and material edits invalidate its binding", async () => {
   const contentRoot = await copyContent();
-  const path = join(contentRoot, "works", workId, "annotations.yaml");
+  const path = join(contentRoot, "works", workSlug, "annotations.yaml");
   const annotations = await readYaml(path);
   const inferred = annotations.method_annotations.find(({ basis }) => basis === "inferred");
 
@@ -204,7 +205,7 @@ test("inferred Method review is independent and material edits invalidate its bi
 
 test("observable assignments reject inference-target terms", async () => {
   const contentRoot = await copyContent();
-  const path = join(contentRoot, "works", workId, "annotations.yaml");
+  const path = join(contentRoot, "works", workSlug, "annotations.yaml");
   const annotations = await readYaml(path);
   const observable = annotations.annotations.find(({ axis }) => axis === "observable");
   observable.assessment.values[0].term_id = "term:ejecta-physical-properties";
@@ -216,7 +217,7 @@ test("observable assignments reject inference-target terms", async () => {
 
 test("an unresolved reader-relevant TransFit bibliographic discrepancy blocks visibility", async () => {
   const contentRoot = await copyContent();
-  const workRoot = join(contentRoot, "works", workId);
+  const workRoot = join(contentRoot, "works", workSlug);
   const versionsPath = join(workRoot, "versions.yaml");
   const versions = await readYaml(versionsPath);
   versions.bibliographic_sources.push({

@@ -6,7 +6,7 @@ expected:
   diagnostics:
     - severity: error
       code: METHOD_ANNOTATION_RISK_FORBIDDEN
-      file: content/works/work:arnett-1982/annotations.yaml
+      file: content/works/arnett-1982/annotations.yaml
       record_id: annotation:t12-method-risk
       field_path: /method_annotations/1/interpretive_risk
       related_ids: []

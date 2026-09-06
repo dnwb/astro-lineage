@@ -4,8 +4,10 @@
 
 ## Current position
 
-- **Stage:** Phase 5 — V0.1 verification and CI acceptance
-- **Status:** V0.1 complete; Tickets 01–14 and all completion gates satisfied
+- **Stage:** Post-V0.1 P0 compatibility hardening
+- **Status:** V0.1 complete; Tickets 01–14 remain closed; the separately
+  authorized filesystem-safe path migration passes local verification and is
+  awaiting its clean remote CI gate
 - **Implementation:** Visible Arnett and Bromberg now exercise governed Actors,
   capability-at-action-time authorization, 16 assessed Physics axes,
   controlled vocabulary, reusable Version-bound Evidence, reviewed Method
@@ -27,8 +29,8 @@
   independent clean-environment CI pass are complete
 - **Decision frontier:** closed through Q151; no open domain-model decision is
   blocking migration
-- **Next execution action:** none for V0.1; begin a separately authorized
-  milestone before adding deferred scope
+- **Next execution action:** commit and push the filesystem-safe path migration,
+  then confirm its clean remote CI gate; no V0.1 ticket is reopened
 
 The repository has completed specification, governance, and authority
 migration. Ticket 01 established the independent Git boundary and bootstrap
@@ -162,28 +164,59 @@ The coverage matrix is per entity and requires real fixture-based
 `Stored + Validated + Rendered` checks. Validation, tests, build, verify, and
 CI remain fully offline; external deployment and source refresh are deferred.
 
+## Post-V0.1 P0 compatibility hardening
+
+The separately authorized filesystem-safe path migration decouples immutable
+semantic IDs from filesystem locations before the corpus expands beyond the
+five-Work V0.1 slice. Canonical IDs such as `work:transfit-2025` and
+`edge:long-yu-extends-zhu-dynamic-trajectory` remain unchanged and continue to
+identify references, ownership, lookup, and display. Work, Research Line, and
+Learning Path bundle directories, their generated static reader route segments,
+and Scientific Edge filename stems now use independent colon-free filesystem
+slugs so a normal Windows NTFS checkout and Astro build contain no managed path
+component with `:`.
+
+The loader obtains identity from structured records and reports each discovered
+filesystem slug and source path separately. Validation diagnostics use those
+actual source paths, while cross-file ownership remains enforced through the
+semantic IDs in YAML envelopes and Markdown frontmatter. ADR 0081 governs this
+post-V0.1 hardening and narrows the path-coupling language in ADRs 0036 and
+0069. This work does not reopen, extend, or redo Tickets 01–14.
+
 ## Next action
 
-V0.1 has no remaining execution action. Ticket 14 is resolved at:
+V0.1 has no remaining execution action. Ticket 14 remains resolved at:
 
 ```text
 .scratch/v0.1-vertical-slice/issues/14-prove-local-verification-and-clean-ci.md
 ```
 
-Any V0.2 or deferred work requires a separately authorized milestone. A newly
-discovered semantic choice must first be classified under the migration rule
-above.
+The separately authorized P0 filesystem compatibility issue is tracked at:
+
+```text
+.scratch/filesystem-safe-content-paths/issues/01-decouple-semantic-ids-from-paths.md
+```
+
+Its local `npm run verify` gate passes with 17/17 tests, zero Astro diagnostics,
+and an 11-page static build; clean remote CI proof remains before it is
+resolved. Any V0.2 or other deferred work still requires a separately
+authorized milestone. A newly discovered semantic choice must first be
+classified under the migration rule above.
 
 ## Blockers and constraints
 
-There is no remaining V0.1 blocker. Repository initialization remained
-separate from remote creation until the user explicitly authorized
-`git@github.com:dnwb/astro-lineage.git`; GitHub Actions then supplied the
-independent clean-environment proof. A genuinely new semantic choice must be
-escalated as a new decision rather than hidden in `.planning` prose.
+There is no remaining V0.1 blocker. The post-V0.1 P0 migration is blocked only
+until its clean remote CI gate completes. Repository
+initialization remained separate from remote creation until the user
+explicitly authorized `git@github.com:dnwb/astro-lineage.git`; GitHub Actions
+then supplied the independent clean-environment proof. A genuinely new
+semantic choice must be escalated as a new decision rather than hidden in
+`.planning` prose.
 
 ## Session continuity
 
-V0.1 is closed at Ticket 14. If work resumes, read the four `.planning`
-documents first, preserve requirement IDs, and open a new authorized milestone
-rather than extending the completed V0.1 frontier implicitly.
+V0.1 is closed at Ticket 14. The filesystem-safe path migration is a separate
+post-V0.1 P0 hardening effort, not a continuation of that ticket frontier. If
+other work resumes, read the four `.planning` documents first, preserve
+requirement IDs, and open a new authorized milestone rather than extending the
+completed V0.1 frontier implicitly.

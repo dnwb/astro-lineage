@@ -13,32 +13,33 @@ import {
 
 const productionContent = new URL("../content/", import.meta.url);
 const arnettId = "work:arnett-1982";
-const brombergId = "work:bromberg-2011";
+const arnettSlug = "arnett-1982";
+const brombergSlug = "bromberg-2011";
 const journalVersionId = "version:arnett-1982-journal";
-const statementsFile = `content/works/${arnettId}/statements.yaml`;
-const accountFile = `content/works/${arnettId}/physical-account.yaml`;
+const statementsFile = `content/works/${arnettSlug}/statements.yaml`;
+const accountFile = `content/works/${arnettSlug}/physical-account.yaml`;
 
 async function copyContent() {
   const temporaryRoot = await mkdtemp(join(tmpdir(), "axvdaily-ticket04b-"));
   const contentRoot = join(temporaryRoot, "content");
   await cp(productionContent, contentRoot, { recursive: true });
   await rm(join(contentRoot, "learning-paths"), { recursive: true, force: true });
-  const workPath = join(contentRoot, "works", arnettId, "work.yaml");
-  const brombergWorkPath = join(contentRoot, "works", brombergId, "work.yaml");
-  const zhuWorkPath = join(contentRoot, "works", "work:zhu-2021", "work.yaml");
-  const transfitWorkPath = join(contentRoot, "works", "work:transfit-2025", "work.yaml");
-  const longYuWorkPath = join(contentRoot, "works", "work:long-yu-2026", "work.yaml");
-  const linePath = join(contentRoot, "research-lines", "research-line:central-engines", "line.yaml");
+  const workPath = join(contentRoot, "works", arnettSlug, "work.yaml");
+  const brombergWorkPath = join(contentRoot, "works", brombergSlug, "work.yaml");
+  const zhuWorkPath = join(contentRoot, "works", "zhu-2021", "work.yaml");
+  const transfitWorkPath = join(contentRoot, "works", "transfit-2025", "work.yaml");
+  const longYuWorkPath = join(contentRoot, "works", "long-yu-2026", "work.yaml");
+  const linePath = join(contentRoot, "research-lines", "central-engines", "line.yaml");
   const denseLinePath = join(
     contentRoot,
     "research-lines",
-    "research-line:dense-environment-multimessenger",
+    "dense-environment-multimessenger",
     "line.yaml",
   );
   const explosiveLinePath = join(
     contentRoot,
     "research-lines",
-    "research-line:explosive-transients-csm",
+    "explosive-transients-csm",
     "line.yaml",
   );
   const work = parse(await readFile(workPath, "utf8"));
@@ -79,7 +80,7 @@ async function copyContent() {
 }
 
 async function readArnett(contentRoot) {
-  const workRoot = join(contentRoot, "works", arnettId);
+  const workRoot = join(contentRoot, "works", arnettSlug);
   const [statements, account, evidence, annotations] = await Promise.all(
     ["statements.yaml", "physical-account.yaml", "evidence.yaml", "annotations.yaml"].map(
       async (fileName) => parse(await readFile(join(workRoot, fileName), "utf8")),
@@ -341,7 +342,7 @@ test("unreviewed governed records cannot retain prior review bindings", async ()
 
     const result = await validateCanonicalContent(contentRoot);
     diagnosticFor(result, "REVIEW_BINDING_WITHOUT_REVIEW", {
-      file: `content/works/${arnettId}/${fileName}`,
+      file: `content/works/${arnettSlug}/${fileName}`,
       record_id: record.id,
     });
   }
@@ -622,7 +623,7 @@ test("invalid locator on Evidence referenced by the scientific account invalidat
 
   const result = await validateCanonicalContent(contentRoot);
   const diagnostic = diagnosticFor(result, "EVIDENCE_LOCATOR_PAGE_INVALID", {
-    file: `content/works/${arnettId}/evidence.yaml`,
+    file: `content/works/${arnettSlug}/evidence.yaml`,
     record_id: referenced.id,
     field_path: "/evidence/0/locator/page",
   });

@@ -126,6 +126,20 @@ function addUnknownEntry(diagnostics, contentRoot, absolutePath, entryName, kind
   );
 }
 
+function addUnsafeFilesystemName(diagnostics, contentRoot, absolutePath, entryName, kind) {
+  if (!entryName.includes(":")) {
+    return;
+  }
+  diagnostics.push(
+    diagnostic({
+      code: "STRUCTURE_FILESYSTEM_SLUG_INVALID",
+      file: relativeContentPath(contentRoot, absolutePath),
+      recordId: entryName,
+      message: `${kind} names must not contain ':' so canonical content can be checked out on Windows.`,
+    }),
+  );
+}
+
 async function inspectRoot(contentRoot, result) {
   const entries = await directoryEntries(contentRoot);
   if (!entries) {
@@ -244,6 +258,14 @@ async function inspectWorkBundles(contentRoot, directory, result) {
       addUnknownEntry(result.diagnostics, contentRoot, absolutePath, entry.name, "Work collection entry");
       continue;
     }
+    const bundleSlug = entry.name;
+    addUnsafeFilesystemName(
+      result.diagnostics,
+      contentRoot,
+      absolutePath,
+      bundleSlug,
+      "Work bundle",
+    );
 
     const files = await directoryEntries(absolutePath);
     const names = files?.map(({ name }) => name) ?? [];
@@ -266,14 +288,15 @@ async function inspectWorkBundles(contentRoot, directory, result) {
         diagnostic({
           code: "STRUCTURE_WORK_BUNDLE_INCOMPLETE",
           file: relativeContentPath(contentRoot, absolutePath),
-          recordId: entry.name,
+          recordId: bundleSlug,
           message: "Every Work bundle must contain exactly the seven declared concern files.",
           relatedIds: WORK_CONCERN_FILES,
         }),
       );
     }
     result.workBundles.push({
-      id: entry.name,
+      slug: bundleSlug,
+      sourcePath: relativeContentPath(contentRoot, absolutePath),
       directory: absolutePath,
       files: Object.fromEntries(
         WORK_CONCERN_FILES.filter((name) => names.includes(name)).map((name) => [
@@ -297,9 +320,18 @@ async function inspectScientificEdges(contentRoot, directory, result) {
       addUnknownEntry(result.diagnostics, contentRoot, absolutePath, entry.name, "Scientific Edge entry");
       continue;
     }
+    const edgeFileSlug = basename(entry.name, ".yaml");
+    addUnsafeFilesystemName(
+      result.diagnostics,
+      contentRoot,
+      absolutePath,
+      entry.name,
+      "Scientific Edge file",
+    );
     result.files.push(relativeContentPath(contentRoot, absolutePath));
     result.scientificEdges.push({
-      id: basename(entry.name, ".yaml"),
+      slug: edgeFileSlug,
+      sourcePath: relativeContentPath(contentRoot, absolutePath),
       path: absolutePath,
     });
   }
@@ -402,6 +434,15 @@ async function inspectEditorialBundles(contentRoot, directory, metadataFile, pro
     }
     const bundleEntries = await directoryEntries(absolutePath);
     const names = bundleEntries?.map(({ name }) => name) ?? [];
+    const collectionSlug = entry.name;
+    addUnsafeFilesystemName(
+      result.diagnostics,
+      contentRoot,
+      absolutePath,
+      collectionSlug,
+      "Editorial bundle",
+    );
+
     for (const child of bundleEntries ?? []) {
       const childPath = join(absolutePath, child.name);
       if (child.isFile() && [metadataFile, "reading.md"].includes(child.name)) {
@@ -434,14 +475,15 @@ async function inspectEditorialBundles(contentRoot, directory, metadataFile, pro
         diagnostic({
           code: "STRUCTURE_EDITORIAL_BUNDLE_INCOMPLETE",
           file: relativeContentPath(contentRoot, absolutePath),
-          recordId: entry.name,
+          recordId: collectionSlug,
           message: `Editorial bundles must contain exactly ${metadataFile} and reading.md.`,
           relatedIds: [metadataFile, "reading.md"],
         }),
       );
     }
     result[property].push({
-      id: entry.name,
+      slug: collectionSlug,
+      sourcePath: relativeContentPath(contentRoot, absolutePath),
       directory: absolutePath,
       files: Object.fromEntries(
         [metadataFile, "reading.md"]
@@ -475,11 +517,11 @@ export async function discoverCanonicalContent(contentRoot = new URL("../content
   await inspectRoot(root, result);
   result.files = sortBytewise([...new Set(result.files)]);
   result.axes.sort((left, right) => AXIS_IDS.indexOf(left.id) - AXIS_IDS.indexOf(right.id));
-  const compareById = (left, right) => Buffer.from(left.id).compare(Buffer.from(right.id));
-  result.workBundles.sort(compareById);
-  result.scientificEdges.sort(compareById);
-  result.researchLines.sort(compareById);
-  result.learningPaths.sort(compareById);
+  const compareBySlug = (left, right) => Buffer.from(left.slug).compare(Buffer.from(right.slug));
+  result.workBundles.sort(compareBySlug);
+  result.scientificEdges.sort(compareBySlug);
+  result.researchLines.sort(compareBySlug);
+  result.learningPaths.sort(compareBySlug);
   return result;
 }
 
@@ -569,7 +611,7 @@ export async function loadCanonicalContent(contentRoot = new URL("../content/", 
           path,
           discovery.diagnostics,
           relativeContentPath(discovery.root, path),
-          bundle.id,
+          bundle.slug,
         );
         if (text !== undefined) {
           files[fileName] = text;
@@ -583,19 +625,30 @@ export async function loadCanonicalContent(contentRoot = new URL("../content/", 
         );
       }
     }
-    works.push({ id: bundle.id, files });
+    const workId = typeof files["work.yaml"]?.work_id === "string"
+      ? files["work.yaml"].work_id
+      : bundle.slug;
+    works.push({
+      id: workId,
+      slug: bundle.slug,
+      sourcePath: bundle.sourcePath,
+      files,
+    });
   }
 
   const scientificEdges = [];
   for (const edge of discovery.scientificEdges) {
+    const value = await readYaml(
+      edge.path,
+      relativeContentPath(discovery.root, edge.path),
+      discovery.diagnostics,
+      {},
+    );
     scientificEdges.push({
-      id: edge.id,
-      value: await readYaml(
-        edge.path,
-        relativeContentPath(discovery.root, edge.path),
-        discovery.diagnostics,
-        {},
-      ),
+      id: typeof value?.id === "string" ? value.id : edge.slug,
+      slug: edge.slug,
+      sourcePath: edge.sourcePath,
+      value,
     });
   }
 
@@ -607,19 +660,22 @@ export async function loadCanonicalContent(contentRoot = new URL("../content/", 
           readingPath,
           discovery.diagnostics,
           relativeContentPath(discovery.root, readingPath),
-          bundle.id,
+          bundle.slug,
         )
       : undefined;
+    const line = bundle.files["line.yaml"]
+      ? await readYaml(
+          bundle.files["line.yaml"],
+          relativeContentPath(discovery.root, bundle.files["line.yaml"]),
+          discovery.diagnostics,
+          {},
+        )
+      : {};
     const researchLine = {
-      id: bundle.id,
-      line: bundle.files["line.yaml"]
-        ? await readYaml(
-            bundle.files["line.yaml"],
-            relativeContentPath(discovery.root, bundle.files["line.yaml"]),
-            discovery.diagnostics,
-            {},
-          )
-        : {},
+      id: typeof line?.line_id === "string" ? line.line_id : bundle.slug,
+      slug: bundle.slug,
+      sourcePath: bundle.sourcePath,
+      line,
     };
     if (reading !== undefined) {
       researchLine.reading = reading;
@@ -635,25 +691,35 @@ export async function loadCanonicalContent(contentRoot = new URL("../content/", 
           readingPath,
           discovery.diagnostics,
           relativeContentPath(discovery.root, readingPath),
-          bundle.id,
+          bundle.slug,
         )
       : undefined;
+    const path = bundle.files["path.yaml"]
+      ? await readYaml(
+          bundle.files["path.yaml"],
+          relativeContentPath(discovery.root, bundle.files["path.yaml"]),
+          discovery.diagnostics,
+          {},
+        )
+      : {};
     const learningPath = {
-      id: bundle.id,
-      path: bundle.files["path.yaml"]
-        ? await readYaml(
-            bundle.files["path.yaml"],
-            relativeContentPath(discovery.root, bundle.files["path.yaml"]),
-            discovery.diagnostics,
-            {},
-          )
-        : {},
+      id: typeof path?.path_id === "string" ? path.path_id : bundle.slug,
+      slug: bundle.slug,
+      sourcePath: bundle.sourcePath,
+      path,
     };
     if (reading !== undefined) {
       learningPath.reading = reading;
     }
     learningPaths.push(learningPath);
   }
+
+  const compareById = (left, right) =>
+    Buffer.from(String(left.id)).compare(Buffer.from(String(right.id)));
+  works.sort(compareById);
+  scientificEdges.sort(compareById);
+  researchLines.sort(compareById);
+  learningPaths.sort(compareById);
 
   return {
     discovery,

@@ -6,7 +6,7 @@ expected:
   diagnostics:
     - severity: error
       code: MEMBERSHIP_REVIEW_BINDING_STALE
-      file: content/research-lines/research-line:central-engines/line.yaml
+      file: content/research-lines/central-engines/line.yaml
       record_id: membership:central-engines-bromberg-2011
       field_path: /memberships/1/review_binding/semantic_digest
       related_ids: []

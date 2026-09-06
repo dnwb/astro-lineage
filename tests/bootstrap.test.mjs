@@ -1,11 +1,25 @@
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
 import { existsSync } from "node:fs";
-import { readFile } from "node:fs/promises";
+import { readFile, readdir } from "node:fs/promises";
+import { join } from "node:path";
 import { test } from "node:test";
 import { fileURLToPath } from "node:url";
 
 const projectRoot = fileURLToPath(new URL("..", import.meta.url));
+
+async function relativePaths(root, directory = root) {
+  const paths = [];
+  for (const entry of await readdir(directory, { withFileTypes: true })) {
+    const absolutePath = join(directory, entry.name);
+    const relativePath = absolutePath.slice(root.length + 1).split("\\").join("/");
+    paths.push(relativePath);
+    if (entry.isDirectory()) {
+      paths.push(...await relativePaths(root, absolutePath));
+    }
+  }
+  return paths;
+}
 
 test("the project owns its Git boundary", async () => {
   const head = await readFile(new URL("../.git/HEAD", import.meta.url), "utf8");
@@ -49,8 +63,14 @@ test("the production build renders the product boundary as static HTML", async (
   assert.match(papersHtml, /work:arnett-1982/);
   assert.doesNotMatch(papersHtml, /provenance/i);
   assert.equal(
-    existsSync(new URL("../dist/papers/work:arnett-1982/index.html", import.meta.url)),
+    existsSync(new URL("../dist/papers/arnett-1982/index.html", import.meta.url)),
     true,
+  );
+  const distRoot = fileURLToPath(new URL("../dist", import.meta.url));
+  assert.deepEqual(
+    (await relativePaths(distRoot)).filter((path) => path.includes(":")),
+    [],
+    "the generated static site must not contain Windows-incompatible path components",
   );
   assert.doesNotMatch(papersHtml, /<script/i);
 });

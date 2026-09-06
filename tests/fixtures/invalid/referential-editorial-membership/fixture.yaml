@@ -6,7 +6,7 @@ expected:
   diagnostics:
     - severity: error
       code: REFERENTIAL_WORK_MISSING
-      file: content/research-lines/research-line:central-engines/line.yaml
+      file: content/research-lines/central-engines/line.yaml
       record_id: membership:t12-missing-work
       field_path: /memberships/4/work_id
       related_ids:

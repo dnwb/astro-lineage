@@ -40,11 +40,15 @@ const productionContent = join(projectRoot, "content");
 const validFixtureRoot = join(projectRoot, "tests", "fixtures", "valid");
 const invalidFixtureRoot = join(projectRoot, "tests", "fixtures", "invalid");
 
-const ARNETT_WORK = "work:arnett-1982";
+const ARNETT_WORK_SLUG = "arnett-1982";
 const BROMBERG_WORK = "work:bromberg-2011";
+const BROMBERG_WORK_SLUG = "bromberg-2011";
 const LONG_YU_WORK = "work:long-yu-2026";
+const LONG_YU_WORK_SLUG = "long-yu-2026";
 const CENTRAL_ENGINES_LINE = "research-line:central-engines";
+const CENTRAL_ENGINES_LINE_SLUG = "central-engines";
 const EMBEDDED_JET_PATH = "learning-path:embedded-jet-dynamics";
+const EMBEDDED_JET_PATH_SLUG = "embedded-jet-dynamics";
 
 const expectedDiagnosticFields = [
   "severity",
@@ -170,7 +174,7 @@ const mutations = Object.freeze({
 
   "add-malformed-scientific-edge": async (contentRoot) => {
     await writeYaml(
-      join(contentRoot, "scientific-edges", "edge:t12-malformed.yaml"),
+      join(contentRoot, "scientific-edges", "t12-malformed.yaml"),
       null,
     );
   },
@@ -182,7 +186,7 @@ const mutations = Object.freeze({
   },
 
   "add-evidence-with-missing-version": async (contentRoot) => {
-    await updateRecord(contentRoot, `works/${ARNETT_WORK}/evidence.yaml`, (record) => {
+    await updateRecord(contentRoot, `works/${ARNETT_WORK_SLUG}/evidence.yaml`, (record) => {
       const evidence = structuredClone(record.evidence.at(-1));
       evidence.id = "evidence:t12-missing-version";
       evidence.version_id = "version:missing";
@@ -191,7 +195,7 @@ const mutations = Object.freeze({
   },
 
   "add-method-with-missing-technique": async (contentRoot) => {
-    await updateRecord(contentRoot, `works/${ARNETT_WORK}/annotations.yaml`, (record) => {
+    await updateRecord(contentRoot, `works/${ARNETT_WORK_SLUG}/annotations.yaml`, (record) => {
       const annotation = structuredClone(record.method_annotations[0]);
       annotation.id = "annotation:t12-missing-technique";
       annotation.technique_id = "technique:missing";
@@ -205,7 +209,7 @@ const mutations = Object.freeze({
   "add-membership-with-missing-work": async (contentRoot) => {
     await updateRecord(
       contentRoot,
-      `research-lines/${CENTRAL_ENGINES_LINE}/line.yaml`,
+      `research-lines/${CENTRAL_ENGINES_LINE_SLUG}/line.yaml`,
       (record) => {
         const membership = structuredClone(record.memberships.at(-1));
         membership.id = "membership:t12-missing-work";
@@ -221,7 +225,7 @@ const mutations = Object.freeze({
   "add-path-entry-with-missing-work": async (contentRoot) => {
     await updateRecord(
       contentRoot,
-      `learning-paths/${EMBEDDED_JET_PATH}/path.yaml`,
+      `learning-paths/${EMBEDDED_JET_PATH_SLUG}/path.yaml`,
       (record) => {
         record.entries.push({ work_id: "work:missing" });
         const transition = structuredClone(record.transitions.at(-1));
@@ -234,7 +238,7 @@ const mutations = Object.freeze({
   },
 
   "add-statement-with-invalid-lifecycle": async (contentRoot) => {
-    await updateRecord(contentRoot, `works/${ARNETT_WORK}/statements.yaml`, (record) => {
+    await updateRecord(contentRoot, `works/${ARNETT_WORK_SLUG}/statements.yaml`, (record) => {
       const statement = structuredClone(record.statements.at(-1));
       statement.id = "statement:t12-invalid-lifecycle";
       statement.lifecycle = "drafted";
@@ -246,7 +250,7 @@ const mutations = Object.freeze({
   },
 
   "add-cycle-link": async (contentRoot) => {
-    await updateRecord(contentRoot, `works/${ARNETT_WORK}/physical-account.yaml`, (record) => {
+    await updateRecord(contentRoot, `works/${ARNETT_WORK_SLUG}/physical-account.yaml`, (record) => {
       const link = structuredClone(record.links[0]);
       link.id = "causal-link:t12-cycle";
       link.source_stage_id = "stage:arnett-modeled-optical-light";
@@ -259,7 +263,7 @@ const mutations = Object.freeze({
   },
 
   "add-method-physics-risk": async (contentRoot) => {
-    await updateRecord(contentRoot, `works/${ARNETT_WORK}/annotations.yaml`, (record) => {
+    await updateRecord(contentRoot, `works/${ARNETT_WORK_SLUG}/annotations.yaml`, (record) => {
       const annotation = structuredClone(record.method_annotations[0]);
       annotation.id = "annotation:t12-method-risk";
       annotation.interpretive_risk = "interpretive";
@@ -279,10 +283,10 @@ const mutations = Object.freeze({
   },
 
   "edit-reviewed-statement": async (contentRoot) => {
-    await updateRecord(contentRoot, `works/${ARNETT_WORK}/statements.yaml`, (record) => {
+    await updateRecord(contentRoot, `works/${ARNETT_WORK_SLUG}/statements.yaml`, (record) => {
       record.statements[0].canonical_text += " The fixture changes its semantic claim.";
     });
-    await updateRecord(contentRoot, `works/${ARNETT_WORK}/work.yaml`, (record) => {
+    await updateRecord(contentRoot, `works/${ARNETT_WORK_SLUG}/work.yaml`, (record) => {
       record.reader_state = "draft";
       record.visibility_approvals = [];
     });
@@ -290,7 +294,7 @@ const mutations = Object.freeze({
       contentRoot,
       "research_line",
       CENTRAL_ENGINES_LINE,
-      `research-lines/${CENTRAL_ENGINES_LINE}/line.yaml`,
+      `research-lines/${CENTRAL_ENGINES_LINE_SLUG}/line.yaml`,
     );
     // Hiding Arnett removes the cross-Work Scientific Edge from TransFit's
     // reader projection in the final snapshot. Refresh that dependent Work's
@@ -299,14 +303,14 @@ const mutations = Object.freeze({
       contentRoot,
       "work",
       "work:transfit-2025",
-      "works/work:transfit-2025/work.yaml",
+      "works/transfit-2025/work.yaml",
     );
   },
 
   "edit-reviewed-membership": async (contentRoot) => {
     await updateRecord(
       contentRoot,
-      `research-lines/${CENTRAL_ENGINES_LINE}/line.yaml`,
+      `research-lines/${CENTRAL_ENGINES_LINE_SLUG}/line.yaml`,
       (record) => {
         record.memberships[1].reading_roles = ["foundation", "review"];
       },
@@ -315,20 +319,20 @@ const mutations = Object.freeze({
       contentRoot,
       "research_line",
       CENTRAL_ENGINES_LINE,
-      `research-lines/${CENTRAL_ENGINES_LINE}/line.yaml`,
+      `research-lines/${CENTRAL_ENGINES_LINE_SLUG}/line.yaml`,
     );
     await refreshVisibilityApproval(
       contentRoot,
       "work",
       BROMBERG_WORK,
-      `works/${BROMBERG_WORK}/work.yaml`,
+      `works/${BROMBERG_WORK_SLUG}/work.yaml`,
     );
   },
 
   "edit-reviewed-learning-path": async (contentRoot) => {
     await updateRecord(
       contentRoot,
-      `learning-paths/${EMBEDDED_JET_PATH}/path.yaml`,
+      `learning-paths/${EMBEDDED_JET_PATH_SLUG}/path.yaml`,
       (record) => {
         record.transitions[0].reason = `${record.transitions[0].reason} The fixture changes the pedagogical transition.`;
       },
@@ -337,12 +341,12 @@ const mutations = Object.freeze({
       contentRoot,
       "learning_path",
       EMBEDDED_JET_PATH,
-      `learning-paths/${EMBEDDED_JET_PATH}/path.yaml`,
+      `learning-paths/${EMBEDDED_JET_PATH_SLUG}/path.yaml`,
     );
   },
 
   "duplicate-published-as-relation": async (contentRoot) => {
-    await updateRecord(contentRoot, `works/${BROMBERG_WORK}/versions.yaml`, (record) => {
+    await updateRecord(contentRoot, `works/${BROMBERG_WORK_SLUG}/versions.yaml`, (record) => {
       const relation = structuredClone(record.publication_relations[0]);
       relation.id = "publication-relation:t12-duplicate-journal";
       record.publication_relations.push(relation);
@@ -351,12 +355,12 @@ const mutations = Object.freeze({
       contentRoot,
       "work",
       BROMBERG_WORK,
-      `works/${BROMBERG_WORK}/work.yaml`,
+      `works/${BROMBERG_WORK_SLUG}/work.yaml`,
     );
   },
 
   "draft-path-work": async (contentRoot) => {
-    await updateRecord(contentRoot, `works/${LONG_YU_WORK}/work.yaml`, (record) => {
+    await updateRecord(contentRoot, `works/${LONG_YU_WORK_SLUG}/work.yaml`, (record) => {
       record.reader_state = "draft";
       record.visibility_approvals = [];
     });
@@ -364,7 +368,7 @@ const mutations = Object.freeze({
       contentRoot,
       "learning_path",
       EMBEDDED_JET_PATH,
-      `learning-paths/${EMBEDDED_JET_PATH}/path.yaml`,
+      `learning-paths/${EMBEDDED_JET_PATH_SLUG}/path.yaml`,
     );
     // Hiding Long & Yu also removes its reviewed Edge from Zhu's reader
     // projection; refresh that dependent Work so the fixture isolates the
@@ -373,12 +377,12 @@ const mutations = Object.freeze({
       contentRoot,
       "work",
       "work:zhu-2021",
-      "works/work:zhu-2021/work.yaml",
+      "works/zhu-2021/work.yaml",
     );
   },
 
   "stale-work-approval": async (contentRoot) => {
-    await updateRecord(contentRoot, `works/${ARNETT_WORK}/work.yaml`, (record) => {
+    await updateRecord(contentRoot, `works/${ARNETT_WORK_SLUG}/work.yaml`, (record) => {
       record.preferred_version.reason += " The fixture changes the release rationale.";
     });
   },

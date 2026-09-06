@@ -31,12 +31,12 @@ import {
 
 const projectRoot = fileURLToPath(new URL("..", import.meta.url));
 const productionContent = join(projectRoot, "content");
-const workIds = [
-  "work:arnett-1982",
-  "work:bromberg-2011",
-  "work:long-yu-2026",
-  "work:transfit-2025",
-  "work:zhu-2021",
+const works = [
+  { id: "work:arnett-1982", slug: "arnett-1982" },
+  { id: "work:bromberg-2011", slug: "bromberg-2011" },
+  { id: "work:long-yu-2026", slug: "long-yu-2026" },
+  { id: "work:transfit-2025", slug: "transfit-2025" },
+  { id: "work:zhu-2021", slug: "zhu-2021" },
 ];
 
 async function readYaml(path) {
@@ -98,8 +98,9 @@ test("all five Work pages render the academic Reader View and on-demand provenan
   });
   assert.equal(build.status, 0, build.stderr || build.stdout);
 
-  for (const workId of workIds) {
-    const html = await readFile(join(projectRoot, "dist", "papers", workId, "index.html"), "utf8");
+  for (const { id: workId, slug } of works) {
+    const html = await readFile(join(projectRoot, "dist", "papers", slug, "index.html"), "utf8");
+    assert.match(html, new RegExp(workId.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&")));
     for (const marker of [
       "<h1>",
       "Reader View",
@@ -125,7 +126,7 @@ test("all five Work pages render the academic Reader View and on-demand provenan
   assert.doesNotMatch(papers, /provenance/iu);
   assert.match(home, /Research Lines/u);
   assert.match(home, /Learning Paths/u);
-  assert.match(home, /work:arnett-1982/u);
+  assert.match(home, /href="\/papers\/arnett-1982\/"/u);
   assert.equal(existsSync(join(projectRoot, "dist", "validation")), false);
 });
 
@@ -209,7 +210,7 @@ test("reverse indexes are direct, byte-for-byte reproducible, removable, and exc
     assert.equal(secondBytes, firstBytes);
     assert.deepEqual(firstIndex, buildWorkResearchLineIndex(snapshot));
 
-    const statementsPath = join(contentRoot, "works", "work:arnett-1982", "statements.yaml");
+    const statementsPath = join(contentRoot, "works", "arnett-1982", "statements.yaml");
     const statements = await readYaml(statementsPath);
     const hidden = structuredClone(statements.statements[0]);
     hidden.id = "statement:ticket13-hidden-marker";

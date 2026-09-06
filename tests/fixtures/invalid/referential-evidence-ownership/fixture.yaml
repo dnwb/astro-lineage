@@ -6,7 +6,7 @@ expected:
   diagnostics:
     - severity: error
       code: REFERENTIAL_VERSION_MISSING
-      file: content/works/work:arnett-1982/evidence.yaml
+      file: content/works/arnett-1982/evidence.yaml
       record_id: evidence:t12-missing-version
       field_path: /evidence/14/version_id
       related_ids:

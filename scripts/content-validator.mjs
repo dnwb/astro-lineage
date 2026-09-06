@@ -116,6 +116,30 @@ const V01_FIXTURE_WORK_IDS = new Set([
   "work:long-yu-2026",
 ]);
 
+function resolveWorkPath(work) {
+  return typeof work?.sourcePath === "string" && work.sourcePath !== ""
+    ? work.sourcePath
+    : `content/works/${work?.slug ?? "unknown"}`;
+}
+
+function resolveResearchLinePath(researchLine) {
+  return typeof researchLine?.sourcePath === "string" && researchLine.sourcePath !== ""
+    ? researchLine.sourcePath
+    : `content/research-lines/${researchLine?.slug ?? "unknown"}`;
+}
+
+function resolveLearningPathPath(learningPath) {
+  return typeof learningPath?.sourcePath === "string" && learningPath.sourcePath !== ""
+    ? learningPath.sourcePath
+    : `content/learning-paths/${learningPath?.slug ?? "unknown"}`;
+}
+
+function resolveScientificEdgePath(scientificEdge) {
+  return typeof scientificEdge?.sourcePath === "string" && scientificEdge.sourcePath !== ""
+    ? scientificEdge.sourcePath
+    : `content/scientific-edges/${scientificEdge?.slug ?? "unknown"}.yaml`;
+}
+
 const STRUCTURAL_DIAGNOSTIC_CODES = new Set([
   // Local record identity, shape, type, and controlled-value failures.
   "ACTOR_ID_DUPLICATE",
@@ -228,12 +252,12 @@ const STRUCTURAL_DIAGNOSTIC_CODES = new Set([
   "CAUSAL_LINK_RELATION_INVALID",
   "CAUSAL_LINK_ORIGIN_INVALID",
   "CAUSAL_LINK_RISK_INVALID",
+  "WORK_ID_DUPLICATE",
   "WORK_ID_INVALID",
   "WORK_READER_STATE_INVALID",
   "WORK_PREFERRED_VERSION_WITHOUT_VERSIONS",
   "WORK_PREFERRED_VERSION_INVALID",
   "WORK_PREFERRED_VERSION_REASON_INVALID",
-  "WORK_ID_DIRECTORY_MISMATCH",
   "WORK_CONCERN_OWNERSHIP_MISMATCH",
   "WORK_READING_FRONTMATTER_INVALID",
   "WORK_READING_OWNERSHIP_MISMATCH",
@@ -241,8 +265,8 @@ const STRUCTURAL_DIAGNOSTIC_CODES = new Set([
   "STRUCTURE_WORK_COLLECTION_INVALID",
   // Editorial bundle identity, membership shape, and role contracts.
   "RESEARCH_LINE_INVALID_SHAPE",
+  "RESEARCH_LINE_ID_DUPLICATE",
   "RESEARCH_LINE_ID_INVALID",
-  "RESEARCH_LINE_ID_DIRECTORY_MISMATCH",
   "RESEARCH_LINE_READER_STATE_INVALID",
   "RESEARCH_LINE_TITLE_INVALID",
   "RESEARCH_LINE_QUESTION_INVALID",
@@ -266,8 +290,8 @@ const STRUCTURAL_DIAGNOSTIC_CODES = new Set([
   "VISIBILITY_APPROVAL_TIMESTAMP_INVALID",
   // Learning Path bundle identity and local shape contracts.
   "LEARNING_PATH_INVALID_SHAPE",
+  "LEARNING_PATH_ID_DUPLICATE",
   "LEARNING_PATH_ID_INVALID",
-  "LEARNING_PATH_ID_DIRECTORY_MISMATCH",
   "LEARNING_PATH_READER_STATE_INVALID",
   "LEARNING_PATH_TITLE_INVALID",
   "LEARNING_PATH_READING_FRONTMATTER_INVALID",
@@ -296,7 +320,6 @@ const STRUCTURAL_DIAGNOSTIC_CODES = new Set([
   // Scientific Edge record identity, shape, and controlled-value failures.
   "SCIENTIFIC_EDGE_INVALID_SHAPE",
   "SCIENTIFIC_EDGE_ID_INVALID",
-  "SCIENTIFIC_EDGE_FILENAME_MISMATCH",
   "SCIENTIFIC_EDGE_ID_DUPLICATE",
   "SCIENTIFIC_EDGE_RELATION_INVALID",
   "SCIENTIFIC_EDGE_BASIS_INVALID",
@@ -3064,6 +3087,7 @@ function validateVisibilityApprovals(
 
 function validateResearchLines(snapshot, actorsById, diagnostics) {
   const worksById = new Map(snapshot.works.map((work) => [work.id, work]));
+  const seenLineIds = new Set();
   const pairOwners = new Map();
   const membershipIds = new Set();
   const memberships = [];
@@ -3072,7 +3096,8 @@ function validateResearchLines(snapshot, actorsById, diagnostics) {
 
   for (const researchLine of snapshot.researchLines) {
     const line = researchLine.line;
-    const file = `content/research-lines/${researchLine.id}/line.yaml`;
+    const linePath = resolveResearchLinePath(researchLine);
+    const file = `${linePath}/line.yaml`;
     const details = { file, recordId: researchLine.id };
     if (!isObject(line) || hasParseDiagnostic(diagnostics, file)) {
       addDiagnostic(diagnostics, {
@@ -3085,20 +3110,23 @@ function validateResearchLines(snapshot, actorsById, diagnostics) {
       continue;
     }
 
-    validateNamespacedId(line.line_id, "research-line", {
+    const validLineId = validateNamespacedId(line.line_id, "research-line", {
       ...details,
       code: "RESEARCH_LINE_ID_INVALID",
       fieldPath: "/line_id",
       message: "Research Line IDs must use the research-line: namespace.",
     }, diagnostics);
-    if (line.line_id !== researchLine.id) {
+    if (validLineId && seenLineIds.has(line.line_id)) {
       addDiagnostic(diagnostics, {
         ...details,
-        code: "RESEARCH_LINE_ID_DIRECTORY_MISMATCH",
+        code: "RESEARCH_LINE_ID_DUPLICATE",
         fieldPath: "/line_id",
-        message: "line.yaml line_id must match its bundle directory ID.",
-        relatedIds: [researchLine.id],
+        message: `Research Line ID is duplicated: ${line.line_id}.`,
+        relatedIds: [line.line_id],
       });
+      invalidLineIds.add(line.line_id);
+    } else if (validLineId) {
+      seenLineIds.add(line.line_id);
     }
     if (!READER_STATES.includes(line.reader_state)) {
       addDiagnostic(diagnostics, {
@@ -3134,7 +3162,7 @@ function validateResearchLines(snapshot, actorsById, diagnostics) {
       });
     }
 
-    const readingFile = `content/research-lines/${researchLine.id}/reading.md`;
+    const readingFile = `${linePath}/reading.md`;
     const frontmatter = extractEditorialReadingFrontmatter(researchLine.reading, "line_id");
     if (!frontmatter) {
       addDiagnostic(diagnostics, {
@@ -3150,7 +3178,7 @@ function validateResearchLines(snapshot, actorsById, diagnostics) {
         code: "RESEARCH_LINE_READING_OWNERSHIP_MISMATCH",
         file: readingFile,
         fieldPath: "/line_id",
-        message: "Research Line reading.md line_id must match its bundle directory ID.",
+        message: "Research Line reading.md line_id must match the canonical line_id.",
         relatedIds: [researchLine.id],
       });
     }
@@ -3177,7 +3205,7 @@ function validateResearchLines(snapshot, actorsById, diagnostics) {
 
     const lineStructurallyValid = !diagnostics.some(
       (diagnostic) =>
-        diagnostic.file?.startsWith(`content/research-lines/${researchLine.id}/`) &&
+        diagnostic.file?.startsWith(`${linePath}/`) &&
         diagnostic.record_id === researchLine.id &&
         isStructuralDiagnostic(diagnostic),
     );
@@ -3376,12 +3404,14 @@ function validateLearningPathReviewBinding(path, details, diagnostics) {
 
 function validateLearningPaths(snapshot, actorsById, diagnostics) {
   const worksById = new Map(snapshot.works.map((work) => [work.id, work]));
+  const seenPathIds = new Set();
   const invalidPathIds = new Set();
   const learningPaths = [];
 
   for (const learningPath of snapshot.learningPaths) {
+    const learningPathPath = resolveLearningPathPath(learningPath);
     const path = learningPath.path;
-    const file = `content/learning-paths/${learningPath.id}/path.yaml`;
+    const file = `${learningPathPath}/path.yaml`;
     const details = { file, recordId: learningPath.id, fieldPath: "" };
     const diagnosticStart = diagnostics.length;
     if (!isObject(path) || hasParseDiagnostic(diagnostics, file)) {
@@ -3396,23 +3426,26 @@ function validateLearningPaths(snapshot, actorsById, diagnostics) {
     }
 
     let structurallyValid = true;
-    if (!validateNamespacedId(path.path_id, "learning-path", {
+    const validPathId = validateNamespacedId(path.path_id, "learning-path", {
       ...details,
       code: "LEARNING_PATH_ID_INVALID",
       fieldPath: "/path_id",
       message: "Learning Path IDs must use the learning-path: namespace.",
-    }, diagnostics)) {
+    }, diagnostics);
+    if (!validPathId) {
       structurallyValid = false;
-    }
-    if (path.path_id !== learningPath.id) {
+    } else if (seenPathIds.has(path.path_id)) {
       addDiagnostic(diagnostics, {
         ...details,
-        code: "LEARNING_PATH_ID_DIRECTORY_MISMATCH",
+        code: "LEARNING_PATH_ID_DUPLICATE",
         fieldPath: "/path_id",
-        message: "path.yaml path_id must match its bundle directory ID.",
-        relatedIds: [learningPath.id],
+        message: `Learning Path ID is duplicated: ${path.path_id}.`,
+        relatedIds: [path.path_id],
       });
       structurallyValid = false;
+      invalidPathIds.add(path.path_id);
+    } else {
+      seenPathIds.add(path.path_id);
     }
     if (!READER_STATES.includes(path.reader_state)) {
       addDiagnostic(diagnostics, {
@@ -3434,7 +3467,7 @@ function validateLearningPaths(snapshot, actorsById, diagnostics) {
       structurallyValid = false;
     }
 
-    const readingFile = `content/learning-paths/${learningPath.id}/reading.md`;
+    const readingFile = `${learningPathPath}/reading.md`;
     const frontmatter = extractEditorialReadingFrontmatter(learningPath.reading, "path_id");
     if (!frontmatter) {
       addDiagnostic(diagnostics, {
@@ -3451,7 +3484,7 @@ function validateLearningPaths(snapshot, actorsById, diagnostics) {
         code: "LEARNING_PATH_READING_OWNERSHIP_MISMATCH",
         file: readingFile,
         fieldPath: "/path_id",
-        message: "Learning Path reading.md path_id must match its bundle directory ID.",
+        message: "Learning Path reading.md path_id must match the canonical path_id.",
         relatedIds: [learningPath.id],
       });
       structurallyValid = false;
@@ -3690,8 +3723,8 @@ function validateFinalSnapshotVisibility(snapshot, actorsById, diagnostics, edit
     if (!isObject(record)) {
       continue;
     }
-    const details = { file: `content/works/${work.id}/work.yaml`, recordId: work.id };
-    const workPath = `content/works/${work.id}`;
+    const workPath = resolveWorkPath(work);
+    const details = { file: `${workPath}/work.yaml`, recordId: work.id };
     const structurallyInvalid = invalidWorkIds.has(work.id) || diagnostics.some(
       (diagnostic) =>
         diagnostic.file?.startsWith(`${workPath}/`) && isStructuralDiagnostic(diagnostic),
@@ -3778,8 +3811,8 @@ function validateFinalSnapshotVisibility(snapshot, actorsById, diagnostics, edit
     if (!isObject(record)) {
       continue;
     }
-    const details = { file: `content/research-lines/${researchLine.id}/line.yaml`, recordId: researchLine.id };
-    const linePath = `content/research-lines/${researchLine.id}`;
+    const linePath = resolveResearchLinePath(researchLine);
+    const details = { file: `${linePath}/line.yaml`, recordId: researchLine.id };
     const structurallyInvalid = invalidLineIds.has(researchLine.id) || diagnostics.some(
       (diagnostic) =>
         diagnostic.file?.startsWith(`${linePath}/`) && isStructuralDiagnostic(diagnostic),
@@ -3823,11 +3856,11 @@ function validateFinalSnapshotVisibility(snapshot, actorsById, diagnostics, edit
     if (!isObject(record)) {
       continue;
     }
+    const pathRoot = resolveLearningPathPath(learningPath);
     const details = {
-      file: `content/learning-paths/${learningPath.id}/path.yaml`,
+      file: `${pathRoot}/path.yaml`,
       recordId: learningPath.id,
     };
-    const pathRoot = `content/learning-paths/${learningPath.id}`;
     const structurallyInvalid = invalidPathIds.has(learningPath.id) || diagnostics.some(
       (diagnostic) =>
         diagnostic.file?.startsWith(`${pathRoot}/`) && isStructuralDiagnostic(diagnostic),
@@ -3906,7 +3939,7 @@ function validateFinalSnapshotVisibility(snapshot, actorsById, diagnostics, edit
 function deriveResearchLineInventory(snapshot, diagnostics, visibilityByLineId = new Map()) {
   return snapshot.researchLines
     .map((researchLine) => {
-      const path = `content/research-lines/${researchLine.id}`;
+      const path = resolveResearchLinePath(researchLine);
       const visibility = visibilityByLineId.get(researchLine.id) ?? {};
       return {
         line_id: researchLine.id,
@@ -3925,7 +3958,7 @@ function deriveResearchLineInventory(snapshot, diagnostics, visibilityByLineId =
 function deriveLearningPathInventory(snapshot, diagnostics, visibilityByPathId = new Map()) {
   return snapshot.learningPaths
     .map((learningPath) => {
-      const path = `content/learning-paths/${learningPath.id}`;
+      const path = resolveLearningPathPath(learningPath);
       const visibility = visibilityByPathId.get(learningPath.id) ?? {};
       const record = learningPath.path;
       return {
@@ -3995,7 +4028,7 @@ function validateEvidenceLocator(locator, details, diagnostics) {
 
 function validateEvidenceRecords(work, versionsById, actorsById, diagnostics) {
   const evidenceEnvelope = work.files["evidence.yaml"];
-  const file = `content/works/${work.id}/evidence.yaml`;
+  const file = `${resolveWorkPath(work)}/evidence.yaml`;
   const evidenceById = new Map();
   if (!isObject(evidenceEnvelope) || !Array.isArray(evidenceEnvelope.evidence)) {
     return evidenceById;
@@ -4210,7 +4243,7 @@ function validateStatements(
   actorsById,
   diagnostics,
 ) {
-  const file = `content/works/${work.id}/statements.yaml`;
+  const file = `${resolveWorkPath(work)}/statements.yaml`;
   const envelope = work.files["statements.yaml"];
   if (!isObject(envelope) || !Array.isArray(envelope.statements)) {
     return;
@@ -4561,14 +4594,14 @@ function validateScientificEdges(snapshot, actorsById, diagnostics) {
   } = scientificEdgeReferences(snapshot);
   const seenIds = new Map();
   const seenDeltas = new Map();
-  const projectionEdgeIds = new Set();
+  const projectionEdgeSourcePaths = new Set();
   const relationCounts = Object.fromEntries(
     SCIENTIFIC_EDGE_RELATIONS.map((relation) => [relation, 0]),
   );
 
   for (const entry of fileRecords) {
     const fileId = entry?.id;
-    const file = `content/scientific-edges/${fileId}.yaml`;
+    const file = resolveScientificEdgePath(entry);
     const edge = entry?.value;
     const details = {
       file,
@@ -4593,16 +4626,6 @@ function validateScientificEdges(snapshot, actorsById, diagnostics) {
       fieldPath: "/id",
       message: "Scientific Edge IDs must use the edge: namespace.",
     }, diagnostics)) {
-      structurallyValid = false;
-    }
-    if (edge.id !== fileId) {
-      addDiagnostic(diagnostics, {
-        ...details,
-        code: "SCIENTIFIC_EDGE_FILENAME_MISMATCH",
-        fieldPath: "/id",
-        message: "Scientific Edge id must match its filename stem.",
-        relatedIds: [fileId],
-      });
       structurallyValid = false;
     }
     if (seenIds.has(edge.id)) {
@@ -4900,13 +4923,13 @@ function validateScientificEdges(snapshot, actorsById, diagnostics) {
     // independent of malformed global Edge files.
     const recordDiagnostics = diagnostics.slice(diagnosticStart);
     if (recordDiagnostics.length === 0) {
-      projectionEdgeIds.add(fileId);
+      projectionEdgeSourcePaths.add(file);
       if (SCIENTIFIC_EDGE_RELATIONS.includes(edge.relation)) {
         relationCounts[edge.relation] += 1;
       }
     }
   }
-  return { projectionEdgeIds, relationCounts };
+  return { projectionEdgeSourcePaths, relationCounts };
 }
 
 export function causalLinkSemanticDigest(link) {
@@ -4972,7 +4995,7 @@ function validatePhysicalAccount(
   diagnostics,
   annotationState = { available: true, annotationIds: new Set() },
 ) {
-  const file = `content/works/${work.id}/physical-account.yaml`;
+  const file = `${resolveWorkPath(work)}/physical-account.yaml`;
   const envelope = work.files["physical-account.yaml"];
   if (!isObject(envelope)) {
     return;
@@ -5307,7 +5330,7 @@ function validatePhysicsAnnotations(
   actorsById,
   diagnostics,
 ) {
-  const file = `content/works/${work.id}/annotations.yaml`;
+  const file = `${resolveWorkPath(work)}/annotations.yaml`;
   const envelope = work.files["annotations.yaml"];
   if (!isObject(envelope) || !Array.isArray(envelope.annotations)) {
     return { available: false, annotationIds: new Set() };
@@ -5581,7 +5604,7 @@ function validateMethodAnnotations(
   actorsById,
   diagnostics,
 ) {
-  const file = `content/works/${work.id}/annotations.yaml`;
+  const file = `${resolveWorkPath(work)}/annotations.yaml`;
   const envelope = work.files["annotations.yaml"];
   if (!isObject(envelope) || !Array.isArray(envelope.method_annotations)) {
     return;
@@ -5698,30 +5721,31 @@ function validateWorkRecords(
   termsById,
   diagnostics,
 ) {
+  const seenWorkIds = new Set();
   for (const work of snapshot.works) {
-    const workFile = `content/works/${work.id}/work.yaml`;
+    const workPath = resolveWorkPath(work);
+    const workFile = `${workPath}/work.yaml`;
     const workRecord = work.files["work.yaml"];
     if (!isObject(workRecord) || hasParseDiagnostic(diagnostics, workFile)) {
       continue;
     }
     const details = { file: workFile, recordId: work.id };
-    if (!validateNamespacedId(workRecord.work_id, "work", {
+    const validWorkId = validateNamespacedId(workRecord.work_id, "work", {
       ...details,
       code: "WORK_ID_INVALID",
       fieldPath: "/work_id",
       message: "Work IDs must use the work: namespace.",
-    }, diagnostics)) {
-      // Keep the ownership comparison below independent of ID syntax so that a
-      // typo in a valid-looking ID still has one actionable diagnostic.
-    }
-    if (workRecord.work_id !== work.id) {
+    }, diagnostics);
+    if (validWorkId && seenWorkIds.has(workRecord.work_id)) {
       addDiagnostic(diagnostics, {
         ...details,
-        code: "WORK_ID_DIRECTORY_MISMATCH",
+        code: "WORK_ID_DUPLICATE",
         fieldPath: "/work_id",
-        message: "work.yaml work_id must match its bundle directory ID.",
-        relatedIds: [work.id],
+        message: `Work ID is duplicated: ${workRecord.work_id}.`,
+        relatedIds: [workRecord.work_id],
       });
+    } else if (validWorkId) {
+      seenWorkIds.add(workRecord.work_id);
     }
     if (!READER_STATES.includes(workRecord.reader_state)) {
       addDiagnostic(diagnostics, {
@@ -5741,7 +5765,7 @@ function validateWorkRecords(
       "physical-account.yaml",
     ]) {
       const value = work.files[fileName];
-      const file = `content/works/${work.id}/${fileName}`;
+      const file = `${workPath}/${fileName}`;
       if (hasParseDiagnostic(diagnostics, file)) {
         continue;
       }
@@ -5754,7 +5778,7 @@ function validateWorkRecords(
           code: "WORK_CONCERN_OWNERSHIP_MISMATCH",
           file,
           fieldPath: "/work_id",
-          message: `${fileName} work_id must match its Work bundle directory.`,
+          message: `${fileName} work_id must match the canonical Work ID.`,
           relatedIds: [work.id],
         });
       }
@@ -5765,7 +5789,7 @@ function validateWorkRecords(
       addDiagnostic(diagnostics, {
         ...details,
         code: "WORK_READING_FRONTMATTER_INVALID",
-        file: `content/works/${work.id}/reading.md`,
+        file: `${workPath}/reading.md`,
         fieldPath: "/work_id",
         message: "Work reading.md must begin with YAML frontmatter containing work_id.",
       });
@@ -5773,9 +5797,9 @@ function validateWorkRecords(
       addDiagnostic(diagnostics, {
         ...details,
         code: "WORK_READING_OWNERSHIP_MISMATCH",
-        file: `content/works/${work.id}/reading.md`,
+        file: `${workPath}/reading.md`,
         fieldPath: "/work_id",
-        message: "reading.md frontmatter work_id must match its Work bundle directory.",
+        message: "reading.md frontmatter work_id must match the canonical Work ID.",
         relatedIds: [work.id],
       });
     }
@@ -5783,21 +5807,21 @@ function validateWorkRecords(
       addDiagnostic(diagnostics, {
         ...details,
         code: "WORK_READING_EMPTY",
-        file: `content/works/${work.id}/reading.md`,
+        file: `${workPath}/reading.md`,
         fieldPath: null,
         message: "Work reading.md must contain reader-facing prose.",
       });
     }
 
     const versionsEnvelope = work.files["versions.yaml"];
-    if (!isObject(versionsEnvelope) || hasParseDiagnostic(diagnostics, `content/works/${work.id}/versions.yaml`)) {
+    if (!isObject(versionsEnvelope) || hasParseDiagnostic(diagnostics, `${workPath}/versions.yaml`)) {
       continue;
     }
     if (!Array.isArray(versionsEnvelope.versions)) {
       addDiagnostic(diagnostics, {
         ...details,
         code: "VERSION_COLLECTION_INVALID",
-        file: `content/works/${work.id}/versions.yaml`,
+        file: `${workPath}/versions.yaml`,
         fieldPath: "/versions",
         message: "versions.yaml must contain a versions array.",
       });
@@ -5821,7 +5845,7 @@ function validateWorkRecords(
           addDiagnostic(diagnostics, {
             ...details,
             code: "VERSION_ID_DUPLICATE",
-            file: `content/works/${work.id}/versions.yaml`,
+            file: `${workPath}/versions.yaml`,
             recordId: version.id,
             fieldPath: `/versions/${index}/id`,
             message: `Version ID is duplicated: ${version.id}.`,
@@ -5835,7 +5859,7 @@ function validateWorkRecords(
       addDiagnostic(diagnostics, {
         ...details,
         code: "BIB_SOURCE_COLLECTION_INVALID",
-        file: `content/works/${work.id}/versions.yaml`,
+        file: `${workPath}/versions.yaml`,
         fieldPath: "/bibliographic_sources",
         message: "versions.yaml must contain a bibliographic_sources array.",
       });
@@ -5848,7 +5872,7 @@ function validateWorkRecords(
         sourceIds,
         {
           ...details,
-          file: `content/works/${work.id}/versions.yaml`,
+          file: `${workPath}/versions.yaml`,
         },
         diagnostics,
       );
@@ -5860,7 +5884,7 @@ function validateWorkRecords(
         sourceIds,
         {
           ...details,
-          file: `content/works/${work.id}/versions.yaml`,
+          file: `${workPath}/versions.yaml`,
         },
         diagnostics,
       );
@@ -5910,7 +5934,7 @@ function validateWorkRecords(
       workRecord,
       {
         ...details,
-        file: `content/works/${work.id}/versions.yaml`,
+        file: `${workPath}/versions.yaml`,
       },
       diagnostics,
     );
@@ -5921,7 +5945,7 @@ function validateWorkRecords(
       actorsById,
       {
         ...details,
-        file: `content/works/${work.id}/versions.yaml`,
+        file: `${workPath}/versions.yaml`,
       },
       diagnostics,
     );
@@ -5969,7 +5993,7 @@ function validateWorkRecords(
         addDiagnostic(diagnostics, {
           ...details,
           code: "STRUCTURE_WORK_COLLECTION_INVALID",
-          file: `content/works/${work.id}/${fileName}`,
+          file: `${workPath}/${fileName}`,
           fieldPath: `/${field}`,
           message: `${fileName} must contain an explicit ${field} array.`,
         });
@@ -5980,12 +6004,13 @@ function validateWorkRecords(
 
 function validateRecordEnvelopes(snapshot, diagnostics) {
   for (const work of snapshot.works) {
+    const workPath = resolveWorkPath(work);
     for (const fileName of ["work.yaml", "versions.yaml", "evidence.yaml", "annotations.yaml", "statements.yaml", "physical-account.yaml"]) {
       const value = work.files[fileName];
       if (value !== undefined && !isObject(value)) {
         addDiagnostic(diagnostics, {
           code: "STRUCTURE_WORK_RECORD_INVALID_SHAPE",
-          file: `content/works/${work.id}/${fileName}`,
+          file: `${workPath}/${fileName}`,
           recordId: work.id,
           fieldPath: null,
           message: `${fileName} must be a YAML mapping envelope.`,
@@ -6140,7 +6165,7 @@ function scientificAccountInspection(work, validationStatus) {
 }
 
 function scientificAccountDependencyError(work, diagnostics) {
-  const workPath = `content/works/${work.id}`;
+  const workPath = resolveWorkPath(work);
   const evidenceIds = scientificAccountEvidenceIds(work);
   const annotationIds = new Set(
     (Array.isArray(work.files["physical-account.yaml"]?.stages)
@@ -6171,7 +6196,7 @@ function deriveWorkInventory(
   return [...snapshot.works]
     .sort((left, right) => Buffer.from(left.id).compare(Buffer.from(right.id)))
     .map((work) => {
-      const workPath = `content/works/${work.id}`;
+      const workPath = resolveWorkPath(work);
       const statements = work.files["statements.yaml"]?.statements;
       const account = work.files["physical-account.yaml"];
       const workDiagnostics = diagnostics.filter(
@@ -6279,8 +6304,8 @@ export async function validateCanonicalContent(
   const scientificEdgeState = validateScientificEdges(snapshot, actorsById, diagnostics);
   const visibilitySnapshot = {
     ...snapshot,
-    scientificEdges: snapshot.scientificEdges.filter(({ id }) =>
-      scientificEdgeState.projectionEdgeIds.has(id)),
+    scientificEdges: snapshot.scientificEdges.filter((edge) =>
+      scientificEdgeState.projectionEdgeSourcePaths.has(resolveScientificEdgePath(edge))),
   };
 
   const manifestSupportsVisibility =

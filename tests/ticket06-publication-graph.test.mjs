@@ -15,34 +15,35 @@ import { projectWorkForReader } from "../scripts/reader-projection.mjs";
 
 const projectRoot = new URL("../", import.meta.url);
 const productionContent = new URL("../content/", import.meta.url);
-const workId = "work:arnett-1982";
+const workSlug = "arnett-1982";
 const journalVersionId = "version:arnett-1982-journal";
 const sharedSourceId = "source:arnett-publication-graph";
 const brombergWorkId = "work:bromberg-2011";
+const brombergWorkSlug = "bromberg-2011";
 
 async function copyContent() {
   const temporaryRoot = await mkdtemp(join(tmpdir(), "axvdaily-ticket06-"));
   const contentRoot = join(temporaryRoot, "content");
   await cp(productionContent, contentRoot, { recursive: true });
   await rm(join(contentRoot, "learning-paths"), { recursive: true, force: true });
-  const workRoot = join(contentRoot, "works", workId);
+  const workRoot = join(contentRoot, "works", workSlug);
   const versionsPath = join(workRoot, "versions.yaml");
   const workPath = join(workRoot, "work.yaml");
-  const brombergWorkPath = join(contentRoot, "works", brombergWorkId, "work.yaml");
-  const zhuWorkPath = join(contentRoot, "works", "work:zhu-2021", "work.yaml");
-  const transfitWorkPath = join(contentRoot, "works", "work:transfit-2025", "work.yaml");
-  const longYuWorkPath = join(contentRoot, "works", "work:long-yu-2026", "work.yaml");
-  const linePath = join(contentRoot, "research-lines", "research-line:central-engines", "line.yaml");
+  const brombergWorkPath = join(contentRoot, "works", brombergWorkSlug, "work.yaml");
+  const zhuWorkPath = join(contentRoot, "works", "zhu-2021", "work.yaml");
+  const transfitWorkPath = join(contentRoot, "works", "transfit-2025", "work.yaml");
+  const longYuWorkPath = join(contentRoot, "works", "long-yu-2026", "work.yaml");
+  const linePath = join(contentRoot, "research-lines", "central-engines", "line.yaml");
   const denseLinePath = join(
     contentRoot,
     "research-lines",
-    "research-line:dense-environment-multimessenger",
+    "dense-environment-multimessenger",
     "line.yaml",
   );
   const explosiveLinePath = join(
     contentRoot,
     "research-lines",
-    "research-line:explosive-transients-csm",
+    "explosive-transients-csm",
     "line.yaml",
   );
   const versions = parse(await readFile(versionsPath, "utf8"));
@@ -300,7 +301,7 @@ test("Bromberg's static Work page renders publication provenance and the branchi
   });
   assert.equal(build.status, 0, build.stderr || build.stdout);
   const html = await readFile(
-    new URL("../dist/papers/work:bromberg-2011/index.html", import.meta.url),
+    new URL("../dist/papers/bromberg-2011/index.html", import.meta.url),
     "utf8",
   );
   for (const marker of [

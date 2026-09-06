@@ -49,7 +49,7 @@ Canonical production content is closed-world under `content/`. Keep every Work
 in its complete seven-file bundle:
 
 ```text
-content/works/<work-id>/
+content/works/<work-slug>/
   work.yaml
   versions.yaml
   evidence.yaml
@@ -61,8 +61,10 @@ content/works/<work-id>/
 
 To add or revise a Work:
 
-1. Allocate an immutable namespaced `work:` ID and keep it identical in the
-   directory, every Work-owned YAML envelope, and `reading.md` frontmatter.
+1. Allocate an immutable namespaced `work:` ID in `work.yaml` and keep that
+   semantic ID identical in every Work-owned YAML envelope and `reading.md`
+   frontmatter. Choose a separate filesystem slug for the bundle directory;
+   it must not contain `:` and must not be treated as the Work ID.
 2. Store Version metadata on `versions.yaml`; bind every Evidence record to a
    concrete Version with a typed locator. Do not infer metadata from an ID or
    guess missing bibliographic values.
@@ -79,13 +81,22 @@ To add or revise a Work:
 Research Lines are governed bundles containing exactly `line.yaml` and
 `reading.md`. Their memberships own context-local Reading Roles and Editorial
 Anchor designations. A visible Line needs a reviewed membership to a visible
-Work and its own profile-bound Human visibility approval.
+Work and its own profile-bound Human visibility approval. The Line ID comes
+from `line.yaml`; its bundle directory uses a separate colon-free filesystem
+slug.
 
 Learning Paths are governed bundles containing exactly `path.yaml` and
 `reading.md`. Store a duplicate-free ordered sequence of visible Work IDs and
 exactly one normalized Pedagogical Transition for each adjacent pair. Path
 content is reviewed atomically and has its own profile-bound Human visibility
-approval; transition reasons do not create Scientific Edges.
+approval; transition reasons do not create Scientific Edges. The Path ID comes
+from `path.yaml`; its bundle directory uses a separate colon-free filesystem
+slug. Scientific Edge IDs likewise come from their YAML records, while their
+filename stems remain independent and colon-free.
+
+Static Reader Entity route segments use these same colon-free slugs (for
+example, `/papers/transfit-2025/`), while page lookup, displayed identity, and
+all canonical references continue to use the namespaced semantic ID.
 
 For all three Reader Entity types, preserve append-only provenance and review
 history. Run `npm run validate` after each content change, inspect the emitted
@@ -102,9 +113,10 @@ Ticket 13 tests.
 
 ## Delivery boundary
 
-V0.1 verification is offline and does not deploy a site. Local completion is
-not a claim of the independent clean-environment remote CI pass; that separate
-acceptance item remains Ticket 14.
+V0.1 verification is offline and does not deploy a site. Ticket 14 completed
+the independent clean-environment remote CI gate. Post-V0.1 compatibility
+hardening uses the same local and clean-CI verification contract without
+reopening Tickets 01–14.
 
 The repository workflow at `.github/workflows/verify.yml` is verification-only:
 it checks out the repository on a clean Node.js 22.20.0 runner, installs the

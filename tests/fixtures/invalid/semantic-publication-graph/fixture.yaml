@@ -6,7 +6,7 @@ expected:
   diagnostics:
     - severity: error
       code: PUBLICATION_PUBLISHED_AS_CARDINALITY_INVALID
-      file: content/works/work:bromberg-2011/versions.yaml
+      file: content/works/bromberg-2011/versions.yaml
       record_id: publication-relation:t12-duplicate-journal
       field_path: /publication_relations/1/target_version_id
       related_ids:

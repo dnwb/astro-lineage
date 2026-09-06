@@ -6,8 +6,8 @@ expected:
   diagnostics:
     - severity: error
       code: SCIENTIFIC_EDGE_INVALID_SHAPE
-      file: content/scientific-edges/edge:t12-malformed.yaml
-      record_id: edge:t12-malformed
+      file: content/scientific-edges/t12-malformed.yaml
+      record_id: t12-malformed
       field_path: null
       related_ids: []
   passes:

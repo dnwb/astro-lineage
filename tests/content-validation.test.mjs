@@ -88,7 +88,7 @@ test("the production snapshot keeps the frozen canonical layout across canonical
   assert(techniqueIds.includes("technique:detector-effective-area-folding"));
   assert(techniqueIds.includes("technique:crank-nicolson-finite-difference"));
   assert(techniqueIds.includes("technique:forward-model-light-curve-fitting"));
-  assert(snapshot.discovery.files.includes("content/works/work:bromberg-2011/work.yaml"));
+  assert(snapshot.discovery.files.includes("content/works/bromberg-2011/work.yaml"));
   assert(snapshot.discovery.files.every((file) => !file.startsWith("generated/")));
 });
 

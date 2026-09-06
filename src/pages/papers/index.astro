@@ -1,6 +1,7 @@
 ---
 import { loadCanonicalContent } from "../../../scripts/content-loader.mjs";
 import { projectVisibleSnapshot } from "../../../scripts/reader-projection.mjs";
+import { workReaderPath } from "../../lib/reader-routes";
 import "../../styles/global.css";
 
 const snapshot = await loadCanonicalContent(new URL("../../../content/", import.meta.url));
@@ -44,7 +45,7 @@ function authors(work: Record<string, any>) {
               const version = preferred(work);
               return (
                 <li class="paper-index-item">
-                  <a class="paper-title" href={`/papers/${work.work_id}/`}>{version.title ?? work.work_id}</a>
+                  <a class="paper-title" href={workReaderPath(snapshot, work.work_id)}>{version.title ?? work.work_id}</a>
                   <small>{authors(work)}{version.release_date?.value ? ` · ${version.release_date.value}` : ""}</small>
                   <span class="record-label">{work.work_id}</span>
                 </li>

@@ -6,7 +6,7 @@ expected:
   diagnostics:
     - severity: error
       code: CAUSAL_ACCOUNT_CYCLE
-      file: content/works/work:arnett-1982/physical-account.yaml
+      file: content/works/arnett-1982/physical-account.yaml
       record_id: work:arnett-1982
       field_path: /links
       related_ids: []

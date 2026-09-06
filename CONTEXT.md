@@ -8,6 +8,14 @@ This context describes the scientific reading model used to organize high-energy
 An intellectually distinct research contribution and the only node type in the Paper Graph. Work identity follows continuity of the core research contribution rather than identifier, title, author list, or publication venue; a Work may have multiple Versions and explicitly selects a preferred Version for display.
 _Avoid_: Publication version, physical concept node, learning-path node
 
+**Canonical ID**:
+An immutable namespaced semantic identifier stored in canonical structured content, such as `work:transfit-2025` or `edge:long-yu-extends-zhu-dynamic-trajectory`. It may contain `:` and remains the identity used by references, ownership, lookup, and display; it is not copied into filesystem or static-route path components.
+_Avoid_: Filesystem path, directory name, filename stem
+
+**Filesystem Slug**:
+A colon-free directory name or filename stem used to locate a managed canonical-content record and its generated static reader route. It is independent from the record's Canonical ID and does not define semantic identity, ownership, or references.
+_Avoid_: Canonical ID, semantic namespace, semantic identity
+
 **Version**:
 A specific public expression of a Work, such as a curated public arXiv revision or journal publication, that owns its bibliographic metadata. Curated public arXiv revisions have distinct Version identities even when they belong to the same Work.
 _Avoid_: Independent Work, duplicate Paper

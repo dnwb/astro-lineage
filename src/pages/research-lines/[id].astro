@@ -2,17 +2,18 @@
 import ReadingProse from "../../components/ReadingProse.astro";
 import { loadCanonicalContent } from "../../../scripts/content-loader.mjs";
 import { projectResearchLineForReader } from "../../../scripts/reader-projection.mjs";
+import { workReaderPath } from "../../lib/reader-routes";
 import "../../styles/global.css";
 
 type AnyRecord = Record<string, any>;
-type ResearchLineBundle = { id: string; line: AnyRecord };
+type ResearchLineBundle = { id: string; slug: string; line: AnyRecord };
 
 export async function getStaticPaths() {
   const snapshot = await loadCanonicalContent(new URL("../../../content/", import.meta.url));
   const visibleLines = (snapshot.researchLines as ResearchLineBundle[]).filter(
     (line) => line.line.reader_state === "visible",
   );
-  return visibleLines.map((line) => ({ params: { id: line.id }, props: { lineId: line.id } }));
+  return visibleLines.map((line) => ({ params: { id: line.slug }, props: { lineId: line.id } }));
 }
 
 const { lineId } = Astro.props;
@@ -62,7 +63,7 @@ const memberships = (researchLine.memberships ?? []) as AnyRecord[];
         <ul class="paper-index">
           {memberships.map((membership: AnyRecord) => (
             <li class="paper-index-item">
-              <a class="paper-title" href={`/papers/${membership.work_id}/`}>{membership.work?.title ?? membership.work_id}</a>
+              <a class="paper-title" href={workReaderPath(snapshot, membership.work_id)}>{membership.work?.title ?? membership.work_id}</a>
               <small>{membership.reading_roles?.join(", ") ?? ""}{membership.editorial_anchor ? " · Editorial Anchor" : ""}</small>
               {membership.reason ? <span>{membership.reason}</span> : null}
             </li>

@@ -6,7 +6,7 @@ expected:
   diagnostics:
     - severity: error
       code: STATEMENT_REVIEW_BINDING_STALE
-      file: content/works/work:arnett-1982/statements.yaml
+      file: content/works/arnett-1982/statements.yaml
       record_id: statement:arnett-analytic-light-curve-solutions
       field_path: /statements/0/review_binding
       related_ids: []

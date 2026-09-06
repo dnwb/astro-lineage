@@ -6,17 +6,21 @@ import {
   projectResearchLineForReader,
   projectWorkForReader,
 } from "../../../scripts/reader-projection.mjs";
+import {
+  researchLineReaderPath,
+  workReaderPath,
+} from "../../lib/reader-routes";
 import "../../styles/global.css";
 
 type AnyRecord = Record<string, any>;
-type WorkBundle = { id: string; files: AnyRecord };
+type WorkBundle = { id: string; slug: string; files: AnyRecord };
 
 export async function getStaticPaths() {
   const snapshot = await loadCanonicalContent(new URL("../../../content/", import.meta.url));
   const visibleWorks = (snapshot.works as WorkBundle[]).filter(
     (work) => work.files["work.yaml"]?.reader_state === "visible",
   );
-  return visibleWorks.map((work) => ({ params: { workId: work.id }, props: { workId: work.id } }));
+  return visibleWorks.map((work) => ({ params: { workId: work.slug }, props: { workId: work.id } }));
 }
 
 const { workId } = Astro.props;
@@ -206,7 +210,7 @@ function edgeDirection(edge: AnyRecord) {
           <ul class="compact-list">
             {lineMemberships.map((membership: AnyRecord) => (
               <li>
-                <a href={`/research-lines/${membership.line_id}/`}>{membership.line?.title ?? membership.line_id}</a>
+                <a href={researchLineReaderPath(snapshot, membership.line_id)}>{membership.line?.title ?? membership.line_id}</a>
                 {membership.editorial_anchor ? " — Editorial Anchor" : ""}
                 {membership.reading_roles?.length ? ` (${membership.reading_roles.join(", ")})` : ""}
               </li>
@@ -229,7 +233,7 @@ function edgeDirection(edge: AnyRecord) {
                 {edge.source_work_id} <strong>{edge.relation}</strong> {edge.target_work_id}
                 {edge.disposition ? ` — disposition: ${edge.disposition}` : ""}
                 {edge.reason ? ` — ${edge.reason}` : ""}
-                <a class="inline-link" href={`/papers/${edge.source_work_id === workId ? edge.target_work_id : edge.source_work_id}/`}>Read the other Work</a>
+                <a class="inline-link" href={workReaderPath(snapshot, edge.source_work_id === workId ? edge.target_work_id : edge.source_work_id)}>Read the other Work</a>
               </li>
             ))}
           </ul>

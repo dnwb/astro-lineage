@@ -22,6 +22,7 @@ import {
 const productionContent = new URL("../content/", import.meta.url);
 const sourceWorkId = "work:long-yu-2026";
 const targetWorkId = "work:bromberg-2011";
+const targetWorkSlug = "bromberg-2011";
 const thirdWorkId = "work:arnett-1982";
 const sourceEvidenceId = "evidence:long-yu-dynamic-framework";
 const alternateSourceEvidenceId = "evidence:long-yu-head-propagation";
@@ -38,6 +39,13 @@ const relations = Object.freeze([
   "replaces_assumption",
   "corrects",
 ]);
+const edgeFileSlugs = Object.freeze({
+  "edge:long-yu-builds-on-bromberg-dynamics": "long-yu-builds-on-bromberg-dynamics",
+  "edge:long-yu-extends-bromberg-dynamics": "long-yu-extends-bromberg-dynamics",
+  "edge:duplicate-same-delta": "duplicate-same-delta",
+  "edge:long-yu-tests-bromberg-regime": "long-yu-tests-bromberg-regime",
+  "edge:unreviewed-hidden": "unreviewed-hidden",
+});
 let draftContentTemplate;
 
 async function readYaml(path) {
@@ -63,13 +71,13 @@ async function copyContent({ draftReaders = true } = {}) {
   }
   await mkdir(join(contentRoot, "scientific-edges"), { recursive: true });
   if (draftReaders) {
-    for (const directory of ["works", "research-lines", "learning-paths"]) {
-      const snapshot = await loadCanonicalContent(contentRoot);
-      const records = directory === "works"
-        ? snapshot.works.map((work) => join(contentRoot, directory, work.id, "work.yaml"))
-        : directory === "research-lines"
-          ? snapshot.researchLines.map((line) => join(contentRoot, directory, line.id, "line.yaml"))
-          : snapshot.learningPaths.map((path) => join(contentRoot, directory, path.id, "path.yaml"));
+    const snapshot = await loadCanonicalContent(contentRoot);
+    const recordGroups = [
+      snapshot.works.map(({ sourcePath }) => join(temporaryRoot, sourcePath, "work.yaml")),
+      snapshot.researchLines.map(({ sourcePath }) => join(temporaryRoot, sourcePath, "line.yaml")),
+      snapshot.learningPaths.map(({ sourcePath }) => join(temporaryRoot, sourcePath, "path.yaml")),
+    ];
+    for (const records of recordGroups) {
       for (const path of records) {
         const record = await readYaml(path);
         record.reader_state = "draft";
@@ -169,8 +177,18 @@ function inferredEdge(overrides = {}) {
   });
 }
 
-async function writeEdge(contentRoot, value, fileId = value.id) {
-  const path = join(contentRoot, "scientific-edges", `${fileId}.yaml`);
+function edgeFileSlug(value) {
+  const fileSlug = edgeFileSlugs[value.id];
+  assert(fileSlug, `missing explicit filesystem slug for ${value.id}`);
+  return fileSlug;
+}
+
+function edgeDiagnosticFile(value) {
+  return `content/scientific-edges/${edgeFileSlug(value)}.yaml`;
+}
+
+async function writeEdge(contentRoot, value, fileSlug = edgeFileSlug(value)) {
+  const path = join(contentRoot, "scientific-edges", `${fileSlug}.yaml`);
   await writeYaml(path, value);
   return path;
 }
@@ -213,7 +231,7 @@ test("Scientific Edge relation is restricted to the frozen seven-value vocabular
   const result = await validateCanonicalContent(contentRoot);
   assert.equal(result.valid, false);
   diagnosticFor(result, "SCIENTIFIC_EDGE_RELATION_INVALID", {
-    file: `content/scientific-edges/${value.id}.yaml`,
+    file: edgeDiagnosticFile(value),
     record_id: value.id,
     field_path: "/relation",
   });
@@ -245,7 +263,7 @@ test("missing, foreign, and unilateral Evidence fail at the precise Scientific E
     const result = await validateCanonicalContent(contentRoot);
     assert.equal(result.valid, false, label);
     diagnosticFor(result, expectedCode, {
-      file: `content/scientific-edges/${value.id}.yaml`,
+      file: edgeDiagnosticFile(value),
       record_id: value.id,
       field_path: fieldPath,
     });
@@ -259,7 +277,7 @@ test("Scientific Edges reject same-Work endpoints", async () => {
 
   const result = await validateCanonicalContent(contentRoot);
   diagnosticFor(result, "SCIENTIFIC_EDGE_SELF_LOOP", {
-    file: `content/scientific-edges/${value.id}.yaml`,
+    file: edgeDiagnosticFile(value),
     record_id: value.id,
     field_path: "/target_work_id",
   });
@@ -287,7 +305,7 @@ test("optional Statement endpoints must exist and belong to the declared endpoin
     await writeEdge(contentRoot, value);
     const result = await validateCanonicalContent(contentRoot);
     diagnosticFor(result, expectedCode, {
-      file: `content/scientific-edges/${value.id}.yaml`,
+      file: edgeDiagnosticFile(value),
       record_id: value.id,
       field_path: fieldPath,
     });
@@ -314,7 +332,7 @@ test("reviewed Scientific Edges cannot expose unreviewed Statement or Evidence d
     ],
   ]) {
     const { contentRoot } = await validFixture();
-    const path = join(contentRoot, "works", targetWorkId, fileName);
+    const path = join(contentRoot, "works", targetWorkSlug, fileName);
     const envelope = await readYaml(path);
     const record = envelope[collection].find(({ id }) => id === recordId);
     record.review_state = "unreviewed";
@@ -327,7 +345,7 @@ test("reviewed Scientific Edges cannot expose unreviewed Statement or Evidence d
     const result = await validateCanonicalContent(contentRoot);
     assert.equal(result.valid, false, label);
     diagnosticFor(result, expectedCode, {
-      file: `content/scientific-edges/${value.id}.yaml`,
+      file: edgeDiagnosticFile(value),
       record_id: value.id,
       field_path: fieldPath,
     });
@@ -382,7 +400,7 @@ test("every material Scientific Edge field independently invalidates a reviewed 
     const result = await validateCanonicalContent(contentRoot);
     assert(codes(result).has("SCIENTIFIC_EDGE_REVIEW_BINDING_STALE"), label);
     diagnosticFor(result, "SCIENTIFIC_EDGE_REVIEW_BINDING_STALE", {
-      file: `content/scientific-edges/${value.id}.yaml`,
+      file: edgeDiagnosticFile(value),
       record_id: value.id,
       field_path: "/review_binding/semantic_digest",
     });
@@ -513,7 +531,7 @@ async function approveCurrentEdgeVisibility(contentRoot) {
   let snapshot = await loadCanonicalContent(contentRoot);
   for (const workId of [sourceWorkId, targetWorkId]) {
     const work = snapshot.works.find(({ id }) => id === workId);
-    const path = join(contentRoot, "works", workId, "work.yaml");
+    const path = join(contentRoot, "..", work.sourcePath, "work.yaml");
     const record = await readYaml(path);
     record.visibility_approvals.at(-1).visibility_digest =
       computeReaderVisibilityDigest(snapshot, "work", workId);
@@ -549,6 +567,11 @@ test("Reader pages render reviewed inbound/outbound Scientific Edges and bilater
   await approveCurrentEdgeVisibility(contentRoot);
   const validation = await validateCanonicalContent(contentRoot);
   assert.equal(validation.valid, true, JSON.stringify(validation.diagnostics, null, 2));
+  const snapshot = await loadCanonicalContent(contentRoot);
+  const sourceWorkSlug = snapshot.works.find(({ id }) => id === sourceWorkId)?.slug;
+  const targetWorkSlug = snapshot.works.find(({ id }) => id === targetWorkId)?.slug;
+  assert.equal(typeof sourceWorkSlug, "string");
+  assert.equal(typeof targetWorkSlug, "string");
   const buildRoot = await makeBuildRoot(contentRoot);
   const indexBuild = spawnSync("node", ["scripts/editorial-index.mjs"], {
     cwd: buildRoot,
@@ -563,14 +586,14 @@ test("Reader pages render reviewed inbound/outbound Scientific Edges and bilater
   });
   assert.equal(build.status, 0, build.stderr || build.stdout);
 
-  const sourceHtml = await readFile(join(buildRoot, "dist", "papers", sourceWorkId, "index.html"), "utf8");
-  const targetHtml = await readFile(join(buildRoot, "dist", "papers", targetWorkId, "index.html"), "utf8");
-  for (const [html, direction, otherWorkId] of [
-    [sourceHtml, "outbound", targetWorkId],
-    [targetHtml, "inbound", sourceWorkId],
+  const sourceHtml = await readFile(join(buildRoot, "dist", "papers", sourceWorkSlug, "index.html"), "utf8");
+  const targetHtml = await readFile(join(buildRoot, "dist", "papers", targetWorkSlug, "index.html"), "utf8");
+  for (const [html, direction, otherWorkSlug] of [
+    [sourceHtml, "outbound", targetWorkSlug],
+    [targetHtml, "inbound", sourceWorkSlug],
   ]) {
     assert.match(html, new RegExp(direction, "iu"));
-    assert.match(html, new RegExp(`href=["']?/papers/${otherWorkId}/`, "u"));
+    assert.match(html, new RegExp(`href=["']?/papers/${otherWorkSlug}/`, "u"));
     assert.match(html, /extends/iu);
     assert.match(html, /contested/iu);
     assert.match(html, /adds time-dependent shock and cooling evolution/iu);

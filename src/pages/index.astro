@@ -3,6 +3,11 @@ import ProductBoundary from "../copy/product-boundary.md";
 import { loadCanonicalContent } from "../../scripts/content-loader.mjs";
 import { projectVisibleSnapshot } from "../../scripts/reader-projection.mjs";
 import { loadSiteConfig } from "../lib/site-config";
+import {
+  learningPathReaderPath,
+  researchLineReaderPath,
+  workReaderPath,
+} from "../lib/reader-routes";
 import "../styles/global.css";
 
 const site = loadSiteConfig();
@@ -55,7 +60,7 @@ function workAuthors(work: Record<string, any>) {
           <ul class="paper-list">
             {works.map((work) => (
               <li>
-                <a href={`/papers/${work.work_id}/`}>{workTitle(work)}</a>
+                <a href={workReaderPath(snapshot, work.work_id)}>{workTitle(work)}</a>
                 {workAuthors(work) ? <small>{workAuthors(work)}</small> : null}
               </li>
             ))}
@@ -67,7 +72,7 @@ function workAuthors(work: Record<string, any>) {
           <h2 id="lines-heading">Research Lines</h2>
           <ul class="paper-list">
             {researchLines.map((line) => (
-              <li><a href={`/research-lines/${line.line_id}/`}>{line.title ?? line.line_id}</a><small>{line.scientific_question}</small></li>
+              <li><a href={researchLineReaderPath(snapshot, line.line_id)}>{line.title ?? line.line_id}</a><small>{line.scientific_question}</small></li>
             ))}
           </ul>
         </section>
@@ -77,7 +82,7 @@ function workAuthors(work: Record<string, any>) {
           <h2 id="paths-heading">Learning Paths</h2>
           <ul class="paper-list">
             {learningPaths.map((path) => (
-              <li><a href={`/learning-paths/${path.path_id}/`}>{path.title ?? path.path_id}</a><small>{path.entries?.length ?? 0} Works, {path.transitions?.length ?? 0} transitions</small></li>
+              <li><a href={learningPathReaderPath(snapshot, path.path_id)}>{path.title ?? path.path_id}</a><small>{path.entries?.length ?? 0} Works, {path.transitions?.length ?? 0} transitions</small></li>
             ))}
           </ul>
         </section>

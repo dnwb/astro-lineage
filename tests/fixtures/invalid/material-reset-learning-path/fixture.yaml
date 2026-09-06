@@ -6,7 +6,7 @@ expected:
   diagnostics:
     - severity: error
       code: LEARNING_PATH_REVIEW_BINDING_STALE
-      file: content/learning-paths/learning-path:embedded-jet-dynamics/path.yaml
+      file: content/learning-paths/embedded-jet-dynamics/path.yaml
       record_id: learning-path:embedded-jet-dynamics
       field_path: /review_binding/semantic_digest
       related_ids: []

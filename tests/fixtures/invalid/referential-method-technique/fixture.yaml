@@ -6,7 +6,7 @@ expected:
   diagnostics:
     - severity: error
       code: REFERENTIAL_TECHNIQUE_MISSING
-      file: content/works/work:arnett-1982/annotations.yaml
+      file: content/works/arnett-1982/annotations.yaml
       record_id: annotation:t12-missing-technique
       field_path: /method_annotations/1/technique_id
       related_ids:

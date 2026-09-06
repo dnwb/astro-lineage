@@ -16,11 +16,12 @@ import { projectWorkForReader } from "../scripts/reader-projection.mjs";
 const projectRoot = new URL("../", import.meta.url);
 const productionContent = new URL("../content/", import.meta.url);
 const workId = "work:long-yu-2026";
+const workSlug = "long-yu-2026";
 const versionId = "version:long-yu-2026-arxiv-v1";
 const lineId = "research-line:dense-environment-multimessenger";
 const approvalTime = "2026-09-05T04:44:27Z";
-const versionsFile = `content/works/${workId}/versions.yaml`;
-const accountFile = `content/works/${workId}/physical-account.yaml`;
+const versionsFile = `content/works/${workSlug}/versions.yaml`;
+const accountFile = `content/works/${workSlug}/physical-account.yaml`;
 
 async function copyContent() {
   const temporaryRoot = await mkdtemp(join(tmpdir(), "axvdaily-ticket09-"));
@@ -215,7 +216,7 @@ test("Long & Yu Reader View renders the arXiv-only dynamic account and provenanc
   assert.equal(build.status, 0, build.stderr || build.stdout);
 
   const html = await readFile(
-    new URL("../dist/papers/work:long-yu-2026/index.html", import.meta.url),
+    new URL("../dist/papers/long-yu-2026/index.html", import.meta.url),
     "utf8",
   );
   assert.match(html, /2608\.12217v1/u);
@@ -230,7 +231,7 @@ test("Long & Yu Reader View renders the arXiv-only dynamic account and provenanc
 
 test("an arXiv revision must use a positive separate revision number", async () => {
   const contentRoot = await copyContent();
-  const path = join(contentRoot, "works", workId, "versions.yaml");
+  const path = join(contentRoot, "works", workSlug, "versions.yaml");
   const versions = await readYaml(path);
   versions.versions[0].arxiv_revision = 0;
   await writeYaml(path, versions);
@@ -246,7 +247,7 @@ test("an arXiv revision must use a positive separate revision number", async () 
 
 test("a Physical Account link with a missing endpoint is quarantined with a stable diagnostic", async () => {
   const contentRoot = await copyContent();
-  const path = join(contentRoot, "works", workId, "physical-account.yaml");
+  const path = join(contentRoot, "works", workSlug, "physical-account.yaml");
   const account = await readYaml(path);
   const link = account.links[0];
   link.target_stage_id = "stage:ticket09-missing";

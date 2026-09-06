@@ -20,10 +20,12 @@ import {
 const projectRoot = new URL("../", import.meta.url);
 const productionContent = new URL("../content/", import.meta.url);
 const workId = "work:zhu-2021";
+const workSlug = "zhu-2021";
 const arnettWorkId = "work:arnett-1982";
 const brombergWorkId = "work:bromberg-2011";
 const anchorLineId = "research-line:dense-environment-multimessenger";
 const secondaryLineId = "research-line:central-engines";
+const secondaryLineSlug = "central-engines";
 
 async function copyContent() {
   const temporaryRoot = await mkdtemp(join(tmpdir(), "axvdaily-ticket07-"));
@@ -144,7 +146,7 @@ test("Ticket 07 stores a reviewed visible Zhu multi-messenger and cross-context 
 
 test("a second Editorial Anchor for Zhu fails the cross-context membership invariant", async () => {
   const { contentRoot } = await copyContent();
-  const file = join(contentRoot, "research-lines", secondaryLineId, "line.yaml");
+  const file = join(contentRoot, "research-lines", secondaryLineSlug, "line.yaml");
   const line = parse(await readFile(file, "utf8"));
   const membership = line.memberships.find(({ work_id }) => work_id === workId);
   membership.editorial_anchor = true;
@@ -156,7 +158,7 @@ test("a second Editorial Anchor for Zhu fails the cross-context membership invar
 
 test("a photon-band term cannot be stored as a messenger", async () => {
   const { contentRoot } = await copyContent();
-  const file = join(contentRoot, "works", workId, "annotations.yaml");
+  const file = join(contentRoot, "works", workSlug, "annotations.yaml");
   const envelope = parse(await readFile(file, "utf8"));
   const messenger = envelope.annotations.find(({ axis }) => axis === "messenger");
   messenger.assessment.values[0].term_id = "term:gamma-ray-band";
@@ -168,8 +170,8 @@ test("a photon-band term cannot be stored as a messenger", async () => {
 
 test("an unreviewed secondary membership remains canonical but hidden from reverse indexes", async () => {
   const { contentRoot } = await copyContent();
-  const lineFile = join(contentRoot, "research-lines", secondaryLineId, "line.yaml");
-  const workFile = join(contentRoot, "works", workId, "work.yaml");
+  const lineFile = join(contentRoot, "research-lines", secondaryLineSlug, "line.yaml");
+  const workFile = join(contentRoot, "works", workSlug, "work.yaml");
   const line = parse(await readFile(lineFile, "utf8"));
   const membership = line.memberships.find(({ work_id }) => work_id === workId);
   membership.review_state = "unreviewed";
@@ -228,7 +230,7 @@ test("an unreviewed secondary membership remains canonical but hidden from rever
 
 test("a malformed secondary membership is quarantined without invalidating its independent anchor line", async () => {
   const { contentRoot } = await copyContent();
-  const file = join(contentRoot, "research-lines", secondaryLineId, "line.yaml");
+  const file = join(contentRoot, "research-lines", secondaryLineSlug, "line.yaml");
   const line = parse(await readFile(file, "utf8"));
   const membership = line.memberships.find(({ work_id }) => work_id === workId);
   membership.reading_roles = [];
@@ -279,12 +281,12 @@ test("Zhu Reader View renders scientific, provenance, and secondary-context deta
   assert.equal(build.status, 0, build.stderr || build.stdout);
 
   const workHtml = await readFile(
-    new URL("../dist/papers/work:zhu-2021/index.html", import.meta.url),
+    new URL("../dist/papers/zhu-2021/index.html", import.meta.url),
     "utf8",
   );
   const lineHtml = await readFile(
     new URL(
-      "../dist/research-lines/research-line:dense-environment-multimessenger/index.html",
+      "../dist/research-lines/dense-environment-multimessenger/index.html",
       import.meta.url,
     ),
     "utf8",

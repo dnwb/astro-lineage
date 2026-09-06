@@ -6,7 +6,7 @@ expected:
   diagnostics:
     - severity: error
       code: VISIBILITY_APPROVAL_STALE
-      file: content/works/work:arnett-1982/work.yaml
+      file: content/works/arnett-1982/work.yaml
       record_id: work:arnett-1982
       field_path: /visibility_approvals
       related_ids: []

@@ -13,8 +13,11 @@ import { validateCanonicalContent } from "../scripts/content-validator.mjs";
 const projectRoot = new URL("../", import.meta.url);
 const productionContent = new URL("../content/", import.meta.url);
 const workId = "work:arnett-1982";
+const workSlug = "arnett-1982";
 const lineId = "research-line:central-engines";
-const lineFile = `content/research-lines/${lineId}/line.yaml`;
+const lineSlug = "central-engines";
+const lineFile = `content/research-lines/${lineSlug}/line.yaml`;
+const lineReadingFile = `content/research-lines/${lineSlug}/reading.md`;
 
 async function copyContent() {
   const temporaryRoot = await mkdtemp(join(tmpdir(), "axvdaily-ticket05-"));
@@ -24,8 +27,8 @@ async function copyContent() {
 }
 
 async function readVisibleRecords(contentRoot) {
-  const workRoot = join(contentRoot, "works", workId);
-  const lineRoot = join(contentRoot, "research-lines", lineId);
+  const workRoot = join(contentRoot, "works", workSlug);
+  const lineRoot = join(contentRoot, "research-lines", lineSlug);
   return {
     workRoot,
     lineRoot,
@@ -88,13 +91,17 @@ test("Ticket 05 publishes Arnett and one Research Line atomically with independe
 test("Research Line ownership and Reading Role contracts are structural", async () => {
   const { contentRoot } = await copyContent();
   const records = await readVisibleRecords(contentRoot);
-  records.line.line_id = "research-line:wrong";
   records.line.memberships[0].reading_roles = ["foundation", "foundation", "primary"];
-  await writeFile(join(records.lineRoot, "line.yaml"), stringify(records.line), "utf8");
+  const readingPath = join(records.lineRoot, "reading.md");
+  const reading = await readFile(readingPath, "utf8");
+  await Promise.all([
+    writeFile(join(records.lineRoot, "line.yaml"), stringify(records.line), "utf8"),
+    writeFile(readingPath, reading.replace(lineId, "research-line:wrong"), "utf8"),
+  ]);
 
   const result = await validateCanonicalContent(contentRoot);
-  diagnosticFor(result, "RESEARCH_LINE_ID_DIRECTORY_MISMATCH", {
-    file: lineFile,
+  diagnosticFor(result, "RESEARCH_LINE_READING_OWNERSHIP_MISMATCH", {
+    file: lineReadingFile,
     record_id: lineId,
     field_path: "/line_id",
   });
@@ -214,7 +221,8 @@ test("Research Line Membership IDs are globally unique across editorial bundles"
   const { contentRoot } = await copyContent();
   const records = await readVisibleRecords(contentRoot);
   const secondLineId = "research-line:duplicate-id-fixture";
-  const secondRoot = join(contentRoot, "research-lines", secondLineId);
+  const secondLineSlug = "duplicate-id-fixture";
+  const secondRoot = join(contentRoot, "research-lines", secondLineSlug);
   await cp(records.lineRoot, secondRoot, { recursive: true });
 
   const secondLine = structuredClone(records.line);
@@ -356,11 +364,11 @@ test("the static Paper, Work, and Research Line routes render the visible valida
 
   const papersHtml = await readFile(new URL("../dist/papers/index.html", import.meta.url), "utf8");
   const workHtml = await readFile(
-    new URL("../dist/papers/work:arnett-1982/index.html", import.meta.url),
+    new URL("../dist/papers/arnett-1982/index.html", import.meta.url),
     "utf8",
   );
   const lineHtml = await readFile(
-    new URL("../dist/research-lines/research-line:central-engines/index.html", import.meta.url),
+    new URL("../dist/research-lines/central-engines/index.html", import.meta.url),
     "utf8",
   );
   assert.match(papersHtml, /Type I supernovae\. I(?:\.| -)/u);

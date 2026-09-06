@@ -14,8 +14,10 @@ import {
 
 const productionContent = new URL("../content/", import.meta.url);
 const pathId = "learning-path:transient-foundations";
+const pathSlug = "transient-foundations";
 const firstWorkId = "work:arnett-1982";
 const secondWorkId = "work:transfit-2025";
+const secondWorkSlug = "transfit-2025";
 const thirdWorkId = "work:long-yu-2026";
 
 async function copyContent() {
@@ -26,7 +28,7 @@ async function copyContent() {
 }
 
 async function writePath(contentRoot, path, reading = `---\npath_id: ${pathId}\n---\n\n# Path\n`) {
-  const pathRoot = join(contentRoot, "learning-paths", pathId);
+  const pathRoot = join(contentRoot, "learning-paths", pathSlug);
   await mkdir(pathRoot, { recursive: true });
   await writeFile(join(pathRoot, "path.yaml"), stringify(path), "utf8");
   await writeFile(join(pathRoot, "reading.md"), reading, "utf8");
@@ -251,7 +253,7 @@ test("stale visibility approval blocks without mutating the visible Reader State
     );
     const result = await validateCanonicalContent(contentRoot);
     diagnosticFor(result, "VISIBILITY_APPROVAL_STALE", "/visibility_approvals");
-    const reloaded = parse(await readFile(join(contentRoot, "learning-paths", pathId, "path.yaml"), "utf8"));
+    const reloaded = parse(await readFile(join(contentRoot, "learning-paths", pathSlug, "path.yaml"), "utf8"));
     assert.equal(reloaded.reader_state, "visible");
   });
 });
@@ -276,7 +278,7 @@ test("unreviewed hidden paths never create reader-facing or scientific-graph rec
 test("a visible path cannot reference a draft Work", async () => {
   await withFixture(async ({ contentRoot }) => {
     await writeApprovedVisiblePath(contentRoot);
-    const workFile = join(contentRoot, "works", secondWorkId, "work.yaml");
+    const workFile = join(contentRoot, "works", secondWorkSlug, "work.yaml");
     const work = parse(await readFile(workFile, "utf8"));
     work.reader_state = "draft";
     work.visibility_approvals = [];

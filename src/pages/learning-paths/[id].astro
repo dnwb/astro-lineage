@@ -2,17 +2,17 @@
 import ReadingProse from "../../components/ReadingProse.astro";
 import { loadCanonicalContent } from "../../../scripts/content-loader.mjs";
 import { projectLearningPathForReader } from "../../../scripts/reader-projection.mjs";
+import { workReaderPath } from "../../lib/reader-routes";
 import "../../styles/global.css";
 
 type AnyRecord = Record<string, any>;
-type LearningPathBundle = { id: string; path: AnyRecord };
+type LearningPathBundle = { id: string; slug: string; path: AnyRecord };
 
 export async function getStaticPaths() {
   const snapshot = await loadCanonicalContent(new URL("../../../content/", import.meta.url));
   return (snapshot.learningPaths as LearningPathBundle[])
-    .map((path) => projectLearningPathForReader(snapshot, path.id))
-    .filter((path) => path !== null)
-    .map((path) => ({ params: { id: path.path_id }, props: { pathId: path.path_id } }));
+    .filter((path) => projectLearningPathForReader(snapshot, path.id) !== null)
+    .map((path) => ({ params: { id: path.slug }, props: { pathId: path.id } }));
 }
 
 const { pathId } = Astro.props;
@@ -79,7 +79,7 @@ function workDate(entry: AnyRecord) {
             <li class="path-step">
               <span class="step-number">{index + 1}</span>
               <div>
-                <a class="paper-title" href={`/papers/${entry.work_id}/`}>{workTitle(entry)}</a>
+                <a class="paper-title" href={workReaderPath(snapshot, entry.work_id)}>{workTitle(entry)}</a>
                 <p class="step-meta">
                   Preferred Version: {entry.work?.preferred_version_id ?? "unavailable"}.
                   {workAuthors(entry) ? ` ${workAuthors(entry)}.` : ""}

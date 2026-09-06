@@ -18,22 +18,22 @@ async function copyContent() {
   const contentRoot = join(temporaryRoot, "content");
   await cp(productionContent, contentRoot, { recursive: true });
   await rm(join(contentRoot, "learning-paths"), { recursive: true, force: true });
-  const workPath = join(contentRoot, "works", "work:arnett-1982", "work.yaml");
-  const brombergWorkPath = join(contentRoot, "works", "work:bromberg-2011", "work.yaml");
-  const zhuWorkPath = join(contentRoot, "works", "work:zhu-2021", "work.yaml");
-  const transfitWorkPath = join(contentRoot, "works", "work:transfit-2025", "work.yaml");
-  const longYuWorkPath = join(contentRoot, "works", "work:long-yu-2026", "work.yaml");
-  const linePath = join(contentRoot, "research-lines", "research-line:central-engines", "line.yaml");
+  const workPath = join(contentRoot, "works", "arnett-1982", "work.yaml");
+  const brombergWorkPath = join(contentRoot, "works", "bromberg-2011", "work.yaml");
+  const zhuWorkPath = join(contentRoot, "works", "zhu-2021", "work.yaml");
+  const transfitWorkPath = join(contentRoot, "works", "transfit-2025", "work.yaml");
+  const longYuWorkPath = join(contentRoot, "works", "long-yu-2026", "work.yaml");
+  const linePath = join(contentRoot, "research-lines", "central-engines", "line.yaml");
   const denseLinePath = join(
     contentRoot,
     "research-lines",
-    "research-line:dense-environment-multimessenger",
+    "dense-environment-multimessenger",
     "line.yaml",
   );
   const explosiveLinePath = join(
     contentRoot,
     "research-lines",
-    "research-line:explosive-transients-csm",
+    "explosive-transients-csm",
     "line.yaml",
   );
   const work = parse(await readFile(workPath, "utf8"));
@@ -74,7 +74,7 @@ async function copyContent() {
 }
 
 async function readArnett(contentRoot) {
-  const workRoot = join(contentRoot, "works", "work:arnett-1982");
+  const workRoot = join(contentRoot, "works", "arnett-1982");
   const files = {};
   for (const fileName of ["evidence.yaml", "annotations.yaml"]) {
     files[fileName] = parse(await readFile(join(workRoot, fileName), "utf8"));

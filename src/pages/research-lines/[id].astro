@@ -1,7 +1,10 @@
 ---
 import ReadingProse from "../../components/ReadingProse.astro";
 import { loadCanonicalContent } from "../../../scripts/content-loader.mjs";
-import { projectResearchLineForReader } from "../../../scripts/reader-projection.mjs";
+import {
+  projectResearchLineForReader,
+  projectVisibleSnapshot,
+} from "../../../scripts/reader-projection.mjs";
 import { workReaderPath } from "../../lib/reader-routes";
 import { loadSiteConfig } from "../../lib/site-config";
 import "../../styles/global.css";
@@ -11,9 +14,16 @@ type ResearchLineBundle = { id: string; slug: string; line: AnyRecord };
 
 export async function getStaticPaths() {
   const snapshot = await loadCanonicalContent(new URL("../../../content/", import.meta.url));
-  const visibleLines = (snapshot.researchLines as ResearchLineBundle[]).filter(
-    (line) => line.line.reader_state === "visible",
+  const projected = projectVisibleSnapshot(snapshot) as { research_lines?: AnyRecord[] };
+  const projectedLineIds = new Set(
+    (projected.research_lines ?? [])
+      .map((line) => line.line_id)
+      .filter((lineId): lineId is string => typeof lineId === "string"),
   );
+  // Projection supplies the publication boundary; the canonical bundle is
+  // consulted only to resolve an approved identity to its filesystem slug.
+  const visibleLines = (snapshot.researchLines as ResearchLineBundle[])
+    .filter((line) => projectedLineIds.has(line.id));
   return visibleLines.map((line) => ({ params: { id: line.slug }, props: { lineId: line.id } }));
 }
 
@@ -26,6 +36,18 @@ if (!researchLine) {
 }
 
 const memberships = (researchLine.memberships ?? []) as AnyRecord[];
+
+function workAuthors(membership: AnyRecord) {
+  return (membership.work?.authors ?? [])
+    .map((author: AnyRecord) => author.display_name)
+    .filter(Boolean)
+    .join(", ");
+}
+
+function workYear(membership: AnyRecord) {
+  const value = membership.work?.release_date?.value;
+  return typeof value === "string" && /^\d{4}/u.test(value) ? value.slice(0, 4) : "";
+}
 ---
 
 <!doctype html>
@@ -38,39 +60,48 @@ const memberships = (researchLine.memberships ?? []) as AnyRecord[];
   </head>
   <body>
     <main class="site-shell reader-page">
-      <p class="eyebrow"><a href="/">{site.title}</a> · Research Line</p>
+      <p class="eyebrow"><a href="/research-lines/">Research Lines</a> · Research Line</p>
       <header class="reader-header">
-        <p class="record-label">Research Line ID: {lineId}</p>
         <h1>{researchLine.title}</h1>
+        <p class="section-kicker">Scientific question</p>
         <p class="reader-deck">{researchLine.scientific_question}</p>
       </header>
 
       <section class="panel reader-view" aria-labelledby="line-reader-view-heading">
-        <p class="section-kicker">Inspection layer 1</p>
-        <h2 id="line-reader-view-heading">Reader View</h2>
+        <h2 id="line-reader-view-heading">Why This Line Matters</h2>
         <ReadingProse source={String(researchLine.reading ?? "")} />
       </section>
 
-      <section class="panel" aria-labelledby="physical-structure-heading">
-        <p class="section-kicker">Scientific structure</p>
-        <h2 id="physical-structure-heading">Physical Structure</h2>
-        <ul class="compact-list">
-          {(researchLine.physical_structure ?? []).map((item: string) => <li>{item}</li>)}
-        </ul>
-      </section>
-
       <section class="panel" aria-labelledby="line-works-heading">
-        <p class="section-kicker">Editorial context</p>
-        <h2 id="line-works-heading">Works in this Research Line</h2>
-        <ul class="paper-index">
-          {memberships.map((membership: AnyRecord) => (
-            <li class="paper-index-item">
-              <a class="paper-title" href={workReaderPath(snapshot, membership.work_id)}>{membership.work?.title ?? membership.work_id}</a>
-              <small>{membership.reading_roles?.join(", ") ?? ""}{membership.editorial_anchor ? " · Editorial Anchor" : ""}</small>
-              {membership.reason ? <span>{membership.reason}</span> : null}
-            </li>
-          ))}
-        </ul>
+        <h2 id="line-works-heading">Papers in This Research Line</h2>
+        {memberships.length === 0 ? (
+          <p class="empty-state">No reviewed visible Papers are connected to this Research Line yet.</p>
+        ) : (
+          <ol class="paper-index">
+            {memberships.map((membership: AnyRecord) => (
+              <li class="paper-index-item">
+                <article>
+                  <h3>
+                    <a class="paper-title" href={workReaderPath(snapshot, membership.work_id)}>
+                      {membership.work?.title ?? membership.work_id}
+                    </a>
+                  </h3>
+                  {workAuthors(membership) || workYear(membership) ? (
+                    <p class="paper-meta">
+                      {workAuthors(membership)}{workAuthors(membership) && workYear(membership) ? " · " : ""}{workYear(membership)}
+                    </p>
+                  ) : null}
+                  <p class="record-label">
+                    Reading roles: {membership.reading_roles?.join(", ") ?? "none"}
+                    {membership.editorial_anchor ? " · Editorial Anchor for this line" : ""}
+                  </p>
+                  {membership.reason ? <p>{membership.reason}</p> : null}
+                  <p><a class="browse-link" href={workReaderPath(snapshot, membership.work_id)}>Read Paper</a></p>
+                </article>
+              </li>
+            ))}
+          </ol>
+        )}
       </section>
     </main>
   </body>

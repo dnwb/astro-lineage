@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { existsSync } from "node:fs";
 import { cp, mkdtemp, readFile, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -6,6 +7,7 @@ import { spawnSync } from "node:child_process";
 import { test } from "node:test";
 import { parse, stringify } from "yaml";
 
+import { computeCanonicalContentDigest } from "../scripts/content-digest.mjs";
 import { loadCanonicalContent } from "../scripts/content-loader.mjs";
 import {
   computeReaderVisibilityDigest,
@@ -14,6 +16,7 @@ import {
 import { buildWorkResearchLineIndex } from "../scripts/editorial-index.mjs";
 import {
   projectResearchLineForReader,
+  projectVisibleSnapshot,
   projectWorkForReader,
 } from "../scripts/reader-projection.mjs";
 
@@ -26,6 +29,9 @@ const brombergWorkId = "work:bromberg-2011";
 const anchorLineId = "research-line:dense-environment-multimessenger";
 const secondaryLineId = "research-line:central-engines";
 const secondaryLineSlug = "central-engines";
+const explosiveLineId = "research-line:explosive-transients-csm";
+const longYuWorkId = "work:long-yu-2026";
+const lineIds = [secondaryLineId, anchorLineId, explosiveLineId];
 
 async function copyContent() {
   const temporaryRoot = await mkdtemp(join(tmpdir(), "astro-lineage-research-lines-"));
@@ -44,6 +50,28 @@ function workFrom(snapshot) {
 
 function lineFrom(snapshot, lineId) {
   return snapshot.researchLines.find(({ id }) => id === lineId);
+}
+
+function assertInOrder(source, markers, label) {
+  let cursor = -1;
+  for (const marker of markers) {
+    const next = source.indexOf(marker, cursor + 1);
+    assert.notEqual(next, -1, `${label}: missing ${marker}`);
+    assert(next > cursor, `${label}: ${marker} is out of order`);
+    cursor = next;
+  }
+}
+
+function htmlText(source) {
+  return source
+    .replace(/<[^>]+>/gu, " ")
+    .replaceAll("&amp;", "&")
+    .replaceAll("&quot;", '"')
+    .replaceAll("&#39;", "'")
+    .replaceAll("&lt;", "<")
+    .replaceAll("&gt;", ">")
+    .replace(/\s+/gu, " ")
+    .trim();
 }
 
 test("Research Lines store a reviewed visible Zhu multi-messenger and cross-context slice", async () => {
@@ -228,6 +256,51 @@ test("an unreviewed secondary membership remains canonical but hidden from rever
   );
 });
 
+test("reader projections isolate hidden Lines, hidden Works, and unreviewed memberships", async () => {
+  const productionSnapshot = await loadCanonicalContent(productionContent);
+  const productionReader = projectVisibleSnapshot(productionSnapshot);
+  assert.deepEqual(productionReader.research_lines.map(({ line_id }) => line_id), lineIds);
+  assert.deepEqual(
+    projectWorkForReader(productionSnapshot, workId).research_lines.map(({ line_id }) => line_id),
+    [secondaryLineId, anchorLineId],
+    "a Work may retain multiple reviewed visible editorial contexts",
+  );
+
+  const fixture = structuredClone(productionSnapshot);
+  lineFrom(fixture, explosiveLineId).line.reader_state = "draft";
+  fixture.works.find(({ id }) => id === longYuWorkId).files["work.yaml"].reader_state = "draft";
+  const hiddenMembership = lineFrom(fixture, secondaryLineId).line.memberships
+    .find(({ work_id }) => work_id === workId);
+  hiddenMembership.review_state = "unreviewed";
+  hiddenMembership.reason = "UNREVIEWED_MEMBERSHIP_MUST_NOT_RENDER";
+
+  const reader = projectVisibleSnapshot(fixture);
+  assert.deepEqual(reader.research_lines.map(({ line_id }) => line_id), [secondaryLineId, anchorLineId]);
+  assert.equal(reader.works.some(({ work_id }) => work_id === longYuWorkId), false);
+  assert.equal(projectResearchLineForReader(fixture, explosiveLineId), null);
+  assert.equal(projectWorkForReader(fixture, longYuWorkId), null);
+  assert.equal(
+    projectResearchLineForReader(fixture, secondaryLineId).memberships
+      .some(({ work_id }) => work_id === workId),
+    false,
+  );
+  assert.equal(
+    projectResearchLineForReader(fixture, anchorLineId).memberships
+      .some(({ work_id }) => work_id === longYuWorkId),
+    false,
+  );
+  assert.deepEqual(
+    projectWorkForReader(fixture, workId).research_lines.map(({ line_id }) => line_id),
+    [anchorLineId],
+  );
+  assert.doesNotMatch(JSON.stringify(reader), /UNREVIEWED_MEMBERSHIP_MUST_NOT_RENDER/u);
+
+  for (const line of fixture.researchLines) {
+    line.line.reader_state = "draft";
+  }
+  assert.deepEqual(projectVisibleSnapshot(fixture).research_lines, []);
+});
+
 test("a malformed secondary membership is quarantined without invalidating its independent anchor line", async () => {
   const { contentRoot } = await copyContent();
   const file = join(contentRoot, "research-lines", secondaryLineSlug, "line.yaml");
@@ -272,13 +345,102 @@ test("a malformed secondary membership is quarantined without invalidating its i
   );
 });
 
-test("Zhu Reader View renders scientific, provenance, and secondary-context detail", async () => {
+test("Research Line static pages render the projected index, complete prose, links, and accessible semantics without changing digests", async () => {
+  const beforeSnapshot = await loadCanonicalContent(productionContent);
+  const beforeCanonicalDigest = await computeCanonicalContentDigest(productionContent);
+  const beforeLineDigests = new Map(
+    lineIds.map((lineId) => [
+      lineId,
+      computeReaderVisibilityDigest(beforeSnapshot, "research_line", lineId),
+    ]),
+  );
   const build = spawnSync("npm", ["run", "build"], {
     cwd: projectRoot,
     encoding: "utf8",
     stdio: ["ignore", "pipe", "pipe"],
   });
   assert.equal(build.status, 0, build.stderr || build.stdout);
+
+  const indexHtml = await readFile(
+    new URL("../dist/research-lines/index.html", import.meta.url),
+    "utf8",
+  );
+  assert.match(indexHtml, /3 curated Research Lines/u);
+  assertInOrder(indexHtml, [
+    "Central Engines and Engine-powered Transients",
+    "Dense Environments and Multi-messenger Transients",
+    "Explosive Transients and CSM Interaction",
+  ], "Research Lines index");
+
+  const expectedRoutes = [
+    "/research-lines/central-engines/",
+    "/research-lines/dense-environment-multimessenger/",
+    "/research-lines/explosive-transients-csm/",
+  ];
+  for (const route of expectedRoutes) {
+    assert.match(indexHtml, new RegExp(`href="${route}"`, "u"), route);
+    assert.equal(existsSync(new URL(`../dist${route}index.html`, import.meta.url)), true, route);
+  }
+
+  const projectedLines = projectVisibleSnapshot(beforeSnapshot).research_lines;
+  for (const line of projectedLines) {
+    const bundle = lineFrom(beforeSnapshot, line.line_id);
+    const html = await readFile(
+      new URL(`../dist/research-lines/${bundle.slug}/index.html`, import.meta.url),
+      "utf8",
+    );
+    const text = htmlText(html);
+    assertInOrder(html, [
+      `<h1>${line.title}</h1>`,
+      "Scientific question</p>",
+      "Why This Line Matters</h2>",
+      "Papers in This Research Line</h2>",
+    ], bundle.slug);
+    assert(text.includes(line.scientific_question), `${bundle.slug}: incomplete scientific question`);
+
+    const proseBlocks = line.reading
+      .replace(/^---\n[\s\S]*?\n---\n/u, "")
+      .split(/\n\s*\n/u)
+      .map((block) => block.trim().replace(/^#{1,6}\s+/u, "").replace(/\s+/gu, " "))
+      .filter(Boolean);
+    for (const block of proseBlocks) {
+      assert(text.includes(block), `${bundle.slug}: missing prose block: ${block}`);
+    }
+
+    for (const membership of line.memberships) {
+      const workBundle = beforeSnapshot.works.find(({ id }) => id === membership.work_id);
+      const route = `/papers/${workBundle.slug}/`;
+      assert.match(html, new RegExp(`href="${route}"`, "u"), `${bundle.slug}: ${route}`);
+      assert.equal(existsSync(new URL(`../dist${route}index.html`, import.meta.url)), true, route);
+      if (membership.reason) {
+        assert(text.includes(membership.reason), `${bundle.slug}: incomplete membership reason`);
+      }
+    }
+    assert.match(html, /<meta name="viewport" content="width=device-width">/u, bundle.slug);
+    assert.doesNotMatch(html, /<script/iu, bundle.slug);
+    assert.doesNotMatch(html, /tabindex="-1"/iu, bundle.slug);
+  }
+
+  const indexSource = await readFile(
+    new URL("../src/pages/research-lines/index.astro", import.meta.url),
+    "utf8",
+  );
+  const detailSource = await readFile(
+    new URL("../src/pages/research-lines/[id].astro", import.meta.url),
+    "utf8",
+  );
+  assert.match(indexSource, /projectVisibleSnapshot\(snapshot\)/u);
+  assert.match(indexSource, /visibleLines\.length === 0/u);
+  assert.match(indexSource, /No Research Lines are visible in the curated reading map yet\./u);
+  assert.match(detailSource, /projectedLineIds/u);
+  assert.match(detailSource, /No reviewed visible Papers are connected to this Research Line yet\./u);
+  assert.doesNotMatch(`${indexSource}${detailSource}`, /generated\/work-research-lines/u);
+
+  const css = await readFile(new URL("../src/styles/global.css", import.meta.url), "utf8");
+  assert.match(css, /@media \(max-width: 34rem\)/u);
+  assert.match(css, /width: min\(100% - 1\.25rem, 74rem\)/u);
+  assert.match(css, /a:focus-visible/u);
+  assert.match(css, /overflow-wrap: anywhere/u);
 
   const workHtml = await readFile(
     new URL("../dist/papers/zhu-2021/index.html", import.meta.url),
@@ -304,4 +466,14 @@ test("Zhu Reader View renders scientific, provenance, and secondary-context deta
   assert.doesNotMatch(workHtml, /(?:section|equation|figure); page\s*:/iu);
   assert.match(lineHtml, /foundation/iu);
   assert.doesNotMatch(`${workHtml}${lineHtml}`, /<script/iu);
+
+  const afterSnapshot = await loadCanonicalContent(productionContent);
+  assert.equal(await computeCanonicalContentDigest(productionContent), beforeCanonicalDigest);
+  for (const lineId of lineIds) {
+    assert.equal(
+      computeReaderVisibilityDigest(afterSnapshot, "research_line", lineId),
+      beforeLineDigests.get(lineId),
+      lineId,
+    );
+  }
 });

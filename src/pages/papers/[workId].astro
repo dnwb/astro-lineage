@@ -112,6 +112,26 @@ function otherWorkId(edge: AnyRecord) {
   if (edge.target_work_id === workId) return edge.source_work_id;
   throw new Error(`Scientific Edge does not connect to ${workId}.`);
 }
+
+function connectedPaper(edge: AnyRecord) {
+  const connectedWorkId = otherWorkId(edge);
+  const connectedWork = projectWorkForReader(snapshot, connectedWorkId) as AnyRecord | null;
+  if (!connectedWork) {
+    throw new Error(`Scientific Edge endpoint is not reader-visible: ${connectedWorkId}.`);
+  }
+  const connectedVersion = (connectedWork.versions ?? []).find(
+    (version: AnyRecord) => version.id === connectedWork.preferred_version_id,
+  );
+  if (!connectedVersion) {
+    throw new Error(`Missing preferred Version for connected Work ${connectedWorkId}.`);
+  }
+  return {
+    href: workReaderPath(snapshot, connectedWorkId),
+    title: connectedVersion.title,
+    authors: authors(connectedVersion),
+    year: connectedVersion.release_date?.value?.slice(0, 4),
+  };
+}
 ---
 
 <!doctype html>
@@ -164,18 +184,25 @@ function otherWorkId(edge: AnyRecord) {
       <section class="panel" aria-labelledby="connections-heading">
         <h2 id="connections-heading">Connections</h2>
         {scientificEdges.length === 0 ? (
-          <p class="empty-state">No reviewed reader-visible Scientific Edges are stored for this Work.</p>
+          <p class="empty-state">No reviewed scientific connections yet.</p>
         ) : (
           <ul class="compact-list edge-list">
-            {scientificEdges.map((edge) => (
-              <li>
-                <span class="tag">{relationLabel(edge)}</span>
-                <span class="edge-direction">{edge.source_work_id === workId ? "outbound" : "inbound"}</span>
-                {edge.reason}
-                {edge.disposition === "contested" ? <strong class="dispute-indicator"> Contested</strong> : null}
-                <a class="inline-link" href={workReaderPath(snapshot, otherWorkId(edge))}>Read the connected Paper</a>
-              </li>
-            ))}
+            {scientificEdges.map((edge) => {
+              const connected = connectedPaper(edge);
+              return (
+                <li>
+                  <p>
+                    <span class="tag">{relationLabel(edge)}</span>
+                    <span class="edge-direction">{edge.source_work_id === workId ? "outbound" : "inbound"}</span>
+                    {edge.disposition === "contested" ? <strong class="dispute-indicator"> Contested</strong> : null}
+                  </p>
+                  <h3><a href={connected.href}>{connected.title}</a></h3>
+                  <p class="paper-meta">{connected.authors} · {connected.year}</p>
+                  <p>{edge.reason}</p>
+                  <p><a href={connected.href}>Read the connected Paper</a></p>
+                </li>
+              );
+            })}
           </ul>
         )}
       </section>

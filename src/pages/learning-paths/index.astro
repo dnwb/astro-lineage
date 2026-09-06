@@ -1,0 +1,54 @@
+---
+import { loadCanonicalContent } from "../../../scripts/content-loader.mjs";
+import { projectVisibleLearningPaths } from "../../../scripts/reader-projection.mjs";
+import { learningPathReaderPath } from "../../lib/reader-routes";
+import { loadSiteConfig } from "../../lib/site-config";
+import "../../styles/global.css";
+
+type AnyRecord = Record<string, any>;
+
+const site = loadSiteConfig();
+const snapshot = await loadCanonicalContent(new URL("../../../content/", import.meta.url));
+const learningPaths = projectVisibleLearningPaths(snapshot) as AnyRecord[];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta
+      name="description"
+      content={`The reviewed Learning Paths in ${site.title}.`}
+    />
+    <title>Learning Paths · {site.title}</title>
+  </head>
+  <body>
+    <main class="site-shell index-page">
+      <p class="eyebrow"><a href="/">{site.title}</a> · Reader index</p>
+      <h1>Learning Paths</h1>
+      <p class="layer-intro">{learningPaths.length} reviewed Learning {learningPaths.length === 1 ? "Path" : "Paths"}</p>
+      {
+        learningPaths.length === 0 ? (
+          <p class="empty-state">No reviewed learning path yet.</p>
+        ) : (
+          <ol class="paper-index">
+            {learningPaths.map((path) => (
+              <li class="paper-index-item">
+                <article>
+                  <h2>
+                    <a class="paper-title" href={learningPathReaderPath(snapshot, path.path_id)}>
+                      {path.title ?? path.path_id}
+                    </a>
+                  </h2>
+                  <p class="paper-meta">{path.entries?.length ?? 0} Works · {path.transitions?.length ?? 0} Why next explanations</p>
+                  <p><a class="browse-link" href={learningPathReaderPath(snapshot, path.path_id)}>Open learning path</a></p>
+                </article>
+              </li>
+            ))}
+          </ol>
+        )
+      }
+    </main>
+  </body>
+</html>

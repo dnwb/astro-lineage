@@ -26,10 +26,15 @@ if (!learningPath) {
 
 const entries = (learningPath.entries ?? []) as AnyRecord[];
 const transitions = (learningPath.transitions ?? []) as AnyRecord[];
-const steps = entries.map((entry, index) => ({
-  entry,
-  transition: transitions[index] ?? null,
-}));
+const steps = entries.map((entry, index) => {
+  const nextEntry = entries[index + 1];
+  const transition = nextEntry
+    ? transitions.find((candidate) =>
+      candidate.source_work_id === entry.work_id &&
+      candidate.target_work_id === nextEntry.work_id)
+    : null;
+  return { entry, transition };
+});
 
 function workTitle(entry: AnyRecord) {
   return entry.work?.title ?? entry.work_id;
@@ -81,14 +86,11 @@ function workDate(entry: AnyRecord) {
             <li class="path-step">
               <span class="step-number">{index + 1}</span>
               <div>
-                <a class="paper-title" href={workReaderPath(snapshot, entry.work_id)}>{workTitle(entry)}</a>
-                <p class="step-meta">
-                  Preferred Version: {entry.work?.preferred_version_id ?? "unavailable"}.
-                  {workAuthors(entry) ? ` ${workAuthors(entry)}.` : ""}
-                  {` Release date: ${workDate(entry)}.`}
-                </p>
+                <h3>{workTitle(entry)}</h3>
+                <p class="step-meta">{workAuthors(entry) || "Authors unavailable"} · {workDate(entry)} · Preferred Version {entry.work?.preferred_version_id ?? "unavailable"}</p>
+                <p><a class="browse-link" href={workReaderPath(snapshot, entry.work_id)}>Read paper</a></p>
                 {transition ? (
-                  <p class="transition-reason"><strong>Why this next:</strong> {transition.reason}</p>
+                  <p class="transition-reason"><strong>Why next:</strong> {transition.reason}</p>
                 ) : null}
               </div>
             </li>

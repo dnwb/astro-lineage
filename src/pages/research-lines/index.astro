@@ -1,0 +1,59 @@
+---
+import { loadCanonicalContent } from "../../../scripts/content-loader.mjs";
+import { projectVisibleSnapshot } from "../../../scripts/reader-projection.mjs";
+import { researchLineReaderPath } from "../../lib/reader-routes";
+import { loadSiteConfig } from "../../lib/site-config";
+import "../../styles/global.css";
+
+type AnyRecord = Record<string, any>;
+
+const site = loadSiteConfig();
+const snapshot = await loadCanonicalContent(new URL("../../../content/", import.meta.url));
+const reader = projectVisibleSnapshot(snapshot) as Record<string, any>;
+const visibleLines = (reader.research_lines ?? []) as AnyRecord[];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta
+      name="description"
+      content={`The visible Research Lines in ${site.title}.`}
+    />
+    <title>Research Lines · {site.title}</title>
+  </head>
+  <body>
+    <main class="site-shell index-page">
+      <p class="eyebrow"><a href="/">{site.title}</a> · Reader index</p>
+      <h1>Research Lines</h1>
+      <p class="layer-intro">{visibleLines.length} curated Research Lines</p>
+      {
+        visibleLines.length === 0 ? (
+          <p class="empty-state">No Research Lines are visible in the curated reading map yet.</p>
+        ) : (
+          <ol class="paper-index">
+            {visibleLines.map((line) => (
+              <li class="paper-index-item">
+                <article>
+                  <h2>
+                    <a class="paper-title" href={researchLineReaderPath(snapshot, line.line_id)}>
+                      {line.title ?? line.line_id}
+                    </a>
+                  </h2>
+                  <p>{line.scientific_question}</p>
+                  <p>
+                    <a class="browse-link" href={researchLineReaderPath(snapshot, line.line_id)}>
+                      Open Research Line
+                    </a>
+                  </p>
+                </article>
+              </li>
+            ))}
+          </ol>
+        )
+      }
+    </main>
+  </body>
+</html>

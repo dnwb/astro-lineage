@@ -1,9 +1,7 @@
 # High-Energy Transient Reading Radar — V0.1 Roadmap
 
-> Status: authority migration complete; Phase 4 reader closure complete
-> locally, with Phase 5 CI acceptance next; Tickets 01–13 complete; Ticket 14
-> next
-> (2026-09-05)
+> Status: V0.1 complete; Phases 0–5 and Tickets 01–14 complete
+> (2026-09-06)
 >
 > This is the high-level delivery map derived from `PROJECT_CONTEXT.md`,
 > `CONTEXT.md`, the ADR set, and `V0.1_EXECUTION_SPEC.md`. It is not a
@@ -195,6 +193,8 @@ and generated indexes can be deleted and reproduced without editing.
 
 ## Phase 5 — V0.1 verification and CI acceptance
 
+**Status:** complete
+
 **Depends on:** Phases 1–4
 
 **Goal:** prove the complete vertical slice locally and in an independent clean
@@ -211,8 +211,11 @@ and generated indexes can be deleted and reproduced without editing.
 - explicit reporting of valid zero production counts for absent relation types;
 - confirmation that CI verification does not deploy the site.
 
-**Exit gate:** coverage matrix complete, local `npm run verify` exits 0, and
-the real remote CI verification run passes.
+**Exit gate: satisfied.** The coverage matrix is complete, local `npm run
+verify` exits 0, and GitHub Actions run
+[`34002332841`](https://github.com/dnwb/astro-lineage/actions/runs/34002332841)
+passed the same verification contract for commit `5a6c32e` on a clean
+`ubuntu-24.04` runner without deploying the site.
 
 ## Deferred beyond V0.1
 

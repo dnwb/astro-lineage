@@ -1,6 +1,6 @@
 # High-Energy Transient Reading Radar — V0.1 Project Charter
 
-Status: **Pending implementation**  
+Status: **V0.1 complete**
 Planning basis: `PROJECT_CONTEXT.md`, `CONTEXT.md`, accepted `docs/adr/*.md`, and `V0.1_EXECUTION_SPEC.md`.
 
 ## Product purpose

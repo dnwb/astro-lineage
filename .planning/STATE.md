@@ -1,11 +1,11 @@
 # High-Energy Transient Reading Radar — Project State
 
-> Updated: 2026-09-05
+> Updated: 2026-09-06
 
 ## Current position
 
 - **Stage:** Phase 5 — V0.1 verification and CI acceptance
-- **Status:** Tickets 01–13 complete; Ticket 14 local verification contract complete, independent remote CI gate remains
+- **Status:** V0.1 complete; Tickets 01–14 and all completion gates satisfied
 - **Implementation:** Visible Arnett and Bromberg now exercise governed Actors,
   capability-at-action-time authorization, 16 assessed Physics axes,
   controlled vocabulary, reusable Version-bound Evidence, reviewed Method
@@ -23,12 +23,12 @@
   with bilateral Version-specific Evidence, distinct Scientific Deltas, and
   reader-visible inbound/outbound provenance. Ticket 13 closes the static
   Reader View, Provenance Detail, Validation Report, README, and real-fixture
-  Stored + Validated + Rendered coverage matrix; local verification is complete
-  and the independent clean-environment CI pass remains
+  Stored + Validated + Rendered coverage matrix; local verification and the
+  independent clean-environment CI pass are complete
 - **Decision frontier:** closed through Q151; no open domain-model decision is
   blocking migration
-- **Next execution action:** after the local Ticket 14 contract, run the
-  independent remote CI gate when an authorized remote is available
+- **Next execution action:** none for V0.1; begin a separately authorized
+  milestone before adding deferred scope
 
 The repository has completed specification, governance, and authority
 migration. Ticket 01 established the independent Git boundary and bootstrap
@@ -81,9 +81,10 @@ guards. Ticket 13 then closes the academic reader surfaces across the frozen
 routes, adds the real-fixture Stored + Validated + Rendered coverage matrix,
 expands Validation Report statistics, documents the contributor contract, and
 proves local verification. Ticket 14 adds the verification-only clean-run
-workflow, locks the CI-to-local command contract, and records the local
-offline/source-refresh boundary; no remote is selected or claimed here. A
-future separate
+workflow, locks the CI-to-local command contract, records the
+offline/source-refresh boundary, and closes the independent remote gate with
+successful GitHub Actions run `34002332841` for commit `5a6c32e`. A future
+separate
 `Long & Yu --tests--> Zhu` delta is reserved strictly for trajectory-integrated
 detector-yield validation and is not stored in V0.1 Ticket 10.
 
@@ -163,29 +164,26 @@ CI remain fully offline; external deployment and source refresh are deferred.
 
 ## Next action
 
-Continue the approved Ticket 14 frontier with the independent remote CI run
-after a remote and the required authorization are available. The local
-workflow and contract are recorded at:
+V0.1 has no remaining execution action. Ticket 14 is resolved at:
 
 ```text
 .scratch/v0.1-vertical-slice/issues/14-prove-local-verification-and-clean-ci.md
 ```
 
-The ticket may implement accepted requirements but may not extend the closed
-domain model. A newly discovered semantic choice must first be classified
-under the migration rule above.
+Any V0.2 or deferred work requires a separately authorized milestone. A newly
+discovered semantic choice must first be classified under the migration rule
+above.
 
 ## Blockers and constraints
 
-There is no remaining authority-migration blocker. The remaining V0.1 work is
-the independent clean-environment remote CI pass; it must not be claimed from
-local verification alone.
-The local repository intentionally has no remote in
-Ticket 01. A genuinely new semantic choice must be escalated as a new decision
-rather than hidden in `.planning` prose.
+There is no remaining V0.1 blocker. Repository initialization remained
+separate from remote creation until the user explicitly authorized
+`git@github.com:dnwb/astro-lineage.git`; GitHub Actions then supplied the
+independent clean-environment proof. A genuinely new semantic choice must be
+escalated as a new decision rather than hidden in `.planning` prose.
 
 ## Session continuity
 
-Resume with Ticket 14 from the approved local frontier. Read the four `.planning`
-documents first, preserve requirement IDs, and update traceability only when
-ticket evidence is verified.
+V0.1 is closed at Ticket 14. If work resumes, read the four `.planning`
+documents first, preserve requirement IDs, and open a new authorized milestone
+rather than extending the completed V0.1 frontier implicitly.

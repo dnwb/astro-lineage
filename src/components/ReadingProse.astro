@@ -2,7 +2,8 @@
 import { parseReadingMarkdown } from "../../scripts/reader-markdown.mjs";
 
 interface Props {
-  source: string;
+  source?: string;
+  blocks?: ReadingBlock[];
   class?: string;
 }
 
@@ -11,8 +12,8 @@ type ReadingBlock =
   | { kind: "paragraph"; text: string }
   | { kind: "list"; items: string[] };
 
-const { source, class: className = "reading-prose" } = Astro.props;
-const blocks = parseReadingMarkdown(source) as ReadingBlock[];
+const { source = "", blocks: suppliedBlocks, class: className = "reading-prose" } = Astro.props;
+const blocks = suppliedBlocks ?? parseReadingMarkdown(source) as ReadingBlock[];
 ---
 
 <div class={className}>

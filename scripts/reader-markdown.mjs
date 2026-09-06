@@ -86,3 +86,66 @@ export function parseReadingMarkdown(source, { skipTitle = true } = {}) {
   flushList();
   return blocks;
 }
+
+function sectionKey(value) {
+  return String(value).trim().toLocaleLowerCase("en-US");
+}
+
+export function parseReadingDocument(source) {
+  const blocks = parseReadingMarkdown(source, { skipTitle: false });
+  const sections = new Map();
+  let introductoryBlocks = [];
+  let currentSection = null;
+  let firstHeading = null;
+
+  for (const block of blocks) {
+    if (block.kind === "heading" && block.depth === 1 && firstHeading === null) {
+      firstHeading = block.text;
+      continue;
+    }
+    if (block.kind === "heading" && block.depth === 2) {
+      currentSection = sectionKey(block.text);
+      if (!sections.has(currentSection)) {
+        sections.set(currentSection, []);
+      }
+      continue;
+    }
+    if (currentSection === null) {
+      introductoryBlocks.push(block);
+    } else {
+      sections.get(currentSection).push(block);
+    }
+  }
+
+  if (sectionKey(firstHeading ?? "") !== "why this work matters") {
+    introductoryBlocks = [];
+  }
+
+  return { introductoryBlocks, sections };
+}
+
+export function requiredReadingSection(document, heading, workId) {
+  const blocks = document.sections.get(sectionKey(heading)) ?? [];
+  if (blocks.length === 0) {
+    throw new Error(`Missing required reading section "${heading}" for ${workId}.`);
+  }
+  return blocks;
+}
+
+export function whyThisWorkMatters(document, workId) {
+  return document.introductoryBlocks.length > 0
+    ? document.introductoryBlocks
+    : requiredReadingSection(document, "Reason to read", workId);
+}
+
+export function firstCompleteReadingItem(blocks, workId) {
+  for (const block of blocks) {
+    if (block.kind === "paragraph" && block.text) {
+      return block.text;
+    }
+    if (block.kind === "list" && block.items.length > 0) {
+      return block.items[0];
+    }
+  }
+  throw new Error(`Missing readable Why read content for ${workId}.`);
+}

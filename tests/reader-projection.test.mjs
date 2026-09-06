@@ -90,7 +90,7 @@ test("the coverage matrix closes every real fixture row with Stored, Validated, 
   }
 });
 
-test("all five Work pages render the academic Reader View and on-demand provenance as static HTML", async () => {
+test("all five Work pages render the paper-reading loop and on-demand provenance as static HTML", async () => {
   const build = spawnSync("npm", ["run", "build"], {
     cwd: projectRoot,
     encoding: "utf8",
@@ -100,19 +100,19 @@ test("all five Work pages render the academic Reader View and on-demand provenan
 
   for (const { id: workId, slug } of works) {
     const html = await readFile(join(projectRoot, "dist", "papers", slug, "index.html"), "utf8");
-    assert.match(html, new RegExp(workId.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&")));
     for (const marker of [
       "<h1>",
-      "Reader View",
-      "Scientific takeaway",
+      "Why This Work Matters",
       "Problem",
+      "Scientific Takeaway",
       "Assumptions",
-      "Scientific delta",
+      "Scientific Delta",
+      "Connections",
+      "Research Context",
       "Physical Account",
       "Physics Ontology",
       "Methods",
-      "Reason to read",
-      "Provenance Detail",
+      "Provenance &amp; scientific evidence",
       "Version Evidence",
       "typed locator",
     ]) {

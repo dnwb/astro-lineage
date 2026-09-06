@@ -60,7 +60,8 @@ test("the production build renders the product boundary as static HTML", async (
   assert.match(html, /not an arXiv mirror/i);
   assert.match(papersHtml, /<h1>Papers<\/h1>/);
   assert.match(papersHtml, /Type I supernovae/i);
-  assert.match(papersHtml, /work:arnett-1982/);
+  assert.match(papersHtml, /5 curated Papers/);
+  assert.match(papersHtml, /Read paper/);
   assert.doesNotMatch(papersHtml, /provenance/i);
   assert.equal(
     existsSync(new URL("../dist/papers/arnett-1982/index.html", import.meta.url)),

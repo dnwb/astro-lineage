@@ -66,6 +66,12 @@ a:focus-visible {
   color: #75422c;
 }
 
+a:focus-visible,
+summary:focus-visible {
+  outline: 3px solid #9f694c;
+  outline-offset: 0.2rem;
+}
+
 .eyebrow,
 .section-kicker,
 .record-label,
@@ -277,7 +283,23 @@ small {
 }
 
 .paper-index-item {
-  padding-left: 0.35rem;
+  margin: 0;
+  padding: 1.25rem 0 1.25rem 0.35rem;
+  border-top: 1px solid #d6d0c4;
+}
+
+.paper-index-item h2 {
+  margin-bottom: 0.45rem;
+}
+
+.paper-index-item p:last-child {
+  margin-bottom: 0;
+}
+
+.paper-meta {
+  color: #5d6470;
+  font-family: system-ui, sans-serif;
+  font-size: 0.88rem;
 }
 
 .paper-title {
@@ -330,6 +352,13 @@ small {
   cursor: pointer;
   font-size: 1.12rem;
   font-weight: 700;
+}
+
+.provenance-detail,
+.provenance-detail a,
+.paper-title,
+.paper-source-links a {
+  overflow-wrap: anywhere;
 }
 
 .evidence-list li {

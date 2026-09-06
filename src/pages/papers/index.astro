@@ -1,7 +1,12 @@
 ---
 import { loadCanonicalContent } from "../../../scripts/content-loader.mjs";
+import {
+  firstCompleteReadingItem,
+  parseReadingDocument,
+  whyThisWorkMatters,
+} from "../../../scripts/reader-markdown.mjs";
 import { projectVisibleSnapshot } from "../../../scripts/reader-projection.mjs";
-import { workReaderPath } from "../../lib/reader-routes";
+import { researchLineReaderPath, workReaderPath } from "../../lib/reader-routes";
 import { loadSiteConfig } from "../../lib/site-config";
 import "../../styles/global.css";
 
@@ -11,7 +16,11 @@ const reader = projectVisibleSnapshot(snapshot) as Record<string, any>;
 const visibleWorks = (reader.works ?? []) as Record<string, any>[];
 
 function preferred(work: Record<string, any>) {
-  return work.versions?.find((version: Record<string, any>) => version.id === work.preferred_version_id) ?? {};
+  const version = work.versions?.find((candidate: Record<string, any>) => candidate.id === work.preferred_version_id);
+  if (!version) {
+    throw new Error(`Missing preferred Version for ${work.work_id}.`);
+  }
+  return version;
 }
 
 function authors(work: Record<string, any>) {
@@ -19,6 +28,23 @@ function authors(work: Record<string, any>) {
     .map((author: Record<string, any>) => author.display_name)
     .filter(Boolean)
     .join(", ");
+}
+
+function releaseYear(work: Record<string, any>) {
+  const value = preferred(work).release_date?.value;
+  if (typeof value !== "string" || !/^\d{4}/u.test(value)) {
+    throw new Error(`Missing preferred Version release year for ${work.work_id}.`);
+  }
+  return value.slice(0, 4);
+}
+
+function whyRead(work: Record<string, any>) {
+  const document = parseReadingDocument(String(work.reading ?? ""));
+  return firstCompleteReadingItem(whyThisWorkMatters(document, work.work_id), work.work_id);
+}
+
+function researchLines(work: Record<string, any>): Record<string, any>[] {
+  return work.research_lines ?? [];
 }
 ---
 
@@ -37,7 +63,7 @@ function authors(work: Record<string, any>) {
     <main class="site-shell index-page">
       <p class="eyebrow"><a href="/">{site.title}</a> · Reader index</p>
       <h1>Papers</h1>
-      <p class="layer-intro">Five visible Works, ordered by immutable Work ID. Open a Paper for its scientific account and supporting detail.</p>
+      <p class="layer-intro">{visibleWorks.length} curated Papers</p>
       {
         visibleWorks.length === 0 ? (
           <p class="empty-state">No Papers are visible in the curated reading radar yet.</p>
@@ -47,9 +73,19 @@ function authors(work: Record<string, any>) {
               const version = preferred(work);
               return (
                 <li class="paper-index-item">
-                  <a class="paper-title" href={workReaderPath(snapshot, work.work_id)}>{version.title ?? work.work_id}</a>
-                  <small>{authors(work)}{version.release_date?.value ? ` · ${version.release_date.value}` : ""}</small>
-                  <span class="record-label">{work.work_id}</span>
+                  <article>
+                    <h2><a class="paper-title" href={workReaderPath(snapshot, work.work_id)}>{version.title}</a></h2>
+                    <p class="paper-meta">{authors(work)} · {releaseYear(work)}</p>
+                    <p>{whyRead(work)}</p>
+                    {researchLines(work).length > 0 ? (
+                      <ul class="inline-list research-context-links" aria-label="Research Lines">
+                        {researchLines(work).map((membership) => (
+                          <li><a href={researchLineReaderPath(snapshot, membership.line_id)}>{membership.line?.title ?? membership.line_id}</a></li>
+                        ))}
+                      </ul>
+                    ) : null}
+                    <p><a class="browse-link" href={workReaderPath(snapshot, work.work_id)}>Read paper</a></p>
+                  </article>
                 </li>
               );
             })}

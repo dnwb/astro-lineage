@@ -10,10 +10,12 @@ import { researchLineReaderPath, workReaderPath } from "../../lib/reader-routes"
 import { loadSiteConfig } from "../../lib/site-config";
 import "../../styles/global.css";
 
+type AnyRecord = Record<string, any>;
+
 const site = loadSiteConfig();
 const snapshot = await loadCanonicalContent(new URL("../../../content/", import.meta.url));
 const reader = projectVisibleSnapshot(snapshot) as Record<string, any>;
-const visibleWorks = (reader.works ?? []) as Record<string, any>[];
+const visibleWorks = (reader.works ?? []) as AnyRecord[];
 
 function preferred(work: Record<string, any>) {
   const version = work.versions?.find((candidate: Record<string, any>) => candidate.id === work.preferred_version_id);
@@ -43,9 +45,6 @@ function whyRead(work: Record<string, any>) {
   return firstCompleteReadingItem(whyThisWorkMatters(document, work.work_id), work.work_id);
 }
 
-function researchLines(work: Record<string, any>): Record<string, any>[] {
-  return work.research_lines ?? [];
-}
 ---
 
 <!doctype html>
@@ -77,9 +76,9 @@ function researchLines(work: Record<string, any>): Record<string, any>[] {
                     <h2><a class="paper-title" href={workReaderPath(snapshot, work.work_id)}>{version.title}</a></h2>
                     <p class="paper-meta">{authors(work)} · {releaseYear(work)}</p>
                     <p>{whyRead(work)}</p>
-                    {researchLines(work).length > 0 ? (
+                    {(work.research_lines ?? []).length > 0 ? (
                       <ul class="inline-list research-context-links" aria-label="Research Lines">
-                        {researchLines(work).map((membership) => (
+                        {(work.research_lines ?? []).map((membership: AnyRecord) => (
                           <li><a href={researchLineReaderPath(snapshot, membership.line_id)}>{membership.line?.title ?? membership.line_id}</a></li>
                         ))}
                       </ul>

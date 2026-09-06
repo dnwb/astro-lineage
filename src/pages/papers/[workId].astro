@@ -6,7 +6,10 @@ import {
   requiredReadingSection,
   whyThisWorkMatters,
 } from "../../../scripts/reader-markdown.mjs";
-import { projectWorkForReader } from "../../../scripts/reader-projection.mjs";
+import {
+  projectVisibleSnapshot,
+  projectWorkForReader,
+} from "../../../scripts/reader-projection.mjs";
 import { researchLineReaderPath, workReaderPath } from "../../lib/reader-routes";
 import { loadSiteConfig } from "../../lib/site-config";
 import "../../styles/global.css";
@@ -16,9 +19,16 @@ type WorkBundle = { id: string; slug: string; files: AnyRecord };
 
 export async function getStaticPaths() {
   const snapshot = await loadCanonicalContent(new URL("../../../content/", import.meta.url));
-  const visibleWorks = (snapshot.works as WorkBundle[]).filter(
-    (work) => work.files["work.yaml"]?.reader_state === "visible",
+  const projected = projectVisibleSnapshot(snapshot) as { works?: AnyRecord[] };
+  const projectedWorkIds = new Set(
+    (projected.works ?? [])
+      .map((work) => work.work_id)
+      .filter((workId): workId is string => typeof workId === "string"),
   );
+  // Projection supplies the publication boundary; the canonical bundle is
+  // consulted only to resolve the approved Work identity to its filesystem
+  // slug for Astro's static route.
+  const visibleWorks = (snapshot.works as WorkBundle[]).filter((work) => projectedWorkIds.has(work.id));
   return visibleWorks.map((work) => ({ params: { workId: work.slug }, props: { workId: work.id } }));
 }
 
@@ -58,6 +68,16 @@ const evidenceById = new Map(
 );
 const lineMemberships = (work.research_lines ?? []) as AnyRecord[];
 
+const relationLabels: Record<string, { outbound: string; inbound: string }> = {
+  builds_on: { outbound: "BUILDS ON", inbound: "BUILT ON BY" },
+  extends: { outbound: "EXTENDS", inbound: "EXTENDED BY" },
+  tests: { outbound: "TESTS", inbound: "TESTED BY" },
+  constrains: { outbound: "CONSTRAINS", inbound: "CONSTRAINED BY" },
+  challenges: { outbound: "CHALLENGES", inbound: "CHALLENGED BY" },
+  replaces_assumption: { outbound: "REPLACES ASSUMPTION", inbound: "ASSUMPTION REPLACED BY" },
+  corrects: { outbound: "CORRECTS", inbound: "CORRECTED BY" },
+};
+
 function authors(version: AnyRecord) {
   return (version.authors ?? []).map((author: AnyRecord) => author.display_name).filter(Boolean).join(", ");
 }
@@ -79,22 +99,18 @@ function reviewContext(value: AnyRecord) {
 }
 
 function relationLabel(edge: AnyRecord) {
-  const relation = String(edge.relation ?? "related").replaceAll("_", " ").toUpperCase();
-  if (edge.source_work_id === workId) return relation;
-  const inverse = {
-    "BUILDS ON": "BUILT ON BY",
-    EXTENDS: "EXTENDED BY",
-    TESTS: "TESTED BY",
-    CONSTRAINS: "CONSTRAINED BY",
-    CHALLENGES: "CHALLENGED BY",
-    "REPLACES ASSUMPTION": "ASSUMPTION REPLACED BY",
-    CORRECTS: "CORRECTED BY",
-  } as Record<string, string>;
-  return inverse[relation] ?? `${relation} (INCOMING)`;
+  if (typeof edge.relation !== "string" || !relationLabels[edge.relation]) {
+    throw new Error(`Unknown Scientific Edge relation for ${workId}.`);
+  }
+  if (edge.source_work_id === workId) return relationLabels[edge.relation].outbound;
+  if (edge.target_work_id === workId) return relationLabels[edge.relation].inbound;
+  throw new Error(`Scientific Edge does not connect to ${workId}.`);
 }
 
 function otherWorkId(edge: AnyRecord) {
-  return edge.source_work_id === workId ? edge.target_work_id : edge.source_work_id;
+  if (edge.source_work_id === workId) return edge.target_work_id;
+  if (edge.target_work_id === workId) return edge.source_work_id;
+  throw new Error(`Scientific Edge does not connect to ${workId}.`);
 }
 ---
 

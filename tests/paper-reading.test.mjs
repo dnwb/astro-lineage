@@ -1,11 +1,27 @@
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
+import { existsSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { test } from "node:test";
 
+import { computeCanonicalContentDigest } from "../scripts/content-digest.mjs";
+import {
+  computeReaderVisibilityDigest,
+  validateCanonicalContent,
+} from "../scripts/content-validator.mjs";
+import { loadCanonicalContent } from "../scripts/content-loader.mjs";
+
 const projectRoot = fileURLToPath(new URL("..", import.meta.url));
+const productionContent = join(projectRoot, "content");
+const workIds = [
+  "work:arnett-1982",
+  "work:bromberg-2011",
+  "work:long-yu-2026",
+  "work:transfit-2025",
+  "work:zhu-2021",
+];
 
 function buildReader() {
   const build = spawnSync("npm", ["run", "build"], {
@@ -26,8 +42,9 @@ function assertInOrder(source, markers, label) {
   }
 }
 
+test.before(buildReader);
+
 test("Papers index lets readers choose every projected Paper with scientific context", async () => {
-  buildReader();
   const html = await readFile(join(projectRoot, "dist", "papers", "index.html"), "utf8");
 
   assert.match(html, /5 curated Papers/u);
@@ -55,8 +72,36 @@ test("Papers index lets readers choose every projected Paper with scientific con
     "/research-lines/explosive-transients-csm/",
   ]) {
     assert.match(html, new RegExp(`href="${href}"`, "u"), href);
+    assert.equal(
+      existsSync(join(projectRoot, "dist", href.slice(1), "index.html")),
+      true,
+      `missing generated destination for ${href}`,
+    );
   }
   assert.equal((html.match(/>Read paper<\/a>/gu) ?? []).length, 5);
+});
+
+test("the reader build preserves canonical and per-Work visibility digests", async () => {
+  const beforeSnapshot = await loadCanonicalContent(productionContent);
+  const beforeCanonicalDigest = await computeCanonicalContentDigest(productionContent);
+  const beforeVisibilityDigests = new Map(
+    workIds.map((workId) => [
+      workId,
+      computeReaderVisibilityDigest(beforeSnapshot, "work", workId),
+    ]),
+  );
+  const validation = await validateCanonicalContent(productionContent);
+  assert.equal(validation.valid, true, JSON.stringify(validation.diagnostics, null, 2));
+
+  const afterSnapshot = await loadCanonicalContent(productionContent);
+  assert.equal(await computeCanonicalContentDigest(productionContent), beforeCanonicalDigest);
+  for (const workId of workIds) {
+    assert.equal(
+      computeReaderVisibilityDigest(afterSnapshot, "work", workId),
+      beforeVisibilityDigests.get(workId),
+      workId,
+    );
+  }
 });
 
 test("Paper Detail presents the complete scientific reading loop before on-demand evidence", async () => {
@@ -84,6 +129,7 @@ test("Paper Detail presents the complete scientific reading loop before on-deman
     assert.match(html, new RegExp(`href="${publicUrl.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&")}"`, "u"));
     assert.match(html, /<details class="panel provenance-detail">/u, slug);
     assert.doesNotMatch(html, /<details[^>]*\sopen(?:[\s=>])/u, slug);
+    assert.doesNotMatch(html, /(?:visibility_approvals|reader_state)/u, slug);
   }
 
   const arnett = await readFile(join(projectRoot, "dist", "papers", "arnett-1982", "index.html"), "utf8");

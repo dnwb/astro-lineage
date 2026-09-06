@@ -1,31 +1,40 @@
 ---
 import { parseReadingMarkdown } from "../../scripts/reader-markdown.mjs";
+import { localizedBlocks, selectBilingualBlocks, type ReaderBlock } from "../lib/reader-localization";
+import ReadingBlocks from "./ReadingBlocks.astro";
 
 interface Props {
   source?: string;
   blocks?: ReadingBlock[];
   class?: string;
+  localizationKey?: string;
+  localizationSection?: string;
 }
 
-type ReadingBlock =
-  | { kind: "heading"; depth: number; text: string }
-  | { kind: "paragraph"; text: string }
-  | { kind: "list"; items: string[] };
+type ReadingBlock = ReaderBlock;
 
-const { source = "", blocks: suppliedBlocks, class: className = "reading-prose" } = Astro.props;
-const blocks = suppliedBlocks ?? parseReadingMarkdown(source) as ReadingBlock[];
+const {
+  source = "",
+  blocks: suppliedBlocks,
+  class: className = "reading-prose",
+  localizationKey,
+  localizationSection = "reading",
+} = Astro.props;
+const blocks = (suppliedBlocks ?? parseReadingMarkdown(source)) as ReadingBlock[];
+const displayBlocks = localizationKey
+  ? localizedBlocks(localizationKey, localizationSection, blocks)
+  : blocks;
+const englishBlocks = localizationKey
+  ? selectBilingualBlocks(blocks, "english")
+  : blocks;
+const primaryBlocks = localizationKey
+  ? selectBilingualBlocks(displayBlocks, "primary")
+  : blocks;
 ---
 
 <div class={className}>
-  {blocks.map((block) => (
-    block.kind === "heading" ? (
-      block.depth === 2 ? <h2>{block.text}</h2> : <h3>{block.text}</h3>
-    ) : block.kind === "list" ? (
-      <ul class="reading-list">
-        {block.items.map((item) => <li>{item}</li>)}
-      </ul>
-    ) : (
-      <p>{block.text}</p>
-    )
-  ))}
+  <div class="reading-language reading-language-primary language-primary" lang="zh-CN">
+    <ReadingBlocks blocks={primaryBlocks} />
+  </div>
+  {localizationKey ? <div class="reading-language language-english" lang="en"><ReadingBlocks blocks={englishBlocks} /></div> : null}
 </div>

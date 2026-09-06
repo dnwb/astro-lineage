@@ -102,18 +102,18 @@ test("all five Work pages render the paper-reading loop and on-demand provenance
     const html = await readFile(join(projectRoot, "dist", "papers", slug, "index.html"), "utf8");
     for (const marker of [
       "<h1>",
-      "Why This Work Matters",
-      "Problem",
-      "Scientific Takeaway",
-      "Assumptions",
-      "Scientific Delta",
-      "Connections",
-      "Research Context",
-      "Physical Account",
-      "Physics Ontology",
-      "Methods",
-      "Provenance &amp; scientific evidence",
-      "Version Evidence",
+      "为什么这项工作重要",
+      "问题",
+      "科学要点",
+      "假设",
+      "科学增量",
+      "科学关联",
+      "研究背景",
+      "物理描述",
+      "物理本体",
+      "方法",
+      "溯源与科学证据",
+      "版本证据",
       "typed locator",
     ]) {
       assert.match(html, new RegExp(marker.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&")), `${workId}: ${marker}`);
@@ -124,8 +124,8 @@ test("all five Work pages render the paper-reading loop and on-demand provenance
   const papers = await readFile(join(projectRoot, "dist", "papers", "index.html"), "utf8");
   const home = await readFile(join(projectRoot, "dist", "index.html"), "utf8");
   assert.doesNotMatch(papers, /provenance/iu);
-  assert.match(home, /Research Lines/u);
-  assert.match(home, /Learning Paths/u);
+  assert.match(home, /研究方向/u);
+  assert.match(home, /学习路径/u);
   assert.match(home, /href="\/papers\/arnett-1982\/"/u);
   assert.equal(existsSync(join(projectRoot, "dist", "validation")), false);
 });

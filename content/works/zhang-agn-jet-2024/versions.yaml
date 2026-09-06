@@ -1,0 +1,47 @@
+work_id: work:zhang-agn-jet-2024
+versions:
+  - kind: arxiv_revision
+    title: Propagation of GRB Relativistic Jets in AGN Disks and Its Implication for
+      GRB Detection
+    authors:
+      - display_name: Hao-Hui Zhang
+      - display_name: Jin-Ping Zhu
+      - display_name: Yun-Wei Yu
+    release_date:
+      value: 2024-06-16
+      precision: day
+    arxiv_id: "2406.10904"
+    arxiv_revision: 1
+    access_urls:
+      - kind: arxiv
+        url: https://arxiv.org/abs/2406.10904v1
+    id: version:zhang-agn-jet-2024-arxiv-v1
+    field_sources:
+      /title:
+        - source:arxiv-baseline-zhang-agn-jet-2024-20260907
+      /authors/0/display_name:
+        - source:arxiv-baseline-zhang-agn-jet-2024-20260907
+      /authors/1/display_name:
+        - source:arxiv-baseline-zhang-agn-jet-2024-20260907
+      /authors/2/display_name:
+        - source:arxiv-baseline-zhang-agn-jet-2024-20260907
+      /release_date/value:
+        - source:arxiv-baseline-zhang-agn-jet-2024-20260907
+      /release_date/precision:
+        - source:arxiv-baseline-zhang-agn-jet-2024-20260907
+      /arxiv_id:
+        - source:arxiv-baseline-zhang-agn-jet-2024-20260907
+      /arxiv_revision:
+        - source:arxiv-baseline-zhang-agn-jet-2024-20260907
+      /access_urls/0/kind:
+        - source:arxiv-baseline-zhang-agn-jet-2024-20260907
+      /access_urls/0/url:
+        - source:arxiv-baseline-zhang-agn-jet-2024-20260907
+bibliographic_sources:
+  - id: source:arxiv-baseline-zhang-agn-jet-2024-20260907
+    provider: arxiv
+    record_id: "2406.10904"
+    source_url: https://arxiv.org/abs/2406.10904v1
+    retrieved_at: 2026-09-06T22:35:04Z
+publication_relations: []
+bibliographic_discrepancies: []

@@ -1,0 +1,22 @@
+---
+import type { ReaderBlock } from "../lib/reader-localization";
+import ReaderText from "./ReaderText.astro";
+
+interface Props {
+  blocks: ReaderBlock[];
+}
+
+const { blocks } = Astro.props;
+---
+
+{blocks.map((block) => (
+  block.kind === "heading" ? (
+    block.depth === 2 ? <h2><ReaderText text={block.text} /></h2> : <h3><ReaderText text={block.text} /></h3>
+  ) : block.kind === "list" ? (
+    <ul class="reading-list">
+      {block.items.map((item) => <li><ReaderText text={item} /></li>)}
+    </ul>
+  ) : (
+    <p><ReaderText text={block.text} /></p>
+  )
+))}

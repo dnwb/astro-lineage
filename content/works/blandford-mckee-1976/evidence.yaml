@@ -1,0 +1,18 @@
+work_id: work:blandford-mckee-1976
+evidence:
+  - id: evidence:blandford-mckee-1976-abstract
+    version_id: version:blandford-mckee-1976-journal
+    source_url: https://api.crossref.org/works/10.1063/1.861619
+    locator:
+      type: paragraph
+      paragraph: Abstract
+    excerpt: A fluid dynamical treatment of an ultra-relativistic spherical blast
+      wave enclosed by a strong shock is presented. A simple similarity solution
+      describing the explosion of a fixed amount of energy in a uniform medium
+      is derived, and this is generalized to include cases in which power is
+      supplied by a central source and the density of the external medium varies
+      with radius.
+    review_state: unreviewed
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-06T22:35:47Z

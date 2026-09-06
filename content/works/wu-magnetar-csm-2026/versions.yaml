@@ -1,0 +1,47 @@
+work_id: work:wu-magnetar-csm-2026
+versions:
+  - kind: arxiv_revision
+    title: "A Magnetar Engine and Circumstellar Medium Interaction: Synergistic
+      Effects in Producing Superluminous Supernovae"
+    authors:
+      - display_name: Guang-Lei Wu
+      - display_name: Yun-Wei Yu
+      - display_name: Liang-Duan Liu
+    release_date:
+      value: 2026-07-09
+      precision: day
+    arxiv_id: "2607.08216"
+    arxiv_revision: 1
+    access_urls:
+      - kind: arxiv
+        url: https://arxiv.org/abs/2607.08216v1
+    id: version:wu-magnetar-csm-2026-arxiv-v1
+    field_sources:
+      /title:
+        - source:arxiv-baseline-wu-magnetar-csm-2026-20260907
+      /authors/0/display_name:
+        - source:arxiv-baseline-wu-magnetar-csm-2026-20260907
+      /authors/1/display_name:
+        - source:arxiv-baseline-wu-magnetar-csm-2026-20260907
+      /authors/2/display_name:
+        - source:arxiv-baseline-wu-magnetar-csm-2026-20260907
+      /release_date/value:
+        - source:arxiv-baseline-wu-magnetar-csm-2026-20260907
+      /release_date/precision:
+        - source:arxiv-baseline-wu-magnetar-csm-2026-20260907
+      /arxiv_id:
+        - source:arxiv-baseline-wu-magnetar-csm-2026-20260907
+      /arxiv_revision:
+        - source:arxiv-baseline-wu-magnetar-csm-2026-20260907
+      /access_urls/0/kind:
+        - source:arxiv-baseline-wu-magnetar-csm-2026-20260907
+      /access_urls/0/url:
+        - source:arxiv-baseline-wu-magnetar-csm-2026-20260907
+bibliographic_sources:
+  - id: source:arxiv-baseline-wu-magnetar-csm-2026-20260907
+    provider: arxiv
+    record_id: "2607.08216"
+    source_url: https://arxiv.org/abs/2607.08216v1
+    retrieved_at: 2026-09-06T22:35:04Z
+publication_relations: []
+bibliographic_discrepancies: []

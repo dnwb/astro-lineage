@@ -1,0 +1,50 @@
+work_id: work:liu-multiple-ejecta-csm-2018
+versions:
+  - kind: arxiv_revision
+    title: A Multiple Ejecta-Circumstellar Medium Interaction Model and Its
+      Implications for Superluminous Supernovae iPTF15esb and iPTF13dcc
+    authors:
+      - display_name: Liang-Duan Liu
+      - display_name: Ling-Jun Wang
+      - display_name: Shan-Qin Wang
+      - display_name: Zi-Gao Dai
+    release_date:
+      value: 2018-02-20
+      precision: day
+    arxiv_id: "1802.08164"
+    arxiv_revision: 1
+    access_urls:
+      - kind: arxiv
+        url: https://arxiv.org/abs/1802.08164v1
+    id: version:liu-multiple-ejecta-csm-2018-arxiv-v1
+    field_sources:
+      /title:
+        - source:arxiv-baseline-liu-multiple-ejecta-csm-2018-20260907
+      /authors/0/display_name:
+        - source:arxiv-baseline-liu-multiple-ejecta-csm-2018-20260907
+      /authors/1/display_name:
+        - source:arxiv-baseline-liu-multiple-ejecta-csm-2018-20260907
+      /authors/2/display_name:
+        - source:arxiv-baseline-liu-multiple-ejecta-csm-2018-20260907
+      /authors/3/display_name:
+        - source:arxiv-baseline-liu-multiple-ejecta-csm-2018-20260907
+      /release_date/value:
+        - source:arxiv-baseline-liu-multiple-ejecta-csm-2018-20260907
+      /release_date/precision:
+        - source:arxiv-baseline-liu-multiple-ejecta-csm-2018-20260907
+      /arxiv_id:
+        - source:arxiv-baseline-liu-multiple-ejecta-csm-2018-20260907
+      /arxiv_revision:
+        - source:arxiv-baseline-liu-multiple-ejecta-csm-2018-20260907
+      /access_urls/0/kind:
+        - source:arxiv-baseline-liu-multiple-ejecta-csm-2018-20260907
+      /access_urls/0/url:
+        - source:arxiv-baseline-liu-multiple-ejecta-csm-2018-20260907
+bibliographic_sources:
+  - id: source:arxiv-baseline-liu-multiple-ejecta-csm-2018-20260907
+    provider: arxiv
+    record_id: "1802.08164"
+    source_url: https://arxiv.org/abs/1802.08164v1
+    retrieved_at: 2026-09-06T22:35:04Z
+publication_relations: []
+bibliographic_discrepancies: []

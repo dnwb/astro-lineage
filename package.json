@@ -7,6 +7,8 @@
     "node": ">=22.20.0"
   },
   "scripts": {
+    "dev": "node scripts/validate.mjs && astro dev",
+    "arxiv:refresh": "node scripts/arxiv-daily.mjs",
     "validate": "node scripts/validate.mjs",
     "test": "node --test --test-concurrency=1 tests/*.test.mjs",
     "check": "astro check",

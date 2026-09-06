@@ -1,8 +1,14 @@
-<nav class="site-nav" aria-label="Primary navigation">
+---
+import LanguageSwitch from "./LanguageSwitch.astro";
+---
+
+<nav class="site-nav" aria-label="主导航">
   <a class="site-brand" href="/">AstroLineage</a>
   <ul>
-    <li><a href="/papers/">Papers</a></li>
-    <li><a href="/research-lines/">Research Lines</a></li>
-    <li><a href="/learning-paths/">Learning Paths</a></li>
+    <li><a href="/papers/">论文</a></li>
+    <li><a href="/research-lines/">研究方向</a></li>
+    <li><a href="/learning-paths/">学习路径</a></li>
+    <li><a href="/arxiv-daily/">每日 arXiv</a></li>
   </ul>
+  <LanguageSwitch />
 </nav>

@@ -32,6 +32,11 @@ const secondaryLineSlug = "central-engines";
 const explosiveLineId = "research-line:explosive-transients-csm";
 const longYuWorkId = "work:long-yu-2026";
 const lineIds = [secondaryLineId, anchorLineId, explosiveLineId];
+const localizedLineTitles = {
+  [secondaryLineId]: "中心引擎与引擎驱动的瞬变",
+  [anchorLineId]: "致密环境与多信使瞬变",
+  [explosiveLineId]: "爆发性瞬变与星周介质相互作用",
+};
 
 async function copyContent() {
   const temporaryRoot = await mkdtemp(join(tmpdir(), "astro-lineage-research-lines-"));
@@ -365,12 +370,12 @@ test("Research Line static pages render the projected index, complete prose, lin
     new URL("../dist/research-lines/index.html", import.meta.url),
     "utf8",
   );
-  assert.match(indexHtml, /3 curated Research Lines/u);
+  assert.match(indexHtml, /3 个经过审核的研究方向/u);
   assertInOrder(indexHtml, [
-    "Central Engines and Engine-powered Transients",
-    "Dense Environments and Multi-messenger Transients",
-    "Explosive Transients and CSM Interaction",
-  ], "Research Lines index");
+    localizedLineTitles[secondaryLineId],
+    localizedLineTitles[anchorLineId],
+    localizedLineTitles[explosiveLineId],
+  ], "研究方向索引");
 
   const expectedRoutes = [
     "/research-lines/central-engines/",
@@ -391,10 +396,10 @@ test("Research Line static pages render the projected index, complete prose, lin
     );
     const text = htmlText(html);
     assertInOrder(html, [
-      `<h1>${line.title}</h1>`,
-      "Scientific question</p>",
-      "Why This Line Matters</h2>",
-      "Papers in This Research Line</h2>",
+      `<h1>${localizedLineTitles[line.line_id]}</h1>`,
+      "科学问题</p>",
+      "为什么这个方向重要</h2>",
+      "该研究方向中的论文</h2>",
     ], bundle.slug);
     assert(text.includes(line.scientific_question), `${bundle.slug}: incomplete scientific question`);
 
@@ -431,9 +436,9 @@ test("Research Line static pages render the projected index, complete prose, lin
   );
   assert.match(indexSource, /projectVisibleSnapshot\(snapshot\)/u);
   assert.match(indexSource, /visibleLines\.length === 0/u);
-  assert.match(indexSource, /No Research Lines are visible in the curated reading map yet\./u);
+  assert.match(indexSource, /精选阅读地图中暂时没有可见研究方向。/u);
   assert.match(detailSource, /projectedLineIds/u);
-  assert.match(detailSource, /No reviewed visible Papers are connected to this Research Line yet\./u);
+  assert.match(detailSource, /该研究方向暂时没有关联的、经过审核且可见的论文。/u);
   assert.doesNotMatch(`${indexSource}${detailSource}`, /generated\/work-research-lines/u);
 
   const css = await readFile(new URL("../src/styles/global.css", import.meta.url), "utf8");

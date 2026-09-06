@@ -1,0 +1,44 @@
+work_id: work:khatami-kasen-2024
+versions:
+  - kind: arxiv_revision
+    title: The Landscape of Thermal Transients from Supernova Interacting with a
+      Circumstellar Medium
+    authors:
+      - display_name: David Khatami
+      - display_name: Daniel Kasen
+    release_date:
+      value: 2023-04-06
+      precision: day
+    arxiv_id: "2304.03360"
+    arxiv_revision: 2
+    access_urls:
+      - kind: arxiv
+        url: https://arxiv.org/abs/2304.03360v2
+    id: version:khatami-kasen-2024-arxiv-v2
+    field_sources:
+      /title:
+        - source:arxiv-baseline-khatami-kasen-2024-20260907
+      /authors/0/display_name:
+        - source:arxiv-baseline-khatami-kasen-2024-20260907
+      /authors/1/display_name:
+        - source:arxiv-baseline-khatami-kasen-2024-20260907
+      /release_date/value:
+        - source:arxiv-baseline-khatami-kasen-2024-20260907
+      /release_date/precision:
+        - source:arxiv-baseline-khatami-kasen-2024-20260907
+      /arxiv_id:
+        - source:arxiv-baseline-khatami-kasen-2024-20260907
+      /arxiv_revision:
+        - source:arxiv-baseline-khatami-kasen-2024-20260907
+      /access_urls/0/kind:
+        - source:arxiv-baseline-khatami-kasen-2024-20260907
+      /access_urls/0/url:
+        - source:arxiv-baseline-khatami-kasen-2024-20260907
+bibliographic_sources:
+  - id: source:arxiv-baseline-khatami-kasen-2024-20260907
+    provider: arxiv
+    record_id: "2304.03360"
+    source_url: https://arxiv.org/abs/2304.03360v2
+    retrieved_at: 2026-09-06T22:35:04Z
+publication_relations: []
+bibliographic_discrepancies: []

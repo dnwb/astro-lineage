@@ -1,0 +1,50 @@
+work_id: work:blandford-mckee-1976
+versions:
+  - kind: journal_manifestation
+    title: Fluid dynamics of relativistic blast waves
+    authors:
+      - display_name: R. D. Blandford
+      - display_name: C. F. McKee
+    release_date:
+      value: 1976-08-01
+      precision: day
+    doi: 10.1063/1.861619
+    journal:
+      name: The Physics of Fluids
+      volume: "19"
+      first_page: "1130"
+    access_urls:
+      - kind: doi
+        url: https://doi.org/10.1063/1.861619
+    id: version:blandford-mckee-1976-journal
+    field_sources:
+      /title:
+        - source:crossref-baseline-blandford-mckee-1976-20260907
+      /authors/0/display_name:
+        - source:crossref-baseline-blandford-mckee-1976-20260907
+      /authors/1/display_name:
+        - source:crossref-baseline-blandford-mckee-1976-20260907
+      /release_date/value:
+        - source:crossref-baseline-blandford-mckee-1976-20260907
+      /release_date/precision:
+        - source:crossref-baseline-blandford-mckee-1976-20260907
+      /doi:
+        - source:crossref-baseline-blandford-mckee-1976-20260907
+      /journal/name:
+        - source:crossref-baseline-blandford-mckee-1976-20260907
+      /journal/volume:
+        - source:crossref-baseline-blandford-mckee-1976-20260907
+      /journal/first_page:
+        - source:crossref-baseline-blandford-mckee-1976-20260907
+      /access_urls/0/kind:
+        - source:crossref-baseline-blandford-mckee-1976-20260907
+      /access_urls/0/url:
+        - source:crossref-baseline-blandford-mckee-1976-20260907
+bibliographic_sources:
+  - id: source:crossref-baseline-blandford-mckee-1976-20260907
+    provider: crossref
+    record_id: 10.1063/1.861619
+    source_url: https://api.crossref.org/works/10.1063/1.861619
+    retrieved_at: 2026-09-06T22:35:47Z
+publication_relations: []
+bibliographic_discrepancies: []

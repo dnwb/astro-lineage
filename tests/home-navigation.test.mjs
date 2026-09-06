@@ -8,9 +8,9 @@ import { parse, stringify } from "yaml";
 import { test } from "node:test";
 
 const projectRoot = fileURLToPath(new URL("..", import.meta.url));
-const productionContent = join(projectRoot, "content");
 const expectedRoutes = [
   "/",
+  "/arxiv-daily/",
   "/papers/",
   "/papers/arnett-1982/",
   "/papers/bromberg-2011/",
@@ -89,26 +89,34 @@ test("Home provides the four reader entry areas, projected content, and complete
   runBuild(projectRoot);
   const home = await readFile(join(projectRoot, "dist", "index.html"), "utf8");
   assertInOrder(home, [
-    '<header class="home-header"',
-    "Start Here",
-    "Curated Papers",
-    "Scientific Connections",
-  ], "Home sections");
-  assert.match(home, /Understand how ideas in high-energy astrophysics evolve\./u);
-  assert.match(home, /A curated scientific reading map built around papers, their physical relationships, and learning paths\./u);
+    "<h1 id=\"home-title\">AstroLineage</h1>",
+    "从这里开始",
+    "精选论文",
+    "科学关联",
+  ], "首页区域");
+  assert.match(home, /理解高能瞬变天体物理中的思想如何演化。/u);
+  assert.match(home, /围绕论文、物理关系与学习路径构建的科学阅读地图。/u);
   assert.match(home, /From Jet Propagation to Dynamic Multi-messenger Yields/u);
   assertInOrder(home, [
     "/papers/bromberg-2011/",
     "/papers/zhu-2021/",
     "/papers/long-yu-2026/",
-  ], "Start Here sequence");
-  assert.equal((home.match(/<h3><a class="paper-title" href="\/papers\//gu) ?? []).length, 5);
-  assert.match(home, /5 visible Works/u);
+  ], "起始阅读顺序");
+  for (const title of [
+    "I 型超新星：早期光变曲线的解析解",
+    "相对论喷流在外部介质中的传播",
+    "嵌入 AGN 吸积盘的 GRB 喷流高能中微子信号：动态喷流传播框架",
+    "TransFit：具有时间依赖辐射扩散的瞬变光变曲线高效拟合框架",
+    "活动星系核吸积盘中受阻伽马射线暴产生的高能中微子",
+  ]) {
+    assert.match(home, new RegExp(title), `Home missing paper ${title}`);
+  }
+  assert.match(home, /5 篇可见论文/u);
   const homeText = home.replaceAll("&#39;", "'").replaceAll("&amp;", "&");
   for (const reason of edgeReasons) {
     assert.equal((homeText.match(new RegExp(reason, "gu")) ?? []).length, 1, reason);
   }
-  assert.equal((home.match(/<span class="tag">(?:EXTENDS|CHALLENGES)<\/span>/gu) ?? []).length, 2);
+  assert.equal((home.match(/>(?:扩展|挑战)</gu) ?? []).length, 2);
   assert.doesNotMatch(home, /Why next|Pedagogical Transitions|Provenance &amp; scientific evidence/u);
 
   const internalLinks = new Set(
@@ -135,8 +143,8 @@ test("Home provides the four reader entry areas, projected content, and complete
 
   for (const route of expectedRoutes) {
     const html = await readFile(routeFile(projectRoot, route), "utf8");
-    assert.match(html, /<nav class="site-nav" aria-label="Primary navigation">/u, route);
-    for (const navRoute of ["/", "/papers/", "/research-lines/", "/learning-paths/"]) {
+    assert.match(html, /<nav[^>]*aria-label="主导航"/u, route);
+    for (const navRoute of ["/", "/papers/", "/research-lines/", "/learning-paths/", "/arxiv-daily/"]) {
       assert.match(html, new RegExp(`href="${navRoute.replaceAll("/", "\\/")}"`, "u"), `${route}: ${navRoute}`);
     }
     assert.doesNotMatch(html, /<script/iu, route);
@@ -180,7 +188,7 @@ test("Home and downstream routes exclude hidden Works, Paths, and Edges from the
   const rendered = await Promise.all(files.map((path) => readFile(path, "utf8")));
   const allHtml = rendered.join("\n");
   const home = await readFile(join(root, "dist", "index.html"), "utf8");
-  assert.match(home, /No reviewed learning path yet\./u);
+  assert.match(home, /暂无经过审核的学习路径。/u);
   assert.doesNotMatch(home, /zhu-2021|embedded-jet-dynamics|Long and Yu preserve Zhu/u);
   assert.doesNotMatch(allHtml, /HIDDEN|zhu-2021|embedded-jet-dynamics|Long and Yu preserve Zhu/u);
   assert.equal(files.some((path) => path.endsWith("/papers/zhu-2021/index.html")), false);

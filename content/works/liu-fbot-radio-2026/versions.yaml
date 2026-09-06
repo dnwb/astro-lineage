@@ -1,0 +1,50 @@
+work_id: work:liu-fbot-radio-2026
+versions:
+  - kind: arxiv_revision
+    title: Radio Emission from Fast Blue Optical Transients Powered by
+      Trans-relativistic Shocks in Confined Circumstellar Material
+    authors:
+      - display_name: Liang-Duan Liu
+      - display_name: Jia-Sen Zhang
+      - display_name: Zhao-Sheng Zhang
+      - display_name: Yun-Wei Yu
+    release_date:
+      value: 2026-05-17
+      precision: day
+    arxiv_id: "2605.17280"
+    arxiv_revision: 1
+    access_urls:
+      - kind: arxiv
+        url: https://arxiv.org/abs/2605.17280v1
+    id: version:liu-fbot-radio-2026-arxiv-v1
+    field_sources:
+      /title:
+        - source:arxiv-baseline-liu-fbot-radio-2026-20260907
+      /authors/0/display_name:
+        - source:arxiv-baseline-liu-fbot-radio-2026-20260907
+      /authors/1/display_name:
+        - source:arxiv-baseline-liu-fbot-radio-2026-20260907
+      /authors/2/display_name:
+        - source:arxiv-baseline-liu-fbot-radio-2026-20260907
+      /authors/3/display_name:
+        - source:arxiv-baseline-liu-fbot-radio-2026-20260907
+      /release_date/value:
+        - source:arxiv-baseline-liu-fbot-radio-2026-20260907
+      /release_date/precision:
+        - source:arxiv-baseline-liu-fbot-radio-2026-20260907
+      /arxiv_id:
+        - source:arxiv-baseline-liu-fbot-radio-2026-20260907
+      /arxiv_revision:
+        - source:arxiv-baseline-liu-fbot-radio-2026-20260907
+      /access_urls/0/kind:
+        - source:arxiv-baseline-liu-fbot-radio-2026-20260907
+      /access_urls/0/url:
+        - source:arxiv-baseline-liu-fbot-radio-2026-20260907
+bibliographic_sources:
+  - id: source:arxiv-baseline-liu-fbot-radio-2026-20260907
+    provider: arxiv
+    record_id: "2605.17280"
+    source_url: https://arxiv.org/abs/2605.17280v1
+    retrieved_at: 2026-09-06T22:35:04Z
+publication_relations: []
+bibliographic_discrepancies: []

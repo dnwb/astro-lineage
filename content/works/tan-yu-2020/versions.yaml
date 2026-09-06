@@ -1,0 +1,44 @@
+work_id: work:tan-yu-2020
+versions:
+  - kind: arxiv_revision
+    title: The jet structure and the intrinsic luminosity function of short
+      gamma-ray bursts
+    authors:
+      - display_name: Wei-Wei Tan
+      - display_name: Yun-Wei Yu
+    release_date:
+      value: 2020-06-03
+      precision: day
+    arxiv_id: "2006.02060"
+    arxiv_revision: 2
+    access_urls:
+      - kind: arxiv
+        url: https://arxiv.org/abs/2006.02060v2
+    id: version:tan-yu-2020-arxiv-v2
+    field_sources:
+      /title:
+        - source:arxiv-baseline-tan-yu-2020-20260907
+      /authors/0/display_name:
+        - source:arxiv-baseline-tan-yu-2020-20260907
+      /authors/1/display_name:
+        - source:arxiv-baseline-tan-yu-2020-20260907
+      /release_date/value:
+        - source:arxiv-baseline-tan-yu-2020-20260907
+      /release_date/precision:
+        - source:arxiv-baseline-tan-yu-2020-20260907
+      /arxiv_id:
+        - source:arxiv-baseline-tan-yu-2020-20260907
+      /arxiv_revision:
+        - source:arxiv-baseline-tan-yu-2020-20260907
+      /access_urls/0/kind:
+        - source:arxiv-baseline-tan-yu-2020-20260907
+      /access_urls/0/url:
+        - source:arxiv-baseline-tan-yu-2020-20260907
+bibliographic_sources:
+  - id: source:arxiv-baseline-tan-yu-2020-20260907
+    provider: arxiv
+    record_id: "2006.02060"
+    source_url: https://arxiv.org/abs/2006.02060v2
+    retrieved_at: 2026-09-06T22:35:04Z
+publication_relations: []
+bibliographic_discrepancies: []

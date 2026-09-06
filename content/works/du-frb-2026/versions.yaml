@@ -1,0 +1,53 @@
+work_id: work:du-frb-2026
+versions:
+  - kind: arxiv_revision
+    title: "Super-Orbital Variations in Magnetar Rotation Measure Arising from the
+      Precession of Companion Star: Implications for FRB 20220529"
+    authors:
+      - display_name: Ze-Xin Du
+      - display_name: Yun-Wei Yu
+      - display_name: Aming Chen
+      - display_name: Chen-Hui Niu
+      - display_name: Jia-Heng Zhang
+    release_date:
+      value: 2026-01-06
+      precision: day
+    arxiv_id: "2601.02734"
+    arxiv_revision: 1
+    access_urls:
+      - kind: arxiv
+        url: https://arxiv.org/abs/2601.02734v1
+    id: version:du-frb-2026-arxiv-v1
+    field_sources:
+      /title:
+        - source:arxiv-baseline-du-frb-2026-20260907
+      /authors/0/display_name:
+        - source:arxiv-baseline-du-frb-2026-20260907
+      /authors/1/display_name:
+        - source:arxiv-baseline-du-frb-2026-20260907
+      /authors/2/display_name:
+        - source:arxiv-baseline-du-frb-2026-20260907
+      /authors/3/display_name:
+        - source:arxiv-baseline-du-frb-2026-20260907
+      /authors/4/display_name:
+        - source:arxiv-baseline-du-frb-2026-20260907
+      /release_date/value:
+        - source:arxiv-baseline-du-frb-2026-20260907
+      /release_date/precision:
+        - source:arxiv-baseline-du-frb-2026-20260907
+      /arxiv_id:
+        - source:arxiv-baseline-du-frb-2026-20260907
+      /arxiv_revision:
+        - source:arxiv-baseline-du-frb-2026-20260907
+      /access_urls/0/kind:
+        - source:arxiv-baseline-du-frb-2026-20260907
+      /access_urls/0/url:
+        - source:arxiv-baseline-du-frb-2026-20260907
+bibliographic_sources:
+  - id: source:arxiv-baseline-du-frb-2026-20260907
+    provider: arxiv
+    record_id: "2601.02734"
+    source_url: https://arxiv.org/abs/2601.02734v1
+    retrieved_at: 2026-09-06T22:35:04Z
+publication_relations: []
+bibliographic_discrepancies: []

@@ -1,0 +1,334 @@
+{
+  "generated_at": "2026-09-06T22:59:05.745Z",
+  "query": "cat:astro-ph.HE OR cat:astro-ph.GA",
+  "source_url": "https://export.arxiv.org/api/query?search_query=cat%3Aastro-ph.HE+OR+cat%3Aastro-ph.GA&sortBy=submittedDate&sortOrder=descending&start=0&max_results=20",
+  "entries": [
+    {
+      "arxiv_id": "2609.04145",
+      "revision": 1,
+      "title": "Low-angular-momentum accretion shocks can power weak-to-moderate X-ray flares from SgrA*",
+      "abstract": "X-ray flares from Sgr~A* span broad ranges in duration, fluence, and luminosity, but their origin remains unsettled. We test whether standing shocks in low-angular-momentum magnetized accretion flows can provide a viable energy reservoir to account for these events. Using semi-analytic trans-magnetosonic shock solutions, we estimate the kinetic energy available in the downstream post-shock flow and compare it with the 25-year \\textit{Chandra} X-ray flare catalog. For each theoretical solution, we compute the required efficiency $ε=E_{\\rm data}/E_{\\rm sh}$, where $E_{\\rm data}$ is the observed radiated energy for each flare and $E_{\\rm sh}$ is the available energy in the shocked flow. Notably, the weak flares require $ε\\sim10^{-3}$--$10^{-2}$, while moderate flares require a few percent. We perform the analyses for weakly and highly spinning cases, and the resulting weak-to-moderate flare energy budget remains unchanged. For the fiducial accretion rate and bolometric correction, the kinetic energy reservoir in standing shock is sufficient for the observed weak-to-moderate flare population, whereas the strongest events likely require higher efficiency which can be mediated via additional magnetic energy dissipation channel.",
+      "published": "2026-09-03T17:37:54Z",
+      "updated": "2026-09-03T17:37:54Z",
+      "authors": [
+        "Samik Mitra",
+        "Bożena Czerny",
+        "Michal Zajaček",
+        "Zach Sumners"
+      ],
+      "url": "https://arxiv.org/abs/2609.04145v1"
+    },
+    {
+      "arxiv_id": "2609.04130",
+      "revision": 1,
+      "title": "Fundamental differences in the X-ray accretion properties of low and high-excitation radio galaxies",
+      "abstract": "We characterise the accretion rate properties of radio-detected AGN by combining deep radio and X-ray observations of the Boötes field. We used deep international LOFAR telescope observations to identify 2840 radio-AGN across $0.3 < z \\leq 2$, divided into samples that are complete in radio luminosity. We further split this sample into four different classes: radio-quiet AGN (RQ-AGN), high-excitation radio galaxies (HERGs), and low-excitation radio galaxies (LERGs) hosted by star-forming (SF-LERGs) and quiescent galaxies (Q-LERGs). Through performing X-ray stacking, we determined the average X-ray luminosities, $L_{\\rm{X, 2-10\\,keV}}$ and average specific X-ray luminosities, $λ_{sL_{X}}$ (X-ray luminosity scaled by the stellar mass; a proxy for the accretion rate). We studied how these X-ray properties depend on radio luminosity, stellar mass, and redshift for each of the four AGN classes. We found that the LERGs, regardless of their star-formation activity, show significantly lower $L_{\\rm{X, 2-10\\,keV}}$ and $λ_{sL_{X}}$ than both HERGs and RQ-AGN across all redshifts. The average X-ray luminosities for the HERGs, RQ-AGN, and SF-LERGs typically increase with redshift, which may be associated with the increased cold gas fractions at earlier times, resulting in more enhanced black hole accretion. The average X-ray luminosities show weak-to-no correlation with radio luminosity at a given redshift, suggesting that the physical processes producing the X-ray and radio emission may not be coupled on spatial and/or temporal scales.",
+      "published": "2026-09-03T17:27:03Z",
+      "updated": "2026-09-03T17:27:03Z",
+      "authors": [
+        "R. Kondapally",
+        "T. Holc",
+        "P. N. Best",
+        "J. Aird",
+        "K. J. Duncan",
+        "L. K. Morabito",
+        "D. M. Alexander",
+        "D. J. B. Smith",
+        "S. Shenoy",
+        "S. Das"
+      ],
+      "url": "https://arxiv.org/abs/2609.04130v1"
+    },
+    {
+      "arxiv_id": "2609.04118",
+      "revision": 1,
+      "title": "A targeted search for fast radio bursts from magnetars in elliptical galaxies",
+      "abstract": "Motivated by predictions that globular clusters associated with nearby giant elliptical galaxies are prime environments for detecting fast radio bursts (FRBs) from magnetars, we report on a targeted high-sensitivity search across five local massive elliptical galaxies. We utilized the GREENBURST single-pulse search pipeline and the VEGAS backend on the Green Bank Telescope (GBT) to conduct an L-band (1.4 GHz) survey for FRBs in each target environment. We discovered FRB 20240817A in the direction of M49 (NGC 4472) which has a pulse width of 15 ms, a signal-to-noise ratio of 13, and a dispersion measure (DM) of $983~\\rm{cm}^{-3}$ pc. Although a Bayesian spatial association framework initially flags M49 as the host, carefully accounting for the foreground electron column contributions from the Milky Way and both the Virgo intracluster medium and M49's hot gaseous halo ($\\sim300-400~\\rm{cm}^{-3}$ pc combined) strongly disfavours a physical connection. We conclude that FRB 20240817A is a background event. We also identified a repeating cluster of three low-significance pulses from the direction of M49 at a physically plausible DM of $150-160~\\rm{cm}^{-3}$ pc. Accounting for the fraction of each target's extended globular cluster distribution observed, the absence of unambiguous, host-localized bursts allows us to place a joint upper limit on the intrinsic burst rate of a single active source within these systems of $R_0 < 0.028~\\rm{hr}^{-1}$ (and an integrated rate limit of $<1.0$~hr$^{-1}$ for M49), lowering previous upper limits and suggesting that magnetar formation within dynamical clusters is less efficient than previously assumed.",
+      "published": "2026-09-03T17:20:52Z",
+      "updated": "2026-09-03T17:20:52Z",
+      "authors": [
+        "S. Paine",
+        "D. R. Lorimer",
+        "S. Sirota",
+        "G. M. Doskoch",
+        "S. Tabassum",
+        "M. Flanagan",
+        "J. Lituchy",
+        "A. Stone",
+        "J. W. Kania",
+        "M. Bhardwaj",
+        "S. Mehta",
+        "M. A. McLaughlin",
+        "B. Kharel",
+        "D. Agarwal",
+        "M. P. Surnis"
+      ],
+      "url": "https://arxiv.org/abs/2609.04118v1"
+    },
+    {
+      "arxiv_id": "2609.04077",
+      "revision": 1,
+      "title": "Absolute Motion of the Infrared Counterpart to Sagittarius A* in the Gaia Celestial Reference Frame 3 and Limits on an Intermediate-mass Black Hole Companion",
+      "abstract": "We report the first proper motion and acceleration measurements of the infrared (IR) counterpart to Sagittarius A* (Sgr A*-IR), the supermassive black hole (SMBH) at the center of our Galaxy, in the Gaia-Celestial Reference Frame (Gaia-CRF3). This reference frame realizes the International Celestial Reference System (ICRS), which is an absolute reference coordinate system defined by quasars. A combination of Gaia and Hubble Space Telescope data was used to transform Keck adaptive optics (AO) observations into Gaia-CRF3. We developed a method for selecting reference stars that minimizes astrometric transformation errors (statistical error = $0.10-0.63$ mas) and drift of the coordinate system (systematic error $\\sim 0.01$ mas/yr). We find the proper motion of Sgr A*-IR in Gaia-CRF3 to be $μ_{α^{*}} = -3.093 \\pm 0.085$ mas yr$^{-1}$ and $μ_δ= -5.62 \\pm 0.13$ mas yr$^{-1}$ with the initial position at $t_{0} = 2016.0$ of R.A. = 266.41680848 $\\pm$ 0.00000029 deg and DEC = -29.00783947 $\\pm$ 0.00000050 deg, which translates to a precision of 1.05 mas in R.A. and 1.79 mas DEC. This is consistent with the astrometric measurements of the radio counterpart to Sgr A* by \\citet{Xu_2022}. We also place a $2σ$ upper constraint of the acceleration of Sgr A*-IR on the sky at 0.061 mas yr$^{-2}$. This acceleration limit on Sgr A*-IR excludes any intermediate-mass black hole companion with mass $\\gtrsim 4\\times 10^{4}$ $M_{\\odot}$ within a distance of $\\sim$0.01 pc, consistent with previous studies. With the release of Gaia Data Release 4, we predict these limits will be improved by at least a factor of two.",
+      "published": "2026-09-03T16:46:37Z",
+      "updated": "2026-09-03T16:46:37Z",
+      "authors": [
+        "Rebecca A. Lewis-Merrill",
+        "Tuan Do",
+        "Matthew W. Hosek",
+        "Gregory David Martinez",
+        "Shoko Sakai",
+        "Kelly Kosmo O'Neil",
+        "Grant Weldon",
+        "Abhimat Gautam",
+        "Zoë Haggard",
+        "Andrea M. Ghez",
+        "Jessica R. Lu",
+        "Keith Matthews"
+      ],
+      "url": "https://arxiv.org/abs/2609.04077v1"
+    },
+    {
+      "arxiv_id": "2609.04051",
+      "revision": 1,
+      "title": "Sgr A* as a Galactic PeVatron: Multimessenger Signatures of the Magnetic Penrose Process",
+      "abstract": "The magnetic Penrose process (MPP) is one of the most efficient mechanisms for extracting rotational energy from a magnetized Kerr black hole (BH), enabling charged particles to reach very-high energies. We investigate this process in Sagittarius A* (Sgr A*), the supermassive BH at the Galactic center (GC), focusing on its ultra-high-efficiency regime, in which neutrons undergo beta decay inside the BH ergosphere. As a key novelty, we compute the neutron production spectrum in the accretion flow directly from the nuclear reaction kinematics and follow neutron trajectories in the Kerr spacetime to determine the population that reaches the ergosphere and undergoes the MPP. From this population, we derive the spectrum of accelerated protons and show that Sgr A* can accelerate them up to PeV energies, strengthening its interpretation as a candidate Galactic PeVatron. We further compute the gamma-ray and neutrino emission produced through hadronic interactions of the escaping protons in the Central Molecular Zone. The predicted gamma-ray fluxes exhibit distinctive spectral features that could provide an observational signature of the MPP and may constitute a non-negligible contribution to the very-high-energy emission detected by H.E.S.S. and HAWC. The associated neutrino fluxes remain below the diffuse Galactic component inferred by IceCube, but may still contribute to the high-energy emission from the GC. Remarkably, the predicted signals lie within the projected sensitivity of SWGO for all scenarios considered here and, for some models, only a factor of a few below the nominal CTAO sensitivity, while KM3NeT/ARCA and IceCube-Gen2 will provide complementary tests. Our results establish the MPP as an observable mechanism for extracting BH rotational energy, providing a direct connection between horizon-scale physics and multimessenger observations that can be extended to other magnetized BHs.",
+      "published": "2026-09-03T16:23:01Z",
+      "updated": "2026-09-03T16:23:01Z",
+      "authors": [
+        "Marina Cermeño",
+        "Pedro De la Torre Luque",
+        "Cristina Fernández-Suárez",
+        "Viviana Gammaldi",
+        "Enrique Mier-Alonso",
+        "María J. Rodríguez",
+        "Miguel Á. Sánchez-Conde",
+        "Jaume Zuriaga-Puig"
+      ],
+      "url": "https://arxiv.org/abs/2609.04051v1"
+    },
+    {
+      "arxiv_id": "2609.04036",
+      "revision": 1,
+      "title": "Ionized Nebulae Around Two New Symbiotic Stars: GR Cygni and [D75] 141",
+      "abstract": "In the course of selecting targets for a spectroscopic survey of faint planetary-nebula nuclei, we encountered two anomalous cases of late-type variable stars surrounded by nebulosities discovered by amateur astronomers. We obtained follow-up deep narrow-band images of the two nebulae: StDr Objet 14 (diameter 1.5 arcmin) and StDr 4 (diameter 2.5 arcmin). StDr Objet 14 is found to be a low-excitation nebula, bright only in Ha+[N II], and showing a unique double-ring \"bull's-eye\" morphology. StDr 4 exhibits a bow-shock structure, bright in Halpha and [S II], embedded in an extended emission nebula. Both central stars, respectively GR Cygni and [D75] 141, are found to be pulsating semiregular variable stars. Our spectroscopic observations show GR Cyg to be a cool carbon star of type C9,2, with emission lines of the Balmer series, [O II] and [O III], [Ne III], [S II], and Fe II. A synthetic narrow-band image of GR Cyg shows that the source of its strong [O II] 3727 A emission line is a knot displaced from the star by about 1.6 arcsec, indicative of a recent collimated ejection event. [D75] 141 is a M6 III red giant, with weak Balmer-series emission. Both stars show a blue excess, and GR Cyg was detected in the near-UV by the GALEX spacecraft. These data establish both stars as new symbiotic binaries, containing a late-type red giant and a hot companion accreting from its stellar wind. We speculate that the double rings surrounding GR Cyg were ejected during helium-shell thermal pulses (or conceivably from recurring nova outbursts), while the nebula around [D75] 141 may be the result of a collision of the symbiotic star's ejecta with an interstellar cloud. Our accidental discoveries of these two binaries because they are surrounded by faint nebulae supports the view that there is a significant population of \"missing\" symbiotic stars yet to be discovered.",
+      "published": "2026-09-03T16:11:23Z",
+      "updated": "2026-09-03T16:11:23Z",
+      "authors": [
+        "Howard E. Bond",
+        "Calvin Carter",
+        "Sven E. Eklund",
+        "Peter Goodhew",
+        "Ulisse Munari",
+        "Jonathan Talbot",
+        "Gregory R. Zeimann"
+      ],
+      "url": "https://arxiv.org/abs/2609.04036v1"
+    },
+    {
+      "arxiv_id": "2609.04012",
+      "revision": 1,
+      "title": "Two sets of potential-density basis pairs for the study of radial perturbations in collisionless spherical stellar systems",
+      "abstract": "The Kalnajs matrix method is a widely used framework for studying the global linear stability and possible Landau damping of collisionless stellar systems. However, for radial perturbations ($l=0$) in three-dimensional spherical models with infinite boundaries, standard biorthogonal sets such as the Clutton-Brock basis often converge slowly. This stems from a physical constraint: mass-conserving radial modes force the perturbed potential to decay faster than a point mass at infinity, whereas individual Clutton-Brock elements carry a fictitious net mass and decay only as $\\mathcal{O}(1/r)$, producing unphysical asymptotic tails. We construct two new families of potential-density basis pairs that are free of these tails by construction. The first modifies the Clutton-Brock set: a specific linear combination of adjacent elements analytically cancels the leading $\\mathcal{O}(1/r)$ term, giving potentials that decay as $\\mathcal{O}(1/r^3)$ and densities as $\\mathcal{O}(1/r^5)$. This breaks strict biorthogonality but yields a compact tridiagonal Gram matrix that enters the response equation at negligible additional cost. The second family is built from Jacobi polynomials that embed the required $\\mathcal{O}(1/r^2)$ potential decay directly into their construction while retaining strict diagonal biorthogonality. Numerical tests demonstrate convergence that is uniform in radius for both expansions: the truncation error decreases exponentially when the asymptotic tail of the expanded potential matches the parity of the basis elements, and algebraically otherwise. Both bases reduce the dimension of the response matrix required for a given accuracy and are suited to studying radial perturbations in open stellar systems.",
+      "published": "2026-09-03T15:53:04Z",
+      "updated": "2026-09-03T15:53:04Z",
+      "authors": [
+        "E. V. Polyachenko",
+        "I. G. Shukhman"
+      ],
+      "url": "https://arxiv.org/abs/2609.04012v1"
+    },
+    {
+      "arxiv_id": "2609.03979",
+      "revision": 1,
+      "title": "Eight Local Couplings of Gravitational Waves from Unified Field Equations",
+      "abstract": "A gravitational-wave (GW) detector records a linear mixture of local couplings under the assumption that extra polarizations enter geodesic deviation. Vacuum general relativity (GR) admits two transverse-traceless (TT) amplitudes. It remains to determine the largest set of couplings that can sit in that mixture, and whether a tensor-only arm-length result selects GR uniquely. The little group \\(E(2)\\) of a null four-momentum classifies the strain amplitudes \\(\\mathbf{p}=(p_{+},p_{\\times},p_{x},p_{y},p_{b},p_{\\ell})\\), commonly written \\(h_{P}\\), which determine the electric tidal tensor along a ray. Geodesic deviation, recorded as differential arm length, therefore contains only those \\(p_{P}\\) that enter that tensor. Lorentz mixing at helicity \\(\\pm1\\) supplies a gravito-magnetic (GEM) field that does not enter the tidal tensor. if GEM field is static, that does not propagate as a wave. A time-varying helicity-\\(\\pm1\\) current sources a GEM wave that enters the mixture as a coupling, to be isolated by its measured quantity. For a radiation-zone wave that depends only on retarded time, \\(\\betag_{\\perp}=\\hat{\\mathbf{k}}\\times\\partial_{t}(p_{x},p_{y})\\), and the eight couplings are \\(\\Pvec=(\\mathbf{p},\\betag_{\\perp})\\). Here we adopt unified field equations on \\(\\mathbf{p}\\) to clarify the origin of each component of \\(\\Pvec\\); the measured quantity of each coupling then isolates the polarizations in that mixture, which favors identification of distinct polarizations and model tests.",
+      "published": "2026-09-03T15:13:46Z",
+      "updated": "2026-09-03T15:13:46Z",
+      "authors": [
+        "Hong-Bo Jin",
+        "Yue-Liang Wu"
+      ],
+      "url": "https://arxiv.org/abs/2609.03979v1"
+    },
+    {
+      "arxiv_id": "2609.03964",
+      "revision": 1,
+      "title": "Ultra-compact twin stars with hybrid equations of state from bosonic dark matter",
+      "abstract": "The properties of compact stars with a strong first-order phase transition to quark matter and with an additional fluid of self-interacting bosonic dark matter (DM) are studied. We find that the inclusion of DM changes considerably the stability of mass-radius configurations relative to the naive one-fluid criterion. For compact star configurations with similar masses and different radii, so-called twin stars, the presence of DM removes the unstable segment between the hadronic and the hybrid branch, so that the stable mass-radius sequence becomes continuous after the onset of the phase transition to quark matter. We furthermore find stable ultra-compact objects (UCOs), defined by a total compactness $C = M_\\text{tot}/R_\\text{grav} \\ge 1/3$. We observe two distinct classes of UCOs: a DM-halo class with $f_\\text{DM} \\gtrsim 0.9$, and a DM-core class at $f_\\text{DM} \\lesssim 0.02$. The two classes can be separated by the surface redshift of the normal matter, which reaches $z=0.73$--$0.77$ for the DM-core class and stays below $0.45$ for the DM-halo class. Finally, we find hybrid star solutions of 'ultimate twins' with similar mass and visible radius, but different dark matter content, leading to different tidal deformabilities and surface redshifts. Future X-ray and gravitational measurements of ultra-compact neutron stars with radii and masses outside the allowed neutron star range can thereby probe the presence and the properties of DM in addition to a first-order phase transition to quark matter.",
+      "published": "2026-09-03T14:58:22Z",
+      "updated": "2026-09-03T14:58:22Z",
+      "authors": [
+        "Ishfaq Ahmad Rather",
+        "Sarah Louisa Pitz",
+        "Jürgen Schaffner-Bielich"
+      ],
+      "url": "https://arxiv.org/abs/2609.03964v1"
+    },
+    {
+      "arxiv_id": "2609.03859",
+      "revision": 1,
+      "title": "A catalogue of insights from the fourth LIGO-Virgo-KAGRA observing run",
+      "abstract": "Over the last decade, gravitational-wave science has developed from an era where a single detection was a Nobel-winning achievement to an (almost) everyday occurrence. The LIGO-Virgo-KAGRA (LVK) Collaboration's flagship scientific results are now their catalogues of detections, which include a comprehensive set of analysis results characterising the astrophysical properties of sources, and their implications for fundamental physics and cosmology. We review discoveries from the fourth observing run (O4) of the LVK network. The most recent catalogues each include $\\sim100$ new detections. Among these new detections are remarkable single discoveries: the loudest signals detected so far, and sources unlike those seen before. However, significant advances in the field are coming from population-level analyses, leveraging the increasing sample size to infer constraints on the astrophysical distribution of merging compact binaries, potential deviations to general relativity, and the expansion rate of the Universe. Analyses of the latest data have revealed evidence for multiple subpopulations of sources. These observations provide a unique probe into the evolution of massive stars and the formation of coalescing binaries. Our understanding of gravitational-wave signals and their sources will continue to deepen with more observations. The final catalogue from O4}is due for release in December 2026, and future observing runs with even greater detector sensitivity are planned. These will bring even larger catalogues, and additional loud signals, continuing to advance gravitational-wave science.",
+      "published": "2026-09-03T13:50:08Z",
+      "updated": "2026-09-03T13:50:08Z",
+      "authors": [
+        "Christopher P L Berry",
+        "Daniel Williams"
+      ],
+      "url": "https://arxiv.org/abs/2609.03859v1"
+    },
+    {
+      "arxiv_id": "2609.03779",
+      "revision": 1,
+      "title": "Morphology of Radio Sources in Representation Space",
+      "abstract": "Understanding radio source morphologies and their classification remains challenging. We previously developed a deep clustering method based on self-supervised learning to classify a subsample of radio sources from the LOFAR Two-meter Sky Survey DR2. This yielded a labelled subset used to fine-tune an ensemble of classifiers. We aim to identify rare morphological classes in a subsample of LoTSS-DR3, which contains > 13 million sources, beyond the 12 classes previously recognised in the DR2 sample. We further aim to characterise the resulting class distribution. We applied the classifier ensemble to derive class probabilities and representations for our samples. Among DR3 sources with low class probabilities, we searched for new clusters in representation space. Moreover, we use these clusters as centroids to classify the low-probability subset. We found that 88% of the sources fall into clearly separated clusters in representation space, coinciding with the DR2 clusters. Within the remaining sources, we identified representatives of six additional morphological classes, including rare morphologies like winged and FR-ambiguous sources. The number of sources in the resulting 18 classes exhibit a strongly skewed distribution, with four dominant classes constituting 69% of the DR3 sample, while rare morphologies account for only a small fraction. The identification of additional morphological classes shows the possibility of open-set recognition with representation learning in an unexplored dataset. Unlike anomaly detection, which flags individual sources as uncommon, this approach identifies representatives of novel morphological classes, providing a framework for discovering novel source populations. The highly skewed class distribution poses a fundamental challenge for constructing balanced training datasets and highlights the need for open-set approaches in future observations.",
+      "published": "2026-09-03T12:54:08Z",
+      "updated": "2026-09-03T12:54:08Z",
+      "authors": [
+        "Nicolas Baron Perez",
+        "Marcus Brüggen",
+        "Luisa Lucie-Smith"
+      ],
+      "url": "https://arxiv.org/abs/2609.03779v1"
+    },
+    {
+      "arxiv_id": "2609.03759",
+      "revision": 1,
+      "title": "Disk survey in the Serpens star-forming region: Environmental effects in nearby star-forming regions",
+      "abstract": "The external environment where protoplanetary disks are embedded regulates disk evolution. External irradiation, which heats and evaporates gas, as well as frequent stellar encounters, which truncate disks, can reduce disk sizes and masses. Disk surveys in nearby star-forming regions with various environments can help us understand how external environments impact disk evolution. The Serpens star-forming region, which is thought to be dense but not highly irradiated by massive stars, is an ideal laboratory to study the dynamical effects on disk properties. We aim to study how dynamical interactions modify disk dust masses by comparing Serpens with other nearby star-forming regions through their disk masses and 3D stellar densities. We survey 321 young stellar objects from Class I to III in Serpens using ALMA at 0.25 arcsec. We measure disk dust masses from millimeter observations under the optically thin assumption and recompute the 3D stellar density using Gaia data. We apply the same method to other nearby star-forming regions for direct comparison with Serpens. The cumulative disk dust mass distribution of Serpens is similar to those of similarly aged nearby star-forming regions, such as Lupus and Taurus. Along with re-assessment of the 3D stellar density, it suggests that Serpens is not likely to have experienced strong tidal truncation capable of producing lower disk dust masses. We also find that the low disk dust mass tension in Ophiuchus and Corona Australis can be resolved when only disks that have been explicitly identified as members of young (1-2 Myr) sub-clusters are considered. Disks without Gaia identifications, especially in Ophiuchus, are spatially clustered in the 2D projected sky plane and less massive than nearby disks with Gaia identifications, possibly tracing the effects of tidal truncation in denser environments at earlier evolutionary stages.",
+      "published": "2026-09-03T12:27:17Z",
+      "updated": "2026-09-03T12:27:17Z",
+      "authors": [
+        "Simin Tong",
+        "Nienke van der Marel",
+        "Jonathan P. Williams",
+        "Alexa R. Anderson"
+      ],
+      "url": "https://arxiv.org/abs/2609.03759v1"
+    },
+    {
+      "arxiv_id": "2609.03714",
+      "revision": 1,
+      "title": "The Physics of the Nebular Phase in Black Hole X-ray Binaries: Modelling V404 Cygni",
+      "abstract": "Some of the most extreme galactic black hole transients exhibit a nebular phase at the end of their outbursts. This stage was first identified in the 2015 outburst of V404 Cygni, when it dominated the optical spectrum for ~4 days. It is characterised by exceptionally strong optical emission lines, together with a significant increase in the Balmer decrement. The emission features show broad wings reaching velocities consistent with outflow speeds derived from prominent P-Cygni profiles that preceded the nebular phase. They are thus interpreted as arising from previously launched ejecta that expand and recombine as X-ray irradiation declines. In this work, we modelled this phase using the photoionisation code Cloudy. Adopting simple assumptions for the irradiating continuum and emitting gas, we quantitatively reproduced key observables, such as the Balmer decrement and the H$α$ equivalent width, and qualitatively reproduced the observed spectra. Our simulations show that the Balmer decrement remains roughly stable within the observed range across orders-of-magnitude changes in the density and ionisation parameter, spanning $n_\\mathrm{H} \\sim 10^{10.5}-10^{12.5}\\,\\text{cm}^{-3}$ and $-1.5 \\lesssim \\logξ\\lesssim 1$. This supports the scenario in which the nebular phase can persist through moderate ejecta expansion and cooling, consistent with observations. Finally, we used different approaches to constrain the general properties of the nebular phase, which we propose is produced by clumpy, partially ionised ejecta whose total mass likely exceeds the mass accreted during the outburst.",
+      "published": "2026-09-03T11:50:39Z",
+      "updated": "2026-09-03T11:50:39Z",
+      "authors": [
+        "A. Ambrifi",
+        "T. Muñoz-Darias",
+        "J. A. Fernández-Ontiveros",
+        "J. Casares",
+        "D. Mata Sánchez",
+        "J. H. Matthews"
+      ],
+      "url": "https://arxiv.org/abs/2609.03714v1"
+    },
+    {
+      "arxiv_id": "2609.03701",
+      "revision": 1,
+      "title": "Rapid Growth of Intermediate-Mass Black Holes through Disk-induced Stellar DisruptionsRapid Growth of Intermediate-Mass Black Holes through Disk-induced Stellar Disruptions",
+      "abstract": "Dense nuclear star clusters provide unique environments for studying the dynamical interactions between stars and massive black holes. When an accretion disk is present, dissipative star--disk interactions can capture surrounding stars, drive their inward migration, and ultimately lead to disk-induced tidal disruption events\\,(dTDEs). The long-term feeding rate from this process, however, cannot be inferred from single-orbit migration estimates alone, as it depends on the coupled evolution of disk capture, collisional relaxation, stellar depletion and replenishment, and physical mergers within the star cluster. In this work, we use high-performance direct $N$-body simulations combined with analytic prescriptions for star--disk interactions to follow this coupled evolution for intermediate-mass black holes\\,(IMBHs) with accretion disks embedded in dense stellar clusters. The simulations track the formation of the stellar cusp, the capture of stars by repeated disk crossings, their subsequent orbital damping and migration, and their eventual consumption by the central IMBH. We find that dTDEs can sustain stellar mass supply rates of $\\sim10^{-3}\\,M_\\odot \\,\\mathrm{yr}^{-1}$, which exceeds the Eddington-limited gas accretion rate for IMBHs with $M_\\bullet<10^5\\,M_\\odot$. These results identify dTDEs as an efficient stellar feeding channel for IMBHs in gas-rich dense stellar systems. As one possible application, this mechanism may help transform $\\sim10^3\\,M_\\odot$ IMBHs into more massive black-hole seeds, provided that compact stellar clusters and accretion disks persist for $>30$ Myr.",
+      "published": "2026-09-03T11:39:22Z",
+      "updated": "2026-09-03T11:39:22Z",
+      "authors": [
+        "Mengye Wang",
+        "Yiqiu Ma",
+        "Qingwen Wu",
+        "Boyuan Liu",
+        "Zijian Wang",
+        "Zhili Wang"
+      ],
+      "url": "https://arxiv.org/abs/2609.03701v1"
+    },
+    {
+      "arxiv_id": "2609.03649",
+      "revision": 1,
+      "title": "Prospects for probing dark matter with filamentary 21cm emission",
+      "abstract": "The cosmic web contains most of the matter in the Universe, and its filamentary structure is closely related to the properties of dark matter. Compared with the cold dark matter (CDM) model, warm dark matter (WDM) suppresses the formation of low-mass halos and produces smoother cosmic filaments. In this work, we explore whether filamentary 21cm emission can be used to distinguish between these two dark matter models at $z=4$ and $2.5$. We generate intrinsic 21cm brightness temperature maps from cosmological hydrodynamical simulations and produce mock observations by convolving them with Gaussian beams of different angular resolutions. We then compare the predicted filament signals with the expected sensitivities of SKA1-Low and SKA2-Low. We find that the intrinsic 21cm emission clearly reflects the different filament morphologies in the CDM and WDM models, particularly at $z=4$. However, these differences rapidly disappear as the beam size increases, especially for beam sizes larger than 6 arcsec. Although larger beams improve the observational sensitivity, they also erase the small-scale structures that encode the dark matter information. As a result, neither SKA1-Low nor the planned SKA2-Low can directly resolve individual filaments with sufficient sensitivity to distinguish between the two models. We therefore conclude that direct imaging of cosmic filaments and constraining dark matter through their morphology are unlikely to be feasible with current and planned SKA-Low facilities.",
+      "published": "2026-09-03T10:49:23Z",
+      "updated": "2026-09-03T10:49:23Z",
+      "authors": [
+        "Yizhou Liu",
+        "Yingjie Jing",
+        "Haoran Shi",
+        "Huijie Hu"
+      ],
+      "url": "https://arxiv.org/abs/2609.03649v1"
+    },
+    {
+      "arxiv_id": "2609.03624",
+      "revision": 1,
+      "title": "NuSTAR View of the 2025 Mini-Outburst of the Black Hole X-ray Binary GRS 1739-278: Spectral and Timing Evolution in the Soft State",
+      "abstract": "We present a dedicated timing and spectral analysis of three NuSTAR observations of the Galactic black hole candidate GRS 1739-278 obtained during the decay of its 2025 mini-outburst (September 18-30, 2025). The source is found in a soft, disk-dominated state throughout, with a declining $3$-$79$ keV count rate (from $112.4$ to $99.4$ cts s$^{-1}$), a low and only mildly evolving hardness ratio ($\\approx0.14$-$0.16$) and a fractional variability that drops from $3.2\\%$ to $1.1\\%$; no periodic or quasi-periodic signal is detected in the power spectrum or the Lomb-Scargle periodogram of any observation. Joint FPMA+FPMB spectral fits with an absorbed disk-blackbody plus thermal-Comptonization continuum, together with a broad, high-significance ($11.7$-$15.0σ$) curvature feature near $10$-$12$ keV (an empirical proxy for a strong disk-reflection/returning-radiation component) describe the $4$-$30$ keV spectra well ($χ^2/{\\rm dof}=1.04$-$1.15$). The inner-disk temperature cools steadily from $1.021\\pm0.001$ to $1.002^{+0.003}_{-0.002}$ keV while the disk normalization and hence the derived inner radius, $R_{\\rm in}\\simeq27.7$ km $\\simeq0.95\\,R_{ISCO}$ remains constant to within $0.3\\%$, consistent with a disk anchored at the innermost stable circular orbit throughout. The unabsorbed $4$-$30$ keV luminosity declines from $1.35\\times10^{37}$ to $1.15\\times10^{37}$ erg s$^{-1}$ ($0.67\\%$ to $0.57 L_{Edd}$). These results of the spectral-timing characterization of the 2025 mini-outburst are broadly consistent with a high-spin black hole accreting at a low, steadily declining rate in the canonical soft state.",
+      "published": "2026-09-03T10:14:22Z",
+      "updated": "2026-09-03T10:14:22Z",
+      "authors": [
+        "Arshad Hussain",
+        "Umananda Dev Goswami"
+      ],
+      "url": "https://arxiv.org/abs/2609.03624v1"
+    },
+    {
+      "arxiv_id": "2609.03609",
+      "revision": 1,
+      "title": "KM3NeT/ARCA stacking search for high-energy neutrino point sources: the case of ultra-luminous infrared galaxies and blazars",
+      "abstract": "A stacking search for high-energy astrophysical neutrino emission is presented using three candidate source populations: ultra-luminous infrared galaxies and two categories of blazars, specifically high-synchrotron-peaked BL Lacs and extreme blazars. The analysis is based on 336 days of data from the Astroparticle Research with Cosmics in the Abyss component of the KM3NeT research infrastructure (KM3NeT/ARCA), collected with detector configurations comprising 19-21 detection units, yielding 1544 selected track-like neutrino candidates. The sample of ultra-luminous infrared galaxies consists of 75 sources, for which conventional power-law spectra are assumed in modelling their signal emission. The blazar samples comprise 232 high-synchrotron-peaked BL Lac objects and 88 extreme synchrotron-peaked emitters, respectively. Their expected neutrino fluxes are obtained from numerical tools constrained by multi-wavelength observational data. No statistically significant excess above the atmospheric background is found for the three catalogues and 90% confidence level upper limits are set.",
+      "published": "2026-09-03T09:55:50Z",
+      "updated": "2026-09-03T09:55:50Z",
+      "authors": [
+        "The KM3NeT Collaboration"
+      ],
+      "url": "https://arxiv.org/abs/2609.03609v1"
+    },
+    {
+      "arxiv_id": "2609.03608",
+      "revision": 1,
+      "title": "C3PO: A Lyα Emitting Galaxy at $z \\sim 9$",
+      "abstract": "We present deep, $>10$ hr, JWST NIRSpec G140M and G395M observations of a previously known galaxy C3PO-8447 at $z=8.99781$. Our new NIRSpec data from the Carbon-3 plus Oxygen (C3PO) survey detect Ly$α$ emission with an escape fraction of $1.5\\pm0.3\\%$ and a velocity offset of $210\\pm80$ km s$^{-1}$, making C3PO-8447 the third Ly$α$ emitting galaxy confirmed at $z\\gtrsim 9$. The galaxy has a low stellar mass of $2.2\\pm0.1\\times 10^7\\ M_\\odot$, a young stellar age of $1.6\\pm0.2$ Myr, and a low oxygen abundance of $12+\\log(\\mathrm{O/H}) = 7.50\\pm0.08$. UV diagnostic diagrams incorporating the C IV, O III], and C III] emission lines indicate that the ionization of C3PO-8447 is dominated by the recent starburst. The low Ly$α$ escape fraction of C3PO-8447 implies that C3PO-8447 resides in a small ionized bubble with radius $R \\sim 0.07$ to 0.20 pMpc, which can be produced by C3PO-8447 alone. We find no evidence for either a large-scale galaxy overdensity around C3PO-8447 or a significant contribution from nearby galaxies to its ionizing photon budget. Taken together, these results suggest that C3PO-8447 likely represents an ionized bubble powered by a single low-mass, vigorously star-forming galaxy during the early stages of cosmic reionization.",
+      "published": "2026-09-03T09:55:42Z",
+      "updated": "2026-09-03T09:55:42Z",
+      "authors": [
+        "Weida Hu",
+        "Casey Papovich",
+        "Taylor A. Hutchison",
+        "Rebecca L. Larson",
+        "Pablo Arrabal Haro",
+        "Steven L. Finkelstein",
+        "Nikko J. Cleri",
+        "Lu Shen",
+        "Jiayang Yang"
+      ],
+      "url": "https://arxiv.org/abs/2609.03608v1"
+    },
+    {
+      "arxiv_id": "2609.03575",
+      "revision": 1,
+      "title": "Trans-Neptunian Object dynamics even better explained by a stellar flyby after 4.5 Gyr of evolution",
+      "abstract": "The Trans-Neptunian objects (TNOs) formed together with the planets from a flat disc of gas and dust but now orbit the Sun mostly on inclined, eccentric orbits. One explanation for the TNOs' orbits is a close flyby of another star. One with a mass of $M_p =$0.8 Msun at $q_p =$ 110 au and $i_p =$70° fits the observations. However, such close encounters were more frequent when the Sun was young and still part of its birth cluster. Assuming that the flyby happened then, we use numerical $N$-body simulations to model how the TNOs' orbits changed due to interactions with the planets over the 4.56 Gyr since the Sun formed. We find that the cold Kuiper belt region lost about 80% and the hot Kuiper belt population about 40% of its initial population. About 7% --8% of the TNOs were injected into the planet region, but almost all (99%) were ejected afterwards. By contrast, the orbital parameters of distant Sedna-like objects ($q >$60 au) remained basically unchanged. Surprisingly, in sum, these changes improve the fit to the observed TNO population even more, strengthening the argument for a close flyby to the Solar System. The remaining differences concern the location of the cold population and the inclination distribution of the Sedna population. We discuss possible reasons and steps to resolve these issues.",
+      "published": "2026-09-03T09:26:00Z",
+      "updated": "2026-09-03T09:26:00Z",
+      "authors": [
+        "Susanne Pfalzner",
+        "Frank W. Wagner",
+        "Marco Bischoff"
+      ],
+      "url": "https://arxiv.org/abs/2609.03575v1"
+    },
+    {
+      "arxiv_id": "2609.03537",
+      "revision": 1,
+      "title": "Bright star-forming galaxies naturally forming at z>10 in the Shark semi-analytic model",
+      "abstract": "The James Webb Space Telescope (JWST) has unveiled the existence of numerous z>10 bright ultraviolet (UV) galaxies, potentially challenging galaxy formation models in a Lambda Cold Dark Matter (LCDM) universe. Modifications to star formation and stellar feedback models have been suggested to alleviate the tension. However, the fundamental challenge is to design a galaxy formation model that simultaneously reproduces observations from z=0 to those at the highest redshifts. Here, we present predictions from the Shark semi-analytic model of galaxy formation, which is tuned to reproduce the z=0 universe. We show that the same model is capable of reproducing the current UV luminosity function constraints even up to z=17 without the need to invoke variations in the baryon physics model. This model is also capable of reproducing reasonably well the stellar mass function evolution from z=0 to z=10 and the cosmic star formation rate (SFR) density at 0<z<15, again with the same baryon physics and parameters. The key to the success of Shark is the triggering of starbursts by violent disk instabilities included in the model, which leads to an increase in the variance of the UV luminosity with increasing halo mass at z>10. We demonstrate that without this mechanism, galaxies are not bursty enough in the model to reproduce the observations at z>10.",
+      "published": "2026-09-03T08:36:36Z",
+      "updated": "2026-09-03T08:36:36Z",
+      "authors": [
+        "Claudia D. P. Lagos",
+        "Angel Chandro-Gomez",
+        "Chris Power",
+        "Aaron S. G. Robotham"
+      ],
+      "url": "https://arxiv.org/abs/2609.03537v1"
+    }
+  ]
+}

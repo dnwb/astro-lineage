@@ -1,0 +1,47 @@
+work_id: work:yu-zhang-gao-2013
+versions:
+  - kind: arxiv_revision
+    title: 'Bright "merger-nova" from the remnant of a neutron star binary merger: A
+      signature of a newly born, massive, millisecond magnetar'
+    authors:
+      - display_name: Yun-Wei Yu
+      - display_name: Bing Zhang
+      - display_name: He Gao
+    release_date:
+      value: 2013-08-05
+      precision: day
+    arxiv_id: "1308.0876"
+    arxiv_revision: 3
+    access_urls:
+      - kind: arxiv
+        url: https://arxiv.org/abs/1308.0876v3
+    id: version:yu-zhang-gao-2013-arxiv-v3
+    field_sources:
+      /title:
+        - source:arxiv-baseline-yu-zhang-gao-2013-20260907
+      /authors/0/display_name:
+        - source:arxiv-baseline-yu-zhang-gao-2013-20260907
+      /authors/1/display_name:
+        - source:arxiv-baseline-yu-zhang-gao-2013-20260907
+      /authors/2/display_name:
+        - source:arxiv-baseline-yu-zhang-gao-2013-20260907
+      /release_date/value:
+        - source:arxiv-baseline-yu-zhang-gao-2013-20260907
+      /release_date/precision:
+        - source:arxiv-baseline-yu-zhang-gao-2013-20260907
+      /arxiv_id:
+        - source:arxiv-baseline-yu-zhang-gao-2013-20260907
+      /arxiv_revision:
+        - source:arxiv-baseline-yu-zhang-gao-2013-20260907
+      /access_urls/0/kind:
+        - source:arxiv-baseline-yu-zhang-gao-2013-20260907
+      /access_urls/0/url:
+        - source:arxiv-baseline-yu-zhang-gao-2013-20260907
+bibliographic_sources:
+  - id: source:arxiv-baseline-yu-zhang-gao-2013-20260907
+    provider: arxiv
+    record_id: "1308.0876"
+    source_url: https://arxiv.org/abs/1308.0876v3
+    retrieved_at: 2026-09-06T22:35:04Z
+publication_relations: []
+bibliographic_discrepancies: []

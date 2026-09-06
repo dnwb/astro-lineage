@@ -1,0 +1,18 @@
+work_id: work:transfit-csm-2025
+evidence:
+  - id: evidence:transfit-csm-2025-abstract
+    version_id: version:transfit-csm-2025-arxiv-v1
+    source_url: https://arxiv.org/abs/2511.13265v1
+    locator:
+      type: paragraph
+      paragraph: Abstract
+    excerpt: We present TransFit-CSM, a fast and physically consistent framework for
+      modeling interaction-powered transients. The method self-consistently
+      couples the ejecta circumstellar medium (CSM) shock dynamics to radiative
+      diffusion from a moving heating boundary tied to the shocks, so that both
+      the photon escape path and the effective diffusion time evolve with radius
+      and time.
+    review_state: unreviewed
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-06T22:35:47Z

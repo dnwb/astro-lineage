@@ -5,6 +5,12 @@ import { loadCanonicalContent } from "../../scripts/content-loader.mjs";
 import { projectVisibleSnapshot } from "../../scripts/reader-projection.mjs";
 import SiteNav from "../components/SiteNav.astro";
 import { learningPathReaderPath, workReaderPath } from "../lib/reader-routes";
+import {
+  localizedEdgeReason,
+  localizedBlocks,
+  localizedPathTitle,
+  localizedWorkTitle,
+} from "../lib/reader-localization";
 import { loadSiteConfig } from "../lib/site-config";
 import "../styles/global.css";
 
@@ -20,13 +26,13 @@ const workById = new Map(visibleWorks.map((work) => [work.work_id, work]));
 const startPath = learningPaths[0] ?? null;
 
 const relationLabels: Record<string, string> = {
-  builds_on: "BUILDS ON",
-  extends: "EXTENDS",
-  tests: "TESTS",
-  constrains: "CONSTRAINS",
-  challenges: "CHALLENGES",
-  replaces_assumption: "REPLACES ASSUMPTION",
-  corrects: "CORRECTS",
+  builds_on: "建立在其上",
+  extends: "扩展",
+  tests: "检验",
+  constrains: "约束",
+  challenges: "挑战",
+  replaces_assumption: "替代假设",
+  corrects: "修正",
 };
 
 function preferred(work: AnyRecord) {
@@ -53,6 +59,14 @@ function releaseYear(work: AnyRecord) {
 
 function whyRead(work: AnyRecord) {
   const document = parseReadingDocument(String(work.reading ?? ""));
+  return firstCompleteReadingItem(
+    localizedBlocks(work.work_id, "why", whyThisWorkMatters(document, work.work_id)),
+    work.work_id,
+  );
+}
+
+function originalWhyRead(work: AnyRecord) {
+  const document = parseReadingDocument(String(work.reading ?? ""));
   return firstCompleteReadingItem(whyThisWorkMatters(document, work.work_id), work.work_id);
 }
 
@@ -70,7 +84,7 @@ function edgeLabel(edge: AnyRecord) {
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
@@ -87,48 +101,55 @@ function edgeLabel(edge: AnyRecord) {
       <header class="home-header" aria-labelledby="home-title">
         <p class="eyebrow">{site.eyebrow}</p>
         <h1 id="home-title">{site.title}</h1>
-        <p class="home-lead">Understand how ideas in high-energy astrophysics evolve.</p>
-        <p>A curated scientific reading map built around papers, their physical relationships, and learning paths.</p>
+        <p class="home-lead language-primary">理解高能瞬变天体物理中的思想如何演化。</p>
+        <p class="language-primary">围绕论文、物理关系与学习路径构建的科学阅读地图。</p>
+        <div class="language-english" lang="en">
+          <p class="home-lead">Understand how ideas in high-energy astrophysics evolve.</p>
+          <p>A curated scientific reading map built around papers, their physical relationships, and learning paths.</p>
+        </div>
         <ProductBoundary />
       </header>
 
       <section class="panel home-section" aria-labelledby="start-here-heading">
-        <p class="section-kicker">Begin with a reviewed sequence</p>
-        <h2 id="start-here-heading">Start Here</h2>
+        <p class="section-kicker">从经过审核的阅读顺序开始</p>
+        <h2 id="start-here-heading">从这里开始</h2>
         {startPath ? (
           <>
-            <h3><a href={learningPathReaderPath(snapshot, startPath.path_id)}>{startPath.title ?? startPath.path_id}</a></h3>
+            <h3><a href={learningPathReaderPath(snapshot, startPath.path_id)}>{localizedPathTitle(startPath.path_id, startPath.title ?? startPath.path_id)}</a></h3>
+            <p class="original-title" lang="en">英文标题：{startPath.title ?? startPath.path_id}</p>
             <ol class="path-citations">
               {(startPath.entries ?? []).map((entry: AnyRecord, index: number) => (
                 <li>
                   <span class="step-number">{index + 1}</span>
-                  <a href={workReaderPath(snapshot, entry.work_id)}>{entry.work?.title ?? entry.work_id}</a>
-                  <small>{(entry.work?.authors ?? []).map((author: AnyRecord) => author.display_name).filter(Boolean).join(", ")} · {entry.work?.release_date?.value?.slice(0, 4) ?? "release date unavailable"}</small>
+                  <a href={workReaderPath(snapshot, entry.work_id)}>{localizedWorkTitle(entry.work_id, entry.work?.title ?? entry.work_id)}</a>
+                  <small>{(entry.work?.authors ?? []).map((author: AnyRecord) => author.display_name).filter(Boolean).join(", ")} · {entry.work?.release_date?.value?.slice(0, 4) ?? "年份未知"}</small>
                 </li>
               ))}
             </ol>
-            <p><a class="browse-link" href={learningPathReaderPath(snapshot, startPath.path_id)}>Open learning path</a></p>
+            <p><a class="browse-link" href={learningPathReaderPath(snapshot, startPath.path_id)}>打开学习路径</a></p>
           </>
         ) : (
-          <p class="empty-state">No reviewed learning path yet.</p>
+          <p class="empty-state">暂无经过审核的学习路径。</p>
         )}
       </section>
 
       <div class="home-grid">
         <section class="panel home-section" aria-labelledby="curated-papers-heading">
-          <p class="section-kicker">{visibleWorks.length} visible Works</p>
-          <h2 id="curated-papers-heading">Curated Papers</h2>
+          <p class="section-kicker">{visibleWorks.length} 篇可见论文</p>
+          <h2 id="curated-papers-heading">精选论文</h2>
           {visibleWorks.length === 0 ? (
-            <p class="empty-state">No Papers are visible in the curated reading map yet.</p>
+            <p class="empty-state">精选阅读地图中暂时没有可见论文。</p>
           ) : (
             <ol class="paper-index">
               {visibleWorks.map((work) => (
                 <li class="paper-index-item">
                   <article>
-                    <h3><a class="paper-title" href={workReaderPath(snapshot, work.work_id)}>{preferred(work).title}</a></h3>
+                    <h3><a class="paper-title" href={workReaderPath(snapshot, work.work_id)}>{localizedWorkTitle(work.work_id, preferred(work).title)}</a></h3>
+                    <p class="original-title" lang="en">英文原题：{preferred(work).title}</p>
                     <p class="paper-meta">{authors(work, true)} · {releaseYear(work)}</p>
                     <p>{whyRead(work)}</p>
-                    <p><a class="browse-link" href={workReaderPath(snapshot, work.work_id)}>Read paper</a></p>
+                    <p class="language-english" lang="en">{originalWhyRead(work)}</p>
+                    <p><a class="browse-link" href={workReaderPath(snapshot, work.work_id)}>阅读论文</a></p>
                   </article>
                 </li>
               ))}
@@ -137,10 +158,10 @@ function edgeLabel(edge: AnyRecord) {
         </section>
 
         <section class="panel home-section" aria-labelledby="scientific-connections-heading">
-          <p class="section-kicker">{scientificEdges.length} projected Edges</p>
-          <h2 id="scientific-connections-heading">Scientific Connections</h2>
+          <p class="section-kicker">{scientificEdges.length} 条科学关联</p>
+          <h2 id="scientific-connections-heading">科学关联</h2>
           {scientificEdges.length === 0 ? (
-            <p class="empty-state">No reviewed scientific connections yet.</p>
+            <p class="empty-state">暂无经过审核的科学关联。</p>
           ) : (
             <ul class="compact-list edge-list">
               {scientificEdges.map((edge) => {
@@ -149,12 +170,13 @@ function edgeLabel(edge: AnyRecord) {
                 return (
                   <li>
                     <p>
-                      <a href={workReaderPath(snapshot, edge.source_work_id)}>{preferred(source).title}</a>
+                      <a href={workReaderPath(snapshot, edge.source_work_id)}>{localizedWorkTitle(edge.source_work_id, preferred(source).title)}</a>
                       <span class="tag">{edgeLabel(edge)}</span>
-                      <a href={workReaderPath(snapshot, edge.target_work_id)}>{preferred(target).title}</a>
-                      {edge.disposition === "contested" ? <strong class="dispute-indicator"> Contested</strong> : null}
+                      <a href={workReaderPath(snapshot, edge.target_work_id)}>{localizedWorkTitle(edge.target_work_id, preferred(target).title)}</a>
+                      {edge.disposition === "contested" ? <strong class="dispute-indicator"> 有争议</strong> : null}
                     </p>
-                    <p>{edge.reason}</p>
+                    <p>{localizedEdgeReason(edge.id, edge.reason)}</p>
+                    <p class="language-english" lang="en">{edge.reason}</p>
                   </li>
                 );
               })}

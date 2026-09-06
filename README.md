@@ -19,12 +19,48 @@ Use Node.js 22.20.0 or newer and npm. From the project root:
 
 ```bash
 npm ci
-npm run dev
+npm run dev -- --host 127.0.0.1
+# for a development server reachable from another local-network device:
+npm run dev -- --host 0.0.0.0
 ```
 
-The Astro site is static-first and reads canonical YAML and Markdown directly
-from `content/`. No network access or bibliographic refresh is required for
+The development script validates canonical content before starting Astro and
+passes additional Astro arguments through. Use `--host 0.0.0.0` when a second
+device on the same local network must reach the development server. The Astro
+site is static-first and reads canonical YAML and Markdown directly from
+`content/`. No network access or bibliographic refresh is required for
 validation, tests, builds, or verification.
+
+Refresh the cached daily arXiv discovery page separately when an upstream
+update is wanted, then rebuild the static site:
+
+```bash
+npm run arxiv:refresh
+npm run build
+```
+
+The result is available at `/arxiv-daily/`; its Chinese editorial guides and
+original English abstracts share the same page-level language switch.
+
+For the validated static build, use the existing Astro preview server:
+
+```bash
+npm run verify
+npm run build                 # only when a standalone build is needed
+npm exec -- astro preview --host 127.0.0.1 --port 3000
+```
+
+For a LAN trial, bind the preview explicitly to all interfaces and replace
+`127.0.0.1` in the browser address with the server's local IP:
+
+```bash
+npm exec -- astro preview --host 0.0.0.0 --port 3000
+# http://<server-ip>:3000/
+```
+
+This project does not modify firewall rules, create a public tunnel, or deploy
+to an external host. A localhost response proves only the local service; a
+second physical device is required for LAN acceptance.
 
 ## Frozen verification commands
 

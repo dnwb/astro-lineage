@@ -1,0 +1,24 @@
+---
+import { renderMathMarkup, splitMath } from "../../scripts/reader-math.mjs";
+
+interface Props {
+  text: string;
+}
+
+type ReaderTextSegment =
+  | { kind: "text"; value: string }
+  | { kind: "math"; value: string; display: boolean };
+
+const { text } = Astro.props;
+const segments = splitMath(text) as ReaderTextSegment[];
+---
+
+{segments.map((segment) => (
+  segment.kind === "math" ? (
+    <span
+      class={segment.display ? "reader-math reader-math-display" : "reader-math"}
+      aria-label={`数学公式：${segment.value}`}
+      set:html={renderMathMarkup(segment.value, segment.display)}
+    />
+  ) : segment.value
+))}

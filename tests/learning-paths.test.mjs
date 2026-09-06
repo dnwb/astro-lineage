@@ -413,7 +413,7 @@ test("the static Learning Paths index and detail form a complete slug-based read
   const indexHtml = await readFile(indexPath, "utf8");
   const detailHtml = await readFile(detailPath, "utf8");
   const detailText = htmlText(detailHtml);
-  assert.match(indexHtml, /1 reviewed Learning Path/u);
+  assert.match(indexHtml, /1 条已审核学习路径/u);
   assert.match(indexHtml, /href="\/learning-paths\/embedded-jet-dynamics\/"/u);
   assert.match(indexHtml, /From Jet Propagation to Dynamic Multi-messenger Yields/u);
   assert.match(detailText, /This path moves from a compact account of relativistic jet propagation/u);
@@ -433,16 +433,16 @@ test("the static Learning Paths index and detail form a complete slug-based read
     assert.match(detailHtml, new RegExp(`href="${href}"`, "u"), href);
     assert.equal(existsSync(join(projectRoot, "dist", href.slice(1), "index.html")), true, href);
   }
-  assert.equal((detailHtml.match(/>Read paper<\/a>/gu) ?? []).length, 3);
-  assert.equal((detailHtml.match(/<strong>Why next:<\/strong>/gu) ?? []).length, 2);
+  assert.equal((detailHtml.match(/>阅读论文<\/a>/gu) ?? []).length, 3);
+  assert.equal((detailHtml.match(/<strong>下一步为什么：<\/strong>/gu) ?? []).length, 2);
   for (const versionId of [
     "version:bromberg-2011-journal",
     "version:zhu-2021-arxiv-v3",
     "version:long-yu-2026-arxiv-v1",
   ]) {
-    assert.match(detailHtml, new RegExp(`Preferred Version ${versionId}`, "u"), versionId);
+    assert.match(detailHtml, new RegExp(`首选版本 ${versionId}`, "u"), versionId);
   }
-  assert.match(detailHtml, /<details class="panel provenance-detail">/u);
+  assert.match(detailHtml, /<summary>溯源详情<\/summary>/u);
   assert.doesNotMatch(`${indexHtml}${detailHtml}`, /<script/iu);
 
   const indexSource = await readFile(
@@ -450,7 +450,7 @@ test("the static Learning Paths index and detail form a complete slug-based read
     "utf8",
   );
   assert.match(indexSource, /learningPaths\.length === 0/u);
-  assert.match(indexSource, />No reviewed learning path yet\.<\/p>/u);
+  assert.match(indexSource, />暂无经过审核的学习路径。<\/p>/u);
 
   const emptyFixture = await copyContent();
   try {

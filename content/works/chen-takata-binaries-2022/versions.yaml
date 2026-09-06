@@ -1,0 +1,43 @@
+work_id: work:chen-takata-binaries-2022
+versions:
+  - kind: arxiv_revision
+    title: Modelling the correlated keV/TeV light curves of Be/gamma-ray binaries
+    authors:
+      - display_name: A. M. Chen
+      - display_name: J. Takata
+    release_date:
+      value: 2021-12-01
+      precision: day
+    arxiv_id: "2112.00345"
+    arxiv_revision: 1
+    access_urls:
+      - kind: arxiv
+        url: https://arxiv.org/abs/2112.00345v1
+    id: version:chen-takata-binaries-2022-arxiv-v1
+    field_sources:
+      /title:
+        - source:arxiv-baseline-chen-takata-binaries-2022-20260907
+      /authors/0/display_name:
+        - source:arxiv-baseline-chen-takata-binaries-2022-20260907
+      /authors/1/display_name:
+        - source:arxiv-baseline-chen-takata-binaries-2022-20260907
+      /release_date/value:
+        - source:arxiv-baseline-chen-takata-binaries-2022-20260907
+      /release_date/precision:
+        - source:arxiv-baseline-chen-takata-binaries-2022-20260907
+      /arxiv_id:
+        - source:arxiv-baseline-chen-takata-binaries-2022-20260907
+      /arxiv_revision:
+        - source:arxiv-baseline-chen-takata-binaries-2022-20260907
+      /access_urls/0/kind:
+        - source:arxiv-baseline-chen-takata-binaries-2022-20260907
+      /access_urls/0/url:
+        - source:arxiv-baseline-chen-takata-binaries-2022-20260907
+bibliographic_sources:
+  - id: source:arxiv-baseline-chen-takata-binaries-2022-20260907
+    provider: arxiv
+    record_id: "2112.00345"
+    source_url: https://arxiv.org/abs/2112.00345v1
+    retrieved_at: 2026-09-06T22:35:04Z
+publication_relations: []
+bibliographic_discrepancies: []

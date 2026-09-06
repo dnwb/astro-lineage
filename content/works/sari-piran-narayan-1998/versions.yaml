@@ -1,0 +1,46 @@
+work_id: work:sari-piran-narayan-1998
+versions:
+  - kind: arxiv_revision
+    title: Spectra and Light Curves of Gamma-Ray Burst Afterglows
+    authors:
+      - display_name: Re'em Sari
+      - display_name: Tsvi Piran
+      - display_name: Ramesh Narayan
+    release_date:
+      value: 1997-11-30
+      precision: day
+    arxiv_id: astro-ph/9712005
+    arxiv_revision: 1
+    access_urls:
+      - kind: arxiv
+        url: https://arxiv.org/abs/astro-ph/9712005v1
+    id: version:sari-piran-narayan-1998-arxiv-v1
+    field_sources:
+      /title:
+        - source:arxiv-baseline-sari-piran-narayan-1998-20260907
+      /authors/0/display_name:
+        - source:arxiv-baseline-sari-piran-narayan-1998-20260907
+      /authors/1/display_name:
+        - source:arxiv-baseline-sari-piran-narayan-1998-20260907
+      /authors/2/display_name:
+        - source:arxiv-baseline-sari-piran-narayan-1998-20260907
+      /release_date/value:
+        - source:arxiv-baseline-sari-piran-narayan-1998-20260907
+      /release_date/precision:
+        - source:arxiv-baseline-sari-piran-narayan-1998-20260907
+      /arxiv_id:
+        - source:arxiv-baseline-sari-piran-narayan-1998-20260907
+      /arxiv_revision:
+        - source:arxiv-baseline-sari-piran-narayan-1998-20260907
+      /access_urls/0/kind:
+        - source:arxiv-baseline-sari-piran-narayan-1998-20260907
+      /access_urls/0/url:
+        - source:arxiv-baseline-sari-piran-narayan-1998-20260907
+bibliographic_sources:
+  - id: source:arxiv-baseline-sari-piran-narayan-1998-20260907
+    provider: arxiv
+    record_id: astro-ph/9712005
+    source_url: https://arxiv.org/abs/astro-ph/9712005v1
+    retrieved_at: 2026-09-06T22:35:04Z
+publication_relations: []
+bibliographic_discrepancies: []

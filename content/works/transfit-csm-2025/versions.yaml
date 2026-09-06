@@ -1,0 +1,56 @@
+work_id: work:transfit-csm-2025
+versions:
+  - kind: arxiv_revision
+    title: "TransFit-CSM: A Fast, Physically Consistent Framework for
+      Interaction-Powered Transients"
+    authors:
+      - display_name: Yu-Hao Zhang
+      - display_name: Liang-Duan Liu
+      - display_name: Ze-Xin Du
+      - display_name: Guang-Lei Wu
+      - display_name: Jing-Yao Li
+      - display_name: Yun-Wei Yu
+    release_date:
+      value: 2025-11-17
+      precision: day
+    arxiv_id: "2511.13265"
+    arxiv_revision: 1
+    access_urls:
+      - kind: arxiv
+        url: https://arxiv.org/abs/2511.13265v1
+    id: version:transfit-csm-2025-arxiv-v1
+    field_sources:
+      /title:
+        - source:arxiv-baseline-transfit-csm-2025-20260907
+      /authors/0/display_name:
+        - source:arxiv-baseline-transfit-csm-2025-20260907
+      /authors/1/display_name:
+        - source:arxiv-baseline-transfit-csm-2025-20260907
+      /authors/2/display_name:
+        - source:arxiv-baseline-transfit-csm-2025-20260907
+      /authors/3/display_name:
+        - source:arxiv-baseline-transfit-csm-2025-20260907
+      /authors/4/display_name:
+        - source:arxiv-baseline-transfit-csm-2025-20260907
+      /authors/5/display_name:
+        - source:arxiv-baseline-transfit-csm-2025-20260907
+      /release_date/value:
+        - source:arxiv-baseline-transfit-csm-2025-20260907
+      /release_date/precision:
+        - source:arxiv-baseline-transfit-csm-2025-20260907
+      /arxiv_id:
+        - source:arxiv-baseline-transfit-csm-2025-20260907
+      /arxiv_revision:
+        - source:arxiv-baseline-transfit-csm-2025-20260907
+      /access_urls/0/kind:
+        - source:arxiv-baseline-transfit-csm-2025-20260907
+      /access_urls/0/url:
+        - source:arxiv-baseline-transfit-csm-2025-20260907
+bibliographic_sources:
+  - id: source:arxiv-baseline-transfit-csm-2025-20260907
+    provider: arxiv
+    record_id: "2511.13265"
+    source_url: https://arxiv.org/abs/2511.13265v1
+    retrieved_at: 2026-09-06T22:35:04Z
+publication_relations: []
+bibliographic_discrepancies: []

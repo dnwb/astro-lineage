@@ -1,0 +1,47 @@
+work_id: work:metzger-2017
+versions:
+  - kind: arxiv_revision
+    title: Millisecond Magnetar Birth Connects FRB 121102 to Superluminous
+      Supernovae and Long Duration Gamma-ray Bursts
+    authors:
+      - display_name: Brian D. Metzger
+      - display_name: Edo Berger
+      - display_name: Ben Margalit
+    release_date:
+      value: 2017-01-09
+      precision: day
+    arxiv_id: "1701.02370"
+    arxiv_revision: 5
+    access_urls:
+      - kind: arxiv
+        url: https://arxiv.org/abs/1701.02370v5
+    id: version:metzger-2017-arxiv-v5
+    field_sources:
+      /title:
+        - source:arxiv-baseline-metzger-2017-20260907
+      /authors/0/display_name:
+        - source:arxiv-baseline-metzger-2017-20260907
+      /authors/1/display_name:
+        - source:arxiv-baseline-metzger-2017-20260907
+      /authors/2/display_name:
+        - source:arxiv-baseline-metzger-2017-20260907
+      /release_date/value:
+        - source:arxiv-baseline-metzger-2017-20260907
+      /release_date/precision:
+        - source:arxiv-baseline-metzger-2017-20260907
+      /arxiv_id:
+        - source:arxiv-baseline-metzger-2017-20260907
+      /arxiv_revision:
+        - source:arxiv-baseline-metzger-2017-20260907
+      /access_urls/0/kind:
+        - source:arxiv-baseline-metzger-2017-20260907
+      /access_urls/0/url:
+        - source:arxiv-baseline-metzger-2017-20260907
+bibliographic_sources:
+  - id: source:arxiv-baseline-metzger-2017-20260907
+    provider: arxiv
+    record_id: "1701.02370"
+    source_url: https://arxiv.org/abs/1701.02370v5
+    retrieved_at: 2026-09-06T22:35:04Z
+publication_relations: []
+bibliographic_discrepancies: []

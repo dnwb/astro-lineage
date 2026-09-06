@@ -1,0 +1,53 @@
+work_id: work:zhang-grb-radio-2022
+versions:
+  - kind: arxiv_revision
+    title: Diagnosing Circumburst Environment with Multiband Gamma-Ray Burst Radio
+      Afterglows
+    authors:
+      - display_name: Bo Zhang
+      - display_name: Liang-Duan Liu
+      - display_name: Tian-Rui Sun
+      - display_name: Fen Lyu
+      - display_name: Xue-Feng Wu
+    release_date:
+      value: 2022-03-16
+      precision: day
+    arxiv_id: "2203.08646"
+    arxiv_revision: 1
+    access_urls:
+      - kind: arxiv
+        url: https://arxiv.org/abs/2203.08646v1
+    id: version:zhang-grb-radio-2022-arxiv-v1
+    field_sources:
+      /title:
+        - source:arxiv-baseline-zhang-grb-radio-2022-20260907
+      /authors/0/display_name:
+        - source:arxiv-baseline-zhang-grb-radio-2022-20260907
+      /authors/1/display_name:
+        - source:arxiv-baseline-zhang-grb-radio-2022-20260907
+      /authors/2/display_name:
+        - source:arxiv-baseline-zhang-grb-radio-2022-20260907
+      /authors/3/display_name:
+        - source:arxiv-baseline-zhang-grb-radio-2022-20260907
+      /authors/4/display_name:
+        - source:arxiv-baseline-zhang-grb-radio-2022-20260907
+      /release_date/value:
+        - source:arxiv-baseline-zhang-grb-radio-2022-20260907
+      /release_date/precision:
+        - source:arxiv-baseline-zhang-grb-radio-2022-20260907
+      /arxiv_id:
+        - source:arxiv-baseline-zhang-grb-radio-2022-20260907
+      /arxiv_revision:
+        - source:arxiv-baseline-zhang-grb-radio-2022-20260907
+      /access_urls/0/kind:
+        - source:arxiv-baseline-zhang-grb-radio-2022-20260907
+      /access_urls/0/url:
+        - source:arxiv-baseline-zhang-grb-radio-2022-20260907
+bibliographic_sources:
+  - id: source:arxiv-baseline-zhang-grb-radio-2022-20260907
+    provider: arxiv
+    record_id: "2203.08646"
+    source_url: https://arxiv.org/abs/2203.08646v1
+    retrieved_at: 2026-09-06T22:35:04Z
+publication_relations: []
+bibliographic_discrepancies: []

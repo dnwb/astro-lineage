@@ -372,8 +372,8 @@ test("the static Paper, Work, and Research Line routes render the visible valida
     "utf8",
   );
   assert.match(papersHtml, /Type I supernovae\. I(?:\.| -)/u);
-  assert.match(workHtml, /Scientific Statements/u);
-  assert.match(workHtml, /Physical Account/u);
+  assert.match(workHtml, /科学陈述/u);
+  assert.match(workHtml, /物理描述/u);
   assert.match(workHtml, /Central Engines/u);
   assert.match(lineHtml, /What powers/u);
   assert.match(lineHtml, /foundation/u);

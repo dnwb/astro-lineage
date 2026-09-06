@@ -2,6 +2,7 @@
 import { loadCanonicalContent } from "../../../scripts/content-loader.mjs";
 import { projectVisibleSnapshot } from "../../../scripts/reader-projection.mjs";
 import { researchLineReaderPath } from "../../lib/reader-routes";
+import { localizedLineQuestion, localizedLineTitle } from "../../lib/reader-localization";
 import { loadSiteConfig } from "../../lib/site-config";
 import SiteNav from "../../components/SiteNav.astro";
 import "../../styles/global.css";
@@ -15,7 +16,7 @@ const visibleLines = (reader.research_lines ?? []) as AnyRecord[];
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
@@ -23,17 +24,17 @@ const visibleLines = (reader.research_lines ?? []) as AnyRecord[];
       name="description"
       content={`The visible Research Lines in ${site.title}.`}
     />
-    <title>Research Lines · {site.title}</title>
+    <title>研究方向 · {site.title}</title>
   </head>
   <body>
     <main class="site-shell index-page">
       <SiteNav />
-      <p class="eyebrow"><a href="/">{site.title}</a> · Reader index</p>
-      <h1>Research Lines</h1>
-      <p class="layer-intro">{visibleLines.length} curated Research Lines</p>
+      <p class="eyebrow"><a href="/">{site.title}</a> · 研究方向索引</p>
+      <h1>研究方向</h1>
+      <p class="layer-intro">{visibleLines.length} 个经过审核的研究方向</p>
       {
         visibleLines.length === 0 ? (
-          <p class="empty-state">No Research Lines are visible in the curated reading map yet.</p>
+          <p class="empty-state">精选阅读地图中暂时没有可见研究方向。</p>
         ) : (
           <ol class="paper-index">
             {visibleLines.map((line) => (
@@ -41,13 +42,15 @@ const visibleLines = (reader.research_lines ?? []) as AnyRecord[];
                 <article>
                   <h2>
                     <a class="paper-title" href={researchLineReaderPath(snapshot, line.line_id)}>
-                      {line.title ?? line.line_id}
+                      {localizedLineTitle(line.line_id, line.title ?? line.line_id)}
                     </a>
                   </h2>
-                  <p>{line.scientific_question}</p>
+                  <p class="original-title" lang="en">英文标题：{line.title ?? line.line_id}</p>
+                  <p>{localizedLineQuestion(line.line_id, line.scientific_question)}</p>
+                  <p class="language-english" lang="en">English question: {line.scientific_question}</p>
                   <p>
                     <a class="browse-link" href={researchLineReaderPath(snapshot, line.line_id)}>
-                      Open Research Line
+                      打开研究方向
                     </a>
                   </p>
                 </article>

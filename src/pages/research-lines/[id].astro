@@ -6,6 +6,13 @@ import {
   projectVisibleSnapshot,
 } from "../../../scripts/reader-projection.mjs";
 import { workReaderPath } from "../../lib/reader-routes";
+import {
+  localizedLineQuestion,
+  localizedLineTitle,
+  localizedMembershipReason,
+  localizedRole,
+  localizedWorkTitle,
+} from "../../lib/reader-localization";
 import { loadSiteConfig } from "../../lib/site-config";
 import SiteNav from "../../components/SiteNav.astro";
 import "../../styles/global.css";
@@ -52,32 +59,34 @@ function workYear(membership: AnyRecord) {
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={researchLine.scientific_question} />
-    <title>{researchLine.title} · {site.title}</title>
+    <title>{localizedLineTitle(lineId, researchLine.title)} · {site.title}</title>
   </head>
   <body>
     <main class="site-shell reader-page">
       <SiteNav />
-      <p class="eyebrow"><a href="/research-lines/">Research Lines</a> · Research Line</p>
+      <p class="eyebrow"><a href="/research-lines/">研究方向</a> · 研究方向详情</p>
       <header class="reader-header">
-        <h1>{researchLine.title}</h1>
-        <p class="section-kicker">Scientific question</p>
-        <p class="reader-deck">{researchLine.scientific_question}</p>
+        <h1>{localizedLineTitle(lineId, researchLine.title)}</h1>
+        <p class="original-title" lang="en">英文标题：{researchLine.title}</p>
+        <p class="section-kicker">科学问题</p>
+        <p class="reader-deck">{localizedLineQuestion(lineId, researchLine.scientific_question)}</p>
+        <p class="language-english" lang="en">English question: {researchLine.scientific_question}</p>
       </header>
 
       <section class="panel reader-view" aria-labelledby="line-reader-view-heading">
-        <h2 id="line-reader-view-heading">Why This Line Matters</h2>
-        <ReadingProse source={String(researchLine.reading ?? "")} />
+        <h2 id="line-reader-view-heading">为什么这个方向重要</h2>
+        <ReadingProse source={String(researchLine.reading ?? "")} localizationKey={lineId} />
       </section>
 
       <section class="panel" aria-labelledby="line-works-heading">
-        <h2 id="line-works-heading">Papers in This Research Line</h2>
+        <h2 id="line-works-heading">该研究方向中的论文</h2>
         {memberships.length === 0 ? (
-          <p class="empty-state">No reviewed visible Papers are connected to this Research Line yet.</p>
+          <p class="empty-state">该研究方向暂时没有关联的、经过审核且可见的论文。</p>
         ) : (
           <ol class="paper-index">
             {memberships.map((membership: AnyRecord) => (
@@ -85,20 +94,26 @@ function workYear(membership: AnyRecord) {
                 <article>
                   <h3>
                     <a class="paper-title" href={workReaderPath(snapshot, membership.work_id)}>
-                      {membership.work?.title ?? membership.work_id}
+                      {localizedWorkTitle(membership.work_id, membership.work?.title ?? membership.work_id)}
                     </a>
                   </h3>
+                  <p class="original-title" lang="en">英文原题：{membership.work?.title ?? membership.work_id}</p>
                   {workAuthors(membership) || workYear(membership) ? (
                     <p class="paper-meta">
                       {workAuthors(membership)}{workAuthors(membership) && workYear(membership) ? " · " : ""}{workYear(membership)}
                     </p>
                   ) : null}
                   <p class="record-label">
-                    Reading roles: {membership.reading_roles?.join(", ") ?? "none"}
-                    {membership.editorial_anchor ? " · Editorial Anchor for this line" : ""}
+                    阅读角色：{membership.reading_roles?.map(localizedRole).join("、") ?? "无"}
+                    {membership.editorial_anchor ? " · 该方向的编辑锚点" : ""}
                   </p>
-                  {membership.reason ? <p>{membership.reason}</p> : null}
-                  <p><a class="browse-link" href={workReaderPath(snapshot, membership.work_id)}>Read Paper</a></p>
+                  {membership.reason ? (
+                    <>
+                      <p>{localizedMembershipReason(membership.id, membership.reason)}</p>
+                      <p class="language-english" lang="en">English note: {membership.reason}</p>
+                    </>
+                  ) : null}
+                  <p><a class="browse-link" href={workReaderPath(snapshot, membership.work_id)}>阅读论文</a></p>
                 </article>
               </li>
             ))}

@@ -1,0 +1,40 @@
+work_id: work:dubus-2013
+versions:
+  - kind: arxiv_revision
+    title: Gamma-ray binaries and related systems
+    authors:
+      - display_name: Guillaume Dubus
+    release_date:
+      value: 2013-07-26
+      precision: day
+    arxiv_id: "1307.7083"
+    arxiv_revision: 2
+    access_urls:
+      - kind: arxiv
+        url: https://arxiv.org/abs/1307.7083v2
+    id: version:dubus-2013-arxiv-v2
+    field_sources:
+      /title:
+        - source:arxiv-baseline-dubus-2013-20260907
+      /authors/0/display_name:
+        - source:arxiv-baseline-dubus-2013-20260907
+      /release_date/value:
+        - source:arxiv-baseline-dubus-2013-20260907
+      /release_date/precision:
+        - source:arxiv-baseline-dubus-2013-20260907
+      /arxiv_id:
+        - source:arxiv-baseline-dubus-2013-20260907
+      /arxiv_revision:
+        - source:arxiv-baseline-dubus-2013-20260907
+      /access_urls/0/kind:
+        - source:arxiv-baseline-dubus-2013-20260907
+      /access_urls/0/url:
+        - source:arxiv-baseline-dubus-2013-20260907
+bibliographic_sources:
+  - id: source:arxiv-baseline-dubus-2013-20260907
+    provider: arxiv
+    record_id: "1307.7083"
+    source_url: https://arxiv.org/abs/1307.7083v2
+    retrieved_at: 2026-09-06T22:35:04Z
+publication_relations: []
+bibliographic_discrepancies: []

@@ -539,7 +539,8 @@ test("canonical reports and digests are deterministic across filesystem creation
 test("production discovery, indexes, and reader projections stay isolated from fixture descriptors", async () => {
   const snapshot = await loadCanonicalContent(productionContent);
   const discovery = await discoverCanonicalContent(productionContent);
-  assert.equal(snapshot.works.length, 5);
+  assert.equal(snapshot.works.filter((work) => work.files["work.yaml"]?.reader_state === "visible").length, 5);
+  assert.equal(snapshot.works.length, 35);
   assert.equal(snapshot.researchLines.length, 3);
   assert.equal(snapshot.learningPaths.length, 1);
   assert.equal(discovery.diagnostics.length, 0);
@@ -553,7 +554,10 @@ test("production discovery, indexes, and reader projections stay isolated from f
     assert.equal(JSON.stringify(index).includes("fixture"), false);
     const visible = projectVisibleSnapshot(snapshot);
     assert.equal(JSON.stringify(visible).includes("fixture"), false);
-    assert.equal(Object.keys(index).length, snapshot.works.length);
+    assert.equal(
+      Object.keys(index).length,
+      snapshot.works.filter((work) => work.files["work.yaml"]?.reader_state === "visible").length,
+    );
   } finally {
     await rm(generatedRoot, { recursive: true, force: true });
   }

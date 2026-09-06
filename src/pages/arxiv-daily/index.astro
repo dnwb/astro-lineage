@@ -1,0 +1,93 @@
+---
+import dailyFeed from "../../data/arxiv-daily.json";
+import SiteNav from "../../components/SiteNav.astro";
+import ReaderText from "../../components/ReaderText.astro";
+import { loadSiteConfig } from "../../lib/site-config";
+import "../../styles/global.css";
+
+type ArxivEntry = {
+  arxiv_id: string;
+  revision: number;
+  title: string;
+  abstract: string;
+  published: string;
+  updated: string;
+  authors: string[];
+  url: string;
+};
+
+const site = loadSiteConfig();
+const entries = (dailyFeed.entries ?? []) as ArxivEntry[];
+const generatedAt = new Date(dailyFeed.generated_at);
+const generatedLabel = Number.isNaN(generatedAt.valueOf())
+  ? "尚未刷新"
+  : generatedAt.toLocaleString("zh-CN", { timeZone: "Asia/Shanghai" });
+
+const chineseGuides: Record<string, string> = {
+  "2609.04145": "研究检验低角动量磁化吸积流中的驻立激波能否为 Sgr A* 的弱到中等 X 射线耀斑提供能量库。结果显示，弱耀斑所需的辐射效率约为 $10^{-3}$--$10^{-2}$，中等耀斑需要几个百分点；最强耀斑可能还需要额外的磁能耗散。",
+  "2609.04130": "研究把 LOFAR 深度射电观测与 X 射线观测结合起来，比较低激发和高激发射电星系的吸积性质。结果表明，LERG 的平均 X 射线光度和按恒星质量归一化的光度在各个红移都低于 HERG 与射电宁静 AGN，射电和 X 射线辐射在固定红移下的联系也很弱。",
+  "2609.04118": "研究用绿岸望远镜在五个近邻巨椭圆星系中定向寻找磁星产生的快速射电暴。发现的 FRB 20240817A 虽然位于 M49 方向，但扣除银河系、室女座星系团和 M49 热气晕的前景电子柱密度后，更可能是背景事件；同时给出了球状星团中活动源爆发率的上限。",
+  "2609.04077": "研究首次在 Gaia-CRF3 绝对参考系中测量 Sgr A* 红外对应体的自行和加速度。测得的天球加速度上限排除了约 $4\\times10^{4}\,M_{\\odot}$ 以上、位于约 $0.01$ pc 内的中等质量黑洞伴星，并预测 Gaia DR4 将进一步收紧限制。",
+  "2609.04051": "研究磁 Penrose 过程能否把 Sgr A* 变成银河系 PeVatron。作者从吸积流核反应动力学计算中子谱，并追踪中子在 Kerr 时空中的运动；所得质子可达 PeV 能量，预言的伽马射线和中微子信号可由未来的 SWGO、CTAO、KM3NeT/ARCA 和 IceCube-Gen2 检验。",
+  "2609.04036": "研究报告两个新发现的共生星及其电离星云：GR Cygni 周围呈双环结构，另一目标呈弓形激波。窄带成像和光谱结果支持它们由晚型红巨星及正在吸积恒星风的热伴星组成，并提示喷出物与周围介质相互作用可能塑造了星云。",
+  "2609.04012": "研究为无限边界球对称恒星系统的径向扰动构造两组新的势--密度基。它们消除了标准 Clutton--Brock 基在无穷远处不物理的 $1/r$ 尾部；数值测试显示，在匹配渐近行为时截断误差可指数下降，从而更高效地研究开放恒星系统的稳定性。",
+  "2609.03979": "研究讨论统一场方程下引力波探测器可能记录的局域耦合。除广义相对论真空中的两个横向无迹分量外，作者把额外偏振与引力磁场的传播耦合纳入统一描述，并说明应通过各自的可测量量来区分这些成分。",
+  "2609.03964": "研究带有自相互作用玻色暗物质的混合致密星。强一级相变、暗物质晕或暗物质核可以改变质量--半径序列的稳定性，并产生超致密双星与“终极双星”；表面红移和潮汐形变为观测区分这些暗物质构型提供了线索。",
+  "2609.03859": "这篇综述整理 LIGO--Virgo--KAGRA 第四次观测运行的主要认识。随着探测事件数量增长，群体分析已经能够约束致密双星的形成、引力理论偏离和宇宙膨胀，同时揭示多个源族群；最终 O4 星表预计在 2026 年底发布。",
+  "2609.03779": "研究在 LOFAR DR3 的超过 1300 万个射电源中寻找新的形态类别。表示空间聚类把已知的 12 类扩展到 18 类，其中包括翼状和 FR 模糊源；这展示了表示学习进行开放集识别的潜力，也暴露出类别分布极度不均衡的问题。",
+  "2609.03759": "研究用 ALMA 和 Gaia 比较 Serpens 与其他近邻恒星形成区的原行星盘。Serpens 的盘尘质量分布与同龄区域相近，暂不支持经历过强潮汐截断；但没有 Gaia 识别的盘在 Ophiuchus 等高密度环境中更集中且质量更低，可能保留早期动力学作用的痕迹。",
+  "2609.03714": "研究用 Cloudy 模拟黑洞 X 射线双星 V404 Cygni 爆发末期的星云阶段。模型再现了 Balmer decrement 和 H$\\alpha$ 等关键观测量，并表明由团块状、部分电离的喷出物组成的星云，即使在膨胀冷却过程中也能维持数天。",
+  "2609.03701": "研究吸积盘与恒星反复相交时，如何把恒星捕获并送入中等质量黑洞。直接 $N$ 体模拟显示，盘诱导潮汐瓦解事件可维持约 $10^{-3}\,M_{\\odot}\,\\mathrm{yr}^{-1}$ 的恒星供给率；若致密星团和吸积盘持续超过 30 Myr，这一机制可能帮助黑洞种子快速增重。",
+  "2609.03649": "研究能否用宇宙网丝状结构的 21 cm 辐射区分冷暗物质与暖暗物质。模拟显示两种模型的本征丝状形态在高分辨率下有差异，但角分辨率变差后差异迅速消失；因此 SKA-Low 目前难以直接解析并凭丝状形态测量暗物质模型。",
+  "2609.03624": "研究 NuSTAR 对 GRS 1739-278 在 2025 年小爆发衰减期的三次观测。源始终处于软、盘主导态，$3$--$79$ keV 计数率和变异度下降，内盘半径约保持在 $0.95R_{\\rm ISCO}$；光谱--时序性质符合高自旋黑洞以较低且持续下降的吸积率运行。",
+  "2609.03609": "研究用 KM3NeT/ARCA 对超高光度红外星系、高同步峰 BL Lac 和极端耀变体进行高能中微子叠加搜索。基于 336 天数据，三个源目录都没有发现显著超出大气背景的信号，因此给出了 90% 置信水平的通量上限。",
+  "2609.03608": "研究利用 JWST/NIRSpec 深度观测确认 C3PO-8447 在 $z=8.99781$ 处发出 Ly$\\alpha$，使其成为目前已确认的第三个 $z\\gtrsim9$ Ly$\\alpha$ 星系。它质量低、年龄年轻、金属丰度低，观测更支持一个由单个强烈成星星系供能的小型电离气泡。",
+  "2609.03575": "研究把太阳系形成后的 45.6 亿年行星动力学演化加入恒星近距离掠过模型。模拟显示冷、热柯伊伯带分别损失约 80% 和 40% 的初始成员，而远处 Sedna 类天体基本不变；长期演化反而让恒星掠过模型更符合今天观测到的跨海王星天体分布。",
+  "2609.03537": "研究用在 $z=0$ 校准的 Shark 半解析模型解释 JWST 发现的高红移明亮紫外星系。模型无需改变重子物理参数，就能大致重现最高到 $z=17$ 的紫外光度函数；关键在于高红移盘不稳定触发的星暴提高了大质量晕中紫外光度的离散度。",
+};
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content="最近提交的高能天体物理 arXiv 论文。" />
+    <title>每日 arXiv 更新 · {site.title}</title>
+  </head>
+  <body>
+    <main class="site-shell index-page">
+      <SiteNav />
+      <p class="eyebrow"><a href="/">{site.title}</a> · 每日 arXiv 更新</p>
+      <header class="reader-header">
+        <h1>每日 arXiv 更新</h1>
+        <p class="reader-deck language-primary">按最近提交时间整理的高能天体物理新论文，供组内发现线索和决定后续阅读。</p>
+        <p class="reader-deck language-english" lang="en">Recent high-energy astrophysics submissions, ordered by submission time for discovery and follow-up reading.</p>
+        <p class="record-label">最近刷新：{generatedLabel} · {entries.length} 篇</p>
+        <p class="record-label language-english" lang="en">Last refresh: {generatedLabel} · {entries.length} entries</p>
+      </header>
+
+      {entries.length === 0 ? (
+        <section class="panel">
+          <p class="empty-state">暂无已缓存的 arXiv 更新。运行 <code>npm run arxiv:refresh</code> 后重新构建页面。</p>
+        </section>
+      ) : (
+        <ol class="paper-index daily-arxiv-list">
+          {entries.map((entry) => (
+            <li class="paper-index-item">
+              <article>
+                <h2><a class="paper-title" href={entry.url}>{entry.title}</a></h2>
+                <p class="paper-meta">{entry.authors.join(", ")} · {entry.published.slice(0, 10)} · arXiv:{entry.arxiv_id}v{entry.revision}</p>
+                <p class="record-label language-primary">中文导读</p>
+                <p class="language-primary"><ReaderText text={chineseGuides[entry.arxiv_id] ?? "该条目尚未加入人工中文导读，请先参考 English abstract。"} /></p>
+                <p class="record-label language-english" lang="en">English abstract</p>
+                <p class="language-english" lang="en"><ReaderText text={entry.abstract} /></p>
+                <p><a class="browse-link" href={entry.url}>打开 arXiv 原文页面</a></p>
+              </article>
+            </li>
+          ))}
+        </ol>
+      )}
+    </main>
+  </body>
+</html>

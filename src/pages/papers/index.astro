@@ -7,6 +7,11 @@ import {
 } from "../../../scripts/reader-markdown.mjs";
 import { projectVisibleSnapshot } from "../../../scripts/reader-projection.mjs";
 import { researchLineReaderPath, workReaderPath } from "../../lib/reader-routes";
+import {
+  localizedBlocks,
+  localizedLineTitle,
+  localizedWorkTitle,
+} from "../../lib/reader-localization";
 import { loadSiteConfig } from "../../lib/site-config";
 import SiteNav from "../../components/SiteNav.astro";
 import "../../styles/global.css";
@@ -43,13 +48,21 @@ function releaseYear(work: Record<string, any>) {
 
 function whyRead(work: Record<string, any>) {
   const document = parseReadingDocument(String(work.reading ?? ""));
+  return firstCompleteReadingItem(
+    localizedBlocks(work.work_id, "why", whyThisWorkMatters(document, work.work_id)),
+    work.work_id,
+  );
+}
+
+function originalWhyRead(work: Record<string, any>) {
+  const document = parseReadingDocument(String(work.reading ?? ""));
   return firstCompleteReadingItem(whyThisWorkMatters(document, work.work_id), work.work_id);
 }
 
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
@@ -57,17 +70,17 @@ function whyRead(work: Record<string, any>) {
       name="description"
       content={`The visible Papers in ${site.title}.`}
     />
-    <title>Papers · {site.title}</title>
+    <title>论文 · {site.title}</title>
   </head>
   <body>
     <main class="site-shell index-page">
       <SiteNav />
-      <p class="eyebrow"><a href="/">{site.title}</a> · Reader index</p>
-      <h1>Papers</h1>
-      <p class="layer-intro">{visibleWorks.length} curated Papers</p>
+      <p class="eyebrow"><a href="/">{site.title}</a> · 论文索引</p>
+      <h1>论文</h1>
+      <p class="layer-intro">{visibleWorks.length} 篇精选论文</p>
       {
         visibleWorks.length === 0 ? (
-          <p class="empty-state">No Papers are visible in the curated reading radar yet.</p>
+          <p class="empty-state">精选阅读地图中暂时没有可见论文。</p>
         ) : (
           <ol class="paper-index">
             {visibleWorks.map((work) => {
@@ -75,17 +88,19 @@ function whyRead(work: Record<string, any>) {
               return (
                 <li class="paper-index-item">
                   <article>
-                    <h2><a class="paper-title" href={workReaderPath(snapshot, work.work_id)}>{version.title}</a></h2>
+                    <h2><a class="paper-title" href={workReaderPath(snapshot, work.work_id)}>{localizedWorkTitle(work.work_id, version.title)}</a></h2>
+                    <p class="original-title" lang="en">英文原题：{version.title}</p>
                     <p class="paper-meta">{authors(work)} · {releaseYear(work)}</p>
                     <p>{whyRead(work)}</p>
+                    <p class="language-english" lang="en">{originalWhyRead(work)}</p>
                     {(work.research_lines ?? []).length > 0 ? (
-                      <ul class="inline-list research-context-links" aria-label="Research Lines">
+                      <ul class="inline-list research-context-links" aria-label="研究方向">
                         {(work.research_lines ?? []).map((membership: AnyRecord) => (
-                          <li><a href={researchLineReaderPath(snapshot, membership.line_id)}>{membership.line?.title ?? membership.line_id}</a></li>
+                          <li><a href={researchLineReaderPath(snapshot, membership.line_id)}>{localizedLineTitle(membership.line_id, membership.line?.title ?? membership.line_id)}</a></li>
                         ))}
                       </ul>
                     ) : null}
-                    <p><a class="browse-link" href={workReaderPath(snapshot, work.work_id)}>Read paper</a></p>
+                    <p><a class="browse-link" href={workReaderPath(snapshot, work.work_id)}>阅读论文</a></p>
                   </article>
                 </li>
               );

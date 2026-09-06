@@ -1,0 +1,53 @@
+work_id: work:chen-psr-b1259-2019
+versions:
+  - kind: arxiv_revision
+    title: "Modelling the multi-wavelength emissions from PSR B1259-63/LS 2883: the
+      effects of the stellar disc on shock radiations"
+    authors:
+      - display_name: A. M. Chen
+      - display_name: J. Takata
+      - display_name: S. X. Yi
+      - display_name: Y. W. Yu
+      - display_name: K. S. Cheng
+    release_date:
+      value: 2019-04-16
+      precision: day
+    arxiv_id: "1904.07527"
+    arxiv_revision: 2
+    access_urls:
+      - kind: arxiv
+        url: https://arxiv.org/abs/1904.07527v2
+    id: version:chen-psr-b1259-2019-arxiv-v2
+    field_sources:
+      /title:
+        - source:arxiv-baseline-chen-psr-b1259-2019-20260907
+      /authors/0/display_name:
+        - source:arxiv-baseline-chen-psr-b1259-2019-20260907
+      /authors/1/display_name:
+        - source:arxiv-baseline-chen-psr-b1259-2019-20260907
+      /authors/2/display_name:
+        - source:arxiv-baseline-chen-psr-b1259-2019-20260907
+      /authors/3/display_name:
+        - source:arxiv-baseline-chen-psr-b1259-2019-20260907
+      /authors/4/display_name:
+        - source:arxiv-baseline-chen-psr-b1259-2019-20260907
+      /release_date/value:
+        - source:arxiv-baseline-chen-psr-b1259-2019-20260907
+      /release_date/precision:
+        - source:arxiv-baseline-chen-psr-b1259-2019-20260907
+      /arxiv_id:
+        - source:arxiv-baseline-chen-psr-b1259-2019-20260907
+      /arxiv_revision:
+        - source:arxiv-baseline-chen-psr-b1259-2019-20260907
+      /access_urls/0/kind:
+        - source:arxiv-baseline-chen-psr-b1259-2019-20260907
+      /access_urls/0/url:
+        - source:arxiv-baseline-chen-psr-b1259-2019-20260907
+bibliographic_sources:
+  - id: source:arxiv-baseline-chen-psr-b1259-2019-20260907
+    provider: arxiv
+    record_id: "1904.07527"
+    source_url: https://arxiv.org/abs/1904.07527v2
+    retrieved_at: 2026-09-06T22:35:04Z
+publication_relations: []
+bibliographic_discrepancies: []

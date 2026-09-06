@@ -1,0 +1,48 @@
+work_id: work:chevalier-1982
+versions:
+  - kind: journal_manifestation
+    title: Self-similar solutions for the interaction of stellar ejecta with an
+      external medium
+    authors:
+      - display_name: R. A. Chevalier
+    release_date:
+      value: 1982-07
+      precision: month
+    doi: 10.1086/160126
+    journal:
+      name: The Astrophysical Journal
+      volume: "258"
+      first_page: "790"
+    access_urls:
+      - kind: doi
+        url: https://doi.org/10.1086/160126
+    id: version:chevalier-1982-journal
+    field_sources:
+      /title:
+        - source:crossref-baseline-chevalier-1982-20260907
+      /authors/0/display_name:
+        - source:crossref-baseline-chevalier-1982-20260907
+      /release_date/value:
+        - source:crossref-baseline-chevalier-1982-20260907
+      /release_date/precision:
+        - source:crossref-baseline-chevalier-1982-20260907
+      /doi:
+        - source:crossref-baseline-chevalier-1982-20260907
+      /journal/name:
+        - source:crossref-baseline-chevalier-1982-20260907
+      /journal/volume:
+        - source:crossref-baseline-chevalier-1982-20260907
+      /journal/first_page:
+        - source:crossref-baseline-chevalier-1982-20260907
+      /access_urls/0/kind:
+        - source:crossref-baseline-chevalier-1982-20260907
+      /access_urls/0/url:
+        - source:crossref-baseline-chevalier-1982-20260907
+bibliographic_sources:
+  - id: source:crossref-baseline-chevalier-1982-20260907
+    provider: crossref
+    record_id: 10.1086/160126
+    source_url: https://api.crossref.org/works/10.1086/160126
+    retrieved_at: 2026-09-06T22:35:47Z
+publication_relations: []
+bibliographic_discrepancies: []

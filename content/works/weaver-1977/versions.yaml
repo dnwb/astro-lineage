@@ -1,0 +1,59 @@
+work_id: work:weaver-1977
+versions:
+  - kind: journal_manifestation
+    title: Interstellar bubbles. II - Structure and evolution
+    authors:
+      - display_name: R. Weaver
+      - display_name: R. McCray
+      - display_name: J. Castor
+      - display_name: P. Shapiro
+      - display_name: R. Moore
+    release_date:
+      value: 1977-12
+      precision: month
+    doi: 10.1086/155692
+    journal:
+      name: The Astrophysical Journal
+      volume: "218"
+      first_page: "377"
+    access_urls:
+      - kind: doi
+        url: https://doi.org/10.1086/155692
+    id: version:weaver-1977-journal
+    field_sources:
+      /title:
+        - source:crossref-baseline-weaver-1977-20260907
+      /authors/0/display_name:
+        - source:crossref-baseline-weaver-1977-20260907
+      /authors/1/display_name:
+        - source:crossref-baseline-weaver-1977-20260907
+      /authors/2/display_name:
+        - source:crossref-baseline-weaver-1977-20260907
+      /authors/3/display_name:
+        - source:crossref-baseline-weaver-1977-20260907
+      /authors/4/display_name:
+        - source:crossref-baseline-weaver-1977-20260907
+      /release_date/value:
+        - source:crossref-baseline-weaver-1977-20260907
+      /release_date/precision:
+        - source:crossref-baseline-weaver-1977-20260907
+      /doi:
+        - source:crossref-baseline-weaver-1977-20260907
+      /journal/name:
+        - source:crossref-baseline-weaver-1977-20260907
+      /journal/volume:
+        - source:crossref-baseline-weaver-1977-20260907
+      /journal/first_page:
+        - source:crossref-baseline-weaver-1977-20260907
+      /access_urls/0/kind:
+        - source:crossref-baseline-weaver-1977-20260907
+      /access_urls/0/url:
+        - source:crossref-baseline-weaver-1977-20260907
+bibliographic_sources:
+  - id: source:crossref-baseline-weaver-1977-20260907
+    provider: crossref
+    record_id: 10.1086/155692
+    source_url: https://api.crossref.org/works/10.1086/155692
+    retrieved_at: 2026-09-06T22:35:47Z
+publication_relations: []
+bibliographic_discrepancies: []

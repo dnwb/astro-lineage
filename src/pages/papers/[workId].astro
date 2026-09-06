@@ -10,6 +10,7 @@ import {
   researchLineReaderPath,
   workReaderPath,
 } from "../../lib/reader-routes";
+import { loadSiteConfig } from "../../lib/site-config";
 import "../../styles/global.css";
 
 type AnyRecord = Record<string, any>;
@@ -24,6 +25,7 @@ export async function getStaticPaths() {
 }
 
 const { workId } = Astro.props;
+const site = loadSiteConfig();
 const snapshot = await loadCanonicalContent(new URL("../../../content/", import.meta.url));
 const work = projectWorkForReader(snapshot, workId) as AnyRecord | null;
 if (!work) {
@@ -102,7 +104,7 @@ function edgeDirection(edge: AnyRecord) {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={`Scientific Reader View for ${preferredVersion?.title ?? workId}.`} />
-    <title>{preferredVersion?.title ?? workId} · High-Energy Transient Reading Radar</title>
+    <title>{preferredVersion?.title ?? workId} · {site.title}</title>
   </head>
   <body>
     <main class="site-shell reader-page">

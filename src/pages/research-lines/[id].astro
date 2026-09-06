@@ -3,6 +3,7 @@ import ReadingProse from "../../components/ReadingProse.astro";
 import { loadCanonicalContent } from "../../../scripts/content-loader.mjs";
 import { projectResearchLineForReader } from "../../../scripts/reader-projection.mjs";
 import { workReaderPath } from "../../lib/reader-routes";
+import { loadSiteConfig } from "../../lib/site-config";
 import "../../styles/global.css";
 
 type AnyRecord = Record<string, any>;
@@ -17,6 +18,7 @@ export async function getStaticPaths() {
 }
 
 const { lineId } = Astro.props;
+const site = loadSiteConfig();
 const snapshot = await loadCanonicalContent(new URL("../../../content/", import.meta.url));
 const researchLine = projectResearchLineForReader(snapshot, lineId) as AnyRecord | null;
 if (!researchLine) {
@@ -32,11 +34,11 @@ const memberships = (researchLine.memberships ?? []) as AnyRecord[];
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={researchLine.scientific_question} />
-    <title>{researchLine.title} · High-Energy Transient Reading Radar</title>
+    <title>{researchLine.title} · {site.title}</title>
   </head>
   <body>
     <main class="site-shell reader-page">
-      <p class="eyebrow"><a href="/">High-Energy Transient Reading Radar</a> · Research Line</p>
+      <p class="eyebrow"><a href="/">{site.title}</a> · Research Line</p>
       <header class="reader-header">
         <p class="record-label">Research Line ID: {lineId}</p>
         <h1>{researchLine.title}</h1>

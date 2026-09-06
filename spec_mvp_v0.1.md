@@ -1,4 +1,4 @@
-# High-Energy Transient Reading Radar — V0.1 Spec
+# AstroLineage — V0.1 Spec
 
 > **Status: Superseded**  
 > Superseded on 2026-09-03 by `V0.1_EXECUTION_SPEC.md` after requirement migration. Retained only as non-normative historical input; do not use it for implementation or acceptance. See `docs/migrations/v0.1-authority-migration.md` for disposition of its requirements.
@@ -96,7 +96,7 @@ V0.1 只需要以下页面。
 
 网站名称：
 
-**High-Energy Transient Reading Radar**
+**AstroLineage**
 
 副标题：
 

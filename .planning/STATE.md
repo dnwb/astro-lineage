@@ -1,4 +1,4 @@
-# High-Energy Transient Reading Radar — Project State
+# AstroLineage — Project State
 
 > Updated: 2026-09-06
 
@@ -182,6 +182,25 @@ actual source paths, while cross-file ownership remains enforced through the
 semantic IDs in YAML envelopes and Markdown frontmatter. ADR 0081 governs this
 post-V0.1 hardening and narrows the path-coupling language in ADRs 0036 and
 0069. This work does not reopen, extend, or redo Tickets 01–14.
+
+## Post-V0.1 architecture and product naming
+
+The public product name is now **AstroLineage** across the README, project
+context and specifications, site configuration and rendered page titles, npm
+package metadata, and the verification workflow. The GitHub repository remains
+`dnwb/astro-lineage`; its description and astronomy/knowledge-graph topics
+match the product scope. Homepage, Pages, and the `master` default branch remain
+unchanged because they are independent publication and branch-policy choices.
+
+Validator implementation is organized by stable domain boundaries under
+`scripts/validation/`: Works, Versions, Evidence, Ontology, Methods, Scientific
+Edges, Editorial structures, and Visibility. `scripts/content-validator.mjs`
+is the compatibility facade and orchestration entrypoint only. Tests now use
+domain names rather than preserving Ticket numbers as permanent architecture;
+Scientific Edge semantics and Edge review policy have separate suites. This
+maintainability refactor changes no canonical record, semantic ID, review
+binding, visibility approval, or content digest, and it does not reopen
+Tickets 01–14.
 
 ## Next action
 

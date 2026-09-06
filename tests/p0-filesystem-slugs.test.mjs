@@ -50,7 +50,7 @@ test("canonical content uses colon-free filesystem paths while preserving semant
 });
 
 test("renaming filesystem slugs does not change semantic identity or validity", async () => {
-  const temporaryRoot = await mkdtemp(join(tmpdir(), "axvdaily-p0-slugs-"));
+  const temporaryRoot = await mkdtemp(join(tmpdir(), "astro-lineage-filesystem-slugs-"));
   const contentRoot = join(temporaryRoot, "content");
   await cp(productionContent, contentRoot, { recursive: true });
 
@@ -88,7 +88,7 @@ test("renaming filesystem slugs does not change semantic identity or validity", 
 });
 
 test("distinct filesystem slugs cannot declare duplicate semantic IDs", async () => {
-  const temporaryRoot = await mkdtemp(join(tmpdir(), "axvdaily-p0-duplicate-ids-"));
+  const temporaryRoot = await mkdtemp(join(tmpdir(), "astro-lineage-duplicate-ids-"));
   const contentRoot = join(temporaryRoot, "content");
   await cp(productionContent, contentRoot, { recursive: true });
 
@@ -140,7 +140,7 @@ test("distinct filesystem slugs cannot declare duplicate semantic IDs", async ()
 });
 
 test("duplicate Scientific Edge IDs quarantine only the colliding source file", async () => {
-  const temporaryRoot = await mkdtemp(join(tmpdir(), "axvdaily-p0-duplicate-edge-"));
+  const temporaryRoot = await mkdtemp(join(tmpdir(), "astro-lineage-duplicate-edge-"));
   const contentRoot = join(temporaryRoot, "content");
   await cp(productionContent, contentRoot, { recursive: true });
 

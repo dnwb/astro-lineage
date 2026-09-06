@@ -21,7 +21,7 @@ const secondWorkSlug = "transfit-2025";
 const thirdWorkId = "work:long-yu-2026";
 
 async function copyContent() {
-  const temporaryRoot = await mkdtemp(join(tmpdir(), "axvdaily-ticket11-"));
+  const temporaryRoot = await mkdtemp(join(tmpdir(), "astro-lineage-learning-paths-"));
   const contentRoot = join(temporaryRoot, "content");
   await cp(productionContent, contentRoot, { recursive: true });
   return { temporaryRoot, contentRoot };

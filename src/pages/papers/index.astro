@@ -2,8 +2,10 @@
 import { loadCanonicalContent } from "../../../scripts/content-loader.mjs";
 import { projectVisibleSnapshot } from "../../../scripts/reader-projection.mjs";
 import { workReaderPath } from "../../lib/reader-routes";
+import { loadSiteConfig } from "../../lib/site-config";
 import "../../styles/global.css";
 
+const site = loadSiteConfig();
 const snapshot = await loadCanonicalContent(new URL("../../../content/", import.meta.url));
 const reader = projectVisibleSnapshot(snapshot) as Record<string, any>;
 const visibleWorks = (reader.works ?? []) as Record<string, any>[];
@@ -27,13 +29,13 @@ function authors(work: Record<string, any>) {
     <meta name="viewport" content="width=device-width" />
     <meta
       name="description"
-      content="The visible Papers in the High-Energy Transient Reading Radar."
+      content={`The visible Papers in ${site.title}.`}
     />
-    <title>Papers · High-Energy Transient Reading Radar</title>
+    <title>Papers · {site.title}</title>
   </head>
   <body>
     <main class="site-shell index-page">
-      <p class="eyebrow"><a href="/">High-Energy Transient Reading Radar</a> · Reader index</p>
+      <p class="eyebrow"><a href="/">{site.title}</a> · Reader index</p>
       <h1>Papers</h1>
       <p class="layer-intro">Five visible Works, ordered by immutable Work ID. Open a Paper for its scientific account and supporting detail.</p>
       {

@@ -16,7 +16,7 @@ import {
 const productionContent = new URL("../content/", import.meta.url);
 
 async function copyContent() {
-  const temporaryRoot = await mkdtemp(join(tmpdir(), "axvdaily-ticket03-"));
+  const temporaryRoot = await mkdtemp(join(tmpdir(), "astro-lineage-works-"));
   const contentRoot = join(temporaryRoot, "content");
   await cp(productionContent, contentRoot, { recursive: true });
   await rm(join(contentRoot, "learning-paths"), { recursive: true, force: true });

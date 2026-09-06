@@ -20,7 +20,7 @@ const statementsFile = `content/works/${arnettSlug}/statements.yaml`;
 const accountFile = `content/works/${arnettSlug}/physical-account.yaml`;
 
 async function copyContent() {
-  const temporaryRoot = await mkdtemp(join(tmpdir(), "axvdaily-ticket04b-"));
+  const temporaryRoot = await mkdtemp(join(tmpdir(), "astro-lineage-scientific-accounts-"));
   const contentRoot = join(temporaryRoot, "content");
   await cp(productionContent, contentRoot, { recursive: true });
   await rm(join(contentRoot, "learning-paths"), { recursive: true, force: true });

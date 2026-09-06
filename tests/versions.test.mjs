@@ -22,7 +22,7 @@ const brombergWorkId = "work:bromberg-2011";
 const brombergWorkSlug = "bromberg-2011";
 
 async function copyContent() {
-  const temporaryRoot = await mkdtemp(join(tmpdir(), "axvdaily-ticket06-"));
+  const temporaryRoot = await mkdtemp(join(tmpdir(), "astro-lineage-versions-"));
   const contentRoot = join(temporaryRoot, "content");
   await cp(productionContent, contentRoot, { recursive: true });
   await rm(join(contentRoot, "learning-paths"), { recursive: true, force: true });
@@ -325,7 +325,7 @@ test("Bromberg's static Work page renders publication provenance and the branchi
   assert.doesNotMatch(html, /review_state/u);
 });
 
-test("Ticket 06 validates an explicit arXiv revision graph and publication correspondence", async () => {
+test("Version validation accepts an explicit arXiv revision graph and publication correspondence", async () => {
   const fixture = await makePublicationFixture();
   const result = await validateFixture(fixture);
 
@@ -409,7 +409,7 @@ test("curator_matched requires two meaningful identity sources and ignores set o
   assert.equal(codes(result).size, 0);
 });
 
-test("Ticket 06 rejects malformed identities and hostile Publication Graph topology without cascades", async () => {
+test("Version validation rejects malformed identities and hostile Publication Graph topology without cascades", async () => {
   for (const [mutate, expectedCode] of [
     [
       (fixture) => {

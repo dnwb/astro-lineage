@@ -128,7 +128,7 @@ async function copyTree(source, destination, reverse = false) {
 
 async function materializeFixture(descriptor) {
   assert.equal(descriptor.base, "canonical-production");
-  const temporaryRoot = await mkdtemp(join(tmpdir(), "axvdaily-ticket12-"));
+  const temporaryRoot = await mkdtemp(join(tmpdir(), "astro-lineage-validator-fixtures-"));
   const contentRoot = join(temporaryRoot, "content");
   await copyProduction(contentRoot);
   const mutate = mutations[descriptor.mutation];
@@ -499,8 +499,8 @@ test("valid warning and info diagnostics are emitted without invalidating a fixt
 });
 
 test("canonical reports and digests are deterministic across filesystem creation order", async () => {
-  const firstRoot = await mkdtemp(join(tmpdir(), "axvdaily-ticket12-order-a-"));
-  const secondRoot = await mkdtemp(join(tmpdir(), "axvdaily-ticket12-order-b-"));
+  const firstRoot = await mkdtemp(join(tmpdir(), "astro-lineage-validator-order-a-"));
+  const secondRoot = await mkdtemp(join(tmpdir(), "astro-lineage-validator-order-b-"));
   try {
     const firstContent = join(firstRoot, "content");
     const secondContent = join(secondRoot, "content");
@@ -546,7 +546,7 @@ test("production discovery, indexes, and reader projections stay isolated from f
   assert.equal(discovery.files.some((file) => file.includes("tests/fixtures")), false);
   assert.equal(discovery.files.some((file) => file.startsWith("generated/")), false);
 
-  const generatedRoot = await mkdtemp(join(tmpdir(), "axvdaily-ticket12-index-"));
+  const generatedRoot = await mkdtemp(join(tmpdir(), "astro-lineage-validator-index-"));
   try {
     const index = await writeEditorialIndexes(snapshot, generatedRoot);
     assert.deepEqual(index, buildWorkResearchLineIndex(snapshot));
@@ -560,7 +560,7 @@ test("production discovery, indexes, and reader projections stay isolated from f
 });
 
 test("validation is offline and does not call fetch or HTTP(S) clients", async () => {
-  const temporaryRoot = await mkdtemp(join(tmpdir(), "axvdaily-ticket12-offline-"));
+  const temporaryRoot = await mkdtemp(join(tmpdir(), "astro-lineage-validator-offline-"));
   const networkCalls = [];
   const originalFetch = globalThis.fetch;
   const originalHttpRequest = http.request;
@@ -569,7 +569,7 @@ test("validation is offline and does not call fetch or HTTP(S) clients", async (
   const originalHttpsGet = https.get;
   const denyNetwork = (...args) => {
     networkCalls.push(args);
-    throw new Error("Ticket 12 validation must remain offline");
+    throw new Error("Canonical validation must remain offline");
   };
   try {
     globalThis.fetch = denyNetwork;

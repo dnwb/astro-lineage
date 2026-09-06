@@ -20,7 +20,7 @@ const lineFile = `content/research-lines/${lineSlug}/line.yaml`;
 const lineReadingFile = `content/research-lines/${lineSlug}/reading.md`;
 
 async function copyContent() {
-  const temporaryRoot = await mkdtemp(join(tmpdir(), "axvdaily-ticket05-"));
+  const temporaryRoot = await mkdtemp(join(tmpdir(), "astro-lineage-visibility-"));
   const contentRoot = join(temporaryRoot, "content");
   await cp(productionContent, contentRoot, { recursive: true });
   return { temporaryRoot, contentRoot };
@@ -56,7 +56,7 @@ function diagnosticFor(result, code, context = {}) {
   return diagnostic;
 }
 
-test("Ticket 05 publishes Arnett and one Research Line atomically with independent approvals", async () => {
+test("visibility publishes Arnett and one Research Line atomically with independent approvals", async () => {
   const snapshot = await loadCanonicalContent(productionContent);
   const result = await validateCanonicalContent(productionContent);
   const work = snapshot.works.find(({ id }) => id === workId);
@@ -319,8 +319,8 @@ test("hidden unreviewed records are excluded from the Work visibility projection
   const before = await validateCanonicalContent(contentRoot);
   const records = await readVisibleRecords(contentRoot);
   const hidden = structuredClone(records.statements.statements[0]);
-  hidden.id = "statement:arnett-hidden-ticket05-fixture";
-  hidden.canonical_text = "HIDDEN_TICKET05_MARKER";
+  hidden.id = "statement:arnett-hidden-visibility-fixture";
+  hidden.canonical_text = "HIDDEN_VISIBILITY_MARKER";
   hidden.review_state = "unreviewed";
   hidden.curation_provenance.recorded_at = "2026-09-04T07:00:00Z";
   delete hidden.review_provenance;
@@ -334,7 +334,7 @@ test("hidden unreviewed records are excluded from the Work visibility projection
 
   const { projectVisibleSnapshot } = await import("../scripts/reader-projection.mjs");
   const projection = await projectVisibleSnapshot(await loadCanonicalContent(contentRoot));
-  assert.doesNotMatch(JSON.stringify(projection), /HIDDEN_TICKET05_MARKER/u);
+  assert.doesNotMatch(JSON.stringify(projection), /HIDDEN_VISIBILITY_MARKER/u);
 });
 
 test("generated reverse membership indexes are reproducible and non-canonical", async () => {

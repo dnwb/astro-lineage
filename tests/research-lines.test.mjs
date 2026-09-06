@@ -28,7 +28,7 @@ const secondaryLineId = "research-line:central-engines";
 const secondaryLineSlug = "central-engines";
 
 async function copyContent() {
-  const temporaryRoot = await mkdtemp(join(tmpdir(), "axvdaily-ticket07-"));
+  const temporaryRoot = await mkdtemp(join(tmpdir(), "astro-lineage-research-lines-"));
   const contentRoot = join(temporaryRoot, "content");
   await cp(productionContent, contentRoot, { recursive: true });
   return { temporaryRoot, contentRoot };
@@ -46,7 +46,7 @@ function lineFrom(snapshot, lineId) {
   return snapshot.researchLines.find(({ id }) => id === lineId);
 }
 
-test("Ticket 07 stores a reviewed visible Zhu multi-messenger and cross-context slice", async () => {
+test("Research Lines store a reviewed visible Zhu multi-messenger and cross-context slice", async () => {
   const snapshot = await loadCanonicalContent(productionContent);
   const result = await validateCanonicalContent(productionContent);
   const work = workFrom(snapshot);
@@ -186,7 +186,7 @@ test("an unreviewed secondary membership remains canonical but hidden from rever
     secondaryLineId,
   );
   const beforeWorkDigest = computeReaderVisibilityDigest(hiddenSnapshot, "work", workId);
-  membership.reason = `${membership.reason} HIDDEN_TICKET07_MARKER`;
+  membership.reason = `${membership.reason} HIDDEN_RESEARCH_LINE_MARKER`;
   line.visibility_approvals.push({
     profile_id: "v0.1-default",
     visibility_digest: beforeLineDigest,
@@ -215,11 +215,11 @@ test("an unreviewed secondary membership remains canonical but hidden from rever
   assert.equal(result.valid, true);
   const index = buildWorkResearchLineIndex(snapshot);
   assert.deepEqual(index[workId].map(({ line_id }) => line_id), [anchorLineId]);
-  assert.doesNotMatch(JSON.stringify(index[workId]), /HIDDEN_TICKET07_MARKER/u);
+  assert.doesNotMatch(JSON.stringify(index[workId]), /HIDDEN_RESEARCH_LINE_MARKER/u);
   const workProjection = projectWorkForReader(snapshot, workId);
   const lineProjection = projectResearchLineForReader(snapshot, secondaryLineId);
-  assert.doesNotMatch(JSON.stringify(workProjection), /HIDDEN_TICKET07_MARKER/u);
-  assert.doesNotMatch(JSON.stringify(lineProjection), /HIDDEN_TICKET07_MARKER/u);
+  assert.doesNotMatch(JSON.stringify(workProjection), /HIDDEN_RESEARCH_LINE_MARKER/u);
+  assert.doesNotMatch(JSON.stringify(lineProjection), /HIDDEN_RESEARCH_LINE_MARKER/u);
   assert.equal(
     lineFrom(snapshot, secondaryLineId).line.memberships.some(
       ({ id }) => id === "membership:central-engines-zhu-2021",

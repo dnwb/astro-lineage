@@ -14,7 +14,7 @@ import {
 const productionContent = new URL("../content/", import.meta.url);
 
 async function copyContent() {
-  const temporaryRoot = await mkdtemp(join(tmpdir(), "axvdaily-ticket04-"));
+  const temporaryRoot = await mkdtemp(join(tmpdir(), "astro-lineage-ontology-"));
   const contentRoot = join(temporaryRoot, "content");
   await cp(productionContent, contentRoot, { recursive: true });
   await rm(join(contentRoot, "learning-paths"), { recursive: true, force: true });
@@ -86,7 +86,7 @@ async function readArnett(contentRoot) {
   };
 }
 
-test("Ticket 04A production slice has governed actors, 16 assessments, evidence, and a method annotation", async () => {
+test("the production ontology has governed actors, 16 assessments, evidence, and a method annotation", async () => {
   const snapshot = await loadCanonicalContent(productionContent);
   const result = await validateCanonicalContent(productionContent);
   const work = snapshot.works.find(({ id }) => id === "work:arnett-1982");

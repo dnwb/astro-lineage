@@ -55,7 +55,7 @@ test("the production build renders the product boundary as static HTML", async (
   const html = await readFile(new URL("../dist/index.html", import.meta.url), "utf8");
   const papersHtml = await readFile(new URL("../dist/papers/index.html", import.meta.url), "utf8");
 
-  assert.match(html, /High-Energy Transient Reading Radar/);
+  assert.match(html, /AstroLineage/);
   assert.match(html, /scientific reading and knowledge-navigation system/i);
   assert.match(html, /not an arXiv mirror/i);
   assert.match(papersHtml, /<h1>Papers<\/h1>/);

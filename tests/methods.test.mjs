@@ -16,7 +16,7 @@ const workSlug = "transfit-2025";
 const lineId = "research-line:explosive-transients-csm";
 const centralLineId = "research-line:central-engines";
 const reviewTime = "2026-09-04T13:30:00Z";
-const ticket08TermIds = new Set([
+const methodTermIds = new Set([
   "method-family:numerical-modeling",
   "method-family:model-data-parameter-estimation",
   "technique:crank-nicolson-finite-difference",
@@ -31,7 +31,7 @@ const ticket08TermIds = new Set([
 ]);
 
 async function copyContent() {
-  const temporaryRoot = await mkdtemp(join(tmpdir(), "axvdaily-ticket08-"));
+  const temporaryRoot = await mkdtemp(join(tmpdir(), "astro-lineage-methods-"));
   const contentRoot = join(temporaryRoot, "content");
   await cp(productionContent, contentRoot, { recursive: true });
   return contentRoot;
@@ -49,7 +49,7 @@ async function writeYaml(path, value) {
   await writeFile(path, stringify(value), "utf8");
 }
 
-test("Ticket 08 canonical TransFit content is visible and Human-reviewed", async () => {
+test("canonical TransFit method content is visible and Human-reviewed", async () => {
   const productionSnapshot = await loadCanonicalContent(productionContent);
   assert(productionSnapshot.works.some(({ id }) => id === workId));
   assert(productionSnapshot.researchLines.some(({ id }) => id === lineId));
@@ -114,16 +114,16 @@ test("Ticket 08 canonical TransFit content is visible and Human-reviewed", async
   assert.equal(memberships.find(({ line_id }) => line_id === lineId).editorial_anchor, true);
   assert.equal(memberships.find(({ line_id }) => line_id === centralLineId).editorial_anchor, false);
 
-  const ticket08Terms = [
+  const methodTerms = [
     ...snapshot.methods.method_families,
     ...snapshot.methods.techniques,
     ...snapshot.axes.flatMap(({ value }) => value.terms),
-  ].filter(({ id }) => ticket08TermIds.has(id));
-  assert.equal(ticket08Terms.length, ticket08TermIds.size);
-  assert(ticket08Terms.every(({ status, review_state }) => status === "active" && review_state === "reviewed"));
-  const expansionWork = ticket08Terms.find(({ id }) => id === "term:expansion-work-energy-transfer");
+  ].filter(({ id }) => methodTermIds.has(id));
+  assert.equal(methodTerms.length, methodTermIds.size);
+  assert(methodTerms.every(({ status, review_state }) => status === "active" && review_state === "reviewed"));
+  const expansionWork = methodTerms.find(({ id }) => id === "term:expansion-work-energy-transfer");
   assert.equal(expansionWork.allowed_functional_roles, undefined);
-  const continuousInput = ticket08Terms.find(({ id }) => id === "term:continuous-heating-input");
+  const continuousInput = methodTerms.find(({ id }) => id === "term:continuous-heating-input");
   assert.match(continuousInput.definition, /distributed radioactive deposition/);
   assert.match(continuousInput.definition, /central-boundary engine input/);
   assert.match(continuousInput.boundary_notes, /distributed or local heating deposition/);

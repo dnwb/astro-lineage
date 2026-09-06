@@ -10,7 +10,7 @@ const projectRoot = fileURLToPath(new URL("..", import.meta.url));
 const validateScript = fileURLToPath(new URL("../scripts/validate.mjs", import.meta.url));
 
 test("project validation failures are merged into the emitted report", async () => {
-  const temporaryRoot = await mkdtemp(join(tmpdir(), "axvdaily-project-validation-"));
+  const temporaryRoot = await mkdtemp(join(tmpdir(), "astro-lineage-project-validation-"));
   await cp(new URL("../content/", import.meta.url), join(temporaryRoot, "content"), {
     recursive: true,
   });

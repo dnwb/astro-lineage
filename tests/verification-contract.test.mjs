@@ -15,6 +15,7 @@ async function readPackage() {
 
 test("the five frozen npm commands retain their verification contract", async () => {
   const packageJson = await readPackage();
+  assert.equal(packageJson.name, "astro-lineage");
   assert.equal(packageJson.engines?.node, ">=22.20.0");
   assert.deepEqual(packageJson.scripts, {
     validate: "node scripts/validate.mjs",
@@ -37,7 +38,7 @@ test("the CI workflow reproduces the local proof in a clean Node environment", a
   const workflow = await readFile(workflowPath, "utf8");
   const config = parse(workflow);
   const job = config.jobs?.verify;
-  assert.equal(config.name, "V0.1 verification");
+  assert.equal(config.name, "AstroLineage verification");
   assert.deepEqual(config.on, {
     push: null,
     pull_request: null,
@@ -71,6 +72,14 @@ test("the verification workflow keeps scholarly source refresh outside productio
   const productionEntrypoints = [
     "scripts/validate.mjs",
     "scripts/content-validator.mjs",
+    "scripts/validation/works.mjs",
+    "scripts/validation/versions.mjs",
+    "scripts/validation/evidence.mjs",
+    "scripts/validation/ontology.mjs",
+    "scripts/validation/methods.mjs",
+    "scripts/validation/edges.mjs",
+    "scripts/validation/editorial.mjs",
+    "scripts/validation/visibility.mjs",
     "scripts/editorial-index.mjs",
     "scripts/reader-projection.mjs",
   ];

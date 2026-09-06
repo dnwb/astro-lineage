@@ -44,7 +44,7 @@ async function readYaml(path) {
 }
 
 async function withContentFixture(callback) {
-  const temporaryRoot = await mkdtemp(join(tmpdir(), "axvdaily-ticket13-content-"));
+  const temporaryRoot = await mkdtemp(join(tmpdir(), "astro-lineage-reader-content-"));
   const contentRoot = join(temporaryRoot, "content");
   await cp(productionContent, contentRoot, { recursive: true });
   try {
@@ -66,7 +66,7 @@ test("the reading prose parser preserves section hierarchy and wrapped list item
   );
 });
 
-test("the Ticket 13 matrix closes every real fixture row with Stored, Validated, and Rendered evidence", async () => {
+test("the coverage matrix closes every real fixture row with Stored, Validated, and Rendered evidence", async () => {
   const matrixPath = join(projectRoot, "docs", "coverage", "v0.1-stored-validated-rendered.md");
   const matrix = await readFile(matrixPath, "utf8");
   assert.match(matrix, /Stored \+ Validated \+ Rendered coverage matrix/u);
@@ -131,12 +131,12 @@ test("all five Work pages render the academic Reader View and on-demand provenan
 });
 
 test("Validation Report carries pass states, digests, complete inventory statistics, and explicit zero counts", async () => {
-  const temporaryRoot = await mkdtemp(join(tmpdir(), "axvdaily-ticket13-report-"));
+  const temporaryRoot = await mkdtemp(join(tmpdir(), "astro-lineage-reader-report-"));
   try {
     const report = await runValidation({
       contentRoot: productionContent,
       outputRoot: temporaryRoot,
-      dataset: "fixture:ticket13-production",
+      dataset: "fixture:reader-production",
     });
     assert.equal(report.valid, true, JSON.stringify(report.diagnostics, null, 2));
     assert.deepEqual(
@@ -186,7 +186,7 @@ test("Validation Report carries pass states, digests, complete inventory statist
     });
     const jsonReport = JSON.parse(await readFile(join(temporaryRoot, "validation", "report.json"), "utf8"));
     const markdownReport = await readFile(join(temporaryRoot, "validation", "report.md"), "utf8");
-    assert.equal(jsonReport.dataset, "fixture:ticket13-production");
+    assert.equal(jsonReport.dataset, "fixture:reader-production");
     assert.match(markdownReport, /## Stored \+ Validated \+ Rendered/u);
     assert.match(markdownReport, /scientific_edge_relation_counts/u);
     assert.match(markdownReport, /builds_on.*0/u);
@@ -213,21 +213,21 @@ test("reverse indexes are direct, byte-for-byte reproducible, removable, and exc
     const statementsPath = join(contentRoot, "works", "arnett-1982", "statements.yaml");
     const statements = await readYaml(statementsPath);
     const hidden = structuredClone(statements.statements[0]);
-    hidden.id = "statement:ticket13-hidden-marker";
-    hidden.canonical_text = "HIDDEN_TICKET13_MARKER";
+    hidden.id = "statement:reader-hidden-marker";
+    hidden.canonical_text = "HIDDEN_READER_MARKER";
     hidden.review_state = "unreviewed";
     delete hidden.review_provenance;
     delete hidden.review_binding;
     statements.statements.push(hidden);
     await writeFile(statementsPath, stringify(statements), "utf8");
 
-    const report = await validateCanonicalContent(contentRoot, { dataset: "fixture:ticket13-hidden" });
+    const report = await validateCanonicalContent(contentRoot, { dataset: "fixture:reader-hidden" });
     assert.equal(report.valid, true, JSON.stringify(report.diagnostics, null, 2));
     const after = await loadCanonicalContent(contentRoot);
     const projection = projectVisibleSnapshot(after);
     const index = buildWorkResearchLineIndex(after);
-    assert.doesNotMatch(JSON.stringify(projection), /HIDDEN_TICKET13_MARKER/u);
-    assert.doesNotMatch(JSON.stringify(index), /HIDDEN_TICKET13_MARKER/u);
+    assert.doesNotMatch(JSON.stringify(projection), /HIDDEN_READER_MARKER/u);
+    assert.doesNotMatch(JSON.stringify(index), /HIDDEN_READER_MARKER/u);
     assert.equal(report.work_inventory.find(({ work_id }) => work_id === "work:arnett-1982").visibility_status, "approved");
   });
 });

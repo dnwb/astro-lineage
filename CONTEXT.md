@@ -1,4 +1,4 @@
-# High-Energy Transient Reading Radar
+# AstroLineage
 
 This context describes the scientific reading model used to organize high-energy transient literature by physical relationships and research lineage.
 

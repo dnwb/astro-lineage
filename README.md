@@ -1,6 +1,6 @@
-# High-Energy Transient Reading Radar
+# AstroLineage
 
-This repository is the V0.1 static reader slice for an internal high-energy
+AstroLineage is the V0.1 static reader slice for an internal high-energy
 transient astrophysics group. It organizes five curated Works by physical
 structure, research context, and a reviewed Learning Path. The reader presents
 scientific content first and keeps Version Evidence, typed locators,
@@ -109,12 +109,12 @@ only under `tests/fixtures/` and never affect production discovery or counts.
 The real-fixture Stored + Validated + Rendered evidence is recorded row by row
 in [the V0.1 coverage matrix](docs/coverage/v0.1-stored-validated-rendered.md).
 The matrix is deliberately separate from canonical content and is checked by
-Ticket 13 tests.
+the reader-projection tests.
 
 ## Delivery boundary
 
-V0.1 verification is offline and does not deploy a site. Ticket 14 completed
-the independent clean-environment remote CI gate. Post-V0.1 compatibility
+V0.1 verification is offline and does not deploy a site. The verification
+contract includes an independent clean-environment remote CI gate. Post-V0.1 compatibility
 hardening uses the same local and clean-CI verification contract without
 reopening Tickets 01–14.
 

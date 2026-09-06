@@ -1,4 +1,4 @@
-# High-Energy Transient Reading Radar — Project Context
+# AstroLineage — Project Context
 
 > **Status:** Authoritative product charter  
 > **Normative scope:** project purpose, audience, scientific organizing principle, durable product boundaries, and the six Research Line themes.  

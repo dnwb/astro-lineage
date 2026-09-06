@@ -3,6 +3,7 @@ import ReadingProse from "../../components/ReadingProse.astro";
 import { loadCanonicalContent } from "../../../scripts/content-loader.mjs";
 import { projectLearningPathForReader } from "../../../scripts/reader-projection.mjs";
 import { workReaderPath } from "../../lib/reader-routes";
+import { loadSiteConfig } from "../../lib/site-config";
 import "../../styles/global.css";
 
 type AnyRecord = Record<string, any>;
@@ -16,6 +17,7 @@ export async function getStaticPaths() {
 }
 
 const { pathId } = Astro.props;
+const site = loadSiteConfig();
 const snapshot = await loadCanonicalContent(new URL("../../../content/", import.meta.url));
 const learningPath = projectLearningPathForReader(snapshot, pathId) as AnyRecord | null;
 if (!learningPath) {
@@ -54,11 +56,11 @@ function workDate(entry: AnyRecord) {
       name="description"
       content={`Learning Path: ${learningPath.title ?? pathId}`}
     />
-    <title>{learningPath.title ?? pathId} · High-Energy Transient Reading Radar</title>
+    <title>{learningPath.title ?? pathId} · {site.title}</title>
   </head>
   <body>
     <main class="site-shell reader-page">
-      <p class="eyebrow"><a href="/">High-Energy Transient Reading Radar</a> · Learning Path</p>
+      <p class="eyebrow"><a href="/">{site.title}</a> · Learning Path</p>
       <header class="reader-header">
         <p class="record-label">Learning Path ID: {pathId}</p>
         <h1>{learningPath.title ?? pathId}</h1>

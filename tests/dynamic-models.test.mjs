@@ -24,7 +24,7 @@ const versionsFile = `content/works/${workSlug}/versions.yaml`;
 const accountFile = `content/works/${workSlug}/physical-account.yaml`;
 
 async function copyContent() {
-  const temporaryRoot = await mkdtemp(join(tmpdir(), "axvdaily-ticket09-"));
+  const temporaryRoot = await mkdtemp(join(tmpdir(), "astro-lineage-dynamic-models-"));
   const contentRoot = join(temporaryRoot, "content");
   await cp(productionContent, contentRoot, { recursive: true });
   return contentRoot;
@@ -72,7 +72,7 @@ function edgeEndpoint(edge, side) {
   return null;
 }
 
-test("Ticket 09 publishes the approved Long & Yu arXiv-only Work", async () => {
+test("the dynamic-model slice publishes the approved Long & Yu arXiv-only Work", async () => {
   const snapshot = await loadCanonicalContent(productionContent);
   const result = await validateCanonicalContent(productionContent);
   const work = snapshot.works.find(({ id }) => id === workId);
@@ -250,7 +250,7 @@ test("a Physical Account link with a missing endpoint is quarantined with a stab
   const path = join(contentRoot, "works", workSlug, "physical-account.yaml");
   const account = await readYaml(path);
   const link = account.links[0];
-  link.target_stage_id = "stage:ticket09-missing";
+  link.target_stage_id = "stage:dynamic-model-missing";
   await writeYaml(path, account);
 
   const result = await validateCanonicalContent(contentRoot);

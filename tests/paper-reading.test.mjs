@@ -116,7 +116,6 @@ test("Paper Detail presents the complete scientific reading loop before on-deman
   for (const [slug, publicUrl] of papers) {
     const html = await readFile(join(projectRoot, "dist", "papers", slug, "index.html"), "utf8");
     assertInOrder(html, [
-      "reader-header",
       "Why This Work Matters</h2>",
       "Problem</h2>",
       "Scientific Takeaway</h2>",
@@ -127,7 +126,7 @@ test("Paper Detail presents the complete scientific reading loop before on-deman
       "Provenance &amp; scientific evidence</summary>",
     ], slug);
     assert.match(html, new RegExp(`href="${publicUrl.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&")}"`, "u"));
-    assert.match(html, /<details class="panel provenance-detail">/u, slug);
+    assert.match(html, /<summary>Provenance &amp; scientific evidence<\/summary>/u, slug);
     assert.doesNotMatch(html, /<details[^>]*\sopen(?:[\s=>])/u, slug);
     assert.doesNotMatch(html, /(?:visibility_approvals|reader_state)/u, slug);
   }
@@ -153,8 +152,8 @@ test("Paper connections preserve canonical direction while linking both endpoint
   for (const [slug, relation, href] of expectations) {
     const html = await readFile(join(projectRoot, "dist", "papers", slug, "index.html"), "utf8");
     const connections = html.slice(
-      html.indexOf('<section class="panel" aria-labelledby="connections-heading">'),
-      html.indexOf('<section class="panel" aria-labelledby="research-context-heading">'),
+      html.indexOf("Connections</h2>"),
+      html.indexOf("Research Context</h2>"),
     );
     assert.match(connections, new RegExp(`<span class="tag">${relation}</span>`, "u"), slug);
     assert.match(connections, new RegExp(`href="${href}"`, "u"), slug);

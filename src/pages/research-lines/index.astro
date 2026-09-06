@@ -3,6 +3,7 @@ import { loadCanonicalContent } from "../../../scripts/content-loader.mjs";
 import { projectVisibleSnapshot } from "../../../scripts/reader-projection.mjs";
 import { researchLineReaderPath } from "../../lib/reader-routes";
 import { loadSiteConfig } from "../../lib/site-config";
+import SiteNav from "../../components/SiteNav.astro";
 import "../../styles/global.css";
 
 type AnyRecord = Record<string, any>;
@@ -26,6 +27,7 @@ const visibleLines = (reader.research_lines ?? []) as AnyRecord[];
   </head>
   <body>
     <main class="site-shell index-page">
+      <SiteNav />
       <p class="eyebrow"><a href="/">{site.title}</a> · Reader index</p>
       <h1>Research Lines</h1>
       <p class="layer-intro">{visibleLines.length} curated Research Lines</p>

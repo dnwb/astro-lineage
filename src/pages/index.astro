@@ -1,31 +1,71 @@
 ---
 import ProductBoundary from "../copy/product-boundary.md";
+import { firstCompleteReadingItem, parseReadingDocument, whyThisWorkMatters } from "../../scripts/reader-markdown.mjs";
 import { loadCanonicalContent } from "../../scripts/content-loader.mjs";
 import { projectVisibleSnapshot } from "../../scripts/reader-projection.mjs";
+import SiteNav from "../components/SiteNav.astro";
+import { learningPathReaderPath, workReaderPath } from "../lib/reader-routes";
 import { loadSiteConfig } from "../lib/site-config";
-import {
-  learningPathReaderPath,
-  researchLineReaderPath,
-  workReaderPath,
-} from "../lib/reader-routes";
 import "../styles/global.css";
+
+type AnyRecord = Record<string, any>;
 
 const site = loadSiteConfig();
 const snapshot = await loadCanonicalContent("content");
 const reader = projectVisibleSnapshot(snapshot) as Record<string, any>;
-const works = (reader.works ?? []) as Record<string, any>[];
-const researchLines = (reader.research_lines ?? []) as Record<string, any>[];
-const learningPaths = (reader.learning_paths ?? []) as Record<string, any>[];
+const visibleWorks = (reader.works ?? []) as AnyRecord[];
+const learningPaths = (reader.learning_paths ?? []) as AnyRecord[];
+const scientificEdges = (reader.scientific_edges ?? []) as AnyRecord[];
+const workById = new Map(visibleWorks.map((work) => [work.work_id, work]));
+const startPath = learningPaths[0] ?? null;
 
-function workTitle(work: Record<string, any>) {
-  return work.versions?.find((version: Record<string, any>) => version.id === work.preferred_version_id)?.title ?? work.work_id;
+const relationLabels: Record<string, string> = {
+  builds_on: "BUILDS ON",
+  extends: "EXTENDS",
+  tests: "TESTS",
+  constrains: "CONSTRAINS",
+  challenges: "CHALLENGES",
+  replaces_assumption: "REPLACES ASSUMPTION",
+  corrects: "CORRECTS",
+};
+
+function preferred(work: AnyRecord) {
+  const version = work.versions?.find((candidate: AnyRecord) => candidate.id === work.preferred_version_id);
+  if (!version) throw new Error(`Missing preferred Version for ${work.work_id}.`);
+  return version;
 }
 
-function workAuthors(work: Record<string, any>) {
-  return work.versions
-    ?.find((version: Record<string, any>) => version.id === work.preferred_version_id)
-    ?.authors?.map((author: Record<string, any>) => author.display_name)
-    .join(", ");
+function authors(work: AnyRecord, abbreviated = false) {
+  const names = (preferred(work).authors ?? [])
+    .map((author: AnyRecord) => author.display_name)
+    .filter(Boolean);
+  if (abbreviated && names.length > 2) return `${names[0]} et al.`;
+  return names.join(", ");
+}
+
+function releaseYear(work: AnyRecord) {
+  const value = preferred(work).release_date?.value;
+  if (typeof value !== "string" || !/^\d{4}/u.test(value)) {
+    throw new Error(`Missing preferred Version release year for ${work.work_id}.`);
+  }
+  return value.slice(0, 4);
+}
+
+function whyRead(work: AnyRecord) {
+  const document = parseReadingDocument(String(work.reading ?? ""));
+  return firstCompleteReadingItem(whyThisWorkMatters(document, work.work_id), work.work_id);
+}
+
+function projectedWork(workId: string) {
+  const work = workById.get(workId);
+  if (!work) throw new Error(`Scientific Edge endpoint is not visible: ${workId}.`);
+  return work;
+}
+
+function edgeLabel(edge: AnyRecord) {
+  const label = relationLabels[edge.relation];
+  if (!label) throw new Error(`Unknown Scientific Edge relation: ${edge.relation}.`);
+  return label;
 }
 ---
 
@@ -36,59 +76,92 @@ function workAuthors(work: Record<string, any>) {
     <meta name="viewport" content="width=device-width" />
     <meta
       name="description"
-      content="A scientific reading and knowledge-navigation system for high-energy transient astrophysics."
+      content="A curated scientific reading map for high-energy transient astrophysics."
     />
     <title>{site.title}</title>
   </head>
   <body>
     <main class="site-shell home-page">
-      <p class="eyebrow">{site.eyebrow}</p>
-      <h1>{site.title}</h1>
-      <ProductBoundary />
+      <SiteNav />
 
-      <section class="home-intro panel" aria-labelledby="reading-map-heading">
-        <p class="section-kicker">V0.1 reader map</p>
-        <h2 id="reading-map-heading">Start with the scientific structure</h2>
-        <p>Browse five curated Works, their Research Lines, and the reviewed Learning Path. The map is a static navigation view, not a daily feed or a standalone graph product.</p>
-        <p><a class="browse-link" href="/papers">Browse all curated Papers</a></p>
+      <header class="home-header" aria-labelledby="home-title">
+        <p class="eyebrow">{site.eyebrow}</p>
+        <h1 id="home-title">{site.title}</h1>
+        <p class="home-lead">Understand how ideas in high-energy astrophysics evolve.</p>
+        <p>A curated scientific reading map built around papers, their physical relationships, and learning paths.</p>
+        <ProductBoundary />
+      </header>
+
+      <section class="panel home-section" aria-labelledby="start-here-heading">
+        <p class="section-kicker">Begin with a reviewed sequence</p>
+        <h2 id="start-here-heading">Start Here</h2>
+        {startPath ? (
+          <>
+            <h3><a href={learningPathReaderPath(snapshot, startPath.path_id)}>{startPath.title ?? startPath.path_id}</a></h3>
+            <ol class="path-citations">
+              {(startPath.entries ?? []).map((entry: AnyRecord, index: number) => (
+                <li>
+                  <span class="step-number">{index + 1}</span>
+                  <a href={workReaderPath(snapshot, entry.work_id)}>{entry.work?.title ?? entry.work_id}</a>
+                  <small>{(entry.work?.authors ?? []).map((author: AnyRecord) => author.display_name).filter(Boolean).join(", ")} · {entry.work?.release_date?.value?.slice(0, 4) ?? "release date unavailable"}</small>
+                </li>
+              ))}
+            </ol>
+            <p><a class="browse-link" href={learningPathReaderPath(snapshot, startPath.path_id)}>Open learning path</a></p>
+          </>
+        ) : (
+          <p class="empty-state">No reviewed learning path yet.</p>
+        )}
       </section>
 
       <div class="home-grid">
-        <section class="panel" aria-labelledby="works-heading">
-          <p class="section-kicker">Reader entities</p>
-          <h2 id="works-heading">Papers</h2>
-          <ul class="paper-list">
-            {works.map((work) => (
-              <li>
-                <a href={workReaderPath(snapshot, work.work_id)}>{workTitle(work)}</a>
-                {workAuthors(work) ? <small>{workAuthors(work)}</small> : null}
-              </li>
-            ))}
-          </ul>
+        <section class="panel home-section" aria-labelledby="curated-papers-heading">
+          <p class="section-kicker">{visibleWorks.length} visible Works</p>
+          <h2 id="curated-papers-heading">Curated Papers</h2>
+          {visibleWorks.length === 0 ? (
+            <p class="empty-state">No Papers are visible in the curated reading map yet.</p>
+          ) : (
+            <ol class="paper-index">
+              {visibleWorks.map((work) => (
+                <li class="paper-index-item">
+                  <article>
+                    <h3><a class="paper-title" href={workReaderPath(snapshot, work.work_id)}>{preferred(work).title}</a></h3>
+                    <p class="paper-meta">{authors(work, true)} · {releaseYear(work)}</p>
+                    <p>{whyRead(work)}</p>
+                    <p><a class="browse-link" href={workReaderPath(snapshot, work.work_id)}>Read paper</a></p>
+                  </article>
+                </li>
+              ))}
+            </ol>
+          )}
         </section>
 
-        <section class="panel" aria-labelledby="lines-heading">
-          <p class="section-kicker">Editorial context</p>
-          <h2 id="lines-heading">Research Lines</h2>
-          <ul class="paper-list">
-            {researchLines.map((line) => (
-              <li><a href={researchLineReaderPath(snapshot, line.line_id)}>{line.title ?? line.line_id}</a><small>{line.scientific_question}</small></li>
-            ))}
-          </ul>
-        </section>
-
-        <section class="panel" aria-labelledby="paths-heading">
-          <p class="section-kicker">Ordered pedagogy</p>
-          <h2 id="paths-heading">Learning Paths</h2>
-          <ul class="paper-list">
-            {learningPaths.map((path) => (
-              <li><a href={learningPathReaderPath(snapshot, path.path_id)}>{path.title ?? path.path_id}</a><small>{path.entries?.length ?? 0} Works, {path.transitions?.length ?? 0} transitions</small></li>
-            ))}
-          </ul>
+        <section class="panel home-section" aria-labelledby="scientific-connections-heading">
+          <p class="section-kicker">{scientificEdges.length} projected Edges</p>
+          <h2 id="scientific-connections-heading">Scientific Connections</h2>
+          {scientificEdges.length === 0 ? (
+            <p class="empty-state">No reviewed scientific connections yet.</p>
+          ) : (
+            <ul class="compact-list edge-list">
+              {scientificEdges.map((edge) => {
+                const source = projectedWork(edge.source_work_id);
+                const target = projectedWork(edge.target_work_id);
+                return (
+                  <li>
+                    <p>
+                      <a href={workReaderPath(snapshot, edge.source_work_id)}>{preferred(source).title}</a>
+                      <span class="tag">{edgeLabel(edge)}</span>
+                      <a href={workReaderPath(snapshot, edge.target_work_id)}>{preferred(target).title}</a>
+                      {edge.disposition === "contested" ? <strong class="dispute-indicator"> Contested</strong> : null}
+                    </p>
+                    <p>{edge.reason}</p>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
         </section>
       </div>
-
-      <p class="status">Five-Work V0.1 reader slice · static, validated, and evidence-aware</p>
     </main>
   </body>
 </html>

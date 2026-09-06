@@ -4,6 +4,7 @@ import { loadCanonicalContent } from "../../../scripts/content-loader.mjs";
 import { projectLearningPathForReader } from "../../../scripts/reader-projection.mjs";
 import { workReaderPath } from "../../lib/reader-routes";
 import { loadSiteConfig } from "../../lib/site-config";
+import SiteNav from "../../components/SiteNav.astro";
 import "../../styles/global.css";
 
 type AnyRecord = Record<string, any>;
@@ -65,6 +66,7 @@ function workDate(entry: AnyRecord) {
   </head>
   <body>
     <main class="site-shell reader-page">
+      <SiteNav />
       <p class="eyebrow"><a href="/">{site.title}</a> · Learning Path</p>
       <header class="reader-header">
         <p class="record-label">Learning Path ID: {pathId}</p>

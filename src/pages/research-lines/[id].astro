@@ -7,6 +7,7 @@ import {
 } from "../../../scripts/reader-projection.mjs";
 import { workReaderPath } from "../../lib/reader-routes";
 import { loadSiteConfig } from "../../lib/site-config";
+import SiteNav from "../../components/SiteNav.astro";
 import "../../styles/global.css";
 
 type AnyRecord = Record<string, any>;
@@ -60,6 +61,7 @@ function workYear(membership: AnyRecord) {
   </head>
   <body>
     <main class="site-shell reader-page">
+      <SiteNav />
       <p class="eyebrow"><a href="/research-lines/">Research Lines</a> · Research Line</p>
       <header class="reader-header">
         <h1>{researchLine.title}</h1>

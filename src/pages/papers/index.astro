@@ -8,6 +8,7 @@ import {
 import { projectVisibleSnapshot } from "../../../scripts/reader-projection.mjs";
 import { researchLineReaderPath, workReaderPath } from "../../lib/reader-routes";
 import { loadSiteConfig } from "../../lib/site-config";
+import SiteNav from "../../components/SiteNav.astro";
 import "../../styles/global.css";
 
 type AnyRecord = Record<string, any>;
@@ -60,6 +61,7 @@ function whyRead(work: Record<string, any>) {
   </head>
   <body>
     <main class="site-shell index-page">
+      <SiteNav />
       <p class="eyebrow"><a href="/">{site.title}</a> · Reader index</p>
       <h1>Papers</h1>
       <p class="layer-intro">{visibleWorks.length} curated Papers</p>

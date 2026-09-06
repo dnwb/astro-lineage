@@ -12,6 +12,7 @@ import {
 } from "../../../scripts/reader-projection.mjs";
 import { researchLineReaderPath, workReaderPath } from "../../lib/reader-routes";
 import { loadSiteConfig } from "../../lib/site-config";
+import SiteNav from "../../components/SiteNav.astro";
 import "../../styles/global.css";
 
 type AnyRecord = Record<string, any>;
@@ -144,6 +145,7 @@ function connectedPaper(edge: AnyRecord) {
   </head>
   <body>
     <main class="site-shell reader-page">
+      <SiteNav />
       <p class="eyebrow"><a href="/papers">Papers</a> · Paper</p>
 
       <header class="reader-header">

@@ -17,6 +17,53 @@ body {
   padding: clamp(2rem, 7vw, 7rem) 0 5rem;
 }
 
+.site-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.8rem 1.5rem;
+  margin-bottom: 2.2rem;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid #c9c3b7;
+  font-family: system-ui, sans-serif;
+}
+
+.site-nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem 1.2rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.site-brand {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.home-header {
+  max-width: 62rem;
+  margin-bottom: 2.2rem;
+}
+
+.home-header p:last-child {
+  margin-bottom: 0;
+}
+
+.home-lead {
+  max-width: 42rem;
+  color: #4b5360;
+  font-size: 1.35rem;
+}
+
+.home-header > h2 {
+  margin-top: 2rem;
+}
+
 .reader-page {
   max-width: 74rem;
 }
@@ -172,6 +219,29 @@ small {
 .account-stages {
   margin: 0;
   padding-left: 1.25rem;
+}
+
+.path-citations {
+  display: grid;
+  gap: 0.8rem;
+  margin: 1.2rem 0;
+  padding: 0;
+  list-style: none;
+}
+
+.path-citations li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.15rem 0.7rem;
+  align-items: baseline;
+}
+
+.path-citations .step-number {
+  grid-row: span 2;
+}
+
+.path-citations small {
+  grid-column: 2;
 }
 
 .reading-list li,

@@ -6,8 +6,8 @@
 
 - **Stage:** Post-V0.1 P0 compatibility hardening
 - **Status:** V0.1 complete; Tickets 01–14 remain closed; the separately
-  authorized filesystem-safe path migration passes local verification and is
-  awaiting its clean remote CI gate
+  authorized filesystem-safe path migration passes local verification and its
+  clean remote CI gate
 - **Implementation:** Visible Arnett and Bromberg now exercise governed Actors,
   capability-at-action-time authorization, 16 assessed Physics axes,
   controlled vocabulary, reusable Version-bound Evidence, reviewed Method
@@ -29,8 +29,8 @@
   independent clean-environment CI pass are complete
 - **Decision frontier:** closed through Q151; no open domain-model decision is
   blocking migration
-- **Next execution action:** commit and push the filesystem-safe path migration,
-  then confirm its clean remote CI gate; no V0.1 ticket is reopened
+- **Next execution action:** none for the filesystem-safe path migration; no
+  V0.1 ticket is reopened
 
 The repository has completed specification, governance, and authority
 migration. Ticket 01 established the independent Git boundary and bootstrap
@@ -198,15 +198,15 @@ The separately authorized P0 filesystem compatibility issue is tracked at:
 ```
 
 Its local `npm run verify` gate passes with 17/17 tests, zero Astro diagnostics,
-and an 11-page static build; clean remote CI proof remains before it is
-resolved. Any V0.2 or other deferred work still requires a separately
+and an 11-page static build. GitHub Actions run `34007603487` passed the same
+verification contract for implementation commit `68bde92`, resolving the P0
+migration. Any V0.2 or other deferred work still requires a separately
 authorized milestone. A newly discovered semantic choice must first be
 classified under the migration rule above.
 
 ## Blockers and constraints
 
-There is no remaining V0.1 blocker. The post-V0.1 P0 migration is blocked only
-until its clean remote CI gate completes. Repository
+There is no remaining V0.1 or post-V0.1 P0 blocker. Repository
 initialization remained separate from remote creation until the user
 explicitly authorized `git@github.com:dnwb/astro-lineage.git`; GitHub Actions
 then supplied the independent clean-environment proof. A genuinely new

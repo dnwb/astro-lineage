@@ -15,7 +15,7 @@ are local governance artifacts.
 
 ## Setup and local development
 
-Use Node.js 20 or newer and npm. From the project root:
+Use Node.js 22.20.0 or newer and npm. From the project root:
 
 ```bash
 npm ci
@@ -105,3 +105,10 @@ Ticket 13 tests.
 V0.1 verification is offline and does not deploy a site. Local completion is
 not a claim of the independent clean-environment remote CI pass; that separate
 acceptance item remains Ticket 14.
+
+The repository workflow at `.github/workflows/verify.yml` is verification-only:
+it checks out the repository on a clean Node.js 22.20.0 runner, installs the
+locked package set with `npm ci --ignore-scripts`, and runs `npm run verify`. The
+verification commands read committed canonical records and do not contact
+bibliographic providers or paper sources; dependency installation is the only
+package-registry operation. The workflow has no deployment step.

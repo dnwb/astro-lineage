@@ -1,5 +1,7 @@
 ## Agent skills
 
+### Agent context policy.md
+see docs/agent-context-policy.md
 ### Issue tracker
 
 Issues and specs use the local Markdown tracker. See `docs/agents/issue-tracker.md`.

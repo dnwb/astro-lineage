@@ -5,7 +5,7 @@
 ## Current position
 
 - **Stage:** Phase 5 — V0.1 verification and CI acceptance
-- **Status:** Tickets 01–13 complete
+- **Status:** Tickets 01–13 complete; Ticket 14 local verification contract complete, independent remote CI gate remains
 - **Implementation:** Visible Arnett and Bromberg now exercise governed Actors,
   capability-at-action-time authorization, 16 assessed Physics axes,
   controlled vocabulary, reusable Version-bound Evidence, reviewed Method
@@ -27,8 +27,8 @@
   and the independent clean-environment CI pass remains
 - **Decision frontier:** closed through Q151; no open domain-model decision is
   blocking migration
-- **Next execution action:** Ticket 14,
-  `.scratch/v0.1-vertical-slice/issues/14-prove-local-verification-and-clean-ci.md`
+- **Next execution action:** after the local Ticket 14 contract, run the
+  independent remote CI gate when an authorized remote is available
 
 The repository has completed specification, governance, and authority
 migration. Ticket 01 established the independent Git boundary and bootstrap
@@ -80,7 +80,10 @@ report determinism, production projection isolation, and offline network
 guards. Ticket 13 then closes the academic reader surfaces across the frozen
 routes, adds the real-fixture Stored + Validated + Rendered coverage matrix,
 expands Validation Report statistics, documents the contributor contract, and
-proves local verification. A future separate
+proves local verification. Ticket 14 adds the verification-only clean-run
+workflow, locks the CI-to-local command contract, and records the local
+offline/source-refresh boundary; no remote is selected or claimed here. A
+future separate
 `Long & Yu --tests--> Zhu` delta is reserved strictly for trajectory-integrated
 detector-yield validation and is not stored in V0.1 Ticket 10.
 
@@ -160,7 +163,9 @@ CI remain fully offline; external deployment and source refresh are deferred.
 
 ## Next action
 
-Continue the approved local ticket frontier with:
+Continue the approved Ticket 14 frontier with the independent remote CI run
+after a remote and the required authorization are available. The local
+workflow and contract are recorded at:
 
 ```text
 .scratch/v0.1-vertical-slice/issues/14-prove-local-verification-and-clean-ci.md

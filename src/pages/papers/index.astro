@@ -3,14 +3,16 @@ import { loadCanonicalContent } from "../../../scripts/content-loader.mjs";
 import {
   firstCompleteReadingItem,
   parseReadingDocument,
+  parseReadingMarkdown,
   whyThisWorkMatters,
 } from "../../../scripts/reader-markdown.mjs";
-import { projectVisibleSnapshot } from "../../../scripts/reader-projection.mjs";
+import { projectBaselineSnapshot } from "../../../scripts/reader-projection.mjs";
 import { researchLineReaderPath, workReaderPath } from "../../lib/reader-routes";
 import {
   localizedBlocks,
   localizedLineTitle,
   localizedWorkTitle,
+  selectBilingualBlocks,
 } from "../../lib/reader-localization";
 import { loadSiteConfig } from "../../lib/site-config";
 import SiteNav from "../../components/SiteNav.astro";
@@ -20,8 +22,10 @@ type AnyRecord = Record<string, any>;
 
 const site = loadSiteConfig();
 const snapshot = await loadCanonicalContent(new URL("../../../content/", import.meta.url));
-const reader = projectVisibleSnapshot(snapshot) as Record<string, any>;
-const visibleWorks = (reader.works ?? []) as AnyRecord[];
+const reader = projectBaselineSnapshot(snapshot) as Record<string, any>;
+const baselineWorks = (reader.works ?? []) as AnyRecord[];
+const publishedCount = baselineWorks.filter((work) => work.reader_status === "published").length;
+const candidateCount = baselineWorks.filter((work) => work.reader_status === "candidate").length;
 
 function preferred(work: Record<string, any>) {
   const version = work.versions?.find((candidate: Record<string, any>) => candidate.id === work.preferred_version_id);
@@ -49,14 +53,28 @@ function releaseYear(work: Record<string, any>) {
 function whyRead(work: Record<string, any>) {
   const document = parseReadingDocument(String(work.reading ?? ""));
   return firstCompleteReadingItem(
-    localizedBlocks(work.work_id, "why", whyThisWorkMatters(document, work.work_id)),
+    selectBilingualBlocks(
+      localizedBlocks(work.work_id, "why", whyThisWorkMatters(document, work.work_id)),
+      "primary",
+    ),
     work.work_id,
   );
 }
 
 function originalWhyRead(work: Record<string, any>) {
   const document = parseReadingDocument(String(work.reading ?? ""));
-  return firstCompleteReadingItem(whyThisWorkMatters(document, work.work_id), work.work_id);
+  return firstCompleteReadingItem(
+    selectBilingualBlocks(whyThisWorkMatters(document, work.work_id), "english"),
+    work.work_id,
+  );
+}
+
+function title(work: Record<string, any>) {
+  const version = preferred(work);
+  const localized = localizedWorkTitle(work.work_id, version.title);
+  if (localized !== version.title) return localized;
+  return parseReadingMarkdown(String(work.reading ?? ""), { skipTitle: false })
+    .find((block) => block.kind === "heading" && block.depth === 1)?.text ?? version.title;
 }
 
 ---
@@ -77,20 +95,22 @@ function originalWhyRead(work: Record<string, any>) {
       <SiteNav />
       <p class="eyebrow"><a href="/">{site.title}</a> · 论文索引</p>
       <h1>论文</h1>
-      <p class="layer-intro">{visibleWorks.length} 篇精选论文</p>
+      <p class="layer-intro">{baselineWorks.length} 篇基准文献：{publishedCount} 篇已审核，{candidateCount} 篇候选基准</p>
+      <p class="reader-note">候选基准已经完成来源、双语导读和公式整理，正在等待人工审核；它们可以阅读，但不等同于正式发布的精选论文。</p>
       {
-        visibleWorks.length === 0 ? (
-          <p class="empty-state">精选阅读地图中暂时没有可见论文。</p>
+        baselineWorks.length === 0 ? (
+          <p class="empty-state">基准文献库中暂时没有可显示论文。</p>
         ) : (
           <ol class="paper-index">
-            {visibleWorks.map((work) => {
+            {baselineWorks.map((work) => {
               const version = preferred(work);
               return (
                 <li class="paper-index-item">
                   <article>
-                    <h2><a class="paper-title" href={workReaderPath(snapshot, work.work_id)}>{localizedWorkTitle(work.work_id, version.title)}</a></h2>
+                    <h2><a class="paper-title" href={workReaderPath(snapshot, work.work_id)}>{title(work)}</a></h2>
                     <p class="original-title" lang="en">英文原题：{version.title}</p>
                     <p class="paper-meta">{authors(work)} · {releaseYear(work)}</p>
+                    <p><span class="tag">{work.reader_status === "candidate" ? "候选基准" : "已审核精选"}</span></p>
                     <p>{whyRead(work)}</p>
                     <p class="language-english" lang="en">{originalWhyRead(work)}</p>
                     {(work.research_lines ?? []).length > 0 ? (

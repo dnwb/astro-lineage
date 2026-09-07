@@ -1,0 +1,27 @@
+path_id: learning-path:baseline-engine-powered-transients
+reader_state: draft
+title: From Radioactive Heating to Engine-powered Transients
+entries:
+  - work_id: work:arnett-1982
+  - work_id: work:yu-zhang-gao-2013
+  - work_id: work:yu-li-dai-2015
+  - work_id: work:kasen-bildsten-2010
+  - work_id: work:transfit-mag-2026
+transitions:
+  - source_work_id: work:arnett-1982
+    target_work_id: work:yu-zhang-gao-2013
+    reason: After the radioactive-heating baseline, examine how a newborn magnetar changes the dynamics and electromagnetic signal of merger ejecta.
+  - source_work_id: work:yu-zhang-gao-2013
+    target_work_id: work:yu-li-dai-2015
+    reason: Generalize the merger-nova example to a broader class of rapidly evolving transients powered by newborn neutron stars.
+  - source_work_id: work:yu-li-dai-2015
+    target_work_id: work:kasen-bildsten-2010
+    reason: Compare a rapid transient model with the magnetar-powered supernova light-curve picture and its diffusion timescale.
+  - source_work_id: work:kasen-bildsten-2010
+    target_work_id: work:transfit-mag-2026
+    reason: Finish with a time-dependent framework that couples magnetar injection, shock heating, and radiative diffusion.
+curation_provenance:
+  actor_id: actor:agent-curator
+  recorded_at: 2026-09-07T04:00:00Z
+review_state: unreviewed
+visibility_approvals: []

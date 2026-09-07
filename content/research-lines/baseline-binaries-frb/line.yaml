@@ -1,0 +1,81 @@
+line_id: research-line:baseline-binaries-frb
+reader_state: draft
+title: Compact Binaries, Pulsars, and Fast Radio Bursts
+scientific_question: How do binary geometry, pulsar winds, magnetized companions, and compact remnants produce or modulate multi-band transient signals?
+physical_structure:
+  - progenitor_system
+  - central_object
+  - environment
+  - energy_transfer
+  - emission_process
+  - observable
+memberships:
+  - id: membership:baseline-binaries-frb-dubus-2013
+    work_id: work:dubus-2013
+    reading_roles: [review]
+    editorial_anchor: true
+    review_state: unreviewed
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-07T04:00:00Z
+  - id: membership:baseline-binaries-frb-chen-psr-b1259-2019
+    work_id: work:chen-psr-b1259-2019
+    reading_roles: [method]
+    editorial_anchor: false
+    review_state: unreviewed
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-07T04:00:00Z
+  - id: membership:baseline-binaries-frb-chen-takata-binaries-2022
+    work_id: work:chen-takata-binaries-2022
+    reading_roles: [method]
+    editorial_anchor: false
+    review_state: unreviewed
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-07T04:00:00Z
+  - id: membership:baseline-binaries-frb-zhang-frb-2023
+    work_id: work:zhang-frb-2023
+    reading_roles: [review, foundation]
+    editorial_anchor: false
+    review_state: unreviewed
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-07T04:00:00Z
+  - id: membership:baseline-binaries-frb-metzger-2017
+    work_id: work:metzger-2017
+    reading_roles: [group_lineage]
+    editorial_anchor: false
+    review_state: unreviewed
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-07T04:00:00Z
+  - id: membership:baseline-binaries-frb-du-frb-2026
+    work_id: work:du-frb-2026
+    reading_roles: [frontier]
+    editorial_anchor: false
+    review_state: unreviewed
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-07T04:00:00Z
+  - id: membership:baseline-binaries-frb-xie-sgr-j1935-2025
+    work_id: work:xie-sgr-j1935-2025
+    reading_roles: [frontier]
+    editorial_anchor: false
+    review_state: unreviewed
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-07T04:00:00Z
+  - id: membership:baseline-binaries-frb-du-psr-j1932-2026
+    work_id: work:du-psr-j1932-2026
+    reading_roles: [frontier]
+    editorial_anchor: false
+    review_state: unreviewed
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-07T04:00:00Z
+curation_provenance:
+  actor_id: actor:agent-curator
+  recorded_at: 2026-09-07T04:00:00Z
+review_state: unreviewed
+visibility_approvals: []

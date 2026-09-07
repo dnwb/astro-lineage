@@ -47,7 +47,7 @@ test.before(buildReader);
 test("Papers index lets readers choose every projected Paper with scientific context", async () => {
   const html = await readFile(join(projectRoot, "dist", "papers", "index.html"), "utf8");
 
-  assert.match(html, /5 篇精选论文/u);
+  assert.match(html, /35 篇基准文献/u);
   for (const expected of [
     "Type I supernovae. I - Analytic solutions for the early part of the light curve",
     "The Propagation of Relativistic Jets in External Media",
@@ -78,7 +78,7 @@ test("Papers index lets readers choose every projected Paper with scientific con
       `missing generated destination for ${href}`,
     );
   }
-  assert.equal((html.match(/>阅读论文<\/a>/gu) ?? []).length, 5);
+  assert.equal((html.match(/>阅读论文<\/a>/gu) ?? []).length, 35);
 });
 
 test("the reader build preserves canonical and per-Work visibility digests", async () => {

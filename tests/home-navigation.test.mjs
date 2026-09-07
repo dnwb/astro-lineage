@@ -8,21 +8,68 @@ import { parse, stringify } from "yaml";
 import { test } from "node:test";
 
 const projectRoot = fileURLToPath(new URL("..", import.meta.url));
+const paperSlugs = [
+  "arnett-1982",
+  "blandford-mckee-1976",
+  "bromberg-2011",
+  "chen-psr-b1259-2019",
+  "chen-takata-binaries-2022",
+  "chevalier-1982",
+  "du-frb-2026",
+  "du-psr-j1932-2026",
+  "dubus-2013",
+  "kasen-bildsten-2010",
+  "khatami-kasen-2024",
+  "liu-csm-formalism-2020",
+  "liu-fbot-2022",
+  "liu-fbot-radio-2026",
+  "liu-magnetar-2017",
+  "liu-multiple-ejecta-csm-2018",
+  "long-yu-2026",
+  "metzger-2017",
+  "ni-dense-csm-2026",
+  "sari-piran-narayan-1998",
+  "tan-yu-2020",
+  "transfit-2025",
+  "transfit-csm-2025",
+  "transfit-mag-2026",
+  "weaver-1977",
+  "wu-magnetar-csm-2026",
+  "xie-sgr-j1935-2025",
+  "yu-gw-jet-2020",
+  "yu-li-dai-2015",
+  "yu-zhang-gao-2013",
+  "zhang-agn-jet-2024",
+  "zhang-frb-2023",
+  "zhang-grb-radio-2022",
+  "zhu-2021",
+  "zhu-bns-agn-2021",
+];
+const researchLineSlugs = [
+  "baseline-binaries-frb",
+  "baseline-central-engine-transients",
+  "baseline-csm-radiative-transients",
+  "baseline-jet-multimessenger",
+  "central-engines",
+  "dense-environment-multimessenger",
+  "explosive-transients-csm",
+];
+const learningPathSlugs = [
+  "baseline-binary-multimessenger",
+  "baseline-csm-light-curves",
+  "baseline-engine-powered-transients",
+  "baseline-jet-foundations",
+  "embedded-jet-dynamics",
+];
 const expectedRoutes = [
   "/",
   "/arxiv-daily/",
   "/papers/",
-  "/papers/arnett-1982/",
-  "/papers/bromberg-2011/",
-  "/papers/long-yu-2026/",
-  "/papers/transfit-2025/",
-  "/papers/zhu-2021/",
+  ...paperSlugs.map((slug) => `/papers/${slug}/`),
   "/research-lines/",
-  "/research-lines/central-engines/",
-  "/research-lines/dense-environment-multimessenger/",
-  "/research-lines/explosive-transients-csm/",
+  ...researchLineSlugs.map((slug) => `/research-lines/${slug}/`),
   "/learning-paths/",
-  "/learning-paths/embedded-jet-dynamics/",
+  ...learningPathSlugs.map((slug) => `/learning-paths/${slug}/`),
 ];
 const edgeReasons = [
   "Long and Yu preserve Zhu et al.'s embedded-GRB reverse-shock and hadronic-neutrino scaffold",
@@ -91,7 +138,7 @@ test("Home provides the four reader entry areas, projected content, and complete
   assertInOrder(home, [
     "<h1 id=\"home-title\">AstroLineage</h1>",
     "从这里开始",
-    "精选论文",
+    "基准论文",
     "科学关联",
   ], "首页区域");
   assert.match(home, /理解高能瞬变天体物理中的思想如何演化。/u);
@@ -111,7 +158,7 @@ test("Home provides the four reader entry areas, projected content, and complete
   ]) {
     assert.match(home, new RegExp(title), `Home missing paper ${title}`);
   }
-  assert.match(home, /5 篇可见论文/u);
+  assert.match(home, /35 篇基准论文/u);
   const homeText = home.replaceAll("&#39;", "'").replaceAll("&amp;", "&");
   for (const reason of edgeReasons) {
     assert.equal((homeText.match(new RegExp(reason, "gu")) ?? []).length, 1, reason);
@@ -128,11 +175,14 @@ test("Home provides the four reader entry areas, projected content, and complete
     "/research-lines/",
     "/learning-paths/",
     "/learning-paths/embedded-jet-dynamics/",
+    "/learning-paths/baseline-jet-foundations/",
     "/papers/arnett-1982/",
+    "/papers/blandford-mckee-1976/",
     "/papers/bromberg-2011/",
     "/papers/long-yu-2026/",
     "/papers/transfit-2025/",
     "/papers/zhu-2021/",
+    "/research-lines/baseline-jet-multimessenger/",
   ];
   for (const route of homeLinks) {
     assert(internalLinks.has(route), `Home missing route ${route}`);

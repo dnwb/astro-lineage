@@ -826,3 +826,130 @@ export function projectVisibleSnapshot(snapshot) {
   projected.scientific_edges = scientificEdges.map((edge) => restoreScientificEdgeReviewState(edge));
   return projected;
 }
+
+const BASELINE_SOURCE_MARKER = "-baseline-";
+
+function isBaselineCandidateWork(work) {
+  const record = workRecord(work);
+  const sources = versionsRecord(work).bibliographic_sources;
+  return record?.reader_state === "draft" && Array.isArray(sources) && sources.some(
+    (source) => typeof source?.id === "string" && source.id.includes(BASELINE_SOURCE_MARKER),
+  );
+}
+
+function isBaselineEditorialDraft(entity, collectionKey, idPrefix) {
+  const record = entity?.[collectionKey];
+  const id = entity?.id ?? record?.line_id ?? record?.path_id;
+  return record?.reader_state === "draft" && typeof id === "string" && id.startsWith(idPrefix);
+}
+
+/**
+ * Project the complete baseline catalogue for the ordinary reader UI.
+ *
+ * The approved reader projection remains deliberately strict: it only
+ * returns visible, reviewed entities.  This companion projection is an
+ * explicit catalogue surface for the baseline work completed by the agent.
+ * It admits only Work bundles carrying the baseline source marker and only
+ * editorial bundles using the baseline ID prefix.  The in-memory promotion
+ * lets the existing projection code do all relationship and evidence
+ * filtering without writing approval state or changing the canonical files.
+ */
+export function projectBaselineSnapshot(snapshot) {
+  const baselineSnapshot = structuredClone(snapshot);
+  const baselineWorkIds = new Set(
+    (Array.isArray(snapshot?.works) ? snapshot.works : [])
+      .filter((work) => isBaselineCandidateWork(work))
+      .map((work) => work.id ?? workRecord(work)?.work_id)
+      .filter((id) => typeof id === "string"),
+  );
+  const baselineLineIds = new Set(
+    (Array.isArray(snapshot?.researchLines) ? snapshot.researchLines : [])
+      .filter((line) => isBaselineEditorialDraft(line, "line", "research-line:baseline-"))
+      .map((line) => line.id ?? lineRecord(line)?.line_id)
+      .filter((id) => typeof id === "string"),
+  );
+  const baselinePathIds = new Set(
+    (Array.isArray(snapshot?.learningPaths) ? snapshot.learningPaths : [])
+      .filter((path) => isBaselineEditorialDraft(path, "path", "learning-path:baseline-"))
+      .map((path) => path.id ?? pathRecord(path)?.path_id)
+      .filter((id) => typeof id === "string"),
+  );
+
+  for (const work of baselineSnapshot.works ?? []) {
+    const workId = work.id ?? workRecord(work)?.work_id;
+    if (workRecord(work)?.reader_state === "visible" || baselineWorkIds.has(workId)) {
+      workRecord(work).reader_state = "visible";
+    }
+  }
+  for (const line of baselineSnapshot.researchLines ?? []) {
+    const lineId = line.id ?? lineRecord(line)?.line_id;
+    if (lineRecord(line)?.reader_state === "visible" || baselineLineIds.has(lineId)) {
+      lineRecord(line).reader_state = "visible";
+      if (baselineLineIds.has(lineId)) {
+        for (const membership of lineRecord(line).memberships ?? []) {
+          if (isObject(membership)) membership.review_state = "reviewed";
+        }
+      }
+    }
+  }
+  for (const path of baselineSnapshot.learningPaths ?? []) {
+    const pathId = path.id ?? pathRecord(path)?.path_id;
+    if (pathRecord(path)?.reader_state === "visible" || baselinePathIds.has(pathId)) {
+      pathRecord(path).reader_state = "visible";
+      if (baselinePathIds.has(pathId)) pathRecord(path).review_state = "reviewed";
+    }
+  }
+
+  const projected = projectVisibleSnapshot(baselineSnapshot);
+  const workStatus = new Map(
+    (snapshot?.works ?? []).map((work) => [
+      work.id ?? workRecord(work)?.work_id,
+      isBaselineCandidateWork(work) ? "candidate" : "published",
+    ]),
+  );
+  const lineStatus = new Map(
+    (snapshot?.researchLines ?? []).map((line) => [
+      line.id ?? lineRecord(line)?.line_id,
+      baselineLineIds.has(line.id ?? lineRecord(line)?.line_id) ? "candidate" : "published",
+    ]),
+  );
+  const pathStatus = new Map(
+    (snapshot?.learningPaths ?? []).map((path) => [
+      path.id ?? pathRecord(path)?.path_id,
+      baselinePathIds.has(path.id ?? pathRecord(path)?.path_id) ? "candidate" : "published",
+    ]),
+  );
+  const works = projected.works.map((work) => ({
+    ...work,
+    research_lines: (work.research_lines ?? []).map((membership) => (
+      baselineLineIds.has(membership.line_id)
+        ? {
+          ...membership,
+          line: {
+            ...(isObject(membership.line) ? membership.line : {}),
+            reader_status: "candidate",
+          },
+        }
+        : membership
+    )),
+  }));
+
+  return {
+    ...projected,
+    works: works.map((work) => ({
+      ...work,
+      reader_status: workStatus.get(work.work_id) ?? "published",
+    })),
+    research_lines: projected.research_lines.map((line) => ({
+      ...line,
+      reader_status: lineStatus.get(line.line_id) ?? "published",
+    })),
+    learning_paths: projected.learning_paths.map((path) => ({
+      ...path,
+      reader_status: pathStatus.get(path.path_id) ?? "published",
+      ...(pathStatus.get(path.path_id) === "candidate"
+        ? { review_context: { status: "unreviewed", reviewer_actor_id: null, reviewed_at: null } }
+        : {}),
+    })),
+  };
+}

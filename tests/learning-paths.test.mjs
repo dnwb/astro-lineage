@@ -413,7 +413,7 @@ test("the static Learning Paths index and detail form a complete slug-based read
   const indexHtml = await readFile(indexPath, "utf8");
   const detailHtml = await readFile(detailPath, "utf8");
   const detailText = htmlText(detailHtml);
-  assert.match(indexHtml, /1 条已审核学习路径/u);
+  assert.match(indexHtml, /5 条学习路径：1 条已审核/u);
   assert.match(indexHtml, /href="\/learning-paths\/embedded-jet-dynamics\/"/u);
   assert.match(indexHtml, /From Jet Propagation to Dynamic Multi-messenger Yields/u);
   assert.match(detailText, /This path moves from a compact account of relativistic jet propagation/u);

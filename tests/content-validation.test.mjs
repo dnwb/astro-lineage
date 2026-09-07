@@ -56,6 +56,10 @@ test("the production snapshot keeps the frozen canonical layout across canonical
   assert.deepEqual(
     snapshot.researchLines.map(({ id }) => id),
     [
+      "research-line:baseline-binaries-frb",
+      "research-line:baseline-central-engine-transients",
+      "research-line:baseline-csm-radiative-transients",
+      "research-line:baseline-jet-multimessenger",
       "research-line:central-engines",
       "research-line:dense-environment-multimessenger",
       "research-line:explosive-transients-csm",
@@ -67,11 +71,17 @@ test("the production snapshot keeps the frozen canonical layout across canonical
       reader_state: path.reader_state,
       review_state: path.review_state,
     })),
-    [{
-      id: "learning-path:embedded-jet-dynamics",
-      reader_state: "visible",
-      review_state: "reviewed",
-    }],
+    [
+      "learning-path:baseline-binary-multimessenger",
+      "learning-path:baseline-csm-light-curves",
+      "learning-path:baseline-engine-powered-transients",
+      "learning-path:baseline-jet-foundations",
+      "learning-path:embedded-jet-dynamics",
+    ].map((id) => ({
+      id,
+      reader_state: id === "learning-path:embedded-jet-dynamics" ? "visible" : "draft",
+      review_state: id === "learning-path:embedded-jet-dynamics" ? "reviewed" : "unreviewed",
+    })),
   );
   assert.deepEqual(snapshot.axes.map((axis) => axis.id), AXIS_IDS);
   assert.deepEqual(

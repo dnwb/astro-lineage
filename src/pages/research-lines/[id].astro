@@ -1,9 +1,9 @@
 ---
 import ReadingProse from "../../components/ReadingProse.astro";
 import { loadCanonicalContent } from "../../../scripts/content-loader.mjs";
+import { parseReadingMarkdown } from "../../../scripts/reader-markdown.mjs";
 import {
-  projectResearchLineForReader,
-  projectVisibleSnapshot,
+  projectBaselineSnapshot,
 } from "../../../scripts/reader-projection.mjs";
 import { workReaderPath } from "../../lib/reader-routes";
 import {
@@ -22,26 +22,28 @@ type ResearchLineBundle = { id: string; slug: string; line: AnyRecord };
 
 export async function getStaticPaths() {
   const snapshot = await loadCanonicalContent(new URL("../../../content/", import.meta.url));
-  const projected = projectVisibleSnapshot(snapshot) as { research_lines?: AnyRecord[] };
+  const projected = projectBaselineSnapshot(snapshot) as { research_lines?: AnyRecord[] };
   const projectedLineIds = new Set(
     (projected.research_lines ?? [])
       .map((line) => line.line_id)
       .filter((lineId): lineId is string => typeof lineId === "string"),
   );
-  // Projection supplies the publication boundary; the canonical bundle is
-  // consulted only to resolve an approved identity to its filesystem slug.
-  const visibleLines = (snapshot.researchLines as ResearchLineBundle[])
+  // The baseline projection supplies the catalogue boundary; the canonical
+  // bundle is consulted only to resolve an identity to its filesystem slug.
+  const readerLines = (snapshot.researchLines as ResearchLineBundle[])
     .filter((line) => projectedLineIds.has(line.id));
-  return visibleLines.map((line) => ({ params: { id: line.slug }, props: { lineId: line.id } }));
+  return readerLines.map((line) => ({ params: { id: line.slug }, props: { lineId: line.id } }));
 }
 
 const { lineId } = Astro.props;
 const site = loadSiteConfig();
 const snapshot = await loadCanonicalContent(new URL("../../../content/", import.meta.url));
-const researchLine = projectResearchLineForReader(snapshot, lineId) as AnyRecord | null;
+const baselineReader = projectBaselineSnapshot(snapshot) as { research_lines?: AnyRecord[]; works?: AnyRecord[] };
+const researchLine = baselineReader.research_lines?.find((line) => line.line_id === lineId) ?? null;
 if (!researchLine) {
-  throw new Error(`Visible Research Line not found: ${lineId}`);
+  throw new Error(`Baseline Research Line not found: ${lineId}`);
 }
+const isCandidate = researchLine.reader_status === "candidate";
 
 const memberships = (researchLine.memberships ?? []) as AnyRecord[];
 
@@ -50,6 +52,17 @@ function workAuthors(membership: AnyRecord) {
     .map((author: AnyRecord) => author.display_name)
     .filter(Boolean)
     .join(", ");
+}
+
+function workTitle(membership: AnyRecord) {
+  const fallback = membership.work?.title ?? membership.work_id;
+  const localized = localizedWorkTitle(membership.work_id, fallback);
+  if (localized !== fallback) return localized;
+  const work = baselineReader.works?.find((candidate) => candidate.work_id === membership.work_id);
+  return work?.reading
+    ? parseReadingMarkdown(String(work.reading), { skipTitle: false })
+      .find((block) => block.kind === "heading" && block.depth === 1)?.text ?? fallback
+    : fallback;
 }
 
 function workYear(membership: AnyRecord) {
@@ -71,6 +84,7 @@ function workYear(membership: AnyRecord) {
       <SiteNav />
       <p class="eyebrow"><a href="/research-lines/">研究方向</a> · 研究方向详情</p>
       <header class="reader-header">
+        {isCandidate ? <p class="reader-note"><span class="tag">候选基准方向</span> 本方向由完整基准文献整理而来，尚未获得人工审核发布。</p> : null}
         <h1>{localizedLineTitle(lineId, researchLine.title)}</h1>
         <p class="original-title" lang="en">英文标题：{researchLine.title}</p>
         <p class="section-kicker">科学问题</p>
@@ -94,7 +108,7 @@ function workYear(membership: AnyRecord) {
                 <article>
                   <h3>
                     <a class="paper-title" href={workReaderPath(snapshot, membership.work_id)}>
-                      {localizedWorkTitle(membership.work_id, membership.work?.title ?? membership.work_id)}
+                      {workTitle(membership)}
                     </a>
                   </h3>
                   <p class="original-title" lang="en">英文原题：{membership.work?.title ?? membership.work_id}</p>

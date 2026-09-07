@@ -30,14 +30,17 @@ test("reader pages present Chinese interface copy across every route", { timeout
     "/papers/arnett-1982/",
     "/papers/bromberg-2011/",
     "/papers/long-yu-2026/",
+    "/papers/blandford-mckee-1976/",
     "/papers/transfit-2025/",
     "/papers/zhu-2021/",
     "/research-lines/",
     "/research-lines/central-engines/",
     "/research-lines/dense-environment-multimessenger/",
     "/research-lines/explosive-transients-csm/",
+    "/research-lines/baseline-csm-radiative-transients/",
     "/learning-paths/",
     "/learning-paths/embedded-jet-dynamics/",
+    "/learning-paths/baseline-engine-powered-transients/",
   ];
   const pages = new Map(
     await Promise.all(routes.map(async (route) => [route, await readFile(routeFile(route), "utf8")])),
@@ -50,9 +53,9 @@ test("reader pages present Chinese interface copy across every route", { timeout
 
   assert.match(pages.get("/"), /理解高能瞬变天体物理中的思想如何演化/u);
   assert.match(pages.get("/"), /从这里开始/u);
-  assert.match(pages.get("/"), /精选论文/u);
+  assert.match(pages.get("/"), /基准论文/u);
   assert.match(pages.get("/"), /科学关联/u);
-  assert.match(pages.get("/papers/"), /篇精选论文/u);
+  assert.match(pages.get("/papers/"), /篇基准文献/u);
   assert.match(pages.get("/papers/arnett-1982/"), /为什么这项工作重要/u);
   assert.match(pages.get("/papers/arnett-1982/"), /科学要点/u);
   assert.match(pages.get("/papers/arnett-1982/"), /溯源与科学证据/u);

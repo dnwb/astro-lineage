@@ -1,6 +1,6 @@
 ---
 import { loadCanonicalContent } from "../../../scripts/content-loader.mjs";
-import { projectVisibleSnapshot } from "../../../scripts/reader-projection.mjs";
+import { projectBaselineSnapshot } from "../../../scripts/reader-projection.mjs";
 import { researchLineReaderPath } from "../../lib/reader-routes";
 import { localizedLineQuestion, localizedLineTitle } from "../../lib/reader-localization";
 import { loadSiteConfig } from "../../lib/site-config";
@@ -11,8 +11,10 @@ type AnyRecord = Record<string, any>;
 
 const site = loadSiteConfig();
 const snapshot = await loadCanonicalContent(new URL("../../../content/", import.meta.url));
-const reader = projectVisibleSnapshot(snapshot) as Record<string, any>;
-const visibleLines = (reader.research_lines ?? []) as AnyRecord[];
+const reader = projectBaselineSnapshot(snapshot) as Record<string, any>;
+const researchLines = (reader.research_lines ?? []) as AnyRecord[];
+const publishedCount = researchLines.filter((line) => line.reader_status === "published").length;
+const candidateCount = researchLines.filter((line) => line.reader_status === "candidate").length;
 ---
 
 <!doctype html>
@@ -31,13 +33,14 @@ const visibleLines = (reader.research_lines ?? []) as AnyRecord[];
       <SiteNav />
       <p class="eyebrow"><a href="/">{site.title}</a> · 研究方向索引</p>
       <h1>研究方向</h1>
-      <p class="layer-intro">{visibleLines.length} 个经过审核的研究方向</p>
+      <p class="layer-intro">{researchLines.length} 个研究方向：{publishedCount} 个已审核，{candidateCount} 个基准研究方向</p>
+      <p class="reader-note">基准研究方向由本轮 35 篇文献的主题整理而来，当前作为候选规划展示，等待组内审核后再进入正式 reader。</p>
       {
-        visibleLines.length === 0 ? (
-          <p class="empty-state">精选阅读地图中暂时没有可见研究方向。</p>
+        researchLines.length === 0 ? (
+          <p class="empty-state">文献库中暂时没有可显示研究方向。</p>
         ) : (
           <ol class="paper-index">
-            {visibleLines.map((line) => (
+            {researchLines.map((line) => (
               <li class="paper-index-item">
                 <article>
                   <h2>
@@ -46,6 +49,7 @@ const visibleLines = (reader.research_lines ?? []) as AnyRecord[];
                     </a>
                   </h2>
                   <p class="original-title" lang="en">英文标题：{line.title ?? line.line_id}</p>
+                  <p><span class="tag">{line.reader_status === "candidate" ? "候选基准方向" : "已审核方向"}</span></p>
                   <p>{localizedLineQuestion(line.line_id, line.scientific_question)}</p>
                   <p class="language-english" lang="en">English question: {line.scientific_question}</p>
                   <p>

@@ -1,0 +1,31 @@
+path_id: learning-path:baseline-binary-multimessenger
+reader_state: draft
+title: From Binary Shocks to Fast Radio Burst Environments
+entries:
+  - work_id: work:dubus-2013
+  - work_id: work:chen-psr-b1259-2019
+  - work_id: work:zhang-frb-2023
+  - work_id: work:metzger-2017
+  - work_id: work:du-frb-2026
+  - work_id: work:xie-sgr-j1935-2025
+transitions:
+  - source_work_id: work:dubus-2013
+    target_work_id: work:chen-psr-b1259-2019
+    reason: Use the binary review as a map, then inspect a concrete pulsar-wind shock and multi-wavelength calculation.
+  - source_work_id: work:chen-psr-b1259-2019
+    target_work_id: work:zhang-frb-2023
+    reason: Move from a resolved binary shock to the broader plasma and radiation constraints of fast radio bursts.
+  - source_work_id: work:zhang-frb-2023
+    target_work_id: work:metzger-2017
+    reason: Read a specific young-magnetar scenario after the FRB phenomenology and open physical questions.
+  - source_work_id: work:metzger-2017
+    target_work_id: work:du-frb-2026
+    reason: Follow the young-magnetar picture into a model for long-timescale rotation-measure variation in a binary environment.
+  - source_work_id: work:du-frb-2026
+    target_work_id: work:xie-sgr-j1935-2025
+    reason: Finish by comparing environmental inference with an eclipsed magnetar X-ray-burst measurement.
+curation_provenance:
+  actor_id: actor:agent-curator
+  recorded_at: 2026-09-07T04:00:00Z
+review_state: unreviewed
+visibility_approvals: []

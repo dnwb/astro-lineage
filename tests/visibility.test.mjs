@@ -56,6 +56,10 @@ function diagnosticFor(result, code, context = {}) {
   return diagnostic;
 }
 
+function researchLineInventory(result) {
+  return result.research_line_inventory.find(({ line_id }) => line_id === lineId);
+}
+
 test("visibility publishes Arnett and one Research Line atomically with independent approvals", async () => {
   const snapshot = await loadCanonicalContent(productionContent);
   const result = await validateCanonicalContent(productionContent);
@@ -85,7 +89,7 @@ test("visibility publishes Arnett and one Research Line atomically with independ
   }
   assert.notEqual(workApproval.visibility_digest, lineApproval.visibility_digest);
   assert.equal(result.work_inventory[0].visibility_status, "approved");
-  assert.equal(result.research_line_inventory[0].visibility_status, "approved");
+  assert.equal(researchLineInventory(result).visibility_status, "approved");
 });
 
 test("Research Line ownership and Reading Role contracts are structural", async () => {
@@ -118,7 +122,7 @@ test("Research Line ownership and Reading Role contracts are structural", async 
   assert.equal(result.passes.structural.status, "partial");
   assert.equal(result.passes.semantic.diagnostic_count, 0);
   assert.equal(result.work_inventory[0].visibility_status, "skipped");
-  assert.equal(result.research_line_inventory[0].visibility_status, "skipped");
+  assert.equal(researchLineInventory(result).visibility_status, "skipped");
   assert.equal(codes(result).has("MEMBERSHIP_REVIEW_BINDING_STALE"), false);
   assert.equal(codes(result).has("VISIBILITY_APPROVAL_STALE"), false);
 });
@@ -197,7 +201,7 @@ test("malformed visibility approvals quarantine the entity without derived diagn
     assert.deepEqual([...codes(result)], [code], name);
     assert.equal(result.passes.semantic.status, semanticStatus, name);
     assert.equal(result.passes.semantic.diagnostic_count, semanticDiagnosticCount, name);
-    assert.equal(result.research_line_inventory[0].visibility_status, "skipped", name);
+    assert.equal(researchLineInventory(result).visibility_status, "skipped", name);
   }
 });
 

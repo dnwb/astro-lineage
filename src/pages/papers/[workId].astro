@@ -3,11 +3,12 @@ import ReadingProse from "../../components/ReadingProse.astro";
 import { loadCanonicalContent } from "../../../scripts/content-loader.mjs";
 import {
   parseReadingDocument,
+  parseReadingMarkdown,
   requiredReadingSection,
   whyThisWorkMatters,
 } from "../../../scripts/reader-markdown.mjs";
 import {
-  projectVisibleSnapshot,
+  projectBaselineSnapshot,
   projectWorkForReader,
 } from "../../../scripts/reader-projection.mjs";
 import { researchLineReaderPath, workReaderPath } from "../../lib/reader-routes";
@@ -30,7 +31,7 @@ type WorkBundle = { id: string; slug: string; files: AnyRecord };
 
 export async function getStaticPaths() {
   const snapshot = await loadCanonicalContent(new URL("../../../content/", import.meta.url));
-  const projected = projectVisibleSnapshot(snapshot) as { works?: AnyRecord[] };
+  const projected = projectBaselineSnapshot(snapshot) as { works?: AnyRecord[] };
   const projectedWorkIds = new Set(
     (projected.works ?? [])
       .map((work) => work.work_id)
@@ -39,19 +40,23 @@ export async function getStaticPaths() {
   // Projection supplies the publication boundary; the canonical bundle is
   // consulted only to resolve the approved Work identity to its filesystem
   // slug for Astro's static route.
-  const visibleWorks = (snapshot.works as WorkBundle[]).filter((work) => projectedWorkIds.has(work.id));
-  return visibleWorks.map((work) => ({ params: { workId: work.slug }, props: { workId: work.id } }));
+  const readerWorks = (snapshot.works as WorkBundle[]).filter((work) => projectedWorkIds.has(work.id));
+  return readerWorks.map((work) => ({ params: { workId: work.slug }, props: { workId: work.id } }));
 }
 
 const { workId } = Astro.props;
 const site = loadSiteConfig();
 const snapshot = await loadCanonicalContent(new URL("../../../content/", import.meta.url));
-const work = projectWorkForReader(snapshot, workId) as AnyRecord | null;
-if (!work) throw new Error(`Visible Work not found: ${workId}`);
+const baselineReader = projectBaselineSnapshot(snapshot) as { works?: AnyRecord[] };
+const workCandidate = baselineReader.works?.find((candidate) => candidate.work_id === workId);
+if (!workCandidate) throw new Error(`Baseline Work not found: ${workId}`);
+const work = workCandidate;
+const isCandidate = work.reader_status === "candidate";
 
 const versions = (work.versions ?? []) as AnyRecord[];
-const preferredVersion = versions.find((version) => version.id === work.preferred_version_id);
-if (!preferredVersion) throw new Error(`Missing preferred Version for ${workId}.`);
+const preferredVersionCandidate = versions.find((version) => version.id === work.preferred_version_id);
+if (!preferredVersionCandidate) throw new Error(`Missing preferred Version for ${workId}.`);
+const preferredVersion = preferredVersionCandidate;
 if (typeof preferredVersion.release_date?.value !== "string" || !/^\d{4}/u.test(preferredVersion.release_date.value)) {
   throw new Error(`Missing preferred Version release year for ${workId}.`);
 }
@@ -64,6 +69,13 @@ const readingSections = {
   assumptions: requiredReadingSection(reading, "Assumptions", workId),
   delta: requiredReadingSection(reading, "Scientific delta", workId),
 };
+
+function title() {
+  const localized = localizedWorkTitle(workId, preferredVersion.title);
+  if (localized !== preferredVersion.title) return localized;
+  return parseReadingMarkdown(String(work.reading ?? ""), { skipTitle: false })
+    .find((block) => block.kind === "heading" && block.depth === 1)?.text ?? preferredVersion.title;
+}
 
 const publicationRelations = (work.publication_relations ?? []) as AnyRecord[];
 const bibliographicSources = (work.bibliographic_sources ?? []) as AnyRecord[];
@@ -166,7 +178,7 @@ function connectedPaper(edge: AnyRecord) {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={`Scientific reading view for ${preferredVersion.title}.`} />
-    <title>{localizedWorkTitle(workId, preferredVersion.title)} · {site.title}</title>
+    <title>{title()} · {site.title}</title>
   </head>
   <body>
     <main class="site-shell reader-page">
@@ -175,9 +187,12 @@ function connectedPaper(edge: AnyRecord) {
 
       <header class="reader-header">
         <p class="section-kicker">书目信息</p>
-        <h1>{localizedWorkTitle(workId, preferredVersion.title)}</h1>
+        <h1>{title()}</h1>
         <p class="original-title" lang="en">英文原题：{preferredVersion.title}</p>
         <p class="paper-meta">{authors(preferredVersion)} · {preferredVersion.release_date.value.slice(0, 4)}</p>
+        {isCandidate ? (
+          <p class="reader-note"><span class="tag">候选基准</span> 本条目已完成来源核验、双语导读和公式整理，尚未获得人工审核发布。</p>
+        ) : null}
         {preferredVersion.journal?.name ? (
           <p>{preferredVersion.journal.name}{preferredVersion.journal.volume ? ` ${preferredVersion.journal.volume}` : ""}{preferredVersion.journal.first_page ? `, ${preferredVersion.journal.first_page}` : ""}{preferredVersion.doi ? ` · DOI ${preferredVersion.doi}` : ""}</p>
         ) : null}
@@ -245,6 +260,7 @@ function connectedPaper(edge: AnyRecord) {
             {lineMemberships.map((membership) => (
               <li>
                 <a href={researchLineReaderPath(snapshot, membership.line_id)}>{localizedLineTitle(membership.line_id, membership.line?.title ?? membership.line_id)}</a>
+                {membership.line?.reader_status === "candidate" ? <span class="tag">候选基准方向</span> : null}
                 <span class="original-title" lang="en">（English: {membership.line?.title ?? membership.line_id}）</span>
                 {membership.editorial_anchor ? " — 编辑锚点" : ""}
                 {membership.reading_roles?.length ? `（${membership.reading_roles.map(localizedRole).join("、")}）` : ""}

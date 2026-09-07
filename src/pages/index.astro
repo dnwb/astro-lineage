@@ -2,14 +2,16 @@
 import ProductBoundary from "../copy/product-boundary.md";
 import { firstCompleteReadingItem, parseReadingDocument, whyThisWorkMatters } from "../../scripts/reader-markdown.mjs";
 import { loadCanonicalContent } from "../../scripts/content-loader.mjs";
-import { projectVisibleSnapshot } from "../../scripts/reader-projection.mjs";
+import { projectBaselineSnapshot, projectVisibleSnapshot } from "../../scripts/reader-projection.mjs";
 import SiteNav from "../components/SiteNav.astro";
-import { learningPathReaderPath, workReaderPath } from "../lib/reader-routes";
+import { learningPathReaderPath, researchLineReaderPath, workReaderPath } from "../lib/reader-routes";
 import {
   localizedEdgeReason,
+  localizedLineTitle,
   localizedBlocks,
   localizedPathTitle,
   localizedWorkTitle,
+  selectBilingualBlocks,
 } from "../lib/reader-localization";
 import { loadSiteConfig } from "../lib/site-config";
 import "../styles/global.css";
@@ -18,11 +20,14 @@ type AnyRecord = Record<string, any>;
 
 const site = loadSiteConfig();
 const snapshot = await loadCanonicalContent("content");
-const reader = projectVisibleSnapshot(snapshot) as Record<string, any>;
-const visibleWorks = (reader.works ?? []) as AnyRecord[];
-const learningPaths = (reader.learning_paths ?? []) as AnyRecord[];
-const scientificEdges = (reader.scientific_edges ?? []) as AnyRecord[];
-const workById = new Map(visibleWorks.map((work) => [work.work_id, work]));
+const visibleReader = projectVisibleSnapshot(snapshot) as Record<string, any>;
+const baselineReader = projectBaselineSnapshot(snapshot) as Record<string, any>;
+const learningPaths = (visibleReader.learning_paths ?? []) as AnyRecord[];
+const scientificEdges = (visibleReader.scientific_edges ?? []) as AnyRecord[];
+const baselineWorks = (baselineReader.works ?? []) as AnyRecord[];
+const baselineLines = (baselineReader.research_lines ?? []) as AnyRecord[];
+const baselinePaths = (baselineReader.learning_paths ?? []) as AnyRecord[];
+const workById = new Map(baselineWorks.map((work) => [work.work_id, work]));
 const startPath = learningPaths[0] ?? null;
 
 const relationLabels: Record<string, string> = {
@@ -60,14 +65,20 @@ function releaseYear(work: AnyRecord) {
 function whyRead(work: AnyRecord) {
   const document = parseReadingDocument(String(work.reading ?? ""));
   return firstCompleteReadingItem(
-    localizedBlocks(work.work_id, "why", whyThisWorkMatters(document, work.work_id)),
+    selectBilingualBlocks(
+      localizedBlocks(work.work_id, "why", whyThisWorkMatters(document, work.work_id)),
+      "primary",
+    ),
     work.work_id,
   );
 }
 
 function originalWhyRead(work: AnyRecord) {
   const document = parseReadingDocument(String(work.reading ?? ""));
-  return firstCompleteReadingItem(whyThisWorkMatters(document, work.work_id), work.work_id);
+  return firstCompleteReadingItem(
+    selectBilingualBlocks(whyThisWorkMatters(document, work.work_id), "english"),
+    work.work_id,
+  );
 }
 
 function projectedWork(workId: string) {
@@ -134,19 +145,20 @@ function edgeLabel(edge: AnyRecord) {
       </section>
 
       <div class="home-grid">
-        <section class="panel home-section" aria-labelledby="curated-papers-heading">
-          <p class="section-kicker">{visibleWorks.length} 篇可见论文</p>
-          <h2 id="curated-papers-heading">精选论文</h2>
-          {visibleWorks.length === 0 ? (
-            <p class="empty-state">精选阅读地图中暂时没有可见论文。</p>
+        <section class="panel home-section" aria-labelledby="baseline-papers-heading">
+          <p class="section-kicker">{baselineWorks.length} 篇基准论文</p>
+          <h2 id="baseline-papers-heading">基准论文</h2>
+          {baselineWorks.length === 0 ? (
+            <p class="empty-state">基准文献库中暂时没有可显示论文。</p>
           ) : (
             <ol class="paper-index">
-              {visibleWorks.map((work) => (
+              {baselineWorks.map((work) => (
                 <li class="paper-index-item">
                   <article>
                     <h3><a class="paper-title" href={workReaderPath(snapshot, work.work_id)}>{localizedWorkTitle(work.work_id, preferred(work).title)}</a></h3>
                     <p class="original-title" lang="en">英文原题：{preferred(work).title}</p>
                     <p class="paper-meta">{authors(work, true)} · {releaseYear(work)}</p>
+                    <p><span class="tag">{work.reader_status === "candidate" ? "候选基准" : "已审核精选"}</span></p>
                     <p>{whyRead(work)}</p>
                     <p class="language-english" lang="en">{originalWhyRead(work)}</p>
                     <p><a class="browse-link" href={workReaderPath(snapshot, work.work_id)}>阅读论文</a></p>
@@ -184,6 +196,42 @@ function edgeLabel(edge: AnyRecord) {
           )}
         </section>
       </div>
+
+      <section class="panel baseline-overview" aria-labelledby="baseline-heading">
+        <p class="section-kicker">完整基准入口</p>
+        <h2 id="baseline-heading">基准文献库</h2>
+        <p>{baselineWorks.length} 篇论文、{baselineLines.length} 个研究方向、{baselinePaths.length} 条学习路径。</p>
+        <p class="reader-note">其中 5 篇论文、3 个方向和 1 条路径已经审核；其余条目是本轮整理的候选基准，页面可读，等待组内审核发布。</p>
+        <p>
+          <a class="browse-link" href="/papers/">查看全部基准文献</a>
+          <span class="inline-link"><a href="/research-lines/">浏览研究方向</a></span>
+          <span class="inline-link"><a href="/learning-paths/">浏览学习路径</a></span>
+        </p>
+        <div class="baseline-columns">
+          <section aria-labelledby="baseline-lines-heading">
+            <h3 id="baseline-lines-heading">研究方向</h3>
+            <ul class="compact-list baseline-links">
+              {baselineLines.map((line) => (
+                <li>
+                  <a href={researchLineReaderPath(snapshot, line.line_id)}>{localizedLineTitle(line.line_id, line.title ?? line.line_id)}</a>
+                  <span class="tag">{line.reader_status === "candidate" ? "候选基准" : "已审核"}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+          <section aria-labelledby="baseline-paths-heading">
+            <h3 id="baseline-paths-heading">学习路径</h3>
+            <ul class="compact-list baseline-links">
+              {baselinePaths.map((path) => (
+                <li>
+                  <a href={learningPathReaderPath(snapshot, path.path_id)}>{localizedPathTitle(path.path_id, path.title ?? path.path_id)}</a>
+                  <span class="tag">{path.reader_status === "candidate" ? "候选基准" : "已审核"}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        </div>
+      </section>
     </main>
   </body>
 </html>

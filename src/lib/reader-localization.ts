@@ -57,12 +57,20 @@ const lineTitles: Record<string, string> = {
   "research-line:central-engines": "中心引擎与引擎驱动的瞬变",
   "research-line:dense-environment-multimessenger": "致密环境与多信使瞬变",
   "research-line:explosive-transients-csm": "爆发性瞬变与星周介质相互作用",
+  "research-line:baseline-jet-multimessenger": "相对论喷流与多信使瞬变",
+  "research-line:baseline-central-engine-transients": "中心引擎与快速高亮瞬变",
+  "research-line:baseline-csm-radiative-transients": "星周介质相互作用与瞬变光变",
+  "research-line:baseline-binaries-frb": "致密双星、脉冲星与快速射电暴",
 };
 
 const lineQuestions: Record<string, string> = {
   "research-line:central-engines": "什么驱动高光度瞬变？储存的能量如何转移为可观测辐射？",
   "research-line:dense-environment-multimessenger": "致密环境如何重塑瞬变外流，并将能量重新分配到中微子、光子和引力波通道？",
   "research-line:explosive-transients-csm": "爆发性抛射物的能量如何转移为辐射，包括膨胀、扩散以及与星周介质相互作用的过程？",
+  "research-line:baseline-jet-multimessenger": "相对论外流如何穿过变化的环境，并在电磁、中微子和引力波通道中形成可观测信号？",
+  "research-line:baseline-central-engine-transients": "致密中心引擎如何向抛射物注入能量，并塑造快速高亮瞬变？",
+  "research-line:baseline-csm-radiative-transients": "抛射物、星周介质、激波和辐射输运如何共同塑造瞬变光变？",
+  "research-line:baseline-binaries-frb": "双星几何、脉冲星风、磁化伴星和致密遗迹如何产生或调制多波段瞬变信号？",
 };
 
 const lineBlocks: Record<string, ReaderBlock[]> = {
@@ -83,6 +91,10 @@ const lineBlocks: Record<string, ReaderBlock[]> = {
 
 const pathTitles: Record<string, string> = {
   "learning-path:embedded-jet-dynamics": "从喷流传播到动态多信使产额",
+  "learning-path:baseline-jet-foundations": "从相对论爆炸波到动态喷流传播",
+  "learning-path:baseline-engine-powered-transients": "从放射性加热到引擎驱动瞬变",
+  "learning-path:baseline-csm-light-curves": "从星周介质激波到时间依赖光变",
+  "learning-path:baseline-binary-multimessenger": "从双星激波到快速射电暴环境",
 };
 
 const pathBlocks: Record<string, ReaderBlock[]> = {
@@ -96,6 +108,23 @@ const pathBlocks: Record<string, ReaderBlock[]> = {
 const pathTransitionReasons: Record<string, string> = {
   "work:bromberg-2011>work:zhu-2021": "先用 Bromberg 等人的工作建立喷流头部传播、茧状体准直和突破这套紧凑的动力学词汇，再把它应用到 Zhu 等人的嵌入式 AGN 吸积盘多信使案例中。",
   "work:zhu-2021>work:long-yu-2026": "在理解 Zhu 等人关于受阻喷流特征状态和强子中微子的描述后，继续研究 Long 和 Yu 对激波及冷却演化的轨迹解析处理，包括受阻和突破两种结果。",
+  "work:blandford-mckee-1976>work:sari-piran-narayan-1998": "先从相对论爆炸波解出发，再用它阅读激波动力学如何形成余辉光谱和光变曲线。",
+  "work:sari-piran-narayan-1998>work:bromberg-2011": "从膨胀激波进入准直喷流，学习喷流头部和茧状体如何与外部介质交换能量。",
+  "work:bromberg-2011>work:zhang-agn-jet-2024": "把喷流传播词汇带入活动星系核吸积盘的致密有限几何。",
+  "work:zhang-agn-jet-2024>work:zhu-2021": "接着阅读受阻喷流，理解吸积盘约束如何把喷流能量重新分配到多信使通道。",
+  "work:arnett-1982>work:yu-zhang-gao-2013": "在放射性加热基线之后，考察新生磁星如何改变并合抛射物的动力学和电磁信号。",
+  "work:yu-zhang-gao-2013>work:yu-li-dai-2015": "把并合新星例子推广到更广泛的新生中子星驱动快速瞬变。",
+  "work:yu-li-dai-2015>work:kasen-bildsten-2010": "将快速瞬变模型与磁星驱动超新星光变及其扩散时标进行比较。",
+  "work:kasen-bildsten-2010>work:transfit-mag-2026": "最后学习把磁星注能、激波加热和辐射扩散耦合起来的时间依赖框架。",
+  "work:chevalier-1982>work:liu-csm-formalism-2020": "先从自相似抛射物—介质相互作用开始，再把质量、动量和辐射标度写清楚。",
+  "work:liu-csm-formalism-2020>work:transfit-2025": "从相互作用标度进入可以拟合瞬变光变的数值扩散框架。",
+  "work:transfit-2025>work:transfit-csm-2025": "在一般扩散处理中加入移动激波加热边界和不断变化的光子逃逸路径。",
+  "work:transfit-csm-2025>work:ni-dense-csm-2026": "最后阅读把致密星周环境作为推断目标的跨类别群体比较。",
+  "work:dubus-2013>work:chen-psr-b1259-2019": "先用双星综述建立地图，再阅读具体的脉冲星风激波和多波段计算。",
+  "work:chen-psr-b1259-2019>work:zhang-frb-2023": "从具体双星激波进入快速射电暴更广泛的等离子体和辐射约束。",
+  "work:zhang-frb-2023>work:metzger-2017": "读完 FRB 现象学和开放问题后，再研究一个具体的年轻磁星情景。",
+  "work:metzger-2017>work:du-frb-2026": "沿着年轻磁星情景进入双星环境中长时标旋转量变化的模型。",
+  "work:du-frb-2026>work:xie-sgr-j1935-2025": "最后将环境推断与掩食磁星 X 射线爆发的测量进行比较。",
 };
 
 const edgeReasons: Record<string, string> = {

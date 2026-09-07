@@ -1,7 +1,8 @@
 ---
 import ReadingProse from "../../components/ReadingProse.astro";
 import { loadCanonicalContent } from "../../../scripts/content-loader.mjs";
-import { projectLearningPathForReader } from "../../../scripts/reader-projection.mjs";
+import { parseReadingMarkdown } from "../../../scripts/reader-markdown.mjs";
+import { projectBaselineSnapshot } from "../../../scripts/reader-projection.mjs";
 import { workReaderPath } from "../../lib/reader-routes";
 import {
   localizedPathTitle,
@@ -17,18 +18,26 @@ type LearningPathBundle = { id: string; slug: string; path: AnyRecord };
 
 export async function getStaticPaths() {
   const snapshot = await loadCanonicalContent(new URL("../../../content/", import.meta.url));
+  const projected = projectBaselineSnapshot(snapshot) as { learning_paths?: AnyRecord[] };
+  const projectedPathIds = new Set(
+    (projected.learning_paths ?? [])
+      .map((path) => path.path_id)
+      .filter((pathId): pathId is string => typeof pathId === "string"),
+  );
   return (snapshot.learningPaths as LearningPathBundle[])
-    .filter((path) => projectLearningPathForReader(snapshot, path.id) !== null)
+    .filter((path) => projectedPathIds.has(path.id))
     .map((path) => ({ params: { id: path.slug }, props: { pathId: path.id } }));
 }
 
 const { pathId } = Astro.props;
 const site = loadSiteConfig();
 const snapshot = await loadCanonicalContent(new URL("../../../content/", import.meta.url));
-const learningPath = projectLearningPathForReader(snapshot, pathId) as AnyRecord | null;
+const baselineReader = projectBaselineSnapshot(snapshot) as { learning_paths?: AnyRecord[]; works?: AnyRecord[] };
+const learningPath = baselineReader.learning_paths?.find((path) => path.path_id === pathId) ?? null;
 if (!learningPath) {
-  throw new Error(`Visible Learning Path not found: ${pathId}`);
+  throw new Error(`Baseline Learning Path not found: ${pathId}`);
 }
+const isCandidate = learningPath.reader_status === "candidate";
 
 const entries = (learningPath.entries ?? []) as AnyRecord[];
 const transitions = (learningPath.transitions ?? []) as AnyRecord[];
@@ -43,7 +52,13 @@ const steps = entries.map((entry, index) => {
 });
 
 function workTitle(entry: AnyRecord) {
-  return localizedWorkTitle(entry.work_id, entry.work?.title ?? entry.work_id);
+  const fallback = entry.work?.title ?? entry.work_id;
+  const localized = localizedWorkTitle(entry.work_id, fallback);
+  if (localized !== fallback) return localized;
+  const sourceWork = baselineReader.works?.find((work) => work.work_id === entry.work_id);
+  if (!sourceWork?.reading) return fallback;
+  return parseReadingMarkdown(String(sourceWork.reading), { skipTitle: false })
+    .find((block) => block.kind === "heading" && block.depth === 1)?.text ?? fallback;
 }
 
 function workAuthors(entry: AnyRecord) {
@@ -67,17 +82,18 @@ function workDate(entry: AnyRecord) {
       name="description"
       content={`Learning Path: ${learningPath.title ?? pathId}`}
     />
-    <title>{learningPath.title ?? pathId} · {site.title}</title>
+    <title>{localizedPathTitle(pathId, learningPath.title ?? pathId)} · {site.title}</title>
   </head>
   <body>
     <main class="site-shell reader-page">
       <SiteNav />
       <p class="eyebrow"><a href="/">{site.title}</a> · 学习路径</p>
       <header class="reader-header">
+        {isCandidate ? <p class="reader-note"><span class="tag">候选基准路径</span> 这条路径用于组织完整基准文献，尚未获得人工审核发布。</p> : null}
         <p class="record-label">学习路径 ID：{pathId}</p>
         <h1>{localizedPathTitle(pathId, learningPath.title ?? pathId)}</h1>
         <p class="original-title" lang="en">英文标题：{learningPath.title ?? pathId}</p>
-        <p class="reader-deck">这是一条有序且经过审核的论文阅读序列。过渡理由属于学习路径自身的教学背景，不是科学关联。</p>
+        <p class="reader-deck">{isCandidate ? "这是一条用于整理基准文献的候选阅读序列，过渡理由是待审核的教学背景。" : "这是一条有序且经过审核的论文阅读序列。过渡理由属于学习路径自身的教学背景，不是科学关联。"}</p>
       </header>
 
       <section class="panel reader-view" aria-labelledby="path-reader-view-heading">
@@ -114,7 +130,7 @@ function workDate(entry: AnyRecord) {
         <summary>溯源详情</summary>
         <h2>路径审核</h2>
         <p>
-          <span class="tag">{learningPath.review_context?.status === "reviewed" ? "已审核" : "审核状态不可用"}</span>
+          <span class="tag">{learningPath.review_context?.status === "reviewed" ? "已审核" : "未审核"}</span>
           {learningPath.review_context?.reviewer_actor_id
             ? `，审核者 ${learningPath.review_context.reviewer_actor_id}`
             : ""}

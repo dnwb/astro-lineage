@@ -1,0 +1,27 @@
+path_id: learning-path:baseline-csm-light-curves
+reader_state: draft
+title: From Circumstellar Shocks to Time-dependent Light Curves
+entries:
+  - work_id: work:chevalier-1982
+  - work_id: work:liu-csm-formalism-2020
+  - work_id: work:transfit-2025
+  - work_id: work:transfit-csm-2025
+  - work_id: work:ni-dense-csm-2026
+transitions:
+  - source_work_id: work:chevalier-1982
+    target_work_id: work:liu-csm-formalism-2020
+    reason: Begin with self-similar ejecta–medium interaction, then make its mass, momentum, and radiation scalings explicit.
+  - source_work_id: work:liu-csm-formalism-2020
+    target_work_id: work:transfit-2025
+    reason: Move from interaction scalings to a numerical diffusion framework that can fit transient light curves.
+  - source_work_id: work:transfit-2025
+    target_work_id: work:transfit-csm-2025
+    reason: Add a moving shock-heating boundary and evolving photon escape path to the general diffusion treatment.
+  - source_work_id: work:transfit-csm-2025
+    target_work_id: work:ni-dense-csm-2026
+    reason: End with a population comparison that uses dense circumstellar environments as an inference target.
+curation_provenance:
+  actor_id: actor:agent-curator
+  recorded_at: 2026-09-07T04:00:00Z
+review_state: unreviewed
+visibility_approvals: []

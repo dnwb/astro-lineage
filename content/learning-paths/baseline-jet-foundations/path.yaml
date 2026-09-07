@@ -1,0 +1,31 @@
+path_id: learning-path:baseline-jet-foundations
+reader_state: draft
+title: From Relativistic Blast Waves to Dynamic Jet Propagation
+entries:
+  - work_id: work:blandford-mckee-1976
+  - work_id: work:sari-piran-narayan-1998
+  - work_id: work:bromberg-2011
+  - work_id: work:zhang-agn-jet-2024
+  - work_id: work:zhu-2021
+  - work_id: work:long-yu-2026
+transitions:
+  - source_work_id: work:blandford-mckee-1976
+    target_work_id: work:sari-piran-narayan-1998
+    reason: Start with the relativistic blast-wave solution, then use it to read how shock dynamics become afterglow spectra and light curves.
+  - source_work_id: work:sari-piran-narayan-1998
+    target_work_id: work:bromberg-2011
+    reason: Move from an expanding shock to a collimated jet whose head and cocoon exchange energy with the external medium.
+  - source_work_id: work:bromberg-2011
+    target_work_id: work:zhang-agn-jet-2024
+    reason: Apply the jet-propagation vocabulary to the dense and finite geometry of an AGN accretion disk.
+  - source_work_id: work:zhang-agn-jet-2024
+    target_work_id: work:zhu-2021
+    reason: Read the choked-jet case next to see how disk confinement redirects jet energy into multi-messenger channels.
+  - source_work_id: work:zhu-2021
+    target_work_id: work:long-yu-2026
+    reason: Finish with trajectory-resolved propagation and compare it with the characteristic-state approximation.
+curation_provenance:
+  actor_id: actor:agent-curator
+  recorded_at: 2026-09-07T04:00:00Z
+review_state: unreviewed
+visibility_approvals: []

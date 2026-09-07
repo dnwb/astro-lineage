@@ -60,7 +60,7 @@ test("the production build renders the product boundary as static HTML", async (
   assert.match(html, /not an arXiv mirror/i);
   assert.match(papersHtml, /<h1>论文<\/h1>/);
   assert.match(papersHtml, /Type I supernovae/i);
-  assert.match(papersHtml, /5 篇精选论文/);
+  assert.match(papersHtml, /35 篇基准文献/);
   assert.match(papersHtml, /阅读论文/);
   assert.doesNotMatch(papersHtml, /provenance/i);
   assert.equal(

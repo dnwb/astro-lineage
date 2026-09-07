@@ -1,0 +1,97 @@
+line_id: research-line:baseline-csm-radiative-transients
+reader_state: draft
+title: Circumstellar Interaction and Transient Light Curves
+scientific_question: How do ejecta, circumstellar material, shocks, and radiative transport combine to shape transient light curves?
+physical_structure:
+  - outflow
+  - environment
+  - dynamics
+  - energy_dissipation
+  - transport_process
+  - observable
+memberships:
+  - id: membership:baseline-csm-radiative-transients-chevalier-1982
+    work_id: work:chevalier-1982
+    reading_roles: [foundation]
+    editorial_anchor: true
+    review_state: unreviewed
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-07T04:00:00Z
+  - id: membership:baseline-csm-radiative-transients-weaver-1977
+    work_id: work:weaver-1977
+    reading_roles: [foundation]
+    editorial_anchor: false
+    review_state: unreviewed
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-07T04:00:00Z
+  - id: membership:baseline-csm-radiative-transients-liu-csm-formalism-2020
+    work_id: work:liu-csm-formalism-2020
+    reading_roles: [foundation, method]
+    editorial_anchor: false
+    review_state: unreviewed
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-07T04:00:00Z
+  - id: membership:baseline-csm-radiative-transients-liu-multiple-ejecta-csm-2018
+    work_id: work:liu-multiple-ejecta-csm-2018
+    reading_roles: [frontier]
+    editorial_anchor: false
+    review_state: unreviewed
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-07T04:00:00Z
+  - id: membership:baseline-csm-radiative-transients-transfit-2025
+    work_id: work:transfit-2025
+    reading_roles: [method]
+    editorial_anchor: false
+    review_state: unreviewed
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-07T04:00:00Z
+  - id: membership:baseline-csm-radiative-transients-transfit-csm-2025
+    work_id: work:transfit-csm-2025
+    reading_roles: [method, frontier]
+    editorial_anchor: false
+    review_state: unreviewed
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-07T04:00:00Z
+  - id: membership:baseline-csm-radiative-transients-liu-fbot-radio-2026
+    work_id: work:liu-fbot-radio-2026
+    reading_roles: [frontier]
+    editorial_anchor: false
+    review_state: unreviewed
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-07T04:00:00Z
+  - id: membership:baseline-csm-radiative-transients-ni-dense-csm-2026
+    work_id: work:ni-dense-csm-2026
+    reading_roles: [frontier]
+    editorial_anchor: false
+    review_state: unreviewed
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-07T04:00:00Z
+  - id: membership:baseline-csm-radiative-transients-khatami-kasen-2024
+    work_id: work:khatami-kasen-2024
+    reading_roles: [review]
+    editorial_anchor: false
+    review_state: unreviewed
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-07T04:00:00Z
+  - id: membership:baseline-csm-radiative-transients-wu-magnetar-csm-2026
+    work_id: work:wu-magnetar-csm-2026
+    reading_roles: [frontier]
+    editorial_anchor: false
+    review_state: unreviewed
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-07T04:00:00Z
+curation_provenance:
+  actor_id: actor:agent-curator
+  recorded_at: 2026-09-07T04:00:00Z
+review_state: unreviewed
+visibility_approvals: []

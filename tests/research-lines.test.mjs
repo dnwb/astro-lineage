@@ -156,7 +156,7 @@ test("Research Lines store a reviewed visible Zhu multi-messenger and cross-cont
 
   const memberships = snapshot.researchLines.flatMap((line) =>
     line.line.memberships
-      .filter(({ work_id }) => work_id === workId)
+      .filter(({ work_id, review_state }) => work_id === workId && review_state === "reviewed")
       .map((membership) => ({ line_id: line.id, ...membership })),
   );
   assert.equal(memberships.length, 2);
@@ -370,7 +370,7 @@ test("Research Line static pages render the projected index, complete prose, lin
     new URL("../dist/research-lines/index.html", import.meta.url),
     "utf8",
   );
-  assert.match(indexHtml, /3 个经过审核的研究方向/u);
+  assert.match(indexHtml, /7 个研究方向：3 个已审核/u);
   assertInOrder(indexHtml, [
     localizedLineTitles[secondaryLineId],
     localizedLineTitles[anchorLineId],
@@ -378,6 +378,10 @@ test("Research Line static pages render the projected index, complete prose, lin
   ], "研究方向索引");
 
   const expectedRoutes = [
+    "/research-lines/baseline-binaries-frb/",
+    "/research-lines/baseline-central-engine-transients/",
+    "/research-lines/baseline-csm-radiative-transients/",
+    "/research-lines/baseline-jet-multimessenger/",
     "/research-lines/central-engines/",
     "/research-lines/dense-environment-multimessenger/",
     "/research-lines/explosive-transients-csm/",
@@ -434,9 +438,9 @@ test("Research Line static pages render the projected index, complete prose, lin
     new URL("../src/pages/research-lines/[id].astro", import.meta.url),
     "utf8",
   );
-  assert.match(indexSource, /projectVisibleSnapshot\(snapshot\)/u);
-  assert.match(indexSource, /visibleLines\.length === 0/u);
-  assert.match(indexSource, /精选阅读地图中暂时没有可见研究方向。/u);
+  assert.match(indexSource, /projectBaselineSnapshot\(snapshot\)/u);
+  assert.match(indexSource, /researchLines\.length === 0/u);
+  assert.match(indexSource, /文献库中暂时没有可显示研究方向。/u);
   assert.match(detailSource, /projectedLineIds/u);
   assert.match(detailSource, /该研究方向暂时没有关联的、经过审核且可见的论文。/u);
   assert.doesNotMatch(`${indexSource}${detailSource}`, /generated\/work-research-lines/u);

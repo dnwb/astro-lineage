@@ -1,3 +1,5 @@
+@import "katex/dist/katex.min.css";
+
 :root {
   color: #172033;
   background: #f4f1ea;
@@ -299,19 +301,94 @@ small {
 }
 
 .reader-math {
+  display: inline-block;
+  max-inline-size: 100%;
+  vertical-align: baseline;
   white-space: nowrap;
 }
 
 .reader-math-display {
   display: block;
+  inline-size: 100%;
+  box-sizing: border-box;
+  max-inline-size: 100%;
   margin: 1rem 0;
+  padding: 0.35rem 0.25rem 0.5rem;
   overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-inline: contain;
+  scrollbar-width: thin;
   white-space: normal;
   text-align: center;
 }
 
-.reader-math math {
-  font-size: 1.08em;
+.reader-math-display > .katex-display {
+  box-sizing: border-box;
+  inline-size: max-content;
+  min-inline-size: 100%;
+  margin: 0;
+  padding-inline: 0.25rem;
+  text-align: center;
+}
+
+.reader-math-display:focus-visible {
+  outline: 3px solid #9f694c;
+  outline-offset: 0.2rem;
+}
+
+.reader-math > .katex {
+  max-inline-size: 100%;
+  color: inherit;
+  font-size: 1.04em;
+}
+
+.reader-math .katex-html {
+  white-space: nowrap;
+}
+
+.reader-math-display > .katex-display > .katex {
+  font-size: 1.12em;
+}
+
+.reader-math .katex-mathml {
+  user-select: text;
+}
+
+.reader-math-error {
+  display: inline-flex;
+  max-inline-size: 100%;
+  align-items: baseline;
+  gap: 0.45rem;
+  padding: 0.1rem 0.35rem;
+  border: 1px dashed #a35f4d;
+  background: #fff4ed;
+  color: #753b2e;
+  vertical-align: middle;
+}
+
+.reader-math-error-label {
+  flex: 0 0 auto;
+  font-family: system-ui, sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.reader-math-source {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+@media print {
+  .reader-math,
+  .reader-math-display {
+    max-inline-size: none;
+    overflow: visible;
+  }
+
+  .reader-math-display > .katex-display {
+    min-inline-size: 0;
+  }
 }
 
 .reading-list,
@@ -547,6 +624,251 @@ small {
   font-weight: 700;
 }
 
+.radar-section {
+  margin: 2.6rem 0;
+}
+
+.radar-section h2 {
+  margin-bottom: 0.7rem;
+}
+
+.radar-list {
+  padding-left: 0;
+  list-style: none;
+}
+
+.radar-list-item {
+  margin: 1rem 0;
+}
+
+.radar-card {
+  min-width: 0;
+  padding: clamp(1rem, 2.4vw, 1.5rem);
+  border: 1px solid #d6d0c4;
+  background: rgb(255 253 248 / 0.72);
+  overflow-wrap: anywhere;
+}
+
+.radar-card h3 {
+  margin-top: 0.7rem;
+}
+
+.radar-card p:last-child {
+  margin-bottom: 0;
+}
+
+.radar-priority {
+  margin-bottom: 0.7rem;
+}
+
+.radar-reason,
+.radar-result,
+.radar-entry {
+  max-width: 72ch;
+}
+
+.radar-coverage {
+  max-width: 72ch;
+  padding: 0.65rem 0.8rem;
+  border-left: 3px solid #9f694c;
+  background: rgb(237 232 222 / 0.62);
+  font-size: 0.93rem;
+}
+
+.radar-guide-detail,
+.radar-source-detail {
+  margin-top: 1.1rem;
+  border-top: 1px solid #d6d0c4;
+}
+
+.radar-guide-detail > summary,
+.radar-source-detail > summary,
+.skip-section > summary {
+  cursor: pointer;
+  padding: 0.85rem 0;
+  font-weight: 700;
+}
+
+.radar-guide {
+  padding-top: 0.2rem;
+}
+
+.radar-guide h4 {
+  margin-top: 1.4rem;
+  margin-bottom: 0.45rem;
+  font-size: 1rem;
+}
+
+.radar-guide h5 {
+  margin-top: 1.2rem;
+  margin-bottom: 0.4rem;
+  font-family: system-ui, sans-serif;
+  font-size: 0.86rem;
+}
+
+.radar-coverage-expanded {
+  margin-top: 0;
+}
+
+.source-reference-list {
+  display: grid;
+  gap: 0.45rem;
+  margin: 1.2rem 0 0;
+  padding: 0.8rem 0 0;
+  border-top: 1px solid #e2ddd4;
+  list-style: none;
+}
+
+.source-reference-list li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.7rem;
+  font-family: system-ui, sans-serif;
+  font-size: 0.78rem;
+}
+
+.source-reference-list span {
+  color: #5d6470;
+}
+
+.radar-source-detail > p {
+  display: block;
+  max-width: 72ch;
+}
+
+.radar-links {
+  margin-top: 1rem;
+}
+
+.radar-pending-card {
+  border-style: dashed;
+}
+
+.radar-overview {
+  margin-bottom: 2.4rem;
+}
+
+.radar-priority-section {
+  margin: 2.6rem 0;
+  padding: 0 1rem;
+  border: 1px solid #c9c3b7;
+  background: rgb(255 253 248 / 0.32);
+}
+
+.radar-priority-section[open] {
+  padding-bottom: 1rem;
+}
+
+.radar-priority-section > .radar-section {
+  margin: 0;
+}
+
+.knowledge-point {
+  margin-top: 2rem;
+}
+
+.knowledge-point h3 {
+  margin-top: 0;
+}
+
+.knowledge-point h4 {
+  margin-top: 1.4rem;
+  margin-bottom: 0.45rem;
+  font-size: 1rem;
+}
+
+.knowledge-derivation {
+  margin: 0;
+  padding-left: 1.4rem;
+}
+
+.knowledge-derivation li {
+  margin: 1rem 0;
+  padding-left: 0.25rem;
+}
+
+.knowledge-derivation p:last-child {
+  margin-bottom: 0;
+}
+
+@media (min-width: 48.01rem) {
+  .radar-page {
+    max-width: 60rem;
+  }
+
+  .radar-page .reader-header,
+  .radar-page .radar-overview,
+  .radar-page .radar-section,
+  .radar-page .radar-priority-section {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 52rem;
+    margin-inline: auto;
+  }
+
+  .radar-page .radar-list-item {
+    width: 100%;
+    max-width: none;
+  }
+
+  .radar-page .radar-card {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .radar-page .reader-header,
+  .radar-page .radar-overview,
+  .radar-page .radar-section,
+  .radar-page .radar-card,
+  .radar-page .radar-priority-section {
+    line-height: 1.8;
+  }
+
+  .radar-page .reader-header .language-primary,
+  .radar-page .radar-overview .language-primary {
+    width: 100%;
+    max-width: 45em;
+  }
+
+  .radar-page .reader-header .language-english,
+  .radar-page .radar-overview .language-english {
+    width: 100%;
+    max-width: 75ch;
+  }
+
+  .radar-page .radar-card > .language-primary,
+  .radar-page .radar-card > p:not(.paper-meta):not(.language-english),
+  .radar-page .radar-card .language-english,
+  .radar-page .radar-source-detail .language-english {
+    width: 100%;
+    max-width: none;
+  }
+
+  .radar-page .radar-card p,
+  .radar-page .radar-card li,
+  .radar-page .radar-card dd {
+    max-width: none;
+  }
+
+  .radar-page .radar-card h3 {
+    line-height: 1.4;
+  }
+
+  .radar-page .radar-overview p,
+  .radar-page .radar-card p,
+  .radar-page .radar-guide p,
+  .radar-page .knowledge-point p {
+    margin-block-end: 1em;
+  }
+
+  .radar-page .radar-overview p:last-child,
+  .radar-page .radar-card p:last-child,
+  .radar-page .radar-guide p:last-child,
+  .radar-page .knowledge-point p:last-child {
+    margin-block-end: 0;
+  }
+}
+
 .status {
   margin-top: 2.5rem;
   padding-top: 1rem;
@@ -563,6 +885,10 @@ small {
   .home-grid,
   .baseline-columns {
     grid-template-columns: 1fr;
+  }
+
+  .radar-priority-section {
+    padding: 0 0.75rem;
   }
 
   .citation-reason {

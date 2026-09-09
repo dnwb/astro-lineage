@@ -1,0 +1,9 @@
+[Unit]
+Description=AstroLineage arXiv Daily Radar refresh
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/long/axvdaily
+ExecStart=/usr/bin/env node scripts/arxiv-daily-scheduler.mjs

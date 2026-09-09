@@ -1,0 +1,34 @@
+---
+import DailyRadarCard from "./DailyRadarCard.astro";
+
+type AnyRecord = Record<string, any>;
+
+interface Props {
+  id: string;
+  items: AnyRecord[];
+  primaryLabel: string;
+  englishLabel: string;
+  visibleWorkLinks: Record<string, { href: string; title: string }>;
+}
+
+const { id, items, primaryLabel, englishLabel, visibleWorkLinks } = Astro.props;
+---
+
+<section class="radar-section" id={id}>
+  <p class="section-kicker"><span class="language-primary">阅读优先级</span><span class="language-english" lang="en">Reading priority</span></p>
+  <h2><span class="language-primary">{primaryLabel}</span><span class="language-english" lang="en">{englishLabel}</span></h2>
+  {items.length === 0 ? (
+    <p class="empty-state">本期有效分析没有条目。</p>
+  ) : (
+    <ol class="paper-index radar-list">
+      {items.map((item) => (
+        <DailyRadarCard
+          item={item}
+          primaryPriority={primaryLabel}
+          englishPriority={englishLabel}
+          visibleWorkLinks={visibleWorkLinks}
+        />
+      ))}
+    </ol>
+  )}
+</section>

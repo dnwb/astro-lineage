@@ -1,0 +1,43 @@
+---
+import ReaderText from "./ReaderText.astro";
+import DailyRadarGuide from "./DailyRadarGuide.astro";
+import DailyRadarSource from "./DailyRadarSource.astro";
+
+type AnyRecord = Record<string, any>;
+type CoverageLevel = "abstract_only" | "body_partial" | "full_body";
+
+interface Props {
+  item: AnyRecord;
+  primaryPriority: string;
+  englishPriority: string;
+  visibleWorkLinks: Record<string, { href: string; title: string }>;
+}
+
+const { item, primaryPriority, englishPriority, visibleWorkLinks } = Astro.props;
+const record = item.analysis as AnyRecord;
+const coverage = record.coverage as AnyRecord;
+const coverageText = `${coverage.label}；版本 ${coverage.source_version}；检查材料：${coverage.inspected_sections.join("、")}。`;
+const englishCoverage: Record<CoverageLevel, string> = {
+  abstract_only: "abstract only",
+  body_partial: "identified body sections",
+  full_body: "full body read",
+};
+const coverageLevel = coverage.level as CoverageLevel;
+---
+
+<li class="radar-list-item">
+  <article class="radar-card">
+    <p class="radar-priority tag"><span class="language-primary">{primaryPriority}</span><span class="language-english" lang="en">{englishPriority}</span></p>
+    <h3><a class="paper-title" href={item.url}>{item.title}</a></h3>
+    <p class="paper-meta">{item.authors.join(", ")} · {item.published.slice(0, 10)} · arXiv:{item.arxiv_id}v{item.revision}</p>
+    <div class="language-primary">
+      <p class="radar-reason"><strong>为什么这样排：</strong><ReaderText text={record.analysis.reason} /></p>
+      <p class="radar-result"><strong>主要结果与限定：</strong><ReaderText text={record.analysis.result} /></p>
+      <p class="radar-coverage"><strong>实际阅读范围：</strong>{coverageText}</p>
+      <p class="radar-entry"><strong>建议入口：</strong><ReaderText text={record.analysis.reading_entry} /></p>
+      <DailyRadarGuide item={item} visibleWorkLinks={visibleWorkLinks} />
+    </div>
+    <p class="language-english" lang="en">Scientific guide available in Chinese. Actual reading coverage: {englishCoverage[coverageLevel] ?? "coverage recorded"}; version {coverage.source_version}; inspected {coverage.inspected_sections.join(", ")}.</p>
+    <DailyRadarSource item={item} />
+  </article>
+</li>

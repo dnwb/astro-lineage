@@ -1,0 +1,23 @@
+---
+import DailyRadarSource from "./DailyRadarSource.astro";
+
+type AnyRecord = Record<string, any>;
+
+interface Props {
+  item: AnyRecord;
+  pendingLabel: string;
+}
+
+const { item, pendingLabel } = Astro.props;
+---
+
+<li class="radar-list-item">
+  <article class="radar-card radar-pending-card">
+    <p><span class="tag">待分析</span> <strong>{pendingLabel}</strong></p>
+    <h3><a class="paper-title" href={item.url}>{item.title}</a></h3>
+    <p class="paper-meta">{item.authors.join(", ")} · {item.published.slice(0, 10)} · arXiv:{item.arxiv_id}v{item.revision}</p>
+    <p>{item.pending_detail}</p>
+    <p class="radar-coverage"><strong>实际阅读范围：</strong>没有可用于科学导读的有效版本级阅读记录。</p>
+    <DailyRadarSource item={item} />
+  </article>
+</li>

@@ -1,19 +1,7 @@
-const greekLetters = {
-  alpha: "α", beta: "β", gamma: "γ", delta: "δ", epsilon: "ϵ", varepsilon: "ε",
-  zeta: "ζ", eta: "η", theta: "θ", vartheta: "ϑ", iota: "ι", kappa: "κ",
-  lambda: "λ", mu: "μ", nu: "ν", xi: "ξ", pi: "π", varpi: "ϖ", rho: "ρ",
-  sigma: "σ", tau: "τ", upsilon: "υ", phi: "ϕ", varphi: "φ", chi: "χ", psi: "ψ", omega: "ω",
-  Gamma: "Γ", Delta: "Δ", Theta: "Θ", Lambda: "Λ", Xi: "Ξ", Pi: "Π", Sigma: "Σ",
-  Upsilon: "Υ", Phi: "Φ", Psi: "Ψ", Omega: "Ω",
-};
+import katex from "katex";
 
-const symbols = {
-  times: "×", cdot: "⋅", pm: "±", mp: "∓", le: "≤", leq: "≤", ge: "≥", geq: "≥",
-  neq: "≠", approx: "≈", sim: "∼", infty: "∞", propto: "∝", to: "→", rightarrow: "→",
-  leftarrow: "←", Leftrightarrow: "⇔", partial: "∂", nabla: "∇", sum: "∑", prod: "∏", int: "∫",
-  lesssim: "≲", gtrsim: "≳", simeq: "≃", perp: "⟂", in: "∈", notin: "∉",
-  odot: "⊙", ell: "ℓ", bullet: "•", circ: "○", ast: "∗", degree: "°",
-};
+const renderedMathCache = new Map();
+const warnedMathFailures = new Set();
 
 function escapeHtml(value) {
   return String(value)
@@ -24,146 +12,65 @@ function escapeHtml(value) {
     .replaceAll("'", "&#39;");
 }
 
-function node(tag, children = [], attributes = {}) {
-  return { tag, children, attributes };
+function normalizeLegacyTex(source) {
+  return String(source)
+    // Definitions verified in arXiv:2609.03979v1's source package. Keep these
+    // aliases explicit; unknown author macros still take the visible fallback.
+    .replace(/\\betag(?![A-Za-z])/gu, "\\boldsymbol{\\beta}")
+    .replace(/\\Pvec(?![A-Za-z])/gu, "\\mathbf{P}")
+    .replace(/\\rm(?![A-Za-z])/gu, "\\mathrm")
+    .replace(/\\bf(?![A-Za-z])/gu, "\\mathbf")
+    .replace(/\\it(?![A-Za-z])/gu, "\\mathit")
+    .replace(/\\cal(?![A-Za-z])/gu, "\\mathcal")
+    // TeX tokenizes a control word before a Unicode symbol, while KaTeX
+    // needs the boundary made explicit (for example, `\\logξ`).
+    .replace(/\\(log|ln|exp|sin|cos|tan|max|min|lim|det)(?=[^A-Za-z\s])/gu, "\\$1 ");
 }
 
-function textNode(tag, value, attributes = {}) {
-  return node(tag, [{ text: String(value) }], attributes);
+function mathErrorMarkup(source, reason) {
+  const key = `${reason}\u0000${source}`;
+  if (!warnedMathFailures.has(key)) {
+    warnedMathFailures.add(key);
+    console.warn(`[reader-math] ${reason}: ${source}`);
+  }
+  return `<span class="reader-math-error" data-math-status="error" role="img" aria-label="公式暂未渲染"><span class="reader-math-error-label">公式暂未渲染</span><code class="reader-math-source">${escapeHtml(source)}</code></span>`;
 }
 
-function renderNode(value) {
-  if (value?.text !== undefined) return escapeHtml(value.text);
-  const attributes = Object.entries(value.attributes ?? {})
-    .map(([key, attribute]) => ` ${key}="${escapeHtml(attribute)}"`)
-    .join("");
-  return `<${value.tag}${attributes}>${value.children.map(renderNode).join("")}</${value.tag}>`;
+function isUnsafeMarkup(value) {
+  return /<(?:script|iframe|object|embed|style)\b|\son[a-z-]+\s*=|javascript\s*:/iu.test(value);
 }
 
-function wrap(children) {
-  return children.length === 1 ? children[0] : node("mrow", children);
-}
+function renderWithKatex(source, display) {
+  const normalizedSource = normalizeLegacyTex(source);
+  try {
+    let markup = katex.renderToString(normalizedSource, {
+      displayMode: display,
+      output: "htmlAndMathml",
+      throwOnError: true,
+      trust: false,
+      strict: "ignore",
+    });
+    if (!/<span\b[^>]*class=["']katex["'][\s\S]*<math\b[\s\S]*<\/math>/u.test(markup)) {
+      return mathErrorMarkup(source, "TeX 未生成 KaTeX 和 MathML");
+    }
+    if (!/<semantics\b[\s\S]*<annotation\b[^>]*encoding=["']application\/x-tex["'][\s\S]*<\/annotation>/u.test(markup)) {
+      return mathErrorMarkup(source, "MathML 缺少原始 TeX annotation");
+    }
+    if (isUnsafeMarkup(markup)) return mathErrorMarkup(source, "KaTeX 输出包含不安全标记");
 
-function mathText(value) {
-  return textNode("mtext", value);
-}
-
-function parseTex(source) {
-  const input = String(source);
-  let index = 0;
-
-  function skipWhitespace() {
-    while (/\s/u.test(input[index] ?? "")) index += 1;
+    // KaTeX emits both a visual HTML tree and an aria-hidden MathML tree. The
+    // HTML is what browsers paint; MathML remains the single accessible and
+    // copyable semantic representation. Restore the exact source annotation
+    // after the explicitly verified aliases have been normalized for parsing.
+    markup = markup.replace(
+      /<annotation\b[^>]*encoding=["']application\/x-tex["'][^>]*>[\s\S]*?<\/annotation>/u,
+      `<annotation encoding="application/x-tex">${escapeHtml(source)}</annotation>`,
+    );
+    return markup;
+  } catch (error) {
+    const detail = error instanceof Error ? error.message : String(error);
+    return mathErrorMarkup(source, `KaTeX 转换失败：${detail}`);
   }
-
-  function parseSequence(stopAtBrace = false) {
-    const children = [];
-    while (index < input.length) {
-      if (input[index] === "}") {
-        if (stopAtBrace) break;
-        children.push(textNode("mo", "}"));
-        index += 1;
-        continue;
-      }
-      if (/\s/u.test(input[index])) {
-        skipWhitespace();
-        if (children.length > 0 && index < input.length) children.push(node("mspace", [], { width: "0.2em" }));
-        continue;
-      }
-      children.push(parseAtomWithScripts());
-    }
-    return children;
-  }
-
-  function parseGroup() {
-    if (input[index] !== "{") return parseAtomWithScripts();
-    index += 1;
-    const children = parseSequence(true);
-    if (input[index] === "}") index += 1;
-    return wrap(children);
-  }
-
-  function parseArgument() {
-    skipWhitespace();
-    return input[index] === "{" ? parseGroup() : parseAtomWithScripts();
-  }
-
-  function parseCommand() {
-    index += 1;
-    if (index >= input.length) return mathText("\\");
-    const commandStart = index;
-    while (/[A-Za-z]/u.test(input[index] ?? "")) index += 1;
-    const command = index > commandStart ? input.slice(commandStart, index) : input[index++];
-    if (["frac", "dfrac", "tfrac", "cfrac"].includes(command)) {
-      return node("mfrac", [parseArgument(), parseArgument()]);
-    }
-    if (command === "sqrt") return node("msqrt", [parseArgument()]);
-    if (["mathrm", "textrm", "rm", "mathbf", "textbf", "mathit", "textit", "mathcal", "cal", "mathbb", "mathsf", "texttt"].includes(command)) {
-      const variants = {
-        mathcal: "script",
-        cal: "script",
-        mathbb: "double-struck",
-        mathsf: "sans-serif",
-        texttt: "monospace",
-      };
-      const variant = variants[command] ?? (["mathbf", "textbf"].includes(command) ? "bold" : ["mathit", "textit"].includes(command) ? "italic" : "normal");
-      return node("mrow", [parseArgument()], { mathvariant: variant });
-    }
-    if (["text", "operatorname"].includes(command)) return node("mtext", [parseArgument()]);
-    if (["hat", "widehat", "bar", "vec", "dot", "tilde"].includes(command)) {
-      const accents = { hat: "^", widehat: "^", bar: "¯", vec: "→", dot: "˙", tilde: "˜" };
-      return node("mover", [parseArgument(), textNode("mo", accents[command])]);
-    }
-    if (["log", "ln", "exp", "sin", "cos", "tan", "max", "min"].includes(command)) {
-      return textNode("mo", command);
-    }
-    if (greekLetters[command]) return textNode("mi", greekLetters[command]);
-    if (symbols[command]) {
-      const operator = symbols[command];
-      return textNode("mo", operator, ["sum", "prod", "int"].includes(command) ? { largeop: "true" } : {});
-    }
-    if (command === "left" || command === "right") {
-      skipWhitespace();
-      const delimiter = input[index] ?? "";
-      index += 1;
-      return textNode("mo", delimiter === "." ? "" : delimiter);
-    }
-    if (command === "quad" || command === "!" || command === "," || command === ";") {
-      return node("mspace", [], { width: command === "quad" ? "1em" : "0.2em" });
-    }
-    return mathText(`\\${command}`);
-  }
-
-  function parseAtom() {
-    if (input[index] === "{") return parseGroup();
-    if (input[index] === "\\") return parseCommand();
-    const character = input[index++];
-    if (/[0-9]/u.test(character)) {
-      let value = character;
-      while (/[0-9.,]/u.test(input[index] ?? "")) value += input[index++];
-      return textNode("mn", value);
-    }
-    if (/[A-Za-z]/u.test(character)) return textNode("mi", character);
-    return textNode("mo", character);
-  }
-
-  function parseAtomWithScripts() {
-    const base = parseAtom();
-    let subscript = null;
-    let superscript = null;
-    while (input[index] === "_" || input[index] === "^") {
-      const marker = input[index++];
-      const argument = parseArgument();
-      if (marker === "_") subscript = argument;
-      else superscript = argument;
-    }
-    if (subscript && superscript) return node("msubsup", [base, subscript, superscript]);
-    if (subscript) return node("msub", [base, subscript]);
-    if (superscript) return node("msup", [base, superscript]);
-    return base;
-  }
-
-  return wrap(parseSequence());
 }
 
 function findClosing(source, start, closing) {
@@ -206,12 +113,13 @@ export function splitMath(value) {
     }
     const contentStart = candidate.start + candidate.delimiter.length;
     const closing = findClosing(source, contentStart, candidate.closing);
-    if (closing === -1 || closing === contentStart || source.slice(contentStart, closing).includes("\n")) {
+    const content = closing === -1 ? "" : source.slice(contentStart, closing);
+    if (closing === -1 || closing === contentStart || (!candidate.display && content.includes("\n"))) {
       cursor = contentStart;
       continue;
     }
     addText(candidate.start);
-    segments.push({ kind: "math", value: source.slice(contentStart, closing).trim(), display: candidate.display });
+    segments.push({ kind: "math", value: content.trim(), display: candidate.display });
     cursor = closing + candidate.closing.length;
     textStart = cursor;
   }
@@ -221,7 +129,7 @@ export function splitMath(value) {
 
 export function renderMathMarkup(value, display = false) {
   const source = String(value).trim();
-  const body = renderNode(parseTex(source));
-  const displayAttribute = display ? ' display="block"' : "";
-  return `<math xmlns="http://www.w3.org/1998/Math/MathML"${displayAttribute} aria-label="${escapeHtml(source)}"><semantics>${body}<annotation encoding="application/x-tex">${escapeHtml(source)}</annotation></semantics></math>`;
+  const cacheKey = `${display ? "display" : "inline"}\u0000${source}`;
+  if (!renderedMathCache.has(cacheKey)) renderedMathCache.set(cacheKey, renderWithKatex(source, display));
+  return renderedMathCache.get(cacheKey);
 }

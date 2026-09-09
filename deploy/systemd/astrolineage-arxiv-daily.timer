@@ -1,0 +1,13 @@
+[Unit]
+Description=Run AstroLineage arXiv Daily Radar after arXiv announcements
+
+[Timer]
+OnCalendar=Sun *-*-* 20:30:00 America/New_York
+OnCalendar=Mon..Thu *-*-* 20:30:00 America/New_York
+Persistent=true
+RandomizedDelaySec=15m
+AccuracySec=1m
+Unit=astrolineage-arxiv-daily.service
+
+[Install]
+WantedBy=timers.target

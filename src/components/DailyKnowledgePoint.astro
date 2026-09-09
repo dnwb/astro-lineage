@@ -1,0 +1,62 @@
+---
+import ReaderText from "./ReaderText.astro";
+
+type AnyRecord = Record<string, any>;
+
+interface Props {
+  point: AnyRecord;
+}
+
+const { point } = Astro.props;
+const source = point.source as AnyRecord;
+---
+
+<article class="panel knowledge-point" id={point.id}>
+  <p class="section-kicker">今日知识点 / Knowledge point</p>
+  <h3>{point.title}</h3>
+  <p class="radar-coverage"><strong>实际阅读范围：</strong>{source.label}；版本 {source.source_version}；检查材料：{source.inspected_sections.join("、")}。</p>
+  <h4>为什么值得理解</h4>
+  <p><ReaderText text={point.why_it_matters} /></p>
+  <h4>物理图像</h4>
+  <p><ReaderText text={point.physical_picture} /></p>
+  <h4>假设与符号</h4>
+  <ul class="reading-list">
+    {point.assumptions.map((value: string) => <li><ReaderText text={value} /></li>)}
+  </ul>
+  <dl class="dense-definitions">
+    {point.symbols.map((symbol: AnyRecord) => (
+      <>
+        <dt><ReaderText text={symbol.symbol} /></dt>
+        <dd><ReaderText text={symbol.meaning} /></dd>
+      </>
+    ))}
+  </dl>
+  <h4>关键推导</h4>
+  <ol class="knowledge-derivation">
+    {point.derivation.map((step: AnyRecord) => (
+      <li>
+        <p class="record-label"><span class="tag">{step.kind === "paper" ? "论文原式/原文" : "教学补充"}</span></p>
+        <ReaderText text={step.text} />
+      </li>
+    ))}
+  </ol>
+  <h4>量纲与极限检查</h4>
+  <ul class="reading-list">
+    {point.units_checks.map((value: string) => <li><ReaderText text={value} /></li>)}
+  </ul>
+  <h4>论文如何使用它</h4>
+  <p><ReaderText text={point.paper_use} /></p>
+  <h4>来源</h4>
+  <ul class="source-reference-list">
+    {point.source_references.map((reference: AnyRecord) => (
+      <li>
+        <a href={reference.url}>{reference.kind === "arxiv_source_package" ? "arXiv source" : "arXiv abstract"}</a>
+        <span>{reference.locator}</span>
+      </li>
+    ))}
+  </ul>
+  <h4>仍未核实</h4>
+  <ul class="reading-list">
+    {point.unresolved_checks.map((value: string) => <li><ReaderText text={value} /></li>)}
+  </ul>
+</article>

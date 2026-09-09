@@ -39,8 +39,72 @@ npm run arxiv:refresh
 npm run build
 ```
 
+`npm run arxiv:refresh` now fetches the complete arXiv announcement batch. The
+batch uses the official 14:00 submission-cutoff mapping in
+`America/New_York`: Sunday covers Thursday-to-Friday, Monday covers
+Friday-to-Monday, and Tuesday through Thursday cover the preceding day. Both
+boundaries are converted to the UTC format required by the arXiv API. The
+refresh follows Atom pagination serially, respects the API request interval on
+every retry, and publishes only after every page and the paired Radar edition
+have passed validation. `npm run arxiv:schedule` selects the latest batch whose
+20:00 announcement has completed and catches up a missed batch from Friday,
+Saturday, or early Monday.
+
+For a local systemd user timer, install the reviewed unit files and enable the
+timer:
+
+```bash
+mkdir -p ~/.config/systemd/user
+cp deploy/systemd/astrolineage-arxiv-daily.service ~/.config/systemd/user/
+cp deploy/systemd/astrolineage-arxiv-daily.timer ~/.config/systemd/user/
+systemctl --user daemon-reload
+systemctl --user enable --now astrolineage-arxiv-daily.timer
+```
+
+The timer runs Sun–Thu at 20:30 in `America/New_York`, after the usual
+announcement time, with a small randomized delay. Persistent timer recovery is
+resolved from the last successful batch, rather than from the day on which the
+process happens to restart. It only refreshes the local cache; static builds
+and CI remain offline and are run separately.
+
+Each production refresh also writes its raw Atom pages and an immutable
+manifest under `.cache/arxiv-daily/runs/<run-id>/`. The manifest records the
+query, announcement window, parser version, page URLs, byte lengths and SHA-256
+fingerprints. `run-state.json` keeps the last attempt, last success and last
+failure without replacing the last-good `src/data/arxiv-daily.json`. The seven
+newest terminal runs are retained; the run referenced by the current cache and
+the last successful state are always retained as well. Incomplete or unreadable
+runs are kept for diagnosis. Replay a published snapshot with:
+
+```bash
+npm run arxiv:replay -- --run-id=<run-id>
+```
+
+Replay verifies the recorded batch window, base query, generated page URLs,
+every raw page, and reconstructs the normalized entries without contacting
+arXiv. The cache payload records the run ID and relative manifest path, so a
+displayed edition can be traced back to its exact response files.
+
+The feed and Radar are committed together as an immutable generation through a
+single `current-generation.json` pointer. Existing JSON paths remain
+compatibility mirrors; the reader follows the pointer and therefore never
+combines mirrors from different refreshes. A complete generation is retained
+for recovery if a process stops before the pointer switch.
+
 The result is available at `/arxiv-daily/`; its Chinese editorial guides and
 original English abstracts share the same page-level language switch.
+
+### Formula rendering
+
+Formula source stays in TeX and is rendered at build time by the pinned KaTeX
+package with `htmlAndMathml` output. The built page contains KaTeX's local
+typeset HTML plus one semantic MathML tree with the original TeX annotation;
+the browser does not need MathJax/KaTeX JavaScript, a CDN, or a network
+conversion pass. Inline math stays in the sentence flow. Display math gets a
+centered viewport that keeps its typeset size and scrolls horizontally when it
+is wider than the reader. KaTeX's bundled fonts are copied into the static
+site by Astro. An unsupported TeX macro is kept as escaped source with a
+visible “公式暂未渲染” marker so it cannot be mistaken for a valid equation.
 
 For the validated static build, use the existing Astro preview server:
 

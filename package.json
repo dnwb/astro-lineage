@@ -9,6 +9,8 @@
   "scripts": {
     "dev": "node scripts/validate.mjs && astro dev",
     "arxiv:refresh": "node scripts/arxiv-daily.mjs",
+    "arxiv:replay": "node scripts/arxiv-daily.mjs --replay",
+    "arxiv:schedule": "node scripts/arxiv-daily-scheduler.mjs",
     "validate": "node scripts/validate.mjs",
     "test": "node --test --test-concurrency=1 tests/*.test.mjs",
     "check": "astro check",
@@ -17,6 +19,7 @@
   },
   "dependencies": {
     "astro": "6.4.8",
+    "katex": "0.16.25",
     "yaml": "2.9.0"
   },
   "devDependencies": {

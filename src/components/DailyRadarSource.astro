@@ -1,0 +1,17 @@
+---
+import ReaderText from "./ReaderText.astro";
+
+type AnyRecord = Record<string, any>;
+
+interface Props {
+  item: AnyRecord;
+}
+
+const { item } = Astro.props;
+---
+
+<details class="radar-source-detail">
+  <summary><span class="language-primary">原始摘要</span><span class="language-english" lang="en">Original abstract</span></summary>
+  <p class="language-english" lang="en"><ReaderText text={item.abstract} /></p>
+</details>
+<p class="radar-links"><a class="browse-link" href={item.url}>打开 arXiv 原文页面</a></p>

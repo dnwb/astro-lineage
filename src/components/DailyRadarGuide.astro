@@ -1,0 +1,99 @@
+---
+import ReaderText from "./ReaderText.astro";
+import { projectPotentialLineage } from "../../scripts/daily-radar.mjs";
+
+type AnyRecord = Record<string, any>;
+
+interface Props {
+  item: AnyRecord;
+  visibleWorkLinks: Record<string, { href: string; title: string }>;
+}
+
+const { item, visibleWorkLinks } = Astro.props;
+const record = item.analysis as AnyRecord;
+const guide = record.analysis as AnyRecord;
+const coverage = record.coverage as AnyRecord;
+const lineage = projectPotentialLineage(guide.potential_lineage, Object.keys(visibleWorkLinks)) as AnyRecord;
+const prerequisites = Array.isArray(guide.prerequisite_works)
+  ? guide.prerequisite_works.filter((prerequisite: AnyRecord) => visibleWorkLinks[prerequisite.work_id])
+  : [];
+const lineageCandidates = Array.isArray(lineage.candidates)
+  ? lineage.candidates.filter((candidate: AnyRecord) => visibleWorkLinks[candidate.target_work_id])
+  : [];
+const lineageChecks = Array.isArray(lineage.unresolved_checks) ? lineage.unresolved_checks : [];
+---
+
+<details class="radar-guide-detail">
+  <summary>展开科学导读 / Open scientific guide</summary>
+  <div class="radar-guide">
+    <p class="radar-coverage radar-coverage-expanded"><strong>实际阅读范围：</strong>{coverage.label}；版本 {coverage.source_version}；检查材料：{coverage.inspected_sections.join("、")}。</p>
+    <p class="record-label">分析来源：{guide.origin} · 分析时间：{guide.analyzed_at}</p>
+    <h4>研究问题</h4>
+    <p><ReaderText text={guide.problem} /></p>
+    <h4>核心假设</h4>
+    <ul class="reading-list">
+      {guide.assumptions.map((value: string) => <li><ReaderText text={value} /></li>)}
+    </ul>
+    <h4>结果与边界</h4>
+    <p><ReaderText text={guide.result} /></p>
+    <ul class="reading-list">
+      {guide.limits.map((value: string) => <li><ReaderText text={value} /></li>)}
+    </ul>
+    <h4>引用线索</h4>
+    <ul class="reading-list">
+      {guide.citation_leads.map((value: string) => <li><ReaderText text={value} /></li>)}
+    </ul>
+    <h4>研究进展（本期比较范围）</h4>
+    <p><ReaderText text={guide.research_progress} /></p>
+    <h4>Potential lineage</h4>
+    <p>{lineage.reason}</p>
+    <p class="record-label">状态：{lineage.status === "no_match" ? "当前材料未形成候选科学关系" : lineage.status}</p>
+    {lineageChecks.length > 0 ? (
+      <div>
+        <h5>关系核查待办</h5>
+        <ul class="reading-list">
+          {lineageChecks.map((value: string) => <li><ReaderText text={value} /></li>)}
+        </ul>
+      </div>
+    ) : null}
+    {prerequisites.length > 0 ? (
+      <div>
+        <h5>阅读前置</h5>
+        <ul class="reading-list">
+          {prerequisites.map((prerequisite: AnyRecord) => (
+            <li>
+              <a href={visibleWorkLinks[prerequisite.work_id].href}>{visibleWorkLinks[prerequisite.work_id].title}</a>
+              <span>：{prerequisite.reason}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    ) : null}
+    {lineageCandidates.length > 0 ? (
+      <div>
+        <h5>候选科学关系（待审核）</h5>
+        <ul class="reading-list">
+          {lineageCandidates.map((candidate: AnyRecord) => (
+            <li>
+              <span>候选论文 arXiv:{item.arxiv_id}v{item.revision} → {candidate.relation} → </span>
+              <a href={visibleWorkLinks[candidate.target_work_id].href}>{visibleWorkLinks[candidate.target_work_id].title}</a>
+              <span>：{candidate.delta}；支持位置：{candidate.support}; 未核查：{candidate.unresolved_checks}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    ) : null}
+    <h5>未完成核查</h5>
+    <ul class="reading-list">
+      {guide.unresolved_checks.map((value: string) => <li><ReaderText text={value} /></li>)}
+    </ul>
+    <ul class="source-reference-list">
+      {coverage.source_references.map((reference: AnyRecord) => (
+        <li>
+          <a href={reference.url}>{reference.kind === "arxiv_source_package" ? "arXiv source" : "arXiv abstract"}</a>
+          <span>{reference.locator}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+</details>

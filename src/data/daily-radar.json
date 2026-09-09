@@ -1,0 +1,454 @@
+{
+  "edition": {
+    "kind": "cached_first_edition",
+    "coverage_kind": "recent_submission_sample",
+    "note": "这是现有 arXiv API 缓存返回的最近提交样本，不是完整的当日新增集合。",
+    "analysis_note": "首期只对少量条目建立有效版本级导读；其余条目保持待分析。"
+  },
+  "analyses": [
+    {
+      "arxiv_id": "2609.04145",
+      "revision": 1,
+      "source_fingerprint": "225143295591206117fe8e76bee047ed455bb974e6a7d69c9904758628eaef3e",
+      "priority": "must_read",
+      "coverage": {
+        "level": "body_partial",
+        "label": "已检查 arXiv v1 正文指定部分：Introduction、Model、Results、Comparison with Chandra data、Discussion and limitations、Conclusions；附录未检查。",
+        "source_version": "arXiv:2609.04145v1",
+        "inspected_sections": [
+          "Abstract",
+          "Introduction",
+          "Model",
+          "Results",
+          "Comparison with Chandra data",
+          "Discussion and limitations",
+          "Conclusions"
+        ],
+        "source_material": "arXiv source package / cached Atom abstract",
+        "source_references": [
+          {
+            "kind": "arxiv_abstract",
+            "url": "https://arxiv.org/abs/2609.04145v1",
+            "locator": "Abstract",
+            "description": "缓存 Atom feed 中保留的原始英文摘要"
+          },
+          {
+            "kind": "arxiv_source_package",
+            "url": "https://arxiv.org/src/2609.04145v1",
+            "locator": "Arxived.tex: Introduction, Model, Results, Comparison with Chandra data, Discussion and limitations, Conclusions",
+            "sha256": "7348d98bec0978b2bbb33f5505f0ac2541366f7349f2d1de62c4bccc5fa80c0d",
+            "description": "实际下载并检查的 arXiv source package；主 TeX 文件 sha256=ca8bcd5101a98052f6b07d792155a2b1891d4e574594aed050172d6f86755f0a"
+          }
+        ]
+      },
+      "analysis": {
+        "origin": "manual",
+        "analyzed_at": "2026-09-07T12:00:00Z",
+        "reason": "它直接提供一个可检验的低角动量磁化吸积流能量预算问题，适合先读以判断模型假设与观测比较是否能支撑当前的高能瞬变阅读。",
+        "result": "正文的能量预算比较显示，在采用给定吸积率和 bolometric correction 时，弱耀斑需要约 $10^{-3}$--$10^{-2}$ 的转换效率，中等耀斑需要几个百分点；最强耀斑可能需要额外磁耗散。这个结论是数量级能量允许性检验，不是逐耀斑光变模型。",
+        "reading_entry": "先读 Model 了解定常、轴对称和 Kerr 流假设，再读 Results 的 Energy budget estimate 与 Comparison with Chandra data；最后看 Discussion and limitations 的适用边界。",
+        "problem": "论文要回答：低角动量磁化吸积流中的驻立激波，是否有足够的下游能量储备来容纳 Sgr A* 弱到中等 X 射线耀斑的辐射能？",
+        "assumptions": [
+          "吸积流被处理为定常、轴对称的理想 GRMHD 流。",
+          "Sgr A* 质量取 $4.2\\times10^6M_{\\odot}$；$a_k=0.94$ 是模型基准值，另以 $a_k=0.5$ 做敏感性比较。",
+          "耀斑持续时间与震波位置到视界的声波穿越时间建立工作性对应。"
+        ],
+        "limits": [
+          "模型是能量预算估计，不预测单个耀斑的完整光变或光谱。",
+          "转换效率随 bolometric correction 和吸积率的选择变化；热能、磁能及粒子微观过程未被显式纳入。",
+          "全文主章节已检查，但附录和每条推导的独立复核尚未完成。"
+        ],
+        "citation_leads": [
+          "“弱耀斑需要 $\\epsilon\\sim10^{-3}$--$10^{-2}$，中等耀斑需要几个百分点”——Abstract；可支持摘要层结果概括。",
+          "“neither timescale is interpreted as an exact observer-frame flare duration”——Discussion and limitations；可支持持续时间映射的限制说明。",
+          "“The present work should be interpreted as an energy-budget test rather than a complete time-dependent emission model”——Discussion and limitations；可支持结论边界。"
+        ],
+        "research_progress": "仅与本期缓存中的高能天体物理候选作阅读优先级比较；这不是完整领域综述，也没有据此修改 canonical Works。",
+        "unresolved_checks": [
+          "未逐项复算 source package 中的数值表格和附录结果。",
+          "未独立验证 Chandra flare catalogue 的观测输入。"
+        ],
+        "prerequisite_works": [
+          {
+            "work_id": "work:long-yu-2026",
+            "reason": "可先用组内已可见的动态喷流模型练习“模型假设—结果—边界”的读法；这是教学上的阅读前置，不表示两篇论文存在正式科学关系。"
+          }
+        ],
+        "potential_lineage": {
+          "status": "no_match",
+          "reason": "正文主题是 Sgr A* 低角动量吸积震波；当前已检查材料不足以把它与现有 Work 的科学 Delta 建立为候选关系。",
+          "candidates": [],
+          "unresolved_checks": [
+            "需要双方正文证据才能判断与组内喷流/瞬变 Work 是否存在可表达的关系。"
+          ]
+        }
+      }
+    },
+    {
+      "arxiv_id": "2609.04130",
+      "revision": 1,
+      "source_fingerprint": "091a9608998052d30c4ca0e8753691266681861e3c45162932a284a9d7537d45",
+      "priority": "worth_knowing",
+      "coverage": {
+        "level": "abstract_only",
+        "label": "仅检查 arXiv v1 摘要；正文未检查。",
+        "source_version": "arXiv:2609.04130v1",
+        "inspected_sections": [
+          "Abstract"
+        ],
+        "source_material": "缓存 arXiv Atom 摘要",
+        "source_references": [
+          {
+            "kind": "arxiv_abstract",
+            "url": "https://arxiv.org/abs/2609.04130v1",
+            "locator": "Abstract",
+            "description": "缓存 Atom feed 中保留的原始英文摘要"
+          }
+        ]
+      },
+      "analysis": {
+        "origin": "manual",
+        "analyzed_at": "2026-09-07T12:00:00Z",
+        "reason": "它涉及射电星系吸积性质，但对当前阅读焦点的直接影响低于今天先读的 Sgr A* 能量预算候选。",
+        "result": "摘要称，低激发射电星系的平均 X 射线光度及按恒星质量归一化的光度低于高激发和射电宁静 AGN，且固定红移下射电与 X 射线辐射的联系较弱；正文样本、统计方法和限制尚未核查。",
+        "reading_entry": "先读摘要和原文入口；若要使用样本或统计结论，需转向正文的数据与方法章节。",
+        "problem": "摘要试图比较不同射电星系激发类别的 X 射线吸积性质。",
+        "assumptions": [
+          "摘要报告的是观测样本比较，但样本选择与质量控制未检查。"
+        ],
+        "limits": [
+          "没有检查正文方法、样本定义、误差处理和图表。"
+        ],
+        "citation_leads": [
+          "摘要中的类别差异描述——Abstract；只能支持摘要层转述，不能支持完整统计复核。"
+        ],
+        "research_progress": "只在当前 20 条缓存样本内作相对阅读排序，不能代表射电 AGN 全领域进展。",
+        "unresolved_checks": [
+          "正文样本与统计显著性待核查。"
+        ],
+        "prerequisite_works": [],
+        "potential_lineage": {
+          "status": "no_match",
+          "reason": "当前材料只支持本条论文的内容判断，未足以提出候选科学关系。",
+          "unresolved_checks": [
+            "未完成与现有 Work 的双方正文对读。"
+          ],
+          "candidates": []
+        }
+      }
+    },
+    {
+      "arxiv_id": "2609.04118",
+      "revision": 1,
+      "source_fingerprint": "b015949ed29cdbb5d1dd86cd99aac2ccabd5abe3a77c7d82dfb3c7675e41e49d",
+      "priority": "worth_knowing",
+      "coverage": {
+        "level": "abstract_only",
+        "label": "仅检查 arXiv v1 摘要；正文未检查。",
+        "source_version": "arXiv:2609.04118v1",
+        "inspected_sections": [
+          "Abstract"
+        ],
+        "source_material": "缓存 arXiv Atom 摘要",
+        "source_references": [
+          {
+            "kind": "arxiv_abstract",
+            "url": "https://arxiv.org/abs/2609.04118v1",
+            "locator": "Abstract",
+            "description": "缓存 Atom feed 中保留的原始英文摘要"
+          }
+        ]
+      },
+      "analysis": {
+        "origin": "manual",
+        "analyzed_at": "2026-09-07T12:00:00Z",
+        "reason": "它提供近邻椭圆星系中 FRB 搜索的观测线索，可帮助了解磁星 FRB 候选的环境判别，但暂不改变当前模型工作。",
+        "result": "摘要称，FRB 20240817A 虽位于 M49 方向，扣除银河系、室女座星系团和 M49 热气晕的前景电子柱密度后更可能是背景事件；搜索也给出了球状星团活动源爆发率上限。正文的定位、DM 分解和统计上限计算尚未核查。",
+        "reading_entry": "先读摘要与原文入口；正文开始位置、观测设置和 DM 预算待核查。",
+        "problem": "论文要回答：定向寻找椭圆星系磁星时，事件是否与目标星系或其球状星团相关？",
+        "assumptions": [
+          "摘要结论依赖色散量和前景分解，但具体模型未检查。"
+        ],
+        "limits": [
+          "不能仅凭摘要确认事件归属或爆发率上限的统计置信度。"
+        ],
+        "citation_leads": [
+          "关于 FRB 20240817A 更可能是背景事件的句子——Abstract；正文定位与前景模型待核实。"
+        ],
+        "research_progress": "仅与当前缓存候选和组内已有 FRB 阅读入口作发现层比较，不作新的 FRB 领域结论。",
+        "unresolved_checks": [
+          "正文观测与 DM 分解待核查。"
+        ],
+        "prerequisite_works": [],
+        "potential_lineage": {
+          "status": "no_match",
+          "reason": "当前材料只支持本条论文的内容判断，未足以提出候选科学关系。",
+          "unresolved_checks": [
+            "未完成与现有 Work 的双方正文对读。"
+          ],
+          "candidates": []
+        }
+      }
+    },
+    {
+      "arxiv_id": "2609.04051",
+      "revision": 1,
+      "source_fingerprint": "a82bb163098c73723b6462397298b56908a805cdcb0b7dcf9b4d707013adcedb",
+      "priority": "worth_knowing",
+      "coverage": {
+        "level": "abstract_only",
+        "label": "仅检查 arXiv v1 摘要；正文未检查。",
+        "source_version": "arXiv:2609.04051v1",
+        "inspected_sections": [
+          "Abstract"
+        ],
+        "source_material": "缓存 arXiv Atom 摘要",
+        "source_references": [
+          {
+            "kind": "arxiv_abstract",
+            "url": "https://arxiv.org/abs/2609.04051v1",
+            "locator": "Abstract",
+            "description": "缓存 Atom feed 中保留的原始英文摘要"
+          }
+        ]
+      },
+      "analysis": {
+        "origin": "manual",
+        "analyzed_at": "2026-09-07T12:00:00Z",
+        "reason": "它把 Sgr A*、磁 Penrose 过程和 PeV 多信使预测放在一起，具有研究关联，但其核反应模型和可探测性边界还需正文检查。",
+        "result": "摘要称，作者计算吸积流核反应产生的中子谱并追踪 Kerr 时空中的中子运动，得到可达 PeV 能量的质子及可由未来探测器检验的伽马射线和中微子信号；模型细节与预测归因尚未核查。",
+        "reading_entry": "先读摘要；若要判断能谱、源区和探测器预测，需检查正文模型、结果图和限制。",
+        "problem": "论文要回答：磁 Penrose 过程是否能让 Sgr A* 成为银河系 PeVatron？",
+        "assumptions": [
+          "摘要提到 Kerr 时空和吸积流核反应；参数与几何未检查。"
+        ],
+        "limits": [
+          "不能把摘要中的 PeV 预测当作已验证的观测预言。"
+        ],
+        "citation_leads": [
+          "关于质子能量与未来探测器检验的句子——Abstract；正文能谱和响应折叠待核实。"
+        ],
+        "research_progress": "在本期缓存内按 Sgr A* 与多信使主题排序；未与完整银河系 PeVatron 文献集比较。",
+        "unresolved_checks": [
+          "正文核反应网络、粒子输运和探测器预测待核查。"
+        ],
+        "prerequisite_works": [],
+        "potential_lineage": {
+          "status": "no_match",
+          "reason": "当前材料只支持本条论文的内容判断，未足以提出候选科学关系。",
+          "unresolved_checks": [
+            "未完成与现有 Work 的双方正文对读。"
+          ],
+          "candidates": []
+        }
+      }
+    },
+    {
+      "arxiv_id": "2609.04077",
+      "revision": 1,
+      "source_fingerprint": "90abda80b0087d4f6ee5d11cc708a5b6e23ab05532480ec156626feb57aa6633",
+      "priority": "skip",
+      "coverage": {
+        "level": "abstract_only",
+        "label": "仅检查 arXiv v1 摘要；正文未检查。",
+        "source_version": "arXiv:2609.04077v1",
+        "inspected_sections": [
+          "Abstract"
+        ],
+        "source_material": "缓存 arXiv Atom 摘要",
+        "source_references": [
+          {
+            "kind": "arxiv_abstract",
+            "url": "https://arxiv.org/abs/2609.04077v1",
+            "locator": "Abstract",
+            "description": "缓存 Atom feed 中保留的原始英文摘要"
+          }
+        ]
+      },
+      "analysis": {
+        "origin": "manual",
+        "analyzed_at": "2026-09-07T12:00:00Z",
+        "reason": "本期暂不优先：它是 Sgr A* 的参考系与伴星约束研究，和当前导读关注的能量预算/多信使产生机制距离较远。",
+        "result": "摘要称，Gaia-CRF3 中的红外对应体自行与加速度上限排除了约 $4\\times10^4M_{\\odot}$ 以上、位于约 $0.01$ pc 内的中等质量黑洞伴星，并预测 Gaia DR4 会进一步收紧限制；数据处理和置信界限尚未核查。",
+        "reading_entry": "暂保留原摘要和 arXiv 入口；若研究问题转向 Sgr A* 动力学约束，再检查正文的参考系与系统误差。",
+        "problem": "论文要回答：红外对应体的绝对运动能对 Sgr A* 附近的中等质量黑洞伴星施加什么限制？",
+        "assumptions": [
+          "摘要给出的是天体测量约束，具体误差模型未检查。"
+        ],
+        "limits": [
+          "不能据摘要复述完整统计置信度或 Gaia DR4 预测细节。"
+        ],
+        "citation_leads": [
+          "关于伴星质量与轨道尺度约束的句子——Abstract；正文数据处理待核实。"
+        ],
+        "research_progress": "只相对于当前缓存的研究焦点排序；不是对该工作的科学质量评价。",
+        "unresolved_checks": [
+          "正文天体测量模型和系统误差待核查。"
+        ],
+        "prerequisite_works": [],
+        "potential_lineage": {
+          "status": "no_match",
+          "reason": "当前材料只支持本条论文的内容判断，未足以提出候选科学关系。",
+          "unresolved_checks": [
+            "未完成与现有 Work 的双方正文对读。"
+          ],
+          "candidates": []
+        }
+      }
+    },
+    {
+      "arxiv_id": "2609.03859",
+      "revision": 1,
+      "source_fingerprint": "bbe66575c6016aa299bb81497dd1b09c769748db48298398d746098ffa6262ba",
+      "priority": "skip",
+      "coverage": {
+        "level": "abstract_only",
+        "label": "仅检查 arXiv v1 摘要；正文未检查。",
+        "source_version": "arXiv:2609.03859v1",
+        "inspected_sections": [
+          "Abstract"
+        ],
+        "source_material": "缓存 arXiv Atom 摘要",
+        "source_references": [
+          {
+            "kind": "arxiv_abstract",
+            "url": "https://arxiv.org/abs/2609.03859v1",
+            "locator": "Abstract",
+            "description": "缓存 Atom feed 中保留的原始英文摘要"
+          }
+        ]
+      },
+      "analysis": {
+        "origin": "manual",
+        "analyzed_at": "2026-09-07T12:00:00Z",
+        "reason": "本期暂不优先：它是 O4 认识的综述性目录，信息范围广但不能直接推进当前候选的具体模型阅读。",
+        "result": "摘要称，随着探测事件增加，群体分析可以约束致密双星形成、引力理论偏离和宇宙膨胀，并揭示多个源族群；完整目录范围、选择效应和每项结论的证据尚未核查。",
+        "reading_entry": "如果需要 O4 背景，再从摘要进入综述正文和引用；本期先保留原文入口。",
+        "problem": "综述试图整理 O4 对致密双星群体与基本物理的主要认识。",
+        "assumptions": [
+          "这是摘要对综述范围的概括，不能替代逐项文献检查。"
+        ],
+        "limits": [
+          "没有检查综述的源表、统计方法或选择效应讨论。"
+        ],
+        "citation_leads": [
+          "关于 O4 群体分析能约束多个问题的句子——Abstract；具体证据范围待核实。"
+        ],
+        "research_progress": "只在当前 20 条缓存中按与当前研究焦点的直接性排序，不能代表 O4 文献全貌。",
+        "unresolved_checks": [
+          "综述正文与引用范围待核查。"
+        ],
+        "prerequisite_works": [],
+        "potential_lineage": {
+          "status": "no_match",
+          "reason": "当前材料只支持本条论文的内容判断，未足以提出候选科学关系。",
+          "unresolved_checks": [
+            "未完成与现有 Work 的双方正文对读。"
+          ],
+          "candidates": []
+        }
+      }
+    }
+  ],
+  "knowledge_points": [
+    {
+      "id": "knowledge-point:2609.04145-shock-energy-budget",
+      "title": "驻立激波怎样变成一个能量预算约束？",
+      "why_it_matters": "这篇论文的核心判断不是直接拟合某一次耀斑，而是先问震波后的流体是否拥有足够的能量储备。把能量密度、体积、观测辐射能和转换效率分开，有助于读者看清“能量上允许”与“完整辐射机制成立”之间的差别。",
+      "physical_picture": "上游超声速流经过驻立激波后减速、压缩并加热，下游形成更厚、更热的区域。论文用这个下游区域的局部动能损失估计一个可用能量库，再与观测耀斑所需辐射能比较。",
+      "assumptions": [
+        "流体采用定常、轴对称的低角动量磁化吸积模型。",
+        "这里的推导只整理论文的数量级能量估计；没有把热能、磁能和粒子辐射微观过程补进能量库。",
+        "声波穿越时间只是把定常模型与耀斑持续时间相连的工作性映射，不是精确的观测时标。"
+      ],
+      "symbols": [
+        {
+          "symbol": "$\\delta e_{\\rm sh}$",
+          "meaning": "震波前后局部可用动能密度差的数量级估计。"
+        },
+        {
+          "symbol": "$R$",
+          "meaning": "论文定义的压缩比，约为 $\\rho_+H_+/(\\rho_-H_-)$。"
+        },
+        {
+          "symbol": "$E_{\\rm sh}$",
+          "meaning": "下游流体中可用震波能量储备的估计。"
+        },
+        {
+          "symbol": "$E_{\\rm data}$",
+          "meaning": "用观测 X 射线光度、持续时间和 bolometric correction 估计的辐射能。"
+        },
+        {
+          "symbol": "$\\epsilon$",
+          "meaning": "所需震波能量到辐射能的转换分数 $E_{\\rm data}/E_{\\rm sh}$。"
+        }
+      ],
+      "derivation": [
+        {
+          "kind": "paper",
+          "text": "论文在 Results > Energy budget estimate 中从局部 ram-pressure 能量差开始：$$\\delta e_{\\rm sh}\\propto\\rho_-v_-^2-\\rho_+v_+^2.$$"
+        },
+        {
+          "kind": "paper",
+          "text": "论文使用压缩比 $R$、质量流连续条件 $[\\rho u^r]=0$ 和厚度比 $\\Delta H=H_+/H_-$，将上式写成：$$\\delta e_{\\rm sh}\\propto\\rho_-v_-^2\\left(1-\\frac{\\Delta H}{R}\\frac{\\gamma_{v_-}^2}{\\gamma_{v_+}^2}\\right).$$"
+        },
+        {
+          "kind": "paper",
+          "text": "论文在 Results > Energy budget estimate 的 Eq. (fluence) 中将局部能量密度估计乘以准球形震波后区体积，并写出能量储备原式：$$E_{\\rm sh}\\equiv4\\pi\\rho_-v_-^2\\left(1-\\frac{\\Delta H}{R}\\frac{\\gamma_{v_-}^2}{\\gamma_{v_+}^2}\\right)r_{\\rm sh}^2H_+\\times M_{\\rm BH}c^2.$$"
+        },
+        {
+          "kind": "teaching",
+          "text": "教学补充：把 $r_{\\rm sh}^2H_+$ 看作特征体积尺度，再乘以能量密度和单位换算，可以先做量纲检查；这是对论文原式的解释性拆解，不是作者额外给出的独立推导。"
+        },
+        {
+          "kind": "paper",
+          "text": "论文把观测辐射能写成 $E_{\\rm data}=f_{\\rm bol}L_{\\rm X}\\tau_{\\rm obs}$，然后定义所需转换分数：$$\\epsilon=\\frac{E_{\\rm data}}{E_{\\rm sh}}.$$"
+        },
+        {
+          "kind": "teaching",
+          "text": "教学补充：$\\epsilon<1$ 只说明在该估计器下能量储备足以容纳观测辐射能；它不等于模型已经解释了光变、光谱或辐射效率的时间演化。"
+        }
+      ],
+      "units_checks": [
+        "$E_{\\rm sh}$ 和 $E_{\\rm data}$ 都是能量，因而 $\\epsilon$ 无量纲。",
+        "$r_{\\rm sh}^2H_+$ 给出长度三次方；与能量密度和单位换算相乘后才得到能量。",
+        "当 $E_{\\rm data}$ 增大而 $E_{\\rm sh}$ 固定时，$\\epsilon$ 线性增大；这与论文说明 bolometric correction 的不确定性会线性传播一致。"
+      ],
+      "paper_use": "论文用这个估计器将不同震波分支与 Chandra 耀斑目录的持续时间和能量需求相比较。正文结论是弱耀斑通常只需约 $10^{-3}$--$10^{-2}$ 的效率，中等耀斑需几个百分点；最强事件可能需要额外磁耗散。",
+      "source_references": [
+        {
+          "kind": "arxiv_source_package",
+          "url": "https://arxiv.org/src/2609.04145v1",
+          "locator": "Arxived.tex: Results > Energy budget estimate；Comparison with Chandra data；Discussion and limitations",
+          "sha256": "7348d98bec0978b2bbb33f5505f0ac2541366f7349f2d1de62c4bccc5fa80c0d"
+        },
+        {
+          "kind": "arxiv_abstract",
+          "url": "https://arxiv.org/abs/2609.04145v1",
+          "locator": "Abstract"
+        }
+      ],
+      "unresolved_checks": [
+        "没有逐项复算论文数值表格和附录中的同一估计。",
+        "没有独立验证 Chandra 目录数据、光谱假设和真实耀斑辐射效率。"
+      ],
+      "source": {
+        "arxiv_id": "2609.04145",
+        "revision": 1,
+        "source_fingerprint": "225143295591206117fe8e76bee047ed455bb974e6a7d69c9904758628eaef3e",
+        "source_version": "arXiv:2609.04145v1",
+        "level": "body_partial",
+        "label": "已检查 arXiv v1 正文指定部分",
+        "inspected_sections": [
+          "Abstract",
+          "Introduction",
+          "Model",
+          "Results > Energy budget estimate",
+          "Comparison with Chandra data",
+          "Discussion and limitations",
+          "Conclusions"
+        ]
+      }
+    }
+  ]
+}

@@ -540,7 +540,7 @@ test("production discovery, indexes, and reader projections stay isolated from f
   const snapshot = await loadCanonicalContent(productionContent);
   const discovery = await discoverCanonicalContent(productionContent);
   assert.equal(snapshot.works.filter((work) => work.files["work.yaml"]?.reader_state === "visible").length, 5);
-  assert.equal(snapshot.works.length, 35);
+  assert.equal(snapshot.works.length, 41);
   assert.equal(snapshot.researchLines.length, 7);
   assert.equal(snapshot.learningPaths.length, 5);
   assert.equal(discovery.diagnostics.length, 0);

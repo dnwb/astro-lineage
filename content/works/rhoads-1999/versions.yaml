@@ -1,0 +1,40 @@
+work_id: work:rhoads-1999
+versions:
+  - id: version:rhoads-1999-arxiv-v1
+    kind: arxiv_revision
+    title: The Dynamics and Light Curves of Beamed Gamma-Ray Burst Afterglows
+    authors:
+      - display_name: James E. Rhoads
+    release_date:
+      value: 1999-03-12
+      precision: day
+    access_urls:
+      - kind: arxiv
+        url: https://arxiv.org/abs/astro-ph/9903399
+    arxiv_id: astro-ph/9903399
+    arxiv_revision: 1
+    field_sources:
+      /title:
+        - source:arxiv-baseline-rhoads-1999-20260920
+      /authors/0/display_name:
+        - source:arxiv-baseline-rhoads-1999-20260920
+      /release_date/value:
+        - source:arxiv-baseline-rhoads-1999-20260920
+      /release_date/precision:
+        - source:arxiv-baseline-rhoads-1999-20260920
+      /access_urls/0/kind:
+        - source:arxiv-baseline-rhoads-1999-20260920
+      /access_urls/0/url:
+        - source:arxiv-baseline-rhoads-1999-20260920
+      /arxiv_id:
+        - source:arxiv-baseline-rhoads-1999-20260920
+      /arxiv_revision:
+        - source:arxiv-baseline-rhoads-1999-20260920
+bibliographic_sources:
+  - id: source:arxiv-baseline-rhoads-1999-20260920
+    provider: arxiv
+    record_id: astro-ph/9903399
+    source_url: https://arxiv.org/abs/astro-ph/9903399
+    retrieved_at: 2026-09-20T05:00:00Z
+publication_relations: []
+bibliographic_discrepancies: []

@@ -23,9 +23,9 @@ test("the baseline projection includes only the marked candidate catalogue", asy
   const snapshot = await loadCanonicalContent(new URL("../content/", import.meta.url));
   const reader = projectBaselineSnapshot(snapshot);
 
-  assert.equal(reader.works.length, 35);
+  assert.equal(reader.works.length, 41);
   assert.equal(reader.works.filter((work) => work.reader_status === "published").length, 5);
-  assert.equal(reader.works.filter((work) => work.reader_status === "candidate").length, 30);
+  assert.equal(reader.works.filter((work) => work.reader_status === "candidate").length, 36);
   assert.equal(reader.research_lines.length, 7);
   assert.equal(reader.research_lines.filter((line) => line.reader_status === "candidate").length, 4);
   assert.equal(reader.learning_paths.length, 5);
@@ -44,7 +44,7 @@ test("the reader exposes the complete baseline with candidate status and navigat
   const lines = await readFile(new URL("research-lines/index.html", distRoot), "utf8");
   const paths = await readFile(new URL("learning-paths/index.html", distRoot), "utf8");
 
-  assert.match(home, /35 篇基准论文/u);
+  assert.match(home, /41 篇基准论文/u);
   assert.match(home, /7 个研究方向/u);
   assert.match(home, /5 条学习路径/u);
   assert.doesNotMatch(home, /5 篇可见论文/u);
@@ -52,13 +52,13 @@ test("the reader exposes the complete baseline with candidate status and navigat
   assert.match(home, /href="\/research-lines\/baseline-jet-multimessenger\/"/u);
   assert.match(home, /href="\/learning-paths\/baseline-jet-foundations\/"/u);
 
-  assert.match(papers, /35 篇基准文献/u);
-  assert.match(papers, /30 篇候选基准/u);
+  assert.match(papers, /41 篇基准文献/u);
+  assert.match(papers, /36 篇候选基准/u);
   assert.match(papers, /流体动力学/u);
   assert.match(papers, /候选基准/u);
   assert.match(papers, /Read it to connect self-similar relativistic blast-wave dynamics/u);
   assert.match(papers, /href="\/papers\/blandford-mckee-1976\/"/u);
-  assert.equal((papers.match(/>阅读论文<\/a>/gu) ?? []).length, 35);
+  assert.equal((papers.match(/>阅读论文<\/a>/gu) ?? []).length, 41);
 
   assert.match(lines, /7 个研究方向/u);
   assert.match(lines, /基准研究方向/u);

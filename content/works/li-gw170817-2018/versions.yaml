@@ -1,0 +1,49 @@
+work_id: work:li-gw170817-2018
+versions:
+  - id: version:li-gw170817-2018-arxiv-v1
+    kind: arxiv_revision
+    title: What Powered the Optical Transient AT2017gfo Associated with GW170817?
+    authors:
+      - display_name: Shao-Ze Li
+      - display_name: Liang-Duan Liu
+      - display_name: Yun-Wei Yu
+      - display_name: Bing Zhang
+    release_date:
+      value: 2018-07-16
+      precision: day
+    access_urls:
+      - kind: arxiv
+        url: https://arxiv.org/abs/1804.06597v2
+    arxiv_id: "1804.06597"
+    arxiv_revision: 1
+    field_sources:
+      /title:
+        - source:arxiv-baseline-li-gw170817-2018-20260920
+      /authors/0/display_name:
+        - source:arxiv-baseline-li-gw170817-2018-20260920
+      /authors/1/display_name:
+        - source:arxiv-baseline-li-gw170817-2018-20260920
+      /authors/2/display_name:
+        - source:arxiv-baseline-li-gw170817-2018-20260920
+      /authors/3/display_name:
+        - source:arxiv-baseline-li-gw170817-2018-20260920
+      /release_date/value:
+        - source:arxiv-baseline-li-gw170817-2018-20260920
+      /release_date/precision:
+        - source:arxiv-baseline-li-gw170817-2018-20260920
+      /access_urls/0/kind:
+        - source:arxiv-baseline-li-gw170817-2018-20260920
+      /access_urls/0/url:
+        - source:arxiv-baseline-li-gw170817-2018-20260920
+      /arxiv_id:
+        - source:arxiv-baseline-li-gw170817-2018-20260920
+      /arxiv_revision:
+        - source:arxiv-baseline-li-gw170817-2018-20260920
+bibliographic_sources:
+  - id: source:arxiv-baseline-li-gw170817-2018-20260920
+    provider: arxiv
+    record_id: "1804.06597"
+    source_url: https://arxiv.org/abs/1804.06597v2
+    retrieved_at: 2026-09-20T05:00:00Z
+publication_relations: []
+bibliographic_discrepancies: []

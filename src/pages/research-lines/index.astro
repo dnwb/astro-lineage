@@ -13,6 +13,7 @@ const site = loadSiteConfig();
 const snapshot = await loadCanonicalContent(new URL("../../../content/", import.meta.url));
 const reader = projectBaselineSnapshot(snapshot) as Record<string, any>;
 const researchLines = (reader.research_lines ?? []) as AnyRecord[];
+const baselineWorks = (reader.works ?? []) as AnyRecord[];
 const publishedCount = researchLines.filter((line) => line.reader_status === "published").length;
 const candidateCount = researchLines.filter((line) => line.reader_status === "candidate").length;
 ---
@@ -34,7 +35,7 @@ const candidateCount = researchLines.filter((line) => line.reader_status === "ca
       <p class="eyebrow"><a href="/">{site.title}</a> · 研究方向索引</p>
       <h1>研究方向</h1>
       <p class="layer-intro">{researchLines.length} 个研究方向：{publishedCount} 个已审核，{candidateCount} 个基准研究方向</p>
-      <p class="reader-note">基准研究方向由本轮 35 篇文献的主题整理而来，当前作为候选规划展示，等待组内审核后再进入正式 reader。</p>
+      <p class="reader-note">基准研究方向由本轮 {baselineWorks.length} 篇文献的主题整理而来，当前作为候选规划展示，等待组内审核后再进入正式 reader。</p>
       {
         researchLines.length === 0 ? (
           <p class="empty-state">文献库中暂时没有可显示研究方向。</p>

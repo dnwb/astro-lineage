@@ -42,6 +42,12 @@ const expectedNewWorks = [
   ["work:metzger-2017", "metzger-2017"],
   ["work:zhang-frb-2023", "zhang-frb-2023"],
   ["work:khatami-kasen-2024", "khatami-kasen-2024"],
+  ["work:bu-hxmt-1a0535-2022", "bu-hxmt-1a0535-2022"],
+  ["work:du-bu-vela-x1-2026", "du-bu-vela-x1-2026"],
+  ["work:bu-extp-strong-gravity-2025", "bu-extp-strong-gravity-2025"],
+  ["work:dai-lu-1998", "dai-lu-1998"],
+  ["work:rhoads-1999", "rhoads-1999"],
+  ["work:li-gw170817-2018", "li-gw170817-2018"],
 ];
 
 const expectedFormulaByWork = new Map([
@@ -50,13 +56,19 @@ const expectedFormulaByWork = new Map([
   ["work:yu-gw-jet-2020", String.raw`h\sim10^{-26}-10^{-23}`],
   ["work:zhang-grb-radio-2022", String.raw`n=A_{\ast}R^{-k}`],
   ["work:zhu-bns-agn-2021", String.raw`10^{46}\,{\rm erg\,s^{-1}}`],
+  ["work:bu-hxmt-1a0535-2022", String.raw`\nu_{\rm QPO} \approx \nu_{\rm K}(r_0) - \nu_s`],
+  ["work:du-bu-vela-x1-2026", String.raw`E_{\rm CRSF} \approx 11.6\,{\rm keV}\,\left(\frac{B}{10^{12}\,{\rm G}}\right)(1+z)^{-1}`],
+  ["work:bu-extp-strong-gravity-2025", String.raw`r_{\rm ISCO} = f(a_*) \frac{GM}{c^2}`],
+  ["work:dai-lu-1998", String.raw`L_{\rm dip}(t) = L_0 \left(1 + \frac{t}{\tau}\right)^{-2}`],
+  ["work:rhoads-1999", String.raw`\theta(t) \sim \theta_0 + \frac{c_s}{c}\frac{1}{\Gamma(t)}`],
+  ["work:li-gw170817-2018", String.raw`E_{\rm rot} = \frac{1}{2} I \Omega_0^2 \approx 3\times 10^{52}\,{\rm erg}\,\left(\frac{P_0}{1\,{\rm ms}}\right)^{-2}`],
 ]);
 
-test("the baseline library contains the 30 newly scoped Work bundles as draft candidates", async () => {
+test("the baseline library contains the 36 newly scoped Work bundles as draft candidates", async () => {
   const snapshot = await loadCanonicalContent(contentRoot);
   const report = await validateCanonicalContent(contentRoot, { dataset: "baseline-library" });
   assert.equal(report.valid, true, JSON.stringify(report.diagnostics));
-  assert.equal(snapshot.works.length, 35);
+  assert.equal(snapshot.works.length, 41);
   let arxivSources = 0;
   let crossrefSources = 0;
   for (const [workId, slug] of expectedNewWorks) {
@@ -83,8 +95,8 @@ test("the baseline library contains the 30 newly scoped Work bundles as draft ca
       evidence.excerpt.trim().length > 0
     )), `${slug}/evidence fields`);
   }
-  assert.equal(arxivSources, 27);
-  assert.equal(crossrefSources, 3);
+  assert.equal(arxivSources, 30);
+  assert.equal(crossrefSources, 6);
 });
 
 test("each new baseline reading is bilingual, structurally complete, and contains renderable math", async () => {

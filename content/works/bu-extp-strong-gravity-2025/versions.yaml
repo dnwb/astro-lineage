@@ -1,0 +1,64 @@
+work_id: work:bu-extp-strong-gravity-2025
+versions:
+  - id: version:bu-extp-strong-gravity-2025-arxiv-v1
+    kind: arxiv_revision
+    title: Probing the strong gravity region of black holes with eXTP
+    authors:
+      - display_name: Qingcui Bu
+      - display_name: Cosimo Bambi
+      - display_name: Lijun Gou
+      - display_name: Yanjun Xu
+      - display_name: Phil Uttley
+      - display_name: Diego Altamirano
+      - display_name: Michiel van der Klis
+      - display_name: Andrea Santangelo
+      - display_name: Shuang-Nan Zhang
+    release_date:
+      value: 2025-06-12
+      precision: day
+    access_urls:
+      - kind: arxiv
+        url: https://arxiv.org/abs/2506.08105v1
+    arxiv_id: "2506.08105"
+    arxiv_revision: 1
+    field_sources:
+      /title:
+        - source:arxiv-baseline-bu-extp-strong-gravity-2025-20260920
+      /authors/0/display_name:
+        - source:arxiv-baseline-bu-extp-strong-gravity-2025-20260920
+      /authors/1/display_name:
+        - source:arxiv-baseline-bu-extp-strong-gravity-2025-20260920
+      /authors/2/display_name:
+        - source:arxiv-baseline-bu-extp-strong-gravity-2025-20260920
+      /authors/3/display_name:
+        - source:arxiv-baseline-bu-extp-strong-gravity-2025-20260920
+      /authors/4/display_name:
+        - source:arxiv-baseline-bu-extp-strong-gravity-2025-20260920
+      /authors/5/display_name:
+        - source:arxiv-baseline-bu-extp-strong-gravity-2025-20260920
+      /authors/6/display_name:
+        - source:arxiv-baseline-bu-extp-strong-gravity-2025-20260920
+      /authors/7/display_name:
+        - source:arxiv-baseline-bu-extp-strong-gravity-2025-20260920
+      /authors/8/display_name:
+        - source:arxiv-baseline-bu-extp-strong-gravity-2025-20260920
+      /release_date/value:
+        - source:arxiv-baseline-bu-extp-strong-gravity-2025-20260920
+      /release_date/precision:
+        - source:arxiv-baseline-bu-extp-strong-gravity-2025-20260920
+      /access_urls/0/kind:
+        - source:arxiv-baseline-bu-extp-strong-gravity-2025-20260920
+      /access_urls/0/url:
+        - source:arxiv-baseline-bu-extp-strong-gravity-2025-20260920
+      /arxiv_id:
+        - source:arxiv-baseline-bu-extp-strong-gravity-2025-20260920
+      /arxiv_revision:
+        - source:arxiv-baseline-bu-extp-strong-gravity-2025-20260920
+bibliographic_sources:
+  - id: source:arxiv-baseline-bu-extp-strong-gravity-2025-20260920
+    provider: arxiv
+    record_id: "2506.08105"
+    source_url: https://arxiv.org/abs/2506.08105v1
+    retrieved_at: 2026-09-20T05:00:00Z
+publication_relations: []
+bibliographic_discrepancies: []

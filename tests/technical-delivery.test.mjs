@@ -12,14 +12,19 @@ const paperSlugs = [
   "arnett-1982",
   "blandford-mckee-1976",
   "bromberg-2011",
+  "bu-extp-strong-gravity-2025",
+  "bu-hxmt-1a0535-2022",
   "chen-psr-b1259-2019",
   "chen-takata-binaries-2022",
   "chevalier-1982",
+  "dai-lu-1998",
+  "du-bu-vela-x1-2026",
   "du-frb-2026",
   "du-psr-j1932-2026",
   "dubus-2013",
   "kasen-bildsten-2010",
   "khatami-kasen-2024",
+  "li-gw170817-2018",
   "liu-csm-formalism-2020",
   "liu-fbot-2022",
   "liu-fbot-radio-2026",
@@ -28,6 +33,7 @@ const paperSlugs = [
   "long-yu-2026",
   "metzger-2017",
   "ni-dense-csm-2026",
+  "rhoads-1999",
   "sari-piran-narayan-1998",
   "tan-yu-2020",
   "transfit-2025",
@@ -132,9 +138,9 @@ test("technical delivery exposes the gated dev command, all baseline routes, and
   const papers = await readFile(join(distRoot, "papers", "index.html"), "utf8");
   const lines = await readFile(join(distRoot, "research-lines", "index.html"), "utf8");
   const paths = await readFile(join(distRoot, "learning-paths", "index.html"), "utf8");
-  assert.match(home, /35 篇基准论文/u);
+  assert.match(home, /41 篇基准论文/u);
   assert.match(home, /2 条科学关联/u);
-  assert.match(papers, /35 篇基准文献/u);
+  assert.match(papers, /41 篇基准文献/u);
   assert.match(lines, /7 个研究方向：3 个已审核/u);
   assert.match(paths, /5 条学习路径：1 条已审核/u);
   assert.doesNotMatch(allHtml.join("\n"), /<script/iu);

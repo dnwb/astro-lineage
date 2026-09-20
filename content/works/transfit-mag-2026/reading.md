@@ -8,61 +8,62 @@ work_id: work:transfit-mag-2026
 
 ### 中文导读
 
-它是阅读中心引擎、激波和扩散三者耦合关系的当前方法节点。
+它是磁星瞬变建模从“中心指定加热曲线”迈向“空间动力学激波与时间依赖辐射输运完全自洽耦合”的现代计算基石。解决了磁星风吹出膨胀气泡、激波扫过抛射物并在移动位置加热等前沿复杂物理问题。
 
 ### English reading note
 
-This Work matters because it studies coupling a magnetar wind nebula, forward shock, shock heating, and time-dependent diffusion. The reading note keeps its conclusions attached to the model, data, and scope described by the authors.
+The contemporary computational benchmark for magnetar transients. It moves beyond ad-hoc central heating curves to self-consistently couple magnetar-wind-inflated cavity dynamics, forward shock propagation, and time-dependent radiative diffusion.
 
 ## Problem
 
 ### 中文导读
 
-磁星注能、激波加热、绝热冷却和辐射扩散如何共同形成磁星驱动瞬变的早期峰和后期光变？
+磁星风驱动强前向激波穿过超新星抛射物时，激波加热位置随时间向外推移且伴随绝热功损耗，如何自洽模拟从早期激波破越到晚期扩散双峰或多峰光变的复杂演化？
 
 ### English reading note
 
-The paper asks how coupling a magnetar wind nebula, forward shock, shock heating, and time-dependent diffusion can be described and connected to an observable signal under the assumptions stated in the source.
+As a magnetar wind drives a forward shock outward through expanding ejecta, how can moving-boundary shock heating, adiabatic expansion losses, and non-steady diffusion be unified to compute multi-peaked light curves?
 
 ## Scientific takeaway
 
 ### 中文导读
 
-作者提出 TransFit-MAG，把扩散求解器与磁星风星云及其前向激波的动力学耦合，计算辐射能分布、光球演化和加热位置；不同参数可以产生双峰、部分合并峰或单一宽峰。 该模型中的一个代表性关系写作 $$\frac{\partial E}{\partial t} + \nabla\cdot F = Q_{\rm sd}-P\nabla\cdot v$$，它用于说明变量之间的物理联系，并不脱离本文的模型设定独立成立。
+构建了 TransFit-MAG 动态耦合框架，直接求解球坐标下包含中心能量注入与空间发散功的辐射能量方程 $$\frac{\partial E}{\partial t} + \nabla\cdot F = Q_{\rm sd}-P\nabla\cdot v$$，揭示了激波破越峰与扩散极大峰在不同参数下的合并、分立与形态跃迁规律，大幅提高了参数反演物理精度。
 
 ### English reading note
 
-The abstract and model report the result within that scope. A representative relation is $$\frac{\partial E}{\partial t} + \nabla\cdot F = Q_{\rm sd}-P\nabla\cdot v$$; it is retained as a model equation, not promoted to an unqualified universal law.
+Constructs the TransFit-MAG framework solving the coupled radiation diffusion equation $$\frac{\partial E}{\partial t} + \nabla\cdot F = Q_{\rm sd}-P\nabla\cdot v$$. Uncovers how forward shock heating interacts with photon escape to synthesize double peaks, merged shoulders, or broad luminous light curves.
 
 ## Assumptions
 
 ### 中文导读
 
-- 抛射物作同速膨胀，磁星风星云在其中膨胀并驱动前向激波。
-- 辐射输运由模型设定的时间依赖扩散近似描述。
-- 这里的参数范围、样本选择和辐射处方决定了可以从结果外推到哪里。
+- 抛射物作一维球对称同速膨胀，磁星风在抛射物内边界驱动无碰撞接触面与前向激波。
+- 辐射输运采用具有流限制器（Flux-limiter）的多层时间依赖扩散算法近似求解。
+- 磁星能量注入功率遵循自转减速形式，且注入能瞬间在激波内层热化为辐射压与动能。
 
 ### English reading note
 
-- The interpretation depends on the source model's geometry, dynamics, and radiation prescription.
-- The data selection and parameter range limit how far the reported result can be generalized.
+- 1D spherical homologous expansion with a magnetar wind driving an interior shock wave.
+- Radiative transfer handled via multi-grid, time-dependent diffusion with flux limiters.
+- Dipole spin-down energy is efficiently thermalized into radiation and mechanical expansion work.
 
 ## Scientific delta
 
 ### 中文导读
 
-相对于只指定中心加热曲线的模型，它把激波位置和磁星风星云动力学纳入扩散计算；峰形多样性仍是该模型参数空间中的结果。 它是候选基准 Work，尚未获得本项目的 Human visibility approval。
+取代了将磁星注能简单当作几何中心均匀点热源的 Arnett 式旧框架，首次在光变拟合中完整追踪了激波动力学位置随半径演化对扩散深度的动态调控。
 
 ### English reading note
 
-a self-consistent engine–shock–diffusion model that determines where heating occurs instead of prescribing only a central light curve. This candidate Work remains a draft until an independent Human review approves its final canonical snapshot.
+Replaces the simplistic central-point heating approximation with a rigorous spatial solver that tracks moving shock fronts and dynamic photon diffusion depths.
 
 ## Reason to read
 
 ### 中文导读
 
-它是阅读中心引擎、激波和扩散三者耦合关系的当前方法节点。
+课题组在磁星驱动瞬变方向的核心前沿方法文献；阅读时重点关注 Crank-Nicolson 隐式差分求解流动扩散方程的具体实现与双峰产生的判据条件。
 
 ### English reading note
 
-Read it to connect coupling a magnetar wind nebula, forward shock, shock heating, and time-dependent diffusion to a concrete calculation, and to inspect the assumptions before using its result in a broader scientific argument.
+Core methodological paper for our research group on magnetar modeling. Focus on the Crank-Nicolson implicit scheme solving moving-boundary energy diffusion.

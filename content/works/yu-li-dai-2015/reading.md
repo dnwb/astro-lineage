@@ -8,61 +8,62 @@ work_id: work:yu-li-dai-2015
 
 ### 中文导读
 
-它能帮助读者区分“同一中心引擎模型”与“不同前身系统”，适合接在并合新星之后阅读。
+它是将磁星中心引擎注能机制从双中子星并合推广到一类崭新宇宙快速高亮瞬变（FBOT/Fast Transients）的开创性工作。证明了新生快速自转中子星驱动低质量非相对论外流时，能自然解释传统超新星模型无法企及的数天极快上升与超高光度。
 
 ### English reading note
 
-This Work matters because it studies a rapidly spinning, highly magnetized neutron star powering a low-mass outflow. The reading note keeps its conclusions attached to the model, data, and scope described by the authors.
+A pioneering work generalizing magnetar injection to rapidly evolving luminous transients. It proves that newborn spinning neutron stars injecting energy into low-mass non-relativistic outflows naturally reproduce day-scale rise times and high luminosities.
 
 ## Problem
 
 ### 中文导读
 
-新发现的快速高亮瞬变，是否可以由新生中子星向低质量外流持续注能来解释？
+巡天发现的升温极快（数天内）、亮度极高（达 SLSN 级别）且快速衰退的奇异光学瞬变，其苛刻的光变时序与能谱如何通过常规前身星坍缩或吸积爆发加以统一解释？
 
 ### English reading note
 
-The paper asks how a rapidly spinning, highly magnetized neutron star powering a low-mass outflow can be described and connected to an observable signal under the assumptions stated in the source.
+What physical engine can generate extraordinary optical peaks within days followed by rapid decay, avoiding the severe timescale-luminosity constraints of standard core-collapse supernovae?
 
 ## Scientific takeaway
 
 ### 中文导读
 
-作者分析了低质量非相对论外流在新生中子星驱动下的辐射性质，并指出白矮星吸积诱发坍缩或双中子星并合都可提供候选形成通道。 该模型中的一个代表性关系写作 $$t_{\rm sd} = \frac{3c^3 I P_0^2}{4\pi^2 B_p^2 R_*^6}$$，它用于说明变量之间的物理联系，并不脱离本文的模型设定独立成立。
+指出当抛射物质量极低（$M_{\rm ej} \sim 10^{-2}-10^{-1}\,M_\odot$）时，扩散时标大幅缩短，结合自转减速时标 $$t_{\rm sd} = \frac{3c^3 I P_0^2}{4\pi^2 B_p^2 R_*^6}$$，磁星能够驱动出峰值光度高达 $10^{43}-10^{45}\,{\rm erg\,s^{-1}}$ 且仅持续几天的蓝光瞬变，并提出白矮星吸积诱发坍缩（AIC）或极度剥离包层坍缩等前身星通道。
 
 ### English reading note
 
-The abstract and model report the result within that scope. A representative relation is $$t_{\rm sd} = \frac{3c^3 I P_0^2}{4\pi^2 B_p^2 R_*^6}$$; it is retained as a model equation, not promoted to an unqualified universal law.
+Demonstrates that low ejecta mass ($M_{\rm ej} \sim 10^{-2}-10^{-1}\,M_\odot$) combined with spin-down timescale $$t_{\rm sd} = \frac{3c^3 I P_0^2}{4\pi^2 B_p^2 R_*^6}$$ produces blue optical peaks reaching $10^{43}-10^{45}\,{\rm erg\,s^{-1}}$ evolving within days, identifying accretion-induced collapse (AIC) as a viable progenitor.
 
 ## Assumptions
 
 ### 中文导读
 
-- 外流质量足够低，使能量注入和扩散时标都能产生快速光变。
-- 新生中子星的自转能与磁场强度决定注入时标和可用能量。
-- 这里的参数范围、样本选择和辐射处方决定了可以从结果外推到哪里。
+- 系统外流质量远低于常规铁芯坍缩超新星（数个太阳质量），通常在 $0.1\,M_\odot$ 以下。
+- 新生中子星具备强偶极场与毫秒初始自转，且旋转能释放主导了光变而非放射性衰变。
+- 物质膨胀接近亚相对论速度（$\sim 0.1-0.2\,c$），辐射转移保持球对称扩散近似。
 
 ### English reading note
 
-- The interpretation depends on the source model's geometry, dynamics, and radiation prescription.
-- The data selection and parameter range limit how far the reported result can be generalized.
+- Significantly depleted ejecta mass ($M_{\rm ej} < 0.1\,M_\odot$) compared to standard core collapse.
+- Newborn neutron star possesses millisecond period and magnetar-strength dipole field.
+- Sub-relativistic outflow expansion with quasi-spherical radiative diffusion.
 
 ## Scientific delta
 
 ### 中文导读
 
-这项工作把磁星驱动的并合新星思路推广到一类更宽的快速高亮瞬变，并把瞬变观测与中子星、白矮星和引力波物理联系起来。 它是候选基准 Work，尚未获得本项目的 Human visibility approval。
+解耦了“超亮超新星必须拥有巨大抛射物质量”的思维定势，确立了“低抛射物质量 + 强磁星注能 = 快速高亮瞬变”的新物理分支，直接启发了后续对 AT2018cow 等 FBOT 现象的理论解释。
 
 ### English reading note
 
-a broader class of rapidly evolving transients powered by newborn neutron stars, beyond one merger counterpart. This candidate Work remains a draft until an independent Human review approves its final canonical snapshot.
+Decouples extreme luminosity from massive ejecta, pioneering the 'low ejecta mass + magnetar engine = fast luminous transient' paradigm that directly inspired models for AT2018cow-like events.
 
 ## Reason to read
 
 ### 中文导读
 
-它能帮助读者区分“同一中心引擎模型”与“不同前身系统”，适合接在并合新星之后阅读。
+学习 FBOT 与致密天体爆发前沿的必读论文；重点关注低质量抛射物扩散时标 $t_{\rm diff} \propto M_{\rm ej}^{1/2}$ 如何决定光变陡峭上升与快速冷却演化。
 
 ### English reading note
 
-Read it to connect a rapidly spinning, highly magnetized neutron star powering a low-mass outflow to a concrete calculation, and to inspect the assumptions before using its result in a broader scientific argument.
+Critical paper for understanding fast optical transients. Focus on how the ejecta mass scaling $t_{\rm diff} \propto M_{\rm ej}^{1/2}$ dictates ultra-rapid rise times and subsequent bluing/cooling.

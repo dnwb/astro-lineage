@@ -8,61 +8,62 @@ work_id: work:tan-yu-2020
 
 ### 中文导读
 
-它适合建立喷流几何如何进入观测量和群体推断的基本概念。
+它是短伽马射线暴（SGRB）与双中子星并合引力波多信使天文学的关键群体推断文献。首次将结构化喷流（Structured Jet）的横向角向剖面与短暴本征光度函数、全天事件率进行了联合贝叶斯反演。
 
 ### English reading note
 
-This Work matters because it studies joint inference of short-GRB jet structure, viewing angle, and intrinsic luminosity. The reading note keeps its conclusions attached to the model, data, and scope described by the authors.
+A pivotal population synthesis study for short GRBs and neutron star merger multi-messenger astrophysics. It performs joint Bayesian inference linking structured jet angular profiles with the intrinsic short GRB luminosity function and cosmological rates.
 
 ## Problem
 
 ### 中文导读
 
-短伽马暴的观测光度分布，如何由喷流结构、视角效应和本征光度函数共同决定？
+由于双中子星并合喷流通常存在横向能量梯度（核心明亮而外翼暗淡），观测到的各向同性等效光度分布如何从视线几何效应与真正的天体物理本征发光能力中解耦？
 
 ### English reading note
 
-The paper asks how joint inference of short-GRB jet structure, viewing angle, and intrinsic luminosity can be described and connected to an observable signal under the assumptions stated in the source.
+Because relativistic jets possess transverse angular profiles rather than top-hat edges, how can observed short GRB luminosity distributions disentangle viewing-angle geometry from true intrinsic engine energetics?
 
 ## Scientific takeaway
 
 ### 中文导读
 
-作者研究具有普适结构的相对论喷流，并将喷流结构与短伽马暴本征光度函数及观测选择效应联合起来；推断结果依赖喷流结构和观测样本的假设。 该模型中的一个代表性关系写作 $$L_{\rm iso}(\theta_v) = 4\pi\,\frac{dE}{d\Omega}(\theta_v)\,\frac{1}{T}$$，它用于说明变量之间的物理联系，并不脱离本文的模型设定独立成立。
+建立了考虑观测选择效应与任意视角 $\theta_v$ 的结构化喷流投影公式 $$L_{\rm iso}(\theta_v) = 4\pi\,\frac{dE}{d\Omega}(\theta_v)\,\frac{1}{T}$$，通过蒙特卡洛抽样严格约束了短暴中心引擎本征破裂幂律光度函数，推断出近邻宇宙中子星并合产生的几何侧向暴事件率远高于正面对准事件。
 
 ### English reading note
 
-The abstract and model report the result within that scope. A representative relation is $$L_{\rm iso}(\theta_v) = 4\pi\,\frac{dE}{d\Omega}(\theta_v)\,\frac{1}{T}$$; it is retained as a model equation, not promoted to an unqualified universal law.
+Formulates the off-axis structured jet projection relation $$L_{\rm iso}(\theta_v) = 4\pi\,\frac{dE}{d\Omega}(\theta_v)\,\frac{1}{T}$$. Constrains the broken power-law intrinsic luminosity function and proves that local off-axis merger rates substantially exceed on-axis detections.
 
 ## Assumptions
 
 ### 中文导读
 
-- 短伽马暴喷流可以由选定的轴对称或参数化结构表示。
-- 观测到的光度和事件率可在给定视角分布与选择函数下建模。
-- 这里的参数范围、样本选择和辐射处方决定了可以从结果外推到哪里。
+- 短暴喷流具有普遍性角向结构（如高斯型或幂律结构喷流），其能量与洛伦兹因子随离轴角递减。
+- 双中子星并合事件在三维空间呈各向同性随机取向，并遵循恒星形成率延迟时间分布。
+- 触发观测卫星（如 Fermi/GBM, Swift/BAT）的探测效率由仪器阈值与瞬时能谱形态决定。
 
 ### English reading note
 
-- The interpretation depends on the source model's geometry, dynamics, and radiation prescription.
-- The data selection and parameter range limit how far the reported result can be generalized.
+- Short GRB outflows follow universal structured jet profiles (e.g., Gaussian or power-law cores with wings).
+- Merger orientations are isotropic in space, folded through cosmological delay-time distributions.
+- Flux thresholds and trigger selection functions reflect actual detector sensitivities.
 
 ## Scientific delta
 
 ### 中文导读
 
-它把“每个事件有一个固定开角”的简化视角扩展为结构化喷流与本征分布的联合问题。 它是候选基准 Work，尚未获得本项目的 Human visibility approval。
+摒弃了传统将喷流当成边缘陡峭的“平顶帽（Top-hat）”简化模型，为 GW170817 后时代定量计算离轴引力波电磁对应体的探测率提供了权威群体基准。
 
 ### English reading note
 
-a population model that treats jet structure and viewing angle as part of the luminosity-function problem. This candidate Work remains a draft until an independent Human review approves its final canonical snapshot.
+Replaces idealized top-hat jet models with realistic structured outflows, establishing standard population benchmarks for predicting off-axis electromagnetic rates in the multi-messenger era.
 
 ## Reason to read
 
 ### 中文导读
 
-它适合建立喷流几何如何进入观测量和群体推断的基本概念。
+从事喷流结构、伽马暴光度函数及引力波对应体并合率研究的必读文献；重点掌握结构化喷流视角积分与巡天探测体积选择函数的数学构建方法。
 
 ### English reading note
 
-Read it to connect joint inference of short-GRB jet structure, viewing angle, and intrinsic luminosity to a concrete calculation, and to inspect the assumptions before using its result in a broader scientific argument.
+Core reference for jet structures and multi-messenger event rates. Focus on the mathematical integration of angular viewing geometries with flux-limited survey selection volumes.

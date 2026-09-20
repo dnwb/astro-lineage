@@ -8,61 +8,62 @@ work_id: work:liu-fbot-radio-2026
 
 ### 中文导读
 
-它适合在掌握 CSM 激波光变后，继续阅读非热射电信号如何提供独立环境约束。
+它是通过非热射电暂现信号反演快速蓝色光学瞬变（FBOT）前身星极端失质量史的前沿代表性工作。揭示了跨相对论/超相对论激波在致密受限星周介质（Confined CSM）中传播时的同步辐射自吸收与环境动力学约束。
 
 ### English reading note
 
-This Work matters because it studies radio emission from trans-relativistic shocks in confined circumstellar material. The reading note keeps its conclusions attached to the model, data, and scope described by the authors.
+A pioneering study using non-thermal radio diagnostics to constrain the extreme progenitor mass-loss history of FBOTs. It models trans-relativistic shocks ploughing through compact, confined circumstellar shells.
 
 ## Problem
 
 ### 中文导读
 
-快速蓝色光学瞬变的射电形态和光变，如何约束爆发前失质量形成的受限星周介质？
+极端 FBOT（如 AT2018cow）观测到明亮且演化极快的同位素毫米波与微波余辉，如何利用跨相对论激波模型从非热射电辐射中反演爆发前夕几十年内恒星最内层的抛射几何与密度极值？
 
 ### English reading note
 
-The paper asks how radio emission from trans-relativistic shocks in confined circumstellar material can be described and connected to an observable signal under the assumptions stated in the source.
+Extreme FBOTs exhibit luminous, rapidly peaking millimeter and radio afterglows. How can trans-relativistic shock modeling break parameter degeneracies to measure the radius and density of compact confined CSM shells?
 
 ## Scientific takeaway
 
 ### 中文导读
 
-作者研究超相对论激波在受限星周介质中的粒子加速和射电辐射，使用射电信号探讨介质密度、几何和爆发前失质量历史。 该模型中的一个代表性关系写作 $$\nu_m \propto \gamma_e^2 B$$，它用于说明变量之间的物理联系，并不脱离本文的模型设定独立成立。
+计算了跨相对论激波（$\Gamma\beta \sim 0.1-0.5$）在小尺度受限 CSM 中膨胀时的粒子加速与非热辐射，推导了射电特征注入频率与磁场强度依赖关系 $$\nu_m \propto \gamma_e^2 B$$，证明了射电峰值频率的快速跃迁由自吸收光深降低主导，直接证实了前身星在死前数年经历过超级恒星风或不对称壳层喷发。
 
 ### English reading note
 
-The abstract and model report the result within that scope. A representative relation is $$\nu_m \propto \gamma_e^2 B$$; it is retained as a model equation, not promoted to an unqualified universal law.
+Models trans-relativistic shocks ($\Gamma\beta \sim 0.1-0.5$) sweeping through compact CSM, deriving the characteristic synchrotron frequency scaling $$\nu_m \propto \gamma_e^2 B$$. Shows that radio peak transitions trace the clearance of synchrotron self-absorption, diagnosing violent mass-loss eruptive history.
 
 ## Assumptions
 
 ### 中文导读
 
-- 激波在有限范围的致密星周介质中传播，并将一部分能量转移到非热电子和磁场。
-- 射电观测可由同步辐射和吸收过程的组合模型描述。
-- 这里的参数范围、样本选择和辐射处方决定了可以从结果外推到哪里。
+- 前向激波在径向距离小于 $10^{15}-10^{16}\text{ cm}$ 的致密受限 CSM 区域以跨相对论速度传播。
+- 激波后方电子被有效加速为非热幂律分布，微观磁能分配参数 $\epsilon_B$ 处于近均分状态。
+- 射电衰减受同步辐射自吸收（SSA）与自由-自由吸收（FFA）的联合抑制。
 
 ### English reading note
 
-- The interpretation depends on the source model's geometry, dynamics, and radiation prescription.
-- The data selection and parameter range limit how far the reported result can be generalized.
+- Trans-relativistic forward shock advances through a compact CSM zone within $R < 10^{16}\text{ cm}$.
+- Accelerated electrons form power-law distributions with near-equipartition magnetic field fractions.
+- Radio light curves are shaped by synchrotron self-absorption (SSA) and free-free absorption competition.
 
 ## Scientific delta
 
 ### 中文导读
 
-它把 FBOT 的射电形态作为环境诊断入口，将光学快速瞬变与爆发前质量损失过程连接起来。 它是候选基准 Work，尚未获得本项目的 Human visibility approval。
+将 FBOT 的物理约束从光学“热辐射光球”延伸到射电“非热高能激波前锋”，建立了利用射电光变极速反演前身星死前最后喘息阶段物理参数的严密反演链条。
 
 ### English reading note
 
-a radio-focused probe of confined CSM and pre-explosion mass loss through non-thermal shock emission. This candidate Work remains a draft until an independent Human review approves its final canonical snapshot.
+Extends FBOT diagnostics beyond thermal optical photospheres to non-thermal shock fronts, establishing an exact chain to measure progenitor dying spasms from high-frequency radio data.
 
 ## Reason to read
 
 ### 中文导读
 
-它适合在掌握 CSM 激波光变后，继续阅读非热射电信号如何提供独立环境约束。
+深入研究 FBOT 射电观测、跨相对论激波与前身星极限失质量的必读前沿文献；重点精读自吸收频率峰值移动与激波半径演化的定量解析反演方程。
 
 ### English reading note
 
-Read it to connect radio emission from trans-relativistic shocks in confined circumstellar material to a concrete calculation, and to inspect the assumptions before using its result in a broader scientific argument.
+Essential for researchers in radio transients and trans-relativistic dynamics. Study the algebraic inversion mapping the peak frequency trajectory directly to shock radius and ambient density.

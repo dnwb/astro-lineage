@@ -8,61 +8,62 @@ work_id: work:blandford-mckee-1976
 
 ### 中文导读
 
-先读它可以把后续的喷流、激波和余辉公式放回相对论爆炸波的基本解。
+它是整个相对论流体力学激波与伽马暴余辉理论的数学奠基石。通过在超相对论极限下求解流体动力学方程，确立了激波减速标度律，使所有解析余辉模型都能建立在严格自洽的流体动力学底座之上。
 
 ### English reading note
 
-This Work matters because it studies self-similar relativistic blast-wave dynamics. The reading note keeps its conclusions attached to the model, data, and scope described by the authors.
+Read it to connect self-similar relativistic blast-wave dynamics to blast-wave energetics and afterglow physics. BM76 provides the foundational hydrodynamics for relativistic blast waves, deriving self-similar scaling laws in the ultra-relativistic limit that underpin all analytic shock deceleration models.
 
 ## Problem
 
 ### 中文导读
 
-固定能量在均匀介质中爆炸时，超相对论球形激波的流体动力学如何用自相似解描述？
+点源在非均匀外部介质中瞬时释放超相对论能量驱动球形强激波时，激波下游极端相对论流体（超相对论声速与变薄壳层）的动力学剖面如何用自相似解析求解？
 
 ### English reading note
 
-The paper asks how self-similar relativistic blast-wave dynamics can be described and connected to an observable signal under the assumptions stated in the source.
+When an ultra-relativistic explosion expands into an ambient medium with a density gradient, how can the post-shock relativistic fluid profiles behind a thin shock shell be determined analytically via self-similar variables?
 
 ## Scientific takeaway
 
 ### 中文导读
 
-Blandford 和 McKee 给出强激波包围的超相对论球形爆炸波处理，并推广到中心持续供能、外部密度随半径变化及辐射激波。 该模型中的一个代表性关系写作 $$E \propto \rho R^3\Gamma^2$$，它用于说明变量之间的物理联系，并不脱离本文的模型设定独立成立。
+证明了在超相对论极限 $\Gamma \gg 1$ 下，被扫物质高度压缩在厚度为 $\Delta R \sim R/\Gamma^2$ 的薄壳层内，能量守恒给出激波动力学标度 $$E \propto \rho R^3\Gamma^2 c^2$$，激波洛伦兹因子满足 $\Gamma^2 \propto R^{-(3-k)}$，并给出了绝热与等温激波的无量纲相似解曲线。
 
 ### English reading note
 
-The abstract and model report the result within that scope. A representative relation is $$E \propto \rho R^3\Gamma^2$$; it is retained as a model equation, not promoted to an unqualified universal law.
+Shows that for $\Gamma \gg 1$, shocked material concentrates within a thin shell of width $\Delta R \sim R/\Gamma^2$. Conservation of energy yields the primary dynamical scaling $$E \propto \rho R^3\Gamma^2 c^2$$, where $\Gamma^2 \propto R^{-(3-k)}$, providing complete dimensionless profiles for adiabatic and radiative regimes.
 
 ## Assumptions
 
 ### 中文导读
 
-- 流动由强激波和相对论流体方程控制。
-- 自相似解适用于给定能量、介质和对称性近似的演化区间。
-- 这里的参数范围、样本选择和辐射处方决定了可以从结果外推到哪里。
+- 处于超相对论极限（$\Gamma \gg 1$），忽略激波下游压强相对于静质量能量的一阶修正。
+- 相对论流体满足状态方程 $P = (\hat{\gamma}-1)e$，绝热指数取 $\hat{\gamma}=4/3$。
+- 外部介质密度分布为幂律剖面 $\rho \propto R^{-k}$（$k < 4$ 以保证激波能稳定减速）。
 
 ### English reading note
 
-- The interpretation depends on the source model's geometry, dynamics, and radiation prescription.
-- The data selection and parameter range limit how far the reported result can be generalized.
+- Assumes the ultra-relativistic limit ($\Gamma \gg 1$) where the downstream blast wave is geometrically thin.
+- Adopts a relativistic ideal gas equation of state with constant adiabatic index $\hat{\gamma}=4/3$.
+- Treats the ambient medium as a power-law density distribution $\rho \propto R^{-k}$ with $k < 4$.
 
 ## Scientific delta
 
 ### 中文导读
 
-它提供了相对论爆炸波的基础动力学标度，是后续伽马暴余辉和喷流传播模型的物理底座。 它是候选基准 Work，尚未获得本项目的 Human visibility approval。
+将经典 Sedov-Taylor 非相对论爆炸波自相似理论彻底推广至爱因斯坦狭义相对论流体力学，推导出了后激波区自相似坐标 $\chi$ 与全套守恒边界条件。
 
 ### English reading note
 
-the foundational self-similar relativistic blast-wave solution used by later afterglow and jet models. This candidate Work remains a draft until an independent Human review approves its final canonical snapshot.
+Generalizes the classical non-relativistic Sedov-Taylor blast wave to relativistic hydrodynamics, providing the similarity coordinate $\chi$ and self-consistent boundary conditions for decelerating relativistic shocks.
 
 ## Reason to read
 
 ### 中文导读
 
-先读它可以把后续的喷流、激波和余辉公式放回相对论爆炸波的基本解。
+深入理解激波减速半径、余辉衰减时序斜率与喷流能量守恒的必读论文；重点推导激波下游物理量沿相似变量 $\chi = 1 + 2(m+1)\Gamma^2(1 - r/R)$ 的分布。
 
 ### English reading note
 
-Read it to connect self-similar relativistic blast-wave dynamics to a concrete calculation, and to inspect the assumptions before using its result in a broader scientific argument.
+Read it to connect self-similar relativistic blast-wave dynamics to afterglow decay indices, shock deceleration radii, and blast-wave energy conservation. Focus on the similarity variable $\chi = 1 + 2(m+1)\Gamma^2(1 - r/R)$ and shock jump conditions.

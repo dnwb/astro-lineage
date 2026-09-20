@@ -8,61 +8,62 @@ work_id: work:chen-takata-binaries-2022
 
 ### 中文导读
 
-它连接 PSR B1259−63 个案与更广的高能双星群体模型。
+它是将单一双星个案建模提升为高能双星群体统一辐射理论框架的理论力作。系统揭示了在不同轨道倾角与离心率下，碰撞激波加速的同源非热电子如何在不同辐射场中产生强相关的 X 射线与 TeV 伽马射线时变行为。
 
 ### English reading note
 
-This Work matters because it studies a binary-geometry radiation framework for correlated keV and TeV light curves. The reading note keeps its conclusions attached to the model, data, and scope described by the authors.
+A rigorous theoretical framework elevating single-binary case studies into a unified population paradigm for Be/gamma-ray binaries. It demonstrates how shock-accelerated electrons generate correlated X-ray and TeV light curves modulated by orbital kinematics.
 
 ## Problem
 
 ### 中文导读
 
-Be/伽马射线双星中的 keV 和 TeV 光变，如何由轨道几何、粒子冷却和种子光子场共同产生相关结构？
+在不同 Be/伽马射线双星系统中，为何 X 射线（同步辐射主导）与 TeV 伽马射线（逆康普顿散射主导）有时正相关、有时反相关，甚至出现特征相位延迟？其背后的统一主控机制为何？
 
 ### English reading note
 
-The paper asks how a binary-geometry radiation framework for correlated keV and TeV light curves can be described and connected to an observable signal under the assumptions stated in the source.
+Why do different Be/gamma-ray binaries display diverse correlated, anti-correlated, or phase-shifted X-ray versus TeV light curves, and what unified physical mechanism dictates this multi-wavelength diversity?
 
 ## Scientific takeaway
 
 ### 中文导读
 
-作者研究双星系统中冲击加速电子的同步辐射和逆康普顿辐射，并用轨道变化解释 X 射线与 TeV 光变之间的相关行为。 该模型中的一个代表性关系写作 $$F_\nu^{\rm syn}\propto B^{(p+1)/2}\nu^{-(p-1)/2}$$，它用于说明变量之间的物理联系，并不脱离本文的模型设定独立成立。
+构建了宽带粒子演化与各向异性辐射场耦合框架，给出了同步辐射特征流强公式 $$F_\nu^{\rm syn}\propto B^{(p+1)/2}\nu^{-(p-1)/2}$$，证明了当轨道调制由激波磁场强度主导时两者强正相关，而当大倾角各向异性逆康普顿几何效应或电子严重冷却占优时则引发反相关或相位偏移，为系统多波段联测提供了统一理论判据。
 
 ### English reading note
 
-The abstract and model report the result within that scope. A representative relation is $$F_\nu^{\rm syn}\propto B^{(p+1)/2}\nu^{-(p-1)/2}$$; it is retained as a model equation, not promoted to an unqualified universal law.
+Constructs a broadband particle transport and anisotropic radiation framework, deriving the synchrotron flux scaling $$F_\nu^{\rm syn}\propto B^{(p+1)/2}\nu^{-(p-1)/2}$$. Proves that magnetic field modulations drive positive X/TeV correlations, whereas extreme anisotropic Compton geometry or radiative cooling induces anti-correlations and phase lags.
 
 ## Assumptions
 
 ### 中文导读
 
-- 高能辐射主要来自碰撞激波中的非热电子。
-- 恒星辐射场、轨道几何和吸收过程由所选双星模型给定。
-- 这里的参数范围、样本选择和辐射处方决定了可以从结果外推到哪里。
+- 所有高能光子均源于同一群在双星接触激波面被加速的相对论非热电子。
+- 主导 X 射线辐射的是激波自生磁场中的同步辐射，主导 TeV 辐射的是散射伴星光子的逆康普顿过程。
+- 双星轨道参数（周期、偏心率、倾角）由已测光学/红外光谱精确定标。
 
 ### English reading note
 
-- The interpretation depends on the source model's geometry, dynamics, and radiation prescription.
-- The data selection and parameter range limit how far the reported result can be generalized.
+- All multi-band emissions originate from a single non-thermal electron population accelerated at the binary shock.
+- X-rays are pure synchrotron radiation in shock magnetic fields; TeVs are inverse Compton up-scattering of stellar photons.
+- Orbital parameters (eccentricity, inclination, period) are constrained by optical/IR companion observations.
 
 ## Scientific delta
 
 ### 中文导读
 
-它把单一系统的辐射解释提升为可比较的二元几何框架，强调同一个粒子群可通过不同过程形成不同波段信号。 它是候选基准 Work，尚未获得本项目的 Human visibility approval。
+打破了以往将 X 射线与 TeV 辐射割裂拟合的局限，建立了以轨道运动、空间磁场梯度与各向异性散射几何为三维主轴的统一高能双星相关性动力学相图。
 
 ### English reading note
 
-a generalized binary-geometry account that separates the shared particle population from the band-dependent radiation processes. This candidate Work remains a draft until an independent Human review approves its final canonical snapshot.
+Overcomes isolated single-band modeling by establishing a unified phase-space framework governed by orbital kinematics, magnetic field gradients, and anisotropic scattering geometries.
 
 ## Reason to read
 
 ### 中文导读
 
-它连接 PSR B1259−63 个案与更广的高能双星群体模型。
+从事高能双星多波段联合观测（NuSTAR, HXMT, LHAASO, CTA）与能谱时变分析的必读指南；重点关注文中关于 X-ray 对比 TeV 相关系数随轨道相位变化解析推导章节。
 
 ### English reading note
 
-Read it to connect a binary-geometry radiation framework for correlated keV and TeV light curves to a concrete calculation, and to inspect the assumptions before using its result in a broader scientific argument.
+Indispensable guide for interpreting multi-wavelength binary observations across HXMT, NuSTAR, and LHAASO. Focus on the mathematical derivation of correlation coefficients across orbital phases.

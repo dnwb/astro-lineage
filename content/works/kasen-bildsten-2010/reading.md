@@ -8,61 +8,62 @@ work_id: work:kasen-bildsten-2010
 
 ### 中文导读
 
-它是理解磁星中心引擎如何转化为超新星光变的经典基础节点。
+它是磁星中心引擎驱动超新星（如超亮超新星 SLSN）理论的基石文献。揭示了新生磁星自转减速释放的巨大磁偶极转动能如何与超新星抛射物的扩散时标匹配，从而无需极高核合成镍质量即可产生超高光度。
 
 ### English reading note
 
-This Work matters because it studies matching magnetar spin-down and supernova-ejecta diffusion timescales. The reading note keeps its conclusions attached to the model, data, and scope described by the authors.
+The foundational paper for magnetar-powered supernova light curves. It demonstrates that rotational energy deposited by a newborn spinning-down magnetar can match ejecta diffusion timescales, naturally explaining superluminous supernovae without unphysical nickel masses.
 
 ## Problem
 
 ### 中文导读
 
-年轻、高磁场、快速自转中子星注入超新星抛射物的能量，如何产生极高光度并改变光变上升和峰值？
+高光度超新星（SLSNe）中高达 $10^{44}\,{\rm erg\,s^{-1}}$ 的峰值光度无法由放射性衰变合理供能时，新生毫秒磁星的自转减速能如何通过扩散重塑光变峰值与上升演化？
 
 ### English reading note
 
-The paper asks how matching magnetar spin-down and supernova-ejecta diffusion timescales can be described and connected to an observable signal under the assumptions stated in the source.
+How can the extreme optical luminosities of SLSNe be powered by dipole spin-down energy injection from a newborn millisecond magnetar when radioactive $^{56}\text{Ni}$ is inadequate?
 
 ## Scientific takeaway
 
 ### 中文导读
 
-作者指出磁星在数天到数周释放的转动能可与抛射物有效扩散时标匹配，从而减少绝热损失并增强光变；磁星风还会形成扫过抛射物的中心气泡。 该模型中的一个代表性关系写作 $$t_{\rm diff}\sim\left(\frac{\kappa M_{\rm ej}}{\beta c v}\right)^{1/2}$$，它用于说明变量之间的物理联系，并不脱离本文的模型设定独立成立。
+确立了磁星偶极辐射注入功率 $L_{\rm sd}(t)$ 与有效光子扩散时标 $$t_{\rm diff}\sim\left(\frac{\kappa M_{\rm ej}}{\beta c v}\right)^{1/2}$$ 的匹配关系，指出当自转减速时标 $t_{\rm sd} \sim t_{\rm diff}$ 时辐射转换效率最高，并给出了磁星风吹成热气泡并加速抛射物的动力学图景。
 
 ### English reading note
 
-The abstract and model report the result within that scope. A representative relation is $$t_{\rm diff}\sim\left(\frac{\kappa M_{\rm ej}}{\beta c v}\right)^{1/2}$$; it is retained as a model equation, not promoted to an unqualified universal law.
+Connects magnetic dipole spin-down power $L_{\rm sd}(t)$ with the ejecta photon diffusion timescale $$t_{\rm diff}\sim\left(\frac{\kappa M_{\rm ej}}{\beta c v}\right)^{1/2}$$. Peak luminosity is maximized when $t_{\rm sd} \sim t_{\rm diff}$, with the magnetar wind inflating a central thermal bubble that dynamically accelerates the ejecta.
 
 ## Assumptions
 
 ### 中文导读
 
-- 中心磁星的自转减速是主要延迟能量源之一。
-- 超新星抛射物膨胀并通过光学厚区域扩散辐射，磁星气泡可推动内部壳层。
-- 这里的参数范围、样本选择和辐射处方决定了可以从结果外推到哪里。
+- 中心天体为保持偶极磁场的快速自转磁星，真空磁偶极制动辐射指数 $n=3$。
+- 超新星抛射物作球对称同速膨胀，中心磁星风星云的辐射能被有效热化并扩散。
+- 假设常数光学不透明度 $\kappa$，忽略复杂的辐射转移线毛刺效应和晚期高能光子泄漏。
 
 ### English reading note
 
-- The interpretation depends on the source model's geometry, dynamics, and radiation prescription.
-- The data selection and parameter range limit how far the reported result can be generalized.
+- Assumes vacuum magnetic dipole radiation with braking index $n=3$.
+- Spherically symmetric, homologously expanding ejecta fully trapping central wind energy.
+- Constant optical opacity $\kappa$ without wavelength-dependent line blanketing or gamma-ray leakage.
 
 ## Scientific delta
 
 ### 中文导读
 
-它给出磁星参数、光变时标和峰值光度之间的解析关系，为后续磁星驱动瞬变拟合提供基础。 它是候选基准 Work，尚未获得本项目的 Human visibility approval。
+摆脱了传统超新星依赖放射性 $^{56}\text{Ni}$ 加热的能量学极限，建立了通过光变峰值光度与持续时间直接反演初始自转周期 $P_0$ 和偶极磁场 $B_p$ 的解析方法。
 
 ### English reading note
 
-the classic analytic connection between magnetar parameters, ejecta diffusion, and supernova luminosity. This candidate Work remains a draft until an independent Human review approves its final canonical snapshot.
+Breaks free from the nickel-powered paradigm for extreme transients, establishing an analytic method to infer initial spin period $P_0$ and magnetic field $B_p$ from peak luminosity and width.
 
 ## Reason to read
 
 ### 中文导读
 
-它是理解磁星中心引擎如何转化为超新星光变的经典基础节点。
+学习超亮超新星（SLSNe）、快速光学瞬变（FBOT）磁星引擎假设的起点；阅读时重点关注不同磁场与自转周期对光变峰值时间和极大亮度的解析映射关系。
 
 ### English reading note
 
-Read it to connect matching magnetar spin-down and supernova-ejecta diffusion timescales to a concrete calculation, and to inspect the assumptions before using its result in a broader scientific argument.
+Prime starting point for magnetar-powered transient theory. Focus on the analytic parameter mapping between $(B, P_0, M_{\rm ej})$ and peak bolometric properties.

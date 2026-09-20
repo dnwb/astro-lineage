@@ -8,61 +8,62 @@ work_id: work:zhang-agn-jet-2024
 
 ### 中文导读
 
-它是理解 AGN 盘如何改变喷流传播和可探测性的关键过渡节点。
+它是研究极端致密介质与相对论外流相互作用（R2 与 R6 交叉方向）的前沿关键文献。系统揭示了嵌入活动星系核（AGN）超高密度吸积盘内的伽马暴喷流在传播过程中的准直、激波受阻以及突破行为。
 
 ### English reading note
 
-This Work matters because it studies jet-head propagation, forward and reverse shocks, choking, and breakout in AGN disks. The reading note keeps its conclusions attached to the model, data, and scope described by the authors.
+A leading study at the intersection of relativistic jets and dense environments (R2 and R6). It establishes the hydrodynamic criteria for jet propagation, collimation, choking, and breakout inside super-dense active galactic nucleus (AGN) accretion disks.
 
 ## Problem
 
 ### 中文导读
 
-活动星系核吸积盘中的伽马暴喷流，在什么光度和发动机持续时间下可以突破，何时会被致密盘物质阻塞？
+发生在超大质量黑洞吸积盘致密中平面区域的致密双星并合或恒星坍缩产生的相对论喷流，其超高环境阻力下是否能够成功穿透盘尺度高度？临界物理判据是什么？
 
 ### English reading note
 
-The paper asks how jet-head propagation, forward and reverse shocks, choking, and breakout in AGN disks can be described and connected to an observable signal under the assumptions stated in the source.
+When relativistic jets are launched within the ultra-dense midplane of AGN accretion disks, can they break out through the disk scale height, or are they choked, and what sets the threshold?
 
 ## Scientific takeaway
 
 ### 中文导读
 
-作者分析喷流与吸积盘物质相互作用形成的反向和前向激波，指出突破需要足够高的光度和足够长的持续时间；受阻情形主要期待盘边缘附近的激波突破和冷却信号。 该模型中的一个代表性关系写作 $$t_{\rm bo} \lesssim T_{\rm eng}$$，它用于说明变量之间的物理联系，并不脱离本文的模型设定独立成立。
+对吸积盘内喷流传播的正反激波进行了全动力学解析求解，确立了喷流能否成功突破的临界引擎工作时长与光度条件 $$t_{\rm bo} \lesssim T_{\rm eng}$$，指出未突破的受阻喷流会形成高能热茧并在盘表面发生边缘激波突破，释放独特的紫外/软 X 射线暂现信号与多信使粒子。
 
 ### English reading note
 
-The abstract and model report the result within that scope. A representative relation is $$t_{\rm bo} \lesssim T_{\rm eng}$$; it is retained as a model equation, not promoted to an unqualified universal law.
+Derives exact shock-head jump conditions inside dense AGN disks, establishing the critical breakout condition $$t_{\rm bo} \lesssim T_{\rm eng}$$. Shows that choked jets deposit enormous energy into cocoons that undergo subsequent disk-surface breakout, generating unique UV/soft X-ray transients.
 
 ## Assumptions
 
 ### 中文导读
 
-- 吸积盘密度和尺度高度由给定的活动星系核模型设定。
-- 喷流传播可由前向/反向激波动力学和有限发动机时长描述。
-- 这里的参数范围、样本选择和辐射处方决定了可以从结果外推到哪里。
+- 吸积盘结构采用标准辐射主导或气压主导的高吸积率 AGN 薄盘/胖盘唯象模型（如 Sirko-Goodman 剖面）。
+- 喷流头部传播由前后向一维无碰撞激波动力学控制，喷流能量持续注入至发动机熄火。
+- 忽略大尺度强磁场重联直接撕裂喷流管道的极端非线性磁流体湍流效应。
 
 ### English reading note
 
-- The interpretation depends on the source model's geometry, dynamics, and radiation prescription.
-- The data selection and parameter range limit how far the reported result can be generalized.
+- Adopts canonical accretion disk density and scale-height profiles for radiatively efficient AGN.
+- Jet head advance governed by 1D relativistic forward and reverse shock ram-pressure balance.
+- Neglects catastrophic jet disruption from large-scale ambient magnetic field reconnection.
 
 ## Scientific delta
 
 ### 中文导读
 
-它把普通伽马暴喷流的突破条件带入活动星系核盘环境，明确区分突破、受阻和边缘激波辐射三种结果。 它是候选基准 Work，尚未获得本项目的 Human visibility approval。
+将传统的恒星包层喷流传播理论（Bromberg et al. 2011）成功拓展至致密 AGN 吸积盘环境，明确解构了“完全受阻（Choked）”、“热茧突破（Cocoon Breakout）”与“喷流突破（Jet Breakout）”的三重观测判据。
 
 ### English reading note
 
-an AGN-disk propagation calculation that separates breakout, choking, and edge shock-breakout observables. This candidate Work remains a draft until an independent Human review approves its final canonical snapshot.
+Extends stellar-envelope jet propagation theory into dense AGN disk environments, establishing distinct observable criteria for choked jets, cocoon breakouts, and prompt jet breakouts.
 
 ## Reason to read
 
 ### 中文导读
 
-它是理解 AGN 盘如何改变喷流传播和可探测性的关键过渡节点。
+深入研究盘内引力波事件电磁对应体及多信使中微子起源的必读文献；重点阅读喷流头部穿行时标与盘垂直密度标高匹配关系的数学推演。
 
 ### English reading note
 
-Read it to connect jet-head propagation, forward and reverse shocks, choking, and breakout in AGN disks to a concrete calculation, and to inspect the assumptions before using its result in a broader scientific argument.
+Vital for AGN-embedded transient modeling and neutrino counterpart prediction. Study the derivation of head velocity and penetration timescales across the disk vertical density gradient.

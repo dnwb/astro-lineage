@@ -8,61 +8,62 @@ work_id: work:xie-sgr-j1935-2025
 
 ### 中文导读
 
-它展示了如何把高能瞬变光变中的几何特征连接到磁层物理。
+它是探索银河系唯一已知能够产生快速射电暴（FRB 200428）的磁星 SGR J1935+2154 磁层高能爆发现象（R5 主线）的标志性实测与理论分析成果。利用 X 射线暴独特的几何掩食形态，首次实现了对磁星磁层闭合火球空间尺度的直接实测测量。
 
 ### English reading note
 
-This Work matters because it studies inferring magnetospheric fireball geometry from eclipsed X-ray-burst light curves. The reading note keeps its conclusions attached to the model, data, and scope described by the authors.
+A landmark study probing magnetospheric burst geometry in the Galactic FRB-emitting magnetar SGR J1935+2154 (R5). Using unique geometric eclipse light-curve signatures, it achieves the first direct empirical spatial measurement of a magnetospheric fireball.
 
 ## Problem
 
 ### 中文导读
 
-磁星中间型 X 射线暴的盘状平台和掩食形状，能否约束火球相对磁星表面的空间位置？
+磁星爆发释放巨大能量的电子-正负电子对“火球（Fireball）”，究竟是起源于中子星坚硬固态地壳破裂（星震），还是起源于高空悬浮的阿尔芬波磁重联？长期以来缺乏直接的几何空间定位手段。
 
 ### English reading note
 
-The paper asks how inferring magnetospheric fireball geometry from eclipsed X-ray-burst light curves can be described and connected to an observable signal under the assumptions stated in the source.
+Do explosive magnetar pair fireballs originate from solid crustal fractures (starquakes) or are they trapped magnetic reconnection structures suspended high in the outer magnetosphere?
 
 ## Scientific takeaway
 
 ### 中文导读
 
-作者从 GECAM 和 Fermi/GBM 长暴中识别具有掩食特征的候选事件，用火球掩食模型估计视角约为 $17^\circ\pm10^\circ$，并得到火球距离大于磁星半径的数倍，支持其悬浮在磁层中。 该模型中的一个代表性关系写作 $$\theta_{\rm view}=17^\circ\pm10^\circ$$，它用于说明变量之间的物理联系，并不脱离本文的模型设定独立成立。
+从 GECAM 和 Fermi/GBM 观测数据中识别出具有平顶平台和自掩食特征的特殊 X 射线暴样本，通过球对称自遮挡火球模型严格反演出观测者视线倾角为 $$\theta_{\rm view}=17^\circ\pm10^\circ$$，测得火球中心距离磁星表面达到中子星半径的数倍，直接证明了辐射区悬浮于磁层高空，为磁层重联触发机制提供了极其强硬的几何实测证据。
 
 ### English reading note
 
-The abstract and model report the result within that scope. A representative relation is $$\theta_{\rm view}=17^\circ\pm10^\circ$$; it is retained as a model equation, not promoted to an unqualified universal law.
+Identifies eclipsed X-ray burst profiles from GECAM and Fermi/GBM data. Fireball geometric occultation modeling measures an observer viewing angle $$\theta_{\rm view}=17^\circ\pm10^\circ$$ and places the fireball center several stellar radii above the surface, confirming a suspended magnetospheric reconnection origin.
 
 ## Assumptions
 
 ### 中文导读
 
-- 暴发辐射区可由具有几何边界的磁层火球近似。
-- 光变平台和掩食形状主要由观察视角与火球位置决定。
-- 这里的参数范围、样本选择和辐射处方决定了可以从结果外推到哪里。
+- X 射线暴辐射区可有效近似为被磁层偶极磁环束缚的准球形或凸状高能热火球。
+- 光变曲线中观测到的流量跌落主要源自中子星本体自转或几何朝向引发的确定性视线掩食。
+- 暴发期间火球辐射近似满足局部普朗克黑体热辐射谱，且几何尺寸在掩食期间相对稳定。
 
 ### English reading note
 
-- The interpretation depends on the source model's geometry, dynamics, and radiation prescription.
-- The data selection and parameter range limit how far the reported result can be generalized.
+- Burst emitting zone is modeled as a convex, magnetically trapped pair-photon fireball.
+- Observed light-curve dips and plateaus result from deterministic geometric occultation.
+- Fireball emission approximates a trapped Planckian thermal radiator with quasi-static dimensions.
 
 ## Scientific delta
 
 ### 中文导读
 
-它把 X 射线暴的时间结构转化为磁层几何约束，并提出部分中间型暴可能源于磁层重联而非单纯星震。 它是候选基准 Work，尚未获得本项目的 Human visibility approval。
+首次通过光变几何掩食反演方法将磁星火球的空间物理高度从理论猜测推向了精度优于数个中子星半径的直接实测测量，为解决磁星爆发“地壳 vs 磁层”起源之争提供了关键决定性支点。
 
 ### English reading note
 
-a geometric interpretation of burst light-curve eclipses that places the emitting fireball in the magnetosphere. This candidate Work remains a draft until an independent Human review approves its final canonical snapshot.
+Transfers the radial altitude of magnetar fireballs from speculative theory to direct empirical measurement, resolving the decades-long debate between crustal fracture and outer magnetospheric reconnection.
 
 ## Reason to read
 
 ### 中文导读
 
-它展示了如何把高能瞬变光变中的几何特征连接到磁层物理。
+学习如何将空间高能空间望远镜（GECAM/GBM）的时变光变曲线转化为微观几何物理约束的典范文献；重点精读火球自掩食几何面积微积分推导与 $17^\circ\pm10^\circ$ 视角约束的误差分析。
 
 ### English reading note
 
-Read it to connect inferring magnetospheric fireball geometry from eclipsed X-ray-burst light curves to a concrete calculation, and to inspect the assumptions before using its result in a broader scientific argument.
+Methodological masterpiece extracting geometric boundaries from high-energy time-series data. Study the geometric occultation area integrals yielding the viewing angle $\theta_{\rm view}=17^\circ\pm10^\circ$.

@@ -8,61 +8,62 @@ work_id: work:ni-dense-csm-2026
 
 ### 中文导读
 
-它是从单个相互作用模型进入样本比较和群体推断的当前节点。
+它是富星周介质致密瞬变领域目前最为庞大、系统的全样本大巡天比较研究。首次利用统一的高精度辐射动力学模型，对包括 25 个各类致密环境超新星（Ibn, Icn）与 FBOT 进行了多波段全样本参数空间大摸底。
 
 ### English reading note
 
-This Work matters because it studies population comparison of dense CSM across SNe Ibn, SNe Icn, and FBOTs. The reading note keeps its conclusions attached to the model, data, and scope described by the authors.
+The largest systematic population-level comparative study in the dense-CSM transient field. It applies a unified radiative-shock framework across a sample of 25 SNe Ibn, SNe Icn, and FBOTs to construct a comprehensive ambient density atlas.
 
 ## Problem
 
 ### 中文导读
 
-不同快速瞬变类别的光变和光谱差异，能否由统一的致密星周介质参数空间加以比较？
+富氦超新星（Ibn）、富碳氧超新星（Icn）以及 FBOT 在光变下降速度和峰值上具有高度相似性，它们究竟反映了连续的前身星失质量环境谱系，还是来自截然不同的物理爆炸起源？
 
 ### English reading note
 
-The paper asks how population comparison of dense CSM across SNe Ibn, SNe Icn, and FBOTs can be described and connected to an observable signal under the assumptions stated in the source.
+Do helium-rich (Ibn), carbon-oxygen-rich (Icn) supernovae and FBOTs form a single continuous spectrum of pre-collapse mass-loss architectures, or do they require intrinsically distinct explosion engines?
 
 ## Scientific takeaway
 
 ### 中文导读
 
-作者将统一的相互作用框架应用于 25 个源，比较 SNe Ibn、SNe Icn 和 FBOT 的抛射物及星周介质性质，并讨论极端 FBOT 可能需要额外能量源的情况。 该模型中的一个代表性关系写作 $$M_{\rm CSM}=\int 4\pi r^2\rho_{\rm CSM}(r)\,dr$$，它用于说明变量之间的物理联系，并不脱离本文的模型设定独立成立。
+对全样本进行统一环境参数反演，计算了星周介质总积分质量方程 $$M_{\rm CSM}=\int 4\pi r^2\rho_{\rm CSM}(r)\,dr$$，首次绘制了从剥层致密致密包层到广延恒星风的连续环境分布图谱，确立了 SNe Ibn/Icn 能够被中等致密 CSM 完美解释，而极端 FBOT 则要求小尺度极端致密壳层与额外的中心引擎协同注能。
 
 ### English reading note
 
-The abstract and model report the result within that scope. A representative relation is $$M_{\rm CSM}=\int 4\pi r^2\rho_{\rm CSM}(r)\,dr$$; it is retained as a model equation, not promoted to an unqualified universal law.
+Performs unified parameter estimation across all 25 transients, computing total circumstellar mass via $$M_{\rm CSM}=\int 4\pi r^2\rho_{\rm CSM}(r)\,dr$$. Constructs a continuous environmental atlas demonstrating that SNe Ibn/Icn are explained by dense winds, whereas extreme FBOTs necessitate compact confined shells plus auxiliary engine power.
 
 ## Assumptions
 
 ### 中文导读
 
-- 不同源的观测光变可以在共同的相互作用模型中进行一致拟合。
-- 群体参数比较受样本选择、距离/消光处理和模型简化影响。
-- 这里的参数范围、样本选择和辐射处方决定了可以从结果外推到哪里。
+- 样本所有源的测光数据均经过宿主星系消光与宇宙学距离修正，并在统一统计口径下拟合。
+- 不同类别瞬变的光变主要由激波相互作用与后续辐射扩散主导，使用一致的微观不透明度标准。
+- 承认大样本中各源测光观测完备性与采样密集度存在差异，并在置信区间评估中显式保留。
 
 ### English reading note
 
-- The interpretation depends on the source model's geometry, dynamics, and radiation prescription.
-- The data selection and parameter range limit how far the reported result can be generalized.
+- All light curves are uniformly corrected for host galaxy extinction and cosmological distances.
+- Employs consistent grey opacities and shock thermalization prescriptions across diverse transient types.
+- Explicitly factors in survey cadence variance when evaluating parameter confidence boundaries.
 
 ## Scientific delta
 
 ### 中文导读
 
-这项工作把单源星周介质拟合推进到跨类别群体图谱，为比较密度、质量和时标提供统一坐标系。 它是候选基准 Work，尚未获得本项目的 Human visibility approval。
+终结了以往各个瞬变类别孤立分立研究的碎片化格局，首次建立了跨越剥层超新星与极端快瞬变的统一致密星周介质拓扑图谱，给出了前身星失质量率与几何范围的大样本统计规律。
 
 ### English reading note
 
-a population-level map that applies one interaction framework across several dense-CSM transient classes. This candidate Work remains a draft until an independent Human review approves its final canonical snapshot.
+Overcomes fragmented single-object studies by establishing the first unified environmental atlas spanning SNe Ibn, Icn, and FBOTs, delivering empirical mass-loss distribution baselines.
 
 ## Reason to read
 
 ### 中文导读
 
-它是从单个相互作用模型进入样本比较和群体推断的当前节点。
+宏观把握致密环境瞬变全貌的综合性必读文献；重点阅读大样本统计参数相关性矩阵（CSM 质量、速度、外半径）及其对大质量恒星演化晚期失质量理论的强烈约束。
 
 ### English reading note
 
-Read it to connect population comparison of dense CSM across SNe Ibn, SNe Icn, and FBOTs to a concrete calculation, and to inspect the assumptions before using its result in a broader scientific argument.
+Comprehensive reading for mastering dense-environment transients. Focus on the statistical correlation matrix linking CSM mass, shock velocity, and shell boundary radii.

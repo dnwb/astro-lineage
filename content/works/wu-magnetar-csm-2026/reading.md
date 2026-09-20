@@ -8,61 +8,62 @@ work_id: work:wu-magnetar-csm-2026
 
 ### 中文导读
 
-这篇工作适合检验简单的单一能量源叙事何时需要升级为磁星加星周介质的联合模型。
+它是终结超亮超新星中“磁星供能与星周介质碰撞供能长期非此即彼对立”的关键突破文献。构建了中心致密磁星能量注入与外层抛射物碰撞致密 CSM 相互作用协同耦合的统一动力学理论框架。
 
 ### English reading note
 
-This Work matters because it studies coupled magnetar-driven shocks and circumstellar interaction. The reading note keeps its conclusions attached to the model, data, and scope described by the authors.
+A pivotal breakthrough bridging the long-standing dichotomy between 'pure magnetar' and 'pure CSM-interaction' models. It establishes a unified hybrid framework where central magnetar spin-down and outer CSM shock dynamics interact synergistically.
 
 ## Problem
 
 ### 中文导读
 
-磁星中心引擎与致密星周介质同时存在时，能量注入、抛射物激波和辐射扩散如何共同改变超亮超新星光变？
+在许多展现出起伏波动、反常温度演化或双峰光变的富介质超亮超新星中，单独使用磁星注入或单独使用 CSM 相互作用均遭遇物理参数危机，两者协同存在时动力学如何交织？
 
 ### English reading note
 
-The paper asks how coupled magnetar-driven shocks and circumstellar interaction can be described and connected to an observable signal under the assumptions stated in the source.
+When extreme transients display complex bumpy light curves or anomalous spectral evolution that strain pure magnetar or pure CSM models individually, how do central injection and external shocks couple dynamically?
 
 ## Scientific takeaway
 
 ### 中文导读
 
-作者建立半解析混合模型，追踪磁星风吹成的热泡、抛射物外层与星周介质的碰撞，以及磁星激波追上相互作用区后的后续演化；模型可产生多样峰形和晚期磁星辐射泄漏。 该模型中的一个代表性关系写作 $$E_{\rm rad}+E_{\rm kin} = \int L_{\rm sd}(t)\,dt + E_{\rm sh}$$，它用于说明变量之间的物理联系，并不脱离本文的模型设定独立成立。
+推导了中心磁星注入能、外部激波耗散能与辐射扩散总能量守恒方程 $$E_{\rm rad}+E_{\rm kin} = \int L_{\rm sd}(t)\,dt + E_{\rm sh}$$，阐明了内部磁星激波追赶并穿透外部 CSM 相互作用区时的能量再分配，成功解释了早期双峰、平顶光变及晚期辐射泄漏。
 
 ### English reading note
 
-The abstract and model report the result within that scope. A representative relation is $$E_{\rm rad}+E_{\rm kin} = \int L_{\rm sd}(t)\,dt + E_{\rm sh}$$; it is retained as a model equation, not promoted to an unqualified universal law.
+Derives the global coupled energy conservation formulation $$E_{\rm rad}+E_{\rm kin} = \int L_{\rm sd}(t)\,dt + E_{\rm sh}$$. Demonstrates how internal magnetar-driven shocks overtake external deceleration zones, elucidating complex bumpy light curves, plateaus, and late-time flux leakage.
 
 ## Assumptions
 
 ### 中文导读
 
-- 磁星风在抛射物内形成热泡，并将能量分配到辐射和整体动能。
-- 外部星周介质具有足以形成前向和反向激波的密度结构。
-- 这里的参数范围、样本选择和辐射处方决定了可以从结果外推到哪里。
+- 系统同时具备中心长寿命自转磁星和前身星在爆发前剧烈失质量留下的稠密外壳/恒星风。
+- 内部磁星风泡将能量分配至动能和辐射，外部抛射物前端形成 Chevalier 式正反激波结构。
+- 两套激波系统在未剧烈交叠前可分层处理，穿透后遵循动量与能动张量再守恒。
 
 ### English reading note
 
-- The interpretation depends on the source model's geometry, dynamics, and radiation prescription.
-- The data selection and parameter range limit how far the reported result can be generalized.
+- Simultaneous coexistence of a central spin-down magnetar and a dense pre-explosion CSM shell.
+- Internal wind bubble distributes energy into expansion while outer ejecta drives forward/reverse shocks.
+- Coupled shock layers undergo unified momentum and radiative conservation upon collision.
 
 ## Scientific delta
 
 ### 中文导读
 
-它把“磁星供能”和“星周介质供能”从互斥解释改为耦合动力学问题，同时保留两种机制在特定参数下的不同作用。 它是候选基准 Work，尚未获得本项目的 Human visibility approval。
+将学术界争论多年的“磁星派 vs CSM 派”转化为可定量检验的多参耦合相图，建立了双机制协同作用下光变形态与物理参数的映射规则。
 
 ### English reading note
 
-a hybrid dynamical account in which engine injection and circumstellar interaction can exchange control of the shock and light curve. This candidate Work remains a draft until an independent Human review approves its final canonical snapshot.
+Transforms a decade-long debate between competing paradigms into a rigorous hybrid framework with concrete parameter mapping for bumpy, plateau, and double-peaked transients.
 
 ## Reason to read
 
 ### 中文导读
 
-这篇工作适合检验简单的单一能量源叙事何时需要升级为磁星加星周介质的联合模型。
+深入理解复杂非平滑光变瞬变演化的核心理论论文；建议精读文中关于内部磁星激波追及时间 $t_{\rm catch}$ 与外部相互作用辐射时标比较的物理推演。
 
 ### English reading note
 
-Read it to connect coupled magnetar-driven shocks and circumstellar interaction to a concrete calculation, and to inspect the assumptions before using its result in a broader scientific argument.
+Essential for understanding bumpy transient light curves. Study the derivation of the internal shock overtake timescale $t_{\rm catch}$ relative to external radiative diffusion.

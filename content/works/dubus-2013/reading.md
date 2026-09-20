@@ -8,61 +8,62 @@ work_id: work:dubus-2013
 
 ### 中文导读
 
-它适合作为脉冲星风、高能双星和多波段辐射路线的基础导读。
+它是高能伽马射线双星（Gamma-ray Binaries）物理图谱的权威综述。系统厘清了由旋转供能脉冲星风与大质量伴星风碰撞激波（Intrabinary Shock, IBS）驱动非热辐射的理论图景。
 
 ### English reading note
 
-This Work matters because it studies rotation-powered pulsars, stellar-wind shocks, and high-energy binaries. The reading note keeps its conclusions attached to the model, data, and scope described by the authors.
+The authoritative comprehensive review on gamma-ray binaries. It synthesizes the physical picture where non-thermal emission is governed by an intrabinary shock between a rotation-powered pulsar wind and a massive star outflow.
 
 ## Problem
 
 ### 中文导读
 
-伽马射线双星及相关系统的高能辐射由什么驱动，轨道运动如何提供不同的粒子加速和传播条件？
+大质量双星系统中的 TeV/GeV 伽马射线与非热 X 射线辐射，究竟是由微类星体黑洞吸积喷流产生，还是由年轻非吸积脉冲星风碰撞激波调制形成？
 
 ### English reading note
 
-The paper asks how rotation-powered pulsars, stellar-wind shocks, and high-energy binaries can be described and connected to an observable signal under the assumptions stated in the source.
+What physical mechanism governs high-energy gamma-ray and X-ray emission in massive binaries: microquasar accretion jets or collisionless shocks powered by non-accreting pulsars?
 
 ## Scientific takeaway
 
 ### 中文导读
 
-Dubus 综述伽马射线双星、微类星体、碰撞风双星和新星等系统，强调旋转供能脉冲星、恒星风相互作用与粒子加速在高能辐射中的作用。 该模型中的一个代表性关系写作 $$L_{\gamma}=\eta_{\gamma}L_{\rm sd}$$，它用于说明变量之间的物理联系，并不脱离本文的模型设定独立成立。
+明确了旋转供能脉冲星风与恒星风动压平衡决定了激波驻点位置与锥角，高能辐射受开普勒轨道调制，由同步辐射和各向异性逆康普顿散射共同决定 $$L_{\gamma}=\eta_{\gamma}L_{\rm sd}$$，为双星多波段光变提供了统一因果坐标。
 
 ### English reading note
 
-The abstract and model report the result within that scope. A representative relation is $$L_{\gamma}=\eta_{\gamma}L_{\rm sd}$$; it is retained as a model equation, not promoted to an unqualified universal law.
+Establishes that the momentum balance of pulsar and stellar winds shapes the intrabinary shock geometry, with orbitally modulated gamma-ray luminosity scaling as $$L_{\gamma}=\eta_{\gamma}L_{\rm sd}$$ driven by anisotropic inverse Compton scattering.
 
 ## Assumptions
 
 ### 中文导读
 
-- 不同双星系统的高能辐射机制需要结合源类别和轨道几何判断。
-- 同步辐射、逆康普顿和粒子输运共同决定观测到的伽马射线。
-- 这里的参数范围、样本选择和辐射处方决定了可以从结果外推到哪里。
+- 致密天体为旋转供能且非吸积的年轻脉冲星，拥有超相对论冷电子-正负电子对风。
+- 大质量伴星提供强烈的恒星风动压阻挡和密集的紫外软光子辐射靶场。
+- 非热粒子主要在无碰撞双星激波面通过费米加速机制被有效加速。
 
 ### English reading note
 
-- The interpretation depends on the source model's geometry, dynamics, and radiation prescription.
-- The data selection and parameter range limit how far the reported result can be generalized.
+- Compact object is an energetic non-accreting pulsar with an ultra-relativistic pair wind.
+- Massive companion supplies wind momentum balance and anisotropic UV seed photon fields.
+- Non-thermal particles are accelerated via Fermi mechanisms at the intrabinary shock.
 
 ## Scientific delta
 
 ### 中文导读
 
-这篇综述提供跨系统的现象学和物理词汇，使后续具体的 Be 星盘和星内双星激波工作有共同背景。 它是候选基准 Work，尚未获得本项目的 Human visibility approval。
+将此前混乱的微类星体喷流假说与碰撞风模型进行了严格的动力学与观测判据解耦，确立了以脉冲星自转减速功率 $L_{\rm sd}$ 和轨道动压比 $\eta$ 为主控因子的分类标准。
 
 ### English reading note
 
-a broad physical map for interpreting pulsar-wind shocks and orbitally modulated high-energy binary emission. This candidate Work remains a draft until an independent Human review approves its final canonical snapshot.
+Systematically distinguishes the pulsar-wind shock paradigm from microquasar accretion jet models, establishing momentum ratio $\eta$ and spin-down $L_{\rm sd}$ as canonical parameters.
 
 ## Reason to read
 
 ### 中文导读
 
-它适合作为脉冲星风、高能双星和多波段辐射路线的基础导读。
+进入 R4 主线（高能双星与脉冲星风）的必读总论；重点精读激波张角公式 $\eta = L_{\rm sd}/(\dot{M} v_w c)$ 的推导及其各向异性逆康普顿散射的轨道相位调制效应。
 
 ### English reading note
 
-Read it to connect rotation-powered pulsars, stellar-wind shocks, and high-energy binaries to a concrete calculation, and to inspect the assumptions before using its result in a broader scientific argument.
+Indispensable review for entering R4 high-energy binaries. Study the momentum flux ratio $\eta = L_{\rm sd}/(\dot{M} v_w c)$ and anisotropic inverse Compton orbital modulations.

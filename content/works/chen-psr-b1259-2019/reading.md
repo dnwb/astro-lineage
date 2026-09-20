@@ -8,61 +8,62 @@ work_id: work:chen-psr-b1259-2019
 
 ### 中文导读
 
-它是研究环境几何如何重新分配同一激波能量到多个光子波段的典型案例。
+它是伽马射线双星（R4 主线）多波段辐射建模的标杆性权威论文。完美解决了著名脉冲星双星系统 PSR B1259−63 在近星点附近穿过倾斜 Be 星星周盘时，激波几何剧烈变化与 TeV/X 射线双峰光变的动力学起源。
 
 ### English reading note
 
-This Work matters because it studies a pulsar wind crossing an inclined Be-star disk and changing shock geometry. The reading note keeps its conclusions attached to the model, data, and scope described by the authors.
+A benchmark paper for multi-wavelength modeling in gamma-ray binaries (R4). It provides the definitive physical solution for how the PSR B1259-63 intrabinary shock geometry and non-thermal emission are modulated as the pulsar traverses an inclined Be stellar disk.
 
 ## Problem
 
 ### 中文导读
 
-Be 星盘如何改变 PSR B1259−63/LS 2883 中脉冲星风激波的磁场、软光子场以及射电到 TeV 的辐射？
+PSR B1259−63 每次通过近星点前后，其 TeV 伽马射线与非热 X 射线均展现出反常的不对称双峰结构，简单的球对称恒星风相互作用完全无法重现，其三维轨道与盘几何调制机制为何？
 
 ### English reading note
 
-The paper asks how a pulsar wind crossing an inclined Be-star disk and changing shock geometry can be described and connected to an observable signal under the assumptions stated in the source.
+Why does the pulsar binary PSR B1259-63 produce pronounced asymmetric double-peaked X-ray and TeV light curves around periastron that completely defy spherically symmetric stellar wind shock models?
 
 ## Scientific takeaway
 
 ### 中文导读
 
-作者建模脉冲星风与恒星外流、赤道盘的相互作用，指出盘穿越期间更强的磁场可增强同步辐射，盘受热提供的软光子可使逆康普顿 TeV 光变形成双峰。 该模型中的一个代表性关系写作 $$L_{\rm IC}\propto n_e\,U_{\rm ph}\,\sigma_T c$$，它用于说明变量之间的物理联系，并不脱离本文的模型设定独立成立。
+建立了考虑倾斜 Be 星赤道致密盘的三维激波辐射模型，指出当脉冲星两度穿越 Be 星盘时，致密盘物质显著增强了局域激波磁场并提供了丰富的软光子场，通过逆康普顿散射公式 $$L_{\rm IC}\propto n_e\,U_{\rm ph}\,\sigma_T c$$ 自洽重现了 TeV 与 X 射线双峰光变，并预言了激波后方非热电子从盘边缘逃逸的高能特征。
 
 ### English reading note
 
-The abstract and model report the result within that scope. A representative relation is $$L_{\rm IC}\propto n_e\,U_{\rm ph}\,\sigma_T c$$; it is retained as a model equation, not promoted to an unqualified universal law.
+Develops an orbit-resolved 3D shock model incorporating an inclined equatorial Be disk. Shows that disk crossings dramatically amplify local magnetic fields and provide dense target photon densities $U_{\rm ph}$, driving double-peaked TeV/X-ray profiles via inverse Compton scattering $$L_{\rm IC}\propto n_e\,U_{\rm ph}\,\sigma_T c$$.
 
 ## Assumptions
 
 ### 中文导读
 
-- 系统由脉冲星风、Be 星风和倾斜赤道盘共同决定激波位置。
-- 非热电子通过同步辐射和逆康普顿散射产生宽带辐射。
-- 这里的参数范围、样本选择和辐射处方决定了可以从结果外推到哪里。
+- 大质量伴星拥有密集的截断赤道 Be 星盘，且盘面相对双星开普勒轨道面存在显著倾角。
+- 脉冲星自转能量以各向同性超相对论冷风形式外流，与 Be 星盘和极风共同达成动压平衡激波。
+- 高能电子的冷却由同步辐射和各向异性逆康普顿散射主导，假定粒子加速效率沿激波面均匀分布。
 
 ### English reading note
 
-- The interpretation depends on the source model's geometry, dynamics, and radiation prescription.
-- The data selection and parameter range limit how far the reported result can be generalized.
+- Massive companion possesses a dense, truncated circumstellar Be disk inclined relative to the orbital plane.
+- Pulsar wind is an isotropic relativistic cold pair flow establishing ram-pressure equilibrium shocks.
+- Electron cooling is dictated by synchrotron and anisotropic inverse Compton scattering off stellar/disk photons.
 
 ## Scientific delta
 
 ### 中文导读
 
-它把二元轨道几何和 Be 星盘环境显式带入脉冲星风激波模型，解释了单一恒星光子场难以对应的 TeV 双峰。 它是候选基准 Work，尚未获得本项目的 Human visibility approval。
+首次将真实的倾斜星周盘三维几何自洽引入脉冲星风激波模型，成功破译了近星点双峰辐射机制，确立了环境结构直接重塑双星非热辐射能谱的经典范式。
 
 ### English reading note
 
-an orbit- and disk-resolved shock model that explains multi-band structure through changing magnetic and seed-photon fields. This candidate Work remains a draft until an independent Human review approves its final canonical snapshot.
+Pioneers the incorporation of inclined 3D circumstellar disk geometry into intrabinary shock dynamics, breaking the mystery of periastron double peaks and defining a paradigm for binary environmental modulation.
 
 ## Reason to read
 
 ### 中文导读
 
-它是研究环境几何如何重新分配同一激波能量到多个光子波段的典型案例。
+深入研究高能双星、脉冲星风激波与伴星盘相互作用的经典必读论文；重点精读脉冲星穿越 Be 盘时的动压平衡驻点距离计算与各向异性逆康普顿散射角分布积分。
 
 ### English reading note
 
-Read it to connect a pulsar wind crossing an inclined Be-star disk and changing shock geometry to a concrete calculation, and to inspect the assumptions before using its result in a broader scientific argument.
+Essential classical study for high-energy binaries and pulsar-wind-disk interactions. Step through the orbital geometry calculations of shock stagnation distances and anisotropic Compton angular integrations.

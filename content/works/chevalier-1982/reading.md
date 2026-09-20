@@ -8,61 +8,62 @@ work_id: work:chevalier-1982
 
 ### 中文导读
 
-这是理解超新星相互作用光变、激波加热和后续 CSM 半解析模型的动力学底座。
+它是超新星及各类爆发瞬变与周围星周介质（CSM）相互作用流体力学的绝对奠基之作。推导了具有幂律密度分布的膨胀抛射物与外介质碰撞时自相似前后激波结构的严格解析解。
 
 ### English reading note
 
-This Work matters because it studies self-similar forward and reverse shocks in ejecta–circumstellar interaction. The reading note keeps its conclusions attached to the model, data, and scope described by the authors.
+The classical cornerstone for supernova-circumstellar medium (CSM) hydrodynamic interaction. It derives exact self-similar solutions for forward and reverse shocks formed when power-law expanding ejecta collide with stationary circumstellar matter.
 
 ## Problem
 
 ### 中文导读
 
-具有幂律密度的恒星抛射物撞击外部介质时，前向激波、接触间断面和反向激波如何共同演化？
+陡峭幂律密度分布的超新星膨胀包层与静止周围星周介质（恒星风或均一介质）相撞时，激波半径、接触间断面及激波层内部压强与密度剖面如何自相似演化？
 
 ### English reading note
 
-The paper asks how self-similar forward and reverse shocks in ejecta–circumstellar interaction can be described and connected to an observable signal under the assumptions stated in the source.
+How do the radii and internal hydrodynamic profiles of the forward shock, contact discontinuity, and reverse shock evolve self-similarly during ejecta-CSM collision?
 
 ## Scientific takeaway
 
 ### 中文导读
 
-Chevalier 建立恒星抛射物与外部介质相互作用的自相似解，给出冲击结构和半径随时间的标度关系。 该模型中的一个代表性关系写作 $$R_{\rm sh}\propto t^{(n-3)/(n-s)}$$，它用于说明变量之间的物理联系，并不脱离本文的模型设定独立成立。
+推导了激波半径随时间的自相似幂律关系 $$R_{\rm sh}\propto t^{(n-3)/(n-s)}$$，其中 $n$ 为抛射物外层密度幂律指数（典型值 $7\sim 12$），$s$ 为周围介质密度指数（风介质 $s=2$，均匀介质 $s=0$），并计算了激波间物质压缩比与压强分布。
 
 ### English reading note
 
-The abstract and model report the result within that scope. A representative relation is $$R_{\rm sh}\propto t^{(n-3)/(n-s)}$$; it is retained as a model equation, not promoted to an unqualified universal law.
+Derives the fundamental self-similar shock radius scaling $$R_{\rm sh}\propto t^{(n-3)/(n-s)}$$, where $n$ is the outer ejecta power-law index ($7\le n\le 12$) and $s$ is the ambient density slope ($s=2$ for winds, $s=0$ for ISM), providing exact interior shock profiles.
 
 ## Assumptions
 
 ### 中文导读
 
-- 抛射物和外部介质的密度可用幂律形式表示。
-- 相互作用阶段近似球对称且由强激波主导。
-- 这里的参数范围、样本选择和辐射处方决定了可以从结果外推到哪里。
+- 抛射物外包层满足同速膨胀幂律密度分布 $\rho_{\rm ej} \propto t^{-3} (r/t)^{-n}$。
+- 周围介质保持静止且满足 $\rho_{\rm CSM} = q r^{-s}$，相互作用由强激波流体力学主导。
+- 激波过渡区厚度相对半径较小，系统在绝热单原子气体（$\gamma=5/3$）状态方程下演化。
 
 ### English reading note
 
-- The interpretation depends on the source model's geometry, dynamics, and radiation prescription.
-- The data selection and parameter range limit how far the reported result can be generalized.
+- Outer ejecta follows homologous expansion with power-law density $\rho_{\rm ej} \propto t^{-3} (r/t)^{-n}$.
+- Ambient circumstellar medium is stationary with $\rho_{\rm CSM} = q r^{-s}$.
+- Adiabatic non-relativistic gas with $\gamma=5/3$ under spherical symmetry.
 
 ## Scientific delta
 
 ### 中文导读
 
-它提供了星周介质相互作用模型中前向/反向激波和接触面演化的基础标度。 它是候选基准 Work，尚未获得本项目的 Human visibility approval。
+取代了将超新星抛射物粗糙简化为均匀刚性球的旧假说，建立了包含自由膨胀核心、受阻反向激波区、接触面和前向激波区的完整动力学微观剖面。
 
 ### English reading note
 
-the self-similar shock structure underlying supernova–CSM interaction light-curve models. This candidate Work remains a draft until an independent Human review approves its final canonical snapshot.
+Replaces rigid-sphere approximations with an exact four-zone hydrodynamic structure: unshocked ejecta, reverse shock, contact discontinuity, and forward shock.
 
 ## Reason to read
 
 ### 中文导读
 
-这是理解超新星相互作用光变、激波加热和后续 CSM 半解析模型的动力学底座。
+所有 CSM 相互作用超新星（IIn, Ibn, Icn）、FBOT 激波拟合及 TransFit-CSM 模型的力学源头；建议重点推导式 (n-3)/(n-s) 的时序指数起源与反向激波能量耗散率。
 
 ### English reading note
 
-Read it to connect self-similar forward and reverse shocks in ejecta–circumstellar interaction to a concrete calculation, and to inspect the assumptions before using its result in a broader scientific argument.
+The mechanical origin of all CSM-interaction models and shock heating frameworks. Focus on how $(n-3)/(n-s)$ controls shock acceleration, deceleration, and kinetic dissipation.

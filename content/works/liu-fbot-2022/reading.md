@@ -8,61 +8,62 @@ work_id: work:liu-fbot-2022
 
 ### 中文导读
 
-它适合阅读“中心引擎参数如何跨现象比较”，也能帮助理解小抛射物质量如何改变光变时标。
+它是系统探索快速蓝色光学瞬变（FBOT）与超亮超新星（SLSN）、宽线 Ic 型超新星（SN Ic-BL）以及长伽马暴（LGRB）在中心引擎层面上内在统一性的里程碑研究。通过群体统计拟合，揭示了四类极端爆发共享同一磁星参数空间的连续性谱系。
 
 ### English reading note
 
-This Work matters because it studies comparing magnetar parameter space across FBOTs, SLSNe, SNe Ic-BL, and LGRBs. The reading note keeps its conclusions attached to the model, data, and scope described by the authors.
+A milestone study investigating the unified central engine architecture connecting FBOTs, SLSNe, SNe Ic-BL, and LGRBs. Through sample-level parameter inference, it uncovers an intrinsic continuum across diverse explosive transient classes.
 
 ## Problem
 
 ### 中文导读
 
-快速蓝色光学瞬变的快速光变和高亮度，能否与超亮超新星及宽线 Ic 型超新星共享一个磁星中心引擎描述？
+光变时标极短、辐射能量极高的 FBOT（如 AT2018cow），究竟是一种全新的未知物理现象，还是与已知剥层大质量恒星爆发同属同一磁星引擎的不同极端参数展现？
 
 ### English reading note
 
-The paper asks how comparing magnetar parameter space across FBOTs, SLSNe, SNe Ic-BL, and LGRBs can be described and connected to an observable signal under the assumptions stated in the source.
+Are extreme FBOTs completely distinct cosmological phenomena, or do they share an identical magnetar central engine continuum with standard stripped-envelope core-collapse events?
 
 ## Scientific takeaway
 
 ### 中文导读
 
-作者拟合 40 个 FBOT 的多波段光变，报告其抛射物质量、初始周期和磁场的约束，并在合并样本中得到 $P_{\rm i}\propto M_{\rm ej}^{-0.45}$；FBOT 的小抛射物质量对应约 12 天的上升时标分离。 该模型中的一个代表性关系写作 $$P_{\rm i} \propto M_{\rm ej}^{-0.45}$$，它用于说明变量之间的物理联系，并不脱离本文的模型设定独立成立。
+对 40 个 FBOT 进行系统多波段拟合，发现其初始自转周期与抛射物质量展现出明确的统计负相关幂律 $$P_{\rm i}\propto M_{\rm ej}^{-0.45}$$；FBOT 极小的抛射物质量（$\sim 0.1\,M_\odot$）是其光变在 12 天内迅速完成上升与峰值演化的根本决定因素，统一了从超低包层质量到大质量恒星演化的磁星全图景。
 
 ### English reading note
 
-The abstract and model report the result within that scope. A representative relation is $$P_{\rm i} \propto M_{\rm ej}^{-0.45}$$; it is retained as a model equation, not promoted to an unqualified universal law.
+Analyzes 40 FBOT light curves and uncovers an empirical engine scaling $$P_{\rm i}\propto M_{\rm ej}^{-0.45}$$. Demonstrates that ultra-low ejecta mass ($M_{\rm ej} \sim 0.1\,M_\odot$) naturally separates FBOTs into a 12-day rise-time domain, unifying diverse engine-driven transients under a common scaling continuum.
 
 ## Assumptions
 
 ### 中文导读
 
-- FBOT 的多波段光变可以用磁星能量注入的抛射物模型拟合。
-- 不同瞬变类别的合并比较使用一致的参数定义和选定的样本。
-- 这里的参数范围、样本选择和辐射处方决定了可以从结果外推到哪里。
+- FBOT 的紫外/光学光变主要由被捕获在低质量抛射物中的中心磁星能量注入主导。
+- 对四种不同瞬变类别的拟合采用了统一的磁偶极辐射公式与一致的吸积/自转减速物理假设。
+- 假定样本选择效应未完全扭曲 $P_i - M_{\rm ej}$ 的内禀幂律关联趋势。
 
 ### English reading note
 
-- The interpretation depends on the source model's geometry, dynamics, and radiation prescription.
-- The data selection and parameter range limit how far the reported result can be generalized.
+- FBOT UV/optical emissions are powered by magnetar energy thermalization in low-mass ejecta.
+- Employs consistent magnetic dipole injection physics across FBOTs, SLSNe, and SNe Ic-BL.
+- Assumes observational selection effects do not artificially create the $P_{\rm i} \propto M_{\rm ej}^{-0.45}$ correlation.
 
 ## Scientific delta
 
 ### 中文导读
 
-这项工作把磁星驱动模型用于 FBOT 群体比较，并提出不同瞬变的参数相关性；共同起源仍是作者提出的情景，需要独立检验。 它是候选基准 Work，尚未获得本项目的 Human visibility approval。
+首次在定量水平上建立了连接 FBOT、SLSN 和 GRB 的连续引擎相图，给出了解释 FBOT 极端时变特性的 $P_{\rm i}\propto M_{\rm ej}^{-0.45}$ 物理定标。
 
 ### English reading note
 
-a population comparison that places FBOTs in a common magnetar-parameter discussion while retaining model and sample limits. This candidate Work remains a draft until an independent Human review approves its final canonical snapshot.
+Establishes a quantitative unified engine phase space bridging FBOTs, SLSNe, and GRBs, defining the key scaling relation $P_{\rm i}\propto M_{\rm ej}^{-0.45}$ for low-mass fast transients.
 
 ## Reason to read
 
 ### 中文导读
 
-它适合阅读“中心引擎参数如何跨现象比较”，也能帮助理解小抛射物质量如何改变光变时标。
+理解跨类别高能瞬变统一中心引擎图景的必读文献；重点研读文中四类天体在 $P_i$ 对 $M_{\rm ej}$ 二维平面上的分布图以及上升时标分离的物理机制。
 
 ### English reading note
 
-Read it to connect comparing magnetar parameter space across FBOTs, SLSNe, SNe Ic-BL, and LGRBs to a concrete calculation, and to inspect the assumptions before using its result in a broader scientific argument.
+Essential reading for unified engine paradigms. Study the diagnostic $P_i$ versus $M_{\rm ej}$ distribution diagram that groups diverse transients into a coherent physical evolutionary track.

@@ -8,61 +8,62 @@ work_id: work:yu-zhang-gao-2013
 
 ### 中文导读
 
-它适合用来建立“中心引擎—抛射物—电磁对应体”的阅读起点，并连接引力波事件和短时标光学/紫外信号。
+它是双中子星并合千新星/合并新星（Mergernova）磁星中心引擎理论的奠基性开创论文。首次提出中子星并合遗迹若形成长寿命毫秒磁星，其自转能注入可将千新星峰值光度提升数个数量级，改变了人们对引力波电磁对应体亮度的传统认知。
 
 ### English reading note
 
-This Work matters because it studies central magnetar spin-down injecting energy into merger ejecta. The reading note keeps its conclusions attached to the model, data, and scope described by the authors.
+The pioneering paper proposing magnetar-powered merger-novae. It demonstrates that if a double neutron star merger leaves behind a long-lived millisecond magnetar, spin-down energy injection elevates the kilonova luminosity by orders of magnitude.
 
 ## Problem
 
 ### 中文导读
 
-中子星并合后留下的大质量毫秒磁星，如何通过持续能量注入改变并合抛射物的电磁信号？
+双中子星并合通常被认为仅靠微量放射性重元素 $r$-过程衰变供能（光度极低且暗淡），如果中央留下未立刻坍缩的大质量毫秒磁星，其强偶极注入如何改变并合抛射物的多波段光变？
 
 ### English reading note
 
-The paper asks how central magnetar spin-down injecting energy into merger ejecta can be described and connected to an observable signal under the assumptions stated in the source.
+While classical kilonovae powered purely by radioactive $r$-process heating are faint, how does continuous dipole energy injection from a remnant millisecond magnetar transform the transient's multi-band signatures?
 
 ## Scientific takeaway
 
 ### 中文导读
 
-作者建立了含中心磁星能量注入的并合抛射物动力学模型，并报告了合并新星在紫外附近较早达到峰值、光学峰值可接近超新星的结果；磁星早期坍缩会压低亮度并缩短持续时间。 该模型中的一个代表性关系写作 $$L_{\rm sd}(t) = L_0(1+t/t_{\rm sd})^{-2}$$，它用于说明变量之间的物理联系，并不脱离本文的模型设定独立成立。
+建立了中心磁星能量注入与膨胀抛射物动力学耦合的辐射模型，指出磁星偶极辐射以功率 $$L_{\rm sd}(t) = L_0(1+t/t_{\rm sd})^{-2}$$ 持续注入，显著延缓抛射物绝热冷却，使光变在紫外与光学波段达到与常规超新星相当甚至更高的极大值，并预言磁星早期黑洞坍缩会产生急剧截断特征。
 
 ### English reading note
 
-The abstract and model report the result within that scope. A representative relation is $$L_{\rm sd}(t) = L_0(1+t/t_{\rm sd})^{-2}$$; it is retained as a model equation, not promoted to an unqualified universal law.
+Models dynamical coupling between magnetar dipole power $$L_{\rm sd}(t) = L_0(1+t/t_{\rm sd})^{-2}$$ and expanding ejecta. Energy injection counteracts adiabatic cooling, boosting UV/optical peaks to supernova-like levels and predicting an abrupt cutoff if the magnetar collapses to a black hole.
 
 ## Assumptions
 
 ### 中文导读
 
-- 并合遗迹在一段时间内保持为大质量、快速自转的磁星。
-- 磁星风的能量主要进入膨胀的并合抛射物，并由辐射扩散形成可见信号。
-- 这里的参数范围、样本选择和辐射处方决定了可以从结果外推到哪里。
+- 双中子星并合状态方程足够硬，使得并合遗迹能维持数十秒至数小时的超大质量/大质量中子星阶段而不立刻黑洞化。
+- 磁星风能量以较高效率热化注入抛射物基底，并通过光学厚介质向外辐射扩散。
+- 抛射物质量取 $10^{-3}-10^{-2}\,M_\odot$，平均不透明度采用铁族或中等重元素估计。
 
 ### English reading note
 
-- The interpretation depends on the source model's geometry, dynamics, and radiation prescription.
-- The data selection and parameter range limit how far the reported result can be generalized.
+- Equation of state is sufficiently stiff to support a supramassive millisecond magnetar remnant before collapse.
+- Magnetar wind Poynting flux thermalizes efficiently into the base of the ejecta.
+- Ejecta mass ranges between $10^{-3}-10^{-2}\,M_\odot$ with typical optical opacities.
 
 ## Scientific delta
 
 ### 中文导读
 
-这项工作把并合后的中心遗迹、抛射物动力学和多波段光变放在同一模型中，给出了相对于纯放射性加热并合新星的动力学增量。 它是候选基准 Work，尚未获得本项目的 Human visibility approval。
+首次在引力波并合物理中确立了“新生磁星—能量注入—千新星增亮”的物理因果链，为 GW170817 等多信使事件中寻找长寿命致密天体中心引擎提供了标准理论模板。
 
 ### English reading note
 
-a dynamical merger-ejecta model with sustained central-engine injection and a distinct electromagnetic counterpart. This candidate Work remains a draft until an independent Human review approves its final canonical snapshot.
+Establishes the canonical causal paradigm of 'merger remnant $\to$ magnetar injection $\to$ bright kilonova', providing the core theoretical template for diagnosing long-lived post-merger engines in gravitational-wave events.
 
 ## Reason to read
 
 ### 中文导读
 
-它适合用来建立“中心引擎—抛射物—电磁对应体”的阅读起点，并连接引力波事件和短时标光学/紫外信号。
+掌握引力波电磁对应体与千新星中心引擎理论的第一篇必读论文；建议重点演算磁星自转减速时标 $t_{\rm sd}$ 与抛射物扩散时标 $t_{\rm diff}$ 的交点决定峰值时刻的物理过程。
 
 ### English reading note
 
-Read it to connect central magnetar spin-down injecting energy into merger ejecta to a concrete calculation, and to inspect the assumptions before using its result in a broader scientific argument.
+Essential reading for gravitational wave counterparts and merger engine physics. Focus on the quantitative matching between spin-down timescale $t_{\rm sd}$ and ejecta diffusion time $t_{\rm diff}$.

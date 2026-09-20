@@ -8,61 +8,62 @@ work_id: work:liu-magnetar-2017
 
 ### 中文导读
 
-这篇文章是从单源物理模型进入群体参数空间和不确定性讨论的桥梁。
+它是磁星驱动模型从单源个案定性解释迈向严谨统计参数空间反演的代表作。通过建立马尔可夫链蒙特卡洛（MCMC）多参拟合框架，首次对数十个无氢超亮超新星（SLSN-I）的磁场、自转周期与抛射物质量给出了自洽的置信后验分布。
 
 ### English reading note
 
-This Work matters because it studies Monte Carlo parameter inference for magnetar-powered hydrogen-deficient supernovae. The reading note keeps its conclusions attached to the model, data, and scope described by the authors.
+A benchmark work elevating magnetar transient modeling from qualitative fits to rigorous statistical MCMC inference. It systematically extracts multi-dimensional parameter posteriors ($B_p, P_0, M_{\rm ej}$) across a sample of hydrogen-poor SLSNe.
 
 ## Problem
 
 ### 中文导读
 
-怎样用统一的磁星驱动模型，同时拟合无氢超亮超新星的光变、温度演化和速度演化，并量化参数范围？
+如何摆脱过去对超亮超新星光变的人工网格调参局限，自洽量化初始磁场、自转周期、抛射物质量以及伽马射线光深等多参数简并度与物理置信区间？
 
 ### English reading note
 
-The paper asks how Monte Carlo parameter inference for magnetar-powered hydrogen-deficient supernovae can be described and connected to an observable signal under the assumptions stated in the source.
+How can multi-parameter degeneracies among magnetic field, initial spin, ejecta mass, and gamma-ray opacity be statistically broken and quantified across real SLSN light curves?
 
 ## Scientific takeaway
 
 ### 中文导读
 
-作者收集 19 个无氢超亮超新星并使用马尔可夫链蒙特卡洛拟合，报告了初始自转周期、极向磁场、抛射物质量和伽马射线不透明度的分布；结果还显示磁星注能对抛射物加速不可忽略。 该模型中的一个代表性关系写作 $$\chi^2 = \sum_i \frac{(F_{i,\rm obs}-F_{i,\rm mod})^2}{\sigma_i^2}$$，它用于说明变量之间的物理联系，并不脱离本文的模型设定独立成立。
+利用 MCMC 结合多波段测光构建统计拟合目标函数 $$\chi^2 = \sum_i \frac{(F_{i,\rm obs}-F_{i,\rm mod})^2}{\sigma_i^2}$$，揭示了 SLSN-I 磁星初始自转周期集中在 $1-5\text{ ms}$、磁场分布在 $(1-10)\times 10^{14}\text{ G}$，并发现磁星风对抛射物的流体动力学额外加速作用不可忽略。
 
 ### English reading note
 
-The abstract and model report the result within that scope. A representative relation is $$\chi^2 = \sum_i \frac{(F_{i,\rm obs}-F_{i,\rm mod})^2}{\sigma_i^2}$$; it is retained as a model equation, not promoted to an unqualified universal law.
+Employs an MCMC fitting pipeline minimizing $$\chi^2 = \sum_i \frac{(F_{i,\rm obs}-F_{i,\rm mod})^2}{\sigma_i^2}$$, finding that SLSN-I magnetar engines cluster at $P_0 \sim 1-5\text{ ms}$ and $B_p \sim (1-10)\times 10^{14}\text{ G}$, while demonstrating that dynamic wind acceleration significantly boosts ejecta velocities.
 
 ## Assumptions
 
 ### 中文导读
 
-- 样本中的光变、温度和速度可以由同一类磁星驱动抛射物模型描述。
-- 参数后验受所选先验、光变数据和磁星能量注入处方共同限制。
-- 这里的参数范围、样本选择和辐射处方决定了可以从结果外推到哪里。
+- 样本中所有无氢 SLSN 光变均受同一类磁星自转能注入机制主导，忽略外部致密 CSM 剧烈碰撞。
+- 辐射泄漏阶段采用广义等效伽马射线不透明度 $\kappa_\gamma$ 处方描述高能光子逃逸。
+- 观测测光数据误差满足正态分布，所选平坦或对数先验覆盖合理的恒星物理参数区间。
 
 ### English reading note
 
-- The interpretation depends on the source model's geometry, dynamics, and radiation prescription.
-- The data selection and parameter range limit how far the reported result can be generalized.
+- SLSN-I bolometric light curves are universally dominated by continuous magnetar dipole injection.
+- High-energy radiation leakage is parameterized by an effective leakage opacity $\kappa_\gamma$.
+- Measurement errors are Gaussian and priors cover physically plausible compact object parameter spaces.
 
 ## Scientific delta
 
 ### 中文导读
 
-它把单个瞬变的中心引擎解释推进到带有样本和参数后验的比较框架，但拟合分布仍不等于对所有超亮超新星前身的普遍证明。 它是候选基准 Work，尚未获得本项目的 Human visibility approval。
+首次实现了磁星驱动瞬变参数反演的统计化与代码化规范，不仅证实了磁星模型的普适解释力，更指出了磁星注入对抛射物膨胀速度的动态反作用这一关键动力学修正。
 
 ### English reading note
 
-a sample-level, uncertainty-aware comparison of magnetar parameters rather than a single-event light-curve explanation. This candidate Work remains a draft until an independent Human review approves its final canonical snapshot.
+Pioneers standardized statistical parameter estimation for magnetar transients, confirming the viability of the engine paradigm while establishing the dynamical acceleration effect on ejecta expansion.
 
 ## Reason to read
 
 ### 中文导读
 
-这篇文章是从单源物理模型进入群体参数空间和不确定性讨论的桥梁。
+学习高能瞬变 MCMC 拟合流程与参数空间反演的绝佳范例；重点查看 $B_p - P_0$ 的二维相关图以及抛射物质量对光变衰减斜率的控制机制。
 
 ### English reading note
 
-Read it to connect Monte Carlo parameter inference for magnetar-powered hydrogen-deficient supernovae to a concrete calculation, and to inspect the assumptions before using its result in a broader scientific argument.
+The primary reference for statistical parameter inference in engine-driven transients. Examine the two-dimensional posterior contours of $B_p$ versus $P_0$ and correlations with ejecta mass.

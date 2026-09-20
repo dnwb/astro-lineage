@@ -1,15 +1,22 @@
 ---
 import LanguageSwitch from "./LanguageSwitch.astro";
+
+const currentPath = Astro.url.pathname;
+const isCurrent = (path: string) => {
+  if (path === "/" && currentPath === "/") return true;
+  if (path !== "/" && currentPath.startsWith(path)) return true;
+  return false;
+};
 ---
 
 <nav class="site-nav" aria-label="主导航">
-  <a class="site-brand" href="/">AstroLineage</a>
+  <a class="site-brand" href="/" aria-current={isCurrent("/") && currentPath === "/" ? "page" : undefined}>AstroLineage</a>
   <ul>
-    <li><a href="/papers/">论文</a></li>
-    <li><a href="/research-lines/">研究方向</a></li>
-    <li><a href="/learning-paths/">学习路径</a></li>
-    <li><a href="/arxiv-daily/">每日 arXiv</a></li>
-    <li><a href="/arxiv-weekly/">每周总结</a></li>
+    <li><a href="/papers/" aria-current={isCurrent("/papers/") ? "page" : undefined} class={isCurrent("/papers/") ? "active" : undefined}>论文</a></li>
+    <li><a href="/research-lines/" aria-current={isCurrent("/research-lines/") ? "page" : undefined} class={isCurrent("/research-lines/") ? "active" : undefined}>研究方向</a></li>
+    <li><a href="/learning-paths/" aria-current={isCurrent("/learning-paths/") ? "page" : undefined} class={isCurrent("/learning-paths/") ? "active" : undefined}>学习路径</a></li>
+    <li><a href="/arxiv-daily/" aria-current={isCurrent("/arxiv-daily/") ? "page" : undefined} class={isCurrent("/arxiv-daily/") ? "active" : undefined}>每日 arXiv</a></li>
+    <li><a href="/arxiv-weekly/" aria-current={isCurrent("/arxiv-weekly/") ? "page" : undefined} class={isCurrent("/arxiv-weekly/") ? "active" : undefined}>每周总结</a></li>
   </ul>
   <LanguageSwitch />
 </nav>

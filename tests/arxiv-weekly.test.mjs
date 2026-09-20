@@ -28,7 +28,7 @@ test("arXiv weekly data file conforms to weekly summary schema", async () => {
   assert.ok(typeof data.week_id === "string" && /^\d{4}-W\d{2}$/u.test(data.week_id), "week_id must match YYYY-Www");
   assert.ok(typeof data.executive_summary === "string" && data.executive_summary.length > 50, "executive summary must be substantial");
   assert.ok(Array.isArray(data.thematic_highlights) && data.thematic_highlights.length > 0, "must have thematic highlights");
-  assert.ok(Array.isArray(data.top_picks) && data.top_picks.length > 0, "must have top picks");
+  assert.ok(Array.isArray(data.top_picks), "top_picks must be an array (can be empty when no breakthrough occurred)");
   assert.ok(Array.isArray(data.papers) && data.papers.length > 0, "must have reviewed papers");
 
   // Verify top picks structure

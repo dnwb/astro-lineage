@@ -27,8 +27,9 @@
 * Yun-Wei Yu（俞云伟）
 * Liang-Duan Liu（刘良端）
 * A-Ming Chen（陈尚明）
+* Qing-Cui Bu（卜庆翠）
 
-但网站**不能按老师分类成三个 publication list**。
+但网站**不能按老师分类成四个 publication list**。
 
 我们的目标是把整个组的研究工作放进统一的物理知识体系中。
 
@@ -401,6 +402,16 @@ magnetar magnetic energy
 * GW/EM/neutrino counterparts
 
 这一栏也是潜在的新课题孵化区。
+
+---
+
+## R7. High-Energy X-ray Timing, Spectroscopy & Compact Binary Observations
+
+> **定位与主体性保护原则**：  
+> 本主线涵盖卜庆翠老师所代表的**高能X射线数据分析与致密天体观测**方向。为了不稀释课题组以“爆发现象（Explosive Transients）与物理因果链”为核心的主体性，R7 作为**观测与实测数据分析支撑翼（Observational Wing）**存在，不冲淡组内理论与因果动力学主轴：  
+> - **核心物理与研究内容**：中子星/黑洞X射线双星（XRB）、吸积脉冲星时变与自转演化、回旋吸收线（CRSF）与磁场测量、准周期震荡（QPO）、慧眼（Insight-HXMT）、NuSTAR、NICER、EP 等X射线空间望远镜实测数据解析。  
+> - **与核心主体的协同关系**：主要作为 R1（中央引擎与吸积）、R4（脉冲星风与高能双星）、R5（磁星爆发高能辐射）的**关键观测对应体与物理参数边界约束**。  
+> - **入选门槛（严格防泛化）**：仅收录具有重要致密星物理参数约束（如磁场测量、吸积流几何、极端时变机制）的高价值X射线实测分析论文，严禁将泛星系巡天、低信噪比常规普查或脱离致密星机制的常规仪器标定纳入。
 
 ---
 

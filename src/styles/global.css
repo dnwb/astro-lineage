@@ -40,6 +40,14 @@ body {
   list-style: none;
 }
 
+.site-nav a.active,
+.site-nav a[aria-current="page"] {
+  font-weight: 700;
+  color: #1e3a8a;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
 .language-switch {
   display: inline-flex;
   align-items: center;

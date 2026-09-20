@@ -182,52 +182,59 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
           <h2><span class="language-primary">本周精选重点论文解读</span><span class="language-english" lang="en">Weekly Top Picks</span></h2>
         </div>
         <div class="picks-list">
-          {weeklyData.top_picks?.map((pick: any) => {
-            const badge = priorityLabels[pick.priority] ?? priorityLabels.worth_knowing;
-            const paperObj = paperMap.get(pick.arxiv_id);
-            return (
-              <article class={`pick-card ${pick.priority === "must_read" ? "pick-card-must" : "pick-card-worth"}`}>
-                <div class="pick-header">
-                  <span class={`pick-badge ${badge.class}`}>{badge.zh}</span>
-                  <div class="pick-action-links">
-                    <a class="pick-arxiv-id" href={`https://arxiv.org/abs/${pick.arxiv_id}`} target="_blank" rel="noopener noreferrer">
-                      arXiv:{pick.arxiv_id} ↗
-                    </a>
-                    <a class="pick-ads-link" href={`https://ui.adsabs.harvard.edu/abs/arXiv:${pick.arxiv_id}`} target="_blank" rel="noopener noreferrer" title="在 NASA ADS 中查看">
-                      NASA ADS ↗
-                    </a>
-                  </div>
-                </div>
-                <h3 class="pick-title">{pick.title}</h3>
-
-                <div class="pick-details">
-                  <div class="detail-row">
-                    <span class="detail-label">推荐理由：</span>
-                    <span class="detail-text"><ReaderText text={pick.recommendation_reason} /></span>
-                  </div>
-                  <div class="detail-row highlight-row">
-                    <span class="detail-label">核心突破：</span>
-                    <span class="detail-text"><ReaderText text={pick.core_insight} /></span>
-                  </div>
-                  <div class="detail-row guide-row">
-                    <span class="detail-label">阅读切入：</span>
-                    <span class="detail-text"><ReaderText text={pick.reading_guide} /></span>
-                  </div>
-                </div>
-
-                <details class="paper-citation-details">
-                  <summary class="citation-summary"><span class="language-primary">复制 BibTeX / 规范引用</span><span class="language-english" lang="en">BibTeX & Citation</span></summary>
-                  <div class="citation-box">
-                    <div class="citation-short-row">
-                      <span class="citation-label">规范引用：</span>
-                      <code class="citation-short">{formatCitation(paperObj || pick)}</code>
+          {weeklyData.top_picks && weeklyData.top_picks.length > 0 ? (
+            weeklyData.top_picks.map((pick: any) => {
+              const badge = priorityLabels[pick.priority] ?? priorityLabels.worth_knowing;
+              const paperObj = paperMap.get(pick.arxiv_id);
+              return (
+                <article class={`pick-card ${pick.priority === "must_read" ? "pick-card-must" : "pick-card-worth"}`}>
+                  <div class="pick-header">
+                    <span class={`pick-badge ${badge.class}`}>{badge.zh}</span>
+                    <div class="pick-action-links">
+                      <a class="pick-arxiv-id" href={`https://arxiv.org/abs/${pick.arxiv_id}`} target="_blank" rel="noopener noreferrer">
+                        arXiv:{pick.arxiv_id} ↗
+                      </a>
+                      <a class="pick-ads-link" href={`https://ui.adsabs.harvard.edu/abs/arXiv:${pick.arxiv_id}`} target="_blank" rel="noopener noreferrer" title="在 NASA ADS 中查看">
+                        NASA ADS ↗
+                      </a>
                     </div>
-                    <pre class="citation-pre" tabindex="0" title="点击全选复制">{formatBibtex(paperObj || pick)}</pre>
                   </div>
-                </details>
-              </article>
-            );
-          })}
+                  <h3 class="pick-title">{pick.title}</h3>
+
+                  <div class="pick-details">
+                    <div class="detail-row">
+                      <span class="detail-label">推荐理由：</span>
+                      <span class="detail-text"><ReaderText text={pick.recommendation_reason} /></span>
+                    </div>
+                    <div class="detail-row highlight-row">
+                      <span class="detail-label">核心突破：</span>
+                      <span class="detail-text"><ReaderText text={pick.core_insight} /></span>
+                    </div>
+                    <div class="detail-row guide-row">
+                      <span class="detail-label">阅读切入：</span>
+                      <span class="detail-text"><ReaderText text={pick.reading_guide} /></span>
+                    </div>
+                  </div>
+
+                  <details class="paper-citation-details">
+                    <summary class="citation-summary"><span class="language-primary">复制 BibTeX / 规范引用</span><span class="language-english" lang="en">BibTeX & Citation</span></summary>
+                    <div class="citation-box">
+                      <div class="citation-short-row">
+                        <span class="citation-label">规范引用：</span>
+                        <code class="citation-short">{formatCitation(paperObj || pick)}</code>
+                      </div>
+                      <pre class="citation-pre" tabindex="0" title="点击全选复制">{formatBibtex(paperObj || pick)}</pre>
+                    </div>
+                  </details>
+                </article>
+              );
+            })
+          ) : (
+            <div class="empty-picks-notice">
+              <p class="empty-picks-title">本周暂无核心爆发现象必读推荐</p>
+              <p class="empty-picks-desc">已扫描本周所有 arXiv 论文，未发现直接推动课题组 R1~R7 爆发现象因果链条的重大突破性工作。学术追踪严守宁缺毋滥原则，所列其它论文已归档至下方快速浏览目录。</p>
+            </div>
+          )}
         </div>
       </section>
 
@@ -532,6 +539,28 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
         background: #4338ca;
         color: #ffffff;
         border-color: #4338ca;
+      }
+
+      /* Empty picks notice */
+      .empty-picks-notice {
+        background: #f8fafc;
+        border: 1px dashed #94a3b8;
+        border-radius: 8px;
+        padding: 1.5rem 1.8rem;
+        margin-top: 0.8rem;
+        text-align: center;
+      }
+      .empty-picks-title {
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: #334155;
+        margin: 0 0 0.5rem 0;
+      }
+      .empty-picks-desc {
+        font-size: 0.9rem;
+        color: #64748b;
+        margin: 0;
+        line-height: 1.5;
       }
 
       /* Markdown export */

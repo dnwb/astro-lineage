@@ -1,0 +1,93 @@
+---
+import ReaderText from "./ReaderText.astro";
+import DailyRadarGuide from "./DailyRadarGuide.astro";
+import DailyRadarSource from "./DailyRadarSource.astro";
+import { projectPotentialLineage, radarCardAnchor, radarCoverageDescription } from "../../scripts/daily-radar.mjs";
+
+type AnyRecord = Record<string, any>;
+type CoverageLevel = "abstract_only" | "body_partial" | "full_body";
+
+interface Props {
+  item: AnyRecord;
+  visibleWorkLinks: Record<string, { href: string; title: string }>;
+}
+
+const { item, visibleWorkLinks } = Astro.props;
+const record = item.analysis as AnyRecord;
+const coverage = record.coverage as AnyRecord;
+const coverageLevel = coverage.level as CoverageLevel;
+const guide = record.analysis as AnyRecord;
+const lineage = projectPotentialLineage(guide.potential_lineage, Object.keys(visibleWorkLinks)) as AnyRecord;
+const lineageCandidates = Array.isArray(lineage.candidates) ? lineage.candidates : [];
+const prerequisiteWorks = Array.isArray(guide.prerequisite_works)
+  ? guide.prerequisite_works.filter((prerequisite: AnyRecord) => visibleWorkLinks[prerequisite.work_id])
+  : [];
+const coverageDescription = radarCoverageDescription(coverage);
+const resultLabel = coverageLevel === "abstract_only" ? "摘要线索" : priorityLabel(item.analysis.priority);
+const isSkim = item.analysis.priority === "skip";
+const cardVariant = isSkim
+  ? "skim"
+  : item.analysis.priority === "must_read"
+    ? "must-read"
+    : "worth-knowing";
+const relationLabels: Record<string, string> = {
+  builds_on: "建立在其上",
+  extends: "扩展",
+  tests: "检验",
+  constrains: "约束",
+  challenges: "挑战",
+  replaces_assumption: "替代假设",
+  corrects: "修正",
+};
+
+function priorityLabel(priority: string) {
+  return priority === "must_read" ? "作者报告的主要结果与限定" : "进展与限定";
+}
+---
+
+<li class="radar-list-item">
+  <article class={`radar-card radar-card-${cardVariant}`} id={radarCardAnchor(item.arxiv_id, item.revision)}>
+    <h3><a class="paper-title" href={item.url}>{item.title}</a></h3>
+    <div class="language-primary">
+      {item.analysis.priority === "must_read" ? (
+        <>
+          <p class="radar-must-summary"><strong>研究了什么：</strong><ReaderText text={guide.problem} /> <strong>得到了什么：</strong><ReaderText text={record.analysis.result} /></p>
+          <p class="radar-reason"><strong>为什么关注：</strong><ReaderText text={guide.reason} /></p>
+        </>
+      ) : isSkim ? (
+        <p class="radar-skim-summary"><strong>{resultLabel}：</strong><ReaderText text={record.analysis.result} /></p>
+      ) : (
+        <p class="radar-result"><strong>{resultLabel}：</strong><ReaderText text={record.analysis.result} /></p>
+      )}
+      {lineageCandidates.length > 0 ? (
+        <div class="radar-work-context">
+          <strong>相关组内 Work（关系待审核）：</strong>
+          {lineageCandidates.map((candidate: AnyRecord) => (
+            <p>
+              <span>{relationLabels[candidate.relation] ?? "候选关系"} → </span>
+              <a href={visibleWorkLinks[candidate.target_work_id].href}>{visibleWorkLinks[candidate.target_work_id].title}</a>
+              <span>：{candidate.delta}</span>
+            </p>
+          ))}
+        </div>
+      ) : null}
+      {prerequisiteWorks.length > 0 ? (
+        <div class="radar-reading-prerequisite">
+          <strong>阅读前置：</strong>
+          {prerequisiteWorks.map((prerequisite: AnyRecord) => (
+            <p>
+              <a href={visibleWorkLinks[prerequisite.work_id].href}>{visibleWorkLinks[prerequisite.work_id].title}</a>
+              <span>：{prerequisite.reason}</span>
+            </p>
+          ))}
+        </div>
+      ) : null}
+      {isSkim ? (
+        <p class="radar-skim-coverage">{coverageDescription.primary}</p>
+      ) : null}
+      {!isSkim ? <DailyRadarGuide item={item} visibleWorkLinks={visibleWorkLinks} /> : null}
+    </div>
+    <p class="language-english" lang="en">{isSkim ? coverageDescription.english : "The scientific guide is available in Chinese; open it for source and reading evidence."}</p>
+    <DailyRadarSource item={item} />
+  </article>
+</li>

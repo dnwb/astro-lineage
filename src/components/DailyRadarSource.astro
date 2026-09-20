@@ -1,0 +1,69 @@
+---
+import ReaderText from "./ReaderText.astro";
+import { radarCoverageDescription } from "../../scripts/daily-radar.mjs";
+
+type AnyRecord = Record<string, any>;
+
+interface Props {
+  item: AnyRecord;
+}
+
+const { item } = Astro.props;
+const authors = Array.isArray(item.authors) && item.authors.length > 0 ? item.authors.join("、") : "作者未记录";
+const dateLabel = (value: unknown) => typeof value === "string" && value.length >= 10 ? value.slice(0, 10) : "未记录";
+const coverage = item.analysis?.coverage as AnyRecord | undefined;
+const coverageDescription = radarCoverageDescription(coverage);
+const coverageReferences = Array.isArray(coverage?.source_references) ? coverage.source_references : [];
+const isSkim = item.analysis?.priority === "skip";
+const arxivIdLabel = item.revision ? `arXiv:${item.arxiv_id}v${item.revision}` : (item.arxiv_id ? `arXiv:${item.arxiv_id}` : "arXiv");
+---
+
+<details class={`radar-source-detail${isSkim ? " radar-skim-source" : ""}`}>
+  <summary><span class="language-primary">原始摘要与来源</span><span class="language-english" lang="en">Original abstract and source</span></summary>
+  <div class="radar-source-body">
+    <dl class="radar-source-metadata">
+      <div>
+        <dt><span class="language-primary">作者</span><span class="language-english" lang="en">Authors</span></dt>
+        <dd>{authors}</dd>
+      </div>
+      <div>
+        <dt><span class="language-primary">首版提交</span><span class="language-english" lang="en">First submitted</span></dt>
+        <dd><time datetime={item.published}>{dateLabel(item.published)}</time></dd>
+      </div>
+      <div>
+        <dt><span class="language-primary">最近更新</span><span class="language-english" lang="en">Last updated</span></dt>
+        <dd><time datetime={item.updated}>{dateLabel(item.updated)}</time></dd>
+      </div>
+      <div>
+        <dt><span class="language-primary">版本</span><span class="language-english" lang="en">Version</span></dt>
+        <dd>arXiv:{item.arxiv_id}v{item.revision}</dd>
+      </div>
+    </dl>
+    {coverage ? (
+      <section class="radar-source-coverage">
+        <h4><span class="language-primary">阅读范围与依据</span><span class="language-english" lang="en">Coverage and evidence</span></h4>
+        <p class="radar-coverage">实际阅读范围：{coverage.label}；版本 {coverage.source_version}；检查材料：{Array.isArray(coverage.inspected_sections) ? coverage.inspected_sections.join("、") : "未记录"}。</p>
+        <p class="language-english" lang="en">{coverageDescription.english}</p>
+        <ul class="source-reference-list">
+          {coverageReferences.map((reference: AnyRecord) => (
+            <li>
+              <a href={reference.url}>{reference.kind === "arxiv_source_package" ? "arXiv body material" : "arXiv abstract"}</a>
+              <span>{reference.locator}{reference.description ? `; ${reference.description}` : ""}</span>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ) : null}
+    <p class="radar-original-abstract" lang="en"><ReaderText text={item.abstract} /></p>
+    <p class="record-label language-primary">这里保留 arXiv 提供的原始摘要；它是来源材料，不表示独立验证。</p>
+    <p class="record-label language-english" lang="en">This is the original arXiv abstract used as source material; it does not represent independent verification.</p>
+  </div>
+</details>
+<p class="radar-links">
+  <a class="browse-link" href={item.url}><span class="language-primary">打开 {arxivIdLabel} 原文页面</span><span class="language-english" lang="en">Open {arxivIdLabel} source page</span></a>
+  {item.arxiv_id ? (
+    <a class="browse-link ads-link" href={`https://ui.adsabs.harvard.edu/abs/arXiv:${item.arxiv_id}`} target="_blank" rel="noopener noreferrer">
+      <span class="language-primary">在 NASA ADS 查看</span><span class="language-english" lang="en">NASA ADS</span> ↗
+    </a>
+  ) : null}
+</p>

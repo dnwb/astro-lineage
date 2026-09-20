@@ -1,0 +1,47 @@
+---
+import DailyRadarSource from "./DailyRadarSource.astro";
+
+type AnyRecord = Record<string, any>;
+
+interface Props {
+  item: AnyRecord;
+  pendingLabel: string;
+}
+
+const { item, pendingLabel } = Astro.props;
+const analysis = item.pending_analysis as AnyRecord | undefined;
+const coverage = analysis?.coverage as AnyRecord | undefined;
+const inspectedSections = Array.isArray(coverage?.inspected_sections)
+  ? coverage.inspected_sections.filter((section: unknown): section is string => typeof section === "string" && section.trim() !== "")
+  : [];
+const hasUsableCoverage = typeof coverage?.label === "string" && coverage.label.trim() !== "" &&
+  typeof coverage?.source_version === "string" && coverage.source_version.trim() !== "" && inspectedSections.length > 0;
+const coverageText = hasUsableCoverage
+  ? `${coverage.label}；版本 ${coverage.source_version}；检查材料：${inspectedSections.join("、")}。`
+  : "阅读记录无效，无法用于科学导读。";
+const coverageTextEnglish = hasUsableCoverage
+  ? `${coverage.label}; version ${coverage.source_version}; inspected material: ${inspectedSections.join(", ")}.`
+  : "The reading record is invalid and cannot support a scientific guide.";
+const pendingLabelEnglish: Record<string, string> = {
+  analysis_missing: "analysis not started",
+  analysis_failed: "analysis failed",
+  analysis_invalid: "invalid analysis record",
+  analysis_pending: "analysis still in progress",
+  source_changed: "source changed; old guide is stale",
+  analysis_revision_mismatch: "revision mismatch; old guide is stale",
+  coverage_insufficient_must_read: "insufficient full-paper coverage",
+  coverage_insufficient_worth_knowing: "insufficient body evidence",
+};
+---
+
+<li class="radar-list-item">
+  <article class="radar-card radar-pending-card">
+    <p><span class="tag"><span class="language-primary">待分析</span><span class="language-english" lang="en">Pending</span></span> <strong><span class="language-primary">{pendingLabel}</span><span class="language-english" lang="en">{pendingLabelEnglish[item.pending_reason] ?? "review pending"}</span></strong></p>
+    <h3><a class="paper-title" href={item.url}>{item.title}</a></h3>
+    <p class="paper-meta">{item.authors.join(", ")} · {item.published.slice(0, 10)} · arXiv:{item.arxiv_id}v{item.revision}</p>
+    <p class="language-primary">{item.pending_detail}</p>
+    <p class="language-english" lang="en">This entry remains outside the reading groups until its version-bound analysis is complete. {item.pending_reason === "analysis_failed" ? "The analysis failed and needs another attempt." : ""}</p>
+    <p class="radar-coverage"><strong><span class="language-primary">当前阅读记录：</span><span class="language-english" lang="en">Current reading record: </span></strong><span class="language-primary">{coverageText}</span><span class="language-english" lang="en">{coverageTextEnglish}</span></p>
+    <DailyRadarSource item={item} />
+  </article>
+</li>

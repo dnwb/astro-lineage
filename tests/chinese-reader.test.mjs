@@ -32,6 +32,7 @@ test("reader pages present Chinese interface copy across every route", { timeout
     "/papers/long-yu-2026/",
     "/papers/blandford-mckee-1976/",
     "/papers/transfit-2025/",
+    "/papers/transfit-csm-2025/",
     "/papers/zhu-2021/",
     "/research-lines/",
     "/research-lines/central-engines/",
@@ -74,9 +75,13 @@ test("reader pages present Chinese interface copy across every route", { timeout
   assert.match(arnett, /Read this Work to see how a compact physical model connects an energy source to transport and a measurable light curve\./u);
   assert.match(arnett, /Type I supernovae\. I - Analytic solutions for the early part of the light curve/u);
   assert.doesNotMatch(arnett, /<details[^>]*\sopen(?:[\s=>])/u);
+
+  const formulaPage = pages.get("/papers/transfit-csm-2025/");
+  assert.match(formulaPage, /class="reader-math reader-math-display" tabindex="0" aria-label="公式，可横向滚动查看"/u);
+  assert.match(formulaPage, /<span class="katex-display"><span class="katex">[\s\S]*<math[^>]*display="block"/u);
 });
 
-test("reader math renders supported TeX delimiters as escaped static MathML", () => {
+test("reader math renders supported TeX delimiters as static KaTeX and MathML", () => {
   assert.deepEqual(splitMath("Energy $E=mc^2$ and $$\\frac{a}{b}$$."), [
     { kind: "text", value: "Energy " },
     { kind: "math", value: "E=mc^2", display: false },
@@ -85,13 +90,22 @@ test("reader math renders supported TeX delimiters as escaped static MathML", ()
     { kind: "text", value: "." },
   ]);
   const markup = renderMathMarkup("\\frac{a}{b} + \\alpha", true);
-  assert.match(markup, /^<math[^>]*display="block"[^>]*>/u);
+  assert.match(markup, /^<span class="katex-display"><span class="katex">/u);
+  assert.match(markup, /<math[^>]*display="block"[^>]*>/u);
   assert.match(markup, /<mfrac><mi>a<\/mi><mi>b<\/mi><\/mfrac>/u);
   assert.match(markup, /<mi>α<\/mi>/u);
-  const common = renderMathMarkup("\\mathcal{L} \\lesssim \\rm{10}^{44} \\, \\hat{n}", false);
-  assert.match(common, /<mrow mathvariant="script">/u);
-  assert.match(common, /≲/u);
-  const renderedBody = common.slice(common.indexOf("<semantics>"), common.indexOf("<annotation"));
+  const legacyCommandFormula = renderMathMarkup("\\mathcal{L} \\lesssim \\rm{10}^{44} \\, \\hat{n}", false);
+  assert.match(legacyCommandFormula, /<mi mathvariant="script">L<\/mi>/u);
+  assert.match(legacyCommandFormula, /≲/u);
+  const renderedBody = legacyCommandFormula.slice(legacyCommandFormula.indexOf("<semantics>"), legacyCommandFormula.indexOf("<annotation"));
   assert.doesNotMatch(renderedBody, /\\rm/u);
   assert.doesNotMatch(renderMathMarkup("<script>alert(1)<\/script>", false), /<script/iu);
+});
+
+test("reader math uses a semantic node and a responsive equation viewport", async () => {
+  const display = renderMathMarkup("\\frac{a}{b} + \\sum_{i=1}^{n} x_i", true);
+  assert.match(display, /<span class="katex-display"><span class="katex">/u);
+  assert.match(display, /<math[^>]*display="block"/u);
+  assert.match(display, /class="katex-html"[^>]*aria-hidden="true"/u);
+  assert.match(display, /<annotation encoding="application\/x-tex">/u);
 });

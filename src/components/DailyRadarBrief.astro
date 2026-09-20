@@ -1,0 +1,55 @@
+---
+import ReaderText from "./ReaderText.astro";
+
+type AnyRecord = Record<string, any>;
+
+interface Props {
+  brief: AnyRecord | null;
+  visibleWorkLinks: Record<string, { href: string; title: string }>;
+  groups?: AnyRecord;
+}
+
+const { brief, visibleWorkLinks, groups = {} } = Astro.props;
+const ready = brief?.status === "ready";
+const mustRead = ready && Array.isArray(brief.must_read) ? brief.must_read : [];
+const hasWorthKnowing = Array.isArray(groups.worth_knowing) && groups.worth_knowing.length > 0;
+const hasSkim = Array.isArray(groups.skip) && groups.skip.length > 0;
+
+function visibleRelatedWorks(sentence: AnyRecord) {
+  return (Array.isArray(sentence.related_work_ids) ? sentence.related_work_ids : [])
+    .map((workId: string) => visibleWorkLinks[workId])
+    .filter((work): work is { href: string; title: string } => work !== undefined);
+}
+---
+
+<section class="panel radar-brief" id="opening-brief" aria-labelledby="opening-brief-title">
+  <p class="section-kicker"><span class="language-primary">本期导读</span><span class="language-english" lang="en">Opening brief</span></p>
+  <h2 id="opening-brief-title"><span class="language-primary">先看这批更新</span><span class="language-english" lang="en">Read this update first</span></h2>
+  {ready ? (
+    <div class="language-primary">
+      <p class="radar-brief-intro"><ReaderText text={brief.intro} /></p>
+      {mustRead.length > 0 ? (
+        <ul class="radar-brief-must-read">
+          {mustRead.map((sentence: AnyRecord) => (
+            <li>
+              <a href={`#${sentence.anchor}`}>{sentence.label}</a>：<ReaderText text={sentence.text} />
+              {visibleRelatedWorks(sentence).length > 0 ? (
+                <span class="radar-brief-work-links">（相关 Work：{visibleRelatedWorks(sentence).map((work) => <a href={work.href}>{work.title}</a>) }）</span>
+              ) : null}
+            </li>
+          ))}
+        </ul>
+      ) : null}
+      {hasWorthKnowing && brief.worth_knowing_summary ? <p><strong>值得知道：</strong><ReaderText text={brief.worth_knowing_summary} /></p> : null}
+      {hasSkim && brief.skim_summary ? <p><strong>快速浏览：</strong><ReaderText text={brief.skim_summary} /></p> : null}
+    </div>
+  ) : (
+    <>
+      <p class="empty-state language-primary">本期导读暂不可用；下面仍保留有证据边界的论文卡片。</p>
+      <p class="empty-state language-english" lang="en">This opening brief is unavailable; the paper cards below retain their evidence boundaries.</p>
+    </>
+  )}
+  {ready ? (
+    <p class="record-label language-english" lang="en">This opening brief is available in Chinese only; each paper card retains its own source and coverage disclosure.</p>
+  ) : null}
+</section>

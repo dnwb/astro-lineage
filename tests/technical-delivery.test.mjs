@@ -64,6 +64,7 @@ const learningPathSlugs = [
 const expectedRoutes = [
   "/",
   "/arxiv-daily/",
+  "/arxiv-weekly/",
   "/papers/",
   ...paperSlugs.map((slug) => `/papers/${slug}/`),
   "/research-lines/",

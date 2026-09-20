@@ -1,0 +1,31 @@
+---
+import DailyRadarCard from "./DailyRadarCard.astro";
+
+type AnyRecord = Record<string, any>;
+
+interface Props {
+  id: string;
+  items: AnyRecord[];
+  primaryLabel: string;
+  englishLabel: string;
+  visibleWorkLinks: Record<string, { href: string; title: string }>;
+}
+
+const { id, items, primaryLabel, englishLabel, visibleWorkLinks } = Astro.props;
+---
+
+<section class="radar-section" id={id}>
+  <h2><span class="language-primary">{primaryLabel}</span><span class="language-english" lang="en">{englishLabel}</span></h2>
+  {items.length === 0 ? (
+    <p class="empty-state"><span class="language-primary">本期没有符合这一阅读门槛的条目。</span><span class="language-english" lang="en">No entries meet this reading threshold in this edition.</span></p>
+  ) : (
+    <ol class="paper-index radar-list">
+      {items.map((item) => (
+        <DailyRadarCard
+          item={item}
+          visibleWorkLinks={visibleWorkLinks}
+        />
+      ))}
+    </ol>
+  )}
+</section>

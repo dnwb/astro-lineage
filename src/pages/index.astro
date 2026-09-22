@@ -3,7 +3,6 @@ import ProductBoundary from "../copy/product-boundary.md";
 import { firstCompleteReadingItem, parseReadingDocument, whyThisWorkMatters } from "../../scripts/reader-markdown.mjs";
 import { loadCanonicalContent } from "../../scripts/content-loader.mjs";
 import { projectBaselineSnapshot, projectVisibleSnapshot } from "../../scripts/reader-projection.mjs";
-import SiteNav from "../components/SiteNav.astro";
 import { learningPathReaderPath, researchLineReaderPath, workReaderPath } from "../lib/reader-routes";
 import {
   localizedEdgeReason,
@@ -14,6 +13,12 @@ import {
   selectBilingualBlocks,
 } from "../lib/reader-localization";
 import { loadSiteConfig } from "../lib/site-config";
+import SiteNav from "../components/SiteNav.astro";
+import ReaderText from "../components/ReaderText.astro";
+import weeklyData from "../data/arxiv-weekly.json";
+import dailyRadar from "../data/daily-radar.json";
+import dailyFeed from "../data/arxiv-daily.json";
+import archiveManifest from "../data/arxiv-archives/manifest.json";
 import "../styles/global.css";
 
 type AnyRecord = Record<string, any>;
@@ -29,6 +34,41 @@ const baselineLines = (baselineReader.research_lines ?? []) as AnyRecord[];
 const baselinePaths = (baselineReader.learning_paths ?? []) as AnyRecord[];
 const workById = new Map(baselineWorks.map((work) => [work.work_id, work]));
 const startPath = learningPaths[0] ?? null;
+
+// Intelligence Dashboard Data Preparation
+const weeklyStats = (weeklyData as any).statistics ?? {
+  total_analyzed: (weeklyData as any).papers?.length ?? 0,
+  must_read_count: (weeklyData as any).top_picks?.filter((p: any) => p.priority === "must_read").length ?? 0,
+  worth_knowing_count: (weeklyData as any).top_picks?.filter((p: any) => p.priority === "worth_knowing").length ?? 0,
+  skip_count: 0,
+};
+const weeklyLeadSummary = (weeklyData as any).executive_summary
+  ? (weeklyData as any).executive_summary.split("\n\n")[0]
+  : "聚合高能天体物理最新因果动力学与观测前沿。";
+const weeklyTopPicks = (weeklyData as any).top_picks ?? [];
+
+const dailyEntries = (dailyFeed as any).entries ?? [];
+const feedMap = new Map(dailyEntries.map((entry: any) => [entry.arxiv_id, entry]));
+const radarAnalyses = (dailyRadar as any).analyses ?? [];
+const dailyMustReads = radarAnalyses
+  .filter((a: any) => a.priority === "must_read")
+  .map((a: any) => ({
+    ...a,
+    entry: feedMap.get(a.arxiv_id) ?? null,
+  }));
+const dailyWorthKnowing = radarAnalyses.filter((a: any) => a.priority === "worth_knowing");
+const dailySkip = radarAnalyses.filter((a: any) => a.priority === "skip");
+
+const dailyStats = {
+  total_papers: dailyEntries.length || radarAnalyses.length,
+  must_read_count: dailyMustReads.length,
+  worth_knowing_count: dailyWorthKnowing.length,
+  skip_count: dailySkip.length,
+};
+
+const latestDate = (dailyFeed as any).window?.announcement_date ?? "2026-09-21";
+const radarWeekday = (dailyFeed as any).window?.announcement_weekday ?? "Mon";
+const radarBatchLabel = `${radarWeekday} 监测批次 · ${(dailyFeed as any).window?.cutoff_local_time ?? "14:00"} Cutoff`;
 
 const relationLabels: Record<string, string> = {
   builds_on: "建立在其上",
@@ -121,7 +161,184 @@ function edgeLabel(edge: AnyRecord) {
         <ProductBoundary />
       </header>
 
-      <section class="panel home-section" aria-labelledby="start-here-heading">
+      <!-- Primary Feature Section: Weekly Synthesis & Daily Radar -->
+      <section class="intelligence-hero-section" aria-labelledby="intelligence-hero-heading">
+        <div class="intelligence-hero-header">
+          <div class="hero-badge-row">
+            <span class="pulse-indicator"><span class="pulse-dot"></span> 实时前沿学术情报</span>
+            <span class="hero-tag">AI 驱动 · 高能瞬变天体物理</span>
+            <span class="hero-tag-muted">宁缺毋滥 · 严格因果动力学</span>
+          </div>
+          <h2 id="intelligence-hero-heading" class="intelligence-title">
+            <span class="intelligence-title-main">前沿学术监测与周度研判</span>
+            <span class="intelligence-title-sub">Frontier arXiv Intelligence & Weekly Synthesis</span>
+          </h2>
+          <p class="intelligence-desc">
+            聚焦超新星、相对论喷流、磁星、FRB 及多信使高能瞬变现象。每日执行基于 R1～R7 核心主线的因果研判，每周提炼宏观科学脉络与重点精选。
+          </p>
+        </div>
+
+        <div class="intelligence-grid">
+          <!-- Card 1: 本周学术脉络周报 (Weekly Synthesis) -->
+          <article class="intel-card intel-card-weekly">
+            <div class="intel-card-top">
+              <div class="intel-badge-group">
+                <span class="intel-badge intel-badge-weekly">本周综述 · {(weeklyData as any).week_id}</span>
+                <span class="intel-date">{(weeklyData as any).date_range}</span>
+              </div>
+              <a class="intel-view-all-link" href="/arxiv-weekly/">查看完整周报 →</a>
+            </div>
+
+            <h3 class="intel-card-title">
+              <a href="/arxiv-weekly/">{(weeklyData as any).title || "高能天体物理 arXiv 每周学术脉络与前沿精选"}</a>
+            </h3>
+
+            <div class="intel-metrics-strip">
+              <div class="intel-metric-item">
+                <span class="intel-metric-val">{weeklyStats.total_analyzed}</span>
+                <span class="intel-metric-lbl">已研判论文</span>
+              </div>
+              <div class="intel-metric-item highlight-must-read">
+                <span class="intel-metric-val">{weeklyStats.must_read_count}</span>
+                <span class="intel-metric-lbl">重点精读</span>
+              </div>
+              <div class="intel-metric-item highlight-worth-knowing">
+                <span class="intel-metric-val">{weeklyStats.worth_knowing_count}</span>
+                <span class="intel-metric-lbl">值得关注</span>
+              </div>
+              <div class="intel-metric-item">
+                <span class="intel-metric-val">{(weeklyData as any).thematic_highlights?.length ?? 0}</span>
+                <span class="intel-metric-lbl">前沿专题</span>
+              </div>
+            </div>
+
+            <div class="intel-summary-box">
+              <p class="intel-summary-label">宏观学术脉络导读：</p>
+              <p class="intel-summary-text">
+                <ReaderText text={weeklyLeadSummary} />
+              </p>
+            </div>
+
+            {weeklyTopPicks.length > 0 && (
+              <div class="intel-picks-box">
+                <p class="intel-picks-label">本周精选 Top Picks 候选：</p>
+                <ul class="intel-picks-list">
+                  {weeklyTopPicks.slice(0, 2).map((pick: any) => (
+                    <li class="intel-pick-item">
+                      <div class="intel-pick-header">
+                        <span class="intel-pick-badge">{pick.priority === "must_read" ? "今天先读" : "值得知道"}</span>
+                        <a class="intel-pick-id" href={`https://arxiv.org/abs/${pick.arxiv_id}`} target="_blank" rel="noopener noreferrer">
+                          arXiv:{pick.arxiv_id}
+                        </a>
+                      </div>
+                      <h4 class="intel-pick-title">{pick.title}</h4>
+                      <p class="intel-pick-insight">
+                        <strong>核心突破：</strong><ReaderText text={pick.core_insight} />
+                      </p>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            <div class="intel-card-footer">
+              <a class="btn-primary" href="/arxiv-weekly/">
+                <span>阅读本周完整周报与专题研讨</span>
+                <span aria-hidden="true">→</span>
+              </a>
+            </div>
+          </article>
+
+          <!-- Card 2: 今日高能研读雷达 (Daily Radar) -->
+          <article class="intel-card intel-card-daily">
+            <div class="intel-card-top">
+              <div class="intel-badge-group">
+                <span class="intel-badge intel-badge-daily">今日雷达 · {latestDate}</span>
+                <span class="intel-batch">{radarBatchLabel}</span>
+              </div>
+              <a class="intel-view-all-link" href="/arxiv-daily/">查看今日雷达 →</a>
+            </div>
+
+            <h3 class="intel-card-title">
+              <a href="/arxiv-daily/">今日高能瞬变学术研读雷达</a>
+            </h3>
+
+            <div class="intel-metrics-strip">
+              <div class="intel-metric-item">
+                <span class="intel-metric-val">{dailyStats.total_papers}</span>
+                <span class="intel-metric-lbl">今日监测</span>
+              </div>
+              <div class="intel-metric-item highlight-must-read">
+                <span class="intel-metric-val">{dailyStats.must_read_count}</span>
+                <span class="intel-metric-lbl">今天先读</span>
+              </div>
+              <div class="intel-metric-item highlight-worth-knowing">
+                <span class="intel-metric-val">{dailyStats.worth_knowing_count}</span>
+                <span class="intel-metric-lbl">值得知道</span>
+              </div>
+              <div class="intel-metric-item highlight-skip">
+                <span class="intel-metric-val">{dailyStats.skip_count}</span>
+                <span class="intel-metric-lbl">快速浏览</span>
+              </div>
+            </div>
+
+            <div class="intel-radar-highlights">
+              <p class="intel-summary-label">今日高能瞬变重点研判候选：</p>
+              {dailyMustReads.length > 0 ? (
+                <ul class="intel-radar-list">
+                  {dailyMustReads.map((paper: any) => (
+                    <li class="intel-radar-item">
+                      <div class="intel-radar-item-top">
+                        <span class="intel-radar-tag tag-must-read">今天先读 (Must Read)</span>
+                        <a class="intel-radar-id" href={`https://arxiv.org/abs/${paper.arxiv_id}`} target="_blank" rel="noopener noreferrer">
+                          arXiv:{paper.arxiv_id}
+                        </a>
+                      </div>
+                      <h4 class="intel-radar-paper-title">{paper.entry?.title || paper.arxiv_id}</h4>
+                      <p class="intel-radar-reason">
+                        <strong>分类理由：</strong><ReaderText text={paper.analysis?.reason || paper.analysis?.result || "重点高能爆发现象"} />
+                      </p>
+                      {paper.analysis?.result && (
+                        <p class="intel-radar-result">
+                          <strong>科学发现：</strong><ReaderText text={paper.analysis.result} />
+                        </p>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <div class="intel-radar-empty">
+                  <p>今日暂无符合严格爆发现象核心机制的“今天先读”候选（坚持“宁缺毋滥、严禁硬凑”原则），请浏览值得关注与背景列表。</p>
+                </div>
+              )}
+            </div>
+
+            <div class="intel-archives-bar">
+              <span class="intel-archives-label">历史归档：</span>
+              <span class="intel-archives-counts">已收录 {(archiveManifest as any).total_weeks} 周、{(archiveManifest as any).total_daily_editions} 个批次</span>
+              <a class="intel-archives-link" href="/arxiv-daily/#historical-archives">浏览历史批次 →</a>
+            </div>
+
+            <div class="intel-card-footer">
+              <a class="btn-secondary" href="/arxiv-daily/">
+                <span>进入今日完整雷达列表 ({dailyStats.total_papers} 篇)</span>
+                <span aria-hidden="true">→</span>
+              </a>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Secondary Section Divider: Research Foundations & Causal Graph -->
+      <div class="secondary-section-divider">
+        <div class="secondary-divider-content">
+          <span class="secondary-kicker">科研基准与因果图谱 · 长期知识库</span>
+          <h2 class="secondary-title">基础文献、因果关联与学习路径</h2>
+          <p class="secondary-subtitle">以 41 篇经过审核与整理的经典基准文献为基石，厘清高能天体物理思想演化的长程脉络。</p>
+        </div>
+      </div>
+
+      <section class="panel home-section secondary-panel" aria-labelledby="start-here-heading">
         <p class="section-kicker">从经过审核的阅读顺序开始</p>
         <h2 id="start-here-heading">从这里开始</h2>
         {startPath ? (

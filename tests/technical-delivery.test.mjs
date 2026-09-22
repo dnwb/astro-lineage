@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { spawnSync } from "node:child_process";
 import { readdir, readFile } from "node:fs/promises";
 import { join } from "node:path";
@@ -67,9 +67,14 @@ const learningPathSlugs = [
   "baseline-jet-foundations",
   "embedded-jet-dynamics",
 ];
+const manifestPath = join(projectRoot, "src/data/arxiv-archives/manifest.json");
+const archivedDailyRoutes = existsSync(manifestPath)
+  ? JSON.parse(readFileSync(manifestPath, "utf8")).weeks.flatMap((w) => w.days.map((d) => `/arxiv-daily/${d.date}/`))
+  : [];
 const expectedRoutes = [
   "/",
   "/arxiv-daily/",
+  ...archivedDailyRoutes,
   "/arxiv-weekly/",
   "/papers/",
   ...paperSlugs.map((slug) => `/papers/${slug}/`),

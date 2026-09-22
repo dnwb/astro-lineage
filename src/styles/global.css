@@ -2442,3 +2442,325 @@ small {
   }
 }
 
+/* ==========================================================================
+   Standalone Archive Pages & Hierarchical Directory (Tufte Data-Ink)
+   ========================================================================== */
+
+.archive-standalone-page {
+  padding-bottom: 4rem;
+}
+
+.standalone-archive-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  background: #faf8f5;
+  border: 1px solid #d8d2c2;
+  border-top: 3px solid #2c405a;
+  border-radius: 2px;
+  padding: 0.85rem 1.25rem;
+  margin-bottom: 2rem;
+}
+
+.archive-banner-left {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.banner-badge-archive {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #2c405a;
+  background: #eef3f8;
+  border: 1px solid #d0dbe6;
+  padding: 0.2rem 0.5rem;
+  border-radius: 2px;
+}
+
+.banner-date {
+  font-size: 1.15rem;
+  color: #1b1b1a;
+  letter-spacing: -0.01em;
+}
+
+.banner-weekday {
+  font-size: 0.88rem;
+  color: #5c5550;
+}
+
+.banner-meta-pill {
+  font-size: 0.78rem;
+  color: #5c5550;
+  background: #f4f1ea;
+  border: 1px solid #e2ded4;
+  padding: 0.15rem 0.45rem;
+  border-radius: 2px;
+}
+
+.archive-banner-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.banner-nav-link {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #1b1b1a;
+  text-decoration: none;
+  padding: 0.35rem 0.75rem;
+  border: 1px solid #d8d2c2;
+  background: #ffffff;
+  border-radius: 2px;
+  transition: all 0.15s ease;
+}
+
+.banner-nav-link:hover {
+  border-color: #2c405a;
+  color: #2c405a;
+  background: #f4f1ea;
+}
+
+.historical-quick-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.standalone-date-pager {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #faf8f5;
+  border: 1px solid #d8d2c2;
+  border-radius: 2px;
+  padding: 0.65rem 1rem;
+  margin-bottom: 2rem;
+}
+
+.date-pager-btn {
+  display: inline-block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #1b1b1a;
+  text-decoration: none;
+  padding: 0.35rem 0.85rem;
+  border: 1px solid #d8d2c2;
+  background: #ffffff;
+  border-radius: 2px;
+  transition: all 0.15s ease;
+}
+
+.date-pager-btn:hover {
+  border-color: #1b1b1a;
+  background: #f4f1ea;
+}
+
+.date-pager-btn.disabled {
+  color: #9e9890;
+  border-color: #e2ded4;
+  background: #f8f6f2;
+  cursor: not-allowed;
+}
+
+.date-pager-btn.overview {
+  background: transparent;
+  border-color: transparent;
+  color: #5c5550;
+}
+
+.date-pager-btn.overview:hover {
+  color: #1b1b1a;
+  background: #f4f1ea;
+  border-color: #d8d2c2;
+}
+
+/* Past Weeks Directory Grid on /arxiv-daily/ */
+.prior-weeks-history-wrap {
+  margin-top: 2.5rem;
+}
+
+.history-subheading {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #1b1b1a;
+  margin-bottom: 1rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid #e2ded4;
+}
+
+.past-weeks-directory-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.past-week-card {
+  background: #faf8f5;
+  border: 1px solid #d8d2c2;
+  border-top: 3px solid #2c405a;
+  border-radius: 2px;
+  padding: 1.25rem;
+}
+
+.past-week-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.past-week-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.past-week-badge {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: #2c405a;
+  background: #eef3f8;
+  border: 1px solid #d0dbe6;
+  padding: 0.2rem 0.55rem;
+  border-radius: 2px;
+}
+
+.past-week-range {
+  font-size: 0.95rem;
+  color: #1b1b1a;
+}
+
+.past-week-link {
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: #2c405a;
+  text-decoration: none;
+}
+
+.past-week-link:hover {
+  text-decoration: underline;
+}
+
+.past-week-summary-snip {
+  font-size: 0.88rem;
+  color: #5c5550;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.past-week-days-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.past-day-entry-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: #ffffff;
+  border: 1px solid #e2ded4;
+  border-radius: 2px;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+
+.past-day-entry-row:hover {
+  border-color: #2c405a;
+  background: #fbfaf8;
+  transform: translateY(-1px);
+}
+
+.past-day-entry-row .entry-left {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.past-day-entry-row .entry-date {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #1b1b1a;
+}
+
+.past-day-entry-row .entry-weekday {
+  font-size: 0.82rem;
+  color: #5c5550;
+}
+
+.past-day-entry-row .entry-batch {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.78rem;
+  color: #7a726c;
+  background: #f4f1ea;
+  padding: 0.15rem 0.4rem;
+  border-radius: 2px;
+}
+
+.past-day-entry-row .entry-stats {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.past-day-entry-row .stat-tag {
+  font-size: 0.78rem;
+  padding: 0.18rem 0.5rem;
+  border-radius: 2px;
+  border: 1px solid #e2ded4;
+}
+
+.past-day-entry-row .stat-tag.total {
+  color: #1b1b1a;
+  background: #f4f1ea;
+}
+
+.past-day-entry-row .stat-tag.must {
+  color: #a6300e;
+  background: #fbf0ed;
+  border-color: #ebd0c8;
+  font-weight: 600;
+}
+
+.past-day-entry-row .stat-tag.worth {
+  color: #2c405a;
+  background: #eef3f8;
+  border-color: #d0dbe6;
+  font-weight: 600;
+}
+
+.past-day-entry-row .entry-arrow {
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: #2c405a;
+  margin-left: 0.25rem;
+}
+
+@media (max-width: 640px) {
+  .standalone-archive-banner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .standalone-date-pager {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .past-day-entry-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+

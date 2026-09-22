@@ -191,7 +191,7 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
                 </div>
               )}
               <div class="batch-card-actions">
-                <a class="batch-action-btn" href={day.date === archiveManifest.latest_daily_date ? "/arxiv-daily/" : `/arxiv-daily/#archive-${day.date}`}>
+                <a class="batch-action-btn" href={day.date === archiveManifest.latest_daily_date ? "/arxiv-daily/" : `/arxiv-daily/${day.date}/`}>
                   查看当日完整导读雷达 →
                 </a>
               </div>

@@ -87,3 +87,19 @@ test("arXiv weekly HTML exposes daily breakdown section with links to daily edit
     }
   }
 });
+
+test("arXiv daily standalone static pages are generated for all archived editions", async () => {
+  const manifest = JSON.parse(await readFile(fileURLToPath(manifestUrl), "utf8"));
+  for (const week of manifest.weeks) {
+    for (const day of week.days) {
+      const pagePath = join(projectRoot, `dist/arxiv-daily/${day.date}/index.html`);
+      if (existsSync(pagePath)) {
+        const pageHtml = await readFile(pagePath, "utf8");
+        assert.match(pageHtml, new RegExp(day.date, "u"));
+        assert.match(pageHtml, /历史归档批次/u);
+        assert.match(pageHtml, /href="\/arxiv-daily\/"/u);
+      }
+    }
+  }
+});
+

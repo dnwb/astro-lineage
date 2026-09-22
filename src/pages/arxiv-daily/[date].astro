@@ -1,0 +1,259 @@
+---
+import { validateDailyRadarPayload } from "../../../scripts/daily-radar.mjs";
+import { loadCanonicalContent } from "../../../scripts/content-loader.mjs";
+import { projectVisibleSnapshot } from "../../../scripts/reader-projection.mjs";
+import { workReaderPath } from "../../lib/reader-routes";
+import SiteNav from "../../components/SiteNav.astro";
+import DailyRadarBrief from "../../components/DailyRadarBrief.astro";
+import DailyRadarPendingCard from "../../components/DailyRadarPendingCard.astro";
+import DailyRadarPrioritySection from "../../components/DailyRadarPrioritySection.astro";
+import DailyKnowledgePoint from "../../components/DailyKnowledgePoint.astro";
+import { loadSiteConfig } from "../../lib/site-config";
+import "../../styles/global.css";
+
+type AnyRecord = Record<string, any>;
+
+export async function getStaticPaths() {
+  const dailyArchiveModules = import.meta.glob<{ default: AnyRecord }>(
+    "../../data/arxiv-archives/daily/*.json",
+    { eager: true }
+  );
+
+  const allArchives = Object.values(dailyArchiveModules)
+    .map((mod) => (mod as any).default || mod)
+    .sort((a, b) => a.date.localeCompare(b.date));
+
+  return allArchives.map((archive, index) => {
+    const prevArchive = index > 0 ? allArchives[index - 1] : null;
+    const nextArchive = index < allArchives.length - 1 ? allArchives[index + 1] : null;
+
+    return {
+      params: { date: archive.date },
+      props: {
+        archive,
+        prevDate: prevArchive ? prevArchive.date : null,
+        nextDate: nextArchive ? nextArchive.date : null,
+      },
+    };
+  });
+}
+
+const { date } = Astro.params;
+const { archive, prevDate, nextDate } = Astro.props as {
+  archive: AnyRecord;
+  prevDate: string | null;
+  nextDate: string | null;
+};
+
+const site = loadSiteConfig();
+const snapshot = await loadCanonicalContent(new URL("../../../content/", import.meta.url));
+const visibleReader = projectVisibleSnapshot(snapshot) as AnyRecord;
+
+function preferredVersion(work: AnyRecord) {
+  const preferredVersionId = work.preferred_version_id ?? work.preferred_version?.version_id;
+  return Array.isArray(work.versions)
+    ? work.versions.find((version: AnyRecord) => version.id === preferredVersionId)
+    : null;
+}
+
+const visibleWorkLinks = Object.fromEntries(
+  (visibleReader.works ?? [])
+    .map((work: AnyRecord): readonly [string, { href: string; title: string }] | null => {
+      const version = preferredVersion(work);
+      if (typeof work.work_id !== "string" || typeof version?.title !== "string" || version.title.trim() === "") return null;
+      return [work.work_id, { href: workReaderPath(snapshot, work.work_id), title: version.title }] as const;
+    })
+    .filter((entry: readonly [string, { href: string; title: string }] | null): entry is readonly [string, { href: string; title: string }] => entry !== null),
+);
+
+const radarValidation = validateDailyRadarPayload(archive.feed, archive.radar, {
+  visibleWorkIds: Object.keys(visibleWorkLinks),
+});
+
+if (radarValidation.fatalDiagnostics?.length > 0 || (!radarValidation.fatalDiagnostics && !radarValidation.valid)) {
+  throw new Error(`Daily Radar archive payload for ${date} is invalid: ${radarValidation.diagnostics.join(", ")}`);
+}
+
+const model = radarValidation.model;
+const priorityGroups = model.groups as AnyRecord;
+
+function pendingLabel(reason: string) {
+  return {
+    analysis_missing: "尚未分析",
+    analysis_failed: "分析失败",
+    analysis_invalid: "分析记录无效",
+    analysis_pending: "分析尚未完成",
+    source_changed: "来源已变化，旧导读失效",
+    analysis_revision_mismatch: "版本不匹配，旧导读失效",
+    coverage_insufficient_must_read: "全文分析不足，暂不推荐",
+    coverage_insufficient_worth_knowing: "正文证据不足，暂不归入本组",
+  }[reason] ?? "待核查";
+}
+
+const generatedAt = new Date(archive.generated_at ?? model.edition.generated_at ?? "");
+const generatedLabel = Number.isNaN(generatedAt.valueOf())
+  ? "历史归档"
+  : generatedAt.toLocaleString("zh-CN", { timeZone: "Asia/Shanghai" });
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta
+      name="description"
+      content={`arXiv 每日学术导读历史归档 · ${archive.date}（${archive.weekday}）：高能瞬变天体物理前沿监测与分级研判。`}
+    />
+    <title>Daily Radar · {archive.date} · {site.title}</title>
+  </head>
+  <body>
+    <main class="site-shell index-page reader-page radar-page archive-standalone-page">
+      <SiteNav />
+
+      <p class="eyebrow">
+        <a href="/">{site.title}</a> · <a href="/arxiv-daily/">Daily Radar</a> · 历史归档批次
+      </p>
+
+      <!-- Historical Archive Banner -->
+      <section class="standalone-archive-banner" aria-label="归档批次元信息与快速跳转">
+        <div class="archive-banner-left">
+          <span class="banner-badge-archive">📅 历史归档批次</span>
+          <strong class="banner-date">{archive.date}</strong>
+          <span class="banner-weekday">星期{archive.weekday === "Mon" ? "一" : archive.weekday === "Tue" ? "二" : archive.weekday === "Wed" ? "三" : archive.weekday === "Thu" ? "四" : archive.weekday === "Fri" ? "五" : archive.weekday === "Sat" ? "六" : "日"} ({archive.weekday})</span>
+          <span class="banner-meta-pill">所属周：{archive.week_id}</span>
+          <span class="banner-meta-pill">{archive.batch_id}</span>
+        </div>
+        <div class="archive-banner-right">
+          <a class="banner-nav-link" href="/arxiv-daily/">
+            <span class="language-primary">← 返回今日最新导读</span>
+            <span class="language-english" lang="en">← Latest Daily</span>
+          </a>
+          <a class="banner-nav-link" href="/arxiv-weekly/">
+            <span class="language-primary">📖 查看周报综述 →</span>
+            <span class="language-english" lang="en">Weekly Synthesis →</span>
+          </a>
+        </div>
+      </section>
+
+      <header class="reader-header">
+        <h1>
+          <span class="language-primary">arXiv 每日学术导读 · 历史归档</span>
+          <span class="language-english" lang="en">Daily arXiv Reading Guide · Archive</span>
+        </h1>
+        <p class="reader-deck language-primary">
+          批次窗口：<strong>{archive.date}</strong> · 归档于 {generatedLabel}。先决定当天读什么，再展开查看问题、假设、结果边界和实际阅读范围。
+        </p>
+        <p class="reader-deck language-english" lang="en">
+          Batch date: {archive.date} · Archived at {generatedLabel}. Standalone permanent record of candidate papers and reading guides.
+        </p>
+        <div class="historical-quick-stats">
+          <span class="stat-pill total">总收录候选 <strong>{model.counts.total}</strong> 篇</span>
+          <span class="stat-pill analyzed">有效研判 <strong>{model.counts.analyzed}</strong> 篇</span>
+          <span class="stat-pill must">今天先读 <strong>{priorityGroups.must_read?.length ?? 0}</strong> 篇</span>
+          <span class="stat-pill worth">值得知道 <strong>{priorityGroups.worth_knowing?.length ?? 0}</strong> 篇</span>
+          <span class="stat-pill skim">快速浏览 <strong>{priorityGroups.skip?.length ?? 0}</strong> 篇</span>
+          <span class="stat-pill pending">待分析 <strong>{model.pending?.length ?? 0}</strong> 篇</span>
+        </div>
+      </header>
+
+      <!-- Standalone Date Pager -->
+      <nav class="standalone-date-pager" aria-label="往期历史日报快速切换">
+        <div class="pager-col left">
+          {prevDate ? (
+            <a class="date-pager-btn" href={`/arxiv-daily/${prevDate}/`} title={`切换到前一天：${prevDate}`}>
+              ← 前一期 ({prevDate})
+            </a>
+          ) : (
+            <span class="date-pager-btn disabled">已是首期归档</span>
+          )}
+        </div>
+        <div class="pager-col center">
+          <a class="date-pager-btn overview" href="/arxiv-daily/#historical-archives">
+            🗓️ 查看全部归档列表
+          </a>
+        </div>
+        <div class="pager-col right">
+          {nextDate ? (
+            <a class="date-pager-btn" href={`/arxiv-daily/${nextDate}/`} title={`切换到后一天：${nextDate}`}>
+              后一期 ({nextDate}) →
+            </a>
+          ) : (
+            <a class="date-pager-btn" href="/arxiv-daily/" title="前往最新日报">
+              今日最新导读 →
+            </a>
+          )}
+        </div>
+      </nav>
+
+      <DailyRadarBrief brief={model.opening_brief} visibleWorkLinks={visibleWorkLinks} groups={priorityGroups} />
+
+      <DailyRadarPrioritySection
+        id="must-read"
+        items={priorityGroups.must_read}
+        primaryLabel="今天先读"
+        englishLabel="Must Read"
+        visibleWorkLinks={visibleWorkLinks}
+      />
+
+      <DailyRadarPrioritySection
+        id="worth-knowing"
+        items={priorityGroups.worth_knowing}
+        primaryLabel="值得知道"
+        englishLabel="Worth Knowing"
+        visibleWorkLinks={visibleWorkLinks}
+      />
+
+      {priorityGroups.skip && priorityGroups.skip.length > 0 && (
+        <details class="radar-priority-section skip-section">
+          <summary>
+            <span class="language-primary">快速浏览 · Skim（默认收起）</span>
+            <span class="language-english" lang="en">Skim (collapsed by default)</span>
+          </summary>
+          <DailyRadarPrioritySection
+            id="skim"
+            items={priorityGroups.skip}
+            primaryLabel="快速浏览"
+            englishLabel="Skim"
+            visibleWorkLinks={visibleWorkLinks}
+          />
+        </details>
+      )}
+
+      {model.knowledge_points && model.knowledge_points.length > 0 && (
+        <section class="radar-section" id="knowledge-points">
+          <p class="section-kicker"><span class="language-primary">学习补充</span><span class="language-english" lang="en">Learning supplement</span></p>
+          <h2><span class="language-primary">今日知识点</span><span class="language-english" lang="en">Knowledge point</span></h2>
+          {model.knowledge_points.map((point: any) => (
+            <>
+              <div class="language-primary"><DailyKnowledgePoint point={point} /></div>
+              <p class="language-english" lang="en">This knowledge point is written in Chinese and is bound to {point.source.source_version}. Open the original source: <a href={point.source_references[0].url}>arXiv source</a>.</p>
+            </>
+          ))}
+        </section>
+      )}
+
+      <details class="radar-status-disclosure">
+        <summary>
+          <span class="language-primary">该归档批次来源与待分析条目（按需查看）</span>
+          <span class="language-english" lang="en">Historical Sources & Pending Items</span>
+        </summary>
+        <div class="radar-status-body">
+          <p class="language-primary">
+            此归档为公告批次 {archive.batch_id}（日期 {archive.date}），总收录候选 {model.counts.total} 篇，已形成有效导读 {model.counts.analyzed} 篇，待核查 {model.pending?.length ?? 0} 篇。
+          </p>
+          <p class="record-label">Query: {model.edition.query ?? archive.feed?.query ?? "未记录"}</p>
+          <section class="radar-section" id="pending-analysis">
+            <p class="section-kicker"><span class="language-primary">分析状态</span><span class="language-english" lang="en">Analysis status</span></p>
+            <h2><span class="language-primary">待分析</span><span class="language-english" lang="en">Pending analysis</span></h2>
+            <ol class="paper-index radar-list">
+              {model.pending.map((item: any) => (
+                <DailyRadarPendingCard item={item} pendingLabel={pendingLabel(item.pending_reason)} />
+              ))}
+            </ol>
+          </section>
+        </div>
+      </details>
+    </main>
+  </body>
+</html>

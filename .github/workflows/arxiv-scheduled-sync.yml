@@ -1,0 +1,81 @@
+name: Scheduled arXiv Daily & Weekly Sync
+
+on:
+  schedule:
+    # Runs at 00:45 UTC Monday through Friday (20:45 EDT Sun-Thu / 08:45 CST Mon-Fri)
+    - cron: '45 0 * * 1-5'
+  workflow_dispatch:
+    inputs:
+      force_weekly:
+        description: 'Force run weekly synthesis'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+jobs:
+  arxiv-sync:
+    name: Sync arXiv Daily Radar & Weekly Synthesis
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js 22.20.0
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.20.0
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Run Daily Scheduler & AI Analysis
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY || secrets.WU_API_KEY }}
+          WU_API_KEY: ${{ secrets.WU_API_KEY || secrets.OPENAI_API_KEY }}
+          OPENAI_BASE_URL: ${{ secrets.OPENAI_BASE_URL || 'https://api.ccnulaowu.online/v1' }}
+          AI_MODEL: ${{ vars.AI_MODEL || 'gpt-5.6-sol' }}
+        run: |
+          # Run scheduled refresh with automatic end-of-week weekly synthesis trigger
+          node scripts/arxiv-daily-scheduler.mjs --auto-weekly
+
+      - name: Force Weekly Synthesis (if triggered manually)
+        if: ${{ inputs.force_weekly }}
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY || secrets.WU_API_KEY }}
+          WU_API_KEY: ${{ secrets.WU_API_KEY || secrets.OPENAI_API_KEY }}
+          OPENAI_BASE_URL: ${{ secrets.OPENAI_BASE_URL || 'https://api.ccnulaowu.online/v1' }}
+          AI_MODEL: ${{ vars.AI_MODEL || 'gpt-5.6-sol' }}
+        run: |
+          node scripts/arxiv-weekly-summary.mjs
+
+      - name: Sync Archives and Rebuild Indexes
+        run: |
+          node scripts/arxiv-archive.mjs
+          node scripts/editorial-index.mjs
+
+      - name: Verify Builds and Content
+        run: |
+          npm run validate
+          npm run check
+          npm run build
+
+      - name: Commit and Push Changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if [[ -n "$(git status --porcelain src/data/ .cache/)" ]]; then
+            git add src/data/ .cache/
+            git commit -m "chore(arxiv): automated daily & weekly sync [skip ci]"
+            git push origin HEAD:${{ github.ref_name }}
+            echo "Changes successfully pushed."
+          else
+            echo "No new arXiv updates in this cycle."
+          fi

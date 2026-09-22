@@ -1,5 +1,13 @@
 import { fileURLToPath } from "node:url";
 import { resolve } from "node:path";
+import { existsSync } from "node:fs";
+
+try {
+  if (typeof process.loadEnvFile === "function" && existsSync(".env")) {
+    process.loadEnvFile();
+  }
+} catch {}
+
 import {
   ANNOUNCEMENT_LOCAL_TIME,
   ANNOUNCEMENT_WEEKDAYS,
@@ -139,7 +147,8 @@ if (process.argv[1] && resolve(process.argv[1]) === resolve(fileURLToPath(import
       const { runAiAnalyzer } = await import("./arxiv-ai-analyzer.mjs");
       await runAiAnalyzer({ feed: output });
     }
-    const shouldWeekly = hasFlag(args, "--weekly") && (process.env.WU_API_KEY || process.env.OPENAI_API_KEY);
+    const isEndOfWeekBatch = ["Thu", "Fri"].includes(result.payload?.window?.announcement_weekday);
+    const shouldWeekly = (hasFlag(args, "--weekly") || (hasFlag(args, "--auto-weekly") && isEndOfWeekBatch)) && (process.env.WU_API_KEY || process.env.OPENAI_API_KEY);
     if (shouldWeekly) {
       console.log(`[scheduler] 开始自动执行 AI 每周学术脉络总结...`);
       const { runWeeklySummary } = await import("./arxiv-weekly-summary.mjs");

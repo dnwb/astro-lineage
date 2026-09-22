@@ -1,0 +1,43 @@
+# ==============================================================================
+# AstroLineage arXiv 定时抓取与研判 Crontab 任务配置示例
+#
+# 使用方法：
+#   1. 编辑当前用户的 crontab: crontab -e
+#   2. 复制并根据实际路径调整以下条目
+#   3. 保存退出后通过 crontab -l 验证
+# ==============================================================================
+
+# 基础环境变量（cron 默认环境较精简，必须显式定义）
+SHELL=/bin/bash
+PATH=/usr/local/bin:/usr/bin:/bin:/home/long/.local/bin
+PROJECT_DIR=/home/long/axvdaily
+
+# API 密钥与端点配置（或在项目根目录下配置 .env）
+OPENAI_BASE_URL=https://api.ccnulaowu.online/v1
+OPENAI_API_KEY=sk-cpa-kAXP0IsAxZUh8_tZf72iP1q-J7982Je6P6EDefcoCXE
+WU_API_KEY=sk-cpa-kAXP0IsAxZUh8_tZf72iP1q-J7982Je6P6EDefcoCXE
+AI_MODEL=gpt-5.6-sol
+
+# ------------------------------------------------------------------------------
+# 1. 每日导读 (Daily Radar)
+# ------------------------------------------------------------------------------
+# arXiv 官方在美东时间周日至周四 20:00 发布公告批次。
+#
+# 【北京时间配置】（适合国内时区的服务器）：
+# 周一至周五上午 08:30 执行抓取与 AI 研判
+30 8 * * 1-5 cd $PROJECT_DIR && /usr/bin/env node scripts/arxiv-daily-scheduler.mjs >> /tmp/arxiv-daily.log 2>&1
+
+# 【UTC 时间配置】（适合使用 UTC 时区的海外云服务器）：
+# 周一至周五凌晨 00:30 UTC 执行
+# 30 0 * * 1-5 cd $PROJECT_DIR && /usr/bin/env node scripts/arxiv-daily-scheduler.mjs >> /tmp/arxiv-daily.log 2>&1
+
+# ------------------------------------------------------------------------------
+# 2. 每周学术脉络总结 (Weekly Synthesis)
+# ------------------------------------------------------------------------------
+# 每周五上午执行，聚合当周一至周四的所有已研判批次生成宏观脉络总结
+#
+# 【北京时间配置】：每周五上午 09:30 执行
+30 9 * * 5 cd $PROJECT_DIR && /usr/bin/env node scripts/arxiv-weekly-summary.mjs >> /tmp/arxiv-weekly.log 2>&1
+
+# 【UTC 时间配置】：每周五凌晨 01:30 UTC 执行
+# 30 1 * * 5 cd $PROJECT_DIR && /usr/bin/env node scripts/arxiv-weekly-summary.mjs >> /tmp/arxiv-weekly.log 2>&1

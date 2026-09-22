@@ -1,0 +1,14 @@
+[Unit]
+Description=Run AstroLineage arXiv Weekly Synthesis after weekday announcements
+PartOf=astrolineage-arxiv-weekly.service
+
+[Timer]
+# Runs Friday morning in New York (21:00 Friday Beijing time), ensuring all Mon-Thu batches are finalized
+OnCalendar=Fri *-*-* 09:00:00 America/New_York
+Persistent=true
+RandomizedDelaySec=15m
+AccuracySec=1m
+Unit=astrolineage-arxiv-weekly.service
+
+[Install]
+WantedBy=timers.target

@@ -1663,12 +1663,156 @@ small {
   margin: 0;
 }
 
-/* Two-column card grid */
-.intelligence-grid {
+/* Asymmetric Dual Hero (Weekly Synthesis 7 : Daily Radar 5) */
+.intelligence-grid,
+.asymmetric-hero-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: 7fr 5fr;
   gap: 1.75rem;
   align-items: stretch;
+}
+
+.flagship-stage {
+  border-top: 4px solid #4f46e5;
+  background: linear-gradient(180deg, #ffffff 0%, #faf8ff 100%);
+  box-shadow: 0 4px 24px rgba(79, 70, 229, 0.06);
+}
+
+.telemetry-companion {
+  border-top: 4px solid #0284c7;
+  background: linear-gradient(180deg, #ffffff 0%, #f0f9ff 100%);
+  box-shadow: 0 4px 24px rgba(2, 132, 199, 0.06);
+}
+
+.intel-pill-accent {
+  display: inline-block;
+  padding: 0.2rem 0.55rem;
+  background: #ede9fe;
+  color: #6d28d9;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.intel-thematic-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-bottom: 1.1rem;
+}
+
+.thematic-chip {
+  display: inline-block;
+  padding: 0.2rem 0.55rem;
+  background: #f1f5f9;
+  color: #475569;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.intel-metric-item.highlight-topics .intel-metric-val {
+  color: #7c3aed;
+}
+
+/* Pillar 2: Signal-to-Noise Telemetry Seal */
+.intel-telemetry-seal {
+  background: #0f172a;
+  color: #f8fafc;
+  border-radius: 8px;
+  padding: 0.85rem 1rem;
+  margin-bottom: 1.1rem;
+  border: 1px solid #1e293b;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.12);
+}
+
+.telemetry-seal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.65rem;
+}
+
+.telemetry-seal-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #38bdf8;
+  letter-spacing: 0.02em;
+}
+
+.seal-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #38bdf8;
+  box-shadow: 0 0 6px #38bdf8;
+}
+
+.telemetry-seal-rate {
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: #34d399;
+  background: rgba(52, 211, 153, 0.15);
+  padding: 0.15rem 0.55rem;
+  border-radius: 9999px;
+}
+
+.telemetry-pipeline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem;
+  background: rgba(255, 255, 255, 0.04);
+  padding: 0.55rem 0.7rem;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.telemetry-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.telemetry-stage-val {
+  font-family: ui-monospace, monospace;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #f8fafc;
+  line-height: 1.1;
+}
+
+.telemetry-stage-lbl {
+  font-size: 0.7rem;
+  color: #94a3b8;
+  margin-top: 0.15rem;
+}
+
+.telemetry-stage-filtered .telemetry-stage-val {
+  color: #f87171;
+}
+
+.telemetry-stage-filtered .telemetry-stage-lbl {
+  color: #fca5a5;
+}
+
+.telemetry-stage-selected .telemetry-stage-val {
+  color: #38bdf8;
+}
+
+.telemetry-stage-selected .telemetry-stage-lbl {
+  color: #7dd3fc;
+}
+
+.telemetry-arrow {
+  color: #64748b;
+  font-size: 0.9rem;
+  font-weight: 700;
 }
 
 .intel-card {
@@ -2122,16 +2266,163 @@ small {
 }
 
 .secondary-panel {
-  opacity: 0.96;
+  opacity: 0.98;
+}
+
+/* Pillar 3: Reading Orbit & Stepper */
+.orbit-card-lead {
+  margin-bottom: 1.2rem;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid #e5dfd5;
+}
+
+.orbit-meta-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.5rem;
+}
+
+.orbit-chip {
+  padding: 0.2rem 0.55rem;
+  background: #fef3c7;
+  color: #92400e;
+  border-radius: 9999px;
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+
+.orbit-step-count {
+  font-size: 0.82rem;
+  color: #78716c;
+  font-family: ui-monospace, monospace;
+}
+
+.orbit-title {
+  margin: 0.3rem 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.reading-orbit-stepper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  margin: 1.2rem 0;
+  padding: 0;
+  list-style: none;
+}
+
+.orbit-step-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.9rem;
+  padding: 0.85rem 1rem;
+  background: #faf9f6;
+  border: 1px solid #e5e0d6;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.orbit-step-item:hover {
+  background: #ffffff;
+  border-color: #cbd5e1;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+}
+
+.orbit-step-item .step-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  background: #1e3a8a;
+  color: #ffffff;
+  border-radius: 50%;
+  font-size: 0.85rem;
+  font-weight: 800;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
+.orbit-step-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex: 1;
+}
+
+.orbit-step-link {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1e3a8a;
+  text-decoration: none;
+}
+
+.orbit-step-link:hover {
+  text-decoration: underline;
+}
+
+.orbit-step-meta {
+  color: #64748b;
+  font-size: 0.82rem;
+}
+
+/* Dense Baseline & Connections Drawer */
+.dense-paper-drawer,
+.dense-edge-drawer {
+  max-height: 680px;
+  overflow-y: auto;
+  padding-right: 0.75rem;
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
+
+.dense-paper-drawer::-webkit-scrollbar,
+.dense-edge-drawer::-webkit-scrollbar {
+  width: 6px;
+}
+
+.dense-paper-drawer::-webkit-scrollbar-track,
+.dense-edge-drawer::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.dense-paper-drawer::-webkit-scrollbar-thumb,
+.dense-edge-drawer::-webkit-scrollbar-thumb {
+  background-color: #cbd5e1;
+  border-radius: 3px;
+}
+
+.dense-baseline-panel .paper-index-item {
+  padding: 1rem 0.5rem;
+  border-top: 1px solid #e7e3da;
+  transition: background-color 0.15s ease;
+}
+
+.dense-baseline-panel .paper-index-item:hover {
+  background-color: #fbfaf8;
 }
 
 /* Responsive adjustment for intelligence grid */
-@media (max-width: 860px) {
-  .intelligence-grid {
+@media (max-width: 1024px) {
+  .intelligence-grid,
+  .asymmetric-hero-grid {
     grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
+}
+
+@media (max-width: 640px) {
   .intel-metrics-strip {
     grid-template-columns: repeat(2, 1fr);
+  }
+  .telemetry-pipeline {
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .telemetry-arrow {
+    transform: rotate(90deg);
   }
 }
 

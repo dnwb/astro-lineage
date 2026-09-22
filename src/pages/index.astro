@@ -46,6 +46,7 @@ const weeklyLeadSummary = (weeklyData as any).executive_summary
   ? (weeklyData as any).executive_summary.split("\n\n")[0]
   : "聚合高能天体物理最新因果动力学与观测前沿。";
 const weeklyTopPicks = (weeklyData as any).top_picks ?? [];
+const thematicHighlights = (weeklyData as any).thematic_highlights ?? [];
 
 const dailyEntries = (dailyFeed as any).entries ?? [];
 const feedMap = new Map(dailyEntries.map((entry: any) => [entry.arxiv_id, entry]));
@@ -65,6 +66,10 @@ const dailyStats = {
   worth_knowing_count: dailyWorthKnowing.length,
   skip_count: dailySkip.length,
 };
+
+const filterNoiseReductionRate = dailyStats.total_papers > 0
+  ? Math.round((dailyStats.skip_count / dailyStats.total_papers) * 100)
+  : 0;
 
 const latestDate = (dailyFeed as any).window?.announcement_date ?? "2026-09-21";
 const radarWeekday = (dailyFeed as any).window?.announcement_weekday ?? "Mon";
@@ -161,7 +166,7 @@ function edgeLabel(edge: AnyRecord) {
         <ProductBoundary />
       </header>
 
-      <!-- Primary Feature Section: Weekly Synthesis & Daily Radar -->
+      <!-- Primary Feature Section: Asymmetric Dual Hero (Weekly Synthesis 7 : Daily Radar 5) -->
       <section class="intelligence-hero-section" aria-labelledby="intelligence-hero-heading">
         <div class="intelligence-hero-header">
           <div class="hero-badge-row">
@@ -178,13 +183,14 @@ function edgeLabel(edge: AnyRecord) {
           </p>
         </div>
 
-        <div class="intelligence-grid">
-          <!-- Card 1: 本周学术脉络周报 (Weekly Synthesis) -->
-          <article class="intel-card intel-card-weekly">
+        <div class="intelligence-grid asymmetric-hero-grid">
+          <!-- Pillar 1: 旗舰级周报主舞台 (Weekly Synthesis Flagship Stage - 7 cols) -->
+          <article class="intel-card intel-card-weekly flagship-stage">
             <div class="intel-card-top">
               <div class="intel-badge-group">
-                <span class="intel-badge intel-badge-weekly">本周综述 · {(weeklyData as any).week_id}</span>
+                <span class="intel-badge intel-badge-weekly">本周宏观综述 · {(weeklyData as any).week_id}</span>
                 <span class="intel-date">{(weeklyData as any).date_range}</span>
+                <span class="intel-pill-accent">旗舰研判</span>
               </div>
               <a class="intel-view-all-link" href="/arxiv-weekly/">查看完整周报 →</a>
             </div>
@@ -192,6 +198,21 @@ function edgeLabel(edge: AnyRecord) {
             <h3 class="intel-card-title">
               <a href="/arxiv-weekly/">{(weeklyData as any).title || "高能天体物理 arXiv 每周学术脉络与前沿精选"}</a>
             </h3>
+
+            {thematicHighlights.length > 0 && (
+              <div class="intel-thematic-chips" aria-label="本周核心专题">
+                {thematicHighlights.slice(0, 3).map((th: any) => (
+                  <span class="thematic-chip">#{th.theme_name}</span>
+                ))}
+              </div>
+            )}
+
+            <div class="intel-summary-box">
+              <p class="intel-summary-label">宏观学术脉络导读：</p>
+              <p class="intel-summary-text">
+                <ReaderText text={weeklyLeadSummary} />
+              </p>
+            </div>
 
             <div class="intel-metrics-strip">
               <div class="intel-metric-item">
@@ -206,29 +227,22 @@ function edgeLabel(edge: AnyRecord) {
                 <span class="intel-metric-val">{weeklyStats.worth_knowing_count}</span>
                 <span class="intel-metric-lbl">值得关注</span>
               </div>
-              <div class="intel-metric-item">
-                <span class="intel-metric-val">{(weeklyData as any).thematic_highlights?.length ?? 0}</span>
+              <div class="intel-metric-item highlight-topics">
+                <span class="intel-metric-val">{thematicHighlights.length}</span>
                 <span class="intel-metric-lbl">前沿专题</span>
               </div>
             </div>
 
-            <div class="intel-summary-box">
-              <p class="intel-summary-label">宏观学术脉络导读：</p>
-              <p class="intel-summary-text">
-                <ReaderText text={weeklyLeadSummary} />
-              </p>
-            </div>
-
             {weeklyTopPicks.length > 0 && (
               <div class="intel-picks-box">
-                <p class="intel-picks-label">本周精选 Top Picks 候选：</p>
+                <p class="intel-picks-label">本周精选 Top Picks 突破代表：</p>
                 <ul class="intel-picks-list">
                   {weeklyTopPicks.slice(0, 2).map((pick: any) => (
                     <li class="intel-pick-item">
                       <div class="intel-pick-header">
                         <span class="intel-pick-badge">{pick.priority === "must_read" ? "今天先读" : "值得知道"}</span>
                         <a class="intel-pick-id" href={`https://arxiv.org/abs/${pick.arxiv_id}`} target="_blank" rel="noopener noreferrer">
-                          arXiv:{pick.arxiv_id}
+                          arXiv:{pick.arxiv_id} ↗
                         </a>
                       </div>
                       <h4 class="intel-pick-title">{pick.title}</h4>
@@ -243,14 +257,14 @@ function edgeLabel(edge: AnyRecord) {
 
             <div class="intel-card-footer">
               <a class="btn-primary" href="/arxiv-weekly/">
-                <span>阅读本周完整周报与专题研讨</span>
+                <span>阅读本周完整周报与 {thematicHighlights.length} 个专题研讨</span>
                 <span aria-hidden="true">→</span>
               </a>
             </div>
           </article>
 
-          <!-- Card 2: 今日高能研读雷达 (Daily Radar) -->
-          <article class="intel-card intel-card-daily">
+          <!-- Pillar 1 & 2: 高精度每日雷达伴侣 (Daily Radar Precision Telemetry Companion - 5 cols) -->
+          <article class="intel-card intel-card-daily telemetry-companion">
             <div class="intel-card-top">
               <div class="intel-badge-group">
                 <span class="intel-badge intel-badge-daily">今日雷达 · {latestDate}</span>
@@ -262,6 +276,30 @@ function edgeLabel(edge: AnyRecord) {
             <h3 class="intel-card-title">
               <a href="/arxiv-daily/">今日高能瞬变学术研读雷达</a>
             </h3>
+
+            <!-- Pillar 2: Signal-to-Noise Telemetry Seal (科研过滤信噪比遥测) -->
+            <div class="intel-telemetry-seal">
+              <div class="telemetry-seal-header">
+                <span class="telemetry-seal-badge"><span class="seal-dot"></span> 科研过滤信噪比遥测</span>
+                <span class="telemetry-seal-rate">诚实降噪 {filterNoiseReductionRate}%</span>
+              </div>
+              <div class="telemetry-pipeline">
+                <div class="telemetry-stage">
+                  <span class="telemetry-stage-val">{dailyStats.total_papers}</span>
+                  <span class="telemetry-stage-lbl">全域监测</span>
+                </div>
+                <div class="telemetry-arrow" aria-hidden="true">→</div>
+                <div class="telemetry-stage telemetry-stage-filtered">
+                  <span class="telemetry-stage-val">-{dailyStats.skip_count}</span>
+                  <span class="telemetry-stage-lbl">诚实筛除背景</span>
+                </div>
+                <div class="telemetry-arrow" aria-hidden="true">→</div>
+                <div class="telemetry-stage telemetry-stage-selected">
+                  <span class="telemetry-stage-val">{dailyStats.must_read_count + dailyStats.worth_knowing_count}</span>
+                  <span class="telemetry-stage-lbl">精选爆发现象</span>
+                </div>
+              </div>
+            </div>
 
             <div class="intel-metrics-strip">
               <div class="intel-metric-item">
@@ -283,7 +321,7 @@ function edgeLabel(edge: AnyRecord) {
             </div>
 
             <div class="intel-radar-highlights">
-              <p class="intel-summary-label">今日高能瞬变重点研判候选：</p>
+              <p class="intel-summary-label">今日高能瞬变重点突破候选：</p>
               {dailyMustReads.length > 0 ? (
                 <ul class="intel-radar-list">
                   {dailyMustReads.map((paper: any) => (
@@ -291,7 +329,7 @@ function edgeLabel(edge: AnyRecord) {
                       <div class="intel-radar-item-top">
                         <span class="intel-radar-tag tag-must-read">今天先读 (Must Read)</span>
                         <a class="intel-radar-id" href={`https://arxiv.org/abs/${paper.arxiv_id}`} target="_blank" rel="noopener noreferrer">
-                          arXiv:{paper.arxiv_id}
+                          arXiv:{paper.arxiv_id} ↗
                         </a>
                       </div>
                       <h4 class="intel-radar-paper-title">{paper.entry?.title || paper.arxiv_id}</h4>
@@ -343,14 +381,22 @@ function edgeLabel(edge: AnyRecord) {
         <h2 id="start-here-heading">从这里开始</h2>
         {startPath ? (
           <>
-            <h3><a href={learningPathReaderPath(snapshot, startPath.path_id)}>{localizedPathTitle(startPath.path_id, startPath.title ?? startPath.path_id)}</a></h3>
-            <p class="original-title" lang="en">英文标题：{startPath.title ?? startPath.path_id}</p>
-            <ol class="path-citations">
+            <div class="orbit-card-lead">
+              <div class="orbit-meta-badge">
+                <span class="orbit-chip">推荐起始轨道</span>
+                <span class="orbit-step-count">共 {(startPath.entries ?? []).length} 篇阶梯式精选</span>
+              </div>
+              <h3 class="orbit-title"><a href={learningPathReaderPath(snapshot, startPath.path_id)}>{localizedPathTitle(startPath.path_id, startPath.title ?? startPath.path_id)}</a></h3>
+              <p class="original-title" lang="en">英文标题：{startPath.title ?? startPath.path_id}</p>
+            </div>
+            <ol class="path-citations reading-orbit-stepper">
               {(startPath.entries ?? []).map((entry: AnyRecord, index: number) => (
-                <li>
+                <li class="orbit-step-item">
                   <span class="step-number">{index + 1}</span>
-                  <a href={workReaderPath(snapshot, entry.work_id)}>{localizedWorkTitle(entry.work_id, entry.work?.title ?? entry.work_id)}</a>
-                  <small>{(entry.work?.authors ?? []).map((author: AnyRecord) => author.display_name).filter(Boolean).join(", ")} · {entry.work?.release_date?.value?.slice(0, 4) ?? "年份未知"}</small>
+                  <div class="orbit-step-content">
+                    <a class="orbit-step-link" href={workReaderPath(snapshot, entry.work_id)}>{localizedWorkTitle(entry.work_id, entry.work?.title ?? entry.work_id)}</a>
+                    <small class="orbit-step-meta">{(entry.work?.authors ?? []).map((author: AnyRecord) => author.display_name).filter(Boolean).join(", ")} · {entry.work?.release_date?.value?.slice(0, 4) ?? "年份未知"}</small>
+                  </div>
                 </li>
               ))}
             </ol>
@@ -362,13 +408,13 @@ function edgeLabel(edge: AnyRecord) {
       </section>
 
       <div class="home-grid">
-        <section class="panel home-section" aria-labelledby="baseline-papers-heading">
+        <section class="panel home-section dense-baseline-panel" aria-labelledby="baseline-papers-heading">
           <p class="section-kicker">{baselineWorks.length} 篇基准论文</p>
           <h2 id="baseline-papers-heading">基准论文</h2>
           {baselineWorks.length === 0 ? (
             <p class="empty-state">基准文献库中暂时没有可显示论文。</p>
           ) : (
-            <ol class="paper-index">
+            <ol class="paper-index dense-paper-drawer">
               {baselineWorks.map((work) => (
                 <li class="paper-index-item">
                   <article>
@@ -386,13 +432,13 @@ function edgeLabel(edge: AnyRecord) {
           )}
         </section>
 
-        <section class="panel home-section" aria-labelledby="scientific-connections-heading">
+        <section class="panel home-section dense-connections-panel" aria-labelledby="scientific-connections-heading">
           <p class="section-kicker">{scientificEdges.length} 条科学关联</p>
           <h2 id="scientific-connections-heading">科学关联</h2>
           {scientificEdges.length === 0 ? (
             <p class="empty-state">暂无经过审核的科学关联。</p>
           ) : (
-            <ul class="compact-list edge-list">
+            <ul class="compact-list edge-list dense-edge-drawer">
               {scientificEdges.map((edge) => {
                 const source = projectedWork(edge.source_work_id);
                 const target = projectedWork(edge.target_work_id);

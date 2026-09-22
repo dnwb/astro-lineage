@@ -2304,5 +2304,9 @@ if (process.argv[1] && resolve(process.argv[1]) === resolve(fileURLToPath(import
     const output = args.find((argument) => !argument.startsWith("--")) ?? DEFAULT_OUTPUT;
     const payload = await refreshArxivFeed({ output });
     console.log(`wrote ${payload.entries.length} arXiv entries to ${output}`);
+    try {
+      const { syncArxivArchives } = await import("./arxiv-archive.mjs");
+      await syncArxivArchives();
+    } catch {}
   }
 }

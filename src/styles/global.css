@@ -1134,3 +1134,423 @@ small {
     scroll-behavior: auto !important;
   }
 }
+
+/* ==========================================================================
+   arXiv Daily & Weekly Archives Components
+   ========================================================================== */
+
+.archive-nav-card {
+  margin: 1.5rem 0 2rem;
+  padding: 1.2rem 1.4rem;
+  background: #fbf9f4;
+  border: 1px solid #dcd7cb;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.archive-nav-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.8rem;
+  margin-bottom: 0.9rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px dashed #e2ded5;
+}
+
+.archive-nav-title {
+  font-family: system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: #172033;
+  margin-right: 0.8rem;
+}
+
+.archive-nav-sub {
+  font-size: 0.88rem;
+  color: #5d6470;
+}
+
+.archive-jump-weekly-link {
+  font-family: system-ui, sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #1e3a8a;
+  text-decoration: none;
+}
+
+.archive-jump-weekly-link:hover {
+  text-decoration: underline;
+}
+
+.archive-week-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.8rem 1.2rem;
+  margin-top: 0.5rem;
+}
+
+.archive-week-badge-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.archive-week-badge {
+  display: inline-block;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 0.2rem 0.55rem;
+  background: #1e3a8a;
+  color: #ffffff;
+  border-radius: 4px;
+}
+
+.archive-week-range {
+  font-size: 0.82rem;
+  color: #64748b;
+}
+
+.archive-day-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.archive-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.7rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+
+.chip-active {
+  background: #eff6ff;
+  border: 1.5px solid #2563eb;
+  color: #1e40af;
+}
+
+.chip-link {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  color: #334155;
+}
+
+.chip-link:hover {
+  border-color: #1e3a8a;
+  color: #1e3a8a;
+  background: #f8fafc;
+}
+
+.chip-status-tag {
+  font-size: 0.72rem;
+  font-weight: 700;
+  background: #2563eb;
+  color: #ffffff;
+  padding: 0.1rem 0.35rem;
+  border-radius: 3px;
+}
+
+.chip-past-tag {
+  font-size: 0.72rem;
+  background: #e2e8f0;
+  color: #475569;
+  padding: 0.1rem 0.35rem;
+  border-radius: 3px;
+}
+
+.chip-meta {
+  font-size: 0.78rem;
+  color: #64748b;
+}
+
+.archive-history-section {
+  margin-top: 3.5rem;
+  padding-top: 2rem;
+  border-top: 2px dashed #dcd7cb;
+}
+
+.archive-history-intro {
+  font-size: 0.95rem;
+  color: #475569;
+  margin-bottom: 1.5rem;
+}
+
+.historical-edition-card {
+  margin-bottom: 1.5rem;
+  background: #fbf9f4;
+  border: 1px solid #dcd7cb;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.historical-edition-card:target {
+  border: 2px solid #1e3a8a;
+  box-shadow: 0 0 0 4px rgba(30, 58, 138, 0.12);
+}
+
+.historical-edition-summary {
+  padding: 1rem 1.25rem;
+  cursor: pointer;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  background: #f7f4ec;
+  font-family: system-ui, sans-serif;
+}
+
+.historical-edition-summary:hover {
+  background: #f0ece1;
+}
+
+.summary-left {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.historical-date-tag {
+  font-weight: 700;
+  font-size: 1rem;
+  color: #172033;
+}
+
+.historical-weekday-tag {
+  font-size: 0.82rem;
+  background: #e2ded5;
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+  color: #475569;
+}
+
+.historical-week-belong {
+  font-size: 0.82rem;
+  color: #64748b;
+}
+
+.summary-right {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.historical-stat-pill {
+  font-size: 0.78rem;
+  background: #e2e8f0;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  color: #334155;
+}
+
+.summary-toggle-prompt {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #1e3a8a;
+  margin-left: 0.5rem;
+}
+
+.historical-edition-body {
+  padding: 1.5rem;
+  border-top: 1px solid #e2ded5;
+  background: #ffffff;
+}
+
+.historical-notice-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1.5rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  font-size: 0.88rem;
+  color: #334155;
+}
+
+.historical-notice-links {
+  display: flex;
+  gap: 1rem;
+}
+
+.historical-notice-links a {
+  color: #1e3a8a;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.historical-notice-links a:hover {
+  text-decoration: underline;
+}
+
+/* Weekly page: Daily Breakdown Section */
+.daily-breakdown-section {
+  margin-top: 2rem;
+}
+
+.daily-batches-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+  gap: 1.25rem;
+  margin-top: 1rem;
+}
+
+.daily-batch-card {
+  padding: 1.25rem 1.4rem;
+  background: #ffffff;
+  border: 1px solid #e2ded5;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.daily-batch-card:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.batch-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.batch-date-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.batch-date {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #172033;
+}
+
+.batch-weekday {
+  font-size: 0.82rem;
+  background: #f1f5f9;
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+  color: #475569;
+}
+
+.batch-latest-tag {
+  font-size: 0.72rem;
+  font-weight: 700;
+  background: #2563eb;
+  color: #ffffff;
+  padding: 0.1rem 0.4rem;
+  border-radius: 3px;
+}
+
+.batch-id-tag {
+  font-family: ui-monospace, SFMono-Regular, monospace;
+  font-size: 0.75rem;
+  color: #94a3b8;
+}
+
+.batch-stat-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.batch-stat-strip .stat-pill {
+  font-size: 0.78rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  color: #334155;
+}
+
+.batch-stat-strip .stat-pill.must {
+  background: #fef2f2;
+  border-color: #fecaca;
+  color: #b91c1c;
+}
+
+.batch-stat-strip .stat-pill.worth {
+  background: #eff6ff;
+  border-color: #bfdbfe;
+  color: #1d4ed8;
+}
+
+.batch-card-brief {
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: #475569;
+  margin: 0;
+  flex-grow: 1;
+}
+
+.batch-highlights-preview {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.78rem;
+}
+
+.highlights-label {
+  color: #64748b;
+}
+
+.highlights-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.highlight-chip {
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  font-family: ui-monospace, monospace;
+  font-size: 0.75rem;
+}
+
+.highlight-chip.must {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.highlight-chip.worth {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.batch-card-actions {
+  margin-top: 0.4rem;
+  padding-top: 0.6rem;
+  border-top: 1px dashed #e2e8f0;
+}
+
+.batch-action-btn {
+  display: inline-block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #1e3a8a;
+  text-decoration: none;
+}
+
+.batch-action-btn:hover {
+  text-decoration: underline;
+}
+

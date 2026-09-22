@@ -274,6 +274,13 @@ export async function runWeeklySummary({
   const archivePath = join(archiveDir, `${weekId}.json`);
   await writeFile(archivePath, `${JSON.stringify(weeklyPayload, null, 2)}\n`, "utf8");
 
+  try {
+    const { syncArxivArchives } = await import("./arxiv-archive.mjs");
+    await syncArxivArchives();
+  } catch (archiveErr) {
+    console.warn("[Weekly Summary] Warning: Failed to sync archive manifest:", archiveErr.message);
+  }
+
   console.log(`[Weekly Summary] ✓ 周报生成成功并落盘：`);
   console.log(`  - 生产数据: ${resolvedOutput}`);
   console.log(`  - 历史归档: ${archivePath}`);

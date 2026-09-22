@@ -13,6 +13,7 @@
     "arxiv:schedule": "node scripts/arxiv-daily-scheduler.mjs",
     "arxiv:analyze": "node scripts/arxiv-ai-analyzer.mjs",
     "arxiv:weekly": "node scripts/arxiv-weekly-summary.mjs",
+    "arxiv:archive": "node scripts/arxiv-archive.mjs",
     "validate": "node scripts/validate.mjs",
     "test": "node --test --test-concurrency=1 tests/*.test.mjs",
     "check": "astro check",

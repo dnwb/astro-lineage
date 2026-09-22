@@ -1,0 +1,91 @@
+{
+  "schema_version": "astrolineage-arxiv-archive-manifest-v1",
+  "updated_at": "2026-09-22T08:26:20.853Z",
+  "total_weeks": 1,
+  "total_daily_editions": 2,
+  "latest_week_id": "2026-W38",
+  "latest_daily_date": "2026-09-16",
+  "weeks": [
+    {
+      "week_id": "2026-W38",
+      "title": "高能天体物理 arXiv 每周学术脉络与前沿精选",
+      "date_range": "2026-09-10 ~ 2026-09-17",
+      "has_weekly_summary": true,
+      "executive_summary": "本周高能天体物理研究在致密星磁层动理学、低角动量吸积流能量学以及多信使群体约束三个方向上形成了清晰的因果动力学链条。磁星持续硬X射线辐射的微观起源首次通过自洽PIC模拟被追溯到辐射阻力驱动的单半球加速间隙，揭示了磁层等离子体自组织的普适机制；与此同时，Sgr A*耀斑的能量预算检验将驻立激波下游能量储备与辐射效率直接挂钩，为弱耀斑的辐射起源提供了数量级约束。在群体推断层面，分层贝叶斯框架将引力波空间相关性与AGN电磁目录联合建模，给出了AGN通道贡献比例的首个统计排除区间，标志着多信使群体天文学从单源证认向通道比例定量约束的范式转变。此外，磁Penrose过程作为Sgr A* PeVatron机制、FRB 20240817A的背景事件判定以及射电星系X射线吸积性质的比较研究，共同构成了从中心引擎到周围介质相互作用再到观测特征的完整物理图景。",
+      "statistics": {
+        "total_analyzed": 11,
+        "must_read_count": 2,
+        "worth_knowing_count": 4,
+        "skip_count": 5
+      },
+      "top_picks_count": 5,
+      "days": [
+        {
+          "date": "2026-09-16",
+          "weekday": "Wed",
+          "week_id": "2026-W38",
+          "batch_id": "announcement-2026-09-16",
+          "total_papers": 47,
+          "analyzed_count": 5,
+          "must_read_count": 1,
+          "worth_knowing_count": 1,
+          "skip_count": 3,
+          "pending_count": 42,
+          "brief_status": "unavailable",
+          "brief_intro": "重点关注 1D PIC Simulations of Resonant Scattering-Driven Pair Cascades in Magnetar Magnetospheres",
+          "highlights": [
+            {
+              "arxiv_id": "2609.17661",
+              "priority": "must_read",
+              "title": "1D PIC Simulations of Resonant Scattering-Driven Pair Cascades in Magnetar Magnetospheres",
+              "reason": "该论文直接研究磁星磁层中由共振逆康普顿散射驱动的正负电子对级联，属于磁星爆发与持续硬X射线辐射的核心微观物理机制，与高能瞬变源（磁星、FRB、FXT）的能量释放和辐射过程密切相关。"
+            },
+            {
+              "arxiv_id": "2609.17665",
+              "priority": "worth_knowing",
+              "title": "Unifying spatial correlation with hierarchical population inference to constrain the AGN channel for binary black hole mergers",
+              "reason": "该论文研究双黑洞并合的AGN形成通道，涉及吸积盘物理与引力波群体推断，与高能瞬变源中的吸积流和喷流机制有间接关联，但并非直接针对GRB/FRB等爆发现象。"
+            }
+          ],
+          "data_file": "daily/2026-09-16.json"
+        },
+        {
+          "date": "2026-09-15",
+          "weekday": "Tue",
+          "week_id": "2026-W38",
+          "batch_id": "announcement-2026-09-15",
+          "total_papers": 52,
+          "analyzed_count": 3,
+          "must_read_count": 0,
+          "worth_knowing_count": 3,
+          "skip_count": 0,
+          "pending_count": 49,
+          "brief_status": "unavailable",
+          "brief_intro": "重点关注 A Dark-matter Origin of Little Red Dots: Early Seeding and Super-Bondi Accretion",
+          "highlights": [
+            {
+              "arxiv_id": "2609.16122",
+              "priority": "worth_knowing",
+              "title": "A Dark-matter Origin of Little Red Dots: Early Seeding and Super-Bondi Accretion",
+              "reason": "该论文探讨早期宇宙中超大质量黑洞种子形成与增长的新机制，涉及自相互作用暗物质的引力热坍缩与超Bondi吸积，与高能瞬变源中黑洞吸积流和喷流机制有间接但重要的理论关联，但并非直接针对GRB/FRB等瞬变现象。"
+            },
+            {
+              "arxiv_id": "2609.16126",
+              "priority": "worth_knowing",
+              "title": "On the dynamical accessibility of twin stars",
+              "reason": "该论文研究双星（twin stars）的动力学形成条件，涉及强子-夸克相变与致密星稳定性，与致密双星并合、千新星及磁星等瞬变源的前身星物理有间接关联，但未直接讨论高能瞬变爆发机制或观测信号。"
+            },
+            {
+              "arxiv_id": "2609.16134",
+              "priority": "worth_knowing",
+              "title": "Population III Host Candidates at $z\\sim2$: Strong He II $\\lambda1640$ and Absent UV Metal Lines in HETDEX Ly$α$ Emitters",
+              "reason": "该论文研究高红移贫金属星族III候选体，属于恒星形成与星系演化背景，与高能瞬变源核心机制（如GRB/FRB/磁星等）无直接关联，但其极端金属丰度环境可能为理解高能瞬变源前身星形成提供间接线索。"
+            }
+          ],
+          "data_file": "daily/2026-09-15.json"
+        }
+      ],
+      "weekly_data_file": "weekly/2026-W38.json"
+    }
+  ]
+}

@@ -1,11 +1,15 @@
 ---
 import weeklyData from "../../data/arxiv-weekly.json";
+import archiveManifest from "../../data/arxiv-archives/manifest.json";
 import SiteNav from "../../components/SiteNav.astro";
 import ReaderText from "../../components/ReaderText.astro";
 import { loadSiteConfig } from "../../lib/site-config";
 import "../../styles/global.css";
 
 const site = loadSiteConfig();
+
+const currentWeekManifest = (archiveManifest.weeks as any[]).find((w: any) => w.week_id === weeklyData.week_id) || (archiveManifest.weeks as any[])[0];
+const weekDays = currentWeekManifest?.days || [];
 
 const stats = weeklyData.statistics ?? {
   total_analyzed: weeklyData.papers?.length ?? 0,
@@ -102,7 +106,11 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
         <div class="weekly-meta-bar">
           <span class="meta-badge week-badge">周期：{weeklyData.week_id}（{weeklyData.date_range}）</span>
           <span class="meta-badge update-badge">整理时间：{generatedLabel}</span>
+          {weekDays.length > 0 && (
+            <span class="meta-badge daily-count-badge">含 {weekDays.length} 个每日监测批次</span>
+          )}
           <a class="meta-link" href="/arxiv-daily/">查看今日雷达 →</a>
+          <a class="meta-link" href="#daily-breakdown">本周每日归档 ↓</a>
         </div>
         <details class="weekly-markdown-export">
           <summary class="export-summary-btn"><span class="language-primary">导出 / 复制周报 Markdown</span><span class="language-english" lang="en">Export Weekly Markdown</span></summary>
@@ -141,6 +149,54 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
         </div>
         <div class="executive-content-card">
           <p class="executive-lead"><ReaderText text={weeklyData.executive_summary} /></p>
+        </div>
+      </section>
+
+      <!-- Daily Breakdown in this Week -->
+      <section class="weekly-section daily-breakdown-section" id="daily-breakdown">
+        <div class="section-heading">
+          <p class="section-kicker"><span class="language-primary">每日归档</span><span class="language-english" lang="en">Daily Breakdown</span></p>
+          <h2><span class="language-primary">本周每日批次与日报归档</span><span class="language-english" lang="en">Daily Editions in this Week</span></h2>
+        </div>
+        <p class="section-desc">本周聚合了以下每日 arXiv 监测批次，可分别查看当天的完整导读雷达、论文卡片与筛选边界：</p>
+        <div class="daily-batches-grid">
+          {weekDays.map((day: any) => (
+            <div class="daily-batch-card">
+              <div class="batch-card-top">
+                <div class="batch-date-group">
+                  <strong class="batch-date">{day.date}</strong>
+                  <span class="batch-weekday">{day.weekday}</span>
+                  {day.date === archiveManifest.latest_daily_date && (
+                    <span class="batch-latest-tag">最新批次</span>
+                  )}
+                </div>
+                <span class="batch-id-tag">{day.batch_id}</span>
+              </div>
+              <div class="batch-stat-strip">
+                <span class="stat-pill total">总收录 <strong>{day.total_papers}</strong> 篇</span>
+                <span class="stat-pill must">精读 <strong>{day.must_read_count}</strong></span>
+                <span class="stat-pill worth">了解 <strong>{day.worth_knowing_count}</strong></span>
+              </div>
+              <p class="batch-card-brief">{day.brief_intro}</p>
+              {day.highlights && day.highlights.length > 0 && (
+                <div class="batch-highlights-preview">
+                  <span class="highlights-label">核心条目：</span>
+                  <div class="highlights-tags">
+                    {day.highlights.map((h: any) => (
+                      <span class={`highlight-chip ${h.priority === "must_read" ? "must" : "worth"}`}>
+                        arXiv:{h.arxiv_id}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+              <div class="batch-card-actions">
+                <a class="batch-action-btn" href={day.date === archiveManifest.latest_daily_date ? "/arxiv-daily/" : `/arxiv-daily/#archive-${day.date}`}>
+                  查看当日完整导读雷达 →
+                </a>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 

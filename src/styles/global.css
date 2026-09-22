@@ -2164,6 +2164,12 @@ small {
   text-decoration: underline;
 }
 
+.intel-archives-links {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
 /* Card CTA Buttons */
 .intel-card-footer {
   margin-top: auto;
@@ -2405,7 +2411,7 @@ small {
 }
 
 /* Responsive adjustment for intelligence grid */
-@media (max-width: 1024px) {
+@media (max-width: 1023px) {
   .intelligence-grid,
   .asymmetric-hero-grid {
     grid-template-columns: 1fr;

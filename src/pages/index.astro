@@ -171,7 +171,7 @@ function edgeLabel(edge: AnyRecord) {
         <div class="intelligence-hero-header">
           <div class="hero-badge-row">
             <span class="pulse-indicator"><span class="pulse-dot"></span> 实时前沿学术情报</span>
-            <span class="hero-tag">AI 驱动 · 高能瞬变天体物理</span>
+            <span class="hero-tag">前沿监测 · 高能瞬变天体物理</span>
             <span class="hero-tag-muted">宁缺毋滥 · 严格因果动力学</span>
           </div>
           <h2 id="intelligence-hero-heading" class="intelligence-title">
@@ -196,7 +196,7 @@ function edgeLabel(edge: AnyRecord) {
             </div>
 
             <h3 class="intel-card-title">
-              <a href="/arxiv-weekly/">{(weeklyData as any).title || "高能天体物理 arXiv 每周学术脉络与前沿精选"}</a>
+              <a href="/arxiv-weekly/"><ReaderText text={(weeklyData as any).title || "高能天体物理 arXiv 每周学术脉络与前沿精选"} /></a>
             </h3>
 
             {thematicHighlights.length > 0 && (
@@ -245,7 +245,7 @@ function edgeLabel(edge: AnyRecord) {
                           arXiv:{pick.arxiv_id} ↗
                         </a>
                       </div>
-                      <h4 class="intel-pick-title">{pick.title}</h4>
+                      <h4 class="intel-pick-title"><ReaderText text={pick.title} /></h4>
                       <p class="intel-pick-insight">
                         <strong>核心突破：</strong><ReaderText text={pick.core_insight} />
                       </p>
@@ -332,7 +332,7 @@ function edgeLabel(edge: AnyRecord) {
                           arXiv:{paper.arxiv_id} ↗
                         </a>
                       </div>
-                      <h4 class="intel-radar-paper-title">{paper.entry?.title || paper.arxiv_id}</h4>
+                      <h4 class="intel-radar-paper-title"><ReaderText text={paper.entry?.title || paper.arxiv_id} /></h4>
                       <p class="intel-radar-reason">
                         <strong>分类理由：</strong><ReaderText text={paper.analysis?.reason || paper.analysis?.result || "重点高能爆发现象"} />
                       </p>
@@ -354,7 +354,10 @@ function edgeLabel(edge: AnyRecord) {
             <div class="intel-archives-bar">
               <span class="intel-archives-label">历史归档：</span>
               <span class="intel-archives-counts">已收录 {(archiveManifest as any).total_weeks} 周、{(archiveManifest as any).total_daily_editions} 个批次</span>
-              <a class="intel-archives-link" href="/arxiv-daily/#historical-archives">浏览历史批次 →</a>
+              <div class="intel-archives-links">
+                <a class="intel-archives-link" href="/arxiv-weekly/">周报归档 →</a>
+                <a class="intel-archives-link" href="/arxiv-daily/#historical-archives">每日批次 →</a>
+              </div>
             </div>
 
             <div class="intel-card-footer">
@@ -367,12 +370,12 @@ function edgeLabel(edge: AnyRecord) {
         </div>
       </section>
 
-      <!-- Secondary Section Divider: Research Foundations & Causal Graph -->
+      <!-- Secondary Section Divider: Research Foundations & Paper Graph -->
       <div class="secondary-section-divider">
         <div class="secondary-divider-content">
-          <span class="secondary-kicker">科研基准与因果图谱 · 长期知识库</span>
-          <h2 class="secondary-title">基础文献、因果关联与学习路径</h2>
-          <p class="secondary-subtitle">以 41 篇经过审核与整理的经典基准文献为基石，厘清高能天体物理思想演化的长程脉络。</p>
+          <span class="secondary-kicker">科研基准与科学脉络 · 长期知识库</span>
+          <h2 class="secondary-title">基准文献、科学关联与学习路径</h2>
+          <p class="secondary-subtitle">以 41 篇经过整理与审核的基准文献为基石，厘清高能天体物理思想演化的长程脉络。</p>
         </div>
       </div>
 

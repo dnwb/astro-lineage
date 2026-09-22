@@ -26,6 +26,13 @@ function normalizeLegacyTex(source) {
     .replace(/\\kpc(?![A-Za-z])/gu, "\\mathrm{kpc}")
     .replace(/\\kms(?![A-Za-z])/gu, "\\mathrm{km}\\,\\mathrm{s}^{-1}")
     .replace(/\\sigmam(?![A-Za-z])/gu, "\\sigma_{\\mathrm{m}}")
+    .replace(/\\TeV(?![A-Za-z])/gu, "\\mathrm{TeV}")
+    .replace(/\\GeV(?![A-Za-z])/gu, "\\mathrm{GeV}")
+    .replace(/\\MeV(?![A-Za-z])/gu, "\\mathrm{MeV}")
+    .replace(/\\keV(?![A-Za-z])/gu, "\\mathrm{keV}")
+    .replace(/\\eV(?![A-Za-z])/gu, "\\mathrm{eV}")
+    .replace(/\\Spix(?![A-Za-z])/gu, "S_{\\mathrm{pix}}")
+    .replace(/\\Sscale(?![A-Za-z])/gu, "S_{\\mathrm{scale}}")
     // TeX tokenizes a control word before a Unicode symbol, while KaTeX
     // needs the boundary made explicit (for example, `\\logξ`).
     .replace(/\\(log|ln|exp|sin|cos|tan|max|min|lim|det)(?=[^A-Za-z\s])/gu, "\\$1 ");

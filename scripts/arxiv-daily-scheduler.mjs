@@ -138,5 +138,11 @@ if (process.argv[1] && resolve(process.argv[1]) === resolve(fileURLToPath(import
       const { runWeeklySummary } = await import("./arxiv-weekly-summary.mjs");
       await runWeeklySummary({ feed: output });
     }
+    try {
+      const { syncArxivArchives } = await import("./arxiv-archive.mjs");
+      await syncArxivArchives();
+    } catch (err) {
+      console.warn(`[scheduler] 自动同步归档警告:`, err.message);
+    }
   }
 }

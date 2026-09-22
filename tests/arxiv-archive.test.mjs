@@ -79,8 +79,11 @@ test("arXiv weekly HTML exposes daily breakdown section with links to daily edit
   if (existsSync(fileURLToPath(distWeeklyHtmlUrl))) {
     const html = await readFile(distWeeklyHtmlUrl, "utf8");
     assert.match(html, /本周每日批次与日报归档/u);
-    assert.match(html, /2026-09-15/u);
-    assert.match(html, /2026-09-16/u);
     assert.match(html, /href="\/arxiv-daily\/"/u);
+    const manifest = JSON.parse(await readFile(fileURLToPath(manifestUrl), "utf8"));
+    const currentWeek = manifest.weeks?.[0];
+    if (currentWeek?.days?.length > 0) {
+      assert.match(html, new RegExp(currentWeek.days[0].date, "u"));
+    }
   }
 });

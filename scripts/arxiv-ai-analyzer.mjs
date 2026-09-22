@@ -1,5 +1,5 @@
 import { readFile, writeFile } from "node:fs/promises";
-import { resolve } from "node:path";
+import { resolve, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { createHash } from "node:crypto";
 import {
@@ -11,13 +11,31 @@ import { DEFAULT_OUTPUT, DEFAULT_RADAR_OUTPUT } from "./arxiv-daily.mjs";
 
 const DEFAULT_BASE_URL = process.env.OPENAI_BASE_URL || process.env.CCNU_API_BASE || "https://api.ccnulaowu.online/v1";
 const DEFAULT_API_KEY = process.env.WU_API_KEY || process.env.OPENAI_API_KEY || "";
-const DEFAULT_MODEL = process.env.AI_MODEL || "Deepseek-V4.1-Flash";
+const DEFAULT_MODEL = process.env.AI_MODEL || "gpt-5.6-sol";
 const DEFAULT_CONCURRENCY = 3;
 
 function cleanJsonContent(raw) {
   let cleaned = String(raw ?? "").trim();
   cleaned = cleaned.replace(/^```(?:json)?\s*/iu, "").replace(/\s*```$/u, "").trim();
   return cleaned;
+}
+
+function safeParseJson(raw) {
+  const text = cleanJsonContent(raw);
+  try {
+    return JSON.parse(text);
+  } catch (initialErr) {
+    const match = text.match(/\{[\s\S]*\}/u);
+    if (!match) throw initialErr;
+    const snippet = match[0];
+    try {
+      return JSON.parse(snippet);
+    } catch {
+      // Fix unescaped backslashes commonly emitted for LaTeX math within JSON strings
+      const fixed = snippet.replace(/\\(?!["\\/bfnrt]|u[0-9a-fA-F]{4})/g, "\\\\");
+      return JSON.parse(fixed);
+    }
+  }
 }
 
 function parseCliArgs(args) {
@@ -93,7 +111,8 @@ const SYSTEM_PROMPT = `你是一个专注于高能天体物理与爆发现象（
 【核心原则：宁缺毋滥，严禁硬凑】
 1. 课题组主体高度聚焦于爆发现象（Explosive Transients）及致密天体物理机制。
 2. 凡属于普通星系巡天、暗物质晕动力学、大尺度宇宙学、普通恒星演化或非致密星仪器常规校准的论文，一律必须直接评定为 "skip"，严禁硬凑！
-3. 如果某篇论文与 R1~R7 均无关，诚实给出 "skip" 是完全合规且备受赞赏的诚实行为。`;
+3. 如果某篇论文与 R1~R7 均无关，诚实给出 "skip" 是完全合规且备受赞赏的诚实行为。
+4. 数学公式与物理量符号（如 $\Gamma, \dot{M}, B, E_{\mathrm{iso}}, R_{\mathrm{dec}}$ 等）请使用标准 LaTeX 语法并在两端加单个美元符号（如 $E_{\mathrm{iso}}$）。`;
 
 function buildPrompt(entry) {
   return `【论文信息】
@@ -257,14 +276,7 @@ export async function runAiAnalyzer({
           apiKey,
         });
 
-        let parsed;
-        try {
-          parsed = JSON.parse(rawJson);
-        } catch {
-          const match = rawJson.match(/\{[\s\S]*\}/u);
-          if (match) parsed = JSON.parse(match[0]);
-          else throw new Error("无法解析模型返回的 JSON 内容");
-        }
+        const parsed = safeParseJson(rawJson);
 
         const record = buildAnalysisRecord(entry, parsed, model);
         newAnalyses.push(record);
@@ -305,6 +317,13 @@ export async function runAiAnalyzer({
   await writeFile(resolvedRadar, radarJsonContent, "utf8");
   await syncGenerationRadar(resolvedRadar, radarJsonContent);
   console.log(`[AI Analyzer] 成功写入雷达数据到 ${resolvedRadar}，共计 ${combinedAnalyses.length} 篇有效导读记录。`);
+  try {
+    const { syncArxivArchives } = await import("./arxiv-archive.mjs");
+    await syncArxivArchives();
+    console.log(`[AI Analyzer] 已自动同步归档数据与 manifest。`);
+  } catch (err) {
+    console.warn(`[AI Analyzer] 自动同步归档警告:`, err.message);
+  }
   return nextRadar;
 }
 

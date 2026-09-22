@@ -1,11 +1,44 @@
 {
   "schema_version": "astrolineage-arxiv-archive-manifest-v1",
-  "updated_at": "2026-09-22T08:26:20.853Z",
-  "total_weeks": 1,
-  "total_daily_editions": 2,
-  "latest_week_id": "2026-W38",
-  "latest_daily_date": "2026-09-16",
+  "updated_at": "2026-09-22T09:27:00.634Z",
+  "total_weeks": 2,
+  "total_daily_editions": 3,
+  "latest_week_id": "2026-W39",
+  "latest_daily_date": "2026-09-21",
   "weeks": [
+    {
+      "week_id": "2026-W39",
+      "title": "高能天体物理 arXiv 每周学术脉络与前沿精选",
+      "date_range": "2026-09-15 ~ 2026-09-22",
+      "has_weekly_summary": true,
+      "executive_summary": "本周最突出的进展集中在“爆发之后中心引擎还能活动多久、能量如何继续耗散并留下可观测信号”这一因果链条上。GRB 220706A 的观测将超长 GRB 的中心引擎活动推进到源静止系约 $27$ 天，并伴随峰值绝对星等可达 $M_r\\leq -20.25$ 的高光度超新星，提示超长 GRB、磁星或其他持续供能引擎与超亮超新星之间可能存在更紧密联系。与此同时，磁星硬 X 射线辐射的 $1\\mathrm{D}$ PIC 模拟揭示了由强 RICS 辐射阻力塑造的单半球加速间隙和半球不对称对级联，为磁层电流闭合与高能辐射提供了新的微观图景。\n\n在环境与多信使方向，FRB 宿主统计继续指向低质量、低金属丰度、高比恒星形成率星系，并与 SLSN-I 宿主分布相似；SLSN 抛射物在 $600\\,\\mathrm{MHz}$ 下约需 $29$ 年才能变得自由-自由透明，说明 FRB 周围介质仍是前身星与爆发现象之间的重要时间胶囊。另一方面，长周期射电瞬变 CHIME J0630+25 的 RM 在约 $2500\\,\\mathrm{s}$ 内变化约 $536\\,\\mathrm{rad\\,m^{-2}}$，以及 Cen X-3 食相期间高分辨率 Fe K 线和吸收柱密度的剧烈变化，都显示局部、非均匀且快速演化的磁化介质可能比平滑风模型更能决定瞬变观测特征。",
+      "statistics": {
+        "total_analyzed": 98,
+        "must_read_count": 4,
+        "worth_knowing_count": 24,
+        "skip_count": 70
+      },
+      "top_picks_count": 8,
+      "days": [
+        {
+          "date": "2026-09-21",
+          "weekday": "Mon",
+          "week_id": "2026-W39",
+          "batch_id": "announcement-2026-09-21",
+          "total_papers": 87,
+          "analyzed_count": 65,
+          "must_read_count": 0,
+          "worth_knowing_count": 0,
+          "skip_count": 65,
+          "pending_count": 22,
+          "brief_status": "unavailable",
+          "brief_intro": "常规高能天体物理监测批次",
+          "highlights": [],
+          "data_file": "daily/2026-09-21.json"
+        }
+      ],
+      "weekly_data_file": "weekly/2026-W39.json"
+    },
     {
       "week_id": "2026-W38",
       "title": "高能天体物理 arXiv 每周学术脉络与前沿精选",

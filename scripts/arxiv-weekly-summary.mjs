@@ -5,13 +5,30 @@ import { DEFAULT_RADAR_OUTPUT, DEFAULT_OUTPUT } from "./arxiv-daily.mjs";
 
 const DEFAULT_BASE_URL = process.env.OPENAI_BASE_URL || process.env.CCNU_API_BASE || "https://api.ccnulaowu.online/v1";
 const DEFAULT_API_KEY = process.env.WU_API_KEY || process.env.OPENAI_API_KEY || "";
-const DEFAULT_MODEL = process.env.AI_MODEL || "Deepseek-V4.1-Flash";
+const DEFAULT_MODEL = process.env.AI_MODEL || "gpt-5.6-sol";
 const DEFAULT_WEEKLY_OUTPUT = resolve(fileURLToPath(new URL("../src/data/arxiv-weekly.json", import.meta.url)));
 
 function cleanJsonContent(raw) {
   let cleaned = String(raw ?? "").trim();
   cleaned = cleaned.replace(/^```(?:json)?\s*/iu, "").replace(/\s*```$/u, "").trim();
   return cleaned;
+}
+
+function safeParseJson(raw) {
+  const text = cleanJsonContent(raw);
+  try {
+    return JSON.parse(text);
+  } catch (initialErr) {
+    const match = text.match(/\{[\s\S]*\}/u);
+    if (!match) throw initialErr;
+    const snippet = match[0];
+    try {
+      return JSON.parse(snippet);
+    } catch {
+      const fixed = snippet.replace(/\\(?!["\\/bfnrt]|u[0-9a-fA-F]{4})/g, "\\\\");
+      return JSON.parse(fixed);
+    }
+  }
 }
 
 function parseCliArgs(args) {
@@ -49,33 +66,42 @@ function currentWeekId(date = new Date()) {
   return `${target.getUTCFullYear()}-W${String(weekNumber).padStart(2, "0")}`;
 }
 
-async function callChatCompletion({ prompt, systemPrompt, model, baseUrl, apiKey }) {
+async function callChatCompletion({ prompt, systemPrompt, model, baseUrl, apiKey, retries = 3 }) {
   const url = `${baseUrl.replace(/\/+$/u, "")}/chat/completions`;
-  const response = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${apiKey}`,
-    },
-    body: JSON.stringify({
-      model,
-      messages: [
-        { role: "system", content: systemPrompt },
-        { role: "user", content: prompt },
-      ],
-      temperature: 0.2,
-    }),
-  });
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify({
+          model,
+          messages: [
+            { role: "system", content: systemPrompt },
+            { role: "user", content: prompt },
+          ],
+          temperature: 0.2,
+        }),
+      });
 
-  if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(`API error HTTP ${response.status}: ${errorText}`);
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`API error HTTP ${response.status}: ${errorText.slice(0, 300)}`);
+      }
+
+      const json = await response.json();
+      const content = json.choices?.[0]?.message?.content;
+      if (!content) throw new Error("Empty model response");
+      return cleanJsonContent(content);
+    } catch (err) {
+      if (attempt === retries) throw err;
+      const delay = Math.pow(2, attempt) * 1000;
+      console.warn(`[Weekly Summary] API 请求失败 (尝试 ${attempt}/${retries}): ${err.message}，将在 ${delay}ms 后重试...`);
+      await new Promise((r) => setTimeout(r, delay));
+    }
   }
-
-  const json = await response.json();
-  const content = json.choices?.[0]?.message?.content;
-  if (!content) throw new Error("Empty model response");
-  return cleanJsonContent(content);
 }
 
 const SYSTEM_PROMPT = `你是一个专注于高能天体物理（High-Energy Astrophysics）与爆发现象的学术导师与周报主笔。
@@ -95,27 +121,21 @@ const SYSTEM_PROMPT = `你是一个专注于高能天体物理（High-Energy Ast
 请根据本周收集的所有已分析论文，撰写一份结构化、有深度物理洞察的科研周报。`;
 
 function buildWeeklyPrompt(papers, dateRange, weekId) {
-  // Sort papers so must_read and worth_knowing are at the top
-  const prioritized = [...papers].sort((a, b) => {
-    const order = { must_read: 0, worth_knowing: 1, skip: 2 };
-    return (order[a.priority] ?? 2) - (order[b.priority] ?? 2);
-  });
+  const importantPapers = papers.filter((p) => p.priority === "must_read" || p.priority === "worth_knowing");
+  const skipCount = papers.length - importantPapers.length;
 
-  const papersText = prioritized.map((p, index) => {
-    const isImportant = p.priority === "must_read" || p.priority === "worth_knowing";
-    if (isImportant) {
-      return `[${index + 1}] arXiv:${p.arxiv_id} [${p.priority.toUpperCase()}] ${p.title}
+  const papersText = importantPapers.length > 0
+    ? importantPapers.map((p, index) => {
+        return `[${index + 1}] arXiv:${p.arxiv_id} [${p.priority.toUpperCase()}] ${p.title}
 - 核心物理问题: ${p.analysis?.problem || "探讨相关高能物理现象"}
 - 主要发现与结论: ${p.analysis?.result || "观测或模型结果"}
 - 采用方法: ${p.analysis?.method || "数据分析与模型模拟"}`;
-    } else {
-      return `[${index + 1}] arXiv:${p.arxiv_id} [SKIM] ${p.title} (${p.analysis?.result?.slice(0, 50) || "背景研究"}...)`;
-    }
-  }).join("\n");
+      }).join("\n\n")
+    : "（本周无符合爆发现象核心 R1~R7 方向的重点研读论文）";
 
   return `【周报元数据】
 周期: ${weekId} (${dateRange})
-本周已分析论文: ${papers.length} 篇
+本周已分析论文: 共 ${papers.length} 篇（其中已自动筛除 ${skipCount} 篇非瞬变/泛星系背景论文，保留 ${importantPapers.length} 篇重点高能瞬变工作）
 
 【本周重点论文列表】
 ${papersText}
@@ -228,14 +248,7 @@ export async function runWeeklySummary({
     apiKey,
   });
 
-  let parsed;
-  try {
-    parsed = JSON.parse(rawJson);
-  } catch {
-    const match = rawJson.match(/\{[\s\S]*\}/u);
-    if (match) parsed = JSON.parse(match[0]);
-    else throw new Error("无法解析模型返回的 JSON 周报内容");
-  }
+  const parsed = safeParseJson(rawJson);
 
   const weeklyPayload = {
     schema_version: "astrolineage-weekly-summary-v1",

@@ -65,13 +65,15 @@ test("arXiv weekly HTML is properly generated with expected content and links", 
 test("arXiv weekly HTML renders math formulas via KaTeX and MathML without raw LaTeX leaks", async () => {
   assert.ok(existsSync(fileURLToPath(distWeeklyHtmlUrl)), "dist/arxiv-weekly/index.html must exist");
   const html = await readFile(distWeeklyHtmlUrl, "utf8");
+  // Exclude raw markdown export block which intentionally contains unparsed markdown source
+  const renderedHtml = html.replace(/<details\b[^>]*class=["'][^"']*weekly-markdown-export[^"']*["'][\s\S]*?<\/details>/giu, "");
 
   // Must have rendered KaTeX MathML markup
-  assert.match(html, /<span\b[^>]*class=["'][^"']*katex[^"']*["']/u, "must render KaTeX container");
-  assert.match(html, /<math\b/u, "must render MathML node");
+  assert.match(renderedHtml, /<span\b[^>]*class=["'][^"']*katex[^"']*["']/u, "must render KaTeX container");
+  assert.match(renderedHtml, /<math\b/u, "must render MathML node");
   // Must NOT leak raw math delimiters for known formulas
-  assert.doesNotMatch(html, /\$10\^\{-3\}\$/u, "must not leak unparsed $10^{-3}$ formula");
-  assert.doesNotMatch(html, /\$f_\{?\\text\{?agn\}?\}?\$/u, "must not leak unparsed f_agn formula");
+  assert.doesNotMatch(renderedHtml, /\$10\^\{-3\}\$/u, "must not leak unparsed $10^{-3}$ formula");
+  assert.doesNotMatch(renderedHtml, /\$f_\{?\\text\{?agn\}?\}?\$/u, "must not leak unparsed f_agn formula");
 });
 
 test("arXiv weekly HTML includes NASA ADS links, citation/BibTeX block, and Markdown export", async () => {

@@ -1,8 +1,8 @@
 {
   "schema_version": "astrolineage-arxiv-archive-manifest-v1",
-  "updated_at": "2026-09-22T09:27:00.634Z",
-  "total_weeks": 2,
-  "total_daily_editions": 3,
+  "updated_at": "2026-09-22T19:34:44.583Z",
+  "total_weeks": 3,
+  "total_daily_editions": 6,
   "latest_week_id": "2026-W39",
   "latest_daily_date": "2026-09-21",
   "weeks": [
@@ -53,6 +53,22 @@
       },
       "top_picks_count": 5,
       "days": [
+        {
+          "date": "2026-09-17",
+          "weekday": "Thu",
+          "week_id": "2026-W38",
+          "batch_id": "announcement-2026-09-17",
+          "total_papers": 56,
+          "analyzed_count": 8,
+          "must_read_count": 0,
+          "worth_knowing_count": 0,
+          "skip_count": 8,
+          "pending_count": 48,
+          "brief_status": "unavailable",
+          "brief_intro": "常规高能天体物理监测批次",
+          "highlights": [],
+          "data_file": "daily/2026-09-17.json"
+        },
         {
           "date": "2026-09-16",
           "weekday": "Wed",
@@ -116,9 +132,58 @@
             }
           ],
           "data_file": "daily/2026-09-15.json"
+        },
+        {
+          "date": "2026-09-14",
+          "weekday": "Mon",
+          "week_id": "2026-W38",
+          "batch_id": "announcement-2026-09-14",
+          "total_papers": 73,
+          "analyzed_count": 7,
+          "must_read_count": 0,
+          "worth_knowing_count": 0,
+          "skip_count": 7,
+          "pending_count": 66,
+          "brief_status": "unavailable",
+          "brief_intro": "常规高能天体物理监测批次",
+          "highlights": [],
+          "data_file": "daily/2026-09-14.json"
         }
       ],
       "weekly_data_file": "weekly/2026-W38.json"
+    },
+    {
+      "week_id": "2026-W37",
+      "title": "高能天体物理 arXiv 每周学术脉络 (2026-W37)",
+      "date_range": "2026-09-07 ~ 2026-09-13",
+      "has_weekly_summary": false,
+      "executive_summary": "本周暂未生成宏观脉络总结。",
+      "statistics": {
+        "total_analyzed": 7,
+        "must_read_count": 0,
+        "worth_knowing_count": 0,
+        "skip_count": 7
+      },
+      "top_picks_count": 0,
+      "days": [
+        {
+          "date": "2026-09-10",
+          "weekday": "Thu",
+          "week_id": "2026-W37",
+          "batch_id": "announcement-2026-09-10",
+          "total_papers": 47,
+          "analyzed_count": 7,
+          "must_read_count": 0,
+          "worth_knowing_count": 0,
+          "skip_count": 7,
+          "pending_count": 40,
+          "brief_status": "unavailable",
+          "brief_intro": "常规高能天体物理监测批次",
+          "highlights": [],
+          "data_file": "daily/2026-09-10.json"
+        }
+      ],
+      "weekly_data_file": null
     }
   ]
 }

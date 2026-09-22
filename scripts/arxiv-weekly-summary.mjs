@@ -49,6 +49,8 @@ function parseCliArgs(args) {
     else if (arg.startsWith("--base-url=")) options.baseUrl = arg.slice("--base-url=".length);
     else if (arg.startsWith("--api-key=")) options.apiKey = arg.slice("--api-key=".length);
     else if (arg.startsWith("--days=")) options.days = Number(arg.slice("--days=".length));
+    else if (arg.startsWith("--week=")) options.weekId = arg.slice("--week=".length);
+    else if (arg.startsWith("--week-id=")) options.weekId = arg.slice("--week-id=".length);
   }
   return options;
 }
@@ -171,10 +173,12 @@ ${papersText}
 export async function runWeeklySummary({
   radar: radarPath = DEFAULT_RADAR_OUTPUT,
   output: outputPath = DEFAULT_WEEKLY_OUTPUT,
+  feed: feedPath = DEFAULT_OUTPUT,
   model = DEFAULT_MODEL,
   baseUrl = DEFAULT_BASE_URL,
   apiKey = DEFAULT_API_KEY,
   days = 7,
+  weekId: specifiedWeekId = null,
 } = {}) {
   if (!apiKey) {
     throw new Error("缺少 API Key。请设置环境变量 WU_API_KEY 或 OPENAI_API_KEY。");
@@ -212,8 +216,7 @@ export async function runWeeklySummary({
 
   let feedMap = new Map();
   try {
-    const feedFile = options.feed || DEFAULT_OUTPUT;
-    const feedJson = JSON.parse(await readFile(resolve(feedFile), "utf8"));
+    const feedJson = JSON.parse(await readFile(resolve(feedPath), "utf8"));
     for (const entry of feedJson.entries || []) {
       if (entry.arxiv_id) feedMap.set(entry.arxiv_id, entry);
     }
@@ -233,9 +236,12 @@ export async function runWeeklySummary({
   console.log(`[Weekly Summary] 收集到本周共 ${papers.length} 篇分析论文（Must Read: ${mustReadCount}, Worth Knowing: ${worthKnowingCount}, Skim: ${skipCount}）。`);
 
   const now = new Date();
-  const weekId = currentWeekId(now);
-  const startDate = new Date(now.valueOf() - days * 86400000).toISOString().slice(0, 10);
-  const endDate = now.toISOString().slice(0, 10);
+  const dateFromWindow = radar.edition?.window?.announcement_date
+    ? new Date(radar.edition.window.announcement_date + "T12:00:00Z")
+    : now;
+  const weekId = specifiedWeekId || currentWeekId(dateFromWindow);
+  const startDate = new Date(dateFromWindow.valueOf() - days * 86400000).toISOString().slice(0, 10);
+  const endDate = dateFromWindow.toISOString().slice(0, 10);
   const dateRange = `${startDate} ~ ${endDate}`;
 
   console.log(`[Weekly Summary] 正在调用模型 ${model} 生成第 ${weekId} 期学术周报综述...`);

@@ -114,6 +114,12 @@ function cliOutput(args) {
   return value ? value.slice("--output=".length) : DEFAULT_OUTPUT;
 }
 
+function cliValue(args, name) {
+  const prefix = `${name}=`;
+  const argument = args.find((value) => value.startsWith(prefix));
+  return argument?.slice(prefix.length);
+}
+
 function hasFlag(args, flag) {
   return args.includes(flag);
 }
@@ -121,7 +127,8 @@ function hasFlag(args, flag) {
 if (process.argv[1] && resolve(process.argv[1]) === resolve(fileURLToPath(import.meta.url))) {
   const args = process.argv.slice(2);
   const output = cliOutput(args);
-  const result = await runScheduledArxivRefresh({ output });
+  const announcementDate = cliValue(args, "--date");
+  const result = await runScheduledArxivRefresh({ output, announcementDate });
   if (result.status === "skipped") {
     console.log(`skipped arXiv refresh for ${result.announcement_date}: batch already processed`);
   } else {

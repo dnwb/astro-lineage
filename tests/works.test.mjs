@@ -17,7 +17,7 @@ import { createTemporaryWorkspace } from "./helpers/temporary-workspace.mjs";
 const productionContent = new URL("../content/", import.meta.url);
 
 async function copyContent(t = null) {
-  const { path: temporaryRoot } = await createTemporaryWorkspace("astro-lineage-works-", t);
+  const { path: temporaryRoot, cleanup } = await createTemporaryWorkspace("astro-lineage-works-", t);
   const contentRoot = join(temporaryRoot, "content");
   await cp(productionContent, contentRoot, { recursive: true });
   await rm(join(contentRoot, "learning-paths"), { recursive: true, force: true });
@@ -78,7 +78,7 @@ async function copyContent(t = null) {
     writeFile(denseLinePath, stringify(denseLine), "utf8"),
     writeFile(explosiveLinePath, stringify(explosiveLine), "utf8"),
   ]);
-  return { temporaryRoot, contentRoot };
+  return { temporaryRoot, contentRoot, cleanup };
 }
 
 async function readWork(contentRoot) {
@@ -125,8 +125,8 @@ test("Arnett preserves two immutable ADS retrieval attestations for one upstream
   assert(adsSources.every(({ checksum, snapshot }) => checksum === undefined && snapshot === undefined));
 });
 
-test("field-level bibliographic provenance rejects a normalized metadata field without a source", async () => {
-  const { contentRoot } = await copyContent();
+test("field-level bibliographic provenance rejects a normalized metadata field without a source", async (t) => {
+  const { contentRoot } = await copyContent(t);
   const { workRoot, versions } = await readWork(contentRoot);
   delete versions.versions[0].field_sources["/title"];
   await writeFile(join(workRoot, "versions.yaml"), stringify(versions), "utf8");
@@ -140,8 +140,8 @@ test("field-level bibliographic provenance rejects a normalized metadata field w
   assert.equal(diagnostic.record_id, "version:arnett-1982-journal");
 });
 
-test("ownership, DOI normalization, and date precision are validated as independent invariants", async () => {
-  const { contentRoot } = await copyContent();
+test("ownership, DOI normalization, and date precision are validated as independent invariants", async (t) => {
+  const { contentRoot } = await copyContent(t);
   const { workRoot, work, versions } = await readWork(contentRoot);
   work.work_id = "work:other";
   versions.versions[0].doi = "DOI:10.1086/159681 ";
@@ -157,8 +157,8 @@ test("ownership, DOI normalization, and date precision are validated as independ
   assert(codes.has("BIB_RELEASE_DATE_INVALID"));
 });
 
-test("unsupported release-date precision is diagnosed and reports remain writable", async () => {
-  const { temporaryRoot, contentRoot } = await copyContent();
+test("unsupported release-date precision is diagnosed and reports remain writable", async (t) => {
+  const { temporaryRoot, contentRoot } = await copyContent(t);
   const { workRoot, versions } = await readWork(contentRoot);
   versions.versions[0].release_date = { value: "1982", precision: "season" };
   await writeFile(join(workRoot, "versions.yaml"), stringify(versions), "utf8");
@@ -170,8 +170,8 @@ test("unsupported release-date precision is diagnosed and reports remain writabl
   assert.equal(result.work_inventory[0].validation_status, "invalid");
 });
 
-test("UTC RFC 3339 timestamps reject impossible Gregorian dates", async () => {
-  const { contentRoot } = await copyContent();
+test("UTC RFC 3339 timestamps reject impossible Gregorian dates", async (t) => {
+  const { contentRoot } = await copyContent(t);
   const { workRoot, versions } = await readWork(contentRoot);
   versions.bibliographic_sources[0].retrieved_at = "2026-02-31T00:00:00Z";
   await writeFile(join(workRoot, "versions.yaml"), stringify(versions), "utf8");
@@ -180,8 +180,8 @@ test("UTC RFC 3339 timestamps reject impossible Gregorian dates", async () => {
   assert(result.diagnostics.some(({ code }) => code === "BIB_SOURCE_RETRIEVED_AT_INVALID"));
 });
 
-test("Version-local ORCID values use the ISO 7064 MOD 11-2 checksum", async () => {
-  const { contentRoot } = await copyContent();
+test("Version-local ORCID values use the ISO 7064 MOD 11-2 checksum", async (t) => {
+  const { contentRoot } = await copyContent(t);
   const { workRoot, versions } = await readWork(contentRoot);
   const version = versions.versions[0];
   version.authors[0].orcid = "0000-0002-1825-0097";
@@ -197,8 +197,8 @@ test("Version-local ORCID values use the ISO 7064 MOD 11-2 checksum", async () =
   assert(invalid.diagnostics.some(({ code }) => code === "BIB_ORCID_INVALID"));
 });
 
-test("bibliographic discrepancy state is derived from append-only resolution events", async () => {
-  const { contentRoot } = await copyContent();
+test("bibliographic discrepancy state is derived from append-only resolution events", async (t) => {
+  const { contentRoot } = await copyContent(t);
   const { workRoot, work, versions } = await readWork(contentRoot);
   const [adsSource, secondAdsSource] = versions.bibliographic_sources;
   const discrepancy = {
@@ -243,8 +243,8 @@ test("bibliographic discrepancy state is derived from append-only resolution eve
   assert.equal(deriveBibliographicDiscrepancyState(discrepancy).selected_value, discrepancy.resolution_events[0].selected_value);
 });
 
-test("Bibliographic discrepancies require unique declared sources and one value per distinct source", async () => {
-  const { contentRoot } = await copyContent();
+test("Bibliographic discrepancies require unique declared sources and one value per distinct source", async (t) => {
+  const { contentRoot } = await copyContent(t);
   const { workRoot, versions } = await readWork(contentRoot);
   const [firstSource, secondSource] = versions.bibliographic_sources;
   versions.bibliographic_discrepancies = [
@@ -270,8 +270,8 @@ test("Bibliographic discrepancies require unique declared sources and one value 
   assert(codes.has("BIB_DISCREPANCY_VALUE_SOURCE_MISMATCH"));
 });
 
-test("Bibliographic discrepancy resolution requires a Human actor", async () => {
-  const { contentRoot } = await copyContent();
+test("Bibliographic discrepancy resolution requires a Human actor", async (t) => {
+  const { contentRoot } = await copyContent(t);
   const { workRoot, versions } = await readWork(contentRoot);
   const actorsPath = join(contentRoot, "actors.yaml");
   const actors = parse(await readFile(actorsPath, "utf8"));
@@ -311,8 +311,8 @@ test("Bibliographic discrepancy resolution requires a Human actor", async () => 
   assert(result.diagnostics.some(({ code }) => code === "CURATION_HUMAN_ACTOR_REQUIRED"));
 });
 
-test("an unresolved reader-relevant discrepancy blocks visibility but remains valid draft curation", async () => {
-  const { contentRoot } = await copyContent();
+test("an unresolved reader-relevant discrepancy blocks visibility but remains valid draft curation", async (t) => {
+  const { contentRoot } = await copyContent(t);
   const { workRoot, work, versions } = await readWork(contentRoot);
   versions.bibliographic_discrepancies = [
     {

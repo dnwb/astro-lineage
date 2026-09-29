@@ -21,10 +21,10 @@ import { createTemporaryWorkspace } from "./helpers/temporary-workspace.mjs";
 const lineReadingFile = `content/research-lines/${lineSlug}/reading.md`;
 
 async function copyContent(t = null) {
-  const { path: temporaryRoot } = await createTemporaryWorkspace("astro-lineage-visibility-", t);
+  const { path: temporaryRoot, cleanup } = await createTemporaryWorkspace("astro-lineage-visibility-", t);
   const contentRoot = join(temporaryRoot, "content");
   await cp(productionContent, contentRoot, { recursive: true });
-  return { temporaryRoot, contentRoot };
+  return { temporaryRoot, contentRoot, cleanup };
 }
 
 async function readVisibleRecords(contentRoot) {
@@ -93,8 +93,8 @@ test("visibility publishes Arnett and one Research Line atomically with independ
   assert.equal(researchLineInventory(result).visibility_status, "approved");
 });
 
-test("Research Line ownership and Reading Role contracts are structural", async () => {
-  const { contentRoot } = await copyContent();
+test("Research Line ownership and Reading Role contracts are structural", async (t) => {
+  const { contentRoot } = await copyContent(t);
   const records = await readVisibleRecords(contentRoot);
   records.line.memberships[0].reading_roles = ["foundation", "foundation", "primary"];
   const readingPath = join(records.lineRoot, "reading.md");
@@ -206,8 +206,8 @@ test("malformed visibility approvals quarantine the entity without derived diagn
   }
 });
 
-test("Research Line Membership pairs and visible Work anchors are unique", async () => {
-  const { contentRoot } = await copyContent();
+test("Research Line Membership pairs and visible Work anchors are unique", async (t) => {
+  const { contentRoot } = await copyContent(t);
   const records = await readVisibleRecords(contentRoot);
   const targetMembership = records.line.memberships.find(({ work_id }) => work_id === workId);
   assert(targetMembership, `missing target membership for ${workId}`);
@@ -222,8 +222,8 @@ test("Research Line Membership pairs and visible Work anchors are unique", async
   assert(diagnosticCodes.has("EDITORIAL_ANCHOR_CARDINALITY_INVALID"));
 });
 
-test("Research Line Membership IDs are globally unique across editorial bundles", async () => {
-  const { contentRoot } = await copyContent();
+test("Research Line Membership IDs are globally unique across editorial bundles", async (t) => {
+  const { contentRoot } = await copyContent(t);
   const records = await readVisibleRecords(contentRoot);
   const secondLineId = "research-line:duplicate-id-fixture";
   const secondLineSlug = "duplicate-id-fixture";
@@ -251,7 +251,7 @@ test("Research Line Membership IDs are globally unique across editorial bundles"
   assert(codes(result).has("RESEARCH_LINE_MEMBERSHIP_ID_DUPLICATE"));
 });
 
-test("Membership review is Human-gated and material changes stale its binding", async () => {
+test("Membership review is Human-gated and material changes stale its binding", async (t) => {
   for (const mutate of [
     (membership) => {
       membership.curation_provenance.actor_id = "actor:agent-curator";
@@ -261,7 +261,7 @@ test("Membership review is Human-gated and material changes stale its binding", 
       membership.reading_roles = ["review"];
     },
   ]) {
-    const { contentRoot } = await copyContent();
+    const { contentRoot } = await copyContent(t);
     const records = await readVisibleRecords(contentRoot);
     mutate(records.line.memberships[0]);
     await writeFile(join(records.lineRoot, "line.yaml"), stringify(records.line), "utf8");
@@ -273,7 +273,7 @@ test("Membership review is Human-gated and material changes stale its binding", 
   }
 });
 
-test("final-snapshot visibility requires a visible anchored pair", async () => {
+test("final-snapshot visibility requires a visible anchored pair", async (t) => {
   for (const [mutate, expectedCode] of [
     [
       ({ line }) => {
@@ -291,7 +291,7 @@ test("final-snapshot visibility requires a visible anchored pair", async () => {
       "VISIBLE_RESEARCH_LINE_MEMBERSHIP_REQUIRED",
     ],
   ]) {
-    const { contentRoot } = await copyContent();
+    const { contentRoot } = await copyContent(t);
     const records = await readVisibleRecords(contentRoot);
     mutate(records);
     await Promise.all([
@@ -303,8 +303,8 @@ test("final-snapshot visibility requires a visible anchored pair", async () => {
   }
 });
 
-test("stale visibility approvals block without mutating Reader State", async () => {
-  const { contentRoot } = await copyContent();
+test("stale visibility approvals block without mutating Reader State", async (t) => {
+  const { contentRoot } = await copyContent(t);
   const records = await readVisibleRecords(contentRoot);
   records.line.scientific_question += " Materially changed after approval.";
   await writeFile(join(records.lineRoot, "line.yaml"), stringify(records.line), "utf8");
@@ -319,8 +319,8 @@ test("stale visibility approvals block without mutating Reader State", async () 
   assert.equal(reloaded.reader_state, "visible");
 });
 
-test("hidden unreviewed records are excluded from the Work visibility projection", async () => {
-  const { contentRoot } = await copyContent();
+test("hidden unreviewed records are excluded from the Work visibility projection", async (t) => {
+  const { contentRoot } = await copyContent(t);
   const before = await validateCanonicalContent(contentRoot);
   const records = await readVisibleRecords(contentRoot);
   const hidden = structuredClone(records.statements.statements[0]);
@@ -342,8 +342,8 @@ test("hidden unreviewed records are excluded from the Work visibility projection
   assert.doesNotMatch(JSON.stringify(projection), /HIDDEN_VISIBILITY_MARKER/u);
 });
 
-test("generated reverse membership indexes are reproducible and non-canonical", async () => {
-  const { temporaryRoot, contentRoot } = await copyContent();
+test("generated reverse membership indexes are reproducible and non-canonical", async (t) => {
+  const { temporaryRoot, contentRoot } = await copyContent(t);
   const generatedRoot = join(temporaryRoot, "generated");
   const { writeEditorialIndexes } = await import("../scripts/editorial-index.mjs");
   const snapshot = await loadCanonicalContent(contentRoot);

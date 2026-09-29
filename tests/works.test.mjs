@@ -1,6 +1,5 @@
 import assert from "node:assert/strict";
-import { cp, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
-import { tmpdir } from "node:os";
+import { cp, readFile, rm, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { test } from "node:test";
@@ -13,10 +12,12 @@ import {
   validateCanonicalContent,
 } from "../scripts/content-validator.mjs";
 
+import { createTemporaryWorkspace } from "./helpers/temporary-workspace.mjs";
+
 const productionContent = new URL("../content/", import.meta.url);
 
-async function copyContent() {
-  const temporaryRoot = await mkdtemp(join(tmpdir(), "astro-lineage-works-"));
+async function copyContent(t = null) {
+  const { path: temporaryRoot } = await createTemporaryWorkspace("astro-lineage-works-", t);
   const contentRoot = join(temporaryRoot, "content");
   await cp(productionContent, contentRoot, { recursive: true });
   await rm(join(contentRoot, "learning-paths"), { recursive: true, force: true });
@@ -25,6 +26,7 @@ async function copyContent() {
   const zhuWorkPath = join(contentRoot, "works", "zhu-2021", "work.yaml");
   const transfitWorkPath = join(contentRoot, "works", "transfit-2025", "work.yaml");
   const longYuWorkPath = join(contentRoot, "works", "long-yu-2026", "work.yaml");
+  const zhangWorkPath = join(contentRoot, "works", "zhang-agn-jet-2024", "work.yaml");
   const linePath = join(contentRoot, "research-lines", "central-engines", "line.yaml");
   const denseLinePath = join(
     contentRoot,
@@ -43,6 +45,7 @@ async function copyContent() {
   const zhuWork = parse(await readFile(zhuWorkPath, "utf8"));
   const transfitWork = parse(await readFile(transfitWorkPath, "utf8"));
   const longYuWork = parse(await readFile(longYuWorkPath, "utf8"));
+  const zhangWork = parse(await readFile(zhangWorkPath, "utf8"));
   const line = parse(await readFile(linePath, "utf8"));
   const denseLine = parse(await readFile(denseLinePath, "utf8"));
   const explosiveLine = parse(await readFile(explosiveLinePath, "utf8"));
@@ -56,6 +59,8 @@ async function copyContent() {
   transfitWork.visibility_approvals = [];
   longYuWork.reader_state = "draft";
   longYuWork.visibility_approvals = [];
+  zhangWork.reader_state = "draft";
+  zhangWork.visibility_approvals = [];
   line.reader_state = "draft";
   line.visibility_approvals = [];
   denseLine.reader_state = "draft";
@@ -68,6 +73,7 @@ async function copyContent() {
     writeFile(zhuWorkPath, stringify(zhuWork), "utf8"),
     writeFile(transfitWorkPath, stringify(transfitWork), "utf8"),
     writeFile(longYuWorkPath, stringify(longYuWork), "utf8"),
+    writeFile(zhangWorkPath, stringify(zhangWork), "utf8"),
     writeFile(linePath, stringify(line), "utf8"),
     writeFile(denseLinePath, stringify(denseLine), "utf8"),
     writeFile(explosiveLinePath, stringify(explosiveLine), "utf8"),

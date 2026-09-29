@@ -15,7 +15,9 @@
     "arxiv:weekly": "node scripts/arxiv-weekly-summary.mjs",
     "arxiv:archive": "node scripts/arxiv-archive.mjs",
     "validate": "node scripts/validate.mjs",
+    "pretest": "node scripts/cleanup-test-tmp.mjs",
     "test": "node --test --test-concurrency=1 tests/*.test.mjs",
+    "posttest": "node scripts/cleanup-test-tmp.mjs",
     "check": "astro check",
     "build": "npm run validate && node scripts/editorial-index.mjs && astro build",
     "verify": "npm run validate && npm run test && npm run check && npm run build"
@@ -27,6 +29,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "0.9.10",
+    "qq-guild-bot": "^2.9.5",
     "typescript": "6.0.3"
   }
 }

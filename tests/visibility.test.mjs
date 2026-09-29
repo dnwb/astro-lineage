@@ -1,7 +1,6 @@
 import assert from "node:assert/strict";
 import { existsSync } from "node:fs";
-import { cp, mkdtemp, readFile, writeFile } from "node:fs/promises";
-import { tmpdir } from "node:os";
+import { cp, readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { spawnSync } from "node:child_process";
 import { test } from "node:test";
@@ -17,10 +16,12 @@ const workSlug = "arnett-1982";
 const lineId = "research-line:central-engines";
 const lineSlug = "central-engines";
 const lineFile = `content/research-lines/${lineSlug}/line.yaml`;
+import { createTemporaryWorkspace } from "./helpers/temporary-workspace.mjs";
+
 const lineReadingFile = `content/research-lines/${lineSlug}/reading.md`;
 
-async function copyContent() {
-  const temporaryRoot = await mkdtemp(join(tmpdir(), "astro-lineage-visibility-"));
+async function copyContent(t = null) {
+  const { path: temporaryRoot } = await createTemporaryWorkspace("astro-lineage-visibility-", t);
   const contentRoot = join(temporaryRoot, "content");
   await cp(productionContent, contentRoot, { recursive: true });
   return { temporaryRoot, contentRoot };

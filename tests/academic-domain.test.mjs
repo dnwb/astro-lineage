@@ -10,6 +10,8 @@ import {
 } from "../src/domain/academic-domain.mjs";
 
 test("academic-domain: extractTransientIdentifiers parses standard transient names", () => {
+  assert.ok(SCIENTIFIC_TAGS.length > 5);
+  assert.ok(TRANSIENT_IDENTIFIER_PATTERNS.length > 3);
   const sample = "Follow-up of GRB 250419A and early optical observation of SN 2024ggi with AT2018hyz and FRB 20240114A. Also GW170817 and SGR 1935+2154.";
   const identifiers = extractTransientIdentifiers(sample);
 

@@ -141,17 +141,28 @@ const currentWeekValidatedModels = currentWeekPastArchives.map((pastDay) => {
     <main class="site-shell index-page reader-page radar-page">
       <SiteNav />
       <p class="eyebrow"><a href="/">{site.title}</a> · Daily Radar</p>
-      <header class="reader-header">
-        <h1><span class="language-primary">每日 arXiv 导读</span><span class="language-english" lang="en">Daily arXiv reading guide</span></h1>
-        <p class="reader-deck language-primary">先决定今天读什么，再展开查看问题、假设、结果边界和实际阅读范围。</p>
-        <p class="reader-deck language-english" lang="en">Choose what to read first, then open the guide for its problem, assumptions, limits, and actual reading coverage.</p>
-        <p class="record-label language-primary">{coverageLabel} · 更新时间：{generatedLabel} · <a href="/arxiv-weekly/" style="color: #2563eb; font-weight: 500;">查看每周总结 →</a> · <a href="#historical-archives" style="color: #4b5563; font-weight: 500;">往期日报归档 ↓</a></p>
-        <p class="record-label language-english" lang="en">{isAnnouncementDay ? `Announcement batch ending ${announcementWindow?.announcement_date ?? "unrecorded"} (${announcementWindow?.time_zone ?? "America/New_York"})` : "Recent-submission sample"} · refreshed {generatedLabel} · <a href="/arxiv-weekly/" style="color: #2563eb; font-weight: 500;">View Weekly Synthesis →</a> · <a href="#historical-archives" style="color: #4b5563; font-weight: 500;">Historical Archives ↓</a></p>
+      <header class="radar-hero-header">
+        <div class="radar-hero-top">
+          <div class="radar-hero-title-group">
+            <h1 class="radar-main-title">
+              <span class="language-primary">每日 arXiv 导读</span>
+              <span class="language-english" lang="en">Daily Radar</span>
+              <span class="batch-date-badge">{announcementWindow?.announcement_date ?? currentDate}</span>
+            </h1>
+            <p class="radar-hero-meta">
+              <span class="language-primary">{coverageLabel} · 更新于 {generatedLabel}</span>
+              <span class="language-english" lang="en">{isAnnouncementDay ? `Batch: ${announcementWindow?.announcement_date}` : "Recent sample"} · {generatedLabel}</span>
+            </p>
+          </div>
+          <div class="radar-hero-actions">
+            <a href="/arxiv-weekly/" class="hero-action-pill highlight">学术脉络周报 →</a>
+            <a href="#historical-archives" class="hero-action-pill">往期归档 ↓</a>
+            <a href="/agent" class="hero-action-pill api" title="Agent 协议接口 (llms.txt)">Agent API</a>
+          </div>
+        </div>
       </header>
 
-      <DailyRadarBrief brief={model.opening_brief} visibleWorkLinks={visibleWorkLinks} groups={priorityGroups} />
-
-      <!-- Interactive Pill Filters & Instant Search -->
+      <!-- Interactive Pill Filters & Instant Search (Top Priority) -->
       <section class="radar-filter-container" aria-label="文献即时检索与分类筛选">
         <div class="radar-search-box">
           <span class="search-icon">🔍</span>
@@ -182,6 +193,20 @@ const currentWeekValidatedModels = currentWeekPastArchives.map((pastDay) => {
           <button id="radar-filter-reset" class="filter-reset-link" type="button" style="display: none;">重置全部筛选</button>
         </div>
       </section>
+
+      <!-- Collapsible Opening Brief Drawer -->
+      <details class="radar-brief-drawer" id="brief-drawer">
+        <summary class="radar-brief-drawer-summary">
+          <span class="drawer-title-group">
+            <span class="drawer-icon">📢</span>
+            <span class="drawer-label"><span class="language-primary">今日学术宏观速报（点击展开/收起）</span><span class="language-english" lang="en">Macro Intelligence Brief (Click to expand)</span></span>
+          </span>
+          <span class="drawer-arrow">▾</span>
+        </summary>
+        <div class="radar-brief-drawer-content">
+          <DailyRadarBrief brief={model.opening_brief} visibleWorkLinks={visibleWorkLinks} groups={priorityGroups} />
+        </div>
+      </details>
 
       <DailyRadarPrioritySection
         id="must-read"
@@ -470,6 +495,13 @@ const currentWeekValidatedModels = currentWeekPastArchives.map((pastDay) => {
             }
           });
 
+          document.querySelectorAll(".radar-section").forEach((sec) => {
+            const listItems = sec.querySelectorAll(".radar-list-item");
+            if (listItems.length === 0) return;
+            const anyVisible = Array.from(listItems).some((li) => li.style.display !== "none");
+            sec.style.display = anyVisible ? "" : "none";
+          });
+
           if (skipDetails && (currentFilter === "skip" || (currentQuery && hasVisibleSkim))) {
             skipDetails.open = true;
           }
@@ -530,13 +562,104 @@ const currentWeekValidatedModels = currentWeekPastArchives.map((pastDay) => {
     </script>
 
     <style>
+      .radar-hero-header {
+        margin: 0.5rem 0 1.25rem;
+      }
+      .radar-hero-top {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+      }
+      .radar-hero-title-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+      }
+      .radar-main-title {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 0.65rem;
+        margin: 0;
+        font-size: 1.55rem;
+        line-height: 1.25;
+        font-weight: 700;
+        color: var(--text-primary, #0f172a);
+      }
+      .batch-date-badge {
+        font-size: 0.8rem;
+        font-family: ui-monospace, monospace;
+        font-weight: 600;
+        padding: 0.15rem 0.55rem;
+        border-radius: 9999px;
+        background: #eff6ff;
+        color: #2563eb;
+        border: 1px solid #bfdbfe;
+      }
+      :global([data-theme="dark"]) .batch-date-badge {
+        background: #1e293b;
+        color: #60a5fa;
+        border-color: #3b82f6;
+      }
+      .radar-hero-meta {
+        margin: 0;
+        font-size: 0.84rem;
+        color: var(--text-secondary, #64748b);
+      }
+      .radar-hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        align-items: center;
+      }
+      .hero-action-pill {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.3rem 0.75rem;
+        font-size: 0.8rem;
+        font-weight: 600;
+        border-radius: 9999px;
+        text-decoration: none;
+        border: 1px solid var(--border-color, #cbd5e1);
+        background: var(--card-bg, #ffffff);
+        color: var(--text-secondary, #475569);
+        transition: all 0.15s ease;
+      }
+      .hero-action-pill:hover {
+        background: var(--code-bg, #f1f5f9);
+        color: var(--text-primary, #0f172a);
+      }
+      .hero-action-pill.highlight {
+        background: #2563eb;
+        color: #ffffff;
+        border-color: #1d4ed8;
+      }
+      .hero-action-pill.highlight:hover {
+        background: #1d4ed8;
+      }
+      .hero-action-pill.api {
+        font-family: ui-monospace, monospace;
+      }
+      :global([data-theme="dark"]) .hero-action-pill {
+        background: #1e293b;
+        border-color: #334155;
+        color: #cbd5e1;
+      }
+      :global([data-theme="dark"]) .hero-action-pill.highlight {
+        background: #3b82f6;
+        color: #ffffff;
+        border-color: #2563eb;
+      }
+
       .radar-filter-container {
-        margin: 1.5rem 0 2rem;
-        padding: 1.25rem;
+        margin: 0 0 1.5rem;
+        padding: 1rem 1.15rem;
         background: var(--card-bg, #ffffff);
         border: 1px solid var(--border-color, #c9c3b7);
         border-radius: 0.75rem;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
       }
       .radar-search-box {
         display: flex;
@@ -640,6 +763,58 @@ const currentWeekValidatedModels = currentWeekPastArchives.map((pastDay) => {
         font-weight: 600;
         padding: 0;
         text-decoration: underline;
+      }
+
+      /* Collapsible Brief Drawer */
+      .radar-brief-drawer {
+        margin: 0 0 2rem;
+        background: var(--card-bg, #ffffff);
+        border: 1px solid var(--border-color, #c9c3b7);
+        border-radius: 0.75rem;
+        overflow: hidden;
+      }
+      .radar-brief-drawer-summary {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.85rem 1.25rem;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 0.95rem;
+        color: var(--text-primary, #0f172a);
+        background: var(--bg-primary, #f8fafc);
+        user-select: none;
+        transition: background 0.15s;
+      }
+      .radar-brief-drawer-summary:hover {
+        background: var(--code-bg, #f1f5f9);
+      }
+      .drawer-title-group {
+        display: flex;
+        align-items: center;
+        gap: 0.65rem;
+      }
+      .drawer-icon {
+        font-size: 1.15rem;
+      }
+      .drawer-arrow {
+        font-size: 0.95rem;
+        color: #64748b;
+        transition: transform 0.2s;
+      }
+      .radar-brief-drawer[open] .drawer-arrow {
+        transform: rotate(180deg);
+      }
+      .radar-brief-drawer-content {
+        padding: 1.25rem;
+        border-top: 1px solid var(--card-border, #e2e8f0);
+      }
+      .radar-brief-drawer-content :global(.radar-brief) {
+        margin: 0 !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        background: transparent !important;
       }
     </style>
   </body>

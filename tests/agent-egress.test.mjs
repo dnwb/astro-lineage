@@ -1,7 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { readFile, stat } from "node:fs/promises";
-import { join } from "node:path";
+import { readFile } from "node:fs/promises";
 
 test("agent-egress: public files exist and conform to standards", async () => {
   const llmsTxt = await readFile("public/llms.txt", "utf8");

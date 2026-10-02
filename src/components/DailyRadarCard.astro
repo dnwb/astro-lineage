@@ -62,80 +62,125 @@ function priorityLabel(priority: string) {
   data-search={searchIndex}
 >
   <article class={`radar-card radar-card-${cardVariant}`} id={radarCardAnchor(item.arxiv_id, item.revision)}>
-    <div class="radar-card-badge-row">
-      <span class={`radar-priority-pill priority-pill-${cardVariant}`}>
-        {item.analysis.priority === "must_read" ? "⭐ 必读 (Must Read)" : isSkim ? "略读 (Skim)" : "📌 关注 (Worth Knowing)"}
-      </span>
-      {transientIds.map((tid: string) => (
-        <span class="radar-transient-tag" title="观测事件目标">🔭 {tid}</span>
-      ))}
-      {scientificTags.map((tag: string) => (
-        <span class="radar-category-tag">{tag}</span>
-      ))}
+    <div class="radar-card-header-row">
+      <div class="header-left-badges">
+        <span class={`tier-pill priority-pill-${cardVariant}`}>
+          {item.analysis.priority === "must_read" ? "⭐ 必读" : isSkim ? "略读" : "📌 关注"}
+        </span>
+        <a class="radar-arxiv-badge" href={item.url} target="_blank" rel="noopener">arXiv:{item.arxiv_id}</a>
+        {transientIds.map((tid: string) => (
+          <span class="radar-transient-tag" title="观测事件目标">🔭 {tid}</span>
+        ))}
+        {scientificTags.map((tag: string) => (
+          <span class="radar-category-tag">{tag}</span>
+        ))}
+      </div>
+      {Array.isArray(item.authors) && item.authors.length > 0 ? (
+        <span class="radar-author-preview">
+          <span class="language-primary">{item.authors.slice(0, 2).join(", ")}{item.authors.length > 2 ? " 等" : ""}</span>
+          <span class="language-english" lang="en">{item.authors.slice(0, 2).join(", ")}{item.authors.length > 2 ? " et al." : ""}</span>
+        </span>
+      ) : null}
     </div>
-    <h3><a class="paper-title" href={item.url}>{item.title}</a></h3>
-    {Array.isArray(item.authors) && item.authors.length > 0 ? (
-      <p class="radar-paper-authors">
-        <span class="language-primary">作者：{item.authors.join(", ")}</span>
-        <span class="language-english" lang="en">Authors: {item.authors.join(", ")}</span>
+
+    <h3 class="radar-card-title"><a class="paper-title" href={item.url}>{item.title}</a></h3>
+
+    <!-- AIHOT-style Direct & Scannable BLUF Area -->
+    <div class="radar-bluf-brief">
+      <p class="bluf-item bluf-item-result">
+        <span class="bluf-mark result-mark" title={resultLabel}>💡 核心突破</span>
+        <span class="bluf-text"><ReaderText text={record.analysis.result || guide.result} /></span>
       </p>
-    ) : null}
-    <div class="language-primary">
-      {item.analysis.priority === "must_read" ? (
-        <>
-          <p class="radar-must-summary"><strong>研究了什么：</strong><ReaderText text={guide.problem} /> <strong>得到了什么：</strong><ReaderText text={record.analysis.result} /></p>
-          <p class="radar-reason"><strong>为什么关注：</strong><ReaderText text={guide.reason} /></p>
-        </>
-      ) : isSkim ? (
-        <p class="radar-skim-summary"><strong>{resultLabel}：</strong><ReaderText text={record.analysis.result} /></p>
-      ) : (
-        <p class="radar-result"><strong>{resultLabel}：</strong><ReaderText text={record.analysis.result} /></p>
-      )}
-      {lineageCandidates.length > 0 ? (
-        <div class="radar-work-context">
-          <strong>相关组内 Work（关系待审核）：</strong>
-          {lineageCandidates.map((candidate: AnyRecord) => (
-            <p>
-              <span>{relationLabels[candidate.relation] ?? "候选关系"} → </span>
-              <a href={visibleWorkLinks[candidate.target_work_id].href}>{visibleWorkLinks[candidate.target_work_id].title}</a>
-              <span>：{candidate.delta}</span>
-            </p>
-          ))}
-        </div>
+      {guide.reason && !isSkim ? (
+        <p class="bluf-item bluf-item-reason">
+          <span class="bluf-mark reason-mark">🎯 为什么关注</span>
+          <span class="bluf-text"><ReaderText text={guide.reason} /></span>
+        </p>
       ) : null}
-      {prerequisiteWorks.length > 0 ? (
-        <div class="radar-reading-prerequisite">
-          <strong>阅读前置：</strong>
-          {prerequisiteWorks.map((prerequisite: AnyRecord) => (
-            <p>
-              <a href={visibleWorkLinks[prerequisite.work_id].href}>{visibleWorkLinks[prerequisite.work_id].title}</a>
-              <span>：{prerequisite.reason}</span>
-            </p>
-          ))}
-        </div>
-      ) : null}
-      {isSkim ? (
-        <p class="radar-skim-coverage">{coverageDescription.primary}</p>
-      ) : null}
-      {!isSkim ? <DailyRadarGuide item={item} visibleWorkLinks={visibleWorkLinks} /> : null}
     </div>
-    <p class="language-english" lang="en">{isSkim ? coverageDescription.english : "The scientific guide is available in Chinese; open it for source and reading evidence."}</p>
-    <DailyRadarSource item={item} />
+
+    <!-- Folded Deep Analysis & Verbatim Evidence Accordion -->
+    <details class="radar-deep-dive-details">
+      <summary class="radar-deep-dive-summary">
+        <span class="summary-label">🔬 查看论证细节与原文依据（问题、方法、假设限定与 TeX 依据）</span>
+        <span class="deep-dive-arrow">展开 ▾</span>
+      </summary>
+
+      <div class="radar-deep-dive-content language-primary">
+        <p class="radar-field-row"><strong>作者报告的主要结果与限定：</strong><ReaderText text={record.analysis.result || guide.result} /></p>
+        {guide.problem && guide.problem !== "unknown" ? (
+          <p class="radar-field-row"><strong>研究了什么：</strong><ReaderText text={guide.problem} /></p>
+        ) : null}
+        {guide.method && guide.method !== "unknown" ? (
+          <p class="radar-field-row"><strong>研究方法：</strong><ReaderText text={guide.method} /></p>
+        ) : null}
+
+        {lineageCandidates.length > 0 ? (
+          <div class="radar-work-context">
+            <strong>相关组内 Work（关系待审核）：</strong>
+            {lineageCandidates.map((candidate: AnyRecord) => (
+              <p>
+                <span>{relationLabels[candidate.relation] ?? "候选关系"} → </span>
+                <a href={visibleWorkLinks[candidate.target_work_id].href}>{visibleWorkLinks[candidate.target_work_id].title}</a>
+                <span>：{candidate.delta}</span>
+              </p>
+            ))}
+          </div>
+        ) : null}
+
+        {prerequisiteWorks.length > 0 ? (
+          <div class="radar-reading-prerequisite">
+            <strong>阅读前置：</strong>
+            {prerequisiteWorks.map((prerequisite: AnyRecord) => (
+              <p>
+                <a href={visibleWorkLinks[prerequisite.work_id].href}>{visibleWorkLinks[prerequisite.work_id].title}</a>
+                <span>：{prerequisite.reason}</span>
+              </p>
+            ))}
+          </div>
+        ) : null}
+
+        {isSkim ? (
+          <p class="radar-skim-coverage">{coverageDescription.primary}</p>
+        ) : null}
+
+        {!isSkim ? <DailyRadarGuide item={item} visibleWorkLinks={visibleWorkLinks} /> : null}
+
+        <DailyRadarSource item={item} />
+      </div>
+    </details>
+
+    <p class="language-english radar-en-deck" lang="en">{isSkim ? coverageDescription.english : "Open the deep-dive accordion above for source references and verbatim reading evidence."}</p>
   </article>
 </li>
 
 <style>
-  .radar-card-badge-row {
+  .radar-card-header-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.45rem;
+    margin-bottom: 0.35rem;
+  }
+  .header-left-badges {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     gap: 0.4rem;
-    margin-bottom: 0.5rem;
   }
-  .radar-priority-pill {
+  .radar-author-preview {
+    font-size: 0.78rem;
+    color: var(--text-secondary, #64748b);
+    font-weight: 500;
+  }
+  :global([data-theme="dark"]) .radar-author-preview {
+    color: #94a3b8;
+  }
+  .tier-pill {
     display: inline-block;
-    padding: 0.2rem 0.55rem;
-    font-size: 0.75rem;
+    padding: 0.15rem 0.5rem;
+    font-size: 0.72rem;
     font-weight: 700;
     border-radius: 9999px;
     letter-spacing: 0.02em;
@@ -158,7 +203,7 @@ function priorityLabel(priority: string) {
   .radar-transient-tag {
     display: inline-flex;
     align-items: center;
-    padding: 0.15rem 0.45rem;
+    padding: 0.12rem 0.4rem;
     font-size: 0.72rem;
     font-weight: 700;
     font-family: ui-monospace, monospace;
@@ -169,7 +214,7 @@ function priorityLabel(priority: string) {
   }
   .radar-category-tag {
     display: inline-block;
-    padding: 0.15rem 0.45rem;
+    padding: 0.12rem 0.4rem;
     font-size: 0.72rem;
     font-weight: 600;
     background: #f1f5f9;
@@ -202,4 +247,136 @@ function priorityLabel(priority: string) {
     color: #cbd5e1;
     border-color: #475569;
   }
-</style>
+
+  .radar-arxiv-badge {
+    display: inline-block;
+    padding: 0.12rem 0.4rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    font-family: ui-monospace, monospace;
+    color: #2563eb;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 0.25rem;
+    text-decoration: none;
+  }
+  .radar-arxiv-badge:hover {
+    background: #dbeafe;
+    text-decoration: underline;
+  }
+  :global([data-theme="dark"]) .radar-arxiv-badge {
+    color: #60a5fa;
+    background: #1e293b;
+    border-color: #3b82f6;
+  }
+
+  .radar-card-title {
+    margin: 0.35rem 0 0.45rem;
+    font-size: 1.08rem;
+    line-height: 1.4;
+    font-weight: 600;
+  }
+  .radar-card-title a {
+    text-decoration: none;
+    color: var(--text-primary, #0f172a);
+    transition: color 0.15s;
+  }
+  .radar-card-title a:hover {
+    color: var(--link-color, #2563eb);
+    text-decoration: underline;
+  }
+
+  /* AIHOT-style Direct & Scannable BLUF Brief */
+  .radar-bluf-brief {
+    margin: 0.45rem 0 0.65rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+  .bluf-item {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    margin: 0;
+    font-size: 0.92rem;
+    line-height: 1.55;
+  }
+  .bluf-mark {
+    display: inline-block;
+    padding: 0.1rem 0.4rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    border-radius: 0.25rem;
+    flex-shrink: 0;
+    letter-spacing: 0.02em;
+    user-select: none;
+  }
+  .result-mark {
+    background: #eff6ff;
+    color: #1d4ed8;
+    border: 1px solid #bfdbfe;
+  }
+  .reason-mark {
+    background: #fefce8;
+    color: #a16207;
+    border: 1px solid #fde047;
+  }
+  :global([data-theme="dark"]) .result-mark {
+    background: #1e3a5f;
+    color: #93c5fd;
+    border-color: #2563eb;
+  }
+  :global([data-theme="dark"]) .reason-mark {
+    background: #451a03;
+    color: #fde047;
+    border-color: #ca8a04;
+  }
+  .bluf-text {
+    color: var(--text-primary, #1e293b);
+    font-weight: 500;
+  }
+
+  /* Sleek Deep Dive Details Accordion */
+  .radar-deep-dive-details {
+    margin-top: 0.45rem;
+    border-top: 1px dashed var(--border-color, #e2e8f0);
+    padding-top: 0.35rem;
+  }
+  .radar-deep-dive-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--text-secondary, #64748b);
+    padding: 0.2rem 0;
+    user-select: none;
+    transition: color 0.15s;
+  }
+  .radar-deep-dive-summary:hover {
+    color: var(--link-color, #2563eb);
+  }
+  .deep-dive-arrow {
+    font-size: 0.8rem;
+    transition: transform 0.2s;
+  }
+  .radar-deep-dive-details[open] .deep-dive-arrow {
+    transform: rotate(180deg);
+  }
+  .radar-deep-dive-content {
+    margin-top: 0.5rem;
+    padding: 0.65rem 0.85rem;
+    background: var(--bg-primary, #f8fafc);
+    border-radius: 0.375rem;
+    font-size: 0.88rem;
+  }
+  .radar-field-row {
+    margin: 0.4rem 0;
+    line-height: 1.5;
+  }
+  .radar-en-deck {
+    font-size: 0.76rem;
+    color: #94a3b8;
+    margin: 0.35rem 0 0;
+  }

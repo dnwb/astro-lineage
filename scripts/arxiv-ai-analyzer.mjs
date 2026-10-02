@@ -932,7 +932,7 @@ function stripLatexNoise(text) {
     .replace(/\\[nrt](?![a-zA-Z])/gu, " ")
     .replace(/\\(cite[pt]?|ref|eqref|label|cref)\{[^}]*\}/gu, "")
     .replace(/\\(mbox|textbf|textit|emph|textrm|text)\{([^}]*)\}/gu, "$2")
-    .replace(/\\(?:rm|mathrm|mathbf|mathit|mathcal|mathsf)\b/gu, "")
+    .replace(/\\(?:rm|mathrm|mathbf|mathit|mathcal|mathsf)\b\s*/gu, "")
     .replace(/\\([,;!]|quad|qquad)/gu, " ")
     .replace(/\s?~\s?/gu, " ")
     .replace(/[{}]/gu, "")

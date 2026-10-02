@@ -166,37 +166,35 @@ function edgeLabel(edge: AnyRecord) {
         <ProductBoundary />
       </header>
 
-      <!-- Primary Feature Section: Asymmetric Dual Hero (Weekly Synthesis 7 : Daily Radar 5) -->
+      <!-- Primary Feature Section: Daily & Weekly arXiv Papers -->
       <section class="intelligence-hero-section" aria-labelledby="intelligence-hero-heading">
         <div class="intelligence-hero-header">
           <div class="hero-badge-row">
-            <span class="pulse-indicator"><span class="pulse-dot"></span> 实时前沿学术情报</span>
-            <span class="hero-tag">前沿监测 · 高能瞬变天体物理</span>
-            <span class="hero-tag-muted">宁缺毋滥 · 严格因果动力学</span>
+            <span class="hero-tag">arXiv 追踪</span>
+            <span class="hero-tag-muted">高能瞬变天体物理</span>
           </div>
           <h2 id="intelligence-hero-heading" class="intelligence-title">
-            <span class="intelligence-title-main">前沿学术监测与周度研判</span>
-            <span class="intelligence-title-sub">Frontier arXiv Intelligence & Weekly Synthesis</span>
+            <span class="intelligence-title-main">论文追踪与每周总结</span>
+            <span class="intelligence-title-sub">Daily Radar & Weekly Synthesis</span>
           </h2>
           <p class="intelligence-desc">
-            聚焦超新星、相对论喷流、磁星、FRB 及多信使高能瞬变现象。每日执行基于 R1～R7 核心主线的因果研判，每周提炼宏观科学脉络与重点精选。
+            关注超新星、相对论喷流、磁星、FRB 及多信使瞬变现象，每日更新 arXiv 导读，每周梳理研究进展。
           </p>
         </div>
 
         <div class="intelligence-grid asymmetric-hero-grid">
-          <!-- Pillar 1: 旗舰级周报主舞台 (Weekly Synthesis Flagship Stage - 7 cols) -->
+          <!-- Weekly Synthesis Card -->
           <article class="intel-card intel-card-weekly flagship-stage">
             <div class="intel-card-top">
               <div class="intel-badge-group">
-                <span class="intel-badge intel-badge-weekly">本周宏观综述 · {(weeklyData as any).week_id}</span>
+                <span class="intel-badge intel-badge-weekly">本周综述 · {(weeklyData as any).week_id}</span>
                 <span class="intel-date">{(weeklyData as any).date_range}</span>
-                <span class="intel-pill-accent">旗舰研判</span>
               </div>
               <a class="intel-view-all-link" href="/arxiv-weekly/">查看完整周报 →</a>
             </div>
 
             <h3 class="intel-card-title">
-              <a href="/arxiv-weekly/"><ReaderText text={(weeklyData as any).title || "高能天体物理 arXiv 每周学术脉络与前沿精选"} /></a>
+              <a href="/arxiv-weekly/"><ReaderText text={(weeklyData as any).title || "每周学术脉络与前沿精选"} /></a>
             </h3>
 
             {thematicHighlights.length > 0 && (
@@ -208,7 +206,7 @@ function edgeLabel(edge: AnyRecord) {
             )}
 
             <div class="intel-summary-box">
-              <p class="intel-summary-label">宏观学术脉络导读：</p>
+              <p class="intel-summary-label">本周导读：</p>
               <p class="intel-summary-text">
                 <ReaderText text={weeklyLeadSummary} />
               </p>
@@ -217,37 +215,37 @@ function edgeLabel(edge: AnyRecord) {
             <div class="intel-metrics-strip">
               <div class="intel-metric-item">
                 <span class="intel-metric-val">{weeklyStats.total_analyzed}</span>
-                <span class="intel-metric-lbl">已研判论文</span>
+                <span class="intel-metric-lbl">已读论文</span>
               </div>
               <div class="intel-metric-item highlight-must-read">
                 <span class="intel-metric-val">{weeklyStats.must_read_count}</span>
-                <span class="intel-metric-lbl">重点精读</span>
+                <span class="intel-metric-lbl">必读</span>
               </div>
               <div class="intel-metric-item highlight-worth-knowing">
                 <span class="intel-metric-val">{weeklyStats.worth_knowing_count}</span>
-                <span class="intel-metric-lbl">值得关注</span>
+                <span class="intel-metric-lbl">关注</span>
               </div>
               <div class="intel-metric-item highlight-topics">
                 <span class="intel-metric-val">{thematicHighlights.length}</span>
-                <span class="intel-metric-lbl">前沿专题</span>
+                <span class="intel-metric-lbl">专题</span>
               </div>
             </div>
 
             {weeklyTopPicks.length > 0 && (
               <div class="intel-picks-box">
-                <p class="intel-picks-label">本周精选 Top Picks 突破代表：</p>
+                <p class="intel-picks-label">本周重点论文：</p>
                 <ul class="intel-picks-list">
                   {weeklyTopPicks.slice(0, 2).map((pick: any) => (
                     <li class="intel-pick-item">
                       <div class="intel-pick-header">
-                        <span class="intel-pick-badge">{pick.priority === "must_read" ? "今天先读" : "值得知道"}</span>
+                        <span class="intel-pick-badge">{pick.priority === "must_read" ? "必读" : "关注"}</span>
                         <a class="intel-pick-id" href={`https://arxiv.org/abs/${pick.arxiv_id}`} target="_blank" rel="noopener noreferrer">
                           arXiv:{pick.arxiv_id} ↗
                         </a>
                       </div>
                       <h4 class="intel-pick-title"><ReaderText text={pick.title} /></h4>
                       <p class="intel-pick-insight">
-                        <strong>核心突破：</strong><ReaderText text={pick.core_insight} />
+                        <strong>核心内容：</strong><ReaderText text={pick.core_insight} />
                       </p>
                     </li>
                   ))}
@@ -257,13 +255,13 @@ function edgeLabel(edge: AnyRecord) {
 
             <div class="intel-card-footer">
               <a class="btn-primary" href="/arxiv-weekly/">
-                <span>阅读本周完整周报与 {thematicHighlights.length} 个专题研讨</span>
+                <span>查看完整周报（含 {thematicHighlights.length} 个专题）</span>
                 <span aria-hidden="true">→</span>
               </a>
             </div>
           </article>
 
-          <!-- Pillar 1 & 2: 高精度每日雷达伴侣 (Daily Radar Precision Telemetry Companion - 5 cols) -->
+          <!-- Daily Radar Card -->
           <article class="intel-card intel-card-daily telemetry-companion">
             <div class="intel-card-top">
               <div class="intel-badge-group">
@@ -274,29 +272,29 @@ function edgeLabel(edge: AnyRecord) {
             </div>
 
             <h3 class="intel-card-title">
-              <a href="/arxiv-daily/">今日高能瞬变学术研读雷达</a>
+              <a href="/arxiv-daily/">今日 arXiv 论文雷达</a>
             </h3>
 
-            <!-- Pillar 2: Signal-to-Noise Telemetry Seal (科研过滤信噪比遥测) -->
+            <!-- 筛选比例统计 -->
             <div class="intel-telemetry-seal">
               <div class="telemetry-seal-header">
-                <span class="telemetry-seal-badge"><span class="seal-dot"></span> 科研过滤信噪比遥测</span>
-                <span class="telemetry-seal-rate">诚实降噪 {filterNoiseReductionRate}%</span>
+                <span class="telemetry-seal-badge">筛选统计</span>
+                <span class="telemetry-seal-rate">过滤率 {filterNoiseReductionRate}%</span>
               </div>
               <div class="telemetry-pipeline">
                 <div class="telemetry-stage">
                   <span class="telemetry-stage-val">{dailyStats.total_papers}</span>
-                  <span class="telemetry-stage-lbl">全域监测</span>
+                  <span class="telemetry-stage-lbl">抓取总数</span>
                 </div>
                 <div class="telemetry-arrow" aria-hidden="true">→</div>
                 <div class="telemetry-stage telemetry-stage-filtered">
                   <span class="telemetry-stage-val">-{dailyStats.skip_count}</span>
-                  <span class="telemetry-stage-lbl">诚实筛除背景</span>
+                  <span class="telemetry-stage-lbl">排除背景</span>
                 </div>
                 <div class="telemetry-arrow" aria-hidden="true">→</div>
                 <div class="telemetry-stage telemetry-stage-selected">
                   <span class="telemetry-stage-val">{dailyStats.must_read_count + dailyStats.worth_knowing_count}</span>
-                  <span class="telemetry-stage-lbl">精选爆发现象</span>
+                  <span class="telemetry-stage-lbl">瞬变相关</span>
                 </div>
               </div>
             </div>
@@ -304,41 +302,41 @@ function edgeLabel(edge: AnyRecord) {
             <div class="intel-metrics-strip">
               <div class="intel-metric-item">
                 <span class="intel-metric-val">{dailyStats.total_papers}</span>
-                <span class="intel-metric-lbl">今日监测</span>
+                <span class="intel-metric-lbl">总篇数</span>
               </div>
               <div class="intel-metric-item highlight-must-read">
                 <span class="intel-metric-val">{dailyStats.must_read_count}</span>
-                <span class="intel-metric-lbl">今天先读</span>
+                <span class="intel-metric-lbl">必读</span>
               </div>
               <div class="intel-metric-item highlight-worth-knowing">
                 <span class="intel-metric-val">{dailyStats.worth_knowing_count}</span>
-                <span class="intel-metric-lbl">值得知道</span>
+                <span class="intel-metric-lbl">关注</span>
               </div>
               <div class="intel-metric-item highlight-skip">
                 <span class="intel-metric-val">{dailyStats.skip_count}</span>
-                <span class="intel-metric-lbl">快速浏览</span>
+                <span class="intel-metric-lbl">速览</span>
               </div>
             </div>
 
             <div class="intel-radar-highlights">
-              <p class="intel-summary-label">今日高能瞬变重点突破候选：</p>
+              <p class="intel-summary-label">今日推荐论文：</p>
               {dailyMustReads.length > 0 ? (
                 <ul class="intel-radar-list">
                   {dailyMustReads.map((paper: any) => (
                     <li class="intel-radar-item">
                       <div class="intel-radar-item-top">
-                        <span class="intel-radar-tag tag-must-read">今天先读 (Must Read)</span>
+                        <span class="intel-radar-tag tag-must-read">必读</span>
                         <a class="intel-radar-id" href={`https://arxiv.org/abs/${paper.arxiv_id}`} target="_blank" rel="noopener noreferrer">
                           arXiv:{paper.arxiv_id} ↗
                         </a>
                       </div>
                       <h4 class="intel-radar-paper-title"><ReaderText text={paper.entry?.title || paper.arxiv_id} /></h4>
                       <p class="intel-radar-reason">
-                        <strong>分类理由：</strong><ReaderText text={paper.analysis?.reason || paper.analysis?.result || "重点高能爆发现象"} />
+                        <strong>推荐理由：</strong><ReaderText text={paper.analysis?.reason || paper.analysis?.result || "重点高能爆发现象"} />
                       </p>
                       {paper.analysis?.result && (
                         <p class="intel-radar-result">
-                          <strong>科学发现：</strong><ReaderText text={paper.analysis.result} />
+                          <strong>主要结果：</strong><ReaderText text={paper.analysis.result} />
                         </p>
                       )}
                     </li>
@@ -346,36 +344,52 @@ function edgeLabel(edge: AnyRecord) {
                 </ul>
               ) : (
                 <div class="intel-radar-empty">
-                  <p>今日暂无符合严格爆发现象核心机制的“今天先读”候选（坚持“宁缺毋滥、严禁硬凑”原则），请浏览值得关注与背景列表。</p>
+                  <p>今日暂无必读推荐，可查看下方的关注论文与速览列表。</p>
                 </div>
               )}
             </div>
 
             <div class="intel-archives-bar">
               <span class="intel-archives-label">历史归档：</span>
-              <span class="intel-archives-counts">已收录 {(archiveManifest as any).total_weeks} 周、{(archiveManifest as any).total_daily_editions} 个批次</span>
+              <span class="intel-archives-counts">收录 {(archiveManifest as any).total_weeks} 周、{(archiveManifest as any).total_daily_editions} 期</span>
               <div class="intel-archives-links">
-                <a class="intel-archives-link" href="/arxiv-weekly/">周报归档 →</a>
-                <a class="intel-archives-link" href="/arxiv-daily/#historical-archives">每日批次 →</a>
+                <a class="intel-archives-link" href="/arxiv-archives/">往期归档 →</a>
               </div>
             </div>
 
             <div class="intel-card-footer">
               <a class="btn-secondary" href="/arxiv-daily/">
-                <span>进入今日完整雷达列表 ({dailyStats.total_papers} 篇)</span>
+                <span>查看今日完整列表 ({dailyStats.total_papers} 篇)</span>
                 <span aria-hidden="true">→</span>
               </a>
             </div>
           </article>
+        </div>
+
+        <!-- Full-width Archives Portal Banner -->
+        <div class="intel-archives-portal-banner">
+          <div class="portal-banner-left">
+            <span class="portal-tag">📚 历史存档</span>
+            <h4 class="portal-title">往期日报与周报存档</h4>
+            <p class="portal-desc">
+              已收录 {(archiveManifest as any).total_weeks} 周周报与 {(archiveManifest as any).total_daily_editions} 期每日导读，均有独立页面可查阅。
+            </p>
+          </div>
+          <div class="portal-banner-right">
+            <a class="portal-btn" href="/arxiv-archives/">
+              <span>浏览往期归档 ({(archiveManifest as any).total_weeks} 周 · {(archiveManifest as any).total_daily_editions} 期)</span>
+              <span aria-hidden="true">→</span>
+            </a>
+          </div>
         </div>
       </section>
 
       <!-- Secondary Section Divider: Research Foundations & Paper Graph -->
       <div class="secondary-section-divider">
         <div class="secondary-divider-content">
-          <span class="secondary-kicker">科研基准与科学脉络 · 长期知识库</span>
+          <span class="secondary-kicker">文献库</span>
           <h2 class="secondary-title">基准文献、科学关联与学习路径</h2>
-          <p class="secondary-subtitle">以 41 篇经过整理与审核的基准文献为基石，厘清高能天体物理思想演化的长程脉络。</p>
+          <p class="secondary-subtitle">以 41 篇整理审核的基准文献为基础，梳理高能瞬变天体物理的发展脉络。</p>
         </div>
       </div>
 
@@ -386,8 +400,8 @@ function edgeLabel(edge: AnyRecord) {
           <>
             <div class="orbit-card-lead">
               <div class="orbit-meta-badge">
-                <span class="orbit-chip">推荐起始轨道</span>
-                <span class="orbit-step-count">共 {(startPath.entries ?? []).length} 篇阶梯式精选</span>
+                <span class="orbit-chip">入门路径</span>
+                <span class="orbit-step-count">共 {(startPath.entries ?? []).length} 篇论文</span>
               </div>
               <h3 class="orbit-title"><a href={learningPathReaderPath(snapshot, startPath.path_id)}>{localizedPathTitle(startPath.path_id, startPath.title ?? startPath.path_id)}</a></h3>
               <p class="original-title" lang="en">英文标题：{startPath.title ?? startPath.path_id}</p>

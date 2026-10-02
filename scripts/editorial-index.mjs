@@ -125,7 +125,10 @@ export async function readEditorialIndex(generatedRoot = DEFAULT_GENERATED_ROOT)
 
 export { OUTPUT_FILE };
 
+import { writeScientificEventsFile } from "./transient-event-cluster.mjs";
+
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const snapshot = await loadCanonicalContent(DEFAULT_CONTENT_ROOT);
   await writeEditorialIndexes(snapshot, DEFAULT_GENERATED_ROOT);
+  await writeScientificEventsFile();
 }

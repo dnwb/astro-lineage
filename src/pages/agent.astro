@@ -1,0 +1,310 @@
+---
+import SiteNav from "../components/SiteNav.astro";
+import { loadSiteConfig } from "../lib/site-config";
+import "../styles/global.css";
+import scientificEvents from "../data/scientific-events.json";
+
+const site = loadSiteConfig();
+const topEvents = (scientificEvents.events || []).slice(0, 5);
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content="AstroLineage Agent Egress: 面向大模型与自主智能体（Cursor, Claude, NotebookLM, GPT）的标准机器接入协议与 OpenAPI 端点。" />
+    <title>Agent Egress & API · {site.title}</title>
+  </head>
+  <body>
+    <main class="site-shell agent-page reader-page">
+      <SiteNav />
+      <p class="eyebrow"><a href="/">{site.title}</a> · Machine Egress</p>
+      
+      <header class="reader-header">
+        <div class="agent-hero-badge">⚡ DUAL-SURFACE ARCHITECTURE</div>
+        <h1>
+          <span class="language-primary">Agent 机器协议与数据出口</span>
+          <span class="language-english" lang="en">Agent Egress & Machine Protocols</span>
+        </h1>
+        <p class="reader-deck language-primary">
+          为 Cursor、Claude Code、NotebookLM 及自主 Agent 提供开箱即用的高能天体物理机器可读情报与物理约束证据链。
+        </p>
+        <p class="reader-deck language-english" lang="en">
+          Standardized machine-readable intelligence feeds, OpenAPI endpoints, and verbatim evidence chains for autonomous agents.
+        </p>
+      </header>
+
+      <!-- Machine Protocol Cards -->
+      <section class="agent-protocols-grid">
+        <div class="agent-card">
+          <div class="agent-card-icon">📄</div>
+          <h3>/llms.txt</h3>
+          <p>遵循 LLMs.txt 开放标准，精简列出项目核心研究领域、最新必读论文与数据端点索引。</p>
+          <div class="agent-card-actions">
+            <a href="/llms.txt" class="agent-btn" target="_blank">查看 llms.txt →</a>
+            <a href="/llms-full.txt" class="agent-btn agent-btn-subtle" target="_blank">完整上下文 (Full) →</a>
+          </div>
+        </div>
+
+        <div class="agent-card">
+          <div class="agent-card-icon">📡</div>
+          <h3>/api/v1/daily.json</h3>
+          <p>当日最新 arXiv 论文研判，包含优先级分类（Must Read / Worth Knowing）、BLUF 结论及正文原样引文核验证据。</p>
+          <div class="agent-card-actions">
+            <a href="/api/v1/daily.json" class="agent-btn" target="_blank">打开 Daily JSON →</a>
+          </div>
+        </div>
+
+        <div class="agent-card">
+          <div class="agent-card-icon">🪐</div>
+          <h3>/api/v1/events.json</h3>
+          <p>瞬变源科学事件自动聚簇接口。跨论文聚合 GRB、超新星、FRB、引力波后续跟踪，附带 7 天半衰期热度分。</p>
+          <div class="agent-card-actions">
+            <a href="/api/v1/events.json" class="agent-btn" target="_blank">打开 Events JSON →</a>
+          </div>
+        </div>
+
+        <div class="agent-card">
+          <div class="agent-card-icon">📑</div>
+          <h3>OpenAPI 规范</h3>
+          <p>标准 OpenAPI 3.1 描述文件，支持一键导入 Postman、Swagger 或直接作为 Agent Tool Schema 注册。</p>
+          <div class="agent-card-actions">
+            <a href="/openapi.yaml" class="agent-btn" target="_blank">下载 openapi.yaml →</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Usage Instructions for Agents -->
+      <section class="radar-section">
+        <p class="section-kicker">使用指南</p>
+        <h2>如何在外部智能体中使用</h2>
+
+        <div class="agent-guide-block">
+          <h3>1. 在 Cursor / Claude Code 中一键载入</h3>
+          <p>直接在对话框中引用 <code>/llms.txt</code>，即可让 AI 助手掌握天体物理组最新文献脉络：</p>
+          <pre class="agent-code-box"><code>@https://axvdaily.internal/llms.txt 结合最新的 Must Read 论文，总结当前 FRB 磁星模型的新限制</code></pre>
+
+          <h3>2. 在 Python / 自治智能体中调用 API</h3>
+          <pre class="agent-code-box"><code>{`import urllib.request, json
+
+# 获取今日必读文献与证据链
+with urllib.request.urlopen("https://axvdaily.internal/api/v1/daily.json") as resp:
+    data = json.loads(resp.read().decode())
+    must_reads = data["groups"]["must_read"]
+    for paper in must_reads:
+        print(f"[{paper['arxiv_id']}] {paper['title']}")
+        print(f"  核心突破: {paper['analysis']['analysis']['result']}")`}</code></pre>
+        </div>
+      </section>
+
+      <!-- Live Top Events Preview -->
+      <section class="radar-section">
+        <p class="section-kicker">实时聚簇预览</p>
+        <h2>当前活跃瞬变源事件榜单（Top 5 Heat Scores）</h2>
+        <div class="agent-events-list">
+          {topEvents.map((event: any, idx: number) => (
+            <div class="agent-event-row">
+              <div class="event-rank">#{idx + 1}</div>
+              <div class="event-info">
+                <div class="event-header">
+                  <span class="event-id">{event.event_id}</span>
+                  <span class="event-type-badge">{event.event_type}</span>
+                  <span class="event-heat">🔥 热度 {event.heat_score}</span>
+                  <span class="event-papers-count">共 {event.paper_count} 篇论文关联</span>
+                </div>
+                <div class="event-meta">
+                  <span>首次发现: {event.first_seen}</span> · <span>最近更新: {event.last_updated}</span>
+                </div>
+                <ul class="event-papers">
+                  {event.papers.map((p: any) => (
+                    <li>
+                      <span class={`p-priority p-priority-${p.priority}`}>{p.priority}</span>
+                      <a href={`https://arxiv.org/abs/${p.arxiv_id}`} target="_blank">arXiv:{p.arxiv_id}</a>
+                      <span class="p-title">{p.title}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
+
+<style>
+  .agent-hero-badge {
+    display: inline-block;
+    padding: 0.25rem 0.65rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: #4f46e5;
+    background: #eef2ff;
+    border: 1px solid #c7d2fe;
+    border-radius: 9999px;
+    margin-bottom: 0.75rem;
+  }
+  .agent-protocols-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.25rem;
+    margin: 2rem 0;
+  }
+  .agent-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+  }
+  .agent-card-icon {
+    font-size: 1.75rem;
+    margin-bottom: 0.5rem;
+  }
+  .agent-card h3 {
+    margin: 0 0 0.5rem;
+    font-size: 1.15rem;
+    font-family: monospace;
+    color: #0f172a;
+  }
+  .agent-card p {
+    font-size: 0.9rem;
+    color: #475569;
+    flex-grow: 1;
+    margin-bottom: 1.25rem;
+  }
+  .agent-card-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .agent-btn {
+    display: inline-block;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-decoration: none;
+    color: #fff;
+    background: #2563eb;
+    border-radius: 0.375rem;
+    transition: background 0.15s;
+  }
+  .agent-btn:hover {
+    background: #1d4ed8;
+  }
+  .agent-btn-subtle {
+    background: #f1f5f9;
+    color: #334155;
+    border: 1px solid #cbd5e1;
+  }
+  .agent-btn-subtle:hover {
+    background: #e2e8f0;
+  }
+  .agent-code-box {
+    background: #0f172a;
+    color: #f8fafc;
+    padding: 1rem 1.25rem;
+    border-radius: 0.5rem;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.85rem;
+    overflow-x: auto;
+    margin: 0.75rem 0 1.5rem;
+    border: 1px solid #334155;
+  }
+  .agent-events-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  .agent-event-row {
+    display: flex;
+    gap: 1.25rem;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
+    padding: 1.25rem;
+    align-items: flex-start;
+  }
+  .event-rank {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #94a3b8;
+    min-width: 2.5rem;
+  }
+  .event-info {
+    flex-grow: 1;
+  }
+  .event-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.35rem;
+  }
+  .event-id {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #0f172a;
+    font-family: monospace;
+  }
+  .event-type-badge {
+    padding: 0.15rem 0.5rem;
+    background: #e0e7ff;
+    color: #4338ca;
+    font-size: 0.75rem;
+    font-weight: 700;
+    border-radius: 0.25rem;
+  }
+  .event-heat {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #ea580c;
+  }
+  .event-papers-count {
+    font-size: 0.82rem;
+    color: #64748b;
+  }
+  .event-meta {
+    font-size: 0.8rem;
+    color: #64748b;
+    margin-bottom: 0.75rem;
+  }
+  .event-papers {
+    margin: 0;
+    padding-left: 1.2rem;
+    font-size: 0.88rem;
+  }
+  .event-papers li {
+    margin-bottom: 0.35rem;
+  }
+  .p-priority {
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 0.1rem 0.35rem;
+    border-radius: 0.2rem;
+    margin-right: 0.4rem;
+    text-transform: uppercase;
+  }
+  .p-priority-must_read {
+    background: #fee2e2;
+    color: #b91c1c;
+  }
+  .p-priority-worth_knowing {
+    background: #fef3c7;
+    color: #b45309;
+  }
+  .p-priority-skip {
+    background: #f1f5f9;
+    color: #64748b;
+  }
+  .p-title {
+    margin-left: 0.4rem;
+    color: #334155;
+  }
+</style>

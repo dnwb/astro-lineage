@@ -1,3 +1,286 @@
 work_id: work:zhang-agn-jet-2024
-annotations: []
-method_annotations: []
+annotations:
+  - id: annotation:zhang-agn-jet-2024-progenitor-system
+    axis: progenitor_system
+    assessment:
+      state: present
+      values:
+        - term_id: term:gamma-ray-burst-progenitor-system
+    interpretive_risk: descriptive
+    evidence_ids:
+      - evidence:zhang-agn-jet-2024-abstract
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-06T22:35:47Z
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: 2026-09-06T22:36:00Z
+  - id: annotation:zhang-agn-jet-2024-central-object
+    axis: central_object
+    assessment:
+      state: unknown
+      values: []
+    interpretive_risk: descriptive
+    reason: The Work investigates jets launched in AGN disks without restricting to
+      a single central engine compact object identity.
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-06T22:35:47Z
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: 2026-09-06T22:36:00Z
+  - id: annotation:zhang-agn-jet-2024-energy-reservoir
+    axis: energy_reservoir
+    assessment:
+      state: present
+      values:
+        - term_id: term:central-engine-jet-power
+    interpretive_risk: descriptive
+    evidence_ids:
+      - evidence:zhang-agn-jet-2024-head-propagation
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-06T22:35:47Z
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: 2026-09-06T22:36:00Z
+  - id: annotation:zhang-agn-jet-2024-energy-transfer
+    axis: energy_transfer
+    assessment:
+      state: present
+      values:
+        - term_id: term:relativistic-jet-injection
+    interpretive_risk: descriptive
+    evidence_ids:
+      - evidence:zhang-agn-jet-2024-head-propagation
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-06T22:35:47Z
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: 2026-09-06T22:36:00Z
+  - id: annotation:zhang-agn-jet-2024-outflow
+    axis: outflow
+    assessment:
+      state: present
+      values:
+        - term_id: term:relativistic-hydrodynamic-jet
+        - term_id: term:jet-cocoon
+    interpretive_risk: descriptive
+    evidence_ids:
+      - evidence:zhang-agn-jet-2024-head-propagation
+      - evidence:zhang-agn-jet-2024-cocoon-emission
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-06T22:35:47Z
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: 2026-09-06T22:36:00Z
+  - id: annotation:zhang-agn-jet-2024-environment
+    axis: environment
+    assessment:
+      state: present
+      values:
+        - term_id: term:agn-accretion-disk
+    interpretive_risk: descriptive
+    evidence_ids:
+      - evidence:zhang-agn-jet-2024-abstract
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-06T22:35:47Z
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: 2026-09-06T22:36:00Z
+  - id: annotation:zhang-agn-jet-2024-dynamics
+    axis: dynamics
+    assessment:
+      state: present
+      values:
+        - term_id: term:jet-head-propagation
+        - term_id: term:jet-stalling-and-choking
+    interpretive_risk: descriptive
+    evidence_ids:
+      - evidence:zhang-agn-jet-2024-head-propagation
+      - evidence:zhang-agn-jet-2024-choking-breakout
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-06T22:35:47Z
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: 2026-09-06T22:36:00Z
+  - id: annotation:zhang-agn-jet-2024-energy-dissipation
+    axis: energy_dissipation
+    assessment:
+      state: present
+      values:
+        - term_id: term:jet-head-shock-heating
+        - term_id: term:reverse-shock-particle-acceleration
+    interpretive_risk: descriptive
+    evidence_ids:
+      - evidence:zhang-agn-jet-2024-head-propagation
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-06T22:35:47Z
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: 2026-09-06T22:36:00Z
+  - id: annotation:zhang-agn-jet-2024-particle-interaction
+    axis: particle_interaction
+    assessment:
+      state: not_applicable
+      values: []
+    interpretive_risk: descriptive
+    reason: The Work focuses on relativistic hydrodynamic shock propagation and does
+      not calculate microscopic particle interaction chains.
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-06T22:35:47Z
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: 2026-09-06T22:36:00Z
+  - id: annotation:zhang-agn-jet-2024-emission-process
+    axis: emission_process
+    assessment:
+      state: present
+      values:
+        - term_id: term:cocoon-shock-breakout
+    interpretive_risk: descriptive
+    evidence_ids:
+      - evidence:zhang-agn-jet-2024-cocoon-emission
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-06T22:35:47Z
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: 2026-09-06T22:36:00Z
+  - id: annotation:zhang-agn-jet-2024-transport-process
+    axis: transport_process
+    assessment:
+      state: present
+      values:
+        - term_id: term:gamma-ray-trapping-and-degradation
+    interpretive_risk: descriptive
+    evidence_ids:
+      - evidence:zhang-agn-jet-2024-cocoon-emission
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-06T22:35:47Z
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: 2026-09-06T22:36:00Z
+  - id: annotation:zhang-agn-jet-2024-phenomenon
+    axis: phenomenon
+    assessment:
+      state: present
+      values:
+        - term_id: term:choked-grb-in-agn-disk
+        - term_id: term:relativistic-jet-propagation
+    interpretive_risk: descriptive
+    evidence_ids:
+      - evidence:zhang-agn-jet-2024-abstract
+      - evidence:zhang-agn-jet-2024-choking-breakout
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-06T22:35:47Z
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: 2026-09-06T22:36:00Z
+  - id: annotation:zhang-agn-jet-2024-messenger
+    axis: messenger
+    assessment:
+      state: present
+      values:
+        - term_id: term:photons
+    interpretive_risk: descriptive
+    evidence_ids:
+      - evidence:zhang-agn-jet-2024-cocoon-emission
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-06T22:35:47Z
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: 2026-09-06T22:36:00Z
+  - id: annotation:zhang-agn-jet-2024-photon-band
+    axis: photon_band
+    assessment:
+      state: present
+      values:
+        - term_id: term:optical-band
+    interpretive_risk: descriptive
+    evidence_ids:
+      - evidence:zhang-agn-jet-2024-cocoon-emission
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-06T22:35:47Z
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: 2026-09-06T22:36:00Z
+  - id: annotation:zhang-agn-jet-2024-observable
+    axis: observable
+    assessment:
+      state: present
+      values:
+        - term_id: term:shock-breakout-photon-transient
+    interpretive_risk: descriptive
+    evidence_ids:
+      - evidence:zhang-agn-jet-2024-cocoon-emission
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-06T22:35:47Z
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: 2026-09-06T22:36:00Z
+  - id: annotation:zhang-agn-jet-2024-inference-target
+    axis: inference_target
+    assessment:
+      state: present
+      values:
+        - term_id: term:jet-choking-condition
+        - term_id: term:jet-breakout-time
+    interpretive_risk: interpretive
+    risk_escalation:
+      reason: Breakout timescale and choking conditions are model-inferred analytical
+        outcomes across disk profile parameters.
+    evidence_ids:
+      - evidence:zhang-agn-jet-2024-choking-breakout
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-06T22:35:47Z
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: 2026-09-06T22:36:00Z
+method_annotations:
+  - id: annotation:zhang-agn-jet-2024-method-pressure-balance
+    technique_id: technique:coupled-pressure-balance-model
+    basis: explicit
+    reason: The source analytically formulates jet-head ram pressure balance with
+      ambient disk medium and cocoon pressure feedback to govern jet propagation
+      and collimation.
+    evidence_ids:
+      - evidence:zhang-agn-jet-2024-head-propagation
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-06T22:35:47Z
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: 2026-09-06T22:36:00Z
+    review_binding:
+      canonicalization_version: v1
+      semantic_digest: d0d90c28db306efd9ddda36bb29ec8aa7d9aa3237a9bbcc6bbf1aa78ae9738a8

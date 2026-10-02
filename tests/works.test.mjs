@@ -16,8 +16,9 @@ import { createTemporaryWorkspace } from "./helpers/temporary-workspace.mjs";
 
 const productionContent = new URL("../content/", import.meta.url);
 
-async function copyContent(t = null) {
-  const { path: temporaryRoot, cleanup } = await createTemporaryWorkspace("astro-lineage-works-", t);
+async function copyContent(t) {
+  assert(t && typeof t.after === "function", "copyContent requires a test context t");
+  const { path: temporaryRoot } = await createTemporaryWorkspace("astro-lineage-works-", t);
   const contentRoot = join(temporaryRoot, "content");
   await cp(productionContent, contentRoot, { recursive: true });
   await rm(join(contentRoot, "learning-paths"), { recursive: true, force: true });
@@ -78,7 +79,7 @@ async function copyContent(t = null) {
     writeFile(denseLinePath, stringify(denseLine), "utf8"),
     writeFile(explosiveLinePath, stringify(explosiveLine), "utf8"),
   ]);
-  return { temporaryRoot, contentRoot, cleanup };
+  return { temporaryRoot, contentRoot };
 }
 
 async function readWork(contentRoot) {

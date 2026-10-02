@@ -1,0 +1,85 @@
+openapi: 3.1.0
+info:
+  title: AstroLineage Intelligence API
+  description: Machine-readable API for high-energy astrophysics arXiv preprints, transient event clusters, and evidence-backed reading guides.
+  version: 1.0.0
+servers:
+  - url: /api/v1
+    description: AstroLineage Static API v1
+paths:
+  /daily.json:
+    get:
+      summary: Get Today's Daily Radar Intelligence
+      description: Returns the latest daily arXiv preprint screening with priority tiers (must_read, worth_knowing, skip), opening brief, and verified evidence quotes.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  edition:
+                    type: object
+                  opening_brief:
+                    type: string
+                  groups:
+                    type: object
+                    properties:
+                      must_read:
+                        type: array
+                      worth_knowing:
+                        type: array
+                      skip:
+                        type: array
+  /weekly.json:
+    get:
+      summary: Get Latest Weekly Academic Synthesis
+      description: Returns the latest weekly intelligence synthesis, thematic highlights, executive summary, and domain matrix.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  week_id:
+                    type: string
+                  date_range:
+                    type: string
+                  executive_summary:
+                    type: string
+                  thematic_highlights:
+                    type: array
+                  top_picks:
+                    type: array
+  /events.json:
+    get:
+      summary: Get Transient Scientific Events Feed
+      description: Returns clustered observational transient events (GRBs, Supernovae, FRBs, Gravitational Waves) with time-decayed heat scores.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total_events:
+                    type: integer
+                  events:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        event_id:
+                          type: string
+                        event_type:
+                          type: string
+                        heat_score:
+                          type: number
+                        paper_count:
+                          type: integer
+                        papers:
+                          type: array

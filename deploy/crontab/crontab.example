@@ -1,43 +1,23 @@
 # ==============================================================================
-# AstroLineage arXiv 定时抓取与研判 Crontab 任务配置示例
+# AstroLineage arXiv 定时抓取、AI 研判与频道自动发布 Crontab 任务配置（已合并）
 #
-# 使用方法：
-#   1. 编辑当前用户的 crontab: crontab -e
-#   2. 复制并根据实际路径调整以下条目
-#   3. 保存退出后通过 crontab -l 验证
+# 时序与合并机制：
+#   - 每天统一在【上午 10:00 (北京时间)】执行一次；
+#   - 避开冬夏令时交替与官方 API 索引延迟；
+#   - 周一至周四：执行每日批次抓取、AI 研判、构建页面并自动推送到【每日arXiv导读】版块；
+#   - 每周五：每日批次抓取研判完成后，自动追加执行【每周学术脉络总结】，并推送到【前沿学术周报】版块。
+#   - 单个统一日志文件：/tmp/arxiv-task.log
 # ==============================================================================
 
 # 基础环境变量（cron 默认环境较精简，必须显式定义）
 SHELL=/bin/bash
-PATH=/usr/local/bin:/usr/bin:/bin:/home/long/.local/bin
+PATH=/home/long/.npm-global/bin:/usr/local/bin:/usr/bin:/bin:/home/long/.local/bin
 PROJECT_DIR=/home/long/axvdaily
 
-# API 密钥与端点配置（或在项目根目录下配置 .env）
-OPENAI_BASE_URL=https://api.ccnulaowu.online/v1
-OPENAI_API_KEY=sk-cpa-kAXP0IsAxZUh8_tZf72iP1q-J7982Je6P6EDefcoCXE
-WU_API_KEY=sk-cpa-kAXP0IsAxZUh8_tZf72iP1q-J7982Je6P6EDefcoCXE
-AI_MODEL=gpt-5.6-sol
+# 指定 cron 时区为北京时间（系统 cronie 支持 CRON_TZ 变量）
+CRON_TZ=Asia/Shanghai
 
 # ------------------------------------------------------------------------------
-# 1. 每日导读 (Daily Radar)
+# 统一前沿学术调度任务：周一至周五上午 10:00 (北京时间)
 # ------------------------------------------------------------------------------
-# arXiv 官方在美东时间周日至周四 20:00 发布公告批次。
-#
-# 【北京时间配置】（适合国内时区的服务器）：
-# 周一至周五上午 08:30 执行抓取与 AI 研判
-30 8 * * 1-5 cd $PROJECT_DIR && /usr/bin/env node scripts/arxiv-daily-scheduler.mjs >> /tmp/arxiv-daily.log 2>&1
-
-# 【UTC 时间配置】（适合使用 UTC 时区的海外云服务器）：
-# 周一至周五凌晨 00:30 UTC 执行
-# 30 0 * * 1-5 cd $PROJECT_DIR && /usr/bin/env node scripts/arxiv-daily-scheduler.mjs >> /tmp/arxiv-daily.log 2>&1
-
-# ------------------------------------------------------------------------------
-# 2. 每周学术脉络总结 (Weekly Synthesis)
-# ------------------------------------------------------------------------------
-# 每周五上午执行，聚合当周一至周四的所有已研判批次生成宏观脉络总结
-#
-# 【北京时间配置】：每周五上午 09:30 执行
-30 9 * * 5 cd $PROJECT_DIR && /usr/bin/env node scripts/arxiv-weekly-summary.mjs >> /tmp/arxiv-weekly.log 2>&1
-
-# 【UTC 时间配置】：每周五凌晨 01:30 UTC 执行
-# 30 1 * * 5 cd $PROJECT_DIR && /usr/bin/env node scripts/arxiv-weekly-summary.mjs >> /tmp/arxiv-weekly.log 2>&1
+0 10 * * 1-5 /bin/bash /home/long/axvdaily/scripts/cron-runner.sh auto >> /tmp/arxiv-task.log 2>&1

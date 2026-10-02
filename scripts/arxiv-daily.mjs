@@ -4,7 +4,7 @@ import { basename, dirname, join, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import { reconcileDailyRadarEdition, validateDailyRadarPayload } from "./daily-radar.mjs";
 
-export const DEFAULT_QUERY = "cat:astro-ph.HE OR cat:astro-ph.GA";
+export const DEFAULT_QUERY = "cat:astro-ph.HE OR cat:astro-ph.GA OR cat:astro-ph.SR";
 export const DEFAULT_FEED_URL = "https://export.arxiv.org/api/query";
 export const DEFAULT_RSS_URL = "https://export.arxiv.org/rss/astro-ph.HE";
 export const DEFAULT_OUTPUT = fileURLToPath(new URL("../src/data/arxiv-daily.json", import.meta.url));
@@ -1034,7 +1034,7 @@ async function isStaleLock(lockPath) {
   return Date.now() - lockStats.mtimeMs > LOCK_STALE_AFTER_MS;
 }
 
-async function acquireRefreshLock(lockPath) {
+export async function acquireRefreshLock(lockPath) {
   await mkdir(dirname(lockPath), { recursive: true });
   for (let attempt = 0; attempt < 2; attempt += 1) {
     let handle;
@@ -1057,7 +1057,7 @@ async function acquireRefreshLock(lockPath) {
   throw new ArxivFeedError("ARXIV_REFRESH_IN_PROGRESS", "arXiv 刷新锁无法取得。");
 }
 
-async function releaseRefreshLock(lockPath) {
+export async function releaseRefreshLock(lockPath) {
   await unlink(lockPath).catch((error) => {
     if (error?.code !== "ENOENT") throw error;
   });
@@ -1484,7 +1484,7 @@ function serializedError(error) {
   };
 }
 
-async function writeJsonAtomically(target, value, renameImpl = rename) {
+export async function writeJsonAtomically(target, value, renameImpl = rename) {
   await writeAtomically(target, jsonContents(value), renameImpl);
 }
 
@@ -1521,6 +1521,7 @@ export async function readPublishedArxivEdition({
   artifactRoot,
   fallbackFeed,
   fallbackRadar,
+  allowMissing = false,
 } = {}) {
   const target = resolve(output);
   const radarTarget = resolve(radarOutput);
@@ -1541,12 +1542,66 @@ export async function readPublishedArxivEdition({
       pointer: published.pointer,
     };
   }
+  const readFallback = async (path, empty) => {
+    try {
+      return JSON.parse(await readFile(path, "utf8"));
+    } catch (error) {
+      if (allowMissing && error?.code === "ENOENT") return empty;
+      throw error;
+    }
+  };
   return {
-    feed: fallbackFeed ?? JSON.parse(await readFile(target, "utf8")),
-    radar: fallbackRadar ?? JSON.parse(await readFile(radarTarget, "utf8")),
+    feed: fallbackFeed ?? await readFallback(target, { entries: [] }),
+    radar: fallbackRadar ?? await readFallback(radarTarget, { analyses: [], knowledge_points: [] }),
     generation_id: null,
     pointer: null,
   };
+}
+
+// Analysis is a new edition generation, never an in-place snapshot edit.
+export async function publishAnalyzedArxivEdition({
+  output = DEFAULT_OUTPUT,
+  radarOutput = DEFAULT_RADAR_OUTPUT,
+  artifactRoot,
+  expectedFeed,
+  expectedRadar,
+  radar,
+  renameImpl = rename,
+} = {}) {
+  if (!expectedFeed || !expectedRadar) {
+    throw new ArxivFeedError("ARXIV_ANALYSIS_INVALID", "分析发布必须绑定读取时的 feed 与 radar。");
+  }
+  const target = resolve(output);
+  const radarTarget = resolve(radarOutput);
+  if (target !== resolve(DEFAULT_OUTPUT) && radarTarget === resolve(DEFAULT_RADAR_OUTPUT)) {
+    throw new ArxivFeedError("ARXIV_ANALYSIS_INVALID", "自定义 feed 必须指定独立 radar 输出。");
+  }
+  const paths = publicationPaths({ target, artifactRoot: configuredArtifactRoot({ target, artifactRoot }) });
+  const lockPath = `${target}.lock`;
+  await acquireRefreshLock(lockPath);
+  try {
+    const current = await readPublishedArxivEdition({ output: target, radarOutput: radarTarget, artifactRoot, allowMissing: true });
+    if (JSON.stringify(current.feed) !== JSON.stringify(expectedFeed) ||
+        JSON.stringify(current.radar) !== JSON.stringify(expectedRadar)) {
+      throw new ArxivFeedError("ARXIV_ANALYSIS_STALE", "分析期间 edition 已改变；保留当前发布结果并等待重试。");
+    }
+    const validation = validateDailyRadarPayload(current.feed, radar);
+    if (!validation.valid) {
+      throw new ArxivFeedError("ARXIV_RADAR_INVALID", `分析发布验证失败：${validation.diagnostics.join(", ")}`);
+    }
+    const files = [{ target, contents: jsonContents(current.feed) }, { target: radarTarget, contents: jsonContents(radar) }];
+    if (current.pointer) {
+      const otherTargets = current.pointer.files.map((record) => resolve(dirname(paths.pointerPath), record.target))
+        .filter((path) => path !== target && path !== radarTarget);
+      if (otherTargets.length > 0) {
+        const preserved = await readPublishedFileSet({ ...paths, targets: otherTargets, allowRecovery: false });
+        for (const path of otherTargets) files.push({ target: path, contents: preserved.files.get(path) });
+      }
+    }
+    return await publishFileSet(files, renameImpl, paths);
+  } finally {
+    await releaseRefreshLock(lockPath);
+  }
 }
 
 function emptyRunState() {
@@ -2090,6 +2145,7 @@ export async function refreshArxivFeed({
   publishStageHook = async () => {},
   rssUrl,
   manualSnapshot,
+  rejectEmpty = false,
 } = {}) {
   if (typeof fetchImpl !== "function" && manualSnapshot === undefined) throw new ArxivFeedError("ARXIV_REQUEST_FAILED", "当前运行环境没有 fetch 实现。");
   if (!Number.isFinite(totalTimeoutMs) || totalTimeoutMs <= 0) throw new ArxivFeedError("ARXIV_REQUEST_TIMEOUT", "整轮时间预算必须为正数。");
@@ -2119,6 +2175,7 @@ export async function refreshArxivFeed({
         output: target,
         radarOutput: radarTarget,
         artifactRoot: artifactDirectory,
+        allowMissing: true,
       });
       previousFeed = previousEdition.feed;
       previousRadar = previousEdition.radar;
@@ -2182,6 +2239,9 @@ export async function refreshArxivFeed({
       providerAttempts.push({ provider: "manual", status: "success" });
     }
     const provenance = { source_type: provider, source_url: provider === "api" ? result.pages[0]?.source_url ?? feedUrl({ query: result.query, maxResults: pageSize, start }) : provider === "rss" ? effectiveRssUrl : null, retrieved_at: now.toISOString(), query: result.query ?? effectiveAnnouncementQuery(query, window), evidence_scope: "discovery_metadata_only", attempts: providerAttempts };
+    if (rejectEmpty && result.entries.length === 0) {
+      throw new ArxivFeedError("ARXIV_EMPTY_BATCH", "公告批次暂无条目，保留 last-good edition 并等待重试。");
+    }
     const responseSha = createHash("sha256")
       .update(result.pages.map(({ response_sha256 }) => response_sha256).join("\n"))
       .digest("hex");

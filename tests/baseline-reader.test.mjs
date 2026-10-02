@@ -24,13 +24,14 @@ test("the baseline projection includes only the marked candidate catalogue", asy
   const reader = projectBaselineSnapshot(snapshot);
 
   assert.equal(reader.works.length, 41);
-  assert.equal(reader.works.filter((work) => work.reader_status === "published").length, 5);
-  assert.equal(reader.works.filter((work) => work.reader_status === "candidate").length, 36);
+  assert.equal(reader.works.filter((work) => work.reader_status === "published").length, 6);
+  assert.equal(reader.works.filter((work) => work.reader_status === "candidate").length, 35);
   assert.equal(reader.research_lines.length, 7);
   assert.equal(reader.research_lines.filter((line) => line.reader_status === "candidate").length, 4);
   assert.equal(reader.learning_paths.length, 5);
   assert.equal(reader.learning_paths.filter((path) => path.reader_status === "candidate").length, 4);
   assert.equal(reader.works.find((work) => work.work_id === "work:zhu-2021").reader_status, "published");
+  assert.equal(reader.works.find((work) => work.work_id === "work:zhang-agn-jet-2024").reader_status, "published");
   assert.equal(
     reader.works.find((work) => work.work_id === "work:blandford-mckee-1976").reader_status,
     "candidate",
@@ -53,7 +54,7 @@ test("the reader exposes the complete baseline with candidate status and navigat
   assert.match(home, /href="\/learning-paths\/baseline-jet-foundations\/"/u);
 
   assert.match(papers, /41 篇基准文献/u);
-  assert.match(papers, /36 篇候选基准/u);
+  assert.match(papers, /35 篇候选基准/u);
   assert.match(papers, /流体动力学/u);
   assert.match(papers, /候选基准/u);
   assert.match(papers, /Read it to connect self-similar relativistic blast-wave dynamics/u);

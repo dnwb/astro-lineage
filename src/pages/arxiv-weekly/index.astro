@@ -24,17 +24,36 @@ const generatedLabel = Number.isNaN(generatedAt.valueOf())
   : generatedAt.toLocaleString("zh-CN", { timeZone: "Asia/Shanghai" });
 
 const priorityLabels: Record<string, { zh: string; en: string; class: string }> = {
-  must_read: { zh: "今天先读", en: "Must Read", class: "badge-must-read" },
-  worth_knowing: { zh: "值得知道", en: "Worth Knowing", class: "badge-worth-knowing" },
+  must_read: { zh: "必读", en: "Must Read", class: "badge-must-read" },
+  worth_knowing: { zh: "关注", en: "Worth Knowing", class: "badge-worth-knowing" },
   skip: { zh: "快速浏览", en: "Skim", class: "badge-skip" },
 };
 
 const paperMap = new Map((weeklyData.papers ?? []).map((p: any) => [p.arxiv_id, p]));
 
+const dailyArchiveModules = import.meta.glob<{ default: any }>("../../data/arxiv-archives/daily/*.json", { eager: true });
+const authorMap = new Map<string, string[]>();
+for (const mod of Object.values(dailyArchiveModules)) {
+  const data = (mod as any).default || mod;
+  for (const entry of data.feed?.entries ?? []) {
+    if (entry.arxiv_id && Array.isArray(entry.authors) && entry.authors.length > 0) {
+      authorMap.set(entry.arxiv_id, entry.authors);
+    }
+  }
+}
+
+function resolveAuthors(id: string, direct?: any): string[] {
+  if (Array.isArray(direct?.authors) && direct.authors.length > 0) return direct.authors;
+  const inMap = paperMap.get(id);
+  if (Array.isArray(inMap?.authors) && inMap.authors.length > 0) return inMap.authors;
+  return authorMap.get(id) || [];
+}
+
 function formatBibtex(paper: any) {
   const cleanId = String(paper.arxiv_id || "").trim();
-  const authors = Array.isArray(paper.authors) && paper.authors.length > 0
-    ? paper.authors.join(" and ")
+  const resolved = resolveAuthors(cleanId, paper);
+  const authors = resolved.length > 0
+    ? resolved.join(" and ")
     : "Author, A.";
   const year = paper.published ? new Date(paper.published).getFullYear() : (weeklyData.week_id?.slice(0, 4) || new Date().getFullYear());
   const title = String(paper.title || "").trim();
@@ -51,8 +70,9 @@ function formatBibtex(paper: any) {
 
 function formatCitation(paper: any) {
   const cleanId = String(paper.arxiv_id || "").trim();
-  const firstAuthor = Array.isArray(paper.authors) && paper.authors.length > 0
-    ? paper.authors[0]
+  const resolved = resolveAuthors(cleanId, paper);
+  const firstAuthor = resolved.length > 0
+    ? resolved[0]
     : "Author";
   const year = paper.published ? new Date(paper.published).getFullYear() : (weeklyData.week_id?.slice(0, 4) || new Date().getFullYear());
   return `${firstAuthor} et al. (${year}), arXiv:${cleanId}`;
@@ -71,7 +91,7 @@ ${t.summary}
 关联论文: ${(t.paper_ids ?? []).map((id: string) => `arXiv:${id}`).join(", ")}`).join("\n\n")}
 
 ## 本周精选重点解读
-${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read" ? "今天先读" : "值得知道"}] arXiv:${p.arxiv_id} - ${p.title}
+${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read" ? "必读" : "关注"}] arXiv:${p.arxiv_id} - ${p.title}
 - **推荐理由**: ${p.recommendation_reason}
 - **核心突破**: ${p.core_insight}
 - **阅读切入**: ${p.reading_guide}
@@ -109,6 +129,7 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
           {weekDays.length > 0 && (
             <span class="meta-badge daily-count-badge">含 {weekDays.length} 个每日监测批次</span>
           )}
+          <a class="meta-link" href="/arxiv-archives/">往期归档全库 →</a>
           <a class="meta-link" href="/arxiv-daily/">查看今日雷达 →</a>
           <a class="meta-link" href="#daily-breakdown">本周每日归档 ↓</a>
         </div>
@@ -256,6 +277,9 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
                     </div>
                   </div>
                   <h3 class="pick-title">{pick.title}</h3>
+                  {resolveAuthors(pick.arxiv_id, pick).length > 0 ? (
+                    <p class="pick-authors">作者：{resolveAuthors(pick.arxiv_id, pick).join(", ")}</p>
+                  ) : null}
 
                   <div class="pick-details">
                     <div class="detail-row">
@@ -316,6 +340,9 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
                     </a>
                     <span class="catalog-item-title">{p.title}</span>
                   </div>
+                  {resolveAuthors(p.arxiv_id, p).length > 0 && (
+                    <p class="catalog-item-authors">作者：{resolveAuthors(p.arxiv_id, p).join(", ")}</p>
+                  )}
                   {p.result && (
                     <p class="catalog-item-result"><strong>结论要点：</strong><ReaderText text={p.result} /></p>
                   )}
@@ -749,8 +776,14 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
         font-size: 1.2rem;
         font-weight: 600;
         color: #0f172a;
-        margin: 0.25rem 0 1rem 0;
+        margin: 0.25rem 0 0.4rem 0;
         line-height: 1.4;
+      }
+      .pick-authors {
+        font-size: 0.88rem;
+        color: #475569;
+        margin: 0 0 0.85rem 0;
+        line-height: 1.45;
       }
       .pick-details {
         display: flex;
@@ -824,6 +857,12 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
         font-weight: 600;
         font-size: 0.9rem;
         color: #1e293b;
+      }
+      .catalog-item-authors {
+        margin: 0.2rem 0 0.25rem 0;
+        font-size: 0.82rem;
+        color: #64748b;
+        line-height: 1.4;
       }
       .catalog-item-result {
         margin: 0.35rem 0 0 0;

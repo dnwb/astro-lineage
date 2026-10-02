@@ -1,7 +1,9 @@
 line_id: research-line:dense-environment-multimessenger
 reader_state: visible
 title: Dense Environments and Multi-messenger Transients
-scientific_question: How do dense environments reshape transient outflows and redistribute their energy across neutrino, photon, and gravitational-wave channels?
+scientific_question: How do dense environments reshape transient outflows and
+  redistribute their energy across neutrino, photon, and gravitational-wave
+  channels?
 physical_structure:
   - environment
   - dynamics
@@ -15,14 +17,15 @@ memberships:
       - foundation
       - frontier
     editorial_anchor: true
-    reason: This Work supplies the V0.1 foundation for tracing an embedded choked jet into distinct neutrino, photon, and gravitational-wave branches.
+    reason: This Work supplies the V0.1 foundation for tracing an embedded choked
+      jet into distinct neutrino, photon, and gravitational-wave branches.
     curation_provenance:
       actor_id: actor:agent-curator
       recorded_at: 2026-09-04T10:20:10Z
     review_state: reviewed
     review_provenance:
       actor_id: actor:human-curator
-      recorded_at: "2026-09-04T12:30:31Z"
+      recorded_at: 2026-09-04T12:30:31Z
     review_binding:
       canonicalization_version: v1
       semantic_digest: e24a4939f47c78a1ffad6d165e0eb33f5dd005956dbeadb5712ef0d520e07d4f
@@ -32,17 +35,37 @@ memberships:
       - frontier
       - method
     editorial_anchor: true
-    reason: This Work provides a dynamic-model frontier account of jet propagation and neutrino production in a dense AGN-disk environment.
+    reason: This Work provides a dynamic-model frontier account of jet propagation
+      and neutrino production in a dense AGN-disk environment.
     curation_provenance:
       actor_id: actor:agent-curator
-      recorded_at: "2026-09-04T23:23:40Z"
+      recorded_at: 2026-09-04T23:23:40Z
     review_state: reviewed
     review_provenance:
       actor_id: actor:human-curator
-      recorded_at: "2026-09-05T04:44:27Z"
+      recorded_at: 2026-09-05T04:44:27Z
     review_binding:
       canonicalization_version: v1
       semantic_digest: 921fc42718c26074b96084616fc6a1d893f126b8b7b74c59384d4d089280b1f8
+  - id: membership:dense-environment-multimessenger-zhang-agn-jet-2024
+    work_id: work:zhang-agn-jet-2024
+    reading_roles:
+      - foundation
+      - frontier
+    editorial_anchor: true
+    reason: This Work provides the analytical jet propagation and choking framework
+      in dense AGN disks connecting stellar envelope models to AGN-embedded
+      multi-messenger transients.
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-06T22:35:47Z
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: 2026-09-06T22:36:00Z
+    review_binding:
+      canonicalization_version: v1
+      semantic_digest: 16522aacf2f1e65d49f1aed90f90c637e8f16e51e5310b0b463e02b9e700cf9a
 visibility_approvals:
   - profile_id: v0.1-default
     visibility_digest: a2b97a738f5739e992fea964ab973b026b156ba9eca78f6c505a2e9cf4e54e10
@@ -55,4 +78,8 @@ visibility_approvals:
   - profile_id: v0.1-default
     visibility_digest: d782f57d4d88632cfd1ba0a852d96ae2dc379194081a487fceb1d1f400292efc
     actor_id: actor:human-curator
-    approved_at: "2026-09-05T04:44:27Z"
+    approved_at: 2026-09-05T04:44:27Z
+  - profile_id: v0.1-default
+    visibility_digest: 07f9b6db6928b6299d9d4ba0c2c370090fb1b17ea5b37bc977b10ee9f148a7b2
+    actor_id: actor:human-curator
+    approved_at: 2026-09-06T22:36:00Z

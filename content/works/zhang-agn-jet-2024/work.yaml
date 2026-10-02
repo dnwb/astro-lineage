@@ -1,9 +1,13 @@
 work_id: work:zhang-agn-jet-2024
-reader_state: draft
+reader_state: visible
 preferred_version:
   version_id: version:zhang-agn-jet-2024-arxiv-v1
   reason: 以本轮已核验的公开书目记录作为候选 Preferred Version。
   curation_provenance:
     actor_id: actor:agent-curator
     recorded_at: 2026-09-06T22:35:47Z
-visibility_approvals: []
+visibility_approvals:
+  - profile_id: v0.1-default
+    visibility_digest: f2c592a4467359b5e08176c0249b11269668fc763f794391953e6aa213ef8e09
+    actor_id: actor:human-curator
+    approved_at: 2026-09-06T22:36:00Z

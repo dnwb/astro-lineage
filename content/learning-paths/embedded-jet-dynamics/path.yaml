@@ -3,27 +3,35 @@ reader_state: visible
 title: From Jet Propagation to Dynamic Multi-messenger Yields
 entries:
   - work_id: work:bromberg-2011
+  - work_id: work:zhang-agn-jet-2024
   - work_id: work:zhu-2021
   - work_id: work:long-yu-2026
 transitions:
   - source_work_id: work:bromberg-2011
+    target_work_id: work:zhang-agn-jet-2024
+    reason: Apply the jet-propagation vocabulary to the dense and finite geometry of
+      an AGN accretion disk.
+  - source_work_id: work:zhang-agn-jet-2024
     target_work_id: work:zhu-2021
-    reason: Use Bromberg et al. to establish jet-head propagation, cocoon collimation, and breakout as a compact dynamical vocabulary before applying that vocabulary to Zhu et al.'s embedded AGN-disk, multi-messenger case.
+    reason: Read the choked-jet case next to see how disk confinement redirects jet
+      energy into multi-messenger channels.
   - source_work_id: work:zhu-2021
     target_work_id: work:long-yu-2026
-    reason: After Zhu et al.'s characteristic-state choked-jet and hadronic-neutrino account, study Long and Yu's trajectory-resolved shock and cooling evolution, including both choking and breakout outcomes.
+    reason: After Zhu et al.'s characteristic-state choked-jet and hadronic-neutrino
+      account, study Long and Yu's trajectory-resolved shock and cooling
+      evolution, including both choking and breakout outcomes.
 curation_provenance:
   actor_id: actor:agent-curator
-  recorded_at: "2026-09-05T07:46:01Z"
+  recorded_at: 2026-09-05T07:46:01Z
 review_state: reviewed
 review_provenance:
   actor_id: actor:human-curator
-  recorded_at: "2026-09-05T11:48:58Z"
+  recorded_at: 2026-09-06T22:36:00Z
 review_binding:
   canonicalization_version: v1
-  semantic_digest: b77f8961c2be07b6d75fa0d9060cf48b9b710dc5c94f3ce60a2ebb48d0df84dd
+  semantic_digest: 4b809f59e08495815e920378ec36ac2d932b042f5c2efdedba18b82d74fe20c4
 visibility_approvals:
   - profile_id: v0.1-default
-    visibility_digest: 8af71fcbfb79c4fb69b5177c983d894ccd76daeb08953f040e87d734c4f5cfe8
+    visibility_digest: 38e4d174b415bf745aba5a313bf087174ced541c88d26ebb1eb6461c74c07a00
     actor_id: actor:human-curator
-    approved_at: "2026-09-05T11:48:58Z"
+    approved_at: 2026-09-06T22:36:00Z

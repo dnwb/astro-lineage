@@ -20,11 +20,12 @@ import { createTemporaryWorkspace } from "./helpers/temporary-workspace.mjs";
 
 const lineReadingFile = `content/research-lines/${lineSlug}/reading.md`;
 
-async function copyContent(t = null) {
-  const { path: temporaryRoot, cleanup } = await createTemporaryWorkspace("astro-lineage-visibility-", t);
+async function copyContent(t) {
+  assert(t && typeof t.after === "function", "copyContent requires a test context t");
+  const { path: temporaryRoot } = await createTemporaryWorkspace("astro-lineage-visibility-", t);
   const contentRoot = join(temporaryRoot, "content");
   await cp(productionContent, contentRoot, { recursive: true });
-  return { temporaryRoot, contentRoot, cleanup };
+  return { temporaryRoot, contentRoot };
 }
 
 async function readVisibleRecords(contentRoot) {
@@ -128,7 +129,7 @@ test("Research Line ownership and Reading Role contracts are structural", async 
   assert.equal(codes(result).has("VISIBILITY_APPROVAL_STALE"), false);
 });
 
-test("malformed visibility approvals quarantine the entity without derived diagnostics", async () => {
+test("malformed visibility approvals quarantine the entity without derived diagnostics", async (t) => {
   for (const {
     name,
     mutate,
@@ -188,7 +189,7 @@ test("malformed visibility approvals quarantine the entity without derived diagn
       semanticDiagnosticCount: 1,
     },
   ]) {
-    const { contentRoot } = await copyContent();
+    const { contentRoot } = await copyContent(t);
     const records = await readVisibleRecords(contentRoot);
     mutate(records);
     await writeFile(join(records.lineRoot, "line.yaml"), stringify(records.line), "utf8");

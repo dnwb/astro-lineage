@@ -32,11 +32,13 @@ const secondWorkSlug = "transfit-2025";
 const thirdWorkId = "work:long-yu-2026";
 const productionEntryIds = [
   "work:bromberg-2011",
+  "work:zhang-agn-jet-2024",
   "work:zhu-2021",
   "work:long-yu-2026",
 ];
 const productionTransitionReasons = [
-  "Use Bromberg et al. to establish jet-head propagation, cocoon collimation, and breakout as a compact dynamical vocabulary before applying that vocabulary to Zhu et al.'s embedded AGN-disk, multi-messenger case.",
+  "Apply the jet-propagation vocabulary to the dense and finite geometry of an AGN accretion disk.",
+  "Read the choked-jet case next to see how disk confinement redirects jet energy into multi-messenger channels.",
   "After Zhu et al.'s characteristic-state choked-jet and hadronic-neutrino account, study Long and Yu's trajectory-resolved shock and cooling evolution, including both choking and breakout outcomes.",
 ];
 
@@ -339,12 +341,16 @@ test("the reader projection exposes only visible paths and entries while preserv
     assert.deepEqual(path.transitions.map(({ reason }) => reason), productionTransitionReasons);
     assert.deepEqual(
       path.transitions.map(({ source_work_id, target_work_id }) => [source_work_id, target_work_id]),
-      [productionEntryIds.slice(0, 2), productionEntryIds.slice(1, 3)],
+      [
+        productionEntryIds.slice(0, 2),
+        productionEntryIds.slice(1, 3),
+        productionEntryIds.slice(2, 4),
+      ],
     );
     assert.deepEqual(path.review_context, {
       status: "reviewed",
       reviewer_actor_id: "actor:human-curator",
-      reviewed_at: "2026-09-05T11:48:58Z",
+      reviewed_at: "2026-09-06T22:36:00Z",
     });
 
     await writeApprovedVisiblePath(contentRoot, {
@@ -383,9 +389,11 @@ test("the reader projection exposes only visible paths and entries while preserv
     );
     assert.deepEqual(
       projectedWithHiddenEntry.entries.map(({ work_id }) => work_id),
-      ["work:bromberg-2011", "work:long-yu-2026"],
+      ["work:bromberg-2011", "work:zhang-agn-jet-2024", "work:long-yu-2026"],
     );
-    assert.deepEqual(projectedWithHiddenEntry.transitions, []);
+    assert.equal(projectedWithHiddenEntry.transitions.length, 1);
+    assert.equal(projectedWithHiddenEntry.transitions[0].source_work_id, "work:bromberg-2011");
+    assert.equal(projectedWithHiddenEntry.transitions[0].target_work_id, "work:zhang-agn-jet-2024");
   });
 });
 
@@ -421,22 +429,26 @@ test("the static Learning Paths index and detail form a complete slug-based read
   assertInOrder(detailText, [
     "The Propagation of Relativistic Jets in External Media",
     productionTransitionReasons[0],
-    "High-energy Neutrinos from Choked Gamma-Ray Bursts in Active Galactic Nucleus Accretion Disks",
+    "Propagation of GRB Relativistic Jets in AGN Disks and Its Implication for GRB Detection",
     productionTransitionReasons[1],
+    "High-energy Neutrinos from Choked Gamma-Ray Bursts in Active Galactic Nucleus Accretion Disks",
+    productionTransitionReasons[2],
     "High-energy neutrino signatures of embedded GRB jets in AGN disks: a dynamic jet-propagation framework",
   ], "Learning Path timeline");
   for (const href of [
     "/papers/bromberg-2011/",
+    "/papers/zhang-agn-jet-2024/",
     "/papers/zhu-2021/",
     "/papers/long-yu-2026/",
   ]) {
     assert.match(detailHtml, new RegExp(`href="${href}"`, "u"), href);
     assert.equal(existsSync(join(projectRoot, "dist", href.slice(1), "index.html")), true, href);
   }
-  assert.equal((detailHtml.match(/>阅读论文<\/a>/gu) ?? []).length, 3);
-  assert.equal((detailHtml.match(/<strong>下一步为什么：<\/strong>/gu) ?? []).length, 2);
+  assert.equal((detailHtml.match(/>阅读论文<\/a>/gu) ?? []).length, 4);
+  assert.equal((detailHtml.match(/<strong>下一步为什么：<\/strong>/gu) ?? []).length, 3);
   for (const versionId of [
     "version:bromberg-2011-journal",
+    "version:zhang-agn-jet-2024-arxiv-v1",
     "version:zhu-2021-arxiv-v3",
     "version:long-yu-2026-arxiv-v1",
   ]) {

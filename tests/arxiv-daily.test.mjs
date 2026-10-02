@@ -317,13 +317,13 @@ test("a valid empty Atom feed is publishable, while invalid responses preserve t
   await writeFile(output, oldCache, "utf8");
   try {
     await assert.rejects(
-      refreshArxivFeed({ output, maxAttempts: 1, fetchImpl: async () => atomResponse("upstream error", 200, "text/html") }),
+      refreshArxivFeed({ output, announcementDate: "2026-09-07", maxAttempts: 1, fetchImpl: async () => atomResponse("upstream error", 200, "text/html") }),
       (error) => error instanceof ArxivFeedError && error.code === "ARXIV_RESPONSE_NOT_XML",
     );
     assert.equal(await readFile(output, "utf8"), oldCache);
 
     await assert.rejects(
-      refreshArxivFeed({ output, maxAttempts: 1, fetchImpl: async () => atomResponse("<feed><entry>") }),
+      refreshArxivFeed({ output, announcementDate: "2026-09-07", maxAttempts: 1, fetchImpl: async () => atomResponse("<feed><entry>") }),
       (error) => error instanceof ArxivFeedError && error.code === "ARXIV_XML_INVALID",
     );
     assert.equal(await readFile(output, "utf8"), oldCache);
@@ -352,6 +352,7 @@ test("a refresh rejects a page without complete Atom pagination metadata", async
     await assert.rejects(
       refreshArxivFeed({
         output,
+        announcementDate: "2026-09-07",
         maxAttempts: 1,
         minRequestIntervalMs: 0,
         fetchImpl: async () => atomResponse(`<?xml version="1.0"?><feed xmlns="http://www.w3.org/2005/Atom"><title>arXiv Query</title>${atomEntry()}</feed>`),
@@ -399,6 +400,7 @@ test("every retry request passes the shared rate gate and a long Retry-After exc
     await assert.rejects(
       refreshArxivFeed({
         output,
+        announcementDate: "2026-09-07",
         totalTimeoutMs: 10_000,
         minRequestIntervalMs: 3_000,
         maxAttempts: 2,
@@ -420,6 +422,7 @@ test("every retry request passes the shared rate gate and a long Retry-After exc
     delays.length = 0;
     const payload = await refreshArxivFeed({
       output,
+      announcementDate: "2026-09-07",
       totalTimeoutMs: 10_000,
       minRequestIntervalMs: 3_000,
       maxAttempts: 2,
@@ -610,6 +613,7 @@ test("an atomic publish failure leaves the previous cache intact and retains inc
     await assert.rejects(
       refreshArxivFeed({
         output,
+        announcementDate: "2026-09-07",
         maxAttempts: 1,
         fetchImpl: async () => atomResponse(atomFeed(atomEntry())),
         renameImpl: async () => { throw new Error("simulated publish failure"); },
@@ -634,6 +638,7 @@ test("a failed install with a failed rollback never deletes the only last-good c
     await assert.rejects(
       refreshArxivFeed({
         output,
+        announcementDate: "2026-09-07",
         maxAttempts: 1,
         fetchImpl: async () => atomResponse(atomFeed(atomEntry("2609.00028v1"))),
         renameImpl: async (from, to) => {
@@ -920,7 +925,7 @@ test("a refresh already in progress blocks a second publisher and preserves the 
   await writeFile(lockPath, JSON.stringify({ pid: process.pid, started_at: "2026-09-08T00:00:00Z" }), "utf8");
   try {
     await assert.rejects(
-      refreshArxivFeed({ output, maxAttempts: 1, fetchImpl: async () => atomResponse(atomFeed(atomEntry())) }),
+      refreshArxivFeed({ output, announcementDate: "2026-09-07", maxAttempts: 1, fetchImpl: async () => atomResponse(atomFeed(atomEntry())) }),
       (error) => error instanceof ArxivFeedError && error.code === "ARXIV_REFRESH_IN_PROGRESS",
     );
     assert.equal(await readFile(output, "utf8"), oldCache);
@@ -938,6 +943,7 @@ test("a response body that stalls is bounded by the request timeout", async () =
     await assert.rejects(
       refreshArxivFeed({
         output,
+        announcementDate: "2026-09-07",
         timeoutMs: 5,
         totalTimeoutMs: 100,
         maxAttempts: 1,
@@ -1094,6 +1100,7 @@ test("snapshot retention keeps the newest successful runs and replay detects tam
     for (const [runId, arxivId] of [["run-one", "2609.00009v1"], ["run-two", "2609.00010v1"], ["run-three", "2609.00011v1"]]) {
       await refreshArxivFeed({
         output,
+        announcementDate: "2026-09-07",
         artifactRoot,
         runId,
         snapshotRetention: 2,
@@ -1320,8 +1327,8 @@ test("the deployed Daily Radar page is static and exposes the latest cache data"
   assert.match(html, /<details class="radar-priority-section skip-section">/u);
   assert.doesNotMatch(html, /<details class="radar-priority-section skip-section" open/u);
   assert.doesNotMatch(html, /<details class="knowledge-detail" open/u);
-  assert.ok(html.indexOf("本期导读") < html.indexOf("今天先读"));
-  assert.ok(html.indexOf("今天先读") < html.indexOf("快速浏览 · Skim"));
+  assert.ok(html.indexOf("本期导读") < html.indexOf("必读"));
+  assert.ok(html.indexOf("必读") < html.indexOf("快速浏览 · Skim"));
   assert.ok(html.indexOf("今日知识点") < html.indexOf("来源与运行状态"));
   assert.doesNotMatch(html, /<script/iu);
 });

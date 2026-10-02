@@ -74,25 +74,38 @@ systemctl --user start astrolineage-arxiv-daily.service
 
 ---
 
-### 方案二：Linux Crontab 调度（轻量免 root 方案）
+### 方案二：Linux Crontab 调度（已启用）
 
-适合习惯使用传统 crontab 的服务器环境。
+适合习惯使用传统 crontab 的服务器环境。系统已安装并配置统一定时任务执行器 [`scripts/cron-runner.sh`](file:///home/long/axvdaily/scripts/cron-runner.sh)。
 
-1. 打开 crontab 编辑器：
-   ```bash
-   crontab -e
-   ```
-2. 参考 [`deploy/crontab/crontab.example`](file:///home/long/axvdaily/deploy/crontab/crontab.example) 添加如下任务条目：
+#### 1. 已启用的 Crontab 配置条目
+```cron
+# 基础环境变量
+SHELL=/bin/bash
+PATH=/home/long/.npm-global/bin:/usr/local/bin:/usr/bin:/bin:/home/long/.local/bin
+PROJECT_DIR=/home/long/axvdaily
 
-   ```bash
-   PROJECT_DIR=/home/long/axvdaily
-   
-   # 周一至周五上午 08:30 自动执行每日导读更新与分析
-   30 8 * * 1-5 cd $PROJECT_DIR && /usr/bin/env node scripts/arxiv-daily-scheduler.mjs >> /tmp/arxiv-daily.log 2>&1
-   
-   # 每周五上午 09:30 自动执行每周学术脉络总结
-   30 9 * * 5 cd $PROJECT_DIR && /usr/bin/env node scripts/arxiv-weekly-summary.mjs >> /tmp/arxiv-weekly.log 2>&1
-   ```
+# 指定 cron 时区为北京时间（系统 cronie 支持 CRON_TZ 变量）
+CRON_TZ=Asia/Shanghai
+
+# 每日导读；周五自动追加周报。构建后独立同步频道及年度 NotebookLM。
+0 10 * * 1-5 /bin/bash /home/long/axvdaily/scripts/cron-runner.sh auto >> /tmp/arxiv-task.log 2>&1
+```
+
+#### 2. 腾讯频道发布联动
+
+年度 NotebookLM 的一次性服务器认证、单独补同步和目标状态说明见 [年度精读同步](runbooks/notebooklm-annual-sync.md)。NotebookLM 未登录不阻塞频道，QQ 主动通知单独等待权限。
+定时任务执行完毕后，会自动调用 [`scripts/tencent-channel-publisher.mjs`](file:///home/long/axvdaily/scripts/tencent-channel-publisher.mjs)：
+- 每日导读自动推送到 **`AstroLineage前沿`** 频道的 **`每日arXiv导读`** 版块（ID: `742956201`）；
+- 每周总结自动推送到 **`AstroLineage前沿`** 频道的 **`前沿学术周报`** 版块（ID: `742956302`）。
+
+#### 3. 日常检查与运维命令
+- **查看当前生效的定时任务**：`crontab -l`
+- **编辑修改定时任务**：`crontab -e`
+- **查看每日任务执行日志**：`tail -f /tmp/arxiv-daily.log`
+- **查看每周总结执行日志**：`tail -f /tmp/arxiv-weekly.log`
+- **手动立即运行一次每日流程**：`bash scripts/cron-runner.sh daily`
+- **手动立即运行一次周报流程**：`bash scripts/cron-runner.sh weekly`
 
 ---
 

@@ -46,13 +46,15 @@ flowchart TD
 
 ## 二、一键健康检查与诊断 (`--doctor`)
 
-系统在官方 QQ 机器人模块中内置了非破坏性自检诊断命令：
+默认诊断仅检查本地配置，不申请 token、不调用模型、不发送 QQ 消息：
 
 ```bash
 node scripts/qq-official-bot.mjs --doctor
 ```
 
-### 诊断步骤说明
+需要真实连通性检查时，显式运行 `node scripts/qq-official-bot.mjs --doctor --live`。该模式会申请 token 并调用收费模型，但不发送 QQ 消息。CI 不得使用 `--live`。
+
+### 显式 live 诊断步骤说明
 1. **环境变量**：核验 `QQ_APP_ID`（纯数字格式）与 `QQ_APP_SECRET`（纯 32 位 Hex，且无非法前缀）；
 2. **官方 OAuth 凭据交换**：通过 `getAppAccessToken` 向腾讯开放平台换取动态 AccessToken；
 3. **官方 Gateway 路由**：向 `api.sgroup.qq.com/gateway` 确认 WebSocket 网关地址可达；
@@ -60,8 +62,17 @@ node scripts/qq-official-bot.mjs --doctor
 5. **本地数据缓存完整性**：检查 `arxiv-daily.json`、`daily-radar.json`、`arxiv-weekly.json` 的有效性。
 
 **退出码约定**：
-- `0`：全部核心检查项通过，服务环境健康；
+- `0`：所选检查通过；默认离线模式不证明凭据、网关或模型可用；
 - `1`：检测到异常项，并在控制台输出明确的定位修复指引。
+
+### 安全与上线门槛
+
+- 模型凭据只能来自环境变量。曾在源码中出现的备用密钥必须在供应商处轮换；移除源码不等于撤销旧密钥。
+- 主、备用模型请求只允许 HTTPS，禁止重定向。备用服务必须显式配置 `FALLBACK_OPENAI_BASE_URL` 和密钥；HTTP 备用地址会被拒绝，不自动猜测 HTTPS 地址。
+- Node >=22.20 的原生 WebSocket，无需单独安装 `ws`。请求有超时、模型输入/输出大小上限；同时最多处理 4 个回复，超量消息不排队。
+- 消息去重仅覆盖当前进程内 30 分钟（最多 2000 ID），不承诺跨重启 exactly-once；失败或超量时可用新消息重试。
+- 知识状态读取已发布 feed/radar 并复用导读校验，未导读不是排除；核心书目使用通过验证的可见 projection。未接入 NotebookLM，不声称读过全文。
+- 代码测试通过后仍需受控重启及真实群/私聊验收；不要把旧进程在线当作新版本已上线。
 
 ---
 

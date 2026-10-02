@@ -172,8 +172,8 @@ const groups = {
 <html lang="zh-CN"><body>
   <main class="radar-page">
     <DailyRadarBrief brief={brief} visibleWorkLinks={visibleWorkLinks} groups={groups} />
-    <DailyRadarPrioritySection id="must-read" items={groups.must_read} primaryLabel="今天先读" englishLabel="Must Read" visibleWorkLinks={visibleWorkLinks} />
-    <DailyRadarPrioritySection id="worth-knowing" items={groups.worth_knowing} primaryLabel="值得知道" englishLabel="Worth Knowing" visibleWorkLinks={visibleWorkLinks} />
+    <DailyRadarPrioritySection id="must-read" items={groups.must_read} primaryLabel="必读" englishLabel="Must Read" visibleWorkLinks={visibleWorkLinks} />
+    <DailyRadarPrioritySection id="worth-knowing" items={groups.worth_knowing} primaryLabel="关注" englishLabel="Worth Knowing" visibleWorkLinks={visibleWorkLinks} />
     <details class="radar-priority-section skip-section">
       <summary>快速浏览 · Skim</summary>
       <DailyRadarPrioritySection id="skim" items={groups.skip} primaryLabel="快速浏览" englishLabel="Skim" visibleWorkLinks={visibleWorkLinks} />

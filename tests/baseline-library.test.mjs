@@ -21,7 +21,6 @@ const expectedNewWorks = [
   ["work:tan-yu-2020", "tan-yu-2020"],
   ["work:yu-gw-jet-2020", "yu-gw-jet-2020"],
   ["work:zhang-grb-radio-2022", "zhang-grb-radio-2022"],
-  ["work:zhang-agn-jet-2024", "zhang-agn-jet-2024"],
   ["work:liu-multiple-ejecta-csm-2018", "liu-multiple-ejecta-csm-2018"],
   ["work:liu-csm-formalism-2020", "liu-csm-formalism-2020"],
   ["work:transfit-csm-2025", "transfit-csm-2025"],
@@ -64,7 +63,7 @@ const expectedFormulaByWork = new Map([
   ["work:li-gw170817-2018", String.raw`E_{\rm rot} = \frac{1}{2} I \Omega_0^2 \approx 3\times 10^{52}\,{\rm erg}\,\left(\frac{P_0}{1\,{\rm ms}}\right)^{-2}`],
 ]);
 
-test("the baseline library contains the 36 newly scoped Work bundles as draft candidates", async () => {
+test("the baseline library contains the 35 newly scoped Work bundles as draft candidates", async () => {
   const snapshot = await loadCanonicalContent(contentRoot);
   const report = await validateCanonicalContent(contentRoot, { dataset: "baseline-library" });
   assert.equal(report.valid, true, JSON.stringify(report.diagnostics));
@@ -95,7 +94,7 @@ test("the baseline library contains the 36 newly scoped Work bundles as draft ca
       evidence.excerpt.trim().length > 0
     )), `${slug}/evidence fields`);
   }
-  assert.equal(arxivSources, 30);
+  assert.equal(arxivSources, 29);
   assert.equal(crossrefSources, 6);
 });
 
@@ -127,7 +126,7 @@ test("each new baseline reading is bilingual, structurally complete, and contain
 test("new baseline drafts remain outside the visible reader projection", async () => {
   const snapshot = await loadCanonicalContent(contentRoot);
   const reader = projectVisibleSnapshot(snapshot);
-  assert.equal(reader.works.length, 5);
+  assert.equal(reader.works.length, 6);
   for (const [workId] of expectedNewWorks) {
     assert.equal(reader.works.some((work) => work.work_id === workId), false, workId);
   }

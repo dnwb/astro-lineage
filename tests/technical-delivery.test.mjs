@@ -71,11 +71,16 @@ const manifestPath = join(projectRoot, "src/data/arxiv-archives/manifest.json");
 const archivedDailyRoutes = existsSync(manifestPath)
   ? JSON.parse(readFileSync(manifestPath, "utf8")).weeks.flatMap((w) => w.days.map((d) => `/arxiv-daily/${d.date}/`))
   : [];
+const archivedWeeklyRoutes = existsSync(manifestPath)
+  ? JSON.parse(readFileSync(manifestPath, "utf8")).weeks.map((w) => `/arxiv-weekly/${w.week_id}/`)
+  : [];
 const expectedRoutes = [
   "/",
   "/arxiv-daily/",
   ...archivedDailyRoutes,
   "/arxiv-weekly/",
+  ...archivedWeeklyRoutes,
+  "/arxiv-archives/",
   "/papers/",
   ...paperSlugs.map((slug) => `/papers/${slug}/`),
   "/research-lines/",

@@ -3,6 +3,7 @@ import ReaderText from "./ReaderText.astro";
 import DailyRadarGuide from "./DailyRadarGuide.astro";
 import DailyRadarSource from "./DailyRadarSource.astro";
 import { projectPotentialLineage, radarCardAnchor, radarCoverageDescription } from "../../scripts/daily-radar.mjs";
+import { matchScientificTags, extractTransientIdentifiers } from "../domain/academic-domain.mjs";
 
 type AnyRecord = Record<string, any>;
 type CoverageLevel = "abstract_only" | "body_partial" | "full_body";
@@ -30,6 +31,13 @@ const cardVariant = isSkim
   : item.analysis.priority === "must_read"
     ? "must-read"
     : "worth-knowing";
+
+const scientificTags = matchScientificTags(item);
+const transientIds = extractTransientIdentifiers(
+  `${item.title} ${guide.problem || ""} ${record.analysis.result || ""} ${guide.reason || ""}`
+);
+const searchIndex = `${item.title} ${item.arxiv_id} ${(item.authors || []).join(" ")} ${guide.problem || ""} ${record.analysis.result || ""} ${guide.reason || ""} ${scientificTags.join(" ")} ${transientIds.join(" ")}`.toLowerCase();
+
 const relationLabels: Record<string, string> = {
   builds_on: "建立在其上",
   extends: "扩展",
@@ -45,9 +53,33 @@ function priorityLabel(priority: string) {
 }
 ---
 
-<li class="radar-list-item">
+<li
+  class="radar-list-item"
+  data-arxiv-id={item.arxiv_id}
+  data-priority={item.analysis.priority}
+  data-tags={scientificTags.join(",")}
+  data-transients={transientIds.join(",")}
+  data-search={searchIndex}
+>
   <article class={`radar-card radar-card-${cardVariant}`} id={radarCardAnchor(item.arxiv_id, item.revision)}>
+    <div class="radar-card-badge-row">
+      <span class={`radar-priority-pill priority-pill-${cardVariant}`}>
+        {item.analysis.priority === "must_read" ? "⭐ 必读 (Must Read)" : isSkim ? "略读 (Skim)" : "📌 关注 (Worth Knowing)"}
+      </span>
+      {transientIds.map((tid: string) => (
+        <span class="radar-transient-tag" title="观测事件目标">🔭 {tid}</span>
+      ))}
+      {scientificTags.map((tag: string) => (
+        <span class="radar-category-tag">{tag}</span>
+      ))}
+    </div>
     <h3><a class="paper-title" href={item.url}>{item.title}</a></h3>
+    {Array.isArray(item.authors) && item.authors.length > 0 ? (
+      <p class="radar-paper-authors">
+        <span class="language-primary">作者：{item.authors.join(", ")}</span>
+        <span class="language-english" lang="en">Authors: {item.authors.join(", ")}</span>
+      </p>
+    ) : null}
     <div class="language-primary">
       {item.analysis.priority === "must_read" ? (
         <>
@@ -91,3 +123,83 @@ function priorityLabel(priority: string) {
     <DailyRadarSource item={item} />
   </article>
 </li>
+
+<style>
+  .radar-card-badge-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem;
+    margin-bottom: 0.5rem;
+  }
+  .radar-priority-pill {
+    display: inline-block;
+    padding: 0.2rem 0.55rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    border-radius: 9999px;
+    letter-spacing: 0.02em;
+  }
+  .priority-pill-must-read {
+    background: #fed7aa;
+    color: #9a3412;
+    border: 1px solid #f97316;
+  }
+  .priority-pill-worth-knowing {
+    background: #e0e7ff;
+    color: #3730a3;
+    border: 1px solid #818cf8;
+  }
+  .priority-pill-skim {
+    background: #f1f5f9;
+    color: #475569;
+    border: 1px solid #cbd5e1;
+  }
+  .radar-transient-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.15rem 0.45rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    font-family: ui-monospace, monospace;
+    background: #fef08a;
+    color: #854d0e;
+    border: 1px solid #eab308;
+    border-radius: 0.25rem;
+  }
+  .radar-category-tag {
+    display: inline-block;
+    padding: 0.15rem 0.45rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    background: #f1f5f9;
+    color: #334155;
+    border: 1px solid #cbd5e1;
+    border-radius: 0.25rem;
+  }
+  :global([data-theme="dark"]) .priority-pill-must-read {
+    background: #431407;
+    color: #fdba74;
+    border-color: #ea580c;
+  }
+  :global([data-theme="dark"]) .priority-pill-worth-knowing {
+    background: #1e1b4b;
+    color: #c7d2fe;
+    border-color: #6366f1;
+  }
+  :global([data-theme="dark"]) .priority-pill-skim {
+    background: #1e293b;
+    color: #94a3b8;
+    border-color: #475569;
+  }
+  :global([data-theme="dark"]) .radar-transient-tag {
+    background: #422006;
+    color: #fde047;
+    border-color: #ca8a04;
+  }
+  :global([data-theme="dark"]) .radar-category-tag {
+    background: #1e293b;
+    color: #cbd5e1;
+    border-color: #475569;
+  }
+</style>

@@ -151,6 +151,7 @@ function coverageEvidenceDiagnostics(coverage) {
   const bodyLevel = ["body_partial", "full_body"].includes(coverage?.level);
   if (!bodyLevel) return [];
   const inspected = Array.isArray(coverage?.inspected_sections) ? coverage.inspected_sections : [];
+  if (inspected.some((section) => !hasText(section))) return ["analysis_invalid"];
   const hasBodySection = inspected.some((section) => hasText(section) && !/^abstract$/iu.test(section.trim()));
   const bodyReferences = Array.isArray(coverage?.source_references)
     ? coverage.source_references.filter((reference) => reference?.kind === "arxiv_source_package")
@@ -164,20 +165,33 @@ function coverageEvidenceDiagnostics(coverage) {
   if (coverage.level === "full_body") {
     const sectionCoverage = coverage.section_coverage;
     if (!isObject(sectionCoverage) ||
-      ["problem", "assumptions", "method", "results", "limitations"].some((field) => sectionCoverage[field] !== true) ||
+      ["problem", "assumptions", "method", "results", "limitations"].some((field) => typeof sectionCoverage[field] !== "boolean") ||
       !["checked", "not_needed", "not_applicable", "not_checked"].includes(sectionCoverage.appendices)) {
       return ["analysis_invalid"];
     }
-    const sectionPatterns = {
-      problem: /problem|introduction|background/iu,
-      assumptions: /assumption|model|setup/iu,
-      method: /method|model|approach|data/iu,
-      results: /result|finding|analysis|experiment/iu,
-      limitations: /discussion|limit|conclusion/iu,
-    };
-    if (Object.entries(sectionPatterns).some(([field, pattern]) =>
-      sectionCoverage[field] !== true || !inspected.some((section) => hasText(section) && pattern.test(section)))) {
-      return ["analysis_invalid"];
+    if (Object.hasOwn(coverage, "source_sections")) {
+      const sourceSections = coverage.source_sections;
+      if (!Array.isArray(sourceSections)) return ["analysis_invalid"];
+      const normalized = (sections) => sections.map((section) => section.trim().toLocaleLowerCase());
+      if (sourceSections.length === 0 || sourceSections.some((section) => !hasText(section)) ||
+          new Set(normalized(sourceSections)).size !== sourceSections.length ||
+          new Set(normalized(inspected)).size !== inspected.length ||
+          sourceSections.length !== inspected.length ||
+          normalized(sourceSections).some((section) => !normalized(inspected).includes(section))) {
+        return ["analysis_invalid"];
+      }
+    } else {
+      const sectionPatterns = {
+        problem: /problem|introduction|background/iu,
+        assumptions: /assumption|model|setup/iu,
+        method: /method|model|approach|data/iu,
+        results: /result|finding|analysis|experiment/iu,
+        limitations: /discussion|limit|conclusion/iu,
+      };
+      if (Object.entries(sectionPatterns).some(([field, pattern]) =>
+        sectionCoverage[field] !== true || !inspected.some((section) => hasText(section) && pattern.test(section)))) {
+        return ["analysis_invalid"];
+      }
     }
   }
   return [];
@@ -721,3 +735,39 @@ export function validateDailyRadarPayload(feed, radar, options = {}) {
     model,
   };
 }
+
+export function buildOpeningBrief(feed, radar) {
+  const { groups } = buildDailyRadarModel(feed, radar);
+  const eligible = [...groups.must_read, ...groups.worth_knowing, ...groups.skip];
+  if (eligible.length === 0) return { status: "unavailable", reason: "本期尚无可核验的科学导读。" };
+  const reference = (item) => ({
+    arxiv_id: item.arxiv_id,
+    revision: Number(item.revision),
+    source_fingerprint: sourceFingerprint(item),
+    guide_fingerprint: guideFingerprint(item.analysis),
+  });
+  const sentence = (text) => {
+    const value = String(text).trim();
+    const chineseStop = value.search(/[。！？]/u);
+    return chineseStop < 0 ? value.split(/(?<=[.!?])\s+/u)[0] : value.slice(0, chineseStop + 1);
+  };
+  const focus = groups.must_read[0] || groups.worth_knowing[0];
+  return {
+    status: "ready",
+    edition_fingerprint: editionFingerprint(feed),
+    intro: focus
+      ? `本次更新可先看「${focus.title}」${groups.must_read.length + groups.worth_knowing.length > 1 ? "等论文" : ""}；以下导读仅概括已核对的来源内容。`
+      : "本次更新目前只有摘要级快速浏览条目；打开原文后再决定是否深入阅读。",
+    must_read: groups.must_read.map((item) => ({
+      ...reference(item),
+      label: item.title,
+      text: sentence(item.analysis?.analysis?.result || item.analysis?.analysis?.reason || ""),
+      anchor: radarCardAnchor(item.arxiv_id, item.revision),
+    })),
+    worth_knowing: groups.worth_knowing.map(reference),
+    skip: groups.skip.map(reference),
+    ...(groups.worth_knowing.length > 0 ? { worth_knowing_summary: `其他值得知道的工作：${groups.worth_knowing.slice(0, 2).map((item) => sentence(item.analysis?.analysis?.result || item.analysis?.analysis?.reason || "")).join("；")}${groups.worth_knowing.length > 2 ? "；其余见下方卡片。" : ""}` } : {}),
+    ...(groups.skip.length > 0 ? { skim_summary: `快速浏览条目涉及「${groups.skip.slice(0, 2).map((item) => item.title).join("」「")}」${groups.skip.length > 2 ? "等主题" : ""}；目前仅依据摘要分类。` } : {}),
+  };
+}
+

@@ -150,8 +150,8 @@ const generatedLabel = Number.isNaN(generatedAt.valueOf())
         <div class="historical-quick-stats">
           <span class="stat-pill total">总收录候选 <strong>{model.counts.total}</strong> 篇</span>
           <span class="stat-pill analyzed">有效研判 <strong>{model.counts.analyzed}</strong> 篇</span>
-          <span class="stat-pill must">今天先读 <strong>{priorityGroups.must_read?.length ?? 0}</strong> 篇</span>
-          <span class="stat-pill worth">值得知道 <strong>{priorityGroups.worth_knowing?.length ?? 0}</strong> 篇</span>
+          <span class="stat-pill must">必读 <strong>{priorityGroups.must_read?.length ?? 0}</strong> 篇</span>
+          <span class="stat-pill worth">关注 <strong>{priorityGroups.worth_knowing?.length ?? 0}</strong> 篇</span>
           <span class="stat-pill skim">快速浏览 <strong>{priorityGroups.skip?.length ?? 0}</strong> 篇</span>
           <span class="stat-pill pending">待分析 <strong>{model.pending?.length ?? 0}</strong> 篇</span>
         </div>
@@ -191,7 +191,7 @@ const generatedLabel = Number.isNaN(generatedAt.valueOf())
       <DailyRadarPrioritySection
         id="must-read"
         items={priorityGroups.must_read}
-        primaryLabel="今天先读"
+        primaryLabel="必读"
         englishLabel="Must Read"
         visibleWorkLinks={visibleWorkLinks}
       />
@@ -199,7 +199,7 @@ const generatedLabel = Number.isNaN(generatedAt.valueOf())
       <DailyRadarPrioritySection
         id="worth-knowing"
         items={priorityGroups.worth_knowing}
-        primaryLabel="值得知道"
+        primaryLabel="关注"
         englishLabel="Worth Knowing"
         visibleWorkLinks={visibleWorkLinks}
       />

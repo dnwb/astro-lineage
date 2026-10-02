@@ -1,8 +1,9 @@
-import { readFile, writeFile, mkdir, readdir } from "node:fs/promises";
-import { resolve, join } from "node:path";
+import { readFile, mkdir, readdir } from "node:fs/promises";
+import { resolve, join, dirname } from "node:path";
 import { existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
-import { validateDailyRadarPayload } from "./daily-radar.mjs";
+import { buildOpeningBrief, editionFingerprint, normalizeArxivId, sourceFingerprint, validateDailyRadarPayload } from "./daily-radar.mjs";
+import { acquireRefreshLock, readPublishedArxivEdition, releaseRefreshLock, writeJsonAtomically } from "./arxiv-daily.mjs";
 
 const DEFAULT_ARCHIVE_ROOT = resolve(fileURLToPath(new URL("../src/data/arxiv-archives", import.meta.url)));
 const DEFAULT_DAILY_FEED = resolve(fileURLToPath(new URL("../src/data/arxiv-daily.json", import.meta.url)));
@@ -10,6 +11,62 @@ const DEFAULT_DAILY_RADAR = resolve(fileURLToPath(new URL("../src/data/daily-rad
 const DEFAULT_WEEKLY_FILE = resolve(fileURLToPath(new URL("../src/data/arxiv-weekly.json", import.meta.url)));
 const DEFAULT_DAILY_CACHE = resolve(fileURLToPath(new URL("../.cache/arxiv-daily/generations", import.meta.url)));
 const DEFAULT_WEEKLY_CACHE = resolve(fileURLToPath(new URL("../.cache/arxiv-weekly/archives", import.meta.url)));
+export const DEFAULT_DIRTY_WEEKS_PATH = resolve(fileURLToPath(new URL("../.cache/dirty-weeks.json", import.meta.url)));
+
+export async function getDirtyWeeks(path = DEFAULT_DIRTY_WEEKS_PATH) {
+  try {
+    if (!existsSync(path)) return [];
+    const data = JSON.parse(await readFile(path, "utf8"));
+    return Array.isArray(data) ? data : [];
+  } catch {
+    return [];
+  }
+}
+
+export async function markWeekDirty(weekId, path = DEFAULT_DIRTY_WEEKS_PATH) {
+  if (!weekId) return;
+  const lock = `${path}.lock`;
+  await acquireRefreshLock(lock);
+  try {
+    await mkdir(dirname(path), { recursive: true });
+    const current = await getDirtyWeeks(path);
+    if (!current.includes(weekId)) {
+      current.push(weekId);
+      current.sort();
+      await writeJsonAtomically(path, current);
+      console.log(`[Archive] Marked natural week ${weekId} as dirty in ${path}`);
+    }
+  } catch (err) {
+    console.warn(`[Archive] Could not mark week dirty ${weekId}:`, err.message);
+  } finally {
+    await releaseRefreshLock(lock);
+  }
+}
+
+export async function clearDirtyWeek(weekId, path = DEFAULT_DIRTY_WEEKS_PATH) {
+  if (!weekId) return;
+  const lock = `${path}.lock`;
+  await acquireRefreshLock(lock);
+  try {
+    const current = await getDirtyWeeks(path);
+    const next = current.filter((w) => w !== weekId);
+    if (next.length !== current.length) {
+      await writeJsonAtomically(path, next);
+    }
+  } catch {} finally {
+    await releaseRefreshLock(lock);
+  }
+}
+
+export async function clearAllDirtyWeeks(path = DEFAULT_DIRTY_WEEKS_PATH) {
+  const lock = `${path}.lock`;
+  await acquireRefreshLock(lock);
+  try {
+    await writeJsonAtomically(path, []);
+  } catch {} finally {
+    await releaseRefreshLock(lock);
+  }
+}
 
 export function getIsoWeek(dateStr) {
   const d = new Date(dateStr + "T12:00:00Z");
@@ -40,6 +97,64 @@ export function getWeekMondayAndSunday(weekId) {
   };
 }
 
+export function getNaturalWeekBounds(weekId) {
+  const { monday, sunday } = getWeekMondayAndSunday(weekId);
+  const start = new Date(`${monday}T00:00:00Z`);
+  const announcementDates = Array.from({ length: 7 }, (_, i) =>
+    new Date(start.valueOf() + i * 86400000).toISOString().slice(0, 10));
+  return {
+    monday,
+    sunday,
+    announcementDates,
+    dateRange: `${monday} ~ ${sunday}`,
+  };
+}
+
+function batchIdFor(feed, radar, date) {
+  return feed?.window?.batch_id ?? radar?.edition?.window?.batch_id ?? `announcement-${date}`;
+}
+
+function eligibleAnalysisMap(feed, radar) {
+  const { model } = validateDailyRadarPayload(feed, radar);
+  return new Map(["must_read", "worth_knowing", "skip"].flatMap((priority) =>
+    model.groups[priority].map((item) => [`${normalizeArxivId(item.arxiv_id)}@${item.revision}`, item.analysis])));
+}
+
+function analysisStrength(analysis) {
+  const coverage = { abstract_only: 0, body_partial: 1, full_body: 2 }[analysis?.coverage?.level] ?? -1;
+  const priority = { skip: 0, worth_knowing: 1, must_read: 2 }[analysis?.priority] ?? -1;
+  return coverage * 3 + priority;
+}
+
+function addMatchingAnalysis(feed, radar, candidate, eligibleOnly = false) {
+  const analysis = candidate?.coverage ? candidate : candidate?.analysis ?? candidate;
+  if (!analysis?.arxiv_id || !Number.isInteger(Number(analysis.revision))) return radar;
+  const entry = (feed.entries || []).find((item) =>
+    normalizeArxivId(item.arxiv_id) === normalizeArxivId(analysis.arxiv_id) && Number(item.revision) === Number(analysis.revision));
+  if (!entry || analysis.source_fingerprint !== sourceFingerprint(entry)) return radar;
+
+  const key = `${normalizeArxivId(entry.arxiv_id)}@${entry.revision}`;
+  const existing = (Array.isArray(radar.analyses) ? radar.analyses : []).find((item) =>
+    `${normalizeArxivId(item.arxiv_id)}@${item.revision}` === key);
+  if (existing && analysisStrength(existing) >= analysisStrength(analysis)) return radar;
+
+  const analyses = (Array.isArray(radar.analyses) ? radar.analyses : [])
+    .filter((item) => `${normalizeArxivId(item.arxiv_id)}@${item.revision}` !== key);
+  const mergedRadar = { ...radar, analyses: [...analyses, analysis] };
+  const validation = validateDailyRadarPayload(feed, mergedRadar, { visibleWorkIds: [] });
+  if (validation.fatalDiagnostics.length > 0) return radar;
+  return !eligibleOnly || eligibleAnalysisMap(feed, mergedRadar).has(key) ? mergedRadar : radar;
+}
+
+function projectHistoricalAnalyses(feed, radar, records, date) {
+  const batchId = batchIdFor(feed, radar, date);
+  const fingerprint = editionFingerprint(feed);
+  return records.reduce((current, record) => {
+    if (record?.historical_edition !== batchId || record?.historical_edition_fingerprint !== fingerprint) return current;
+    return addMatchingAnalysis(feed, current, record, true);
+  }, radar);
+}
+
 export async function readJsonSafe(filePath) {
   try {
     const raw = await readFile(filePath, "utf8");
@@ -49,13 +164,14 @@ export async function readJsonSafe(filePath) {
   }
 }
 
-export async function syncArxivArchives({
+async function syncArxivArchivesWithLockHeld({
   archiveRoot = DEFAULT_ARCHIVE_ROOT,
   currentFeedPath = DEFAULT_DAILY_FEED,
   currentRadarPath = DEFAULT_DAILY_RADAR,
   currentWeeklyPath = DEFAULT_WEEKLY_FILE,
   dailyCacheDir = DEFAULT_DAILY_CACHE,
   weeklyCacheDir = DEFAULT_WEEKLY_CACHE,
+  dirtyWeeksPath = DEFAULT_DIRTY_WEEKS_PATH,
 } = {}) {
   const dailyArchiveDir = join(archiveRoot, "daily");
   const weeklyArchiveDir = join(archiveRoot, "weekly");
@@ -63,6 +179,28 @@ export async function syncArxivArchives({
   await mkdir(weeklyArchiveDir, { recursive: true });
 
   const discoveredDaily = new Map();
+  const allHistoricalAnalyses = [];
+  const allAnalyses = new Map();
+
+  function considerDaily(feed, radar, date, source) {
+    if (!/^\d{4}-\d{2}-\d{2}$/u.test(date ?? "") || !Array.isArray(feed?.entries) || feed.entries.length === 0) return;
+    const validation = validateDailyRadarPayload(feed, radar, { visibleWorkIds: [] });
+    if (!validation.valid) {
+      console.warn(`[Archive Sync] Skipping invalid ${source} for ${date}: ${validation.diagnostics.join(", ")}`);
+      return;
+    }
+    if (Array.isArray(radar.historical_analyses)) allHistoricalAnalyses.push(...radar.historical_analyses);
+    if (!allAnalyses.has(date)) allAnalyses.set(date, []);
+    allAnalyses.get(date).push(...radar.analyses.map((analysis) => ({
+      batchId: batchIdFor(feed, radar, date), analysis,
+    })));
+    const generatedAt = Date.parse(feed.generated_at ?? "") || 0;
+    const sourceRank = source === "current" ? 2 : source === "archived" ? 1 : 0;
+    const previous = discoveredDaily.get(date);
+    if (!previous || generatedAt > previous.generatedAt || (generatedAt === previous.generatedAt && sourceRank >= previous.sourceRank)) {
+      discoveredDaily.set(date, { feed, radar, date, source, generatedAt, sourceRank });
+    }
+  }
 
   // 1. Scan .cache/arxiv-daily/generations
   if (existsSync(dailyCacheDir)) {
@@ -78,9 +216,7 @@ export async function syncArxivArchives({
           const radar = await readJsonSafe(file1);
           if (feed && radar) {
             const date = feed.window?.announcement_date || radar.edition?.window?.announcement_date;
-            if (date && /^\d{4}-\d{2}-\d{2}$/u.test(date)) {
-              discoveredDaily.set(date, { feed, radar, date, source: `cache:${ent.name}` });
-            }
+            considerDaily(feed, radar, date, `cache:${ent.name}`);
           }
         }
       }
@@ -89,16 +225,16 @@ export async function syncArxivArchives({
     }
   }
 
-  // 2. Scan current active src/data/arxiv-daily.json & daily-radar.json (authoritative for latest date)
-  if (existsSync(currentFeedPath) && existsSync(currentRadarPath)) {
-    const curFeed = await readJsonSafe(currentFeedPath);
-    const curRadar = await readJsonSafe(currentRadarPath);
-    if (curFeed && curRadar) {
-      const curDate = curFeed.window?.announcement_date || curRadar.edition?.window?.announcement_date;
-      if (curDate) {
-        discoveredDaily.set(curDate, { feed: curFeed, radar: curRadar, date: curDate, source: "current" });
-      }
-    }
+  // 2. Read the active pair through its published pointer, not potentially
+  // mixed compatibility mirrors left behind by an interrupted publication.
+  try {
+    const current = await readPublishedArxivEdition({ output: currentFeedPath, radarOutput: currentRadarPath });
+    const curFeed = current?.feed;
+    const curRadar = current?.radar;
+    const curDate = curFeed?.window?.announcement_date || curRadar?.edition?.window?.announcement_date;
+    if (curFeed && curRadar) considerDaily(curFeed, curRadar, curDate, "current");
+  } catch (err) {
+    console.warn("[Archive Sync] Warning reading current published edition:", err.message);
   }
 
   // 3. Scan existing archived daily files in case some were manually created or preserved
@@ -108,26 +244,56 @@ export async function syncArxivArchives({
       for (const file of archivedFiles) {
         if (!file.endsWith(".json")) continue;
         const date = file.slice(0, -5);
-        if (!discoveredDaily.has(date)) {
-          const content = await readJsonSafe(join(dailyArchiveDir, file));
-          if (content?.feed && content?.radar) {
-            discoveredDaily.set(date, { feed: content.feed, radar: content.radar, date, source: "archived" });
+        const content = await readJsonSafe(join(dailyArchiveDir, file));
+        if (content?.feed && content?.radar) considerDaily(content.feed, content.radar, date, "archived");
+      }
+    } catch {}
+  }
+  // 4. Ingest completed analyses from persistent screening queue
+  const queuePath = resolve(".cache/arxiv-daily/screening-queue.json");
+  if (existsSync(queuePath)) {
+    try {
+      const queue = await readJsonSafe(queuePath);
+      if (Array.isArray(queue?.items)) {
+        for (const item of queue.items) {
+          if (item?.state === "complete" && item.analysis?.status === "ready") {
+            for (const edition of item.editions || []) {
+              allHistoricalAnalyses.push({
+                ...item.analysis,
+                historical_edition: edition.historical_edition,
+                historical_edition_fingerprint: edition.historical_edition_fingerprint,
+              });
+            }
           }
         }
       }
     } catch {}
   }
 
+  const historicalAnalyses = [...new Map(allHistoricalAnalyses
+    .map((analysis) => [`${analysis.historical_edition}\u0000${analysis.historical_edition_fingerprint}\u0000${normalizeArxivId(analysis.arxiv_id)}@${analysis.revision}\u0000${analysis.source_fingerprint}`, analysis])).values()];
+
   // Process and write individual daily archives
   const processedDays = [];
   for (const [date, item] of discoveredDaily.entries()) {
-    const { feed, radar } = item;
+    const { feed } = item;
+    let radar = item.radar;
+    const dailyDest = join(dailyArchiveDir, `${date}.json`);
+    const batchId = batchIdFor(feed, radar, date);
+    for (const candidate of allAnalyses.get(date) ?? []) {
+      if (candidate.batchId === batchId) radar = addMatchingAnalysis(feed, radar, candidate.analysis);
+    }
+    radar = projectHistoricalAnalyses(feed, radar, historicalAnalyses, date);
+    radar.opening_brief = buildOpeningBrief(feed, radar);
     const weekId = getIsoWeek(date);
     const window = feed.window || radar.edition?.window || {};
     const weekday = window.announcement_weekday || new Date(date + "T12:00:00Z").toLocaleDateString("en-US", { weekday: "short" });
-    const batchId = window.batch_id || `announcement-${date}`;
+    const archiveBatchId = batchId;
 
     const validation = validateDailyRadarPayload(feed, radar, { visibleWorkIds: [] });
+    if (!validation.valid) {
+      throw new Error(`ARXIV_ARCHIVE_INVALID: ${date}: ${validation.diagnostics.join(", ")}`);
+    }
     const model = validation.model;
     const counts = model.counts || {
       total: feed.entries?.length || 0,
@@ -157,7 +323,7 @@ export async function syncArxivArchives({
       date,
       week_id: weekId,
       weekday,
-      batch_id: batchId,
+      batch_id: archiveBatchId,
       generated_at: feed.generated_at || radar.edition?.generated_at || new Date().toISOString(),
       counts: {
         total: counts.total,
@@ -173,14 +339,32 @@ export async function syncArxivArchives({
       radar,
     };
 
-    const dailyDest = join(dailyArchiveDir, `${date}.json`);
-    await writeFile(dailyDest, `${JSON.stringify(dailyArchivePayload, null, 2)}\n`, "utf8");
+    let fileChanged = true;
+    if (existsSync(dailyDest)) {
+      try {
+        const existingData = await readJsonSafe(dailyDest);
+        if (existingData &&
+            existingData.counts?.analyzed === dailyArchivePayload.counts?.analyzed &&
+            existingData.counts?.pending === dailyArchivePayload.counts?.pending &&
+            existingData.counts?.must_read === dailyArchivePayload.counts?.must_read &&
+            existingData.counts?.worth_knowing === dailyArchivePayload.counts?.worth_knowing &&
+            JSON.stringify(existingData.highlights) === JSON.stringify(dailyArchivePayload.highlights)) {
+          fileChanged = false;
+        }
+      } catch {}
+    }
+
+    await writeJsonAtomically(dailyDest, dailyArchivePayload);
+
+    if (fileChanged) {
+      await markWeekDirty(weekId, dirtyWeeksPath);
+    }
 
     processedDays.push({
       date,
       weekday,
       week_id: weekId,
-      batch_id: batchId,
+      batch_id: archiveBatchId,
       total_papers: counts.total,
       analyzed_count: counts.analyzed,
       must_read_count: model.groups?.must_read?.length || 0,
@@ -217,7 +401,7 @@ export async function syncArxivArchives({
   // Save weekly archives
   for (const [weekId, wData] of discoveredWeekly.entries()) {
     const weeklyDest = join(weeklyArchiveDir, `${weekId}.json`);
-    await writeFile(weeklyDest, `${JSON.stringify(wData, null, 2)}\n`, "utf8");
+    await writeJsonAtomically(weeklyDest, wData);
   }
 
   // Group days by week_id
@@ -242,8 +426,8 @@ export async function syncArxivArchives({
   const weeksSummary = sortedWeekIds.map((weekId) => {
     const daysInWeek = (weekMap.get(weekId) || []).sort((a, b) => b.date.localeCompare(a.date));
     const weeklyObj = discoveredWeekly.get(weekId);
-    const range = getWeekMondayAndSunday(weekId);
-    const dateRangeStr = weeklyObj?.date_range || `${range.monday} ~ ${range.sunday}`;
+    const bounds = getNaturalWeekBounds(weekId);
+    const dateRangeStr = weeklyObj?.date_range || bounds.dateRange;
 
     return {
       week_id: weekId,
@@ -274,9 +458,20 @@ export async function syncArxivArchives({
   };
 
   const manifestPath = join(archiveRoot, "manifest.json");
-  await writeFile(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`, "utf8");
+  await writeJsonAtomically(manifestPath, manifest);
 
   return manifest;
+}
+
+export async function syncArxivArchives(options = {}) {
+  const archiveRoot = resolve(options.archiveRoot ?? DEFAULT_ARCHIVE_ROOT);
+  const lockPath = join(archiveRoot, ".sync.lock");
+  await acquireRefreshLock(lockPath);
+  try {
+    return await syncArxivArchivesWithLockHeld({ ...options, archiveRoot });
+  } finally {
+    await releaseRefreshLock(lockPath);
+  }
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === resolve(fileURLToPath(import.meta.url))) {

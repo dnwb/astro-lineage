@@ -40,7 +40,7 @@ function visibleRelatedWorks(sentence: AnyRecord) {
           ))}
         </ul>
       ) : null}
-      {hasWorthKnowing && brief.worth_knowing_summary ? <p><strong>值得知道：</strong><ReaderText text={brief.worth_knowing_summary} /></p> : null}
+      {hasWorthKnowing && brief.worth_knowing_summary ? <p><strong>关注：</strong><ReaderText text={brief.worth_knowing_summary} /></p> : null}
       {hasSkim && brief.skim_summary ? <p><strong>快速浏览：</strong><ReaderText text={brief.skim_summary} /></p> : null}
     </div>
   ) : (

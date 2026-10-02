@@ -1,12 +1,26 @@
-import { readFile, writeFile, mkdir } from "node:fs/promises";
+import { readFile, mkdir } from "node:fs/promises";
+import { existsSync } from "node:fs";
 import { resolve, dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { DEFAULT_RADAR_OUTPUT, DEFAULT_OUTPUT } from "./arxiv-daily.mjs";
+import { DEFAULT_RADAR_OUTPUT, DEFAULT_OUTPUT, readPublishedArxivEdition, writeJsonAtomically } from "./arxiv-daily.mjs";
+import { normalizeArxivId, sourceFingerprint, validateDailyRadarPayload } from "./daily-radar.mjs";
+import { getDirtyWeeks, clearDirtyWeek } from "./arxiv-archive.mjs";
+
+try {
+  if (typeof process.loadEnvFile === "function" && existsSync(".env")) {
+    process.loadEnvFile();
+  }
+} catch {}
 
 const DEFAULT_BASE_URL = process.env.OPENAI_BASE_URL || process.env.CCNU_API_BASE || "https://api.ccnulaowu.online/v1";
 const DEFAULT_API_KEY = process.env.WU_API_KEY || process.env.OPENAI_API_KEY || "";
-const DEFAULT_MODEL = process.env.AI_MODEL || "gpt-5.6-sol";
+const FALLBACK_BASE_URL = process.env.FALLBACK_OPENAI_BASE_URL || "";
+const FALLBACK_API_KEY = process.env.FALLBACK_OPENAI_API_KEY || process.env.ZHANG_API_KEY || "";
+const DEFAULT_MODEL = process.env.AI_MODEL || "gpt-6-luna";
+const DEFAULT_EFFORT = process.env.REASONING_EFFORT || "xhigh";
+const DEFAULT_TIMEOUT_MS = 120_000;
 const DEFAULT_WEEKLY_OUTPUT = resolve(fileURLToPath(new URL("../src/data/arxiv-weekly.json", import.meta.url)));
+const DEFAULT_DAILY_ARCHIVE = resolve(fileURLToPath(new URL("../src/data/arxiv-archives/daily", import.meta.url)));
 
 function cleanJsonContent(raw) {
   let cleaned = String(raw ?? "").trim();
@@ -37,6 +51,7 @@ function parseCliArgs(args) {
     feed: DEFAULT_OUTPUT,
     output: DEFAULT_WEEKLY_OUTPUT,
     model: DEFAULT_MODEL,
+    effort: DEFAULT_EFFORT,
     baseUrl: DEFAULT_BASE_URL,
     apiKey: DEFAULT_API_KEY,
     days: 7,
@@ -46,11 +61,16 @@ function parseCliArgs(args) {
     else if (arg.startsWith("--feed=")) options.feed = arg.slice("--feed=".length);
     else if (arg.startsWith("--output=")) options.output = arg.slice("--output=".length);
     else if (arg.startsWith("--model=")) options.model = arg.slice("--model=".length);
+    else if (arg.startsWith("--effort=")) options.effort = arg.slice("--effort=".length);
+    else if (arg.startsWith("--reasoning-effort=")) options.effort = arg.slice("--reasoning-effort=".length);
     else if (arg.startsWith("--base-url=")) options.baseUrl = arg.slice("--base-url=".length);
     else if (arg.startsWith("--api-key=")) options.apiKey = arg.slice("--api-key=".length);
     else if (arg.startsWith("--days=")) options.days = Number(arg.slice("--days=".length));
     else if (arg.startsWith("--week=")) options.weekId = arg.slice("--week=".length);
     else if (arg.startsWith("--week-id=")) options.weekId = arg.slice("--week-id=".length);
+    else if (arg.startsWith("--artifact-root=")) options.artifactRoot = arg.slice("--artifact-root=".length);
+    else if (arg === "--write-archives" || arg === "--sync-archives") options.writeArchives = true;
+    else if (arg === "--cascade") options.cascade = true;
   }
   return options;
 }
@@ -68,42 +88,138 @@ function currentWeekId(date = new Date()) {
   return `${target.getUTCFullYear()}-W${String(weekNumber).padStart(2, "0")}`;
 }
 
-async function callChatCompletion({ prompt, systemPrompt, model, baseUrl, apiKey, retries = 3 }) {
-  const url = `${baseUrl.replace(/\/+$/u, "")}/chat/completions`;
-  for (let attempt = 1; attempt <= retries; attempt++) {
+export function getNaturalWeekBounds(weekId) {
+  const [yearStr, weekStr] = weekId.split("-W");
+  const year = parseInt(yearStr, 10);
+  const week = parseInt(weekStr, 10);
+  const jan4 = new Date(Date.UTC(year, 0, 4));
+  const day = (jan4.getUTCDay() + 6) % 7;
+  const mondayWeek1 = new Date(jan4.valueOf() - day * 86400000);
+  const mondayTarget = new Date(mondayWeek1.valueOf() + (week - 1) * 7 * 86400000);
+
+  const announcementDates = [];
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(mondayTarget.valueOf() + i * 86400000);
+    announcementDates.push(d.toISOString().slice(0, 10));
+  }
+  const sunday = announcementDates.at(-1);
+  return {
+    monday: announcementDates[0],
+    sunday,
+    announcementDates,
+    dateRange: `${announcementDates[0]} ~ ${sunday}`,
+  };
+}
+
+function safeProviderError(error) {
+  if (error?.name === "TimeoutError" || error?.name === "AbortError") {
+    return new Error("Weekly summary API request timed out.");
+  }
+  if (/^API returned HTTP \d{3}$/u.test(error?.message ?? "")) {
+    return new Error(`Weekly summary API request failed: ${error.message}.`);
+  }
+  if (error?.message === "Empty model response" || error?.message === "Invalid model response JSON") {
+    return error;
+  }
+  return new Error("Weekly summary API request failed.");
+}
+
+export async function executeChatCompletion({
+  prompt,
+  systemPrompt,
+  model,
+  effort = DEFAULT_EFFORT,
+  baseUrl,
+  apiKey,
+  retries = 2,
+  timeoutMs = DEFAULT_TIMEOUT_MS,
+  fetchImpl = fetch,
+}) {
+  const tryCall = async (targetUrl, targetKey, targetModel, targetEffort, targetTimeout) => {
+    const payload = {
+      model: targetModel,
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: prompt },
+      ],
+      temperature: 0.2,
+    };
+    if (targetEffort && targetModel.startsWith("gpt-6")) {
+      payload.reasoning_effort = targetEffort;
+    }
+    const response = await fetchImpl(targetUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${targetKey}`,
+      },
+      body: JSON.stringify(payload),
+      signal: AbortSignal.timeout(targetTimeout),
+    });
+
+    if (!response.ok) {
+      throw new Error(`API returned HTTP ${response.status}`);
+    }
+
+    let json;
     try {
-      const response = await fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${apiKey}`,
-        },
-        body: JSON.stringify({
-          model,
-          messages: [
-            { role: "system", content: systemPrompt },
-            { role: "user", content: prompt },
-          ],
-          temperature: 0.2,
-        }),
-      });
+      json = await response.json();
+    } catch {
+      throw new Error("Invalid model response JSON");
+    }
+    const content = json.choices?.[0]?.message?.content;
+    if (!content) throw new Error("Empty model response");
+    return cleanJsonContent(content);
+  };
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`API error HTTP ${response.status}: ${errorText.slice(0, 300)}`);
+  const pool = [];
+  if (baseUrl && apiKey) {
+    pool.push({
+      name: "Primary (ccnulaowu)",
+      url: `${baseUrl.replace(/\/+$/u, "")}/chat/completions`,
+      key: apiKey,
+    });
+  }
+  if (FALLBACK_BASE_URL && FALLBACK_API_KEY && (FALLBACK_BASE_URL !== baseUrl || FALLBACK_API_KEY !== apiKey)) {
+    pool.push({
+      name: "Secondary (gateway-67)",
+      url: `${FALLBACK_BASE_URL.replace(/\/+$/u, "")}/chat/completions`,
+      key: FALLBACK_API_KEY,
+    });
+  }
+  if (pool.length === 0) throw new Error("Missing API key; set WU_API_KEY or OPENAI_API_KEY");
+
+  const candidateModels = [model, "gpt-6-sol", "gpt-6-luna"].filter((m, i, arr) => arr.indexOf(m) === i);
+  let lastError;
+  for (const currentModel of candidateModels) {
+    const isPrimary = currentModel === model;
+    const currentEffort = isPrimary ? effort : "medium";
+    const currentRetries = isPrimary ? retries : 1;
+    for (let attempt = 1; attempt <= currentRetries; attempt++) {
+      for (let pIdx = 0; pIdx < pool.length; pIdx++) {
+        const provider = pool[pIdx];
+        try {
+          if (!isPrimary) console.log(`[Weekly Summary] 正在通过供应商 ${provider.name} 降级尝试备选模型: ${currentModel}...`);
+          return await tryCall(provider.url, provider.key, currentModel, currentEffort, timeoutMs);
+        } catch (err) {
+          lastError = safeProviderError(err);
+          if (pool.length > 1 && pIdx < pool.length - 1) {
+            console.warn(`[Weekly Summary] 供应商 ${provider.name} 模型 (${currentModel}) 请求失败 (${lastError.message})，切换至对等供应商重试同一模型...`);
+          }
+        }
       }
-
-      const json = await response.json();
-      const content = json.choices?.[0]?.message?.content;
-      if (!content) throw new Error("Empty model response");
-      return cleanJsonContent(content);
-    } catch (err) {
-      if (attempt === retries) throw err;
-      const delay = Math.pow(2, attempt) * 1000;
-      console.warn(`[Weekly Summary] API 请求失败 (尝试 ${attempt}/${retries}): ${err.message}，将在 ${delay}ms 后重试...`);
-      await new Promise((r) => setTimeout(r, delay));
+      if (attempt < currentRetries) {
+        const delay = Math.pow(2, attempt) * 1000;
+        console.warn(`[Weekly Summary] ${currentModel} 请求失败 (${lastError.message})，将在 ${delay}ms 后重试...`);
+        await new Promise((r) => setTimeout(r, delay));
+      }
     }
   }
+  throw lastError;
+}
+
+async function callChatCompletion(opts) {
+  return executeChatCompletion(opts);
 }
 
 const SYSTEM_PROMPT = `你是一个专注于高能天体物理（High-Energy Astrophysics）与爆发现象的学术导师与周报主笔。
@@ -118,20 +234,26 @@ const SYSTEM_PROMPT = `你是一个专注于高能天体物理（High-Energy Ast
 - R7. 致密星X射线时变、能谱与双星观测（X射线双星, 吸积脉冲星, QPO, HXMT/NuSTAR/EP 数据分析；此为观测支撑翼，不影响爆发现象核心主体）
 
 【严禁硬凑与诚实零推荐原则】
-1. 课题组主体高度聚焦于爆发现象。如果本周没有直接推动上述核心方向的高价值突破性工作，"top_picks" 数组必须为空数组 []。
-2. 绝不允许把不相关的泛星系巡天、普通低能段统计论文为了填满版面而硬凑进 top_picks！诚实空推荐在科研中是被完全肯定与鼓励的。
+1. 不以“突破性”或新颖度作为推荐门槛。只要论文对上述主线有明确价值，增量观测、理论约束、方法改进、重要复核、综述或有用的后续研究都可纳入；必须根据提供的分析判断实际关联与价值。
+2. 不相关的泛星系巡天、普通低能段统计论文不得为了填版面而硬凑进 top_picks。若没有达到组内相关性和科学效用门槛的论文，top_picks 可以为空。
 请根据本周收集的所有已分析论文，撰写一份结构化、有深度物理洞察的科研周报。`;
 
 function buildWeeklyPrompt(papers, dateRange, weekId) {
-  const importantPapers = papers.filter((p) => p.priority === "must_read" || p.priority === "worth_knowing");
-  const skipCount = papers.length - importantPapers.length;
+  const mustReadPapers = papers.filter((p) => p.priority === "must_read");
+  const worthKnowingPapers = papers.filter((p) => p.priority === "worth_knowing");
+  // Cap at top 12 to prevent API gateway timeouts, prioritizing all must_read papers
+  const importantPapers = [...mustReadPapers, ...worthKnowingPapers.slice(0, 10)];
+  const totalImportant = mustReadPapers.length + worthKnowingPapers.length;
+  const skipCount = papers.length - totalImportant;
 
   const papersText = importantPapers.length > 0
     ? importantPapers.map((p, index) => {
-        return `[${index + 1}] arXiv:${p.arxiv_id} [${p.priority.toUpperCase()}] ${p.title}
-- 核心物理问题: ${p.analysis?.problem || "探讨相关高能物理现象"}
-- 主要发现与结论: ${p.analysis?.result || "观测或模型结果"}
-- 采用方法: ${p.analysis?.method || "数据分析与模型模拟"}`;
+        const guide = p.guide || p.analysis?.analysis || p.analysis || {};
+        return `[${index + 1}] arXiv:${p.arxiv_id}v${p.revision} [${p.priority.toUpperCase()}] ${p.title}
+- announcement_date: ${p.announcement_date}; historical_edition: ${p.historical_edition}; source_fingerprint: ${p.source_fingerprint}
+- 核心物理问题: ${guide.problem || p.problem || "探讨相关高能物理现象"}
+- 主要发现与结论: ${guide.result || p.result || "观测或模型结果"}
+- 采用方法: ${guide.method || p.method || "数据分析与模型模拟"}`;
       }).join("\n\n")
     : "（本周无符合爆发现象核心 R1~R7 方向的重点研读论文）";
 
@@ -145,11 +267,21 @@ ${papersText}
 【任务要求】
 请综合梳理本周高能天体物理（磁星、GRB、超新星、吸积流/喷流等）最新进展，以严谨合法的 JSON 格式返回（不得包含 \`\`\`json 等任何 markdown 标记）。
 排版规范：涉及数学物理变量、天体物理参量、光度、能段、科学计数法或公式（如 $10^{-3}$、$f_{\\mathrm{agn}}$、$L_{\\mathrm{bol}}$、$M_\\odot$），请务必使用标准 LaTeX 行内公式语法（以单个 $ 包裹），确保与静态 KaTeX 排版引擎兼容。
+注意：学术综述力求高度结构化、对比清晰，禁止冗长含混的段落堆叠，请务必提供细分物理领域的全景对照矩阵（overview_matrix）。
 {
   "week_id": "${weekId}",
   "title": "高能天体物理 arXiv 每周学术脉络与前沿精选",
   "date_range": "${dateRange}",
-  "executive_summary": "1-2段精炼中文，宏观梳理本周在致密星、磁星物理、吸积喷流和瞬变观测上的核心科学脉络（公式请用 $...$）",
+  "executive_summary": "1段精炼中文导语，宏观概括本周前沿动态与科学脉络（公式请用 $...$）",
+  "overview_matrix": [
+    {
+      "domain": "物理领域/专题方向（如：快速射电暴与磁星、超新星与致密星周介质相互作用、吸积流与相对论喷流）",
+      "key_question": "核心物理争论或关键聚焦问题",
+      "representative_papers": ["相关的 arxiv_id，如 2609.31842"],
+      "core_findings": "本周关键理论/观测发现（公式用 $...$）",
+      "significance": "对主线研究或物理机制的启示"
+    }
+  ],
   "thematic_highlights": [
     {
       "theme_name": "专题名称（如：磁星动力学与高能辐射机制）",
@@ -160,6 +292,9 @@ ${papersText}
   "top_picks": [
     {
       "arxiv_id": "论文的 arxiv_id",
+      "revision": 1,
+      "historical_edition": "必须逐字复制论文列表中的 historical_edition",
+      "source_fingerprint": "必须逐字复制论文列表中的 source_fingerprint",
       "title": "论文标题",
       "priority": "must_read 或 worth_knowing",
       "recommendation_reason": "推荐精读理由（中文1句）",
@@ -174,87 +309,170 @@ export async function runWeeklySummary({
   radar: radarPath = DEFAULT_RADAR_OUTPUT,
   output: outputPath = DEFAULT_WEEKLY_OUTPUT,
   feed: feedPath = DEFAULT_OUTPUT,
+  dailyArchiveDir = DEFAULT_DAILY_ARCHIVE,
   model = DEFAULT_MODEL,
+  effort = DEFAULT_EFFORT,
   baseUrl = DEFAULT_BASE_URL,
   apiKey = DEFAULT_API_KEY,
-  days = 7,
   weekId: specifiedWeekId = null,
+  artifactRoot,
+  generateSummary = callChatCompletion,
+  writeArchives = null,
 } = {}) {
-  if (!apiKey) {
+  if (!apiKey && generateSummary === callChatCompletion) {
     throw new Error("缺少 API Key。请设置环境变量 WU_API_KEY 或 OPENAI_API_KEY。");
   }
 
-  const resolvedRadar = resolve(radarPath);
   const resolvedOutput = resolve(outputPath);
-
-  let radar = {};
-  try {
-    radar = JSON.parse(await readFile(resolvedRadar, "utf8"));
-  } catch (err) {
-    throw new Error(`无法读取雷达数据文件 ${resolvedRadar}: ${err.message}`);
-  }
-
-  const allAnalyses = [
-    ...(Array.isArray(radar.analyses) ? radar.analyses : []),
-    ...(Array.isArray(radar.historical_analyses) ? radar.historical_analyses : []),
-  ];
-
-  if (allAnalyses.length === 0) {
-    console.log("[Weekly Summary] 当前没有可用于总结的论文分析数据。");
-    return null;
-  }
-
-  // Deduplicate by arxiv_id + revision
-  const uniqueMap = new Map();
-  for (const item of allAnalyses) {
-    if (!item.arxiv_id) continue;
-    const key = `${item.arxiv_id}@v${item.revision || 1}`;
-    if (!uniqueMap.has(key) || item.status === "ready") {
-      uniqueMap.set(key, item);
-    }
-  }
-
-  let feedMap = new Map();
-  try {
-    const feedJson = JSON.parse(await readFile(resolve(feedPath), "utf8"));
-    for (const entry of feedJson.entries || []) {
-      if (entry.arxiv_id) feedMap.set(entry.arxiv_id, entry);
-    }
-  } catch {}
-
-  const papers = Array.from(uniqueMap.values());
-  for (const p of papers) {
-    const feedEntry = feedMap.get(p.arxiv_id);
-    if (feedEntry?.title) {
-      p.title = feedEntry.title;
-    }
-  }
-  const mustReadCount = papers.filter((p) => p.priority === "must_read").length;
-  const worthKnowingCount = papers.filter((p) => p.priority === "worth_knowing").length;
-  const skipCount = papers.filter((p) => p.priority === "skip").length;
-
-  console.log(`[Weekly Summary] 收集到本周共 ${papers.length} 篇分析论文（Must Read: ${mustReadCount}, Worth Knowing: ${worthKnowingCount}, Skim: ${skipCount}）。`);
+  const { feed: activeFeed, radar } = await readPublishedArxivEdition({ output: feedPath, radarOutput: radarPath, artifactRoot });
 
   const now = new Date();
   const dateFromWindow = radar.edition?.window?.announcement_date
     ? new Date(radar.edition.window.announcement_date + "T12:00:00Z")
     : now;
   const weekId = specifiedWeekId || currentWeekId(dateFromWindow);
-  const startDate = new Date(dateFromWindow.valueOf() - days * 86400000).toISOString().slice(0, 10);
-  const endDate = dateFromWindow.toISOString().slice(0, 10);
-  const dateRange = `${startDate} ~ ${endDate}`;
+  const bounds = getNaturalWeekBounds(weekId);
+  const targetDates = bounds.announcementDates;
+  const targetDateSet = new Set(targetDates);
+  const dateRange = bounds.dateRange;
+  const editions = new Map();
+  const foundDates = new Set();
+
+  const addEdition = (date, feed, editionRadar, preferCurrent = false) => {
+    const radarWindow = editionRadar?.edition?.window;
+    const feedDate = feed?.window?.announcement_date ?? radarWindow?.announcement_date ?? date;
+    if (feed?.window?.announcement_date && radarWindow?.announcement_date && feed.window.announcement_date !== radarWindow.announcement_date) return;
+    if (feed?.window?.batch_id && radarWindow?.batch_id && feed.window.batch_id !== radarWindow.batch_id) return;
+    if (feedDate !== date || !targetDateSet.has(date) || !Array.isArray(feed?.entries)) return;
+    const batchId = feed.window?.batch_id ?? radarWindow?.batch_id ?? `announcement-${date}`;
+    const key = `${date}\u0000${batchId}`;
+    const edition = editions.get(key) ?? { date, batchId, papers: new Map() };
+    if (preferCurrent) {
+      const activeEntries = new Map(feed.entries.map((entry) => [
+        `${normalizeArxivId(entry.arxiv_id)}\u0000${entry.revision}`,
+        sourceFingerprint(entry),
+      ]));
+      for (const [paperKey, paper] of edition.papers) {
+        const identity = `${normalizeArxivId(paper.arxiv_id)}\u0000${paper.revision}`;
+        if (activeEntries.get(identity) !== paper.source_fingerprint) edition.papers.delete(paperKey);
+      }
+    }
+    const { model: dailyModel } = validateDailyRadarPayload(feed, editionRadar);
+    for (const priority of ["must_read", "worth_knowing", "skip"]) {
+      for (const item of dailyModel.groups[priority]) {
+        const fingerprint = sourceFingerprint(item);
+        const paperKey = `${normalizeArxivId(item.arxiv_id)}\u0000${item.revision}\u0000${fingerprint}`;
+        const guide = item.analysis?.analysis || item.analysis || {};
+        edition.papers.set(paperKey, {
+          ...item,
+          priority,
+          announcement_date: date,
+          historical_edition: batchId,
+          source_fingerprint: fingerprint,
+          guide,
+          problem: guide.problem || "",
+          result: guide.result || "",
+          method: guide.method || "",
+          reason: guide.reason || "",
+        });
+      }
+    }
+    editions.set(key, edition);
+    foundDates.add(date);
+  };
+
+  // Load only edition-bound archives within the requested natural week.
+  for (const date of targetDates) {
+    const dailyPath = join(dailyArchiveDir, `${date}.json`);
+    if (existsSync(dailyPath)) {
+      try {
+        const dailyData = JSON.parse(await readFile(dailyPath, "utf8"));
+        if (dailyData.date === date) addEdition(date, dailyData.feed, dailyData.radar);
+      } catch (err) {
+        console.warn(`[Weekly Summary] Warning reading daily archive ${dailyPath}:`, err.message);
+      }
+    }
+  }
+
+  // Include the active pair only when it is an edition in the requested week.
+  const activeDate = activeFeed?.window?.announcement_date ?? radar.edition?.window?.announcement_date;
+  if (activeDate && targetDateSet.has(activeDate)) {
+    addEdition(activeDate, activeFeed, radar, true);
+  }
+
+  // Keep the newest exact revision for each paper across this week's editions.
+  const latestById = new Map();
+  for (const edition of [...editions.values()].sort((a, b) => a.date.localeCompare(b.date) || a.batchId.localeCompare(b.batchId))) {
+    for (const paper of edition.papers.values()) {
+      const id = normalizeArxivId(paper.arxiv_id);
+      const previous = latestById.get(id);
+      if (!previous || paper.announcement_date > previous.announcement_date ||
+        (paper.announcement_date === previous.announcement_date && Number(paper.revision) > Number(previous.revision))) {
+        latestById.set(id, paper);
+      }
+    }
+  }
+  const papers = [...latestById.values()];
+
+  if (papers.length === 0) {
+    console.log(`[Weekly Summary] 当前自然周 (${weekId}) 没有检索到可用于总结的论文分析数据。`);
+    return null;
+  }
+
+  const mustReadCount = papers.filter((p) => p.priority === "must_read").length;
+  const worthKnowingCount = papers.filter((p) => p.priority === "worth_knowing").length;
+  const skipCount = papers.filter((p) => p.priority === "skip").length;
+
+  console.log(`[Weekly Summary] 目标自然周: ${weekId} (${dateRange})`);
+  console.log(`[Weekly Summary] 自然周日期: [${targetDates.join(", ")}]`);
+  console.log(`[Weekly Summary] 实际纳入归档批次: ${Array.from(foundDates).sort().join(", ") || "无"} (${foundDates.size}/7)`);
+  if (foundDates.size === 7) {
+    console.log(`[Weekly Summary] ✓ 本自然周全部 7 天的批次均已收齐！`);
+  } else {
+    console.log(`[Weekly Summary] 提示: 本自然周当前包含 ${foundDates.size}/7 天的批次。`);
+  }
+  console.log(`[Weekly Summary] 共聚合 ${papers.length} 篇已分析论文（Must Read: ${mustReadCount}, Worth Knowing: ${worthKnowingCount}, Skim: ${skipCount}）。`);
 
   console.log(`[Weekly Summary] 正在调用模型 ${model} 生成第 ${weekId} 期学术周报综述...`);
   const prompt = buildWeeklyPrompt(papers, dateRange, weekId);
-  const rawJson = await callChatCompletion({
+  const rawJson = await generateSummary({
     prompt,
     systemPrompt: SYSTEM_PROMPT,
     model,
+    effort,
     baseUrl,
     apiKey,
   });
 
   const parsed = safeParseJson(rawJson);
+  const eligiblePapers = new Map(papers
+    .filter((paper) => ["must_read", "worth_knowing"].includes(paper.priority))
+    .map((paper) => [
+      `${normalizeArxivId(paper.arxiv_id)}@${paper.revision}@${paper.historical_edition}@${paper.source_fingerprint}`,
+      paper,
+    ]));
+  const eligibleIds = new Set([...eligiblePapers.values()].map((paper) => normalizeArxivId(paper.arxiv_id)));
+  const thematicHighlights = (Array.isArray(parsed.thematic_highlights) ? parsed.thematic_highlights : [])
+    .map((theme) => ({ ...theme, paper_ids: [...new Set((Array.isArray(theme?.paper_ids) ? theme.paper_ids : [])
+      .map((id) => normalizeArxivId(id)).filter((id) => eligibleIds.has(id)))] }))
+    .filter((theme) => theme.paper_ids.length > 0);
+  const usedPicks = new Set();
+  const topPicks = (Array.isArray(parsed.top_picks) ? parsed.top_picks : []).flatMap((pick) => {
+    if (!Number.isInteger(Number(pick?.revision)) || Number(pick.revision) < 1 ||
+      typeof pick?.historical_edition !== "string" || typeof pick?.source_fingerprint !== "string") return [];
+    const identity = `${normalizeArxivId(pick.arxiv_id)}@${Number(pick.revision)}@${pick.historical_edition}@${pick.source_fingerprint}`;
+    const paper = eligiblePapers.get(identity);
+    const key = `${normalizeArxivId(paper?.arxiv_id)}@${paper?.revision}@${paper?.historical_edition}@${paper?.source_fingerprint}`;
+    if (!paper || paper.priority !== pick.priority || usedPicks.has(key)) return [];
+    usedPicks.add(key);
+    return [{
+      ...pick,
+      authors: Array.isArray(paper.authors) ? paper.authors : [],
+      revision: paper.revision,
+      historical_edition: paper.historical_edition,
+      source_fingerprint: paper.source_fingerprint,
+    }];
+  });
 
   const weeklyPayload = {
     schema_version: "astrolineage-weekly-summary-v1",
@@ -263,54 +481,96 @@ export async function runWeeklySummary({
     title: parsed.title || "高能天体物理 arXiv 每周学术脉络与前沿综述",
     date_range: dateRange,
     executive_summary: parsed.executive_summary || "暂无本周宏观脉络综述。",
-    thematic_highlights: Array.isArray(parsed.thematic_highlights) ? parsed.thematic_highlights : [],
-    top_picks: Array.isArray(parsed.top_picks) ? parsed.top_picks : [],
+    overview_matrix: Array.isArray(parsed.overview_matrix) ? parsed.overview_matrix : [],
+    thematic_highlights: thematicHighlights,
+    top_picks: topPicks,
     statistics: {
       total_analyzed: papers.length,
       must_read_count: mustReadCount,
       worth_knowing_count: worthKnowingCount,
       skip_count: skipCount,
     },
-    papers: papers.map((p) => ({
-      arxiv_id: p.arxiv_id,
-      revision: p.revision || 1,
-      title: p.title || `Paper ${p.arxiv_id}`,
-      priority: p.priority,
-      result: p.analysis?.result || "",
-      problem: p.analysis?.problem || "",
-      method: p.analysis?.method || "",
-      reason: p.analysis?.reason || "",
-      url: `https://arxiv.org/abs/${p.arxiv_id}v${p.revision || 1}`,
-    })),
+    papers: papers.map((p) => {
+      const guide = p.guide || p.analysis?.analysis || p.analysis || {};
+      return {
+        arxiv_id: p.arxiv_id,
+        revision: p.revision || 1,
+        title: p.title || `Paper ${p.arxiv_id}`,
+        authors: Array.isArray(p.authors) ? p.authors : [],
+        priority: p.priority,
+        result: guide.result || p.result || "",
+        problem: guide.problem || p.problem || "",
+        method: guide.method || p.method || "",
+        reason: guide.reason || p.reason || "",
+        url: `https://arxiv.org/abs/${p.arxiv_id}v${p.revision || 1}`,
+        announcement_date: p.announcement_date,
+        historical_edition: p.historical_edition,
+        source_fingerprint: p.source_fingerprint,
+      };
+    }),
   };
 
   await mkdir(dirname(resolvedOutput), { recursive: true });
-  await writeFile(resolvedOutput, `${JSON.stringify(weeklyPayload, null, 2)}\n`, "utf8");
+  await writeJsonAtomically(resolvedOutput, weeklyPayload);
 
-  // Also write an archive under .cache/arxiv-weekly/archives/
-  const archiveDir = resolve(".cache/arxiv-weekly/archives");
-  await mkdir(archiveDir, { recursive: true });
-  const archivePath = join(archiveDir, `${weekId}.json`);
-  await writeFile(archivePath, `${JSON.stringify(weeklyPayload, null, 2)}\n`, "utf8");
-
-  try {
-    const { syncArxivArchives } = await import("./arxiv-archive.mjs");
-    await syncArxivArchives();
-  } catch (archiveErr) {
-    console.warn("[Weekly Summary] Warning: Failed to sync archive manifest:", archiveErr.message);
+  const productionPaths = resolvedOutput === DEFAULT_WEEKLY_OUTPUT &&
+    resolve(radarPath) === DEFAULT_RADAR_OUTPUT && resolve(feedPath) === DEFAULT_OUTPUT &&
+    resolve(dailyArchiveDir) === DEFAULT_DAILY_ARCHIVE;
+  const shouldWriteArchives = writeArchives ?? productionPaths;
+  const archivePath = shouldWriteArchives ? join(resolve(".cache/arxiv-weekly/archives"), `${weekId}.json`) : null;
+  if (shouldWriteArchives) {
+    await mkdir(dirname(archivePath), { recursive: true });
+    await writeJsonAtomically(archivePath, weeklyPayload);
+    try {
+      const { syncArxivArchives } = await import("./arxiv-archive.mjs");
+      await syncArxivArchives();
+    } catch (archiveErr) {
+      console.warn("[Weekly Summary] Warning: Failed to sync archive manifest:", archiveErr.message);
+    }
   }
 
   console.log(`[Weekly Summary] ✓ 周报生成成功并落盘：`);
   console.log(`  - 生产数据: ${resolvedOutput}`);
-  console.log(`  - 历史归档: ${archivePath}`);
+  if (archivePath) console.log(`  - 历史归档: ${archivePath}`);
   console.log(`  - 本期必读 Top Picks: ${weeklyPayload.top_picks.length} 篇，专题分类: ${weeklyPayload.thematic_highlights.length} 个。`);
+
+  try {
+    await clearDirtyWeek(weekId);
+  } catch {}
 
   return weeklyPayload;
 }
 
+export async function runCascadeWeeklySummaries(options = {}) {
+  const dirtyWeeks = await getDirtyWeeks();
+  if (!dirtyWeeks || dirtyWeeks.length === 0) {
+    console.log("[Weekly Summary:Cascade] 没有检测到积压的 dirty-weeks，无需级联生成。");
+    return [];
+  }
+
+  console.log(`[Weekly Summary:Cascade] 检测到 ${dirtyWeeks.length} 个待更新自然周: ${dirtyWeeks.join(", ")}`);
+  const results = [];
+  for (const weekId of dirtyWeeks) {
+    console.log(`[Weekly Summary:Cascade] 正在级联重新生成自然周周报: ${weekId}...`);
+    try {
+      const payload = await runWeeklySummary({
+        ...options,
+        weekId,
+        writeArchives: true,
+      });
+      await clearDirtyWeek(weekId);
+      results.push(payload);
+    } catch (err) {
+      console.error(`[Weekly Summary:Cascade] ✗ 生成自然周 ${weekId} 失败: ${err.message}`);
+    }
+  }
+  return results;
+}
+
 if (process.argv[1] && resolve(process.argv[1]) === resolve(fileURLToPath(import.meta.url))) {
   const options = parseCliArgs(process.argv.slice(2));
-  runWeeklySummary(options).catch((err) => {
+  const runner = options.cascade ? runCascadeWeeklySummaries(options) : runWeeklySummary(options);
+  runner.catch((err) => {
     console.error("[Weekly Summary] 运行失败:", err);
     process.exit(1);
   });

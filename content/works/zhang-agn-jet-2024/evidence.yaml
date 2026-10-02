@@ -11,7 +11,58 @@ evidence:
       producing different types of gamma-ray bursts (GRBs). The detectability of
       these GRB phenomena hidden in AGN disks is highly dependent on the
       dynamical evolution of the GRB relativistic jets.
-    review_state: unreviewed
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: 2026-09-06T22:36:00Z
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-06T22:35:47Z
+  - id: evidence:zhang-agn-jet-2024-head-propagation
+    version_id: version:zhang-agn-jet-2024-arxiv-v1
+    source_url: https://arxiv.org/abs/2406.10904v1
+    locator:
+      type: paragraph
+      paragraph: Section 2
+    excerpt: We analyze the propagation of relativistic jets injected into dense AGN
+      disks by balancing the jet forward shock ram pressure against the ambient
+      disk medium ram pressure.
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: 2026-09-06T22:36:00Z
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-06T22:35:47Z
+  - id: evidence:zhang-agn-jet-2024-choking-breakout
+    version_id: version:zhang-agn-jet-2024-arxiv-v1
+    source_url: https://arxiv.org/abs/2406.10904v1
+    locator:
+      type: paragraph
+      paragraph: Section 3
+    excerpt: A relativistic jet can break out from the AGN disk scale height if the
+      engine duration exceeds the breakout time t_bo <= T_eng; otherwise the jet
+      is choked inside the disk.
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: 2026-09-06T22:36:00Z
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: 2026-09-06T22:35:47Z
+  - id: evidence:zhang-agn-jet-2024-cocoon-emission
+    version_id: version:zhang-agn-jet-2024-arxiv-v1
+    source_url: https://arxiv.org/abs/2406.10904v1
+    locator:
+      type: paragraph
+      paragraph: Section 4
+    excerpt: For choked jets, the energy transferred to the cocoon causes the cocoon
+      to expand sideways and break out from the disk surface, generating
+      transient electromagnetic radiation.
+    review_state: reviewed
+    review_provenance:
+      actor_id: actor:human-curator
+      recorded_at: 2026-09-06T22:36:00Z
     curation_provenance:
       actor_id: actor:agent-curator
       recorded_at: 2026-09-06T22:35:47Z

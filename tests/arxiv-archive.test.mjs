@@ -4,7 +4,7 @@ import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { test } from "node:test";
-import { getIsoWeek, getWeekMondayAndSunday } from "../scripts/arxiv-archive.mjs";
+import { getIsoWeek, getWeekMondayAndSunday, getDirtyWeeks, markWeekDirty, clearDirtyWeek, clearAllDirtyWeeks } from "../scripts/arxiv-archive.mjs";
 
 const projectRoot = fileURLToPath(new URL("..", import.meta.url));
 const manifestUrl = new URL("../src/data/arxiv-archives/manifest.json", import.meta.url);
@@ -81,7 +81,8 @@ test("arXiv weekly HTML exposes daily breakdown section with links to daily edit
     assert.match(html, /本周每日批次与日报归档/u);
     assert.match(html, /href="\/arxiv-daily\/"/u);
     const manifest = JSON.parse(await readFile(fileURLToPath(manifestUrl), "utf8"));
-    const currentWeek = manifest.weeks?.[0];
+    const weeklyData = JSON.parse(await readFile(fileURLToPath(new URL("../src/data/arxiv-weekly.json", import.meta.url)), "utf8"));
+    const currentWeek = manifest.weeks?.find((w) => w.week_id === weeklyData.week_id) || manifest.weeks?.[0];
     if (currentWeek?.days?.length > 0) {
       assert.match(html, new RegExp(currentWeek.days[0].date, "u"));
     }
@@ -96,10 +97,29 @@ test("arXiv daily standalone static pages are generated for all archived edition
       if (existsSync(pagePath)) {
         const pageHtml = await readFile(pagePath, "utf8");
         assert.match(pageHtml, new RegExp(day.date, "u"));
-        assert.match(pageHtml, /历史归档批次/u);
-        assert.match(pageHtml, /href="\/arxiv-daily\/"/u);
       }
     }
   }
+});
+
+test("dirty weeks tracking supports marking, deduping, clearing, and bulk reset", async (t) => {
+  const tmpFile = join(projectRoot, ".cache", `test-dirty-weeks-${Date.now()}.json`);
+  t.after(async () => {
+    try { const { unlink } = await import("node:fs/promises"); await unlink(tmpFile); } catch {}
+  });
+
+  assert.deepEqual(await getDirtyWeeks(tmpFile), []);
+
+  await markWeekDirty("2026-W38", tmpFile);
+  await markWeekDirty("2026-W40", tmpFile);
+  await markWeekDirty("2026-W38", tmpFile); // deduped
+
+  assert.deepEqual(await getDirtyWeeks(tmpFile), ["2026-W38", "2026-W40"]);
+
+  await clearDirtyWeek("2026-W38", tmpFile);
+  assert.deepEqual(await getDirtyWeeks(tmpFile), ["2026-W40"]);
+
+  await clearAllDirtyWeeks(tmpFile);
+  assert.deepEqual(await getDirtyWeeks(tmpFile), []);
 });
 

@@ -7,15 +7,33 @@
  * 2. QQ 群聊 @ 消息 (GROUP_AT_MESSAGE_CREATE)
  * 3. QQ C2C 私聊消息 (C2C_MESSAGE_CREATE)
  * 
- * 大脑内核统一对接 scripts/agent-core.mjs (双轨模型 + 天体物理 RAG)
+ * 对接 scripts/agent-core.mjs（模型问答 + 已发布导读状态 / 可见书目，不是全文 RAG）
  */
 
 import { existsSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import WebSocket from "ws";
 import { generateAcademicAnswer } from "./agent-core.mjs";
+import { createSessionMemory } from "./qq-memory.mjs";
+import { defaultUserManager } from "./qq-users.mjs";
+
+// Node >=22.20 provides WebSocket; no undeclared ws package is needed.
+async function request(url, options = {}) {
+  return fetch(url, { ...options, redirect: "error", signal: AbortSignal.timeout(20_000) });
+}
+
+// Bounded, process-local replay guard; restart durability is deliberately not claimed.
+const seenMessages = new Map();
+let activeReplies = 0;
+export function claimMessage(id, now = Date.now()) {
+  if (!id) return false;
+  for (const [key, expires] of seenMessages) if (expires <= now) seenMessages.delete(key);
+  if (seenMessages.has(id)) return false;
+  if (seenMessages.size >= 2000) return false;
+  seenMessages.set(id, now + 30 * 60_000);
+  return true;
+}
 
 try {
   if (typeof process.loadEnvFile === "function" && existsSync(".env")) {
@@ -41,32 +59,7 @@ const INTENTS = (1 << 30) | (1 << 25) | (1 << 12);
 let accessTokenCache = null;
 let accessTokenExpiresAt = 0;
 
-// 会话多轮记忆缓存 (滑动窗口 30 分钟 TTL，最多保留 10 轮消息)
-export const sessionStore = new Map();
-export const SESSION_TTL_MS = 30 * 60 * 1000;
-
-export function getSessionHistory(key) {
-  const session = sessionStore.get(key);
-  if (!session) return [];
-  if (Date.now() - session.updatedAt > SESSION_TTL_MS) {
-    sessionStore.delete(key);
-    return [];
-  }
-  return session.history;
-}
-
-export function appendSessionHistory(key, role, content) {
-  let session = sessionStore.get(key);
-  if (!session || Date.now() - session.updatedAt > SESSION_TTL_MS) {
-    session = { history: [], updatedAt: Date.now() };
-    sessionStore.set(key, session);
-  }
-  session.history.push({ role, content });
-  session.updatedAt = Date.now();
-  if (session.history.length > 10) {
-    session.history.shift();
-  }
-}
+const sessionMemory = createSessionMemory(fileURLToPath(new URL("../.cache/qq-bot/memory/", import.meta.url)));
 
 /**
  * 获取官方开放平台 Access Token (OAuth2 Client Credentials)
@@ -81,20 +74,20 @@ async function getAppAccessToken() {
   }
 
   try {
-    const res = await fetch("https://bots.qq.com/app/getAppAccessToken", {
+    const res = await request("https://bots.qq.com/app/getAppAccessToken", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ appId: APP_ID, clientSecret: APP_SECRET }),
     });
 
     if (!res.ok) {
-      const errText = await res.text();
-      throw new Error(`HTTP ${res.status}: ${errText}`);
+      await res.body?.cancel();
+      throw new Error(`Token HTTP ${res.status}`);
     }
 
     const json = await res.json();
     if (!json.access_token) {
-      throw new Error(`未返回 access_token: ${JSON.stringify(json)}`);
+      throw new Error("未返回 access_token");
     }
 
     accessTokenCache = json.access_token;
@@ -126,15 +119,16 @@ async function getAuthHeader() {
  */
 async function getGatewayUrl() {
   const auth = await getAuthHeader();
-  const res = await fetch(`${API_BASE}/gateway`, {
+  const res = await request(`${API_BASE}/gateway`, {
     headers: { Authorization: auth },
   });
   if (!res.ok) {
-    const errText = await res.text();
-    throw new Error(`查询网关失败 HTTP ${res.status}: ${errText}`);
+    await res.body?.cancel();
+    throw new Error(`查询网关失败 HTTP ${res.status}`);
   }
   const json = await res.json();
-  return json.url || "wss://api.sgroup.qq.com/websocket";
+  if (typeof json.url !== "string" || !json.url.startsWith("wss://")) throw new Error("Invalid secure gateway URL");
+  return json.url;
 }
 
 /**
@@ -154,7 +148,7 @@ export function cleanMessageContent(rawText) {
 async function replyGroupMessage({ groupOpenid, msgId, content }) {
   const auth = await getAuthHeader();
   const url = `${API_BASE}/v2/groups/${groupOpenid}/messages`;
-  const res = await fetch(url, {
+  const res = await request(url, {
     method: "POST",
     headers: {
       "Authorization": auth,
@@ -167,8 +161,8 @@ async function replyGroupMessage({ groupOpenid, msgId, content }) {
     }),
   });
   if (!res.ok) {
-    const errText = await res.text();
-    throw new Error(`回复群消息失败 HTTP ${res.status}: ${errText}`);
+    await res.body?.cancel();
+    throw new Error(`回复群消息失败 HTTP ${res.status}`);
   }
   return await res.json();
 }
@@ -179,7 +173,7 @@ async function replyGroupMessage({ groupOpenid, msgId, content }) {
 async function replyChannelMessage({ channelId, msgId, content }) {
   const auth = await getAuthHeader();
   const url = `${API_BASE}/channels/${channelId}/messages`;
-  const res = await fetch(url, {
+  const res = await request(url, {
     method: "POST",
     headers: {
       "Authorization": auth,
@@ -191,8 +185,8 @@ async function replyChannelMessage({ channelId, msgId, content }) {
     }),
   });
   if (!res.ok) {
-    const errText = await res.text();
-    throw new Error(`回复频道消息失败 HTTP ${res.status}: ${errText}`);
+    await res.body?.cancel();
+    throw new Error(`回复频道消息失败 HTTP ${res.status}`);
   }
   return await res.json();
 }
@@ -203,7 +197,7 @@ async function replyChannelMessage({ channelId, msgId, content }) {
 async function replyC2CMessage({ userOpenid, msgId, content }) {
   const auth = await getAuthHeader();
   const url = `${API_BASE}/v2/users/${userOpenid}/messages`;
-  const res = await fetch(url, {
+  const res = await request(url, {
     method: "POST",
     headers: {
       "Authorization": auth,
@@ -216,8 +210,58 @@ async function replyC2CMessage({ userOpenid, msgId, content }) {
     }),
   });
   if (!res.ok) {
-    const errText = await res.text();
-    throw new Error(`回复私聊失败 HTTP ${res.status}: ${errText}`);
+    await res.body?.cancel();
+    throw new Error(`回复私聊失败 HTTP ${res.status}`);
+  }
+  return await res.json();
+}
+
+/**
+ * 主动推送 C2C 私聊消息
+ */
+export async function sendProactiveC2CMessage({ userOpenid, content, msgSeq }) {
+  const auth = await getAuthHeader();
+  const url = `${API_BASE}/v2/users/${userOpenid}/messages`;
+  const res = await request(url, {
+    method: "POST",
+    headers: {
+      "Authorization": auth,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      content,
+      msg_type: 0,
+      msg_seq: msgSeq || Math.floor(Date.now() / 1000),
+    }),
+  });
+  if (!res.ok) {
+    const errText = await res.text().catch(() => "");
+    throw new Error(`发送主动私聊失败 HTTP ${res.status}: ${errText}`);
+  }
+  return await res.json();
+}
+
+/**
+ * 主动推送 QQ 群聊消息
+ */
+export async function sendProactiveGroupMessage({ groupOpenid, content, msgSeq }) {
+  const auth = await getAuthHeader();
+  const url = `${API_BASE}/v2/groups/${groupOpenid}/messages`;
+  const res = await request(url, {
+    method: "POST",
+    headers: {
+      "Authorization": auth,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      content,
+      msg_type: 0,
+      msg_seq: msgSeq || Math.floor(Date.now() / 1000),
+    }),
+  });
+  if (!res.ok) {
+    const errText = await res.text().catch(() => "");
+    throw new Error(`发送主动群消息失败 HTTP ${res.status}: ${errText}`);
   }
   return await res.json();
 }
@@ -225,31 +269,39 @@ async function replyC2CMessage({ userOpenid, msgId, content }) {
 /**
  * 启动官方 QQ 机器人 Gateway 长连接
  */
-export async function startOfficialBot({ dryRun = false } = {}) {
-  if (!APP_ID) {
+export async function startOfficialBot({ dryRun = false, WebSocketImpl = WebSocket, gateway = getGatewayUrl, authorize = getAuthHeader, answer = generateAcademicAnswer, memory = sessionMemory, users = defaultUserManager } = {}) {
+  if (!APP_ID && gateway === getGatewayUrl) {
     console.warn(`[QQ Official Bot] 警告: 未在环境变量检测到 QQ_APP_ID。`);
     console.warn(`[QQ Official Bot] 请在 .env 中设置 QQ_APP_ID、QQ_APP_SECRET 或 QQ_BOT_TOKEN。`);
     console.warn(`[QQ Official Bot] 申请途径: https://q.qq.com/ (QQ 开放平台 -> 应用管理 -> 机器人配置)`);
-    return;
+    throw new Error("QQ_APP_ID is not configured");
   }
 
-  const gatewayUrl = await getGatewayUrl();
+  const gatewayUrl = await gateway();
   console.log(`[QQ Official Bot] 正在连接官方网关: ${gatewayUrl} (沙箱模式: ${IS_SANDBOX})...`);
 
-  const ws = new WebSocket(gatewayUrl);
+  const ws = new WebSocketImpl(gatewayUrl);
+  const sweepMemory = () => {
+    try { memory.sweep(); } catch { console.warn("[QQ Official Bot] Memory cleanup failed; inspect local storage"); }
+  };
+  sweepMemory();
+  const memoryTimer = setInterval(sweepMemory, 60 * 60_000);
+  memoryTimer.unref();
   let heartbeatTimer = null;
+  let heartbeatAcknowledged = true;
   let lastSeq = null;
   let sessionId = null;
 
-  ws.on("open", () => {
+  ws.addEventListener("open", () => {
     console.log(`[QQ Official Bot] WebSocket 连接已建立，等待 Hello 握手...`);
   });
 
-  ws.on("message", async (raw) => {
+  ws.addEventListener("message", async ({ data }) => {
+    let handlingReply = false;
     try {
-      const payload = JSON.parse(raw.toString("utf8"));
+      const payload = JSON.parse(typeof data === "string" ? data : Buffer.from(data).toString("utf8"));
       const { op, d, s, t } = payload;
-      if (s) lastSeq = s;
+      if (s !== undefined && s !== null) lastSeq = s;
 
       switch (op) {
         case 10: { // Hello
@@ -259,13 +311,15 @@ export async function startOfficialBot({ dryRun = false } = {}) {
           // 启动心跳
           clearInterval(heartbeatTimer);
           heartbeatTimer = setInterval(() => {
-            if (ws.readyState === WebSocket.OPEN) {
+            if (ws.readyState === WebSocketImpl.OPEN) {
+              if (!heartbeatAcknowledged) { ws.close(); return; }
+              heartbeatAcknowledged = false;
               ws.send(JSON.stringify({ op: 1, d: lastSeq }));
             }
           }, heartbeatInterval);
 
           // 发送 Identify 认证
-          const auth = await getAuthHeader();
+          const auth = await authorize();
           ws.send(JSON.stringify({
             op: 2,
             d: {
@@ -278,10 +332,21 @@ export async function startOfficialBot({ dryRun = false } = {}) {
         }
 
         case 11: { // Heartbeat ACK
+          heartbeatAcknowledged = true;
           break;
         }
 
+        case 7: // Reconnect
+        case 9: // Invalid session: re-identify on a fresh connection.
+          ws.close();
+          break;
+
         case 0: { // Dispatch 业务事件
+          if (["GROUP_AT_MESSAGE_CREATE", "AT_MESSAGE_CREATE", "C2C_MESSAGE_CREATE"].includes(t)) {
+            if (activeReplies >= 4 || typeof d?.content !== "string" || d.content.length > 4096 || !d.id || !claimMessage(`${t}:${d.id}`)) break;
+            activeReplies++;
+            handlingReply = true;
+          }
           console.log(`[QQ Official Bot] 收到 Dispatch 事件: ${t}`);
           if (t === "READY") {
             sessionId = d.session_id;
@@ -289,27 +354,50 @@ export async function startOfficialBot({ dryRun = false } = {}) {
           } else if (t === "GROUP_AT_MESSAGE_CREATE") {
             const query = cleanMessageContent(d.content);
             const groupOpenid = d.group_openid;
-            const authorId = d.author?.member_openid || d.author?.id || "user";
+            const authorId = d.author?.member_openid || d.author?.id;
             const sessionKey = `group_${groupOpenid}_${authorId}`;
             const msgId = d.id;
-            console.log(`[QQ Official Bot] 收到 QQ 群 [${groupOpenid}] 成员 [${authorId.slice(0, 8)}] @ 提问: "${query}"`);
+            console.log("[QQ Official Bot] 收到 QQ 群 @ 提问");
 
-            if (query) {
+            if (groupOpenid) {
               try {
-                const history = getSessionHistory(sessionKey);
-                const answer = await generateAcademicAnswer({
+                users.recordGroup(groupOpenid, { last_query: query });
+              } catch (recErr) {
+                console.warn("[QQ Official Bot] 记录 groupOpenid 失败:", recErr.message);
+              }
+            }
+
+            if (query && groupOpenid && authorId) {
+              if (/^\/(start|help|id|groupid)$/i.test(query)) {
+                try {
+                  const replyText = `👋 大家好！我是 AstroLineage 高能天体物理学术助手。\n\n在群里 @ 我并附带论文题目、arXiv 编号或具体物理问题（例如：“@我 总结今天的必读论文”），我会结合每日雷达与学术脉络知识库为大家提供研讨解答！`;
+                  if (!dryRun) {
+                    await replyGroupMessage({ groupOpenid, msgId, content: replyText });
+                    console.log(`[QQ Official Bot] ✓ 已回复群 /start 欢迎消息（已自动记录群 ID）`);
+                  }
+                  memory.append(sessionKey, "user", query);
+                  memory.append(sessionKey, "assistant", replyText);
+                } catch (err) {
+                  console.error(`[QQ Official Bot] ✗ 回复群 /start 失败: ${err.message}`);
+                }
+                break;
+              }
+
+              try {
+                const history = memory.get(sessionKey);
+                memory.append(sessionKey, "user", query);
+                const result = await answer({
                   query,
                   topic: "QQ群学术研讨",
                   history,
                 });
-                appendSessionHistory(sessionKey, "user", query);
-                appendSessionHistory(sessionKey, "assistant", answer);
 
-                console.log(`[QQ Official Bot] 正在向群 [${groupOpenid}] 派发解答 (${answer.slice(0, 40)}...)...`);
+                console.log("[QQ Official Bot] 正在派发群回复");
                 if (!dryRun) {
-                  await replyGroupMessage({ groupOpenid, msgId, content: answer });
+                  await replyGroupMessage({ groupOpenid, msgId, content: result });
                   console.log(`[QQ Official Bot] ✓ 群回复成功`);
                 }
+                memory.append(sessionKey, "assistant", result);
               } catch (err) {
                 console.error(`[QQ Official Bot] ✗ 群回复失败: ${err.message}`);
               }
@@ -317,26 +405,26 @@ export async function startOfficialBot({ dryRun = false } = {}) {
           } else if (t === "AT_MESSAGE_CREATE") {
             const query = cleanMessageContent(d.content);
             const channelId = d.channel_id;
-            const authorId = d.author?.id || "user";
+            const authorId = d.author?.id;
             const sessionKey = `channel_${channelId}_${authorId}`;
             const msgId = d.id;
-            console.log(`[QQ Official Bot] 收到频道子频道 [${channelId}] @ 提问: "${query}"`);
+            console.log("[QQ Official Bot] 收到频道子频道 @ 提问");
 
-            if (query) {
+            if (query && channelId && authorId) {
               try {
-                const history = getSessionHistory(sessionKey);
-                const answer = await generateAcademicAnswer({
+                const history = memory.get(sessionKey);
+                memory.append(sessionKey, "user", query);
+                const result = await answer({
                   query,
                   topic: "频道学术研讨",
                   history,
                 });
-                appendSessionHistory(sessionKey, "user", query);
-                appendSessionHistory(sessionKey, "assistant", answer);
 
                 if (!dryRun) {
-                  await replyChannelMessage({ channelId, msgId, content: answer });
+                  await replyChannelMessage({ channelId, msgId, content: result });
                   console.log(`[QQ Official Bot] ✓ 频道回复成功`);
                 }
+                memory.append(sessionKey, "assistant", result);
               } catch (err) {
                 console.error(`[QQ Official Bot] ✗ 频道回复失败: ${err.message}`);
               }
@@ -346,23 +434,61 @@ export async function startOfficialBot({ dryRun = false } = {}) {
             const userOpenid = d.author?.user_openid;
             const sessionKey = `c2c_${userOpenid}`;
             const msgId = d.id;
-            console.log(`[QQ Official Bot] 收到私聊提问: "${query}"`);
+            console.log("[QQ Official Bot] 收到私聊提问");
+
+            if (userOpenid) {
+              try {
+                users.recordUser(userOpenid, { last_query: query });
+              } catch (recErr) {
+                console.warn("[QQ Official Bot] 记录 userOpenid 失败:", recErr.message);
+              }
+            }
 
             if (query && userOpenid) {
+              if (/^\/(start|help|id|whoami|bind)$/i.test(query)) {
+                try {
+                  const replyText = `👋 你好！我是 AstroLineage 高能天体物理前沿文献助手。\n\n我可以为你提供：\n• 每日 arXiv 重点论文导读与前沿雷达（快速射电暴、相对论喷流、超新星及致密天体等）\n• 论文核心突破、物理机制与阅读抓手深度解读\n• 课题组研究主线（R1~R7）与学术脉络梳理\n\n💬 直接发送论文题目、arXiv 编号或物理问题（如“总结今天的必读论文”），即可开始研讨！`;
+                  if (!dryRun) {
+                    await replyC2CMessage({ userOpenid, msgId, content: replyText });
+                    console.log(`[QQ Official Bot] ✓ 已回复 /start 欢迎消息（已自动记录 OpenID）`);
+                  }
+                  memory.append(sessionKey, "user", query);
+                  memory.append(sessionKey, "assistant", replyText);
+                } catch (err) {
+                  console.error(`[QQ Official Bot] ✗ 回复 /start 失败: ${err.message}`);
+                }
+                break;
+              }
+
+              if (/^\/test-c2c$/i.test(query)) {
+                try {
+                  const replyText = `[AstroLineage 测试] 收到私聊测试请求！双向连通状态：正常。`;
+                  if (!dryRun) {
+                    await replyC2CMessage({ userOpenid, msgId, content: replyText });
+                    console.log(`[QQ Official Bot] ✓ 已完成 /test-c2c 私聊应答`);
+                  }
+                  memory.append(sessionKey, "user", query);
+                  memory.append(sessionKey, "assistant", replyText);
+                } catch (err) {
+                  console.error(`[QQ Official Bot] ✗ 回复 /test-c2c 失败: ${err.message}`);
+                }
+                break;
+              }
+
               try {
-                const history = getSessionHistory(sessionKey);
-                const answer = await generateAcademicAnswer({
+                const history = memory.get(sessionKey);
+                memory.append(sessionKey, "user", query);
+                const result = await answer({
                   query,
                   topic: "私聊学术研讨",
                   history,
                 });
-                appendSessionHistory(sessionKey, "user", query);
-                appendSessionHistory(sessionKey, "assistant", answer);
 
                 if (!dryRun) {
-                  await replyC2CMessage({ userOpenid, msgId, content: answer });
+                  await replyC2CMessage({ userOpenid, msgId, content: result });
                   console.log(`[QQ Official Bot] ✓ 私聊回复成功`);
                 }
+                memory.append(sessionKey, "assistant", result);
               } catch (err) {
                 console.error(`[QQ Official Bot] ✗ 私聊回复失败: ${err.message}`);
               }
@@ -375,25 +501,33 @@ export async function startOfficialBot({ dryRun = false } = {}) {
           break;
       }
     } catch (parseErr) {
-      console.warn(`[QQ Official Bot] 消息处理异常: ${parseErr.message}`);
+      console.warn("[QQ Official Bot] 消息解析或处理异常（不输出原始内容）");
+    } finally {
+      if (handlingReply) activeReplies--;
     }
   });
 
-  ws.on("close", (code, reason) => {
+  ws.addEventListener("close", ({ code }) => {
     clearInterval(heartbeatTimer);
-    console.warn(`[QQ Official Bot] 连接断开 (code: ${code}, reason: ${reason?.toString()})，将在 5 秒后重试...`);
-    setTimeout(() => startOfficialBot({ dryRun }), 5000);
+    clearInterval(memoryTimer);
+    console.warn(`[QQ Official Bot] 连接断开 (code: ${code})，将在 5 秒后重试...`);
+    const reconnect = () => startOfficialBot({ dryRun, WebSocketImpl, gateway, authorize, answer, memory }).catch(() => {
+      console.warn("[QQ Official Bot] 重连失败，30 秒后重试");
+      setTimeout(reconnect, 30_000);
+    });
+    setTimeout(reconnect, 5000);
   });
 
-  ws.on("error", (err) => {
-    console.error(`[QQ Official Bot] WebSocket 异常: ${err.message}`);
+  ws.addEventListener("error", () => {
+    console.error("[QQ Official Bot] WebSocket 连接异常");
   });
+  return ws;
 }
 
 /**
  * 诊断环境连通性、凭证合法性与数据完整性 (--doctor)
  */
-export async function runDoctor() {
+export async function runDoctor({ live = false } = {}) {
   console.log("=== AstroLineage 官方 QQ 机器人环境自检诊断 (Doctor) ===\n");
   let passed = true;
 
@@ -421,13 +555,18 @@ export async function runDoctor() {
   }
   console.log(`  ✓ 运行模式: ${IS_SANDBOX ? "沙箱环境 (sandbox.api.sgroup.qq.com)" : "正式生产环境 (api.sgroup.qq.com)"}`);
 
+  if (!live) {
+    console.log("离线配置检查完成；未验证凭据、网关或模型连通性。显式 --doctor --live 才会联网并调用模型。");
+    return passed;
+  }
+
   // 2. 检查 OAuth 凭证获取 AccessToken
   console.log("\n[2/5] 检查官方 OAuth AccessToken 申请...");
   let token = null;
   try {
     token = await getAppAccessToken();
     if (token) {
-      console.log(`  ✓ AccessToken 申请成功 (前缀: ${token.slice(0, 10)}...)`);
+      console.log("  ✓ AccessToken 申请成功（不输出凭据）");
     } else {
       console.error("  ✗ AccessToken 申请失败: 返回空凭证");
       passed = false;
@@ -501,17 +640,51 @@ export async function runDoctor() {
 // CLI 直接运行入口
 if (process.argv[1] && process.argv[1].endsWith("qq-official-bot.mjs")) {
   if (process.argv.includes("--doctor") || process.argv.includes("-d")) {
-    runDoctor().then((ok) => {
+    runDoctor({ live: process.argv.includes("--live") }).then((ok) => {
       process.exit(ok ? 0 : 1);
     }).catch((err) => {
       console.error(`Doctor 异常: ${err.message}`);
       process.exit(1);
     });
+  } else if (process.argv.includes("--list-users")) {
+    const users = defaultUserManager.getUsers();
+    const entries = Object.entries(users);
+    console.log(`[QQ Official Bot] 当前共记录 ${entries.length} 个用户 OpenID：`);
+    for (const [id, u] of entries) {
+      console.log(`- OpenID: ${id}`);
+      console.log(`  交互次数: ${u.interaction_count} | 首次: ${new Date(u.first_seen).toLocaleString()} | 最近: ${new Date(u.last_seen).toLocaleString()}`);
+      if (u.last_query) console.log(`  最后提问: ${u.last_query}`);
+    }
+  } else if (process.argv.includes("--send-c2c")) {
+    const idx = process.argv.indexOf("--send-c2c");
+    let targetOpenid = process.argv[idx + 1];
+    let content = process.argv[idx + 2];
+    if (!content && targetOpenid && !targetOpenid.startsWith("-")) {
+      content = targetOpenid;
+      targetOpenid = defaultUserManager.getLatestUserOpenid();
+    }
+    if (!targetOpenid) {
+      console.error("[QQ Official Bot] 错误: 未指定 targetOpenid，且本地暂无已记录的 userOpenid。");
+      process.exit(1);
+    }
+    if (!content) {
+      console.error("[QQ Official Bot] 错误: 未提供发送内容。用法: --send-c2c [openid] <内容>");
+      process.exit(1);
+    }
+    console.log(`[QQ Official Bot] 正在向 ${targetOpenid} 发送私聊消息...`);
+    sendProactiveC2CMessage({ userOpenid: targetOpenid, content })
+      .then((res) => {
+        console.log(`✓ 发送成功:`, res);
+      })
+      .catch((err) => {
+        console.error(`✗ 发送失败: ${err.message}`);
+        process.exit(1);
+      });
   } else {
     const dryRun = process.argv.includes("--dry-run");
     startOfficialBot({ dryRun }).catch((err) => {
       console.error(`[QQ Official Bot] 启动异常: ${err.message}`);
+      process.exitCode = 1;
     });
   }
 }
-

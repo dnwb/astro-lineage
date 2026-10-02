@@ -100,8 +100,8 @@ const pathTitles: Record<string, string> = {
 const pathBlocks: Record<string, ReaderBlock[]> = {
   "learning-path:embedded-jet-dynamics": [
     paragraph("这条路径从相对论喷流传播的紧凑描述开始，进入嵌入 AGN 吸积盘的多信使应用，最后考察该应用的轨迹解析扩展。"),
-    paragraph("先阅读 Bromberg 等人 2011，建立喷流头部运动、茧状体准直和突破这套基本传播词汇。接着阅读 Zhu 等人 2021，把这套词汇带入具有受阻喷流、强子相互作用分支和中微子信使的致密 AGN 吸积盘环境。最后阅读 Long 和 Yu 2026，考察如何沿完整的喷流头部轨迹追踪激波和冷却条件的演化，以及喷流受阻或突破的不同结果。"),
-    paragraph("两段过渡理由是局部于本学习路径的教学依据。它们不主张科学谱系，不新增论文图谱关联，也不在工作之间建立全局的下一篇阅读关系。"),
+    paragraph("先阅读 Bromberg 等人 2011，建立喷流头部运动、茧状体准直和突破这套基本传播词汇。接着阅读 Zhang 等人 2024，把这套词汇应用到活动星系核吸积盘的致密有限几何中。随后阅读 Zhu 等人 2021，理解受阻喷流与吸积盘约束如何把喷流能量重新分配到多信使通道。最后阅读 Long 和 Yu 2026，考察如何沿完整的喷流头部轨迹追踪激波和冷却条件的演化，以及喷流受阻或突破的不同结果。"),
+    paragraph("三段过渡理由是局部于本学习路径的教学依据。它们不主张科学谱系，不新增论文图谱关联，也不在工作之间建立全局的下一篇阅读关系。"),
   ],
 };
 
@@ -137,6 +137,7 @@ const membershipReasons: Record<string, string> = {
   "membership:central-engines-zhu-2021": "这项工作把中心引擎阅读延伸到嵌入式致密环境，其中喷流能量被重新导向多个信使通道。",
   "membership:central-engines-transfit-2025": "这项工作提供了把中心引擎加热连接到瞬变光变曲线的具体数值流程，而更广义的爆发性瞬变方法背景仍由编辑锚点组织。",
   "membership:dense-environment-multimessenger-zhu-2021": "这项工作提供了从嵌入式受阻喷流追踪到中微子、光子和引力波分支的 V0.1 基础。",
+  "membership:dense-environment-multimessenger-zhang-agn-jet-2024": "这项工作提供了在致密 AGN 吸积盘中喷流传播、准直和受阻的解析框架，把传统包层理论拓展至致密盘环境。",
   "membership:dense-environment-multimessenger-long-yu-2026": "这项工作提供了在致密 AGN 吸积盘环境中描述喷流传播和中微子产生的动态模型前沿。",
   "membership:explosive-transients-csm-transfit-2025": "这项工作提供了可复用的时间依赖扩散和光变曲线拟合方法，不要求每个应用都包含星周介质相互作用。",
 };

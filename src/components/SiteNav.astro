@@ -1,5 +1,6 @@
 ---
 import LanguageSwitch from "./LanguageSwitch.astro";
+import ThemeToggle from "./ThemeToggle.astro";
 
 const currentPath = Astro.url.pathname;
 const isCurrent = (path: string) => {
@@ -17,6 +18,25 @@ const isCurrent = (path: string) => {
     <li><a href="/learning-paths/" aria-current={isCurrent("/learning-paths/") ? "page" : undefined} class={isCurrent("/learning-paths/") ? "active" : undefined}>学习路径</a></li>
     <li><a href="/arxiv-daily/" aria-current={isCurrent("/arxiv-daily/") ? "page" : undefined} class={isCurrent("/arxiv-daily/") ? "active" : undefined}>每日 arXiv</a></li>
     <li><a href="/arxiv-weekly/" aria-current={isCurrent("/arxiv-weekly/") ? "page" : undefined} class={isCurrent("/arxiv-weekly/") ? "active" : undefined}>每周总结</a></li>
+    <li><a href="/arxiv-archives/" aria-current={isCurrent("/arxiv-archives/") ? "page" : undefined} class={isCurrent("/arxiv-archives/") ? "active" : undefined}>往期归档</a></li>
+    <li><a href="/agent/" aria-current={isCurrent("/agent/") ? "page" : undefined} class={`agent-nav-tab ${isCurrent("/agent/") ? "active" : ""}`} title="面向 AI 智能体的开放端点与 OpenAPI">🤖 Agent 接入</a></li>
   </ul>
-  <LanguageSwitch />
+  <div class="site-nav-tools">
+    <LanguageSwitch />
+    <ThemeToggle />
+  </div>
 </nav>
+
+<style>
+  .agent-nav-tab {
+    color: #4f46e5;
+    font-weight: 600;
+  }
+  .site-nav-tools {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: auto;
+  }
+</style>
+

@@ -427,6 +427,21 @@ test("full-body coverage cannot be declared from an introduction-only inspection
   assert.equal(model.pending[0].pending_reason, "analysis_invalid");
 });
 
+test("malformed full-body section lists stay pending instead of throwing or entering legacy validation", () => {
+  const item = feedEntry("2609.00028");
+  for (const invalid of [
+    { source_sections: ["Introduction", "Methods"], inspected_sections: ["Introduction", 42] },
+    { source_sections: null },
+  ]) {
+    const analysis = validAnalysis(item, {
+      coverage: { ...coverageFor(item, "full_body"), ...invalid },
+    });
+    const model = buildDailyRadarModel({ entries: [item] }, { analyses: [analysis] });
+    assert.equal(model.groups.must_read.length, 0);
+    assert.equal(model.pending[0].pending_reason, "analysis_invalid");
+  }
+});
+
 test("non-terminal analyses remain pending until explicitly ready", () => {
   const entry = feedEntry("2609.00029");
   const model = buildDailyRadarModel(
@@ -790,7 +805,7 @@ test("knowledge points require an exact source revision and preserve paper versu
   assert.equal(limited.knowledge_points_pending.at(-1).pending_reason, "knowledge_point_limit");
 });
 
-test("the cached first edition does not publish abstract-only Worth Knowing or partial Must Read guides", async () => {
+test("the cached edition keeps ineligible guides pending without requiring a forced recommendation", async () => {
   const feed = JSON.parse(await readFile(new URL("../src/data/arxiv-daily.json", import.meta.url), "utf8"));
   const radar = JSON.parse(await readFile(new URL("../src/data/daily-radar.json", import.meta.url), "utf8"));
   const validation = validateDailyRadarPayload(feed, radar);
@@ -809,6 +824,8 @@ test("the cached first edition does not publish abstract-only Worth Knowing or p
       ],
     );
   } else {
-    assert.ok(validation.model.groups.must_read.length > 0 || validation.model.groups.worth_knowing.length > 0 || validation.model.groups.skip.length > 0);
+    const eligible = validation.model.groups.must_read.length + validation.model.groups.worth_knowing.length + validation.model.groups.skip.length;
+    assert.equal(eligible + validation.model.pending.length, feed.entries.length);
+    if (eligible === 0) assert.notEqual(validation.model.opening_brief?.status, "ready");
   }
 });

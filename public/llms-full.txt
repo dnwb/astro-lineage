@@ -1,0 +1,70 @@
+# AstroLineage Intelligence Knowledge Base (Full Context)
+
+> Complete domain guide, data schema, research lines, and endpoints for external AI agents (Cursor, Claude Code, NotebookLM, ChatGPT).
+
+## 1. Domain Scope & Mission
+AstroLineage is dedicated to high-energy transient astrophysics. We focus on:
+- Fast Radio Bursts (FRB): Magnetar engines, plasma lensing, dispersion measures (DM), Faraday rotation measures (RM), persistent radio sources (PRS), host galaxy environments.
+- Supernovae (SN): Core-collapse supernovae, circumstellar medium (CSM) interaction, early shock breakout and shock cooling, progenitor mass loss, superluminous supernovae (SLSN).
+- Gamma-Ray Bursts (GRB): Prompt emission mechanisms, relativistic jet launching and collimation, deceleration shocks, afterglows, collapsar and binary merger progenitors.
+- Gravitational Waves (GW) & Multi-Messenger: Binary neutron star (BNS) mergers, neutron star - black hole (NS-BH) mergers, kilonova emission, high-energy neutrinos (IceCube).
+- Magnetars & Pulsars: Giant flares, magnetar spin-down, pulsar wind nebulae (PWN), intra-binary shocks in spider pulsars.
+
+## 2. API Endpoints for Agents
+All endpoints return JSON and are updated automatically:
+- `GET /api/v1/daily.json`: Current active daily radar payload with priority groupings (must_read, worth_knowing, skip), opening brief, and verified evidence quotes.
+- `GET /api/v1/weekly.json`: Current weekly synthesis including executive summary, thematic highlights, top picks, and domain matrix.
+- `GET /api/v1/events.json`: Transient scientific event clusters (e.g. GW170817, GRB 250419A, AT2018hyz) sorted by heat score with 7-day half-life decay.
+
+## 3. Data Contract: Paper Analysis Record
+Each paper analyzed by AstroLineage follows this contract:
+```json
+{
+  "arxiv_id": "2609.38682",
+  "revision": 1,
+  "title": "Paper Title",
+  "priority": "must_read | worth_knowing | skip",
+  "analysis": {
+    "problem": "Specific astrophysical problem investigated",
+    "method": "Observational facilities, models, simulation codes used",
+    "result": "Principal empirical or theoretical conclusions with boundaries",
+    "reason": "Why this paper matters to high-energy transient astrophysics",
+    "reading_entry": "Recommended starting section (e.g. 'Section 3.2' or 'Abstract')",
+    "assumptions": ["Explicit theoretical or modeling assumptions"],
+    "limits": ["Observational limits, systematic uncertainties, parameter degeneracies"],
+    "research_progress": "Incremental step relative to prior literature",
+    "evidence": [
+      {
+        "section": "Section title in source TeX",
+        "quote": "Verbatim quote from source text (12-240 characters)",
+        "supports": ["reason", "result", "problem", "method", "research_progress"]
+      }
+    ]
+  },
+  "coverage": {
+    "level": "full_body | body_partial | abstract_only",
+    "inspected_sections": ["1. Introduction", "2. Observations", "..."]
+  }
+}
+```
+
+## 4. Transient Events Schema
+```json
+{
+  "event_id": "GRB 250419A",
+  "event_type": "GRB",
+  "tags": ["GRB"],
+  "heat_score": 22.0,
+  "paper_count": 1,
+  "first_seen": "2026-10-01",
+  "last_updated": "2026-10-01",
+  "papers": [
+    {
+      "arxiv_id": "2610.00508",
+      "title": "...",
+      "priority": "must_read",
+      "bluf_result": "..."
+    }
+  ]
+}
+```

@@ -1,0 +1,36 @@
+# AstroLineage (axvdaily)
+
+> High-Energy Astrophysics & Transient Intelligence Feed for Autonomous Agents and Researchers.
+> Tracking Fast Radio Bursts (FRB), Supernovae & CSM Shock Interactions, Relativistic Jets (GRB), Gravitational Waves (GW), Magnetars, and Compact Binaries with Fail-Closed Scientific Evidence.
+
+## Overview
+AstroLineage is an automated academic intelligence platform for high-energy astrophysics. It continuously monitors arXiv preprints (astro-ph.HE, astro-ph.SR, astro-ph.GA), ingests full TeX source packages, and generates verifiable, fail-closed reading guides with verbatim evidence quotes and physical boundary conditions.
+
+## Machine-Readable Endpoints
+- Daily Radar JSON: `/api/v1/daily.json` (Today's prioritized papers, BLUF summaries, and verbatim evidence chains)
+- Weekly Synthesis JSON: `/api/v1/weekly.json` (Structured weekly synthesis, thematic highlights, and domain matrix)
+- Transient Events Feed: `/api/v1/events.json` (Clustered observational transient events: GRBs, SNe, FRBs, GWs with heat decay scores)
+- Full Machine Context: `/llms-full.txt` (Comprehensive taxonomy, research lines, and recent intelligence)
+- OpenAPI Specification: `/openapi.yaml` (OpenAPI 3.1 schema for API consumers)
+- Agent Documentation: `/agent/` (Interactive developer and agent onboarding guide)
+
+## Research Directions
+1. Central Engines & Energy Injection (中央引擎与能量注入 - R1)
+2. Relativistic Jets & GRB Physics (相对论喷流与伽马暴 - R2)
+3. Explosive Transients & Circumstellar Medium (爆发瞬变与星周介质 - R3)
+4. Pulsar Wind & High-Energy Binaries (脉冲星风与高能双星 - R4)
+5. Magnetar Bursts & FRB Environment (磁星爆发与FRB环境 - R5)
+6. Compact Environments & Multi-Messenger (致密环境与多信使 - R6)
+7. High-Energy X-ray Timing & Accretion (高能X射线观测与致密双星 - R7)
+
+## Priority Definitions
+- `must_read`: Fundamental empirical or theoretical breakthrough directly impacting core research lines; requires full TeX body verification.
+- `worth_knowing`: Important incremental observation, methodology constraint, or physical model; requires body partial verification.
+- `skip`: Purely out-of-scope (e.g. planetary science, solar corona, pure instrumentation) or peripheral material.
+
+## Guidance for AI Agents & LLMs
+When summarizing or answering questions using AstroLineage intelligence:
+1. Always cite the arXiv ID and specific version (e.g. `arXiv:2609.38682v1`).
+2. Cite the exact observational transient identifier if applicable (e.g. `GRB 250419A`, `SN 2024ggi`).
+3. Preserve the distinction between verified full-body evidence and abstract-only initial screening.
+4. Distinguish between empirical constraints and theoretical model assumptions.

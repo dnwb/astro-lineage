@@ -145,70 +145,55 @@ const currentWeekValidatedModels = currentWeekPastArchives.map((pastDay) => {
         <h1><span class="language-primary">每日 arXiv 导读</span><span class="language-english" lang="en">Daily arXiv reading guide</span></h1>
         <p class="reader-deck language-primary">先决定今天读什么，再展开查看问题、假设、结果边界和实际阅读范围。</p>
         <p class="reader-deck language-english" lang="en">Choose what to read first, then open the guide for its problem, assumptions, limits, and actual reading coverage.</p>
-        <p class="record-label language-primary">{coverageLabel} · 更新时间：{generatedLabel} · <a href="/arxiv-weekly/" style="color: #2563eb; font-weight: 500;">查看每周总结 →</a></p>
-        <p class="record-label language-english" lang="en">{isAnnouncementDay ? `Announcement batch ending ${announcementWindow?.announcement_date ?? "unrecorded"} (${announcementWindow?.time_zone ?? "America/New_York"})` : "Recent-submission sample"} · refreshed {generatedLabel} · <a href="/arxiv-weekly/" style="color: #2563eb; font-weight: 500;">View Weekly Synthesis →</a></p>
+        <p class="record-label language-primary">{coverageLabel} · 更新时间：{generatedLabel} · <a href="/arxiv-weekly/" style="color: #2563eb; font-weight: 500;">查看每周总结 →</a> · <a href="#historical-archives" style="color: #4b5563; font-weight: 500;">往期日报归档 ↓</a></p>
+        <p class="record-label language-english" lang="en">{isAnnouncementDay ? `Announcement batch ending ${announcementWindow?.announcement_date ?? "unrecorded"} (${announcementWindow?.time_zone ?? "America/New_York"})` : "Recent-submission sample"} · refreshed {generatedLabel} · <a href="/arxiv-weekly/" style="color: #2563eb; font-weight: 500;">View Weekly Synthesis →</a> · <a href="#historical-archives" style="color: #4b5563; font-weight: 500;">Historical Archives ↓</a></p>
       </header>
 
-      <!-- Weekly Archive Navigator -->
-      <nav class="archive-nav-card" aria-label="arXiv 历史归档导航">
-        <div class="archive-nav-top">
-          <div class="archive-nav-title-group">
-            <span class="archive-nav-title"><span class="language-primary">🗓️ 历史日报归档 · 按周索引</span><span class="language-english" lang="en">Daily Archives (Grouped Weekly)</span></span>
-            <span class="archive-nav-sub"><span class="language-primary">每日监测按周聚类，可查阅往期完整导读雷达：</span><span class="language-english" lang="en">Browse daily radar editions grouped by week:</span></span>
-          </div>
-          <a class="archive-jump-weekly-link" href="/arxiv-weekly/">
-            <span class="language-primary">📖 查看本周学术脉络周报 →</span>
-            <span class="language-english" lang="en">View Weekly Synthesis →</span>
-          </a>
-        </div>
-        <div class="archive-nav-weeks">
-          {archiveManifest.weeks.map((week) => (
-            <div class="archive-week-row">
-              <div class="archive-week-badge-wrap">
-                <span class="archive-week-badge">{week.week_id}</span>
-                <span class="archive-week-range">{week.date_range}</span>
-              </div>
-              <div class="archive-day-chips">
-                {week.days.map((d) => (
-                  d.date === currentDate ? (
-                    <span class="archive-chip chip-active" id={`archive-${d.date}`} title="当前展示最新日报">
-                      <span class="chip-status-tag">当前展示</span>
-                      <strong class="chip-date">{d.date}</strong>
-                      <span class="chip-meta">{d.weekday} · {d.total_papers}篇</span>
-                    </span>
-                  ) : week.week_id === currentWeekId ? (
-                    <a class="archive-chip chip-link in-week-chip" id={`chip-${d.date}`} href={`#archive-${d.date}`} title="点击跳转并展开当周历史导读">
-                      <span class="chip-past-tag">当周折叠</span>
-                      <strong class="chip-date">{d.date}</strong>
-                      <span class="chip-meta">{d.weekday} · {d.total_papers}篇 ↓</span>
-                    </a>
-                  ) : (
-                    <a class="archive-chip chip-link standalone-chip" id={`chip-${d.date}`} href={`#archive-${d.date}`} title="点击跳转至该历史日期归档条目">
-                      <span class="chip-past-tag">独立归档</span>
-                      <strong class="chip-date">{d.date}</strong>
-                      <span class="chip-meta">{d.weekday} · {d.total_papers}篇 ↓</span>
-                    </a>
-                  )
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </nav>
-
       <DailyRadarBrief brief={model.opening_brief} visibleWorkLinks={visibleWorkLinks} groups={priorityGroups} />
+
+      <!-- Interactive Pill Filters & Instant Search -->
+      <section class="radar-filter-container" aria-label="文献即时检索与分类筛选">
+        <div class="radar-search-box">
+          <span class="search-icon">🔍</span>
+          <input
+            type="text"
+            id="radar-instant-search"
+            class="radar-search-input"
+            placeholder="即时搜索标题、作者、编号或物理问题（如 250419A, magnetar, shock）..."
+            autocomplete="off"
+            aria-label="搜索当前批次论文"
+          />
+          <button id="radar-search-clear" class="radar-search-clear-btn" type="button" aria-label="清除搜索" style="display: none;">×</button>
+        </div>
+
+        <div class="radar-pills-track" role="tablist" aria-label="科学分类与优先级胶囊">
+          <button class="filter-pill active" data-filter="ALL" type="button">全部 ({model.counts.total})</button>
+          <button class="filter-pill pill-must-read" data-filter="must_read" type="button">⭐ 必读 ({priorityGroups.must_read.length})</button>
+          <button class="filter-pill pill-worth-knowing" data-filter="worth_knowing" type="button">📌 关注 ({priorityGroups.worth_knowing.length})</button>
+          <button class="filter-pill" data-filter="FRB" type="button">⚡ FRB 快速射电暴</button>
+          <button class="filter-pill" data-filter="GRB" type="button">💥 GRB 伽马暴/喷流</button>
+          <button class="filter-pill" data-filter="SN" type="button">🌟 SN 超新星/星周</button>
+          <button class="filter-pill" data-filter="GW" type="button">🌀 GW 引力波/致密星</button>
+          <button class="filter-pill" data-filter="TRANSIENT" type="button">🔭 观测瞬变源目标</button>
+        </div>
+
+        <div class="radar-filter-status">
+          <span id="radar-filter-count-badge" class="filter-count-badge">显示当前批次全部 {model.counts.total} 篇论文</span>
+          <button id="radar-filter-reset" class="filter-reset-link" type="button" style="display: none;">重置全部筛选</button>
+        </div>
+      </section>
 
       <DailyRadarPrioritySection
         id="must-read"
         items={priorityGroups.must_read}
-        primaryLabel="今天先读"
+        primaryLabel="必读"
         englishLabel="Must Read"
         visibleWorkLinks={visibleWorkLinks}
       />
       <DailyRadarPrioritySection
         id="worth-knowing"
         items={priorityGroups.worth_knowing}
-        primaryLabel="值得知道"
+        primaryLabel="关注"
         englishLabel="Worth Knowing"
         visibleWorkLinks={visibleWorkLinks}
       />
@@ -271,6 +256,53 @@ const currentWeekValidatedModels = currentWeekPastArchives.map((pastDay) => {
         <h2><span class="language-primary">往期日报与历史归档</span><span class="language-english" lang="en">Historical Daily Guide Archives</span></h2>
         <p class="archive-history-intro"><span class="language-primary">按周分级归档：当周往期可就地展开查看；跨周历史批次沉淀为独立静态页面，保障轻快阅读体验：</span><span class="language-english" lang="en">Past editions are archived hierarchically: current-week editions fold in-place, while prior weeks are served as standalone pages.</span></p>
 
+        <!-- Weekly Archive Navigator -->
+        <nav class="archive-nav-card" aria-label="arXiv 历史归档导航">
+          <div class="archive-nav-top">
+            <div class="archive-nav-title-group">
+              <span class="archive-nav-title"><span class="language-primary">🗓️ 历史日报归档 · 按周索引</span><span class="language-english" lang="en">Daily Archives (Grouped Weekly)</span></span>
+              <span class="archive-nav-sub"><span class="language-primary">每日监测按周聚类，可查阅往期完整导读雷达：</span><span class="language-english" lang="en">Browse daily radar editions grouped by week:</span></span>
+            </div>
+            <a class="archive-jump-weekly-link" href="/arxiv-weekly/">
+              <span class="language-primary">📖 查看本周学术脉络周报 →</span>
+              <span class="language-english" lang="en">View Weekly Synthesis →</span>
+            </a>
+          </div>
+          <div class="archive-nav-weeks">
+            {archiveManifest.weeks.map((week) => (
+              <div class="archive-week-row">
+                <div class="archive-week-badge-wrap">
+                  <span class="archive-week-badge">{week.week_id}</span>
+                  <span class="archive-week-range">{week.date_range}</span>
+                </div>
+                <div class="archive-day-chips">
+                  {week.days.map((d) => (
+                    d.date === currentDate ? (
+                      <span class="archive-chip chip-active" id={`archive-${d.date}`} title="当前展示最新日报">
+                        <span class="chip-status-tag">当前展示</span>
+                        <strong class="chip-date">{d.date}</strong>
+                        <span class="chip-meta">{d.weekday} · {d.total_papers}篇</span>
+                      </span>
+                    ) : week.week_id === currentWeekId ? (
+                      <a class="archive-chip chip-link in-week-chip" id={`chip-${d.date}`} href={`#archive-${d.date}`} title="点击跳转并展开当周历史导读">
+                        <span class="chip-past-tag">当周折叠</span>
+                        <strong class="chip-date">{d.date}</strong>
+                        <span class="chip-meta">{d.weekday} · {d.total_papers}篇 ↓</span>
+                      </a>
+                    ) : (
+                      <a class="archive-chip chip-link standalone-chip" id={`chip-${d.date}`} href={`#archive-${d.date}`} title="点击跳转至该历史日期归档条目">
+                        <span class="chip-past-tag">独立归档</span>
+                        <strong class="chip-date">{d.date}</strong>
+                        <span class="chip-meta">{d.weekday} · {d.total_papers}篇 ↓</span>
+                      </a>
+                    )
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </nav>
+
         {currentWeekValidatedModels.length > 0 && (
           <div class="current-week-history-wrap">
             <h3 class="history-subheading"><span class="language-primary">本周往期（就地折叠）</span><span class="language-english" lang="en">In-Week Editions</span></h3>
@@ -305,14 +337,14 @@ const currentWeekValidatedModels = currentWeekPastArchives.map((pastDay) => {
                     <DailyRadarPrioritySection
                       id={`must-read-${dayInfo.date}`}
                       items={pastGroups.must_read}
-                      primaryLabel="今天先读"
+                      primaryLabel="必读"
                       englishLabel="Must Read"
                       visibleWorkLinks={visibleWorkLinks}
                     />
                     <DailyRadarPrioritySection
                       id={`worth-knowing-${dayInfo.date}`}
                       items={pastGroups.worth_knowing}
-                      primaryLabel="值得知道"
+                      primaryLabel="关注"
                       englishLabel="Worth Knowing"
                       visibleWorkLinks={visibleWorkLinks}
                     />
@@ -389,5 +421,226 @@ const currentWeekValidatedModels = currentWeekPastArchives.map((pastDay) => {
         )}
       </section>
     </main>
+
+    <script is:inline>
+      (function () {
+        const searchInput = document.getElementById("radar-instant-search");
+        const clearBtn = document.getElementById("radar-search-clear");
+        const resetBtn = document.getElementById("radar-filter-reset");
+        const countBadge = document.getElementById("radar-filter-count-badge");
+        const pillButtons = document.querySelectorAll(".filter-pill");
+        const skipDetails = document.querySelector(".skip-section");
+
+        let currentFilter = "ALL";
+        let currentQuery = "";
+
+        function updateView() {
+          const items = document.querySelectorAll(".radar-list-item");
+          let visibleCount = 0;
+          let hasVisibleSkim = false;
+
+          items.forEach((item) => {
+            const priority = item.getAttribute("data-priority") || "";
+            const tags = (item.getAttribute("data-tags") || "").split(",").filter(Boolean);
+            const transients = (item.getAttribute("data-transients") || "").split(",").filter(Boolean);
+            const searchCorpus = (item.getAttribute("data-search") || "").toLowerCase();
+
+            let matchesFilter = false;
+            if (currentFilter === "ALL") {
+              matchesFilter = true;
+            } else if (currentFilter === "must_read" || currentFilter === "worth_knowing" || currentFilter === "skip") {
+              matchesFilter = priority === currentFilter;
+            } else if (currentFilter === "TRANSIENT") {
+              matchesFilter = transients.length > 0;
+            } else {
+              matchesFilter = tags.includes(currentFilter);
+            }
+
+            let matchesSearch = true;
+            if (currentQuery) {
+              const terms = currentQuery.toLowerCase().split(/\s+/).filter(Boolean);
+              matchesSearch = terms.every((term) => searchCorpus.includes(term));
+            }
+
+            const isVisible = matchesFilter && matchesSearch;
+            item.style.display = isVisible ? "" : "none";
+            if (isVisible) {
+              visibleCount++;
+              if (priority === "skip") hasVisibleSkim = true;
+            }
+          });
+
+          if (skipDetails && (currentFilter === "skip" || (currentQuery && hasVisibleSkim))) {
+            skipDetails.open = true;
+          }
+
+          if (countBadge) {
+            if (currentFilter === "ALL" && !currentQuery) {
+              countBadge.textContent = `显示当前批次全部 ${items.length} 篇论文`;
+              if (resetBtn) resetBtn.style.display = "none";
+            } else {
+              countBadge.textContent = `匹配筛选到 ${visibleCount} / ${items.length} 篇论文`;
+              if (resetBtn) resetBtn.style.display = "inline";
+            }
+          }
+
+          if (clearBtn) {
+            clearBtn.style.display = currentQuery ? "inline-block" : "none";
+          }
+        }
+
+        pillButtons.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            pillButtons.forEach((b) => b.classList.remove("active"));
+            btn.classList.add("active");
+            currentFilter = btn.getAttribute("data-filter") || "ALL";
+            updateView();
+          });
+        });
+
+        if (searchInput) {
+          searchInput.addEventListener("input", (e) => {
+            currentQuery = (e.target.value || "").trim();
+            updateView();
+          });
+        }
+
+        if (clearBtn) {
+          clearBtn.addEventListener("click", () => {
+            if (searchInput) searchInput.value = "";
+            currentQuery = "";
+            updateView();
+            searchInput.focus();
+          });
+        }
+
+        if (resetBtn) {
+          resetBtn.addEventListener("click", () => {
+            currentFilter = "ALL";
+            currentQuery = "";
+            if (searchInput) searchInput.value = "";
+            pillButtons.forEach((b) => {
+              if (b.getAttribute("data-filter") === "ALL") b.classList.add("active");
+              else b.classList.remove("active");
+            });
+            updateView();
+          });
+        }
+      })();
+    </script>
+
+    <style>
+      .radar-filter-container {
+        margin: 1.5rem 0 2rem;
+        padding: 1.25rem;
+        background: var(--card-bg, #ffffff);
+        border: 1px solid var(--border-color, #c9c3b7);
+        border-radius: 0.75rem;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      }
+      .radar-search-box {
+        display: flex;
+        align-items: center;
+        position: relative;
+        margin-bottom: 1rem;
+      }
+      .search-icon {
+        position: absolute;
+        left: 0.85rem;
+        font-size: 1rem;
+        pointer-events: none;
+        opacity: 0.6;
+      }
+      .radar-search-input {
+        width: 100%;
+        padding: 0.65rem 2.5rem 0.65rem 2.4rem;
+        font-size: 0.95rem;
+        border: 1px solid var(--card-border, #cbd5e1);
+        border-radius: 0.5rem;
+        background: var(--bg-primary, #f8fafc);
+        color: var(--text-primary, #0f172a);
+        outline: none;
+        transition: border-color 0.15s, box-shadow 0.15s;
+      }
+      .radar-search-input:focus {
+        border-color: #2563eb;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+      }
+      .radar-search-clear-btn {
+        position: absolute;
+        right: 0.75rem;
+        background: none;
+        border: none;
+        font-size: 1.25rem;
+        color: #94a3b8;
+        cursor: pointer;
+        padding: 0;
+        line-height: 1;
+      }
+      .radar-search-clear-btn:hover {
+        color: #0f172a;
+      }
+      .radar-pills-track {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 0.85rem;
+      }
+      .filter-pill {
+        padding: 0.35rem 0.75rem;
+        font-size: 0.82rem;
+        font-weight: 600;
+        border-radius: 9999px;
+        border: 1px solid var(--card-border, #cbd5e1);
+        background: var(--card-bg, #ffffff);
+        color: var(--text-secondary, #475569);
+        cursor: pointer;
+        transition: all 0.15s ease;
+      }
+      .filter-pill:hover {
+        border-color: #94a3b8;
+        background: var(--code-bg, #f1f5f9);
+      }
+      .filter-pill.active {
+        background: #1e3a8a;
+        color: #ffffff;
+        border-color: #1e3a8a;
+      }
+      :global([data-theme="dark"]) .filter-pill.active {
+        background: #2563eb;
+        color: #ffffff;
+        border-color: #3b82f6;
+      }
+      .filter-pill.pill-must-read.active {
+        background: #ea580c;
+        border-color: #c2410c;
+      }
+      .filter-pill.pill-worth-knowing.active {
+        background: #4f46e5;
+        border-color: #4338ca;
+      }
+      .radar-filter-status {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 0.82rem;
+        color: var(--text-secondary, #64748b);
+        padding-top: 0.5rem;
+        border-top: 1px solid var(--border-color, #e2e8f0);
+      }
+      .filter-count-badge {
+        font-weight: 500;
+      }
+      .filter-reset-link {
+        background: none;
+        border: none;
+        color: #2563eb;
+        cursor: pointer;
+        font-size: 0.82rem;
+        font-weight: 600;
+        padding: 0;
+        text-decoration: underline;
+      }
+    </style>
   </body>
 </html>

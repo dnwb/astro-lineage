@@ -47,6 +47,8 @@ const LONG_YU_WORK = "work:long-yu-2026";
 const LONG_YU_WORK_SLUG = "long-yu-2026";
 const CENTRAL_ENGINES_LINE = "research-line:central-engines";
 const CENTRAL_ENGINES_LINE_SLUG = "central-engines";
+const DENSE_ENVIRONMENT_LINE = "research-line:dense-environment-multimessenger";
+const DENSE_ENVIRONMENT_LINE_SLUG = "dense-environment-multimessenger";
 const EMBEDDED_JET_PATH = "learning-path:embedded-jet-dynamics";
 const EMBEDDED_JET_PATH_SLUG = "embedded-jet-dynamics";
 
@@ -366,6 +368,12 @@ const mutations = Object.freeze({
     });
     await refreshVisibilityApproval(
       contentRoot,
+      "research_line",
+      DENSE_ENVIRONMENT_LINE,
+      `research-lines/${DENSE_ENVIRONMENT_LINE_SLUG}/line.yaml`,
+    );
+    await refreshVisibilityApproval(
+      contentRoot,
       "learning_path",
       EMBEDDED_JET_PATH,
       `learning-paths/${EMBEDDED_JET_PATH_SLUG}/path.yaml`,
@@ -539,7 +547,7 @@ test("canonical reports and digests are deterministic across filesystem creation
 test("production discovery, indexes, and reader projections stay isolated from fixture descriptors", async () => {
   const snapshot = await loadCanonicalContent(productionContent);
   const discovery = await discoverCanonicalContent(productionContent);
-  assert.equal(snapshot.works.filter((work) => work.files["work.yaml"]?.reader_state === "visible").length, 5);
+  assert.equal(snapshot.works.filter((work) => work.files["work.yaml"]?.reader_state === "visible").length, 6);
   assert.equal(snapshot.works.length, 41);
   assert.equal(snapshot.researchLines.length, 7);
   assert.equal(snapshot.learningPaths.length, 5);

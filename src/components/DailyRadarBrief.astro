@@ -20,19 +20,28 @@ function visibleRelatedWorks(sentence: AnyRecord) {
     .map((workId: string) => visibleWorkLinks[workId])
     .filter((work): work is { href: string; title: string } => work !== undefined);
 }
+function cleanBriefSummary(text: string) {
+  if (!text) return "";
+  return text
+    .replace(/^其他值得知道的工作[：:]\s*/u, "")
+    .replace(/；其余见下方卡片[。.]?$/u, "。")
+    .replace(/^快速浏览条目涉及\s*/u, "")
+    .replace(/；目前仅依据摘要分类[。.]?$/u, "。");
+}
 ---
 
 <section class="panel radar-brief" id="opening-brief" aria-labelledby="opening-brief-title">
   <p class="section-kicker"><span class="language-primary">本期导读</span><span class="language-english" lang="en">Opening brief</span></p>
-  <h2 id="opening-brief-title"><span class="language-primary">先看这批更新</span><span class="language-english" lang="en">Read this update first</span></h2>
+  <h2 id="opening-brief-title"><span class="language-primary">宏观速报</span><span class="language-english" lang="en">Read this update first</span></h2>
   {ready ? (
     <div class="language-primary">
       <p class="radar-brief-intro"><ReaderText text={brief.intro} /></p>
       {mustRead.length > 0 ? (
         <ul class="radar-brief-must-read">
           {mustRead.map((sentence: AnyRecord) => (
-            <li>
-              <a href={`#${sentence.anchor}`}>{sentence.label}</a>：<ReaderText text={sentence.text} />
+            <li class="radar-brief-item">
+              <span class="radar-brief-pill pill-must-read">⭐ 必读</span>
+              <a href={`#${sentence.anchor}`} class="brief-paper-title">{sentence.label}</a>：<ReaderText text={sentence.text} />
               {visibleRelatedWorks(sentence).length > 0 ? (
                 <span class="radar-brief-work-links">（相关 Work：{visibleRelatedWorks(sentence).map((work) => <a href={work.href}>{work.title}</a>) }）</span>
               ) : null}
@@ -40,8 +49,18 @@ function visibleRelatedWorks(sentence: AnyRecord) {
           ))}
         </ul>
       ) : null}
-      {hasWorthKnowing && brief.worth_knowing_summary ? <p><strong>关注：</strong><ReaderText text={brief.worth_knowing_summary} /></p> : null}
-      {hasSkim && brief.skim_summary ? <p><strong>快速浏览：</strong><ReaderText text={brief.skim_summary} /></p> : null}
+      {hasWorthKnowing && brief.worth_knowing_summary ? (
+        <p class="radar-brief-row">
+          <span class="radar-brief-pill pill-worth-knowing">📌 关注</span>
+          <span class="brief-summary-text"><ReaderText text={cleanBriefSummary(brief.worth_knowing_summary)} /></span>
+        </p>
+      ) : null}
+      {hasSkim && brief.skim_summary ? (
+        <p class="radar-brief-row">
+          <span class="radar-brief-pill pill-skim">⚡ 略读</span>
+          <span class="brief-summary-text"><ReaderText text={cleanBriefSummary(brief.skim_summary)} /></span>
+        </p>
+      ) : null}
     </div>
   ) : (
     <>
@@ -53,3 +72,84 @@ function visibleRelatedWorks(sentence: AnyRecord) {
     <p class="record-label language-english" lang="en">This opening brief is available in Chinese only; each paper card retains its own source and coverage disclosure.</p>
   ) : null}
 </section>
+
+<style>
+  .radar-brief-intro {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 0.85rem;
+  }
+  .radar-brief-must-read {
+    list-style: none;
+    padding: 0;
+    margin: 0.5rem 0 0.85rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+  .radar-brief-item {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+  .radar-brief-row {
+    display: flex;
+    align-items: baseline;
+    gap: 0.45rem;
+    margin: 0.5rem 0;
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+  .radar-brief-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.12rem 0.45rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    border-radius: 0.25rem;
+    flex-shrink: 0;
+    user-select: none;
+  }
+  .pill-must-read {
+    background: #fbf0ed;
+    color: #a6300e;
+    border: 1px solid #ebd0c8;
+  }
+  .pill-worth-knowing {
+    background: #eef3f8;
+    color: #2c405a;
+    border: 1px solid #d0dbe6;
+  }
+  .pill-skim {
+    background: #f1f5f9;
+    color: #475569;
+    border: 1px solid #cbd5e1;
+  }
+  :global([data-theme="dark"]) .pill-must-read {
+    background: #431407;
+    color: #fdba74;
+    border-color: #ea580c;
+  }
+  :global([data-theme="dark"]) .pill-worth-knowing {
+    background: #1e1b4b;
+    color: #c7d2fe;
+    border-color: #6366f1;
+  }
+  :global([data-theme="dark"]) .pill-skim {
+    background: #1e293b;
+    color: #94a3b8;
+    border-color: #475569;
+  }
+  .brief-paper-title {
+    font-weight: 600;
+    color: var(--text-primary, #0f172a);
+    text-decoration: none;
+  }
+  .brief-paper-title:hover {
+    color: var(--link-color, #2563eb);
+    text-decoration: underline;
+  }
+</style>

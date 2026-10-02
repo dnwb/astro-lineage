@@ -21,6 +21,21 @@ import dailyFeed from "../data/arxiv-daily.json";
 import archiveManifest from "../data/arxiv-archives/manifest.json";
 import "../styles/global.css";
 
+const dailyArchiveModules = import.meta.glob<{ default: any }>("../data/arxiv-archives/daily/*.json", { eager: true });
+const paperDailyDateMap = new Map<string, string>();
+for (const mod of Object.values(dailyArchiveModules)) {
+  const data = (mod as any).default || mod;
+  const date = data.date;
+  for (const entry of data.feed?.entries ?? []) {
+    if (entry.arxiv_id && date) paperDailyDateMap.set(entry.arxiv_id, date);
+  }
+  for (const a of data.radar?.analyses ?? []) {
+    if (a.arxiv_id && date && !paperDailyDateMap.has(a.arxiv_id)) {
+      paperDailyDateMap.set(a.arxiv_id, date);
+    }
+  }
+}
+
 type AnyRecord = Record<string, any>;
 
 const site = loadSiteConfig();
@@ -235,20 +250,44 @@ function edgeLabel(edge: AnyRecord) {
               <div class="intel-picks-box">
                 <p class="intel-picks-label">本周重点论文：</p>
                 <ul class="intel-picks-list">
-                  {weeklyTopPicks.slice(0, 2).map((pick: any) => (
-                    <li class="intel-pick-item">
-                      <div class="intel-pick-header">
-                        <span class="intel-pick-badge">{pick.priority === "must_read" ? "必读" : "关注"}</span>
-                        <a class="intel-pick-id" href={`https://arxiv.org/abs/${pick.arxiv_id}`} target="_blank" rel="noopener noreferrer">
-                          arXiv:{pick.arxiv_id} ↗
-                        </a>
-                      </div>
-                      <h4 class="intel-pick-title"><ReaderText text={pick.title} /></h4>
-                      <p class="intel-pick-insight">
-                        <strong>核心内容：</strong><ReaderText text={pick.core_insight} />
-                      </p>
-                    </li>
-                  ))}
+                  {weeklyTopPicks.slice(0, 2).map((pick: any) => {
+                    const dailyDate = paperDailyDateMap.get(pick.arxiv_id);
+                    return (
+                      <li class="intel-pick-item">
+                        <div class="intel-pick-header">
+                          <span class={`intel-pick-badge ${pick.priority === "must_read" ? "badge-must-read" : "badge-worth-knowing"}`}>
+                            {pick.priority === "must_read" ? "⭐ 必读" : "📌 关注"}
+                          </span>
+                          <div class="intel-pick-links">
+                            <a class="intel-pick-id" href={`https://arxiv.org/abs/${pick.arxiv_id}`} target="_blank" rel="noopener noreferrer">
+                              arXiv:{pick.arxiv_id} ↗
+                            </a>
+                            <a class="intel-pick-pdf" href={`https://arxiv.org/pdf/${pick.arxiv_id}`} target="_blank" rel="noopener noreferrer" title="直接阅读官方 PDF">
+                              📄 PDF
+                            </a>
+                            {dailyDate ? (
+                              <a class="intel-pick-daily" href={`/arxiv-daily/${dailyDate}/#card-${pick.arxiv_id}-v1`} title="查看当日研判进度与证据">
+                                📅 当日导读 →
+                              </a>
+                            ) : null}
+                          </div>
+                        </div>
+                        <h4 class="intel-pick-title"><ReaderText text={pick.title} /></h4>
+                        <div class="intel-pick-bluf">
+                          <p class="intel-bluf-row">
+                            <span class="bluf-tag result-tag">突破</span>
+                            <span class="bluf-text"><ReaderText text={pick.core_insight} /></span>
+                          </p>
+                          {pick.recommendation_reason ? (
+                            <p class="intel-bluf-row">
+                              <span class="bluf-tag reason-tag">理由</span>
+                              <span class="bluf-text"><ReaderText text={pick.recommendation_reason} /></span>
+                            </p>
+                          ) : null}
+                        </div>
+                      </li>
+                    );
+                  })}
                 </ul>
               </div>
             )}
@@ -319,28 +358,54 @@ function edgeLabel(edge: AnyRecord) {
             </div>
 
             <div class="intel-radar-highlights">
-              <p class="intel-summary-label">今日推荐论文：</p>
+              <p class="intel-summary-label">今日精选重点论文：</p>
               {dailyMustReads.length > 0 ? (
                 <ul class="intel-radar-list">
-                  {dailyMustReads.map((paper: any) => (
-                    <li class="intel-radar-item">
-                      <div class="intel-radar-item-top">
-                        <span class="intel-radar-tag tag-must-read">必读</span>
-                        <a class="intel-radar-id" href={`https://arxiv.org/abs/${paper.arxiv_id}`} target="_blank" rel="noopener noreferrer">
-                          arXiv:{paper.arxiv_id} ↗
-                        </a>
-                      </div>
-                      <h4 class="intel-radar-paper-title"><ReaderText text={paper.entry?.title || paper.arxiv_id} /></h4>
-                      <p class="intel-radar-reason">
-                        <strong>推荐理由：</strong><ReaderText text={paper.analysis?.reason || paper.analysis?.result || "重点高能爆发现象"} />
-                      </p>
-                      {paper.analysis?.result && (
-                        <p class="intel-radar-result">
-                          <strong>主要结果：</strong><ReaderText text={paper.analysis.result} />
-                        </p>
-                      )}
-                    </li>
-                  ))}
+                  {dailyMustReads.map((paper: any) => {
+                    const analysis = paper.analysis?.analysis || paper.analysis || {};
+                    const problem = analysis.problem;
+                    const result = analysis.result;
+                    const reason = analysis.reason;
+                    return (
+                      <li class="intel-radar-item">
+                        <div class="intel-radar-item-top">
+                          <span class="intel-radar-tag tag-must-read">⭐ 必读</span>
+                          <div class="intel-radar-links">
+                            <a class="intel-radar-id" href={`https://arxiv.org/abs/${paper.arxiv_id}`} target="_blank" rel="noopener noreferrer">
+                              arXiv:{paper.arxiv_id} ↗
+                            </a>
+                            <a class="intel-radar-pdf" href={`https://arxiv.org/pdf/${paper.arxiv_id}`} target="_blank" rel="noopener noreferrer" title="直接阅读官方 PDF">
+                              📄 PDF
+                            </a>
+                            <a class="intel-radar-card-link" href={`/arxiv-daily/#card-${paper.arxiv_id}-v${paper.revision || 1}`} title="查看完整学术卡片与证据链">
+                              完整卡片 →
+                            </a>
+                          </div>
+                        </div>
+                        <h4 class="intel-radar-paper-title"><ReaderText text={paper.entry?.title || paper.arxiv_id} /></h4>
+                        <div class="intel-bluf-stream">
+                          {problem && problem !== "unknown" && !problem.startsWith("未能从已检查材料") ? (
+                            <p class="intel-bluf-row">
+                              <span class="bluf-tag problem-tag">课题</span>
+                              <span class="bluf-text"><ReaderText text={problem} /></span>
+                            </p>
+                          ) : null}
+                          {result ? (
+                            <p class="intel-bluf-row">
+                              <span class="bluf-tag result-tag">突破</span>
+                              <span class="bluf-text"><ReaderText text={result} /></span>
+                            </p>
+                          ) : null}
+                          {reason ? (
+                            <p class="intel-bluf-row">
+                              <span class="bluf-tag reason-tag">理由</span>
+                              <span class="bluf-text"><ReaderText text={reason} /></span>
+                            </p>
+                          ) : null}
+                        </div>
+                      </li>
+                    );
+                  })}
                 </ul>
               ) : (
                 <div class="intel-radar-empty">
@@ -513,5 +578,130 @@ function edgeLabel(edge: AnyRecord) {
         </div>
       </section>
     </main>
+
+    <style>
+      .intel-pick-header,
+      .intel-radar-item-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 0.45rem;
+        margin-bottom: 0.35rem;
+      }
+      .intel-pick-links,
+      .intel-radar-links {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+      }
+      .intel-pick-pdf,
+      .intel-radar-pdf {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.12rem 0.4rem;
+        font-size: 0.72rem;
+        font-weight: 600;
+        font-family: ui-monospace, monospace;
+        color: #dc2626;
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        border-radius: 0.25rem;
+        text-decoration: none;
+        transition: all 0.15s;
+      }
+      .intel-pick-pdf:hover,
+      .intel-radar-pdf:hover {
+        background: #fee2e2;
+        border-color: #f87171;
+      }
+      .intel-pick-daily,
+      .intel-radar-card-link {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.12rem 0.45rem;
+        font-size: 0.72rem;
+        font-weight: 600;
+        color: #166534;
+        background: #f0fdf4;
+        border: 1px solid #bbf7d0;
+        border-radius: 0.25rem;
+        text-decoration: none;
+        transition: all 0.15s;
+      }
+      .intel-pick-daily:hover,
+      .intel-radar-card-link:hover {
+        background: #dcfce7;
+        border-color: #86efac;
+      }
+      .intel-bluf-stream,
+      .intel-pick-bluf {
+        margin-top: 0.45rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.35rem;
+      }
+      .intel-bluf-row {
+        display: flex;
+        align-items: baseline;
+        gap: 0.45rem;
+        margin: 0;
+        font-size: 0.88rem;
+        line-height: 1.5;
+      }
+      .bluf-tag {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.08rem 0.38rem;
+        font-size: 0.7rem;
+        font-weight: 700;
+        border-radius: 0.25rem;
+        flex-shrink: 0;
+        letter-spacing: 0.02em;
+        user-select: none;
+      }
+      .problem-tag {
+        background: #f0fdf4;
+        color: #166534;
+        border: 1px solid #bbf7d0;
+      }
+      .result-tag {
+        background: #eff6ff;
+        color: #1d4ed8;
+        border: 1px solid #bfdbfe;
+      }
+      .reason-tag {
+        background: #fefce8;
+        color: #a16207;
+        border: 1px solid #fde047;
+      }
+      :global([data-theme="dark"]) .intel-pick-pdf,
+      :global([data-theme="dark"]) .intel-radar-pdf {
+        color: #f87171;
+        background: #450a0a;
+        border-color: #991b1b;
+      }
+      :global([data-theme="dark"]) .intel-pick-daily,
+      :global([data-theme="dark"]) .intel-radar-card-link {
+        color: #86efac;
+        background: #064e3b;
+        border-color: #047857;
+      }
+      :global([data-theme="dark"]) .problem-tag {
+        background: #064e3b;
+        color: #6ee7b7;
+        border-color: #047857;
+      }
+      :global([data-theme="dark"]) .result-tag {
+        background: #1e3a5f;
+        color: #93c5fd;
+        border-color: #2563eb;
+      }
+      :global([data-theme="dark"]) .reason-tag {
+        background: #451a03;
+        color: #fde047;
+        border-color: #ca8a04;
+      }
+    </style>
   </body>
 </html>

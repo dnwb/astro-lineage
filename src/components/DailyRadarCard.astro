@@ -65,9 +65,10 @@ function priorityLabel(priority: string) {
     <div class="radar-card-header-row">
       <div class="header-left-badges">
         <span class={`tier-pill priority-pill-${cardVariant}`}>
-          {item.analysis.priority === "must_read" ? "⭐ 必读" : isSkim ? "略读" : "📌 关注"}
+          {item.analysis.priority === "must_read" ? "⭐ 必读" : isSkim ? "⚡ 略读" : "📌 关注"}
         </span>
         <a class="radar-arxiv-badge" href={item.url} target="_blank" rel="noopener">arXiv:{item.arxiv_id}</a>
+        <a class="radar-pdf-badge" href={`https://arxiv.org/pdf/${item.arxiv_id}`} target="_blank" rel="noopener" title="直接阅读/下载官方 PDF">📄 PDF</a>
         {transientIds.map((tid: string) => (
           <span class="radar-transient-tag" title="观测事件目标">🔭 {tid}</span>
         ))}
@@ -89,20 +90,26 @@ function priorityLabel(priority: string) {
     <div class="radar-bluf-brief">
       {!isSkim ? (
         <>
+          {guide.problem && guide.problem !== "unknown" && !guide.problem.startsWith("未能从已检查材料") ? (
+            <p class="bluf-item bluf-item-problem">
+              <span class="bluf-mark bluf-tag problem-mark problem-tag">课题</span>
+              <span class="bluf-text"><ReaderText text={guide.problem} /></span>
+            </p>
+          ) : null}
           <p class="bluf-item bluf-item-result">
-            <span class="bluf-mark result-mark" title={resultLabel}>💡 核心突破</span>
+            <span class="bluf-mark bluf-tag result-mark result-tag" title={resultLabel}>突破</span>
             <span class="bluf-text"><ReaderText text={record.analysis.result || guide.result} /></span>
           </p>
           {guide.reason ? (
             <p class="bluf-item bluf-item-reason">
-              <span class="bluf-mark reason-mark">🎯 为什么关注</span>
+              <span class="bluf-mark bluf-tag reason-mark reason-tag">理由</span>
               <span class="bluf-text"><ReaderText text={guide.reason} /></span>
             </p>
           ) : null}
         </>
       ) : (
         <p class="bluf-item bluf-item-skim">
-          <span class="bluf-mark skim-mark">📌 略读概括</span>
+          <span class="bluf-mark bluf-tag skim-mark skim-tag">略读</span>
           <span class="bluf-text"><ReaderText text={guide.reason || record.analysis.result || guide.result} /></span>
         </p>
       )}
@@ -111,7 +118,7 @@ function priorityLabel(priority: string) {
     <!-- Folded Deep Analysis & Verbatim Evidence Accordion -->
     <details class="radar-deep-dive-details">
       <summary class="radar-deep-dive-summary">
-        <span class="summary-label">🔬 查看论证细节与原文依据（问题、方法、假设限定与 TeX 依据）</span>
+        <span class="summary-label">🔬 论证与证据链</span>
         <span class="deep-dive-arrow">展开 ▾</span>
       </summary>
 
@@ -279,6 +286,59 @@ function priorityLabel(priority: string) {
     border-color: #3b82f6;
   }
 
+  .radar-pdf-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.12rem 0.42rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    font-family: ui-monospace, monospace;
+    color: #dc2626;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 0.25rem;
+    text-decoration: none;
+    transition: all 0.15s;
+  }
+  .radar-pdf-badge:hover {
+    background: #fee2e2;
+    border-color: #f87171;
+    text-decoration: underline;
+  }
+  :global([data-theme="dark"]) .radar-pdf-badge {
+    color: #f87171;
+    background: #450a0a;
+    border-color: #991b1b;
+  }
+
+  .radar-card {
+    background: var(--card-bg, #ffffff);
+    border: 1px solid var(--border-color, #e2e8f0);
+    border-radius: 0.5rem;
+    padding: 1.15rem 1.35rem;
+    margin-bottom: 0.85rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .radar-card:hover {
+    border-color: #cbd5e1;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+  }
+  .radar-card-must-read {
+    border-left: 4px solid #ea580c;
+  }
+  .radar-card-worth-knowing {
+    border-left: 4px solid #3b82f6;
+  }
+  .radar-card-skim {
+    border-left: 3px solid #94a3b8;
+  }
+  :global([data-theme="dark"]) .radar-card {
+    background: #1e293b;
+    border-color: #334155;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  }
+
   .radar-card-title {
     margin: 0.35rem 0 0.45rem;
     font-size: 1.08rem;
@@ -310,42 +370,63 @@ function priorityLabel(priority: string) {
     font-size: 0.92rem;
     line-height: 1.55;
   }
-  .bluf-mark {
-    display: inline-block;
-    padding: 0.1rem 0.4rem;
-    font-size: 0.75rem;
+  .bluf-mark,
+  .bluf-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.1rem 0.42rem;
+    font-size: 0.72rem;
     font-weight: 700;
+    line-height: 1.25;
     border-radius: 0.25rem;
     flex-shrink: 0;
     letter-spacing: 0.02em;
     user-select: none;
   }
-  .result-mark {
+  .problem-mark,
+  .problem-tag {
+    background: #f0fdf4;
+    color: #166534;
+    border: 1px solid #bbf7d0;
+  }
+  .result-mark,
+  .result-tag {
     background: #eff6ff;
     color: #1d4ed8;
     border: 1px solid #bfdbfe;
   }
-  .reason-mark {
+  .reason-mark,
+  .reason-tag {
     background: #fefce8;
     color: #a16207;
     border: 1px solid #fde047;
   }
-  .skim-mark {
+  .skim-mark,
+  .skim-tag {
     background: #f1f5f9;
     color: #475569;
     border: 1px solid #cbd5e1;
   }
-  :global([data-theme="dark"]) .result-mark {
+  :global([data-theme="dark"]) .problem-mark,
+  :global([data-theme="dark"]) .problem-tag {
+    background: #064e3b;
+    color: #6ee7b7;
+    border-color: #047857;
+  }
+  :global([data-theme="dark"]) .result-mark,
+  :global([data-theme="dark"]) .result-tag {
     background: #1e3a5f;
     color: #93c5fd;
     border-color: #2563eb;
   }
-  :global([data-theme="dark"]) .reason-mark {
+  :global([data-theme="dark"]) .reason-mark,
+  :global([data-theme="dark"]) .reason-tag {
     background: #451a03;
     color: #fde047;
     border-color: #ca8a04;
   }
-  :global([data-theme="dark"]) .skim-mark {
+  :global([data-theme="dark"]) .skim-mark,
+  :global([data-theme="dark"]) .skim-tag {
     background: #1e293b;
     color: #94a3b8;
     border-color: #475569;

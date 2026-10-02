@@ -2,15 +2,23 @@
 
 `AstroLineage｜YYYY 精读日报与周报` 按年组织已发布导读。内容按月汇总为文本来源，超过 1 MB 时拆分；不是每天新建 notebook，也不是把导读冒充论文全文。日报使用公历年；周报使用 ISO 周所属年。原有研究方向笔记本不变。
 
-## 一次性认证
+## 认证与账户选择
 
-服务器浏览器的登录状态不同于你正在使用的浏览器。需要有图形显示的服务器终端执行：
+默认使用新版 `notebooklm` skill 的 HTTP 认证配置，不再要求另一份项目浏览器状态。先做只读检查：
 
 ```bash
+cd /home/long/.agents/skills/notebooklm
+python scripts/run.py notebooklm auth check --test --passive
+```
+
+仅在认证缺失或失效时，在有图形显示的服务器终端手动登录：
+
+```bash
+cd /home/long/axvdaily
 npm run notebooklm:login
 ```
 
-可见 Chrome 打开后，在五分钟内手动登录正确的 Google 账号。凭据保存在被 Git 忽略的 `.cache/notebooklm/auth.json`，目录 0700、文件 0600；不要上传或提交该文件。无桌面环境时，需要先提供可交互的显示环境，不能用“浏览器里已经登录”代替服务器认证。
+该命令显式启动上游 CLI 的 Chrome 登录。默认凭据选择遵循 skill：其默认 API profile、API storage 或已有浏览器状态；显式 `NOTEBOOKLM_HOME` / `NOTEBOOKLM_PROFILE` / `NOTEBOOKLM_AUTH_JSON` 优先。需要指定独立状态文件时设置 `NOTEBOOKLM_AUTH_STATE`，它只作为上游 `--storage` 参数，不把凭据写入日志。不要提交任何凭据。同步本身只走 HTTP，失败不会自动打开浏览器或重新登录。
 
 ## 日常执行
 
@@ -25,7 +33,11 @@ npm run notebooklm:sync -- --dry-run
 bash scripts/cron-runner.sh notebook
 ```
 
-同步由全局锁保护，来源标题包含内容哈希。远端已上传、本地未记账时重入会先核对现有来源，避免重复上传。确认新来源中哈希标记可见后，才删除同一自动生成 bundle 的旧版本；不删除 notebook 或用户来源。浏览器任务每年度最多运行六分钟；超时后保留已确认进度，下一次继续。页面变化重新构建后才进入同步，不读取构建后的可变 JSON。
+同步由全局锁保护，来源标题包含内容哈希。`scripts/notebooklm-http.py` 调用 skill 的上游 CLI：先核对年度 notebook 的标题与身份，再枚举来源、上传缺失文件、等待索引并验证正文。上传前用字面文本块包装原文，防止 Google 把导读中的 Markdown/TeX 当作排版标记改写；校验仍要求索引正文与原始标记、SHA256 一致，不清洗公式反斜杠或放宽证据范围。远端已上传、本地未记账时重入先核对同名来源，避免重复上传；内容不匹配或写入结果未知时明确阻塞，不盲目重试写入。每年度最多运行六分钟；超时先终止并回收 CLI 子进程，保留已确认进度，下一次继续。
+
+上传前还会核对导出快照与实际归档 HTML 的逐页哈希；仅构建 ID 相同不足以证明 `dist/` 未被其他会话覆盖。网页变化或快照过期返回 `NOTEBOOKLM_EXPORT_STALE`，应重新执行离线 `build`，不能绕过此门槛。
+
+本轮 HTTP 迁移不删除旧版本、用户来源或 notebook。变化的月度 bundle 会上传新版；旧版暂时保留，因此年度来源数量会随修订增加。来源配额或后续清理必须单独核验，不能用同名/标题前缀作为删除用户内容的依据。
 
 ## 状态文件
 
@@ -43,6 +55,7 @@ bash scripts/cron-runner.sh notebook
 ```bash
 node tests/notebooklm-sync.test.mjs
 node tests/cron-runner.test.mjs
+python3 tests/notebooklm-http.test.py
 bash -n scripts/cron-runner.sh
 ```
 

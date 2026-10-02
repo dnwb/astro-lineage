@@ -756,8 +756,8 @@ export function buildOpeningBrief(feed, radar) {
     status: "ready",
     edition_fingerprint: editionFingerprint(feed),
     intro: focus
-      ? `本次更新可先看「${focus.title}」${groups.must_read.length + groups.worth_knowing.length > 1 ? "等论文" : ""}；以下导读仅概括已核对的来源内容。`
-      : "本次更新目前只有摘要级快速浏览条目；打开原文后再决定是否深入阅读。",
+      ? `本期首看《${focus.title}》${groups.must_read.length + groups.worth_knowing.length > 1 ? `等 ${groups.must_read.length + groups.worth_knowing.length} 篇核心进展` : ""}。`
+      : "本期为常规监测批次，以摘要略读为主。",
     must_read: groups.must_read.map((item) => ({
       ...reference(item),
       label: item.title,
@@ -766,8 +766,8 @@ export function buildOpeningBrief(feed, radar) {
     })),
     worth_knowing: groups.worth_knowing.map(reference),
     skip: groups.skip.map(reference),
-    ...(groups.worth_knowing.length > 0 ? { worth_knowing_summary: `其他值得知道的工作：${groups.worth_knowing.slice(0, 2).map((item) => sentence(item.analysis?.analysis?.result || item.analysis?.analysis?.reason || "")).join("；")}${groups.worth_knowing.length > 2 ? "；其余见下方卡片。" : ""}` } : {}),
-    ...(groups.skip.length > 0 ? { skim_summary: `快速浏览条目涉及「${groups.skip.slice(0, 2).map((item) => item.title).join("」「")}」${groups.skip.length > 2 ? "等主题" : ""}；目前仅依据摘要分类。` } : {}),
+    ...(groups.worth_knowing.length > 0 ? { worth_knowing_summary: `${groups.worth_knowing.slice(0, 2).map((item) => sentence(item.analysis?.analysis?.result || item.analysis?.analysis?.reason || "")).join("；")}${groups.worth_knowing.length > 2 ? " 等。" : "。"}` } : {}),
+    ...(groups.skip.length > 0 ? { skim_summary: `${groups.skip.slice(0, 2).map((item) => item.title).join("、")}${groups.skip.length > 2 ? " 等主题。" : "。"}` } : {}),
   };
 }
 

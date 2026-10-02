@@ -8,10 +8,12 @@ import { acquireRefreshLock, releaseRefreshLock, writeJsonAtomically } from "./a
 
 const ROOT = fileURLToPath(new URL("../", import.meta.url));
 const CACHE = resolve(ROOT, ".cache/notebooklm");
-const ADAPTER = resolve(ROOT, "scripts/notebooklm-browser.py");
+const EXPORTER = resolve(ROOT, "scripts/notebooklm-browser.py");
+const ADAPTER = resolve(ROOT, "scripts/notebooklm-http.py");
 const SKILL = process.env.NOTEBOOKLM_SKILL_ROOT || "/home/long/.agents/skills/notebooklm";
-const AUTH = process.env.NOTEBOOKLM_AUTH_STATE || resolve(CACHE, "auth.json");
-const SAFE_NOTEBOOKLM_CODES = new Set(["NOTEBOOKLM_AUTH_REQUIRED", "NOTEBOOKLM_BROWSER_FAILED", "NOTEBOOKLM_DUPLICATE_ANNUAL_NOTEBOOKS", "NOTEBOOKLM_EMPTY_PAGE", "NOTEBOOKLM_INVALID_URL", "NOTEBOOKLM_INVENTORY_INCOMPLETE", "NOTEBOOKLM_PAGE_TOO_LARGE", "NOTEBOOKLM_REPORT_TOO_LARGE", "NOTEBOOKLM_TITLE_MISMATCH", "NOTEBOOKLM_INVALID_RESPONSE", "NOTEBOOKLM_OUTPUT_LIMIT", "NOTEBOOKLM_RUNTIME_UNAVAILABLE", "NOTEBOOKLM_SYNC_INCOMPLETE", "NOTEBOOKLM_TIMEOUT", "NOTEBOOKLM_EXPORT_INVALID", "NOTEBOOKLM_EXPORT_STALE", "NOTEBOOKLM_BUILD_REQUIRED", "NOTEBOOKLM_BUILD_ID_INVALID", "NOTEBOOKLM_BUILD_CAPTURE_REQUIRED", "NOTEBOOKLM_SOURCE_CHANGED", "NOTEBOOKLM_MANIFEST_INVALID", "NOTEBOOKLM_ARGUMENT_INVALID"]);
+// Default account/storage selection belongs to the maintained skill wrapper.
+const AUTH = process.env.NOTEBOOKLM_AUTH_STATE;
+const SAFE_NOTEBOOKLM_CODES = new Set(["NOTEBOOKLM_AUTH_REQUIRED", "NOTEBOOKLM_BROWSER_FAILED", "NOTEBOOKLM_CLI_FAILED", "NOTEBOOKLM_SOURCE_MISMATCH", "NOTEBOOKLM_UNKNOWN_OUTCOME", "NOTEBOOKLM_DUPLICATE_ANNUAL_NOTEBOOKS", "NOTEBOOKLM_EMPTY_PAGE", "NOTEBOOKLM_INVALID_URL", "NOTEBOOKLM_INVENTORY_INCOMPLETE", "NOTEBOOKLM_PAGE_TOO_LARGE", "NOTEBOOKLM_REPORT_TOO_LARGE", "NOTEBOOKLM_TITLE_MISMATCH", "NOTEBOOKLM_INVALID_RESPONSE", "NOTEBOOKLM_OUTPUT_LIMIT", "NOTEBOOKLM_RUNTIME_UNAVAILABLE", "NOTEBOOKLM_SYNC_INCOMPLETE", "NOTEBOOKLM_TIMEOUT", "NOTEBOOKLM_EXPORT_INVALID", "NOTEBOOKLM_EXPORT_STALE", "NOTEBOOKLM_BUILD_REQUIRED", "NOTEBOOKLM_BUILD_ID_INVALID", "NOTEBOOKLM_BUILD_CAPTURE_REQUIRED", "NOTEBOOKLM_SOURCE_CHANGED", "NOTEBOOKLM_MANIFEST_INVALID", "NOTEBOOKLM_ARGUMENT_INVALID"]);
 const SAFE_CHANNEL_CODES = new Set([
   "CHANNEL_ARCHIVE_INVALID", "CHANNEL_ARCHIVE_TOO_LARGE", "CHANNEL_CONTENT_LIMIT",
   "CHANNEL_CREATE_IDENTITY_MISSING", "CHANNEL_DIRECTIONS_INVALID", "CHANNEL_LEDGER_CORRUPT",
@@ -41,9 +43,15 @@ async function readJson(path, fallback) {
 export function runAdapter(args, { input, timeoutMs = 360_000, python = "python3" } = {}) {
   return new Promise((done, reject) => {
     const child = spawn(python, args, { cwd: ROOT, detached: process.platform !== "win32", stdio: ["pipe", "pipe", "pipe"] });
-    let output = "", bytes = 0, failure;
+    let output = "", bytes = 0, failure, killTimer;
     const stop = () => {
-      try { if (process.platform !== "win32") process.kill(-child.pid, "SIGKILL"); else child.kill("SIGKILL"); } catch {}
+      try {
+        // Allow the HTTP adapter to stop its scoped CLI subprocesses first.
+        if (process.platform !== "win32") process.kill(-child.pid, "SIGTERM"); else child.kill("SIGTERM");
+        killTimer ||= setTimeout(() => {
+          try { if (process.platform !== "win32") process.kill(-child.pid, "SIGKILL"); else child.kill("SIGKILL"); } catch {}
+        }, 2000);
+      } catch {}
     };
     const timer = setTimeout(() => { failure = "NOTEBOOKLM_TIMEOUT"; stop(); }, timeoutMs);
     child.stdout.setEncoding("utf8");
@@ -57,6 +65,7 @@ export function runAdapter(args, { input, timeoutMs = 360_000, python = "python3
     child.on("error", () => { clearTimeout(timer); reject(new Error("NOTEBOOKLM_RUNTIME_UNAVAILABLE")); });
     child.on("close", (code) => {
       clearTimeout(timer);
+      clearTimeout(killTimer);
       const events = output.split("\n").filter((line) => line.startsWith("{")).map((line) => {
         try { return JSON.parse(line); } catch { return { event: "error", code: "NOTEBOOKLM_INVALID_RESPONSE" }; }
       });
@@ -95,7 +104,7 @@ export async function exportNotebookPages({ dist = resolve(ROOT, "dist"), cache 
   if (buildId !== undefined && (!validBuildId(buildId) || (await readJson(resolve(cache, "website.json"), null))?.build_id !== buildId)) {
     throw new Error("NOTEBOOKLM_BUILD_REQUIRED");
   }
-  const result = await adapter([ADAPTER, "--export", dist], { timeoutMs: 60_000 });
+  const result = await adapter([EXPORTER, "--export", dist], { timeoutMs: 60_000 });
   const snapshot = result.events[0];
   if (result.code || snapshot?.schema_version !== 1 || !Array.isArray(snapshot.sources) || !Array.isArray(snapshot.reports)) {
     throw new Error(result.code || "NOTEBOOKLM_EXPORT_INVALID");
@@ -110,13 +119,23 @@ export async function exportNotebookPages({ dist = resolve(ROOT, "dist"), cache 
   return snapshot;
 }
 
-export async function syncAnnualNotebooks({ cache = CACHE, adapter = runAdapter, dryRun = false, expectedBuildId } = {}) {
+export async function syncAnnualNotebooks({ cache = CACHE, dist = resolve(ROOT, "dist"), adapter = runAdapter, dryRun = false, expectedBuildId } = {}) {
   const snapshot = await readJson(resolve(cache, "export.json"), null);
   if (snapshot?.schema_version !== 1 || !Array.isArray(snapshot.sources)) throw new Error("NOTEBOOKLM_BUILD_REQUIRED");
   const website = await readJson(resolve(cache, "website.json"), null);
   const capture = await readJson(resolve(cache, "build-capture.json"), null);
   if (!snapshot.build_id || website?.build_id !== snapshot.build_id || (capture && capture.build_id !== snapshot.build_id)
     || (expectedBuildId && snapshot.build_id !== expectedBuildId)) throw new Error("NOTEBOOKLM_EXPORT_STALE");
+  if (!Array.isArray(snapshot.reports)) throw new Error("NOTEBOOKLM_EXPORT_INVALID");
+  for (const report of snapshot.reports) {
+    const route = report?.kind === "daily" ? "arxiv-daily" : report?.kind === "weekly" ? "arxiv-weekly" : null;
+    const pattern = report?.kind === "daily" ? /^\d{4}-\d{2}-\d{2}$/u : /^\d{4}-W\d{2}$/u;
+    if (!route || !pattern.test(report.id) || report.route !== `/${route}/${report.id}/` || !/^[a-f0-9]{64}$/u.test(report.page_sha256)) throw new Error("NOTEBOOKLM_EXPORT_INVALID");
+    let page;
+    try { page = await readFile(resolve(dist, route, report.id, "index.html")); }
+    catch { throw new Error("NOTEBOOKLM_EXPORT_STALE"); }
+    if (createHash("sha256").update(page).digest("hex") !== report.page_sha256) throw new Error("NOTEBOOKLM_EXPORT_STALE");
+  }
   const manifestPath = resolve(cache, "manifest.json");
   const manifest = await readJson(manifestPath, { schema_version: 1, notebooks: {} });
   if (manifest.schema_version !== 1 || !manifest.notebooks || typeof manifest.notebooks !== "object") {
@@ -151,7 +170,7 @@ export async function syncAnnualNotebooks({ cache = CACHE, adapter = runAdapter,
       if (!changed.length) continue;
       let result;
       try {
-        result = await adapter([resolve(SKILL, "scripts/run.py"), ADAPTER, "--state", AUTH], {
+        result = await adapter([ADAPTER, "--skill-root", SKILL, ...(AUTH ? ["--state", AUTH] : [])], {
           input: { year, notebook_url: notebook.url, sources: changed },
         });
       } catch (error) { result = { events: [], code: error.message }; }
@@ -236,9 +255,11 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
     else if (args[0] === "--built" && args.length === 2) result = await recordWebsiteBuild({ buildId: args[1] });
     else if (args[0] === "--export" && args.length <= 2) result = await exportNotebookPages({ buildId: args[1] });
     else if (args[0] === "--login" && args.length === 1) {
-      await mkdir(dirname(AUTH), { recursive: true, mode: 0o700 });
-      await chmod(dirname(AUTH), 0o700);
-      result = await runAdapter([resolve(SKILL, "scripts/run.py"), ADAPTER, "--state", AUTH, "--login"], { timeoutMs: 330_000 });
+      if (AUTH) {
+        await mkdir(dirname(AUTH), { recursive: true, mode: 0o700 });
+        await chmod(dirname(AUTH), 0o700);
+      }
+      result = await runAdapter([resolve(SKILL, "scripts/run.py"), "notebooklm", ...(AUTH ? ["--storage", AUTH] : []), "login", "--browser", "chrome"], { timeoutMs: 330_000 });
       if (result.code) throw new Error(result.code);
     } else if (args[0] === "--deliver" && args.length === 3) {
       const mode = args[1];

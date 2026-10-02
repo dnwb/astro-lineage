@@ -73,16 +73,16 @@ const resultSectionLabelEnglish = coverage.level === "abstract_only" ? "Abstract
     ) : null}
     {Array.isArray(guide.figures || record.figures) && (guide.figures || record.figures).length > 0 && (
       <section class="radar-guide-figures">
-        <h4><span class="language-primary">核心物理机制与模型示意图 (Schematic / Cartoon)</span><span class="language-english" lang="en">Core Physical Model Schematic</span></h4>
+        <h4><span class="language-primary">核心图表导读（理论模型 / 观测曲线 / 拟合对比）</span><span class="language-english" lang="en">Key Scientific Figures</span></h4>
         <div class="schematic-figures-grid">
           {(guide.figures || record.figures).map((fig: any) => (
             <figure class="paper-schematic-figure">
               <a href={fig.url} target="_blank" rel="noopener noreferrer" title="点击查看原始高清大图">
-                <img src={fig.url} alt={fig.caption || "核心物理机制示意图"} loading="lazy" />
+                <img src={fig.url} alt={fig.caption || "核心科学图表"} loading="lazy" />
               </a>
               {fig.caption && (
                 <figcaption>
-                  <span class="fig-badge">{fig.label || "示意图"}</span>
+                  <span class={`fig-badge fig-badge-${fig.category || "theoretical"}`}>{fig.category_badge || fig.label || "科学图表"}</span>
                   <ReaderText text={fig.caption} />
                 </figcaption>
               )}

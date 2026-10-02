@@ -12,10 +12,25 @@ interface Props {
 }
 
 const { id, items, primaryLabel, englishLabel, visibleWorkLinks } = Astro.props;
+
+const sectionSubtitles: Record<string, string> = {
+  "must-read": "高置信度 · 经全文/核心章节证据严格核验",
+  "worth-knowing": "重要进展 · 包含正文重点结论或物理边界约束",
+  "skim": "摘要层级快速浏览",
+};
 ---
 
 <section class="radar-section" id={id}>
-  <h2><span class="language-primary">{primaryLabel}</span><span class="language-english" lang="en">{englishLabel}</span></h2>
+  <div class="radar-section-header">
+    <h2>
+      <span class="language-primary">{primaryLabel}</span>
+      <span class="language-english" lang="en">{englishLabel}</span>
+      <span class="section-count-badge">{items.length} 篇</span>
+    </h2>
+    {sectionSubtitles[id] ? (
+      <p class="section-meta-desc language-primary">{sectionSubtitles[id]}</p>
+    ) : null}
+  </div>
   {items.length === 0 ? (
     <p class="empty-state"><span class="language-primary">本期没有符合这一阅读门槛的条目。</span><span class="language-english" lang="en">No entries meet this reading threshold in this edition.</span></p>
   ) : (
@@ -29,3 +44,37 @@ const { id, items, primaryLabel, englishLabel, visibleWorkLinks } = Astro.props;
     </ol>
   )}
 </section>
+
+<style>
+  .radar-section-header {
+    margin-bottom: 0.85rem;
+    padding-bottom: 0.35rem;
+    border-bottom: 1px solid var(--border-color, #e2e8f0);
+  }
+  .radar-section-header h2 {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin: 0 0 0.2rem;
+    font-size: 1.35rem;
+  }
+  .section-count-badge {
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 0.15rem 0.55rem;
+    border-radius: 9999px;
+    background: var(--code-bg, #f1f5f9);
+    color: var(--text-secondary, #64748b);
+    border: 1px solid var(--border-color, #cbd5e1);
+  }
+  .section-meta-desc {
+    margin: 0;
+    font-size: 0.82rem;
+    color: var(--text-secondary, #64748b);
+  }
+  :global([data-theme="dark"]) .section-count-badge {
+    background: #1e293b;
+    color: #94a3b8;
+    border-color: #334155;
+  }
+</style>

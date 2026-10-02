@@ -69,16 +69,24 @@ const paperMap = new Map((weeklyData.papers ?? []).map((p: any) => [p.arxiv_id, 
 const dailyArchiveModules = import.meta.glob<{ default: any }>("../../data/arxiv-archives/daily/*.json", { eager: true });
 const authorMap = new Map<string, string[]>();
 const dailyAnalysisMap = new Map<string, any>();
+const paperDailyDateMap = new Map<string, string>();
 for (const mod of Object.values(dailyArchiveModules)) {
   const data = (mod as any).default || mod;
+  const date = data.date;
   for (const entry of data.feed?.entries ?? []) {
-    if (entry.arxiv_id && Array.isArray(entry.authors) && entry.authors.length > 0) {
-      authorMap.set(entry.arxiv_id, entry.authors);
+    if (entry.arxiv_id) {
+      if (Array.isArray(entry.authors) && entry.authors.length > 0) {
+        authorMap.set(entry.arxiv_id, entry.authors);
+      }
+      if (date) paperDailyDateMap.set(entry.arxiv_id, date);
     }
   }
   for (const a of data.radar?.analyses ?? []) {
     if (a.arxiv_id) {
       dailyAnalysisMap.set(a.arxiv_id, a);
+      if (date && !paperDailyDateMap.has(a.arxiv_id)) {
+        paperDailyDateMap.set(a.arxiv_id, date);
+      }
     }
   }
 }
@@ -288,10 +296,18 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
                           <div class="matrix-paper-tags">
                             {row.representative_papers.map((id: string) => {
                               const clean = String(id).replace(/^arXiv:/i, "").trim();
+                              const dailyDate = paperDailyDateMap.get(clean);
                               return (
-                                <a class="matrix-paper-link" href={`https://arxiv.org/abs/${clean}`} target="_blank" rel="noopener noreferrer" title={`查看 arXiv:${clean} 原文`}>
-                                  arXiv:{clean} ↗
-                                </a>
+                                <div class="matrix-paper-item">
+                                  <a class="matrix-paper-link" href={`https://arxiv.org/abs/${clean}`} target="_blank" rel="noopener noreferrer" title={`查看 arXiv:${clean} 论文原文`}>
+                                    arXiv:{clean} ↗
+                                  </a>
+                                  {dailyDate ? (
+                                    <a class="matrix-daily-link" href={`/arxiv-daily/${dailyDate}/#card-${clean}-v1`} title={`跳转至 ${dailyDate} 日报研判与证据`}>
+                                      📅 {dailyDate}
+                                    </a>
+                                  ) : null}
+                                </div>
                               );
                             })}
                           </div>
@@ -381,13 +397,24 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
                 <p class="thematic-body"><ReaderText text={theme.summary} /></p>
                 {theme.paper_ids?.length > 0 && (
                   <div class="thematic-papers">
-                    <span class="thematic-papers-label">关联论文：</span>
+                    <span class="thematic-papers-label">关联论文与每日进度：</span>
                     <div class="paper-tag-list">
-                      {theme.paper_ids.map((id: string) => (
-                        <a class="paper-tag" href={`https://arxiv.org/abs/${id}`} target="_blank" rel="noopener noreferrer">
-                          arXiv:{id}
-                        </a>
-                      ))}
+                      {theme.paper_ids.map((id: string) => {
+                        const clean = String(id).replace(/^arXiv:/i, "").trim();
+                        const dailyDate = paperDailyDateMap.get(clean);
+                        return (
+                          <div class="thematic-paper-entry">
+                            <a class="paper-tag" href={`https://arxiv.org/abs/${clean}`} target="_blank" rel="noopener noreferrer">
+                              arXiv:{clean} ↗
+                            </a>
+                            {dailyDate ? (
+                              <a class="paper-daily-link" href={`/arxiv-daily/${dailyDate}/#card-${clean}-v1`} title={`跳转至 ${dailyDate} 导读卡片`}>
+                                📅 {dailyDate}
+                              </a>
+                            ) : null}
+                          </div>
+                        );
+                      })}
                     </div>
                   </div>
                 )}
@@ -408,6 +435,7 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
             weeklyData.top_picks.map((pick: any) => {
               const badge = priorityLabels[pick.priority] ?? priorityLabels.worth_knowing;
               const paperObj = paperMap.get(pick.arxiv_id);
+              const dailyDate = paperDailyDateMap.get(pick.arxiv_id);
               return (
                 <article class={`pick-card ${pick.priority === "must_read" ? "pick-card-must" : "pick-card-worth"}`}>
                   <div class="pick-header">
@@ -416,9 +444,17 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
                       <a class="pick-arxiv-id" href={`https://arxiv.org/abs/${pick.arxiv_id}`} target="_blank" rel="noopener noreferrer">
                         arXiv:{pick.arxiv_id} ↗
                       </a>
+                      <a class="pick-pdf-link" href={`https://arxiv.org/pdf/${pick.arxiv_id}`} target="_blank" rel="noopener noreferrer" title="直接阅读官方 PDF">
+                        📄 PDF ↗
+                      </a>
                       <a class="pick-ads-link" href={`https://ui.adsabs.harvard.edu/abs/arXiv:${pick.arxiv_id}`} target="_blank" rel="noopener noreferrer" title="在 NASA ADS 中查看">
                         NASA ADS ↗
                       </a>
+                      {dailyDate ? (
+                        <a class="pick-daily-link" href={`/arxiv-daily/${dailyDate}/#card-${pick.arxiv_id}-v1`} title="查看当日完整研判卡片与证据链">
+                          📅 当日研判 ({dailyDate}) →
+                        </a>
+                      ) : null}
                     </div>
                   </div>
                   <h3 class="pick-title">{pick.title}</h3>
@@ -1214,6 +1250,92 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
       .matrix-paper-link:hover {
         background: #dbeafe;
         color: #1e40af;
+      }
+      .matrix-paper-item {
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
+        flex-wrap: wrap;
+      }
+      .matrix-daily-link {
+        display: inline-block;
+        font-size: 0.75rem;
+        font-weight: 500;
+        padding: 0.15rem 0.4rem;
+        background: #f0fdf4;
+        color: #166534;
+        border: 1px solid #bbf7d0;
+        border-radius: 4px;
+        text-decoration: none;
+        transition: all 0.15s ease;
+      }
+      .matrix-daily-link:hover {
+        background: #dcfce7;
+        color: #14532d;
+      }
+      .thematic-paper-entry {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        margin-right: 0.5rem;
+        margin-bottom: 0.35rem;
+      }
+      .paper-daily-link {
+        font-size: 0.72rem;
+        font-weight: 500;
+        padding: 0.12rem 0.38rem;
+        background: #f0fdf4;
+        color: #166534;
+        border: 1px solid #bbf7d0;
+        border-radius: 4px;
+        text-decoration: none;
+        transition: all 0.15s ease;
+      }
+      .paper-daily-link:hover {
+        background: #dcfce7;
+        color: #14532d;
+      }
+      .pick-pdf-link {
+        color: #dc2626;
+        font-size: 0.82rem;
+        font-weight: 600;
+        text-decoration: none;
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        padding: 0.15rem 0.45rem;
+        border-radius: 4px;
+        transition: all 0.15s ease;
+      }
+      .pick-pdf-link:hover {
+        background: #fee2e2;
+        border-color: #f87171;
+      }
+      .pick-daily-link {
+        color: #166534;
+        font-size: 0.82rem;
+        font-weight: 600;
+        text-decoration: none;
+        background: #f0fdf4;
+        border: 1px solid #bbf7d0;
+        padding: 0.15rem 0.45rem;
+        border-radius: 4px;
+        transition: all 0.15s ease;
+      }
+      .pick-daily-link:hover {
+        background: #dcfce7;
+        border-color: #86efac;
+      }
+      :global([data-theme="dark"]) .matrix-daily-link,
+      :global([data-theme="dark"]) .paper-daily-link,
+      :global([data-theme="dark"]) .pick-daily-link {
+        background: #064e3b;
+        color: #86efac;
+        border-color: #047857;
+      }
+      :global([data-theme="dark"]) .pick-pdf-link {
+        background: #450a0a;
+        color: #f87171;
+        border-color: #991b1b;
       }
 
       /* Export */

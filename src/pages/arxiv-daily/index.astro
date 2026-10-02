@@ -143,8 +143,8 @@ const currentWeekValidatedModels = currentWeekPastArchives.map((pastDay) => {
       <p class="eyebrow"><a href="/">{site.title}</a> · Daily Radar</p>
       <header class="reader-header">
         <h1><span class="language-primary">每日 arXiv 导读</span><span class="language-english" lang="en">Daily arXiv reading guide</span></h1>
-        <p class="reader-deck language-primary">先决定今天读什么，再展开查看问题、假设、结果边界和实际阅读范围。</p>
-        <p class="reader-deck language-english" lang="en">Choose what to read first, then open the guide for its problem, assumptions, limits, and actual reading coverage.</p>
+        <p class="reader-deck language-primary">高能天体物理前沿快讯 · 核心结论直达 · 原文论证溯源</p>
+        <p class="reader-deck language-english" lang="en">High-energy astrophysics alerts · Direct takeaways · Verbatim evidence trails</p>
         <p class="record-label language-primary">{coverageLabel} · 更新时间：{generatedLabel} · <a href="/arxiv-weekly/" style="color: #2563eb; font-weight: 500;">查看每周总结 →</a> · <a href="#historical-archives" style="color: #4b5563; font-weight: 500;">往期日报归档 ↓</a></p>
         <p class="record-label language-english" lang="en">{isAnnouncementDay ? `Announcement batch ending ${announcementWindow?.announcement_date ?? "unrecorded"} (${announcementWindow?.time_zone ?? "America/New_York"})` : "Recent-submission sample"} · refreshed {generatedLabel} · <a href="/arxiv-weekly/" style="color: #2563eb; font-weight: 500;">View Weekly Synthesis →</a> · <a href="#historical-archives" style="color: #4b5563; font-weight: 500;">Historical Archives ↓</a></p>
       </header>
@@ -152,7 +152,7 @@ const currentWeekValidatedModels = currentWeekPastArchives.map((pastDay) => {
       <!-- Quick Section Anchor Pills -->
       <nav class="radar-pills-track" aria-label="文献直达导航">
         <a href="#brief-drawer" class="filter-pill">📢 本期导读</a>
-        <a href="#must-read" class="filter-pill pill-must-read">⭐ 精选 ({priorityGroups.must_read.length})</a>
+        <a href="#must-read" class="filter-pill pill-must-read">⭐ 必读 ({priorityGroups.must_read.length})</a>
         <a href="#worth-knowing" class="filter-pill pill-worth-knowing">📌 关注 ({priorityGroups.worth_knowing.length})</a>
         <a href="#skim" class="filter-pill">⚡ 略读 ({priorityGroups.skip.length})</a>
         <a href="#historical-archives" class="filter-pill">📅 往期归档</a>
@@ -163,7 +163,7 @@ const currentWeekValidatedModels = currentWeekPastArchives.map((pastDay) => {
         <summary class="radar-brief-drawer-summary">
           <span class="drawer-title-group">
             <span class="drawer-icon">📢</span>
-            <span class="drawer-label"><span class="language-primary">本期导读 · 学术宏观速报（点击展开/收起）</span><span class="language-english" lang="en">Opening Brief (Click to expand)</span></span>
+            <span class="drawer-label"><span class="language-primary">本期导读（展开/收起）</span><span class="language-english" lang="en">Opening Brief (Click to expand)</span></span>
           </span>
           <span class="drawer-arrow">▾</span>
         </summary>

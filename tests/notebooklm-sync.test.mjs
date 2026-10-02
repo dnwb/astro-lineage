@@ -80,6 +80,46 @@ test("partial failure preserves completed sources and retries only missing hashe
   assert.equal(calls.at(-1).sources[0].key, "weekly-2026-12-p01");
 });
 
+test("live sync selects the HTTP CLI adapter and leaves default credentials to the skill", async (t) => {
+  const options = await workspace(t);
+  await exportNotebookPages(options);
+  const argsSeen = [];
+  const result = await syncAnnualNotebooks({ ...options, adapter: async (args, context) => {
+    argsSeen.push(args);
+    return transport([])(args, context);
+  } });
+  assert.equal(result.status, "success");
+  for (const args of argsSeen) {
+    assert.equal(args[0].endsWith("/scripts/notebooklm-http.py"), true);
+    assert.equal(args[1], "--skill-root");
+    assert.equal(args.some((arg) => arg.includes("notebooklm-browser.py")), false);
+    if (!process.env.NOTEBOOKLM_AUTH_STATE) assert.equal(args.includes("--state"), false);
+  }
+});
+
+test("changed built pages cannot upload an older export with matching build IDs", async (t) => {
+  const options = await workspace(t);
+  await exportNotebookPages(options);
+  await options.page("arxiv-daily/2026-12-31", "<p>网页已变化，旧导出不得同步</p>");
+  let calls = 0;
+  await assert.rejects(syncAnnualNotebooks({ ...options, adapter: async () => {
+    calls++;
+    return { code: null, events: [] };
+  } }), /NOTEBOOKLM_EXPORT_STALE/u);
+  assert.equal(calls, 0);
+});
+
+test("HTTP source verification and unknown-write failures retain last-good state", async (t) => {
+  const options = await workspace(t);
+  await exportNotebookPages(options);
+  for (const code of ["NOTEBOOKLM_SOURCE_MISMATCH", "NOTEBOOKLM_UNKNOWN_OUTCOME", "NOTEBOOKLM_CLI_FAILED"]) {
+    const result = await syncAnnualNotebooks({ ...options, adapter: async () => ({ code, events: [] }) });
+    assert.equal(result.status, "blocked");
+    assert.equal(result.uploaded, 0);
+    assert.equal(result.errors[0].code, code);
+  }
+});
+
 test("replacement failure keeps last-good manifest and records auth blocker", async (t) => {
   const options = await workspace(t);
   await exportNotebookPages(options);

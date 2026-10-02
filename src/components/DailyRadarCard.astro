@@ -87,16 +87,25 @@ function priorityLabel(priority: string) {
 
     <!-- AIHOT-style Direct & Scannable BLUF Area -->
     <div class="radar-bluf-brief">
-      <p class="bluf-item bluf-item-result">
-        <span class="bluf-mark result-mark" title={resultLabel}>💡 核心突破</span>
-        <span class="bluf-text"><ReaderText text={record.analysis.result || guide.result} /></span>
-      </p>
-      {guide.reason && !isSkim ? (
-        <p class="bluf-item bluf-item-reason">
-          <span class="bluf-mark reason-mark">🎯 为什么关注</span>
-          <span class="bluf-text"><ReaderText text={guide.reason} /></span>
+      {!isSkim ? (
+        <>
+          <p class="bluf-item bluf-item-result">
+            <span class="bluf-mark result-mark" title={resultLabel}>💡 核心突破</span>
+            <span class="bluf-text"><ReaderText text={record.analysis.result || guide.result} /></span>
+          </p>
+          {guide.reason ? (
+            <p class="bluf-item bluf-item-reason">
+              <span class="bluf-mark reason-mark">🎯 为什么关注</span>
+              <span class="bluf-text"><ReaderText text={guide.reason} /></span>
+            </p>
+          ) : null}
+        </>
+      ) : (
+        <p class="bluf-item bluf-item-skim">
+          <span class="bluf-mark skim-mark">📌 略读概括</span>
+          <span class="bluf-text"><ReaderText text={guide.reason || record.analysis.result || guide.result} /></span>
         </p>
-      ) : null}
+      )}
     </div>
 
     <!-- Folded Deep Analysis & Verbatim Evidence Accordion -->
@@ -321,6 +330,11 @@ function priorityLabel(priority: string) {
     color: #a16207;
     border: 1px solid #fde047;
   }
+  .skim-mark {
+    background: #f1f5f9;
+    color: #475569;
+    border: 1px solid #cbd5e1;
+  }
   :global([data-theme="dark"]) .result-mark {
     background: #1e3a5f;
     color: #93c5fd;
@@ -330,6 +344,11 @@ function priorityLabel(priority: string) {
     background: #451a03;
     color: #fde047;
     border-color: #ca8a04;
+  }
+  :global([data-theme="dark"]) .skim-mark {
+    background: #1e293b;
+    color: #94a3b8;
+    border-color: #475569;
   }
   .bluf-text {
     color: var(--text-primary, #1e293b);

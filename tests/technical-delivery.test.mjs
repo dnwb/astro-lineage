@@ -76,6 +76,7 @@ const archivedWeeklyRoutes = existsSync(manifestPath)
   : [];
 const expectedRoutes = [
   "/",
+  "/agent/",
   "/arxiv-daily/",
   ...archivedDailyRoutes,
   "/arxiv-weekly/",
@@ -108,6 +109,7 @@ function routeFile(route) {
 function normalizeInternalRoute(href) {
   if (!href.startsWith("/") || href.startsWith("/_astro/") || href.startsWith("//")) return null;
   const pathname = href.split(/[?#]/u, 1)[0];
+  if (/\.[a-z0-9]+$/iu.test(pathname)) return null;
   return pathname.endsWith("/") ? pathname : `${pathname}/`;
 }
 

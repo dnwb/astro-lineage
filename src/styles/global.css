@@ -1213,6 +1213,26 @@ small {
   .radar-page .knowledge-point p:last-child {
     margin-block-end: 0;
   }
+
+  .radar-page .reader-header {
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.35rem;
+  }
+  .radar-page .reader-header h1 {
+    font-size: 1.55rem;
+    margin-bottom: 0.2rem;
+  }
+  .radar-page .reader-deck {
+    font-size: 0.85rem;
+    line-height: 1.45;
+    margin: 0.15rem 0;
+    color: var(--text-secondary, #64748b);
+  }
+  .radar-page .record-label {
+    font-size: 0.78rem;
+    margin-top: 0.3rem;
+    line-height: 1.4;
+  }
 }
 
 .status {
@@ -2978,6 +2998,124 @@ small {
     flex-direction: column;
     align-items: flex-start;
   }
+}
+
+/* Radar Pills Track & Quick Jump */
+.radar-pills-track {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0.5rem 0 1.25rem;
+  padding: 0.45rem 0.65rem;
+  background: var(--card-bg, #ffffff);
+  border: 1px solid var(--border-color, #e2e8f0);
+  border-radius: 0.5rem;
+  position: sticky;
+  top: 0;
+  z-index: 15;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+:global([data-theme="dark"]) .radar-pills-track {
+  background: #1e293b;
+  border-color: #334155;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+.filter-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.65rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border-radius: 9999px;
+  border: 1px solid var(--card-border, #cbd5e1);
+  background: var(--card-bg, #ffffff);
+  color: var(--text-secondary, #475569);
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.filter-pill:hover {
+  border-color: #94a3b8;
+  background: var(--code-bg, #f1f5f9);
+  color: var(--text-primary, #0f172a);
+}
+.filter-pill.pill-must-read {
+  background: #fbf0ed;
+  color: #a6300e;
+  border-color: #ebd0c8;
+}
+.filter-pill.pill-worth-knowing {
+  background: #eef3f8;
+  color: #2c405a;
+  border-color: #d0dbe6;
+}
+:global([data-theme="dark"]) .filter-pill.pill-must-read {
+  background: #431407;
+  color: #fdba74;
+  border-color: #ea580c;
+}
+:global([data-theme="dark"]) .filter-pill.pill-worth-knowing {
+  background: #1e1b4b;
+  color: #c7d2fe;
+  border-color: #6366f1;
+}
+
+/* Collapsible Brief Drawer */
+.radar-brief-drawer {
+  margin: 0 0 1.25rem;
+  background: var(--card-bg, #ffffff);
+  border: 1px solid var(--border-color, #c9c3b7);
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+.radar-brief-drawer-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.65rem 1rem;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.88rem;
+  color: var(--text-primary, #0f172a);
+  background: var(--bg-primary, #f8fafc);
+  user-select: none;
+  transition: background 0.15s;
+}
+.radar-brief-drawer-summary:hover {
+  background: var(--code-bg, #f1f5f9);
+}
+.drawer-title-group {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+.drawer-icon {
+  font-size: 1.05rem;
+}
+.drawer-arrow {
+  font-size: 0.85rem;
+  color: #64748b;
+  transition: transform 0.2s;
+}
+.radar-brief-drawer[open] .drawer-arrow {
+  transform: rotate(180deg);
+}
+.radar-brief-drawer-content {
+  padding: 1rem 1.15rem;
+  border-top: 1px solid var(--card-border, #e2e8f0);
+}
+.radar-brief-drawer-content .radar-brief {
+  margin: 0 !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  background: transparent !important;
+}
+
+.agent-nav-tab {
+  color: #4f46e5;
+  font-weight: 600;
 }
 
 

@@ -1,5 +1,7 @@
 # Execution
 
+Reader extension: preserve a recoverable current-file/ledger baseline at `/tmp/astrolineage-channel-reader.T1hmPB/`; implement and test Chinese labels, concise summary rendering and one source-bound persistent event chart. Rebuild offline for the event-artifact receipt, stage current daily/weekly/chart, then bounded same-ID historical paper/brief updates and reentry. Keep canonical data, remote original identities, unresolved placements and schedule cadence unchanged.
+
 1. Disjoint ownership: publisher/helper/tests lane; runner/sync/tests lane; lead owns task docs, live operations and integration. Read context manifests, PRD, design and this plan.
 2. Add behavior regressions and implement source/routing/idempotency/backfill; eliminate double calls and stale build/export status without relaxing eligibility.
 3. Targeted tests and syntax checks; independent review of exact diff against recoverable baseline, repair regressions.

@@ -1,4 +1,4 @@
-import { readFile, mkdir, chmod } from "node:fs/promises";
+import { readFile, mkdir, chmod, stat } from "node:fs/promises";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { spawn } from "node:child_process";
@@ -24,6 +24,7 @@ const SAFE_CHANNEL_CODES = new Set([
   "CHANNEL_SECTION_MISSING", "CHANNEL_SOURCE_BUILD_MISMATCH", "CHANNEL_SOURCE_BUILD_REQUIRED",
   "CHANNEL_SOURCE_DATE_INVALID", "CHANNEL_SOURCE_INVALID", "CHANNEL_SOURCE_UNBOUND", "CHANNEL_SOURCE_UNPUBLISHED",
   "CHANNEL_TIMEOUT", "CHANNEL_TOPIC_UNRESOLVED", "CHANNEL_UNKNOWN_OUTCOME", "CHANNEL_WEEKLY_AMBIGUOUS", "CHANNEL_WEEKLY_INVALID",
+  "CHANNEL_BRIEF_UNAVAILABLE", "CHANNEL_EVENTS_INVALID", "CHANNEL_EVENTS_BUILD_REQUIRED", "CHANNEL_EVENTS_BUILD_MISMATCH",
 ]);
 
 function safeChannelCode(error) {
@@ -90,12 +91,22 @@ export async function captureBuildSources({ cache = CACHE, buildId, capture = ca
   return { build_id: buildId, source_binding };
 }
 
-export async function recordWebsiteBuild({ cache = CACHE, buildId, capture = captureSources } = {}) {
+export async function recordWebsiteBuild({ cache = CACHE, buildId, capture = captureSources, eventsPath = resolve(ROOT, "dist/api/v1/events.json") } = {}) {
   if (!validBuildId(buildId)) throw new Error("NOTEBOOKLM_BUILD_ID_INVALID");
   const before = await readJson(resolve(cache, "build-capture.json"), null);
   if (before?.build_id !== buildId || !/^[a-f0-9]{64}$/u.test(before.source_binding?.id || "")) throw new Error("NOTEBOOKLM_BUILD_CAPTURE_REQUIRED");
   if (!isDeepStrictEqual(before.source_binding, await capture())) throw new Error("NOTEBOOKLM_SOURCE_CHANGED");
   const website = { status: "success", built_at: new Date().toISOString(), build_id: buildId, source_binding: before.source_binding };
+  // Event heat is generated during build, so bind the actual built artifact afterwards.
+  if (eventsPath !== null) {
+    try {
+      if ((await stat(eventsPath)).size > 20_000_000) throw new Error("CHANNEL_EVENTS_INVALID");
+      const bytes = await readFile(eventsPath);
+      const events = JSON.parse(bytes);
+      if (!Array.isArray(events.events) || !Number.isFinite(Date.parse(events.generated_at))) throw new Error("CHANNEL_EVENTS_INVALID");
+      website.events = { hash: createHash("sha256").update(bytes).digest("hex"), generated_at: events.generated_at };
+    } catch { website.events = { error: "CHANNEL_EVENTS_INVALID" }; }
+  }
   await writeJsonAtomically(resolve(cache, "website.json"), website);
   return website;
 }
@@ -198,7 +209,7 @@ export async function syncAnnualNotebooks({ cache = CACHE, dist = resolve(ROOT, 
   } finally { await releaseRefreshLock(lock); }
 }
 
-export async function deliverPublication({ kinds = ["daily"], cache = CACHE, buildId, channel, notebookSync = syncAnnualNotebooks } = {}) {
+export async function deliverPublication({ kinds = ["daily"], cache = CACHE, buildId, channel, includeEvents = channel === undefined, notebookSync = syncAnnualNotebooks } = {}) {
   if (!validBuildId(buildId) || !Array.isArray(kinds) || !kinds.length || kinds.some((kind) => !["daily", "weekly"].includes(kind)) || new Set(kinds).size !== kinds.length) throw new Error("INVALID_DELIVERY_MODE");
   const website = await readJson(resolve(cache, "website.json"), null);
   if (website?.status !== "success" || website.build_id !== buildId) throw new Error("NOTEBOOKLM_BUILD_REQUIRED");
@@ -206,15 +217,17 @@ export async function deliverPublication({ kinds = ["daily"], cache = CACHE, bui
   if (capture && capture.build_id !== buildId) throw new Error("NOTEBOOKLM_BUILD_REQUIRED");
   const status = { checked_at: new Date().toISOString(), website, channel: {},
     qq: { status: "waiting_permission", reason: "proactive messaging not authorized by QQ platform" } };
+  const targets = includeEvents ? [...kinds, "events"] : kinds;
   if (!channel) {
     channel = async (kind, { sourceBinding }) => {
       if (!sourceBinding) throw new Error("CHANNEL_SOURCE_UNBOUND");
       const publisher = await import("./tencent-channel-publisher.mjs");
-      return kind === "weekly" ? publisher.publishWeeklyFeed({ sourceBinding }) : publisher.publishDailyFeed({ sourceBinding });
+      if (kind === "events") return publisher.publishEventRanking({ sourceBinding, eventSnapshot: website.events });
+      return kind === "weekly" ? publisher.publishWeeklyFeed({ sourceBinding }) : publisher.publishDailyFeed({ sourceBinding, includeBrief: true });
     };
   }
   // Targets fail independently, but failure is recorded rather than swallowed.
-  for (const kind of kinds) {
+  for (const kind of targets) {
     try {
       const result = await channel(kind, { sourceBinding: website.source_binding });
       if (result === null && kind === "daily") status.channel[kind] = { status: "skipped", reason: "no highlights" };

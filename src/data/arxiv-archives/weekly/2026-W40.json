@@ -1,95 +1,113 @@
 {
   "schema_version": "astrolineage-weekly-summary-v1",
-  "generated_at": "2026-10-02T05:32:52.378Z",
+  "generated_at": "2026-10-03T01:11:01.300Z",
   "week_id": "2026-W40",
   "title": "高能天体物理 arXiv 每周学术脉络与前沿精选",
   "date_range": "2026-09-28 ~ 2026-10-04",
-  "executive_summary": "本周重点工作沿着“前身与环境—动力学—辐射—观测反演”链条，集中推进了几类互有关联的问题：FRB方面，一项等离子体透镜可检验预言与一项磁星极区火球受激上散射模型分别触及传播效应和辐射机制，但后者的高光度能力仍依赖未完全自洽的密度及饱和处方；超新星方面，SN 2024ggi的爆前搜索与射电约束倾向于外层风状介质和更致密内层并存，三维前身星模拟则揭示核燃烧与湍流输运竞争下的一维混合局限；GRB方面，短暴本征率推断、软X射线闪余辉和准热谱分量工作分别约束人口、喷流动力学和谱分解的不确定性。致密星并合的核合成及塌缩星盘碎裂引力波背景提供了多信使延伸；X射线吸积研究则展示了力矩噪声、吸积柱几何如何影响连续引力波搜索与脉冲轮廓解释。",
+  "executive_summary": "本周重点工作沿着“发动机与前身星—喷流或外流—周围介质—辐射与多信使信号”的因果链条展开。FRB方向一方面提出可由重复爆发检验的等离子体透镜统计预言，另一方面发展磁星极区火球受激康普顿上散射模型，但后者的高光度实现仍依赖密度加载与饱和处方。超新星工作将爆前前兆搜索、射电约束的CSM密度结构与前身星三维壳层燃烧联系起来；GRB工作则通过多波段余辉限制软X射线闪的喷流参数，并以层级贝叶斯方法重新评估短暴率和并合延迟。多信使方向涵盖并合千新星的元素谱线、塌缩星盘碎裂引力波背景及潮汐瓦解事件的高能中微子产额。整体上，本周最值得关注的共同问题不是单一辐射机制是否可行，而是模型参数、选择效应与传播环境能否被独立观测交叉验证。",
   "overview_matrix": [
     {
-      "domain": "快速射电暴与磁星辐射、传播环境",
-      "key_question": "重复暴中的频率相关放大和时延是否可检验等离子体透镜；磁星爆发能否通过极区火球与受激散射产生观测所需的FRB辐射？",
+      "domain": "快速射电暴与磁星环境",
+      "key_question": "重复爆发中的频率依赖放大与时延能否检验等离子体透镜；磁星爆发能否通过极区火球和受激散射产生观测所需的相干射电亮度？",
       "representative_papers": [
         "2609.31842",
         "2609.36114",
         "2609.38344"
       ],
-      "core_findings": "一维高斯透镜模型预言高放大主要由焦散B贡献、折叠概率随平均总放大率按 $\\mu^{-2}$ 变化，频率间隔为数量级 $1$ 时的重复时延可达数周至数月。另一项模型研究提出约 $10\\,\\mathrm{kHz}$ 种子波可经相对论外流中的受激康普顿散射升至GHz；其估算的各向同性等效FRB光度在特定高密度加载和几何条件下可达约 $1.1\\times10^{45}\\,\\mathrm{erg\\,s^{-1}}$，但依赖饱和处方，尚非完整自洽实现。CHIME/FRB Outriggers的定位工作报告通常可达或部分超过约 $50\\,\\mathrm{mas}$ 精度。",
-      "significance": "把传播透镜的统计预言、源区辐射机制和高精度定位连成可观测检验链条；需通过多频重复暴时延统计、独立定位及源区环境约束区分传播效应与本征发射模型。"
+      "core_findings": "一维高斯透镜模型预言高放大事件主要由焦散B贡献，折叠概率随平均总放大率近似按 $\\mu^{-2}$ 变化，并预期数量级为1的频率间隔对应数周至数月的重复时延。磁星火球模型则提出约$10\\,\\mathrm{kHz}$种子波可经受激康普顿散射升至GHz；在接近局部冻结密度上限等条件下，估计各向同性等效FRB光度可达约$1.1\\times10^{45}\\,\\mathrm{erg\\,s^{-1}}$，但依赖额外粒子加载和非线性饱和处方。",
+      "significance": "透镜模型提供可由重复源监测直接检验的统计与时延预言；火球模型给出磁星爆发到射电辐射的候选动力学链条，但尚不能视为自洽实现或机制确认。CHIME/FRB Outriggers所报告的毫角秒级定位能力可帮助将射电源与宿主及局部环境联系起来。"
     },
     {
-      "domain": "超新星前兆、周星介质与前身星结构",
-      "key_question": "爆前失质量如何塑造周星介质，早期光学、射电和闪电离光谱能否区分致密内层与延展风状结构，并反推前身星末期演化？",
+      "domain": "超新星前身星、爆前活动与周星介质",
+      "key_question": "爆前可探测前兆是否足以形成观测推断的致密CSM；射电激波诊断与前身星内部燃烧结构如何共同约束失质量和爆炸初始条件？",
       "representative_papers": [
         "2609.31844",
         "2609.38304",
         "2610.01239"
       ],
-      "core_findings": "SN 2024ggi的约8年ATLAS爆前搜索未发现显著前兆；对持续2天和300天事件，80%探测效率对应绝对星等阈值分别为 $-11.28$ 和 $-8.98$。射电同步辐射自吸收分析支持外层近似 $\\rho\\propto r^{-2}$，在风速 $50\\,\\mathrm{km\\,s^{-1}}$ 假设下失质量率约为 $8\\times10^{-5}\\,M_\\odot\\,\\mathrm{yr^{-1}}$，并与较致密内层的推断共同指向多尺度CSM。综述预估LSST时代可系统获取近邻超新星早期样本，但事件数为规划预测而非巡天实测。三维氧—氖壳模拟发现多个同位素特有反应层，许多反应峰的Damköhler数接近 $1$。",
-      "significance": "前兆未检出只排除特定亮度、时长和模型范围内的显著事件，不能据此否定短暂或暗弱失质量。结合射电、早期光谱和三维前身星模拟，才能把CSM密度结构与末期燃烧及爆炸前演化建立更可靠联系。"
+      "core_findings": "SN 2024ggi的约8年ATLAS爆前搜索未发现显著前兆；模拟持续2天和300天事件的80%探测效率阈值分别为绝对星等$-11.28$和$-8.98$，因此不能排除较暗或极短事件。其射电同步辐射分析支持外层CSM近似为$\\rho\\propto r^{-2}$，在假定风速$50\\,\\mathrm{km\\,s^{-1}}$时失质量率约为$8\\times10^{-5}\\,M_\\odot\\,\\mathrm{yr^{-1}}$。三维前身星模拟则发现氧—氖壳合并后可形成多个同位素特有的反应—对流层，许多反应峰具有接近1的Damköhler数。",
+      "significance": "未检出前兆约束的是特定时长与亮度范围内的爆发式失质量，并不否定其他较弱或短时机制；射电密度测量可补足爆前光学搜索的盲区。前身星三维模拟显示统一的一维扩散混合处方可能遗漏不同同位素的输运差异，提示爆炸模型初始结构仍有系统不确定性。"
     },
     {
-      "domain": "GRB喷流、余辉与短暴人口",
-      "key_question": "软瞬时辐射和非标准余辉来自低洛伦兹因子、偏轴结构还是能量注入；短暴本征率能否在选择效应和红移稀缺下可靠反演？",
+      "domain": "相对论喷流与伽马射线暴",
+      "key_question": "软X射线闪的软瞬时辐射和复杂余辉来自低洛伦兹因子火球、偏轴结构化喷流，还是能量注入；短GRB人口能否在选择效应下约束并合历史？",
       "representative_papers": [
-        "2609.35994",
         "2610.00508",
-        "2610.01061"
+        "2610.01061",
+        "2609.35994"
       ],
-      "core_findings": "Fermi/GBM短暴分层推断给出Type I GRB本地率 $22.6^{+15.0}_{-10.6}\\,\\mathrm{Gpc^{-3}\\,yr^{-1}}$，结构喷流特征核心半角约 $0.10\\,\\mathrm{rad}$，但红移演化约束较弱且参数相关明显。GRB 250419A的多波段余辉支持动能约 $10^{49}$–$10^{50}\\,\\mathrm{erg}$、初始洛伦兹因子 $\\Gamma_0\\gtrsim100$，不支持低 $\\Gamma_0$ 脏火球解释；偏轴结构与轴上能量注入仍难区分。八个GRB的准热成分统计结果依赖经验基线模型，时间分辨展宽黑体占比不可与时间积分窄黑体占比直接互换。",
-      "significance": "人口率反演必须保留探测效率、红移信息不足和喷流结构的系统不确定性；单一余辉或谱分解通常无法唯一判定几何与辐射机制，需联合瞬时辐射、射电谱演化和能量注入诊断。"
+      "core_findings": "GRB 250419A的多波段余辉可由动能约$10^{49}$–$10^{50}\\,\\mathrm{erg}$、初始洛伦兹因子$\\Gamma_0\\gtrsim100$的喷流解释，不支持低$\\Gamma_0$脏火球；允许能量注入或偏轴结构化喷流的模型均可拟合主要数据，但两者尚不可区分。另一项八例GRB研究报告时间分辨谱中准热成分的统计偏好，但结论依赖经验基线模型、谱分解和假定光球半径。短暴分层贝叶斯分析给出本地Type I GRB率$22.6^{+15.0}_{-10.6}\\,\\mathrm{Gpc^{-3}\\,yr^{-1}}$，且并合延迟时间约束较宽并与红移演化参数相关。",
+      "significance": "余辉的射电谱演化与早期浅衰减为标准前向激波模型提供了有力压力测试，但现有数据不能唯一辨认偏轴几何与持续能量注入。短暴率与双中子星并合率相容不等于两者一一对应；喷流结构、样本选择及红移信息不足会显著影响人口推断。"
     },
     {
-      "domain": "千新星与致密星并合多信使",
-      "key_question": "并合抛射物的r过程元素组成如何从晚期光谱反演，塌缩星盘内致密星形成是否产生可探测的引力波背景？",
+      "domain": "千新星与致密星并合",
+      "key_question": "并合抛射物中的重元素能否由晚期光谱识别并定量；塌缩星吸积盘碎裂是否能产生可区分的随机引力波背景？",
       "representative_papers": [
         "2609.38682",
         "2609.36005",
-        "2609.38341"
+        "2610.00699"
       ],
-      "core_findings": "GW170817晚期近红外光谱模型将约 $1.4$、$1.6$ 和 $2.1\\,\\mu\\mathrm{m}$ 特征主要归为La III、Ce III和Te III，并给出相应暂定质量分数约束；结果依赖近似原子碰撞参数和跃迁模型。塌缩星盘碎裂形成亚太阳质量中子星的研究预言NS-BH背景强于BNS背景，低频谱近似按 $f^{2/3}$ 上升并在高频转折；O4背景非探测在基准假设下约束形成比例 $f_m\\lesssim0.45$，更严格的无可分辨事件界依赖专用搜索覆盖假设。HESS J1507−622可由年轻千新星遗迹的轻子逆康普顿模型解释，但源身份未获确认。",
-      "significance": "光谱元素识别和引力波背景分别检验并合核合成与致密源人口；原子数据、源率和前景扣除是关键系统误差。千新星遗迹解释值得后续多波段检验，但目前属于可行模型而非确认归属。"
-    },
-    {
-      "domain": "吸积中子星、X射线脉冲星与连续引力波",
-      "key_question": "吸积力矩噪声和吸积柱辐射几何如何改变中子星自旋演化、连续引力波相干搜索及X射线脉冲形状？",
-      "representative_papers": [
-        "2609.32164",
-        "2609.32726",
-        "2609.35956",
-        "2609.36042"
-      ],
-      "core_findings": "力矩平衡附近的Ornstein–Uhlenbeck模型显示，Rayleigh–Taylor不稳定性与盘闪烁噪声可导致不同量级的自旋频率游走，示例条件下分别约不超过 $10^{-7}\\,\\mathrm{Hz}$ 与不小于 $10^{-5}\\,\\mathrm{Hz}$。高耸吸积柱模型可生成多种脉冲轮廓，但模型次峰不会强于主峰，无法产生所讨论的 $0.5$ 相位移动。Rapid Burster的JWST红外对应体呈明显变暗，补充了拥挤球状星团内吸积系统的时域观测。另有XRISM研究报告卫星轨道相关Fe Kα线位移信号，其统计解释仍需独立核验增益及系统误差。",
-      "significance": "吸积流的随机力矩可能直接限制长相干连续波搜索，应将X射线通量与自旋漂移联合用于候选一致性检验；脉冲轮廓模型需明确其几何可解释范围，避免以单一波形特征作唯一物理解读。"
+      "core_findings": "GW170817晚期近红外光谱建模将约1.4、1.6和2.1微米特征分别主要归于La III、Ce III和Te III，并给出相应元素质量分数范围；其中La和Ce的识别仍属暂定。塌缩星盘碎裂研究预测NS–BH通道的随机引力波背景强于所研究的BNS通道，谱形低频近似按$f^{2/3}$上升，并在高频出现由终止频率决定的转折与截断。O4背景非探测对基准盘模型给出的比例约束为$f_m\\lesssim0.45$；更严格的无可分辨事件约束依赖专用搜索覆盖完整参数空间。",
+      "significance": "晚期千新星光谱为核合成产物提供了直接但模型依赖的诊断，原子跃迁数据与辐射转移假设仍是主要限制。盘碎裂情景把长伽马射线暴前身与低质量致密星并合联系起来，并提出潜在的背景谱形判别量；当前更强约束需要谨慎区分现有数据结果与理想化专用搜索灵敏度。"
     },
     {
       "domain": "潮汐瓦解事件、致密环境与高能中微子",
-      "key_question": "外流冲击周核介质时，辐射冷却与气体压缩能否提高质子—质子相互作用效率；晚期射电是否揭示延迟外流？",
+      "key_question": "非喷流TDE外流冲击周核物质时，冷却与压缩能否提高$pp$相互作用效率并产生可探测中微子；迟发射电辐射能否诊断核外TDE外流？",
       "representative_papers": [
         "2610.00965",
         "2609.35998",
         "2610.00632"
       ],
-      "core_findings": "非喷流TDE的CNM激波模型预言光学TDE较绝热、pp光学薄，而IR-only TDE因冷却和压缩可接近量热极限；总体贡献估算约为 $100\\,\\mathrm{TeV}$ 弥散中微子通量的 $1\\%$–$5\\%$，部分人口假设下接近 $10\\%$。核外TDE 2023mfm在约 $991$ 天首次射电检出，非相对论外流模型给出半径不小于 $3.1\\times10^{16}\\,\\mathrm{cm}$、能量不小于 $1.3\\times10^{48}\\,\\mathrm{erg}$，但早期离轴喷流仍未排除。AT2018hyz的延迟离轴喷流模型仅在所测试的观测角约 $30^\\circ$–$90^\\circ$ 范围内取得成功拟合。",
-      "significance": "中微子效率由激波冷却和压缩控制，TDE分类、介质密度及人口率会传递到弥散背景估算；迟发射电信号也不能单独区分延迟非相对论外流与早期喷流的晚期显现。"
+      "core_findings": "TDE中微子模型认为，光学TDE激波大体绝热且$pp$光学薄，产额较低；IR-only TDE的辐射冷却和壳层压缩可令$pp$效率接近量热极限，模型估计TDE总体可能贡献约100 TeV弥散中微子通量的1%–5%，部分人口率情景可接近10%。核外TDE 2023mfm在约991天首次射电检出，晚期射电谱光学薄；在采用的非相对论外流模型下，推得半径不小于$3.1\\times10^{16}\\,\\mathrm{cm}$、激波后能量不小于$1.3\\times10^{48}\\,\\mathrm{erg}$。",
+      "significance": "中微子效率主要受CNM密度结构、辐射冷却和宇宙线逃逸控制，现阶段弥散通量估计与探测显著性均属模型预报。核外TDE的迟发射电信号为延迟外流提供候选解释，但早期离轴相对论喷流仍未排除；与AT2018hyz的延迟离轴喷流研究共同凸显了射电余辉对外流几何和启动时间的诊断价值。"
     },
     {
-      "domain": "脉冲星风双星及X射线吸积系统观测",
-      "key_question": "双星内激波能否由光学发射线的轨道运动追踪；红外与X射线观测如何补足拥挤场中的致密双星系统参数？",
+      "domain": "吸积流、X射线双星与致密星时变",
+      "key_question": "吸积力矩随机涨落如何影响连续引力波搜索；高吸积率吸积柱及其上方流如何塑造脉冲轮廓；红外对应体能否改进致密双星参数约束？",
       "representative_papers": [
-        "2610.00455",
+        "2609.32164",
+        "2609.32726",
         "2609.35956",
-        "2609.35980",
-        "2609.32726"
+        "2609.35980"
       ],
-      "core_findings": "蜘蛛毫秒脉冲星候选研究中，J1020的宽双峰Hα与伴星吸收线反相，支持发射区靠近双星内激波，但不同候选的归属可靠性不一。Rapid Burster红外对应体的PSF去混叠光变显示观测间约变暗 $2.5$ 等；ASKAP J1448−68则由光谱及约 $98.6$ 分钟轨道周期支持激变变星身份，其射电周期机制仍可能包含白矮星自转—轨道拍频解释。",
-      "significance": "多历元光谱、可靠轨道历表和空间定位共同决定激波运动学解释的强度；红外高分辨率成像可为拥挤环境中的吸积系统提供独立光变与伴星约束。"
+      "core_findings": "近力矩平衡吸积中子星的Ornstein–Uhlenbeck自旋游走模型预言，不同随机力矩来源可产生显著不同的频率漂移尺度：给定参数下，Rayleigh–Taylor不稳定性对应约不超过$10^{-7}\\,\\mathrm{Hz}$的游走，而盘闪烁噪声可能达到不小于$10^{-5}\\,\\mathrm{Hz}$。高耸吸积柱模型可产生多类脉冲轮廓，但其模型次峰不会强于主峰，因而不能产生$0.5$相位移动。JWST对Rapid Burster的红外对应体提取到约2.5等变化，为拥挤场中的吸积双星识别提供新约束。",
+      "significance": "随机力矩模型可用于评估连续引力波相干积分时长，并为候选信号提供与X射线状态相互检验的自旋漂移预言。脉冲轮廓模型的失败区域同样重要，可用于排除某些几何解释；红外高分辨率观测则有助于拆分拥挤场中的对应体与供体贡献。"
+    },
+    {
+      "domain": "脉冲星风、伽马射线双星与相关高能源",
+      "key_question": "射电脉冲长周期瞬变的周期由轨道调制还是自转—轨道拍频产生；蜘蛛毫秒脉冲星双星内激波能否由光学发射线运动学追踪？",
+      "representative_papers": [
+        "2609.35980",
+        "2610.00455"
+      ],
+      "core_findings": "ASKAP J1448–68被光谱与约98.6分钟轨道周期确认是激变变星双星，其射电周期近似轨道周期，支持轨道调制解释，但未排除白矮星自转—轨道拍频。蜘蛛毫秒脉冲星候选研究发现，J1020的宽双峰Hα发射线与伴星吸收线反相，支持发射区域位于包绕脉冲星的双星内激波附近。",
+      "significance": "这些结果不属于爆发现象核心主体，但为双星风、吸积结构和高能辐射调制提供观测支撑。相位分辨的光谱与射电到达时刻联合分析，有望区分轨道几何、白矮星磁场和双星内激波等机制。"
+    },
+    {
+      "domain": "致密星状态方程与引力波源环境",
+      "key_question": "原中子星是否能在有限时间内成核转化为奇异夸克星；塌缩星盘内形成的亚太阳质量中子星是否能形成可搜索的并合背景？",
+      "representative_papers": [
+        "2610.00699",
+        "2609.36005"
+      ],
+      "core_findings": "在所采用的EOS与热成核判据下，NS–QS共存要求强子—夸克表面张力约为$67$–$287\\,\\mathrm{MeV\\,fm^{-2}}$，有限尺寸配对效应可使成核时间显著延长。塌缩星盘碎裂研究则将亚太阳质量中子星的形成与并合背景联系起来，并预测NS–BH通道可能占主导。",
+      "significance": "奇异夸克物质转化的能量释放及延迟中微子、引力波或GRB信号均为条件性预言，取决于核物质相变参数。与盘碎裂背景相结合，这些研究拓展了致密星形成环境与多信使瞬变的候选路径，但目前尚无对应体确认。"
+    },
+    {
+      "domain": "近邻超新星巡天与早期瞬变观测能力",
+      "key_question": "高频、深时域巡天如何及时捕获超新星爆前前兆、激波破越冷却与闪电离光谱，并降低早期分类与跟进延迟造成的选择偏差？",
+      "representative_papers": [
+        "2609.38304",
+        "2609.31844"
+      ],
+      "core_findings": "LSST时代规划研究预估每年可探测至少约50–100个IIn型及至少约5个Ibn型超新星前兆，并提出对约160 Mpc内II型超新星开展快速光谱跟进。该研究给出的是观测能力和科学产出预估，不是已完成巡天的实测结果。SN 2024ggi爆前搜索展示了长基线强制测光、注入恢复率与射电CSM诊断的互补性。",
+      "significance": "爆前非探测的解释必须明确依赖光度、持续时间和采样窗口；快速多波段跟进可以把发现率转化为前身星失质量、CSM成分与爆炸动力学约束。数据访问延迟、初期分类不可靠及空间光谱资源不足是限制物理收益的关键观测瓶颈。"
     }
   ],
   "thematic_highlights": [
     {
-      "theme_name": "FRB：源区辐射机制与传播透镜的可检验分工",
-      "summary": "本周FRB工作分别提出传播端与源区端的检验路径：高斯等离子体透镜模型给出放大率分布和重复时延预言，磁星极区火球模型则以受激康普顿散射尝试解释GHz相干辐射。后者在高密度加载条件下可以达到FRB量级光度，但结果依赖饱和处方与理想几何，不能视为已经完成自洽的磁星辐射模型。毫角秒级定位能力的提升将有助于把宿主环境、传播结构与源区模型联系起来。",
+      "theme_name": "磁星环境：从透镜可检验预言到受激散射辐射机制",
+      "summary": "本周FRB工作形成了互补的两条路径：等离子体透镜研究给出放大率分布与重复时延的可检验预言，磁星火球研究则尝试从X射线驱动、对产生与冻结、粒子加载和受激散射建立辐射链条。前者的优势是可直接与重复源统计比较，后者的关键不确定性在于密度供应和饱和处方；两者都需要与源定位、环境色散和多频时域数据联合检验。",
       "paper_ids": [
         "2609.31842",
         "2609.36114",
@@ -97,8 +115,8 @@
       ]
     },
     {
-      "theme_name": "超新星：用多时段、多波段约束CSM与前身星末期演化",
-      "summary": "SN 2024ggi的爆前非检出限制的是特定持续时间和亮度范围内的爆发，射电观测则支持外层风状CSM，同时允许内外尺度不同的密度结构。近邻超新星综述强调高频采样、快速光谱跟进和早期数据获取的价值；三维氧—氖壳模拟进一步说明，在核反应与湍流输运时间相近时，同位素混合行为不能简单压缩为统一的一维扩散系数。将爆前测光、爆后射电与前身星模拟联合起来，比孤立解释单一非检出或密度拟合更具判别力。",
+      "theme_name": "超新星因果链：爆前活动、CSM结构与前身星内部混合",
+      "summary": "SN 2024ggi的前兆非探测限制了指定时长和亮度范围内的显著爆发式失质量，但射电推断仍支持外层风状CSM，并允许更致密内层与延展结构共存。与此同时，三维氧—氖壳合并模拟显示反应和湍流输运处于竞争状态，且不同同位素不能由单一混合系数描述。二者共同提醒：从爆前光变反推CSM质量，需要考虑辐射效率、事件持续时间、速度场及前身星结构模型的不确定性。",
       "paper_ids": [
         "2609.31844",
         "2609.38304",
@@ -106,39 +124,40 @@
       ]
     },
     {
-      "theme_name": "GRB：喷流几何、能量注入与人口率的联合约束",
-      "summary": "短暴分层贝叶斯分析给出本地事件率的宽后验，并显示延迟时间和红移演化存在显著相关性；该事件率不应直接等同于双中子星并合率。GRB 250419A的余辉排斥低洛伦兹因子脏火球作为充分解释，却仍无法在略偏轴结构喷流与轴上能量注入之间作唯一选择。准热成分工作也显示谱分解对经验基线和时间分辨方式敏感，热成分的统计偏好不等于已确立热辐射占能主导。",
+      "theme_name": "GRB喷流几何与短暴人口推断",
+      "summary": "GRB 250419A的多波段余辉排除了简单低洛伦兹因子解释，但现有资料仍无法区分偏轴结构化喷流与轴上喷流能量注入。准热成分研究显示模型偏好会受经验谱基线和时间分辨分解影响，适合以条件性喷流参数约束而非唯一辐射机制解读。短暴层级推断则把事件率、喷流结构、选择效应和延迟时间放在统一框架中，但本地率不能直接等同于双中子星并合率。",
       "paper_ids": [
-        "2609.35994",
         "2610.00508",
-        "2610.01061"
+        "2610.01061",
+        "2609.35994"
       ]
     },
     {
-      "theme_name": "并合与致密星：核合成光谱和引力波背景",
-      "summary": "GW170817晚期近红外谱的元素归属为Te、La、Ce等重元素提供了定量但仍依赖原子数据的暂定丰度约束。塌缩星盘碎裂情景则把长GRB相关塌缩星与亚太阳质量致密双星背景联系起来，预测NS-BH通道更强并给出O4及未来探测器的条件性限制。千新星遗迹模型可解释HESS J1507−622的高能辐射，但目前只能视为候选解释，仍需独立环境和多波段证据。",
+      "theme_name": "千新星核合成与塌缩星盘碎裂的多信使检验",
+      "summary": "GW170817晚期光谱的元素归属为重元素丰度提供了重要探索，但La和Ce识别仍受原子跃迁与辐射转移近似限制。塌缩星盘碎裂研究预测NS–BH通道可能主导随机引力波背景，并提出高频截断作为源群体判别线索；当前O4约束与假设专用搜索覆盖完整参数空间时的灵敏度应严格区分。两类工作分别从电磁光谱和引力波人口探测并合物质与形成环境。",
       "paper_ids": [
         "2609.38682",
         "2609.36005",
-        "2609.38341"
+        "2610.00699"
       ]
     },
     {
-      "theme_name": "吸积流随机动力学与X射线脉冲几何",
-      "summary": "近力矩平衡吸积中子星的随机自旋游走可能限制连续引力波搜索的相干时间，并可与X射线通量联合检验候选信号的物理一致性。高耸吸积柱计算展示了遮挡、自由落体流和反射对脉冲形状的作用，同时明确给出模型无法产生某些强次峰或半周期相移的边界。Rapid Burster等系统的红外时域观测为拥挤环境下的吸积光变提供了有用补充。",
-      "paper_ids": [
-        "2609.32164",
-        "2609.32726",
-        "2609.35956"
-      ]
-    },
-    {
-      "theme_name": "TDE外流、CNM压缩与中微子产额",
-      "summary": "TDE中微子产额的核心差异来自激波后介质是否有效辐射冷却并压缩：模型中的光学TDE较难达到高pp效率，而IR-only事件可接近量热情形。相应弥散通量和探测显著性仍受TDE人口率、环境参数及探测器假设控制。TDE 2023mfm的迟发射电支持外流激波解释，但离轴相对论喷流尚未排除，说明迟发射电的动力学反演存在模型简并。",
+      "theme_name": "TDE外流与高能中微子",
+      "summary": "TDE中微子研究强调介质状态对粒子产额的决定作用：光学TDE激波较难达到高$pp$效率，而辐射冷却、压缩显著的IR-only情景可更接近量热极限。核外TDE 2023mfm的迟发射电信号支持非相对论外流解释，但不排除早期离轴相对论喷流。下一步的判别力来自时间分辨的射电谱、独立CNM密度约束，以及与电磁确认事件样本匹配的中微子堆叠搜索。",
       "paper_ids": [
         "2610.00965",
         "2609.35998",
         "2610.00632"
+      ]
+    },
+    {
+      "theme_name": "吸积双星时变与致密星观测诊断",
+      "summary": "吸积中子星随机力矩引起的自旋游走会限制连续引力波相干搜索；脉冲轮廓建模则显示柱上方自由落体流的遮挡与反射可产生多样形态，但并非所有观测到的相位结构都能由该模型解释。Rapid Burster的JWST红外对应体和ASKAP J1448–68的光谱轨道解，为拥挤环境中的致密双星识别与周期机制区分提供新的观测支撑。",
+      "paper_ids": [
+        "2609.32164",
+        "2609.32726",
+        "2609.35956",
+        "2609.35980"
       ]
     }
   ],
@@ -150,9 +169,9 @@
       "source_fingerprint": "ddfd20c46e64fd6a8cc101fbf87a60d2d6d3c14e876ce070e86a2951f4f33b66",
       "title": "Correlated Signatures of Plasma Lensing in Fast Radio Bursts",
       "priority": "must_read",
-      "recommendation_reason": "该文给出可由重复FRB频率相关放大和重复时延直接检验的透镜统计预言，适合用于区分传播效应与本征辐射变化。",
-      "core_insight": "模型预言折叠概率随平均总放大率按 $\\mu^{-2}$ 变化，频率间隔为数量级 $1$ 时可能对应数周至数月重复时延。",
-      "reading_guide": "优先核查正文中的透镜假设、焦散B的定义及预测对透镜参数分布和观测选择效应的敏感性。",
+      "recommendation_reason": "论文给出重复FRB中透镜放大率与频率间隔相关时延的具体可检验预言，直接服务于磁星环境和传播效应的机制判别。",
+      "core_insight": "一维高斯透镜模型预言高放大主要由焦散B贡献，折叠概率随平均总放大率约按$\\mu^{-2}$变化，数量级为1的频率间隔对应数周至数月时延。",
+      "reading_guide": "优先核查正文中透镜几何、频率间隔定义与时延推导的适用条件，并将模型预言与重复源的事件率及频谱监测策略对照。",
       "authors": [
         "Paz Beniamini",
         "Pawan Kumar"
@@ -165,9 +184,9 @@
       "source_fingerprint": "acc25b3dc3c82d96dd02264eeb8f8cdeb5843302642462af1a75c15b98fab5fb",
       "title": "Probing the Nature of the Circumstellar Material Surrounding SN 2024ggi: A Search for Precursor Emission and Constraints from Radio Observations",
       "priority": "must_read",
-      "recommendation_reason": "该研究把爆前前兆搜索的完备性与爆后射电CSM反演并置，能够直接服务于前身星末期失质量和介质结构的因果判断。",
-      "core_insight": "爆前未检出排除不了暗弱或极短事件，而射电支持外层近似 $\\rho\\propto r^{-2}$、风速假设下失质量率约 $8\\times10^{-5}\\,M_\\odot\\,\\mathrm{yr^{-1}}$，并允许致密内层与延展外层共存。",
-      "reading_guide": "重点比较ATClean注入恢复率、CHIPS亮度—质量转换的模型依赖性，以及射电同步辐射拟合与早期光谱约束之间的半径和密度一致性。",
+      "recommendation_reason": "该研究将爆前前兆搜索的注入恢复率与爆后射电CSM诊断结合，展示非探测和介质密度测量如何互相补充。",
+      "core_insight": "未发现显著爆前前兆，但射电观测支持外层近似$\\rho\\propto r^{-2}$，在风速$50\\,\\mathrm{km\\,s^{-1}}$假设下失质量率约为$8\\times10^{-5}\\,M_\\odot\\,\\mathrm{yr^{-1}}$。",
+      "reading_guide": "重点阅读注入恢复率与CHIPS质量转换的模型假设，再对照射电推得的外层风及文献所述致密内层，评估不同半径区间的约束是否一致。",
       "authors": [
         "Tobias Géron",
         "James K. Leung",
@@ -183,32 +202,19 @@
       ]
     },
     {
-      "arxiv_id": "2609.32164",
+      "arxiv_id": "2609.36114",
       "revision": 1,
-      "historical_edition": "announcement-2026-09-28",
-      "source_fingerprint": "a941ab1f618f27367fe2e0ba3fe76cff5eaa4922760dbe95c119f8edef9ce43e",
-      "title": "Spin wandering of an accreting neutron star near torque balance: implications for gravitational wave searches",
+      "historical_edition": "announcement-2026-09-29",
+      "source_fingerprint": "2879b987dec774349d58cb30bf665e0aa075f7b350aa80f9d6ad04f3a76f1b9b",
+      "title": "Fast Radio Bursts from Induced Upscattering. I. Magnetar Polar Fireballs",
       "priority": "must_read",
-      "recommendation_reason": "它把吸积盘随机力矩、X射线观测和连续引力波搜索灵敏度联结起来，直接对应吸积中子星多信使分析中的相干时长问题。",
-      "core_insight": "近力矩平衡的Ornstein–Uhlenbeck模型中，不同力矩噪声可造成约 $10^{-7}\\,\\mathrm{Hz}$ 至不小于 $10^{-5}\\,\\mathrm{Hz}$ 的频率游走量级，显著改变搜索策略。",
-      "reading_guide": "关注线性化力矩恢复项、随机力矩相关时间的设定，以及Rayleigh–Taylor和盘闪烁噪声数值估计的适用范围。",
+      "recommendation_reason": "论文尝试把磁星X射线爆发、极区火球、粒子加载与FRB相干辐射连成完整候选动力学链条，且明确暴露出模型的关键条件依赖。",
+      "core_insight": "在额外加载使火球密度接近局部冻结上限等条件下，受激康普顿散射模型可估计$L_{\\mathrm{FRB}}^{\\mathrm{iso}}\\sim1.1\\times10^{45}\\,\\mathrm{erg\\,s^{-1}}$，但不能据此视为机制已自洽实现。",
+      "reading_guide": "优先检查散射增长半径、密度供应、饱和处方与能量预算之间是否闭合，并区分解析估算与既有一维PIC结果启发的部分。",
       "authors": [
-        "Andrew Melatos"
-      ]
-    },
-    {
-      "arxiv_id": "2609.32726",
-      "revision": 1,
-      "historical_edition": "announcement-2026-09-28",
-      "source_fingerprint": "ed497421776369944b726722986cdd56ec5a662beecd6bcee2054fb5ecd4e3bc",
-      "title": "Pulse profiles of tall accretion columns in X-ray pulsars",
-      "priority": "must_read",
-      "recommendation_reason": "该工作将高吸积率下吸积柱、柱上方流体遮挡与射线追踪纳入同一脉冲轮廓模型，并给出可证伪的波形限制。",
-      "core_insight": "模型能产生多类脉冲轮廓，但次峰不会强于主峰，因此不能产生 $0.5$ 相位移动；Cen X-3的脉冲不对称度为 $0.19\\pm0.025$。",
-      "reading_guide": "从几何、吸积率和柱上方流体的参数依赖入手，评估该不对称度指标对能段、视角和柱结构的退化。",
-      "authors": [
-        "Bagration Megrelishvili",
-        "Pavel Abolmasov"
+        "Rei Nishiura",
+        "Kunihito Ioka",
+        "Bing Zhang"
       ]
     },
     {
@@ -216,11 +222,11 @@
       "revision": 1,
       "historical_edition": "announcement-2026-09-29",
       "source_fingerprint": "53c5b1b66d78e3eb01725fc83eb0f2fc1531cedc8a333385bc11479dfbc8085b",
-      "title": "Hierarchical Bayesian Inference on the intrinsic event rate of Type I gamma-ray bursts from the Fermi/GBM catalogue",
+      "title": "Hierarchical Bayesian Inference on the intrinsic event rate of Type I gamma-ray bursts from the {\\it Fermi}/GBM catalogue",
       "priority": "must_read",
-      "recommendation_reason": "该文把GBM选择效应、短暴喷流结构和延迟时间分布纳入统一人口推断，对短暴与致密星并合历史的联系具有直接参考价值。",
-      "core_insight": "基准模型给出本地率 $22.6^{+15.0}_{-10.6}\\,\\mathrm{Gpc^{-3}\\,yr^{-1}}$，但红移演化较弱约束且该率不能直接等同于双中子星并合率。",
-      "reading_guide": "重点审查Type I分类假设、峰值通量探测效率、仅28个红移样本的似然处理及喷流参数间的后验相关性。",
+      "recommendation_reason": "该工作将GBM选择效应、短暴喷流结构、红移演化与并合延迟纳入统一层级推断，适合评估短暴率如何连接致密星并合史。",
+      "core_insight": "基准模型得到本地Type I GRB率$22.6^{+15.0}_{-10.6}\\,\\mathrm{Gpc^{-3}\\,yr^{-1}}$，但作者明确指出该数值不能直接等同于纯双中子星并合率。",
+      "reading_guide": "重点检查探测效率、28个已知红移事件的似然处理及喷流光度定义，并评估红移演化、延迟时间和结构化喷流参数间的后验相关性。",
       "authors": [
         "Cao Tian-Yong",
         "Yi Shu-Xu",
@@ -230,94 +236,19 @@
       ]
     },
     {
-      "arxiv_id": "2609.36114",
+      "arxiv_id": "2609.36005",
       "revision": 1,
       "historical_edition": "announcement-2026-09-29",
-      "source_fingerprint": "2879b987dec774349d58cb30bf665e0aa075f7b350aa80f9d6ad04f3a76f1b9b",
-      "title": "Fast Radio Bursts from Induced Upscattering. I. Magnetar Polar Fireballs",
+      "source_fingerprint": "437879567742fa99d6b2861f9921d5e48708d9a71fe3adfc9abf1c1dbcd5f8db",
+      "title": "Stochastic gravitational-wave background from subsolar neutron stars in collapsar disks",
       "priority": "must_read",
-      "recommendation_reason": "该文尝试把磁星极区火球的粒子供应、外流加速和受激散射连到FRB光度与带宽，是值得精读但应严格区分估算能力与自洽实现的辐射模型。",
-      "core_insight": "在高密度加载及特定几何下模型可估算 $L_{\\mathrm{FRB}}^{\\mathrm{iso}}\\sim1.1\\times10^{45}\\,\\mathrm{erg\\,s^{-1}}$，但这一结果依赖PIC启发的饱和处方及尚未充分验证的火球条件。",
-      "reading_guide": "逐项追踪冻结密度、散射起始半径、粒子分布饱和和能量预算，尤其辨明哪些结论来自解析估算而非新开展的多维PIC模拟。",
+      "recommendation_reason": "论文把长伽马射线暴相关塌缩星盘碎裂与低质量致密星并合背景联系起来，并明确区分现有背景上限与理想专用搜索约束。",
+      "core_insight": "研究情景中NS–BH通道产生较强随机背景，低频谱近似$f^{2/3}$；基准模型的O4非探测约束为$f_m\\lesssim0.45$，更严的无可分辨事件约束依赖完整参数空间搜索。",
+      "reading_guide": "优先检查碎裂与盘内并合率假设、单源能谱终止频率和O4灵敏度比较，并核实背景上限与事件数上限的统计口径。",
       "authors": [
-        "Rei Nishiura",
-        "Kunihito Ioka",
-        "Bing Zhang"
-      ]
-    },
-    {
-      "arxiv_id": "2609.38304",
-      "revision": 1,
-      "historical_edition": "announcement-2026-09-30",
-      "source_fingerprint": "b8b86030ed03f202f6c0bd7b5caa5b6155846dc0d2c41490a712c3e83b3799e6",
-      "title": "Nearby Supernova Science in the Era of High Cadence, Deep Time Domain Surveys",
-      "priority": "must_read",
-      "recommendation_reason": "该综述将LSST近邻超新星发现率与前兆、激波破越、CSM和闪电离光谱诊断相联系，可帮助课题组规划爆发现象的早期跟进链条。",
-      "core_insight": "文中预估LSST每年可发现约 $50$–$100$ 个IIn及至少约 $5$ 个Ibn超新星前兆，但这些是观测规划预测而非已完成巡天的实测产出。",
-      "reading_guide": "优先检查事件数的样本外推假设、触发到光谱跟进的时效需求，以及各诊断对前身星和CSM参数的可辨识度。",
-      "authors": [
-        "David J. Sand",
-        "Bhagya Subrayan",
-        "Conor L. Ransome",
-        "Griffin Hosseinzadeh",
-        "K. Azalee Bostroem",
-        "Jennifer E. Andrews",
-        "Jeniveve Pearson",
-        "Yize Dong",
-        "Stefano Valenti",
-        "Saurabh W. Jha",
-        "Brian Hsu",
-        "Aravind P. Ravi",
-        "Manisha Shrestha",
-        "Charles D. Kilpatrick",
-        "Noah Franz",
-        "Mojgan Aghakhanloo",
-        "Igor Andreoni",
-        "Moira Andrews",
-        "Katie Auchettl",
-        "Federica B. Bianco",
-        "Régis Cartier",
-        "Siddharth Chaini",
-        "Diva Chaudhary",
-        "Analía V. Smith Castelli",
-        "Shar Daniels",
-        "Alexei V. Filippenko",
-        "Melissa L. Graham",
-        "Xander J. Hall",
-        "Daichi Hiramatsu",
-        "D. Andrew Howell",
-        "Lindsey A. Kwok",
-        "Amanda R. Lopes",
-        "Thomas Matheson",
-        "Curtis McCully",
-        "Maryam Modjaz",
-        "Phillip Noel",
-        "Gregory S. H. Paek",
-        "Antonella Palmese",
-        "Anthony L. Piro",
-        "Monika Soraisam",
-        "Sergiy Vasylyev",
-        "József Vinkó",
-        "J. Craig Wheeler",
-        "Samuel D. Wyatt"
-      ]
-    },
-    {
-      "arxiv_id": "2609.38682",
-      "revision": 1,
-      "historical_edition": "announcement-2026-09-30",
-      "source_fingerprint": "22d244c0ae155c5dd2b7930c60baa815417dc30617d842df74da3ee32d418d32",
-      "title": "New Constraints on r-process Nucleosynthesis in Neutron Star Mergers from GW170817 Late-Phase Spectra",
-      "priority": "must_read",
-      "recommendation_reason": "该文直接利用GW170817晚期近红外光谱尝试测量并合抛射物中的重元素丰度，为千新星核合成反演提供新的谱线诊断。",
-      "core_insight": "模型把约 $1.4$、$1.6$ 和 $2.1\\,\\mu\\mathrm{m}$ 特征分别主要归于La III、Ce III和Te III，但La与Ce丰度约束仍属暂定。",
-      "reading_guide": "重点审查碰撞强度近似、跃迁数据库、Sobolev处理及不同元素线混叠对元素质量分数后验的影响。",
-      "authors": [
-        "Salma Rahmouni",
-        "Masaomi Tanaka",
-        "Daiji Kato",
-        "Gediminas Gaigalas",
-        "Kenta Hotokezaka"
+        "Valerio De Luca",
+        "Loris Del Grosso",
+        "Emanuele Berti"
       ]
     },
     {
@@ -327,9 +258,9 @@
       "source_fingerprint": "38fecf305b90c91dde2512e1fd6e844a63b63536bc0dab55207bd1d6b2b3c350",
       "title": "X-ray Through Radio Observations and Modeling of the Soft X-ray Flash GRB 250419A",
       "priority": "must_read",
-      "recommendation_reason": "该文以X射线至射电余辉检验软X射线闪的喷流动力学，并明确展示偏轴结构与能量注入之间仍存在模型简并。",
-      "core_insight": "余辉支持动能约 $10^{49}$–$10^{50}\\,\\mathrm{erg}$、$\\Gamma_0\\gtrsim100$ 的喷流，不支持低洛伦兹因子脏火球作为充分解释，但无法唯一选择偏轴喷流或轴上能量注入。",
-      "reading_guide": "对照不同余辉模型的参数后验，重点检查射电谱演化和亮温度/闪烁对洛伦兹因子下限的独立贡献。",
+      "recommendation_reason": "该研究以X射线至射电余辉联合检验软X射线闪的喷流动力学，给出了低洛伦兹因子解释的反证及几何—能量注入简并。",
+      "core_insight": "余辉可由动能约$10^{49}$–$10^{50}\\,\\mathrm{erg}$、$\\Gamma_0\\gtrsim100$的喷流解释；偏轴结构化喷流与轴上能量注入仍无法由现有数据区分。",
+      "reading_guide": "先对照光学浅衰减和约10.6天射电谱演化检验简单前向激波假设，再比较三类模型的后验及洛伦兹因子限制所依赖的时间演化条件。",
       "authors": [
         "Genevieve Schroeder",
         "Anna Y. Q. Ho",
@@ -367,9 +298,9 @@
       "source_fingerprint": "0b8e63c5c276f3b94067b7944663682798a665c1ea32729986d8c170aed445b7",
       "title": "High-energy neutrinos from shocked circumnuclear material around optically-bright and infrared-only tidal disruption events",
       "priority": "must_read",
-      "recommendation_reason": "该工作把TDE外流动力学、周核介质冷却压缩和pp中微子效率连成可用于多信使堆叠搜索的预测框架。",
-      "core_insight": "模型中IR-only TDE因辐射冷却和压缩可使pp效率接近量热极限，TDE族群对约 $100\\,\\mathrm{TeV}$ 弥散中微子通量的贡献估计为 $1\\%$–$5\\%$。",
-      "reading_guide": "优先评估冷却转变、壳层近似、宇宙线逃逸和人口率演化对中微子谱及堆叠显著性的联合影响。",
+      "recommendation_reason": "论文突出CNM冷却、压缩和$pp$效率如何控制TDE中微子产额，并将单事件模型延伸到弥散背景与多台望远镜的堆叠前景。",
+      "core_insight": "光学TDE激波通常$pp$效率较低，而IR-only辐射冷却情景可接近量热极限；总体通量估计约占100 TeV弥散中微子背景的1%–5%，属于模型依赖预测。",
+      "reading_guide": "重点追踪球对称壳层近似、辐射转变判据、宇宙线逃逸与TDE人口率如何共同决定中微子归一化和探测显著性。",
       "authors": [
         "Mainak Mukhopadhyay",
         "Shigeo S. Kimura",
@@ -383,9 +314,9 @@
       "source_fingerprint": "ec3e527b9a98838953b989eadf3b637bc2aaf66154cbc987863ef1d0a9b40482",
       "title": "Structure of Convective-Reactive Zone in a Supernova Progenitor",
       "priority": "must_read",
-      "recommendation_reason": "三维氧—氖壳合并模拟直接检验前身星核燃烧与湍流输运竞争，指出标准一维混合处方可能无法描述同位素特有的反应层。",
-      "core_insight": "模拟出现多个交错的同位素反应—对流层，许多反应峰的Damköhler数接近 $1$，说明燃烧与混合处于相近时间尺度。",
-      "reading_guide": "重点检查映射初值、核网络与RANS输运分解，并评估结果对一维超新星前身星混合和后续爆炸初态的影响。",
+      "recommendation_reason": "三维反应—对流模拟直接检验超新星前身星壳层合并中的输运结构，为一维恒星演化混合处方的适用性提供重要物理约束。",
+      "core_insight": "氧—氖壳合并后可形成同位素特有的交错反应层，许多反应峰的Damköhler数接近1，因而不能简单以统一扩散系数描述。",
+      "reading_guide": "优先阅读RANS组分输运方程的分项与同位素反应时间尺度比较，并关注初始恒星模型、核网络和映射到三维计算的影响。",
       "authors": [
         "M. Mocak",
         "C. Meakin",

@@ -200,7 +200,7 @@ test("Home provides the four reader entry areas, projected content, and complete
   for (const route of expectedRoutes) {
     const html = await readFile(routeFile(projectRoot, route), "utf8");
     assert.match(html, /<nav[^>]*aria-label="主导航"/u, route);
-    for (const navRoute of ["/", "/papers/", "/research-lines/", "/learning-paths/", "/arxiv-daily/"]) {
+    for (const navRoute of ["/", "/arxiv-daily/", "/arxiv-weekly/"]) {
       assert.match(html, new RegExp(`href="${navRoute.replaceAll("/", "\\/")}"`, "u"), `${route}: ${navRoute}`);
     }
     assert.doesNotMatch(html, /<script/iu, route);

@@ -5,7 +5,7 @@ import { existsSync } from "node:fs";
 import { spawn } from "node:child_process";
 import { validateDailyRadarPayload } from "./daily-radar.mjs";
 import { readPublishedArxivEdition } from "./arxiv-daily.mjs";
-import { TOPICS, routePaper, hashBody, markerFor, readDailyArchive, listDailyArchives, withPublicationLedger, capturePublishedSourceBinding } from "./channel-publication.mjs";
+import { TOPICS, TOPIC_LABELS, routePaper, hashBody, markerFor, readDailyArchive, listDailyArchives, withPublicationLedger, capturePublishedSourceBinding } from "./channel-publication.mjs";
 
 try {
   if (typeof process.loadEnvFile === "function" && existsSync(".env")) {
@@ -75,6 +75,33 @@ async function runCli(args) {
 function cleanMath(text) {
   if (!text) return "";
   return String(text).replace(/\\\\/g, "\\");
+}
+
+function paperReaderTitle(item, topic = routePaper(item)) {
+  const problem = String(item.analysis?.analysis?.problem || "").replace(/\s+/gu, " ").trim();
+  const headline = /\p{Script=Han}/u.test(problem) ? Array.from(problem).slice(0, 54).join("") + (Array.from(problem).length > 54 ? "…" : "") : `文献导读 · arXiv:${item.arxiv_id}`;
+  return `【${TOPIC_LABELS[topic.primary] || "待分类"}】${headline}`;
+}
+
+function dailyBriefItem(model, date) {
+  const brief = model.opening_brief;
+  if (brief?.status !== "ready") throw new Error("CHANNEL_BRIEF_UNAVAILABLE");
+  const title = `每日导读 · ${date}`;
+  const papers = [...model.groups.must_read, ...model.groups.worth_knowing];
+  const lines = [`# ${title}`, "", "## 本期导读", "", brief.intro, ""];
+  if (brief.must_read.length) {
+    lines.push("## 必读：先了解这几篇", "");
+    for (const sentence of brief.must_read) {
+      const paper = papers.find(p => p.arxiv_id === sentence.arxiv_id && p.revision === sentence.revision);
+      if (!paper) throw new Error("CHANNEL_BRIEF_UNAVAILABLE");
+      const anchor = `radar-paper-${paper.arxiv_id.replace(".", "-")}-v${paper.revision}`;
+      lines.push(`**[${paperReaderTitle(paper)}](${SITE_BASE_URL}/arxiv-daily/${date}/#${anchor})**`, "", `${sentence.text} [原文](https://arxiv.org/abs/${paper.arxiv_id}v${paper.revision})`, "");
+    }
+  }
+  if (model.groups.worth_knowing.length && brief.worth_knowing_summary) lines.push("## 其他值得关注", "", brief.worth_knowing_summary.replace(/；其余见下方卡片[。.]?$/u, "。"), "");
+  if (model.groups.skip.length && brief.skim_summary) lines.push("## 略读线索", "", brief.skim_summary, "");
+  lines.push(`[完整网页导读](${SITE_BASE_URL}/arxiv-daily/${date}/)`, "", "每篇论文的版本、实际阅读范围与未核查项见网页原记录；本摘要不代表独立验证。");
+  return { identity: `daily-summary:${date}`, topic: { primary: "daily" }, title, body: lines.join("\n") };
 }
 
 export function extractPaperTopic(item) {
@@ -159,36 +186,9 @@ export async function generateDailyMarkdown({ titleOverride, radar, feed, radarP
   const worthKnowing = model.groups.worth_knowing || [];
   const highlights = [...mustRead, ...worthKnowing];
 
-  if (highlights.length === 0) {
-    return { batchDate, totalEntries, highlights, postTitle: "", md: "" };
-  }
-
-  const postTitle = titleOverride || deriveDailyContentTitle(batchDate, highlights);
-
-  let md = `# 🌅 ${postTitle.replace(/【|】/gu, "").trim()}\n\n`;
-  md += `**发布日期**：${batchDate} | **本期概览**：arXiv 官方共发布 ${totalEntries} 篇论文，AI 研判筛选出 **${mustRead.length}** 篇重点必读、**${worthKnowing.length}** 篇值得关注。\n\n`;
-  md += `---\n\n`;
-
-  for (let i = 0; i < highlights.length; i++) {
-    const item = highlights[i];
-    const priority = item.analysis?.priority || (i < mustRead.length ? "must_read" : "worth_knowing");
-    const priorityTag = priority === "must_read" ? "🔴【必读·重点突破】" : "🟡【值得关注】";
-    const authors = (item.authors || []).slice(0, 3).join(", ") + ((item.authors || []).length > 3 ? " 等" : "");
-    const analysisObj = item.analysis?.analysis || item.analysis || {};
-
-    md += `### ${i + 1}. ${priorityTag} ${item.title || item.arxiv_id}\n`;
-    md += `* **arXiv 编号**：[arXiv:${item.arxiv_id}](https://arxiv.org/abs/${item.arxiv_id}) | [校园网导读看板](${SITE_BASE_URL}/arxiv-daily/${batchDate}#paper-${item.arxiv_id})\n`;
-    if (authors) md += `* **作者团队**：${authors}\n`;
-    if (analysisObj.reason) md += `* **研读定位**：${cleanMath(analysisObj.reason)}\n`;
-    if (analysisObj.result) md += `* **核心突破**：${cleanMath(analysisObj.result)}\n`;
-    if (analysisObj.reading_entry) md += `* **阅读抓手**：${cleanMath(analysisObj.reading_entry)}\n`;
-    md += `\n`;
-  }
-
-  md += `---\n\n`;
-  md += `* 课题组每日雷达完整看板：[AstroLineage 每日雷达](${SITE_BASE_URL}/arxiv-daily/${batchDate})\n`;
-  md += `* 课题组前沿脉络知识库主页：[AstroLineage 首页](${SITE_BASE_URL}/)\n`;
-
+  const item = dailyBriefItem(model, batchDate);
+  const postTitle = titleOverride || item.title;
+  const md = item.body.replace(/^# .*$/mu, `# ${postTitle}`);
   return { batchDate, totalEntries, highlights, postTitle, md };
 }
 
@@ -197,33 +197,28 @@ export async function generateWeeklyMarkdown({ titleOverride, weekly: weeklyInpu
   const weekId = weekly.week_id || "本周";
   const dateRange = weekly.date_range || "";
 
-  const postTitle = titleOverride || deriveWeeklyContentTitle(weekId, weekly);
+  const postTitle = titleOverride || `每周摘要 · ${weekId}`;
 
-  let md = `# 🌌 ${postTitle.replace(/【|】/gu, "").trim()}\n\n`;
-  md += `**统计区间**：${dateRange}（涵盖当周周一至周四全部发布批次）\n\n`;
+  let md = `# ${postTitle}\n\n${dateRange}\n\n`;
 
   if (weekly.executive_summary) {
-    md += `## 📋 宏观学术态势综述\n\n`;
-    md += `${cleanMath(weekly.executive_summary)}\n\n`;
+    md += `## 本周导读\n\n`;
+    md += `${weekly.executive_summary}\n\n`;
   }
 
   if (Array.isArray(weekly.top_picks) && weekly.top_picks.length > 0) {
-    md += `---\n\n## 🌟 本周重点精选论文 (Top Picks)\n\n`;
+    md += `## 建议优先阅读\n\n`;
     for (const pick of weekly.top_picks) {
-      const tag = pick.priority === "must_read" ? "🔴【必读】" : "🟡【关注】";
-      const authors = Array.isArray(pick.authors) && pick.authors.length > 0
-        ? pick.authors.slice(0, 3).join(", ") + (pick.authors.length > 3 ? " 等" : "")
-        : "";
-      md += `* ${tag} **[${pick.title || pick.arxiv_id}](https://arxiv.org/abs/${pick.arxiv_id})**\n`;
-      if (authors) md += `  * 作者：${authors}\n`;
+      const tag = pick.priority === "must_read" ? "必读" : "关注";
+      md += `**${tag} · [arXiv:${pick.arxiv_id}](https://arxiv.org/abs/${pick.arxiv_id})**\n\n`;
       const reason = pick.reason || pick.recommendation_reason;
-      if (reason) md += `  * 研读定位：${cleanMath(reason)}\n`;
+      if (reason) md += `${reason}\n\n`;
     }
     md += `\n`;
   }
 
   if (Array.isArray(weekly.thematic_highlights) && weekly.thematic_highlights.length > 0) {
-    md += `---\n\n## 🔬 本周核心专题突破与因果链演进\n\n`;
+    md += `## 各主题进展\n\n`;
     for (const theme of weekly.thematic_highlights) {
       const papers = (theme.paper_ids || []).map((id) => {
         const found = (weekly.papers || []).find((p) => p.arxiv_id === id);
@@ -232,9 +227,9 @@ export async function generateWeeklyMarkdown({ titleOverride, weekly: weeklyInpu
           : "";
         return `[arXiv:${id}${authorStr}](https://arxiv.org/abs/${id})`;
       }).join(", ");
-      md += `### ▸ ${theme.theme_name}\n`;
-      md += `${cleanMath(theme.summary)}\n`;
-      if (papers) md += `* **涉及文献**：${papers}\n`;
+      md += `### ${theme.theme_name}\n\n`;
+      md += `${theme.summary}\n\n`;
+      if (papers) md += `相关论文：${papers}\n`;
       md += `\n`;
     }
   }
@@ -249,7 +244,7 @@ export async function generateWeeklyMarkdown({ titleOverride, weekly: weeklyInpu
   }
 
   md += `---\n\n`;
-  md += `* 课题组学术周报完整专栏：[AstroLineage 前沿周报库](${SITE_BASE_URL}/arxiv-weekly/)\n`;
+  md += `[完整网页周报](${SITE_BASE_URL}/arxiv-weekly/${weekId}/)\n`;
   md += `* 课题组前沿脉络知识库主页：[AstroLineage 首页](${SITE_BASE_URL}/)\n`;
 
   return { weekId, dateRange, postTitle, md };
@@ -301,7 +296,8 @@ async function scanFeeds(cli, guildId, channelId) {
     let added = 0;
     for (const feed of feeds) {
       const identity = remoteIdentity(feed);
-      if (identity && !seenId.has(identity.feed_id)) { seenId.add(identity.feed_id); all.push({ ...identity, raw: feed }); added += 1; }
+      if (identity?.channel_id && identity.channel_id !== String(channelId)) return { feeds: all, complete: false };
+      if (identity && !seenId.has(identity.feed_id)) { seenId.add(identity.feed_id); all.push({ ...identity, channel_id: String(channelId), raw: feed }); added += 1; }
     }
     const next = String(data?.feed_attch_info ?? data?.feed_attach_info ?? "");
     if (data?.has_more === false || (!data?.has_more && !next)) return { feeds: all, complete: true };
@@ -314,6 +310,66 @@ async function scanFeeds(cli, guildId, channelId) {
   return { feeds: all, complete: false };
 }
 
+function channelName(value) { return String(value ?? "").replace(/&amp;/gu, "&"); }
+
+async function scanGuildFeeds(cli, guildId, channels) {
+  const names = new Map();
+  const channelIds = new Set();
+  for (const channel of channels) {
+    const name = channelName(channel.channel_name ?? channel.name);
+    const id = String(channel.channel_id ?? channel.id ?? "");
+    if (!name || !id || names.has(name)) return { feeds: [], complete: false };
+    names.set(name, id);
+    channelIds.add(id);
+  }
+  const all = [];
+  const seenIds = new Map();
+  const seenCursors = new Set();
+  let cursor = "";
+  let emptyPages = 0;
+  for (let page = 0; page < 30; page += 1) {
+    const args = ["feed", "get-guild-feeds", "--guild-id", String(guildId), "--get-type", "2", "--count", "100", "--json"];
+    if (cursor) args.push("--feed-attach-info", cursor);
+    const data = payload(await cli(args));
+    const feeds = Array.isArray(data) ? data : data?.feeds ?? data?.feed_list ?? data?.list;
+    if (!Array.isArray(feeds)) return { feeds: all, complete: false };
+    let added = 0;
+    for (const feed of feeds) {
+      const identity = remoteIdentity(feed);
+      const id = names.get(channelName(feed.channel_name ?? feed.channelName));
+      if (!identity || !id || identity.channel_id && identity.channel_id !== id) return { feeds: all, complete: false };
+      if (seenIds.has(identity.feed_id) && seenIds.get(identity.feed_id) !== id) return { feeds: all, complete: false };
+      if (!seenIds.has(identity.feed_id)) {
+        seenIds.set(identity.feed_id, id);
+        all.push({ ...identity, channel_id: id, raw: feed });
+        added += 1;
+      }
+    }
+    if (data?.has_more === false) return { feeds: all, complete: true, channelIds };
+    emptyPages = added ? 0 : emptyPages + 1;
+    if (emptyPages >= 2) return { feeds: all, complete: false };
+    const next = String(data?.feed_attach_info ?? data?.feed_attch_info ?? "");
+    if (!next || next === cursor || seenCursors.has(next)) return { feeds: all, complete: false };
+    seenCursors.add(next);
+    cursor = next;
+  }
+  return { feeds: all, complete: false };
+}
+
+async function scanSectionFeeds(cli, guildId, channelId, fallback) {
+  const section = await scanFeeds(cli, guildId, channelId);
+  if (section.complete) return section;
+  if (!fallback.inventory) {
+    const data = fallback.channels ? null : payload(await cli(["manage", "get-guild-channel-list", "--guild-id", String(guildId), "--json"]));
+    const channels = fallback.channels ?? (Array.isArray(data) ? data : data?.channels ?? data?.channel_list);
+    fallback.inventory = Array.isArray(channels) ? await scanGuildFeeds(cli, guildId, channels) : { feeds: [], complete: false };
+  }
+  if (!fallback.inventory.complete || !fallback.inventory.channelIds.has(String(channelId))) return section;
+  const feeds = fallback.inventory.feeds.filter((feed) => feed.channel_id === String(channelId));
+  if (section.feeds.some((feed) => !feeds.some((entry) => entry.feed_id === feed.feed_id))) return section;
+  return { feeds, complete: true };
+}
+
 async function detail(cli, guildId, feed) {
   return payload(await cli(["feed", "get-feed-detail", "--guild-id", String(guildId), "--channel-id", String(feed.channel_id), "--feed-id", feed.feed_id, "--json"]));
 }
@@ -323,11 +379,13 @@ function paperMarkdown(item, date, topic) {
   const coverage = item.analysis.coverage;
   const version = `arXiv:${item.arxiv_id}v${item.revision}`;
   const anchor = `radar-paper-${item.arxiv_id.replace(".", "-")}-v${item.revision}`;
-  const lines = [`# ${item.title}`, "", `**${item.analysis.priority === "must_read" ? "重点必读" : "值得关注"}** · ${topic.primary}${topic.related.length ? `（相关：${topic.related.join("、")}）` : ""}`, "", `**原文版本**：[${version}](https://arxiv.org/abs/${item.arxiv_id}v${item.revision})`, `**导读**：[${date} 已发布页面](${SITE_BASE_URL}/arxiv-daily/${date}#${anchor})`, `**核读范围**：${coverage.label || coverage.level || "未说明"}`, "", `**研读定位**：${cleanMath(a.reason)}`, `**问题**：${cleanMath(a.problem)}`, `**结果**：${cleanMath(a.result)}`];
-  if (a.assumptions?.length) lines.push(`**假设**：${a.assumptions.map(cleanMath).join("；")}`);
-  if (a.limits?.length) lines.push(`**限制**：${a.limits.map(cleanMath).join("；")}`);
-  if (a.unresolved_checks?.length) lines.push(`**未核查**：${a.unresolved_checks.map(cleanMath).join("；")}`);
-  lines.push("", "以上是指定版本与已检查材料范围内的导读，并非独立复算或同行评审。");
+  const lines = [`# ${paperReaderTitle(item, topic)}`, "", `**${item.analysis.priority === "must_read" ? "必读" : "关注"}** · ${TOPIC_LABELS[topic.primary] || "待分类"}`, "", "## 研究了什么", "", a.problem, "", "## 作者报告的结果", "", a.result, "", "## 为什么值得读", "", a.reason, ""];
+  if (topic.related.length) lines.push(`相关主题：${topic.related.map(id => TOPIC_LABELS[id]).join("、")}`, "");
+  if (a.reading_entry) lines.push("## 建议阅读入口", "", a.reading_entry, "");
+  for (const [label, values] of [["核心假设", a.assumptions], ["限制与边界", a.limits], ["尚未核查", a.unresolved_checks]]) {
+    if (values?.length) lines.push(`## ${label}`, "", ...values.flatMap(value => [`- ${value}`, ""]));
+  }
+  lines.push("---", "", `原标题：${item.title}`, "", `[${version}](https://arxiv.org/abs/${item.arxiv_id}v${item.revision}) · [网页导读](${SITE_BASE_URL}/arxiv-daily/${date}/#${anchor})`, "", `实际阅读范围：${coverage.label || coverage.level || "未说明"}；检查材料：${(coverage.inspected_sections || []).join("、")}`, "", "中文标题为研究问题导读，不是原题译文。以上内容限于已检查材料，并非独立复算或同行评审。");
   return lines.join("\n");
 }
 
@@ -350,21 +408,23 @@ async function publishItems(items, { guildId = DEFAULT_GUILD_ID, channelIds = {}
   if (!legacyBindings || typeof legacyBindings !== "object" || Array.isArray(legacyBindings)) throw new Error("CHANNEL_LEGACY_BINDINGS_INVALID");
   return withPublicationLedger(cacheRoot, guildId, async (records, save, ledger) => {
     const result = summary();
-    const start = backfill ? Math.min(ledger.backfill_cursor || 0, items.length) : 0;
+    const cursorKey = kind === "brief" ? "brief_cursor" : "backfill_cursor";
+    const start = backfill ? Math.min(ledger[cursorKey] || 0, items.length) : 0;
     const list = items.slice(start, start + limit);
     result.remaining = Math.max(0, items.length - start - list.length);
     if (result.remaining && !backfill) result.success = false;
     const scans = new Map();
+    const fallback = {};
     let stoppedAt = null;
     for (const item of list) {
       const { identity, body, title, topic } = item;
-      const target = kind === "weekly" ? channelId : channelIds[topic.primary];
+      const target = kind === "daily" ? channelIds[topic.primary] : channelId;
       if (kind === "daily" && !topic.primary) { pending(result, identity, "CHANNEL_TOPIC_UNRESOLVED"); continue; }
       if (!target && !dryRun) { pending(result, identity, "CHANNEL_SECTION_MISSING"); continue; }
       const hash = hashBody(body);
       const marked = `${body}\n\n${markerFor(identity, hash)}`;
       if (Array.from(title).length > 200 || Array.from(marked).length > 10_000) { pending(result, identity, "CHANNEL_CONTENT_LIMIT"); continue; }
-      const existing = records[identity];
+      let existing = records[identity];
       if (existing?.status === "published" && existing.hash === hash && existing.channel_id === String(target)) { result.unchanged += 1; continue; }
       if (dryRun) { result.pending_items.push({ identity, reason: existing?.feed_id ? "would_update" : "would_publish" }); continue; }
       try {
@@ -381,7 +441,7 @@ async function publishItems(items, { guildId = DEFAULT_GUILD_ID, channelIds = {}
                 actual === binding?.content && remoteTitle(found) === binding?.title) remote = moved;
             else { pending(result, identity, "CHANNEL_UNKNOWN_OUTCOME"); continue; }
           } catch {
-            const inventory = await scanFeeds(cli, guildId, String(target));
+            const inventory = await scanSectionFeeds(cli, guildId, String(target), fallback);
             if (!inventory.complete || inventory.feeds.some((feed) => feed.feed_id === moved.feed_id)) { pending(result, identity, "CHANNEL_UNKNOWN_OUTCOME"); continue; }
             const old = { ...moved, channel_id: existing.channel_id };
             let oldBody;
@@ -441,15 +501,34 @@ async function publishItems(items, { guildId = DEFAULT_GUILD_ID, channelIds = {}
         if (remote && String(remote.channel_id) !== String(target)) { pending(result, identity, "CHANNEL_UNKNOWN_OUTCOME"); continue; }
         const managed = ledger.managed_sections?.[String(target)];
         if (!remote && (existing?.status === "intent" || !existing && !(managed?.verified_empty === true && managed.topic === topic?.primary))) {
-          const scanKey = kind === "weekly" ? String(channelId) : String(target);
-          if (!scans.has(scanKey)) scans.set(scanKey, await scanFeeds(cli, guildId, scanKey));
-          for (const candidate of scans.get(scanKey).feeds) {
-            const found = await detail(cli, guildId, candidate);
-            const currentBody = String(remoteBody(found));
-            if (matchesManagedBody(currentBody, identity, hash)) { remote = candidate; break; }
-            if (kind === "weekly" && currentBody === body && String(found.title ?? found.feed?.title ?? "") === title) { remote = candidate; break; }
-            if (kind === "weekly" && existing?.status !== "intent" && (currentBody.includes(item.week_id) || remoteTitle(found).includes(item.week_id))) { pending(result, identity, "CHANNEL_WEEKLY_AMBIGUOUS"); remote = "pending_weekly"; break; }
-            if (kind === "daily" && currentBody.includes(`arXiv:${item.arxiv_id}v${item.revision}`) && currentBody === body) { remote = candidate; break; }
+          const scanKey = String(target);
+          if (!scans.has(scanKey)) scans.set(scanKey, await scanSectionFeeds(cli, guildId, scanKey, fallback));
+          if (["events", "brief"].includes(kind)) {
+            const matches = [];
+            let invalidMarker = false;
+            for (const candidate of scans.get(scanKey).feeds) {
+              const found = await detail(cli, guildId, candidate);
+              const currentBody = String(remoteBody(found));
+              const priorHash = currentBody.match(/([a-f0-9]{64}) -->$/u)?.[1];
+              if (matchesManagedBody(currentBody, identity, priorHash)) matches.push({ candidate, priorHash });
+              else if (currentBody.includes(`<!-- astrolineage-channel:${identity}:`)) invalidMarker = true;
+            }
+            if (invalidMarker) { pending(result, identity, "CHANNEL_REMOTE_MISMATCH"); continue; }
+            if (matches.length > 1 || matches.length && !scans.get(scanKey).complete) { pending(result, identity, "CHANNEL_UNKNOWN_OUTCOME"); continue; }
+            if (matches.length === 1) {
+              remote = matches[0].candidate;
+              existing = { ...existing, hash: matches[0].priorHash, from_hash: matches[0].priorHash };
+            }
+          }
+          if (!remote) {
+            for (const candidate of scans.get(scanKey).feeds) {
+              const found = await detail(cli, guildId, candidate);
+              const currentBody = String(remoteBody(found));
+              if (matchesManagedBody(currentBody, identity, hash)) { remote = candidate; break; }
+              if (kind === "weekly" && currentBody === body && String(found.title ?? found.feed?.title ?? "") === title) { remote = candidate; break; }
+              if (kind === "weekly" && existing?.status !== "intent" && (currentBody.includes(item.week_id) || remoteTitle(found).includes(item.week_id))) { pending(result, identity, "CHANNEL_WEEKLY_AMBIGUOUS"); remote = "pending_weekly"; break; }
+              if (kind === "daily" && currentBody.includes(`arXiv:${item.arxiv_id}v${item.revision}`) && currentBody === body) { remote = candidate; break; }
+            }
           }
           if (remote === "pending_weekly") continue;
           if (!remote && !scans.get(scanKey).complete) { pending(result, identity, existing?.status === "intent" ? "CHANNEL_UNKNOWN_OUTCOME" : "CHANNEL_PAGINATION_INCOMPLETE"); continue; }
@@ -457,8 +536,13 @@ async function publishItems(items, { guildId = DEFAULT_GUILD_ID, channelIds = {}
         if (existing?.status === "intent" && !remote) { pending(result, identity, "CHANNEL_UNKNOWN_OUTCOME"); continue; }
         if (remote) {
           const current = await detail(cli, guildId, remote);
-          if (String(remoteBody(current)) !== marked) {
-            records[identity] = { ...existing, hash, status: "intent", feed_id: remote.feed_id, create_time: remote.create_time, channel_id: remote.channel_id }; await save();
+          const currentBody = String(remoteBody(current));
+          if (currentBody !== marked) {
+            const priorHash = existing?.status === "intent" ? existing.from_hash : existing?.hash;
+            if (existing && !(matchesManagedBody(currentBody, identity, priorHash) || binding && currentBody === binding.content && remoteTitle(current) === binding.title)) {
+              pending(result, identity, "CHANNEL_REMOTE_MISMATCH"); continue;
+            }
+            records[identity] = { ...existing, hash, from_hash: priorHash, status: "intent", feed_id: remote.feed_id, create_time: remote.create_time, channel_id: remote.channel_id }; await save();
             payload(await cli(["feed", "alter-feed", "--guild-id", String(guildId), "--channel-id", String(remote.channel_id), "--feed-id", remote.feed_id, "--create-time", remote.create_time, "--title", title, "--markdown-content", marked, "--json"]));
             result.updated += 1;
           } else if (movedThisTime) result.updated += 1;
@@ -478,22 +562,30 @@ async function publishItems(items, { guildId = DEFAULT_GUILD_ID, channelIds = {}
       }
     }
     if (stoppedAt !== null) result.remaining += list.length - stoppedAt;
-    if (backfill && !dryRun) { ledger.backfill_cursor = start + (stoppedAt ?? list.length) >= items.length ? 0 : start + (stoppedAt ?? list.length); await save(); }
+    if (backfill && !dryRun) { ledger[cursorKey] = start + (stoppedAt ?? list.length) >= items.length ? 0 : start + (stoppedAt ?? list.length); await save(); }
     return result;
   });
 }
 
-export async function provisionTopicChannels({ guildId = DEFAULT_GUILD_ID, cacheRoot = DEFAULT_CACHE_ROOT, cli = runCli, dryRun = false } = {}) {
+export async function provisionTopicChannels({ guildId = DEFAULT_GUILD_ID, cacheRoot = DEFAULT_CACHE_ROOT, cli = runCli, dryRun = false, rename = false } = {}) {
   const data = payload(await cli(["manage", "get-guild-channel-list", "--guild-id", String(guildId), "--json"]));
   const channels = Array.isArray(data) ? data : data?.channels ?? data?.channel_list ?? [];
   if (!Array.isArray(channels)) throw new Error("CHANNEL_SECTION_LIST_INVALID");
   const ids = {};
+  const fallback = { channels };
   for (const [key, label] of TOPICS) {
-    const title = `${key} ${label}`;
-    const matches = channels.filter((entry) => String(entry.channel_name ?? entry.name ?? "").replace(/&amp;/gu, "&") === title);
+    const title = TOPIC_LABELS[key];
+    const matches = channels.filter((entry) => [title, `${key} ${label}`].includes(channelName(entry.channel_name ?? entry.name)));
     if (matches.length > 1) throw new Error("CHANNEL_SECTION_AMBIGUOUS");
     const current = matches[0];
-    if (current) ids[key] = String(current.channel_id ?? current.id);
+    if (current) {
+      ids[key] = String(current.channel_id ?? current.id);
+      if (rename && !dryRun && channelName(current.channel_name ?? current.name) !== title) {
+        payload(await cli(["manage", "modify-channel", "--guild-id", String(guildId), "--channel-id", ids[key], "--channel-name", title, "--json"]));
+        current.channel_name = title;
+        delete fallback.inventory;
+      }
+    }
     else if (!dryRun) {
       const created = payload(await cli(["manage", "create-channel", "--guild-id", String(guildId), "--channel-name", title, "--json"]));
       const id = created?.channel_id ?? created?.channel?.channel_id;
@@ -503,7 +595,7 @@ export async function provisionTopicChannels({ guildId = DEFAULT_GUILD_ID, cache
     if (ids[key] && !dryRun) {
       const trusted = await withPublicationLedger(cacheRoot, guildId, async (_items, _save, ledger) => ledger.managed_sections?.[ids[key]]?.verified_empty === true);
       if (trusted) continue;
-      const inventory = await scanFeeds(cli, guildId, ids[key]);
+      const inventory = await scanSectionFeeds(cli, guildId, ids[key], fallback);
       if (inventory.complete && inventory.feeds.length === 0) await withPublicationLedger(cacheRoot, guildId, async (_items, save, ledger) => {
         ledger.managed_sections ??= {};
         ledger.managed_sections[ids[key]] = { verified_empty: true, topic: key };
@@ -514,7 +606,7 @@ export async function provisionTopicChannels({ guildId = DEFAULT_GUILD_ID, cache
   return ids;
 }
 
-export async function publishDailyFeed({ feedPath = FEED_PATH, radarPath = RADAR_PATH, artifactRoot, distRoot = DEFAULT_DIST_ROOT, source, readEdition = readPublishedArxivEdition, sourceBinding, channelIds, ...options } = {}) {
+export async function publishDailyFeed({ feedPath = FEED_PATH, radarPath = RADAR_PATH, artifactRoot, distRoot = DEFAULT_DIST_ROOT, source, readEdition = readPublishedArxivEdition, sourceBinding, channelIds, includeBrief = false, dailyChannelId = DEFAULT_DAILY_CHANNEL_ID, ...options } = {}) {
   try {
     if (!source) requireSourceBinding(sourceBinding);
     const edition = source ?? await readEdition({ output: feedPath, radarOutput: radarPath, artifactRoot });
@@ -526,9 +618,16 @@ export async function publishDailyFeed({ feedPath = FEED_PATH, radarPath = RADAR
     if (!/^\d{4}-\d\d-\d\d$/u.test(date || "")) throw new Error("CHANNEL_SOURCE_DATE_INVALID");
     await stat(join(distRoot, "arxiv-daily", date, "index.html"));
     const items = dailyItems(checked.model, date);
-    if (items.length === 0) return null;
+    let briefError;
+    if (includeBrief) {
+      try { items.unshift(dailyBriefItem(checked.model, date)); }
+      catch (error) { briefError = error.message; }
+    }
+    if (items.length === 0 && !briefError) return null;
     const ids = channelIds ?? (options.dryRun ? {} : await provisionTopicChannels(options));
-    return await publishItems(items, { ...options, channelIds: ids });
+    const result = await publishItems(items, { ...options, channelIds: { ...ids, daily: dailyChannelId } });
+    if (briefError) { pending(result, `daily-summary:${date}`, briefError); result.errors.push(briefError); }
+    return result;
   } catch (error) { return { ...summary(), success: false, pending: 1, errors: [error.message] }; }
 }
 
@@ -536,7 +635,7 @@ function dailyItems(model, date) {
   return [...model.groups.must_read, ...model.groups.worth_knowing].map((item) => {
     const topic = routePaper(item);
     const identity = `daily:${item.arxiv_id}v${item.revision}`;
-    return { identity, arxiv_id: item.arxiv_id, revision: item.revision, paper_title: item.title, topic, title: `【${topic.primary || "待分类"}】${item.title}`, body: paperMarkdown(item, date, topic) };
+    return { identity, arxiv_id: item.arxiv_id, revision: item.revision, paper_title: item.title, topic, title: paperReaderTitle(item, topic), body: paperMarkdown(item, date, topic) };
   });
 }
 
@@ -591,7 +690,34 @@ export async function publishWeeklyFeed({
   } catch (error) { return { ...summary(), success: false, pending: 1, errors: [error.message] }; }
 }
 
-export async function publishHistoricalFeeds({ archiveRoot = DEFAULT_ARCHIVE_ROOT, distRoot = DEFAULT_DIST_ROOT, from = "2026-09-07", through = "2026-10-01", limit = 50, dryRun = false, channelIds, sourceBinding, ...options } = {}) {
+export async function publishEventRanking({ sourceBinding, eventSnapshot, eventsPath = join(DEFAULT_DIST_ROOT, "api/v1/events.json"), channelId = DEFAULT_DAILY_CHANNEL_ID, ...options } = {}) {
+  try {
+    requireSourceBinding(sourceBinding);
+    if (eventSnapshot?.error === "CHANNEL_EVENTS_INVALID") throw new Error("CHANNEL_EVENTS_INVALID");
+    if (!/^[a-f0-9]{64}$/u.test(eventSnapshot?.hash || "")) throw new Error("CHANNEL_EVENTS_BUILD_REQUIRED");
+    if ((await stat(eventsPath)).size > 20_000_000) throw new Error("CHANNEL_EVENTS_INVALID");
+    const bytes = await readFile(eventsPath);
+    if (hashBody(bytes) !== eventSnapshot.hash) throw new Error("CHANNEL_EVENTS_BUILD_MISMATCH");
+    const data = JSON.parse(bytes);
+    if (!Array.isArray(data.events) || !Number.isFinite(Date.parse(data.generated_at)) || data.generated_at !== eventSnapshot.generated_at) throw new Error("CHANNEL_EVENTS_INVALID");
+    const top = data.events.slice(0, 5);
+    const seen = new Set();
+    const title = "活跃瞬变源 · 文献热度 Top 5";
+    const lines = [`# ${title}`, "", `数据更新：${data.generated_at}`, "", "榜单与网页使用同一构建快照。热度表示本地近期文献讨论，按现有 7 天半衰期衰减；不等于物理重要性，也不表示事件刚刚爆发。", ""];
+    for (const [index, event] of top.entries()) {
+      if (typeof event.event_id !== "string" || !event.event_id.trim() || seen.has(event.event_id) || !Number.isFinite(event.heat_score) || event.heat_score < 0 || !Number.isInteger(event.paper_count) || event.paper_count < 0 || !/^\d{4}-\d\d-\d\d$/u.test(event.last_updated || "") || !Array.isArray(event.papers)) throw new Error("CHANNEL_EVENTS_INVALID");
+      seen.add(event.event_id);
+      lines.push(`## ${index + 1}. ${event.event_id}`, "", `**热度 ${event.heat_score}** · ${event.paper_count} 篇关联文献 · 最近文献更新 ${event.last_updated}`, "");
+      const paper = event.papers.find(p => ["must_read", "worth_knowing"].includes(p.priority) && /^\d{4}\.\d{4,5}$/u.test(p.arxiv_id || ""));
+      if (paper) lines.push(paper.bluf_problem || "", "", `[近期关联论文 arXiv:${paper.arxiv_id}](https://arxiv.org/abs/${paper.arxiv_id})`, "");
+    }
+    if (!top.length) lines.push("当前没有可展示的事件，不补造排名。", "");
+    lines.push(`[网页事件榜单](${SITE_BASE_URL}/agent/)`);
+    return await publishItems([{ identity: "events:top5", title, body: lines.join("\n") }], { ...options, channelId, kind: "events" });
+  } catch (error) { return { ...summary(), success: false, pending: 1, errors: [error.message] }; }
+}
+
+export async function publishHistoricalFeeds({ archiveRoot = DEFAULT_ARCHIVE_ROOT, distRoot = DEFAULT_DIST_ROOT, from = "2026-09-07", through = "2026-10-01", limit = 50, dryRun = false, channelIds, sourceBinding, briefs = false, channelId = DEFAULT_DAILY_CHANNEL_ID, ...options } = {}) {
   try {
     requireSourceBinding(sourceBinding);
     if (!Number.isInteger(limit) || limit < 1 || limit > 50) throw new Error("CHANNEL_LIMIT_INVALID");
@@ -606,6 +732,7 @@ export async function publishHistoricalFeeds({ archiveRoot = DEFAULT_ARCHIVE_ROO
         const bytes = await readFile(join(archiveRoot, name));
         if (!sourceBinding.archives[date] || hashBody(bytes) !== sourceBinding.archives[date]) throw new Error("CHANNEL_SOURCE_BUILD_MISMATCH");
         const model = await readDailyArchive(join(archiveRoot, name), date, distRoot, bytes);
+        if (briefs) { must.push(dailyBriefItem(model, date)); continue; }
         for (const [group, target, kind] of [[model.groups.must_read, must, "must_read"], [model.groups.worth_knowing, worth, "worth_knowing"]]) {
           for (const paper of group) {
             const item = dailyItems({ groups: { must_read: kind === "must_read" ? [paper] : [], worth_knowing: kind === "worth_knowing" ? [paper] : [] } }, date)[0];
@@ -614,8 +741,8 @@ export async function publishHistoricalFeeds({ archiveRoot = DEFAULT_ARCHIVE_ROO
         }
       } catch (error) { invalid.push({ date, reason: error.message }); }
     }
-    const ids = channelIds ?? (dryRun ? {} : await provisionTopicChannels(options));
-    const result = await publishItems([...must, ...worth], { ...options, channelIds: ids, dryRun, limit, backfill: true });
+    const ids = channelIds ?? (dryRun || briefs ? {} : await provisionTopicChannels(options));
+    const result = await publishItems([...must, ...worth], { ...options, channelIds: ids, channelId, kind: briefs ? "brief" : "daily", dryRun, limit, backfill: true });
     for (const item of invalid) pending(result, item.date, item.reason);
     return result;
   } catch (error) { return { ...summary(), success: false, pending: 1, errors: [error.message] }; }
@@ -674,26 +801,30 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1
   const bindingIndex = process.argv.indexOf("--legacy-bindings");
   const legacyBindings = bindingIndex < 0 ? undefined : JSON.parse(await readFile(resolve(process.argv[bindingIndex + 1]), "utf8"));
   let sourceBinding;
-  if (["daily", "weekly", "backfill", "--backfill"].includes(task)) {
+  let eventSnapshot;
+  if (["daily", "weekly", "events", "backfill", "--backfill"].includes(task)) {
     try {
       const website = JSON.parse(await readFile(WEBSITE_BUILD_PATH, "utf8"));
       if (website.status !== "success") throw new Error();
       sourceBinding = website.source_binding;
+      eventSnapshot = website.events;
       requireSourceBinding(sourceBinding);
     } catch { throw new Error("CHANNEL_SOURCE_BUILD_REQUIRED"); }
   }
   if (task === "daily") {
-    console.log(JSON.stringify(await publishDailyFeed({ dryRun, legacyBindings, sourceBinding })));
+    console.log(JSON.stringify(await publishDailyFeed({ dryRun, legacyBindings, sourceBinding, includeBrief: true })));
   } else if (task === "weekly") {
     console.log(JSON.stringify(await publishWeeklyFeed({ dryRun, sourceBinding, legacyBindings })));
   } else if (task === "provision") {
-    console.log(JSON.stringify(await provisionTopicChannels({ dryRun })));
+    console.log(JSON.stringify(await provisionTopicChannels({ dryRun, rename: true })));
+  } else if (task === "events") {
+    console.log(JSON.stringify(await publishEventRanking({ dryRun, sourceBinding, eventSnapshot })));
   } else if (task === "backfill" || task === "--backfill") {
     const index = process.argv.indexOf("--limit");
     const limit = index < 0 ? 20 : Number(process.argv[index + 1]);
     const currentBinding = await capturePublishedSourceBinding();
     if (currentBinding.id !== sourceBinding.id) throw new Error("CHANNEL_SOURCE_BUILD_MISMATCH");
-    console.log(JSON.stringify(await publishHistoricalFeeds({ dryRun, limit, legacyBindings, sourceBinding })));
+    console.log(JSON.stringify(await publishHistoricalFeeds({ dryRun, limit, legacyBindings, sourceBinding, briefs: process.argv.includes("--briefs") })));
   } else if (task === "alter-daily") {
     const feedId = process.argv[3];
     const createTime = process.argv[4];

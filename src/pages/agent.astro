@@ -102,6 +102,7 @@ with urllib.request.urlopen("https://axvdaily.internal/api/v1/daily.json") as re
       <section class="radar-section">
         <p class="section-kicker">实时聚簇预览</p>
         <h2>当前活跃瞬变源事件榜单（Top 5 Heat Scores）</h2>
+        <p>更新时间：{scientificEvents.generated_at}。热度反映近期文献讨论，不代表物理重要性或新爆发告警。</p>
         <div class="agent-events-list">
           {topEvents.map((event: any, idx: number) => (
             <div class="agent-event-row">
@@ -114,7 +115,7 @@ with urllib.request.urlopen("https://axvdaily.internal/api/v1/daily.json") as re
                   <span class="event-papers-count">共 {event.paper_count} 篇论文关联</span>
                 </div>
                 <div class="event-meta">
-                  <span>首次发现: {event.first_seen}</span> · <span>最近更新: {event.last_updated}</span>
+                  <span>首次文献记录: {event.first_seen}</span> · <span>最近文献更新: {event.last_updated}</span>
                 </div>
                 <ul class="event-papers">
                   {event.papers.map((p: any) => (

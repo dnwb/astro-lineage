@@ -55,12 +55,18 @@ function priorityLabel(priority: string) {
 
 <li
   class="radar-list-item"
+  id={`paper-${item.arxiv_id}`}
   data-arxiv-id={item.arxiv_id}
   data-priority={item.analysis.priority}
   data-tags={scientificTags.join(",")}
   data-transients={transientIds.join(",")}
   data-search={searchIndex}
 >
+  <span id={`arxiv-${item.arxiv_id}`} class="paper-anchor-target"></span>
+  <span id={`card-${item.arxiv_id}-v${item.revision || 1}`} class="paper-anchor-target"></span>
+  <span id={`card-${item.arxiv_id}`} class="paper-anchor-target"></span>
+  <span id={`guide-${item.arxiv_id}`} class="paper-anchor-target"></span>
+  <span id={`guide-${item.arxiv_id.replace(/\./g, "-")}`} class="paper-anchor-target"></span>
   <article class={`radar-card radar-card-${cardVariant}`} id={radarCardAnchor(item.arxiv_id, item.revision)}>
     <div class="radar-card-header-row">
       <div class="header-left-badges">
@@ -116,10 +122,10 @@ function priorityLabel(priority: string) {
     </div>
 
     <!-- Folded Deep Analysis & Verbatim Evidence Accordion -->
-    <details class="radar-deep-dive-details">
+    <details class="radar-deep-dive-details" open={item.analysis.priority === "must_read"}>
       <summary class="radar-deep-dive-summary">
-        <span class="summary-label">🔬 论证与证据链</span>
-        <span class="deep-dive-arrow">展开 ▾</span>
+        <span class="summary-label">🔬 深度研读与证据链</span>
+        <span class="deep-dive-arrow">{item.analysis.priority === "must_read" ? "折叠 ▴" : "展开 ▾"}</span>
       </summary>
 
       <div class="radar-deep-dive-content language-primary">
@@ -192,6 +198,18 @@ function priorityLabel(priority: string) {
   }
   :global([data-theme="dark"]) .radar-author-preview {
     color: #94a3b8;
+  }
+  .paper-anchor-target {
+    display: block;
+    position: relative;
+    top: -80px;
+    visibility: hidden;
+    height: 0;
+  }
+  .radar-card:target,
+  .radar-list-item:has(:target) .radar-card {
+    outline: 2px solid #ea580c;
+    box-shadow: 0 0 0 4px rgba(234, 88, 12, 0.2), 0 10px 15px -3px rgba(0, 0, 0, 0.1);
   }
   .tier-pill {
     display: inline-block;

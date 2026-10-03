@@ -56,13 +56,8 @@ case "${TASK}" in
     echo "[cron-runner] 步骤 1/4: 执行每日 arXiv 调度器与 AI 研判..."
     node scripts/arxiv-daily-scheduler.mjs
 
-    # 判定当前星期 (1=周一, 5=周五)
-    WEEKDAY="$(TZ="Asia/Shanghai" date +%u)"
-    if [ "${WEEKDAY}" -eq 5 ]; then
-      echo "[cron-runner] 步骤 1.5/4: 检测到当前为周五，自动追加执行每周学术脉络总结..."
-      node scripts/arxiv-weekly-summary.mjs
-    fi
-
+    echo "[cron-runner] 步骤 1.5/4: 执行每周学术脉络总结与脏周级联更新..."
+    node scripts/arxiv-weekly-summary.mjs || true
     echo "[cron-runner] 检查并级联更新历史脏自然周..."
     node scripts/arxiv-weekly-summary.mjs --cascade || true
 
@@ -73,6 +68,7 @@ case "${TASK}" in
     systemctl --user restart astrolineage-web.service || true
 
     echo "[cron-runner] 步骤 3/4: 同步腾讯频道社区与年度 NotebookLM 知识库..."
+    WEEKDAY="$(TZ="Asia/Shanghai" date +%u)"
     if [ "${WEEKDAY}" -eq 5 ]; then
       node scripts/notebooklm-sync.mjs --deliver both "${BUILD_ID}" || DELIVERY_FAILED=1
     else
@@ -87,6 +83,8 @@ case "${TASK}" in
   daily)
     echo "[cron-runner] 执行每日流程..."
     node scripts/arxiv-daily-scheduler.mjs
+    echo "[cron-runner] 同步更新本周学术脉络总结与脏周级联..."
+    node scripts/arxiv-weekly-summary.mjs || true
     node scripts/arxiv-weekly-summary.mjs --cascade || true
     capture_current_build
     npm run build

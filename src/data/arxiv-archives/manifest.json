@@ -1,6 +1,6 @@
 {
   "schema_version": "astrolineage-arxiv-archive-manifest-v1",
-  "updated_at": "2026-10-02T05:34:37.008Z",
+  "updated_at": "2026-10-03T01:12:49.388Z",
   "total_weeks": 4,
   "total_daily_editions": 19,
   "latest_week_id": "2026-W40",
@@ -11,14 +11,14 @@
       "title": "高能天体物理 arXiv 每周学术脉络与前沿精选",
       "date_range": "2026-09-28 ~ 2026-10-04",
       "has_weekly_summary": true,
-      "executive_summary": "本周重点工作沿着“前身与环境—动力学—辐射—观测反演”链条，集中推进了几类互有关联的问题：FRB方面，一项等离子体透镜可检验预言与一项磁星极区火球受激上散射模型分别触及传播效应和辐射机制，但后者的高光度能力仍依赖未完全自洽的密度及饱和处方；超新星方面，SN 2024ggi的爆前搜索与射电约束倾向于外层风状介质和更致密内层并存，三维前身星模拟则揭示核燃烧与湍流输运竞争下的一维混合局限；GRB方面，短暴本征率推断、软X射线闪余辉和准热谱分量工作分别约束人口、喷流动力学和谱分解的不确定性。致密星并合的核合成及塌缩星盘碎裂引力波背景提供了多信使延伸；X射线吸积研究则展示了力矩噪声、吸积柱几何如何影响连续引力波搜索与脉冲轮廓解释。",
+      "executive_summary": "本周重点工作沿着“发动机与前身星—喷流或外流—周围介质—辐射与多信使信号”的因果链条展开。FRB方向一方面提出可由重复爆发检验的等离子体透镜统计预言，另一方面发展磁星极区火球受激康普顿上散射模型，但后者的高光度实现仍依赖密度加载与饱和处方。超新星工作将爆前前兆搜索、射电约束的CSM密度结构与前身星三维壳层燃烧联系起来；GRB工作则通过多波段余辉限制软X射线闪的喷流参数，并以层级贝叶斯方法重新评估短暴率和并合延迟。多信使方向涵盖并合千新星的元素谱线、塌缩星盘碎裂引力波背景及潮汐瓦解事件的高能中微子产额。整体上，本周最值得关注的共同问题不是单一辐射机制是否可行，而是模型参数、选择效应与传播环境能否被独立观测交叉验证。",
       "statistics": {
         "total_analyzed": 141,
         "must_read_count": 20,
         "worth_knowing_count": 31,
         "skip_count": 90
       },
-      "top_picks_count": 11,
+      "top_picks_count": 8,
       "days": [
         {
           "date": "2026-10-01",
@@ -32,7 +32,7 @@
           "skip_count": 17,
           "pending_count": 0,
           "brief_status": "ready",
-          "brief_intro": "本次更新可先看「Three New Likely Spider Millisecond Pulsar Binaries and Optical Kinematic Tracers of Intrabinary Shocks」等论文；以下导读仅概括已核对的来源内容。",
+          "brief_intro": "本期首看《Three New Likely Spider Millisecond Pulsar Binaries and Optical Kinematic Tracers of Intrabinary Shocks》等 17 篇核心进展。",
           "highlights": [
             {
               "arxiv_id": "2610.00455",
@@ -67,7 +67,7 @@
           "skip_count": 19,
           "pending_count": 0,
           "brief_status": "ready",
-          "brief_intro": "本次更新可先看「Nearby Supernova Science in the Era of High Cadence, Deep Time Domain Surveys」等论文；以下导读仅概括已核对的来源内容。",
+          "brief_intro": "本期首看《Nearby Supernova Science in the Era of High Cadence, Deep Time Domain Surveys》等 10 篇核心进展。",
           "highlights": [
             {
               "arxiv_id": "2609.38304",
@@ -102,7 +102,7 @@
           "skip_count": 33,
           "pending_count": 0,
           "brief_status": "ready",
-          "brief_intro": "本次更新可先看「Discovery of the Infrared Counterpart of the Rapid Burster with JWST」等论文；以下导读仅概括已核对的来源内容。",
+          "brief_intro": "本期首看《Discovery of the Infrared Counterpart of the Rapid Burster with JWST》等 14 篇核心进展。",
           "highlights": [
             {
               "arxiv_id": "2609.35956",
@@ -137,7 +137,7 @@
           "skip_count": 21,
           "pending_count": 0,
           "brief_status": "ready",
-          "brief_intro": "本次更新可先看「Correlated Signatures of Plasma Lensing in Fast Radio Bursts」等论文；以下导读仅概括已核对的来源内容。",
+          "brief_intro": "本期首看《Correlated Signatures of Plasma Lensing in Fast Radio Bursts》等 10 篇核心进展。",
           "highlights": [
             {
               "arxiv_id": "2609.31842",
@@ -189,7 +189,7 @@
           "skip_count": 35,
           "pending_count": 0,
           "brief_status": "ready",
-          "brief_intro": "本次更新可先看「Spectral and Polarization Properties of Coherent Radio Emission from Relativistic Magnetized Pair Plasma Shocks」等论文；以下导读仅概括已核对的来源内容。",
+          "brief_intro": "本期首看《Spectral and Polarization Properties of Coherent Radio Emission from Relativistic Magnetized Pair Plasma Shocks》等 13 篇核心进展。",
           "highlights": [
             {
               "arxiv_id": "2609.30494",
@@ -224,7 +224,7 @@
           "skip_count": 36,
           "pending_count": 0,
           "brief_status": "ready",
-          "brief_intro": "本次更新可先看「Probing the Metallicity Dependence of Fast Radio Burst Progenitors with CHIME/FRB Outrigger Dwarf Host Galaxies」等论文；以下导读仅概括已核对的来源内容。",
+          "brief_intro": "本期首看《Probing the Metallicity Dependence of Fast Radio Burst Progenitors with CHIME/FRB Outrigger Dwarf Host Galaxies》等 15 篇核心进展。",
           "highlights": [
             {
               "arxiv_id": "2609.28629",
@@ -259,7 +259,7 @@
           "skip_count": 31,
           "pending_count": 0,
           "brief_status": "ready",
-          "brief_intro": "本次更新可先看「A Coherent Search for New Galactic Magnetars using Fermi/GBM and follow-up Swift/BAT: 7 Candidates and a Large Burst Catalog」等论文；以下导读仅概括已核对的来源内容。",
+          "brief_intro": "本期首看《A Coherent Search for New Galactic Magnetars using Fermi/GBM and follow-up Swift/BAT: 7 Candidates and a Large Burst Catalog》等 23 篇核心进展。",
           "highlights": [
             {
               "arxiv_id": "2609.26897",
@@ -294,7 +294,7 @@
           "skip_count": 47,
           "pending_count": 0,
           "brief_status": "ready",
-          "brief_intro": "本次更新可先看「Early NIR echo and the time variable mass loss history of Type IIn SN 2024kgi」等论文；以下导读仅概括已核对的来源内容。",
+          "brief_intro": "本期首看《Early NIR echo and the time variable mass loss history of Type IIn SN 2024kgi》等 15 篇核心进展。",
           "highlights": [
             {
               "arxiv_id": "2609.25233",
@@ -329,7 +329,7 @@
           "skip_count": 90,
           "pending_count": 0,
           "brief_status": "ready",
-          "brief_intro": "本次更新可先看「GRB 220706A: a gamma-ray burst with a month-long engine and a luminous supernova」等论文；以下导读仅概括已核对的来源内容。",
+          "brief_intro": "本期首看《GRB 220706A: a gamma-ray burst with a month-long engine and a luminous supernova》等 23 篇核心进展。",
           "highlights": [
             {
               "arxiv_id": "2609.22426",
@@ -381,7 +381,7 @@
           "skip_count": 61,
           "pending_count": 0,
           "brief_status": "ready",
-          "brief_intro": "本次更新可先看「A mechanism for fast radio bursts and their narrow spectra」等论文；以下导读仅概括已核对的来源内容。",
+          "brief_intro": "本期首看《A mechanism for fast radio bursts and their narrow spectra》等 17 篇核心进展。",
           "highlights": [
             {
               "arxiv_id": "2609.21076",
@@ -416,7 +416,7 @@
           "skip_count": 55,
           "pending_count": 0,
           "brief_status": "ready",
-          "brief_intro": "本次更新可先看「Extragalactic Multi-Band Exploration of Red Supergiants (EMBERS): Pipeline, Source Classification, and Bolometric Properties of 101,219 Red Supergiants from James Webb Space Telescope Imaging」等论文；以下导读仅概括已核对的来源内容。",
+          "brief_intro": "本期首看《Extragalactic Multi-Band Exploration of Red Supergiants (EMBERS): Pipeline, Source Classification, and Bolometric Properties of 101,219 Red Supergiants from James Webb Space Telescope Imaging》等 13 篇核心进展。",
           "highlights": [
             {
               "arxiv_id": "2609.19344",
@@ -451,7 +451,7 @@
           "skip_count": 49,
           "pending_count": 0,
           "brief_status": "ready",
-          "brief_intro": "本次更新可先看「1D PIC Simulations of Resonant Scattering-Driven Pair Cascades in Magnetar Magnetospheres」等论文；以下导读仅概括已核对的来源内容。",
+          "brief_intro": "本期首看《1D PIC Simulations of Resonant Scattering-Driven Pair Cascades in Magnetar Magnetospheres》等 14 篇核心进展。",
           "highlights": [
             {
               "arxiv_id": "2609.17661",
@@ -486,7 +486,7 @@
           "skip_count": 47,
           "pending_count": 0,
           "brief_status": "ready",
-          "brief_intro": "本次更新可先看「A pair of unequal jets imparted the kick velocity to the neutron star of Cassiopeia A」等论文；以下导读仅概括已核对的来源内容。",
+          "brief_intro": "本期首看《A pair of unequal jets imparted the kick velocity to the neutron star of Cassiopeia A》等 24 篇核心进展。",
           "highlights": [
             {
               "arxiv_id": "2609.16138",
@@ -521,7 +521,7 @@
           "skip_count": 57,
           "pending_count": 0,
           "brief_status": "ready",
-          "brief_intro": "本次更新可先看「Observable Signatures of Supernova Shock Breakout in Confined Circumstellar Medium」等论文；以下导读仅概括已核对的来源内容。",
+          "brief_intro": "本期首看《Observable Signatures of Supernova Shock Breakout in Confined Circumstellar Medium》等 32 篇核心进展。",
           "highlights": [
             {
               "arxiv_id": "2609.13540",
@@ -573,7 +573,7 @@
           "skip_count": 31,
           "pending_count": 0,
           "brief_status": "ready",
-          "brief_intro": "本次更新可先看「Probing Lorentz Invariance Violation in Cosmogenic Neutrino Propagation with KM3-230213A」等论文；以下导读仅概括已核对的来源内容。",
+          "brief_intro": "本期首看《Probing Lorentz Invariance Violation in Cosmogenic Neutrino Propagation with KM3-230213A》等 20 篇核心进展。",
           "highlights": [
             {
               "arxiv_id": "2609.12120",
@@ -608,7 +608,7 @@
           "skip_count": 44,
           "pending_count": 0,
           "brief_status": "ready",
-          "brief_intro": "本次更新可先看「Strong Black Hole Natal Kicks in Magnetized Accretion-Powered Explosions」等论文；以下导读仅概括已核对的来源内容。",
+          "brief_intro": "本期首看《Strong Black Hole Natal Kicks in Magnetized Accretion-Powered Explosions》等 18 篇核心进展。",
           "highlights": [
             {
               "arxiv_id": "2609.10694",
@@ -643,7 +643,7 @@
           "skip_count": 37,
           "pending_count": 0,
           "brief_status": "ready",
-          "brief_intro": "本次更新可先看「Dispersion Measure Variability in Fast Radio Bursts from Photoionization」等论文；以下导读仅概括已核对的来源内容。",
+          "brief_intro": "本期首看《Dispersion Measure Variability in Fast Radio Bursts from Photoionization》等 27 篇核心进展。",
           "highlights": [
             {
               "arxiv_id": "2609.09285",
@@ -678,7 +678,7 @@
           "skip_count": 41,
           "pending_count": 0,
           "brief_status": "ready",
-          "brief_intro": "本次更新可先看「SN 2024afyu interpreted as a Pair Instability Supernova」等论文；以下导读仅概括已核对的来源内容。",
+          "brief_intro": "本期首看《SN 2024afyu interpreted as a Pair Instability Supernova》等 26 篇核心进展。",
           "highlights": [
             {
               "arxiv_id": "2609.07931",
@@ -713,7 +713,7 @@
           "skip_count": 44,
           "pending_count": 0,
           "brief_status": "ready",
-          "brief_intro": "本次更新可先看「The First Multi-Messenger Nova: External Shocks, TeV Photons, and Neutrinos in the Next Eruption of T CrB」等论文；以下导读仅概括已核对的来源内容。",
+          "brief_intro": "本期首看《The First Multi-Messenger Nova: External Shocks, TeV Photons, and Neutrinos in the Next Eruption of T CrB》等 24 篇核心进展。",
           "highlights": [
             {
               "arxiv_id": "2609.06201",

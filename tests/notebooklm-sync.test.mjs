@@ -153,7 +153,7 @@ test("failed current export blocks stale NotebookLM upload while channel is atte
   const buildId = "current-build-12345";
   const capture = async () => ({ id: "a".repeat(64) });
   await captureBuildSources({ cache: options.cache, buildId, capture });
-  await recordWebsiteBuild({ cache: options.cache, buildId, capture });
+  await recordWebsiteBuild({ cache: options.cache, buildId, capture, eventsPath: null });
   await assert.rejects(exportNotebookPages({ ...options, buildId,
     adapter: async () => ({ code: "NOTEBOOKLM_EXPORT_INVALID", events: [] }) }), /NOTEBOOKLM_EXPORT_INVALID/u);
   const manualUploads = [];
@@ -181,11 +181,44 @@ test("changed source between capture and build completion cannot become current"
   const first = { daily: { generation_id: "G1", hash: "a".repeat(64) }, weekly: { hash: "b".repeat(64) }, archives: {}, id: "c".repeat(64) };
   const second = { ...first, daily: { generation_id: "G2", hash: "d".repeat(64) }, id: "e".repeat(64) };
   await captureBuildSources({ cache: options.cache, buildId, capture: async () => first });
-  await assert.rejects(recordWebsiteBuild({ cache: options.cache, buildId, capture: async () => second }), /NOTEBOOKLM_SOURCE_CHANGED/u);
+  await assert.rejects(recordWebsiteBuild({ cache: options.cache, buildId, capture: async () => second, eventsPath: null }), /NOTEBOOKLM_SOURCE_CHANGED/u);
   let calls = 0;
   await assert.rejects(deliverPublication({ cache: options.cache, buildId, kinds: ["daily", "weekly"],
     channel: async () => { calls++; return { success: true }; } }), /NOTEBOOKLM_BUILD_REQUIRED/u);
   assert.equal(calls, 0);
+});
+
+test("website receipt binds the exact event artifact generated during build", async (t) => {
+  const options = await workspace(t);
+  const buildId = "events-build-12345";
+  const capture = async () => ({ id: "a".repeat(64) });
+  const eventsPath = resolve(options.cache, "events.json");
+  const bytes = JSON.stringify({ generated_at: "2026-10-03T00:00:00Z", events: [] });
+  await captureBuildSources({ cache: options.cache, buildId, capture });
+  await writeFile(eventsPath, bytes);
+  const website = await recordWebsiteBuild({ cache: options.cache, buildId, capture, eventsPath });
+  assert.equal(website.events.generated_at, "2026-10-03T00:00:00Z");
+  assert.match(website.events.hash, /^[a-f0-9]{64}$/u);
+  await writeFile(eventsPath, JSON.stringify({ events: [] }));
+  const invalid = await recordWebsiteBuild({ cache: options.cache, buildId, capture, eventsPath });
+  assert.equal(invalid.status, "success");
+  assert.deepEqual(invalid.events, { error: "CHANNEL_EVENTS_INVALID" });
+});
+
+test("event chart failure is recorded independently from daily and weekly delivery", async (t) => {
+  const options = await workspace(t);
+  const { build_id: buildId } = await exportNotebookPages(options);
+  const calls = [];
+  const status = await deliverPublication({ cache: options.cache, buildId, kinds: ["daily", "weekly"], includeEvents: true,
+    channel: async kind => { calls.push(kind); return kind === "events"
+      ? { success: false, pending: 1, errors: ["CHANNEL_EVENTS_BUILD_MISMATCH"] }
+      : { success: true, unchanged: 1 }; },
+    notebookSync: async () => ({ status: "success" }) });
+  assert.deepEqual(calls, ["daily", "weekly", "events"]);
+  assert.equal(status.channel.daily.status, "success");
+  assert.equal(status.channel.weekly.status, "success");
+  assert.equal(status.channel.events.status, "failed");
+  assert.deepEqual(status.channel.events.errors, ["CHANNEL_EVENTS_BUILD_MISMATCH"]);
 });
 
 test("daily and weekly delivery receive the verified build source binding", async (t) => {
@@ -194,7 +227,7 @@ test("daily and weekly delivery receive the verified build source binding", asyn
   const binding = { daily: { generation_id: "G1", hash: "a".repeat(64) }, weekly: { hash: "b".repeat(64) }, archives: {}, id: "c".repeat(64) };
   const capture = async () => binding;
   await captureBuildSources({ cache: options.cache, buildId, capture });
-  await recordWebsiteBuild({ cache: options.cache, buildId, capture });
+  await recordWebsiteBuild({ cache: options.cache, buildId, capture, eventsPath: null });
   await exportNotebookPages({ ...options, buildId });
   const seen = [];
   const status = await deliverPublication({ cache: options.cache, buildId, kinds: ["daily", "weekly"],
@@ -210,7 +243,7 @@ test("an unfinished later build cannot reuse the prior website or export", async
   const capture = async () => ({ id: "a".repeat(64) });
   const oldId = "previous-build-12345";
   await captureBuildSources({ cache: options.cache, buildId: oldId, capture });
-  await recordWebsiteBuild({ cache: options.cache, buildId: oldId, capture });
+  await recordWebsiteBuild({ cache: options.cache, buildId: oldId, capture, eventsPath: null });
   await exportNotebookPages({ ...options, buildId: oldId });
   await captureBuildSources({ cache: options.cache, buildId: "later-build-12345", capture });
   let channelCalls = 0, uploads = 0;

@@ -19,6 +19,7 @@ import weeklyData from "../data/arxiv-weekly.json";
 import dailyRadar from "../data/daily-radar.json";
 import dailyFeed from "../data/arxiv-daily.json";
 import archiveManifest from "../data/arxiv-archives/manifest.json";
+import { radarCardAnchor } from "../../scripts/daily-radar.mjs";
 import "../styles/global.css";
 
 const dailyArchiveModules = import.meta.glob<{ default: any }>("../data/arxiv-archives/daily/*.json", { eager: true });
@@ -266,8 +267,8 @@ function edgeLabel(edge: AnyRecord) {
                               📄 PDF
                             </a>
                             {dailyDate ? (
-                              <a class="intel-pick-daily" href={`/arxiv-daily/${dailyDate}/#card-${pick.arxiv_id}-v1`} title="查看当日研判进度与证据">
-                                📅 当日导读 →
+                              <a class="intel-pick-daily" href={`/arxiv-daily/${dailyDate}/#${radarCardAnchor(pick.arxiv_id, pick.revision || 1)}`} title="查看当日精读研判与科学证据">
+                                📖 当日精读 ({dailyDate}) →
                               </a>
                             ) : null}
                           </div>
@@ -377,8 +378,8 @@ function edgeLabel(edge: AnyRecord) {
                             <a class="intel-radar-pdf" href={`https://arxiv.org/pdf/${paper.arxiv_id}`} target="_blank" rel="noopener noreferrer" title="直接阅读官方 PDF">
                               📄 PDF
                             </a>
-                            <a class="intel-radar-card-link" href={`/arxiv-daily/#card-${paper.arxiv_id}-v${paper.revision || 1}`} title="查看完整学术卡片与证据链">
-                              完整卡片 →
+                            <a class="intel-radar-card-link" href={`/arxiv-daily/#${radarCardAnchor(paper.arxiv_id, paper.revision || 1)}`} title="查看完整学术卡片与深度精读导读">
+                              📖 精读导读 →
                             </a>
                           </div>
                         </div>
@@ -446,6 +447,41 @@ function edgeLabel(edge: AnyRecord) {
               <span aria-hidden="true">→</span>
             </a>
           </div>
+        </div>
+      </section>
+
+      <!-- Knowledge Base Portals: 经典论文库 / 关键研究方向 / 体系化学习路径 -->
+      <section class="knowledge-portal-strip" aria-label="基础文献与学术脉络入口">
+        <div class="knowledge-portal-grid">
+          <a class="knowledge-portal-card" href="/papers/">
+            <div class="portal-card-header">
+              <span class="portal-card-icon">📚</span>
+              <span class="portal-card-badge">{baselineWorks.length} 篇基准文献</span>
+            </div>
+            <h3 class="portal-card-title">经典学术论文库</h3>
+            <p class="portal-card-desc">经过审核的高能天体物理奠基文献、经典理论模型与历史里程碑工作。</p>
+            <span class="portal-card-action">浏览基准论文库 →</span>
+          </a>
+
+          <a class="knowledge-portal-card" href="/research-lines/">
+            <div class="portal-card-header">
+              <span class="portal-card-icon">🔭</span>
+              <span class="portal-card-badge">{baselineLines.length} 个方向</span>
+            </div>
+            <h3 class="portal-card-title">关键研究方向</h3>
+            <p class="portal-card-desc">相对论喷流、磁星动力学、周星介质激波与致密星多信使物理脉络演进。</p>
+            <span class="portal-card-action">探索研究方向 →</span>
+          </a>
+
+          <a class="knowledge-portal-card" href="/learning-paths/">
+            <div class="portal-card-header">
+              <span class="portal-card-icon">🗺️</span>
+              <span class="portal-card-badge">{baselinePaths.length} 条路径</span>
+            </div>
+            <h3 class="portal-card-title">体系化研读路径</h3>
+            <p class="portal-card-desc">从基础流体力学、辐射转移到现代前沿瞬变源观测的循序研读路线。</p>
+            <span class="portal-card-action">查看研读路径 →</span>
+          </a>
         </div>
       </section>
 
@@ -579,7 +615,7 @@ function edgeLabel(edge: AnyRecord) {
       </section>
     </main>
 
-    <style>
+    <style is:global>
       .intel-pick-header,
       .intel-radar-item-top {
         display: flex;
@@ -701,6 +737,87 @@ function edgeLabel(edge: AnyRecord) {
         background: #451a03;
         color: #fde047;
         border-color: #ca8a04;
+      }
+      .knowledge-portal-strip {
+        margin: 2rem 0 1.25rem;
+      }
+      .knowledge-portal-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.25rem;
+      }
+      .knowledge-portal-card {
+        display: flex;
+        flex-direction: column;
+        padding: 1.25rem;
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 0.75rem;
+        text-decoration: none;
+        color: inherit;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+      }
+      .knowledge-portal-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        border-color: #cbd5e1;
+      }
+      .portal-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.75rem;
+      }
+      .portal-card-icon {
+        font-size: 1.5rem;
+      }
+      .portal-card-badge {
+        font-size: 0.75rem;
+        font-weight: 700;
+        padding: 0.2rem 0.55rem;
+        background: #f1f5f9;
+        color: #475569;
+        border-radius: 9999px;
+      }
+      .portal-card-title {
+        font-size: 1.1rem;
+        font-weight: 700;
+        margin: 0 0 0.4rem;
+        color: #0f172a;
+      }
+      .portal-card-desc {
+        font-size: 0.86rem;
+        line-height: 1.5;
+        color: #64748b;
+        margin: 0 0 1rem;
+        flex-grow: 1;
+      }
+      .portal-card-action {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: #2563eb;
+      }
+      :global([data-theme="dark"]) .knowledge-portal-card {
+        background: #1e293b;
+        border-color: #334155;
+        color: #f8fafc;
+      }
+      :global([data-theme="dark"]) .knowledge-portal-card:hover {
+        border-color: #475569;
+      }
+      :global([data-theme="dark"]) .portal-card-title {
+        color: #f8fafc;
+      }
+      :global([data-theme="dark"]) .portal-card-badge {
+        background: #0f172a;
+        color: #94a3b8;
+      }
+      :global([data-theme="dark"]) .portal-card-desc {
+        color: #94a3b8;
+      }
+      :global([data-theme="dark"]) .portal-card-action {
+        color: #60a5fa;
       }
     </style>
   </body>

@@ -3,6 +3,7 @@ import archiveManifest from "../../data/arxiv-archives/manifest.json";
 import SiteNav from "../../components/SiteNav.astro";
 import ReaderText from "../../components/ReaderText.astro";
 import { loadSiteConfig } from "../../lib/site-config";
+import { radarCardAnchor } from "../../../scripts/daily-radar.mjs";
 import "../../styles/global.css";
 
 type AnyRecord = Record<string, any>;
@@ -303,8 +304,8 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
                                     arXiv:{clean} ↗
                                   </a>
                                   {dailyDate ? (
-                                    <a class="matrix-daily-link" href={`/arxiv-daily/${dailyDate}/#card-${clean}-v1`} title={`跳转至 ${dailyDate} 日报研判与证据`}>
-                                      📅 {dailyDate}
+                                    <a class="matrix-daily-link" href={`/arxiv-daily/${dailyDate}/#${radarCardAnchor(clean, 1)}`} title={`跳转至 ${dailyDate} 该篇精读导读与证据`}>
+                                      📅 {dailyDate} 精读 →
                                     </a>
                                   ) : null}
                                 </div>
@@ -408,8 +409,8 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
                               arXiv:{clean} ↗
                             </a>
                             {dailyDate ? (
-                              <a class="paper-daily-link" href={`/arxiv-daily/${dailyDate}/#card-${clean}-v1`} title={`跳转至 ${dailyDate} 导读卡片`}>
-                                📅 {dailyDate}
+                              <a class="paper-daily-link" href={`/arxiv-daily/${dailyDate}/#${radarCardAnchor(clean, 1)}`} title={`跳转至 ${dailyDate} 该篇精读导读卡片`}>
+                                📅 {dailyDate} 精读 →
                               </a>
                             ) : null}
                           </div>
@@ -451,8 +452,8 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
                         NASA ADS ↗
                       </a>
                       {dailyDate ? (
-                        <a class="pick-daily-link" href={`/arxiv-daily/${dailyDate}/#card-${pick.arxiv_id}-v1`} title="查看当日完整研判卡片与证据链">
-                          📅 当日研判 ({dailyDate}) →
+                        <a class="pick-daily-link" href={`/arxiv-daily/${dailyDate}/#${radarCardAnchor(pick.arxiv_id, pick.revision || 1)}`} title="查看当日完整研判卡片与证据链">
+                          📖 当日精读导读 ({dailyDate}) →
                         </a>
                       ) : null}
                     </div>

@@ -9,21 +9,35 @@ import { validateDailyRadarPayload } from "./daily-radar.mjs";
 const directionText = readFileSync(fileURLToPath(new URL("../PROJECT_CONTEXT.md", import.meta.url)), "utf8");
 const directionTitles = new Map([...directionText.matchAll(/^## (R[1-7])\. (.+)$/gmu)].map((match) => [match[1], match[2]]));
 if (directionTitles.size !== 7) throw new Error("CHANNEL_DIRECTIONS_INVALID");
+// Presentation labels only; the scientific definitions and routing IDs stay above.
+export const TOPIC_LABELS = {
+  R1: "中央引擎与能量注入",
+  R2: "伽马射线暴与相对论喷流",
+  R3: "超新星与星周介质作用",
+  R4: "脉冲星风与高能双星",
+  R5: "磁星爆发与快速射电暴",
+  R6: "致密环境与多信使暂现源",
+  R7: "X射线时变、能谱与致密双星",
+};
 export const TOPICS = [
   ["R1", /(?:central engine|magnetar spin.down|energy injection|mergernova|engine.powered|pulsar wind nebula|\bPWN\b|中央引擎|磁星自转|能量注入|脉冲星风云)/iu],
   ["R2", /(?:\bGRB\b|gamma.ray burst|relativistic jet|afterglow|cocoon|collapsar|伽马暴|喷流|余辉)/iu],
   ["R3", /(?:supernova|\bCSM\b|circumstellar|shock breakout|shock cooling|前身星|超新星|星周介质|爆前|冲击波突破)/iu],
   ["R4", /(?:pulsar wind binar|intrabinary shock|spider pulsar|high.energy binar|companion environment|脉冲星风双星|双星内激波|蜘蛛脉冲星)/iu],
-  ["R5", /(?:\bFRB\b|fast radio burst|magnetar burst|plasma lens|magnetothermal|Joule heating|Ohmic dissipation|法拉第|快速射电暴|等离子体透镜|磁星爆发|磁热演化|焦耳加热|磁场耗散)/iu],
-  ["R6", /(?:neutrino|multi.messenger|kilonova|tidal disruption|\bTDE\b|AGN disk|gravitational.wave counterpart|中微子|千新星|潮汐瓦解|多信使|致密环境)/iu],
-  ["R7", /(?:X.ray pulsar|accretion column|accreting neutron star|X.ray binar|\bQPO\b|\bCRSF\b|\bXRISM\b|\bNICER\b|\bNuSTAR\b|\bHXMT\b|吸积柱|X射线脉冲星|X射线双星|回旋吸收线)/iu],
+  ["R5", /(?:\bFRB\b|fast radio burst|magnetar burst|magnetar magnetospheres?|magneto.ionic|galactic magnetars?.{0,100}burst catalog|plasma lens|magnetothermal|Joule heating|Ohmic dissipation|法拉第|快速射电暴|等离子体透镜|磁星爆发|磁热演化|焦耳加热|磁场耗散)/iu],
+  ["R6", /(?:neutrino|multi.messenger|kilonova|tidal disruption|\bTDE\b|AGN disk|gravitational.wave counterpart|gravitational.wave follow.up|neutron.star merger universality|post.merger gravitational.wave|neutron stars? with third.generation gravitational.wave detectors?|中微子|千新星|潮汐瓦解|多信使|致密环境)/iu],
+  ["R7", /(?:X.ray pulsar|accretion column|accreting neutron star|accreting magnetar|X.ray binar|X.ray spectral (?:analysis|evolution)|X.ray reverberation|\bNS binary system\b|\bUCXB\b|IXPE.{0,60}magnetar|magnetar.{0,60}IXPE|\bQPO\b|\bCRSF\b|\bXRISM\b|\bNICER\b|\bNuSTAR\b|\bHXMT\b|吸积柱|X射线脉冲星|X射线双星|回旋吸收线)/iu],
 ].map(([id, pattern]) => [id, directionTitles.get(id), pattern]);
 
 export function routePaper(item) {
   const a = item.analysis?.analysis || {};
-  const matches = TOPICS.map(([id, , pattern]) => ({ id, score: (pattern.test(item.title || "") ? 3 : 0) + (pattern.test(a.problem || "") ? 2 : 0) }))
+  const title = item.title || "";
+  const matches = TOPICS.map(([id, , pattern]) => ({ id, score: (pattern.test(title) ? 3 : 0) + (pattern.test(a.problem || "") ? 2 : 0) }))
     .filter(({ score }) => score > 0).sort((left, right) => right.score - left.score);
-  if (/(?:month.long|long.lived|central) engine|energy injection|长时标引擎|中央引擎|能量注入/iu.test(item.title || "")) {
+  if (/spin.down.{0,40}accreting magnetar/iu.test(title)) {
+    return { primary: "R7", related: ["R1", ...matches.filter(({ id }) => id !== "R1" && id !== "R7").map(({ id }) => id)] };
+  }
+  if (/(?:month.long|long.lived|central) engine|energy injection|长时标引擎|中央引擎|能量注入/iu.test(title)) {
     return { primary: "R1", related: matches.filter(({ id }) => id !== "R1").map(({ id }) => id) };
   }
   return { primary: matches[0]?.id || null, related: matches.slice(1).map(({ id }) => id) };

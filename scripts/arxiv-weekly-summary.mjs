@@ -22,28 +22,7 @@ const DEFAULT_TIMEOUT_MS = 120_000;
 const DEFAULT_WEEKLY_OUTPUT = resolve(fileURLToPath(new URL("../src/data/arxiv-weekly.json", import.meta.url)));
 const DEFAULT_DAILY_ARCHIVE = resolve(fileURLToPath(new URL("../src/data/arxiv-archives/daily", import.meta.url)));
 
-function cleanJsonContent(raw) {
-  let cleaned = String(raw ?? "").trim();
-  cleaned = cleaned.replace(/^```(?:json)?\s*/iu, "").replace(/\s*```$/u, "").trim();
-  return cleaned;
-}
-
-function safeParseJson(raw) {
-  const text = cleanJsonContent(raw);
-  try {
-    return JSON.parse(text);
-  } catch (initialErr) {
-    const match = text.match(/\{[\s\S]*\}/u);
-    if (!match) throw initialErr;
-    const snippet = match[0];
-    try {
-      return JSON.parse(snippet);
-    } catch {
-      const fixed = snippet.replace(/\\(?!["\\/bfnrt]|u[0-9a-fA-F]{4})/g, "\\\\");
-      return JSON.parse(fixed);
-    }
-  }
-}
+import { cleanJsonContent, safeParseJson } from "./arxiv-ai-analyzer.mjs";
 
 function parseCliArgs(args) {
   const options = {

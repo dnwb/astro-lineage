@@ -8,6 +8,7 @@ import { readPublishedArxivEdition } from "./arxiv-daily.mjs";
 import { loadCanonicalContent } from "./content-loader.mjs";
 import { projectVisibleSnapshot } from "./reader-projection.mjs";
 import { validateCanonicalContent } from "./content-validator.mjs";
+import { readChannelShareUrl } from "./channel-publication.mjs";
 
 try {
   if (typeof process.loadEnvFile === "function" && existsSync(".env")) {
@@ -56,7 +57,8 @@ export const FALLBACK_MODEL = normalizeModelName(process.env.FALLBACK_BOT_AI_MOD
 const RADAR_PATH = resolve(fileURLToPath(new URL("../src/data/daily-radar.json", import.meta.url)));
 const FEED_PATH = resolve(fileURLToPath(new URL("../src/data/arxiv-daily.json", import.meta.url)));
 
-export async function loadAcademicKnowledge({ feed, radar } = {}) {
+export async function loadAcademicKnowledge({ feed, radar, channelLink = readChannelShareUrl } = {}) {
+  const channelUrl = await channelLink();
   let daily = "每日雷达暂不可用，不能推断已完成研判。";
   let directions = "项目方向暂不可用。";
   let canonical = "可见核心文献暂不可用。";
@@ -93,7 +95,7 @@ export async function loadAcademicKnowledge({ feed, radar } = {}) {
       weeklySummary = `缓存周报 ${weekly.week_id}（不代表本期实时状态）：${weekly.executive_summary.slice(0, 600)}`;
     }
   } catch {}
-  return `AstroLineage 课题组资料\n主站：${SITE_BASE_URL}/\n每日雷达：${SITE_BASE_URL}/arxiv-daily/\n周报：${SITE_BASE_URL}/arxiv-weekly/\n项目研究方向（来自 PROJECT_CONTEXT.md）：\n${directions}\n可见核心文献（仅书目，不代表已读全文）：\n${canonical}\n${daily}\n${weeklySummary}\n没有接入 NotebookLM，未读取论文全文。定时器是否启用与运行是否成功须查询运行状态，不能由计划日程推断。`;
+  return `AstroLineage 课题组资料\n主站：${SITE_BASE_URL}/\n每日雷达：${SITE_BASE_URL}/arxiv-daily/\n周报：${SITE_BASE_URL}/arxiv-weekly/\n频道讨论：${channelUrl || "频道链接尚未配置或配置无效，不得猜测地址。"}\n项目研究方向（来自 PROJECT_CONTEXT.md）：\n${directions}\n可见核心文献（仅书目，不代表已读全文）：\n${canonical}\n${daily}\n${weeklySummary}\n没有接入 NotebookLM，未读取论文全文。定时器是否启用与运行是否成功须查询运行状态，不能由计划日程推断。`;
 }
 export async function executeChatCompletion({ prompt, systemPrompt, history = [], model, effort, baseUrl, apiKey }) {
   const url = new URL(`${baseUrl.replace(/\/+$/u, "")}/chat/completions`);
@@ -333,8 +335,13 @@ export async function generateAcademicAnswer({
   model = DEFAULT_MODEL,
   effort = DEFAULT_EFFORT,
   fallbackModels = DEFAULT_FALLBACK_MODELS,
+  channelLink = readChannelShareUrl,
 }) {
-  const knowledge = await loadAcademicKnowledge();
+  if (/^\/?channel\s*$/iu.test(String(query)) || /频道/u.test(String(query)) && /链接|地址|入口|网址|在哪|哪里|怎么(?:进|加)/u.test(String(query))) {
+    const channelUrl = await channelLink();
+    return channelUrl ? `频道讨论：\n${channelUrl}` : "频道链接尚未配置或配置无效，暂时不能提供；请管理员核对频道分享地址。";
+  }
+  const knowledge = await loadAcademicKnowledge({ channelLink });
 
   const systemPrompt = `你是由前沿高能天体物理课题组打造的 AstroLineage 学术智能体（Research Agent）。
 你正在学术讨论场景中解答读者/同行提出的文献、学术前沿与系统运行问题。

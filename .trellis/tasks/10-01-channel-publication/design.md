@@ -4,6 +4,10 @@ Reader extension: presentation-only Chinese labels map the existing authoritativ
 
 The user confirmed the reviewed plan, including implementation and exact two-post cleanup. Specialize that plan without adding new authority.
 
+Normal brief delivery and brief backfill share the same dated-page source: if the current build binds a dated archive, validate its exact bytes and use its model for the brief. Keep paper publication bound to the immutable current generation. A bad archive leaves only that brief pending. This prevents archive editorial updates from being overwritten by an older current-generation opening brief on each normal reentry.
+
+Expand the existing R1–R7 group references in the reader's Why read field to their Chinese presentation labels, without modifying the stored analysis. Do not perform a whole-body R-code substitution: actual simulation-model labels in results and quoted evidence must remain verbatim. Remote layout verification checks the group-reference surface, while full-body hash verification still checks all scientific text.
+
 - Reuse public publisher names and weekly renderer. One small helper can own routing, source selection, remote reconciliation and atomic operational ledger; native filesystem and existing lock/atomic-write helpers only, no new dependencies/services.
 - R1–R7 definitions come from PROJECT_CONTEXT.md and existing interest rules. Short section labels are operational; routing is not a canonical scientific assertion. Uncertain records stay pending.
 - One primary remote section per post. Identity is guild + arXiv ID/revision or week ID, with exact content hash, remote ID/create time and state. Movement changes placement, not identity. Mark owned posts with a bounded identity marker.

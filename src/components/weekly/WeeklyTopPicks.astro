@@ -1,0 +1,931 @@
+---
+import ReaderText from "../ReaderText.astro";
+import DailyRadarGuide from "../DailyRadarGuide.astro";
+import DailyRadarSource from "../DailyRadarSource.astro";
+import { radarCardAnchor } from "../../../scripts/daily-radar.mjs";
+
+interface Props {
+  topPicks: any[];
+  paperMap?: Map<string, any>;
+  paperDailyDateMap?: Map<string, string>;
+  authorMap?: Map<string, string[]>;
+  dailyAnalysisMap?: Map<string, any>;
+  dailyItemMap?: Map<string, any>;
+  weekId?: string;
+}
+
+const {
+  topPicks,
+  paperMap = new Map(),
+  paperDailyDateMap = new Map(),
+  authorMap = new Map(),
+  dailyAnalysisMap = new Map(),
+  dailyItemMap = new Map(),
+  weekId = "",
+} = Astro.props;
+
+const priorityLabels: Record<string, { zh: string; en: string; class: string }> = {
+  must_read: { zh: "必读", en: "Must Read", class: "badge-must-read" },
+  worth_knowing: { zh: "关注", en: "Worth Knowing", class: "badge-worth-knowing" },
+  skip: { zh: "快速浏览", en: "Skim", class: "badge-skip" },
+};
+
+function resolveAuthors(id: string, direct?: any): string[] {
+  if (Array.isArray(direct?.authors) && direct.authors.length > 0) return direct.authors;
+  const inMap = paperMap.get(id) as any;
+  if (Array.isArray(inMap?.authors) && inMap.authors.length > 0) return inMap.authors;
+  return authorMap.get(id) || [];
+}
+
+function getDailyItem(arxivId: string, pickObj?: any) {
+  const existing = dailyItemMap.get(arxivId);
+  if (existing) return existing;
+  const analysis = dailyAnalysisMap.get(arxivId);
+  const paper = paperMap.get(arxivId) || pickObj;
+  if (analysis && paper) {
+    return {
+      arxiv_id: arxivId,
+      revision: paper.revision || 1,
+      title: paper.title || "",
+      abstract: paper.abstract || "",
+      published: paper.published || "",
+      updated: paper.updated || "",
+      authors: resolveAuthors(arxivId, paper),
+      url: paper.url || `https://arxiv.org/abs/${arxivId}`,
+      categories: paper.categories || ["astro-ph.HE"],
+      primary_category: paper.primary_category || "astro-ph.HE",
+      analysis,
+      dailyDate: paperDailyDateMap.get(arxivId),
+    };
+  }
+  return null;
+}
+
+function formatBibtex(paper: any) {
+  const cleanId = String(paper.arxiv_id || "").trim();
+  const resolved = resolveAuthors(cleanId, paper);
+  const authors = resolved.length > 0
+    ? resolved.join(" and ")
+    : "Author, A.";
+  const year = paper.published ? new Date(paper.published).getFullYear() : (weekId?.slice(0, 4) || new Date().getFullYear());
+  const title = String(paper.title || "").trim();
+  return `@article{arxiv_${cleanId.replace(/[^a-zA-Z0-9]/g, "_")},
+  author = {${authors}},
+  title = {{${title}}},
+  journal = {arXiv preprint arXiv:${cleanId}},
+  year = {${year}},
+  eprint = {${cleanId}},
+  archivePrefix = {arXiv},
+  primaryClass = {astro-ph.HE}
+}`;
+}
+
+function formatCitation(paper: any) {
+  const cleanId = String(paper.arxiv_id || "").trim();
+  const resolved = resolveAuthors(cleanId, paper);
+  const firstAuthor = resolved.length > 0
+    ? resolved[0]
+    : "Author";
+  const year = paper.published ? new Date(paper.published).getFullYear() : (weekId?.slice(0, 4) || new Date().getFullYear());
+  return `${firstAuthor} et al. (${year}), arXiv:${cleanId}`;
+}
+---
+
+<section class="weekly-section picks-section" id="top-picks">
+  <div class="section-heading">
+    <p class="section-kicker"><span class="language-primary">精选必读</span><span class="language-english" lang="en">Curated Selection</span></p>
+    <h2><span class="language-primary">本周精选重点论文解读</span><span class="language-english" lang="en">Weekly Top Picks</span></h2>
+  </div>
+  <div class="picks-list">
+    {topPicks && topPicks.length > 0 ? (
+      topPicks.map((pick: any) => {
+        const badge = priorityLabels[pick.priority] ?? priorityLabels.worth_knowing;
+        const paperObj = paperMap.get(pick.arxiv_id);
+        const dailyDate = paperDailyDateMap.get(pick.arxiv_id);
+        const dailyItem = getDailyItem(pick.arxiv_id, pick);
+        const modalId = `modal-pick-${pick.arxiv_id.replace(/\./g, "-")}`;
+        return (
+          <article class={`pick-card ${pick.priority === "must_read" ? "pick-card-must" : "pick-card-worth"}`}>
+            <div class="pick-header">
+              <span class={`pick-badge ${badge.class}`}>{badge.zh}</span>
+              <div class="pick-action-links">
+                <a class="pick-arxiv-id" href={`https://arxiv.org/abs/${pick.arxiv_id}`} target="_blank" rel="noopener noreferrer">
+                  arXiv:{pick.arxiv_id} ↗
+                </a>
+                <a class="pick-pdf-link" href={`https://arxiv.org/pdf/${pick.arxiv_id}`} target="_blank" rel="noopener noreferrer" title="直接阅读官方 PDF">
+                  📄 PDF ↗
+                </a>
+                <a class="pick-ads-link" href={`https://ui.adsabs.harvard.edu/abs/arXiv:${pick.arxiv_id}`} target="_blank" rel="noopener noreferrer" title="在 NASA ADS 中查看">
+                  NASA ADS ↗
+                </a>
+                {dailyItem ? (
+                  <button
+                    type="button"
+                    class="pick-action-modal-btn"
+                    popovertarget={modalId}
+                    title="在当前页快速查看深度研读与物理模型"
+                  >
+                    🔬 深度精读 ↗
+                  </button>
+                ) : null}
+                {dailyDate ? (
+                  <a class="pick-daily-link" href={`/arxiv-daily/${dailyDate}/#${radarCardAnchor(pick.arxiv_id, pick.revision || 1)}`} title="跳转至当日完整日报归档">
+                    📅 {dailyDate} 日报 →
+                  </a>
+                ) : null}
+              </div>
+            </div>
+            <h3 class="pick-title">
+              {dailyItem ? (
+                <button
+                  type="button"
+                  class="pick-title-btn"
+                  popovertarget={modalId}
+                  title="点击直接精读本文"
+                >
+                  {pick.title}
+                </button>
+              ) : dailyDate ? (
+                <a href={`/arxiv-daily/${dailyDate}/#${radarCardAnchor(pick.arxiv_id, pick.revision || 1)}`} class="pick-title-link" title="点击直接进入本文当日深度精读">
+                  {pick.title}
+                </a>
+              ) : (
+                pick.title
+              )}
+            </h3>
+            {resolveAuthors(pick.arxiv_id, pick).length > 0 ? (
+              <p class="pick-authors">作者：{resolveAuthors(pick.arxiv_id, pick).join(", ")}</p>
+            ) : null}
+
+            <div class="pick-details">
+              <div class="detail-row">
+                <span class="detail-label">推荐理由：</span>
+                <span class="detail-text"><ReaderText text={pick.recommendation_reason} /></span>
+              </div>
+              <div class="detail-row highlight-row">
+                <span class="detail-label">核心突破：</span>
+                <span class="detail-text"><ReaderText text={pick.core_insight} /></span>
+              </div>
+              <div class="detail-row guide-row">
+                <span class="detail-label">阅读切入：</span>
+                <span class="detail-text"><ReaderText text={pick.reading_guide} /></span>
+              </div>
+            </div>
+
+            {dailyItem && (
+              <div class="pick-deep-dive-bar">
+                <button
+                  type="button"
+                  class="pick-open-modal-btn"
+                  popovertarget={modalId}
+                  aria-haspopup="dialog"
+                >
+                  <span class="btn-left">
+                    <span class="btn-icon">🔬</span>
+                    <span class="btn-title">展开深度精读与科学证据（物理假设/公式/图表/证据链）</span>
+                  </span>
+                  <span class="btn-right">
+                    <span class="btn-arrow" aria-hidden="true">↗</span>
+                  </span>
+                </button>
+              </div>
+            )}
+
+            <details class="paper-citation-details">
+              <summary class="citation-summary"><span class="language-primary">复制 BibTeX / 规范引用</span><span class="language-english" lang="en">BibTeX & Citation</span></summary>
+              <div class="citation-box">
+                <div class="citation-short-row">
+                  <span class="citation-label">规范引用：</span>
+                  <code class="citation-short">{formatCitation(paperObj || pick)}</code>
+                </div>
+                <pre class="citation-pre" tabindex="0" title="点击全选复制">{formatBibtex(paperObj || pick)}</pre>
+              </div>
+            </details>
+
+            {dailyItem && (
+              <div
+                class="radar-modal-dialog"
+                id={modalId}
+                popover="auto"
+                role="dialog"
+                aria-labelledby={`modal-title-${modalId}`}
+              >
+                <div class="radar-modal-container">
+                  <header class="radar-modal-header">
+                    <div class="modal-meta-row">
+                      <div class="modal-badges">
+                        <span class={`tier-pill priority-pill-${pick.priority === "must_read" ? "must-read" : "worth-knowing"}`}>
+                          {badge.zh}
+                        </span>
+                        <span class="radar-arxiv-badge">arXiv:{pick.arxiv_id}</span>
+                        {dailyDate && <span class="radar-date-badge">📅 {dailyDate} 日报收录</span>}
+                      </div>
+                      <button
+                        type="button"
+                        class="radar-modal-close-btn"
+                        popovertarget={modalId}
+                        popovertargetaction="hide"
+                        aria-label="关闭研读窗口 (ESC)"
+                      >✕</button>
+                    </div>
+                    <h2 class="radar-modal-title" id={`modal-title-${modalId}`}>
+                      <ReaderText text={pick.title} />
+                    </h2>
+                    {resolveAuthors(pick.arxiv_id, pick).length > 0 && (
+                      <p class="radar-modal-authors">作者：{resolveAuthors(pick.arxiv_id, pick).join(", ")}</p>
+                    )}
+                  </header>
+
+                  <div class="radar-modal-body language-primary">
+                    <DailyRadarGuide item={dailyItem} visibleWorkLinks={{}} />
+                    <DailyRadarSource item={dailyItem} />
+                  </div>
+
+                  <footer class="radar-modal-footer">
+                    <div class="radar-modal-ext-links">
+                      <a class="modal-ext-link" href={`https://arxiv.org/abs/${pick.arxiv_id}`} target="_blank" rel="noopener">arXiv 原文页 ↗</a>
+                      <a class="modal-ext-link" href={`https://arxiv.org/pdf/${pick.arxiv_id}`} target="_blank" rel="noopener">官方 PDF ↗</a>
+                      <a class="modal-ext-link" href={`https://ui.adsabs.harvard.edu/abs/arXiv:${pick.arxiv_id}`} target="_blank" rel="noopener">NASA ADS ↗</a>
+                      {dailyDate && (
+                        <a class="modal-ext-link modal-daily-link" href={`/arxiv-daily/${dailyDate}/#${radarCardAnchor(pick.arxiv_id, pick.revision || 1)}`}>
+                          前往 {dailyDate} 日报完整档案页 →
+                        </a>
+                      )}
+                    </div>
+                    <button
+                      type="button"
+                      class="radar-modal-btn-done"
+                      popovertarget={modalId}
+                      popovertargetaction="hide"
+                    >
+                      完成研读 · 返回周报
+                    </button>
+                  </footer>
+                </div>
+              </div>
+            )}
+          </article>
+        );
+      })
+    ) : (
+      <div class="empty-picks-notice">
+        <p class="empty-picks-title">本周暂无核心爆发现象必读推荐</p>
+        <p class="empty-picks-desc">已扫描本周所有 arXiv 论文，未发现直接推动课题组 R1~R7 爆发现象因果链条的重大突破性工作。学术追踪严守宁缺毋滥原则，所列其它论文已归档至下方快速浏览目录。</p>
+      </div>
+    )}
+  </div>
+</section>
+
+<style>
+  .picks-section {
+    margin: 2.5rem 0;
+  }
+  .section-heading {
+    margin-bottom: 1.5rem;
+  }
+  .section-kicker {
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #2563eb;
+    margin: 0 0 0.25rem 0;
+    display: flex;
+    gap: 0.5rem;
+  }
+  :global([data-theme="dark"]) .section-kicker {
+    color: #60a5fa;
+  }
+  .language-english {
+    color: #94a3b8;
+    font-weight: 500;
+  }
+  .picks-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .pick-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 1.5rem 1.75rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+    position: relative;
+  }
+  :global([data-theme="dark"]) .pick-card {
+    background: #1e293b;
+    border-color: #334155;
+  }
+  .pick-card-must {
+    border-left: 5px solid #dc2626;
+  }
+  .pick-card-worth {
+    border-left: 5px solid #d97706;
+  }
+  .pick-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .pick-badge {
+    display: inline-block;
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+  }
+  .badge-must-read {
+    background: #fee2e2;
+    color: #991b1b;
+  }
+  :global([data-theme="dark"]) .badge-must-read {
+    background: #7f1d1d;
+    color: #fca5a5;
+  }
+  .badge-worth-knowing {
+    background: #fef3c7;
+    color: #92400e;
+  }
+  :global([data-theme="dark"]) .badge-worth-knowing {
+    background: #78350f;
+    color: #fde68a;
+  }
+  .pick-action-links {
+    display: flex;
+    gap: 0.75rem;
+    font-size: 0.85rem;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .pick-arxiv-id, .pick-ads-link {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .pick-arxiv-id:hover, .pick-ads-link:hover {
+    text-decoration: underline;
+  }
+  :global([data-theme="dark"]) .pick-arxiv-id,
+  :global([data-theme="dark"]) .pick-ads-link {
+    color: #60a5fa;
+  }
+  .pick-pdf-link {
+    color: #dc2626;
+    font-size: 0.82rem;
+    font-weight: 600;
+    text-decoration: none;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    padding: 0.15rem 0.45rem;
+    border-radius: 4px;
+    transition: all 0.15s ease;
+  }
+  .pick-pdf-link:hover {
+    background: #fee2e2;
+    border-color: #f87171;
+  }
+  :global([data-theme="dark"]) .pick-pdf-link {
+    background: #450a0a;
+    color: #f87171;
+    border-color: #991b1b;
+  }
+  .pick-daily-link {
+    color: #166534;
+    font-size: 0.82rem;
+    font-weight: 600;
+    text-decoration: none;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    padding: 0.15rem 0.45rem;
+    border-radius: 4px;
+    transition: all 0.15s ease;
+  }
+  .pick-daily-link:hover {
+    background: #dcfce7;
+    border-color: #86efac;
+  }
+  :global([data-theme="dark"]) .pick-daily-link {
+    background: #064e3b;
+    color: #86efac;
+    border-color: #047857;
+  }
+  .pick-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0 0 0.4rem 0;
+    color: #0f172a;
+    line-height: 1.4;
+  }
+  :global([data-theme="dark"]) .pick-title {
+    color: #f8fafc;
+  }
+  .pick-title-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #0f172a;
+    line-height: 1.4;
+    text-align: left;
+    cursor: pointer;
+    display: inline;
+    transition: color 0.15s ease;
+  }
+  .pick-title-btn:hover {
+    color: #2563eb;
+    text-decoration: underline;
+  }
+  :global([data-theme="dark"]) .pick-title-btn {
+    color: #f8fafc;
+  }
+  :global([data-theme="dark"]) .pick-title-btn:hover {
+    color: #60a5fa;
+  }
+  .pick-title-link {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .pick-title-link:hover {
+    color: #2563eb;
+    text-decoration: underline;
+  }
+  :global([data-theme="dark"]) .pick-title-link:hover {
+    color: #60a5fa;
+  }
+  .pick-action-modal-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #1d4ed8;
+    background: #dbeafe;
+    border: 1px solid #bfdbfe;
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .pick-action-modal-btn:hover {
+    background: #bfdbfe;
+    color: #1e40af;
+  }
+  :global([data-theme="dark"]) .pick-action-modal-btn {
+    background: #1e3a8a;
+    color: #bfdbfe;
+    border-color: #2563eb;
+  }
+  :global([data-theme="dark"]) .pick-action-modal-btn:hover {
+    background: #1d4ed8;
+    color: #ffffff;
+  }
+  .pick-authors {
+    font-size: 0.88rem;
+    color: #475569;
+    margin: 0 0 0.85rem 0;
+    line-height: 1.45;
+  }
+  :global([data-theme="dark"]) .pick-authors {
+    color: #94a3b8;
+  }
+  .pick-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+  .detail-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+  @media (min-width: 640px) {
+    .detail-row {
+      flex-direction: row;
+      align-items: baseline;
+    }
+  }
+  .detail-label {
+    font-weight: 700;
+    color: #475569;
+    min-width: 5.5rem;
+    flex-shrink: 0;
+  }
+  :global([data-theme="dark"]) .detail-label {
+    color: #cbd5e1;
+  }
+  .detail-text {
+    color: #1e293b;
+  }
+  :global([data-theme="dark"]) .detail-text {
+    color: #f1f5f9;
+  }
+  .highlight-row {
+    background: #f8fafc;
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    border: 1px solid #f1f5f9;
+  }
+  :global([data-theme="dark"]) .highlight-row {
+    background: #0f172a;
+    border-color: #334155;
+  }
+  .highlight-row .detail-label {
+    color: #2563eb;
+  }
+  :global([data-theme="dark"]) .highlight-row .detail-label {
+    color: #60a5fa;
+  }
+  .pick-deep-dive-bar {
+    margin-top: 0.85rem;
+    padding-top: 0.75rem;
+    border-top: 1px dashed #e2e8f0;
+  }
+  :global([data-theme="dark"]) .pick-deep-dive-bar {
+    border-top-color: #334155;
+  }
+  .pick-open-modal-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.6rem 0.95rem;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 6px;
+    color: #166534;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .pick-open-modal-btn:hover {
+    background: #dcfce7;
+    border-color: #86efac;
+    color: #14532d;
+    box-shadow: 0 2px 6px rgba(22, 101, 52, 0.1);
+  }
+  :global([data-theme="dark"]) .pick-open-modal-btn {
+    background: #064e3b;
+    border-color: #047857;
+    color: #a7f3d0;
+  }
+  :global([data-theme="dark"]) .pick-open-modal-btn:hover {
+    background: #065f46;
+    border-color: #10b981;
+    color: #ffffff;
+  }
+  .btn-left {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+  }
+  .btn-icon {
+    font-size: 0.95rem;
+  }
+  .btn-title {
+    font-size: 0.84rem;
+    font-weight: 600;
+  }
+  .btn-right {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+  .btn-arrow {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #64748b;
+  }
+  :global([data-theme="dark"]) .btn-arrow {
+    color: #a7f3d0;
+  }
+
+  /* Citations */
+  .paper-citation-details {
+    margin-top: 1rem;
+    border-top: 1px solid #f1f5f9;
+    padding-top: 0.75rem;
+    font-size: 0.85rem;
+  }
+  :global([data-theme="dark"]) .paper-citation-details {
+    border-top-color: #334155;
+  }
+  .citation-summary {
+    cursor: pointer;
+    color: #64748b;
+    font-weight: 500;
+  }
+  .citation-summary:hover {
+    color: #0f172a;
+  }
+  :global([data-theme="dark"]) .citation-summary {
+    color: #94a3b8;
+  }
+  :global([data-theme="dark"]) .citation-summary:hover {
+    color: #f8fafc;
+  }
+  .citation-box {
+    margin-top: 0.5rem;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 0.75rem;
+  }
+  :global([data-theme="dark"]) .citation-box {
+    background: #0f172a;
+    border-color: #334155;
+  }
+  .citation-short-row {
+    margin-bottom: 0.5rem;
+  }
+  .citation-label {
+    font-weight: 600;
+    color: #475569;
+  }
+  :global([data-theme="dark"]) .citation-label {
+    color: #94a3b8;
+  }
+  .citation-short {
+    background: #ffffff;
+    padding: 0.2rem 0.4rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    font-family: monospace;
+  }
+  :global([data-theme="dark"]) .citation-short {
+    background: #1e293b;
+    border-color: #475569;
+    color: #cbd5e1;
+  }
+  .citation-pre {
+    background: #0f172a;
+    color: #f8fafc;
+    padding: 0.75rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    overflow-x: auto;
+    margin: 0;
+    white-space: pre-wrap;
+  }
+  :global([data-theme="dark"]) .citation-pre {
+    background: #090d16;
+    border: 1px solid #1e293b;
+  }
+
+  /* Popover Modal Dialog */
+  .radar-modal-dialog[popover] {
+    position: fixed;
+    inset: 0;
+    margin: auto;
+    padding: 0;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(0, 0, 0, 0.1);
+    max-width: 1060px;
+    width: 95vw;
+    max-height: 90vh;
+    background: #ffffff;
+    color: #1c1917;
+    overflow: hidden;
+    z-index: 1000;
+  }
+  .radar-modal-dialog[popover]::backdrop {
+    background: rgba(15, 23, 42, 0.7);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
+  :global([data-theme="dark"]) .radar-modal-dialog[popover] {
+    background: #18181b;
+    color: #f4f4f5;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.1);
+  }
+  .radar-modal-container {
+    display: flex;
+    flex-direction: column;
+    max-height: 90vh;
+    height: 100%;
+  }
+  .radar-modal-header {
+    padding: 1.25rem 2rem 1rem;
+    border-bottom: 1px solid #e2e8f0;
+    background: #f8fafc;
+    flex-shrink: 0;
+  }
+  :global([data-theme="dark"]) .radar-modal-header {
+    border-bottom-color: #27272a;
+    background: #202024;
+  }
+  .modal-meta-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .modal-badges {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .tier-pill {
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 0.1rem 0.45rem;
+    border-radius: 4px;
+  }
+  .priority-pill-must-read {
+    background: #fee2e2;
+    color: #991b1b;
+  }
+  .priority-pill-worth-knowing {
+    background: #fef3c7;
+    color: #92400e;
+  }
+  :global([data-theme="dark"]) .priority-pill-must-read {
+    background: #450a0a;
+    color: #fca5a5;
+  }
+  :global([data-theme="dark"]) .priority-pill-worth-knowing {
+    background: #451a03;
+    color: #fde047;
+  }
+  .radar-arxiv-badge {
+    font-family: monospace;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #1d4ed8;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    padding: 0.1rem 0.4rem;
+    border-radius: 4px;
+  }
+  :global([data-theme="dark"]) .radar-arxiv-badge {
+    color: #93c5fd;
+    background: #1e3a8a;
+    border-color: #2563eb;
+  }
+  .radar-date-badge {
+    display: inline-block;
+    font-size: 0.74rem;
+    font-weight: 600;
+    color: #047857;
+    background: #ecfdf5;
+    border: 1px solid #a7f3d0;
+    padding: 0.1rem 0.4rem;
+    border-radius: 4px;
+  }
+  :global([data-theme="dark"]) .radar-date-badge {
+    color: #6ee7b7;
+    background: #064e3b;
+    border-color: #047857;
+  }
+  .radar-modal-close-btn {
+    background: #e2e8f0;
+    border: none;
+    font-size: 1.1rem;
+    line-height: 1;
+    color: #475569;
+    cursor: pointer;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s ease;
+  }
+  .radar-modal-close-btn:hover {
+    background: #cbd5e1;
+    color: #0f172a;
+  }
+  :global([data-theme="dark"]) .radar-modal-close-btn {
+    background: #27272a;
+    color: #a1a1aa;
+  }
+  :global([data-theme="dark"]) .radar-modal-close-btn:hover {
+    background: #3f3f46;
+    color: #ffffff;
+  }
+  .radar-modal-title {
+    margin: 0 0 0.35rem;
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.35;
+    color: #0f172a;
+  }
+  :global([data-theme="dark"]) .radar-modal-title {
+    color: #f8fafc;
+  }
+  .radar-modal-authors {
+    margin: 0;
+    font-size: 0.84rem;
+    color: #64748b;
+    font-weight: 500;
+  }
+  :global([data-theme="dark"]) .radar-modal-authors {
+    color: #a1a1aa;
+  }
+  .radar-modal-body {
+    padding: 1.5rem 2rem;
+    overflow-y: auto;
+    flex: 1;
+    -webkit-overflow-scrolling: touch;
+    line-height: 1.65;
+  }
+  .radar-modal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.85rem 1.5rem;
+    border-top: 1px solid #e2e8f0;
+    background: #f8fafc;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    flex-shrink: 0;
+  }
+  :global([data-theme="dark"]) .radar-modal-footer {
+    border-top-color: #27272a;
+    background: #202024;
+  }
+  .radar-modal-ext-links {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    flex-wrap: wrap;
+  }
+  .modal-ext-link {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #2563eb;
+    text-decoration: none;
+  }
+  .modal-ext-link:hover {
+    text-decoration: underline;
+  }
+  :global([data-theme="dark"]) .modal-ext-link {
+    color: #60a5fa;
+  }
+  .modal-daily-link {
+    color: #166534;
+  }
+  .modal-daily-link:hover {
+    color: #14532d;
+  }
+  :global([data-theme="dark"]) .modal-daily-link {
+    color: #86efac;
+  }
+  .radar-modal-btn-done {
+    padding: 0.45rem 1.15rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    background: #0284c7;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.15s;
+  }
+  .radar-modal-btn-done:hover {
+    background: #0369a1;
+  }
+
+  /* Empty notice */
+  .empty-picks-notice {
+    background: #f8fafc;
+    border: 1px dashed #cbd5e1;
+    border-radius: 8px;
+    padding: 2rem;
+    text-align: center;
+  }
+  :global([data-theme="dark"]) .empty-picks-notice {
+    background: #0f172a;
+    border-color: #334155;
+  }
+  .empty-picks-title {
+    font-weight: 700;
+    color: #475569;
+    margin: 0 0 0.5rem 0;
+  }
+  :global([data-theme="dark"]) .empty-picks-title {
+    color: #cbd5e1;
+  }
+  .empty-picks-desc {
+    color: #64748b;
+    font-size: 0.9rem;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+  :global([data-theme="dark"]) .empty-picks-desc {
+    color: #94a3b8;
+  }
+</style>

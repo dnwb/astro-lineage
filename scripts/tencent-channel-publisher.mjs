@@ -77,18 +77,18 @@ function cleanMath(text) {
   return String(text).replace(/\\\\/g, "\\");
 }
 
-function paperReaderTitle(item, topic = routePaper(item)) {
-  const problem = String(item.analysis?.analysis?.problem || "").replace(/\s+/gu, " ").trim();
-  const headline = /\p{Script=Han}/u.test(problem) ? Array.from(problem).slice(0, 54).join("") + (Array.from(problem).length > 54 ? "…" : "") : `文献导读 · arXiv:${item.arxiv_id}`;
-  return `【${TOPIC_LABELS[topic.primary] || "待分类"}】${headline}`;
+function paperReaderTitle(item) {
+  const analysis = item.analysis?.analysis || item.analysis || {};
+  const label = readingExcerpt(analysis.problem?.bluf || analysis.problem || analysis.result?.bluf).replace(/。$/u, "");
+  return label && Array.from(label).length <= 180 ? label : item.title || `arXiv:${item.arxiv_id}`;
 }
 
 function dailyBriefItem(model, date) {
   const brief = model.opening_brief;
   if (brief?.status !== "ready") throw new Error("CHANNEL_BRIEF_UNAVAILABLE");
-  const title = `每日导读 · ${date}`;
   const papers = [...model.groups.must_read, ...model.groups.worth_knowing];
-  const lines = [`# ${title}`, "", "## 本期导读", "", brief.intro, ""];
+  const title = deriveDailyContentTitle(date, papers, brief);
+  const lines = [`# ${title}`, "", `发布日期：${date}`, "", "## 本期导读", "", brief.intro, ""];
   if (brief.must_read.length) {
     lines.push("## 必读：先了解这几篇", "");
     for (const sentence of brief.must_read) {
@@ -108,24 +108,28 @@ export function extractPaperTopic(item) {
   const title = item.title || "";
   const analysis = item.analysis?.analysis || item.analysis || {};
   const problem = analysis.problem || "";
-  const reason = analysis.reason || "";
-  const full = `${title} ${problem} ${reason}`;
+  // Reading reasons may mention related subjects; they do not identify this paper's topic.
+  const full = `${title} ${problem}`;
 
-  if (/FRB|快速射电暴/i.test(full)) {
-    if (/透镜|lensing/i.test(full)) return "FRB等离子体透镜效应";
-    if (/PRS|持续射电源/i.test(full)) return "FRB宿主与PRS关联";
-    return "快速射电暴辐射机制";
+  if (/\bFRBs?\b|fast radio bursts?|快速射电暴/i.test(full)) {
+    if (/透镜|lensing/i.test(full)) return "FRB等离子体透镜";
+    if (/dispersion measure|色散量|色散测量/i.test(full)) return /variab|变化/i.test(full) ? "FRB色散量变化" : "FRB色散量";
+    if (/PRS|persistent radio source|持续射电源/i.test(full)) return "FRB与持续射电源";
+    if (/host|environment|宿主|环境/i.test(full)) return "FRB环境";
+    return "FRB";
   }
   if (/脉冲星|pulsar|吸积柱|accretion column/i.test(full)) {
-    if (/吸积柱|accretion column/i.test(full)) return "X射线脉冲星高吸积柱模型";
-    return "脉冲星高能辐射";
+    if (/吸积柱|accretion column/i.test(full)) return /pulse profile|脉冲形状|脉冲轮廓/i.test(full) ? "吸积柱及脉冲轮廓" : "脉冲星吸积柱";
+    return "脉冲星";
   }
   if (/GRB|伽马暴|gamma-ray burst/i.test(full)) {
-    if (/超长|month-long|长时标|engine/i.test(full)) return "超长GRB长时标引擎";
-    return "伽马射线暴物理机制";
+    if (/超长|month-long|长时标/i.test(full)) return "长时标GRB";
+    if (/engine|引擎/i.test(full)) return "GRB中央引擎";
+    return "GRB";
   }
-  if (/CSM|星周介质|致密星周/i.test(full)) {
-    return "超新星致密星周相互作用(CSM)";
+  if (/CSM|circumstellar|星周介质|周星介质/i.test(full)) {
+    if (/shock breakout|激波突破|激波破越/i.test(full)) return "星周介质中的激波突破";
+    return /supernova|\bSN\b|超新星/i.test(full) ? "超新星与星周介质" : "星周介质";
   }
   if (/坍缩星|collapsar|踢速|kick/i.test(full)) {
     return "坍缩星爆炸与黑洞踢速";
@@ -134,41 +138,52 @@ export function extractPaperTopic(item) {
     return "白矮星暗物质探测";
   }
   if (/Sgr A\*|人马座/i.test(full)) {
-    return "Sgr A*近视界偏振与磁场";
+    return /polarization|偏振/i.test(full) ? "Sgr A*偏振" : "Sgr A*";
   }
   if (/AGN|NGC\s*\d+|变脸|changing look/i.test(full)) {
-    return "变面AGN吸积与失败风";
+    if (/变脸|changing look/i.test(full)) return "变脸AGN";
+    return /jet|喷流/i.test(full) ? "AGN喷流" : "AGN";
   }
   if (problem) {
     const clean = problem.replace(/^(论文(旨在|试图|直接|关注)|如何利用|研究)/u, "").replace(/[。！？].*$/u, "").trim();
     if (clean.length > 4 && clean.length <= 20) return clean;
   }
-  return title.slice(0, 24);
+  return title.trim();
 }
 
-export function deriveDailyContentTitle(batchDate, highlights) {
+export function deriveDailyContentTitle(batchDate, highlights, brief) {
   if (!highlights || highlights.length === 0) {
-    return `【AstroLineage每日精选】${batchDate} · 暂无重点关注爆发源`;
+    return `论文更新｜${batchDate.slice(5)}`;
   }
   const mustRead = highlights.filter((h) => h.analysis?.priority === "must_read" || h.priority === "must_read");
-  const focus = mustRead.length > 0 ? mustRead : highlights.slice(0, 2);
-  const topics = [...new Set(focus.map(extractPaperTopic).filter(Boolean))];
-  const summary = topics.slice(0, 2).join("与");
-  return summary ? `【AstroLineage每日精选】${batchDate} · ${summary}` : `【AstroLineage每日精选】${batchDate} 重点文献`;
+  const focus = mustRead.length > 0 ? mustRead : highlights;
+  const candidates = focus.map(item => {
+    const analysis = item.analysis?.analysis || item.analysis || {};
+    const event = (item.title || "").match(/\b(?:GRB|SN|AT)\s*\d{4,6}[a-z]*\b/iu)?.[0];
+    const highlight = brief?.must_read?.find(line => line.arxiv_id === item.arxiv_id && line.revision === item.revision);
+    const statement = readingExcerpt(highlight?.text || analysis.result?.bluf || analysis.result) || item.title || "论文更新";
+    const headline = event && !statement.toLowerCase().includes(event.toLowerCase()) ? `${event}：${statement}` : statement;
+    // ponytail: reuse complete reviewed sentences; no extra model call or lossy clause clipping.
+    // Long sentences fall back to the named object rather than dropping scientific qualifiers.
+    const fallback = event ? `${event}的研究更新` : item.arxiv_id ? `arXiv:${item.arxiv_id}的研究更新` : "论文更新";
+    return { event, headline: Array.from(headline).length <= 180 ? headline.replace(/。$/u, "") : fallback };
+  });
+  const lead = candidates.find(item => item.event) || candidates[0];
+  return `${lead.headline}｜${batchDate.slice(5)}`;
 }
 
 export function deriveWeeklyContentTitle(weekId, weekly) {
   const highlights = weekly.thematic_highlights || [];
   if (highlights.length > 0) {
-    const topics = highlights
-      .map((t) => t.theme_name.replace(/（.*）/u, "").replace(/与/g, "/").trim())
-      .filter(Boolean);
-    const summary = topics.slice(0, 2).join("与");
+    const topics = [...new Set(highlights
+      .map((t) => (t.theme_name || "").split(/[：:]/u)[0].replace(/（[^）]*）|\([^)]*\)/gu, "").trim())
+      .filter(Boolean))];
+    const summary = topics.slice(0, 2).join("、");
     if (summary) {
-      return `【AstroLineage周报】${weekId} · ${summary}`;
+      return `${summary}｜${weekId.replace(/^\d{4}-/u, "")}`;
     }
   }
-  return `【AstroLineage周报】${weekId} (${weekly.date_range || ""}) 学术脉络总结`;
+  return `论文更新｜${weekId.replace(/^\d{4}-/u, "")}`;
 }
 
 export async function generateDailyMarkdown({ titleOverride, radar, feed, radarPath = RADAR_PATH, feedPath = FEED_PATH } = {}) {
@@ -197,7 +212,7 @@ export async function generateWeeklyMarkdown({ titleOverride, weekly: weeklyInpu
   const weekId = weekly.week_id || "本周";
   const dateRange = weekly.date_range || "";
 
-  const postTitle = titleOverride || `每周摘要 · ${weekId}`;
+  const postTitle = titleOverride || deriveWeeklyContentTitle(weekId, weekly);
 
   let md = `# ${postTitle}\n\n${dateRange}\n\n`;
 
@@ -210,8 +225,13 @@ export async function generateWeeklyMarkdown({ titleOverride, weekly: weeklyInpu
     md += `## 建议优先阅读\n\n`;
     for (const pick of weekly.top_picks) {
       const tag = pick.priority === "must_read" ? "必读" : "关注";
-      md += `**${tag} · [arXiv:${pick.arxiv_id}](https://arxiv.org/abs/${pick.arxiv_id})**\n\n`;
-      const reason = pick.reason || pick.recommendation_reason;
+      const paperObj = (weekly.papers || []).find((p) => p.arxiv_id === pick.arxiv_id);
+      const authors = paperObj?.authors || pick.authors;
+      const authorStr = Array.isArray(authors) && authors.length > 0 ? (authors.length > 2 ? `${authors[0]} 等` : authors.join(", ")) : "";
+      const authorSuffix = authorStr ? ` (${authorStr})` : "";
+      md += `**${tag} · [arXiv:${pick.arxiv_id}](https://arxiv.org/abs/${pick.arxiv_id})**${authorSuffix}\n\n`;
+      if (pick.title) md += `*${pick.title}*\n\n`;
+      const reason = pick.reason || pick.recommendation_reason || pick.core_insight;
       if (reason) md += `${reason}\n\n`;
     }
     md += `\n`;
@@ -374,18 +394,45 @@ async function detail(cli, guildId, feed) {
   return payload(await cli(["feed", "get-feed-detail", "--guild-id", String(guildId), "--channel-id", String(feed.channel_id), "--feed-id", feed.feed_id, "--json"]));
 }
 
-function paperMarkdown(item, date, topic) {
-  const a = item.analysis.analysis;
-  const coverage = item.analysis.coverage;
+function claimText(value) {
+  if (typeof value === "string") return value.trim();
+  const text = value?.detailed_text || value?.bluf || value?.result;
+  return typeof text === "string" ? text.trim() : "";
+}
+
+function claimSentences(value) {
+  return claimText(value).match(/[^。！？\n]+[。！？]?/gu)?.map(text => text.trim()).filter(Boolean) || [];
+}
+
+export function readingExcerpt(value) {
+  const first = claimSentences(value)[0] || "";
+  // A colon introduces the following paragraph/list; it is not a complete summary.
+  return /[:：]$/u.test(first)
+    ? claimSentences(claimText(value).replace(/\n\s*[-*]\s+/gu, " ").replace(/\n+/gu, " "))[0] || first
+    : first;
+}
+
+export function paperMarkdown(item, date, topic) {
+  const a = item.analysis.analysis || {};
+  const coverage = item.analysis.coverage || {};
+  const mustRead = item.analysis.priority === "must_read";
   const version = `arXiv:${item.arxiv_id}v${item.revision}`;
   const anchor = `radar-paper-${item.arxiv_id.replace(".", "-")}-v${item.revision}`;
-  const lines = [`# ${paperReaderTitle(item, topic)}`, "", `**${item.analysis.priority === "must_read" ? "必读" : "关注"}** · ${TOPIC_LABELS[topic.primary] || "待分类"}`, "", "## 研究了什么", "", a.problem, "", "## 作者报告的结果", "", a.result, "", "## 为什么值得读", "", a.reason, ""];
-  if (topic.related.length) lines.push(`相关主题：${topic.related.map(id => TOPIC_LABELS[id]).join("、")}`, "");
-  if (a.reading_entry) lines.push("## 建议阅读入口", "", a.reading_entry, "");
-  for (const [label, values] of [["核心假设", a.assumptions], ["限制与边界", a.limits], ["尚未核查", a.unresolved_checks]]) {
-    if (values?.length) lines.push(`## ${label}`, "", ...values.flatMap(value => [`- ${value}`, ""]));
-  }
-  lines.push("---", "", `原标题：${item.title}`, "", `[${version}](https://arxiv.org/abs/${item.arxiv_id}v${item.revision}) · [网页导读](${SITE_BASE_URL}/arxiv-daily/${date}/#${anchor})`, "", `实际阅读范围：${coverage.label || coverage.level || "未说明"}；检查材料：${(coverage.inspected_sections || []).join("、")}`, "", "中文标题为研究问题导读，不是原题译文。以上内容限于已检查材料，并非独立复算或同行评审。");
+  const readerReason = claimText(a.reason).replace(/\bR1[–—-]R7\b/gu, "课题组各研究方向").replace(/\bR[1-7]\b/gu, id => TOPIC_LABELS[id]);
+  const results = claimSentences(a.result);
+  // ponytail: show complete unit-bearing source sentences, not parsed measurements.
+  // A structured measurement contract is needed before extracting bare values or formulae.
+  const numerical = /\d[\s\S]*(?:\b(?:erg|km|cm|Hz|keV|MeV|GeV|TeV|Mpc|kpc|Jy|mJy|K)\b|小时|秒|太阳质量|%)/iu;
+  const data = mustRead ? results.filter(text => numerical.test(text)) : [];
+  const conclusions = mustRead ? results.filter(text => !numerical.test(text)) : results.slice(0, 1);
+  const author = Array.isArray(item.authors) && item.authors.length ? ` · ${item.authors[0]}${item.authors.length > 1 ? " 等" : ""}` : "";
+  const lines = [`# ${paperReaderTitle(item, topic)}`, "", `**${mustRead ? "必读" : "关注"}**${author}`, "", "## 研究了什么", "", readingExcerpt(a.problem), ""];
+  if (conclusions.length) lines.push(`## ${mustRead ? "核心结果" : "要点"}`, "", ...conclusions.slice(0, 3).flatMap(text => [`> ${text}`, ""]));
+  if (data.length) lines.push("## 关键数据", "", ...data.slice(0, 2).flatMap(text => [`> ${text}`, ""]));
+  if (readerReason) lines.push("## 阅读关联", "", mustRead ? readerReason : readingExcerpt(readerReason), "");
+  const limits = [...(a.limits || []), ...(a.unresolved_checks || [])];
+  if (limits.length) lines.push("## 限制与边界", "", ...limits.slice(0, mustRead ? 2 : 1).flatMap(text => [`- ${claimText(text)}`, ""]));
+  lines.push("---", "", "## 阅读入口", "", `[原文 · ${version}](https://arxiv.org/abs/${item.arxiv_id}v${item.revision})`, "", `[完整导读 · 假设、推导与全部结果](${SITE_BASE_URL}/arxiv-daily/${date}/#${anchor})`, "", `原标题：${item.title}`, "", `实际阅读范围：${coverage.label || coverage.level || "未说明"}。本帖摘录作者报告的结果；完整条件与未核查项见网页，并非独立复算或同行评审。`);
   return lines.join("\n");
 }
 
@@ -606,7 +653,7 @@ export async function provisionTopicChannels({ guildId = DEFAULT_GUILD_ID, cache
   return ids;
 }
 
-export async function publishDailyFeed({ feedPath = FEED_PATH, radarPath = RADAR_PATH, artifactRoot, distRoot = DEFAULT_DIST_ROOT, source, readEdition = readPublishedArxivEdition, sourceBinding, channelIds, includeBrief = false, dailyChannelId = DEFAULT_DAILY_CHANNEL_ID, ...options } = {}) {
+export async function publishDailyFeed({ feedPath = FEED_PATH, radarPath = RADAR_PATH, artifactRoot, archiveRoot = DEFAULT_ARCHIVE_ROOT, distRoot = DEFAULT_DIST_ROOT, source, readEdition = readPublishedArxivEdition, sourceBinding, channelIds, includeBrief = false, dailyChannelId = DEFAULT_DAILY_CHANNEL_ID, ...options } = {}) {
   try {
     if (!source) requireSourceBinding(sourceBinding);
     const edition = source ?? await readEdition({ output: feedPath, radarOutput: radarPath, artifactRoot });
@@ -620,7 +667,15 @@ export async function publishDailyFeed({ feedPath = FEED_PATH, radarPath = RADAR
     const items = dailyItems(checked.model, date);
     let briefError;
     if (includeBrief) {
-      try { items.unshift(dailyBriefItem(checked.model, date)); }
+      try {
+        let briefModel = checked.model;
+        if (!source && sourceBinding.archives[date]) {
+          const bytes = await readFile(join(archiveRoot, `${date}.json`));
+          if (hashBody(bytes) !== sourceBinding.archives[date]) throw new Error("CHANNEL_SOURCE_BUILD_MISMATCH");
+          briefModel = await readDailyArchive(join(archiveRoot, `${date}.json`), date, distRoot, bytes);
+        }
+        items.unshift(dailyBriefItem(briefModel, date));
+      }
       catch (error) { briefError = error.message; }
     }
     if (items.length === 0 && !briefError) return null;
@@ -702,7 +757,7 @@ export async function publishEventRanking({ sourceBinding, eventSnapshot, events
     if (!Array.isArray(data.events) || !Number.isFinite(Date.parse(data.generated_at)) || data.generated_at !== eventSnapshot.generated_at) throw new Error("CHANNEL_EVENTS_INVALID");
     const top = data.events.slice(0, 5);
     const seen = new Set();
-    const title = "活跃瞬变源 · 文献热度 Top 5";
+    const title = "瞬变源 Top 5";
     const lines = [`# ${title}`, "", `数据更新：${data.generated_at}`, "", "榜单与网页使用同一构建快照。热度表示本地近期文献讨论，按现有 7 天半衰期衰减；不等于物理重要性，也不表示事件刚刚爆发。", ""];
     for (const [index, event] of top.entries()) {
       if (typeof event.event_id !== "string" || !event.event_id.trim() || seen.has(event.event_id) || !Number.isFinite(event.heat_score) || event.heat_score < 0 || !Number.isInteger(event.paper_count) || event.paper_count < 0 || !/^\d{4}-\d\d-\d\d$/u.test(event.last_updated || "") || !Array.isArray(event.papers)) throw new Error("CHANNEL_EVENTS_INVALID");

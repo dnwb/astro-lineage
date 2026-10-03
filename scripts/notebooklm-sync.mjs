@@ -209,7 +209,7 @@ export async function syncAnnualNotebooks({ cache = CACHE, dist = resolve(ROOT, 
   } finally { await releaseRefreshLock(lock); }
 }
 
-export async function deliverPublication({ kinds = ["daily"], cache = CACHE, buildId, channel, includeEvents = channel === undefined, notebookSync = syncAnnualNotebooks } = {}) {
+export async function deliverPublication({ kinds = ["daily"], cache = CACHE, buildId, channel, includeEvents = channel === undefined, notebookSync = syncAnnualNotebooks, groupNotifier } = {}) {
   if (!validBuildId(buildId) || !Array.isArray(kinds) || !kinds.length || kinds.some((kind) => !["daily", "weekly"].includes(kind)) || new Set(kinds).size !== kinds.length) throw new Error("INVALID_DELIVERY_MODE");
   const website = await readJson(resolve(cache, "website.json"), null);
   if (website?.status !== "success" || website.build_id !== buildId) throw new Error("NOTEBOOKLM_BUILD_REQUIRED");
@@ -256,6 +256,14 @@ export async function deliverPublication({ kinds = ["daily"], cache = CACHE, bui
     try { status.notebooklm = await notebookSync({ cache, expectedBuildId: buildId }); }
     catch (error) { status.notebooklm = { status: "blocked", code: SAFE_NOTEBOOKLM_CODES.has(error.message) ? error.message : "NOTEBOOKLM_DELIVERY_FAILED" }; }
   }
+  try {
+    groupNotifier ||= async (options) => (await import("./qq-send.mjs")).notifyGroupPublication(options);
+    const notification = await groupNotifier({ kinds, sourceBinding: website.source_binding,
+      delivery: { website: status.website, channel: status.channel, notebooklm: status.notebooklm },
+      cache: resolve(cache, "qq-notifications") });
+    if (!["success", "blocked", "waiting_permission"].includes(notification?.status)) throw new Error("QQ_NOTIFY_RESULT_INVALID");
+    status.qq = notification;
+  } catch { status.qq = { status: "blocked", code: "QQ_NOTIFY_DELIVERY_FAILED" }; }
   await writeJsonAtomically(resolve(cache, "delivery.json"), status);
   return status;
 }

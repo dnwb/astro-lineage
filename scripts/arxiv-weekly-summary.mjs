@@ -247,18 +247,22 @@ ${papersText}
 请综合梳理本周高能天体物理（磁星、GRB、超新星、吸积流/喷流等）最新进展，以严谨合法的 JSON 格式返回（不得包含 \`\`\`json 等任何 markdown 标记）。
 排版规范：涉及数学物理变量、天体物理参量、光度、能段、科学计数法或公式（如 $10^{-3}$、$f_{\\mathrm{agn}}$、$L_{\\mathrm{bol}}$、$M_\\odot$），请务必使用标准 LaTeX 行内公式语法（以单个 $ 包裹），确保与静态 KaTeX 排版引擎兼容。
 注意：学术综述力求高度结构化、对比清晰，禁止冗长含混的段落堆叠，请务必提供细分物理领域的全景对照矩阵（overview_matrix）。
+【全景对照矩阵 overview_matrix 规范 - 严守断言与文献一一对齐原则】：
+1. representative_papers 中的每一篇论文，在 core_findings 中必须有针对性的核心物理断言/观测结论，并明确标出文献编号与作者（格式：- 【arXiv:xxxx.xxxxx】(第一作者等)：具体定量断言，物理量用 $...$）。
+2. 严禁在 representative_papers 中列出正文未提及的挂名论文；严禁给出无法追溯至该行具体文献的泛泛定性断言。
+3. core_findings 必须分条列出每篇文献的具体定量结论，再在 significance 中给出该物理方向的机制启示。
 {
   "week_id": "${weekId}",
-  "title": "高能天体物理 arXiv 每周学术脉络与前沿精选",
+  "title": "每周学术脉络 · ${weekId}",
   "date_range": "${dateRange}",
-  "executive_summary": "1段精炼中文导语，宏观概括本周前沿动态与科学脉络（公式请用 $...$）",
+  "executive_summary": "精炼宏观脉络结构化综述（必须包含：首句总体因果链条总揽，随后以 - **领域方向**：核心要点 列表列出各方向关键突破，尾句以 > 🎯 筛选边界与研判 收尾，禁止通篇大段文字堆叠，公式请用 $...$）",
   "overview_matrix": [
     {
-      "domain": "物理领域/专题方向（如：快速射电暴与磁星、超新星与致密星周介质相互作用、吸积流与相对论喷流）",
+      "domain": "物理领域/专题方向（如：快速射电暴与磁星环境、超新星前身星与周星介质、相对论喷流与伽马射线暴）",
       "key_question": "核心物理争论或关键聚焦问题",
-      "representative_papers": ["相关的 arxiv_id，如 2609.31842"],
-      "core_findings": "本周关键理论/观测发现（公式用 $...$）",
-      "significance": "对主线研究或物理机制的启示"
+      "representative_papers": ["该领域下具体支撑上述断言的 arxiv_id 列表，如 2609.31842，与 core_findings 逐一对应"],
+      "core_findings": "- 【arXiv:2609.31842】(第一作者等)：具体定量断言（物理量用 $...$）\n- 【arXiv:2609.36114】(第一作者等)：具体定量断言",
+      "significance": "该物理方向的核心物理启示与机制辨析（1~2句）"
     }
   ],
   "thematic_highlights": [
@@ -453,14 +457,32 @@ export async function runWeeklySummary({
     }];
   });
 
+  const overviewMatrix = (Array.isArray(parsed.overview_matrix) ? parsed.overview_matrix : [])
+    .map((row) => {
+      const citedInText = (String(row?.core_findings || "").match(/\b\d{4}\.\d{4,5}[a-z]?(?:v\d+)?\b/gi) || [])
+        .map((id) => normalizeArxivId(id));
+      const declared = (Array.isArray(row?.representative_papers) ? row.representative_papers : [])
+        .map((id) => normalizeArxivId(id));
+      const combined = [...new Set([...declared, ...citedInText])].filter((id) => eligibleIds.has(id));
+      if (combined.length === 0 && !row?.domain) return null;
+      return {
+        domain: row.domain || "前沿物理方向",
+        key_question: row.key_question || "核心物理争论探讨",
+        representative_papers: combined.length > 0 ? combined : declared,
+        core_findings: row.core_findings || row.summary || "",
+        significance: row.significance || "",
+      };
+    })
+    .filter(Boolean);
+
   const weeklyPayload = {
     schema_version: "astrolineage-weekly-summary-v1",
     generated_at: now.toISOString(),
     week_id: weekId,
-    title: parsed.title || "高能天体物理 arXiv 每周学术脉络与前沿综述",
+    title: parsed.title || `每周学术脉络 · ${weekId}`,
     date_range: dateRange,
     executive_summary: parsed.executive_summary || "暂无本周宏观脉络综述。",
-    overview_matrix: Array.isArray(parsed.overview_matrix) ? parsed.overview_matrix : [],
+    overview_matrix: overviewMatrix,
     thematic_highlights: thematicHighlights,
     top_picks: topPicks,
     statistics: {

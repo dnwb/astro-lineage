@@ -6,6 +6,19 @@ import { fileURLToPath } from "node:url";
 import { acquireRefreshLock, releaseRefreshLock, writeJsonAtomically, readPublishedArxivEdition, DEFAULT_OUTPUT, DEFAULT_RADAR_OUTPUT } from "./arxiv-daily.mjs";
 import { validateDailyRadarPayload } from "./daily-radar.mjs";
 
+export async function readChannelShareUrl({ url = process.env.ASTRO_CHANNEL_URL,
+  cachePath = fileURLToPath(new URL("../.cache/channel-publication/channel-link.json", import.meta.url)) } = {}) {
+  try {
+    if (!url) {
+      if ((await stat(cachePath)).size > 20_000) return null;
+      url = JSON.parse(await readFile(cachePath, "utf8")).url;
+    }
+    if (typeof url !== "string" || url.length > 2048) return null;
+    const address = new URL(url);
+    return address.protocol === "https:" && address.hostname === "pd.qq.com" && !address.username && !address.password && !address.port ? url : null;
+  } catch { return null; }
+}
+
 const directionText = readFileSync(fileURLToPath(new URL("../PROJECT_CONTEXT.md", import.meta.url)), "utf8");
 const directionTitles = new Map([...directionText.matchAll(/^## (R[1-7])\. (.+)$/gmu)].map((match) => [match[1], match[2]]));
 if (directionTitles.size !== 7) throw new Error("CHANNEL_DIRECTIONS_INVALID");

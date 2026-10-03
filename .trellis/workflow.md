@@ -29,6 +29,7 @@ Creates `.trellis/.developer` (gitignored) + `.trellis/workspace/<your-name>/`.
 `.trellis/spec/` holds coding guidelines organized by package and layer.
 
 - `.trellis/spec/<package>/<layer>/index.md` — entry point with **Pre-Development Checklist** + **Quality Check**. Actual guidelines live in the `.md` files it points to.
+- `.trellis/spec/frontend/reader-ui.md` — reader UI experience, AI-HOT date switching, Caveman copy standards, and scriptless UI contract.
 - `.trellis/spec/guides/index.md` — cross-package thinking guides.
 
 ```bash

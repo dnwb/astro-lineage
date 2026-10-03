@@ -1,0 +1,448 @@
+---
+import ReaderText from "../ReaderText.astro";
+
+type AnyRecord = Record<string, any>;
+
+interface Props {
+  coverage: AnyRecord;
+  origin?: string;
+  analyzedAt?: string;
+  unresolvedChecks?: string[];
+}
+
+const {
+  coverage,
+  origin,
+  analyzedAt,
+  unresolvedChecks = [],
+} = Astro.props;
+
+const coverageSummary: Record<string, string> = {
+  abstract_only: "仅摘要",
+  body_partial: "正文指定部分",
+  full_body: "正文全文",
+};
+
+const inspectedSections = Array.isArray(coverage?.inspected_sections) ? coverage.inspected_sections : [];
+const sourceReferences = Array.isArray(coverage?.source_references) ? coverage.source_references : [];
+const hasUnresolved = Array.isArray(unresolvedChecks) && unresolvedChecks.length > 0;
+---
+
+<details class="evidence-audit-drawer">
+  <summary class="audit-drawer-summary">
+    <div class="drawer-summary-left">
+      <span class="audit-icon">📑</span>
+      <strong class="audit-title">证据审计与信源材料</strong>
+      <span class="audit-badge-pill">覆盖：{coverageSummary[coverage?.level] ?? "已记录"}</span>
+      {inspectedSections.length > 0 && (
+        <span class="audit-meta-pill">已核验 {inspectedSections.length} 个章节</span>
+      )}
+      {sourceReferences.length > 0 && (
+        <span class="audit-meta-pill">{sourceReferences.length} 个信源</span>
+      )}
+    </div>
+    <span class="drawer-toggle-arrow">展开核验 ▾</span>
+  </summary>
+
+  <div class="audit-drawer-content">
+    <div class="audit-grid-columns">
+      <!-- 实际阅读范围与章节 -->
+      <div class="audit-col-block">
+        <div class="audit-col-header">
+          <span class="audit-tag">📑 实际阅读范围</span>
+          <span class="coverage-badge coverage-badge-{coverage?.level || 'partial'}">
+            {coverageSummary[coverage?.level] ?? "已记录"}
+          </span>
+        </div>
+        <div class="audit-col-body">
+          <p class="evidence-scope-text">
+            <strong>覆盖范围：</strong>{coverage?.label}；版本 <code>{coverage?.source_version}</code>
+          </p>
+          {inspectedSections.length > 0 && (
+            <div class="inspected-sections-row">
+              <span class="meta-label">已核验章节：</span>
+              <div class="sections-pills">
+                {inspectedSections.map((sec: string) => (
+                  <span class="section-pill">{sec}</span>
+                ))}
+              </div>
+            </div>
+          )}
+          {coverage?.source_material && (
+            <p class="source-material-note">
+              <span class="meta-label">来源格式材料：</span>{coverage.source_material}
+            </p>
+          )}
+        </div>
+      </div>
+
+      <!-- 信源依据与定位 -->
+      {sourceReferences.length > 0 && (
+        <div class="audit-col-block">
+          <div class="audit-col-header">
+            <span class="audit-tag">📦 信源依据与定位</span>
+          </div>
+          <div class="audit-col-body">
+            <ul class="source-ref-list">
+              {sourceReferences.map((ref: AnyRecord) => (
+                <li class="source-ref-item">
+                  <div class="ref-main-row">
+                    <a class="ref-link" href={ref.url} target="_blank" rel="noopener">
+                      {ref.kind === "arxiv_source_package" ? "📦 arXiv TeX 源码包" : "📄 arXiv 原始材料"}
+                    </a>
+                    <span class="ref-locator">位置：{ref.locator}</span>
+                  </div>
+                  {ref.description && <div class="ref-desc">{ref.description}</div>}
+                  {ref.sha256 && (
+                    <div class="ref-hash" title={`SHA256: ${ref.sha256}`}>
+                      <code>sha256:{ref.sha256.slice(0, 16)}...</code>
+                    </div>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      )}
+    </div>
+
+    <!-- 未决核查与系统时间底栏 -->
+    {hasUnresolved && (
+      <div class="audit-unresolved-block">
+        <div class="audit-col-header">
+          <span class="audit-tag tag-unresolved">⏳ 未决核查待办</span>
+        </div>
+        <div class="audit-col-body">
+          <ul class="guide-bullet-list guide-unresolved-list">
+            {unresolvedChecks.map((item: string) => (
+              <li><ReaderText text={item} /></li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    )}
+
+    {(origin || analyzedAt) && (
+      <div class="audit-metadata-footer">
+        <span class="audit-meta-item">
+          <strong>分析来源：</strong>{origin ?? "系统管道"}
+        </span>
+        {analyzedAt && (
+          <span class="audit-meta-item">
+            <strong>研判时间：</strong>{analyzedAt}
+          </span>
+        )}
+      </div>
+    )}
+  </div>
+</details>
+
+<style>
+  .evidence-audit-drawer {
+    background: #f8fafc;
+    border: 1px dashed var(--border-color, #cbd5e1);
+    border-radius: 0.5rem;
+    overflow: hidden;
+    transition: background 0.15s ease, border-color 0.15s ease;
+  }
+  :global([data-theme="dark"]) .evidence-audit-drawer {
+    background: #0f172a;
+    border-color: #334155;
+  }
+  .evidence-audit-drawer[open] {
+    border-style: solid;
+    border-color: var(--border-color, #cbd5e1);
+  }
+  :global([data-theme="dark"]) .evidence-audit-drawer[open] {
+    border-color: #475569;
+  }
+
+  .audit-drawer-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.42rem 0.75rem;
+    cursor: pointer;
+    user-select: none;
+    font-size: 0.78rem;
+    color: var(--text-secondary, #64748b);
+    transition: background 0.12s ease;
+  }
+  .audit-drawer-summary:hover {
+    background: rgba(0, 0, 0, 0.02);
+    color: var(--text-heading, #0f172a);
+  }
+  :global([data-theme="dark"]) .audit-drawer-summary:hover {
+    background: rgba(255, 255, 255, 0.03);
+    color: #f8fafc;
+  }
+
+  .drawer-summary-left {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+  }
+  .audit-icon {
+    font-size: 0.9rem;
+    opacity: 0.8;
+  }
+  .audit-title {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-heading, #334155);
+  }
+  :global([data-theme="dark"]) .audit-title {
+    color: #cbd5e1;
+  }
+  .audit-badge-pill {
+    display: inline-block;
+    padding: 0.05rem 0.35rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    border-radius: 0.2rem;
+    background: #e2e8f0;
+    color: #475569;
+  }
+  :global([data-theme="dark"]) .audit-badge-pill {
+    background: #1e293b;
+    color: #94a3b8;
+  }
+  .audit-meta-pill {
+    font-size: 0.72rem;
+    color: var(--text-muted, #94a3b8);
+  }
+
+  .drawer-toggle-arrow {
+    font-size: 0.72rem;
+    color: var(--text-muted, #94a3b8);
+    font-weight: 500;
+  }
+  .evidence-audit-drawer[open] .drawer-toggle-arrow {
+    color: #2563eb;
+  }
+  :global([data-theme="dark"]) .evidence-audit-drawer[open] .drawer-toggle-arrow {
+    color: #60a5fa;
+  }
+
+  .audit-drawer-content {
+    padding: 0.75rem 0.85rem;
+    border-top: 1px dashed var(--border-color, #e2e8f0);
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    font-size: 0.82rem;
+  }
+  :global([data-theme="dark"]) .audit-drawer-content {
+    border-top-color: #334155;
+  }
+
+  .audit-grid-columns {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+  @media (min-width: 48rem) {
+    .audit-grid-columns {
+      grid-template-columns: 1fr 1fr;
+      align-items: start;
+    }
+  }
+
+  .audit-col-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+  .audit-col-header {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .audit-tag {
+    display: inline-block;
+    padding: 0.08rem 0.35rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    border-radius: 0.2rem;
+    background: #f1f5f9;
+    color: #475569;
+    border: 1px solid #cbd5e1;
+  }
+  :global([data-theme="dark"]) .audit-tag {
+    background: #1e293b;
+    color: #94a3b8;
+    border-color: #334155;
+  }
+  .tag-unresolved {
+    background: #fff7ed;
+    color: #c2410c;
+    border-color: #fed7aa;
+  }
+  :global([data-theme="dark"]) .tag-unresolved {
+    background: #431407;
+    color: #fdba74;
+    border-color: #9a3412;
+  }
+
+  .coverage-badge {
+    display: inline-block;
+    padding: 0.06rem 0.35rem;
+    font-size: 0.68rem;
+    font-weight: 600;
+    border-radius: 0.2rem;
+  }
+  .coverage-badge-full_body {
+    background: #ecfdf5;
+    color: #047857;
+  }
+  .coverage-badge-body_partial {
+    background: #eff6ff;
+    color: #1d4ed8;
+  }
+  .coverage-badge-abstract_only {
+    background: #fefce8;
+    color: #854d0e;
+  }
+  :global([data-theme="dark"]) .coverage-badge-full_body {
+    background: #064e3b;
+    color: #6ee7b7;
+  }
+  :global([data-theme="dark"]) .coverage-badge-body_partial {
+    background: #1e3a8a;
+    color: #93c5fd;
+  }
+  :global([data-theme="dark"]) .coverage-badge-abstract_only {
+    background: #713f12;
+    color: #fef08a;
+  }
+
+  .audit-col-body {
+    padding: 0.45rem 0.65rem;
+    background: var(--bg-surface, #ffffff);
+    border: 1px solid var(--border-color, #e2e8f0);
+    border-radius: 0.35rem;
+    font-size: 0.8rem;
+    line-height: 1.5;
+    color: var(--text-body, #475569);
+  }
+  :global([data-theme="dark"]) .audit-col-body {
+    background: #0b1329;
+    border-color: #1e293b;
+    color: #94a3b8;
+  }
+
+  .evidence-scope-text {
+    margin: 0 0 0.3rem;
+  }
+  .inspected-sections-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.3rem;
+    margin-top: 0.25rem;
+  }
+  .meta-label {
+    font-weight: 600;
+    color: var(--text-secondary, #64748b);
+    font-size: 0.74rem;
+  }
+  .sections-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+  .section-pill {
+    display: inline-block;
+    padding: 0.05rem 0.3rem;
+    font-size: 0.7rem;
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.2rem;
+    color: #334155;
+  }
+  :global([data-theme="dark"]) .section-pill {
+    background: #1e293b;
+    border-color: #334155;
+    color: #cbd5e1;
+  }
+  .source-material-note {
+    margin: 0.3rem 0 0;
+    font-size: 0.74rem;
+    color: var(--text-muted, #94a3b8);
+  }
+
+  .source-ref-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .source-ref-item {
+    font-size: 0.78rem;
+    line-height: 1.45;
+  }
+  .ref-main-row {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+  }
+  .ref-link {
+    font-weight: 600;
+    color: #2563eb;
+    text-decoration: none;
+  }
+  .ref-link:hover {
+    text-decoration: underline;
+  }
+  :global([data-theme="dark"]) .ref-link {
+    color: #60a5fa;
+  }
+  .ref-locator {
+    color: var(--text-secondary, #64748b);
+  }
+  .ref-desc {
+    font-size: 0.72rem;
+    color: var(--text-muted, #94a3b8);
+  }
+  .ref-hash code {
+    font-size: 0.68rem;
+    color: #94a3b8;
+  }
+
+  .audit-unresolved-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+  .guide-bullet-list {
+    margin: 0;
+    padding-left: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+  .guide-unresolved-list {
+    color: #c2410c;
+    font-size: 0.78rem;
+  }
+  :global([data-theme="dark"]) .guide-unresolved-list {
+    color: #fb923c;
+  }
+
+  .audit-metadata-footer {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    padding-top: 0.35rem;
+    border-top: 1px dashed var(--border-color, #e2e8f0);
+    font-size: 0.72rem;
+    color: var(--text-muted, #94a3b8);
+  }
+  :global([data-theme="dark"]) .audit-metadata-footer {
+    border-top-color: #1e293b;
+  }
+</style>

@@ -4,10 +4,10 @@ import { loadCanonicalContent } from "../../../scripts/content-loader.mjs";
 import { projectVisibleSnapshot } from "../../../scripts/reader-projection.mjs";
 import { workReaderPath } from "../../lib/reader-routes";
 import SiteNav from "../../components/SiteNav.astro";
-import DailyRadarBrief from "../../components/DailyRadarBrief.astro";
 import DailyRadarPendingCard from "../../components/DailyRadarPendingCard.astro";
 import DailyRadarPrioritySection from "../../components/DailyRadarPrioritySection.astro";
 import DailyKnowledgePoint from "../../components/DailyKnowledgePoint.astro";
+import DailyDateSwitcher from "../../components/DailyDateSwitcher.astro";
 import { loadSiteConfig } from "../../lib/site-config";
 import "../../styles/global.css";
 
@@ -157,6 +157,9 @@ const generatedLabel = Number.isNaN(generatedAt.valueOf())
         </div>
       </header>
 
+      <!-- AI HOT Date Switcher Ribbon -->
+      <DailyDateSwitcher currentDate={archive.date} />
+
       <!-- Standalone Date Pager -->
       <nav class="standalone-date-pager" aria-label="往期历史日报快速切换">
         <div class="pager-col left">
@@ -185,8 +188,6 @@ const generatedLabel = Number.isNaN(generatedAt.valueOf())
           )}
         </div>
       </nav>
-
-      <DailyRadarBrief brief={model.opening_brief} visibleWorkLinks={visibleWorkLinks} groups={priorityGroups} />
 
       <DailyRadarPrioritySection
         id="must-read"

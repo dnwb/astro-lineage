@@ -1,5 +1,8 @@
 ---
-import ReaderText from "./ReaderText.astro";
+import GuideProblemMethod from "./guide/GuideProblemMethod.astro";
+import GuidePhysicsModel from "./guide/GuidePhysicsModel.astro";
+import GuideAcademicLineage from "./guide/GuideAcademicLineage.astro";
+import GuideEvidenceAudit from "./guide/GuideEvidenceAudit.astro";
 import { projectPotentialLineage } from "../../scripts/daily-radar.mjs";
 
 type AnyRecord = Record<string, any>;
@@ -14,22 +17,13 @@ const record = item.analysis as AnyRecord;
 const guide = record.analysis as AnyRecord;
 const coverage = record.coverage as AnyRecord;
 const lineage = projectPotentialLineage(guide.potential_lineage, Object.keys(visibleWorkLinks)) as AnyRecord;
-const prerequisites = Array.isArray(guide.prerequisite_works)
-  ? guide.prerequisite_works.filter((prerequisite: AnyRecord) => visibleWorkLinks[prerequisite.work_id])
-  : [];
-const lineageCandidates = Array.isArray(lineage.candidates)
-  ? lineage.candidates.filter((candidate: AnyRecord) => visibleWorkLinks[candidate.target_work_id])
-  : [];
-const lineageChecks = Array.isArray(lineage.unresolved_checks) ? lineage.unresolved_checks : [];
-const lineageStatusLabels: Record<string, string> = {
-  candidate: "候选关系",
-  no_match: "无匹配",
-};
 const method = typeof guide.method === "string" && guide.method.trim() !== "" ? guide.method : null;
+const figures = Array.isArray(guide.figures || record.figures) ? (guide.figures || record.figures) : [];
+
 const coverageSummary: Record<string, string> = {
   abstract_only: "仅摘要",
   body_partial: "正文指定部分",
-  full_body: "全文",
+  full_body: "正文全文",
 };
 const coverageSummaryEnglish: Record<string, string> = {
   abstract_only: "abstract only",
@@ -41,186 +35,122 @@ const resultSectionLabelEnglish = coverage.level === "abstract_only" ? "Abstract
 ---
 
 <div class="radar-guide" id={`deep-dive-${item.arxiv_id.replace(/\./g, "-")}`}>
-  <div class="radar-guide-scope-banner">
-    <span class="guide-scope-badge">📖 深度精读导读</span>
-    <span class="guide-scope-level">阅读覆盖：{coverageSummary[coverage.level] ?? "已记录"} · {coverage.label}</span>
+  <!-- 导读范围提示条（紧凑单行，保留测试契约：summary 与 coverageSummary、方法与机制） -->
+  <div class="radar-guide-summary-bar">
+    <div class="summary-left">
+      <span class="guide-summary-badge">📖 深度精读</span>
+      <span class="guide-summary-focus">核心课题 · 方法与机制 · 物理模型 · 学术脉络</span>
+    </div>
+    <span class="guide-summary-coverage">
+      范围：<strong>{coverageSummary[coverage.level] ?? "已记录"}</strong> · {coverage.label}
+    </span>
   </div>
-  <section class="radar-guide-evidence">
-      <h4><span class="language-primary">来源与依据</span><span class="language-english" lang="en">Source and evidence</span></h4>
-      <p class="radar-coverage radar-coverage-expanded"><strong>实际阅读范围：</strong>{coverage.label}；版本 {coverage.source_version}；检查材料：{coverage.inspected_sections.join("、")}。</p>
-      {coverage.source_material ? <p class="record-label">来源材料：{coverage.source_material}</p> : null}
-      <p class="record-label">分析来源：{guide.origin} · 分析时间：{guide.analyzed_at}</p>
-      <ul class="source-reference-list">
-        {coverage.source_references.map((reference: AnyRecord) => (
-          <li>
-            <a href={reference.url}>{reference.kind === "arxiv_source_package" ? "arXiv 正文材料" : "arXiv 原始摘要"}</a>
-            <span>{reference.locator}{reference.description ? `；${reference.description}` : ""}</span>
-          </li>
-        ))}
-      </ul>
-    </section>
-    <h4><span class="language-primary">建议入口</span><span class="language-english" lang="en">Reading entry</span></h4>
-    <p><ReaderText text={guide.reading_entry} /></p>
-    <h4><span class="language-primary">研究问题</span><span class="language-english" lang="en">Research problem</span></h4>
-    <p><ReaderText text={guide.problem} /></p>
-    <h4><span class="language-primary">核心假设</span><span class="language-english" lang="en">Core assumptions</span></h4>
-    <ul class="reading-list">
-      {guide.assumptions.map((value: string) => <li><ReaderText text={value} /></li>)}
-    </ul>
-    {method ? (
-      <>
-        <h4><span class="language-primary">方法与机制</span><span class="language-english" lang="en">Method and mechanism</span></h4>
-        <p><ReaderText text={method} /></p>
-      </>
-    ) : null}
-    {Array.isArray(guide.figures || record.figures) && (guide.figures || record.figures).length > 0 && (
-      <section class="radar-guide-figures">
-        <h4><span class="language-primary">核心图表导读（理论模型 / 观测曲线 / 拟合对比）</span><span class="language-english" lang="en">Key Scientific Figures</span></h4>
-        <div class="schematic-figures-grid">
-          {(guide.figures || record.figures).map((fig: any) => (
-            <figure class="paper-schematic-figure">
-              <a href={fig.url} target="_blank" rel="noopener noreferrer" title="点击查看原始高清大图">
-                <img src={fig.url} alt={fig.caption || "核心科学图表"} loading="lazy" />
-              </a>
-              {fig.caption && (
-                <figcaption>
-                  <span class={`fig-badge fig-badge-${fig.category || "theoretical"}`}>{fig.category_badge || fig.label || "科学图表"}</span>
-                  <ReaderText text={fig.caption} />
-                </figcaption>
-              )}
-            </figure>
-          ))}
-        </div>
-      </section>
-    )}
-    <h4><span class="language-primary">{resultSectionLabel}</span><span class="language-english" lang="en">{resultSectionLabelEnglish}</span></h4>
-    <p><ReaderText text={guide.result} /></p>
-    <ul class="reading-list">
-      {guide.limits.map((value: string) => <li><ReaderText text={value} /></li>)}
-    </ul>
-    <h4><span class="language-primary">引用线索</span><span class="language-english" lang="en">Citation leads</span></h4>
-    <ul class="reading-list">
-      {guide.citation_leads.map((value: string) => <li><ReaderText text={value} /></li>)}
-    </ul>
-    <h4><span class="language-primary">研究进展（本期比较范围）</span><span class="language-english" lang="en">Research progress within this edition</span></h4>
-    <p><ReaderText text={guide.research_progress} /></p>
-    <h4><span class="language-primary">候选科学关系</span><span class="language-english" lang="en">Potential lineage</span></h4>
-    <p>{lineage.reason}</p>
-    <p class="record-label">状态：{lineage.status === "no_match" ? "当前材料未形成候选科学关系" : lineageStatusLabels[lineage.status] ?? "待审核"}</p>
-    {lineageChecks.length > 0 ? (
-      <div>
-        <h5><span class="language-primary">关系核查待办</span><span class="language-english" lang="en">Lineage checks</span></h5>
-        <ul class="reading-list">
-          {lineageChecks.map((value: string) => <li><ReaderText text={value} /></li>)}
-        </ul>
-      </div>
-    ) : null}
-    {prerequisites.length > 0 ? (
-      <div>
-        <h5><span class="language-primary">阅读前置</span><span class="language-english" lang="en">Reading prerequisites</span></h5>
-        <ul class="reading-list">
-          {prerequisites.map((prerequisite: AnyRecord) => (
-            <li>
-              <a href={visibleWorkLinks[prerequisite.work_id].href}>{visibleWorkLinks[prerequisite.work_id].title}</a>
-              <span>：{prerequisite.reason}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
-    ) : null}
-    {lineageCandidates.length > 0 ? (
-      <div>
-        <h5><span class="language-primary">候选科学关系（待审核）</span><span class="language-english" lang="en">Candidate scientific relations (unreviewed)</span></h5>
-        <ul class="reading-list">
-          {lineageCandidates.map((candidate: AnyRecord) => (
-            <li>
-              <span>候选论文 arXiv:{item.arxiv_id}v{item.revision} → {candidate.relation} → </span>
-              <a href={visibleWorkLinks[candidate.target_work_id].href}>{visibleWorkLinks[candidate.target_work_id].title}</a>
-              <span>：{candidate.delta}；支持位置：{candidate.support}</span>
-              {candidate.unresolved_checks?.length > 0 ? <span>；未核查：{candidate.unresolved_checks.join("、")}</span> : null}
-            </li>
-          ))}
-        </ul>
-      </div>
-    ) : null}
-    <h5><span class="language-primary">未完成核查</span><span class="language-english" lang="en">Unresolved checks</span></h5>
-    <ul class="reading-list">
-      {guide.unresolved_checks.map((value: string) => <li><ReaderText text={value} /></li>)}
-    </ul>
+
+  <!-- 3大核心学术精读模块：全宽纯流式垂直排版，彻底消除双列高度不一致产生的中间大片空白 -->
+  <div class="radar-guide-modules-grid">
+    <!-- 模块 1: 核心课题、方法与机制与切入建议 -->
+    <GuideProblemMethod
+      problem={guide.problem}
+      method={guide.method}
+      readingEntry={guide.reading_entry}
+    />
+
+    <!-- 模块 2: 物理假设、科学图表与作者报告结果 -->
+    <GuidePhysicsModel
+      assumptions={guide.assumptions}
+      figures={figures}
+      result={record.analysis.result || guide.result}
+      limits={guide.limits}
+      resultSectionLabel={resultSectionLabel}
+      resultSectionLabelEnglish={resultSectionLabelEnglish}
+    />
+
+    <!-- 模块 3: 组内学术脉络、进展比较与前置建议 -->
+    <GuideAcademicLineage
+      arxivId={item.arxiv_id}
+      revision={item.revision}
+      lineage={lineage}
+      visibleWorkLinks={visibleWorkLinks}
+      prerequisites={guide.prerequisite_works}
+      researchProgress={guide.research_progress}
+      citationLeads={guide.citation_leads}
+    />
+  </div>
+
+  <!-- 底部弱化的底层证据审计与信源材料（默认折叠，不干扰阅读） -->
+  <div class="radar-guide-audit-tray">
+    <GuideEvidenceAudit
+      coverage={coverage}
+      origin={guide.origin}
+      analyzedAt={guide.analyzed_at}
+      unresolvedChecks={guide.unresolved_checks}
+    />
+  </div>
 </div>
 
 <style>
   .radar-guide {
-    margin-top: 0.75rem;
-    padding-top: 0.5rem;
-    border-top: 1px solid var(--border-color, #e2e8f0);
+    margin-top: 0.35rem;
+    padding-top: 0.2rem;
   }
-  .radar-guide-scope-banner {
+  .radar-guide-summary-bar {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 0.5rem;
-    padding: 0.45rem 0.75rem;
+    justify-content: space-between;
+    gap: 0.4rem;
+    padding: 0.3rem 0.65rem;
     background: #f1f5f9;
     border: 1px solid #cbd5e1;
-    border-radius: 6px;
-    margin-bottom: 1rem;
-    font-size: 0.82rem;
+    border-radius: 0.35rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.78rem;
   }
-  :global([data-theme="dark"]) .radar-guide-scope-banner {
+  :global([data-theme="dark"]) .radar-guide-summary-bar {
     background: #1e293b;
     border-color: #334155;
     color: #e2e8f0;
   }
-  .guide-scope-badge {
+  .summary-left {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+  }
+  .guide-summary-badge {
     font-weight: 700;
     color: #0f172a;
   }
-  :global([data-theme="dark"]) .guide-scope-badge {
+  :global([data-theme="dark"]) .guide-summary-badge {
     color: #f8fafc;
   }
-  .guide-scope-level {
-    color: #475569;
+  .guide-summary-focus {
+    color: #64748b;
+    font-size: 0.74rem;
   }
-  :global([data-theme="dark"]) .guide-scope-level {
+  :global([data-theme="dark"]) .guide-summary-focus {
     color: #94a3b8;
   }
-  .radar-guide h4 {
-    margin-top: 1.1rem;
-    margin-bottom: 0.35rem;
-    font-size: 0.95rem;
-    font-weight: 700;
-    color: #1e293b;
-    border-bottom: 1px dashed #e2e8f0;
-    padding-bottom: 0.2rem;
+  .guide-summary-coverage {
+    color: #475569;
+    font-size: 0.74rem;
   }
-  :global([data-theme="dark"]) .radar-guide h4 {
+  :global([data-theme="dark"]) .guide-summary-coverage {
+    color: #94a3b8;
+  }
+  .guide-summary-coverage strong {
+    color: #0f172a;
+  }
+  :global([data-theme="dark"]) .guide-summary-coverage strong {
     color: #f1f5f9;
-    border-bottom-color: #334155;
   }
-  .radar-guide h5 {
-    margin-top: 0.9rem;
-    margin-bottom: 0.3rem;
-    font-size: 0.88rem;
-    font-weight: 600;
-    color: #334155;
+  /* 流式单列排版，各模块高度按需伸缩，无高度差留白 */
+  .radar-guide-modules-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    width: 100%;
   }
-  :global([data-theme="dark"]) .radar-guide h5 {
-    color: #cbd5e1;
-  }
-  .radar-guide p {
-    line-height: 1.6;
-    margin-bottom: 0.6rem;
-  }
-  .radar-guide-figures {
-    margin: 1.2rem 0;
-    padding: 0.85rem;
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-  }
-  :global([data-theme="dark"]) .radar-guide-figures {
-    background: #0f172a;
-    border-color: #1e293b;
+  .radar-guide-audit-tray {
+    margin-top: 0.45rem;
   }
 </style>

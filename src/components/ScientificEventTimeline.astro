@@ -1,0 +1,590 @@
+---
+import ReaderText from "./ReaderText.astro";
+import eventsData from "../data/scientific-events.json";
+
+interface Props {
+  maxEvents?: number;
+  title?: string;
+  titleEnglish?: string;
+  subtitle?: string;
+}
+
+const {
+  maxEvents = 5,
+  title = "瞬变源科学事件追踪与脉络聚簇",
+  titleEnglish = "Transient Event Clustering & Timeline Radar",
+  subtitle = "基于 arXiv 预印本自动识别引力波、超新星、伽马暴与快速射电暴等重大天文瞬变事件，按衰减热度聚簇多篇跟进论文并梳理演化脉络。",
+} = Astro.props;
+
+type ScientificEvent = (typeof eventsData.events)[number];
+
+const events: ScientificEvent[] = (eventsData.events || []).slice(0, maxEvents);
+
+function typeBadgeColor(type: string): string {
+  switch (type.toUpperCase()) {
+    case "GW":
+      return "badge-gw";
+    case "GRB":
+      return "badge-grb";
+    case "SN":
+      return "badge-sn";
+    case "FRB":
+      return "badge-frb";
+    case "AT":
+      return "badge-at";
+    default:
+      return "badge-other";
+  }
+}
+
+function priorityPill(priority: string) {
+  if (priority === "must_read") return { label: "⭐ 必读", cls: "pill-must-read" };
+  if (priority === "worth_knowing") return { label: "📌 关注", cls: "pill-worth-knowing" };
+  return { label: "⚡ 略读", cls: "pill-skim" };
+}
+---
+
+<section class="scientific-events-section" aria-labelledby="scientific-events-heading">
+  <div class="events-section-header">
+    <div class="events-badge-row">
+      <span class="events-kicker-tag">🔭 瞬变源追踪</span>
+      <span class="events-kicker-sub">半衰期热度衰减算法 · 多篇聚簇</span>
+    </div>
+    <h2 id="scientific-events-heading" class="events-main-title">
+      <span class="title-primary">{title}</span>
+      <span class="title-english" lang="en">{titleEnglish}</span>
+    </h2>
+    <p class="events-subtitle">{subtitle}</p>
+  </div>
+
+  <div class="events-grid">
+    {events.map((event) => {
+      const topMustRead = event.papers.find((p) => p.priority === "must_read");
+      return (
+        <article class="event-cluster-card" id={`event-${event.event_id.toLowerCase().replace(/\s+/g, "-")}`}>
+          <!-- Card Header -->
+          <div class="event-card-header">
+            <div class="event-id-group">
+              <span class={`event-type-badge ${typeBadgeColor(event.event_type)}`}>{event.event_type}</span>
+              <h3 class="event-target-id">{event.event_id}</h3>
+            </div>
+            <div class="event-metrics-group">
+              <span class="metric-heat-badge" title="基于7天半衰期模型计算的时间衰减热度指数">
+                🔥 热度 <strong>{event.heat_score}</strong>
+              </span>
+              <span class="metric-count-badge">
+                📚 <strong>{event.paper_count}</strong> 篇研读
+              </span>
+            </div>
+          </div>
+
+          <!-- Structured Headline & Narrative -->
+          <div class="event-synthesis-box">
+            <h4 class="event-headline">{event.headline}</h4>
+            <p class="event-narrative-text">
+              <ReaderText text={event.narrative} />
+            </p>
+          </div>
+
+          <!-- Chronological Papers Timeline -->
+          <div class="event-timeline-container">
+            <div class="timeline-header-row">
+              <span class="timeline-title">📄 聚簇研读论文与学术演进：</span>
+              <span class="timeline-span-badge">活跃：{event.first_seen} 至 {event.last_updated}</span>
+            </div>
+
+            <ul class="event-papers-list">
+              {event.papers.map((paper) => {
+                const priorityInfo = priorityPill(paper.priority);
+                const dailyCardAnchor = `/arxiv-daily/${paper.date}/#card-${paper.arxiv_id}-v${paper.revision || 1}`;
+                return (
+                  <li class={`event-paper-node node-${paper.priority}`}>
+                    <div class="node-meta-row">
+                      <span class={`paper-priority-pill ${priorityInfo.cls}`}>{priorityInfo.label}</span>
+                      <span class="paper-date-tag">📅 {paper.date}</span>
+                      <div class="paper-links-cluster">
+                        <a class="anchor-link-guide" href={dailyCardAnchor} title="直接跳转至当日精读学术卡片">
+                          📖 精读导读 →
+                        </a>
+                        <a class="anchor-link-arxiv" href={`https://arxiv.org/abs/${paper.arxiv_id}`} target="_blank" rel="noopener noreferrer">
+                          arXiv:{paper.arxiv_id} ↗
+                        </a>
+                        <a class="anchor-link-pdf" href={`https://arxiv.org/pdf/${paper.arxiv_id}`} target="_blank" rel="noopener noreferrer" title="下载官方 PDF">
+                          📄 PDF
+                        </a>
+                      </div>
+                    </div>
+
+                    <h5 class="event-paper-title">
+                      <a href={dailyCardAnchor}>
+                        <ReaderText text={paper.title || paper.arxiv_id} />
+                      </a>
+                    </h5>
+
+                    {paper.bluf_result && !paper.bluf_result.startsWith("未能从已检查材料") && paper.bluf_result !== "未记录" && (
+                      <div class="paper-bluf-brief">
+                        <span class="bluf-accent-mark">突破</span>
+                        <p class="bluf-accent-body">
+                          <ReaderText text={paper.bluf_result} />
+                        </p>
+                      </div>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        </article>
+      );
+    })}
+  </div>
+</section>
+
+<style>
+  .scientific-events-section {
+    margin: 2.5rem 0 2rem;
+    padding: 1.5rem;
+    background: var(--bg-surface, #ffffff);
+    border: 1px solid var(--border-color, #e2e8f0);
+    border-radius: 0.85rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  }
+  :global([data-theme="dark"]) .scientific-events-section {
+    background: #0f172a;
+    border-color: #334155;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+
+  .events-section-header {
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-color, #e2e8f0);
+    padding-bottom: 1rem;
+  }
+  :global([data-theme="dark"]) .events-section-header {
+    border-bottom-color: #334155;
+  }
+
+  .events-badge-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.4rem;
+  }
+  .events-kicker-tag {
+    display: inline-block;
+    padding: 0.15rem 0.5rem;
+    font-size: 0.76rem;
+    font-weight: 700;
+    background: #eff6ff;
+    color: #1d4ed8;
+    border: 1px solid #bfdbfe;
+    border-radius: 9999px;
+  }
+  :global([data-theme="dark"]) .events-kicker-tag {
+    background: #1e3a8a;
+    color: #93c5fd;
+    border-color: #2563eb;
+  }
+  .events-kicker-sub {
+    font-size: 0.78rem;
+    color: var(--text-secondary, #64748b);
+    font-weight: 500;
+  }
+
+  .events-main-title {
+    margin: 0.2rem 0 0.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.6rem;
+  }
+  .title-primary {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: var(--text-heading, #0f172a);
+    letter-spacing: -0.01em;
+  }
+  :global([data-theme="dark"]) .title-primary {
+    color: #f8fafc;
+  }
+  .title-english {
+    font-size: 0.95rem;
+    color: var(--text-secondary, #64748b);
+    font-weight: 500;
+  }
+
+  .events-subtitle {
+    margin: 0;
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: var(--text-body, #475569);
+  }
+  :global([data-theme="dark"]) .events-subtitle {
+    color: #94a3b8;
+  }
+
+  .events-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .event-cluster-card {
+    background: var(--bg-primary, #f8fafc);
+    border: 1px solid var(--border-color, #e2e8f0);
+    border-radius: 0.75rem;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  :global([data-theme="dark"]) .event-cluster-card {
+    background: #1e293b;
+    border-color: #334155;
+  }
+  .event-cluster-card:hover {
+    border-color: #cbd5e1;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+  }
+  :global([data-theme="dark"]) .event-cluster-card:hover {
+    border-color: #475569;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+  }
+
+  .event-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  .event-id-group {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .event-target-id {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--text-heading, #0f172a);
+    letter-spacing: -0.01em;
+  }
+  :global([data-theme="dark"]) .event-target-id {
+    color: #f8fafc;
+  }
+
+  .event-type-badge {
+    padding: 0.18rem 0.55rem;
+    font-size: 0.72rem;
+    font-weight: 800;
+    border-radius: 0.35rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .badge-gw {
+    background: #f3e8ff;
+    color: #6b21a8;
+    border: 1px solid #d8b4fe;
+  }
+  :global([data-theme="dark"]) .badge-gw {
+    background: #3b0764;
+    color: #e9d5ff;
+    border-color: #7e22ce;
+  }
+  .badge-grb {
+    background: #fef3c7;
+    color: #b45309;
+    border: 1px solid #fde68a;
+  }
+  :global([data-theme="dark"]) .badge-grb {
+    background: #451a03;
+    color: #fef08a;
+    border-color: #b45309;
+  }
+  .badge-sn {
+    background: #ffe4e6;
+    color: #be123c;
+    border: 1px solid #fecdd3;
+  }
+  :global([data-theme="dark"]) .badge-sn {
+    background: #4c0519;
+    color: #fda4af;
+    border-color: #be123c;
+  }
+  .badge-frb {
+    background: #cffafe;
+    color: #0e7490;
+    border: 1px solid #a5f3fc;
+  }
+  :global([data-theme="dark"]) .badge-frb {
+    background: #083344;
+    color: #67e8f9;
+    border-color: #0e7490;
+  }
+  .badge-at {
+    background: #e0e7ff;
+    color: #4338ca;
+    border: 1px solid #c7d2fe;
+  }
+  :global([data-theme="dark"]) .badge-at {
+    background: #1e1b4b;
+    color: #a5b4fc;
+    border-color: #4338ca;
+  }
+  .badge-other {
+    background: #f1f5f9;
+    color: #475569;
+    border: 1px solid #cbd5e1;
+  }
+
+  .event-metrics-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .metric-heat-badge {
+    padding: 0.2rem 0.55rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    background: #fff1f2;
+    color: #e11d48;
+    border: 1px solid #fecdd3;
+    border-radius: 9999px;
+  }
+  :global([data-theme="dark"]) .metric-heat-badge {
+    background: #380b15;
+    color: #fb7185;
+    border-color: #9f1239;
+  }
+  .metric-count-badge {
+    padding: 0.2rem 0.55rem;
+    font-size: 0.78rem;
+    font-weight: 500;
+    background: var(--bg-surface, #ffffff);
+    color: var(--text-secondary, #475569);
+    border: 1px solid var(--border-color, #e2e8f0);
+    border-radius: 9999px;
+  }
+  :global([data-theme="dark"]) .metric-count-badge {
+    background: #0f172a;
+    border-color: #334155;
+    color: #94a3b8;
+  }
+
+  /* Synthesis Box */
+  .event-synthesis-box {
+    background: var(--bg-surface, #ffffff);
+    border: 1px solid var(--border-color, #e2e8f0);
+    border-left: 4px solid #3b82f6;
+    border-radius: 0.5rem;
+    padding: 0.85rem 1.1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  :global([data-theme="dark"]) .event-synthesis-box {
+    background: #0f172a;
+    border-color: #334155;
+    border-left-color: #60a5fa;
+  }
+  .event-headline {
+    margin: 0;
+    font-size: 0.98rem;
+    font-weight: 700;
+    color: var(--text-heading, #0f172a);
+    line-height: 1.4;
+  }
+  :global([data-theme="dark"]) .event-headline {
+    color: #f8fafc;
+  }
+  .event-narrative-text {
+    margin: 0;
+    font-size: 0.86rem;
+    line-height: 1.62;
+    color: var(--text-body, #475569);
+  }
+  :global([data-theme="dark"]) .event-narrative-text {
+    color: #94a3b8;
+  }
+
+  /* Timeline */
+  .event-timeline-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .timeline-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-secondary, #64748b);
+  }
+  .timeline-span-badge {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--text-muted, #94a3b8);
+  }
+
+  .event-papers-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .event-paper-node {
+    background: var(--bg-surface, #ffffff);
+    border: 1px solid var(--border-color, #e2e8f0);
+    border-radius: 0.5rem;
+    padding: 0.75rem 0.95rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+  :global([data-theme="dark"]) .event-paper-node {
+    background: #0f172a;
+    border-color: #334155;
+  }
+  .node-must_read {
+    border-left: 3px solid #f59e0b;
+  }
+  .node-worth_knowing {
+    border-left: 3px solid #3b82f6;
+  }
+  .node-skip {
+    border-left: 3px solid #94a3b8;
+  }
+
+  .node-meta-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .paper-priority-pill {
+    padding: 0.1rem 0.4rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    border-radius: 0.25rem;
+  }
+  .pill-must-read {
+    background: #fef3c7;
+    color: #92400e;
+  }
+  :global([data-theme="dark"]) .pill-must-read {
+    background: #451a03;
+    color: #fde68a;
+  }
+  .pill-worth-knowing {
+    background: #eff6ff;
+    color: #1e40af;
+  }
+  :global([data-theme="dark"]) .pill-worth-knowing {
+    background: #172554;
+    color: #93c5fd;
+  }
+  .pill-skim {
+    background: #f1f5f9;
+    color: #475569;
+  }
+  :global([data-theme="dark"]) .pill-skim {
+    background: #1e293b;
+    color: #94a3b8;
+  }
+
+  .paper-date-tag {
+    font-size: 0.74rem;
+    color: var(--text-secondary, #64748b);
+    font-weight: 500;
+  }
+
+  .paper-links-cluster {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-left: auto;
+  }
+  .anchor-link-guide {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #2563eb;
+    text-decoration: none;
+  }
+  .anchor-link-guide:hover {
+    text-decoration: underline;
+  }
+  :global([data-theme="dark"]) .anchor-link-guide {
+    color: #60a5fa;
+  }
+  .anchor-link-arxiv, .anchor-link-pdf {
+    font-size: 0.74rem;
+    color: var(--text-secondary, #64748b);
+    text-decoration: none;
+  }
+  .anchor-link-arxiv:hover, .anchor-link-pdf:hover {
+    color: var(--text-heading, #0f172a);
+    text-decoration: underline;
+  }
+  :global([data-theme="dark"]) .anchor-link-arxiv:hover, :global([data-theme="dark"]) .anchor-link-pdf:hover {
+    color: #f8fafc;
+  }
+
+  .event-paper-title {
+    margin: 0;
+    font-size: 0.92rem;
+    font-weight: 700;
+    line-height: 1.4;
+  }
+  .event-paper-title a {
+    color: var(--text-heading, #0f172a);
+    text-decoration: none;
+  }
+  .event-paper-title a:hover {
+    color: #2563eb;
+    text-decoration: underline;
+  }
+  :global([data-theme="dark"]) .event-paper-title a {
+    color: #f8fafc;
+  }
+  :global([data-theme="dark"]) .event-paper-title a:hover {
+    color: #60a5fa;
+  }
+
+  .paper-bluf-brief {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.45rem;
+    margin-top: 0.15rem;
+  }
+  .bluf-accent-mark {
+    flex-shrink: 0;
+    display: inline-block;
+    padding: 0.08rem 0.35rem;
+    font-size: 0.68rem;
+    font-weight: 700;
+    background: #dbeafe;
+    color: #1e40af;
+    border-radius: 0.2rem;
+    margin-top: 0.15rem;
+  }
+  :global([data-theme="dark"]) .bluf-accent-mark {
+    background: #1e3a8a;
+    color: #bfdbfe;
+  }
+  .bluf-accent-body {
+    margin: 0;
+    font-size: 0.82rem;
+    line-height: 1.55;
+    color: var(--text-body, #475569);
+  }
+  :global([data-theme="dark"]) .bluf-accent-body {
+    color: #94a3b8;
+  }
+</style>

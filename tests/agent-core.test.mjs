@@ -1,7 +1,41 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { readFile } from 'node:fs/promises';
-import { loadAcademicKnowledge, executeChatCompletion, callChatCompletion, buildModelCandidates } from '../scripts/agent-core.mjs';
+import { loadAcademicKnowledge, executeChatCompletion, callChatCompletion, buildModelCandidates, generateAcademicAnswer } from '../scripts/agent-core.mjs';
+import { readChannelShareUrl } from '../scripts/channel-publication.mjs';
+
+test('shared channel address rejects unrelated hosts, credentials and non-HTTPS links', async () => {
+  assert.equal(await readChannelShareUrl({ url: 'https://pd.qq.com/s/test-channel' }), 'https://pd.qq.com/s/test-channel');
+  for (const url of ['https://example.com/s/test-channel', 'http://pd.qq.com/s/test-channel', 'https://secret@pd.qq.com/s/test-channel', 'https://pd.qq.com:8443/s/test-channel']) {
+    assert.equal(await readChannelShareUrl({ url }), null);
+  }
+});
+
+test('channel link requests return the configured address without calling a model', async (t) => {
+  let calls = 0;
+  t.mock.method(globalThis, 'fetch', async () => {
+    calls++;
+    return new Response(JSON.stringify({ choices: [{ message: { content: 'model guessed answer' } }] }));
+  });
+  for (const query of ['频道链接发我一下', '我们的 QQ 频道在哪里？', '/channel']) {
+    const answer = await generateAcademicAnswer({ query, channelLink: async () => 'https://pd.qq.com/s/test-channel' });
+    assert.ok(answer.includes('https://pd.qq.com/s/test-channel'));
+  }
+  assert.equal(calls, 0);
+});
+
+test('missing channel address is reported without guessing or contacting a model', async (t) => {
+  t.mock.method(globalThis, 'fetch', async () => { throw new Error('must not call provider'); });
+  const answer = await generateAcademicAnswer({ query: '给我频道链接', channelLink: async () => null });
+  assert.match(answer, /频道链接.*未配置/u);
+  assert.doesNotMatch(answer, /https?:\/\//u);
+});
+
+test('academic context includes the same configured channel link', async () => {
+  const knowledge = await loadAcademicKnowledge({ feed: { entries: [] }, radar: { analyses: [] },
+    channelLink: async () => 'https://pd.qq.com/s/test-channel' });
+  assert.ok(knowledge.includes('频道讨论：https://pd.qq.com/s/test-channel'));
+});
 
 test('missing or invalid guides remain pending, not a negative scientific judgement', async () => {
   const knowledge = await loadAcademicKnowledge({
@@ -121,4 +155,3 @@ test('callChatCompletion prioritizes model across multiple providers before fall
   assert.equal(attempts[0].host, 'provider1.test');
   assert.equal(attempts[1].host, 'provider2.test');
 });
-

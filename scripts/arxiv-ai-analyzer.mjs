@@ -320,16 +320,17 @@ function scientificFieldsPrompt({ abstract = false } = {}) {
 {
   "priority":"must_read|worth_knowing|skip",
   "reason":"分类理由",
-  "result":"主要结果，无法确认时写 unknown",
-  "problem":"论文研究的问题，无法确认时写 unknown",
-  "method":"方法，无法确认时写 unknown",
+  "result":"主要物理结果与定量结论；对于关键机制或标度律，应包含核心物理量与 LaTeX 标度公式（如 $L_{\\rm iso}$、$t_{\\rm delay} \\propto \\nu^{-2}$ 等），无法确认时写 unknown",
+  "problem":"论文研究的核心物理问题或观测矛盾，无法确认时写 unknown",
+  "method":"理论模型、数值模拟或观测数据处理方法；包含关键控制方程、参数空间或依赖关系公式，无法确认时写 unknown",
   "reading_entry":"建议首先查看的实际章节标题或摘要",
   "assumptions":["明确假设；无可核验内容时为空数组"],
   "limits":["明确限制；无可核验内容时为空数组"],
-  "research_progress":"论文明确表达的增量；无法确认时写 unknown",
+  "research_progress":"论文明确表达的物理增量与定标关系；无法确认时写 unknown",
   "inspected_sections":["输入中实际存在且确实检查的标题"],
   "evidence":[{"section":"${abstract ? "Abstract" : "实际正文章节标题（不得使用 Abstract）"}","quote":"从该段原样复制的短摘录（12–120 字符连续原文，同一句内摘取，严禁跨越表格多列拼凑）","supports":["reason","result","problem","method","research_progress","assumptions[0]","limits[0]"]}]
 }
+公式与数学物理呈现：若原文有关键公式能讲清物理图像（如能谱幂律指数、时延关系、光度标度律、磁场临界值），优先以 LaTeX 公式（如 $...$ 或 $$...$$）明确写出，不要仅用模糊白话。JSON 中公式的反斜杠必须转义（如 \\\\alpha, \\\\dot{M}, \\\\mathrm{...}）。
 证据摘录必须是输入中的连续原文（同一句或同一段内的连续字词，严禁跨越表格列或跨行拼凑）；supports 只列该摘录确实支持的字段，不要编造字段值。
 重要校验规则：对于填写的非 unknown 核心字段（reason, result, problem, method, research_progress），在 evidence 数组中必须至少有一处摘录在 supports 里声明包含该字段名称（同一条摘录可 supports 多个字段）。若正文中无法确认某个字段的证据，请将该字段值直接写为 unknown。`;
 }

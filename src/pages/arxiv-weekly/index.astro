@@ -3,13 +3,20 @@ import weeklyData from "../../data/arxiv-weekly.json";
 import archiveManifest from "../../data/arxiv-archives/manifest.json";
 import SiteNav from "../../components/SiteNav.astro";
 import ReaderText from "../../components/ReaderText.astro";
+import WeeklyDomainMatrix from "../../components/weekly/WeeklyDomainMatrix.astro";
+import WeeklyDailyTable from "../../components/weekly/WeeklyDailyTable.astro";
+import WeeklyTopPicks from "../../components/weekly/WeeklyTopPicks.astro";
 import { loadSiteConfig } from "../../lib/site-config";
+import { parseStructuredExecutiveSummary } from "../../domain/academic-domain.mjs";
+import { radarCardAnchor } from "../../../scripts/daily-radar.mjs";
 import "../../styles/global.css";
+import "../../styles/weekly.css";
 
 const site = loadSiteConfig();
 
 const currentWeekManifest = (archiveManifest.weeks as any[]).find((w: any) => w.week_id === weeklyData.week_id) || (archiveManifest.weeks as any[])[0];
 const weekDays = currentWeekManifest?.days || [];
+const structuredExecutive = parseStructuredExecutiveSummary(weeklyData.executive_summary);
 
 const stats = weeklyData.statistics ?? {
   total_analyzed: weeklyData.papers?.length ?? 0,
@@ -29,56 +36,63 @@ const priorityLabels: Record<string, { zh: string; en: string; class: string }> 
   skip: { zh: "快速浏览", en: "Skim", class: "badge-skip" },
 };
 
-const paperMap = new Map((weeklyData.papers ?? []).map((p: any) => [p.arxiv_id, p]));
+const paperMap = new Map<string, any>((weeklyData.papers ?? []).map((p: any) => [p.arxiv_id, p]));
 
 const dailyArchiveModules = import.meta.glob<{ default: any }>("../../data/arxiv-archives/daily/*.json", { eager: true });
 const authorMap = new Map<string, string[]>();
+const dailyAnalysisMap = new Map<string, any>();
+const paperDailyDateMap = new Map<string, string>();
+const dailyItemMap = new Map<string, any>();
+
 for (const mod of Object.values(dailyArchiveModules)) {
   const data = (mod as any).default || mod;
-  for (const entry of data.feed?.entries ?? []) {
-    if (entry.arxiv_id && Array.isArray(entry.authors) && entry.authors.length > 0) {
-      authorMap.set(entry.arxiv_id, entry.authors);
+  const date = data.date;
+  const feedEntries = data.feed?.entries ?? [];
+  const analyses = data.radar?.analyses ?? [];
+  const aMap = new Map(analyses.map((a: any) => [a.arxiv_id, a]));
+  for (const entry of feedEntries) {
+    if (entry.arxiv_id) {
+      if (Array.isArray(entry.authors) && entry.authors.length > 0) {
+        authorMap.set(entry.arxiv_id, entry.authors);
+      }
+      if (date) paperDailyDateMap.set(entry.arxiv_id, date);
+      const a = aMap.get(entry.arxiv_id);
+      if (a) {
+        dailyItemMap.set(entry.arxiv_id, {
+          ...entry,
+          analysis: a,
+          dailyDate: date,
+        });
+      }
+    }
+  }
+  for (const a of analyses) {
+    if (a.arxiv_id) {
+      dailyAnalysisMap.set(a.arxiv_id, a);
+      if (date && !paperDailyDateMap.has(a.arxiv_id)) {
+        paperDailyDateMap.set(a.arxiv_id, date);
+      }
     }
   }
 }
 
+const matrixRows = (Array.isArray(weeklyData.overview_matrix) && weeklyData.overview_matrix.length > 0)
+  ? weeklyData.overview_matrix
+  : (weeklyData.thematic_highlights ?? []).map((t: any) => ({
+      domain: t.theme_name,
+      key_question: "前沿物理机制、模型假设与观测特征研判",
+      core_findings: t.summary,
+      representative_papers: t.paper_ids || [],
+    }));
+
 function resolveAuthors(id: string, direct?: any): string[] {
   if (Array.isArray(direct?.authors) && direct.authors.length > 0) return direct.authors;
-  const inMap = paperMap.get(id);
+  const inMap = paperMap.get(id) as any;
   if (Array.isArray(inMap?.authors) && inMap.authors.length > 0) return inMap.authors;
   return authorMap.get(id) || [];
 }
 
-function formatBibtex(paper: any) {
-  const cleanId = String(paper.arxiv_id || "").trim();
-  const resolved = resolveAuthors(cleanId, paper);
-  const authors = resolved.length > 0
-    ? resolved.join(" and ")
-    : "Author, A.";
-  const year = paper.published ? new Date(paper.published).getFullYear() : (weeklyData.week_id?.slice(0, 4) || new Date().getFullYear());
-  const title = String(paper.title || "").trim();
-  return `@article{arxiv_${cleanId.replace(/[^a-zA-Z0-9]/g, "_")},
-  author = {${authors}},
-  title = {{${title}}},
-  journal = {arXiv preprint arXiv:${cleanId}},
-  year = {${year}},
-  eprint = {${cleanId}},
-  archivePrefix = {arXiv},
-  primaryClass = {astro-ph.HE}
-}`;
-}
-
-function formatCitation(paper: any) {
-  const cleanId = String(paper.arxiv_id || "").trim();
-  const resolved = resolveAuthors(cleanId, paper);
-  const firstAuthor = resolved.length > 0
-    ? resolved[0]
-    : "Author";
-  const year = paper.published ? new Date(paper.published).getFullYear() : (weeklyData.week_id?.slice(0, 4) || new Date().getFullYear());
-  return `${firstAuthor} et al. (${year}), arXiv:${cleanId}`;
-}
-
-const exportMarkdown = `# ${weeklyData.title || "高能天体物理 arXiv 每周学术脉络与前沿精选"}
+const exportMarkdown = `# 高能天体物理 arXiv 每周学术脉络 · ${weeklyData.week_id}
 周期: ${weeklyData.week_id} (${weeklyData.date_range})
 整理时间: ${generatedLabel}
 
@@ -102,7 +116,7 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="AstroLineage 每周 arXiv 学术脉络与深度综述：聚合周度论文，梳理因果动力学脉络与精选必读。" />
     <title>每周总结 · {weeklyData.week_id || "Weekly"} · {site.title}</title>
   </head>
@@ -114,14 +128,14 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
 
       <header class="reader-header">
         <h1>
-          <span class="language-primary">{weeklyData.title || "高能天体物理 arXiv 每周学术脉络与前沿精选"}</span>
-          <span class="language-english" lang="en">High-Energy Astrophysics Weekly arXiv Synthesis</span>
+          <span class="language-primary">每周学术脉络 · {weeklyData.week_id}</span>
+          <span class="language-english" lang="en">Weekly Synthesis · {weeklyData.week_id}</span>
         </h1>
         <p class="reader-deck language-primary">
-          以因果动力学链条为主线，聚合周度重要进展，厘清物理争议、数值突破与多信使观测边界。
+          周度前沿突破 · 物理机制争论 · 多信使观测约束
         </p>
         <p class="reader-deck language-english" lang="en">
-          A weekly causal-dynamics synthesis of breakthrough findings, numerical developments, and multi-messenger constraints.
+          Breakthrough findings, causal dynamics, and multi-messenger observational constraints.
         </p>
         <div class="weekly-meta-bar">
           <span class="meta-badge week-badge">周期：{weeklyData.week_id}（{weeklyData.date_range}）</span>
@@ -144,21 +158,21 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
 
       <!-- Stat Badges -->
       <section class="weekly-stats-strip" aria-label="本周统计">
-        <div class="stat-card">
+        <div class="stat-card stat-total">
           <span class="stat-num">{stats.total_analyzed}</span>
-          <span class="stat-name">本周深度研判</span>
+          <span class="stat-name"><span class="language-primary">本周深度研判</span><span class="language-english" lang="en">Total Papers</span></span>
         </div>
         <div class="stat-card stat-must-read">
           <span class="stat-num">{stats.must_read_count}</span>
-          <span class="stat-name">重点精读 (Must Read)</span>
+          <span class="stat-name"><span class="language-primary">重点精读 (Must Read)</span><span class="language-english" lang="en">Must Read</span></span>
         </div>
         <div class="stat-card stat-worth-knowing">
           <span class="stat-num">{stats.worth_knowing_count}</span>
-          <span class="stat-name">值得追踪 (Worth Knowing)</span>
+          <span class="stat-name"><span class="language-primary">值得追踪 (Worth Knowing)</span><span class="language-english" lang="en">Worth Knowing</span></span>
         </div>
         <div class="stat-card stat-skip">
           <span class="stat-num">{stats.skip_count}</span>
-          <span class="stat-name">浏览略读 (Skim)</span>
+          <span class="stat-name"><span class="language-primary">浏览略读 (Skim)</span><span class="language-english" lang="en">Skim</span></span>
         </div>
       </section>
 
@@ -169,154 +183,99 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
           <h2><span class="language-primary">宏观学术脉络综述</span><span class="language-english" lang="en">Executive Summary</span></h2>
         </div>
         <div class="executive-content-card">
-          <p class="executive-lead"><ReaderText text={weeklyData.executive_summary} /></p>
-        </div>
-      </section>
-
-      <!-- Daily Breakdown in this Week -->
-      <section class="weekly-section daily-breakdown-section" id="daily-breakdown">
-        <div class="section-heading">
-          <p class="section-kicker"><span class="language-primary">每日归档</span><span class="language-english" lang="en">Daily Breakdown</span></p>
-          <h2><span class="language-primary">本周每日批次与日报归档</span><span class="language-english" lang="en">Daily Editions in this Week</span></h2>
-        </div>
-        <p class="section-desc">本周聚合了以下每日 arXiv 监测批次，可分别查看当天的完整导读雷达、论文卡片与筛选边界：</p>
-        <div class="daily-batches-grid">
-          {weekDays.map((day: any) => (
-            <div class="daily-batch-card">
-              <div class="batch-card-top">
-                <div class="batch-date-group">
-                  <strong class="batch-date">{day.date}</strong>
-                  <span class="batch-weekday">{day.weekday}</span>
-                  {day.date === archiveManifest.latest_daily_date && (
-                    <span class="batch-latest-tag">最新批次</span>
-                  )}
-                </div>
-                <span class="batch-id-tag">{day.batch_id}</span>
-              </div>
-              <div class="batch-stat-strip">
-                <span class="stat-pill total">总收录 <strong>{day.total_papers}</strong> 篇</span>
-                <span class="stat-pill must">精读 <strong>{day.must_read_count}</strong></span>
-                <span class="stat-pill worth">了解 <strong>{day.worth_knowing_count}</strong></span>
-              </div>
-              <p class="batch-card-brief">{day.brief_intro}</p>
-              {day.highlights && day.highlights.length > 0 && (
-                <div class="batch-highlights-preview">
-                  <span class="highlights-label">核心条目：</span>
-                  <div class="highlights-tags">
-                    {day.highlights.map((h: any) => (
-                      <span class={`highlight-chip ${h.priority === "must_read" ? "must" : "worth"}`}>
-                        arXiv:{h.arxiv_id}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
-              <div class="batch-card-actions">
-                <a class="batch-action-btn" href={day.date === archiveManifest.latest_daily_date ? "/arxiv-daily/" : `/arxiv-daily/${day.date}/`}>
-                  查看当日完整导读雷达 →
-                </a>
-              </div>
+          {structuredExecutive.lead && (
+            <div class="executive-lead-box">
+              <span class="executive-lead-pill">🌐 核心因果链条</span>
+              <p class="executive-lead"><ReaderText text={structuredExecutive.lead} /></p>
             </div>
-          ))}
-        </div>
-      </section>
+          )}
 
-      <!-- Thematic Highlights -->
-      <section class="weekly-section thematic-section" id="thematic-highlights">
-        <div class="section-heading">
-          <p class="section-kicker"><span class="language-primary">专题聚焦</span><span class="language-english" lang="en">Focus Themes</span></p>
-          <h2><span class="language-primary">前沿专题动态与物理突破</span><span class="language-english" lang="en">Thematic Highlights</span></h2>
-        </div>
-        <div class="thematic-grid">
-          {weeklyData.thematic_highlights?.map((theme: any, idx: number) => (
-            <article class="thematic-card">
-              <div class="thematic-header">
-                <span class="theme-index">专题 0{idx + 1}</span>
-                <h3>{theme.theme_name}</h3>
-              </div>
-              <p class="thematic-body"><ReaderText text={theme.summary} /></p>
-              {theme.paper_ids?.length > 0 && (
-                <div class="thematic-papers">
-                  <span class="thematic-papers-label">关联论文：</span>
-                  <div class="paper-tag-list">
-                    {theme.paper_ids.map((id: string) => (
-                      <a class="paper-tag" href={`https://arxiv.org/abs/${id}`} target="_blank" rel="noopener noreferrer">
-                        arXiv:{id}
-                      </a>
-                    ))}
+          {structuredExecutive.items.length > 0 ? (
+            <ul class="executive-lineage-list">
+              {structuredExecutive.items.map((item: any) => (
+                <li class="executive-lineage-item">
+                  <div class="lineage-item-badge-wrap">
+                    <span class="lineage-topic-badge">{item.topic}</span>
                   </div>
-                </div>
-              )}
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <!-- Top Picks -->
-      <section class="weekly-section picks-section" id="top-picks">
-        <div class="section-heading">
-          <p class="section-kicker"><span class="language-primary">精选必读</span><span class="language-english" lang="en">Curated Selection</span></p>
-          <h2><span class="language-primary">本周精选重点论文解读</span><span class="language-english" lang="en">Weekly Top Picks</span></h2>
-        </div>
-        <div class="picks-list">
-          {weeklyData.top_picks && weeklyData.top_picks.length > 0 ? (
-            weeklyData.top_picks.map((pick: any) => {
-              const badge = priorityLabels[pick.priority] ?? priorityLabels.worth_knowing;
-              const paperObj = paperMap.get(pick.arxiv_id);
-              return (
-                <article class={`pick-card ${pick.priority === "must_read" ? "pick-card-must" : "pick-card-worth"}`}>
-                  <div class="pick-header">
-                    <span class={`pick-badge ${badge.class}`}>{badge.zh}</span>
-                    <div class="pick-action-links">
-                      <a class="pick-arxiv-id" href={`https://arxiv.org/abs/${pick.arxiv_id}`} target="_blank" rel="noopener noreferrer">
-                        arXiv:{pick.arxiv_id} ↗
-                      </a>
-                      <a class="pick-ads-link" href={`https://ui.adsabs.harvard.edu/abs/arXiv:${pick.arxiv_id}`} target="_blank" rel="noopener noreferrer" title="在 NASA ADS 中查看">
-                        NASA ADS ↗
-                      </a>
-                    </div>
+                  <div class="lineage-item-body">
+                    <ReaderText text={item.body} />
                   </div>
-                  <h3 class="pick-title">{pick.title}</h3>
-                  {resolveAuthors(pick.arxiv_id, pick).length > 0 ? (
-                    <p class="pick-authors">作者：{resolveAuthors(pick.arxiv_id, pick).join(", ")}</p>
-                  ) : null}
-
-                  <div class="pick-details">
-                    <div class="detail-row">
-                      <span class="detail-label">推荐理由：</span>
-                      <span class="detail-text"><ReaderText text={pick.recommendation_reason} /></span>
-                    </div>
-                    <div class="detail-row highlight-row">
-                      <span class="detail-label">核心突破：</span>
-                      <span class="detail-text"><ReaderText text={pick.core_insight} /></span>
-                    </div>
-                    <div class="detail-row guide-row">
-                      <span class="detail-label">阅读切入：</span>
-                      <span class="detail-text"><ReaderText text={pick.reading_guide} /></span>
-                    </div>
-                  </div>
-
-                  <details class="paper-citation-details">
-                    <summary class="citation-summary"><span class="language-primary">复制 BibTeX / 规范引用</span><span class="language-english" lang="en">BibTeX & Citation</span></summary>
-                    <div class="citation-box">
-                      <div class="citation-short-row">
-                        <span class="citation-label">规范引用：</span>
-                        <code class="citation-short">{formatCitation(paperObj || pick)}</code>
-                      </div>
-                      <pre class="citation-pre" tabindex="0" title="点击全选复制">{formatBibtex(paperObj || pick)}</pre>
-                    </div>
-                  </details>
-                </article>
-              );
-            })
+                </li>
+              ))}
+            </ul>
           ) : (
-            <div class="empty-picks-notice">
-              <p class="empty-picks-title">本周暂无核心爆发现象必读推荐</p>
-              <p class="empty-picks-desc">已扫描本周所有 arXiv 论文，未发现直接推动课题组 R1~R7 爆发现象因果链条的重大突破性工作。学术追踪严守宁缺毋滥原则，所列其它论文已归档至下方快速浏览目录。</p>
+            <p class="executive-lead"><ReaderText text={weeklyData.executive_summary} /></p>
+          )}
+
+          {structuredExecutive.boundary && (
+            <div class="executive-boundary-box">
+              <span class="boundary-tag">🎯 筛选与研判边界</span>
+              <p class="boundary-text"><ReaderText text={structuredExecutive.boundary} /></p>
             </div>
           )}
         </div>
+
+        <WeeklyDomainMatrix matrixRows={matrixRows} paperDailyDateMap={paperDailyDateMap} />
       </section>
+
+      <!-- Daily Breakdown Table in this Week (本周每日批次与日报归档) -->
+      <WeeklyDailyTable weekDays={weekDays} latestDailyDate={archiveManifest.latest_daily_date} />
+
+      <!-- Thematic Highlights -->
+      {weeklyData.thematic_highlights && weeklyData.thematic_highlights.length > 0 && (
+        <section class="weekly-section thematic-section" id="thematic-highlights">
+          <div class="section-heading">
+            <p class="section-kicker"><span class="language-primary">专题聚焦</span><span class="language-english" lang="en">Focus Themes</span></p>
+            <h2><span class="language-primary">前沿专题动态与物理突破</span><span class="language-english" lang="en">Thematic Highlights</span></h2>
+          </div>
+          <div class="thematic-grid">
+            {weeklyData.thematic_highlights?.map((theme: any, idx: number) => (
+              <article class="thematic-card">
+                <div class="thematic-header">
+                  <span class="theme-index">专题 0{idx + 1}</span>
+                  <h3>{theme.theme_name}</h3>
+                </div>
+                <div class="thematic-body">
+                  <ReaderText text={theme.summary} />
+                </div>
+                {theme.paper_ids && theme.paper_ids.length > 0 ? (
+                  <div class="thematic-papers">
+                    <span class="thematic-papers-label">涉及核心论文：</span>
+                    <div class="paper-tag-list">
+                      {theme.paper_ids.map((id: string) => {
+                        const dailyDate = paperDailyDateMap.get(id);
+                        return (
+                          <span class="thematic-paper-entry">
+                            <a class="paper-tag" href={`https://arxiv.org/abs/${id}`} target="_blank" rel="noopener noreferrer">
+                              arXiv:{id}
+                            </a>
+                            {dailyDate && (
+                              <a class="paper-daily-link" href={`/arxiv-daily/${dailyDate}/#${radarCardAnchor(id, 1)}`} title={`前往 ${dailyDate} 日报查看研读导读与模型假设`}>
+                                📅 {dailyDate} →
+                              </a>
+                            )}
+                          </span>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ) : null}
+              </article>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <!-- Top Picks -->
+      <WeeklyTopPicks
+        topPicks={weeklyData.top_picks}
+        paperMap={paperMap}
+        paperDailyDateMap={paperDailyDateMap}
+        authorMap={authorMap}
+        dailyItemMap={dailyItemMap}
+        dailyAnalysisMap={dailyAnalysisMap}
+        weekId={weeklyData.week_id}
+      />
 
       <!-- Full Catalog -->
       <section class="weekly-section catalog-section" id="catalog">
@@ -328,6 +287,13 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
           <div class="catalog-list">
             {weeklyData.papers?.map((p: any) => {
               const badge = priorityLabels[p.priority] ?? priorityLabels.skip;
+              const dailyRecord = dailyAnalysisMap.get(p.arxiv_id);
+              const guide = dailyRecord?.analysis?.analysis || dailyRecord?.analysis || {};
+              const result = p.result || guide.result || "";
+              const problem = p.problem || guide.problem || "";
+              const method = p.method || guide.method || "";
+              const announcementDate = p.announcement_date || dailyRecord?.historical_edition?.replace(/^announcement-/, "") || paperDailyDateMap.get(p.arxiv_id);
+              const paperTargetUrl = announcementDate ? `/arxiv-daily/${announcementDate}/#${radarCardAnchor(p.arxiv_id, p.revision || 1)}` : (p.url || `https://arxiv.org/abs/${p.arxiv_id}`);
               return (
                 <div class="catalog-item">
                   <div class="catalog-item-header">
@@ -338,13 +304,30 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
                     <a class="catalog-ads-link" href={`https://ui.adsabs.harvard.edu/abs/arXiv:${p.arxiv_id}`} target="_blank" rel="noopener noreferrer" title="NASA ADS">
                       ADS ↗
                     </a>
-                    <span class="catalog-item-title">{p.title}</span>
+                    <h4 class="catalog-item-title">
+                      <a href={paperTargetUrl} class="catalog-paper-title-link" title="点击直接进入该篇当日深度精读">
+                        {p.title}
+                      </a>
+                    </h4>
                   </div>
                   {resolveAuthors(p.arxiv_id, p).length > 0 && (
                     <p class="catalog-item-authors">作者：{resolveAuthors(p.arxiv_id, p).join(", ")}</p>
                   )}
-                  {p.result && (
-                    <p class="catalog-item-result"><strong>结论要点：</strong><ReaderText text={p.result} /></p>
+                  {problem && (
+                    <p class="catalog-item-problem"><strong>研究问题：</strong><ReaderText text={problem} /></p>
+                  )}
+                  {result && (
+                    <p class="catalog-item-result"><strong>结论要点：</strong><ReaderText text={result} /></p>
+                  )}
+                  {method && (
+                    <p class="catalog-item-method"><strong>方法机制：</strong><ReaderText text={method} /></p>
+                  )}
+                  {announcementDate && (
+                    <p class="catalog-item-jump">
+                      <a href={`/arxiv-daily/${announcementDate}/#card-${p.arxiv_id}-v${p.revision || 1}`}>
+                        📖 查看当日完整学术导读卡片与阅读证据 →
+                      </a>
+                    </p>
                   )}
                 </div>
               );
@@ -353,523 +336,5 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
         </details>
       </section>
     </main>
-
-    <style>
-      .weekly-page {
-        max-width: 980px;
-        margin: 0 auto;
-        padding-bottom: 4rem;
-      }
-      .weekly-meta-bar {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.75rem;
-        align-items: center;
-        margin-top: 1rem;
-        font-size: 0.9rem;
-      }
-      .meta-badge {
-        display: inline-block;
-        padding: 0.2rem 0.6rem;
-        border-radius: 4px;
-        background: #f1f5f9;
-        color: #334155;
-        border: 1px solid #cbd5e1;
-      }
-      .week-badge {
-        background: #e0f2fe;
-        color: #0369a1;
-        border-color: #bae6fd;
-        font-weight: 600;
-      }
-      .meta-link {
-        margin-left: auto;
-        font-weight: 500;
-        color: #2563eb;
-        text-decoration: none;
-      }
-      .meta-link:hover {
-        text-decoration: underline;
-      }
-
-      /* Stats strip */
-      .weekly-stats-strip {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-        gap: 1rem;
-        margin: 2rem 0;
-      }
-      .stat-card {
-        padding: 1.25rem 1rem;
-        border-radius: 8px;
-        background: #ffffff;
-        border: 1px solid #e2e8f0;
-        text-align: center;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-      }
-      .stat-num {
-        display: block;
-        font-size: 2rem;
-        font-weight: 700;
-        line-height: 1.1;
-        color: #0f172a;
-      }
-      .stat-name {
-        display: block;
-        font-size: 0.85rem;
-        color: #64748b;
-        margin-top: 0.35rem;
-      }
-      .stat-must-read .stat-num {
-        color: #b91c1c;
-      }
-      .stat-worth-knowing .stat-num {
-        color: #d97706;
-      }
-      .stat-skip .stat-num {
-        color: #64748b;
-      }
-
-      /* Sections */
-      .weekly-section {
-        margin: 2.5rem 0;
-      }
-      .section-heading {
-        margin-bottom: 1.25rem;
-      }
-      .section-heading h2 {
-        font-size: 1.5rem;
-        font-weight: 700;
-        margin: 0.25rem 0 0 0;
-        color: #0f172a;
-      }
-      .section-kicker {
-        font-size: 0.8rem;
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-        font-weight: 700;
-        color: #2563eb;
-        margin: 0;
-      }
-
-      /* Executive summary card */
-      .executive-content-card {
-        background: linear-gradient(135deg, #f8fafc 0%, #eff6ff 100%);
-        border: 1px solid #bfdbfe;
-        border-left: 5px solid #2563eb;
-        border-radius: 8px;
-        padding: 1.75rem 2rem;
-        box-shadow: 0 2px 8px rgba(37, 99, 235, 0.06);
-      }
-      .executive-lead {
-        font-size: 1.05rem;
-        line-height: 1.8;
-        color: #1e293b;
-        margin: 0;
-      }
-
-      /* Thematic grid */
-      .thematic-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
-        gap: 1.25rem;
-      }
-      .thematic-card {
-        background: #ffffff;
-        border: 1px solid #e2e8f0;
-        border-radius: 8px;
-        padding: 1.5rem;
-        display: flex;
-        flex-direction: column;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.03);
-        min-width: 0;
-        overflow-wrap: anywhere;
-        word-break: normal;
-      }
-      .thematic-header {
-        margin-bottom: 0.75rem;
-      }
-      .theme-index {
-        display: inline-block;
-        font-size: 0.75rem;
-        font-weight: 700;
-        color: #6366f1;
-        background: #e0e7ff;
-        padding: 0.15rem 0.5rem;
-        border-radius: 4px;
-        margin-bottom: 0.35rem;
-      }
-      .thematic-header h3 {
-        font-size: 1.15rem;
-        font-weight: 600;
-        margin: 0.25rem 0 0 0;
-        color: #0f172a;
-      }
-      .thematic-body {
-        font-size: 0.95rem;
-        line-height: 1.65;
-        color: #334155;
-        flex-grow: 1;
-        margin: 0 0 1rem 0;
-      }
-      .thematic-papers {
-        border-top: 1px dashed #e2e8f0;
-        padding-top: 0.75rem;
-        font-size: 0.85rem;
-      }
-      .thematic-papers-label {
-        color: #64748b;
-        margin-right: 0.5rem;
-      }
-      .paper-tag-list {
-        display: inline-flex;
-        flex-wrap: wrap;
-        gap: 0.5rem;
-        margin-top: 0.25rem;
-      }
-      .paper-tag {
-        display: inline-block;
-        background: #f1f5f9;
-        color: #0f172a;
-        padding: 0.15rem 0.5rem;
-        border-radius: 4px;
-        text-decoration: none;
-        font-family: monospace;
-        font-size: 0.82rem;
-        border: 1px solid #cbd5e1;
-        transition: all 0.15s ease;
-      }
-      .paper-tag:hover {
-        background: #2563eb;
-        color: #ffffff;
-        border-color: #2563eb;
-      }
-
-      /* Top picks list */
-      .picks-list {
-        display: flex;
-        flex-direction: column;
-        gap: 1.25rem;
-      }
-      .pick-card {
-        background: #ffffff;
-        border-radius: 8px;
-        padding: 1.5rem;
-        border: 1px solid #e2e8f0;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.03);
-        min-width: 0;
-        overflow-wrap: anywhere;
-        word-break: normal;
-      }
-      .pick-card-must {
-        border-left: 5px solid #dc2626;
-      }
-      .pick-card-worth {
-        border-left: 5px solid #d97706;
-      }
-      .pick-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 0.5rem;
-      }
-      .pick-action-links {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.6rem;
-      }
-      .pick-badge {
-        font-size: 0.8rem;
-        font-weight: 700;
-        padding: 0.2rem 0.55rem;
-        border-radius: 4px;
-      }
-      .badge-must-read {
-        background: #fee2e2;
-        color: #991b1b;
-      }
-      .badge-worth-knowing {
-        background: #fef3c7;
-        color: #92400e;
-      }
-      .badge-skip {
-        background: #f1f5f9;
-        color: #475569;
-      }
-      .pick-arxiv-id {
-        font-family: monospace;
-        font-size: 0.85rem;
-        font-weight: 600;
-        color: #2563eb;
-        text-decoration: none;
-      }
-      .pick-arxiv-id:hover {
-        text-decoration: underline;
-      }
-      .pick-ads-link, .catalog-ads-link {
-        font-family: monospace;
-        font-size: 0.78rem;
-        font-weight: 600;
-        color: #4338ca;
-        text-decoration: none;
-        background: #eef2ff;
-        padding: 0.15rem 0.45rem;
-        border-radius: 4px;
-        border: 1px solid #c7d2fe;
-        transition: all 0.15s ease;
-      }
-      .pick-ads-link:hover, .catalog-ads-link:hover {
-        background: #4338ca;
-        color: #ffffff;
-        border-color: #4338ca;
-      }
-
-      /* Empty picks notice */
-      .empty-picks-notice {
-        background: #f8fafc;
-        border: 1px dashed #94a3b8;
-        border-radius: 8px;
-        padding: 1.5rem 1.8rem;
-        margin-top: 0.8rem;
-        text-align: center;
-      }
-      .empty-picks-title {
-        font-size: 1.05rem;
-        font-weight: 700;
-        color: #334155;
-        margin: 0 0 0.5rem 0;
-      }
-      .empty-picks-desc {
-        font-size: 0.9rem;
-        color: #64748b;
-        margin: 0;
-        line-height: 1.5;
-      }
-
-      /* Markdown export */
-      .weekly-markdown-export {
-        margin-top: 1rem;
-        background: #f8fafc;
-        border: 1px solid #cbd5e1;
-        border-radius: 6px;
-        padding: 0.6rem 1rem;
-      }
-      .export-summary-btn {
-        cursor: pointer;
-        font-size: 0.9rem;
-        font-weight: 600;
-        color: #1e293b;
-      }
-      .export-summary-btn:hover {
-        color: #2563eb;
-      }
-      .export-body {
-        margin-top: 0.75rem;
-      }
-      .export-tip {
-        font-size: 0.82rem;
-        color: #64748b;
-        margin: 0 0 0.5rem 0;
-      }
-      .export-markdown-pre {
-        background: #0f172a;
-        color: #f1f5f9;
-        padding: 1rem;
-        border-radius: 6px;
-        font-size: 0.8rem;
-        font-family: monospace;
-        white-space: pre-wrap;
-        word-break: break-all;
-        max-height: 280px;
-        overflow-y: auto;
-        user-select: all;
-        -webkit-user-select: all;
-        cursor: copy;
-      }
-
-      /* Paper citation box */
-      .paper-citation-details {
-        margin-top: 1rem;
-        border-top: 1px dashed #e2e8f0;
-        padding-top: 0.75rem;
-      }
-      .citation-summary {
-        cursor: pointer;
-        font-size: 0.82rem;
-        font-weight: 600;
-        color: #64748b;
-      }
-      .citation-summary:hover {
-        color: #2563eb;
-      }
-      .citation-box {
-        margin-top: 0.5rem;
-        background: #f8fafc;
-        border: 1px solid #e2e8f0;
-        border-radius: 6px;
-        padding: 0.75rem;
-      }
-      .citation-short-row {
-        font-size: 0.85rem;
-        margin-bottom: 0.5rem;
-      }
-      .citation-label {
-        font-weight: 600;
-        color: #475569;
-      }
-      .citation-short {
-        background: #ffffff;
-        padding: 0.15rem 0.4rem;
-        border: 1px solid #e2e8f0;
-        border-radius: 4px;
-        font-size: 0.82rem;
-        user-select: all;
-        -webkit-user-select: all;
-      }
-      .citation-pre {
-        background: #0f172a;
-        color: #f8fafc;
-        padding: 0.75rem 1rem;
-        border-radius: 6px;
-        font-family: monospace;
-        font-size: 0.78rem;
-        white-space: pre-wrap;
-        word-break: break-all;
-        margin: 0;
-        user-select: all;
-        -webkit-user-select: all;
-        cursor: copy;
-      }
-
-      /* Print stylesheet */
-      @media print {
-        .site-nav,
-        .weekly-meta-bar .meta-link,
-        .weekly-markdown-export,
-        .paper-citation-details,
-        .eyebrow,
-        .catalog-section {
-          display: none !important;
-        }
-        .weekly-page {
-          max-width: 100% !important;
-          padding: 0 !important;
-          margin: 0 !important;
-        }
-        .thematic-grid {
-          display: block !important;
-        }
-        .thematic-card,
-        .pick-card {
-          break-inside: avoid;
-          page-break-inside: avoid;
-          border: 1px solid #94a3b8 !important;
-          margin-bottom: 1.25rem !important;
-          box-shadow: none !important;
-        }
-        body {
-          background: #ffffff !important;
-          color: #000000 !important;
-        }
-      }
-      .pick-title {
-        font-size: 1.2rem;
-        font-weight: 600;
-        color: #0f172a;
-        margin: 0.25rem 0 0.4rem 0;
-        line-height: 1.4;
-      }
-      .pick-authors {
-        font-size: 0.88rem;
-        color: #475569;
-        margin: 0 0 0.85rem 0;
-        line-height: 1.45;
-      }
-      .pick-details {
-        display: flex;
-        flex-direction: column;
-        gap: 0.6rem;
-      }
-      .detail-row {
-        font-size: 0.95rem;
-        line-height: 1.55;
-      }
-      .detail-label {
-        font-weight: 700;
-        color: #475569;
-        margin-right: 0.4rem;
-      }
-      .highlight-row {
-        background: #f8fafc;
-        padding: 0.5rem 0.75rem;
-        border-radius: 4px;
-        border-left: 3px solid #3b82f6;
-      }
-      .guide-row {
-        color: #334155;
-      }
-
-      /* Catalog */
-      .catalog-details {
-        background: #f8fafc;
-        border: 1px solid #e2e8f0;
-        border-radius: 8px;
-        padding: 1rem 1.25rem;
-      }
-      .catalog-details summary {
-        cursor: pointer;
-        font-weight: 600;
-        color: #334155;
-      }
-      .catalog-list {
-        margin-top: 1rem;
-        display: flex;
-        flex-direction: column;
-        gap: 0.75rem;
-      }
-      .catalog-item {
-        background: #ffffff;
-        border: 1px solid #e2e8f0;
-        border-radius: 6px;
-        padding: 0.75rem 1rem;
-      }
-      .catalog-item-header {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        gap: 0.5rem;
-        margin-bottom: 0.25rem;
-      }
-      .catalog-badge {
-        font-size: 0.72rem;
-        font-weight: 600;
-        padding: 0.1rem 0.4rem;
-        border-radius: 4px;
-      }
-      .catalog-arxiv-link {
-        font-family: monospace;
-        font-size: 0.8rem;
-        font-weight: 600;
-        color: #2563eb;
-        text-decoration: none;
-      }
-      .catalog-item-title {
-        font-weight: 600;
-        font-size: 0.9rem;
-        color: #1e293b;
-      }
-      .catalog-item-authors {
-        margin: 0.2rem 0 0.25rem 0;
-        font-size: 0.82rem;
-        color: #64748b;
-        line-height: 1.4;
-      }
-      .catalog-item-result {
-        margin: 0.35rem 0 0 0;
-        font-size: 0.85rem;
-        color: #475569;
-        line-height: 1.5;
-      }
-    </style>
   </body>
 </html>

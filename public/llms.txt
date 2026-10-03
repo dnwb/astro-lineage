@@ -6,13 +6,13 @@
 ## Overview
 AstroLineage is an automated academic intelligence platform for high-energy astrophysics. It continuously monitors arXiv preprints (astro-ph.HE, astro-ph.SR, astro-ph.GA), ingests full TeX source packages, and generates verifiable, fail-closed reading guides with verbatim evidence quotes and physical boundary conditions.
 
-## Machine-Readable Endpoints
-- Daily Radar JSON: `/api/v1/daily.json` (Today's prioritized papers, BLUF summaries, and verbatim evidence chains)
-- Weekly Synthesis JSON: `/api/v1/weekly.json` (Structured weekly synthesis, thematic highlights, and domain matrix)
-- Transient Events Feed: `/api/v1/events.json` (Clustered observational transient events: GRBs, SNe, FRBs, GWs with heat decay scores)
-- Full Machine Context: `/llms-full.txt` (Comprehensive taxonomy, research lines, and recent intelligence)
-- OpenAPI Specification: `/openapi.yaml` (OpenAPI 3.1 schema for API consumers)
-- Agent Documentation: `/agent/` (Interactive developer and agent onboarding guide)
+## Machine-Readable Endpoints (Base Server: http://10.131.43.83:4321)
+- Daily Radar JSON: `http://10.131.43.83:4321/api/v1/daily.json` (Today's prioritized papers, BLUF summaries, and verbatim evidence chains)
+- Weekly Synthesis JSON: `http://10.131.43.83:4321/api/v1/weekly.json` (Structured weekly synthesis, thematic highlights, and domain matrix)
+- Transient Events Feed: `http://10.131.43.83:4321/api/v1/events.json` (Clustered observational transient events: GRBs, SNe, FRBs, GWs with heat decay scores)
+- Full Machine Context: `http://10.131.43.83:4321/llms-full.txt` (Comprehensive taxonomy, research lines, and recent intelligence)
+- OpenAPI Specification: `http://10.131.43.83:4321/openapi.yaml` (OpenAPI 3.1 schema for API consumers)
+- Agent Documentation: `http://10.131.43.83:4321/agent/` (Interactive developer and agent onboarding guide)
 
 ## Research Directions
 1. Central Engines & Energy Injection (中央引擎与能量注入 - R1)

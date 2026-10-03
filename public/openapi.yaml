@@ -4,8 +4,10 @@ info:
   description: Machine-readable API for high-energy astrophysics arXiv preprints, transient event clusters, and evidence-backed reading guides.
   version: 1.0.0
 servers:
+  - url: http://10.131.43.83:4321/api/v1
+    description: AstroLineage API Server (10.131.43.83:4321)
   - url: /api/v1
-    description: AstroLineage Static API v1
+    description: AstroLineage Static API v1 (Relative)
 paths:
   /daily.json:
     get:

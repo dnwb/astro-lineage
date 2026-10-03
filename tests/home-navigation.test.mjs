@@ -143,18 +143,14 @@ test("Home provides the four reader entry areas, projected content, and complete
   const home = await readFile(join(projectRoot, "dist", "index.html"), "utf8");
   assertInOrder(home, [
     "<h1 id=\"home-title\">AstroLineage</h1>",
-    "从这里开始",
-    "基准论文",
-    "科学关联",
+    "基准文献、科学关联与学习路径",
   ], "首页区域");
   assert.match(home, /理解高能瞬变天体物理中的思想如何演化。/u);
-  assert.match(home, /围绕论文、物理关系与学习路径构建的科学阅读地图。/u);
-  assert.match(home, /From Jet Propagation to Dynamic Multi-messenger Yields/u);
-  assertInOrder(home, [
-    "/papers/bromberg-2011/",
-    "/papers/zhu-2021/",
-    "/papers/long-yu-2026/",
-  ], "起始阅读顺序");
+  assert.match(home, /41 篇基准文献/u);
+  assert.match(home, /7 个关键研究方向/u);
+  assert.match(home, /5 条体系化研读路径/u);
+
+  const papersIndex = await readFile(join(projectRoot, "dist", "papers", "index.html"), "utf8");
   for (const title of [
     "I 型超新星：早期光变曲线的解析解",
     "相对论喷流在外部介质中的传播",
@@ -162,15 +158,8 @@ test("Home provides the four reader entry areas, projected content, and complete
     "TransFit：具有时间依赖辐射扩散的瞬变光变曲线高效拟合框架",
     "活动星系核吸积盘中受阻伽马射线暴产生的高能中微子",
   ]) {
-    assert.match(home, new RegExp(title), `Home missing paper ${title}`);
+    assert.match(papersIndex, new RegExp(title), `Papers index missing paper ${title}`);
   }
-  assert.match(home, /41 篇基准论文/u);
-  const homeText = home.replaceAll("&#39;", "'").replaceAll("&amp;", "&");
-  for (const reason of edgeReasons) {
-    assert.equal((homeText.match(new RegExp(reason, "gu")) ?? []).length, 1, reason);
-  }
-  assert.equal((home.match(/>(?:扩展|挑战)</gu) ?? []).length, 2);
-  assert.doesNotMatch(home, /Why next|Pedagogical Transitions|Provenance &amp; scientific evidence/u);
 
   const internalLinks = new Set(
     [...home.matchAll(/href="(\/[^"#?]*)/gu)].map((match) => match[1]),
@@ -182,12 +171,6 @@ test("Home provides the four reader entry areas, projected content, and complete
     "/learning-paths/",
     "/learning-paths/embedded-jet-dynamics/",
     "/learning-paths/baseline-jet-foundations/",
-    "/papers/arnett-1982/",
-    "/papers/blandford-mckee-1976/",
-    "/papers/bromberg-2011/",
-    "/papers/long-yu-2026/",
-    "/papers/transfit-2025/",
-    "/papers/zhu-2021/",
     "/research-lines/baseline-jet-multimessenger/",
   ];
   for (const route of homeLinks) {

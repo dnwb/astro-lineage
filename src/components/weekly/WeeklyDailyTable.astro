@@ -1,0 +1,360 @@
+---
+interface Props {
+  weekDays: Array<{
+    date: string;
+    weekday: string;
+    total_papers: number;
+    must_read_count: number;
+    worth_knowing_count: number;
+    highlights?: Array<{ arxiv_id: string; title?: string; priority?: string }>;
+    brief_intro?: string;
+  }>;
+  latestDailyDate?: string;
+}
+
+const { weekDays, latestDailyDate } = Astro.props;
+---
+
+{weekDays && weekDays.length > 0 && (
+  <section class="weekly-section daily-breakdown-section" id="daily-breakdown" aria-label="本周每日批次与日报归档">
+    <div class="section-heading">
+      <p class="section-kicker"><span class="language-primary">批次目录</span><span class="language-english" lang="en">Daily Directory</span></p>
+      <h2><span class="language-primary">本周每日批次与日报归档</span><span class="language-english" lang="en">Daily Editions in this Week</span></h2>
+    </div>
+    <div class="daily-table-toolbar">
+      <span class="daily-table-meta">收录本周 <strong>{weekDays.length}</strong> 个监测批次</span>
+      <a class="daily-all-archive-link" href="/arxiv-daily/">查看全部历史日报归档 →</a>
+    </div>
+    <div class="daily-breakdown-table-wrap">
+      <table class="daily-breakdown-table">
+        <thead>
+          <tr>
+            <th class="th-date" style="width: 18%;">日期 / 批次</th>
+            <th class="th-stats" style="width: 22%;">监测规模</th>
+            <th class="th-topics" style="width: 45%;">核心看点与代表论文</th>
+            <th class="th-action" style="width: 15%; text-align: right;">直达入口</th>
+          </tr>
+        </thead>
+        <tbody>
+          {weekDays.map((day) => (
+            <tr class={day.date === latestDailyDate ? "row-latest" : ""}>
+              <td class="col-date">
+                <div class="daily-table-date-cell">
+                  <strong class="table-date">{day.date}</strong>
+                  <span class="table-weekday">{day.weekday}</span>
+                  {day.date === latestDailyDate && (
+                    <span class="table-latest-badge">最新</span>
+                  )}
+                </div>
+              </td>
+              <td class="col-stats">
+                <div class="daily-table-stats-cell">
+                  <span class="stat-pill-total">总计 <strong>{day.total_papers}</strong> 篇</span>
+                  <div class="stat-pill-sub-row">
+                    {day.must_read_count > 0 && (
+                      <span class="stat-pill-must">必读 {day.must_read_count}</span>
+                    )}
+                    {day.worth_knowing_count > 0 && (
+                      <span class="stat-pill-worth">关注 {day.worth_knowing_count}</span>
+                    )}
+                  </div>
+                </div>
+              </td>
+              <td class="col-topics">
+                <div class="daily-table-topics-cell">
+                  {day.highlights && day.highlights.length > 0 ? (
+                    <div class="table-highlights-list">
+                      {day.highlights.slice(0, 2).map((h) => (
+                        <div class="table-highlight-row">
+                          <a
+                            class={`table-paper-badge ${h.priority === "must_read" ? "must" : "worth"}`}
+                            href={`https://arxiv.org/abs/${h.arxiv_id}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            title="在 arXiv 查看论文"
+                          >
+                            arXiv:{h.arxiv_id} ↗
+                          </a>
+                          {h.title && (
+                            <span class="table-paper-title" title={h.title}>{h.title}</span>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  ) : day.brief_intro ? (
+                    <p class="table-brief-intro">{day.brief_intro}</p>
+                  ) : (
+                    <span class="table-empty-hint">-</span>
+                  )}
+                </div>
+              </td>
+              <td class="col-action" style="text-align: right;">
+                <a class="daily-table-enter-btn" href={day.date === latestDailyDate ? "/arxiv-daily/" : `/arxiv-daily/${day.date}/`} title={`进入 ${day.date} 当日深度精读雷达`}>
+                  进入当日日报 →
+                </a>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+)}
+
+<style>
+  .daily-breakdown-section {
+    margin: 2.5rem 0;
+  }
+  .section-heading {
+    margin-bottom: 0.75rem;
+  }
+  .section-kicker {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #64748b;
+    margin: 0 0 0.25rem 0;
+  }
+  :global([data-theme="dark"]) .section-kicker {
+    color: #94a3b8;
+  }
+  .daily-table-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+  }
+  .daily-table-meta {
+    font-size: 0.85rem;
+    color: #64748b;
+  }
+  :global([data-theme="dark"]) .daily-table-meta {
+    color: #94a3b8;
+  }
+  .daily-all-archive-link {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #2563eb;
+    text-decoration: none;
+  }
+  .daily-all-archive-link:hover {
+    text-decoration: underline;
+  }
+  :global([data-theme="dark"]) .daily-all-archive-link {
+    color: #60a5fa;
+  }
+  .daily-breakdown-table-wrap {
+    overflow-x: auto;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background: #ffffff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  }
+  :global([data-theme="dark"]) .daily-breakdown-table-wrap {
+    border-color: #334155;
+    background: #1e293b;
+  }
+  .daily-breakdown-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+    text-align: left;
+  }
+  .daily-breakdown-table th {
+    background: #f8fafc;
+    color: #475569;
+    font-weight: 600;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #e2e8f0;
+    white-space: nowrap;
+  }
+  :global([data-theme="dark"]) .daily-breakdown-table th {
+    background: #0f172a;
+    color: #94a3b8;
+    border-bottom-color: #334155;
+  }
+  .daily-breakdown-table td {
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid #f1f5f9;
+    vertical-align: middle;
+  }
+  :global([data-theme="dark"]) .daily-breakdown-table td {
+    border-bottom-color: #334155;
+  }
+  .daily-breakdown-table tbody tr:last-child td {
+    border-bottom: none;
+  }
+  .daily-breakdown-table tbody tr:hover {
+    background: #f8fafc;
+  }
+  :global([data-theme="dark"]) .daily-breakdown-table tbody tr:hover {
+    background: #0f172a88;
+  }
+  .daily-breakdown-table tbody tr.row-latest {
+    background: #f0fdf444;
+  }
+  :global([data-theme="dark"]) .daily-breakdown-table tbody tr.row-latest {
+    background: #064e3b22;
+  }
+  .daily-table-date-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+  .table-date {
+    font-family: monospace;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #0f172a;
+  }
+  :global([data-theme="dark"]) .table-date {
+    color: #f8fafc;
+  }
+  .table-weekday {
+    font-size: 0.75rem;
+    color: #64748b;
+  }
+  :global([data-theme="dark"]) .table-weekday {
+    color: #94a3b8;
+  }
+  .table-latest-badge {
+    display: inline-block;
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: #166534;
+    background: #dcfce7;
+    padding: 0.05rem 0.35rem;
+    border-radius: 4px;
+    align-self: flex-start;
+  }
+  :global([data-theme="dark"]) .table-latest-badge {
+    background: #064e3b;
+    color: #86efac;
+  }
+  .daily-table-stats-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+  .stat-pill-total {
+    font-size: 0.8rem;
+    color: #334155;
+  }
+  :global([data-theme="dark"]) .stat-pill-total {
+    color: #cbd5e1;
+  }
+  .stat-pill-sub-row {
+    display: flex;
+    gap: 0.35rem;
+    flex-wrap: wrap;
+  }
+  .stat-pill-must {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #991b1b;
+    background: #fee2e2;
+    padding: 0.1rem 0.35rem;
+    border-radius: 4px;
+  }
+  :global([data-theme="dark"]) .stat-pill-must {
+    background: #7f1d1d;
+    color: #fca5a5;
+  }
+  .stat-pill-worth {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #92400e;
+    background: #fef3c7;
+    padding: 0.1rem 0.35rem;
+    border-radius: 4px;
+  }
+  :global([data-theme="dark"]) .stat-pill-worth {
+    background: #78350f;
+    color: #fde68a;
+  }
+  .daily-table-topics-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+  .table-highlights-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+  .table-highlight-row {
+    display: flex;
+    align-items: baseline;
+    gap: 0.4rem;
+    font-size: 0.82rem;
+  }
+  .table-paper-badge {
+    font-family: monospace;
+    font-weight: 700;
+    font-size: 0.75rem;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .table-paper-badge.must {
+    color: #dc2626;
+  }
+  .table-paper-badge.worth {
+    color: #d97706;
+  }
+  .table-paper-badge:hover {
+    text-decoration: underline;
+  }
+  .table-paper-title {
+    color: #334155;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 380px;
+  }
+  :global([data-theme="dark"]) .table-paper-title {
+    color: #cbd5e1;
+  }
+  .table-brief-intro {
+    margin: 0;
+    font-size: 0.82rem;
+    color: #475569;
+    line-height: 1.45;
+  }
+  :global([data-theme="dark"]) .table-brief-intro {
+    color: #94a3b8;
+  }
+  .table-empty-hint {
+    color: #94a3b8;
+  }
+  .daily-table-enter-btn {
+    display: inline-block;
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 0.35rem 0.7rem;
+    background: #eff6ff;
+    color: #1d4ed8;
+    border: 1px solid #bfdbfe;
+    border-radius: 6px;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: all 0.15s ease;
+  }
+  .daily-table-enter-btn:hover {
+    background: #2563eb;
+    color: #ffffff;
+    border-color: #2563eb;
+  }
+  :global([data-theme="dark"]) .daily-table-enter-btn {
+    background: #1e3a8a44;
+    color: #93c5fd;
+    border-color: #2563eb;
+  }
+  :global([data-theme="dark"]) .daily-table-enter-btn:hover {
+    background: #2563eb;
+    color: #ffffff;
+  }
+</style>

@@ -82,19 +82,23 @@ const topEvents = (scientificEvents.events || []).slice(0, 5);
 
         <div class="agent-guide-block">
           <h3>1. 在 Cursor / Claude Code 中一键载入</h3>
-          <p>直接在对话框中引用 <code>/llms.txt</code>，即可让 AI 助手掌握天体物理组最新文献脉络：</p>
-          <pre class="agent-code-box"><code>@https://axvdaily.internal/llms.txt 结合最新的 Must Read 论文，总结当前 FRB 磁星模型的新限制</code></pre>
+          <p>直接在对话框中引用 <code>/llms.txt</code>，即可让 AI 助手掌握天体物理组最新文献脉络（当前服务地址 <code>10.131.43.83:4321</code>）：</p>
+          <pre class="agent-code-box"><code>@http://10.131.43.83:4321/llms.txt 结合最新的 Must Read 论文，总结当前 FRB 磁星模型的新限制</code></pre>
 
           <h3>2. 在 Python / 自治智能体中调用 API</h3>
           <pre class="agent-code-box"><code>{`import urllib.request, json
 
 # 获取今日必读文献与证据链
-with urllib.request.urlopen("https://axvdaily.internal/api/v1/daily.json") as resp:
+with urllib.request.urlopen("http://10.131.43.83:4321/api/v1/daily.json") as resp:
     data = json.loads(resp.read().decode())
     must_reads = data["groups"]["must_read"]
     for paper in must_reads:
         print(f"[{paper['arxiv_id']}] {paper['title']}")
         print(f"  核心突破: {paper['analysis']['analysis']['result']}")`}</code></pre>
+
+          <h3>3. cURL 命令行快速测试</h3>
+          <pre class="agent-code-box"><code>curl -s http://10.131.43.83:4321/api/v1/daily.json | jq .
+curl -s http://10.131.43.83:4321/api/v1/events.json | jq .</code></pre>
         </div>
       </section>
 

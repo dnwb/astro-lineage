@@ -2,7 +2,7 @@ import { readFile, mkdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { generateDailyMarkdown, generateWeeklyMarkdown, publishDailyFeed, publishWeeklyFeed, publishHistoricalFeeds, provisionTopicChannels, publishEventRanking } from "../scripts/tencent-channel-publisher.mjs";
+import { generateDailyMarkdown, generateWeeklyMarkdown, publishDailyFeed, publishWeeklyFeed, publishHistoricalFeeds, provisionTopicChannels, publishEventRanking, paperMarkdown, extractPaperTopic, deriveDailyContentTitle, deriveWeeklyContentTitle } from "../scripts/tencent-channel-publisher.mjs";
 import { TOPICS, TOPIC_LABELS, routePaper, hashBody, markerFor } from "../scripts/channel-publication.mjs";
 import { createTemporaryWorkspace } from "./helpers/temporary-workspace.mjs";
 
@@ -17,7 +17,9 @@ test("generateDailyMarkdown generates verified daily briefing aligned with radar
   const daily = await generateDailyMarkdown({ feed: archive.feed, radar: archive.radar });
   assert.equal(daily.batchDate, "2026-09-28");
   assert.ok(daily.highlights.length >= 5);
-  assert.equal(daily.postTitle, "每日导读 · 2026-09-28");
+  assert.equal(daily.postTitle, "SN 2024ggi：ATClean在所有测试高斯核宽下均未发现显著爆前前兆｜09-28");
+  assert.ok(daily.md.startsWith(`# ${daily.postTitle}\n`));
+  assert.match(daily.md, /发布日期：2026-09-28/u);
   assert.ok(daily.md.includes(archive.opening_brief.intro));
   for (const sentence of archive.opening_brief.must_read) assert.ok(daily.md.includes(sentence.text));
   const summary = archive.opening_brief.worth_knowing_summary;
@@ -33,6 +35,115 @@ test("generateDailyMarkdown generates verified daily briefing aligned with radar
   assert.doesNotMatch(daily.md, /2609\.31826/u);
   // Ensure valid site URLs
   assert.match(daily.md, /\/arxiv-daily\/2026-09-28/u);
+});
+
+test("daily titles lead with one work instead of topic lists; weekly titles remain unchanged", () => {
+  const highlights = [
+    { title: "Supernova shock breakout", priority: "worth_knowing" },
+    { title: "Plasma lensing in fast radio bursts", priority: "must_read" },
+    { title: "FRB plasma lensing", priority: "must_read" },
+    { title: "Pulse profiles of accretion columns", priority: "must_read" },
+    { title: "Tidal disruption events", priority: "must_read" },
+  ];
+  assert.equal(deriveDailyContentTitle("2026-10-02", highlights), "Plasma lensing in fast radio bursts｜10-02");
+  assert.equal(deriveDailyContentTitle("2026-10-02", []), "论文更新｜10-02");
+  assert.equal(deriveWeeklyContentTitle("2026-W40", { thematic_highlights: [{ theme_name: "喷流传播：动力学与辐射" }, { theme_name: "喷流传播：其他结果" }, { theme_name: "中微子（候选关联）" }] }), "喷流传播、中微子｜W40");
+  assert.equal(deriveWeeklyContentTitle("2026-W40", {}), "论文更新｜W40");
+});
+
+test("news-style daily titles prefer a reviewed named event and preserve its reported uncertainty", () => {
+  const highlights = [
+    { title: "FRB propagation", analysis: { priority: "must_read", analysis: { result: "透镜模型预言重复爆发的相关时延。" } } },
+    { title: "Observations of SN 2024abc", analysis: { priority: "must_read", analysis: { result: "作者提出可能存在爆前活动，尚不能确认。后续观测仍然必要。" } } },
+  ];
+  const before = JSON.stringify(highlights);
+  assert.equal(deriveDailyContentTitle("2026-10-02", highlights), "SN 2024abc：作者提出可能存在爆前活动，尚不能确认｜10-02");
+  assert.equal(JSON.stringify(highlights), before);
+  const lowerPriority = { ...highlights[1], analysis: { ...highlights[1].analysis, priority: "worth_knowing" } };
+  assert.equal(deriveDailyContentTitle("2026-10-02", [highlights[0], lowerPriority]), "透镜模型预言重复爆发的相关时延｜10-02");
+});
+
+test("daily headlines use the exact version-matched opening highlight without inventing a stronger claim", () => {
+  const paper = { arxiv_id: "2609.12345", revision: 2, title: "GRB 250419A", priority: "must_read", analysis: { result: "模型可合理拟合余辉。" } };
+  const brief = { must_read: [
+    { arxiv_id: paper.arxiv_id, revision: 1, text: "发现全新爆发机制。" },
+    { arxiv_id: paper.arxiv_id, revision: 2, text: "GRB 250419A余辉可由相对论喷流拟合，尚不能区分两种几何。" },
+  ] };
+  const title = deriveDailyContentTitle("2026-10-02", [paper], brief);
+  assert.equal(title, "GRB 250419A余辉可由相对论喷流拟合，尚不能区分两种几何｜10-02");
+  assert.doesNotMatch(title, /发现全新|每日导读|所属分组/u);
+});
+
+test("long result sentences fall back to the named event without clipping conditions", () => {
+  const result = "模型预言" + "限定条件下的计算结果，".repeat(24) + "尚未被观测确认。";
+  const title = deriveDailyContentTitle("2026-10-02", [{ title: "GRB 250419A", priority: "must_read", analysis: { result } }]);
+  assert.equal(title, "GRB 250419A的研究更新｜10-02");
+  assert.ok(Array.from(title).length <= 200);
+});
+
+test("paper titles preserve content without inventing mechanisms from reading reasons or clipping terms", () => {
+  assert.equal(extractPaperTopic({ title: "Dispersion Measure Variability in Fast Radio Bursts" }), "FRB色散量变化");
+  assert.equal(extractPaperTopic({ title: "FRB host environments" }), "FRB环境");
+  assert.equal(extractPaperTopic({ title: "A study of accretion", analysis: { reason: "与组内FRB方向相关" } }), "A study of accretion");
+  const title = "A previously unclassified physical process with a complete technical name";
+  assert.equal(extractPaperTopic({ title }), title);
+  const item = { arxiv_id: "2609.12345", revision: 1, title: "Shock breakout in circumstellar material", analysis: { priority: "must_read", coverage: {}, analysis: { problem: "致密星周介质中的激波突破", result: "作者报告的结果", reason: "与组内研究相关" } } };
+  const before = JSON.stringify(item);
+  const markdown = paperMarkdown(item, "2026-10-02", { primary: "R3", related: [] });
+  assert.equal(markdown.split("\n")[0], "# 致密星周介质中的激波突破");
+  assert.ok(markdown.includes(`原标题：${item.title}`));
+  assert.equal(JSON.stringify(item), before);
+});
+
+test("papers in the same section have work-specific titles rather than a shared category name", () => {
+  const make = (problem, title) => ({ arxiv_id: "2609.12345", revision: 1, title,
+    analysis: { priority: "must_read", coverage: {}, analysis: { problem, result: "作者报告的结果。" } } });
+  const first = make("重复FRB的色散量变化是否来自光致电离？", "Dispersion measure changes in fast radio bursts");
+  const second = make("如何利用重复FRB检验等离子体透镜模型？", "Plasma lensing in fast radio bursts");
+  const titles = [first, second].map(item => paperMarkdown(item, "2026-10-02", { primary: "R5", related: [] }).split("\n")[0]);
+  assert.deepEqual(titles, ["# 重复FRB的色散量变化是否来自光致电离？", "# 如何利用重复FRB检验等离子体透镜模型？"]);
+  assert.notEqual(titles[0], titles[1]);
+  const noProblem = make("", "A specific FRB paper title");
+  assert.equal(paperMarkdown(noProblem, "2026-10-02", { primary: "R5", related: [] }).split("\n")[0], "# A specific FRB paper title");
+});
+
+test("paper cards separate contextual numerical results and collect links at the end", () => {
+  const item = { arxiv_id: "2609.13540", revision: 1, title: "Shock breakout in circumstellar material", authors: ["Example Author"], analysis: { priority: "must_read", coverage: { label: "全文" }, analysis: { problem: "研究受限星周介质中的激波突破。", result: "在受限星周介质模型中，峰值光度为 1.43–3.15 × 10^44 erg/s，持续 4.1–35.4 小时。模型中的辐射前驱体预加速周围介质。", reason: "与组内 R3 的激波突破工作相关。", limits: ["这些数值限于本文采用的模型参数。"], unresolved_checks: ["未独立复算。"] } } };
+  const before = JSON.stringify(item);
+  const md = paperMarkdown(item, "2026-09-14", { primary: "R3", related: [] });
+  assert.match(md, /## 核心结果/u);
+  assert.match(md, /## 关键数据/u);
+  assert.ok(md.includes("在受限星周介质模型中，峰值光度为 1.43–3.15 × 10^44 erg/s，持续 4.1–35.4 小时。"));
+  assert.ok(md.indexOf("核心结果") < md.indexOf("关键数据"));
+  assert.ok(md.indexOf("关键数据") < md.indexOf("阅读关联"));
+  assert.ok(md.indexOf("这些数值限于本文采用的模型参数。") < md.indexOf("阅读入口"));
+  assert.equal((md.match(/https?:\/\//gu) || []).length, 2);
+  assert.ok(md.indexOf("https://arxiv.org") > md.indexOf("阅读入口"));
+  assert.doesNotMatch(md, /<details|@img|关键图/u);
+  assert.equal(JSON.stringify(item), before);
+  const shorter = paperMarkdown({ ...item, analysis: { ...item.analysis, priority: "worth_knowing" } }, "2026-09-14", { primary: "R3", related: [] });
+  assert.match(shorter, /\*\*关注\*\*/u);
+  assert.doesNotMatch(shorter, /## 关键数据/u);
+  assert.ok(shorter.length < md.length);
+});
+
+test("bibliographic years and figure numbers are not promoted to numerical measurements", () => {
+  const item = { arxiv_id: "2609.12345", revision: 1, title: "FRB environments", analysis: { priority: "must_read", coverage: {}, analysis: { problem: "研究FRB环境。", result: "作者对照了 2021 年的模型和图 3。结果不支持这一解释。", reason: "相关研究。" } } };
+  const md = paperMarkdown(item, "2026-09-14", { primary: "R5", related: [] });
+  assert.doesNotMatch(md, /## 关键数据/u);
+  assert.ok(md.includes("结果不支持这一解释。"));
+});
+
+test("single-paper cards do not display routing groups in the header or add classification lines", () => {
+  const item = { arxiv_id: "2609.12345", revision: 1, title: "Shock breakout", authors: ["Example Author"],
+    analysis: { priority: "must_read", coverage: {}, analysis: { problem: "研究激波突破。", result: "作者报告的结果。", reason: "与此前的激波模型相关。" } } };
+  const topic = { primary: "R3", related: ["R2"] };
+  const original = JSON.stringify({ item, topic });
+  const text = paperMarkdown(item, "2026-10-02", topic);
+  assert.equal(text.split("\n")[2], "**必读** · Example Author");
+  assert.doesNotMatch(text, /所属分组|相关主题：|待分类/u);
+  assert.equal(text, paperMarkdown(item, "2026-10-02", { primary: "R1", related: [] }));
+  assert.equal(JSON.stringify({ item, topic }), original);
 });
 
 function fakeCli() {
@@ -712,7 +823,8 @@ test("generateWeeklyMarkdown generates verified weekly summary aligned with week
   const archive = JSON.parse(await readFile(new URL("../src/data/arxiv-archives/weekly/2026-W40.json", import.meta.url), "utf8"));
   const weekly = await generateWeeklyMarkdown({ weekly: archive });
   assert.equal(weekly.weekId, "2026-W40");
-  assert.equal(weekly.postTitle, "每周摘要 · 2026-W40");
+  assert.equal(weekly.postTitle, "磁星环境、超新星因果链｜W40");
+  assert.ok(weekly.md.startsWith(`# ${weekly.postTitle}\n`));
   // Enforce content-based title rather than generic filler
   assert.doesNotMatch(weekly.postTitle, /高能天体物理学术脉络总结/u);
   assert.ok(weekly.md.includes(archive.executive_summary));
@@ -766,6 +878,43 @@ test("normal daily update includes one website-aligned brief and readable paper 
   assert.equal(reentry.published + reentry.updated, 0);
 });
 
+test("reader expands group direction references only in reading reason, preserving scientific model labels and source", () => {
+  const item = { arxiv_id: "2609.22426", revision: 1, title: "Engine", analysis: { priority: "must_read", coverage: {}, analysis: { problem: "研究引擎", result: "高速度遭遇模型R4中的黑洞。", reason: "核心关联 R1 中的引擎和 R2 中的喷流，涉及 R1–R7 核心方向。", unresolved_checks: ["R2 marks the flare"] } } };
+  const original = JSON.stringify(item);
+  const text = paperMarkdown(item, "2026-09-21", { primary: "R1", related: [] });
+  assert.ok(text.includes("核心关联 中央引擎与能量注入 中的引擎和 伽马射线暴与相对论喷流 中的喷流，涉及 课题组各研究方向 核心方向。"));
+  assert.ok(text.includes("高速度遭遇模型R4中的黑洞。"));
+  assert.ok(text.includes("R2 marks the flare"));
+  assert.equal(JSON.stringify(item), original);
+});
+
+test("current brief uses its built dated archive so backfill and normal delivery do not oscillate", async (t) => {
+  const { path } = await createTemporaryWorkspace("astro-lineage-channel-brief-source-", t);
+  const archive = JSON.parse(await readFile(new URL("../src/data/arxiv-archives/daily/2026-09-28.json", import.meta.url), "utf8"));
+  const edition = structuredClone(archive);
+  archive.opening_brief.intro += " 本期归档导读。";
+  archive.radar.opening_brief.intro = archive.opening_brief.intro;
+  const archiveRoot = join(path, "archive"); await mkdir(archiveRoot);
+  const bytes = JSON.stringify(archive); await writeFile(join(archiveRoot, "2026-09-28.json"), bytes);
+  const distRoot = join(path, "dist");
+  const page = join(distRoot, "arxiv-daily/2026-09-28"); await mkdir(page, { recursive: true }); await writeFile(join(page, "index.html"), "built dated archive");
+  const sourceBinding = fixtureBinding({ archives: { "2026-09-28": hashBody(bytes) } });
+  sourceBinding.daily.hash = hashBody(JSON.stringify({ feed: edition.feed, radar: edition.radar }));
+  sourceBinding.id = hashBody(JSON.stringify({ daily: sourceBinding.daily, weekly: sourceBinding.weekly, archives: sourceBinding.archives }));
+  const remote = fakeCli();
+  const options = { archiveRoot, distRoot, cacheRoot: join(path, "cache"), guildId: "test", cli: remote.cli, sourceBinding, channelIds: Object.fromEntries(TOPICS.map(([key]) => [key, key])), channelId: "brief" };
+  assert.equal((await publishHistoricalFeeds({ ...options, briefs: true })).published, 1);
+  const daily = { ...options, includeBrief: true, dailyChannelId: "brief", readEdition: async () => ({ feed: edition.feed, radar: edition.radar, generation_id: sourceBinding.daily.generation_id, pointer: {} }) };
+  const current = await publishDailyFeed(daily);
+  assert.equal(current.updated, 0);
+  assert.ok(remote.feeds.find(f => f.channel_id === "brief").markdown_content.includes(archive.opening_brief.intro));
+  assert.equal((await publishHistoricalFeeds({ ...options, briefs: true })).unchanged, 1);
+  await writeFile(join(archiveRoot, "2026-09-28.json"), bytes + "\n");
+  const stale = await publishDailyFeed(daily);
+  assert.ok(stale.errors.includes("CHANNEL_SOURCE_BUILD_MISMATCH"));
+  assert.ok(stale.pending_items.some(x => x.identity === "daily-summary:2026-09-28"));
+});
+
 test("event chart is source-bound, capped at five and updates one persistent identity", async (t) => {
   const { path } = await createTemporaryWorkspace("astro-lineage-channel-events-", t);
   const eventsPath = join(path, "events.json");
@@ -774,6 +923,7 @@ test("event chart is source-bound, capped at five and updates one persistent ide
   const remote = fakeCli();
   const options = { sourceBinding: fixtureBinding(), eventSnapshot: await save(), eventsPath, channelId: "brief", cacheRoot: join(path, "cache"), guildId: "test", cli: remote.cli };
   assert.equal((await publishEventRanking(options)).published, 1);
+  assert.equal(remote.feeds[0].title, "瞬变源 Top 5");
   assert.equal((remote.feeds[0].markdown_content.match(/^## /gmu) || []).length, 5);
   assert.doesNotMatch(remote.feeds[0].markdown_content, /SN 20265/u);
   assert.equal((await publishEventRanking(options)).unchanged, 1);

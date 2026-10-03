@@ -1,0 +1,321 @@
+---
+import ReaderText from "../ReaderText.astro";
+import { radarCardAnchor } from "../../../scripts/daily-radar.mjs";
+
+interface Props {
+  matrixRows: any[];
+  paperDailyDateMap: Map<string, string>;
+}
+
+const { matrixRows, paperDailyDateMap } = Astro.props;
+
+function parseAssertionLine(line: string) {
+  const match = line.match(/^[-*]?\s*【arXiv:(\d{4}\.\d{4,5}[a-z]?(?:v\d+)?)】(?:\(([^)]+)\))?[：:]?\s*(.+)$/i);
+  if (match) {
+    return {
+      arxivId: match[1],
+      author: match[2] || "",
+      claim: match[3],
+    };
+  }
+  return {
+    arxivId: null,
+    author: "",
+    claim: line.replace(/^[-*]\s*/, ""),
+  };
+}
+---
+
+{matrixRows && matrixRows.length > 0 && (
+  <div class="executive-matrix-wrap">
+    <div class="matrix-header-group">
+      <h3 class="matrix-title">📊 物理前沿专题与核心突破全景矩阵 (Domain Breakdown Matrix)</h3>
+    </div>
+    <div class="table-responsive">
+      <table class="weekly-overview-table">
+        <thead>
+          <tr>
+            <th scope="col" style="width: 22%;">物理方向 / 领域</th>
+            <th scope="col" style="width: 26%;">核心科学争论 / 关键问题</th>
+            <th scope="col" style="width: 52%;">本周关键观测 / 理论断言与机制启示</th>
+          </tr>
+        </thead>
+        <tbody>
+          {matrixRows.map((row: any) => {
+            const rawFindings = row.core_findings || row.main_findings || row.summary || "";
+            const findingLines = rawFindings.split("\n").map((s: string) => s.trim()).filter(Boolean);
+            const hasBullets = findingLines.some((l: string) => l.startsWith("- ") || l.includes("【arXiv:"));
+            return (
+              <tr>
+                <td class="col-domain"><strong>{row.domain}</strong></td>
+                <td class="col-question"><ReaderText text={row.key_question || "关键物理问题探讨"} /></td>
+                <td class="col-findings">
+                  {hasBullets ? (
+                    <div class="matrix-findings-list">
+                      {findingLines.map((line: string) => {
+                        const parsed = parseAssertionLine(line);
+                        const dailyDate = parsed.arxivId ? paperDailyDateMap.get(parsed.arxivId) : null;
+                        return (
+                          <div class="matrix-assertion-cardlet">
+                            {parsed.arxivId && (
+                              <div class="matrix-assertion-badge-row">
+                                <span class="assertion-paper-pill">
+                                  <a href={`https://arxiv.org/abs/${parsed.arxivId}`} target="_blank" rel="noopener noreferrer">
+                                    arXiv:{parsed.arxivId} ↗
+                                  </a>
+                                </span>
+                                {parsed.author && <span class="assertion-author-pill">{parsed.author}</span>}
+                                {dailyDate && (
+                                  <a class="assertion-daily-pill" href={`/arxiv-daily/${dailyDate}/#${radarCardAnchor(parsed.arxivId, 1)}`} title={`跳转至 ${dailyDate} 该篇精读导读与证据`}>
+                                    📅 {dailyDate} 精读 →
+                                  </a>
+                                )}
+                              </div>
+                            )}
+                            <div class="matrix-assertion-text">
+                              <ReaderText text={parsed.claim} />
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <div class="matrix-finding-text">
+                      <ReaderText text={rawFindings} />
+                    </div>
+                  )}
+                  {row.significance ? (
+                    <div class="row-significance">
+                      <span class="significance-tag">物理机制启示</span>
+                      <ReaderText text={row.significance} />
+                    </div>
+                  ) : null}
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  </div>
+)}
+
+<style>
+  .executive-matrix-wrap {
+    margin-top: 1.75rem;
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  }
+  :global([data-theme="dark"]) .executive-matrix-wrap {
+    background: #1e293b;
+    border-color: #334155;
+  }
+  .matrix-header-group {
+    margin-bottom: 1rem;
+  }
+  .matrix-title {
+    margin: 0 0 0.35rem 0;
+    font-size: 1.15rem;
+    color: #0f172a;
+    font-weight: 700;
+  }
+  :global([data-theme="dark"]) .matrix-title {
+    color: #f8fafc;
+  }
+  .table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .weekly-overview-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+    text-align: left;
+    min-width: 800px;
+  }
+  .weekly-overview-table th {
+    background: #f1f5f9;
+    color: #334155;
+    font-weight: 600;
+    padding: 0.75rem 0.85rem;
+    border-bottom: 2px solid #cbd5e1;
+  }
+  :global([data-theme="dark"]) .weekly-overview-table th {
+    background: #0f172a;
+    color: #cbd5e1;
+    border-bottom-color: #334155;
+  }
+  .weekly-overview-table td {
+    padding: 0.85rem 0.85rem;
+    border-bottom: 1px solid #e2e8f0;
+    vertical-align: top;
+    line-height: 1.55;
+    color: #1e293b;
+  }
+  :global([data-theme="dark"]) .weekly-overview-table td {
+    border-bottom-color: #334155;
+    color: #e2e8f0;
+  }
+  .weekly-overview-table tr:hover {
+    background: #f8fafc;
+  }
+  :global([data-theme="dark"]) .weekly-overview-table tr:hover {
+    background: #1e293b80;
+  }
+  .col-domain {
+    color: #1e40af;
+    font-weight: 600;
+  }
+  :global([data-theme="dark"]) .col-domain {
+    color: #60a5fa;
+  }
+  .col-question {
+    color: #334155;
+  }
+  :global([data-theme="dark"]) .col-question {
+    color: #94a3b8;
+  }
+  .col-findings {
+    color: #0f172a;
+  }
+  :global([data-theme="dark"]) .col-findings {
+    color: #f8fafc;
+  }
+  .matrix-findings-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .matrix-assertion-cardlet {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-left: 3px solid #3b82f6;
+    border-radius: 6px;
+    padding: 0.55rem 0.7rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    transition: all 0.15s ease;
+  }
+  .matrix-assertion-cardlet:hover {
+    background: #eff6ff;
+    border-color: #bfdbfe;
+    border-left-color: #2563eb;
+  }
+  :global([data-theme="dark"]) .matrix-assertion-cardlet {
+    background: #0f172a;
+    border-color: #334155;
+    border-left-color: #3b82f6;
+  }
+  :global([data-theme="dark"]) .matrix-assertion-cardlet:hover {
+    background: #1e293b;
+    border-color: #475569;
+    border-left-color: #60a5fa;
+  }
+  .matrix-assertion-badge-row {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    flex-wrap: wrap;
+  }
+  .assertion-paper-pill a {
+    display: inline-block;
+    font-family: monospace;
+    font-size: 0.76rem;
+    font-weight: 700;
+    color: #1d4ed8;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    padding: 0.1rem 0.35rem;
+    border-radius: 4px;
+    text-decoration: none;
+  }
+  .assertion-paper-pill a:hover {
+    background: #dbeafe;
+    color: #1e40af;
+  }
+  :global([data-theme="dark"]) .assertion-paper-pill a {
+    color: #93c5fd;
+    background: #1e3a8a;
+    border-color: #2563eb;
+  }
+  .assertion-author-pill {
+    display: inline-block;
+    font-size: 0.74rem;
+    font-weight: 600;
+    color: #475569;
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    padding: 0.1rem 0.4rem;
+    border-radius: 4px;
+  }
+  :global([data-theme="dark"]) .assertion-author-pill {
+    color: #cbd5e1;
+    background: #334155;
+    border-color: #475569;
+  }
+  .assertion-daily-pill {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #15803d;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    padding: 0.1rem 0.4rem;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: all 0.15s ease;
+  }
+  .assertion-daily-pill:hover {
+    background: #dcfce7;
+    color: #14532d;
+  }
+  :global([data-theme="dark"]) .assertion-daily-pill {
+    color: #86efac;
+    background: #064e3b;
+    border-color: #047857;
+  }
+  .matrix-assertion-text {
+    font-size: 0.88rem;
+    line-height: 1.55;
+    color: #1e293b;
+  }
+  :global([data-theme="dark"]) .matrix-assertion-text {
+    color: #e2e8f0;
+  }
+  .matrix-finding-text {
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: #1e293b;
+  }
+  :global([data-theme="dark"]) .matrix-finding-text {
+    color: #e2e8f0;
+  }
+  .row-significance {
+    margin-top: 0.5rem;
+    font-size: 0.82rem;
+    color: #475569;
+    background: #f8fafc;
+    padding: 0.35rem 0.55rem;
+    border-radius: 4px;
+    border-left: 3px solid #3b82f6;
+  }
+  :global([data-theme="dark"]) .row-significance {
+    background: #0f172a;
+    color: #94a3b8;
+    border-left-color: #2563eb;
+  }
+  .significance-tag {
+    display: inline-block;
+    font-weight: 600;
+    color: #2563eb;
+    margin-right: 0.35rem;
+  }
+  :global([data-theme="dark"]) .significance-tag {
+    color: #60a5fa;
+  }
+</style>

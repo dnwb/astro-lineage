@@ -8,6 +8,39 @@ import { createTemporaryWorkspace } from "./helpers/temporary-workspace.mjs";
 
 const URL = "https://notebook.google.com/notebook/11111111-1111-4111-8111-111111111111";
 
+test("group completion summaries run after independent channel and notebook outcomes", async (t) => {
+  const options = await workspace(t);
+  const buildId = "group-summary-build-123";
+  const capture = async () => ({ id: "a".repeat(64) });
+  await captureBuildSources({ cache: options.cache, buildId, capture });
+  await recordWebsiteBuild({ cache: options.cache, buildId, capture, eventsPath: null });
+  await exportNotebookPages({ ...options, buildId });
+  const seen = [];
+  const result = await deliverPublication({ cache: options.cache, buildId, kinds: ["daily", "weekly"], channel: async kind => ({ success: kind === "weekly", pending: kind === "daily" ? 1 : 0 }), notebookSync: async () => ({ status: "success" }), groupNotifier: async input => { seen.push(input); return { status: "waiting_permission", targets: { daily: { status: "waiting_permission" }, weekly: { status: "waiting_permission" } } }; } });
+  assert.equal(seen.length, 1);
+  assert.deepEqual(seen[0].kinds, ["daily", "weekly"]);
+  assert.equal(seen[0].delivery.channel.daily.status, "failed");
+  assert.equal(seen[0].delivery.channel.weekly.status, "success");
+  assert.equal(seen[0].delivery.notebooklm.status, "success");
+  assert.equal(result.qq.targets.weekly.status, "waiting_permission");
+});
+
+test("group notification failure never blocks website, channel or NotebookLM and diagnostics stay private", async (t) => {
+  const options = await workspace(t);
+  const buildId = "group-summary-failure-123";
+  const capture = async () => ({ id: "a".repeat(64) });
+  await captureBuildSources({ cache: options.cache, buildId, capture });
+  await recordWebsiteBuild({ cache: options.cache, buildId, capture, eventsPath: null });
+  await exportNotebookPages({ ...options, buildId });
+  const result = await deliverPublication({ cache: options.cache, buildId, channel: async () => ({ success: true }), notebookSync: async () => ({ status: "success" }), groupNotifier: async () => { throw new Error("private token error"); } });
+  assert.equal(result.website.status, "success");
+  assert.equal(result.channel.daily.status, "success");
+  assert.equal(result.notebooklm.status, "success");
+  assert.equal(result.qq.status, "blocked");
+  assert.equal(result.qq.code, "QQ_NOTIFY_DELIVERY_FAILED");
+  assert.doesNotMatch(JSON.stringify(result), /private token/);
+});
+
 async function workspace(t) {
   const { path } = await createTemporaryWorkspace("astro-lineage-notebook-test-", t);
   const dist = resolve(path, "dist"), cache = resolve(path, "cache");
@@ -138,7 +171,8 @@ test("channel and notebook failures are independent; QQ remains permission-block
   const { build_id: buildId } = await exportNotebookPages(options);
   const status = await deliverPublication({ cache: options.cache, buildId, kinds: ["daily", "weekly"],
     channel: async (kind) => { if (kind === "daily") throw new Error("bad"); return '{"success":true}'; },
-    notebookSync: async () => ({ status: "blocked", errors: [{ code: "NOTEBOOKLM_AUTH_REQUIRED" }] }) });
+    notebookSync: async () => ({ status: "blocked", errors: [{ code: "NOTEBOOKLM_AUTH_REQUIRED" }] }),
+    groupNotifier: async () => ({ status: "waiting_permission" }) });
   assert.equal(status.website.status, "success");
   assert.equal(status.channel.daily.status, "failed");
   assert.equal(status.channel.weekly.status, "success");

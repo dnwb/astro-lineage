@@ -13,10 +13,14 @@
 import { existsSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { resolve } from "node:path";
+import { readFile, mkdir, chmod, stat } from "node:fs/promises";
+import { createHash } from "node:crypto";
 import { defaultUserManager } from "./qq-users.mjs";
 import { sendProactiveC2CMessage, sendProactiveGroupMessage } from "./qq-official-bot.mjs";
-import { readPublishedArxivEdition } from "./arxiv-daily.mjs";
-import { buildDailyRadarModel } from "./daily-radar.mjs";
+import { readPublishedArxivEdition, acquireRefreshLock, releaseRefreshLock, writeJsonAtomically } from "./arxiv-daily.mjs";
+import { validateDailyRadarPayload } from "./daily-radar.mjs";
+import { hashBody, readDailyArchive, readChannelShareUrl } from "./channel-publication.mjs";
+import { extractPaperTopic, deriveDailyContentTitle, deriveWeeklyContentTitle, readingExcerpt } from "./tencent-channel-publisher.mjs";
 
 try {
   if (typeof process.loadEnvFile === "function" && existsSync(".env")) {
@@ -24,76 +28,145 @@ try {
   }
 } catch {}
 
-export async function generateGroupBrief(type = "daily") {
-  if (type === "weekly") {
-    const weekly = JSON.parse(readFileSync("src/data/arxiv-weekly.json", "utf8"));
-    const topPicks = weekly.top_picks || [];
-    const lines = [
-      `📢 【AstroLineage 每周学术脉络简报】`,
-      `周期：${weekly.week_id} (${weekly.date_range})`,
-      `本周收录已研判论文：${weekly.statistics?.total_analyzed ?? 0} 篇（精读 ${weekly.statistics?.must_read_count ?? 0} 篇，关注 ${weekly.statistics?.worth_knowing_count ?? 0} 篇）`,
-      ``,
-      `🎯 本周重点精选工作：`,
-    ];
-    for (const p of topPicks.slice(0, 5)) {
-      lines.push(`• [${p.priority === "must_read" ? "必读" : "关注"}] arXiv:${p.arxiv_id}`);
-      lines.push(`  ${p.title}`);
-      if (p.core_insight) lines.push(`  突破：${p.core_insight}`);
+export async function generateGroupBrief(type = "daily", options = {}) {
+  if (!["daily", "weekly"].includes(type)) throw new Error("QQ_NOTIFY_KIND_INVALID");
+  let { dailyModel: model, weekly, date, sourceBinding, channelUrl } = options;
+  let publicationHash;
+  const websiteBase = (options.websiteBase || process.env.SITE_BASE_URL || process.env.ASTRO_SITE_URL || "http://10.131.43.83:4321").replace(/\/+$/u, "");
+  if (!(type === "daily" ? model : weekly)) {
+    if (!sourceBinding) {
+      const website = JSON.parse(await readFile(".cache/notebooklm/website.json", "utf8"));
+      if (website.status !== "success") throw new Error("QQ_SOURCE_BUILD_REQUIRED");
+      sourceBinding = website.source_binding;
     }
-    lines.push(``);
-    lines.push(`📖 完整结构化周报与全景矩阵：`);
-    lines.push(`http://10.131.43.83:4321/arxiv-weekly/${weekly.week_id}/`);
-    return lines.join("\n");
-  } else {
-    let feed, radar;
-    try {
-      const published = await readPublishedArxivEdition();
-      feed = published?.feed;
-      radar = published?.radar;
-    } catch {}
-    feed ||= JSON.parse(readFileSync("src/data/arxiv-daily.json", "utf8"));
-    radar ||= JSON.parse(readFileSync("src/data/daily-radar.json", "utf8"));
-    const model = buildDailyRadarModel(feed, radar);
-    const date = radar.edition?.window?.announcement_date || feed.window?.announcement_date || new Date().toISOString().slice(0, 10);
-    const mr = model.groups.must_read;
-    const wk = model.groups.worth_knowing;
-    const skip = model.groups.skip;
-    const total = (feed.entries || []).length;
-    const feedMap = new Map((feed.entries || []).map((e) => [e.arxiv_id, e]));
-
-    const lines = [
-      `📅 【AstroLineage 每日学术导读简报】`,
-      `批次：${date} (${total} 篇候选)`,
-      `研判分布：必读 ${mr.length} 篇 | 重点追踪 ${wk.length} 篇 | 快速浏览 ${skip.length} 篇`,
-      ``,
-    ];
-
-    if (mr.length > 0) {
-      lines.push(`🔥 必读论文推荐：`);
-      for (const a of mr.slice(0, 4)) {
-        const entry = feedMap.get(a.arxiv_id);
-        const guide = a.analysis?.analysis || a.analysis || {};
-        lines.push(`• arXiv:${a.arxiv_id} - ${entry?.title || ""}`);
-        if (guide.result) lines.push(`  结论：${guide.result.slice(0, 85)}...`);
+    const { daily, weekly: weeklyBinding, archives, id } = sourceBinding || {};
+    if (!daily?.generation_id || !weeklyBinding?.hash || !archives || hashBody(JSON.stringify({ daily, weekly: weeklyBinding, archives })) !== id) throw new Error("QQ_SOURCE_BUILD_REQUIRED");
+    if (type === "weekly") {
+      const weeklyPath = options.weeklyPath || "src/data/arxiv-weekly.json";
+      if ((await stat(weeklyPath)).size > 20_000_000) throw new Error("QQ_SOURCE_INVALID");
+      const bytes = await readFile(weeklyPath);
+      if (hashBody(bytes) !== weeklyBinding.hash) throw new Error("QQ_SOURCE_BUILD_MISMATCH");
+      weekly = JSON.parse(bytes);
+      publicationHash = weeklyBinding.hash;
+    } else {
+      const published = await (options.readEdition || readPublishedArxivEdition)();
+      if (published.generation_id !== daily.generation_id || hashBody(JSON.stringify({ feed: published.feed, radar: published.radar })) !== daily.hash) throw new Error("QQ_SOURCE_BUILD_MISMATCH");
+      date = published.feed.window?.announcement_date;
+      if (!/^\d{4}-\d\d-\d\d$/u.test(date || "")) throw new Error("QQ_SOURCE_INVALID");
+      if (archives[date]) {
+        const path = resolve(options.archiveRoot || "src/data/arxiv-archives/daily", `${date}.json`);
+        const bytes = await readFile(path);
+        if (hashBody(bytes) !== archives[date]) throw new Error("QQ_SOURCE_BUILD_MISMATCH");
+        model = await readDailyArchive(path, date, options.distRoot || "dist", bytes);
+        publicationHash = archives[date];
+      } else {
+        const checked = validateDailyRadarPayload(published.feed, published.radar);
+        if (!checked.valid) throw new Error("QQ_SOURCE_INVALID");
+        model = checked.model;
+        publicationHash = daily.hash;
       }
-      lines.push(``);
     }
-
-    if (wk.length > 0 && mr.length < 3) {
-      lines.push(`💡 重点追踪：`);
-      for (const a of wk.slice(0, 3)) {
-        const entry = feedMap.get(a.arxiv_id);
-        const guide = a.analysis?.analysis || a.analysis || {};
-        lines.push(`• arXiv:${a.arxiv_id} - ${entry?.title || ""}`);
-        if (guide.result) lines.push(`  要点：${guide.result.slice(0, 75)}...`);
-      }
-      lines.push(``);
-    }
-
-    lines.push(`🌐 校园网完整导读与科学证据：`);
-    lines.push(`http://10.131.43.83:4321/arxiv-daily/${date}/`);
-    return lines.join("\n");
   }
+  channelUrl = await readChannelShareUrl({ url: channelUrl || process.env.ASTRO_CHANNEL_URL });
+  let channelAddress, readerAddress;
+  try { channelAddress = new URL(channelUrl); readerAddress = new URL(websiteBase); } catch { throw new Error("QQ_CHANNEL_LINK_REQUIRED"); }
+  if (channelAddress.protocol !== "https:" || channelAddress.hostname !== "pd.qq.com" || channelAddress.username || channelAddress.password) throw new Error("QQ_CHANNEL_LINK_REQUIRED");
+  if (!["http:", "https:"].includes(readerAddress.protocol) || readerAddress.username || readerAddress.password || readerAddress.search || readerAddress.hash) throw new Error("QQ_SOURCE_INVALID");
+  const lines = [];
+  if (type === "weekly") {
+    if (!/^\d{4}-W\d\d$/u.test(weekly.week_id || "") || !weekly.executive_summary) throw new Error("QQ_SOURCE_INVALID");
+    lines.push(deriveWeeklyContentTitle(weekly.week_id, weekly), weekly.date_range || "", "", readingExcerpt(weekly.executive_summary), "");
+    for (const pick of (weekly.top_picks || []).slice(0, 3)) {
+      if (!/^\d{4}\.\d{4,5}$/u.test(pick.arxiv_id || "")) throw new Error("QQ_SOURCE_INVALID");
+      const revision = pick.revision || weekly.papers?.find(p => p.arxiv_id === pick.arxiv_id)?.revision;
+      const suffix = Number.isSafeInteger(revision) && revision > 0 ? `v${revision}` : "";
+      const paperObj = weekly.papers?.find(p => p.arxiv_id === pick.arxiv_id);
+      const authors = paperObj?.authors || pick.authors;
+      const authorStr = Array.isArray(authors) && authors.length > 0 ? (authors.length > 2 ? `${authors[0]} 等` : authors.join(", ")) : "";
+      const authorSuffix = authorStr ? ` (${authorStr})` : "";
+      lines.push(`• ${pick.priority === "must_read" ? "必读" : "关注"}｜${extractPaperTopic(pick)}${authorSuffix}`, readingExcerpt(pick.reason || pick.recommendation_reason || pick.core_insight), `原文：https://arxiv.org/abs/${pick.arxiv_id}${suffix}`, "");
+    }
+  } else {
+    if (!/^\d{4}-\d\d-\d\d$/u.test(date || "") || model.opening_brief?.status !== "ready") throw new Error("QQ_SOURCE_INVALID");
+    const papers = [...model.groups.must_read, ...model.groups.worth_knowing];
+    lines.push(deriveDailyContentTitle(date, papers, model.opening_brief), date, "", model.opening_brief.intro, "");
+    for (const sentence of model.opening_brief.must_read.slice(0, 3)) {
+      const paper = model.groups.must_read.find(p => p.arxiv_id === sentence.arxiv_id && p.revision === sentence.revision);
+      if (!paper) throw new Error("QQ_SOURCE_INVALID");
+      const authors = paper.entry?.authors;
+      const authorStr = Array.isArray(authors) && authors.length > 0 ? (authors.length > 2 ? `${authors[0]} 等` : authors.join(", ")) : "";
+      const authorSuffix = authorStr ? ` (${authorStr})` : "";
+      lines.push(`• 必读｜${extractPaperTopic(paper)}${authorSuffix}`, sentence.text, `原文：https://arxiv.org/abs/${paper.arxiv_id}v${paper.revision}`, "");
+    }
+    if (model.groups.worth_knowing.length && model.opening_brief.worth_knowing_summary) lines.push("其他关注", readingExcerpt(model.opening_brief.worth_knowing_summary), "");
+  }
+  const channelState = options.delivery?.channel?.[type]?.status;
+  if (channelState && !["success", "skipped"].includes(channelState)) lines.push("频道部分内容待同步；以下网页导读已发布。", "");
+  if (options.delivery?.notebooklm?.status && options.delivery.notebooklm.status !== "success") lines.push("NotebookLM 同步待恢复。", "");
+  const route = type === "weekly" ? `arxiv-weekly/${weekly.week_id}` : `arxiv-daily/${date}`;
+  lines.push("频道讨论", channelUrl, "", "完整导读 · 图表、推导与证据", `${websiteBase}/${route}/`);
+  const text = lines.filter(line => line !== undefined).join("\n");
+  if (Buffer.byteLength(text) > 12_000) throw new Error("QQ_NOTIFY_CONTENT_LIMIT");
+  return options.withSourceIdentity ? { content: text, publicationHash } : text;
+}
+
+export async function notifyGroupPublication({ kinds, sourceBinding, delivery, cache = ".cache/notebooklm/qq-notifications", enabled = process.env.QQ_GROUP_NOTIFY_ENABLED === "true", groupOpenid = process.env.QQ_NOTIFY_GROUP_OPENID, brief = generateGroupBrief, send = sendProactiveGroupMessage } = {}) {
+  if (!Array.isArray(kinds) || !kinds.length || kinds.some(kind => !["daily", "weekly"].includes(kind)) || new Set(kinds).size !== kinds.length) throw new Error("QQ_NOTIFY_KIND_INVALID");
+  const targets = {}, outbox = {};
+  await mkdir(cache, { recursive: true, mode: 0o700 });
+  const lock = resolve(cache, "notify.lock");
+  await acquireRefreshLock(lock);
+  try {
+    let ledger;
+    try {
+      const bytes = await readFile(resolve(cache, "ledger.json"), "utf8");
+      if (Buffer.byteLength(bytes) > 1_000_000) throw new Error("QQ_NOTIFY_LEDGER_INVALID");
+      ledger = JSON.parse(bytes);
+    }
+    catch (error) { if (error.code === "ENOENT") ledger = { version: 1, items: {} }; else return { status: "blocked", code: "QQ_NOTIFY_LEDGER_INVALID", targets }; }
+    if (ledger?.version !== 1 || !ledger.items || typeof ledger.items !== "object" || Array.isArray(ledger.items)) return { status: "blocked", code: "QQ_NOTIFY_LEDGER_INVALID", targets };
+    const save = async () => { await writeJsonAtomically(resolve(cache, "ledger.json"), ledger); await chmod(resolve(cache, "ledger.json"), 0o600); };
+    for (const kind of kinds) {
+      let content, publicationHash;
+      try {
+        const prepared = await brief(kind, { sourceBinding, delivery, withSourceIdentity: true });
+        content = typeof prepared === "string" ? prepared : prepared?.content;
+        publicationHash = typeof prepared === "string" ? sourceBinding?.[kind]?.hash : prepared?.publicationHash;
+      }
+      catch (error) {
+        const safe = new Set(["QQ_SOURCE_BUILD_REQUIRED", "QQ_SOURCE_BUILD_MISMATCH", "QQ_SOURCE_INVALID", "QQ_CHANNEL_LINK_REQUIRED", "QQ_NOTIFY_CONTENT_LIMIT"]);
+        targets[kind] = { status: "blocked", code: safe.has(error.message) ? error.message : "QQ_NOTIFY_PREPARATION_FAILED" }; continue;
+      }
+      if (typeof content !== "string" || !content.trim() || Buffer.byteLength(content) > 12_000) { targets[kind] = { status: "blocked", code: "QQ_NOTIFY_CONTENT_LIMIT" }; continue; }
+      outbox[kind] = { content, hash: hashBody(content), prepared_at: new Date().toISOString() };
+      if (!enabled) { targets[kind] = { status: "waiting_permission" }; continue; }
+      if (typeof groupOpenid !== "string" || !/^[a-zA-Z0-9_-]{1,128}$/u.test(groupOpenid)) { targets[kind] = { status: "blocked", code: "QQ_GROUP_TARGET_REQUIRED" }; continue; }
+      if (typeof publicationHash !== "string" || !/^[a-f0-9]{64}$/u.test(publicationHash)) { targets[kind] = { status: "blocked", code: "QQ_SOURCE_BUILD_REQUIRED" }; continue; }
+      const groupHash = createHash("sha256").update(groupOpenid).digest("hex");
+      // Delivery warnings can change on retry without creating a new publication.
+      const key = `${kind}:${groupHash}:${publicationHash}`;
+      const previous = ledger.items[key];
+      if (previous?.status === "sent") { targets[kind] = { status: "unchanged" }; continue; }
+      if (previous) { targets[kind] = { status: "blocked", code: "QQ_NOTIFY_UNKNOWN_OUTCOME" }; continue; }
+      ledger.items[key] = { status: "intent", content_hash: outbox[kind].hash, created_at: new Date().toISOString() }; await save();
+      try {
+        const receipt = await send({ groupOpenid, content });
+        if (!receipt?.id) throw new Error("QQ_NOTIFY_UNKNOWN_OUTCOME");
+        ledger.items[key] = { status: "sent", content_hash: outbox[kind].hash, sent_at: new Date().toISOString() }; await save();
+        targets[kind] = { status: "success" };
+      } catch (error) {
+        // A definite HTTP rejection did not commit a message; transport errors might have.
+        if (/^发送主动群消息失败 HTTP (?:400|401|403|404|429):/u.test(error?.message || "")) {
+          delete ledger.items[key]; await save();
+          targets[kind] = { status: "blocked", code: "QQ_NOTIFY_REMOTE_REJECTED" };
+        } else targets[kind] = { status: "blocked", code: "QQ_NOTIFY_UNKNOWN_OUTCOME" };
+      }
+    }
+    await writeJsonAtomically(resolve(cache, "outbox.json"), outbox); await chmod(resolve(cache, "outbox.json"), 0o600);
+    const allSuccess = kinds.every(kind => ["success", "unchanged"].includes(targets[kind]?.status));
+    const anyBlocked = kinds.some(kind => targets[kind]?.status === "blocked");
+    return { status: allSuccess ? "success" : anyBlocked ? "blocked" : "waiting_permission", targets };
+  } finally { await releaseRefreshLock(lock); }
 }
 
 export async function alertAdmin(subject, details = "") {

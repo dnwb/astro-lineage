@@ -1,16 +1,11 @@
 ---
 import ProductBoundary from "../copy/product-boundary.md";
-import { firstCompleteReadingItem, parseReadingDocument, whyThisWorkMatters } from "../../scripts/reader-markdown.mjs";
 import { loadCanonicalContent } from "../../scripts/content-loader.mjs";
 import { projectBaselineSnapshot, projectVisibleSnapshot } from "../../scripts/reader-projection.mjs";
-import { learningPathReaderPath, researchLineReaderPath, workReaderPath } from "../lib/reader-routes";
+import { learningPathReaderPath, researchLineReaderPath } from "../lib/reader-routes";
 import {
-  localizedEdgeReason,
   localizedLineTitle,
-  localizedBlocks,
   localizedPathTitle,
-  localizedWorkTitle,
-  selectBilingualBlocks,
 } from "../lib/reader-localization";
 import { loadSiteConfig } from "../lib/site-config";
 import SiteNav from "../components/SiteNav.astro";
@@ -19,7 +14,9 @@ import weeklyData from "../data/arxiv-weekly.json";
 import dailyRadar from "../data/daily-radar.json";
 import dailyFeed from "../data/arxiv-daily.json";
 import archiveManifest from "../data/arxiv-archives/manifest.json";
+import ScientificEventTimeline from "../components/ScientificEventTimeline.astro";
 import { radarCardAnchor } from "../../scripts/daily-radar.mjs";
+import { parseStructuredExecutiveSummary } from "../domain/academic-domain.mjs";
 import "../styles/global.css";
 
 const dailyArchiveModules = import.meta.glob<{ default: any }>("../data/arxiv-archives/daily/*.json", { eager: true });
@@ -37,6 +34,23 @@ for (const mod of Object.values(dailyArchiveModules)) {
   }
 }
 
+const paperAuthorsMap = new Map<string, string>();
+for (const p of (weeklyData as any).papers ?? []) {
+  if (p.arxiv_id && Array.isArray(p.authors) && p.authors.length > 0) {
+    const formatted = p.authors.length > 2 ? `${p.authors[0]} et al.` : p.authors.join(", ");
+    paperAuthorsMap.set(p.arxiv_id, formatted);
+  }
+}
+for (const mod of Object.values(dailyArchiveModules)) {
+  const data = (mod as any).default || mod;
+  for (const entry of data.feed?.entries ?? []) {
+    if (entry.arxiv_id && Array.isArray(entry.authors) && entry.authors.length > 0 && !paperAuthorsMap.has(entry.arxiv_id)) {
+      const formatted = entry.authors.length > 2 ? `${entry.authors[0]} et al.` : entry.authors.join(", ");
+      paperAuthorsMap.set(entry.arxiv_id, formatted);
+    }
+  }
+}
+
 type AnyRecord = Record<string, any>;
 
 const site = loadSiteConfig();
@@ -48,7 +62,6 @@ const scientificEdges = (visibleReader.scientific_edges ?? []) as AnyRecord[];
 const baselineWorks = (baselineReader.works ?? []) as AnyRecord[];
 const baselineLines = (baselineReader.research_lines ?? []) as AnyRecord[];
 const baselinePaths = (baselineReader.learning_paths ?? []) as AnyRecord[];
-const workById = new Map(baselineWorks.map((work) => [work.work_id, work]));
 const startPath = learningPaths[0] ?? null;
 
 // Intelligence Dashboard Data Preparation
@@ -58,8 +71,9 @@ const weeklyStats = (weeklyData as any).statistics ?? {
   worth_knowing_count: (weeklyData as any).top_picks?.filter((p: any) => p.priority === "worth_knowing").length ?? 0,
   skip_count: 0,
 };
-const weeklyLeadSummary = (weeklyData as any).executive_summary
-  ? (weeklyData as any).executive_summary.split("\n\n")[0]
+const weeklyStructured = parseStructuredExecutiveSummary((weeklyData as any).executive_summary || "");
+const weeklyLeadSummary = weeklyStructured.lead
+  ? weeklyStructured.lead.replace(/[：:]$/, "。")
   : "聚合高能天体物理最新因果动力学与观测前沿。";
 const weeklyTopPicks = (weeklyData as any).top_picks ?? [];
 const thematicHighlights = (weeklyData as any).thematic_highlights ?? [];
@@ -91,68 +105,6 @@ const latestDate = (dailyFeed as any).window?.announcement_date ?? "2026-09-21";
 const radarWeekday = (dailyFeed as any).window?.announcement_weekday ?? "Mon";
 const radarBatchLabel = `${radarWeekday} 监测批次 · ${(dailyFeed as any).window?.cutoff_local_time ?? "14:00"} Cutoff`;
 
-const relationLabels: Record<string, string> = {
-  builds_on: "建立在其上",
-  extends: "扩展",
-  tests: "检验",
-  constrains: "约束",
-  challenges: "挑战",
-  replaces_assumption: "替代假设",
-  corrects: "修正",
-};
-
-function preferred(work: AnyRecord) {
-  const version = work.versions?.find((candidate: AnyRecord) => candidate.id === work.preferred_version_id);
-  if (!version) throw new Error(`Missing preferred Version for ${work.work_id}.`);
-  return version;
-}
-
-function authors(work: AnyRecord, abbreviated = false) {
-  const names = (preferred(work).authors ?? [])
-    .map((author: AnyRecord) => author.display_name)
-    .filter(Boolean);
-  if (abbreviated && names.length > 2) return `${names[0]} et al.`;
-  return names.join(", ");
-}
-
-function releaseYear(work: AnyRecord) {
-  const value = preferred(work).release_date?.value;
-  if (typeof value !== "string" || !/^\d{4}/u.test(value)) {
-    throw new Error(`Missing preferred Version release year for ${work.work_id}.`);
-  }
-  return value.slice(0, 4);
-}
-
-function whyRead(work: AnyRecord) {
-  const document = parseReadingDocument(String(work.reading ?? ""));
-  return firstCompleteReadingItem(
-    selectBilingualBlocks(
-      localizedBlocks(work.work_id, "why", whyThisWorkMatters(document, work.work_id)),
-      "primary",
-    ),
-    work.work_id,
-  );
-}
-
-function originalWhyRead(work: AnyRecord) {
-  const document = parseReadingDocument(String(work.reading ?? ""));
-  return firstCompleteReadingItem(
-    selectBilingualBlocks(whyThisWorkMatters(document, work.work_id), "english"),
-    work.work_id,
-  );
-}
-
-function projectedWork(workId: string) {
-  const work = workById.get(workId);
-  if (!work) throw new Error(`Scientific Edge endpoint is not visible: ${workId}.`);
-  return work;
-}
-
-function edgeLabel(edge: AnyRecord) {
-  const label = relationLabels[edge.relation];
-  if (!label) throw new Error(`Unknown Scientific Edge relation: ${edge.relation}.`);
-  return label;
-}
 ---
 
 <!doctype html>
@@ -190,11 +142,11 @@ function edgeLabel(edge: AnyRecord) {
             <span class="hero-tag-muted">高能瞬变天体物理</span>
           </div>
           <h2 id="intelligence-hero-heading" class="intelligence-title">
-            <span class="intelligence-title-main">论文追踪与每周总结</span>
-            <span class="intelligence-title-sub">Daily Radar & Weekly Synthesis</span>
+            <span class="intelligence-title-main">前沿追踪与学术脉络</span>
+            <span class="intelligence-title-sub">Frontier Radar & Weekly Synthesis</span>
           </h2>
           <p class="intelligence-desc">
-            关注超新星、相对论喷流、磁星、FRB 及多信使瞬变现象，每日更新 arXiv 导读，每周梳理研究进展。
+            聚焦超新星、相对论喷流、磁星、FRB 及多信使瞬变源，每日提取可核验科学证据，每周厘清因果演化链条。
           </p>
         </div>
 
@@ -210,7 +162,9 @@ function edgeLabel(edge: AnyRecord) {
             </div>
 
             <h3 class="intel-card-title">
-              <a href="/arxiv-weekly/"><ReaderText text={(weeklyData as any).title || "每周学术脉络与前沿精选"} /></a>
+              <a href="/arxiv-weekly/">
+                <span class="intel-title-prefix">{(weeklyData as any).week_id}</span> 每周学术脉络
+              </a>
             </h3>
 
             {thematicHighlights.length > 0 && (
@@ -222,10 +176,19 @@ function edgeLabel(edge: AnyRecord) {
             )}
 
             <div class="intel-summary-box">
-              <p class="intel-summary-label">本周导读：</p>
-              <p class="intel-summary-text">
+              <p class="intel-summary-lead">
                 <ReaderText text={weeklyLeadSummary} />
               </p>
+              {weeklyStructured.items.length > 0 && (
+                <ul class="intel-summary-hl-list">
+                  {weeklyStructured.items.slice(0, 3).map((item: any) => (
+                    <li class="intel-summary-hl-item">
+                      <span class="hl-topic-tag">{item.topic}</span>
+                      <span class="hl-body-text"><ReaderText text={item.body} /></span>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
 
             <div class="intel-metrics-strip">
@@ -249,10 +212,12 @@ function edgeLabel(edge: AnyRecord) {
 
             {weeklyTopPicks.length > 0 && (
               <div class="intel-picks-box">
-                <p class="intel-picks-label">本周重点论文：</p>
+                <p class="intel-picks-label">本周重点论文（精选 {Math.min(weeklyTopPicks.length, 4)}/{weeklyTopPicks.length} 篇）：</p>
                 <ul class="intel-picks-list">
-                  {weeklyTopPicks.slice(0, 2).map((pick: any) => {
-                    const dailyDate = paperDailyDateMap.get(pick.arxiv_id);
+                  {weeklyTopPicks.slice(0, 4).map((pick: any) => {
+                    const dailyDate = paperDailyDateMap.get(pick.arxiv_id) || latestDate;
+                    const pickTargetUrl = `/arxiv-daily/${dailyDate}/#${radarCardAnchor(pick.arxiv_id, pick.revision || 1)}`;
+                    const authorStr = paperAuthorsMap.get(pick.arxiv_id);
                     return (
                       <li class="intel-pick-item">
                         <div class="intel-pick-header">
@@ -260,20 +225,25 @@ function edgeLabel(edge: AnyRecord) {
                             {pick.priority === "must_read" ? "⭐ 必读" : "📌 关注"}
                           </span>
                           <div class="intel-pick-links">
+                            <a class="intel-pick-daily" href={pickTargetUrl} title="查看当日精读研判与科学证据">
+                              📖 深度精读 ({dailyDate}) →
+                            </a>
                             <a class="intel-pick-id" href={`https://arxiv.org/abs/${pick.arxiv_id}`} target="_blank" rel="noopener noreferrer">
                               arXiv:{pick.arxiv_id} ↗
                             </a>
                             <a class="intel-pick-pdf" href={`https://arxiv.org/pdf/${pick.arxiv_id}`} target="_blank" rel="noopener noreferrer" title="直接阅读官方 PDF">
                               📄 PDF
                             </a>
-                            {dailyDate ? (
-                              <a class="intel-pick-daily" href={`/arxiv-daily/${dailyDate}/#${radarCardAnchor(pick.arxiv_id, pick.revision || 1)}`} title="查看当日精读研判与科学证据">
-                                📖 当日精读 ({dailyDate}) →
-                              </a>
-                            ) : null}
                           </div>
                         </div>
-                        <h4 class="intel-pick-title"><ReaderText text={pick.title} /></h4>
+                        <h4 class="intel-pick-title">
+                          <a href={pickTargetUrl} class="intel-paper-title-link" title="点击直接进入本文深度精读">
+                            <ReaderText text={pick.title} />
+                          </a>
+                        </h4>
+                        {authorStr && (
+                          <p class="intel-pick-authors">作者：{authorStr}</p>
+                        )}
                         <div class="intel-pick-bluf">
                           <p class="intel-bluf-row">
                             <span class="bluf-tag result-tag">突破</span>
@@ -295,139 +265,100 @@ function edgeLabel(edge: AnyRecord) {
 
             <div class="intel-card-footer">
               <a class="btn-primary" href="/arxiv-weekly/">
-                <span>查看完整周报（含 {thematicHighlights.length} 个专题）</span>
+                <span>查看完整周报（共 {weeklyTopPicks.length} 篇重点精选）</span>
                 <span aria-hidden="true">→</span>
               </a>
             </div>
           </article>
 
-          <!-- Daily Radar Card -->
-          <article class="intel-card intel-card-daily telemetry-companion">
+          <!-- Daily Radar Card (Streamlined Portal) -->
+          <article class="intel-card intel-card-daily intel-daily-portal">
             <div class="intel-card-top">
               <div class="intel-badge-group">
                 <span class="intel-badge intel-badge-daily">今日雷达 · {latestDate}</span>
                 <span class="intel-batch">{radarBatchLabel}</span>
               </div>
-              <a class="intel-view-all-link" href="/arxiv-daily/">查看今日雷达 →</a>
+              <a class="intel-view-all-link" href={`/arxiv-daily/${latestDate}/`}>进入今日雷达 →</a>
             </div>
 
             <h3 class="intel-card-title">
-              <a href="/arxiv-daily/">今日 arXiv 论文雷达</a>
+              <a href={`/arxiv-daily/${latestDate}/`}>
+                <span class="intel-title-prefix">{latestDate}</span> 今日论文雷达
+              </a>
             </h3>
 
-            <!-- 筛选比例统计 -->
-            <div class="intel-telemetry-seal">
-              <div class="telemetry-seal-header">
-                <span class="telemetry-seal-badge">筛选统计</span>
-                <span class="telemetry-seal-rate">过滤率 {filterNoiseReductionRate}%</span>
-              </div>
-              <div class="telemetry-pipeline">
-                <div class="telemetry-stage">
-                  <span class="telemetry-stage-val">{dailyStats.total_papers}</span>
-                  <span class="telemetry-stage-lbl">抓取总数</span>
-                </div>
-                <div class="telemetry-arrow" aria-hidden="true">→</div>
-                <div class="telemetry-stage telemetry-stage-filtered">
-                  <span class="telemetry-stage-val">-{dailyStats.skip_count}</span>
-                  <span class="telemetry-stage-lbl">排除背景</span>
-                </div>
-                <div class="telemetry-arrow" aria-hidden="true">→</div>
-                <div class="telemetry-stage telemetry-stage-selected">
-                  <span class="telemetry-stage-val">{dailyStats.must_read_count + dailyStats.worth_knowing_count}</span>
-                  <span class="telemetry-stage-lbl">瞬变相关</span>
-                </div>
+            <!-- 快速切换往期日报 -->
+            <div class="intel-daily-date-pills">
+              <span class="pills-label">批次速选：</span>
+              <div class="pills-scroll">
+                {(archiveManifest.weeks || []).flatMap((w: any) => w.days || []).slice(0, 5).map((d: any) => (
+                  <a
+                    class={`daily-date-chip ${d.date === latestDate ? "active" : ""}`}
+                    href={d.date === latestDate ? `/arxiv-daily/` : `/arxiv-daily/${d.date}/`}
+                    title={`进入 ${d.date} (${d.weekday}) 导读雷达`}
+                  >
+                    {d.date.slice(5)} {d.weekday}
+                  </a>
+                ))}
               </div>
             </div>
 
-            <div class="intel-metrics-strip">
-              <div class="intel-metric-item">
-                <span class="intel-metric-val">{dailyStats.total_papers}</span>
-                <span class="intel-metric-lbl">总篇数</span>
-              </div>
-              <div class="intel-metric-item highlight-must-read">
-                <span class="intel-metric-val">{dailyStats.must_read_count}</span>
-                <span class="intel-metric-lbl">必读</span>
-              </div>
-              <div class="intel-metric-item highlight-worth-knowing">
-                <span class="intel-metric-val">{dailyStats.worth_knowing_count}</span>
-                <span class="intel-metric-lbl">关注</span>
-              </div>
-              <div class="intel-metric-item highlight-skip">
-                <span class="intel-metric-val">{dailyStats.skip_count}</span>
-                <span class="intel-metric-lbl">速览</span>
-              </div>
+            <!-- 一句话极简导读 -->
+            <div class="intel-daily-summary-lead">
+              <p class="intel-daily-one-liner">
+                今日监测 <strong>{dailyStats.total_papers}</strong> 篇高能瞬变论文，严格筛选提炼 <strong>{dailyStats.must_read_count}</strong> 篇必读重点；核心物理机制、数学公式与原文证据链已生成完毕。
+              </p>
             </div>
 
-            <div class="intel-radar-highlights">
-              <p class="intel-summary-label">今日精选重点论文：</p>
+            <!-- 今日必读精简链接直达列表 -->
+            <div class="intel-daily-quick-box">
+              <p class="intel-quick-label">今日核心突破速达：</p>
               {dailyMustReads.length > 0 ? (
-                <ul class="intel-radar-list">
+                <ul class="intel-daily-quick-list">
                   {dailyMustReads.map((paper: any) => {
+                    const paperDate = paperDailyDateMap.get(paper.arxiv_id) || latestDate;
+                    const paperTargetUrl = `/arxiv-daily/${paperDate}/#${radarCardAnchor(paper.arxiv_id, paper.revision || 1)}`;
+                    const authorStr = paperAuthorsMap.get(paper.arxiv_id) || (Array.isArray(paper.entry?.authors) && paper.entry.authors.length > 0 ? (paper.entry.authors.length > 2 ? `${paper.entry.authors[0]} et al.` : paper.entry.authors.join(", ")) : "");
                     const analysis = paper.analysis?.analysis || paper.analysis || {};
-                    const problem = analysis.problem;
                     const result = analysis.result;
-                    const reason = analysis.reason;
                     return (
-                      <li class="intel-radar-item">
-                        <div class="intel-radar-item-top">
-                          <span class="intel-radar-tag tag-must-read">⭐ 必读</span>
-                          <div class="intel-radar-links">
-                            <a class="intel-radar-id" href={`https://arxiv.org/abs/${paper.arxiv_id}`} target="_blank" rel="noopener noreferrer">
-                              arXiv:{paper.arxiv_id} ↗
-                            </a>
-                            <a class="intel-radar-pdf" href={`https://arxiv.org/pdf/${paper.arxiv_id}`} target="_blank" rel="noopener noreferrer" title="直接阅读官方 PDF">
-                              📄 PDF
-                            </a>
-                            <a class="intel-radar-card-link" href={`/arxiv-daily/#${radarCardAnchor(paper.arxiv_id, paper.revision || 1)}`} title="查看完整学术卡片与深度精读导读">
-                              📖 精读导读 →
-                            </a>
-                          </div>
+                      <li class="intel-daily-quick-item">
+                        <div class="quick-item-top">
+                          <span class="quick-tier-pill">⭐ 必读</span>
+                          <span class="quick-arxiv-id">arXiv:{paper.arxiv_id}</span>
+                          {authorStr && <span class="quick-authors">作者：{authorStr}</span>}
                         </div>
-                        <h4 class="intel-radar-paper-title"><ReaderText text={paper.entry?.title || paper.arxiv_id} /></h4>
-                        <div class="intel-bluf-stream">
-                          {problem && problem !== "unknown" && !problem.startsWith("未能从已检查材料") ? (
-                            <p class="intel-bluf-row">
-                              <span class="bluf-tag problem-tag">课题</span>
-                              <span class="bluf-text"><ReaderText text={problem} /></span>
-                            </p>
-                          ) : null}
-                          {result ? (
-                            <p class="intel-bluf-row">
-                              <span class="bluf-tag result-tag">突破</span>
-                              <span class="bluf-text"><ReaderText text={result} /></span>
-                            </p>
-                          ) : null}
-                          {reason ? (
-                            <p class="intel-bluf-row">
-                              <span class="bluf-tag reason-tag">理由</span>
-                              <span class="bluf-text"><ReaderText text={reason} /></span>
-                            </p>
-                          ) : null}
-                        </div>
+                        <h4 class="quick-paper-title">
+                          <a href={paperTargetUrl} class="intel-paper-title-link" title="点击直接进入本文当日完整精读">
+                            <ReaderText text={paper.entry?.title || paper.arxiv_id} />
+                          </a>
+                        </h4>
+                        {result && result !== "unknown" && !result.startsWith("未能从已检查材料") && (
+                          <p class="quick-paper-result">
+                            <span class="quick-res-tag">突破</span>
+                            <span class="quick-res-text"><ReaderText text={result} /></span>
+                          </p>
+                        )}
                       </li>
                     );
                   })}
                 </ul>
               ) : (
                 <div class="intel-radar-empty">
-                  <p>今日暂无必读推荐，可查看下方的关注论文与速览列表。</p>
+                  <p>今日暂无必读推荐，可查看完整雷达中的关注论文与速览列表。</p>
                 </div>
               )}
             </div>
 
-            <div class="intel-archives-bar">
-              <span class="intel-archives-label">历史归档：</span>
-              <span class="intel-archives-counts">收录 {(archiveManifest as any).total_weeks} 周、{(archiveManifest as any).total_daily_editions} 期</span>
-              <div class="intel-archives-links">
-                <a class="intel-archives-link" href="/arxiv-archives/">往期归档 →</a>
-              </div>
-            </div>
-
-            <div class="intel-card-footer">
-              <a class="btn-secondary" href="/arxiv-daily/">
-                <span>查看今日完整列表 ({dailyStats.total_papers} 篇)</span>
+            <div class="intel-card-footer intel-daily-footer">
+              <a class="btn-primary" href={`/arxiv-daily/${latestDate}/`}>
+                <span>查看今日完整导读（含 {dailyStats.total_papers} 篇研判）</span>
                 <span aria-hidden="true">→</span>
               </a>
+              <div class="intel-daily-portal-meta">
+                <span class="telemetry-pill">已过滤背景 {filterNoiseReductionRate}%</span>
+                <a class="archive-sub-link" href="/arxiv-archives/">历史日报归档 →</a>
+              </div>
             </div>
           </article>
         </div>
@@ -450,147 +381,40 @@ function edgeLabel(edge: AnyRecord) {
         </div>
       </section>
 
-      <!-- Knowledge Base Portals: 经典论文库 / 关键研究方向 / 体系化学习路径 -->
-      <section class="knowledge-portal-strip" aria-label="基础文献与学术脉络入口">
-        <div class="knowledge-portal-grid">
-          <a class="knowledge-portal-card" href="/papers/">
-            <div class="portal-card-header">
-              <span class="portal-card-icon">📚</span>
-              <span class="portal-card-badge">{baselineWorks.length} 篇基准文献</span>
-            </div>
-            <h3 class="portal-card-title">经典学术论文库</h3>
-            <p class="portal-card-desc">经过审核的高能天体物理奠基文献、经典理论模型与历史里程碑工作。</p>
-            <span class="portal-card-action">浏览基准论文库 →</span>
-          </a>
+      <!-- Transient Event Clustering Timeline Radar -->
+      <ScientificEventTimeline maxEvents={4} />
 
-          <a class="knowledge-portal-card" href="/research-lines/">
-            <div class="portal-card-header">
-              <span class="portal-card-icon">🔭</span>
-              <span class="portal-card-badge">{baselineLines.length} 个方向</span>
-            </div>
-            <h3 class="portal-card-title">关键研究方向</h3>
-            <p class="portal-card-desc">相对论喷流、磁星动力学、周星介质激波与致密星多信使物理脉络演进。</p>
-            <span class="portal-card-action">探索研究方向 →</span>
-          </a>
+      <!-- Baseline Literature & Scientific Lines Overview Card (Single Bottom Card) -->
+      <section class="panel baseline-overview" aria-labelledby="baseline-heading">
+        <p class="section-kicker">从这里开始 · 完整基准文献与学术脉络</p>
+        <h2 id="baseline-heading">基准文献、科学关联与学习路径</h2>
+        <p class="baseline-overview-lead">{baselineWorks.length} 篇基准论文（含 {baselineWorks.length} 篇基准文献）、{baselineLines.length} 个关键研究方向（共 {baselineLines.length} 个研究方向）、{baselinePaths.length} 条体系化研读路径（共 {baselinePaths.length} 条学习路径）、{scientificEdges.length} 条科学关联。</p>
+        <p class="reader-note">经过审核的高能天体物理奠基文献、经典理论模型与物理脉络演进；点击下方链接查阅全部文献、方向与路径图谱。</p>
 
-          <a class="knowledge-portal-card" href="/learning-paths/">
-            <div class="portal-card-header">
-              <span class="portal-card-icon">🗺️</span>
-              <span class="portal-card-badge">{baselinePaths.length} 条路径</span>
-            </div>
-            <h3 class="portal-card-title">体系化研读路径</h3>
-            <p class="portal-card-desc">从基础流体力学、辐射转移到现代前沿瞬变源观测的循序研读路线。</p>
-            <span class="portal-card-action">查看研读路径 →</span>
-          </a>
-        </div>
-      </section>
-
-      <!-- Secondary Section Divider: Research Foundations & Paper Graph -->
-      <div class="secondary-section-divider">
-        <div class="secondary-divider-content">
-          <span class="secondary-kicker">文献库</span>
-          <h2 class="secondary-title">基准文献、科学关联与学习路径</h2>
-          <p class="secondary-subtitle">以 41 篇整理审核的基准文献为基础，梳理高能瞬变天体物理的发展脉络。</p>
-        </div>
-      </div>
-
-      <section class="panel home-section secondary-panel" aria-labelledby="start-here-heading">
-        <p class="section-kicker">从经过审核的阅读顺序开始</p>
-        <h2 id="start-here-heading">从这里开始</h2>
         {startPath ? (
-          <>
-            <div class="orbit-card-lead">
-              <div class="orbit-meta-badge">
-                <span class="orbit-chip">入门路径</span>
-                <span class="orbit-step-count">共 {(startPath.entries ?? []).length} 篇论文</span>
-              </div>
-              <h3 class="orbit-title"><a href={learningPathReaderPath(snapshot, startPath.path_id)}>{localizedPathTitle(startPath.path_id, startPath.title ?? startPath.path_id)}</a></h3>
-              <p class="original-title" lang="en">英文标题：{startPath.title ?? startPath.path_id}</p>
-            </div>
-            <ol class="path-citations reading-orbit-stepper">
-              {(startPath.entries ?? []).map((entry: AnyRecord, index: number) => (
-                <li class="orbit-step-item">
-                  <span class="step-number">{index + 1}</span>
-                  <div class="orbit-step-content">
-                    <a class="orbit-step-link" href={workReaderPath(snapshot, entry.work_id)}>{localizedWorkTitle(entry.work_id, entry.work?.title ?? entry.work_id)}</a>
-                    <small class="orbit-step-meta">{(entry.work?.authors ?? []).map((author: AnyRecord) => author.display_name).filter(Boolean).join(", ")} · {entry.work?.release_date?.value?.slice(0, 4) ?? "年份未知"}</small>
-                  </div>
-                </li>
-              ))}
-            </ol>
-            <p><a class="browse-link" href={learningPathReaderPath(snapshot, startPath.path_id)}>打开学习路径</a></p>
-          </>
+          <div class="baseline-start-path-box">
+            <span class="orbit-chip">从这里开始 · 推荐入门路径</span>
+            <a class="baseline-start-path-link" href={learningPathReaderPath(snapshot, startPath.path_id)}>
+              {localizedPathTitle(startPath.path_id, startPath.title ?? startPath.path_id)} →
+            </a>
+          </div>
         ) : (
           <p class="empty-state">暂无经过审核的学习路径。</p>
         )}
-      </section>
 
-      <div class="home-grid">
-        <section class="panel home-section dense-baseline-panel" aria-labelledby="baseline-papers-heading">
-          <p class="section-kicker">{baselineWorks.length} 篇基准论文</p>
-          <h2 id="baseline-papers-heading">基准论文</h2>
-          {baselineWorks.length === 0 ? (
-            <p class="empty-state">基准文献库中暂时没有可显示论文。</p>
-          ) : (
-            <ol class="paper-index dense-paper-drawer">
-              {baselineWorks.map((work) => (
-                <li class="paper-index-item">
-                  <article>
-                    <h3><a class="paper-title" href={workReaderPath(snapshot, work.work_id)}>{localizedWorkTitle(work.work_id, preferred(work).title)}</a></h3>
-                    <p class="original-title" lang="en">英文原题：{preferred(work).title}</p>
-                    <p class="paper-meta">{authors(work, true)} · {releaseYear(work)}</p>
-                    <p><span class="tag">{work.reader_status === "candidate" ? "候选基准" : "已审核精选"}</span></p>
-                    <p>{whyRead(work)}</p>
-                    <p class="language-english" lang="en">{originalWhyRead(work)}</p>
-                    <p><a class="browse-link" href={workReaderPath(snapshot, work.work_id)}>阅读论文</a></p>
-                  </article>
-                </li>
-              ))}
-            </ol>
-          )}
-        </section>
-
-        <section class="panel home-section dense-connections-panel" aria-labelledby="scientific-connections-heading">
-          <p class="section-kicker">{scientificEdges.length} 条科学关联</p>
-          <h2 id="scientific-connections-heading">科学关联</h2>
-          {scientificEdges.length === 0 ? (
-            <p class="empty-state">暂无经过审核的科学关联。</p>
-          ) : (
-            <ul class="compact-list edge-list dense-edge-drawer">
-              {scientificEdges.map((edge) => {
-                const source = projectedWork(edge.source_work_id);
-                const target = projectedWork(edge.target_work_id);
-                return (
-                  <li>
-                    <p>
-                      <a href={workReaderPath(snapshot, edge.source_work_id)}>{localizedWorkTitle(edge.source_work_id, preferred(source).title)}</a>
-                      <span class="tag">{edgeLabel(edge)}</span>
-                      <a href={workReaderPath(snapshot, edge.target_work_id)}>{localizedWorkTitle(edge.target_work_id, preferred(target).title)}</a>
-                      {edge.disposition === "contested" ? <strong class="dispute-indicator"> 有争议</strong> : null}
-                    </p>
-                    <p>{localizedEdgeReason(edge.id, edge.reason)}</p>
-                    <p class="language-english" lang="en">{edge.reason}</p>
-                  </li>
-                );
-              })}
-            </ul>
-          )}
-        </section>
-      </div>
-
-      <section class="panel baseline-overview" aria-labelledby="baseline-heading">
-        <p class="section-kicker">完整基准入口</p>
-        <h2 id="baseline-heading">基准文献库</h2>
-        <p>{baselineWorks.length} 篇论文、{baselineLines.length} 个研究方向、{baselinePaths.length} 条学习路径。</p>
-        <p class="reader-note">其中 5 篇论文、3 个方向和 1 条路径已经审核；其余条目是本轮整理的候选基准，页面可读，等待组内审核发布。</p>
-        <p>
-          <a class="browse-link" href="/papers/">查看全部基准文献</a>
-          <span class="inline-link"><a href="/research-lines/">浏览研究方向</a></span>
-          <span class="inline-link"><a href="/learning-paths/">浏览学习路径</a></span>
+        <div class="baseline-portal-actions">
+          <a class="browse-link" href="/papers/">查看全部基准文献与基准论文 ({baselineWorks.length}) →</a>
+          <span class="inline-link"><a href="/research-lines/">浏览关键研究方向 ({baselineLines.length}) →</a></span>
+          <span class="inline-link"><a href="/learning-paths/">浏览体系研读路径 ({baselinePaths.length}) →</a></span>
+        </div>
+        <p class="baseline-representative-links">
+          <span>代表文献：<a href="/papers/arnett-1982/">Arnett (1982)</a>、<a href="/papers/blandford-mckee-1976/">Blandford & McKee (1976)</a></span>
+          <span>代表方向：<a href="/research-lines/baseline-jet-multimessenger/">喷流与多信使</a></span>
+          <span>代表路径：<a href="/learning-paths/baseline-jet-foundations/">相对论喷流基础</a></span>
         </p>
         <div class="baseline-columns">
           <section aria-labelledby="baseline-lines-heading">
-            <h3 id="baseline-lines-heading">研究方向</h3>
+            <h3 id="baseline-lines-heading">🔭 关键研究方向</h3>
             <ul class="compact-list baseline-links">
               {baselineLines.map((line) => (
                 <li>
@@ -601,7 +425,7 @@ function edgeLabel(edge: AnyRecord) {
             </ul>
           </section>
           <section aria-labelledby="baseline-paths-heading">
-            <h3 id="baseline-paths-heading">学习路径</h3>
+            <h3 id="baseline-paths-heading">🗺️ 体系研读路径</h3>
             <ul class="compact-list baseline-links">
               {baselinePaths.map((path) => (
                 <li>
@@ -737,6 +561,68 @@ function edgeLabel(edge: AnyRecord) {
         background: #451a03;
         color: #fde047;
         border-color: #ca8a04;
+      }
+      .intel-daily-date-pills {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin: 0.5rem 0 0.85rem 0;
+        padding: 0.35rem 0.5rem;
+        background: #f8fafc;
+        border-radius: 6px;
+        border: 1px solid #e2e8f0;
+      }
+      :global([data-theme="dark"]) .intel-daily-date-pills {
+        background: #0f172a;
+        border-color: #334155;
+      }
+      .pills-label {
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #64748b;
+        white-space: nowrap;
+      }
+      :global([data-theme="dark"]) .pills-label {
+        color: #94a3b8;
+      }
+      .pills-scroll {
+        display: flex;
+        gap: 0.3rem;
+        overflow-x: auto;
+        scrollbar-width: none;
+      }
+      .daily-date-chip {
+        font-family: monospace;
+        font-size: 0.75rem;
+        padding: 0.15rem 0.45rem;
+        background: #ffffff;
+        border: 1px solid #cbd5e1;
+        border-radius: 4px;
+        color: #475569;
+        text-decoration: none;
+        white-space: nowrap;
+        transition: all 0.12s ease;
+      }
+      .daily-date-chip:hover {
+        background: #eff6ff;
+        border-color: #3b82f6;
+        color: #1d4ed8;
+      }
+      :global([data-theme="dark"]) .daily-date-chip {
+        background: #1e293b;
+        border-color: #475569;
+        color: #cbd5e1;
+      }
+      :global([data-theme="dark"]) .daily-date-chip:hover {
+        background: #1e3a8a33;
+        border-color: #60a5fa;
+        color: #93c5fd;
+      }
+      .daily-date-chip.active {
+        background: #2563eb;
+        border-color: #2563eb;
+        color: #ffffff;
+        font-weight: 600;
       }
       .knowledge-portal-strip {
         margin: 2rem 0 1.25rem;

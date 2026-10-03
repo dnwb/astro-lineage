@@ -11,6 +11,7 @@ import DailyRadarBrief from "../../components/DailyRadarBrief.astro";
 import DailyRadarPendingCard from "../../components/DailyRadarPendingCard.astro";
 import DailyRadarPrioritySection from "../../components/DailyRadarPrioritySection.astro";
 import DailyKnowledgePoint from "../../components/DailyKnowledgePoint.astro";
+import DailyDateSwitcher from "../../components/DailyDateSwitcher.astro";
 import archiveManifest from "../../data/arxiv-archives/manifest.json";
 import { loadSiteConfig } from "../../lib/site-config";
 import "../../styles/global.css";
@@ -104,29 +105,8 @@ const coverageLabel = isAnnouncementDay
   ? `公告批次窗口 ${announcementWindow?.announcement_date ?? "未记录"}（${announcementWindow?.time_zone ?? "America/New_York"}，截止 ${announcementWindow?.cutoff_local_time ?? "14:00"}）`
   : "最近提交样本";
 
-const dailyArchiveModules = import.meta.glob<{ default: AnyRecord }>("../../data/arxiv-archives/daily/*.json", { eager: true });
-const allDailyArchives = Object.values(dailyArchiveModules).map((mod) => (mod as any).default || mod);
 const currentDate = announcementWindow?.announcement_date ?? "2026-09-16";
-
 const currentWeekId = archiveManifest.latest_week_id ?? "2026-W39";
-
-const pastDailyArchives = allDailyArchives
-  .filter((item) => item.date !== currentDate)
-  .sort((a, b) => b.date.localeCompare(a.date));
-
-// Hierarchical separation: only fold current-week past editions in-page; prior weeks are archived standalone
-const currentWeekPastArchives = pastDailyArchives.filter(
-  (item) => (item.week_id ?? "") === currentWeekId
-);
-
-const currentWeekValidatedModels = currentWeekPastArchives.map((pastDay) => {
-  const val = validateDailyRadarPayload(pastDay.feed, pastDay.radar, { visibleWorkIds: Object.keys(visibleWorkLinks) });
-  return {
-    dayInfo: pastDay,
-    model: val.model,
-    priorityGroups: val.model.groups as AnyRecord,
-  };
-});
 ---
 
 <!doctype html>
@@ -148,6 +128,9 @@ const currentWeekValidatedModels = currentWeekPastArchives.map((pastDay) => {
         <p class="record-label language-primary">{coverageLabel} · 更新时间：{generatedLabel} · <a href="/arxiv-weekly/" style="color: #2563eb; font-weight: 500;">查看每周总结 →</a> · <a href="#historical-archives" style="color: #4b5563; font-weight: 500;">往期日报归档 ↓</a></p>
         <p class="record-label language-english" lang="en">{isAnnouncementDay ? `Announcement batch ending ${announcementWindow?.announcement_date ?? "unrecorded"} (${announcementWindow?.time_zone ?? "America/New_York"})` : "Recent-submission sample"} · refreshed {generatedLabel} · <a href="/arxiv-weekly/" style="color: #2563eb; font-weight: 500;">View Weekly Synthesis →</a> · <a href="#historical-archives" style="color: #4b5563; font-weight: 500;">Historical Archives ↓</a></p>
       </header>
+
+      <!-- AI HOT Date Switcher Ribbon -->
+      <DailyDateSwitcher currentDate={currentDate} />
 
       <!-- Quick Section Anchor Pills -->
       <nav class="radar-pills-track" aria-label="文献直达导航">
@@ -243,7 +226,7 @@ const currentWeekValidatedModels = currentWeekPastArchives.map((pastDay) => {
       <section class="radar-section archive-history-section" id="historical-archives">
         <p class="section-kicker"><span class="language-primary">往期归档</span><span class="language-english" lang="en">Past Editions</span></p>
         <h2><span class="language-primary">往期日报与历史归档</span><span class="language-english" lang="en">Historical Daily Guide Archives</span></h2>
-        <p class="archive-history-intro"><span class="language-primary">按周分级归档：当周往期可就地展开查看；跨周历史批次沉淀为独立静态页面，保障轻快阅读体验：</span><span class="language-english" lang="en">Past editions are archived hierarchically: current-week editions fold in-place, while prior weeks are served as standalone pages.</span></p>
+        <p class="archive-history-intro"><span class="language-primary">按自然周聚类的历史日报归档。可直接点击进入对应日期的独立导读雷达：</span><span class="language-english" lang="en">Historical daily radar editions grouped by week. Click any date to enter its standalone guide.</span></p>
 
         <!-- Weekly Archive Navigator -->
         <nav class="archive-nav-card" aria-label="arXiv 历史归档导航">
@@ -272,17 +255,10 @@ const currentWeekValidatedModels = currentWeekPastArchives.map((pastDay) => {
                         <strong class="chip-date">{d.date}</strong>
                         <span class="chip-meta">{d.weekday} · {d.total_papers}篇</span>
                       </span>
-                    ) : week.week_id === currentWeekId ? (
-                      <a class="archive-chip chip-link in-week-chip" id={`chip-${d.date}`} href={`#archive-${d.date}`} title="点击跳转并展开当周历史导读">
-                        <span class="chip-past-tag">当周折叠</span>
-                        <strong class="chip-date">{d.date}</strong>
-                        <span class="chip-meta">{d.weekday} · {d.total_papers}篇 ↓</span>
-                      </a>
                     ) : (
-                      <a class="archive-chip chip-link standalone-chip" id={`chip-${d.date}`} href={`#archive-${d.date}`} title="点击跳转至该历史日期归档条目">
-                        <span class="chip-past-tag">独立归档</span>
+                      <a class="archive-chip chip-link" id={`chip-${d.date}`} href={`/arxiv-daily/${d.date}/#archive-${d.date}`} title={`进入 ${d.date} 完整导读雷达`}>
                         <strong class="chip-date">{d.date}</strong>
-                        <span class="chip-meta">{d.weekday} · {d.total_papers}篇 ↓</span>
+                        <span class="chip-meta">{d.weekday} · {d.total_papers}篇 →</span>
                       </a>
                     )
                   ))}
@@ -291,84 +267,6 @@ const currentWeekValidatedModels = currentWeekPastArchives.map((pastDay) => {
             ))}
           </div>
         </nav>
-
-        {currentWeekValidatedModels.length > 0 && (
-          <div class="current-week-history-wrap">
-            <h3 class="history-subheading"><span class="language-primary">本周往期（就地折叠）</span><span class="language-english" lang="en">In-Week Editions</span></h3>
-            <div class="archive-history-list">
-              {currentWeekValidatedModels.map(({ dayInfo, model: pastModel, priorityGroups: pastGroups }) => (
-                <details class="historical-edition-card" id={`archive-${dayInfo.date}`}>
-                  <summary class="historical-edition-summary">
-                    <div class="summary-left">
-                      <span class="historical-date-tag">📅 {dayInfo.date}</span>
-                      <span class="historical-weekday-tag">{dayInfo.weekday}</span>
-                      <span class="historical-week-belong">所属周：{dayInfo.week_id}</span>
-                    </div>
-                    <div class="summary-right">
-                      <span class="historical-stat-pill">总收录 {pastModel.counts.total} 篇</span>
-                      <span class="historical-stat-pill">精读 {pastGroups.must_read?.length ?? 0}</span>
-                      <span class="historical-stat-pill">了解 {pastGroups.worth_knowing?.length ?? 0}</span>
-                      <span class="summary-toggle-prompt">展开导读 ▾</span>
-                    </div>
-                  </summary>
-                  <div class="historical-edition-body">
-                    <div class="historical-notice-bar">
-                      <span>ℹ️ 正在查阅本周往期：<strong>{dayInfo.date}</strong>（{dayInfo.batch_id}）</span>
-                      <div class="historical-notice-links">
-                        <a href={`/arxiv-daily/${dayInfo.date}/`}>在新页面打开独立归档 ↗</a>
-                        <a href="#opening-brief">↑ 返回最新日报（{currentDate}）</a>
-                        <a href="/arxiv-weekly/">📖 查看所属周报综述（{dayInfo.week_id}）→</a>
-                      </div>
-                    </div>
-
-                    <DailyRadarBrief brief={pastModel.opening_brief} visibleWorkLinks={visibleWorkLinks} groups={pastGroups} />
-
-                    <DailyRadarPrioritySection
-                      id={`must-read-${dayInfo.date}`}
-                      items={pastGroups.must_read}
-                      primaryLabel="必读"
-                      englishLabel="Must Read"
-                      visibleWorkLinks={visibleWorkLinks}
-                    />
-                    <DailyRadarPrioritySection
-                      id={`worth-knowing-${dayInfo.date}`}
-                      items={pastGroups.worth_knowing}
-                      primaryLabel="关注"
-                      englishLabel="Worth Knowing"
-                      visibleWorkLinks={visibleWorkLinks}
-                    />
-
-                    {pastGroups.skip && pastGroups.skip.length > 0 && (
-                      <details class="radar-priority-section skip-section">
-                        <summary><span class="language-primary">快速浏览 · Skim（默认收起）</span><span class="language-english" lang="en">Skim (collapsed by default)</span></summary>
-                        <DailyRadarPrioritySection
-                          id={`skim-${dayInfo.date}`}
-                          items={pastGroups.skip}
-                          primaryLabel="快速浏览"
-                          englishLabel="Skim"
-                          visibleWorkLinks={visibleWorkLinks}
-                        />
-                      </details>
-                    )}
-
-                    <details class="radar-status-disclosure">
-                      <summary><span class="language-primary">该历史批次来源与待分析（点击展开）</span><span class="language-english" lang="en">Historical Sources & Pending</span></summary>
-                      <div class="radar-status-body">
-                        <p>公告批次：{dayInfo.batch_id} · 生成于：{dayInfo.generated_at}</p>
-                        <p>收录候选：{pastModel.counts.total} 篇，有效研判：{pastModel.counts.analyzed} 篇，待分析：{pastModel.pending?.length ?? 0} 篇。</p>
-                        <ol class="paper-index radar-list">
-                          {pastModel.pending.slice(0, 10).map((item: any) => (
-                            <DailyRadarPendingCard item={item} pendingLabel={pendingLabel(item.pending_reason)} />
-                          ))}
-                        </ol>
-                      </div>
-                    </details>
-                  </div>
-                </details>
-              ))}
-            </div>
-          </div>
-        )}
 
         {archiveManifest.weeks.filter((w) => w.week_id !== currentWeekId).length > 0 && (
           <div class="prior-weeks-history-wrap">

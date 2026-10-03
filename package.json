@@ -22,6 +22,7 @@
     "bot:probe": "node scripts/probe-models.mjs",
     "test:bot": "node --test tests/agent-core.test.mjs tests/qq-official-bot.test.mjs tests/qq-users.test.mjs tests/tencent-channel-publisher.test.mjs",
     "test:fast": "node --test tests/agent-core.test.mjs tests/qq-official-bot.test.mjs tests/qq-users.test.mjs tests/tencent-channel-publisher.test.mjs tests/arxiv-scheduler.test.mjs",
+    "test:hygiene": "node --test tests/copy-hygiene.test.mjs",
     "validate": "node scripts/validate.mjs",
     "pretest": "node scripts/cleanup-test-tmp.mjs",
     "test": "node --test --test-concurrency=1 tests/*.test.mjs",

@@ -17,7 +17,7 @@
 
   color: var(--text-primary);
   background: var(--bg-primary);
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
   font-synthesis: none;
   line-height: 1.55;
   text-rendering: optimizeLegibility;
@@ -1815,7 +1815,8 @@ small {
   font-weight: 700;
   color: #1b1b1a;
   line-height: 1.25;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+  letter-spacing: -0.015em;
 }
 
 .intelligence-title-main {
@@ -1958,7 +1959,8 @@ small {
   font-size: 1.3rem;
   font-weight: 700;
   line-height: 1.3;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+  letter-spacing: -0.01em;
 }
 
 .intel-card-title a {
@@ -2031,21 +2033,59 @@ small {
   margin-bottom: 1.2rem;
 }
 
-.intel-summary-label {
-  margin: 0 0 0.35rem;
-  font-size: 0.78rem;
+.intel-title-prefix {
+  color: #1d4ed8;
   font-weight: 700;
-  color: #1b1b1a;
-  letter-spacing: 0.04em;
+  margin-right: 0.25rem;
 }
 
-.intel-summary-text {
+.intel-summary-lead {
+  margin: 0 0 0.6rem;
+  font-size: 0.88rem;
+  font-weight: 500;
+  line-height: 1.5;
+  color: #1c1917;
+}
+
+.intel-summary-hl-list {
+  list-style: none;
+  padding: 0;
   margin: 0;
-  font-size: 0.92rem;
-  line-height: 1.6;
-  color: #2d2b28;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.intel-summary-hl-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: #44403c;
+  padding-bottom: 0.35rem;
+  border-bottom: 1px dashed #e7e5e4;
+}
+
+.intel-summary-hl-item:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.hl-topic-tag {
+  align-self: flex-start;
+  font-weight: 700;
+  color: #0369a1;
+  background: #f0f9ff;
+  border: 1px solid #bae6fd;
+  border-radius: 3px;
+  padding: 0.05rem 0.35rem;
+  font-size: 0.75rem;
+}
+
+.hl-body-text {
   display: -webkit-box;
-  -webkit-line-clamp: 4;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -2114,6 +2154,18 @@ small {
   font-weight: 700;
   line-height: 1.35;
   color: #1b1b1a;
+}
+
+.intel-pick-authors {
+  margin: 0 0 0.35rem;
+  font-size: 0.78rem;
+  color: #57534e;
+  line-height: 1.4;
+  font-weight: 500;
+}
+
+:global([data-theme="dark"]) .intel-pick-authors {
+  color: #a8a29e;
 }
 
 .intel-pick-insight {
@@ -2286,6 +2338,24 @@ small {
   color: #1b1b1a;
 }
 
+.intel-pick-title a,
+.intel-radar-paper-title a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.15s, text-decoration 0.15s;
+}
+
+.intel-pick-title a:hover,
+.intel-radar-paper-title a:hover {
+  color: #2563eb;
+  text-decoration: underline;
+}
+
+:global([data-theme="dark"]) .intel-pick-title a:hover,
+:global([data-theme="dark"]) .intel-radar-paper-title a:hover {
+  color: #60a5fa;
+}
+
 .intel-radar-reason,
 .intel-radar-result {
   margin: 0.2rem 0 0;
@@ -2302,6 +2372,193 @@ small {
   font-size: 0.88rem;
   color: #5c5550;
   line-height: 1.5;
+}
+
+/* Daily Radar Streamlined Portal */
+.intel-daily-portal {
+  display: flex;
+  flex-direction: column;
+}
+
+.intel-daily-summary-lead {
+  margin-bottom: 0.9rem;
+}
+
+.intel-daily-one-liner {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: #292524;
+  padding: 0.65rem 0.85rem;
+  background: #f8fafc;
+  border-left: 3px solid #0284c7;
+  border-radius: 0 4px 4px 0;
+  border-top: 1px solid #e2e8f0;
+  border-right: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+:global([data-theme="dark"]) .intel-daily-one-liner {
+  background: #0f172a;
+  color: #e2e8f0;
+  border-left-color: #38bdf8;
+  border-top-color: #1e293b;
+  border-right-color: #1e293b;
+  border-bottom-color: #1e293b;
+}
+
+.intel-daily-quick-box {
+  margin-bottom: 1.1rem;
+  flex: 1;
+}
+
+.intel-quick-label {
+  margin: 0 0 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #1c1917;
+  letter-spacing: 0.02em;
+}
+
+:global([data-theme="dark"]) .intel-quick-label {
+  color: #f5f5f4;
+}
+
+.intel-daily-quick-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.intel-daily-quick-item {
+  padding: 0.65rem 0.8rem;
+  background: #faf8f5;
+  border: 1px solid #e7e5e4;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  transition: border-color 0.15s, background-color 0.15s;
+}
+
+:global([data-theme="dark"]) .intel-daily-quick-item {
+  background: #171717;
+  border-color: #262626;
+}
+
+.intel-daily-quick-item:hover {
+  border-color: #0284c7;
+  background: #ffffff;
+}
+
+:global([data-theme="dark"]) .intel-daily-quick-item:hover {
+  border-color: #38bdf8;
+  background: #1f1f1f;
+}
+
+.quick-item-top {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.76rem;
+  flex-wrap: wrap;
+}
+
+.quick-tier-pill {
+  padding: 0.1rem 0.4rem;
+  background: #fcf0ec;
+  color: #a6300e;
+  border: 1px solid #f3d4cb;
+  border-radius: 3px;
+  font-weight: 700;
+  font-size: 0.72rem;
+}
+
+.quick-arxiv-id {
+  font-family: ui-monospace, monospace;
+  font-weight: 600;
+  color: #0369a1;
+}
+
+.quick-authors {
+  color: #78716c;
+  font-size: 0.76rem;
+}
+
+:global([data-theme="dark"]) .quick-authors {
+  color: #a8a29e;
+}
+
+.quick-paper-title {
+  margin: 0;
+  font-size: 0.92rem;
+  font-weight: 700;
+  line-height: 1.35;
+  color: #1c1917;
+}
+
+.quick-paper-result {
+  margin: 0;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: #44403c;
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+}
+
+:global([data-theme="dark"]) .quick-paper-result {
+  color: #d6d3d1;
+}
+
+.quick-res-tag {
+  flex-shrink: 0;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.05rem 0.3rem;
+  border-radius: 2px;
+  background: #f0fdf4;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+}
+
+.quick-res-text {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.intel-daily-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-top: auto;
+}
+
+.intel-daily-portal-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: #78716c;
+  padding-top: 0.2rem;
+}
+
+.archive-sub-link {
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.8rem;
+  transition: color 0.15s;
+}
+
+.archive-sub-link:hover {
+  text-decoration: underline;
+  color: #1d4ed8;
 }
 
 /* Archives Bar inside Daily card */
@@ -2505,7 +2762,8 @@ small {
   font-size: 1.45rem;
   font-weight: 700;
   color: #1b1b1a;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+  letter-spacing: -0.015em;
 }
 
 .secondary-subtitle {
@@ -2553,7 +2811,7 @@ small {
   margin: 0.3rem 0;
   font-size: 1.25rem;
   font-weight: 700;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
 }
 
 .reading-orbit-stepper {
@@ -2608,7 +2866,7 @@ small {
   font-weight: 700;
   color: #1b1b1a;
   text-decoration: none;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
 }
 
 .orbit-step-link:hover {

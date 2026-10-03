@@ -82,7 +82,10 @@ export const ASTROPHYSICS_SYSTEM_PROMPT = `你是高能瞬变天体物理研究�
 
 按研究效用判断相关性，不以“是否突破”作为唯一标准。增量观测、理论限制、方法改进和能检验研究假设的结果都可能有用。与上述方向无实质联系的工作应为 skip。输入中出现的教师优先论文只影响处理顺序，不能决定 priority。
 
-不得补写来源中没有的信息。需要输出原文中可逐字核对的短证据摘录和对应实际章节标题；无法判断的字段写 unknown。所有论文事实都要能由给定材料支持。`;
+不得补写来源中没有的信息。需要输出原文中可逐字核对的短证据摘录和对应实际章节标题；无法判断的字段写 unknown。所有论文事实都要能由给定材料支持。
+
+【数学物理与核心公式呈现要求】：
+对于理论推导、辐射机制、数值解或观测标度律论文，凡原文能用公式或标度关系更清晰呈现物理本质的内容（如光度 $L_{\\rm iso}$、特征时延 $t_{\\rm delay} \\propto \\nu^{-2}$、辐射效率 $\\eta$、临界磁场 $B$、洛伦兹因子 $\\Gamma$、质量损失率 $\\dot{M}$、能谱指数 $\\alpha, \\beta$ 等），在 result、method、research_progress 等研读字段中必须优先以标准 LaTeX 行内公式（如 $...$）或块级公式（$$...$$）精准呈现，切忌用模糊笼统的定性文字替代清晰的数学物理表述。注意在输出 JSON 字符串时反斜杠必须做合法转义（如 $\\\\nu$, $\\\\times$, \\\\mathrm{...}）。`;
 
 // 4. Deterministic Triage Skip Rules
 export const DETERMINISTIC_SKIP_RULES = [
@@ -107,3 +110,180 @@ export const DETERMINISTIC_SKIP_RULES = [
     reason: "论文属于望远镜工程、光学波前传感或硬件测试标定方向，与高能瞬变天体物理及致密天体研究无实质联系。",
   },
 ];
+
+/**
+ * 5. Structured Scientific Claim Normalization
+ * 
+ * Splits scientific claims (result, problem, method) into crisp headlines (titles)
+ * and comprehensive body descriptions, ensuring sharp visual demarcation between
+ * headings and narrative content.
+ */
+export function normalizeStructuredClaim(claimInput, fallbackCategory = "结论") {
+  if (!claimInput) {
+    return {
+      headline: `未记录${fallbackCategory}`,
+      bluf: `未能从已检查材料中获得${fallbackCategory}。`,
+      detailed_text: `未能从已检查材料中获得${fallbackCategory}。`,
+    };
+  }
+
+  if (typeof claimInput === "object" && !Array.isArray(claimInput)) {
+    const headline = typeof claimInput.headline === "string" && claimInput.headline.trim() !== ""
+      ? claimInput.headline.trim()
+      : (typeof claimInput.bluf === "string" ? claimInput.bluf.slice(0, 35) : `核心${fallbackCategory}`);
+    const bluf = typeof claimInput.bluf === "string" && claimInput.bluf.trim() !== ""
+      ? claimInput.bluf.trim()
+      : (typeof claimInput.detailed_text === "string" ? claimInput.detailed_text : headline);
+    const detailed_text = typeof claimInput.detailed_text === "string" && claimInput.detailed_text.trim() !== ""
+      ? claimInput.detailed_text.trim()
+      : (typeof claimInput.result === "string" ? claimInput.result : bluf);
+
+    return {
+      headline,
+      bluf,
+      detailed_text,
+      evidence_locator: claimInput.evidence_locator || claimInput.locator || undefined,
+    };
+  }
+
+  // If claimInput is a legacy string:
+  const text = String(claimInput).trim();
+  if (!text || text === "unknown" || text.startsWith("未能从已检查材料")) {
+    return {
+      headline: `未形成${fallbackCategory}`,
+      bluf: text || `未能从已检查材料中核实${fallbackCategory}。`,
+      detailed_text: text || `未能从已检查材料中核实${fallbackCategory}。`,
+    };
+  }
+
+  // Check if there's an explicit separator: "模型总结：...", "突破点：..."
+  const separatorMatch = text.match(/^([^：:——–—\n]{4,30})[：:——–—]\s*(.+)$/su);
+  if (separatorMatch) {
+    return {
+      headline: separatorMatch[1].trim(),
+      bluf: separatorMatch[2].trim(),
+      detailed_text: text,
+    };
+  }
+
+  // Extract first sentence or first clause as headline
+  const sentenceMatch = text.match(/^([^。！？；;!\?\n]+[。！？；;!\?]?)/u);
+  let headline = sentenceMatch ? sentenceMatch[1].trim() : text;
+
+  if (headline.length > 35) {
+    const commaMatch = headline.match(/^([^，,]+)/u);
+    if (commaMatch && commaMatch[1].length >= 6 && commaMatch[1].length <= 32) {
+      headline = commaMatch[1].trim();
+    } else {
+      headline = headline.slice(0, 32) + "...";
+    }
+  }
+
+  return {
+    headline,
+    bluf: sentenceMatch ? sentenceMatch[1].trim() : text,
+    detailed_text: text,
+  };
+}
+
+/**
+ * 6. Structured Executive Summary Parser
+ * 
+ * Transforms dense paragraph weekly summaries into clear, structured components:
+ * - lead: The core overarching causal/physical chain
+ * - items: Array of domain breakdown bullet items ({ topic, body })
+ * - boundary: Curation boundary, scope filtering, or concluding remarks
+ */
+export function parseStructuredExecutiveSummary(textInput) {
+  if (!textInput) {
+    return { lead: "", items: [], boundary: "" };
+  }
+
+  if (typeof textInput === "object" && !Array.isArray(textInput)) {
+    return {
+      lead: textInput.lead || "",
+      items: Array.isArray(textInput.items) ? textInput.items : [],
+      boundary: textInput.boundary || textInput.conclusion || "",
+    };
+  }
+
+  const raw = String(textInput).trim();
+  if (!raw) {
+    return { lead: "", items: [], boundary: "" };
+  }
+
+  // Case 1: Markdown bullet list
+  if (raw.includes("\n- ") || raw.includes("\n* ") || raw.startsWith("- ") || raw.startsWith("* ")) {
+    const lines = raw.split("\n");
+    let lead = "";
+    const items = [];
+    let boundary = "";
+    for (const line of lines) {
+      const trimmed = line.trim();
+      if (!trimmed) continue;
+      if (trimmed.startsWith("> ") || trimmed.includes("筛选边界")) {
+        boundary += (boundary ? " " : "") + trimmed.replace(/^>\s*/, "");
+      } else if (trimmed.startsWith("- ") || trimmed.startsWith("* ")) {
+        const itemText = trimmed.replace(/^[-*]\s*/, "");
+        const match = itemText.match(/^\*\*([^*]+)\*\*[：:]\s*(.+)$/);
+        if (match) {
+          items.push({ topic: match[1].trim(), body: match[2].trim() });
+        } else {
+          items.push({ topic: "核心要点", body: itemText.trim() });
+        }
+      } else if (!items.length) {
+        lead += (lead ? " " : "") + trimmed;
+      } else {
+        boundary += (boundary ? " " : "") + trimmed;
+      }
+    }
+    return { lead, items, boundary };
+  }
+
+  // Case 2: Parse paragraph text into structured sections
+  let lead = "";
+  let remainder = raw;
+
+  // First sentence is the lead
+  const leadMatch = remainder.match(/^([^。！？\n]+[。！？])/);
+  if (leadMatch) {
+    lead = leadMatch[1].trim();
+    remainder = remainder.slice(leadMatch[0].length).trim();
+  }
+
+  // Last sentence if it discusses screening/curation/boundary
+  let boundary = "";
+  const lastMatch = remainder.match(/([^。！？\n]*(?:筛选|推荐|主线|未入选|不作为|整体上)[^。！？\n]*[。！？]?)$/);
+  if (lastMatch) {
+    boundary = lastMatch[1].trim();
+    remainder = remainder.slice(0, remainder.length - lastMatch[0].length).trim();
+  }
+
+  // Split remainder into sentences (by semicolon or period followed by domain start)
+  const sentences = remainder
+    .split(/(?<=[；;。！？\n])\s*/g)
+    .map((s) => s.trim().replace(/[；;]$/, "。"))
+    .filter(Boolean);
+
+  const items = [];
+  for (const sentence of sentences) {
+    let topic = "";
+    let body = sentence;
+
+    if (/FRB|快速射电暴/i.test(sentence)) {
+      topic = "⚡ 快速射电暴 (FRB)";
+    } else if (/超新星|SN|CSM/i.test(sentence)) {
+      topic = "💥 超新星与周星介质 (SNe & CSM)";
+    } else if (/GRB|伽马暴|引力波|多信使|短暴/i.test(sentence)) {
+      topic = "🔭 伽马暴与多信使 (GRBs & GW)";
+    } else if (/千新星|TDE|脉冲星|致密星|磁星/i.test(sentence)) {
+      topic = "🌟 致密天体爆发与观测支撑";
+    } else {
+      topic = "📌 前沿突破与理论进展";
+    }
+
+    items.push({ topic, body });
+  }
+
+  return { lead, items, boundary };
+}

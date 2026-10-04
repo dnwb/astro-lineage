@@ -9,7 +9,9 @@
 ### Rules
 1. **Latest First by Default**: The root `/arxiv-daily/` route always defaults to the latest published monitoring batch.
 2. **Independent Date Routes**: Historical daily editions live at `/arxiv-daily/[date]/`. Each edition is a self-contained static HTML document.
-3. **Decoupled Capsule Switcher**: Use `DailyDateSwitcher.astro` to allow researchers to jump between recent dates and the historical archive without leaving the reader context.
+3. **Decoupled Capsule Switchers**:
+   - Daily uses `DailyDateSwitcher.astro` to allow researchers to jump between recent dates and historical editions without leaving the reader context.
+   - Weekly uses `WeeklyWeekSwitcher.astro` to provide the same AI-HOT quick week switching and historical dropdown navigation.
 4. **Strict Ban on In-Page DOM Stacking (Anti-Pattern)**:
    - **Forbidden**: Stacking past days' papers or nested `<details>` accordions at the bottom of the current day's page.
    - **Rationale**: DOM bloat, high memory footprint, confusing anchor targets, and search engine dilution.
@@ -45,6 +47,7 @@
 ## 4. Weekly Component Modularization & Copy Precision
 
 All weekly synthesis pages (`src/pages/arxiv-weekly/index.astro` and `src/pages/arxiv-weekly/[week].astro`) MUST delegate to modular components under `src/components/weekly/`:
+- `WeeklyWeekSwitcher.astro`: AI-HOT style quick natural week ribbon with historical dropdown.
 - `WeeklyDomainMatrix.astro`: Unified 2-column matrix: Left column displays physical domain; right column directly heads with a dedicated scientific debate banner (`🎯 核心科学争论 / 关键未决问题`), followed by 1-to-1 answering paper cardlets and physical mechanism takeaways.
 - `WeeklyDailyTable.astro`: High-density directory table linking to daily monitoring editions.
 - `WeeklyTopPicks.astro`: Curated paper cards, BibTeX/citation toggle, and popover deep-dive dialogs.

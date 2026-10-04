@@ -6,6 +6,7 @@ import ReaderText from "../../components/ReaderText.astro";
 import WeeklyDomainMatrix from "../../components/weekly/WeeklyDomainMatrix.astro";
 import WeeklyDailyTable from "../../components/weekly/WeeklyDailyTable.astro";
 import WeeklyTopPicks from "../../components/weekly/WeeklyTopPicks.astro";
+import WeeklyWeekSwitcher from "../../components/weekly/WeeklyWeekSwitcher.astro";
 import { loadSiteConfig } from "../../lib/site-config";
 import { parseStructuredExecutiveSummary } from "../../domain/academic-domain.mjs";
 import { radarCardAnchor } from "../../../scripts/daily-radar.mjs";
@@ -131,12 +132,6 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
           <span class="language-primary">每周学术脉络 · {weeklyData.week_id}</span>
           <span class="language-english" lang="en">Weekly Synthesis · {weeklyData.week_id}</span>
         </h1>
-        <p class="reader-deck language-primary">
-          周度前沿突破 · 物理机制争论 · 多信使观测约束
-        </p>
-        <p class="reader-deck language-english" lang="en">
-          Breakthrough findings, causal dynamics, and multi-messenger observational constraints.
-        </p>
         <div class="weekly-meta-bar">
           <span class="meta-badge week-badge">周期：{weeklyData.week_id}（{weeklyData.date_range}）</span>
           <span class="meta-badge update-badge">整理时间：{generatedLabel}</span>
@@ -150,11 +145,13 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
         <details class="weekly-markdown-export">
           <summary class="export-summary-btn"><span class="language-primary">导出 / 复制周报 Markdown</span><span class="language-english" lang="en">Export Weekly Markdown</span></summary>
           <div class="export-body">
-            <p class="export-tip">点击下方文本框即可全选，直接快捷键 Ctrl+C 复制全文：</p>
-            <pre class="export-markdown-pre" tabindex="0" title="点击全选">{exportMarkdown}</pre>
+            <pre class="export-markdown-pre" tabindex="0" title="点击全选复制">{exportMarkdown}</pre>
           </div>
         </details>
       </header>
+
+      <!-- AI HOT Week Switcher Ribbon -->
+      <WeeklyWeekSwitcher currentWeek={weeklyData.week_id} />
 
       <!-- Stat Badges -->
       <section class="weekly-stats-strip" aria-label="本周统计">

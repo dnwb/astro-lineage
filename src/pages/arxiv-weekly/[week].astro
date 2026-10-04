@@ -5,6 +5,7 @@ import ReaderText from "../../components/ReaderText.astro";
 import WeeklyDomainMatrix from "../../components/weekly/WeeklyDomainMatrix.astro";
 import WeeklyDailyTable from "../../components/weekly/WeeklyDailyTable.astro";
 import WeeklyTopPicks from "../../components/weekly/WeeklyTopPicks.astro";
+import WeeklyWeekSwitcher from "../../components/weekly/WeeklyWeekSwitcher.astro";
 import { loadSiteConfig } from "../../lib/site-config";
 import { radarCardAnchor } from "../../../scripts/daily-radar.mjs";
 import { parseStructuredExecutiveSummary } from "../../domain/academic-domain.mjs";
@@ -163,6 +164,32 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
     <SiteNav />
 
     <main class="page-container weekly-page">
+      <header class="page-header weekly-header">
+        <p class="eyebrow"><a href="/">{site.title}</a> · <a href="/arxiv-daily/">arXiv Radar</a> · <a href="/arxiv-weekly/">Weekly Synthesis</a> · {weeklyData.week_id}</p>
+        <h1 class="page-title"><span class="language-primary">每周学术脉络 · {weeklyData.week_id}</span><span class="language-english" lang="en">Weekly Synthesis · {weeklyData.week_id}</span></h1>
+
+        <div class="weekly-meta-bar">
+          <span class="meta-badge week-badge">📅 自然周：{weeklyData.week_id}</span>
+          <span class="meta-badge range-badge">⏱ 时间跨度：{weeklyData.date_range}</span>
+          <span class="meta-badge time-badge">🕒 整理时间：{generatedLabel}</span>
+          {weekDays.length > 0 && (
+            <span class="meta-badge daily-count-badge">含 {weekDays.length} 个每日监测批次</span>
+          )}
+          <a class="meta-link" href="#daily-breakdown">本周每日归档 ↓</a>
+        </div>
+
+        <details class="weekly-markdown-export">
+          <summary class="export-summary-btn">📋 导出 / 复制周报 Markdown</summary>
+          <div class="export-body">
+            <pre class="export-markdown-pre" tabindex="0" title="点击全选复制">{exportMarkdown}</pre>
+          </div>
+        </details>
+      </header>
+
+      <!-- AI HOT Week Switcher Ribbon -->
+      <WeeklyWeekSwitcher currentWeek={weeklyData.week_id} />
+
+      <!-- Navigation Pager Bar -->
       <nav class="week-pager-bar" aria-label="周报周次翻页">
         <div class="pager-prev">
           {olderWeekId ? (
@@ -187,29 +214,6 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
           )}
         </div>
       </nav>
-
-      <header class="page-header weekly-header">
-        <p class="eyebrow"><span class="language-primary">学术脉络周报</span><span class="language-english" lang="en">Weekly Synthesis</span></p>
-        <h1 class="page-title"><span class="language-primary">高能天体物理 arXiv 每周学术脉络</span><span class="language-english" lang="en">High-Energy Astrophysics Weekly Synthesis</span></h1>
-        <p class="page-subtitle">
-          聚焦高能暂现源、致密天体与极端爆发物理，提炼自然周维度的前沿突破、模型争鸣与观测证据演进。
-        </p>
-
-        <div class="weekly-meta-bar">
-          <span class="meta-badge week-badge">📅 自然周：{weeklyData.week_id}</span>
-          <span class="meta-badge range-badge">⏱ 时间跨度：{weeklyData.date_range}</span>
-          <span class="meta-badge time-badge">🕒 整理时间：{generatedLabel}</span>
-          <a class="meta-link" href="#daily-breakdown">本周每日归档 ↓</a>
-        </div>
-
-        <details class="weekly-markdown-export">
-          <summary class="export-summary-btn">📋 导出 / 复制周报 Markdown</summary>
-          <div class="export-body">
-            <p class="export-tip">可直接全选复制下方 Markdown 文本用于组会分享或记录：</p>
-            <pre class="export-markdown-pre" tabindex="0" title="点击全选复制">{exportMarkdown}</pre>
-          </div>
-        </details>
-      </header>
 
       <!-- Stats Strip -->
       <section class="weekly-stats-strip" aria-label="本周监测统计">

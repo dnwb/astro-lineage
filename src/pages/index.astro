@@ -1,5 +1,4 @@
 ---
-import ProductBoundary from "../copy/product-boundary.md";
 import { loadCanonicalContent } from "../../scripts/content-loader.mjs";
 import { projectBaselineSnapshot, projectVisibleSnapshot } from "../../scripts/reader-projection.mjs";
 import { learningPathReaderPath, researchLineReaderPath } from "../lib/reader-routes";
@@ -131,7 +130,6 @@ const radarBatchLabel = `${radarWeekday} 监测批次 · ${(dailyFeed as any).wi
           <p class="home-lead">Understand how ideas in high-energy astrophysics evolve.</p>
           <p>A curated scientific reading map built around papers, their physical relationships, and learning paths.</p>
         </div>
-        <ProductBoundary />
       </header>
 
       <!-- Primary Feature Section: Daily & Weekly arXiv Papers -->
@@ -386,35 +384,15 @@ const radarBatchLabel = `${radarWeekday} 监测批次 · ${(dailyFeed as any).wi
 
       <!-- Baseline Literature & Scientific Lines Overview Card (Single Bottom Card) -->
       <section class="panel baseline-overview" aria-labelledby="baseline-heading">
-        <p class="section-kicker">从这里开始 · 完整基准文献与学术脉络</p>
+        <p class="section-kicker">基准文献与学术脉络</p>
         <h2 id="baseline-heading">基准文献、科学关联与学习路径</h2>
-        <p class="baseline-overview-lead">{baselineWorks.length} 篇基准论文（含 {baselineWorks.length} 篇基准文献）、{baselineLines.length} 个关键研究方向（共 {baselineLines.length} 个研究方向）、{baselinePaths.length} 条体系化研读路径（共 {baselinePaths.length} 条学习路径）、{scientificEdges.length} 条科学关联。</p>
-        <p class="reader-note">经过审核的高能天体物理奠基文献、经典理论模型与物理脉络演进；点击下方链接查阅全部文献、方向与路径图谱。</p>
+        <p class="baseline-overview-lead"><a href="/papers/">{baselineWorks.length} 篇基准论文</a>（含 {baselineWorks.length} 篇基准文献）、<a href="/research-lines/">{baselineLines.length} 个关键研究方向</a>（共 {baselineLines.length} 个研究方向）、<a href="/learning-paths/">{baselinePaths.length} 条体系化研读路径</a>（共 {baselinePaths.length} 条学习路径）、{scientificEdges.length} 条科学关联。</p>
 
-        {startPath ? (
-          <div class="baseline-start-path-box">
-            <span class="orbit-chip">从这里开始 · 推荐入门路径</span>
-            <a class="baseline-start-path-link" href={learningPathReaderPath(snapshot, startPath.path_id)}>
-              {localizedPathTitle(startPath.path_id, startPath.title ?? startPath.path_id)} →
-            </a>
-          </div>
-        ) : (
-          <p class="empty-state">暂无经过审核的学习路径。</p>
-        )}
+        {!startPath && <p class="empty-state">暂无经过审核的学习路径。</p>}
 
-        <div class="baseline-portal-actions">
-          <a class="browse-link" href="/papers/">查看全部基准文献与基准论文 ({baselineWorks.length}) →</a>
-          <span class="inline-link"><a href="/research-lines/">浏览关键研究方向 ({baselineLines.length}) →</a></span>
-          <span class="inline-link"><a href="/learning-paths/">浏览体系研读路径 ({baselinePaths.length}) →</a></span>
-        </div>
-        <p class="baseline-representative-links">
-          <span>代表文献：<a href="/papers/arnett-1982/">Arnett (1982)</a>、<a href="/papers/blandford-mckee-1976/">Blandford & McKee (1976)</a></span>
-          <span>代表方向：<a href="/research-lines/baseline-jet-multimessenger/">喷流与多信使</a></span>
-          <span>代表路径：<a href="/learning-paths/baseline-jet-foundations/">相对论喷流基础</a></span>
-        </p>
         <div class="baseline-columns">
           <section aria-labelledby="baseline-lines-heading">
-            <h3 id="baseline-lines-heading">🔭 关键研究方向</h3>
+            <h3 id="baseline-lines-heading">🔭 关键研究方向 <a class="baseline-col-more" href="/research-lines/">全部 →</a></h3>
             <ul class="compact-list baseline-links">
               {baselineLines.map((line) => (
                 <li>
@@ -425,7 +403,7 @@ const radarBatchLabel = `${radarWeekday} 监测批次 · ${(dailyFeed as any).wi
             </ul>
           </section>
           <section aria-labelledby="baseline-paths-heading">
-            <h3 id="baseline-paths-heading">🗺️ 体系研读路径</h3>
+            <h3 id="baseline-paths-heading">🗺️ 体系研读路径 <a class="baseline-col-more" href="/learning-paths/">全部 →</a></h3>
             <ul class="compact-list baseline-links">
               {baselinePaths.map((path) => (
                 <li>
@@ -703,6 +681,19 @@ const radarBatchLabel = `${radarWeekday} 监测批次 · ${(dailyFeed as any).wi
         color: #94a3b8;
       }
       :global([data-theme="dark"]) .portal-card-action {
+        color: #60a5fa;
+      }
+      .baseline-col-more {
+        font-size: 0.8rem;
+        font-weight: 500;
+        margin-left: 0.5rem;
+        color: #2563eb;
+        text-decoration: none;
+      }
+      .baseline-col-more:hover {
+        text-decoration: underline;
+      }
+      :global([data-theme="dark"]) .baseline-col-more {
         color: #60a5fa;
       }
     </style>

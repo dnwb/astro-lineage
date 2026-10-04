@@ -35,9 +35,8 @@ function parseAssertionLine(line: string) {
       <table class="weekly-overview-table">
         <thead>
           <tr>
-            <th scope="col" style="width: 22%;">物理方向 / 领域</th>
-            <th scope="col" style="width: 26%;">核心科学争论 / 关键问题</th>
-            <th scope="col" style="width: 52%;">本周关键观测 / 理论断言与机制启示</th>
+            <th scope="col" style="width: 24%;">物理方向 / 领域</th>
+            <th scope="col" style="width: 76%;">核心科学争论、观测突破与理论断言</th>
           </tr>
         </thead>
         <tbody>
@@ -47,9 +46,25 @@ function parseAssertionLine(line: string) {
             const hasBullets = findingLines.some((l: string) => l.startsWith("- ") || l.includes("【arXiv:"));
             return (
               <tr>
-                <td class="col-domain"><strong>{row.domain}</strong></td>
-                <td class="col-question"><ReaderText text={row.key_question || "关键物理问题探讨"} /></td>
+                <td class="col-domain">
+                  <div class="domain-badge-wrap">
+                    <strong class="domain-title">{row.domain}</strong>
+                    {row.representative_papers && row.representative_papers.length > 0 && (
+                      <span class="domain-count-pill">{row.representative_papers.length} 篇重点研读</span>
+                    )}
+                  </div>
+                </td>
                 <td class="col-findings">
+                  {row.key_question && (
+                    <div class="matrix-debate-banner">
+                      <div class="debate-header">
+                        <span class="debate-icon">🎯</span>
+                        <span class="debate-kicker">核心科学争论 / 关键未决问题</span>
+                      </div>
+                      <p class="debate-body"><ReaderText text={row.key_question} /></p>
+                    </div>
+                  )}
+
                   {hasBullets ? (
                     <div class="matrix-findings-list">
                       {findingLines.map((line: string) => {
@@ -86,7 +101,7 @@ function parseAssertionLine(line: string) {
                   )}
                   {row.significance ? (
                     <div class="row-significance">
-                      <span class="significance-tag">物理机制启示</span>
+                      <span class="significance-tag">物理机制启示与前沿研判</span>
                       <ReaderText text={row.significance} />
                     </div>
                   ) : null}
@@ -135,7 +150,7 @@ function parseAssertionLine(line: string) {
     border-collapse: collapse;
     font-size: 0.88rem;
     text-align: left;
-    min-width: 800px;
+    min-width: 680px;
   }
   .weekly-overview-table th {
     background: #f1f5f9;
@@ -150,7 +165,7 @@ function parseAssertionLine(line: string) {
     border-bottom-color: #334155;
   }
   .weekly-overview-table td {
-    padding: 0.85rem 0.85rem;
+    padding: 1rem 0.85rem;
     border-bottom: 1px solid #e2e8f0;
     vertical-align: top;
     line-height: 1.55;
@@ -168,15 +183,35 @@ function parseAssertionLine(line: string) {
   }
   .col-domain {
     color: #1e40af;
-    font-weight: 600;
+    vertical-align: top;
   }
-  :global([data-theme="dark"]) .col-domain {
+  .domain-badge-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+  .domain-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #1e40af;
+    line-height: 1.4;
+  }
+  :global([data-theme="dark"]) .domain-title {
     color: #60a5fa;
   }
-  .col-question {
-    color: #334155;
+  .domain-count-pill {
+    align-self: flex-start;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #64748b;
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    padding: 0.1rem 0.4rem;
+    border-radius: 4px;
   }
-  :global([data-theme="dark"]) .col-question {
+  :global([data-theme="dark"]) .domain-count-pill {
+    background: #334155;
+    border-color: #475569;
     color: #94a3b8;
   }
   .col-findings {
@@ -185,6 +220,52 @@ function parseAssertionLine(line: string) {
   :global([data-theme="dark"]) .col-findings {
     color: #f8fafc;
   }
+
+  /* Debate banner directly heading the cell */
+  .matrix-debate-banner {
+    background: #fefce8;
+    border: 1px solid #fef08a;
+    border-left: 3px solid #eab308;
+    border-radius: 6px;
+    padding: 0.6rem 0.8rem;
+    margin-bottom: 0.75rem;
+  }
+  :global([data-theme="dark"]) .matrix-debate-banner {
+    background: #42200633;
+    border-color: #854d0e;
+    border-left-color: #f59e0b;
+  }
+  .debate-header {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin-bottom: 0.2rem;
+  }
+  .debate-icon {
+    font-size: 0.82rem;
+  }
+  .debate-kicker {
+    font-size: 0.74rem;
+    font-weight: 700;
+    color: #b45309;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  :global([data-theme="dark"]) .debate-kicker {
+    color: #fde68a;
+  }
+  .debate-body {
+    margin: 0;
+    font-size: 0.86rem;
+    line-height: 1.5;
+    color: #713f12;
+    font-weight: 500;
+  }
+  :global([data-theme="dark"]) .debate-body {
+    color: #fef9c3;
+  }
+
+  /* Paper assertion list */
   .matrix-findings-list {
     display: flex;
     flex-direction: column;
@@ -296,11 +377,11 @@ function parseAssertionLine(line: string) {
     color: #e2e8f0;
   }
   .row-significance {
-    margin-top: 0.5rem;
+    margin-top: 0.65rem;
     font-size: 0.82rem;
     color: #475569;
     background: #f8fafc;
-    padding: 0.35rem 0.55rem;
+    padding: 0.4rem 0.65rem;
     border-radius: 4px;
     border-left: 3px solid #3b82f6;
   }
@@ -311,9 +392,9 @@ function parseAssertionLine(line: string) {
   }
   .significance-tag {
     display: inline-block;
-    font-weight: 600;
+    font-weight: 700;
     color: #2563eb;
-    margin-right: 0.35rem;
+    margin-right: 0.4rem;
   }
   :global([data-theme="dark"]) .significance-tag {
     color: #60a5fa;

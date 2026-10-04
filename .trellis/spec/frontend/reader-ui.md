@@ -42,12 +42,15 @@
 
 ---
 
-## 4. Weekly Component Modularization
+## 4. Weekly Component Modularization & Copy Precision
 
 All weekly synthesis pages (`src/pages/arxiv-weekly/index.astro` and `src/pages/arxiv-weekly/[week].astro`) MUST delegate to modular components under `src/components/weekly/`:
-- `WeeklyDomainMatrix.astro`: The 3-column physical breakthrough matrix (Physics Domain, Key Scientific Debate, Assertions & Evidence).
+- `WeeklyDomainMatrix.astro`: Unified 2-column matrix: Left column displays physical domain; right column directly heads with a dedicated scientific debate banner (`🎯 核心科学争论 / 关键未决问题`), followed by 1-to-1 answering paper cardlets and physical mechanism takeaways.
 - `WeeklyDailyTable.astro`: High-density directory table linking to daily monitoring editions.
 - `WeeklyTopPicks.astro`: Curated paper cards, BibTeX/citation toggle, and popover deep-dive dialogs.
 - `src/styles/weekly.css`: Shared layout, print stylesheet, and responsive media queries.
 
 Both weekly page routes MUST stay under 600 lines of code.
+
+### Executive Summary Subject Precision Rule
+In `executive_summary`, every scientific breakthrough bullet MUST use specific papers or first authors as the grammatical subject (e.g., `Author et al. (arXiv:xxxx.xxxxx) 提出/约束...` or `arXiv:xxxx.xxxxx (Author et al.) 论证...`). Impersonal, passive, and subjectless formulations are strictly forbidden.

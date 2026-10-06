@@ -1,0 +1,8 @@
+{"_example": "Fill with {\"file\": \"<path>\", \"reason\": \"<why>\"}. Put spec/research files only — no code paths. Run `python3 .trellis/scripts/get_context.py --mode packages` to list available specs. Delete this line once real entries are added."}
+{"file": ".scratch/channel-title-system/spec.md", "reason": "Source requirements for the authorized title-system implementation."}
+{"file": ".scratch/channel-title-system/map.md", "reason": "Ticket dependency order and delivery boundaries."}
+{"file": ".scratch/channel-title-system/issues/01-shared-title-policy.md", "reason": "Shared title-policy acceptance."}
+{"file": ".scratch/channel-title-system/issues/02-flat-post-renderer.md", "reason": "Post-body title de-duplication acceptance."}
+{"file": ".scratch/channel-title-system/issues/03-verified-paper-image.md", "reason": "Verified figure selection acceptance."}
+{"file": ".trellis/spec/backend/arxiv-screening.md", "reason": "Existing publication and evidence contracts; do not edit unrelated concurrent changes."}
+{"file": ".trellis/spec/backend/test-hygiene.md", "reason": "Temporary test workspace contract."}

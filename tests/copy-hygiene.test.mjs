@@ -35,6 +35,10 @@ test("reader templates enforce Caveman principle and ban meta-engineering jargon
     { pattern: /平滑跳转/u, name: "平滑跳转" },
     { pattern: /底层逻辑/u, name: "底层逻辑" },
     { pattern: /工程实现/u, name: "工程实现" },
+    { pattern: /双时间尺度/u, name: "双时间尺度" },
+    { pattern: /沉淀长周期/u, name: "沉淀长周期" },
+    { pattern: /发光时间轴/u, name: "发光时间轴" },
+    { pattern: /研读月历看板/u, name: "研读月历看板" },
   ];
 
   for (const file of files) {

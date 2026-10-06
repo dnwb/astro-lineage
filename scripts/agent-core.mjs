@@ -22,17 +22,35 @@ export function normalizeModelName(name) {
   if (trimmed === "6.1-sol" || trimmed === "chatgpt-6.1-sol") return "gpt-6.1-sol";
   if (trimmed === "6-sol" || trimmed === "chatgpt-6-sol") return "gpt-6-sol";
   if (trimmed === "6-luna" || trimmed === "chatgpt-6-luna") return "gpt-6-luna";
-  if (trimmed === "gemini-3.8-flash" || trimmed === "gemini3.8flash") return "gemini-3.8-flash-high";
+  if (trimmed === "6-astra" || trimmed === "chatgpt-6-astra") return "gpt-6-astra";
+  if (trimmed === "gemini-3.8-flash" || trimmed === "gemini3.8flash" || trimmed === "gemini-3.8-flash-medium") return "gemini-3.8-flash-high";
+  if (trimmed === "gemini-3.5-flash" || trimmed === "gemini3.5flash") return "gemini-3.5-flash-lite";
+  if (trimmed === "claude-opus" || trimmed === "claude-opus-4.6" || trimmed === "claude-opus-4-6") return "claude-opus-4-6-thinking";
+  if (trimmed === "claude-sonnet" || trimmed === "claude-sonnet-4.6") return "claude-sonnet-4-6";
   return trimmed;
 }
 
-export const SITE_BASE_URL = (process.env.SITE_BASE_URL || process.env.ASTRO_SITE_URL || "http://10.131.43.83:4321").replace(/\/+$/u, "");
-export const DEFAULT_BASE_URL = process.env.OPENAI_BASE_URL || process.env.CCNU_API_BASE || "https://api.ccnulaowu.online/v1";
-export const DEFAULT_API_KEY = process.env.WU_API_KEY || process.env.OPENAI_API_KEY || "";
+export const SITE_BASE_URL = (process.env.SITE_BASE_URL || process.env.ASTRO_SITE_URL || "http://localhost:4321").replace(/\/+$/u, "");
+export function resolveDefaultBaseUrl() {
+  const envUrl = process.env.OPENAI_BASE_URL;
+  if (envUrl && !envUrl.includes("ccnulaowu") && !envUrl.includes("67.230")) {
+    return envUrl;
+  }
+  return "http://localhost:8318/v1";
+}
+export const DEFAULT_BASE_URL = resolveDefaultBaseUrl();
+export function resolveDefaultApiKey() {
+  const ioaKey = process.env.IOA_API_KEY;
+  if (ioaKey) return ioaKey;
+  const legacy = process.env.OPENAI_API_KEY;
+  if (legacy && !legacy.startsWith("sk-cpa")) return legacy;
+  return "";
+}
+export const DEFAULT_API_KEY = resolveDefaultApiKey();
 export const DEFAULT_MODEL = normalizeModelName(process.env.BOT_AI_MODEL || "gpt-6.1-sol");
 export const DEFAULT_EFFORT = process.env.BOT_REASONING_EFFORT || "medium";
 
-export const DEFAULT_FALLBACK_MODELS = (process.env.BOT_FALLBACK_MODELS || "gpt-6-sol,gpt-6-luna,gpt-5.5")
+export const DEFAULT_FALLBACK_MODELS = (process.env.BOT_FALLBACK_MODELS || "gemini-3.8-flash-high,claude-opus-4-6-thinking,gpt-6-astra")
   .split(",")
   .map((m) => normalizeModelName(m.trim()))
   .filter(Boolean);
@@ -99,7 +117,8 @@ export async function loadAcademicKnowledge({ feed, radar, channelLink = readCha
 }
 export async function executeChatCompletion({ prompt, systemPrompt, history = [], model, effort, baseUrl, apiKey }) {
   const url = new URL(`${baseUrl.replace(/\/+$/u, "")}/chat/completions`);
-  if (url.protocol !== "https:" || url.username || url.password) throw new Error("Model endpoint requires HTTPS without URL credentials");
+  const isLoopback = url.hostname === "localhost" || url.hostname === "127.0.0.1";
+  if ((url.protocol !== "https:" && !isLoopback) || url.username || url.password) throw new Error("Model endpoint requires HTTPS without URL credentials");
   if (!apiKey) throw new Error("Model API key is not configured");
   const resolvedModel = normalizeModelName(model);
 
@@ -168,8 +187,9 @@ export function resolveProviders({
   const primaryUrl = baseUrl || DEFAULT_BASE_URL;
   const primaryKey = apiKey || DEFAULT_API_KEY;
   if (primaryUrl && primaryKey) {
+    const isLocal = primaryUrl.includes("localhost") || primaryUrl.includes("127.0.0.1");
     resolved.push({
-      name: "Primary (ccnulaowu)",
+      name: isLocal ? "Primary (local-8318)" : "Primary",
       baseUrl: primaryUrl,
       apiKey: primaryKey,
     });
@@ -181,7 +201,7 @@ export function resolveProviders({
 
   if (fbUrl && fbKey && (fbUrl !== primaryUrl || fbKey !== primaryKey)) {
     resolved.push({
-      name: "Secondary (gateway-67)",
+      name: "Secondary (fallback)",
       baseUrl: fbUrl,
       apiKey: fbKey,
     });
@@ -235,6 +255,49 @@ export class GatewayCircuitBreaker {
 
 export const defaultGatewayCircuitBreaker = new GatewayCircuitBreaker(5 * 60 * 1000);
 
+export class ModelHealthRegistry {
+  constructor(cooldownMs = 3 * 60 * 1000) {
+    this.status = new Map();
+    this.cooldownMs = cooldownMs;
+  }
+
+  isAvailable(model) {
+    const norm = normalizeModelName(model);
+    const entry = this.status.get(norm);
+    if (!entry) return true;
+    if (entry.available) return true;
+    if (Date.now() - entry.lastChecked >= this.cooldownMs) {
+      return true;
+    }
+    return false;
+  }
+
+  recordSuccess(model) {
+    const norm = normalizeModelName(model);
+    this.status.set(norm, { available: true, lastChecked: Date.now() });
+  }
+
+  recordFailure(model, error) {
+    const norm = normalizeModelName(model);
+    const msg = String(error?.message || "");
+    this.status.set(norm, { available: false, lastChecked: Date.now(), error: msg });
+  }
+
+  sortCandidates(candidates) {
+    return [...candidates].sort((a, b) => {
+      const aAvail = this.isAvailable(a) ? 0 : 1;
+      const bAvail = this.isAvailable(b) ? 0 : 1;
+      return aAvail - bAvail;
+    });
+  }
+
+  reset() {
+    this.status.clear();
+  }
+}
+
+export const defaultModelHealthRegistry = new ModelHealthRegistry(3 * 60 * 1000);
+
 let agentProviderCycleCounter = 0;
 
 export async function callChatCompletion({
@@ -250,8 +313,10 @@ export async function callChatCompletion({
   fallbackModels = DEFAULT_FALLBACK_MODELS,
   providers,
   circuitBreaker = defaultGatewayCircuitBreaker,
+  modelHealth = defaultModelHealthRegistry,
 }) {
-  const candidates = buildModelCandidates(model, fallbackModels);
+  const rawCandidates = buildModelCandidates(model, fallbackModels);
+  const candidates = modelHealth ? modelHealth.sortCandidates(rawCandidates) : rawCandidates;
   const resolvedProviders = resolveProviders({
     baseUrl,
     apiKey,
@@ -261,7 +326,7 @@ export async function callChatCompletion({
   });
 
   if (resolvedProviders.length === 0) {
-    throw new Error("Missing API key; set WU_API_KEY or OPENAI_API_KEY");
+    throw new Error("Missing API key; set IOA_API_KEY, WU_API_KEY or OPENAI_API_KEY");
   }
 
   // Sort providers so healthy ones come first; rotate among available providers
@@ -302,6 +367,7 @@ export async function callChatCompletion({
         });
 
         circuitBreaker.recordSuccess(provider.name);
+        if (modelHealth) modelHealth.recordSuccess(candidate);
         if (candidate !== candidates[0]) {
           console.log(`[Agent Core] ✓ 主模型 (${candidates[0]}) 不可用，已降级至备选模型 (${candidate}) [供应商: ${provider.name}] 成功生成解答`);
         }
@@ -315,6 +381,7 @@ export async function callChatCompletion({
       }
     }
 
+    if (modelHealth) modelHealth.recordFailure(candidate, errors[errors.length - 1]?.error);
     if (mIdx < candidates.length - 1) {
       console.warn(`[Agent Core] 所有供应商对模型 (${candidate}) 均不可用，切换至下一个候选模型 (${candidates[mIdx + 1]})...`);
     }

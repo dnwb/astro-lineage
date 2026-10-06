@@ -80,6 +80,12 @@ _Avoid_: Silently chosen metadata
 Whether a Publication Relation is asserted by a bibliographic source or matched by a curator.
 _Avoid_: Scientific explicit/inferred basis
 
+### Daily Radar
+
+**Worth Knowing**:
+The existing middle Daily Radar reading priority, shown as “关注” in Chinese. It is the same priority, not a separate followed-paper state or an additional reading class.
+_Avoid_: Separate “关注” priority, followed-paper state
+
 ### Publication Relations
 
 **belongs_to**:

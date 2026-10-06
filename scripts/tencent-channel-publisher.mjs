@@ -1,11 +1,13 @@
-import { readFile, stat } from "node:fs/promises";
-import { join, resolve } from "node:path";
+import { readFile, realpath, stat } from "node:fs/promises";
+import { join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { existsSync } from "node:fs";
 import { spawn } from "node:child_process";
 import { validateDailyRadarPayload } from "./daily-radar.mjs";
 import { readPublishedArxivEdition } from "./arxiv-daily.mjs";
 import { TOPICS, TOPIC_LABELS, routePaper, hashBody, markerFor, readDailyArchive, listDailyArchives, withPublicationLedger, capturePublishedSourceBinding } from "./channel-publication.mjs";
+import { deriveDailyTitleCandidate, derivePaperTitleCandidate, deriveWeeklyTitleCandidate, extractPaperTopic, validateTitleOverride } from "./channel-title-policy.mjs";
+export { extractPaperTopic };
 
 try {
   if (typeof process.loadEnvFile === "function" && existsSync(".env")) {
@@ -13,10 +15,10 @@ try {
   }
 } catch {}
 
-const DEFAULT_GUILD_ID = process.env.TENCENT_GUILD_ID || "612912874093545504";
-const DEFAULT_DAILY_CHANNEL_ID = process.env.TENCENT_DAILY_CHANNEL_ID || "742956201";
-const DEFAULT_WEEKLY_CHANNEL_ID = process.env.TENCENT_WEEKLY_CHANNEL_ID || "742956302";
-const SITE_BASE_URL = (process.env.SITE_BASE_URL || process.env.ASTRO_SITE_URL || "http://10.131.43.83:4321").replace(/\/+$/u, "");
+const DEFAULT_GUILD_ID = process.env.TENCENT_GUILD_ID || "";
+const DEFAULT_DAILY_CHANNEL_ID = process.env.TENCENT_DAILY_CHANNEL_ID || "";
+const DEFAULT_WEEKLY_CHANNEL_ID = process.env.TENCENT_WEEKLY_CHANNEL_ID || "";
+const SITE_BASE_URL = (process.env.SITE_BASE_URL || process.env.ASTRO_SITE_URL || "http://localhost:4321").replace(/\/+$/u, "");
 
 const RADAR_PATH = resolve(fileURLToPath(new URL("../src/data/daily-radar.json", import.meta.url)));
 const FEED_PATH = resolve(fileURLToPath(new URL("../src/data/arxiv-daily.json", import.meta.url)));
@@ -25,6 +27,8 @@ const DEFAULT_CACHE_ROOT = resolve(fileURLToPath(new URL("../.cache/channel-publ
 const DEFAULT_ARCHIVE_ROOT = resolve(fileURLToPath(new URL("../src/data/arxiv-archives/daily", import.meta.url)));
 const DEFAULT_DIST_ROOT = resolve(fileURLToPath(new URL("../dist", import.meta.url)));
 const WEBSITE_BUILD_PATH = resolve(fileURLToPath(new URL("../.cache/notebooklm/website.json", import.meta.url)));
+const DEFAULT_PUBLIC_ROOT = resolve(fileURLToPath(new URL("../public", import.meta.url)));
+const DEFAULT_FIGURE_REVIEW_PATH = resolve(fileURLToPath(new URL("./channel-figure-reviews.json", import.meta.url)));
 
 function requireSourceBinding(sourceBinding) {
   const { daily, weekly, archives, id } = sourceBinding || {};
@@ -78,9 +82,11 @@ function cleanMath(text) {
 }
 
 function paperReaderTitle(item) {
-  const analysis = item.analysis?.analysis || item.analysis || {};
-  const label = readingExcerpt(analysis.problem?.bluf || analysis.problem || analysis.result?.bluf).replace(/。$/u, "");
-  return label && Array.from(label).length <= 180 ? label : item.title || `arXiv:${item.arxiv_id}`;
+  return derivePaperTitleCandidate(item);
+}
+
+export function derivePaperContentTitle(item) {
+  return paperReaderTitle(item);
 }
 
 function dailyBriefItem(model, date) {
@@ -88,7 +94,7 @@ function dailyBriefItem(model, date) {
   if (brief?.status !== "ready") throw new Error("CHANNEL_BRIEF_UNAVAILABLE");
   const papers = [...model.groups.must_read, ...model.groups.worth_knowing];
   const title = deriveDailyContentTitle(date, papers, brief);
-  const lines = [`# ${title}`, "", `发布日期：${date}`, "", "## 本期导读", "", brief.intro, ""];
+  const lines = [`发布日期：${date}`, "", "## 本期导读", "", brief.intro, ""];
   if (brief.must_read.length) {
     lines.push("## 必读：先了解这几篇", "");
     for (const sentence of brief.must_read) {
@@ -104,86 +110,18 @@ function dailyBriefItem(model, date) {
   return { identity: `daily-summary:${date}`, topic: { primary: "daily" }, title, body: lines.join("\n") };
 }
 
-export function extractPaperTopic(item) {
-  const title = item.title || "";
-  const analysis = item.analysis?.analysis || item.analysis || {};
-  const problem = analysis.problem || "";
-  // Reading reasons may mention related subjects; they do not identify this paper's topic.
-  const full = `${title} ${problem}`;
-
-  if (/\bFRBs?\b|fast radio bursts?|快速射电暴/i.test(full)) {
-    if (/透镜|lensing/i.test(full)) return "FRB等离子体透镜";
-    if (/dispersion measure|色散量|色散测量/i.test(full)) return /variab|变化/i.test(full) ? "FRB色散量变化" : "FRB色散量";
-    if (/PRS|persistent radio source|持续射电源/i.test(full)) return "FRB与持续射电源";
-    if (/host|environment|宿主|环境/i.test(full)) return "FRB环境";
-    return "FRB";
-  }
-  if (/脉冲星|pulsar|吸积柱|accretion column/i.test(full)) {
-    if (/吸积柱|accretion column/i.test(full)) return /pulse profile|脉冲形状|脉冲轮廓/i.test(full) ? "吸积柱及脉冲轮廓" : "脉冲星吸积柱";
-    return "脉冲星";
-  }
-  if (/GRB|伽马暴|gamma-ray burst/i.test(full)) {
-    if (/超长|month-long|长时标/i.test(full)) return "长时标GRB";
-    if (/engine|引擎/i.test(full)) return "GRB中央引擎";
-    return "GRB";
-  }
-  if (/CSM|circumstellar|星周介质|周星介质/i.test(full)) {
-    if (/shock breakout|激波突破|激波破越/i.test(full)) return "星周介质中的激波突破";
-    return /supernova|\bSN\b|超新星/i.test(full) ? "超新星与星周介质" : "星周介质";
-  }
-  if (/坍缩星|collapsar|踢速|kick/i.test(full)) {
-    return "坍缩星爆炸与黑洞踢速";
-  }
-  if (/暗物质|dark matter/i.test(full)) {
-    return "白矮星暗物质探测";
-  }
-  if (/Sgr A\*|人马座/i.test(full)) {
-    return /polarization|偏振/i.test(full) ? "Sgr A*偏振" : "Sgr A*";
-  }
-  if (/AGN|NGC\s*\d+|变脸|changing look/i.test(full)) {
-    if (/变脸|changing look/i.test(full)) return "变脸AGN";
-    return /jet|喷流/i.test(full) ? "AGN喷流" : "AGN";
-  }
-  if (problem) {
-    const clean = problem.replace(/^(论文(旨在|试图|直接|关注)|如何利用|研究)/u, "").replace(/[。！？].*$/u, "").trim();
-    if (clean.length > 4 && clean.length <= 20) return clean;
-  }
-  return title.trim();
-}
-
 export function deriveDailyContentTitle(batchDate, highlights, brief) {
-  if (!highlights || highlights.length === 0) {
-    return `论文更新｜${batchDate.slice(5)}`;
-  }
-  const mustRead = highlights.filter((h) => h.analysis?.priority === "must_read" || h.priority === "must_read");
-  const focus = mustRead.length > 0 ? mustRead : highlights;
-  const candidates = focus.map(item => {
-    const analysis = item.analysis?.analysis || item.analysis || {};
-    const event = (item.title || "").match(/\b(?:GRB|SN|AT)\s*\d{4,6}[a-z]*\b/iu)?.[0];
-    const highlight = brief?.must_read?.find(line => line.arxiv_id === item.arxiv_id && line.revision === item.revision);
-    const statement = readingExcerpt(highlight?.text || analysis.result?.bluf || analysis.result) || item.title || "论文更新";
-    const headline = event && !statement.toLowerCase().includes(event.toLowerCase()) ? `${event}：${statement}` : statement;
-    // ponytail: reuse complete reviewed sentences; no extra model call or lossy clause clipping.
-    // Long sentences fall back to the named object rather than dropping scientific qualifiers.
-    const fallback = event ? `${event}的研究更新` : item.arxiv_id ? `arXiv:${item.arxiv_id}的研究更新` : "论文更新";
-    return { event, headline: Array.from(headline).length <= 180 ? headline.replace(/。$/u, "") : fallback };
-  });
-  const lead = candidates.find(item => item.event) || candidates[0];
-  return `${lead.headline}｜${batchDate.slice(5)}`;
+  return deriveDailyTitleCandidate(batchDate, highlights, brief);
 }
 
 export function deriveWeeklyContentTitle(weekId, weekly) {
-  const highlights = weekly.thematic_highlights || [];
-  if (highlights.length > 0) {
-    const topics = [...new Set(highlights
-      .map((t) => (t.theme_name || "").split(/[：:]/u)[0].replace(/（[^）]*）|\([^)]*\)/gu, "").trim())
-      .filter(Boolean))];
-    const summary = topics.slice(0, 2).join("、");
-    if (summary) {
-      return `${summary}｜${weekId.replace(/^\d{4}-/u, "")}`;
-    }
-  }
-  return `论文更新｜${weekId.replace(/^\d{4}-/u, "")}`;
+  return deriveWeeklyTitleCandidate(weekId, weekly);
+}
+
+function useSourceBoundTitleOverride(kind, titleOverride, identity, sourceTitle) {
+  const validated = validateTitleOverride(kind, titleOverride, identity);
+  if (validated !== sourceTitle) throw new Error("CHANNEL_TITLE_OVERRIDE_SOURCE_MISMATCH");
+  return validated;
 }
 
 export async function generateDailyMarkdown({ titleOverride, radar, feed, radarPath = RADAR_PATH, feedPath = FEED_PATH } = {}) {
@@ -202,8 +140,8 @@ export async function generateDailyMarkdown({ titleOverride, radar, feed, radarP
   const highlights = [...mustRead, ...worthKnowing];
 
   const item = dailyBriefItem(model, batchDate);
-  const postTitle = titleOverride || item.title;
-  const md = item.body.replace(/^# .*$/mu, `# ${postTitle}`);
+  const postTitle = titleOverride === undefined ? item.title : useSourceBoundTitleOverride("daily", titleOverride, batchDate, item.title);
+  const md = item.body;
   return { batchDate, totalEntries, highlights, postTitle, md };
 }
 
@@ -212,9 +150,10 @@ export async function generateWeeklyMarkdown({ titleOverride, weekly: weeklyInpu
   const weekId = weekly.week_id || "本周";
   const dateRange = weekly.date_range || "";
 
-  const postTitle = titleOverride || deriveWeeklyContentTitle(weekId, weekly);
+  const sourceTitle = deriveWeeklyContentTitle(weekId, weekly);
+  const postTitle = titleOverride === undefined ? sourceTitle : useSourceBoundTitleOverride("weekly", titleOverride, weekId, sourceTitle);
 
-  let md = `# ${postTitle}\n\n${dateRange}\n\n`;
+  let md = `${dateRange}\n\n`;
 
   if (weekly.executive_summary) {
     md += `## 本周导读\n\n`;
@@ -292,6 +231,21 @@ function remoteBody(value) {
 function remoteTitle(value) {
   const feed = value?.feed ?? value?.feed_info ?? value;
   return feed?.title ?? feed?.feed_title ?? "";
+}
+
+function remoteHasMedia(value) {
+  const feed = value?.feed ?? value?.feed_info ?? value;
+  return ["image_paths", "images", "media"].some(key => Array.isArray(feed?.[key]) && feed[key].length > 0);
+}
+
+function bodyWithoutManagedFigure(value) {
+  const body = String(value);
+  const figurePrefix = "\n\n## 关键图像\n\n[(0,0)](@img)\n\n> 原文 ";
+  const start = body.indexOf(figurePrefix);
+  if (start < 0 || start !== body.lastIndexOf(figurePrefix)) return null;
+  const end = body.indexOf("\n---\n\n## 阅读入口", start);
+  if (end < 0 || !/^Fig\.\s*\d+ 图注（作者报告）：.+$/u.test(body.slice(start + figurePrefix.length, end))) return null;
+  return body.slice(0, start) + body.slice(end);
 }
 
 function matchesManagedBody(value, identity, hash) {
@@ -426,7 +380,7 @@ export function paperMarkdown(item, date, topic) {
   const data = mustRead ? results.filter(text => numerical.test(text)) : [];
   const conclusions = mustRead ? results.filter(text => !numerical.test(text)) : results.slice(0, 1);
   const author = Array.isArray(item.authors) && item.authors.length ? ` · ${item.authors[0]}${item.authors.length > 1 ? " 等" : ""}` : "";
-  const lines = [`# ${paperReaderTitle(item, topic)}`, "", `**${mustRead ? "必读" : "关注"}**${author}`, "", "## 研究了什么", "", readingExcerpt(a.problem), ""];
+  const lines = [`**${mustRead ? "必读" : "关注"}**${author}`, "", "## 研究了什么", "", readingExcerpt(a.problem), ""];
   if (conclusions.length) lines.push(`## ${mustRead ? "核心结果" : "要点"}`, "", ...conclusions.slice(0, 3).flatMap(text => [`> ${text}`, ""]));
   if (data.length) lines.push("## 关键数据", "", ...data.slice(0, 2).flatMap(text => [`> ${text}`, ""]));
   if (readerReason) lines.push("## 阅读关联", "", mustRead ? readerReason : readingExcerpt(readerReason), "");
@@ -446,7 +400,14 @@ function matchesLegacyPaper(body, item) {
 function summary() { return { success: true, published: 0, updated: 0, unchanged: 0, pending: 0, remaining: 0, errors: [], pending_items: [] }; }
 function pending(result, identity, reason) { result.pending += 1; result.pending_items.push({ identity, reason }); result.success = false; }
 
-async function publishItems(items, { guildId = DEFAULT_GUILD_ID, channelIds = {}, channelId, legacyBindings, cacheRoot = DEFAULT_CACHE_ROOT, cli = runCli, dryRun = false, limit = 50, kind = "daily", backfill = false } = {}) {
+function bodyWithReviewedFigure(body, figure) {
+  const marker = "\n---\n\n## 阅读入口";
+  if (!String(body).includes(marker)) throw new Error("CHANNEL_FIGURE_BODY_ANCHOR_MISSING");
+  const caption = String(figure.caption).replace(/\r?\n/gu, " ").trim();
+  return String(body).replace(marker, `\n\n## 关键图像\n\n[(0,0)](@img)\n\n> 原文 ${figure.label} 图注（作者报告）：${caption}${marker}`);
+}
+
+async function publishItems(items, { guildId = DEFAULT_GUILD_ID, channelIds = {}, channelId, legacyBindings, cacheRoot = DEFAULT_CACHE_ROOT, cli = runCli, dryRun = false, limit = 50, kind = "daily", backfill = false, allowExistingBodyEdits = false } = {}) {
   if (!Number.isInteger(limit) || limit < 1 || limit > 50) throw new Error("CHANNEL_LIMIT_INVALID");
   if (!legacyBindings) {
     try { legacyBindings = JSON.parse(await readFile(join(cacheRoot, "legacy-bindings.json"), "utf8")); }
@@ -464,16 +425,27 @@ async function publishItems(items, { guildId = DEFAULT_GUILD_ID, channelIds = {}
     const fallback = {};
     let stoppedAt = null;
     for (const item of list) {
-      const { identity, body, title, topic } = item;
+      const { identity, title, topic } = item;
+      if (item.title_error) { pending(result, identity, item.title_error); continue; }
       const target = kind === "daily" ? channelIds[topic.primary] : channelId;
       if (kind === "daily" && !topic.primary) { pending(result, identity, "CHANNEL_TOPIC_UNRESOLVED"); continue; }
       if (!target && !dryRun) { pending(result, identity, "CHANNEL_SECTION_MISSING"); continue; }
+      let existing = records[identity];
+      let figure = null;
+      let retainPublishedFigure = false;
+      if (existing?.figure_sha256) {
+        if (!item.figure && existing.status === "published") retainPublishedFigure = true;
+        else if (!item.figure || item.figure.sha256 !== existing.figure_sha256) { pending(result, identity, "CHANNEL_FIGURE_REVIEW_MISMATCH"); continue; }
+        else figure = item.figure;
+      } else if (!existing && !legacyBindings[identity]) {
+        figure = item.figure || null;
+      }
+      const body = figure ? bodyWithReviewedFigure(item.body, figure) : item.body;
       const hash = hashBody(body);
       const marked = `${body}\n\n${markerFor(identity, hash)}`;
       if (Array.from(title).length > 200 || Array.from(marked).length > 10_000) { pending(result, identity, "CHANNEL_CONTENT_LIMIT"); continue; }
-      let existing = records[identity];
       if (existing?.status === "published" && existing.hash === hash && existing.channel_id === String(target)) { result.unchanged += 1; continue; }
-      if (dryRun) { result.pending_items.push({ identity, reason: existing?.feed_id ? "would_update" : "would_publish" }); continue; }
+      if (dryRun) { result.pending_items.push({ identity, reason: retainPublishedFigure ? "would_verify_existing_figure" : existing?.feed_id ? "would_update" : "would_publish" }); continue; }
       try {
         let remote = existing?.feed_id ? { feed_id: existing.feed_id, create_time: existing.create_time, channel_id: existing.channel_id } : null;
         let movedThisTime = false;
@@ -584,22 +556,34 @@ async function publishItems(items, { guildId = DEFAULT_GUILD_ID, channelIds = {}
         if (remote) {
           const current = await detail(cli, guildId, remote);
           const currentBody = String(remoteBody(current));
+          const currentIdentity = remoteIdentity(current);
+          const retainedFigureIsUnchanged = retainPublishedFigure && existing?.status === "published" &&
+            existing.channel_id === String(target) && currentIdentity?.feed_id === String(existing.feed_id) &&
+            currentIdentity.create_time === String(existing.create_time) && currentIdentity.channel_id === String(target) &&
+            remoteTitle(current) === title && remoteHasMedia(current) &&
+            matchesManagedBody(currentBody, identity, existing.hash) &&
+            bodyWithoutManagedFigure(currentBody) === `${body}\n\n${markerFor(identity, existing.hash)}`;
+          if (retainedFigureIsUnchanged) { result.unchanged += 1; continue; }
           if (currentBody !== marked) {
             const priorHash = existing?.status === "intent" ? existing.from_hash : existing?.hash;
             if (existing && !(matchesManagedBody(currentBody, identity, priorHash) || binding && currentBody === binding.content && remoteTitle(current) === binding.title)) {
               pending(result, identity, "CHANNEL_REMOTE_MISMATCH"); continue;
             }
+            if (!allowExistingBodyEdits && kind !== "events") { pending(result, identity, "CHANNEL_EXISTING_BODY_EDIT_REQUIRES_APPROVAL"); continue; }
             records[identity] = { ...existing, hash, from_hash: priorHash, status: "intent", feed_id: remote.feed_id, create_time: remote.create_time, channel_id: remote.channel_id }; await save();
             payload(await cli(["feed", "alter-feed", "--guild-id", String(guildId), "--channel-id", String(remote.channel_id), "--feed-id", remote.feed_id, "--create-time", remote.create_time, "--title", title, "--markdown-content", marked, "--json"]));
             result.updated += 1;
           } else if (movedThisTime) result.updated += 1;
           else result.unchanged += 1;
-          records[identity] = { hash, status: "published", feed_id: remote.feed_id, create_time: remote.create_time, channel_id: remote.channel_id }; await save();
+          records[identity] = { hash, status: "published", feed_id: remote.feed_id, create_time: remote.create_time, channel_id: remote.channel_id, ...(figure ? { figure_sha256: figure.sha256 } : {}) }; await save();
         } else {
-          records[identity] = { hash, status: "intent", channel_id: String(target) }; await save();
-          const created = remoteIdentity(payload(await cli(["feed", "publish-feed", "--guild-id", String(guildId), "--channel-id", String(target), "--title", title, "--markdown-content", marked, "--json"])));
+          records[identity] = { hash, status: "intent", channel_id: String(target), ...(figure ? { figure_sha256: figure.sha256 } : {}) }; await save();
+          const args = ["feed", "publish-feed", "--guild-id", String(guildId), "--channel-id", String(target), "--title", title, "--markdown-content", marked];
+          if (figure) args.push("--image", figure.path);
+          args.push("--json");
+          const created = remoteIdentity(payload(await cli(args)));
           if (!created) throw new Error("CHANNEL_CREATE_IDENTITY_MISSING");
-          records[identity] = { hash, status: "published", feed_id: created.feed_id, create_time: created.create_time, channel_id: String(target) }; await save();
+          records[identity] = { hash, status: "published", feed_id: created.feed_id, create_time: created.create_time, channel_id: String(target), ...(figure ? { figure_sha256: figure.sha256 } : {}) }; await save();
           result.published += 1;
         }
       } catch (error) {
@@ -653,7 +637,7 @@ export async function provisionTopicChannels({ guildId = DEFAULT_GUILD_ID, cache
   return ids;
 }
 
-export async function publishDailyFeed({ feedPath = FEED_PATH, radarPath = RADAR_PATH, artifactRoot, archiveRoot = DEFAULT_ARCHIVE_ROOT, distRoot = DEFAULT_DIST_ROOT, source, readEdition = readPublishedArxivEdition, sourceBinding, channelIds, includeBrief = false, dailyChannelId = DEFAULT_DAILY_CHANNEL_ID, ...options } = {}) {
+export async function publishDailyFeed({ feedPath = FEED_PATH, radarPath = RADAR_PATH, artifactRoot, archiveRoot = DEFAULT_ARCHIVE_ROOT, distRoot = DEFAULT_DIST_ROOT, source, readEdition = readPublishedArxivEdition, sourceBinding, channelIds, includeBrief = false, dailyChannelId = DEFAULT_DAILY_CHANNEL_ID, resolveFigure = resolveReviewedFigure, ...options } = {}) {
   try {
     if (!source) requireSourceBinding(sourceBinding);
     const edition = source ?? await readEdition({ output: feedPath, radarOutput: radarPath, artifactRoot });
@@ -664,7 +648,7 @@ export async function publishDailyFeed({ feedPath = FEED_PATH, radarPath = RADAR
     const date = edition.feed.window?.announcement_date;
     if (!/^\d{4}-\d\d-\d\d$/u.test(date || "")) throw new Error("CHANNEL_SOURCE_DATE_INVALID");
     await stat(join(distRoot, "arxiv-daily", date, "index.html"));
-    const items = dailyItems(checked.model, date);
+    const items = await dailyItems(checked.model, date, resolveFigure, { distRoot });
     let briefError;
     if (includeBrief) {
       try {
@@ -686,38 +670,91 @@ export async function publishDailyFeed({ feedPath = FEED_PATH, radarPath = RADAR
   } catch (error) { return { ...summary(), success: false, pending: 1, errors: [error.message] }; }
 }
 
-function dailyItems(model, date) {
-  return [...model.groups.must_read, ...model.groups.worth_knowing].map((item) => {
-    const topic = routePaper(item);
-    const identity = `daily:${item.arxiv_id}v${item.revision}`;
-    return { identity, arxiv_id: item.arxiv_id, revision: item.revision, paper_title: item.title, topic, title: paperReaderTitle(item, topic), body: paperMarkdown(item, date, topic) };
-  });
+export async function resolveReviewedFigure(item, { publicRoot = DEFAULT_PUBLIC_ROOT, distRoot = DEFAULT_DIST_ROOT,
+  reviewPath = DEFAULT_FIGURE_REVIEW_PATH, manifest: manifestInput } = {}) {
+  const record = item.analysis || {};
+  const analysis = record.analysis || {};
+  const priority = record.priority || item.priority;
+  if (priority !== "must_read" || record.coverage?.level !== "full_body") return { image: null, diagnostic: "figure_not_full_body_must_read" };
+  const figures = Array.isArray(analysis.figures) ? analysis.figures : [];
+  if (!figures.length) return { image: null, diagnostic: "figure_source_missing" };
+  let manifest = manifestInput;
+  if (!manifest) {
+    try {
+      if ((await stat(reviewPath)).size > 1_000_000) return { image: null, diagnostic: "figure_review_manifest_too_large" };
+      manifest = JSON.parse(await readFile(reviewPath, "utf8"));
+    } catch { return { image: null, diagnostic: "figure_review_manifest_unavailable" }; }
+  }
+  if (manifest?.version !== 1 || !Array.isArray(manifest.figures)) return { image: null, diagnostic: "figure_review_manifest_invalid" };
+  const arxivId = String(item.arxiv_id || "");
+  const revision = Number(item.revision);
+  const sourceFingerprint = record.source_fingerprint;
+  const sourceVersion = record.coverage?.source_version;
+  if (!/^\d{4}\.\d{4,5}$/u.test(arxivId) || !Number.isSafeInteger(revision) || revision < 1 ||
+      sourceVersion !== `arXiv:${arxivId}v${revision}` || !/^[a-f0-9]{64}$/u.test(sourceFingerprint || "")) {
+    return { image: null, diagnostic: "figure_source_identity_invalid" };
+  }
+  let publicRootReal;
+  try { publicRootReal = await realpath(publicRoot); }
+  catch { return { image: null, diagnostic: "figure_public_root_missing" }; }
+  let distRootReal;
+  try { distRootReal = await realpath(distRoot); }
+  catch { return { image: null, diagnostic: "figure_dist_root_missing" }; }
+  for (const figure of figures) {
+    const url = String(figure?.url || "");
+    const label = String(figure?.label || "");
+    const caption = String(figure?.caption || "").trim();
+    const labelNumber = label.match(/^Fig\.\s*(\d+)$/u)?.[1];
+    const captionNumber = caption.match(/^Figure\s*(\d+)\s*:/iu)?.[1];
+    if (!labelNumber || captionNumber !== labelNumber || !caption ||
+        !new RegExp(`^/arxiv-figures/${arxivId.replaceAll(".", "\\.")}/[A-Za-z0-9][A-Za-z0-9._-]*$`, "u").test(url)) continue;
+    const resolvedPath = resolve(publicRoot, `.${url}`);
+    const builtPath = resolve(distRoot, `.${url}`);
+    const review = manifest.figures.find(candidate => candidate.arxiv_id === arxivId &&
+      Number(candidate.revision) === revision && candidate.source_fingerprint === sourceFingerprint &&
+      candidate.url === url && candidate.label === label && candidate.caption_sha256 === hashBody(caption) &&
+      candidate.visual_match === "confirmed" && candidate.review_method === "human_visual_comparison" &&
+      typeof candidate.reviewed_by === "string" && candidate.reviewed_by.trim() !== "" &&
+      /^[a-f0-9]{64}$/u.test(candidate.asset_sha256 || ""));
+    if (!review) continue;
+    let assetPath;
+    try { assetPath = await realpath(resolvedPath); }
+    catch { continue; }
+    const assetRelative = relative(publicRootReal, assetPath);
+    if (!assetRelative || assetRelative === ".." || assetRelative.startsWith(`..${process.platform === "win32" ? "\\" : "/"}`)) continue;
+    let bytes;
+    try { bytes = await readFile(assetPath); }
+    catch { continue; }
+    if (hashBody(bytes) !== review.asset_sha256) continue;
+    let builtAssetPath;
+    try { builtAssetPath = await realpath(builtPath); }
+    catch { continue; }
+    const builtRelative = relative(distRootReal, builtAssetPath);
+    if (!builtRelative || builtRelative === ".." || builtRelative.startsWith(`..${process.platform === "win32" ? "\\" : "/"}`)) continue;
+    let builtBytes;
+    try { builtBytes = await readFile(builtAssetPath); }
+    catch { continue; }
+    if (hashBody(builtBytes) !== review.asset_sha256) continue;
+    return { image: { path: assetPath, url, label, caption, sha256: review.asset_sha256 }, diagnostic: null };
+  }
+  return { image: null, diagnostic: "figure_review_or_asset_mismatch" };
 }
 
-export async function alterDailyFeed({
-  guildId = DEFAULT_GUILD_ID,
-  channelId = DEFAULT_DAILY_CHANNEL_ID,
-  feedId,
-  createTime,
-  titleOverride,
-} = {}) {
-  if (!feedId || !createTime) throw new Error("alterDailyFeed requires feedId and createTime");
-  const { postTitle, md } = await generateDailyMarkdown({ titleOverride });
+async function dailyItems(model, date, resolveFigure = resolveReviewedFigure, figureOptions = {}) {
+  const papers = [...model.groups.must_read, ...model.groups.worth_knowing];
+  return Promise.all(papers.map(async (item) => {
+    const topic = routePaper(item);
+    const identity = `daily:${item.arxiv_id}v${item.revision}`;
+    let title;
+    try { title = paperReaderTitle(item); }
+    catch (error) { return { identity, topic, title_error: error.message || "CHANNEL_TITLE_PAPER_CLAIM_UNSUPPORTED" }; }
+    const { image } = await resolveFigure(item, figureOptions);
+    return { identity, arxiv_id: item.arxiv_id, revision: item.revision, paper_title: item.title, topic, title, body: paperMarkdown(item, date, topic), figure: image };
+  }));
+}
 
-  console.log(`[publisher] 正在更新每日帖子 ${feedId} (新标题: ${postTitle})...`);
-  const res = await runCli([
-    "feed", "alter-feed",
-    "--guild-id", String(guildId),
-    "--channel-id", String(channelId),
-    "--feed-id", String(feedId),
-    "--create-time", String(createTime),
-    "--title", postTitle,
-    "--markdown-content", md,
-    "--json",
-  ]);
-
-  console.log(`[publisher] 帖子更新成功`);
-  return res;
+export async function alterDailyFeed() {
+  throw new Error("CHANNEL_DIRECT_EDIT_DISABLED");
 }
 
 export async function publishWeeklyFeed({
@@ -731,6 +768,7 @@ export async function publishWeeklyFeed({
   dryRun,
   sourceBinding,
   legacyBindings,
+  allowExistingBodyEdits = false,
 } = {}) {
   try {
     requireSourceBinding(sourceBinding);
@@ -741,8 +779,26 @@ export async function publishWeeklyFeed({
     if (!/^\d{4}-W\d\d$/u.test(weekly.week_id || "") || !weekly.executive_summary) throw new Error("CHANNEL_WEEKLY_INVALID");
     await stat(join(distRoot, "arxiv-weekly", weekly.week_id, "index.html"));
     const { weekId, postTitle, md } = await generateWeeklyMarkdown({ weekly, titleOverride });
-    return await publishItems([{ identity: `weekly:${weekId}`, week_id: weekId, body: md, title: postTitle }], { guildId, channelId, cacheRoot, cli, dryRun, legacyBindings, kind: "weekly" });
+    return await publishItems([{ identity: `weekly:${weekId}`, week_id: weekId, body: md, title: postTitle }], { guildId, channelId, cacheRoot, cli, dryRun, legacyBindings, kind: "weekly", allowExistingBodyEdits });
   } catch (error) { return { ...summary(), success: false, pending: 1, errors: [error.message] }; }
+}
+
+export function renderEventRankingPost(data) {
+  if (!Array.isArray(data?.events) || !Number.isFinite(Date.parse(data.generated_at))) throw new Error("CHANNEL_EVENTS_INVALID");
+  const top = data.events.slice(0, 5);
+  const seen = new Set();
+  const title = "瞬变源 Top 5";
+  const lines = [`数据更新：${data.generated_at}`, "", "榜单与网页使用同一构建快照。热度表示本地近期文献讨论，按现有 7 天半衰期衰减；不等于物理重要性，也不表示事件刚刚爆发。", ""];
+  for (const [index, event] of top.entries()) {
+    if (typeof event.event_id !== "string" || !event.event_id.trim() || seen.has(event.event_id) || !Number.isFinite(event.heat_score) || event.heat_score < 0 || !Number.isInteger(event.paper_count) || event.paper_count < 0 || !/^\d{4}-\d\d-\d\d$/u.test(event.last_updated || "") || !Array.isArray(event.papers)) throw new Error("CHANNEL_EVENTS_INVALID");
+    seen.add(event.event_id);
+    lines.push(`## ${index + 1}. ${event.event_id}`, "", `**热度 ${event.heat_score}** · ${event.paper_count} 篇关联文献 · 最近文献更新 ${event.last_updated}`, "");
+    const paper = event.papers.find(p => ["must_read", "worth_knowing"].includes(p.priority) && /^\d{4}\.\d{4,5}$/u.test(p.arxiv_id || ""));
+    if (paper) lines.push(paper.bluf_problem || "", "", `[近期关联论文 arXiv:${paper.arxiv_id}](https://arxiv.org/abs/${paper.arxiv_id})`, "");
+  }
+  if (!top.length) lines.push("当前没有可展示的事件，不补造排名。", "");
+  lines.push(`[网页事件榜单](${SITE_BASE_URL}/agent/)`);
+  return { title, body: lines.join("\n") };
 }
 
 export async function publishEventRanking({ sourceBinding, eventSnapshot, eventsPath = join(DEFAULT_DIST_ROOT, "api/v1/events.json"), channelId = DEFAULT_DAILY_CHANNEL_ID, ...options } = {}) {
@@ -754,25 +810,13 @@ export async function publishEventRanking({ sourceBinding, eventSnapshot, events
     const bytes = await readFile(eventsPath);
     if (hashBody(bytes) !== eventSnapshot.hash) throw new Error("CHANNEL_EVENTS_BUILD_MISMATCH");
     const data = JSON.parse(bytes);
-    if (!Array.isArray(data.events) || !Number.isFinite(Date.parse(data.generated_at)) || data.generated_at !== eventSnapshot.generated_at) throw new Error("CHANNEL_EVENTS_INVALID");
-    const top = data.events.slice(0, 5);
-    const seen = new Set();
-    const title = "瞬变源 Top 5";
-    const lines = [`# ${title}`, "", `数据更新：${data.generated_at}`, "", "榜单与网页使用同一构建快照。热度表示本地近期文献讨论，按现有 7 天半衰期衰减；不等于物理重要性，也不表示事件刚刚爆发。", ""];
-    for (const [index, event] of top.entries()) {
-      if (typeof event.event_id !== "string" || !event.event_id.trim() || seen.has(event.event_id) || !Number.isFinite(event.heat_score) || event.heat_score < 0 || !Number.isInteger(event.paper_count) || event.paper_count < 0 || !/^\d{4}-\d\d-\d\d$/u.test(event.last_updated || "") || !Array.isArray(event.papers)) throw new Error("CHANNEL_EVENTS_INVALID");
-      seen.add(event.event_id);
-      lines.push(`## ${index + 1}. ${event.event_id}`, "", `**热度 ${event.heat_score}** · ${event.paper_count} 篇关联文献 · 最近文献更新 ${event.last_updated}`, "");
-      const paper = event.papers.find(p => ["must_read", "worth_knowing"].includes(p.priority) && /^\d{4}\.\d{4,5}$/u.test(p.arxiv_id || ""));
-      if (paper) lines.push(paper.bluf_problem || "", "", `[近期关联论文 arXiv:${paper.arxiv_id}](https://arxiv.org/abs/${paper.arxiv_id})`, "");
-    }
-    if (!top.length) lines.push("当前没有可展示的事件，不补造排名。", "");
-    lines.push(`[网页事件榜单](${SITE_BASE_URL}/agent/)`);
-    return await publishItems([{ identity: "events:top5", title, body: lines.join("\n") }], { ...options, channelId, kind: "events" });
+    if (data.generated_at !== eventSnapshot.generated_at) throw new Error("CHANNEL_EVENTS_INVALID");
+    const post = renderEventRankingPost(data);
+    return await publishItems([{ identity: "events:top5", ...post }], { ...options, channelId, kind: "events" });
   } catch (error) { return { ...summary(), success: false, pending: 1, errors: [error.message] }; }
 }
 
-export async function publishHistoricalFeeds({ archiveRoot = DEFAULT_ARCHIVE_ROOT, distRoot = DEFAULT_DIST_ROOT, from = "2026-09-07", through = "2026-10-01", limit = 50, dryRun = false, channelIds, sourceBinding, briefs = false, channelId = DEFAULT_DAILY_CHANNEL_ID, ...options } = {}) {
+export async function publishHistoricalFeeds({ archiveRoot = DEFAULT_ARCHIVE_ROOT, distRoot = DEFAULT_DIST_ROOT, from = "2026-09-07", through = "2026-10-01", limit = 50, dryRun = false, channelIds, sourceBinding, briefs = false, channelId = DEFAULT_DAILY_CHANNEL_ID, resolveFigure = resolveReviewedFigure, ...options } = {}) {
   try {
     requireSourceBinding(sourceBinding);
     if (!Number.isInteger(limit) || limit < 1 || limit > 50) throw new Error("CHANNEL_LIMIT_INVALID");
@@ -790,7 +834,7 @@ export async function publishHistoricalFeeds({ archiveRoot = DEFAULT_ARCHIVE_ROO
         if (briefs) { must.push(dailyBriefItem(model, date)); continue; }
         for (const [group, target, kind] of [[model.groups.must_read, must, "must_read"], [model.groups.worth_knowing, worth, "worth_knowing"]]) {
           for (const paper of group) {
-            const item = dailyItems({ groups: { must_read: kind === "must_read" ? [paper] : [], worth_knowing: kind === "worth_knowing" ? [paper] : [] } }, date)[0];
+            const item = (await dailyItems({ groups: { must_read: kind === "must_read" ? [paper] : [], worth_knowing: kind === "worth_knowing" ? [paper] : [] } }, date, resolveFigure, { distRoot }))[0];
             if (!seen.has(item.identity)) { seen.add(item.identity); target.push(item); }
           }
         }
@@ -803,30 +847,8 @@ export async function publishHistoricalFeeds({ archiveRoot = DEFAULT_ARCHIVE_ROO
   } catch (error) { return { ...summary(), success: false, pending: 1, errors: [error.message] }; }
 }
 
-export async function alterWeeklyFeed({
-  guildId = DEFAULT_GUILD_ID,
-  channelId = DEFAULT_WEEKLY_CHANNEL_ID,
-  feedId,
-  createTime,
-  titleOverride,
-} = {}) {
-  if (!feedId || !createTime) throw new Error("alterWeeklyFeed requires feedId and createTime");
-  const { postTitle, md } = await generateWeeklyMarkdown({ titleOverride });
-
-  console.log(`[publisher] 正在更新周报帖子 ${feedId} (新标题: ${postTitle})...`);
-  const res = await runCli([
-    "feed", "alter-feed",
-    "--guild-id", String(guildId),
-    "--channel-id", String(channelId),
-    "--feed-id", String(feedId),
-    "--create-time", String(createTime),
-    "--title", postTitle,
-    "--markdown-content", md,
-    "--json",
-  ]);
-
-  console.log(`[publisher] 周报帖子更新成功`);
-  return res;
+export async function alterWeeklyFeed() {
+  throw new Error("CHANNEL_DIRECT_EDIT_DISABLED");
 }
 
 export async function deleteFeed({
@@ -889,7 +911,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1
     const createTime = process.argv[4];
     await alterWeeklyFeed({ feedId, createTime });
   } else {
-    console.error(`未知任务类型: ${task}。可用参数: daily, weekly, alter-daily <feedId> <createTime>, alter-weekly <feedId> <createTime>`);
+    console.error(`未知任务类型: ${task}。可用参数: daily, weekly, events, backfill`);
     process.exit(1);
   }
 }

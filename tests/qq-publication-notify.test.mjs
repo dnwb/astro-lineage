@@ -15,6 +15,7 @@ test("group daily summary places original links with papers and separates discus
   const archive = JSON.parse(await readFile(new URL("../src/data/arxiv-archives/daily/2026-09-28.json", import.meta.url)));
   const { model } = validateDailyRadarPayload(archive.feed, archive.radar);
   const text = await generateGroupBrief("daily", { dailyModel: model, date: archive.date, channelUrl, websiteBase });
+  assert.ok(text.startsWith("「09-28」FRB等离子体透镜预言的重复时延为数周至数月\n"));
   assert.ok(text.includes(archive.opening_brief.intro));
   const first = model.groups.must_read[0];
   assert.ok(text.includes(`https://arxiv.org/abs/${first.arxiv_id}v${first.revision}`));
@@ -25,8 +26,9 @@ test("group daily summary places original links with papers and separates discus
 });
 
 test("group weekly summary preserves source picks and labels partial channel delivery", async () => {
-  const weekly = { week_id: "2026-W40", date_range: "2026-09-28 ~ 2026-10-04", executive_summary: "本周关注喷流传播。其他详细结果。", thematic_highlights: [{ theme_name: "喷流传播" }], top_picks: [{ arxiv_id: "2609.12345", title: "Jet propagation", priority: "must_read", reason: "与喷流动力学相关。" }] };
+  const weekly = { week_id: "2026-W40", date_range: "2026-09-28 ~ 2026-10-04", executive_summary: "SN 2024ggi的前兆非探测限制了指定时长和亮度范围内的显著爆发式失质量。本周其他详细结果。", thematic_highlights: [{ theme_name: "喷流传播" }], top_picks: [{ arxiv_id: "2609.12345", title: "Jet propagation", priority: "must_read", reason: "与喷流动力学相关。" }] };
   const text = await generateGroupBrief("weekly", { weekly, channelUrl, websiteBase, delivery: { channel: { weekly: { status: "failed" } } } });
+  assert.ok(text.startsWith("W40周报：SN 2024ggi的前兆非探测限制了指定时长和亮度范围内的显著爆发式失质量\n"));
   assert.ok(text.includes("https://arxiv.org/abs/2609.12345"));
   assert.ok(text.includes(`${websiteBase}/arxiv-weekly/2026-W40/`));
   assert.match(text, /频道部分内容待同步/u);
@@ -131,7 +133,7 @@ test("blocked preparation outranks permission waiting in aggregate status", asyn
 });
 
 test("weekly introduction preserves the complete thought following a leading colon", async () => {
-  const weekly = { week_id: "2026-W40", executive_summary: "本周进展沿着以下脉络：\n\n- 星周介质影响激波演化。\n- 后续内容。" };
+  const weekly = { week_id: "2026-W40", executive_summary: "本周进展沿着以下脉络：\n\n- 星周介质影响激波演化。\n- 后续内容。", thematic_highlights: [{ summary: "SN 2024ggi的前兆非探测限制了指定时长和亮度范围内的显著爆发式失质量。" }] };
   const text = await generateGroupBrief("weekly", { weekly, channelUrl, websiteBase });
   assert.ok(text.includes("星周介质影响激波演化。"));
 });

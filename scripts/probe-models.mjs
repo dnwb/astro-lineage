@@ -67,12 +67,25 @@ async function main() {
   console.log("=========================================================\n");
 
   const primaryCandidates = buildModelCandidates(DEFAULT_MODEL, DEFAULT_FALLBACK_MODELS);
-  console.log(`[主供应商] ${DEFAULT_BASE_URL}`);
-  console.log(`默认主模型: ${DEFAULT_MODEL}`);
-  console.log(`降级候选链: ${DEFAULT_FALLBACK_MODELS.join(" -> ")}\n`);
+  console.log(`[网关服务] ${DEFAULT_BASE_URL}`);
+  console.log(`• 初筛 (Triage):      ${(process.env.AI_MODEL_TRIAGE || "gpt-6-luna")} -> ${(process.env.AI_TRIAGE_FALLBACK_MODELS || "gemini-3.5-flash-lite,claude-sonnet-4-6")}`);
+  console.log(`• 深度精读 (Reading):  ${(process.env.AI_MODEL_BODY || "gpt-6.1-sol")} -> ${(process.env.AI_BODY_FALLBACK_MODELS || "gemini-3.8-flash-high,claude-opus-4-6-thinking")}`);
+  console.log(`• 即时问答 (QA Bot):   ${DEFAULT_MODEL} -> ${DEFAULT_FALLBACK_MODELS.join(" -> ")}\n`);
 
-  for (const model of primaryCandidates) {
-    process.stdout.write(`  • 探测模型: ${model.padEnd(20)} ... `);
+  const triageCandidates = buildModelCandidates(
+    process.env.AI_MODEL_TRIAGE || process.env.AI_MODEL || "gpt-6-luna",
+    (process.env.AI_TRIAGE_FALLBACK_MODELS || "gemini-3.5-flash-lite,claude-sonnet-4-6").split(",").map(m => m.trim()).filter(Boolean)
+  );
+  const bodyCandidates = buildModelCandidates(
+    process.env.AI_MODEL_BODY || "gpt-6.1-sol",
+    (process.env.AI_BODY_FALLBACK_MODELS || "gemini-3.8-flash-high,claude-opus-4-6-thinking").split(",").map(m => m.trim()).filter(Boolean)
+  );
+  const botCandidates = buildModelCandidates(DEFAULT_MODEL, DEFAULT_FALLBACK_MODELS);
+  const allUniqueModels = [...new Set([...triageCandidates, ...bodyCandidates, ...botCandidates])];
+
+  console.log(`探测 ${allUniqueModels.length} 个配置模型：`);
+  for (const model of allUniqueModels) {
+    process.stdout.write(`  • 探测模型: ${model.padEnd(26)} ... `);
     const result = await probeModel({
       baseUrl: DEFAULT_BASE_URL,
       apiKey: DEFAULT_API_KEY,
@@ -90,7 +103,7 @@ async function main() {
     console.log(`\n[备用网关] ${FALLBACK_BASE_URL}`);
     const fbCandidates = [...new Set([FALLBACK_MODEL, "gpt-6-sol", "gpt-5.5"].filter(Boolean))];
     for (const model of fbCandidates) {
-      process.stdout.write(`  • 探测模型: ${model.padEnd(20)} ... `);
+      process.stdout.write(`  • 探测模型: ${model.padEnd(26)} ... `);
       const result = await probeModel({
         baseUrl: FALLBACK_BASE_URL,
         apiKey: FALLBACK_API_KEY,
@@ -106,7 +119,7 @@ async function main() {
   }
 
   console.log("\n=========================================================");
-  console.log("探测完成。系统将自动按首个返回 200 OK 的模型进行业务派发。");
+  console.log("探测完成。系统已全部统一路由至 localhost:8318。");
 }
 
 if (process.argv[1] && import.meta.url.endsWith(process.argv[1].replace(/.*[\/\\]/u, ""))) {

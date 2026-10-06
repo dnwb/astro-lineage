@@ -1,0 +1,5 @@
+{"_example": "Fill with {\"file\": \"<path>\", \"reason\": \"<why>\"}. Put spec/research files only — no code paths. Run `python3 .trellis/scripts/get_context.py --mode packages` to list available specs. Delete this line once real entries are added."}
+{"file": ".scratch/channel-title-system/spec.md", "reason": "Acceptance criteria for independent implementation review."}
+{"file": ".scratch/channel-title-system/issues/04-audit-and-preview.md", "reason": "Read-only history preview and source binding acceptance."}
+{"file": ".scratch/channel-title-system/issues/05-approved-live-sync.md", "reason": "Only approved same-ID title fields may be written."}
+{"file": ".trellis/tasks/10-05-channel-title-system/design.md", "reason": "Implementation seams, media safety, and rollback constraints."}

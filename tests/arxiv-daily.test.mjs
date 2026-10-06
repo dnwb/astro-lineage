@@ -1311,7 +1311,7 @@ test("the deployed Daily Radar page is static and exposes the latest cache data"
   });
   assert.equal(build.status, 0, build.stderr || build.stdout);
   const html = await readFile(join(projectRoot, "dist", "arxiv-daily", "index.html"), "utf8");
-  const currentFeed = JSON.parse(await readFile(join(projectRoot, "src/data/arxiv-daily.json"), "utf8"));
+  const currentFeed = (await readPublishedArxivEdition()).feed;
   assert.match(html, /每日 arXiv 导读/u);
   assert.match(html, /arXiv/iu);
   assert.match(html, /本期导读/u);

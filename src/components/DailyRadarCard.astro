@@ -104,7 +104,9 @@ function priorityLabel(priority: string) {
             <div class="bluf-item bluf-item-problem">
               <span class="bluf-mark bluf-tag problem-mark problem-tag">课题</span>
               <div class="bluf-content-wrapper">
-                <span class="bluf-headline">{problemClaim.headline}</span>
+                {problemClaim.headline && !problemClaim.detailed_text.startsWith(problemClaim.headline.replace(/\.\.\.$/, "")) && (
+                  <span class="bluf-headline">{problemClaim.headline}</span>
+                )}
                 <span class="bluf-text"><ReaderText text={problemClaim.detailed_text} /></span>
               </div>
             </div>
@@ -112,7 +114,9 @@ function priorityLabel(priority: string) {
           <div class="bluf-item bluf-item-result">
             <span class="bluf-mark bluf-tag result-mark result-tag" title={resultLabel}>突破</span>
             <div class="bluf-content-wrapper">
-              <span class="bluf-headline">{resultClaim.headline}</span>
+              {resultClaim.headline && !resultClaim.detailed_text.startsWith(resultClaim.headline.replace(/\.\.\.$/, "")) && (
+                <span class="bluf-headline">{resultClaim.headline}</span>
+              )}
               <span class="bluf-text"><ReaderText text={resultClaim.detailed_text} /></span>
             </div>
           </div>
@@ -120,7 +124,9 @@ function priorityLabel(priority: string) {
             <div class="bluf-item bluf-item-reason">
               <span class="bluf-mark bluf-tag reason-mark reason-tag">理由</span>
               <div class="bluf-content-wrapper">
-                <span class="bluf-headline">{reasonClaim.headline}</span>
+                {reasonClaim.headline && !reasonClaim.detailed_text.startsWith(reasonClaim.headline.replace(/\.\.\.$/, "")) && (
+                  <span class="bluf-headline">{reasonClaim.headline}</span>
+                )}
                 <span class="bluf-text"><ReaderText text={reasonClaim.detailed_text} /></span>
               </div>
             </div>
@@ -130,7 +136,6 @@ function priorityLabel(priority: string) {
         <div class="bluf-item bluf-item-skim">
           <span class="bluf-mark bluf-tag skim-mark skim-tag">略读</span>
           <div class="bluf-content-wrapper">
-            <span class="bluf-headline">{resultClaim.headline}</span>
             <span class="bluf-text"><ReaderText text={guide.reason || record.analysis.result || guide.result} /></span>
           </div>
         </div>
@@ -314,30 +319,30 @@ function priorityLabel(priority: string) {
     border: 1px solid #cbd5e1;
     border-radius: 0.25rem;
   }
-  :global([data-theme="dark"]) .priority-pill-must-read {
-    background: #431407;
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .priority-pill-must-read {
+    background: rgba(234, 88, 12, 0.18);
     color: #fdba74;
-    border-color: #ea580c;
+    border-color: rgba(234, 88, 12, 0.35);
   }
-  :global([data-theme="dark"]) .priority-pill-worth-knowing {
-    background: #1e1b4b;
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .priority-pill-worth-knowing {
+    background: rgba(99, 102, 241, 0.18);
     color: #c7d2fe;
-    border-color: #6366f1;
+    border-color: rgba(99, 102, 241, 0.35);
   }
-  :global([data-theme="dark"]) .priority-pill-skim {
-    background: #1e293b;
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .priority-pill-skim {
+    background: rgba(51, 65, 85, 0.3);
     color: #94a3b8;
-    border-color: #475569;
+    border-color: rgba(71, 85, 105, 0.4);
   }
-  :global([data-theme="dark"]) .radar-transient-tag {
-    background: #422006;
-    color: #fde047;
-    border-color: #ca8a04;
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .radar-transient-tag {
+    background: rgba(245, 158, 11, 0.16);
+    color: #fde68a;
+    border-color: rgba(245, 158, 11, 0.3);
   }
-  :global([data-theme="dark"]) .radar-category-tag {
-    background: #1e293b;
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .radar-category-tag {
+    background: rgba(30, 41, 59, 0.6);
     color: #cbd5e1;
-    border-color: #475569;
+    border-color: rgba(71, 85, 105, 0.5);
   }
 
   .radar-arxiv-badge {
@@ -356,10 +361,10 @@ function priorityLabel(priority: string) {
     background: #dbeafe;
     text-decoration: underline;
   }
-  :global([data-theme="dark"]) .radar-arxiv-badge {
-    color: #60a5fa;
-    background: #1e293b;
-    border-color: #3b82f6;
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .radar-arxiv-badge {
+    color: #93c5fd;
+    background: rgba(30, 58, 138, 0.25);
+    border-color: rgba(59, 130, 246, 0.35);
   }
 
   .radar-pdf-badge {
@@ -381,33 +386,24 @@ function priorityLabel(priority: string) {
     border-color: #f87171;
     text-decoration: underline;
   }
-  :global([data-theme="dark"]) .radar-pdf-badge {
-    color: #f87171;
-    background: #450a0a;
-    border-color: #991b1b;
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .radar-pdf-badge {
+    color: #fca5a5;
+    background: rgba(239, 68, 68, 0.16);
+    border-color: rgba(239, 68, 68, 0.35);
   }
 
   .radar-card {
     background: var(--card-bg, #ffffff);
-    border: 1px solid var(--border-color, #e2e8f0);
-    border-radius: 0.5rem;
-    padding: 1.15rem 1.35rem;
-    margin-bottom: 0.85rem;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-    transition: border-color 0.15s, box-shadow 0.15s;
+    border: 1px solid var(--border-color, rgba(0, 0, 0, 0.06));
+    border-radius: 8px;
+    padding: 1.25rem 1.45rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
   }
   .radar-card:hover {
     border-color: #cbd5e1;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
-  }
-  .radar-card-must-read {
-    border-left: 4px solid #ea580c;
-  }
-  .radar-card-worth-knowing {
-    border-left: 4px solid #3b82f6;
-  }
-  .radar-card-skim {
-    border-left: 3px solid #94a3b8;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   }
   :global([data-theme="dark"]) .radar-card {
     background: #1e293b;
@@ -418,8 +414,8 @@ function priorityLabel(priority: string) {
   .radar-card-title {
     margin: 0.45rem 0 0.65rem;
     font-size: 1.15rem;
-    line-height: 1.38;
-    font-weight: 700;
+    line-height: 1.4;
+    font-weight: 600;
     letter-spacing: -0.01em;
   }
   .radar-card-title a {
@@ -438,20 +434,15 @@ function priorityLabel(priority: string) {
     color: #60a5fa;
   }
 
-  /* AIHOT-style Direct & Scannable BLUF Brief */
+  /* AIHOT-style Direct & Scannable BLUF Brief (Clean Borderless Flow) */
   .radar-bluf-brief {
-    margin: 0.5rem 0 0.75rem;
+    margin: 0.65rem 0 0.85rem;
     display: flex;
     flex-direction: column;
-    gap: 0.45rem;
-    padding: 0.65rem 0.85rem;
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 0.45rem;
-  }
-  :global([data-theme="dark"]) .radar-bluf-brief {
-    background: #0f172a;
-    border-color: #1e293b;
+    gap: 0.5rem;
+    padding: 0;
+    background: transparent;
+    border: none;
   }
   .bluf-item {
     display: flex;
@@ -465,63 +456,64 @@ function priorityLabel(priority: string) {
   .bluf-tag {
     display: inline-flex;
     align-items: center;
-    padding: 0.12rem 0.45rem;
-    font-size: 0.72rem;
+    padding: 0.1rem 0.4rem;
+    font-size: 0.68rem;
     font-weight: 700;
     line-height: 1.25;
-    border-radius: 0.25rem;
+    border-radius: 4px;
     flex-shrink: 0;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.03em;
     user-select: none;
-    margin-top: 0.15rem;
+    margin-top: 0.18rem;
+    border: none;
   }
   .problem-mark,
   .problem-tag {
     background: #ecfdf5;
     color: #065f46;
-    border: 1px solid #a7f3d0;
+    border: none;
   }
   .result-mark,
   .result-tag {
     background: #eff6ff;
     color: #1d4ed8;
-    border: 1px solid #bfdbfe;
+    border: none;
   }
   .reason-mark,
   .reason-tag {
     background: #fefce8;
     color: #a16207;
-    border: 1px solid #fde047;
+    border: none;
   }
   .skim-mark,
   .skim-tag {
     background: #f1f5f9;
     color: #475569;
-    border: 1px solid #cbd5e1;
+    border: none;
   }
-  :global([data-theme="dark"]) .problem-mark,
-  :global([data-theme="dark"]) .problem-tag {
-    background: #064e3b;
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .problem-mark,
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .problem-tag {
+    background: rgba(16, 185, 129, 0.16);
     color: #6ee7b7;
-    border-color: #047857;
+    border: 1px solid rgba(16, 185, 129, 0.25);
   }
-  :global([data-theme="dark"]) .result-mark,
-  :global([data-theme="dark"]) .result-tag {
-    background: #1e3a5f;
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .result-mark,
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .result-tag {
+    background: rgba(59, 130, 246, 0.16);
     color: #93c5fd;
-    border-color: #2563eb;
+    border: 1px solid rgba(59, 130, 246, 0.25);
   }
-  :global([data-theme="dark"]) .reason-mark,
-  :global([data-theme="dark"]) .reason-tag {
-    background: #451a03;
-    color: #fde047;
-    border-color: #ca8a04;
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .reason-mark,
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .reason-tag {
+    background: rgba(245, 158, 11, 0.16);
+    color: #fde68a;
+    border: 1px solid rgba(245, 158, 11, 0.25);
   }
-  :global([data-theme="dark"]) .skim-mark,
-  :global([data-theme="dark"]) .skim-tag {
-    background: #1e293b;
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .skim-mark,
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .skim-tag {
+    background: rgba(100, 116, 139, 0.2);
     color: #94a3b8;
-    border-color: #475569;
+    border: 1px solid rgba(100, 116, 139, 0.25);
   }
   .bluf-content-wrapper {
     display: flex;

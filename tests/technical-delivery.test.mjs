@@ -82,6 +82,7 @@ const expectedRoutes = [
   "/arxiv-weekly/",
   ...archivedWeeklyRoutes,
   "/arxiv-archives/",
+  "/events/",
   "/papers/",
   ...paperSlugs.map((slug) => `/papers/${slug}/`),
   "/research-lines/",

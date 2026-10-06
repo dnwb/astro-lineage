@@ -1,6 +1,7 @@
 ---
 import ReaderText from "./ReaderText.astro";
 import eventsData from "../data/scientific-events.json";
+import { formatAnnouncementInBeijing, parseTransientEpoch } from "../domain/academic-domain.mjs";
 
 interface Props {
   maxEvents?: number;
@@ -47,8 +48,11 @@ function priorityPill(priority: string) {
 <section class="scientific-events-section" aria-labelledby="scientific-events-heading">
   <div class="events-section-header">
     <div class="events-badge-row">
-      <span class="events-kicker-tag">🔭 瞬变源追踪</span>
-      <span class="events-kicker-sub">半衰期热度衰减算法 · 多篇聚簇</span>
+      <div class="events-badge-left">
+        <span class="events-kicker-tag">🔭 瞬变源追踪</span>
+        <span class="events-kicker-sub">半衰期热度衰减算法 · 多篇聚簇</span>
+      </div>
+      <a href="/events/" class="events-explore-link">📅 浏览全部 68 个爆发事件日历 →</a>
     </div>
     <h2 id="scientific-events-heading" class="events-main-title">
       <span class="title-primary">{title}</span>
@@ -60,6 +64,7 @@ function priorityPill(priority: string) {
   <div class="events-grid">
     {events.map((event) => {
       const topMustRead = event.papers.find((p) => p.priority === "must_read");
+      const epoch = parseTransientEpoch(event.event_id);
       return (
         <article class="event-cluster-card" id={`event-${event.event_id.toLowerCase().replace(/\s+/g, "-")}`}>
           <!-- Card Header -->
@@ -67,6 +72,11 @@ function priorityPill(priority: string) {
             <div class="event-id-group">
               <span class={`event-type-badge ${typeBadgeColor(event.event_type)}`}>{event.event_type}</span>
               <h3 class="event-target-id">{event.event_id}</h3>
+              {epoch && (
+                <span class="event-epoch-tag" title="天体物理爆发/探测时间戳">
+                  ⚡ 爆发：{epoch}
+                </span>
+              )}
             </div>
             <div class="event-metrics-group">
               <span class="metric-heat-badge" title="基于7天半衰期模型计算的时间衰减热度指数">
@@ -101,7 +111,7 @@ function priorityPill(priority: string) {
                   <li class={`event-paper-node node-${paper.priority}`}>
                     <div class="node-meta-row">
                       <span class={`paper-priority-pill ${priorityInfo.cls}`}>{priorityInfo.label}</span>
-                      <span class="paper-date-tag">📅 {paper.date}</span>
+                      <span class="paper-date-tag">📅 {formatAnnouncementInBeijing(paper.date).beijingDate}</span>
                       <div class="paper-links-cluster">
                         <a class="anchor-link-guide" href={dailyCardAnchor} title="直接跳转至当日精读学术卡片">
                           📖 精读导读 →
@@ -138,6 +148,13 @@ function priorityPill(priority: string) {
       );
     })}
   </div>
+
+  <div class="events-section-footer">
+    <a href="/events/" class="events-calendar-btn">
+      <span>进入完整爆发日历与演化时间轴 (共 68 个事件)</span>
+      <span aria-hidden="true">→</span>
+    </a>
+  </div>
 </section>
 
 <style>
@@ -148,8 +165,11 @@ function priorityPill(priority: string) {
     border: 1px solid var(--border-color, #e2e8f0);
     border-radius: 0.85rem;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
   }
-  :global([data-theme="dark"]) .scientific-events-section {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .scientific-events-section {
     background: #0f172a;
     border-color: #334155;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
@@ -159,16 +179,83 @@ function priorityPill(priority: string) {
     margin-bottom: 1.5rem;
     border-bottom: 1px solid var(--border-color, #e2e8f0);
     padding-bottom: 1rem;
+    width: 100%;
+    box-sizing: border-box;
   }
-  :global([data-theme="dark"]) .events-section-header {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .events-section-header {
     border-bottom-color: #334155;
   }
 
   .events-badge-row {
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
     gap: 0.5rem;
     margin-bottom: 0.4rem;
+  }
+  .events-badge-left {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .events-explore-link {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #2563eb;
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+  .events-explore-link:hover {
+    color: #1d4ed8;
+    text-decoration: underline;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .events-explore-link {
+    color: #60a5fa;
+  }
+  .event-epoch-tag {
+    font-size: 0.72rem;
+    font-weight: 600;
+    font-family: ui-monospace, monospace;
+    color: #0369a1;
+    background: #f0f9ff;
+    border: 1px solid #bae6fd;
+    padding: 0.1rem 0.4rem;
+    border-radius: 0.25rem;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .event-epoch-tag {
+    color: #7dd3fc;
+    background: rgba(14, 165, 233, 0.18);
+    border-color: rgba(56, 189, 248, 0.35);
+  }
+  .events-section-footer {
+    display: flex;
+    justify-content: center;
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid #f1f5f9;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .events-section-footer {
+    border-top-color: #1e293b;
+  }
+  .events-calendar-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.25rem;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #ffffff;
+    background: #2563eb;
+    border-radius: 0.45rem;
+    text-decoration: none;
+    transition: all 0.15s ease;
+    box-shadow: 0 1px 3px rgba(37, 99, 235, 0.25);
+  }
+  .events-calendar-btn:hover {
+    background: #1d4ed8;
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.35);
   }
   .events-kicker-tag {
     display: inline-block;
@@ -180,10 +267,10 @@ function priorityPill(priority: string) {
     border: 1px solid #bfdbfe;
     border-radius: 9999px;
   }
-  :global([data-theme="dark"]) .events-kicker-tag {
-    background: #1e3a8a;
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .events-kicker-tag {
+    background: rgba(30, 58, 138, 0.28);
     color: #93c5fd;
-    border-color: #2563eb;
+    border-color: rgba(59, 130, 246, 0.35);
   }
   .events-kicker-sub {
     font-size: 0.78rem;
@@ -197,6 +284,7 @@ function priorityPill(priority: string) {
     flex-wrap: wrap;
     align-items: baseline;
     gap: 0.6rem;
+    width: 100%;
   }
   .title-primary {
     font-size: 1.35rem;
@@ -204,7 +292,7 @@ function priorityPill(priority: string) {
     color: var(--text-heading, #0f172a);
     letter-spacing: -0.01em;
   }
-  :global([data-theme="dark"]) .title-primary {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .title-primary {
     color: #f8fafc;
   }
   .title-english {
@@ -218,8 +306,10 @@ function priorityPill(priority: string) {
     font-size: 0.88rem;
     line-height: 1.6;
     color: var(--text-body, #475569);
+    width: 100%;
+    max-width: 100%;
   }
-  :global([data-theme="dark"]) .events-subtitle {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .events-subtitle {
     color: #94a3b8;
   }
 
@@ -227,6 +317,9 @@ function priorityPill(priority: string) {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
   }
 
   .event-cluster-card {
@@ -238,8 +331,11 @@ function priorityPill(priority: string) {
     flex-direction: column;
     gap: 1rem;
     transition: transform 0.15s ease, box-shadow 0.15s ease;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
   }
-  :global([data-theme="dark"]) .event-cluster-card {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .event-cluster-card {
     background: #1e293b;
     border-color: #334155;
   }
@@ -247,7 +343,7 @@ function priorityPill(priority: string) {
     border-color: #cbd5e1;
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
   }
-  :global([data-theme="dark"]) .event-cluster-card:hover {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .event-cluster-card:hover {
     border-color: #475569;
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
   }
@@ -258,6 +354,8 @@ function priorityPill(priority: string) {
     align-items: center;
     flex-wrap: wrap;
     gap: 0.75rem;
+    width: 100%;
+    box-sizing: border-box;
   }
   .event-id-group {
     display: flex;
@@ -271,7 +369,7 @@ function priorityPill(priority: string) {
     color: var(--text-heading, #0f172a);
     letter-spacing: -0.01em;
   }
-  :global([data-theme="dark"]) .event-target-id {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .event-target-id {
     color: #f8fafc;
   }
 
@@ -288,50 +386,50 @@ function priorityPill(priority: string) {
     color: #6b21a8;
     border: 1px solid #d8b4fe;
   }
-  :global([data-theme="dark"]) .badge-gw {
-    background: #3b0764;
-    color: #e9d5ff;
-    border-color: #7e22ce;
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .badge-gw {
+    background: rgba(147, 51, 234, 0.18);
+    color: #d8b4fe;
+    border-color: rgba(168, 85, 247, 0.32);
   }
   .badge-grb {
     background: #fef3c7;
     color: #b45309;
     border: 1px solid #fde68a;
   }
-  :global([data-theme="dark"]) .badge-grb {
-    background: #451a03;
-    color: #fef08a;
-    border-color: #b45309;
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .badge-grb {
+    background: rgba(217, 119, 6, 0.18);
+    color: #fde68a;
+    border-color: rgba(245, 158, 11, 0.32);
   }
   .badge-sn {
     background: #ffe4e6;
     color: #be123c;
     border: 1px solid #fecdd3;
   }
-  :global([data-theme="dark"]) .badge-sn {
-    background: #4c0519;
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .badge-sn {
+    background: rgba(225, 29, 72, 0.18);
     color: #fda4af;
-    border-color: #be123c;
+    border-color: rgba(244, 63, 94, 0.32);
   }
   .badge-frb {
     background: #cffafe;
     color: #0e7490;
     border: 1px solid #a5f3fc;
   }
-  :global([data-theme="dark"]) .badge-frb {
-    background: #083344;
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .badge-frb {
+    background: rgba(6, 182, 212, 0.18);
     color: #67e8f9;
-    border-color: #0e7490;
+    border-color: rgba(14, 165, 233, 0.32);
   }
   .badge-at {
     background: #e0e7ff;
     color: #4338ca;
     border: 1px solid #c7d2fe;
   }
-  :global([data-theme="dark"]) .badge-at {
-    background: #1e1b4b;
-    color: #a5b4fc;
-    border-color: #4338ca;
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .badge-at {
+    background: rgba(99, 102, 241, 0.18);
+    color: #c7d2fe;
+    border-color: rgba(129, 140, 248, 0.32);
   }
   .badge-other {
     background: #f1f5f9;
@@ -353,10 +451,10 @@ function priorityPill(priority: string) {
     border: 1px solid #fecdd3;
     border-radius: 9999px;
   }
-  :global([data-theme="dark"]) .metric-heat-badge {
-    background: #380b15;
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .metric-heat-badge {
+    background: rgba(225, 29, 72, 0.16);
     color: #fb7185;
-    border-color: #9f1239;
+    border-color: rgba(244, 63, 94, 0.3);
   }
   .metric-count-badge {
     padding: 0.2rem 0.55rem;
@@ -367,8 +465,8 @@ function priorityPill(priority: string) {
     border: 1px solid var(--border-color, #e2e8f0);
     border-radius: 9999px;
   }
-  :global([data-theme="dark"]) .metric-count-badge {
-    background: #0f172a;
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .metric-count-badge {
+    background: rgba(51, 65, 85, 0.4);
     border-color: #334155;
     color: #94a3b8;
   }
@@ -383,8 +481,11 @@ function priorityPill(priority: string) {
     display: flex;
     flex-direction: column;
     gap: 0.4rem;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
   }
-  :global([data-theme="dark"]) .event-synthesis-box {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .event-synthesis-box {
     background: #0f172a;
     border-color: #334155;
     border-left-color: #60a5fa;
@@ -395,8 +496,10 @@ function priorityPill(priority: string) {
     font-weight: 700;
     color: var(--text-heading, #0f172a);
     line-height: 1.4;
+    width: 100%;
+    max-width: 100%;
   }
-  :global([data-theme="dark"]) .event-headline {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .event-headline {
     color: #f8fafc;
   }
   .event-narrative-text {
@@ -404,8 +507,10 @@ function priorityPill(priority: string) {
     font-size: 0.86rem;
     line-height: 1.62;
     color: var(--text-body, #475569);
+    width: 100%;
+    max-width: 100%;
   }
-  :global([data-theme="dark"]) .event-narrative-text {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .event-narrative-text {
     color: #94a3b8;
   }
 
@@ -414,6 +519,9 @@ function priorityPill(priority: string) {
     display: flex;
     flex-direction: column;
     gap: 0.6rem;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
   }
   .timeline-header-row {
     display: flex;
@@ -422,6 +530,8 @@ function priorityPill(priority: string) {
     font-size: 0.82rem;
     font-weight: 600;
     color: var(--text-secondary, #64748b);
+    width: 100%;
+    box-sizing: border-box;
   }
   .timeline-span-badge {
     font-size: 0.75rem;
@@ -436,6 +546,9 @@ function priorityPill(priority: string) {
     display: flex;
     flex-direction: column;
     gap: 0.65rem;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
   }
 
   .event-paper-node {
@@ -446,8 +559,11 @@ function priorityPill(priority: string) {
     display: flex;
     flex-direction: column;
     gap: 0.35rem;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
   }
-  :global([data-theme="dark"]) .event-paper-node {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .event-paper-node {
     background: #0f172a;
     border-color: #334155;
   }
@@ -467,6 +583,8 @@ function priorityPill(priority: string) {
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 0.5rem;
+    width: 100%;
+    box-sizing: border-box;
   }
   .paper-priority-pill {
     padding: 0.1rem 0.4rem;
@@ -478,7 +596,7 @@ function priorityPill(priority: string) {
     background: #fef3c7;
     color: #92400e;
   }
-  :global([data-theme="dark"]) .pill-must-read {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .pill-must-read {
     background: #451a03;
     color: #fde68a;
   }
@@ -486,7 +604,7 @@ function priorityPill(priority: string) {
     background: #eff6ff;
     color: #1e40af;
   }
-  :global([data-theme="dark"]) .pill-worth-knowing {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .pill-worth-knowing {
     background: #172554;
     color: #93c5fd;
   }
@@ -494,7 +612,7 @@ function priorityPill(priority: string) {
     background: #f1f5f9;
     color: #475569;
   }
-  :global([data-theme="dark"]) .pill-skim {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .pill-skim {
     background: #1e293b;
     color: #94a3b8;
   }
@@ -520,7 +638,7 @@ function priorityPill(priority: string) {
   .anchor-link-guide:hover {
     text-decoration: underline;
   }
-  :global([data-theme="dark"]) .anchor-link-guide {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .anchor-link-guide {
     color: #60a5fa;
   }
   .anchor-link-arxiv, .anchor-link-pdf {
@@ -532,7 +650,7 @@ function priorityPill(priority: string) {
     color: var(--text-heading, #0f172a);
     text-decoration: underline;
   }
-  :global([data-theme="dark"]) .anchor-link-arxiv:hover, :global([data-theme="dark"]) .anchor-link-pdf:hover {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .anchor-link-arxiv:hover, :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .anchor-link-pdf:hover {
     color: #f8fafc;
   }
 
@@ -541,6 +659,8 @@ function priorityPill(priority: string) {
     font-size: 0.92rem;
     font-weight: 700;
     line-height: 1.4;
+    width: 100%;
+    max-width: 100%;
   }
   .event-paper-title a {
     color: var(--text-heading, #0f172a);
@@ -550,10 +670,10 @@ function priorityPill(priority: string) {
     color: #2563eb;
     text-decoration: underline;
   }
-  :global([data-theme="dark"]) .event-paper-title a {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .event-paper-title a {
     color: #f8fafc;
   }
-  :global([data-theme="dark"]) .event-paper-title a:hover {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .event-paper-title a:hover {
     color: #60a5fa;
   }
 
@@ -562,6 +682,9 @@ function priorityPill(priority: string) {
     align-items: flex-start;
     gap: 0.45rem;
     margin-top: 0.15rem;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
   }
   .bluf-accent-mark {
     flex-shrink: 0;
@@ -574,7 +697,7 @@ function priorityPill(priority: string) {
     border-radius: 0.2rem;
     margin-top: 0.15rem;
   }
-  :global([data-theme="dark"]) .bluf-accent-mark {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .bluf-accent-mark {
     background: #1e3a8a;
     color: #bfdbfe;
   }
@@ -583,8 +706,44 @@ function priorityPill(priority: string) {
     font-size: 0.82rem;
     line-height: 1.55;
     color: var(--text-body, #475569);
+    flex: 1;
+    min-width: 0;
+    width: 100%;
+    max-width: 100%;
   }
-  :global([data-theme="dark"]) .bluf-accent-body {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .bluf-accent-body {
     color: #94a3b8;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :global(body:not(:has(#site-theme-toggle:checked))) .scientific-events-section { background: #0f172a; border-color: #334155; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); }
+    :global(body:not(:has(#site-theme-toggle:checked))) .events-section-header { border-bottom-color: #334155; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .events-kicker-tag { background: rgba(30, 58, 138, 0.28); color: #93c5fd; border-color: rgba(59, 130, 246, 0.35); }
+    :global(body:not(:has(#site-theme-toggle:checked))) .title-primary { color: #f8fafc; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .events-subtitle { color: #94a3b8; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .event-cluster-card { background: #1e293b; border-color: #334155; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .event-cluster-card:hover { border-color: #475569; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3); }
+    :global(body:not(:has(#site-theme-toggle:checked))) .event-target-id { color: #f8fafc; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .badge-gw { background: rgba(147, 51, 234, 0.18); color: #d8b4fe; border-color: rgba(168, 85, 247, 0.32); }
+    :global(body:not(:has(#site-theme-toggle:checked))) .badge-grb { background: rgba(217, 119, 6, 0.18); color: #fde68a; border-color: rgba(245, 158, 11, 0.32); }
+    :global(body:not(:has(#site-theme-toggle:checked))) .badge-sn { background: rgba(225, 29, 72, 0.18); color: #fda4af; border-color: rgba(244, 63, 94, 0.32); }
+    :global(body:not(:has(#site-theme-toggle:checked))) .badge-frb { background: rgba(6, 182, 212, 0.18); color: #67e8f9; border-color: rgba(14, 165, 233, 0.32); }
+    :global(body:not(:has(#site-theme-toggle:checked))) .badge-at { background: rgba(99, 102, 241, 0.18); color: #c7d2fe; border-color: rgba(129, 140, 248, 0.32); }
+    :global(body:not(:has(#site-theme-toggle:checked))) .metric-heat-badge { background: rgba(225, 29, 72, 0.16); color: #fb7185; border-color: rgba(244, 63, 94, 0.3); }
+    :global(body:not(:has(#site-theme-toggle:checked))) .metric-count-badge { background: rgba(51, 65, 85, 0.4); border-color: #334155; color: #94a3b8; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .event-synthesis-box { background: #0f172a; border-color: #334155; border-left-color: #60a5fa; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .event-headline { color: #f8fafc; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .event-narrative-text { color: #94a3b8; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .event-paper-node { background: #0f172a; border-color: #334155; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .pill-must-read { background: rgba(234, 88, 12, 0.18); color: #fdba74; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .pill-worth-knowing { background: rgba(37, 99, 235, 0.18); color: #93c5fd; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .pill-skim { background: rgba(51, 65, 85, 0.3); color: #94a3b8; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .anchor-link-guide { color: #60a5fa; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .anchor-link-arxiv:hover,
+    :global(body:not(:has(#site-theme-toggle:checked))) .anchor-link-pdf:hover { color: #f8fafc; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .event-paper-title a { color: #f8fafc; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .event-paper-title a:hover { color: #60a5fa; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .bluf-accent-mark { background: rgba(30, 58, 138, 0.28); color: #93c5fd; border: 1px solid rgba(59, 130, 246, 0.3); }
+    :global(body:not(:has(#site-theme-toggle:checked))) .bluf-accent-body { color: #94a3b8; }
   }
 </style>

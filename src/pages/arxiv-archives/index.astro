@@ -2,6 +2,7 @@
 import archiveManifest from "../../data/arxiv-archives/manifest.json";
 import SiteNav from "../../components/SiteNav.astro";
 import ReaderText from "../../components/ReaderText.astro";
+import { formatAnnouncementInBeijing } from "../../domain/academic-domain.mjs";
 import { loadSiteConfig } from "../../lib/site-config";
 import "../../styles/global.css";
 
@@ -188,16 +189,19 @@ const dateCoverage = weeks.length > 0
               </div>
 
               <div class="daily-entries-table">
-                {w.days.map((d: any) => (
-                  <a class="daily-entry-item" href={`/arxiv-daily/${d.date}/`}>
-                    <div class="entry-date-cell">
-                      <span class="entry-calendar">📅</span>
-                      <strong class="entry-date-text">{d.date}</strong>
-                      <span class="entry-weekday-tag">({d.weekday})</span>
-                      {d.date === archiveManifest.latest_daily_date && (
-                        <span class="entry-latest-tag">今日最新</span>
-                      )}
-                    </div>
+                {w.days.map((d: any) => {
+                  const dInfo = formatAnnouncementInBeijing(d.date, d.weekday);
+                  return (
+                    <a class="daily-entry-item" href={`/arxiv-daily/${d.date}/`}>
+                      <div class="entry-date-cell">
+                        <span class="entry-calendar">📅</span>
+                        <strong class="entry-date-text">{dInfo.beijingDate}</strong>
+                        <span class="entry-weekday-tag">({dInfo.chineseWeekday})</span>
+                        <span class="entry-us-meta" title="arXiv 美东公告日期">美东 {d.date}</span>
+                        {d.date === archiveManifest.latest_daily_date && (
+                          <span class="entry-latest-tag">今日最新</span>
+                        )}
+                      </div>
 
                     <div class="entry-batch-cell">
                       <span class="entry-batch-id">{d.batch_id}</span>
@@ -217,7 +221,7 @@ const dateCoverage = weeks.length > 0
                       <span class="entry-arrow-text">进入独立导读 ↗</span>
                     </div>
                   </a>
-                ))}
+                ); })}
               </div>
             </div>
           ))}
@@ -250,6 +254,19 @@ const dateCoverage = weeks.length > 0
       .hub-coverage {
         font-size: 0.85rem;
         color: #64748b;
+      }
+      .reader-header h1 {
+        font-size: clamp(1.4rem, 2.4vw, 1.85rem);
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        line-height: 1.25;
+        margin: 0.2rem 0 0.4rem 0;
+      }
+      .reader-deck {
+        font-size: 0.95rem;
+        color: #64748b;
+        margin: 0.2rem 0 0.5rem 0;
+        line-height: 1.5;
       }
       .archive-quick-nav {
         display: flex;
@@ -615,6 +632,12 @@ const dateCoverage = weeks.length > 0
         color: #64748b;
         font-size: 0.9rem;
       }
+      .entry-us-meta {
+        font-size: 0.72rem;
+        color: #94a3b8;
+        font-weight: normal;
+        margin-left: 0.25rem;
+      }
       .entry-latest-tag {
         font-size: 0.75rem;
         background: #dcfce7;
@@ -655,6 +678,133 @@ const dateCoverage = weeks.length > 0
       }
       .daily-entry-item:hover .entry-arrow-text {
         text-decoration: underline;
+      }
+
+      /* Dark Mode for Archives */
+      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .quick-nav-pill {
+        background: #1e293b;
+        border-color: #334155;
+        color: #cbd5e1;
+      }
+      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .quick-nav-pill.accent {
+        background: rgba(30, 58, 138, 0.28);
+        color: #93c5fd;
+        border-color: rgba(59, 130, 246, 0.35);
+      }
+      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .metric-card {
+        background: #1e293b;
+        border-color: #334155;
+      }
+      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .metric-val {
+        color: #f8fafc;
+      }
+      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .metric-lbl {
+        color: #cbd5e1;
+      }
+      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .metric-sub {
+        color: #94a3b8;
+      }
+      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .section-title {
+        color: #f8fafc;
+      }
+      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .weekly-archive-card {
+        background: #1e293b;
+        border-color: #334155;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+      }
+      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .week-range-text {
+        color: #cbd5e1;
+      }
+      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .weekly-card-headline a {
+        color: #f8fafc;
+      }
+      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .weekly-card-headline a:hover {
+        color: #60a5fa;
+      }
+      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .weekly-summary-lead {
+        background: #0f172a;
+        border-color: #334155;
+        border-left-color: #3b82f6;
+        color: #cbd5e1;
+      }
+      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .summary-secondary {
+        color: #94a3b8;
+      }
+      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .day-chip {
+        background: #0f172a;
+        border-color: #334155;
+        color: #cbd5e1;
+      }
+      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .day-chip:hover {
+        background: #172554;
+        border-color: #2563eb;
+        color: #93c5fd;
+      }
+      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .week-directory-block {
+        background: #1e293b;
+        border-color: #334155;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+      }
+      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .block-header {
+        background: #0f172a;
+        border-bottom-color: #334155;
+      }
+      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .block-date-range {
+        color: #f8fafc;
+      }
+      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .block-weekly-link {
+        color: #60a5fa;
+      }
+      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .daily-entry-item {
+        border-bottom-color: #334155;
+      }
+      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .daily-entry-item:hover {
+        background: #0f172a;
+      }
+      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .entry-date-text {
+        color: #f8fafc;
+      }
+      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .entry-weekday-tag {
+        color: #94a3b8;
+      }
+      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .entry-batch-cell {
+        color: #94a3b8;
+      }
+      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .entry-badge {
+        background: #334155;
+        color: #cbd5e1;
+      }
+      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .entry-action-cell {
+        color: #60a5fa;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :global(body:not(:has(#site-theme-toggle:checked))) .quick-nav-pill { background: #1e293b; border-color: #334155; color: #cbd5e1; }
+        :global(body:not(:has(#site-theme-toggle:checked))) .quick-nav-pill.accent { background: rgba(30, 58, 138, 0.28); color: #93c5fd; border-color: rgba(59, 130, 246, 0.35); }
+        :global(body:not(:has(#site-theme-toggle:checked))) .metric-card { background: #1e293b; border-color: #334155; }
+        :global(body:not(:has(#site-theme-toggle:checked))) .metric-val { color: #f8fafc; }
+        :global(body:not(:has(#site-theme-toggle:checked))) .metric-lbl { color: #cbd5e1; }
+        :global(body:not(:has(#site-theme-toggle:checked))) .metric-sub { color: #94a3b8; }
+        :global(body:not(:has(#site-theme-toggle:checked))) .section-title { color: #f8fafc; }
+        :global(body:not(:has(#site-theme-toggle:checked))) .weekly-archive-card { background: #1e293b; border-color: #334155; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3); }
+        :global(body:not(:has(#site-theme-toggle:checked))) .week-range-text { color: #cbd5e1; }
+        :global(body:not(:has(#site-theme-toggle:checked))) .weekly-card-headline a { color: #f8fafc; }
+        :global(body:not(:has(#site-theme-toggle:checked))) .weekly-card-headline a:hover { color: #60a5fa; }
+        :global(body:not(:has(#site-theme-toggle:checked))) .weekly-summary-lead { background: #0f172a; border-color: #334155; border-left-color: #3b82f6; color: #cbd5e1; }
+        :global(body:not(:has(#site-theme-toggle:checked))) .summary-secondary { color: #94a3b8; }
+        :global(body:not(:has(#site-theme-toggle:checked))) .day-chip { background: #0f172a; border-color: #334155; color: #cbd5e1; }
+        :global(body:not(:has(#site-theme-toggle:checked))) .day-chip:hover { background: #172554; border-color: #2563eb; color: #93c5fd; }
+        :global(body:not(:has(#site-theme-toggle:checked))) .week-directory-block { background: #1e293b; border-color: #334155; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3); }
+        :global(body:not(:has(#site-theme-toggle:checked))) .block-header { background: #0f172a; border-bottom-color: #334155; }
+        :global(body:not(:has(#site-theme-toggle:checked))) .block-date-range { color: #f8fafc; }
+        :global(body:not(:has(#site-theme-toggle:checked))) .block-weekly-link { color: #60a5fa; }
+        :global(body:not(:has(#site-theme-toggle:checked))) .daily-entry-item { border-bottom-color: #334155; }
+        :global(body:not(:has(#site-theme-toggle:checked))) .daily-entry-item:hover { background: #0f172a; }
+        :global(body:not(:has(#site-theme-toggle:checked))) .entry-date-text { color: #f8fafc; }
+        :global(body:not(:has(#site-theme-toggle:checked))) .entry-weekday-tag { color: #94a3b8; }
+        :global(body:not(:has(#site-theme-toggle:checked))) .entry-batch-cell { color: #94a3b8; }
+        :global(body:not(:has(#site-theme-toggle:checked))) .entry-badge { background: #334155; color: #cbd5e1; }
+        :global(body:not(:has(#site-theme-toggle:checked))) .entry-action-cell { color: #60a5fa; }
       }
     </style>
   </body>

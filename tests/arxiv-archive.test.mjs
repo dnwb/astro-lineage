@@ -10,6 +10,7 @@ const projectRoot = fileURLToPath(new URL("..", import.meta.url));
 const manifestUrl = new URL("../src/data/arxiv-archives/manifest.json", import.meta.url);
 const distDailyHtmlUrl = new URL("../dist/arxiv-daily/index.html", import.meta.url);
 const distWeeklyHtmlUrl = new URL("../dist/arxiv-weekly/index.html", import.meta.url);
+const distArchivesHtmlUrl = new URL("../dist/arxiv-archives/index.html", import.meta.url);
 
 test("ISO week and date range calculations conform to astronomical announcement standards", () => {
   assert.equal(getIsoWeek("2026-09-15"), "2026-W38");
@@ -64,14 +65,20 @@ test("every archived daily edition file contains valid feed and radar data", asy
   }
 });
 
-test("arXiv daily HTML exposes weekly archive navigator and historical editions", async () => {
-  if (existsSync(fileURLToPath(distDailyHtmlUrl))) {
-    const html = await readFile(distDailyHtmlUrl, "utf8");
-    assert.match(html, /历史日报归档 · 按周索引/u);
+test("arXiv archives hub HTML exposes weekly archive navigator and historical editions", async () => {
+  if (existsSync(fileURLToPath(distArchivesHtmlUrl))) {
+    const html = await readFile(distArchivesHtmlUrl, "utf8");
+    assert.match(html, /往期学术归档/u);
     assert.match(html, /2026-W38/u);
     assert.match(html, /2026-09-15/u);
     assert.match(html, /2026-09-16/u);
-    assert.match(html, /#archive-2026-09-15/u);
+  }
+});
+
+test("arXiv daily HTML exposes direct navigation link to archives library", async () => {
+  if (existsSync(fileURLToPath(distDailyHtmlUrl))) {
+    const html = await readFile(distDailyHtmlUrl, "utf8");
+    assert.match(html, /href="\/arxiv-archives\/"/u);
   }
 });
 

@@ -3,6 +3,7 @@ import ReaderText from "../ReaderText.astro";
 import DailyRadarGuide from "../DailyRadarGuide.astro";
 import DailyRadarSource from "../DailyRadarSource.astro";
 import { radarCardAnchor } from "../../../scripts/daily-radar.mjs";
+import { matchScientificTags, extractTransientIdentifiers, formatAnnouncementInBeijing } from "../../domain/academic-domain.mjs";
 
 interface Props {
   topPicks: any[];
@@ -89,6 +90,71 @@ function formatCitation(paper: any) {
   const year = paper.published ? new Date(paper.published).getFullYear() : (weekId?.slice(0, 4) || new Date().getFullYear());
   return `${firstAuthor} et al. (${year}), arXiv:${cleanId}`;
 }
+
+const TOPIC_FILTER_SPECS = [
+  { id: "FRB", label: "FRB 快速射电暴", short: "FRB 射电暴" },
+  { id: "SN", label: "SN 超新星与介质", short: "SN 超新星" },
+  { id: "GRB", label: "GRB 伽马暴喷流", short: "GRB 喷流" },
+  { id: "GW", label: "GW 引力波致密星", short: "GW 引力波" },
+  { id: "MAG", label: "磁星与脉冲星", short: "磁星脉冲星" },
+  { id: "TDE", label: "TDE 潮汐瓦解", short: "TDE 潮汐瓦解" },
+  { id: "MULTI", label: "多信使中微子", short: "多信使中微子" },
+];
+
+const topicCounts: Record<string, number> = {};
+const totalCount = topPicks?.length ?? 0;
+const mustCount = (topPicks ?? []).filter((p: any) => p.priority === "must_read").length;
+const worthCount = (topPicks ?? []).filter((p: any) => p.priority === "worth_knowing").length;
+
+const enrichedPicks = (topPicks ?? []).map((pick: any) => {
+  const paperObj = paperMap.get(pick.arxiv_id);
+  const dailyDate = paperDailyDateMap.get(pick.arxiv_id);
+  const dailyItem = getDailyItem(pick.arxiv_id, pick);
+  const dailyRec = dailyAnalysisMap.get(pick.arxiv_id);
+
+  const fullText = [
+    pick.title || "",
+    pick.recommendation_reason || "",
+    pick.core_insight || "",
+    pick.reading_guide || "",
+    dailyRec?.analysis?.analysis?.problem || "",
+    dailyRec?.analysis?.analysis?.reason || "",
+    dailyRec?.analysis?.analysis?.result || "",
+  ].join(" ");
+
+  const matchingItem = {
+    title: pick.title,
+    analysis: {
+      analysis: {
+        problem: `${pick.recommendation_reason || ""} ${dailyRec?.analysis?.analysis?.problem || ""}`,
+        reason: `${pick.reading_guide || ""} ${dailyRec?.analysis?.analysis?.reason || ""}`,
+        result: `${pick.core_insight || ""} ${dailyRec?.analysis?.analysis?.result || ""}`,
+      }
+    }
+  };
+
+  const tags = matchScientificTags(matchingItem);
+  const transientIds = extractTransientIdentifiers(fullText);
+
+  for (const t of tags) {
+    topicCounts[t] = (topicCounts[t] || 0) + 1;
+  }
+
+  return {
+    pick,
+    paperObj,
+    dailyDate,
+    dailyItem,
+    modalId: `modal-pick-${pick.arxiv_id.replace(/\./g, "-")}`,
+    badge: priorityLabels[pick.priority] ?? priorityLabels.worth_knowing,
+    tags,
+    transientIds,
+  };
+});
+
+const activeTopicFilters = TOPIC_FILTER_SPECS
+  .map((spec) => ({ ...spec, count: topicCounts[spec.id] || 0 }))
+  .filter((spec) => spec.count > 0);
 ---
 
 <section class="weekly-section picks-section" id="top-picks">
@@ -96,18 +162,58 @@ function formatCitation(paper: any) {
     <p class="section-kicker"><span class="language-primary">精选必读</span><span class="language-english" lang="en">Curated Selection</span></p>
     <h2><span class="language-primary">本周精选重点论文解读</span><span class="language-english" lang="en">Weekly Top Picks</span></h2>
   </div>
+
+  <!-- Pure CSS Topic & Priority Filter Bar -->
+  {totalCount > 0 && (
+    <div class="weekly-filter-bar" role="tablist" aria-label="按主题与标签筛选本周精选">
+      <span class="filter-bar-title">🏷️ 筛选：</span>
+      <input type="radio" name="top-pick-filter" id="filter-all" class="topic-radio" checked />
+      <label for="filter-all" class="topic-filter-pill">全部 ({totalCount})</label>
+
+      {mustCount > 0 && (
+        <>
+          <input type="radio" name="top-pick-filter" id="filter-must" class="topic-radio" />
+          <label for="filter-must" class="topic-filter-pill pill-must">⭐ 必读 ({mustCount})</label>
+        </>
+      )}
+
+      {worthCount > 0 && (
+        <>
+          <input type="radio" name="top-pick-filter" id="filter-worth" class="topic-radio" />
+          <label for="filter-worth" class="topic-filter-pill pill-worth">📌 关注 ({worthCount})</label>
+        </>
+      )}
+
+      {activeTopicFilters.map((t) => (
+        <>
+          <input type="radio" name="top-pick-filter" id={`filter-${t.id.toLowerCase()}`} class="topic-radio" />
+          <label for={`filter-${t.id.toLowerCase()}`} class="topic-filter-pill pill-topic">
+            {t.short} ({t.count})
+          </label>
+        </>
+      ))}
+    </div>
+  )}
+
   <div class="picks-list">
-    {topPicks && topPicks.length > 0 ? (
-      topPicks.map((pick: any) => {
-        const badge = priorityLabels[pick.priority] ?? priorityLabels.worth_knowing;
-        const paperObj = paperMap.get(pick.arxiv_id);
-        const dailyDate = paperDailyDateMap.get(pick.arxiv_id);
-        const dailyItem = getDailyItem(pick.arxiv_id, pick);
-        const modalId = `modal-pick-${pick.arxiv_id.replace(/\./g, "-")}`;
+    {enrichedPicks && enrichedPicks.length > 0 ? (
+      enrichedPicks.map(({ pick, paperObj, dailyDate, dailyItem, modalId, badge, tags, transientIds }) => {
         return (
-          <article class={`pick-card ${pick.priority === "must_read" ? "pick-card-must" : "pick-card-worth"}`}>
+          <article
+            class={`pick-card ${pick.priority === "must_read" ? "pick-card-must" : "pick-card-worth"}`}
+            data-priority={pick.priority}
+            data-topics={tags.join(" ")}
+          >
             <div class="pick-header">
-              <span class={`pick-badge ${badge.class}`}>{badge.zh}</span>
+              <div class="pick-header-badges">
+                <span class={`pick-badge ${badge.class}`}>{badge.zh}</span>
+                {transientIds.map((tid: string) => (
+                  <span class="pick-transient-tag" title="观测事件目标">🔭 {tid}</span>
+                ))}
+                {tags.map((tag: string) => (
+                  <span class="pick-category-tag">{tag}</span>
+                ))}
+              </div>
               <div class="pick-action-links">
                 <a class="pick-arxiv-id" href={`https://arxiv.org/abs/${pick.arxiv_id}`} target="_blank" rel="noopener noreferrer">
                   arXiv:{pick.arxiv_id} ↗
@@ -218,7 +324,7 @@ function formatCitation(paper: any) {
                           {badge.zh}
                         </span>
                         <span class="radar-arxiv-badge">arXiv:{pick.arxiv_id}</span>
-                        {dailyDate && <span class="radar-date-badge">📅 {dailyDate} 日报收录</span>}
+                        {dailyDate && <span class="radar-date-badge">📅 {formatAnnouncementInBeijing(dailyDate).beijingDate} 日报收录</span>}
                       </div>
                       <button
                         type="button"
@@ -293,13 +399,175 @@ function formatCitation(paper: any) {
     display: flex;
     gap: 0.5rem;
   }
-  :global([data-theme="dark"]) .section-kicker {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .section-kicker {
     color: #60a5fa;
   }
   .language-english {
     color: #94a3b8;
     font-weight: 500;
   }
+  /* Topic & Priority Filter Bar (Zero-Script Pure CSS) */
+  .weekly-filter-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.25rem;
+    padding: 0.45rem 0.75rem;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .weekly-filter-bar {
+    background: #1e293b;
+    border-color: #334155;
+  }
+  .filter-bar-title {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #64748b;
+    margin-right: 0.2rem;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .filter-bar-title {
+    color: #94a3b8;
+  }
+  .topic-radio {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+    width: 0;
+    height: 0;
+  }
+  .topic-filter-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.22rem 0.65rem;
+    font-size: 0.78rem;
+    font-weight: 500;
+    border-radius: 9999px;
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    color: #475569;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.15s ease;
+  }
+  .topic-filter-pill:hover {
+    background: #f1f5f9;
+    border-color: #94a3b8;
+    color: #0f172a;
+    transform: translateY(-1px);
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .topic-filter-pill {
+    background: #0f172a;
+    border-color: #334155;
+    color: #cbd5e1;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .topic-filter-pill:hover {
+    background: #334155;
+    border-color: #64748b;
+    color: #f8fafc;
+  }
+  .weekly-filter-bar:has(#filter-all:checked) label[for="filter-all"],
+  .weekly-filter-bar:has(#filter-must:checked) label[for="filter-must"],
+  .weekly-filter-bar:has(#filter-worth:checked) label[for="filter-worth"],
+  .weekly-filter-bar:has(#filter-frb:checked) label[for="filter-frb"],
+  .weekly-filter-bar:has(#filter-sn:checked) label[for="filter-sn"],
+  .weekly-filter-bar:has(#filter-grb:checked) label[for="filter-grb"],
+  .weekly-filter-bar:has(#filter-gw:checked) label[for="filter-gw"],
+  .weekly-filter-bar:has(#filter-mag:checked) label[for="filter-mag"],
+  .weekly-filter-bar:has(#filter-tde:checked) label[for="filter-tde"],
+  .weekly-filter-bar:has(#filter-multi:checked) label[for="filter-multi"] {
+    background: #2563eb;
+    color: #ffffff;
+    border-color: #1d4ed8;
+    font-weight: 600;
+    box-shadow: 0 1px 3px rgba(37, 99, 235, 0.25);
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .weekly-filter-bar:has(#filter-all:checked) label[for="filter-all"],
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .weekly-filter-bar:has(#filter-must:checked) label[for="filter-must"],
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .weekly-filter-bar:has(#filter-worth:checked) label[for="filter-worth"],
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .weekly-filter-bar:has(#filter-frb:checked) label[for="filter-frb"],
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .weekly-filter-bar:has(#filter-sn:checked) label[for="filter-sn"],
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .weekly-filter-bar:has(#filter-grb:checked) label[for="filter-grb"],
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .weekly-filter-bar:has(#filter-gw:checked) label[for="filter-gw"],
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .weekly-filter-bar:has(#filter-mag:checked) label[for="filter-mag"],
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .weekly-filter-bar:has(#filter-tde:checked) label[for="filter-tde"],
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .weekly-filter-bar:has(#filter-multi:checked) label[for="filter-multi"] {
+    background: rgba(37, 99, 235, 0.28);
+    border-color: rgba(96, 165, 250, 0.45);
+    color: #93c5fd;
+  }
+  .picks-section:has(#filter-must:checked) .pick-card:not([data-priority="must_read"]) {
+    display: none !important;
+  }
+  .picks-section:has(#filter-worth:checked) .pick-card:not([data-priority="worth_knowing"]) {
+    display: none !important;
+  }
+  .picks-section:has(#filter-frb:checked) .pick-card:not([data-topics~="FRB"]) {
+    display: none !important;
+  }
+  .picks-section:has(#filter-sn:checked) .pick-card:not([data-topics~="SN"]) {
+    display: none !important;
+  }
+  .picks-section:has(#filter-grb:checked) .pick-card:not([data-topics~="GRB"]) {
+    display: none !important;
+  }
+  .picks-section:has(#filter-gw:checked) .pick-card:not([data-topics~="GW"]) {
+    display: none !important;
+  }
+  .picks-section:has(#filter-mag:checked) .pick-card:not([data-topics~="MAG"]) {
+    display: none !important;
+  }
+  .picks-section:has(#filter-tde:checked) .pick-card:not([data-topics~="TDE"]) {
+    display: none !important;
+  }
+  .picks-section:has(#filter-multi:checked) .pick-card:not([data-topics~="MULTI"]) {
+    display: none !important;
+  }
+
+  /* Tag Badges in Pick Header */
+  .pick-header-badges {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .pick-transient-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.12rem 0.4rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    font-family: ui-monospace, monospace;
+    background: #fef08a;
+    color: #854d0e;
+    border: 1px solid #eab308;
+    border-radius: 0.25rem;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .pick-transient-tag {
+    background: rgba(245, 158, 11, 0.16);
+    color: #fde68a;
+    border-color: rgba(245, 158, 11, 0.3);
+  }
+  .pick-category-tag {
+    display: inline-block;
+    padding: 0.12rem 0.4rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    background: #f1f5f9;
+    color: #334155;
+    border: 1px solid #cbd5e1;
+    border-radius: 0.25rem;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .pick-category-tag {
+    background: #1e293b;
+    color: #cbd5e1;
+    border-color: #475569;
+  }
+
   .picks-list {
     display: flex;
     flex-direction: column;
@@ -313,7 +581,7 @@ function formatCitation(paper: any) {
     box-shadow: 0 2px 4px rgba(0,0,0,0.04);
     position: relative;
   }
-  :global([data-theme="dark"]) .pick-card {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .pick-card {
     background: #1e293b;
     border-color: #334155;
   }
@@ -342,17 +610,19 @@ function formatCitation(paper: any) {
     background: #fee2e2;
     color: #991b1b;
   }
-  :global([data-theme="dark"]) .badge-must-read {
-    background: #7f1d1d;
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .badge-must-read {
+    background: rgba(239, 68, 68, 0.18);
     color: #fca5a5;
+    border: 1px solid rgba(239, 68, 68, 0.3);
   }
   .badge-worth-knowing {
     background: #fef3c7;
     color: #92400e;
   }
-  :global([data-theme="dark"]) .badge-worth-knowing {
-    background: #78350f;
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .badge-worth-knowing {
+    background: rgba(245, 158, 11, 0.18);
     color: #fde68a;
+    border: 1px solid rgba(245, 158, 11, 0.3);
   }
   .pick-action-links {
     display: flex;
@@ -369,8 +639,8 @@ function formatCitation(paper: any) {
   .pick-arxiv-id:hover, .pick-ads-link:hover {
     text-decoration: underline;
   }
-  :global([data-theme="dark"]) .pick-arxiv-id,
-  :global([data-theme="dark"]) .pick-ads-link {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .pick-arxiv-id,
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .pick-ads-link {
     color: #60a5fa;
   }
   .pick-pdf-link {
@@ -388,10 +658,10 @@ function formatCitation(paper: any) {
     background: #fee2e2;
     border-color: #f87171;
   }
-  :global([data-theme="dark"]) .pick-pdf-link {
-    background: #450a0a;
-    color: #f87171;
-    border-color: #991b1b;
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .pick-pdf-link {
+    background: rgba(239, 68, 68, 0.15);
+    color: #fca5a5;
+    border-color: rgba(239, 68, 68, 0.3);
   }
   .pick-daily-link {
     color: #166534;
@@ -408,10 +678,10 @@ function formatCitation(paper: any) {
     background: #dcfce7;
     border-color: #86efac;
   }
-  :global([data-theme="dark"]) .pick-daily-link {
-    background: #064e3b;
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .pick-daily-link {
+    background: rgba(34, 197, 94, 0.15);
     color: #86efac;
-    border-color: #047857;
+    border-color: rgba(34, 197, 94, 0.3);
   }
   .pick-title {
     font-size: 1.25rem;
@@ -420,7 +690,7 @@ function formatCitation(paper: any) {
     color: #0f172a;
     line-height: 1.4;
   }
-  :global([data-theme="dark"]) .pick-title {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .pick-title {
     color: #f8fafc;
   }
   .pick-title-btn {
@@ -442,10 +712,10 @@ function formatCitation(paper: any) {
     color: #2563eb;
     text-decoration: underline;
   }
-  :global([data-theme="dark"]) .pick-title-btn {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .pick-title-btn {
     color: #f8fafc;
   }
-  :global([data-theme="dark"]) .pick-title-btn:hover {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .pick-title-btn:hover {
     color: #60a5fa;
   }
   .pick-title-link {
@@ -457,7 +727,7 @@ function formatCitation(paper: any) {
     color: #2563eb;
     text-decoration: underline;
   }
-  :global([data-theme="dark"]) .pick-title-link:hover {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .pick-title-link:hover {
     color: #60a5fa;
   }
   .pick-action-modal-btn {
@@ -478,13 +748,13 @@ function formatCitation(paper: any) {
     background: #bfdbfe;
     color: #1e40af;
   }
-  :global([data-theme="dark"]) .pick-action-modal-btn {
-    background: #1e3a8a;
-    color: #bfdbfe;
-    border-color: #2563eb;
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .pick-action-modal-btn {
+    background: rgba(30, 58, 138, 0.28);
+    color: #93c5fd;
+    border-color: rgba(59, 130, 246, 0.35);
   }
-  :global([data-theme="dark"]) .pick-action-modal-btn:hover {
-    background: #1d4ed8;
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .pick-action-modal-btn:hover {
+    background: rgba(37, 99, 235, 0.45);
     color: #ffffff;
   }
   .pick-authors {
@@ -493,7 +763,7 @@ function formatCitation(paper: any) {
     margin: 0 0 0.85rem 0;
     line-height: 1.45;
   }
-  :global([data-theme="dark"]) .pick-authors {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .pick-authors {
     color: #94a3b8;
   }
   .pick-details {
@@ -520,13 +790,13 @@ function formatCitation(paper: any) {
     min-width: 5.5rem;
     flex-shrink: 0;
   }
-  :global([data-theme="dark"]) .detail-label {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .detail-label {
     color: #cbd5e1;
   }
   .detail-text {
     color: #1e293b;
   }
-  :global([data-theme="dark"]) .detail-text {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .detail-text {
     color: #f1f5f9;
   }
   .highlight-row {
@@ -535,14 +805,14 @@ function formatCitation(paper: any) {
     border-radius: 6px;
     border: 1px solid #f1f5f9;
   }
-  :global([data-theme="dark"]) .highlight-row {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .highlight-row {
     background: #0f172a;
     border-color: #334155;
   }
   .highlight-row .detail-label {
     color: #2563eb;
   }
-  :global([data-theme="dark"]) .highlight-row .detail-label {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .highlight-row .detail-label {
     color: #60a5fa;
   }
   .pick-deep-dive-bar {
@@ -550,7 +820,7 @@ function formatCitation(paper: any) {
     padding-top: 0.75rem;
     border-top: 1px dashed #e2e8f0;
   }
-  :global([data-theme="dark"]) .pick-deep-dive-bar {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .pick-deep-dive-bar {
     border-top-color: #334155;
   }
   .pick-open-modal-btn {
@@ -572,15 +842,15 @@ function formatCitation(paper: any) {
     color: #14532d;
     box-shadow: 0 2px 6px rgba(22, 101, 52, 0.1);
   }
-  :global([data-theme="dark"]) .pick-open-modal-btn {
-    background: #064e3b;
-    border-color: #047857;
-    color: #a7f3d0;
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .pick-open-modal-btn {
+    background: rgba(16, 185, 129, 0.12);
+    border-color: rgba(16, 185, 129, 0.3);
+    color: #6ee7b7;
   }
-  :global([data-theme="dark"]) .pick-open-modal-btn:hover {
-    background: #065f46;
-    border-color: #10b981;
-    color: #ffffff;
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .pick-open-modal-btn:hover {
+    background: rgba(16, 185, 129, 0.22);
+    border-color: rgba(16, 185, 129, 0.5);
+    color: #a7f3d0;
   }
   .btn-left {
     display: inline-flex;
@@ -604,7 +874,7 @@ function formatCitation(paper: any) {
     font-weight: 700;
     color: #64748b;
   }
-  :global([data-theme="dark"]) .btn-arrow {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .btn-arrow {
     color: #a7f3d0;
   }
 
@@ -615,7 +885,7 @@ function formatCitation(paper: any) {
     padding-top: 0.75rem;
     font-size: 0.85rem;
   }
-  :global([data-theme="dark"]) .paper-citation-details {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .paper-citation-details {
     border-top-color: #334155;
   }
   .citation-summary {
@@ -626,10 +896,10 @@ function formatCitation(paper: any) {
   .citation-summary:hover {
     color: #0f172a;
   }
-  :global([data-theme="dark"]) .citation-summary {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .citation-summary {
     color: #94a3b8;
   }
-  :global([data-theme="dark"]) .citation-summary:hover {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .citation-summary:hover {
     color: #f8fafc;
   }
   .citation-box {
@@ -639,7 +909,7 @@ function formatCitation(paper: any) {
     border-radius: 6px;
     padding: 0.75rem;
   }
-  :global([data-theme="dark"]) .citation-box {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .citation-box {
     background: #0f172a;
     border-color: #334155;
   }
@@ -650,7 +920,7 @@ function formatCitation(paper: any) {
     font-weight: 600;
     color: #475569;
   }
-  :global([data-theme="dark"]) .citation-label {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .citation-label {
     color: #94a3b8;
   }
   .citation-short {
@@ -660,7 +930,7 @@ function formatCitation(paper: any) {
     border-radius: 4px;
     font-family: monospace;
   }
-  :global([data-theme="dark"]) .citation-short {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .citation-short {
     background: #1e293b;
     border-color: #475569;
     color: #cbd5e1;
@@ -675,7 +945,7 @@ function formatCitation(paper: any) {
     margin: 0;
     white-space: pre-wrap;
   }
-  :global([data-theme="dark"]) .citation-pre {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .citation-pre {
     background: #090d16;
     border: 1px solid #1e293b;
   }
@@ -702,7 +972,7 @@ function formatCitation(paper: any) {
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
   }
-  :global([data-theme="dark"]) .radar-modal-dialog[popover] {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .radar-modal-dialog[popover] {
     background: #18181b;
     color: #f4f4f5;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.1);
@@ -719,7 +989,7 @@ function formatCitation(paper: any) {
     background: #f8fafc;
     flex-shrink: 0;
   }
-  :global([data-theme="dark"]) .radar-modal-header {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .radar-modal-header {
     border-bottom-color: #27272a;
     background: #202024;
   }
@@ -750,11 +1020,11 @@ function formatCitation(paper: any) {
     background: #fef3c7;
     color: #92400e;
   }
-  :global([data-theme="dark"]) .priority-pill-must-read {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .priority-pill-must-read {
     background: #450a0a;
     color: #fca5a5;
   }
-  :global([data-theme="dark"]) .priority-pill-worth-knowing {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .priority-pill-worth-knowing {
     background: #451a03;
     color: #fde047;
   }
@@ -768,7 +1038,7 @@ function formatCitation(paper: any) {
     padding: 0.1rem 0.4rem;
     border-radius: 4px;
   }
-  :global([data-theme="dark"]) .radar-arxiv-badge {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .radar-arxiv-badge {
     color: #93c5fd;
     background: #1e3a8a;
     border-color: #2563eb;
@@ -783,7 +1053,7 @@ function formatCitation(paper: any) {
     padding: 0.1rem 0.4rem;
     border-radius: 4px;
   }
-  :global([data-theme="dark"]) .radar-date-badge {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .radar-date-badge {
     color: #6ee7b7;
     background: #064e3b;
     border-color: #047857;
@@ -807,11 +1077,11 @@ function formatCitation(paper: any) {
     background: #cbd5e1;
     color: #0f172a;
   }
-  :global([data-theme="dark"]) .radar-modal-close-btn {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .radar-modal-close-btn {
     background: #27272a;
     color: #a1a1aa;
   }
-  :global([data-theme="dark"]) .radar-modal-close-btn:hover {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .radar-modal-close-btn:hover {
     background: #3f3f46;
     color: #ffffff;
   }
@@ -822,7 +1092,7 @@ function formatCitation(paper: any) {
     line-height: 1.35;
     color: #0f172a;
   }
-  :global([data-theme="dark"]) .radar-modal-title {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .radar-modal-title {
     color: #f8fafc;
   }
   .radar-modal-authors {
@@ -831,7 +1101,7 @@ function formatCitation(paper: any) {
     color: #64748b;
     font-weight: 500;
   }
-  :global([data-theme="dark"]) .radar-modal-authors {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .radar-modal-authors {
     color: #a1a1aa;
   }
   .radar-modal-body {
@@ -852,7 +1122,7 @@ function formatCitation(paper: any) {
     gap: 0.75rem;
     flex-shrink: 0;
   }
-  :global([data-theme="dark"]) .radar-modal-footer {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .radar-modal-footer {
     border-top-color: #27272a;
     background: #202024;
   }
@@ -871,7 +1141,7 @@ function formatCitation(paper: any) {
   .modal-ext-link:hover {
     text-decoration: underline;
   }
-  :global([data-theme="dark"]) .modal-ext-link {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .modal-ext-link {
     color: #60a5fa;
   }
   .modal-daily-link {
@@ -880,7 +1150,7 @@ function formatCitation(paper: any) {
   .modal-daily-link:hover {
     color: #14532d;
   }
-  :global([data-theme="dark"]) .modal-daily-link {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .modal-daily-link {
     color: #86efac;
   }
   .radar-modal-btn-done {
@@ -906,7 +1176,7 @@ function formatCitation(paper: any) {
     padding: 2rem;
     text-align: center;
   }
-  :global([data-theme="dark"]) .empty-picks-notice {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .empty-picks-notice {
     background: #0f172a;
     border-color: #334155;
   }
@@ -915,7 +1185,7 @@ function formatCitation(paper: any) {
     color: #475569;
     margin: 0 0 0.5rem 0;
   }
-  :global([data-theme="dark"]) .empty-picks-title {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .empty-picks-title {
     color: #cbd5e1;
   }
   .empty-picks-desc {
@@ -925,7 +1195,7 @@ function formatCitation(paper: any) {
     margin: 0 auto;
     line-height: 1.6;
   }
-  :global([data-theme="dark"]) .empty-picks-desc {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .empty-picks-desc {
     color: #94a3b8;
   }
 </style>

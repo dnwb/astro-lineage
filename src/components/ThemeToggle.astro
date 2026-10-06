@@ -1,86 +1,147 @@
 ---
 // src/components/ThemeToggle.astro
+// Pure CSS Theme Toggle: Zero-Client-Script compliant with :has() & prefers-color-scheme
 ---
 
-<button
-  id="theme-toggle"
-  class="theme-toggle"
-  type="button"
-  aria-label="切换深色/浅色模式"
-  title="切换主题 (Dark / Light)"
->
-  <span class="theme-icon-sun" aria-hidden="true">☀️</span>
-  <span class="theme-icon-moon" aria-hidden="true">🌙</span>
-</button>
-
-<script is:inline>
-  (function () {
-    const storageKey = "astrolineage-theme";
-    const toggle = document.getElementById("theme-toggle");
-
-    function getPreferredTheme() {
-      const saved = localStorage.getItem(storageKey);
-      if (saved === "dark" || saved === "light") return saved;
-      return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-    }
-
-    function applyTheme(theme) {
-      document.documentElement.setAttribute("data-theme", theme);
-      if (toggle) {
-        toggle.setAttribute("aria-label", theme === "dark" ? "切换为浅色模式" : "切换为深色模式");
-      }
-    }
-
-    // Apply immediately to prevent flash
-    const current = getPreferredTheme();
-    applyTheme(current);
-
-    if (toggle) {
-      toggle.addEventListener("click", () => {
-        const active = document.documentElement.getAttribute("data-theme") || "light";
-        const next = active === "dark" ? "light" : "dark";
-        localStorage.setItem(storageKey, next);
-        applyTheme(next);
-      });
-    }
-  })();
-</script>
+<div class="theme-switch" role="group" aria-label="主题模式 / Theme mode">
+  <input
+    id="site-theme-toggle"
+    type="checkbox"
+    onchange="try{var isDarkOS=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var isDark=isDarkOS?!this.checked:this.checked;var theme=isDark?'dark':'light';localStorage.setItem('astrolineage-theme',theme);document.documentElement.setAttribute('data-theme',theme);}catch(e){}"
+  />
+  <label for="site-theme-toggle" title="切换深色/浅色模式 (Dark / Light)">
+    <span class="theme-btn-content mode-to-dark" aria-hidden="true">
+      <span class="theme-icon">🌙</span>
+      <span class="theme-text">夜间</span>
+    </span>
+    <span class="theme-btn-content mode-to-light" aria-hidden="true">
+      <span class="theme-icon">☀️</span>
+      <span class="theme-text">浅色</span>
+    </span>
+  </label>
+  <img
+    src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+    alt=""
+    width="0"
+    height="0"
+    style="display:none!important;"
+    onload="try{var isDarkOS=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var saved=localStorage.getItem('astrolineage-theme');var isDark=saved?(saved==='dark'):isDarkOS;document.documentElement.setAttribute('data-theme',isDark?'dark':'light');var el=document.getElementById('site-theme-toggle');if(el){var shouldCheck=isDarkOS?!isDark:isDark;el.checked=shouldCheck;if(shouldCheck){el.setAttribute('checked','');}else{el.removeAttribute('checked');}}}catch(e){}"
+  />
+</div>
 
 <style>
-  .theme-toggle {
+  .theme-switch {
     display: inline-flex;
     align-items: center;
-    justify-content: center;
-    width: 2rem;
-    height: 2rem;
-    padding: 0;
-    margin-left: 0.5rem;
-    border: 1px solid var(--border-color, #b6b4aa);
-    border-radius: 9999px;
-    background: var(--card-bg, #ffffff);
-    color: var(--text-color, #172033);
+    color: var(--text-secondary, #5d6470);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+  }
+
+  .theme-switch input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .theme-switch label {
     cursor: pointer;
-    transition: all 0.2s ease;
-    font-size: 0.95rem;
+    display: inline-flex;
+    align-items: center;
+    padding: 0.2rem 0.55rem;
+    border: 1px solid var(--border-color, #b6b4aa);
+    border-radius: 999px;
+    background: var(--card-bg, #ffffff);
+    color: var(--text-secondary, #5d6470);
+    transition: all 0.15s ease;
+    user-select: none;
+    line-height: 1.2;
   }
-  .theme-toggle:hover {
-    border-color: #60a5fa;
-    transform: scale(1.05);
+
+  .theme-switch label:hover {
+    border-color: var(--text-primary, #172033);
+    color: var(--text-primary, #172033);
   }
-  .theme-toggle:focus-visible {
-    outline: 2px solid #2563eb;
-    outline-offset: 2px;
+
+  .theme-switch input:focus-visible + label {
+    outline: 2px solid var(--link-color, #2563eb);
+    outline-offset: 0.15rem;
   }
-  :global([data-theme="dark"]) .theme-icon-sun {
-    display: inline;
+
+  .theme-switch .theme-btn-content {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
   }
-  :global([data-theme="dark"]) .theme-icon-moon {
+
+  .theme-switch .theme-icon {
+    font-size: 0.85rem;
+    line-height: 1;
+  }
+
+  .theme-switch .theme-text {
+    font-size: 0.78rem;
+  }
+
+  /* Default in Light OS */
+  .theme-switch .mode-to-dark {
+    display: inline-flex;
+  }
+  .theme-switch .mode-to-light {
     display: none;
   }
-  :global(:not([data-theme="dark"])) .theme-icon-sun {
+
+  /* Explicit attribute overrides (highest priority) */
+  :global(:root[data-theme="dark"]) .theme-switch .mode-to-dark,
+  :global([data-theme="dark"]) .theme-switch .mode-to-dark {
+    display: none !important;
+  }
+  :global(:root[data-theme="dark"]) .theme-switch .mode-to-light,
+  :global([data-theme="dark"]) .theme-switch .mode-to-light {
+    display: inline-flex !important;
+  }
+
+  :global(:root[data-theme="light"]) .theme-switch .mode-to-dark,
+  :global([data-theme="light"]) .theme-switch .mode-to-dark {
+    display: inline-flex !important;
+  }
+  :global(:root[data-theme="light"]) .theme-switch .mode-to-light,
+  :global([data-theme="light"]) .theme-switch .mode-to-light {
+    display: none !important;
+  }
+
+  /* When checked in Light OS (user switched to Dark) */
+  :global(:root:has(#site-theme-toggle:checked)) .theme-switch .mode-to-dark,
+  :global(body:has(#site-theme-toggle:checked)) .theme-switch .mode-to-dark {
     display: none;
   }
-  :global(:not([data-theme="dark"])) .theme-icon-moon {
-    display: inline;
+
+  :global(:root:has(#site-theme-toggle:checked)) .theme-switch .mode-to-light,
+  :global(body:has(#site-theme-toggle:checked)) .theme-switch .mode-to-light {
+    display: inline-flex;
+  }
+
+  /* When OS prefers Dark and no explicit data-theme is set */
+  @media (prefers-color-scheme: dark) {
+    .theme-switch .mode-to-dark {
+      display: none;
+    }
+    .theme-switch .mode-to-light {
+      display: inline-flex;
+    }
+
+    :global(:root:has(#site-theme-toggle:checked)) .theme-switch .mode-to-dark,
+    :global(body:has(#site-theme-toggle:checked)) .theme-switch .mode-to-dark {
+      display: inline-flex;
+    }
+    :global(:root:has(#site-theme-toggle:checked)) .theme-switch .mode-to-light,
+    :global(body:has(#site-theme-toggle:checked)) .theme-switch .mode-to-light {
+      display: none;
+    }
   }
 </style>

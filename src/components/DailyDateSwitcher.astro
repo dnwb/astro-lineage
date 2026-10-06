@@ -1,11 +1,17 @@
 ---
 import archiveManifest from "../data/arxiv-archives/manifest.json";
+import { formatAnnouncementInBeijing } from "../domain/academic-domain.mjs";
 
 interface Props {
   currentDate: string;
+  groups?: {
+    must_read?: any[];
+    worth_knowing?: any[];
+    skip?: any[];
+  };
 }
 
-const { currentDate } = Astro.props;
+const { currentDate, groups } = Astro.props;
 
 const allWeeks = (archiveManifest as any).weeks || [];
 const allDays = allWeeks
@@ -18,233 +24,278 @@ const latestDate = (archiveManifest as any).latest_daily_date || (allDays[0]?.da
 const recentDays = allDays.slice(0, 8);
 ---
 
-<nav class="aihot-date-ribbon" aria-label="学术日报日期快速切换">
+<nav class="aihot-date-ribbon" aria-label="学术日报日期与分类速选">
   <div class="ribbon-inner">
-    <div class="ribbon-brand-tag">
-      <span class="ribbon-icon">📅</span>
-      <span class="ribbon-title">日期速选</span>
-    </div>
-
-    <!-- Scrollable Recent Dates Track (AI HOT style) -->
-    <div class="ribbon-track-wrap">
-      <div class="ribbon-pills-track">
-        {recentDays.map((d: any) => {
-          const isCurrent = d.date === currentDate;
-          const isLatest = d.date === latestDate;
-          const targetUrl = isLatest ? "/arxiv-daily/" : `/arxiv-daily/${d.date}/`;
-          return (
-            <a
-              class={`date-pill ${isCurrent ? "active" : ""} ${isLatest ? "pill-latest" : ""}`}
-              href={targetUrl}
-              title={`切换至 ${d.date} (${d.weekday}) 导读雷达`}
-              aria-current={isCurrent ? "page" : undefined}
-            >
-              {isLatest && <span class="pill-fire-badge">最新</span>}
-              <strong class="pill-date">{d.date.slice(5)}</strong>
-              <span class="pill-weekday">{d.weekday}</span>
-              <span class="pill-count">{d.total_papers}篇</span>
-            </a>
-          );
-        })}
+    <div class="ribbon-left-group">
+      <div class="ribbon-brand-tag">
+        <span class="ribbon-icon">📅</span>
+        <span class="ribbon-title">日期速选</span>
       </div>
-    </div>
 
-    <!-- Pure HTML Dropdown for All Historical Dates (Zero Script) -->
-    <details class="ribbon-archive-details">
-      <summary class="ribbon-archive-summary" title="展开更多历史日期">
-        <span>全部往期 ({allDays.length})</span>
-        <span class="summary-caret">▾</span>
-      </summary>
-      <div class="ribbon-archive-dropdown-menu">
-        <div class="dropdown-header">
-          <span>历史监测批次归档列表</span>
-          <a class="dropdown-all-link" href="/arxiv-archives/">查看全局存档库 →</a>
-        </div>
-        <div class="dropdown-grid">
-          {allDays.map((d: any) => {
+      <!-- Scrollable Recent Dates Track -->
+      <div class="ribbon-track-wrap">
+        <div class="ribbon-pills-track">
+          {recentDays.map((d: any) => {
             const isCurrent = d.date === currentDate;
             const isLatest = d.date === latestDate;
             const targetUrl = isLatest ? "/arxiv-daily/" : `/arxiv-daily/${d.date}/`;
+            const dInfo = formatAnnouncementInBeijing(d.date, d.weekday);
             return (
               <a
-                class={`dropdown-day-item ${isCurrent ? "active" : ""}`}
+                class={`date-pill ${isCurrent ? "active" : ""} ${isLatest ? "pill-latest" : ""}`}
                 href={targetUrl}
+                title={`切换至 ${dInfo.beijingDate} (${dInfo.chineseWeekday}，北京时间) 导读雷达`}
+                aria-current={isCurrent ? "page" : undefined}
               >
-                <div class="day-item-left">
-                  <span class="day-item-date">{d.date}</span>
-                  <span class="day-item-weekday">{d.weekday}</span>
-                </div>
-                <div class="day-item-right">
-                  {d.must_read_count > 0 && <span class="badge-must">{d.must_read_count}重点</span>}
-                  <span class="badge-total">{d.total_papers}篇</span>
-                </div>
+                {isLatest && <span class="pill-fire-badge">最新</span>}
+                <strong class="pill-date">{dInfo.shortDate}</strong>
+                <span class="pill-weekday">{dInfo.chineseWeekday}</span>
+                <span class="pill-count">{d.total_papers}篇</span>
               </a>
             );
           })}
         </div>
       </div>
-    </details>
+
+      <!-- Pure HTML Dropdown for All Historical Dates -->
+      <details class="ribbon-archive-details">
+        <summary class="ribbon-archive-summary" title="展开更多历史日期">
+          <span>全部往期 ({allDays.length})</span>
+          <span class="summary-caret">▾</span>
+        </summary>
+        <div class="ribbon-archive-dropdown-menu">
+          <div class="dropdown-header">
+            <span>历史监测批次归档列表</span>
+            <a class="dropdown-all-link" href="/arxiv-archives/">查看全局存档库 →</a>
+          </div>
+          <div class="dropdown-grid">
+            {allDays.map((d: any) => {
+              const isCurrent = d.date === currentDate;
+              const isLatest = d.date === latestDate;
+              const targetUrl = isLatest ? "/arxiv-daily/" : `/arxiv-daily/${d.date}/`;
+              const dInfo = formatAnnouncementInBeijing(d.date, d.weekday);
+              return (
+                <a
+                  class={`dropdown-day-item ${isCurrent ? "active" : ""}`}
+                  href={targetUrl}
+                >
+                  <div class="day-item-left">
+                    <span class="day-item-date">{dInfo.beijingDate}</span>
+                    <span class="day-item-weekday">{dInfo.chineseWeekday}</span>
+                    <span class="day-item-us-hint">（美东 {d.date}）</span>
+                  </div>
+                  <div class="day-item-right">
+                    {d.must_read_count > 0 && <span class="badge-must">{d.must_read_count}重点</span>}
+                    <span class="badge-total">{d.total_papers}篇</span>
+                  </div>
+                </a>
+              );
+            })}
+          </div>
+        </div>
+      </details>
+    </div>
+
+    <!-- Integrated Section Filter Pills on the Right -->
+    {groups && (
+      <div class="ribbon-section-pills" aria-label="本期重点分类直达">
+        <span class="ribbon-divider" aria-hidden="true">|</span>
+        <a href="#must-read" class="section-nav-pill pill-must">
+          ⭐ 重点 ({groups.must_read?.length ?? 0})
+        </a>
+        <a href="#worth-knowing" class="section-nav-pill pill-worth">
+          📌 关注 ({groups.worth_knowing?.length ?? 0})
+        </a>
+        {groups.skip && groups.skip.length > 0 && (
+          <a href="#skim" class="section-nav-pill pill-skim">
+            ⚡ 略读 ({groups.skip.length})
+          </a>
+        )}
+      </div>
+    )}
   </div>
 </nav>
 
 <style>
   .aihot-date-ribbon {
-    margin: 1.25rem 0 1.5rem 0;
-    padding: 0.6rem 0.85rem;
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
-  }
-  :global([data-theme="dark"]) .aihot-date-ribbon {
-    background: #0f172a;
-    border-color: #334155;
+    margin: 1.25rem 0 1.75rem 0;
+    padding: 0.35rem 0 0.85rem 0;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--border-color, #e2e8f0);
   }
   .ribbon-inner {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    justify-content: space-between;
+    gap: 1rem;
     flex-wrap: wrap;
+  }
+  .ribbon-left-group {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    flex: 1 1 auto;
+    min-width: 0;
   }
   .ribbon-brand-tag {
     display: flex;
     align-items: center;
     gap: 0.3rem;
-    font-size: 0.85rem;
-    font-weight: 700;
-    color: #475569;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-secondary, #64748b);
     white-space: nowrap;
     padding-right: 0.5rem;
-    border-right: 1px solid #e2e8f0;
+    border-right: 1px solid var(--border-color, #e2e8f0);
   }
-  :global([data-theme="dark"]) .ribbon-brand-tag {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .ribbon-brand-tag {
     color: #94a3b8;
     border-right-color: #334155;
   }
   .ribbon-icon {
-    font-size: 1rem;
+    font-size: 0.95rem;
+  }
+  .ribbon-title {
+    letter-spacing: -0.01em;
   }
   .ribbon-track-wrap {
-    flex: 1;
-    min-width: 240px;
+    flex: 1 1 auto;
     overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
     scrollbar-width: thin;
-    padding: 0.15rem 0;
+    padding-bottom: 2px;
+  }
+  .ribbon-track-wrap::-webkit-scrollbar {
+    height: 3px;
+  }
+  .ribbon-track-wrap::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 2px;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .ribbon-track-wrap::-webkit-scrollbar-thumb {
+    background: #475569;
   }
   .ribbon-pills-track {
     display: flex;
     align-items: center;
-    gap: 0.45rem;
-    width: max-content;
+    gap: 0.4rem;
   }
   .date-pill {
+    position: relative;
     display: inline-flex;
     align-items: center;
-    gap: 0.3rem;
-    padding: 0.35rem 0.65rem;
-    background: #ffffff;
-    border: 1px solid #cbd5e1;
+    gap: 0.35rem;
+    padding: 0.24rem 0.55rem;
+    background: var(--card-bg, #ffffff);
+    border: 1px solid var(--border-color, #cbd5e1);
     border-radius: 6px;
-    font-size: 0.82rem;
-    color: #334155;
+    font-size: 0.78rem;
+    color: var(--text-primary, #334155);
     text-decoration: none;
     white-space: nowrap;
     transition: all 0.15s ease;
   }
-  .date-pill:hover {
-    border-color: #3b82f6;
-    background: #eff6ff;
-    color: #1d4ed8;
-  }
-  :global([data-theme="dark"]) .date-pill {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .date-pill {
     background: #1e293b;
-    border-color: #475569;
-    color: #cbd5e1;
+    border-color: #334155;
+    color: #e2e8f0;
   }
-  :global([data-theme="dark"]) .date-pill:hover {
-    background: #1e3a8a33;
-    border-color: #60a5fa;
-    color: #93c5fd;
+  .date-pill:hover {
+    background: #f8fafc;
+    border-color: #94a3b8;
+    color: #0f172a;
+    transform: translateY(-1px);
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .date-pill:hover {
+    background: #334155;
+    border-color: #64748b;
+    color: #f8fafc;
   }
   .date-pill.active {
     background: #2563eb;
-    border-color: #2563eb;
+    border-color: #1d4ed8;
     color: #ffffff;
     font-weight: 600;
-    box-shadow: 0 2px 4px rgba(37, 99, 235, 0.25);
+    box-shadow: 0 1px 3px rgba(37, 99, 235, 0.2);
   }
-  :global([data-theme="dark"]) .date-pill.active {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .date-pill.active {
     background: #3b82f6;
-    border-color: #3b82f6;
+    border-color: #2563eb;
     color: #ffffff;
   }
   .pill-fire-badge {
-    font-size: 0.68rem;
+    font-size: 0.62rem;
     font-weight: 700;
+    padding: 0.04rem 0.22rem;
     background: #ef4444;
     color: #ffffff;
-    padding: 0.05rem 0.25rem;
-    border-radius: 4px;
-    line-height: 1.1;
+    border-radius: 3px;
+    letter-spacing: 0.02em;
   }
   .date-pill.active .pill-fire-badge {
     background: #ffffff;
-    color: #dc2626;
+    color: #ef4444;
   }
   .pill-date {
-    font-family: monospace;
-    font-size: 0.88rem;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.8rem;
   }
   .pill-weekday {
     font-size: 0.72rem;
-    opacity: 0.8;
+    opacity: 0.75;
   }
   .pill-count {
-    font-size: 0.72rem;
-    opacity: 0.8;
+    font-size: 0.7rem;
+    padding: 0.04rem 0.28rem;
     background: rgba(0, 0, 0, 0.05);
-    padding: 0.05rem 0.25rem;
-    border-radius: 3px;
+    border-radius: 4px;
+    color: inherit;
   }
-  .date-pill.active .pill-count {
-    background: rgba(255, 255, 255, 0.25);
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .pill-count {
+    background: rgba(255, 255, 255, 0.1);
   }
 
-  /* Dropdown styles */
+  /* Details Dropdown Menu */
   .ribbon-archive-details {
     position: relative;
+    display: inline-block;
   }
   .ribbon-archive-summary {
     display: inline-flex;
     align-items: center;
-    gap: 0.35rem;
-    padding: 0.35rem 0.65rem;
-    background: #ffffff;
-    border: 1px solid #cbd5e1;
+    gap: 0.3rem;
+    padding: 0.24rem 0.55rem;
+    background: var(--card-bg, #ffffff);
+    border: 1px solid var(--border-color, #cbd5e1);
     border-radius: 6px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: #475569;
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--text-secondary, #475569);
     cursor: pointer;
-    list-style: none;
     user-select: none;
+    list-style: none;
     transition: all 0.15s ease;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .ribbon-archive-summary {
+    background: #1e293b;
+    border-color: #334155;
+    color: #cbd5e1;
   }
   .ribbon-archive-summary::-webkit-details-marker {
     display: none;
   }
   .ribbon-archive-summary:hover {
+    background: #f8fafc;
     border-color: #94a3b8;
-    background: #f1f5f9;
+    color: #0f172a;
   }
-  :global([data-theme="dark"]) .ribbon-archive-summary {
-    background: #1e293b;
-    border-color: #475569;
-    color: #cbd5e1;
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .ribbon-archive-summary:hover {
+    background: #334155;
+    color: #f8fafc;
   }
   .summary-caret {
-    font-size: 0.75rem;
+    font-size: 0.72rem;
+    color: #94a3b8;
     transition: transform 0.15s ease;
   }
   .ribbon-archive-details[open] .summary-caret {
@@ -252,20 +303,21 @@ const recentDays = allDays.slice(0, 8);
   }
   .ribbon-archive-dropdown-menu {
     position: absolute;
-    right: 0;
     top: calc(100% + 6px);
-    width: 320px;
-    max-height: 380px;
+    left: 0;
+    z-index: 50;
+    min-width: 300px;
+    max-width: 90vw;
+    max-height: 400px;
     overflow-y: auto;
+    padding: 0.5rem;
     background: #ffffff;
     border: 1px solid #cbd5e1;
     border-radius: 8px;
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15);
-    padding: 0.75rem;
-    z-index: 50;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
   }
-  :global([data-theme="dark"]) .ribbon-archive-dropdown-menu {
-    background: #0f172a;
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .ribbon-archive-dropdown-menu {
+    background: #1e293b;
     border-color: #334155;
     box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
   }
@@ -273,90 +325,171 @@ const recentDays = allDays.slice(0, 8);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 0.78rem;
-    font-weight: 700;
+    padding: 0.25rem 0.4rem 0.4rem 0.4rem;
+    font-size: 0.72rem;
+    font-weight: 600;
     color: #64748b;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid #f1f5f9;
-    margin-bottom: 0.5rem;
+    border-bottom: 1px solid #e2e8f0;
+    margin-bottom: 0.35rem;
   }
-  :global([data-theme="dark"]) .dropdown-header {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .dropdown-header {
     color: #94a3b8;
-    border-bottom-color: #1e293b;
+    border-bottom-color: #334155;
   }
   .dropdown-all-link {
-    font-size: 0.75rem;
     color: #2563eb;
     text-decoration: none;
+    font-weight: 600;
   }
   .dropdown-all-link:hover {
     text-decoration: underline;
   }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .dropdown-all-link {
+    color: #60a5fa;
+  }
   .dropdown-grid {
     display: flex;
     flex-direction: column;
-    gap: 0.35rem;
+    gap: 0.2rem;
   }
   .dropdown-day-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.4rem 0.6rem;
-    border-radius: 6px;
+    padding: 0.35rem 0.5rem;
+    border-radius: 5px;
     text-decoration: none;
-    font-size: 0.8rem;
     color: #334155;
-    background: #f8fafc;
-    transition: all 0.12s ease;
+    font-size: 0.78rem;
+    transition: background 0.12s ease;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .dropdown-day-item {
+    color: #e2e8f0;
   }
   .dropdown-day-item:hover {
-    background: #eff6ff;
-    color: #1d4ed8;
+    background: #f1f5f9;
   }
-  :global([data-theme="dark"]) .dropdown-day-item {
-    background: #1e293b;
-    color: #cbd5e1;
-  }
-  :global([data-theme="dark"]) .dropdown-day-item:hover {
-    background: #1e3a8a44;
-    color: #93c5fd;
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .dropdown-day-item:hover {
+    background: #334155;
   }
   .dropdown-day-item.active {
-    background: #2563eb;
-    color: #ffffff;
+    background: #eff6ff;
+    color: #1d4ed8;
     font-weight: 600;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .dropdown-day-item.active {
+    background: #1e3a8a33;
+    color: #93c5fd;
   }
   .day-item-left {
     display: flex;
-    align-items: baseline;
-    gap: 0.4rem;
+    align-items: center;
+    gap: 0.45rem;
   }
   .day-item-date {
-    font-family: monospace;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     font-weight: 600;
+  }
+  .day-item-us-hint {
+    font-size: 0.7rem;
+    color: #94a3b8;
+    font-weight: normal;
   }
   .day-item-weekday {
     font-size: 0.72rem;
-    opacity: 0.8;
+    color: #64748b;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .day-item-weekday {
+    color: #94a3b8;
   }
   .day-item-right {
     display: flex;
     align-items: center;
-    gap: 0.3rem;
+    gap: 0.35rem;
   }
   .badge-must {
     font-size: 0.68rem;
-    background: #fee2e2;
-    color: #991b1b;
-    padding: 0.05rem 0.25rem;
+    font-weight: 700;
+    padding: 0.05rem 0.3rem;
+    background: #fef2f2;
+    color: #dc2626;
     border-radius: 3px;
   }
-  .dropdown-day-item.active .badge-must {
-    background: #ffffff;
-    color: #dc2626;
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .badge-must {
+    background: #450a0a;
+    color: #f87171;
   }
   .badge-total {
-    font-size: 0.7rem;
-    opacity: 0.8;
+    font-size: 0.72rem;
+    color: #64748b;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .badge-total {
+    color: #94a3b8;
+  }
+
+  /* Right Side Section Filter Pills */
+  .ribbon-section-pills {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    flex-wrap: wrap;
+  }
+  .ribbon-divider {
+    color: var(--border-color, #cbd5e1);
+    font-size: 0.8rem;
+    margin: 0 0.15rem;
+  }
+  .section-nav-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.22rem 0.55rem;
+    font-size: 0.78rem;
+    font-weight: 500;
+    border-radius: 6px;
+    text-decoration: none;
+    color: var(--text-secondary, #475569);
+    background: transparent;
+    border: 1px solid transparent;
+    transition: all 0.15s ease;
+  }
+  .section-nav-pill:hover {
+    background: var(--card-bg, #ffffff);
+    border-color: var(--border-color, #cbd5e1);
+    color: var(--text-primary, #0f172a);
+  }
+  .section-nav-pill.pill-must {
+    color: #b91c1c;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .section-nav-pill.pill-must {
+    color: #f87171;
+  }
+  .section-nav-pill.pill-worth {
+    color: #2563eb;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .section-nav-pill.pill-worth {
+    color: #60a5fa;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :global(body:not(:has(#site-theme-toggle:checked))) .ribbon-brand-tag { color: #94a3b8; border-right-color: #334155; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .ribbon-track-wrap::-webkit-scrollbar-thumb { background: #475569; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .date-pill { background: #1e293b; border-color: #334155; color: #e2e8f0; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .date-pill:hover { background: #334155; border-color: #64748b; color: #f8fafc; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .date-pill.active { background: #3b82f6; border-color: #2563eb; color: #ffffff; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .pill-count { background: rgba(255, 255, 255, 0.1); }
+    :global(body:not(:has(#site-theme-toggle:checked))) .ribbon-archive-summary { background: #1e293b; border-color: #334155; color: #cbd5e1; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .ribbon-archive-summary:hover { background: #334155; color: #f8fafc; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .ribbon-archive-dropdown-menu { background: #1e293b; border-color: #334155; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5); }
+    :global(body:not(:has(#site-theme-toggle:checked))) .dropdown-header { color: #94a3b8; border-bottom-color: #334155; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .dropdown-all-link { color: #60a5fa; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .dropdown-day-item { color: #e2e8f0; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .dropdown-day-item:hover { background: #334155; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .dropdown-day-item.active { background: #1e3a8a33; color: #93c5fd; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .day-item-weekday { color: #94a3b8; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .badge-must { background: #450a0a; color: #f87171; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .badge-total { color: #94a3b8; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .section-nav-pill.pill-must { color: #f87171; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .section-nav-pill.pill-worth { color: #60a5fa; }
   }
 </style>

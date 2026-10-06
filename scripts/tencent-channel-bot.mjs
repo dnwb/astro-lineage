@@ -20,7 +20,7 @@ import {
   callChatCompletion,
 } from "./agent-core.mjs";
 
-const DEFAULT_GUILD_ID = process.env.TENCENT_GUILD_ID || "612912874093545504";
+const DEFAULT_GUILD_ID = process.env.TENCENT_GUILD_ID || "";
 
 const STATE_PATH = resolve(fileURLToPath(new URL("../src/data/tencent-bot-state.json", import.meta.url)));
 
@@ -86,16 +86,17 @@ async function saveState(state) {
 
 
 async function getBotUserInfo() {
+  const fallbackId = process.env.TENCENT_BOT_USER_ID || "";
   try {
     const res = await runCli(["manage", "get-user-info", "-j"]);
     const parsed = JSON.parse(res.stdout);
     return {
-      id: "144115221380239833", // Default known bot tinyid
+      id: String(parsed.data?.tiny_id || parsed.data?.id || fallbackId),
       nickname: parsed.data?.global_nickname || parsed.data?.nickname || "astrolineage",
     };
   } catch {
     return {
-      id: "144115221380239833",
+      id: fallbackId,
       nickname: "astrolineage",
     };
   }

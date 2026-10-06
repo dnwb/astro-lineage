@@ -10,6 +10,9 @@ generated/
 /skills/
 .env
 .env.*
+!.env.example
 .claude/
 __pycache__/
 *.pyc
+public/arxiv-figures/
+scripts/channel-figure-reviews.json

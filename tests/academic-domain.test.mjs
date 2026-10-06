@@ -7,6 +7,8 @@ import {
   matchScientificTags,
   DETERMINISTIC_SKIP_RULES,
   ASTROPHYSICS_SYSTEM_PROMPT,
+  formatAnnouncementInBeijing,
+  parseTransientEpoch,
 } from "../src/domain/academic-domain.mjs";
 
 test("academic-domain: extractTransientIdentifiers parses standard transient names", () => {
@@ -56,4 +58,40 @@ test("academic-domain: deterministic skip rules catch off-domain papers", () => 
   assert.ok(!epRule.keywords.test("Supernova shock breakout in dense CSM"));
 
   assert.ok(ASTROPHYSICS_SYSTEM_PROMPT.includes("高能瞬变天体物理"));
+});
+
+test("academic-domain: formatAnnouncementInBeijing maps US announcement dates to Beijing Time correctly", () => {
+  const sun = formatAnnouncementInBeijing("2026-10-04", "Sun");
+  assert.equal(sun.beijingDate, "2026-10-05");
+  assert.equal(sun.shortDate, "10-05");
+  assert.equal(sun.chineseWeekday, "周一");
+  assert.match(sun.batchKicker, /周一监测批次/u);
+
+  const thu = formatAnnouncementInBeijing("2026-10-01", "Thu");
+  assert.equal(thu.beijingDate, "2026-10-02");
+  assert.equal(thu.shortDate, "10-02");
+  assert.equal(thu.chineseWeekday, "周五");
+
+  const wed = formatAnnouncementInBeijing("2026-09-30", "Wed");
+  assert.equal(wed.beijingDate, "2026-10-01");
+  assert.equal(wed.shortDate, "10-01");
+  assert.equal(wed.chineseWeekday, "周四");
+
+  const tue = formatAnnouncementInBeijing("2026-09-29", "Tue");
+  assert.equal(tue.beijingDate, "2026-09-30");
+  assert.equal(tue.chineseWeekday, "周三");
+
+  const mon = formatAnnouncementInBeijing("2026-09-28", "Mon");
+  assert.equal(mon.beijingDate, "2026-09-29");
+  assert.equal(mon.chineseWeekday, "周二");
+});
+
+test("academic-domain: parseTransientEpoch accurately extracts discovery/eruption year or date", () => {
+  assert.equal(parseTransientEpoch("GW170817"), "2017-08-17");
+  assert.equal(parseTransientEpoch("GRB 250419A"), "2025-04-19");
+  assert.equal(parseTransientEpoch("GRB 221009A"), "2022-10-09");
+  assert.equal(parseTransientEpoch("SN 2024ggi"), "2024");
+  assert.equal(parseTransientEpoch("AT 2018hyz"), "2018");
+  assert.equal(parseTransientEpoch("FRB 20201124A"), "2020-11-24");
+  assert.equal(parseTransientEpoch("UNKNOWN"), null);
 });

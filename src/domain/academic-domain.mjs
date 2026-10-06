@@ -57,6 +57,27 @@ export function extractTransientIdentifiers(text) {
 }
 
 /**
+ * Parse observational discovery / trigger epoch from standard astronomical transient ID.
+ * Returns formatted date string or year string, e.g. "2017-08-17", "2025-04-19", "2024", or null.
+ */
+export function parseTransientEpoch(eventId) {
+  if (!eventId || typeof eventId !== "string") return null;
+  const id = eventId.trim();
+  let m = id.match(/^GW\s*(\d{2})(\d{2})(\d{2})/i);
+  if (m) return `20${m[1]}-${m[2]}-${m[3]}`;
+  m = id.match(/^GRB\s*(\d{2})(\d{2})(\d{2})/i);
+  if (m) return `${parseInt(m[1], 10) > 50 ? "19" : "20"}${m[1]}-${m[2]}-${m[3]}`;
+  m = id.match(/^(?:SN|AT)\s*(\d{4})/i);
+  if (m) return m[1];
+  m = id.match(/^FRB\s*(\d{4}|\d{2})(\d{2})(\d{2})/i);
+  if (m) {
+    const yr = m[1].length === 4 ? m[1] : `${parseInt(m[1], 10) > 50 ? "19" : "20"}${m[1]}`;
+    return `${yr}-${m[2]}-${m[3]}`;
+  }
+  return null;
+}
+
+/**
  * Assign scientific tags to a paper item based on title, problem, and reason.
  */
 export function matchScientificTags(item) {
@@ -286,4 +307,64 @@ export function parseStructuredExecutiveSummary(textInput) {
   }
 
   return { lead, items, boundary };
+}
+
+/**
+ * Utilities for formatting arXiv announcement dates and times in Beijing Time (Asia/Shanghai, UTC+8).
+ * 
+ * arXiv releases new announcements at 20:00 US Eastern Time (America/New_York) on Sun-Thu.
+ * In Beijing Time (UTC+8), this corresponds to 08:00 (EDT) or 09:00 (EST) the NEXT calendar day (Mon-Fri).
+ */
+export function formatAnnouncementInBeijing(usDateStr, usWeekday) {
+  if (!usDateStr || typeof usDateStr !== "string" || !/^\d{4}-\d{2}-\d{2}$/u.test(usDateStr)) {
+    return {
+      beijingDate: usDateStr || "",
+      shortDate: usDateStr?.slice(5) || "",
+      chineseWeekday: "周一",
+      displayLabel: usDateStr || "",
+      batchKicker: "监测批次",
+      usDate: usDateStr || "",
+      usWeekday: usWeekday || "",
+    };
+  }
+
+  const [year, month, day] = usDateStr.split("-").map(Number);
+  // Estimate UTC for 20:00 in America/New_York on usDateStr
+  // At 20:00 EDT, UTC is 00:00 next day (UTC-4)
+  // At 20:00 EST, UTC is 01:00 next day (UTC-5)
+  const candidateUtc = new Date(Date.UTC(year, month - 1, day + 1, 0, 0, 0));
+  const nyFmt = new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", hour: "numeric", hourCycle: "h23" });
+  const nyHour = Number(nyFmt.format(candidateUtc));
+  const announcementUtc = nyHour === 20
+    ? candidateUtc
+    : new Date(Date.UTC(year, month - 1, day + 1, 1, 0, 0));
+
+  const parts = new Intl.DateTimeFormat("zh-CN", {
+    timeZone: "Asia/Shanghai",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    weekday: "short",
+  }).formatToParts(announcementUtc);
+
+  const p = Object.fromEntries(parts.map((x) => [x.type, x.value]));
+  const beijingDate = `${p.year}-${p.month}-${p.day}`;
+  const shortDate = `${p.month}-${p.day}`;
+
+  const weekdayMap = {
+    "周日": "周日", "周一": "周一", "周二": "周二", "周三": "周三", "周四": "周四", "周五": "周五", "周六": "周六",
+    "Sun": "周日", "Mon": "周一", "Tue": "周二", "Wed": "周三", "Thu": "周四", "Fri": "周五", "Sat": "周六",
+  };
+  const rawWk = p.weekday || "";
+  const chineseWeekday = rawWk.startsWith("周") ? rawWk : (weekdayMap[rawWk] || `周${rawWk}`);
+
+  return {
+    beijingDate,
+    shortDate,
+    chineseWeekday,
+    displayLabel: `${beijingDate} (${chineseWeekday})`,
+    batchKicker: `${chineseWeekday}监测批次 · 截稿于 02:00（北京时间）`,
+    usDate: usDateStr,
+    usWeekday: usWeekday || "",
+  };
 }

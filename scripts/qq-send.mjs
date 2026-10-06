@@ -20,7 +20,8 @@ import { sendProactiveC2CMessage, sendProactiveGroupMessage } from "./qq-officia
 import { readPublishedArxivEdition, acquireRefreshLock, releaseRefreshLock, writeJsonAtomically } from "./arxiv-daily.mjs";
 import { validateDailyRadarPayload } from "./daily-radar.mjs";
 import { hashBody, readDailyArchive, readChannelShareUrl } from "./channel-publication.mjs";
-import { extractPaperTopic, deriveDailyContentTitle, deriveWeeklyContentTitle, readingExcerpt } from "./tencent-channel-publisher.mjs";
+import { readingExcerpt } from "./tencent-channel-publisher.mjs";
+import { deriveDailyTitleCandidate, deriveWeeklyTitleCandidate, extractPaperTopic } from "./channel-title-policy.mjs";
 
 try {
   if (typeof process.loadEnvFile === "function" && existsSync(".env")) {
@@ -32,7 +33,7 @@ export async function generateGroupBrief(type = "daily", options = {}) {
   if (!["daily", "weekly"].includes(type)) throw new Error("QQ_NOTIFY_KIND_INVALID");
   let { dailyModel: model, weekly, date, sourceBinding, channelUrl } = options;
   let publicationHash;
-  const websiteBase = (options.websiteBase || process.env.SITE_BASE_URL || process.env.ASTRO_SITE_URL || "http://10.131.43.83:4321").replace(/\/+$/u, "");
+  const websiteBase = (options.websiteBase || process.env.SITE_BASE_URL || process.env.ASTRO_SITE_URL || "http://localhost:4321").replace(/\/+$/u, "");
   if (!(type === "daily" ? model : weekly)) {
     if (!sourceBinding) {
       const website = JSON.parse(await readFile(".cache/notebooklm/website.json", "utf8"));
@@ -75,7 +76,7 @@ export async function generateGroupBrief(type = "daily", options = {}) {
   const lines = [];
   if (type === "weekly") {
     if (!/^\d{4}-W\d\d$/u.test(weekly.week_id || "") || !weekly.executive_summary) throw new Error("QQ_SOURCE_INVALID");
-    lines.push(deriveWeeklyContentTitle(weekly.week_id, weekly), weekly.date_range || "", "", readingExcerpt(weekly.executive_summary), "");
+    lines.push(deriveWeeklyTitleCandidate(weekly.week_id, weekly), weekly.date_range || "", "", readingExcerpt(weekly.executive_summary), "");
     for (const pick of (weekly.top_picks || []).slice(0, 3)) {
       if (!/^\d{4}\.\d{4,5}$/u.test(pick.arxiv_id || "")) throw new Error("QQ_SOURCE_INVALID");
       const revision = pick.revision || weekly.papers?.find(p => p.arxiv_id === pick.arxiv_id)?.revision;
@@ -89,7 +90,7 @@ export async function generateGroupBrief(type = "daily", options = {}) {
   } else {
     if (!/^\d{4}-\d\d-\d\d$/u.test(date || "") || model.opening_brief?.status !== "ready") throw new Error("QQ_SOURCE_INVALID");
     const papers = [...model.groups.must_read, ...model.groups.worth_knowing];
-    lines.push(deriveDailyContentTitle(date, papers, model.opening_brief), date, "", model.opening_brief.intro, "");
+    lines.push(deriveDailyTitleCandidate(date, papers, model.opening_brief), date, "", model.opening_brief.intro, "");
     for (const sentence of model.opening_brief.must_read.slice(0, 3)) {
       const paper = model.groups.must_read.find(p => p.arxiv_id === sentence.arxiv_id && p.revision === sentence.revision);
       if (!paper) throw new Error("QQ_SOURCE_INVALID");
@@ -170,7 +171,7 @@ export async function notifyGroupPublication({ kinds, sourceBinding, delivery, c
 }
 
 export async function alertAdmin(subject, details = "") {
-  const adminOpenid = process.env.QQ_ADMIN_OPENID || defaultUserManager.getLatestUserOpenid() || "4D18DE64E4A033C91FEFB68DC98BF5D7";
+  const adminOpenid = process.env.QQ_ADMIN_OPENID || defaultUserManager.getLatestUserOpenid();
   if (!adminOpenid) {
     console.error("[qq-send:alert] 未找到管理员 OpenID，跳过告警");
     return { success: false, reason: "no_admin_openid" };

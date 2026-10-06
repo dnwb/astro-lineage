@@ -1,8 +1,21 @@
 import assert from 'node:assert/strict';
-import { test } from 'node:test';
+import { test, beforeEach } from 'node:test';
 import { readFile } from 'node:fs/promises';
-import { loadAcademicKnowledge, executeChatCompletion, callChatCompletion, buildModelCandidates, generateAcademicAnswer } from '../scripts/agent-core.mjs';
+import {
+  defaultGatewayCircuitBreaker,
+  defaultModelHealthRegistry,
+  loadAcademicKnowledge,
+  executeChatCompletion,
+  callChatCompletion,
+  buildModelCandidates,
+  generateAcademicAnswer,
+} from '../scripts/agent-core.mjs';
 import { readChannelShareUrl } from '../scripts/channel-publication.mjs';
+
+beforeEach(() => {
+  defaultGatewayCircuitBreaker.reset();
+  defaultModelHealthRegistry.reset();
+});
 
 test('shared channel address rejects unrelated hosts, credentials and non-HTTPS links', async () => {
   assert.equal(await readChannelShareUrl({ url: 'https://pd.qq.com/s/test-channel' }), 'https://pd.qq.com/s/test-channel');

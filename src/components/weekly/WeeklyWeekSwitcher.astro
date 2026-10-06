@@ -13,95 +13,112 @@ const latestWeekId = (archiveManifest as any).latest_week_id || (allWeeks[0]?.we
 
 <nav class="aihot-date-ribbon" aria-label="学术周报周期快速切换">
   <div class="ribbon-inner">
-    <div class="ribbon-brand-tag">
-      <span class="ribbon-icon">🗓️</span>
-      <span class="ribbon-title">周期速选</span>
-    </div>
-
-    <!-- Scrollable Weeks Track (AI HOT style) -->
-    <div class="ribbon-track-wrap">
-      <div class="ribbon-pills-track">
-        {allWeeks.map((w: any) => {
-          const isCurrent = w.week_id === currentWeek;
-          const isLatest = w.week_id === latestWeekId;
-          const targetUrl = isLatest ? "/arxiv-weekly/" : `/arxiv-weekly/${w.week_id}/`;
-          const rangeLabel = w.date_range ? w.date_range.split(" ~ ")[0]?.slice(5) : "";
-          const paperCount = w.statistics?.total_analyzed ?? w.top_picks_count ?? 0;
-          return (
-            <a
-              class={`date-pill ${isCurrent ? "active" : ""} ${isLatest ? "pill-latest" : ""}`}
-              href={targetUrl}
-              title={`切换至 ${w.week_id} (${w.date_range}) 学术脉络综述`}
-              aria-current={isCurrent ? "page" : undefined}
-            >
-              {isLatest && <span class="pill-fire-badge">最新</span>}
-              <strong class="pill-date">{w.week_id}</strong>
-              {rangeLabel && <span class="pill-weekday">{rangeLabel}</span>}
-              <span class="pill-count">{paperCount}篇</span>
-            </a>
-          );
-        })}
+    <div class="ribbon-left-group">
+      <div class="ribbon-brand-tag">
+        <span class="ribbon-icon">🗓️</span>
+        <span class="ribbon-title">周期速选</span>
       </div>
-    </div>
 
-    <!-- Pure HTML Dropdown for All Historical Weeks (Zero Script) -->
-    <details class="ribbon-archive-details">
-      <summary class="ribbon-archive-summary" title="展开更多历史周报">
-        <span>全部往期 ({allWeeks.length})</span>
-        <span class="summary-caret">▾</span>
-      </summary>
-      <div class="ribbon-archive-dropdown-menu">
-        <div class="dropdown-header">
-          <span>历史自然周学术脉络归档</span>
-          <a class="dropdown-all-link" href="/arxiv-archives/">查看全局存档库 →</a>
-        </div>
-        <div class="dropdown-grid">
+      <!-- Scrollable Weeks Track (AI HOT style) -->
+      <div class="ribbon-track-wrap">
+        <div class="ribbon-pills-track">
           {allWeeks.map((w: any) => {
             const isCurrent = w.week_id === currentWeek;
             const isLatest = w.week_id === latestWeekId;
             const targetUrl = isLatest ? "/arxiv-weekly/" : `/arxiv-weekly/${w.week_id}/`;
-            const mustCount = w.statistics?.must_read_count ?? 0;
-            const totalCount = w.statistics?.total_analyzed ?? 0;
+            const rangeLabel = w.date_range ? w.date_range.split(" ~ ")[0]?.slice(5) : "";
+            const paperCount = w.statistics?.total_analyzed ?? w.top_picks_count ?? 0;
             return (
               <a
-                class={`dropdown-day-item ${isCurrent ? "active" : ""}`}
+                class={`date-pill ${isCurrent ? "active" : ""} ${isLatest ? "pill-latest" : ""}`}
                 href={targetUrl}
+                title={`切换至 ${w.week_id} (${w.date_range}) 学术脉络综述`}
+                aria-current={isCurrent ? "page" : undefined}
               >
-                <div class="day-item-left">
-                  <span class="day-item-date">{w.week_id}</span>
-                  <span class="day-item-weekday">{w.date_range}</span>
-                </div>
-                <div class="day-item-right">
-                  {mustCount > 0 && <span class="badge-must">{mustCount}必读</span>}
-                  <span class="badge-total">{totalCount}篇</span>
-                </div>
+                {isLatest && <span class="pill-fire-badge">最新</span>}
+                <strong class="pill-date">{w.week_id}</strong>
+                {rangeLabel && <span class="pill-weekday">{rangeLabel}</span>}
+                <span class="pill-count">{paperCount}篇</span>
               </a>
             );
           })}
         </div>
       </div>
-    </details>
+
+      <!-- Pure HTML Dropdown for All Historical Weeks (Zero Script) -->
+      <details class="ribbon-archive-details">
+        <summary class="ribbon-archive-summary" title="展开更多历史周报">
+          <span>全部往期 ({allWeeks.length})</span>
+          <span class="summary-caret">▾</span>
+        </summary>
+        <div class="ribbon-archive-dropdown-menu">
+          <div class="dropdown-header">
+            <span>历史自然周学术脉络归档</span>
+            <a class="dropdown-all-link" href="/arxiv-archives/">查看全局存档库 →</a>
+          </div>
+          <div class="dropdown-grid">
+            {allWeeks.map((w: any) => {
+              const isCurrent = w.week_id === currentWeek;
+              const isLatest = w.week_id === latestWeekId;
+              const targetUrl = isLatest ? "/arxiv-weekly/" : `/arxiv-weekly/${w.week_id}/`;
+              const mustCount = w.statistics?.must_read_count ?? 0;
+              const totalCount = w.statistics?.total_analyzed ?? 0;
+              return (
+                <a
+                  class={`dropdown-day-item ${isCurrent ? "active" : ""}`}
+                  href={targetUrl}
+                >
+                  <div class="day-item-left">
+                    <span class="day-item-date">{w.week_id}</span>
+                    <span class="day-item-weekday">{w.date_range}</span>
+                  </div>
+                  <div class="day-item-right">
+                    {mustCount > 0 && <span class="badge-must">{mustCount}必读</span>}
+                    <span class="badge-total">{totalCount}篇</span>
+                  </div>
+                </a>
+              );
+            })}
+          </div>
+        </div>
+      </details>
+    </div>
+
+    <!-- Integrated Section Filter Pills on the Right -->
+    <div class="ribbon-section-pills" aria-label="周报重点板块直达">
+      <span class="ribbon-divider" aria-hidden="true">|</span>
+      <a href="#top-picks" class="section-nav-pill pill-picks">⭐ 精选解读</a>
+      <a href="#executive-summary" class="section-nav-pill pill-summary">📊 宏观脉络</a>
+      <a href="#thematic-highlights" class="section-nav-pill pill-thematic">🔬 专题突破</a>
+      <a href="#catalog" class="section-nav-pill pill-catalog">📚 全目录</a>
+    </div>
   </div>
 </nav>
 
 <style>
   .aihot-date-ribbon {
-    margin: 1.25rem 0 1.5rem 0;
-    padding: 0.6rem 0.85rem;
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+    margin: 1.25rem 0 1.75rem 0;
+    padding: 0.35rem 0 0.85rem 0;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--border-color, #e2e8f0);
   }
-  :global([data-theme="dark"]) .aihot-date-ribbon {
-    background: #0f172a;
-    border-color: #334155;
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .aihot-date-ribbon {
+    border-bottom-color: #334155;
   }
   .ribbon-inner {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    justify-content: space-between;
+    gap: 1rem;
     flex-wrap: wrap;
+  }
+  .ribbon-left-group {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    flex: 1 1 auto;
+    min-width: 0;
   }
   .ribbon-brand-tag {
     display: flex;
@@ -114,7 +131,7 @@ const latestWeekId = (archiveManifest as any).latest_week_id || (allWeeks[0]?.we
     padding-right: 0.5rem;
     border-right: 1px solid #e2e8f0;
   }
-  :global([data-theme="dark"]) .ribbon-brand-tag {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .ribbon-brand-tag {
     color: #cbd5e1;
     border-right-color: #334155;
   }
@@ -137,7 +154,7 @@ const latestWeekId = (archiveManifest as any).latest_week_id || (allWeeks[0]?.we
     background: #cbd5e1;
     border-radius: 2px;
   }
-  :global([data-theme="dark"]) .ribbon-track-wrap::-webkit-scrollbar-thumb {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .ribbon-track-wrap::-webkit-scrollbar-thumb {
     background: #475569;
   }
   .ribbon-pills-track {
@@ -160,7 +177,7 @@ const latestWeekId = (archiveManifest as any).latest_week_id || (allWeeks[0]?.we
     white-space: nowrap;
     transition: all 0.15s ease;
   }
-  :global([data-theme="dark"]) .date-pill {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .date-pill {
     background: #1e293b;
     border-color: #475569;
     color: #e2e8f0;
@@ -171,7 +188,7 @@ const latestWeekId = (archiveManifest as any).latest_week_id || (allWeeks[0]?.we
     color: #0f172a;
     transform: translateY(-1px);
   }
-  :global([data-theme="dark"]) .date-pill:hover {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .date-pill:hover {
     background: #334155;
     border-color: #64748b;
     color: #f8fafc;
@@ -183,7 +200,7 @@ const latestWeekId = (archiveManifest as any).latest_week_id || (allWeeks[0]?.we
     font-weight: 600;
     box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
   }
-  :global([data-theme="dark"]) .date-pill.active {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .date-pill.active {
     background: #3b82f6;
     border-color: #2563eb;
     color: #ffffff;
@@ -216,7 +233,7 @@ const latestWeekId = (archiveManifest as any).latest_week_id || (allWeeks[0]?.we
     border-radius: 4px;
     color: #475569;
   }
-  :global([data-theme="dark"]) .pill-count {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .pill-count {
     background: #334155;
     color: #cbd5e1;
   }
@@ -246,7 +263,7 @@ const latestWeekId = (archiveManifest as any).latest_week_id || (allWeeks[0]?.we
     list-style: none;
     transition: all 0.15s ease;
   }
-  :global([data-theme="dark"]) .ribbon-archive-summary {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .ribbon-archive-summary {
     background: #1e293b;
     border-color: #475569;
     color: #cbd5e1;
@@ -259,7 +276,7 @@ const latestWeekId = (archiveManifest as any).latest_week_id || (allWeeks[0]?.we
     border-color: #94a3b8;
     color: #0f172a;
   }
-  :global([data-theme="dark"]) .ribbon-archive-summary:hover {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .ribbon-archive-summary:hover {
     background: #334155;
     color: #f8fafc;
   }
@@ -286,7 +303,7 @@ const latestWeekId = (archiveManifest as any).latest_week_id || (allWeeks[0]?.we
     border-radius: 8px;
     box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
   }
-  :global([data-theme="dark"]) .ribbon-archive-dropdown-menu {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .ribbon-archive-dropdown-menu {
     background: #1e293b;
     border-color: #334155;
     box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
@@ -302,7 +319,7 @@ const latestWeekId = (archiveManifest as any).latest_week_id || (allWeeks[0]?.we
     border-bottom: 1px solid #e2e8f0;
     margin-bottom: 0.4rem;
   }
-  :global([data-theme="dark"]) .dropdown-header {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .dropdown-header {
     color: #94a3b8;
     border-bottom-color: #334155;
   }
@@ -314,7 +331,7 @@ const latestWeekId = (archiveManifest as any).latest_week_id || (allWeeks[0]?.we
   .dropdown-all-link:hover {
     text-decoration: underline;
   }
-  :global([data-theme="dark"]) .dropdown-all-link {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .dropdown-all-link {
     color: #60a5fa;
   }
   .dropdown-grid {
@@ -333,13 +350,13 @@ const latestWeekId = (archiveManifest as any).latest_week_id || (allWeeks[0]?.we
     font-size: 0.8rem;
     transition: background 0.12s ease;
   }
-  :global([data-theme="dark"]) .dropdown-day-item {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .dropdown-day-item {
     color: #e2e8f0;
   }
   .dropdown-day-item:hover {
     background: #f1f5f9;
   }
-  :global([data-theme="dark"]) .dropdown-day-item:hover {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .dropdown-day-item:hover {
     background: #334155;
   }
   .dropdown-day-item.active {
@@ -347,7 +364,7 @@ const latestWeekId = (archiveManifest as any).latest_week_id || (allWeeks[0]?.we
     color: #1d4ed8;
     font-weight: 600;
   }
-  :global([data-theme="dark"]) .dropdown-day-item.active {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .dropdown-day-item.active {
     background: #1e3a8a33;
     color: #93c5fd;
   }
@@ -364,7 +381,7 @@ const latestWeekId = (archiveManifest as any).latest_week_id || (allWeeks[0]?.we
     font-size: 0.72rem;
     color: #64748b;
   }
-  :global([data-theme="dark"]) .day-item-weekday {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .day-item-weekday {
     color: #94a3b8;
   }
   .day-item-right {
@@ -380,7 +397,7 @@ const latestWeekId = (archiveManifest as any).latest_week_id || (allWeeks[0]?.we
     color: #dc2626;
     border-radius: 3px;
   }
-  :global([data-theme="dark"]) .badge-must {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .badge-must {
     background: #450a0a;
     color: #f87171;
   }
@@ -388,7 +405,60 @@ const latestWeekId = (archiveManifest as any).latest_week_id || (allWeeks[0]?.we
     font-size: 0.72rem;
     color: #64748b;
   }
-  :global([data-theme="dark"]) .badge-total {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .badge-total {
     color: #94a3b8;
+  }
+
+  /* Right Side Section Filter Pills */
+  .ribbon-section-pills {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    flex-wrap: wrap;
+  }
+  .ribbon-divider {
+    color: var(--border-color, #cbd5e1);
+    font-size: 0.8rem;
+    margin: 0 0.15rem;
+  }
+  .section-nav-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.24rem 0.55rem;
+    font-size: 0.78rem;
+    font-weight: 500;
+    border-radius: 6px;
+    text-decoration: none;
+    color: var(--text-secondary, #475569);
+    background: transparent;
+    border: 1px solid transparent;
+    transition: all 0.15s ease;
+  }
+  .section-nav-pill:hover {
+    background: var(--card-bg, #ffffff);
+    border-color: var(--border-color, #cbd5e1);
+    color: var(--text-primary, #0f172a);
+    transform: translateY(-1px);
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .section-nav-pill {
+    color: #cbd5e1;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .section-nav-pill:hover {
+    background: #1e293b;
+    border-color: #475569;
+    color: #f8fafc;
+  }
+  .section-nav-pill.pill-picks {
+    color: #b91c1c;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .section-nav-pill.pill-picks {
+    color: #f87171;
+  }
+  .section-nav-pill.pill-summary {
+    color: #2563eb;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .section-nav-pill.pill-summary {
+    color: #60a5fa;
   }
 </style>

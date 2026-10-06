@@ -8,6 +8,7 @@ import DailyRadarPendingCard from "../../components/DailyRadarPendingCard.astro"
 import DailyRadarPrioritySection from "../../components/DailyRadarPrioritySection.astro";
 import DailyKnowledgePoint from "../../components/DailyKnowledgePoint.astro";
 import DailyDateSwitcher from "../../components/DailyDateSwitcher.astro";
+import { formatAnnouncementInBeijing } from "../../domain/academic-domain.mjs";
 import { loadSiteConfig } from "../../lib/site-config";
 import "../../styles/global.css";
 
@@ -23,19 +24,29 @@ export async function getStaticPaths() {
     .map((mod) => (mod as any).default || mod)
     .sort((a, b) => a.date.localeCompare(b.date));
 
-  return allArchives.map((archive, index) => {
+  const paths: any[] = [];
+  const emittedDates = new Set<string>();
+
+  for (let index = 0; index < allArchives.length; index++) {
+    const archive = allArchives[index];
     const prevArchive = index > 0 ? allArchives[index - 1] : null;
     const nextArchive = index < allArchives.length - 1 ? allArchives[index + 1] : null;
+    const bjtInfo = formatAnnouncementInBeijing(archive.date, archive.weekday);
 
-    return {
-      params: { date: archive.date },
-      props: {
-        archive,
-        prevDate: prevArchive ? prevArchive.date : null,
-        nextDate: nextArchive ? nextArchive.date : null,
-      },
-    };
-  });
+    if (!emittedDates.has(archive.date)) {
+      emittedDates.add(archive.date);
+      paths.push({
+        params: { date: archive.date },
+        props: {
+          archive,
+          prevDate: prevArchive ? prevArchive.date : null,
+          nextDate: nextArchive ? nextArchive.date : null,
+        },
+      });
+    }
+  }
+
+  return paths;
 }
 
 const { date } = Astro.params;
@@ -90,10 +101,7 @@ function pendingLabel(reason: string) {
   }[reason] ?? "待核查";
 }
 
-const generatedAt = new Date(archive.generated_at ?? model.edition.generated_at ?? "");
-const generatedLabel = Number.isNaN(generatedAt.valueOf())
-  ? "历史归档"
-  : generatedAt.toLocaleString("zh-CN", { timeZone: "Asia/Shanghai" });
+const bjtInfo = formatAnnouncementInBeijing(archive.date, archive.weekday);
 ---
 
 <!doctype html>
@@ -103,9 +111,9 @@ const generatedLabel = Number.isNaN(generatedAt.valueOf())
     <meta name="viewport" content="width=device-width" />
     <meta
       name="description"
-      content={`arXiv 每日学术导读历史归档 · ${archive.date}（${archive.weekday}）：高能瞬变天体物理前沿监测与分级研判。`}
+      content={`arXiv 每日学术导读历史归档 · ${bjtInfo.beijingDate}（${bjtInfo.chineseWeekday}，北京时间 / 美东 ${archive.date}）：高能瞬变天体物理前沿监测与分级研判。`}
     />
-    <title>Daily Radar · {archive.date} · {site.title}</title>
+    <title>Daily Radar · {bjtInfo.beijingDate} · {site.title}</title>
   </head>
   <body>
     <main class="site-shell index-page reader-page radar-page archive-standalone-page">
@@ -119,8 +127,9 @@ const generatedLabel = Number.isNaN(generatedAt.valueOf())
       <section class="standalone-archive-banner" aria-label="归档批次元信息与快速跳转">
         <div class="archive-banner-left">
           <span class="banner-badge-archive">📅 历史归档批次</span>
-          <strong class="banner-date">{archive.date}</strong>
-          <span class="banner-weekday">星期{archive.weekday === "Mon" ? "一" : archive.weekday === "Tue" ? "二" : archive.weekday === "Wed" ? "三" : archive.weekday === "Thu" ? "四" : archive.weekday === "Fri" ? "五" : archive.weekday === "Sat" ? "六" : "日"} ({archive.weekday})</span>
+          <strong class="banner-date">{bjtInfo.beijingDate}</strong>
+          <span class="banner-weekday">{bjtInfo.chineseWeekday}（北京时间）</span>
+          <span class="banner-meta-pill">美东批次：{archive.date} ({archive.weekday})</span>
           <span class="banner-meta-pill">所属周：{archive.week_id}</span>
           <span class="banner-meta-pill">{archive.batch_id}</span>
         </div>
@@ -141,24 +150,17 @@ const generatedLabel = Number.isNaN(generatedAt.valueOf())
           <span class="language-primary">arXiv 每日学术导读 · 历史归档</span>
           <span class="language-english" lang="en">Daily arXiv Reading Guide · Archive</span>
         </h1>
-        <p class="reader-deck language-primary">
-          批次窗口：<strong>{archive.date}</strong> · 归档于 {generatedLabel}。先决定当天读什么，再展开查看问题、假设、结果边界和实际阅读范围。
-        </p>
-        <p class="reader-deck language-english" lang="en">
-          Batch date: {archive.date} · Archived at {generatedLabel}. Standalone permanent record of candidate papers and reading guides.
-        </p>
         <div class="historical-quick-stats">
-          <span class="stat-pill total">总收录候选 <strong>{model.counts.total}</strong> 篇</span>
+          <span class="stat-pill total">总收录 <strong>{model.counts.total}</strong> 篇</span>
           <span class="stat-pill analyzed">有效研判 <strong>{model.counts.analyzed}</strong> 篇</span>
           <span class="stat-pill must">必读 <strong>{priorityGroups.must_read?.length ?? 0}</strong> 篇</span>
           <span class="stat-pill worth">关注 <strong>{priorityGroups.worth_knowing?.length ?? 0}</strong> 篇</span>
           <span class="stat-pill skim">快速浏览 <strong>{priorityGroups.skip?.length ?? 0}</strong> 篇</span>
-          <span class="stat-pill pending">待分析 <strong>{model.pending?.length ?? 0}</strong> 篇</span>
         </div>
       </header>
 
-      <!-- AI HOT Date Switcher Ribbon -->
-      <DailyDateSwitcher currentDate={archive.date} />
+      <!-- Consolidated AI HOT Date Switcher & Filter Ribbon -->
+      <DailyDateSwitcher currentDate={archive.date} groups={priorityGroups} />
 
       <!-- Standalone Date Pager -->
       <nav class="standalone-date-pager" aria-label="往期历史日报快速切换">
@@ -172,8 +174,8 @@ const generatedLabel = Number.isNaN(generatedAt.valueOf())
           )}
         </div>
         <div class="pager-col center">
-          <a class="date-pager-btn overview" href="/arxiv-daily/#historical-archives">
-            🗓️ 查看全部归档列表
+          <a class="date-pager-btn overview" href="/arxiv-archives/">
+            🗓️ 查看往期归档全库
           </a>
         </div>
         <div class="pager-col right">

@@ -1,4 +1,5 @@
 ---
+import ProductBoundary from "../copy/product-boundary.md";
 import { loadCanonicalContent } from "../../scripts/content-loader.mjs";
 import { projectBaselineSnapshot, projectVisibleSnapshot } from "../../scripts/reader-projection.mjs";
 import { learningPathReaderPath, researchLineReaderPath } from "../lib/reader-routes";
@@ -15,7 +16,7 @@ import dailyFeed from "../data/arxiv-daily.json";
 import archiveManifest from "../data/arxiv-archives/manifest.json";
 import ScientificEventTimeline from "../components/ScientificEventTimeline.astro";
 import { radarCardAnchor } from "../../scripts/daily-radar.mjs";
-import { parseStructuredExecutiveSummary } from "../domain/academic-domain.mjs";
+import { parseStructuredExecutiveSummary, formatAnnouncementInBeijing } from "../domain/academic-domain.mjs";
 import "../styles/global.css";
 
 const dailyArchiveModules = import.meta.glob<{ default: any }>("../data/arxiv-archives/daily/*.json", { eager: true });
@@ -102,7 +103,7 @@ const filterNoiseReductionRate = dailyStats.total_papers > 0
 
 const latestDate = (dailyFeed as any).window?.announcement_date ?? "2026-09-21";
 const radarWeekday = (dailyFeed as any).window?.announcement_weekday ?? "Mon";
-const radarBatchLabel = `${radarWeekday} 监测批次 · ${(dailyFeed as any).window?.cutoff_local_time ?? "14:00"} Cutoff`;
+const bjtDailyInfo = formatAnnouncementInBeijing(latestDate, radarWeekday);
 
 ---
 
@@ -122,39 +123,28 @@ const radarBatchLabel = `${radarWeekday} 监测批次 · ${(dailyFeed as any).wi
       <SiteNav />
 
       <header class="home-header" aria-labelledby="home-title">
-        <p class="eyebrow">{site.eyebrow}</p>
-        <h1 id="home-title">{site.title}</h1>
+        <div class="home-title-line">
+          <h1 id="home-title">{site.title}</h1>
+        </div>
         <p class="home-lead language-primary">理解高能瞬变天体物理中的思想如何演化。</p>
-        <p class="language-primary">围绕论文、物理关系与学习路径构建的科学阅读地图。</p>
+        <p class="home-sub-desc language-primary">聚焦超新星、相对论喷流、磁星、FRB 及多信使瞬变源 · 每日提取可核验证据 · 每周厘清学术脉络</p>
         <div class="language-english" lang="en">
           <p class="home-lead">Understand how ideas in high-energy astrophysics evolve.</p>
-          <p>A curated scientific reading map built around papers, their physical relationships, and learning paths.</p>
+          <p class="home-sub-desc">A curated scientific reading map tracking supernovae, relativistic jets, magnetars, FRBs, and multimessenger transients.</p>
         </div>
+        <ProductBoundary />
       </header>
 
       <!-- Primary Feature Section: Daily & Weekly arXiv Papers -->
-      <section class="intelligence-hero-section" aria-labelledby="intelligence-hero-heading">
-        <div class="intelligence-hero-header">
-          <div class="hero-badge-row">
-            <span class="hero-tag">arXiv 追踪</span>
-            <span class="hero-tag-muted">高能瞬变天体物理</span>
-          </div>
-          <h2 id="intelligence-hero-heading" class="intelligence-title">
-            <span class="intelligence-title-main">前沿追踪与学术脉络</span>
-            <span class="intelligence-title-sub">Frontier Radar & Weekly Synthesis</span>
-          </h2>
-          <p class="intelligence-desc">
-            聚焦超新星、相对论喷流、磁星、FRB 及多信使瞬变源，每日提取可核验科学证据，每周厘清因果演化链条。
-          </p>
-        </div>
+      <section class="intelligence-hero-section" aria-label="前沿追踪与学术脉络">
 
         <div class="intelligence-grid asymmetric-hero-grid">
           <!-- Weekly Synthesis Card -->
           <article class="intel-card intel-card-weekly flagship-stage">
             <div class="intel-card-top">
-              <div class="intel-badge-group">
-                <span class="intel-badge intel-badge-weekly">本周综述 · {(weeklyData as any).week_id}</span>
-                <span class="intel-date">{(weeklyData as any).date_range}</span>
+              <div class="intel-meta-group">
+                <span class="intel-meta-kicker">本周综述 · {(weeklyData as any).week_id}</span>
+                <span class="intel-meta-date">{(weeklyData as any).date_range}</span>
               </div>
               <a class="intel-view-all-link" href="/arxiv-weekly/">查看完整周报 →</a>
             </div>
@@ -165,14 +155,6 @@ const radarBatchLabel = `${radarWeekday} 监测批次 · ${(dailyFeed as any).wi
               </a>
             </h3>
 
-            {thematicHighlights.length > 0 && (
-              <div class="intel-thematic-chips" aria-label="本周核心专题">
-                {thematicHighlights.slice(0, 3).map((th: any) => (
-                  <span class="thematic-chip">#{th.theme_name}</span>
-                ))}
-              </div>
-            )}
-
             <div class="intel-summary-box">
               <p class="intel-summary-lead">
                 <ReaderText text={weeklyLeadSummary} />
@@ -181,7 +163,7 @@ const radarBatchLabel = `${radarWeekday} 监测批次 · ${(dailyFeed as any).wi
                 <ul class="intel-summary-hl-list">
                   {weeklyStructured.items.slice(0, 3).map((item: any) => (
                     <li class="intel-summary-hl-item">
-                      <span class="hl-topic-tag">{item.topic}</span>
+                      <strong class="hl-topic-lead">{item.topic}：</strong>
                       <span class="hl-body-text"><ReaderText text={item.body} /></span>
                     </li>
                   ))}
@@ -223,7 +205,7 @@ const radarBatchLabel = `${radarWeekday} 监测批次 · ${(dailyFeed as any).wi
                             {pick.priority === "must_read" ? "⭐ 必读" : "📌 关注"}
                           </span>
                           <div class="intel-pick-links">
-                            <a class="intel-pick-daily" href={pickTargetUrl} title="查看当日精读研判与科学证据">
+                            <a class="intel-pick-daily-link" href={pickTargetUrl} title="查看当日精读研判与科学证据">
                               📖 深度精读 ({dailyDate}) →
                             </a>
                             <a class="intel-pick-id" href={`https://arxiv.org/abs/${pick.arxiv_id}`} target="_blank" rel="noopener noreferrer">
@@ -244,12 +226,12 @@ const radarBatchLabel = `${radarWeekday} 监测批次 · ${(dailyFeed as any).wi
                         )}
                         <div class="intel-pick-bluf">
                           <p class="intel-bluf-row">
-                            <span class="bluf-tag result-tag">突破</span>
+                            <strong class="bluf-lead result-lead">突破：</strong>
                             <span class="bluf-text"><ReaderText text={pick.core_insight} /></span>
                           </p>
                           {pick.recommendation_reason ? (
                             <p class="intel-bluf-row">
-                              <span class="bluf-tag reason-tag">理由</span>
+                              <strong class="bluf-lead reason-lead">理由：</strong>
                               <span class="bluf-text"><ReaderText text={pick.recommendation_reason} /></span>
                             </p>
                           ) : null}
@@ -272,16 +254,16 @@ const radarBatchLabel = `${radarWeekday} 监测批次 · ${(dailyFeed as any).wi
           <!-- Daily Radar Card (Streamlined Portal) -->
           <article class="intel-card intel-card-daily intel-daily-portal">
             <div class="intel-card-top">
-              <div class="intel-badge-group">
-                <span class="intel-badge intel-badge-daily">今日雷达 · {latestDate}</span>
-                <span class="intel-batch">{radarBatchLabel}</span>
+              <div class="intel-meta-group">
+                <span class="intel-meta-kicker">今日雷达 · {bjtDailyInfo.beijingDate}</span>
+                <span class="intel-meta-batch">{bjtDailyInfo.chineseWeekday}监测批次 · 北京时间 08:00 发布</span>
               </div>
-              <a class="intel-view-all-link" href={`/arxiv-daily/${latestDate}/`}>进入今日雷达 →</a>
+              <a class="intel-view-all-link" href="/arxiv-daily/">进入今日雷达 →</a>
             </div>
 
             <h3 class="intel-card-title">
-              <a href={`/arxiv-daily/${latestDate}/`}>
-                <span class="intel-title-prefix">{latestDate}</span> 今日论文雷达
+              <a href="/arxiv-daily/">
+                <span class="intel-title-prefix">{bjtDailyInfo.beijingDate}</span> 今日论文雷达
               </a>
             </h3>
 
@@ -289,15 +271,18 @@ const radarBatchLabel = `${radarWeekday} 监测批次 · ${(dailyFeed as any).wi
             <div class="intel-daily-date-pills">
               <span class="pills-label">批次速选：</span>
               <div class="pills-scroll">
-                {(archiveManifest.weeks || []).flatMap((w: any) => w.days || []).slice(0, 5).map((d: any) => (
-                  <a
-                    class={`daily-date-chip ${d.date === latestDate ? "active" : ""}`}
-                    href={d.date === latestDate ? `/arxiv-daily/` : `/arxiv-daily/${d.date}/`}
-                    title={`进入 ${d.date} (${d.weekday}) 导读雷达`}
-                  >
-                    {d.date.slice(5)} {d.weekday}
-                  </a>
-                ))}
+                {(archiveManifest.weeks || []).flatMap((w: any) => w.days || []).slice(0, 5).map((d: any) => {
+                  const dInfo = formatAnnouncementInBeijing(d.date, d.weekday);
+                  return (
+                    <a
+                      class={`daily-date-chip ${d.date === latestDate ? "active" : ""}`}
+                      href={d.date === latestDate ? `/arxiv-daily/` : `/arxiv-daily/${d.date}/`}
+                      title={`进入 ${dInfo.beijingDate} (${dInfo.chineseWeekday}，北京时间) 导读雷达`}
+                    >
+                      {dInfo.shortDate} {dInfo.chineseWeekday}
+                    </a>
+                  );
+                })}
               </div>
             </div>
 
@@ -333,7 +318,7 @@ const radarBatchLabel = `${radarWeekday} 监测批次 · ${(dailyFeed as any).wi
                         </h4>
                         {result && result !== "unknown" && !result.startsWith("未能从已检查材料") && (
                           <p class="quick-paper-result">
-                            <span class="quick-res-tag">突破</span>
+                            <strong class="quick-res-lead">突破：</strong>
                             <span class="quick-res-text"><ReaderText text={result} /></span>
                           </p>
                         )}
@@ -349,7 +334,7 @@ const radarBatchLabel = `${radarWeekday} 监测批次 · ${(dailyFeed as any).wi
             </div>
 
             <div class="intel-card-footer intel-daily-footer">
-              <a class="btn-primary" href={`/arxiv-daily/${latestDate}/`}>
+              <a class="btn-primary" href="/arxiv-daily/">
                 <span>查看今日完整导读（含 {dailyStats.total_papers} 篇研判）</span>
                 <span aria-hidden="true">→</span>
               </a>
@@ -364,7 +349,7 @@ const radarBatchLabel = `${radarWeekday} 监测批次 · ${(dailyFeed as any).wi
         <!-- Full-width Archives Portal Banner -->
         <div class="intel-archives-portal-banner">
           <div class="portal-banner-left">
-            <span class="portal-tag">📚 历史存档</span>
+            <span class="portal-kicker">📚 往期归档</span>
             <h4 class="portal-title">往期日报与周报存档</h4>
             <p class="portal-desc">
               已收录 {(archiveManifest as any).total_weeks} 周周报与 {(archiveManifest as any).total_daily_editions} 期每日导读，均有独立页面可查阅。
@@ -384,9 +369,12 @@ const radarBatchLabel = `${radarWeekday} 监测批次 · ${(dailyFeed as any).wi
 
       <!-- Baseline Literature & Scientific Lines Overview Card (Single Bottom Card) -->
       <section class="panel baseline-overview" aria-labelledby="baseline-heading">
-        <p class="section-kicker">基准文献与学术脉络</p>
+        <p class="section-kicker">从这里开始 · 基准文献与学术脉络</p>
         <h2 id="baseline-heading">基准文献、科学关联与学习路径</h2>
         <p class="baseline-overview-lead"><a href="/papers/">{baselineWorks.length} 篇基准论文</a>（含 {baselineWorks.length} 篇基准文献）、<a href="/research-lines/">{baselineLines.length} 个关键研究方向</a>（共 {baselineLines.length} 个研究方向）、<a href="/learning-paths/">{baselinePaths.length} 条体系化研读路径</a>（共 {baselinePaths.length} 条学习路径）、{scientificEdges.length} 条科学关联。</p>
+        <p class="baseline-representative-links">
+          <span>代表文献：<a href="/papers/arnett-1982/">Arnett (1982)</a>、<a href="/papers/blandford-mckee-1976/">Blandford & McKee (1976)</a></span>
+        </p>
 
         {!startPath && <p class="empty-state">暂无经过审核的学习路径。</p>}
 
@@ -397,7 +385,7 @@ const radarBatchLabel = `${radarWeekday} 监测批次 · ${(dailyFeed as any).wi
               {baselineLines.map((line) => (
                 <li>
                   <a href={researchLineReaderPath(snapshot, line.line_id)}>{localizedLineTitle(line.line_id, line.title ?? line.line_id)}</a>
-                  <span class="tag">{line.reader_status === "candidate" ? "候选基准" : "已审核"}</span>
+                  {line.reader_status === "candidate" && <span class="tag candidate-tag">候选基准</span>}
                 </li>
               ))}
             </ul>
@@ -408,16 +396,42 @@ const radarBatchLabel = `${radarWeekday} 监测批次 · ${(dailyFeed as any).wi
               {baselinePaths.map((path) => (
                 <li>
                   <a href={learningPathReaderPath(snapshot, path.path_id)}>{localizedPathTitle(path.path_id, path.title ?? path.path_id)}</a>
-                  <span class="tag">{path.reader_status === "candidate" ? "候选基准" : "已审核"}</span>
+                  {path.reader_status === "candidate" && <span class="tag candidate-tag">候选基准</span>}
                 </li>
               ))}
             </ul>
           </section>
         </div>
       </section>
+
+      <!-- Global Site Footer & Feedback Bar -->
+      <footer class="site-global-footer">
+        <div class="footer-inner">
+          <div class="footer-left">
+            <span class="footer-brand">AstroLineage</span>
+            <span class="footer-desc">面向高能天体物理前沿的自动化文献情报与学术脉络跟踪平台</span>
+          </div>
+          <div class="footer-links">
+            <a href="https://github.com/dnwb/astro-lineage/issues" target="_blank" rel="noopener noreferrer" class="footer-feedback-link">
+              <span>💬 意见反馈与 Bug 提交 (GitHub Issues)</span>
+              <span aria-hidden="true">↗</span>
+            </a>
+            <span class="footer-sep">·</span>
+            <a href="https://pd.qq.com/s/d4lw4zl0g" target="_blank" rel="noopener noreferrer">腾讯频道交流</a>
+            <span class="footer-sep">·</span>
+            <a href="/agent/">Agent 接入</a>
+            <span class="footer-sep">·</span>
+            <a href="/events/">爆发日历</a>
+          </div>
+        </div>
+      </footer>
     </main>
 
     <style is:global>
+      .home-header {
+        margin-top: 3rem;
+        margin-bottom: 2.5rem;
+      }
       .intel-pick-header,
       .intel-radar-item-top {
         display: flex;
@@ -427,50 +441,80 @@ const radarBatchLabel = `${radarWeekday} 监测批次 · ${(dailyFeed as any).wi
         gap: 0.45rem;
         margin-bottom: 0.35rem;
       }
-      .intel-pick-links,
-      .intel-radar-links {
-        display: inline-flex;
+      .intel-meta-group {
+        display: flex;
         align-items: center;
-        gap: 0.35rem;
+        gap: 0.6rem;
+        flex-wrap: wrap;
       }
-      .intel-pick-pdf,
-      .intel-radar-pdf {
-        display: inline-flex;
-        align-items: center;
-        padding: 0.12rem 0.4rem;
-        font-size: 0.72rem;
-        font-weight: 600;
+      .intel-meta-kicker {
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+        color: #2563eb;
+      }
+      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .intel-meta-kicker {
+        color: #60a5fa;
+      }
+      .intel-meta-date,
+      .intel-meta-batch {
+        font-size: 0.78rem;
+        color: #64748b;
         font-family: ui-monospace, monospace;
-        color: #dc2626;
-        background: #fef2f2;
-        border: 1px solid #fecaca;
-        border-radius: 0.25rem;
-        text-decoration: none;
-        transition: all 0.15s;
       }
-      .intel-pick-pdf:hover,
-      .intel-radar-pdf:hover {
-        background: #fee2e2;
-        border-color: #f87171;
+      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .intel-meta-date,
+      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .intel-meta-batch {
+        color: #94a3b8;
       }
-      .intel-pick-daily,
-      .intel-radar-card-link {
+      .hl-topic-lead {
+        font-size: 0.88rem;
+        font-weight: 700;
+        color: #1e3a8a;
+        white-space: nowrap;
+      }
+      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .hl-topic-lead {
+        color: #93c5fd;
+      }
+      .intel-pick-links {
         display: inline-flex;
         align-items: center;
-        padding: 0.12rem 0.45rem;
-        font-size: 0.72rem;
-        font-weight: 600;
-        color: #166534;
-        background: #f0fdf4;
-        border: 1px solid #bbf7d0;
-        border-radius: 0.25rem;
-        text-decoration: none;
-        transition: all 0.15s;
+        gap: 0.75rem;
+        font-size: 0.82rem;
       }
-      .intel-pick-daily:hover,
-      .intel-radar-card-link:hover {
-        background: #dcfce7;
-        border-color: #86efac;
+      .intel-pick-daily-link {
+        color: #166534;
+        font-weight: 600;
+        text-decoration: none;
+      }
+      .intel-pick-daily-link:hover {
+        text-decoration: underline;
+      }
+      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .intel-pick-daily-link {
+        color: #86efac;
+      }
+      .intel-pick-id {
+        color: #2563eb;
+        text-decoration: none;
+        font-family: ui-monospace, monospace;
+        font-size: 0.8rem;
+      }
+      .intel-pick-id:hover {
+        text-decoration: underline;
+      }
+      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .intel-pick-id {
+        color: #60a5fa;
+      }
+      .intel-pick-pdf {
+        color: #dc2626;
+        text-decoration: none;
+        font-size: 0.8rem;
+        font-weight: 600;
+      }
+      .intel-pick-pdf:hover {
+        text-decoration: underline;
+      }
+      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .intel-pick-pdf {
+        color: #fca5a5;
       }
       .intel-bluf-stream,
       .intel-pick-bluf {
@@ -482,63 +526,52 @@ const radarBatchLabel = `${radarWeekday} 监测批次 · ${(dailyFeed as any).wi
       .intel-bluf-row {
         display: flex;
         align-items: baseline;
-        gap: 0.45rem;
+        gap: 0.35rem;
         margin: 0;
         font-size: 0.88rem;
-        line-height: 1.5;
+        line-height: 1.55;
       }
-      .bluf-tag {
-        display: inline-flex;
-        align-items: center;
-        padding: 0.08rem 0.38rem;
-        font-size: 0.7rem;
+      .bluf-lead {
         font-weight: 700;
-        border-radius: 0.25rem;
+        font-size: 0.85rem;
+        white-space: nowrap;
         flex-shrink: 0;
-        letter-spacing: 0.02em;
-        user-select: none;
       }
-      .problem-tag {
-        background: #f0fdf4;
-        color: #166534;
-        border: 1px solid #bbf7d0;
-      }
-      .result-tag {
-        background: #eff6ff;
+      .result-lead,
+      .quick-res-lead {
         color: #1d4ed8;
-        border: 1px solid #bfdbfe;
       }
-      .reason-tag {
-        background: #fefce8;
-        color: #a16207;
-        border: 1px solid #fde047;
-      }
-      :global([data-theme="dark"]) .intel-pick-pdf,
-      :global([data-theme="dark"]) .intel-radar-pdf {
-        color: #f87171;
-        background: #450a0a;
-        border-color: #991b1b;
-      }
-      :global([data-theme="dark"]) .intel-pick-daily,
-      :global([data-theme="dark"]) .intel-radar-card-link {
-        color: #86efac;
-        background: #064e3b;
-        border-color: #047857;
-      }
-      :global([data-theme="dark"]) .problem-tag {
-        background: #064e3b;
-        color: #6ee7b7;
-        border-color: #047857;
-      }
-      :global([data-theme="dark"]) .result-tag {
-        background: #1e3a5f;
+      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .result-lead,
+      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .quick-res-lead {
         color: #93c5fd;
-        border-color: #2563eb;
       }
-      :global([data-theme="dark"]) .reason-tag {
-        background: #451a03;
-        color: #fde047;
-        border-color: #ca8a04;
+      .reason-lead {
+        color: #b45309;
+      }
+      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .reason-lead {
+        color: #fde68a;
+      }
+      .candidate-tag {
+        font-size: 0.72rem;
+        font-weight: 600;
+        padding: 0.08rem 0.4rem;
+        background: rgba(245, 158, 11, 0.15);
+        color: #d97706;
+        border: 1px solid rgba(245, 158, 11, 0.3);
+        border-radius: 4px;
+      }
+      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .candidate-tag {
+        color: #fde68a;
+      }
+      .portal-kicker {
+        font-size: 0.82rem;
+        font-weight: 700;
+        color: #2563eb;
+        margin-bottom: 0.35rem;
+        display: inline-block;
+      }
+      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .portal-kicker {
+        color: #60a5fa;
       }
       .intel-daily-date-pills {
         display: flex;

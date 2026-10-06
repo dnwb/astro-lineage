@@ -1,0 +1,1865 @@
+---
+import SiteNav from "../../components/SiteNav.astro";
+import ReaderText from "../../components/ReaderText.astro";
+import eventsData from "../../data/scientific-events.json";
+import { formatAnnouncementInBeijing, parseTransientEpoch } from "../../domain/academic-domain.mjs";
+import { loadSiteConfig } from "../../lib/site-config";
+import "../../styles/global.css";
+
+const site = loadSiteConfig();
+const allEvents = eventsData.events || [];
+
+// Calculate type counts
+const counts: Record<string, number> = {
+  ALL: allEvents.length,
+  GRB: 0,
+  SN: 0,
+  AT: 0,
+  FRB: 0,
+  GW: 0,
+  SGR: 0,
+};
+for (const e of allEvents) {
+  if (counts[e.event_type] !== undefined) counts[e.event_type]++;
+  else counts[e.event_type] = 1;
+}
+
+interface EventWithBjt {
+  event_id: string;
+  event_type: string;
+  tags: string[];
+  heat_score: number;
+  paper_count: number;
+  headline: string;
+  narrative: string;
+  first_seen: string;
+  last_updated: string;
+  papers: any[];
+  usDate: string;
+  bjtDate: string;
+  bjtShort: string;
+  bjtWeekday: string;
+}
+
+// Map each event to Beijing Time announcement date
+const eventsWithBjt: EventWithBjt[] = allEvents.map((e) => {
+  const bjt = formatAnnouncementInBeijing(e.last_updated, "");
+  return {
+    ...e,
+    usDate: e.last_updated,
+    bjtDate: bjt.beijingDate,
+    bjtShort: bjt.shortDate,
+    bjtWeekday: bjt.chineseWeekday,
+  };
+});
+
+// Group events by Beijing Date
+const dateMap: Record<string, EventWithBjt[]> = {};
+for (const e of eventsWithBjt) {
+  if (!dateMap[e.bjtDate]) dateMap[e.bjtDate] = [];
+  dateMap[e.bjtDate].push(e);
+}
+// Sorted dates descending (most recent first)
+const sortedFollowUpDates = Object.keys(dateMap).sort((a, b) => b.localeCompare(a));
+
+// Discover all active months dynamically from BJT dates (YYYY-MM)
+const monthMap = new Map<string, Record<string, EventWithBjt[]>>();
+for (const bjtDate of sortedFollowUpDates) {
+  const ym = bjtDate.slice(0, 7);
+  if (!monthMap.has(ym)) monthMap.set(ym, {});
+  monthMap.get(ym)![bjtDate] = dateMap[bjtDate];
+}
+const sortedYearMonths = Array.from(monthMap.keys()).sort((a, b) => b.localeCompare(a));
+
+interface CalendarCell {
+  empty: boolean;
+  day?: number;
+  dateStr?: string;
+  usDateStr?: string;
+  weekday?: string;
+  events?: EventWithBjt[];
+  hasEvents?: boolean;
+}
+
+interface MonthCalendar {
+  yearMonth: string;
+  year: number;
+  month: number;
+  title: string;
+  badge: string;
+  totalEvents: number;
+  activeBatchesCount: number;
+  isLatest: boolean;
+  activeDates: string[];
+  defaultActiveDate: string;
+  cells: CalendarCell[];
+}
+
+function buildMonthCalendar(year: number, month: number, eventsByBjtDate: Record<string, EventWithBjt[]>): CalendarCell[] {
+  const firstDay = new Date(Date.UTC(year, month - 1, 1));
+  let startDayOfWeek = firstDay.getUTCDay();
+  if (startDayOfWeek === 0) startDayOfWeek = 7; // Mon=1, Sun=7
+  const daysInMonth = new Date(Date.UTC(year, month, 0)).getUTCDate();
+  const cells: CalendarCell[] = [];
+
+  for (let p = 1; p < startDayOfWeek; p++) {
+    cells.push({ empty: true });
+  }
+
+  const weekdays = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];
+  for (let d = 1; d <= daysInMonth; d++) {
+    const dStr = `${year}-${String(month).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
+    const evts = eventsByBjtDate[dStr] || [];
+    const dt = new Date(Date.UTC(year, month - 1, d));
+    const dayOfWeek = dt.getUTCDay();
+    const usDateStr = evts[0]?.usDate || "";
+
+    cells.push({
+      empty: false,
+      day: d,
+      dateStr: dStr,
+      usDateStr,
+      weekday: weekdays[dayOfWeek],
+      events: evts,
+      hasEvents: evts.length > 0,
+    });
+  }
+  return cells;
+}
+
+const allMonthCalendars: MonthCalendar[] = sortedYearMonths.map((ym, index) => {
+  const [y, m] = ym.split("-").map(Number);
+  const evtsOnMonth = monthMap.get(ym)!;
+  const activeDates = Object.keys(evtsOnMonth).sort((a, b) => b.localeCompare(a));
+  const activeBatchesCount = activeDates.length;
+  const totalEvents = Object.values(evtsOnMonth).reduce((sum, list) => sum + list.length, 0);
+  const isLatest = index === 0;
+  const defaultActiveDate = activeDates[0] || "";
+
+  return {
+    yearMonth: ym,
+    year: y,
+    month: m,
+    title: `${y} 年 ${m} 月`,
+    badge: isLatest ? "当前监测月 · 活跃" : `往期 ${activeBatchesCount} 批次`,
+    totalEvents,
+    activeBatchesCount,
+    isLatest,
+    activeDates,
+    defaultActiveDate,
+    cells: buildMonthCalendar(y, m, evtsOnMonth),
+  };
+});
+
+// Outburst epoch categorization
+function getEventOutburstYear(eventId: string): number | null {
+  const epoch = parseTransientEpoch(eventId);
+  if (!epoch) return null;
+  const m = epoch.match(/^(\d{4})/);
+  return m ? parseInt(m[1], 10) : null;
+}
+
+const epochGroups = [
+  { id: "epoch-2026", title: "2026 年最新爆发", badge: "当年爆发", desc: "最新发现的高能瞬变现象与快照预警", filter: (yr: number | null) => yr === 2026 },
+  { id: "epoch-2025", title: "2025 年爆发密集反演", badge: "近 1 年", desc: "爆发后近1年内密集跟进，多波段联合反演与喷流减速物理", filter: (yr: number | null) => yr === 2025 },
+  { id: "epoch-2024", title: "2024 年爆发", badge: "近 2 年", desc: "极早期闪光光谱、外流激波与前身星包层作用", filter: (yr: number | null) => yr === 2024 },
+  { id: "epoch-2023", title: "2023 年爆发", badge: "近 3 年", desc: "非热辐射持续观测、晚期余辉与深层介质约束", filter: (yr: number | null) => yr === 2023 },
+  { id: "epoch-2022", title: "2022 年世纪伽马暴", badge: "历史最亮", desc: "史上最亮暴 GRB 221009A 等极端物理对象的长期跨波段监测", filter: (yr: number | null) => yr === 2022 },
+  { id: "epoch-multi", title: "2017–2021 年多信使与引力波突破", badge: "多信使里程碑", desc: "双中子星并合千新星晚期光谱、潮汐瓦解喷流晚期复苏", filter: (yr: number | null) => yr !== null && yr >= 2017 && yr <= 2021 },
+  { id: "epoch-historic", title: "经典历史瞬变与深场监测 (< 2017)", badge: "长周期监测", desc: "SN 1987A 爆发近40年深场演化、历史伽马暴全样本统计", filter: (yr: number | null) => yr !== null && yr < 2017 },
+  { id: "epoch-other", title: "坐标与周期性源", badge: "长期源", desc: "按天球坐标编号的软伽马中继器、磁星与重复快速射电暴", filter: (yr: number | null) => yr === null },
+];
+
+function typeBadgeColor(type: string): string {
+  switch (type.toUpperCase()) {
+    case "GW":
+      return "badge-gw";
+    case "GRB":
+      return "badge-grb";
+    case "SN":
+      return "badge-sn";
+    case "FRB":
+      return "badge-frb";
+    case "AT":
+      return "badge-at";
+    default:
+      return "badge-other";
+  }
+}
+
+function priorityPill(priority: string) {
+  if (priority === "must_read") return { label: "⭐ 必读", cls: "pill-must-read" };
+  if (priority === "worth_knowing") return { label: "📌 关注", cls: "pill-worth-knowing" };
+  return { label: "⚡ 略读", cls: "pill-skim" };
+}
+
+const dynamicMonthCss = allMonthCalendars.map((m) => `
+  body:has(#month-${m.yearMonth}:checked) .month-split-container[data-month="${m.yearMonth}"] {
+    display: grid !important;
+  }
+  body:has(#month-${m.yearMonth}:checked) label[for="month-${m.yearMonth}"] {
+    background: #2563eb !important;
+    color: #ffffff !important;
+    border-color: #2563eb !important;
+    box-shadow: 0 1px 3px rgba(37, 99, 235, 0.25) !important;
+  }
+  body:has(#month-${m.yearMonth}:checked) label[for="month-${m.yearMonth}"] .pill-badge {
+    background: rgba(255, 255, 255, 0.25) !important;
+    color: #ffffff !important;
+  }
+`).join("\n");
+
+const dynamicDateCss = allMonthCalendars.flatMap((m) =>
+  m.activeDates.map((dStr) => `
+    body:has(#date-${dStr}:checked) .daily-detail-panel[data-date="${dStr}"] {
+      display: flex !important;
+    }
+    body:has(#date-${dStr}:checked) label[for="date-${dStr}"] {
+      background: #2563eb !important;
+      color: #ffffff !important;
+      border-color: #1d4ed8 !important;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.35) !important;
+    }
+    body:has(#date-${dStr}:checked) label[for="date-${dStr}"] .day-num-active,
+    body:has(#date-${dStr}:checked) label[for="date-${dStr}"] .cal-active-badge {
+      color: #ffffff !important;
+    }
+    body:has(#date-${dStr}:checked) label[for="date-${dStr}"] .cal-mini-dot {
+      outline: 1.5px solid rgba(255, 255, 255, 0.95);
+    }
+  `)
+).join("\n");
+
+const dynamicCalendarCss = dynamicMonthCss + "\n" + dynamicDateCss;
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content="AstroLineage 瞬变源爆发日历与演化时间轴：提供科学月历网格与真实时间线轨道，按天体物理爆发时刻与 arXiv 跟踪批次双视点追踪 68 个高能事件。" />
+    <title>瞬变源爆发日历与脉络时间轴 · {site.title}</title>
+  </head>
+  <body>
+    <main class="site-shell reader-page events-calendar-page">
+      <SiteNav />
+      <p class="eyebrow"><a href="/">{site.title}</a> · Transient Calendar & Timeline</p>
+
+      <!-- Header -->
+      <header class="reader-header">
+        <h1>
+          <span class="language-primary">爆发事件</span>
+          <span class="language-english" lang="en">Events & Timeline</span>
+        </h1>
+      </header>
+
+      <!-- Master Interactive View Switcher (Zero Client Script) -->
+      <section class="master-calendar-control">
+        <input type="radio" name="events-view-mode" id="view-calendar-timeline" checked class="view-radio" />
+        <input type="radio" name="events-view-mode" id="view-epoch-timeline" class="view-radio" />
+
+        <!-- Category Radio Inputs -->
+        <input type="radio" name="event-cat" id="cat-all" checked class="cat-radio" />
+        <input type="radio" name="event-cat" id="cat-gw" class="cat-radio" />
+        <input type="radio" name="event-cat" id="cat-grb" class="cat-radio" />
+        <input type="radio" name="event-cat" id="cat-sn" class="cat-radio" />
+        <input type="radio" name="event-cat" id="cat-at" class="cat-radio" />
+        <input type="radio" name="event-cat" id="cat-frb" class="cat-radio" />
+        <input type="radio" name="event-cat" id="cat-sgr" class="cat-radio" />
+
+        <!-- Month Filter Radio Inputs: Single Month Mode (Latest checked by default) -->
+        {allMonthCalendars.map((m) => (
+          <input
+            type="radio"
+            name="cal-month-filter"
+            id={`month-${m.yearMonth}`}
+            checked={m.isLatest}
+            class="month-radio"
+          />
+        ))}
+
+        <!-- Active Date Selection Radio Inputs (Per-month groups, zero client script) -->
+        {allMonthCalendars.map((m) =>
+          m.activeDates.map((dStr) => (
+            <input
+              type="radio"
+              name={`select-date-${m.yearMonth}`}
+              id={`date-${dStr}`}
+              checked={dStr === m.defaultActiveDate}
+              class="date-select-radio"
+            />
+          ))
+        )}
+
+        <!-- Dynamic Single Month & Active Date Rules (Pure CSS Zero Script) -->
+        <style is:inline set:html={dynamicCalendarCss} />
+
+        <!-- Dual Dimension Controls Bar -->
+        <div class="controls-card">
+          <div class="control-row">
+            <span class="control-label">视点模式：</span>
+            <div class="view-pills-group">
+              <label for="view-calendar-timeline" class="view-pill view-pill-calendar">
+                📅 研读日历
+              </label>
+              <label for="view-epoch-timeline" class="view-pill view-pill-epoch">
+                🪐 爆发年代
+              </label>
+            </div>
+          </div>
+
+          <div class="control-row">
+            <span class="control-label">事件类型：</span>
+            <div class="cat-pills-bar" aria-label="事件分类筛选">
+              <label for="cat-all" class="cat-pill">全部 ({counts.ALL})</label>
+              <label for="cat-grb" class="cat-pill">💥 伽马暴 GRB ({counts.GRB})</label>
+              <label for="cat-sn" class="cat-pill">🌟 超新星 SN ({counts.SN})</label>
+              <label for="cat-at" class="cat-pill">🕳️ 潮汐瓦解 AT ({counts.AT})</label>
+              <label for="cat-frb" class="cat-pill">⚡ 快速射电暴 FRB ({counts.FRB})</label>
+              <label for="cat-gw" class="cat-pill">🌌 引力波 GW ({counts.GW})</label>
+              <label for="cat-sgr" class="cat-pill">🧲 磁星与致密星 ({counts.SGR})</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dimension 1: Monthly Calendar Grid (Visible in calendar mode) -->
+        <section class="calendar-matrix-section" aria-labelledby="calendar-grid-heading">
+          <div class="calendar-matrix-header">
+            <div class="matrix-title-row">
+              <h2 id="calendar-grid-heading" class="calendar-matrix-title">
+                📅 研读日历
+              </h2>
+              <span class="matrix-total-badge font-mono">收录 {sortedFollowUpDates.length} 个研读批次 · {allMonthCalendars.length} 个月份</span>
+            </div>
+
+            <!-- Month Quick Filter Ribbon (Dynamic Single Month Switcher) -->
+            <div class="month-selector-bar">
+              <span class="month-selector-label">🗓️ 月份切换：</span>
+              <div class="month-selector-pills">
+                {allMonthCalendars.map((m) => (
+                  <label for={`month-${m.yearMonth}`} class="month-tab-pill">
+                    <span>{m.title}</span>
+                    <span class="pill-badge">{m.isLatest ? "最新 · " : ""}{m.activeBatchesCount} 批次</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <!-- Single Month Split View: Calendar on Left, Selected Day Events on Right -->
+          <div class="monthly-split-wrapper">
+            {allMonthCalendars.map((m) => (
+              <div class="month-split-container" data-month={m.yearMonth}>
+                <!-- Left Pane: Calendar Matrix for this month -->
+                <aside class="calendar-side-pane">
+                  <div class="month-card-header">
+                    <div class="month-title-group">
+                      <span class="month-title">{m.title}</span>
+                      <span class={`month-badge ${m.isLatest ? "month-badge-current" : "month-badge-prev"}`}>
+                        {m.badge}
+                      </span>
+                    </div>
+                    <div class="month-stats-text font-mono">
+                      <span>{m.activeBatchesCount} 个活跃批次</span> · <span>{m.totalEvents} 个事件</span>
+                    </div>
+                  </div>
+                  <div class="calendar-weekdays-row">
+                    <span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span>
+                  </div>
+                  <div class="calendar-days-grid">
+                    {m.cells.map((cell) => {
+                      if (cell.empty) return <div class="cal-cell cal-cell-empty" />;
+                      if (!cell.hasEvents) {
+                        return (
+                          <div class="cal-cell cal-cell-idle" title={`北京时间 ${cell.dateStr}（${cell.weekday}）无爆发事件研读`}>
+                            <span class="day-num">{cell.day}</span>
+                          </div>
+                        );
+                      }
+                      return (
+                        <label
+                          for={`date-${cell.dateStr}`}
+                          class="cal-cell cal-cell-active"
+                          title={cell.events?.map((e: any) => `${e.event_id} (${e.event_type})`).join("\n")}
+                        >
+                          <span class="day-num-active">{cell.day}</span>
+                          <span class="cal-active-badge">{cell.events?.length || 0}件</span>
+                          <div class="cal-dots-row">
+                            {(cell.events || []).slice(0, 3).map((e: any) => (
+                              <span class={`cal-mini-dot ${typeBadgeColor(e.event_type)}`} />
+                            ))}
+                          </div>
+                          <div class="cal-cell-popover" role="tooltip">
+                            <div class="popover-title font-mono">{cell.dateStr}（{cell.events?.length} 个事件）</div>
+                            <ul class="popover-event-list">
+                              {cell.events?.map((e: any) => (
+                                <li class="popover-event-item">
+                                  <span class={`popover-type-badge ${typeBadgeColor(e.event_type)}`}>{e.event_type}</span>
+                                  <span class="popover-event-name font-mono">{e.event_id}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </label>
+                      );
+                    })}
+                  </div>
+                </aside>
+
+                <!-- Right Pane: Daily Detail Events Stream Pane -->
+                <div class="detail-side-pane">
+                  {m.activeDates.map((dStr) => {
+                    const eventsOnDate = dateMap[dStr] || [];
+                    const firstEvt = eventsOnDate[0];
+                    const bjtWeekday = firstEvt?.bjtWeekday || "";
+                    const usDate = firstEvt?.usDate || "";
+
+                    return (
+                      <section class="daily-detail-panel" data-date={dStr} aria-label={`${dStr} 爆发研读事件`}>
+                        <div class="detail-header-card">
+                          <div class="detail-header-main">
+                            <div class="detail-date-title">
+                              <span class="detail-date-badge font-mono">📅 {dStr}（{bjtWeekday} · 北京时间）</span>
+                              <span class="detail-count-pill font-mono">当日研读 {eventsOnDate.length} 个高能事件</span>
+                            </div>
+                            <span class="detail-us-batch font-mono">对应 arXiv 美东批次：{usDate}</span>
+                          </div>
+                          <div class="detail-header-actions">
+                            <a href={`/arxiv-daily/${usDate}/`} class="detail-daily-link">
+                              查看当日论文雷达 →
+                            </a>
+                            <a href={`#station-${dStr}`} class="detail-spine-link" title="在下方完整时间轴轨道中定位">
+                              完整轨道 ↓
+                            </a>
+                          </div>
+                        </div>
+
+                        <div class="detail-cards-stream">
+                          {eventsOnDate.map((event) => {
+                            const epoch = parseTransientEpoch(event.event_id);
+                            return (
+                              <article class="timeline-event-card" data-type={event.event_type} id={`detail-event-${event.event_id.toLowerCase().replace(/[\s+]+/g, "-")}`}>
+                                <div class="card-top-bar">
+                                  <div class="card-id-cluster">
+                                    <span class={`event-type-badge ${typeBadgeColor(event.event_type)}`}>{event.event_type}</span>
+                                    <h3 class="card-event-name">{event.event_id}</h3>
+                                    {epoch && (
+                                      <span class="card-epoch-pill" title="天体物理爆发/探测时刻">
+                                        ⚡ 物理爆发：{epoch}
+                                      </span>
+                                    )}
+                                  </div>
+                                  <div class="card-metrics-cluster">
+                                    <span class="metric-heat-chip" title="基于7天半衰期模型计算的热度指数">
+                                      🔥 热度 <strong>{event.heat_score}</strong>
+                                    </span>
+                                    <span class="metric-papers-chip">
+                                      📚 <strong>{event.paper_count}</strong> 篇研读
+                                    </span>
+                                  </div>
+                                </div>
+
+                                <div class="card-narrative-block">
+                                  <h4 class="card-headline">{event.headline}</h4>
+                                  <p class="card-narrative-text">
+                                    <ReaderText text={event.narrative} />
+                                  </p>
+                                </div>
+
+                                <div class="card-papers-stream">
+                                  <div class="stream-label">📄 当期研读论文与物理结论：</div>
+                                  <ul class="station-paper-list">
+                                    {event.papers.map((paper) => {
+                                      const priority = priorityPill(paper.priority);
+                                      const dailyAnchor = `/arxiv-daily/${paper.date}/#card-${paper.arxiv_id}-v${paper.revision || 1}`;
+                                      return (
+                                        <li class="station-paper-item">
+                                          <div class="paper-item-top">
+                                            <span class={`priority-badge ${priority.cls}`}>{priority.label}</span>
+                                            <a href={dailyAnchor} class="paper-title-anchor">
+                                              <span class="paper-arxiv-id font-mono">[{paper.arxiv_id}]</span> {paper.title}
+                                            </a>
+                                          </div>
+                                          {paper.bluf_result && (
+                                            <p class="paper-bluf-row">
+                                              <strong class="bluf-key">突破：</strong>
+                                              <span class="bluf-val">{paper.bluf_result}</span>
+                                            </p>
+                                          )}
+                                          <div class="paper-links-bar">
+                                            <a href={dailyAnchor} class="link-radar-deep">进入每日雷达深度解析 →</a>
+                                            <a href={`https://arxiv.org/abs/${paper.arxiv_id}`} target="_blank" rel="noopener noreferrer" class="link-arxiv-origin">arXiv 原文 ↗</a>
+                                          </div>
+                                        </li>
+                                      );
+                                    })}
+                                  </ul>
+                                </div>
+                              </article>
+                            );
+                          })}
+                        </div>
+                      </section>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <!-- VIEW 1: Follow-up Timeline Spine (Real Chronological Axis) -->
+        <section class="timeline-followup-container" aria-label="批次跟踪时间轴">
+          <div class="timeline-axis-header">
+            <span class="axis-kicker">CHRONOLOGICAL SPINE</span>
+            <h2>按 arXiv 批次日期排列的研读时间轴</h2>
+            <p>发光轨道清晰展示从最新批次到历史批次的演进时间站（Timeline Stations），与上方月历网格精准联动。</p>
+          </div>
+
+          <div class="timeline-track">
+            {sortedFollowUpDates.map((dateStr) => {
+              const eventsOnDate = dateMap[dateStr] || [];
+              const firstEvent = eventsOnDate[0];
+              const bjtWeekday = firstEvent?.bjtWeekday || "";
+              const usDate = firstEvent?.usDate || "";
+
+              return (
+                <section class="timeline-station" id={`station-${dateStr}`}>
+                  <!-- Station Indicator & Anchor -->
+                  <div class="station-marker-row">
+                    <div class="station-pulse-node" />
+                    <div class="station-badge">
+                      <span class="station-bjt-date font-mono">📅 {dateStr}（{bjtWeekday} · 北京时间）</span>
+                      <span class="station-us-date font-mono">arXiv 美东批次：{usDate}</span>
+                      <span class="station-count-pill">共研读 {eventsOnDate.length} 个高能事件</span>
+                    </div>
+                  </div>
+
+                  <!-- Station Event Cards -->
+                  <div class="station-cards-stream">
+                    {eventsOnDate.map((event) => {
+                      const epoch = parseTransientEpoch(event.event_id);
+                      return (
+                        <article class="timeline-event-card" data-type={event.event_type} id={`event-${event.event_id.toLowerCase().replace(/[\s+]+/g, "-")}`}>
+                          <div class="card-top-bar">
+                            <div class="card-id-cluster">
+                              <span class={`event-type-badge ${typeBadgeColor(event.event_type)}`}>{event.event_type}</span>
+                              <h3 class="card-event-name">{event.event_id}</h3>
+                              {epoch && (
+                                <span class="card-epoch-pill" title="天体物理爆发/探测时刻">
+                                  ⚡ 物理爆发：{epoch}
+                                </span>
+                              )}
+                            </div>
+                            <div class="card-metrics-cluster">
+                              <span class="metric-heat-chip" title="基于7天半衰期模型计算的热度指数">
+                                🔥 热度 <strong>{event.heat_score}</strong>
+                              </span>
+                              <span class="metric-papers-chip">
+                                📚 <strong>{event.paper_count}</strong> 篇研读
+                              </span>
+                            </div>
+                          </div>
+
+                          <div class="card-narrative-block">
+                            <h4 class="card-headline">{event.headline}</h4>
+                            <p class="card-narrative-text">
+                              <ReaderText text={event.narrative} />
+                            </p>
+                          </div>
+
+                          <div class="card-papers-stream">
+                            <div class="stream-label">📄 当期研读论文与物理结论：</div>
+                            <ul class="station-paper-list">
+                              {event.papers.map((paper) => {
+                                const priority = priorityPill(paper.priority);
+                                const dailyAnchor = `/arxiv-daily/${paper.date}/#card-${paper.arxiv_id}-v${paper.revision || 1}`;
+                                return (
+                                  <li class="station-paper-item">
+                                    <div class="paper-item-top">
+                                      <span class={`priority-badge ${priority.cls}`}>{priority.label}</span>
+                                      <a href={dailyAnchor} class="paper-title-anchor">
+                                        <span class="paper-arxiv-id font-mono">[{paper.arxiv_id}]</span> {paper.title}
+                                      </a>
+                                    </div>
+                                    {paper.bluf_result && (
+                                      <p class="paper-bluf-row">
+                                        <strong class="bluf-key">突破：</strong>
+                                        <span class="bluf-val">{paper.bluf_result}</span>
+                                      </p>
+                                    )}
+                                    <div class="paper-links-bar">
+                                      <a href={dailyAnchor} class="link-radar-deep">进入每日雷达深度解析 →</a>
+                                      <a href={`https://arxiv.org/abs/${paper.arxiv_id}`} target="_blank" rel="noopener noreferrer" class="link-arxiv-origin">arXiv 原文 ↗</a>
+                                    </div>
+                                  </li>
+                                );
+                              })}
+                            </ul>
+                          </div>
+                        </article>
+                      );
+                    })}
+                  </div>
+                </section>
+              );
+            })}
+          </div>
+        </section>
+
+        <!-- VIEW 2: Cosmic Outburst Epoch Timeline (Universe Epoch: 2026 ➔ 1987) -->
+        <section class="timeline-epoch-container" aria-label="宇宙物理爆发年代史">
+          <div class="timeline-axis-header">
+            <span class="axis-kicker">COSMIC OUTBURST EPOCH</span>
+            <h2>沿宇宙时间回溯的高能瞬变物理年代史</h2>
+            <p>按爆发/发现年代自 2026 回溯至 1987，呈现不同生命周期瞬变源（从早期激波到数十年晚期演化）的学术图景。</p>
+          </div>
+
+          <div class="timeline-track">
+            {epochGroups.map((group) => {
+              const matchedEvents = allEvents.filter((e) => group.filter(getEventOutburstYear(e.event_id)));
+              if (matchedEvents.length === 0) return null;
+
+              return (
+                <section class="timeline-station epoch-station" id={group.id}>
+                  <div class="station-marker-row">
+                    <div class="station-pulse-node node-epoch" />
+                    <div class="station-badge badge-epoch">
+                      <span class="station-epoch-title">{group.title}</span>
+                      <span class="epoch-badge-pill">{group.badge}</span>
+                      <span class="station-count-pill">共 {matchedEvents.length} 个天体事件</span>
+                    </div>
+                  </div>
+                  <p class="epoch-desc-lead">{group.desc}</p>
+
+                  <div class="station-cards-stream">
+                    {matchedEvents.map((event) => {
+                      const epoch = parseTransientEpoch(event.event_id);
+                      return (
+                        <article class="timeline-event-card" data-type={event.event_type} id={`epoch-event-${event.event_id.toLowerCase().replace(/[\s+]+/g, "-")}`}>
+                          <div class="card-top-bar">
+                            <div class="card-id-cluster">
+                              <span class={`event-type-badge ${typeBadgeColor(event.event_type)}`}>{event.event_type}</span>
+                              <h3 class="card-event-name">{event.event_id}</h3>
+                              {epoch && (
+                                <span class="card-epoch-pill" title="天体物理爆发/探测时刻">
+                                  ⚡ 物理爆发：{epoch}
+                                </span>
+                              )}
+                            </div>
+                            <div class="card-metrics-cluster">
+                              <span class="metric-heat-chip">🔥 热度 <strong>{event.heat_score}</strong></span>
+                              <span class="metric-papers-chip">📚 <strong>{event.paper_count}</strong> 篇研读</span>
+                            </div>
+                          </div>
+
+                          <div class="card-narrative-block">
+                            <h4 class="card-headline">{event.headline}</h4>
+                            <p class="card-narrative-text">
+                              <ReaderText text={event.narrative} />
+                            </p>
+                          </div>
+
+                          <div class="card-papers-stream">
+                            <div class="stream-label">📄 近期研读跟踪：</div>
+                            <ul class="station-paper-list">
+                              {event.papers.map((paper) => {
+                                const priority = priorityPill(paper.priority);
+                                const dailyAnchor = `/arxiv-daily/${paper.date}/#card-${paper.arxiv_id}-v${paper.revision || 1}`;
+                                return (
+                                  <li class="station-paper-item">
+                                    <div class="paper-item-top">
+                                      <span class={`priority-badge ${priority.cls}`}>{priority.label}</span>
+                                      <span class="paper-date-pill font-mono">{paper.date}</span>
+                                      <a href={dailyAnchor} class="paper-title-anchor">
+                                        <span class="paper-arxiv-id font-mono">[{paper.arxiv_id}]</span> {paper.title}
+                                      </a>
+                                    </div>
+                                    <div class="paper-links-bar">
+                                      <a href={dailyAnchor} class="link-radar-deep">进入雷达深度卡片 →</a>
+                                      <a href={`https://arxiv.org/abs/${paper.arxiv_id}`} target="_blank" rel="noopener noreferrer" class="link-arxiv-origin">arXiv 原文 ↗</a>
+                                    </div>
+                                  </li>
+                                );
+                              })}
+                            </ul>
+                          </div>
+                        </article>
+                      );
+                    })}
+                  </div>
+                </section>
+              );
+            })}
+          </div>
+        </section>
+      </section>
+
+      <!-- Global Site Footer & Feedback Bar -->
+      <footer class="site-global-footer">
+        <div class="footer-inner">
+          <div class="footer-left">
+            <span class="footer-brand">AstroLineage</span>
+            <span class="footer-desc">面向高能天体物理前沿的自动化文献情报与学术脉络跟踪平台</span>
+          </div>
+          <div class="footer-links">
+            <a href="https://github.com/dnwb/astro-lineage/issues" target="_blank" rel="noopener noreferrer" class="footer-feedback-link">
+              <span>💬 意见反馈与 Bug 提交 (GitHub Issues)</span>
+              <span aria-hidden="true">↗</span>
+            </a>
+            <span class="footer-sep">·</span>
+            <a href="https://pd.qq.com/s/d4lw4zl0g" target="_blank" rel="noopener noreferrer">腾讯频道交流</a>
+            <span class="footer-sep">·</span>
+            <a href="/agent/">Agent 接入</a>
+            <span class="footer-sep">·</span>
+            <a href="/">返回首页</a>
+          </div>
+        </div>
+      </footer>
+    </main>
+  </body>
+</html>
+
+<style>
+  .events-calendar-page {
+    max-width: 68rem;
+    margin: 0 auto;
+    padding-bottom: 5rem;
+  }
+  .calendar-hero-badge {
+    display: inline-block;
+    padding: 0.25rem 0.65rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: #0369a1;
+    background: #e0f2fe;
+    border: 1px solid #bae6fd;
+    border-radius: 9999px;
+    margin-bottom: 0.75rem;
+  }
+  .reader-header h1 {
+    font-size: clamp(1.4rem, 2.4vw, 1.95rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+    margin: 0.2rem 0 0.4rem 0;
+  }
+  .reader-deck {
+    font-size: 0.95rem;
+    color: #64748b;
+    margin: 0.2rem 0 0.5rem 0;
+    line-height: 1.55;
+    max-width: 56rem;
+  }
+
+  /* Master Switcher Radios */
+  .view-radio,
+  .cat-radio,
+  .month-radio,
+  .date-select-radio {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* Control Card */
+  .controls-card {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.85rem;
+    padding: 1.25rem;
+    margin: 1.5rem 0 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
+  }
+  .control-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .control-label {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #475569;
+    min-width: 5rem;
+  }
+  .view-pills-group {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .view-pill {
+    padding: 0.45rem 1rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #475569;
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 0.45rem;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    user-select: none;
+  }
+  .view-pill:hover {
+    background: #eff6ff;
+    color: #1d4ed8;
+    border-color: #93c5fd;
+  }
+
+  /* Category pills */
+  .cat-pills-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+  .cat-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.35rem 0.75rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #475569;
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 0.4rem;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    user-select: none;
+  }
+  .cat-pill:hover {
+    background: #eff6ff;
+    color: #1d4ed8;
+    border-color: #93c5fd;
+  }
+
+  /* View Radio Selection Logic */
+  #view-calendar-timeline:checked ~ .controls-card .view-pill-calendar,
+  #view-epoch-timeline:checked ~ .controls-card .view-pill-epoch {
+    background: #1e3a8a;
+    color: #ffffff;
+    border-color: #1e3a8a;
+    box-shadow: 0 1px 3px rgba(30, 58, 138, 0.3);
+  }
+
+  #view-calendar-timeline:checked ~ .timeline-epoch-container {
+    display: none;
+  }
+  #view-epoch-timeline:checked ~ .calendar-matrix-section,
+  #view-epoch-timeline:checked ~ .timeline-followup-container {
+    display: none;
+  }
+
+  /* Category Radio Selection Logic */
+  #cat-all:checked ~ .controls-card label[for="cat-all"],
+  #cat-grb:checked ~ .controls-card label[for="cat-grb"],
+  #cat-sn:checked ~ .controls-card label[for="cat-sn"],
+  #cat-at:checked ~ .controls-card label[for="cat-at"],
+  #cat-frb:checked ~ .controls-card label[for="cat-frb"],
+  #cat-gw:checked ~ .controls-card label[for="cat-gw"],
+  #cat-sgr:checked ~ .controls-card label[for="cat-sgr"] {
+    background: #2563eb;
+    color: #ffffff;
+    border-color: #2563eb;
+    box-shadow: 0 1px 3px rgba(37, 99, 235, 0.25);
+  }
+
+  #cat-grb:checked ~ .timeline-followup-container .timeline-event-card:not([data-type="GRB"]),
+  #cat-grb:checked ~ .timeline-epoch-container .timeline-event-card:not([data-type="GRB"]) { display: none; }
+  #cat-sn:checked ~ .timeline-followup-container .timeline-event-card:not([data-type="SN"]),
+  #cat-sn:checked ~ .timeline-epoch-container .timeline-event-card:not([data-type="SN"]) { display: none; }
+  #cat-at:checked ~ .timeline-followup-container .timeline-event-card:not([data-type="AT"]),
+  #cat-at:checked ~ .timeline-epoch-container .timeline-event-card:not([data-type="AT"]) { display: none; }
+  #cat-frb:checked ~ .timeline-followup-container .timeline-event-card:not([data-type="FRB"]),
+  #cat-frb:checked ~ .timeline-epoch-container .timeline-event-card:not([data-type="FRB"]) { display: none; }
+  #cat-gw:checked ~ .timeline-followup-container .timeline-event-card:not([data-type="GW"]),
+  #cat-gw:checked ~ .timeline-epoch-container .timeline-event-card:not([data-type="GW"]) { display: none; }
+  #cat-sgr:checked ~ .timeline-followup-container .timeline-event-card:not([data-type="SGR"]),
+  #cat-sgr:checked ~ .timeline-epoch-container .timeline-event-card:not([data-type="SGR"]) { display: none; }
+
+  /* Calendar Monthly Matrix Section */
+  .calendar-matrix-section {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.85rem;
+    padding: 1.5rem;
+    margin-bottom: 2.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  }
+  .calendar-matrix-title {
+    margin: 0 0 0.35rem;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #0f172a;
+  }
+  .matrix-title-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 0.35rem;
+  }
+  .matrix-total-badge {
+    font-size: 0.78rem;
+    padding: 0.2rem 0.55rem;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 0.35rem;
+    color: #1d4ed8;
+  }
+  .calendar-matrix-subtitle {
+    margin: 0 0 1rem;
+    font-size: 0.88rem;
+    color: #64748b;
+  }
+
+
+  /* Month Selector Bar */
+  .month-selector-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.25rem;
+    padding: 0.65rem 0.95rem;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.6rem;
+  }
+  .month-selector-label {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #475569;
+    white-space: nowrap;
+  }
+  .month-selector-pills {
+    display: flex;
+    gap: 0.45rem;
+    flex-wrap: wrap;
+  }
+  .month-tab-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.35rem 0.75rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #475569;
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 0.4rem;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    user-select: none;
+  }
+  .month-tab-pill:hover {
+    background: #eff6ff;
+    color: #1d4ed8;
+    border-color: #93c5fd;
+  }
+  .month-tab-pill .pill-badge {
+    font-size: 0.72rem;
+    padding: 0.1rem 0.35rem;
+    background: #e2e8f0;
+    border-radius: 0.25rem;
+    color: #64748b;
+    font-family: ui-monospace, monospace;
+  }
+
+  /* Single-Month Split View Layout */
+  .monthly-split-wrapper {
+    position: relative;
+    width: 100%;
+  }
+  .month-split-container {
+    display: none;
+    grid-template-columns: 360px 1fr;
+    gap: 1.5rem;
+    align-items: start;
+  }
+  .calendar-side-pane {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.75rem;
+    padding: 1.15rem;
+    position: sticky;
+    top: 1rem;
+    display: flex;
+    flex-direction: column;
+  }
+  .month-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .month-title-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .month-stats-text {
+    font-size: 0.75rem;
+    color: #64748b;
+  }
+  .month-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #1e293b;
+  }
+  .month-badge {
+    font-size: 0.72rem;
+    padding: 0.12rem 0.45rem;
+    border-radius: 0.25rem;
+  }
+  .month-badge-current {
+    font-weight: 700;
+    color: #166534;
+    background: #dcfce7;
+    border: 1px solid #bbf7d0;
+  }
+  .month-badge-prev {
+    font-weight: 600;
+    color: #64748b;
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+  }
+
+  .detail-side-pane {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .daily-detail-panel {
+    display: none;
+    flex-direction: column;
+    gap: 1.15rem;
+  }
+  .detail-header-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    padding: 0.85rem 1.15rem;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 0.65rem;
+  }
+  .detail-header-main {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  .detail-date-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .detail-date-badge {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: #1e3a8a;
+  }
+  .detail-count-pill {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #166534;
+    background: #dcfce7;
+    border: 1px solid #bbf7d0;
+    padding: 0.1rem 0.45rem;
+    border-radius: 9999px;
+  }
+  .detail-us-batch {
+    font-size: 0.78rem;
+    color: #475569;
+  }
+  .detail-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+  }
+  .detail-daily-link {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #1d4ed8;
+    background: #ffffff;
+    border: 1px solid #93c5fd;
+    padding: 0.35rem 0.75rem;
+    border-radius: 0.4rem;
+    text-decoration: none;
+    transition: all 0.15s ease;
+  }
+  .detail-daily-link:hover {
+    background: #2563eb;
+    color: #ffffff;
+    border-color: #2563eb;
+  }
+  .detail-spine-link {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #64748b;
+    text-decoration: none;
+    padding: 0.35rem 0.55rem;
+  }
+  .detail-spine-link:hover {
+    color: #1e293b;
+    text-decoration: underline;
+  }
+  .detail-cards-stream {
+    display: flex;
+    flex-direction: column;
+    gap: 1.15rem;
+  }
+  .calendar-weekdays-row {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #64748b;
+    margin-bottom: 0.5rem;
+  }
+  .calendar-days-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.35rem;
+  }
+  .cal-cell {
+    aspect-ratio: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.4rem;
+    text-decoration: none;
+    position: relative;
+    padding: 0.2rem;
+    box-sizing: border-box;
+  }
+  .cal-cell-empty {
+    visibility: hidden;
+  }
+  .cal-cell-idle {
+    background: #ffffff;
+    border: 1px solid #f1f5f9;
+    color: #94a3b8;
+  }
+  .day-num {
+    font-size: 0.8rem;
+    font-family: ui-monospace, monospace;
+  }
+  .cal-cell-active {
+    background: #eff6ff;
+    border: 1.5px solid #3b82f6;
+    color: #1d4ed8;
+    box-shadow: 0 1px 3px rgba(59, 130, 246, 0.2);
+    cursor: pointer;
+    transition: transform 0.15s ease, background 0.15s ease;
+  }
+  .cal-cell-active:hover {
+    transform: translateY(-2px);
+    background: #dbeafe;
+    border-color: #2563eb;
+  }
+  .day-num-active {
+    font-size: 0.85rem;
+    font-weight: 800;
+    font-family: ui-monospace, monospace;
+    color: #1e3a8a;
+  }
+  .cal-active-badge {
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: #2563eb;
+    margin-top: -0.1rem;
+  }
+  .cal-dots-row {
+    display: flex;
+    gap: 0.15rem;
+    margin-top: 0.15rem;
+  }
+  .cal-mini-dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+  }
+
+  /* Calendar Cell Hover Popover */
+  .cal-cell-popover {
+    display: none;
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: #0f172a;
+    color: #f8fafc;
+    border: 1px solid #334155;
+    border-radius: 0.5rem;
+    padding: 0.5rem 0.65rem;
+    box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.4);
+    z-index: 100;
+    pointer-events: none;
+    white-space: nowrap;
+    min-width: 130px;
+    max-width: 240px;
+    text-align: left;
+  }
+  .cal-cell-popover::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 5px;
+    border-style: solid;
+    border-color: #0f172a transparent transparent transparent;
+  }
+  .cal-cell-active:hover .cal-cell-popover {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+  .popover-title {
+    font-size: 0.72rem;
+    color: #94a3b8;
+    border-bottom: 1px solid #334155;
+    padding-bottom: 0.25rem;
+    margin-bottom: 0.1rem;
+    font-weight: 700;
+  }
+  .popover-event-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  .popover-event-item {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.76rem;
+  }
+  .popover-type-badge {
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 0.05rem 0.3rem;
+    border-radius: 0.2rem;
+  }
+  .popover-event-name {
+    font-weight: 700;
+    color: #ffffff;
+    font-size: 0.78rem;
+  }
+
+  /* Timeline Axis Header */
+  .timeline-axis-header {
+    margin-bottom: 1.75rem;
+  }
+  .axis-kicker {
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    color: #2563eb;
+  }
+  .timeline-axis-header h2 {
+    margin: 0.25rem 0 0.4rem;
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #0f172a;
+  }
+  .timeline-axis-header p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #64748b;
+  }
+
+  /* Chronological Timeline Track & Spine */
+  .timeline-track {
+    position: relative;
+    padding-left: 2.25rem;
+  }
+  .timeline-track::before {
+    content: "";
+    position: absolute;
+    left: 0.75rem;
+    top: 0.5rem;
+    bottom: 1rem;
+    width: 3px;
+    background: linear-gradient(180deg, #3b82f6 0%, #60a5fa 35%, #93c5fd 70%, #cbd5e1 100%);
+    border-radius: 2px;
+  }
+
+  /* Timeline Station */
+  .timeline-station {
+    position: relative;
+    margin-bottom: 2.5rem;
+  }
+  .station-marker-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+  @keyframes pulse-ring {
+    0% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.45); }
+    70% { box-shadow: 0 0 0 8px rgba(37, 99, 235, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
+  }
+  @keyframes pulse-ring-purple {
+    0% { box-shadow: 0 0 0 0 rgba(124, 58, 237, 0.45); }
+    70% { box-shadow: 0 0 0 8px rgba(124, 58, 237, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(124, 58, 237, 0); }
+  }
+  @keyframes cardFadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .station-pulse-node {
+    position: absolute;
+    left: calc(-2.25rem + 0.75rem - 7px);
+    width: 17px;
+    height: 17px;
+    border-radius: 50%;
+    background: #2563eb;
+    border: 3px solid #ffffff;
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.25);
+    animation: pulse-ring 2.5s infinite cubic-bezier(0.4, 0, 0.6, 1);
+  }
+  .node-epoch {
+    background: #7c3aed;
+    animation: pulse-ring-purple 2.5s infinite cubic-bezier(0.4, 0, 0.6, 1);
+  }
+  .station-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.35rem 0.85rem;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 9999px;
+    flex-wrap: wrap;
+  }
+  .badge-epoch {
+    background: #f5f3ff;
+    border-color: #ddd6fe;
+  }
+  .station-bjt-date {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #1e3a8a;
+  }
+  .station-epoch-title {
+    font-size: 0.92rem;
+    font-weight: 800;
+    color: #5b21b6;
+  }
+  .epoch-badge-pill {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #7c3aed;
+    background: #ffffff;
+    padding: 0.08rem 0.4rem;
+    border-radius: 0.25rem;
+    border: 1px solid #c4b5fd;
+  }
+  .epoch-desc-lead {
+    margin: -0.35rem 0 1rem 0;
+    font-size: 0.85rem;
+    color: #64748b;
+  }
+  .station-us-date {
+    font-size: 0.78rem;
+    color: #64748b;
+  }
+  .station-count-pill {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #166534;
+    background: #dcfce7;
+    padding: 0.08rem 0.45rem;
+    border-radius: 9999px;
+  }
+
+  /* Station Cards Stream */
+  .station-cards-stream {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  .timeline-event-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.75rem;
+    padding: 1.35rem 1.5rem;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
+    position: relative;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .timeline-event-card:hover {
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+    transform: translateY(-1px);
+  }
+
+  .card-top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 0.65rem;
+  }
+  .card-id-cluster {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    flex-wrap: wrap;
+  }
+  .card-event-name {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #0f172a;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    letter-spacing: -0.01em;
+  }
+  .card-epoch-pill {
+    font-size: 0.78rem;
+    font-weight: 600;
+    font-family: ui-monospace, monospace;
+    color: #0369a1;
+    background: #f0f9ff;
+    border: 1px solid #bae6fd;
+    padding: 0.15rem 0.5rem;
+    border-radius: 0.3rem;
+  }
+  .card-metrics-cluster {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .metric-heat-chip {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #c2410c;
+    background: #fff7ed;
+    border: 1px solid #fed7aa;
+    padding: 0.15rem 0.5rem;
+    border-radius: 0.35rem;
+  }
+  .metric-papers-chip {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #475569;
+    background: #f1f5f9;
+    padding: 0.15rem 0.5rem;
+    border-radius: 0.35rem;
+  }
+
+  .event-type-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.2rem 0.55rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    border-radius: 0.35rem;
+    letter-spacing: 0.04em;
+  }
+  .badge-gw { background: #e0e7ff; color: #3730a3; }
+  .badge-grb { background: #fee2e2; color: #991b1b; }
+  .badge-sn { background: #fef3c7; color: #92400e; }
+  .badge-frb { background: #dbeafe; color: #1e40af; }
+  .badge-at { background: #fae8ff; color: #86198f; }
+  .badge-other { background: #f1f5f9; color: #475569; }
+
+  /* Narrative */
+  .card-narrative-block {
+    margin-bottom: 1rem;
+  }
+  .card-headline {
+    margin: 0 0 0.35rem;
+    font-size: 1.02rem;
+    font-weight: 700;
+    color: #1e293b;
+    line-height: 1.45;
+  }
+  .card-narrative-text {
+    margin: 0;
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: #475569;
+  }
+
+  /* Paper List */
+  .card-papers-stream {
+    border-top: 1px solid #f1f5f9;
+    padding-top: 0.85rem;
+  }
+  .stream-label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #64748b;
+    margin-bottom: 0.5rem;
+  }
+  .station-paper-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .station-paper-item {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
+  }
+  .paper-item-top {
+    display: flex;
+    align-items: baseline;
+    gap: 0.45rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.3rem;
+  }
+  .priority-badge {
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 0.08rem 0.35rem;
+    border-radius: 0.2rem;
+    flex-shrink: 0;
+  }
+  .pill-must-read { background: #fee2e2; color: #b91c1c; }
+  .pill-worth-knowing { background: #fef3c7; color: #b45309; }
+  .pill-skim { background: #f1f5f9; color: #64748b; }
+
+  .paper-title-anchor {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #1e3a8a;
+    text-decoration: none;
+    line-height: 1.4;
+  }
+  .paper-title-anchor:hover {
+    text-decoration: underline;
+    color: #2563eb;
+  }
+  .paper-arxiv-id {
+    color: #2563eb;
+  }
+  .paper-date-pill {
+    font-size: 0.75rem;
+    color: #64748b;
+  }
+  .paper-bluf-row {
+    margin: 0 0 0.45rem;
+    font-size: 0.86rem;
+    line-height: 1.65;
+    color: #334155;
+    background: #ffffff;
+    padding: 0.5rem 0.85rem;
+    border-radius: 0.35rem;
+    border: 1px solid #e2e8f0;
+    border-left: 3.5px solid #2563eb;
+  }
+  .bluf-key {
+    color: #1d4ed8;
+  }
+  .paper-links-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    font-size: 0.78rem;
+  }
+  .link-radar-deep {
+    font-weight: 600;
+    color: #166534;
+    text-decoration: none;
+  }
+  .link-radar-deep:hover {
+    text-decoration: underline;
+  }
+  .link-arxiv-origin {
+    color: #64748b;
+    text-decoration: none;
+  }
+  .link-arxiv-origin:hover {
+    color: #2563eb;
+    text-decoration: underline;
+  }
+
+  /* Responsive */
+  @media (max-width: 860px) {
+    .month-split-container {
+      grid-template-columns: 1fr;
+    }
+    .calendar-side-pane {
+      position: static;
+    }
+  }
+  @media (max-width: 640px) {
+    .timeline-track {
+      padding-left: 1.75rem;
+    }
+    .timeline-track::before {
+      left: 0.5rem;
+    }
+    .station-pulse-node {
+      left: calc(-1.75rem + 0.5rem - 7px);
+    }
+  }
+
+  /* Dark mode */
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .controls-card {
+    background: #1e293b;
+    border-color: #334155;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .control-label {
+    color: #cbd5e1;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .view-pill,
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .cat-pill {
+    background: #0f172a;
+    border-color: #334155;
+    color: #cbd5e1;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .calendar-matrix-section {
+    background: #1e293b;
+    border-color: #334155;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .calendar-matrix-title {
+    color: #f8fafc;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .matrix-total-badge {
+    background: #1e3a8a44;
+    border-color: #3b82f6;
+    color: #93c5fd;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .calendar-matrix-subtitle {
+    color: #94a3b8;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .month-selector-bar {
+    background: #0f172a;
+    border-color: #334155;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .month-selector-label {
+    color: #cbd5e1;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .month-tab-pill {
+    background: #1e293b;
+    border-color: #334155;
+    color: #cbd5e1;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .month-tab-pill:hover {
+    background: #1e3a8a;
+    color: #60a5fa;
+    border-color: #3b82f6;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .month-tab-pill .pill-badge {
+    background: #0f172a;
+    color: #94a3b8;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .calendar-side-pane {
+    background: #0f172a;
+    border-color: #334155;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .cal-cell-popover {
+    background: #1e293b;
+    border-color: #475569;
+    box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.6);
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .cal-cell-popover::after {
+    border-color: #1e293b transparent transparent transparent;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .popover-title {
+    color: #94a3b8;
+    border-bottom-color: #334155;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .popover-event-name {
+    color: #f8fafc;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .detail-header-card {
+    background: #0f172a;
+    border-color: #334155;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .detail-date-badge {
+    color: #93c5fd;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .detail-us-batch {
+    color: #94a3b8;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .detail-daily-link {
+    background: #1e293b;
+    border-color: #334155;
+    color: #93c5fd;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .detail-daily-link:hover {
+    background: #2563eb;
+    color: #ffffff;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .detail-spine-link {
+    color: #94a3b8;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .detail-spine-link:hover {
+    color: #f8fafc;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .month-title {
+    color: #f8fafc;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .cal-cell-idle {
+    background: #1e293b;
+    border-color: #334155;
+    color: #64748b;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .cal-cell-active {
+    background: #1e3a8a33;
+    border-color: #60a5fa;
+    color: #93c5fd;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .day-num-active {
+    color: #bfdbfe;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .timeline-axis-header h2 {
+    color: #f8fafc;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .timeline-track::before {
+    background: linear-gradient(180deg, #3b82f6 0%, #60a5fa 35%, #93c5fd 70%, #475569 100%);
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .station-badge {
+    background: #0f172a;
+    border-color: #334155;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .station-bjt-date {
+    color: #93c5fd;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .station-epoch-title {
+    color: #c4b5fd;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .timeline-event-card {
+    background: #1e293b;
+    border-color: #334155;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .card-event-name {
+    color: #f8fafc;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .card-epoch-pill {
+    background: rgba(14, 165, 233, 0.18);
+    border-color: rgba(56, 189, 248, 0.35);
+    color: #7dd3fc;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .metric-heat-chip {
+    background: rgba(234, 88, 12, 0.18);
+    border-color: rgba(251, 146, 60, 0.35);
+    color: #fdba74;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .metric-papers-chip {
+    background: #0f172a;
+    color: #94a3b8;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .card-headline {
+    color: #f1f5f9;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .card-narrative-text {
+    color: #cbd5e1;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .card-papers-stream {
+    border-top-color: #334155;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .station-paper-item {
+    background: #0f172a;
+    border-color: #334155;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .paper-title-anchor {
+    color: #93c5fd;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .paper-arxiv-id {
+    color: #60a5fa;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .paper-bluf-row {
+    background: #0f172a;
+    border-color: #334155;
+    border-left: 3.5px solid #60a5fa;
+    color: #cbd5e1;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .metric-heat-chip {
+    background: rgba(234, 88, 12, 0.18);
+    border-color: rgba(251, 146, 60, 0.35);
+    color: #fdba74;
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.08);
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .bluf-key {
+    color: #60a5fa;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .link-radar-deep {
+    color: #86efac;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .link-arxiv-origin {
+    color: #94a3b8;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :global(body:not(:has(#site-theme-toggle:checked))) .controls-card { background: #1e293b; border-color: #334155; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .control-label { color: #cbd5e1; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .view-pill,
+    :global(body:not(:has(#site-theme-toggle:checked))) .cat-pill { background: #0f172a; border-color: #334155; color: #cbd5e1; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .calendar-matrix-section { background: #1e293b; border-color: #334155; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35); }
+    :global(body:not(:has(#site-theme-toggle:checked))) .calendar-matrix-title { color: #f8fafc; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .calendar-side-pane { background: #0f172a; border-color: #334155; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .cal-cell-popover {
+      background: #1e293b;
+      border-color: #475569;
+      box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.6);
+    }
+    :global(body:not(:has(#site-theme-toggle:checked))) .cal-cell-popover::after {
+      border-color: #1e293b transparent transparent transparent;
+    }
+    :global(body:not(:has(#site-theme-toggle:checked))) .popover-title {
+      color: #94a3b8;
+      border-bottom-color: #334155;
+    }
+    :global(body:not(:has(#site-theme-toggle:checked))) .popover-event-name {
+      color: #f8fafc;
+    }
+    :global(body:not(:has(#site-theme-toggle:checked))) .detail-header-card { background: #0f172a; border-color: #334155; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .detail-date-badge { color: #93c5fd; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .detail-us-batch { color: #94a3b8; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .detail-daily-link { background: #1e293b; border-color: #334155; color: #93c5fd; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .detail-daily-link:hover { background: #2563eb; color: #ffffff; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .detail-spine-link { color: #94a3b8; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .detail-spine-link:hover { color: #f8fafc; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .cal-cell-idle { background: #1e293b; border-color: #334155; color: #64748b; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .cal-cell-active { background: #1e3a8a33; border-color: #60a5fa; color: #93c5fd; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .day-num-active { color: #bfdbfe; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .timeline-axis-header h2 { color: #f8fafc; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .timeline-track::before { background: linear-gradient(180deg, #3b82f6 0%, #60a5fa 35%, #93c5fd 70%, #475569 100%); }
+    :global(body:not(:has(#site-theme-toggle:checked))) .station-badge { background: #0f172a; border-color: #334155; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .station-bjt-date { color: #93c5fd; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .station-epoch-title { color: #c4b5fd; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .timeline-event-card { background: #1e293b; border-color: #334155; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3); }
+    :global(body:not(:has(#site-theme-toggle:checked))) .card-event-name { color: #f8fafc; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .card-epoch-pill { background: rgba(14, 165, 233, 0.18); border-color: rgba(56, 189, 248, 0.35); color: #7dd3fc; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .metric-heat-chip { background: rgba(234, 88, 12, 0.18); border-color: rgba(251, 146, 60, 0.35); color: #fdba74; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .metric-papers-chip { background: #0f172a; color: #94a3b8; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .card-headline { color: #f1f5f9; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .card-narrative-text { color: #cbd5e1; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .card-papers-stream { border-top-color: #334155; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .station-paper-item { background: #0f172a; border-color: #334155; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .paper-title-anchor { color: #93c5fd; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .paper-bluf-row { background: #1e293b; border-color: #334155; color: #cbd5e1; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .link-radar-deep { color: #86efac; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .link-arxiv-origin { color: #94a3b8; }
+  }
+</style>

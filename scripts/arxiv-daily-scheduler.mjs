@@ -499,7 +499,7 @@ if (process.argv[1] && resolve(process.argv[1]) === resolve(fileURLToPath(import
   if (requestedAnalysisLimit !== undefined && (!Number.isInteger(requestedAnalysisLimit) || requestedAnalysisLimit < 1)) {
     throw new Error("--analysis-limit must be a positive integer");
   }
-  const hasCredentials = Boolean(process.env.WU_API_KEY || process.env.OPENAI_API_KEY);
+  const hasCredentials = Boolean(process.env.IOA_API_KEY || process.env.WU_API_KEY || process.env.OPENAI_API_KEY);
   const result = await runScheduledArxivRefresh({
     output,
     announcementDate,

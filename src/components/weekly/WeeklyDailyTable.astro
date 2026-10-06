@@ -1,4 +1,6 @@
 ---
+import { formatAnnouncementInBeijing } from "../../domain/academic-domain.mjs";
+
 interface Props {
   weekDays: Array<{
     date: string;
@@ -36,17 +38,20 @@ const { weekDays, latestDailyDate } = Astro.props;
           </tr>
         </thead>
         <tbody>
-          {weekDays.map((day) => (
-            <tr class={day.date === latestDailyDate ? "row-latest" : ""}>
-              <td class="col-date">
-                <div class="daily-table-date-cell">
-                  <strong class="table-date">{day.date}</strong>
-                  <span class="table-weekday">{day.weekday}</span>
-                  {day.date === latestDailyDate && (
-                    <span class="table-latest-badge">最新</span>
-                  )}
-                </div>
-              </td>
+          {weekDays.map((day) => {
+            const dInfo = formatAnnouncementInBeijing(day.date, day.weekday);
+            return (
+              <tr class={day.date === latestDailyDate ? "row-latest" : ""}>
+                <td class="col-date">
+                  <div class="daily-table-date-cell">
+                    <strong class="table-date">{dInfo.beijingDate}</strong>
+                    <span class="table-weekday">{dInfo.chineseWeekday}</span>
+                    <span class="table-us-date" title="arXiv 美东公告日期">美东 {day.date}</span>
+                    {day.date === latestDailyDate && (
+                      <span class="table-latest-badge">最新</span>
+                    )}
+                  </div>
+                </td>
               <td class="col-stats">
                 <div class="daily-table-stats-cell">
                   <span class="stat-pill-total">总计 <strong>{day.total_papers}</strong> 篇</span>
@@ -94,7 +99,7 @@ const { weekDays, latestDailyDate } = Astro.props;
                 </a>
               </td>
             </tr>
-          ))}
+          ); })}
         </tbody>
       </table>
     </div>
@@ -220,6 +225,14 @@ const { weekDays, latestDailyDate } = Astro.props;
   }
   :global([data-theme="dark"]) .table-weekday {
     color: #94a3b8;
+  }
+  .table-us-date {
+    font-size: 0.7rem;
+    color: #94a3b8;
+    font-family: monospace;
+  }
+  :global([data-theme="dark"]) .table-us-date {
+    color: #64748b;
   }
   .table-latest-badge {
     display: inline-block;

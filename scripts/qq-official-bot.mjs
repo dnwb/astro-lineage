@@ -15,6 +15,7 @@ import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { generateAcademicAnswer } from "./agent-core.mjs";
+import { readChannelShareUrl } from "./channel-publication.mjs";
 import { createSessionMemory } from "./qq-memory.mjs";
 import { defaultUserManager } from "./qq-users.mjs";
 
@@ -140,6 +141,14 @@ export function cleanMessageContent(rawText) {
     .replace(/<@!\d+>/g, "")
     .replace(/@\S+/g, "")
     .trim();
+}
+
+export async function appendChannelShareLinkToReply(content, getChannelShareUrl = readChannelShareUrl) {
+  const text = typeof content === "string" ? content : String(content ?? "");
+  if (!/https?:\/\/\S+/iu.test(text)) return text;
+  const channelUrl = await getChannelShareUrl();
+  if (!channelUrl || text.includes(channelUrl)) return text;
+  return `${text.trimEnd()}\n\nAstroLineage QQ 频道：\n${channelUrl}`;
 }
 
 /**
@@ -269,7 +278,7 @@ export async function sendProactiveGroupMessage({ groupOpenid, content, msgSeq }
 /**
  * 启动官方 QQ 机器人 Gateway 长连接
  */
-export async function startOfficialBot({ dryRun = false, WebSocketImpl = WebSocket, gateway = getGatewayUrl, authorize = getAuthHeader, answer = generateAcademicAnswer, memory = sessionMemory, users = defaultUserManager } = {}) {
+export async function startOfficialBot({ dryRun = false, WebSocketImpl = WebSocket, gateway = getGatewayUrl, authorize = getAuthHeader, answer = generateAcademicAnswer, memory = sessionMemory, users = defaultUserManager, channelLink = readChannelShareUrl } = {}) {
   if (!APP_ID && gateway === getGatewayUrl) {
     console.warn(`[QQ Official Bot] 警告: 未在环境变量检测到 QQ_APP_ID。`);
     console.warn(`[QQ Official Bot] 请在 .env 中设置 QQ_APP_ID、QQ_APP_SECRET 或 QQ_BOT_TOKEN。`);
@@ -391,13 +400,16 @@ export async function startOfficialBot({ dryRun = false, WebSocketImpl = WebSock
                   topic: "QQ群学术研讨",
                   history,
                 });
+                const replyText = /https?:\/\/\S+/iu.test(result)
+                  ? await appendChannelShareLinkToReply(result, channelLink)
+                  : result;
 
                 console.log("[QQ Official Bot] 正在派发群回复");
                 if (!dryRun) {
-                  await replyGroupMessage({ groupOpenid, msgId, content: result });
+                  await replyGroupMessage({ groupOpenid, msgId, content: replyText });
                   console.log(`[QQ Official Bot] ✓ 群回复成功`);
                 }
-                memory.append(sessionKey, "assistant", result);
+                memory.append(sessionKey, "assistant", replyText);
               } catch (err) {
                 console.error(`[QQ Official Bot] ✗ 群回复失败: ${err.message}`);
               }
@@ -419,12 +431,15 @@ export async function startOfficialBot({ dryRun = false, WebSocketImpl = WebSock
                   topic: "频道学术研讨",
                   history,
                 });
+                const replyText = /https?:\/\/\S+/iu.test(result)
+                  ? await appendChannelShareLinkToReply(result, channelLink)
+                  : result;
 
                 if (!dryRun) {
-                  await replyChannelMessage({ channelId, msgId, content: result });
+                  await replyChannelMessage({ channelId, msgId, content: replyText });
                   console.log(`[QQ Official Bot] ✓ 频道回复成功`);
                 }
-                memory.append(sessionKey, "assistant", result);
+                memory.append(sessionKey, "assistant", replyText);
               } catch (err) {
                 console.error(`[QQ Official Bot] ✗ 频道回复失败: ${err.message}`);
               }
@@ -483,12 +498,15 @@ export async function startOfficialBot({ dryRun = false, WebSocketImpl = WebSock
                   topic: "私聊学术研讨",
                   history,
                 });
+                const replyText = /https?:\/\/\S+/iu.test(result)
+                  ? await appendChannelShareLinkToReply(result, channelLink)
+                  : result;
 
                 if (!dryRun) {
-                  await replyC2CMessage({ userOpenid, msgId, content: result });
+                  await replyC2CMessage({ userOpenid, msgId, content: replyText });
                   console.log(`[QQ Official Bot] ✓ 私聊回复成功`);
                 }
-                memory.append(sessionKey, "assistant", result);
+                memory.append(sessionKey, "assistant", replyText);
               } catch (err) {
                 console.error(`[QQ Official Bot] ✗ 私聊回复失败: ${err.message}`);
               }

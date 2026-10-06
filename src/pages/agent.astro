@@ -35,6 +35,48 @@ const topEvents = (scientificEvents.events || []).slice(0, 5);
         </p>
       </header>
 
+      <!-- Tencent Channel & QQ Bot Connection Card -->
+      <section class="channel-connect-card" aria-labelledby="channel-connect-heading">
+        <div class="channel-connect-main">
+          <div class="channel-header-badge">💬 官方前沿交流社区 · 每日实时推送与研讨</div>
+          <h2 id="channel-connect-heading">AstroLineage 腾讯频道与官方机器人</h2>
+          <p class="channel-desc">
+            加入官方天体物理前沿交流频道，每日自动接收最新 arXiv 导读推送、分领域学术脉络整理，并在频道内与智能体机器人进行文献问答与研讨。
+          </p>
+          <div class="channel-meta-grid">
+            <div class="channel-meta-item">
+              <span class="meta-label">频道名称</span>
+              <span class="meta-value">AstroLineage前沿</span>
+            </div>
+            <div class="channel-meta-item">
+              <span class="meta-label">频道号</span>
+              <span class="meta-value font-mono">pd28000535</span>
+            </div>
+            <div class="channel-meta-item">
+              <span class="meta-label">官方机器人</span>
+              <span class="meta-value">@AstroLineage Bot</span>
+            </div>
+          </div>
+          <div class="channel-actions">
+            <a href="https://pd.qq.com/s/d4lw4zl0g" target="_blank" rel="noopener noreferrer" class="channel-join-btn">
+              <span>立即加入腾讯频道</span>
+              <span aria-hidden="true">→</span>
+            </a>
+            <a href="https://github.com/dnwb/astro-lineage/issues" target="_blank" rel="noopener noreferrer" class="channel-feedback-btn">
+              <span>💬 GitHub Issues 反馈</span>
+              <span aria-hidden="true">↗</span>
+            </a>
+            <span class="channel-url-copy">直达链接：<a href="https://pd.qq.com/s/d4lw4zl0g" target="_blank" rel="noopener noreferrer">https://pd.qq.com/s/d4lw4zl0g</a></span>
+          </div>
+        </div>
+        <div class="channel-qr-pane">
+          <div class="channel-qr-frame">
+            <img src="/qq-channel-qrcode.svg" alt="AstroLineage 腾讯频道二维码" width="150" height="150" class="channel-qr-img" />
+          </div>
+          <p class="channel-qr-hint">手机 QQ 扫一扫加入频道</p>
+        </div>
+      </section>
+
       <!-- Machine Protocol Cards -->
       <section class="agent-protocols-grid">
         <div class="agent-card">
@@ -82,14 +124,14 @@ const topEvents = (scientificEvents.events || []).slice(0, 5);
 
         <div class="agent-guide-block">
           <h3>1. 在 Cursor / Claude Code 中一键载入</h3>
-          <p>直接在对话框中引用 <code>/llms.txt</code>，即可让 AI 助手掌握天体物理组最新文献脉络（当前服务地址 <code>10.131.43.83:4321</code>）：</p>
-          <pre class="agent-code-box"><code>@http://10.131.43.83:4321/llms.txt 结合最新的 Must Read 论文，总结当前 FRB 磁星模型的新限制</code></pre>
+          <p>直接在对话框中引用 <code>/llms.txt</code>，即可让 AI 助手掌握天体物理组最新文献脉络（默认服务地址 <code>localhost:4321</code>）：</p>
+          <pre class="agent-code-box"><code>@http://localhost:4321/llms.txt 结合最新的 Must Read 论文，总结当前 FRB 磁星模型的新限制</code></pre>
 
           <h3>2. 在 Python / 自治智能体中调用 API</h3>
           <pre class="agent-code-box"><code>{`import urllib.request, json
 
 # 获取今日必读文献与证据链
-with urllib.request.urlopen("http://10.131.43.83:4321/api/v1/daily.json") as resp:
+with urllib.request.urlopen("http://localhost:4321/api/v1/daily.json") as resp:
     data = json.loads(resp.read().decode())
     must_reads = data["groups"]["must_read"]
     for paper in must_reads:
@@ -97,8 +139,8 @@ with urllib.request.urlopen("http://10.131.43.83:4321/api/v1/daily.json") as res
         print(f"  核心突破: {paper['analysis']['analysis']['result']}")`}</code></pre>
 
           <h3>3. cURL 命令行快速测试</h3>
-          <pre class="agent-code-box"><code>curl -s http://10.131.43.83:4321/api/v1/daily.json | jq .
-curl -s http://10.131.43.83:4321/api/v1/events.json | jq .</code></pre>
+          <pre class="agent-code-box"><code>curl -s http://localhost:4321/api/v1/daily.json | jq .
+curl -s http://localhost:4321/api/v1/events.json | jq .</code></pre>
         </div>
       </section>
 
@@ -152,6 +194,190 @@ curl -s http://10.131.43.83:4321/api/v1/events.json | jq .</code></pre>
     border-radius: 9999px;
     margin-bottom: 0.75rem;
   }
+  .reader-header h1 {
+    font-size: clamp(1.4rem, 2.4vw, 1.85rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+    margin: 0.2rem 0 0.4rem 0;
+  }
+  .reader-deck {
+    font-size: 0.95rem;
+    color: #64748b;
+    margin: 0.2rem 0 0.5rem 0;
+    line-height: 1.5;
+    max-width: 58rem;
+  }
+  .channel-connect-card {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid #e2e8f0;
+    border-radius: 0.85rem;
+    padding: 1.75rem;
+    margin: 1.75rem 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  }
+  .channel-connect-main {
+    flex: 1;
+    min-width: 0;
+  }
+  .channel-header-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.2rem 0.6rem;
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: #0369a1;
+    background: #e0f2fe;
+    border: 1px solid #bae6fd;
+    border-radius: 9999px;
+    margin-bottom: 0.6rem;
+  }
+  .channel-connect-card h2 {
+    margin: 0 0 0.5rem;
+    font-size: clamp(1.15rem, 1.8vw, 1.4rem);
+    font-weight: 700;
+    color: #0f172a;
+    letter-spacing: -0.01em;
+  }
+  .channel-desc {
+    font-size: 0.92rem;
+    line-height: 1.55;
+    color: #475569;
+    margin: 0 0 1rem;
+    max-width: 44rem;
+  }
+  .channel-meta-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    margin-bottom: 1.25rem;
+    padding: 0.65rem 0.85rem;
+    background: #f1f5f9;
+    border-radius: 0.5rem;
+    border: 1px solid #e2e8f0;
+  }
+  .channel-meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+  .channel-meta-item .meta-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  .channel-meta-item .meta-value {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #1e293b;
+  }
+  .channel-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .channel-join-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.55rem 1.15rem;
+    background: #2563eb;
+    color: #ffffff;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: 0.45rem;
+    text-decoration: none;
+    transition: all 0.15s ease;
+    box-shadow: 0 1px 3px rgba(37, 99, 235, 0.25);
+  }
+  .channel-join-btn:hover {
+    background: #1d4ed8;
+    box-shadow: 0 2px 6px rgba(37, 99, 235, 0.35);
+  }
+  .channel-feedback-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.52rem 1.05rem;
+    background: transparent;
+    color: #2563eb;
+    border: 1px solid #93c5fd;
+    font-size: 0.88rem;
+    font-weight: 600;
+    border-radius: 0.45rem;
+    text-decoration: none;
+    transition: all 0.15s ease;
+  }
+  .channel-feedback-btn:hover {
+    background: #eff6ff;
+    border-color: #2563eb;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .channel-feedback-btn {
+    color: #60a5fa;
+    border-color: #3b82f6;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .channel-feedback-btn:hover {
+    background: rgba(59, 130, 246, 0.15);
+  }
+  .channel-url-copy {
+    font-size: 0.82rem;
+    color: #64748b;
+  }
+  .channel-url-copy a {
+    color: #2563eb;
+    font-family: ui-monospace, monospace;
+    text-decoration: underline;
+    word-break: break-all;
+  }
+  .channel-qr-pane {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+  }
+  .channel-qr-frame {
+    background: #ffffff;
+    padding: 0.5rem;
+    border-radius: 0.6rem;
+    border: 1px solid #cbd5e1;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    line-height: 0;
+  }
+  .channel-qr-img {
+    display: block;
+    border-radius: 0.25rem;
+  }
+  .channel-qr-hint {
+    margin: 0.45rem 0 0;
+    font-size: 0.75rem;
+    color: #64748b;
+    font-weight: 500;
+    text-align: center;
+  }
+
+  @media (max-width: 680px) {
+    .channel-connect-card {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 1.5rem;
+      padding: 1.25rem;
+    }
+    .channel-qr-pane {
+      align-items: center;
+      padding-top: 0.5rem;
+      border-top: 1px solid #e2e8f0;
+    }
+  }
+
   .agent-protocols-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -311,5 +537,135 @@ curl -s http://10.131.43.83:4321/api/v1/events.json | jq .</code></pre>
   .p-title {
     margin-left: 0.4rem;
     color: #334155;
+  }
+
+  /* Dark Mode for Agent Page */
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .channel-connect-card {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    border-color: #334155;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .channel-header-badge {
+    color: #7dd3fc;
+    background: rgba(14, 165, 233, 0.18);
+    border-color: rgba(56, 189, 248, 0.35);
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .channel-connect-card h2 {
+    color: #f8fafc;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .channel-desc {
+    color: #cbd5e1;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .channel-meta-grid {
+    background: #0f172a;
+    border-color: #334155;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .channel-meta-item .meta-label {
+    color: #94a3b8;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .channel-meta-item .meta-value {
+    color: #f1f5f9;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .channel-url-copy {
+    color: #94a3b8;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .channel-url-copy a {
+    color: #60a5fa;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .channel-qr-frame {
+    border-color: #475569;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .channel-qr-hint {
+    color: #94a3b8;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .agent-badge-pill {
+    background: rgba(30, 58, 138, 0.28);
+    color: #93c5fd;
+    border-color: rgba(59, 130, 246, 0.35);
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .p-priority-must_read {
+    background: rgba(239, 68, 68, 0.18);
+    color: #fca5a5;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .p-priority-worth_knowing {
+    background: rgba(245, 158, 11, 0.18);
+    color: #fde68a;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .p-priority-skip {
+    background: rgba(100, 116, 139, 0.2);
+    color: #94a3b8;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .agent-card {
+    background: #1e293b;
+    border-color: #334155;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .agent-card h3 {
+    color: #f8fafc;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .agent-card p {
+    color: #cbd5e1;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .agent-btn-subtle {
+    background: #0f172a;
+    border-color: #334155;
+    color: #cbd5e1;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .agent-btn-subtle:hover {
+    background: #1e293b;
+    color: #f8fafc;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .agent-event-row {
+    background: #1e293b;
+    border-color: #334155;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .event-id {
+    color: #f8fafc;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .event-papers-count {
+    color: #94a3b8;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .event-meta {
+    color: #94a3b8;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .p-title {
+    color: #cbd5e1;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :global(body:not(:has(#site-theme-toggle:checked))) .channel-connect-card {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      border-color: #334155;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+    }
+    :global(body:not(:has(#site-theme-toggle:checked))) .channel-header-badge {
+      color: #7dd3fc;
+      background: rgba(14, 165, 233, 0.18);
+      border-color: rgba(56, 189, 248, 0.35);
+    }
+    :global(body:not(:has(#site-theme-toggle:checked))) .channel-connect-card h2 { color: #f8fafc; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .channel-desc { color: #cbd5e1; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .channel-meta-grid { background: #0f172a; border-color: #334155; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .channel-meta-item .meta-label { color: #94a3b8; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .channel-meta-item .meta-value { color: #f1f5f9; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .channel-url-copy { color: #94a3b8; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .channel-url-copy a { color: #60a5fa; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .channel-qr-frame { border-color: #475569; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .channel-qr-hint { color: #94a3b8; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .agent-badge-pill { background: rgba(30, 58, 138, 0.28); color: #93c5fd; border-color: rgba(59, 130, 246, 0.35); }
+    :global(body:not(:has(#site-theme-toggle:checked))) .p-priority-must_read { background: rgba(239, 68, 68, 0.18); color: #fca5a5; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .p-priority-worth_knowing { background: rgba(245, 158, 11, 0.18); color: #fde68a; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .p-priority-skip { background: rgba(100, 116, 139, 0.2); color: #94a3b8; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .agent-card { background: #1e293b; border-color: #334155; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3); }
+    :global(body:not(:has(#site-theme-toggle:checked))) .agent-card h3 { color: #f8fafc; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .agent-card p { color: #cbd5e1; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .agent-btn-subtle { background: #0f172a; border-color: #334155; color: #cbd5e1; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .agent-btn-subtle:hover { background: #1e293b; color: #f8fafc; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .agent-event-row { background: #1e293b; border-color: #334155; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .event-id { color: #f8fafc; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .event-papers-count { color: #94a3b8; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .event-meta { color: #94a3b8; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .p-title { color: #cbd5e1; }
   }
 </style>

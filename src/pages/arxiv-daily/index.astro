@@ -12,7 +12,7 @@ import DailyRadarPendingCard from "../../components/DailyRadarPendingCard.astro"
 import DailyRadarPrioritySection from "../../components/DailyRadarPrioritySection.astro";
 import DailyKnowledgePoint from "../../components/DailyKnowledgePoint.astro";
 import DailyDateSwitcher from "../../components/DailyDateSwitcher.astro";
-import archiveManifest from "../../data/arxiv-archives/manifest.json";
+import { formatAnnouncementInBeijing } from "../../domain/academic-domain.mjs";
 import { loadSiteConfig } from "../../lib/site-config";
 import "../../styles/global.css";
 
@@ -101,12 +101,9 @@ function pendingLabel(reason: string) {
 const priorityGroups = model.groups as AnyRecord;
 const isAnnouncementDay = ["announcement_day", "announcement_batch"].includes(model.edition.coverage_kind);
 const announcementWindow = model.edition.window as AnyRecord | undefined;
-const coverageLabel = isAnnouncementDay
-  ? `公告批次窗口 ${announcementWindow?.announcement_date ?? "未记录"}（${announcementWindow?.time_zone ?? "America/New_York"}，截止 ${announcementWindow?.cutoff_local_time ?? "14:00"}）`
-  : "最近提交样本";
 
 const currentDate = announcementWindow?.announcement_date ?? "2026-09-16";
-const currentWeekId = archiveManifest.latest_week_id ?? "2026-W39";
+const bjtInfo = formatAnnouncementInBeijing(currentDate, announcementWindow?.announcement_weekday);
 ---
 
 <!doctype html>
@@ -123,23 +120,28 @@ const currentWeekId = archiveManifest.latest_week_id ?? "2026-W39";
       <p class="eyebrow"><a href="/">{site.title}</a> · Daily Radar</p>
       <header class="reader-header">
         <h1><span class="language-primary">每日 arXiv 导读</span><span class="language-english" lang="en">Daily arXiv reading guide</span></h1>
-        <p class="reader-deck language-primary">高能天体物理前沿快讯 · 核心结论直达 · 原文论证溯源</p>
-        <p class="reader-deck language-english" lang="en">High-energy astrophysics alerts · Direct takeaways · Verbatim evidence trails</p>
-        <p class="record-label language-primary">{coverageLabel} · 更新时间：{generatedLabel} · <a href="/arxiv-weekly/" style="color: #2563eb; font-weight: 500;">查看每周总结 →</a> · <a href="#historical-archives" style="color: #4b5563; font-weight: 500;">往期日报归档 ↓</a></p>
-        <p class="record-label language-english" lang="en">{isAnnouncementDay ? `Announcement batch ending ${announcementWindow?.announcement_date ?? "unrecorded"} (${announcementWindow?.time_zone ?? "America/New_York"})` : "Recent-submission sample"} · refreshed {generatedLabel} · <a href="/arxiv-weekly/" style="color: #2563eb; font-weight: 500;">View Weekly Synthesis →</a> · <a href="#historical-archives" style="color: #4b5563; font-weight: 500;">Historical Archives ↓</a></p>
+        <p class="record-label language-primary">
+          <span class="record-meta-tag">{isAnnouncementDay ? `批次窗口 ${bjtInfo.beijingDate}（${bjtInfo.chineseWeekday} · 北京时间）` : "最近提交样本"}</span>
+          <span class="record-meta-sep">·</span>
+          <span>更新时间：{generatedLabel}</span>
+          <span class="record-meta-sep">·</span>
+          <a href="/arxiv-weekly/">查看每周总结 →</a>
+          <span class="record-meta-sep">·</span>
+          <a href="/arxiv-archives/">往期归档全库 →</a>
+        </p>
+        <p class="record-label language-english" lang="en">
+          <span>{isAnnouncementDay ? `Batch ${bjtInfo.beijingDate} (${bjtInfo.chineseWeekday} Beijing Time)` : "Sample"}</span>
+          <span class="record-meta-sep">·</span>
+          <span>Refreshed {generatedLabel}</span>
+          <span class="record-meta-sep">·</span>
+          <a href="/arxiv-weekly/">Weekly Synthesis →</a>
+          <span class="record-meta-sep">·</span>
+          <a href="#historical-archives">Historical Archives ↓</a>
+        </p>
       </header>
 
-      <!-- AI HOT Date Switcher Ribbon -->
-      <DailyDateSwitcher currentDate={currentDate} />
-
-      <!-- Quick Section Anchor Pills -->
-      <nav class="radar-pills-track" aria-label="文献直达导航">
-        <a href="#brief-drawer" class="filter-pill">📢 本期导读</a>
-        <a href="#must-read" class="filter-pill pill-must-read">⭐ 必读 ({priorityGroups.must_read.length})</a>
-        <a href="#worth-knowing" class="filter-pill pill-worth-knowing">📌 关注 ({priorityGroups.worth_knowing.length})</a>
-        <a href="#skim" class="filter-pill">⚡ 略读 ({priorityGroups.skip.length})</a>
-        <a href="#historical-archives" class="filter-pill">📅 往期归档</a>
-      </nav>
+      <!-- Consolidated AI HOT Date Switcher & Filter Ribbon -->
+      <DailyDateSwitcher currentDate={currentDate} groups={priorityGroups} />
 
       <!-- Collapsible Opening Brief Drawer -->
       <details class="radar-brief-drawer" id="brief-drawer">
@@ -222,91 +224,6 @@ const currentWeekId = archiveManifest.latest_week_id ?? "2026-W39";
           ) : null}
         </div>
       </details>
-
-      <section class="radar-section archive-history-section" id="historical-archives">
-        <p class="section-kicker"><span class="language-primary">往期归档</span><span class="language-english" lang="en">Past Editions</span></p>
-        <h2><span class="language-primary">往期日报与历史归档</span><span class="language-english" lang="en">Historical Daily Guide Archives</span></h2>
-        <p class="archive-history-intro"><span class="language-primary">按自然周聚类的历史日报归档。可直接点击进入对应日期的独立导读雷达：</span><span class="language-english" lang="en">Historical daily radar editions grouped by week. Click any date to enter its standalone guide.</span></p>
-
-        <!-- Weekly Archive Navigator -->
-        <nav class="archive-nav-card" aria-label="arXiv 历史归档导航">
-          <div class="archive-nav-top">
-            <div class="archive-nav-title-group">
-              <span class="archive-nav-title"><span class="language-primary">🗓️ 历史日报归档 · 按周索引</span><span class="language-english" lang="en">Daily Archives (Grouped Weekly)</span></span>
-              <span class="archive-nav-sub"><span class="language-primary">每日监测按周聚类，可查阅往期完整导读雷达：</span><span class="language-english" lang="en">Browse daily radar editions grouped by week:</span></span>
-            </div>
-            <a class="archive-jump-weekly-link" href="/arxiv-weekly/">
-              <span class="language-primary">📖 查看本周学术脉络周报 →</span>
-              <span class="language-english" lang="en">View Weekly Synthesis →</span>
-            </a>
-          </div>
-          <div class="archive-nav-weeks">
-            {archiveManifest.weeks.map((week) => (
-              <div class="archive-week-row">
-                <div class="archive-week-badge-wrap">
-                  <span class="archive-week-badge">{week.week_id}</span>
-                  <span class="archive-week-range">{week.date_range}</span>
-                </div>
-                <div class="archive-day-chips">
-                  {week.days.map((d) => (
-                    d.date === currentDate ? (
-                      <span class="archive-chip chip-active" id={`archive-${d.date}`} title="当前展示最新日报">
-                        <span class="chip-status-tag">当前展示</span>
-                        <strong class="chip-date">{d.date}</strong>
-                        <span class="chip-meta">{d.weekday} · {d.total_papers}篇</span>
-                      </span>
-                    ) : (
-                      <a class="archive-chip chip-link" id={`chip-${d.date}`} href={`/arxiv-daily/${d.date}/#archive-${d.date}`} title={`进入 ${d.date} 完整导读雷达`}>
-                        <strong class="chip-date">{d.date}</strong>
-                        <span class="chip-meta">{d.weekday} · {d.total_papers}篇 →</span>
-                      </a>
-                    )
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </nav>
-
-        {archiveManifest.weeks.filter((w) => w.week_id !== currentWeekId).length > 0 && (
-          <div class="prior-weeks-history-wrap">
-            <h3 class="history-subheading"><span class="language-primary">跨周历史归档（已沉淀为独立静态页面）</span><span class="language-english" lang="en">Standalone Archive Directory</span></h3>
-            <div class="past-weeks-directory-grid">
-              {archiveManifest.weeks.filter((w) => w.week_id !== currentWeekId).map((w) => (
-                <div class="past-week-card">
-                  <div class="past-week-card-header">
-                    <div class="past-week-title-wrap">
-                      <span class="past-week-badge">{w.week_id}</span>
-                      <strong class="past-week-range">{w.date_range}</strong>
-                    </div>
-                    <a class="past-week-link" href="/arxiv-weekly/">查看本周学术脉络周报 →</a>
-                  </div>
-                  {w.executive_summary && (
-                    <p class="past-week-summary-snip">{w.executive_summary.slice(0, 110)}...</p>
-                  )}
-                  <div class="past-week-days-list">
-                    {w.days.map((d) => (
-                      <a class="past-day-entry-row" href={`/arxiv-daily/${d.date}/`} id={`archive-${d.date}`}>
-                        <div class="entry-left">
-                          <span class="entry-date">📅 {d.date}</span>
-                          <span class="entry-weekday">({d.weekday})</span>
-                          <span class="entry-batch">{d.batch_id}</span>
-                        </div>
-                        <div class="entry-stats">
-                          <span class="stat-tag total">{d.total_papers} 篇</span>
-                          {d.must_read_count > 0 && <span class="stat-tag must">精读 {d.must_read_count}</span>}
-                          {d.worth_knowing_count > 0 && <span class="stat-tag worth">了解 {d.worth_knowing_count}</span>}
-                          <span class="entry-arrow">阅读独立导读 ↗</span>
-                        </div>
-                      </a>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-      </section>
     </main>
   </body>
 </html>

@@ -31,10 +31,24 @@ import {
 } from "./arxiv-daily.mjs";
 import { triageBatch } from "./arxiv-triage.mjs";
 import { extractPaperFigures } from "./arxiv-figures.mjs";
-import { defaultGatewayCircuitBreaker } from "./agent-core.mjs";
+import { defaultGatewayCircuitBreaker, defaultModelHealthRegistry, normalizeModelName } from "./agent-core.mjs";
 
-const DEFAULT_BASE_URL = process.env.OPENAI_BASE_URL || process.env.CCNU_API_BASE || "https://api.ccnulaowu.online/v1";
-const DEFAULT_API_KEY = process.env.WU_API_KEY || process.env.OPENAI_API_KEY || "";
+function resolveDefaultBaseUrl() {
+  const envUrl = process.env.OPENAI_BASE_URL;
+  if (envUrl && !envUrl.includes("ccnulaowu") && !envUrl.includes("67.230")) {
+    return envUrl;
+  }
+  return "http://localhost:8318/v1";
+}
+const DEFAULT_BASE_URL = resolveDefaultBaseUrl();
+function resolveDefaultApiKey() {
+  const ioaKey = process.env.IOA_API_KEY;
+  if (ioaKey) return ioaKey;
+  const legacy = process.env.OPENAI_API_KEY;
+  if (legacy && !legacy.startsWith("sk-cpa")) return legacy;
+  return "";
+}
+const DEFAULT_API_KEY = resolveDefaultApiKey();
 const DEFAULT_MODEL = process.env.AI_MODEL || "gpt-6-luna";
 const DEFAULT_EFFORT = process.env.REASONING_EFFORT || "medium";
 const DEFAULT_CONCURRENCY = Number(process.env.AI_CONCURRENCY) || 2;
@@ -44,13 +58,13 @@ const FALLBACK_API_KEY = process.env.FALLBACK_OPENAI_API_KEY || process.env.ZHAN
 export const FALLBACK_MODEL = process.env.FALLBACK_AI_MODEL || "gpt-6.1-sol";
 const DEFAULT_TRIAGE_MODEL = process.env.AI_MODEL_TRIAGE || process.env.AI_MODEL_SKIM || "gpt-6-luna";
 const DEFAULT_BODY_MODEL = process.env.AI_MODEL_BODY || process.env.AI_MODEL_READING || "gpt-6.1-sol";
-const DEFAULT_TRIAGE_FALLBACKS = (process.env.AI_TRIAGE_FALLBACK_MODELS || "gpt-6.1-sol,gpt-6-sol")
+const DEFAULT_TRIAGE_FALLBACKS = (process.env.AI_TRIAGE_FALLBACK_MODELS || "gemini-3.5-flash-lite,claude-sonnet-4-6")
   .split(",")
-  .map((s) => s.trim())
+  .map((s) => normalizeModelName(s.trim()))
   .filter(Boolean);
-const DEFAULT_BODY_FALLBACKS = (process.env.AI_BODY_FALLBACK_MODELS || "gpt-6-sol,gpt-6-luna")
+const DEFAULT_BODY_FALLBACKS = (process.env.AI_BODY_FALLBACK_MODELS || "gemini-3.8-flash-high,claude-opus-4-6-thinking")
   .split(",")
-  .map((s) => s.trim())
+  .map((s) => normalizeModelName(s.trim()))
   .filter(Boolean);
 const QUEUE_SCHEMA_VERSION = "arxiv-ai-screening-queue-v1";
 const DEFAULT_ARCHIVE_ROOT = fileURLToPath(new URL("../src/data/arxiv-archives", import.meta.url));
@@ -237,7 +251,7 @@ async function executeChatCompletion({
   const pool = [];
   if (baseUrl && apiKey) {
     pool.push({
-      name: "Primary (ccnulaowu)",
+      name: "Primary (local-8318)",
       url: `${baseUrl.replace(/\/+$/u, "")}/chat/completions`,
       key: apiKey,
     });
@@ -250,14 +264,16 @@ async function executeChatCompletion({
     });
   }
 
-  if (pool.length === 0) throw new Error("Missing API key; set WU_API_KEY or OPENAI_API_KEY");
+  if (pool.length === 0) throw new Error("Missing API key; set IOA_API_KEY, WU_API_KEY or OPENAI_API_KEY");
 
-  const candidates = [model || DEFAULT_MODEL];
+  const rawCandidates = [normalizeModelName(model || DEFAULT_MODEL)];
   if (Array.isArray(fallbackModels)) {
     for (const fb of fallbackModels) {
-      if (fb && !candidates.includes(fb)) candidates.push(fb);
+      const norm = normalizeModelName(fb);
+      if (norm && !rawCandidates.includes(norm)) rawCandidates.push(norm);
     }
   }
+  const candidates = defaultModelHealthRegistry.sortCandidates(rawCandidates);
 
   let lastError;
   for (let attempt = 1; attempt <= retries; attempt++) {
@@ -285,6 +301,7 @@ async function executeChatCompletion({
         try {
           const result = await tryCall(provider.url, provider.key, candidateModel, candidateEffort);
           defaultGatewayCircuitBreaker.recordSuccess(provider.name);
+          defaultModelHealthRegistry.recordSuccess(candidateModel);
           if (!isPrimary) {
             console.log(`[AI Analyzer] ✓ 主模型不可用，已通过供应商 ${provider.name} 降级至候选模型 (${candidateModel}) 成功返回`);
           }
@@ -298,6 +315,7 @@ async function executeChatCompletion({
         }
       }
 
+      defaultModelHealthRegistry.recordFailure(candidateModel, lastError);
       if (mIdx < candidates.length - 1) {
         console.warn(`[AI Analyzer] 所有供应商对模型 (${candidateModel}) 均不可用，正在降级切换至候选模型 (${candidates[mIdx + 1]})...`);
       }
@@ -1603,7 +1621,7 @@ export async function runAiAnalyzer({
       if (request.prompt.length > MAX_MODEL_PROMPT_CHARS) throw new Error(`Model prompt exceeds ${MAX_MODEL_PROMPT_CHARS} characters`);
       return unboundedModelCall(request);
     };
-    if (selected.length > 0 && !modelRunner && !apiKey) throw new Error("Missing API key; set WU_API_KEY or OPENAI_API_KEY");
+    if (selected.length > 0 && !modelRunner && !apiKey) throw new Error("Missing API key; set IOA_API_KEY, WU_API_KEY or OPENAI_API_KEY");
 
     for (const item of selected) {
       item.attempts = Number(item.attempts || 0) + 1;

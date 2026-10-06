@@ -12,8 +12,22 @@ try {
   }
 } catch {}
 
-const DEFAULT_BASE_URL = process.env.OPENAI_BASE_URL || process.env.CCNU_API_BASE || "https://api.ccnulaowu.online/v1";
-const DEFAULT_API_KEY = process.env.WU_API_KEY || process.env.OPENAI_API_KEY || "";
+function resolveDefaultBaseUrl() {
+  const envUrl = process.env.OPENAI_BASE_URL;
+  if (envUrl && !envUrl.includes("ccnulaowu") && !envUrl.includes("67.230")) {
+    return envUrl;
+  }
+  return "http://localhost:8318/v1";
+}
+const DEFAULT_BASE_URL = resolveDefaultBaseUrl();
+function resolveDefaultApiKey() {
+  const ioaKey = process.env.IOA_API_KEY;
+  if (ioaKey) return ioaKey;
+  const legacy = process.env.OPENAI_API_KEY;
+  if (legacy && !legacy.startsWith("sk-cpa")) return legacy;
+  return "";
+}
+const DEFAULT_API_KEY = resolveDefaultApiKey();
 const FALLBACK_BASE_URL = process.env.FALLBACK_OPENAI_BASE_URL || "";
 const FALLBACK_API_KEY = process.env.FALLBACK_OPENAI_API_KEY || process.env.ZHANG_API_KEY || "";
 const DEFAULT_MODEL = process.env.AI_MODEL || "gpt-6-luna";
@@ -153,20 +167,21 @@ export async function executeChatCompletion({
 
   const pool = [];
   if (baseUrl && apiKey) {
+    const isLocal = baseUrl.includes("localhost") || baseUrl.includes("127.0.0.1");
     pool.push({
-      name: "Primary (ccnulaowu)",
+      name: isLocal ? "Primary (local-8318)" : "Primary",
       url: `${baseUrl.replace(/\/+$/u, "")}/chat/completions`,
       key: apiKey,
     });
   }
   if (FALLBACK_BASE_URL && FALLBACK_API_KEY && (FALLBACK_BASE_URL !== baseUrl || FALLBACK_API_KEY !== apiKey)) {
     pool.push({
-      name: "Secondary (gateway-67)",
+      name: "Secondary (fallback)",
       url: `${FALLBACK_BASE_URL.replace(/\/+$/u, "")}/chat/completions`,
       key: FALLBACK_API_KEY,
     });
   }
-  if (pool.length === 0) throw new Error("Missing API key; set WU_API_KEY or OPENAI_API_KEY");
+  if (pool.length === 0) throw new Error("Missing API key; set IOA_API_KEY, WU_API_KEY or OPENAI_API_KEY");
 
   const candidateModels = [model, "gpt-6-sol", "gpt-6-luna"].filter((m, i, arr) => arr.indexOf(m) === i);
   let lastError;
@@ -306,7 +321,7 @@ export async function runWeeklySummary({
   writeArchives = null,
 } = {}) {
   if (!apiKey && generateSummary === callChatCompletion) {
-    throw new Error("缺少 API Key。请设置环境变量 WU_API_KEY 或 OPENAI_API_KEY。");
+    throw new Error("缺少 API Key。请设置环境变量 IOA_API_KEY、WU_API_KEY 或 OPENAI_API_KEY。");
   }
 
   const resolvedOutput = resolve(outputPath);

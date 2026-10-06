@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { spawnSync } from "node:child_process";
-import { cleanMessageContent, claimMessage, startOfficialBot } from "../scripts/qq-official-bot.mjs";
+import { cleanMessageContent, claimMessage, startOfficialBot, appendChannelShareLinkToReply } from "../scripts/qq-official-bot.mjs";
 import { createSessionMemory, SESSION_TTL_MS } from "../scripts/qq-memory.mjs";
 import { createUserManager } from "../scripts/qq-users.mjs";
 import { createTemporaryWorkspace } from "./helpers/temporary-workspace.mjs";
@@ -14,6 +14,31 @@ test("cleanMessageContent strips QQ bot mentions and whitespace", () => {
   assert.equal(cleanMessageContent("@astrolineage 喷流破茧模型"), "喷流破茧模型");
   assert.equal(cleanMessageContent(""), "");
   assert.equal(cleanMessageContent(null), "");
+});
+
+test("outgoing bot replies that contain external links also include the configured QQ channel link", async () => {
+  let lookups = 0;
+  const response = await appendChannelShareLinkToReply(
+    "这篇论文见 https://arxiv.org/abs/2609.00001",
+    async () => { lookups++; return "https://pd.qq.com/s/astrolineage"; },
+  );
+  assert.equal(response, "这篇论文见 https://arxiv.org/abs/2609.00001\n\nAstroLineage QQ 频道：\nhttps://pd.qq.com/s/astrolineage");
+  assert.equal(lookups, 1);
+});
+
+test("outgoing replies do not add duplicate or guessed channel links", async () => {
+  let lookups = 0;
+  const getChannelUrl = async () => { lookups++; return "https://pd.qq.com/s/astrolineage"; };
+  const plain = "结论是该机制仍未被观测确认。";
+  assert.equal(await appendChannelShareLinkToReply(plain, getChannelUrl), plain);
+  assert.equal(lookups, 0);
+
+  const alreadyLinked = "论文 https://arxiv.org/abs/2609.00001\nhttps://pd.qq.com/s/astrolineage";
+  assert.equal(await appendChannelShareLinkToReply(alreadyLinked, getChannelUrl), alreadyLinked);
+  assert.equal(lookups, 1);
+
+  const unavailable = "论文 https://arxiv.org/abs/2609.00001";
+  assert.equal(await appendChannelShareLinkToReply(unavailable, async () => null), unavailable);
 });
 
 test("loadAcademicKnowledge uses project directions and does not invent runtime state", async () => {
@@ -180,6 +205,30 @@ test("C2C message records userOpenid and responds to /whoami and /test-c2c", asy
   assert.match(memory.get("c2c_user-beta").at(-1).content, /双向连通状态：正常/);
 });
 
+test("C2C academic replies append the channel link when the answer contains a paper link", async (t) => {
+  class Socket extends EventTarget {
+    static OPEN = 1;
+    readyState = 1;
+    send() {}
+    close() { this.readyState = 3; }
+  }
+  const { path } = await createTemporaryWorkspace("astro-lineage-qq-link-reply-", t);
+  const memory = createSessionMemory(path);
+  const users = createUserManager({ filePath: join(path, "users.json"), root: path });
+  const channelUrl = "https://pd.qq.com/s/astrolineage";
+  const ws = await startOfficialBot({
+    memory, users, WebSocketImpl: Socket, gateway: async () => "wss://example.com",
+    authorize: async () => "fake-test-token", answer: async () => "论文：https://arxiv.org/abs/2609.00001",
+    channelLink: async () => channelUrl, dryRun: true,
+  });
+  const message = { op: 0, t: "C2C_MESSAGE_CREATE", d: { id: "link-reply-1", content: "给我论文链接", author: { user_openid: "user-link" } } };
+  ws.dispatchEvent(new MessageEvent("message", { data: JSON.stringify(message) }));
+  await new Promise(resolve => setImmediate(resolve));
+  const sentText = memory.get("c2c_user-link").at(-1).content;
+  assert.match(sentText, /https:\/\/arxiv\.org\/abs\/2609\.00001/u);
+  assert.match(sentText, /AstroLineage QQ 频道：\nhttps:\/\/pd\.qq\.com\/s\/astrolineage/u);
+});
+
 test("alertAdmin targets admin openid with structured alert content", async () => {
   const { alertAdmin } = await import("../scripts/qq-send.mjs");
   const origEnv = process.env.QQ_ADMIN_OPENID;
@@ -194,4 +243,3 @@ test("alertAdmin targets admin openid with structured alert content", async () =
     else delete process.env.QQ_ADMIN_OPENID;
   }
 });
-

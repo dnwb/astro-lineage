@@ -341,6 +341,26 @@ export function selectPaperTitleCandidate(item, fallbackCandidate) {
   const problem = sourceText(analysis.problem);
   const result = sourceText(analysis.result);
   const object = namedObject(title);
+  const resultSentences = sourceSentences(result);
+  const resultClaimSentenceIndex = resultSentences.findIndex(sentence => sentence.includes("发现三个候选弥散结构"));
+  const resultSentence = resultClaimSentenceIndex < 0 ? "" : resultSentences[resultClaimSentenceIndex];
+  const resultClaimIndex = resultSentence.indexOf("发现三个候选弥散结构");
+  const resultScopeBefore = resultClaimIndex < 0 ? "" : resultSentence.slice(0, resultClaimIndex)
+    .split(/[；;]/u).at(-1).split(/[，,]/u).map(clause => clause.trim()).filter(isScopedQualifierClause).join("，");
+  const resultTail = resultClaimIndex < 0 ? "" : resultSentence.slice(resultClaimIndex + "发现三个候选弥散结构".length).split(/[；;]/u)[0]
+    .replace(/^[，,；;。]+/u, "").replace(/[。！？?]+$/u, "").trim();
+  const followingSentence = resultClaimSentenceIndex < 0 ? "" : resultSentences[resultClaimSentenceIndex + 1] || "";
+  const hasFollowingScope = Boolean(followingSentence && SCOPED_CONDITION.test(followingSentence));
+  const ambiguousLaterScope = hasFollowingScope && (() => {
+    const normalized = followingSentence.replace(/^(?:但|不过|然而)[，,、]?\s*/u, "");
+    return !isScopedQualifierClause(followingSentence) && !/^(?:这一|该)(?:发现|结果|结论)|^这些候选/u.test(normalized);
+  })();
+  const laterScopes = hasFollowingScope && !ambiguousLaterScope
+    ? [followingSentence.replace(/[。！？?]+$/u, "").trim()] : [];
+  const resultScopeAfter = [
+    resultTail && SCOPED_CONDITION.test(resultTail) ? resultTail : "",
+    ...laterScopes,
+  ].filter(Boolean).join("，");
   const checks = [
     [
       /blue supergiant/iu.test(title) && /collapsar/iu.test(title) && /GRB\s*220627A/iu.test(title),
@@ -348,7 +368,10 @@ export function selectPaperTitleCandidate(item, fallbackCandidate) {
     ],
     [
       /V4641\s*Sgr/iu.test(`${title} ${problem}`) && /X-ray/iu.test(title) && /发现三个候选弥散结构/iu.test(result),
-      () => "V4641 Sgr附近发现三处候选X射线弥散结构",
+      () => {
+        if (ambiguousLaterScope) throw new Error("CHANNEL_TITLE_PAPER_CONDITION_AMBIGUOUS");
+        return `V4641 Sgr附近${resultScopeBefore ? `${resultScopeBefore}，` : ""}发现三处候选X射线弥散结构${resultScopeAfter ? `，${resultScopeAfter}` : ""}`;
+      },
     ],
     [
       /V4641\s*Sgr/iu.test(`${title} ${problem}`) && /jet/iu.test(title) && /沿射电喷流轴/iu.test(result) && /20\s*[–-]\s*25\s*pc/iu.test(result),

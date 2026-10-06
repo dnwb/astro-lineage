@@ -410,6 +410,55 @@ test("paper result titles preserve a leading sample condition across a comma", (
   );
 });
 
+test("V4641 Sgr's fixed headline preserves a scoped low-background condition", () => {
+  const title = "Diffuse X-ray emission around V4641 Sgr";
+  const problem = "搜索V4641 Sgr附近的X射线弥散结构。";
+  assert.equal(
+    derivePaperTitleCandidate({
+      title,
+      analysis: { analysis: {
+        problem,
+        result: "仅在低背景模型下，发现三个候选弥散结构。",
+      } },
+    }),
+    "V4641 Sgr附近仅在低背景模型下，发现三处候选X射线弥散结构",
+  );
+  assert.equal(
+    derivePaperTitleCandidate({
+      title,
+      analysis: { analysis: { problem, result: "作者报告，仅在低背景模型下，发现三个候选弥散结构。" } },
+    }),
+    "V4641 Sgr附近仅在低背景模型下，发现三处候选X射线弥散结构",
+  );
+  assert.equal(
+    derivePaperTitleCandidate({
+      title,
+      analysis: { analysis: { problem, result: "发现三个候选弥散结构，这一发现仅在低背景模型下成立。" } },
+    }),
+    "V4641 Sgr附近发现三处候选X射线弥散结构，这一发现仅在低背景模型下成立",
+  );
+  assert.equal(
+    derivePaperTitleCandidate({
+      title,
+      analysis: { analysis: { problem, result: "发现三个候选弥散结构。这一发现仅在低背景模型下成立。" } },
+    }),
+    "V4641 Sgr附近发现三处候选X射线弥散结构，这一发现仅在低背景模型下成立",
+  );
+});
+
+test("V4641 Sgr headline does not carry a condition across a semicolon", () => {
+  assert.equal(
+    derivePaperTitleCandidate({
+      title: "Diffuse X-ray emission around V4641 Sgr",
+      analysis: { analysis: {
+        problem: "搜索V4641 Sgr附近的X射线弥散结构。",
+        result: "仅在高背景模型下，未见显著信号；发现三个候选弥散结构。",
+      } },
+    }),
+    "V4641 Sgr附近发现三处候选X射线弥散结构",
+  );
+});
+
 test("daily headline generation keeps source conditions instead of selecting only the final comma clause", () => {
   const paper = {
     arxiv_id: "2610.02889",

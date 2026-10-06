@@ -109,6 +109,36 @@ test("history preview conserves rows and uses read-only inventory/detail", async
   assert.ok(preview.rows[0].risk_flags.includes("body_change_outside_title_only_scope"));
 });
 
+test("history preview marks body drift after the matching first line as pending", async () => {
+  const { ledger, feed, sources } = fixture();
+  sources[DAILY] = { ...sources[DAILY], title: feed.title, firstLine: "old body" };
+  feed.markdown_content = `old body\nChanged paragraph\n\n${markerFor(DAILY, ledger.items[DAILY].hash)}`;
+
+  const preview = await previewTitleHistory({ ledger, sourceBinding, currentBinding: sourceBinding,
+    sources, listInventory: async () => ({ complete: true, feeds: [feed] }),
+    getDetail: async () => feed });
+
+  assert.equal(preview.rows[0].status, "pending");
+  assert.equal(preview.rows[0].classification, "remote_drift");
+  assert.equal(preview.rows[0].reason, "remote_body_drift");
+});
+
+test("history preview treats a missing managed-body marker as remote drift", async () => {
+  for (const marker of ["", `\n\n${markerFor("daily:other", "0".repeat(64))}`]) {
+    const { ledger, feed, sources } = fixture();
+    sources[DAILY] = { ...sources[DAILY], title: feed.title, firstLine: "old body" };
+    feed.markdown_content = `old body${marker}`;
+
+    const preview = await previewTitleHistory({ ledger, sourceBinding, currentBinding: sourceBinding,
+      sources, listInventory: async () => ({ complete: true, feeds: [feed] }),
+      getDetail: async () => feed });
+
+    assert.equal(preview.rows[0].status, "pending");
+    assert.equal(preview.rows[0].classification, "remote_drift");
+    assert.equal(preview.rows[0].reason, "remote_body_drift");
+  }
+});
+
 test("history preview surfaces a paper-title human-review diagnostic", async () => {
   const identity = "daily:2609.31850v1";
   const body = "paper body";

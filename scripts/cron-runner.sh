@@ -18,6 +18,13 @@ cd "${PROJECT_DIR}"
 # 确保 Node 与 npm 全局路径在精简的 cron 环境中可用
 export PATH="/home/long/.npm-global/bin:/usr/local/bin:/usr/bin:/bin:/home/long/.local/bin:${PATH:-}"
 
+if [ -f "${PROJECT_DIR}/.env" ]; then
+  set -a
+  # shellcheck disable=SC1091
+  source "${PROJECT_DIR}/.env"
+  set +a
+fi
+
 TASK="${1:-auto}"
 TIMESTAMP="$(TZ="Asia/Shanghai" date '+%Y-%m-%d %H:%M:%S CST')"
 # ponytail: one host-wide runner lock; split locks only if independent builds are needed.

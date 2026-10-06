@@ -115,15 +115,23 @@ const dateCoverage = weeks.length > 0
                   )}
                 </div>
                 <div class="week-card-actions">
-                  <a class="btn-read-weekly" href={`/arxiv-weekly/${w.week_id}/`}>
-                    <span>阅读完整周报</span>
-                    <span aria-hidden="true">→</span>
-                  </a>
+                  {w.has_weekly_summary ? (
+                    <a class="btn-read-weekly" href={`/arxiv-weekly/${w.week_id}/`}>
+                      <span>阅读完整周报</span>
+                      <span aria-hidden="true">→</span>
+                    </a>
+                  ) : (
+                    <span class="pill-stat">本周进行中</span>
+                  )}
                 </div>
               </div>
 
               <h3 class="weekly-card-headline">
-                <a href={`/arxiv-weekly/${w.week_id}/`}>{w.title || "高能天体物理 arXiv 每周学术脉络与前沿精选"}</a>
+                {w.has_weekly_summary ? (
+                  <a href={`/arxiv-weekly/${w.week_id}/`}>{w.title || "高能天体物理 arXiv 每周学术脉络与前沿精选"}</a>
+                ) : (
+                  <span>{w.title || "高能天体物理 arXiv 每周学术脉络"}</span>
+                )}
               </h3>
 
               {w.executive_summary && (
@@ -183,9 +191,15 @@ const dateCoverage = weeks.length > 0
                   <span class="block-week-id">{w.week_id}</span>
                   <strong class="block-date-range">{w.date_range}</strong>
                 </div>
-                <a class="block-weekly-link" href={`/arxiv-weekly/${w.week_id}/`}>
-                  查阅该周学术脉络周报 →
-                </a>
+                {w.has_weekly_summary ? (
+                  <a class="block-weekly-link" href={`/arxiv-weekly/${w.week_id}/`}>
+                    查阅该周学术脉络周报 →
+                  </a>
+                ) : (
+                  <span class="block-weekly-link" style="opacity: 0.6; cursor: default;">
+                    本周进行中（周日自动汇总）
+                  </span>
+                )}
               </div>
 
               <div class="daily-entries-table">

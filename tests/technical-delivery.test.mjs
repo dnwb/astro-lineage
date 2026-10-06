@@ -72,7 +72,7 @@ const archivedDailyRoutes = existsSync(manifestPath)
   ? JSON.parse(readFileSync(manifestPath, "utf8")).weeks.flatMap((w) => w.days.map((d) => `/arxiv-daily/${d.date}/`))
   : [];
 const archivedWeeklyRoutes = existsSync(manifestPath)
-  ? JSON.parse(readFileSync(manifestPath, "utf8")).weeks.map((w) => `/arxiv-weekly/${w.week_id}/`)
+  ? JSON.parse(readFileSync(manifestPath, "utf8")).weeks.filter((w) => w.has_weekly_summary && w.weekly_data_file).map((w) => `/arxiv-weekly/${w.week_id}/`)
   : [];
 const expectedRoutes = [
   "/",

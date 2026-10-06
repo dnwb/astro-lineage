@@ -31,7 +31,9 @@ import {
 } from "./arxiv-daily.mjs";
 import { triageBatch } from "./arxiv-triage.mjs";
 import { extractPaperFigures } from "./arxiv-figures.mjs";
-import { defaultGatewayCircuitBreaker, defaultModelHealthRegistry, normalizeModelName } from "./agent-core.mjs";
+import { defaultGatewayCircuitBreaker, defaultModelHealthRegistry, normalizeModelName, loadProjectEnv } from "./agent-core.mjs";
+
+loadProjectEnv();
 
 function resolveDefaultBaseUrl() {
   const envUrl = process.env.OPENAI_BASE_URL;
@@ -385,7 +387,10 @@ function buildBodyChunkPrompt(entry, source, text, index, total) {
 }
 
 export function checkedBodyChunk(output, text) {
-  if (typeof output?.summary !== "string" || !output.summary.trim() || output.summary.length > 800) throw new Error("Body portion lacks a summary of at most 800 characters");
+  if (typeof output?.summary !== "string" || !output.summary.trim()) throw new Error("Body portion lacks a summary");
+  if (output.summary.length > 800) {
+    output.summary = output.summary.slice(0, 800);
+  }
   if (typeof output.quote !== "string" || normalizeWhitespace(output.quote).length < 12) throw new Error("Body portion quote must contain 12–240 source characters");
   let quote = output.quote.trim();
   if (quote.length > 240) {

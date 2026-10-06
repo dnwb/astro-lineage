@@ -133,7 +133,7 @@ const exportMarkdown = `# 高能天体物理 arXiv 每周学术脉络 · ${weekl
 周期: ${weeklyData.week_id} (${weeklyData.date_range})
 整理时间: ${generatedLabel}
 
-## 宏观学术脉络综述
+## 本周综述
 ${weeklyData.executive_summary}
 
 ## 前沿专题动态与物理突破
@@ -175,7 +175,7 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
           {weekDays.length > 0 && (
             <span class="meta-badge daily-count-badge">含 {weekDays.length} 个每日监测批次</span>
           )}
-          <a class="meta-link" href="#daily-breakdown">本周每日归档 ↓</a>
+          <a class="meta-link" href="#daily-breakdown">必读文献目录 ↓</a>
         </div>
 
         <details class="weekly-markdown-export">
@@ -238,8 +238,8 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
       <!-- Executive Summary -->
       <section class="weekly-section executive-section" id="executive-summary">
         <div class="section-heading">
-          <p class="section-kicker"><span class="language-primary">全景宏观</span><span class="language-english" lang="en">Big Picture</span></p>
-          <h2><span class="language-primary">宏观学术脉络综述</span><span class="language-english" lang="en">Executive Summary</span></h2>
+          <p class="section-kicker"><span class="language-primary">全景</span><span class="language-english" lang="en">Overview</span></p>
+          <h2><span class="language-primary">本周综述</span><span class="language-english" lang="en">Weekly Summary</span></h2>
         </div>
         <div class="executive-content-card">
           {structuredExecutive.lead && (
@@ -273,12 +273,15 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
             </div>
           )}
         </div>
-
-        <WeeklyDomainMatrix matrixRows={matrixRows} paperDailyDateMap={paperDailyDateMap} />
       </section>
 
-      <!-- Daily Breakdown Table in this Week (本周每日批次与日报归档) -->
+      <!-- Daily Breakdown Table in this Week (必读文献目录) -->
       <WeeklyDailyTable weekDays={weekDays} latestDailyDate={archiveManifest.latest_daily_date} />
+
+      <!-- Domain Matrix (领域研判矩阵) -->
+      <section class="weekly-section matrix-section" id="domain-matrix">
+        <WeeklyDomainMatrix matrixRows={matrixRows} paperDailyDateMap={paperDailyDateMap} />
+      </section>
 
       <!-- Thematic Highlights -->
       {weeklyData.thematic_highlights && weeklyData.thematic_highlights.length > 0 && (

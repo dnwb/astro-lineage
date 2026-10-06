@@ -372,7 +372,7 @@ const dynamicCalendarCss = dynamicMonthCss + "\n" + dynamicDateCss;
                       if (cell.empty) return <div class="cal-cell cal-cell-empty" />;
                       if (!cell.hasEvents) {
                         return (
-                          <div class="cal-cell cal-cell-idle" title={`北京时间 ${cell.dateStr}（${cell.weekday}）无爆发事件研读`}>
+                          <div class="cal-cell cal-cell-idle" title={`${cell.dateStr}（${cell.weekday}）无爆发事件研读`}>
                             <span class="day-num">{cell.day}</span>
                           </div>
                         );
@@ -420,7 +420,7 @@ const dynamicCalendarCss = dynamicMonthCss + "\n" + dynamicDateCss;
                         <div class="detail-header-card">
                           <div class="detail-header-main">
                             <div class="detail-date-title">
-                              <span class="detail-date-badge font-mono">📅 {dStr}（{bjtWeekday} · 北京时间）</span>
+                              <span class="detail-date-badge font-mono">📅 {dStr}（{bjtWeekday}）</span>
                               <span class="detail-count-pill font-mono">当日研读 {eventsOnDate.length} 个高能事件</span>
                             </div>
                             <span class="detail-us-batch font-mono">对应 arXiv 美东批次：{usDate}</span>
@@ -530,7 +530,7 @@ const dynamicCalendarCss = dynamicMonthCss + "\n" + dynamicDateCss;
                   <div class="station-marker-row">
                     <div class="station-pulse-node" />
                     <div class="station-badge">
-                      <span class="station-bjt-date font-mono">📅 {dateStr}（{bjtWeekday} · 北京时间）</span>
+                      <span class="station-bjt-date font-mono">📅 {dateStr}（{bjtWeekday}）</span>
                       <span class="station-us-date font-mono">arXiv 美东批次：{usDate}</span>
                       <span class="station-count-pill">共研读 {eventsOnDate.length} 个高能事件</span>
                     </div>

@@ -82,6 +82,18 @@ export function getIsoWeek(dateStr) {
   return `${target.getUTCFullYear()}-W${String(weekNumber).padStart(2, "0")}`;
 }
 
+export function getAnnouncementWeekId(dateStr, weekday) {
+  const d = new Date(dateStr + "T12:00:00Z");
+  const isSunday = weekday === "Sun" || d.getUTCDay() === 0;
+  // arXiv announcements released on Sunday evening (20:00 US EDT) arrive on Monday morning (08:00 BJT),
+  // which belongs to the incoming academic week (W+1), not the closed preceding week.
+  if (isSunday && dateStr >= "2026-10-04") {
+    const nextDay = new Date(d.valueOf() + 86400000).toISOString().slice(0, 10);
+    return getIsoWeek(nextDay);
+  }
+  return getIsoWeek(dateStr);
+}
+
 export function getWeekMondayAndSunday(weekId) {
   const [yearStr, weekStr] = weekId.split("-W");
   const year = parseInt(yearStr, 10);
@@ -285,9 +297,9 @@ async function syncArxivArchivesWithLockHeld({
     }
     radar = projectHistoricalAnalyses(feed, radar, historicalAnalyses, date);
     radar.opening_brief = buildOpeningBrief(feed, radar);
-    const weekId = getIsoWeek(date);
     const window = feed.window || radar.edition?.window || {};
     const weekday = window.announcement_weekday || new Date(date + "T12:00:00Z").toLocaleDateString("en-US", { weekday: "short" });
+    const weekId = getAnnouncementWeekId(date, weekday);
     const archiveBatchId = batchId;
 
     const validation = validateDailyRadarPayload(feed, radar, { visibleWorkIds: [] });
@@ -373,7 +385,7 @@ async function syncArxivArchivesWithLockHeld({
       pending_count: model.pending?.length || 0,
       brief_status: model.opening_brief?.status || "unavailable",
       brief_intro: model.opening_brief?.intro || (highlights[0] ? `重点关注 ${highlights[0].title}` : "常规高能天体物理监测批次"),
-      highlights: highlights.slice(0, 3),
+      highlights: highlights.slice(0, 10),
       data_file: `daily/${date}.json`,
     });
   }

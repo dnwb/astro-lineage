@@ -44,7 +44,7 @@ const recentDays = allDays.slice(0, 8);
               <a
                 class={`date-pill ${isCurrent ? "active" : ""} ${isLatest ? "pill-latest" : ""}`}
                 href={targetUrl}
-                title={`切换至 ${dInfo.beijingDate} (${dInfo.chineseWeekday}，北京时间) 导读雷达`}
+                title={`切换至 ${dInfo.beijingDate} (${dInfo.chineseWeekday}) 导读雷达`}
                 aria-current={isCurrent ? "page" : undefined}
               >
                 {isLatest && <span class="pill-fire-badge">最新</span>}

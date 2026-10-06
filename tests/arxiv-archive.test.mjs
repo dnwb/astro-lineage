@@ -4,7 +4,7 @@ import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { test } from "node:test";
-import { getIsoWeek, getWeekMondayAndSunday, getDirtyWeeks, markWeekDirty, clearDirtyWeek, clearAllDirtyWeeks } from "../scripts/arxiv-archive.mjs";
+import { getIsoWeek, getAnnouncementWeekId, getWeekMondayAndSunday, getDirtyWeeks, markWeekDirty, clearDirtyWeek, clearAllDirtyWeeks } from "../scripts/arxiv-archive.mjs";
 
 const projectRoot = fileURLToPath(new URL("..", import.meta.url));
 const manifestUrl = new URL("../src/data/arxiv-archives/manifest.json", import.meta.url);
@@ -16,6 +16,10 @@ test("ISO week and date range calculations conform to astronomical announcement 
   assert.equal(getIsoWeek("2026-09-15"), "2026-W38");
   assert.equal(getIsoWeek("2026-09-16"), "2026-W38");
   assert.equal(getIsoWeek("2026-01-01"), "2026-W01");
+
+  assert.equal(getAnnouncementWeekId("2026-10-04", "Sun"), "2026-W41");
+  assert.equal(getAnnouncementWeekId("2026-10-05", "Mon"), "2026-W41");
+  assert.equal(getAnnouncementWeekId("2026-10-01", "Thu"), "2026-W40");
 
   const range = getWeekMondayAndSunday("2026-W38");
   assert.equal(range.monday, "2026-09-14");
@@ -39,7 +43,7 @@ test("archive manifest conforms to schema and indexes daily editions grouped by 
 
     for (const day of week.days) {
       assert.ok(/^\d{4}-\d{2}-\d{2}$/u.test(day.date), `day date ${day.date} must match YYYY-MM-DD`);
-      assert.equal(getIsoWeek(day.date), week.week_id, `day ${day.date} must belong to week ${week.week_id}`);
+      assert.equal(getAnnouncementWeekId(day.date, day.weekday), week.week_id, `day ${day.date} must belong to week ${week.week_id}`);
       assert.ok(typeof day.total_papers === "number" && day.total_papers > 0, "day total_papers must be positive");
       assert.ok(typeof day.analyzed_count === "number", "analyzed_count must be a number");
       assert.ok(existsSync(join(projectRoot, "src/data/arxiv-archives", day.data_file)), `data file ${day.data_file} must exist`);
@@ -85,7 +89,7 @@ test("arXiv daily HTML exposes direct navigation link to archives library", asyn
 test("arXiv weekly HTML exposes daily breakdown section with links to daily editions", async () => {
   if (existsSync(fileURLToPath(distWeeklyHtmlUrl))) {
     const html = await readFile(distWeeklyHtmlUrl, "utf8");
-    assert.match(html, /本周每日批次与日报归档/u);
+    assert.match(html, /(?:必读文献目录|(?:当周|本周)每日批次与日报归档)/u);
     assert.match(html, /href="\/arxiv-daily\/"/u);
     const manifest = JSON.parse(await readFile(fileURLToPath(manifestUrl), "utf8"));
     const weeklyData = JSON.parse(await readFile(fileURLToPath(new URL("../src/data/arxiv-weekly.json", import.meta.url)), "utf8"));

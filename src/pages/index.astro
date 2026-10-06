@@ -256,7 +256,7 @@ const bjtDailyInfo = formatAnnouncementInBeijing(latestDate, radarWeekday);
             <div class="intel-card-top">
               <div class="intel-meta-group">
                 <span class="intel-meta-kicker">今日雷达 · {bjtDailyInfo.beijingDate}</span>
-                <span class="intel-meta-batch">{bjtDailyInfo.chineseWeekday}监测批次 · 北京时间 08:00 发布</span>
+                <span class="intel-meta-batch">{bjtDailyInfo.chineseWeekday}监测批次</span>
               </div>
               <a class="intel-view-all-link" href="/arxiv-daily/">进入今日雷达 →</a>
             </div>
@@ -277,7 +277,7 @@ const bjtDailyInfo = formatAnnouncementInBeijing(latestDate, radarWeekday);
                     <a
                       class={`daily-date-chip ${d.date === latestDate ? "active" : ""}`}
                       href={d.date === latestDate ? `/arxiv-daily/` : `/arxiv-daily/${d.date}/`}
-                      title={`进入 ${dInfo.beijingDate} (${dInfo.chineseWeekday}，北京时间) 导读雷达`}
+                      title={`进入 ${dInfo.beijingDate} (${dInfo.chineseWeekday}) 导读雷达`}
                     >
                       {dInfo.shortDate} {dInfo.chineseWeekday}
                     </a>

@@ -2,7 +2,7 @@
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { buildDailyRadarModel } from "./daily-radar.mjs";
 import { readPublishedArxivEdition } from "./arxiv-daily.mjs";
 import { loadCanonicalContent } from "./content-loader.mjs";
@@ -10,11 +10,27 @@ import { projectVisibleSnapshot } from "./reader-projection.mjs";
 import { validateCanonicalContent } from "./content-validator.mjs";
 import { readChannelShareUrl } from "./channel-publication.mjs";
 
-try {
-  if (typeof process.loadEnvFile === "function" && existsSync(".env")) {
-    process.loadEnvFile();
-  }
-} catch {}
+export function loadProjectEnv(envPath = ".env") {
+  const resolved = resolve(process.cwd(), envPath);
+  if (!existsSync(resolved)) return;
+  try {
+    const raw = readFileSync(resolved, "utf8");
+    for (const line of raw.split("\n")) {
+      const trimmed = line.trim();
+      if (!trimmed || trimmed.startsWith("#")) continue;
+      const eqIdx = trimmed.indexOf("=");
+      if (eqIdx <= 0) continue;
+      const key = trimmed.slice(0, eqIdx).trim();
+      let val = trimmed.slice(eqIdx + 1).trim();
+      if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'"))) {
+        val = val.slice(1, -1);
+      }
+      process.env[key] = val;
+    }
+  } catch {}
+}
+
+loadProjectEnv();
 
 export function normalizeModelName(name) {
   if (!name) return "gpt-6.1-sol";

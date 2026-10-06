@@ -18,13 +18,13 @@ const { weekDays, latestDailyDate } = Astro.props;
 ---
 
 {weekDays && weekDays.length > 0 && (
-  <section class="weekly-section daily-breakdown-section" id="daily-breakdown" aria-label="本周每日批次与日报归档">
+  <section class="weekly-section daily-breakdown-section" id="daily-breakdown" aria-label="必读文献目录">
     <div class="section-heading">
-      <p class="section-kicker"><span class="language-primary">批次目录</span><span class="language-english" lang="en">Daily Directory</span></p>
-      <h2><span class="language-primary">本周每日批次与日报归档</span><span class="language-english" lang="en">Daily Editions in this Week</span></h2>
+      <p class="section-kicker"><span class="language-primary">每日批次</span><span class="language-english" lang="en">Daily Index</span></p>
+      <h2><span class="language-primary">必读文献目录</span><span class="language-english" lang="en">Must-Read Directory</span></h2>
     </div>
     <div class="daily-table-toolbar">
-      <span class="daily-table-meta">收录本周 <strong>{weekDays.length}</strong> 个监测批次</span>
+      <span class="daily-table-meta">收录本周 <strong>{weekDays.length}</strong> 个批次重点文献</span>
       <a class="daily-all-archive-link" href="/arxiv-daily/">查看全部历史日报归档 →</a>
     </div>
     <div class="daily-breakdown-table-wrap">
@@ -69,7 +69,7 @@ const { weekDays, latestDailyDate } = Astro.props;
                 <div class="daily-table-topics-cell">
                   {day.highlights && day.highlights.length > 0 ? (
                     <div class="table-highlights-list">
-                      {day.highlights.slice(0, 2).map((h) => (
+                      {day.highlights.slice(0, 3).map((h) => (
                         <div class="table-highlight-row">
                           <a
                             class={`table-paper-badge ${h.priority === "must_read" ? "must" : "worth"}`}
@@ -85,6 +85,31 @@ const { weekDays, latestDailyDate } = Astro.props;
                           )}
                         </div>
                       ))}
+                      {day.highlights.length > 3 && (
+                        <details class="table-highlights-more">
+                          <summary class="more-toggle-btn">
+                            展开其余 {day.highlights.length - 3} 篇文献 ▾
+                          </summary>
+                          <div class="more-highlights-list">
+                            {day.highlights.slice(3).map((h) => (
+                              <div class="table-highlight-row">
+                                <a
+                                  class={`table-paper-badge ${h.priority === "must_read" ? "must" : "worth"}`}
+                                  href={`https://arxiv.org/abs/${h.arxiv_id}`}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  title="在 arXiv 查看论文"
+                                >
+                                  arXiv:{h.arxiv_id} ↗
+                                </a>
+                                {h.title && (
+                                  <span class="table-paper-title" title={h.title}>{h.title}</span>
+                                )}
+                              </div>
+                            ))}
+                          </div>
+                        </details>
+                      )}
                     </div>
                   ) : day.brief_intro ? (
                     <p class="table-brief-intro">{day.brief_intro}</p>
@@ -330,6 +355,43 @@ const { weekDays, latestDailyDate } = Astro.props;
   }
   :global([data-theme="dark"]) .table-paper-title {
     color: #cbd5e1;
+  }
+  .table-highlights-more {
+    margin-top: 0.25rem;
+  }
+  .more-toggle-btn {
+    font-size: 0.73rem;
+    color: #64748b;
+    cursor: pointer;
+    user-select: none;
+    padding: 0.15rem 0.45rem;
+    background: #f1f5f9;
+    border-radius: 4px;
+    display: inline-block;
+    transition: all 0.15s ease;
+  }
+  .more-toggle-btn:hover {
+    color: #0f172a;
+    background: #e2e8f0;
+  }
+  :global([data-theme="dark"]) .more-toggle-btn {
+    color: #94a3b8;
+    background: #1e293b;
+  }
+  :global([data-theme="dark"]) .more-toggle-btn:hover {
+    color: #f1f5f9;
+    background: #334155;
+  }
+  .more-highlights-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    margin-top: 0.35rem;
+    padding-left: 0.4rem;
+    border-left: 2px solid #e2e8f0;
+  }
+  :global([data-theme="dark"]) .more-highlights-list {
+    border-left-color: #334155;
   }
   .table-brief-intro {
     margin: 0;

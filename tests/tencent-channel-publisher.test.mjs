@@ -370,7 +370,16 @@ function fakeCli() {
   const feeds = [];
   let calls = 0;
   let moves = 0;
+  let moveAttempts = 0;
   let failNextCreate = false;
+  let failNextMove = false;
+  let failNextMoveAfterCommit = false;
+  let requireExactDetailChannel = false;
+  let alterNextCreateReadback = null;
+  let failNextImageCreate = false;
+  let addExtraImageOnNextCreate = false;
+  let replaceNextImageReadback = false;
+  let omitImageFromNextCreateResponse = false;
   const cli = async (args) => {
     const action = args[1];
     const arg = (flag) => args[args.indexOf(flag) + 1];
@@ -381,16 +390,31 @@ function fakeCli() {
     }
     if (action === "get-feed-detail") {
       assert.equal(args.includes("--create-time"), false);
-      return { retCode: 0, data: feeds.find((feed) => feed.feed_id === arg("--feed-id")) };
+      const feed = feeds.find((entry) => entry.feed_id === arg("--feed-id"));
+      if (!feed || requireExactDetailChannel && feed.channel_id !== arg("--channel-id")) throw new Error("absent");
+      if (alterNextCreateReadback && feed.image_paths.length) {
+        if (alterNextCreateReadback === "title") feed.title = "Altered title";
+        else feed.markdown_content += "\nAltered body";
+        alterNextCreateReadback = null;
+      }
+      if (replaceNextImageReadback && feed?.image_paths.length) { feed.image_paths = ["unrelated-image.png"]; replaceNextImageReadback = false; }
+      return { retCode: 0, data: feed };
     }
     if (action === "publish-feed") {
       calls += 1;
       const imagePaths = [];
       for (let i = 0; i < args.length; i += 1) if (args[i] === "--image") imagePaths.push(args[i + 1]);
+      if (addExtraImageOnNextCreate && imagePaths.length) { imagePaths.push("unrelated-image.png"); addExtraImageOnNextCreate = false; }
       const feed = { feed_id: String(calls), create_time_raw: String(calls + 100), channel_id: arg("--channel-id"), title: arg("--title"), markdown_content: arg("--markdown-content"), image_paths: imagePaths };
       feeds.push(feed);
-      if (failNextCreate) { failNextCreate = false; throw new Error("CHANNEL_TIMEOUT"); }
-      return { retCode: 0, data: feed };
+      if (failNextCreate || failNextImageCreate && imagePaths.length) {
+        failNextCreate = false;
+        failNextImageCreate = false;
+        throw new Error("CHANNEL_TIMEOUT");
+      }
+      const responseImagePaths = omitImageFromNextCreateResponse ? [] : [...imagePaths];
+      omitImageFromNextCreateResponse = false;
+      return { retCode: 0, data: { ...feed, image_paths: responseImagePaths } };
     }
     if (action === "alter-feed") {
       const feed = feeds.find((entry) => entry.feed_id === arg("--feed-id"));
@@ -400,12 +424,15 @@ function fakeCli() {
     if (action === "move-feed") {
       const feed = feeds.find((entry) => entry.feed_id === arg("--feed-id"));
       assert.equal(feed.channel_id, arg("--original-channel-id"));
+      moveAttempts += 1;
+      if (failNextMove) { failNextMove = false; throw new Error("CHANNEL_TIMEOUT"); }
       feed.channel_id = arg("--channel-id"); moves += 1;
+      if (failNextMoveAfterCommit) { failNextMoveAfterCommit = false; throw new Error("CHANNEL_TIMEOUT"); }
       return { retCode: 0, data: feed };
     }
     throw new Error(`unexpected ${action}`);
   };
-  return { cli, feeds, get moves() { return moves; }, failCreate: () => { failNextCreate = true; } };
+  return { cli, feeds, get moves() { return moves; }, get moveAttempts() { return moveAttempts; }, failCreate: () => { failNextCreate = true; }, failMove: () => { failNextMove = true; }, failMoveAfterCommit: () => { failNextMoveAfterCommit = true; }, requireExactDetailChannel: () => { requireExactDetailChannel = true; }, alterCreateReadback: field => { alterNextCreateReadback = field; }, failImageCreate: () => { failNextImageCreate = true; }, addExtraImage: () => { addExtraImageOnNextCreate = true; }, replaceNextImageReadback: () => { replaceNextImageReadback = true; }, omitNextCreateImageResponse: () => { omitImageFromNextCreateResponse = true; } };
 }
 
 test("daily publishes once per version, then reconciles an unknown committed create", async (t) => {
@@ -1182,7 +1209,7 @@ test("a visually reviewed Must Read figure is attached once and remains idempote
   await mkdir(page, { recursive: true }); await writeFile(join(page, "index.html"), "built");
   const remote = fakeCli();
   let figureDistRoot;
-  const options = { source, distRoot: join(path, "dist"), cacheRoot: join(path, "cache"), cli: remote.cli,
+  const options = { source, distRoot: join(path, "dist"), cacheRoot: join(path, "cache"), guildId: "test", cli: remote.cli,
     channelIds: Object.fromEntries(TOPICS.map(([key]) => [key, key])),
     resolveFigure: async (item, resolverOptions) => {
       figureDistRoot = resolverOptions?.distRoot;
@@ -1193,6 +1220,8 @@ test("a visually reviewed Must Read figure is attached once and remains idempote
   };
   const first = await publishDailyFeed(options);
   assert.ok(first.published >= 1);
+  let ledger = JSON.parse(await readFile(join(options.cacheRoot, "guild-test.json"), "utf8"));
+  assert.match(ledger.items[`daily:${selected.arxiv_id}v${selected.revision}`].figure_media_sha256, /^[a-f0-9]{64}$/u);
   assert.equal(figureDistRoot, options.distRoot);
   const figurePost = remote.feeds.find(feed => feed.title === derivePaperContentTitle(selected));
   assert.equal(figurePost.image_paths.length, 1);
@@ -1200,6 +1229,21 @@ test("a visually reviewed Must Read figure is attached once and remains idempote
   assert.ok(figurePost.markdown_content.includes("[(0,0)](@img)"));
   assert.ok(figurePost.markdown_content.includes("Figure 1: reviewed fixture"));
   assert.equal(remote.feeds.filter(feed => feed.image_paths.length).length, 1);
+  let figureRecord = ledger.items[`daily:${selected.arxiv_id}v${selected.revision}`];
+  figureRecord.status = "intent";
+  await writeFile(join(options.cacheRoot, "guild-test.json"), JSON.stringify(ledger));
+  const knownOutcomeRecovery = await publishDailyFeed(options);
+  assert.equal(knownOutcomeRecovery.pending_items.some(item => item.identity === `daily:${selected.arxiv_id}v${selected.revision}`), false);
+  ledger = JSON.parse(await readFile(join(options.cacheRoot, "guild-test.json"), "utf8"));
+  figureRecord = ledger.items[`daily:${selected.arxiv_id}v${selected.revision}`];
+  assert.equal(figureRecord.status, "published");
+  const expectedMediaFingerprint = figureRecord.figure_media_sha256;
+  delete figureRecord.figure_media_sha256;
+  await writeFile(join(options.cacheRoot, "guild-test.json"), JSON.stringify(ledger));
+  const legacyReentry = await publishDailyFeed(options);
+  assert.ok(legacyReentry.pending_items.some(item => item.identity === `daily:${selected.arxiv_id}v${selected.revision}` && item.reason === "CHANNEL_REMOTE_MEDIA_BASELINE_MISSING"));
+  figureRecord.figure_media_sha256 = expectedMediaFingerprint;
+  await writeFile(join(options.cacheRoot, "guild-test.json"), JSON.stringify(ledger));
   const second = await publishDailyFeed(options);
   assert.equal(second.published + second.updated, 0);
   assert.equal(remote.feeds.filter(feed => feed.image_paths.length).length, 1);
@@ -1212,6 +1256,284 @@ test("a visually reviewed Must Read figure is attached once and remains idempote
   assert.equal(reviewUnavailable.published + reviewUnavailable.updated, 0);
   assert.equal(remote.feeds.find(feed => feed.title === derivePaperContentTitle(selected)).markdown_content, retainedBody);
   assert.equal(remote.feeds.filter(feed => feed.image_paths.length).length, 1);
+
+  options.resolveFigure = async item => item.arxiv_id === selected.arxiv_id
+    ? { image: { path: figurePath, url: "/arxiv-figures/test/fig1.png", label: "Fig. 1", caption: "Figure 1: reviewed fixture", sha256: "fixture-sha" } }
+    : { image: null, diagnostic: "figure_source_missing" };
+  figurePost.title = "External title edit";
+  const titleDrift = await publishDailyFeed(options);
+  assert.ok(titleDrift.pending_items.some(item => item.identity === `daily:${selected.arxiv_id}v${selected.revision}` && item.reason === "CHANNEL_REMOTE_TITLE_DRIFT"));
+  assert.equal(figurePost.title, "External title edit");
+
+  figurePost.title = derivePaperContentTitle(selected);
+  figurePost.image_paths = ["replacement.png"];
+  const replacedMedia = await publishDailyFeed(options);
+  assert.ok(replacedMedia.pending_items.some(item => item.identity === `daily:${selected.arxiv_id}v${selected.revision}` && item.reason === "CHANNEL_REMOTE_MEDIA_DRIFT"));
+  assert.deepEqual(figurePost.image_paths, ["replacement.png"]);
+
+  figurePost.image_paths = [];
+  const mediaDrift = await publishDailyFeed(options);
+  assert.ok(mediaDrift.pending_items.some(item => item.identity === `daily:${selected.arxiv_id}v${selected.revision}` && item.reason === "CHANNEL_REMOTE_MEDIA_DRIFT"));
+  assert.equal(remote.feeds.filter(feed => feed.image_paths.length).length, 0);
+
+  figurePost.image_paths = [figurePath];
+  figurePost.channel_id = "wrong-channel";
+  const identityDrift = await publishDailyFeed(options);
+  assert.ok(identityDrift.pending_items.some(item => item.identity === `daily:${selected.arxiv_id}v${selected.revision}` && item.reason === "CHANNEL_REMOTE_IDENTITY_DRIFT"));
+  assert.equal(figurePost.channel_id, "wrong-channel");
+
+  figurePost.channel_id = figureRecord.channel_id;
+  figurePost.image_paths = ["replacement.png"];
+  const originalChannel = figureRecord.channel_id;
+  const selectedTopic = routePaper(selected).primary;
+  options.channelIds[selectedTopic] = "new-target-channel";
+  const movesBeforeDriftCheck = remote.moves;
+  const moveWithMediaDrift = await publishDailyFeed(options);
+  assert.ok(moveWithMediaDrift.pending_items.some(item => item.identity === `daily:${selected.arxiv_id}v${selected.revision}` && item.reason === "CHANNEL_REMOTE_MEDIA_DRIFT"));
+  assert.equal(remote.moves, movesBeforeDriftCheck);
+  assert.equal(figurePost.channel_id, originalChannel);
+});
+
+test("an unchanged non-figure post does not ignore remote title drift", async (t) => {
+  const { path } = await createTemporaryWorkspace("astro-lineage-channel-title-drift-", t);
+  const archive = JSON.parse(await readFile(new URL("../src/data/arxiv-archives/daily/2026-09-28.json", import.meta.url), "utf8"));
+  const source = { feed: archive.feed, radar: archive.radar };
+  const model = await generateDailyMarkdown({ ...source });
+  const selected = model.highlights[0];
+  const page = join(path, "dist/arxiv-daily/2026-09-28");
+  await mkdir(page, { recursive: true }); await writeFile(join(page, "index.html"), "built");
+  const remote = fakeCli();
+  const options = { source, distRoot: join(path, "dist"), cacheRoot: join(path, "cache"), guildId: "test", cli: remote.cli,
+    channelIds: Object.fromEntries(TOPICS.map(([key]) => [key, key])),
+    resolveFigure: async () => ({ image: null, diagnostic: "figure_source_missing" }),
+  };
+  const identity = `daily:${selected.arxiv_id}v${selected.revision}`;
+  await publishDailyFeed(options);
+  const feed = remote.feeds.find(entry => entry.markdown_content.includes(`astrolineage-channel:${identity}:`));
+  assert.ok(feed);
+  feed.title = "External title edit";
+
+  const retry = await publishDailyFeed(options);
+  assert.ok(retry.pending_items.some(item => item.identity === identity && item.reason === "CHANNEL_REMOTE_TITLE_DRIFT"));
+  assert.equal(feed.title, "External title edit");
+});
+
+test("a timed-out figure create remains pending without a captured media baseline", async (t) => {
+  const { path } = await createTemporaryWorkspace("astro-lineage-channel-figure-recovery-", t);
+  const archive = JSON.parse(await readFile(new URL("../src/data/arxiv-archives/daily/2026-09-28.json", import.meta.url), "utf8"));
+  const source = { feed: archive.feed, radar: archive.radar };
+  const model = await generateDailyMarkdown({ ...source });
+  const selected = model.highlights.find(item => item.analysis.priority === "must_read");
+  const figurePath = join(path, "reviewed.png");
+  await writeFile(figurePath, "reviewed image fixture");
+  const page = join(path, "dist/arxiv-daily/2026-09-28");
+  await mkdir(page, { recursive: true }); await writeFile(join(page, "index.html"), "built");
+  const remote = fakeCli();
+  const options = { source, distRoot: join(path, "dist"), cacheRoot: join(path, "cache"), guildId: "test", cli: remote.cli,
+    channelIds: Object.fromEntries(TOPICS.map(([key]) => [key, key])),
+    resolveFigure: async item => item.arxiv_id === selected.arxiv_id
+      ? { image: { path: figurePath, url: "/arxiv-figures/test/fig1.png", label: "Fig. 1", caption: "Figure 1: reviewed fixture", sha256: "fixture-sha" } }
+      : { image: null, diagnostic: "figure_source_missing" },
+  };
+
+  remote.failImageCreate();
+  const first = await publishDailyFeed(options);
+  const identity = `daily:${selected.arxiv_id}v${selected.revision}`;
+  assert.ok(first.pending_items.some(item => item.identity === identity && item.reason === "CHANNEL_TIMEOUT"));
+  const figurePosts = remote.feeds.filter(feed => feed.title === derivePaperContentTitle(selected));
+  assert.equal(figurePosts.length, 1);
+  figurePosts[0].image_paths = ["replacement.png"];
+
+  const unknownMedia = await publishDailyFeed(options);
+  assert.ok(unknownMedia.pending_items.some(item => item.identity === identity && item.reason === "CHANNEL_CREATE_MEDIA_BASELINE_MISSING"));
+  let ledger = JSON.parse(await readFile(join(options.cacheRoot, "guild-test.json"), "utf8"));
+  assert.equal(ledger.items[identity].status, "intent");
+  assert.equal(ledger.items[identity].figure_media_sha256, undefined);
+  assert.equal(remote.feeds.filter(feed => feed.title === derivePaperContentTitle(selected)).length, 1);
+
+  figurePosts[0].image_paths = [figurePath];
+  const stillUnknown = await publishDailyFeed(options);
+  assert.ok(stillUnknown.pending_items.some(item => item.identity === identity && item.reason === "CHANNEL_CREATE_MEDIA_BASELINE_MISSING"));
+  ledger = JSON.parse(await readFile(join(options.cacheRoot, "guild-test.json"), "utf8"));
+  assert.equal(ledger.items[identity].status, "intent");
+  assert.equal(ledger.items[identity].figure_media_sha256, undefined);
+  assert.equal(remote.feeds.filter(feed => feed.title === derivePaperContentTitle(selected)).length, 1);
+});
+
+test("a create response with more than one reviewed-figure attachment stays pending", async (t) => {
+  const { path } = await createTemporaryWorkspace("astro-lineage-channel-figure-multiple-", t);
+  const archive = JSON.parse(await readFile(new URL("../src/data/arxiv-archives/daily/2026-09-28.json", import.meta.url), "utf8"));
+  const source = { feed: archive.feed, radar: archive.radar };
+  const model = await generateDailyMarkdown({ ...source });
+  const selected = model.highlights.find(item => item.analysis.priority === "must_read");
+  const figurePath = join(path, "reviewed.png");
+  await writeFile(figurePath, "reviewed image fixture");
+  const page = join(path, "dist/arxiv-daily/2026-09-28");
+  await mkdir(page, { recursive: true }); await writeFile(join(page, "index.html"), "built");
+  const remote = fakeCli();
+  remote.addExtraImage();
+  const options = { source, distRoot: join(path, "dist"), cacheRoot: join(path, "cache"), guildId: "test", cli: remote.cli,
+    channelIds: Object.fromEntries(TOPICS.map(([key]) => [key, key])),
+    resolveFigure: async item => item.arxiv_id === selected.arxiv_id
+      ? { image: { path: figurePath, url: "/arxiv-figures/test/fig1.png", label: "Fig. 1", caption: "Figure 1: reviewed fixture", sha256: "fixture-sha" } }
+      : { image: null, diagnostic: "figure_source_missing" },
+  };
+
+  const result = await publishDailyFeed(options);
+  const identity = `daily:${selected.arxiv_id}v${selected.revision}`;
+  assert.ok(result.pending_items.some(item => item.identity === identity && item.reason === "CHANNEL_CREATE_MEDIA_UNVERIFIED"));
+  const figurePosts = remote.feeds.filter(feed => feed.title === derivePaperContentTitle(selected));
+  assert.equal(figurePosts.length, 1);
+  assert.equal(figurePosts[0].image_paths.length, 2);
+  const ledger = JSON.parse(await readFile(join(options.cacheRoot, "guild-test.json"), "utf8"));
+  assert.equal(ledger.items[identity].status, "intent");
+  assert.equal(ledger.items[identity].figure_media_sha256, undefined);
+});
+
+test("a create whose media readback differs from its response stays pending", async (t) => {
+  const { path } = await createTemporaryWorkspace("astro-lineage-channel-figure-readback-", t);
+  const archive = JSON.parse(await readFile(new URL("../src/data/arxiv-archives/daily/2026-09-28.json", import.meta.url), "utf8"));
+  const source = { feed: archive.feed, radar: archive.radar };
+  const model = await generateDailyMarkdown({ ...source });
+  const selected = model.highlights.find(item => item.analysis.priority === "must_read");
+  const figurePath = join(path, "reviewed.png");
+  await writeFile(figurePath, "reviewed image fixture");
+  const page = join(path, "dist/arxiv-daily/2026-09-28");
+  await mkdir(page, { recursive: true }); await writeFile(join(page, "index.html"), "built");
+  const remote = fakeCli();
+  remote.replaceNextImageReadback();
+  const options = { source, distRoot: join(path, "dist"), cacheRoot: join(path, "cache"), guildId: "test", cli: remote.cli,
+    channelIds: Object.fromEntries(TOPICS.map(([key]) => [key, key])),
+    resolveFigure: async item => item.arxiv_id === selected.arxiv_id
+      ? { image: { path: figurePath, url: "/arxiv-figures/test/fig1.png", label: "Fig. 1", caption: "Figure 1: reviewed fixture", sha256: "fixture-sha" } }
+      : { image: null, diagnostic: "figure_source_missing" },
+  };
+
+  const result = await publishDailyFeed(options);
+  const identity = `daily:${selected.arxiv_id}v${selected.revision}`;
+  assert.ok(result.pending_items.some(item => item.identity === identity && item.reason === "CHANNEL_CREATE_MEDIA_UNVERIFIED"));
+  const figurePosts = remote.feeds.filter(feed => feed.title === derivePaperContentTitle(selected));
+  assert.equal(figurePosts.length, 1);
+  assert.deepEqual(figurePosts[0].image_paths, ["unrelated-image.png"]);
+  const ledger = JSON.parse(await readFile(join(options.cacheRoot, "guild-test.json"), "utf8"));
+  assert.equal(ledger.items[identity].status, "intent");
+  assert.equal(ledger.items[identity].figure_media_sha256, undefined);
+});
+
+test("figure creation requires the submitted title and body in remote readback", async (t) => {
+  for (const [field, reason] of [["title", "CHANNEL_CREATE_TITLE_UNVERIFIED"], ["body", "CHANNEL_CREATE_BODY_UNVERIFIED"]]) {
+    const { path } = await createTemporaryWorkspace(`astro-lineage-channel-figure-${field}-drift-`, t);
+    const archive = JSON.parse(await readFile(new URL("../src/data/arxiv-archives/daily/2026-09-28.json", import.meta.url), "utf8"));
+    const source = { feed: archive.feed, radar: archive.radar };
+    const model = await generateDailyMarkdown({ ...source });
+    const selected = model.highlights.find(item => item.analysis.priority === "must_read");
+    const figurePath = join(path, "reviewed.png");
+    await writeFile(figurePath, "reviewed image fixture");
+    const page = join(path, "dist/arxiv-daily/2026-09-28");
+    await mkdir(page, { recursive: true }); await writeFile(join(page, "index.html"), "built");
+    const remote = fakeCli();
+    remote.alterCreateReadback(field);
+    const options = { source, distRoot: join(path, "dist"), cacheRoot: join(path, "cache"), guildId: "test", cli: remote.cli,
+      channelIds: Object.fromEntries(TOPICS.map(([key]) => [key, key])),
+      resolveFigure: async item => item.arxiv_id === selected.arxiv_id
+        ? { image: { path: figurePath, url: "/arxiv-figures/test/fig1.png", label: "Fig. 1", caption: "Figure 1: reviewed fixture", sha256: "fixture-sha" } }
+        : { image: null, diagnostic: "figure_source_missing" },
+    };
+    const identity = `daily:${selected.arxiv_id}v${selected.revision}`;
+    const result = await publishDailyFeed(options);
+    assert.ok(result.pending_items.some(item => item.identity === identity && item.reason === reason));
+    assert.equal(JSON.parse(await readFile(join(options.cacheRoot, "guild-test.json"), "utf8")).items[identity].status, "intent");
+  }
+});
+
+test("figure move recovery checks media after pre- and post-commit timeouts", async (t) => {
+  const { path } = await createTemporaryWorkspace("astro-lineage-channel-figure-move-", t);
+  const archive = JSON.parse(await readFile(new URL("../src/data/arxiv-archives/daily/2026-09-28.json", import.meta.url), "utf8"));
+  const source = { feed: archive.feed, radar: archive.radar };
+  const model = await generateDailyMarkdown({ ...source });
+  const selected = model.highlights.find(item => item.analysis.priority === "must_read");
+  const topic = routePaper(selected).primary;
+  const figurePath = join(path, "reviewed.png");
+  await writeFile(figurePath, "reviewed image fixture");
+  const page = join(path, "dist/arxiv-daily/2026-09-28");
+  await mkdir(page, { recursive: true }); await writeFile(join(page, "index.html"), "built");
+  const remote = fakeCli();
+  remote.requireExactDetailChannel();
+  const oldChannelIds = Object.fromEntries(TOPICS.map(([key]) => [key, `old-${key}`]));
+  const options = { source, distRoot: join(path, "dist"), cacheRoot: join(path, "cache"), guildId: "test", cli: remote.cli,
+    channelIds: oldChannelIds,
+    resolveFigure: async item => item.arxiv_id === selected.arxiv_id
+      ? { image: { path: figurePath, url: "/arxiv-figures/test/fig1.png", label: "Fig. 1", caption: "Figure 1: reviewed fixture", sha256: "fixture-sha" } }
+      : { image: null, diagnostic: "figure_source_missing" },
+  };
+  const identity = `daily:${selected.arxiv_id}v${selected.revision}`;
+  const published = await publishDailyFeed(options);
+  const ledgerPath = join(options.cacheRoot, "guild-test.json");
+  assert.equal(JSON.parse(await readFile(ledgerPath, "utf8")).items[identity].status, "published");
+
+  const newChannelIds = { ...oldChannelIds, [topic]: "new-topic" };
+  remote.failMove();
+  const interrupted = await publishDailyFeed({ ...options, channelIds: newChannelIds });
+  assert.ok(interrupted.pending_items.some(item => item.identity === identity));
+  assert.equal(remote.moveAttempts, 1);
+  assert.equal(remote.moves, 0);
+
+  const figurePost = remote.feeds.find(feed => feed.image_paths.length === 1);
+  assert.ok(figurePost);
+  figurePost.image_paths[0] = "unrelated-image.png";
+  const retry = await publishDailyFeed({ ...options, channelIds: newChannelIds });
+  assert.ok(retry.pending_items.some(item => item.identity === identity && item.reason === "CHANNEL_REMOTE_MEDIA_DRIFT"));
+  assert.equal(remote.moveAttempts, 1);
+  assert.equal(remote.moves, 0);
+  assert.equal(figurePost.channel_id, oldChannelIds[topic]);
+  assert.ok(published.published > 0);
+
+  figurePost.image_paths[0] = figurePath;
+  const recovered = await publishDailyFeed({ ...options, channelIds: newChannelIds });
+  assert.equal(recovered.pending_items.some(item => item.identity === identity), false);
+  assert.equal(remote.moveAttempts, 2);
+  assert.equal(remote.moves, 1);
+
+  remote.failMoveAfterCommit();
+  const committedTimeout = await publishDailyFeed({ ...options, channelIds: oldChannelIds });
+  assert.ok(committedTimeout.pending_items.some(item => item.identity === identity));
+  assert.equal(remote.moveAttempts, 3);
+  assert.equal(remote.moves, 2);
+  assert.equal(figurePost.channel_id, oldChannelIds[topic]);
+
+  figurePost.image_paths[0] = "unrelated-image.png";
+  const committedRetry = await publishDailyFeed({ ...options, channelIds: oldChannelIds });
+  assert.ok(committedRetry.pending_items.some(item => item.identity === identity && item.reason === "CHANNEL_REMOTE_MEDIA_DRIFT"));
+  assert.equal(remote.moveAttempts, 3);
+  assert.equal(remote.moves, 2);
+  assert.equal(figurePost.channel_id, oldChannelIds[topic]);
+});
+
+test("a create without media in its response cannot establish a remote-image baseline", async (t) => {
+  const { path } = await createTemporaryWorkspace("astro-lineage-channel-figure-no-receipt-", t);
+  const archive = JSON.parse(await readFile(new URL("../src/data/arxiv-archives/daily/2026-09-28.json", import.meta.url), "utf8"));
+  const source = { feed: archive.feed, radar: archive.radar };
+  const model = await generateDailyMarkdown({ ...source });
+  const selected = model.highlights.find(item => item.analysis.priority === "must_read");
+  const figurePath = join(path, "reviewed.png");
+  await writeFile(figurePath, "reviewed image fixture");
+  const page = join(path, "dist/arxiv-daily/2026-09-28");
+  await mkdir(page, { recursive: true }); await writeFile(join(page, "index.html"), "built");
+  const remote = fakeCli();
+  remote.omitNextCreateImageResponse();
+  const options = { source, distRoot: join(path, "dist"), cacheRoot: join(path, "cache"), guildId: "test", cli: remote.cli,
+    channelIds: Object.fromEntries(TOPICS.map(([key]) => [key, key])),
+    resolveFigure: async item => item.arxiv_id === selected.arxiv_id
+      ? { image: { path: figurePath, url: "/arxiv-figures/test/fig1.png", label: "Fig. 1", caption: "Figure 1: reviewed fixture", sha256: "fixture-sha" } }
+      : { image: null, diagnostic: "figure_source_missing" },
+  };
+
+  const result = await publishDailyFeed(options);
+  const identity = `daily:${selected.arxiv_id}v${selected.revision}`;
+  assert.ok(result.pending_items.some(item => item.identity === identity && item.reason === "CHANNEL_CREATE_MEDIA_UNVERIFIED"));
+  const ledger = JSON.parse(await readFile(join(options.cacheRoot, "guild-test.json"), "utf8"));
+  assert.equal(ledger.items[identity].status, "intent");
+  assert.equal(ledger.items[identity].figure_media_sha256, undefined);
 });
 
 test("historical figure resolution uses the archive's active build root", async (t) => {

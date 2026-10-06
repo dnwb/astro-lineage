@@ -111,7 +111,7 @@ const bjtInfo = formatAnnouncementInBeijing(archive.date, archive.weekday);
     <meta name="viewport" content="width=device-width" />
     <meta
       name="description"
-      content={`arXiv 每日学术导读历史归档 · ${bjtInfo.beijingDate}（${bjtInfo.chineseWeekday}，北京时间 / 美东 ${archive.date}）：高能瞬变天体物理前沿监测与分级研判。`}
+      content={`arXiv 每日学术导读历史归档 · ${bjtInfo.beijingDate}（${bjtInfo.chineseWeekday} / 美东 ${archive.date}）：高能瞬变天体物理前沿监测与分级研判。`}
     />
     <title>Daily Radar · {bjtInfo.beijingDate} · {site.title}</title>
   </head>
@@ -128,7 +128,7 @@ const bjtInfo = formatAnnouncementInBeijing(archive.date, archive.weekday);
         <div class="archive-banner-left">
           <span class="banner-badge-archive">📅 历史归档批次</span>
           <strong class="banner-date">{bjtInfo.beijingDate}</strong>
-          <span class="banner-weekday">{bjtInfo.chineseWeekday}（北京时间）</span>
+          <span class="banner-weekday">{bjtInfo.chineseWeekday}</span>
           <span class="banner-meta-pill">美东批次：{archive.date} ({archive.weekday})</span>
           <span class="banner-meta-pill">所属周：{archive.week_id}</span>
           <span class="banner-meta-pill">{archive.batch_id}</span>

@@ -238,6 +238,42 @@ function remoteHasMedia(value) {
   return ["image_paths", "images", "media"].some(key => Array.isArray(feed?.[key]) && feed[key].length > 0);
 }
 
+export function matchesManagedBody(value, identity, hash) {
+  if (!/^[a-f0-9]{64}$/u.test(hash || "")) return false;
+  const body = String(value);
+  const suffix = `\n\n${markerFor(identity, hash)}`;
+  return body.endsWith(suffix) && hashBody(body.slice(0, -suffix.length)) === hash;
+}
+
+function remoteMediaFingerprint(value) {
+  const feed = value?.feed ?? value?.feed_info ?? value;
+  const fields = ["image_paths", "images", "media"].map(key => feed?.[key]);
+  const populated = fields.filter(value => Array.isArray(value) && value.length);
+  if (!populated.length || populated.some(media => media.length !== 1)) return null;
+  const media = populated[0];
+  const references = media.map(item => typeof item === "string" ? item : item?.url ?? item?.path);
+  if (references.some(reference => typeof reference !== "string" || !reference)) return null;
+  return hashBody(JSON.stringify(references));
+}
+
+function figureReadbackProblem(current, expectedRemote, identity, title, existing, channelId) {
+  const expectedIdentity = remoteIdentity(expectedRemote);
+  const currentIdentity = remoteIdentity(current);
+  if (!expectedIdentity || !currentIdentity || currentIdentity.feed_id !== expectedIdentity.feed_id ||
+      currentIdentity.create_time !== expectedIdentity.create_time || currentIdentity.channel_id !== String(channelId)) {
+    return "CHANNEL_REMOTE_IDENTITY_DRIFT";
+  }
+  if (!matchesManagedBody(remoteBody(current), identity, existing.hash)) return "CHANNEL_REMOTE_BODY_DRIFT";
+  if (remoteTitle(current) !== title) return "CHANNEL_REMOTE_TITLE_DRIFT";
+  const currentMediaFingerprint = remoteMediaFingerprint(current);
+  if (!currentMediaFingerprint) return existing.status === "intent" ? "CHANNEL_CREATE_MEDIA_UNVERIFIED" : "CHANNEL_REMOTE_MEDIA_DRIFT";
+  if (!existing.figure_media_sha256) {
+    return existing.status === "intent" ? "CHANNEL_CREATE_MEDIA_BASELINE_MISSING" : "CHANNEL_REMOTE_MEDIA_BASELINE_MISSING";
+  }
+  if (currentMediaFingerprint !== existing.figure_media_sha256) return "CHANNEL_REMOTE_MEDIA_DRIFT";
+  return null;
+}
+
 function bodyWithoutManagedFigure(value) {
   const body = String(value);
   const figurePrefix = "\n\n## 关键图像\n\n[(0,0)](@img)\n\n> 原文 ";
@@ -246,13 +282,6 @@ function bodyWithoutManagedFigure(value) {
   const end = body.indexOf("\n---\n\n## 阅读入口", start);
   if (end < 0 || !/^Fig\.\s*\d+ 图注（作者报告）：.+$/u.test(body.slice(start + figurePrefix.length, end))) return null;
   return body.slice(0, start) + body.slice(end);
-}
-
-function matchesManagedBody(value, identity, hash) {
-  if (!hash) return false;
-  const suffix = `\n\n${markerFor(identity, hash)}`;
-  const body = String(value);
-  return body.endsWith(suffix) && hashBody(body.slice(0, -suffix.length)) === hash;
 }
 
 async function scanFeeds(cli, guildId, channelId) {
@@ -444,8 +473,9 @@ async function publishItems(items, { guildId = DEFAULT_GUILD_ID, channelIds = {}
       const hash = hashBody(body);
       const marked = `${body}\n\n${markerFor(identity, hash)}`;
       if (Array.from(title).length > 200 || Array.from(marked).length > 10_000) { pending(result, identity, "CHANNEL_CONTENT_LIMIT"); continue; }
-      if (existing?.status === "published" && existing.hash === hash && existing.channel_id === String(target)) { result.unchanged += 1; continue; }
-      if (dryRun) { result.pending_items.push({ identity, reason: retainPublishedFigure ? "would_verify_existing_figure" : existing?.feed_id ? "would_update" : "would_publish" }); continue; }
+      const unchangedPublished = existing?.status === "published" && existing.hash === hash && existing.channel_id === String(target);
+      const unchangedPublishedFigure = unchangedPublished && existing.figure_sha256;
+      if (dryRun) { result.pending_items.push({ identity, reason: retainPublishedFigure || unchangedPublishedFigure ? "would_verify_existing_figure" : unchangedPublished ? "would_verify_existing" : existing?.feed_id ? "would_update" : "would_publish" }); continue; }
       try {
         let remote = existing?.feed_id ? { feed_id: existing.feed_id, create_time: existing.create_time, channel_id: existing.channel_id } : null;
         let movedThisTime = false;
@@ -467,7 +497,13 @@ async function publishItems(items, { guildId = DEFAULT_GUILD_ID, channelIds = {}
             try {
               const found = await detail(cli, guildId, old);
               oldBody = String(remoteBody(found));
-              if (!(oldBody === binding?.content && remoteTitle(found) === binding?.title || matchesManagedBody(oldBody, identity, existing.from_hash))) { pending(result, identity, "CHANNEL_UNKNOWN_OUTCOME"); continue; }
+              if (existing.figure_sha256) {
+                const prior = existing.from_hash ? { ...existing, hash: existing.from_hash } : existing;
+                const figureProblem = figureReadbackProblem(found, old, identity, title, prior, existing.channel_id);
+                if (figureProblem) { pending(result, identity, figureProblem); continue; }
+              } else if (!(oldBody === binding?.content && remoteTitle(found) === binding?.title || matchesManagedBody(oldBody, identity, existing.from_hash))) {
+                pending(result, identity, "CHANNEL_UNKNOWN_OUTCOME"); continue;
+              }
             } catch { pending(result, identity, "CHANNEL_UNKNOWN_OUTCOME"); continue; }
             payload(await cli(["feed", "move-feed", "--guild-id", String(guildId), "--channel-id", String(target), "--original-channel-id", String(old.channel_id), "--feed-id", old.feed_id, "--json"]));
             const verified = await detail(cli, guildId, moved);
@@ -501,6 +537,10 @@ async function publishItems(items, { guildId = DEFAULT_GUILD_ID, channelIds = {}
         if (remote && String(remote.channel_id) !== String(target) && existing?.status === "published") {
           const before = await detail(cli, guildId, remote);
           const priorBody = String(remoteBody(before));
+          if (existing.figure_sha256) {
+            const figureProblem = figureReadbackProblem(before, remote, identity, title, existing, remote.channel_id);
+            if (figureProblem) { pending(result, identity, figureProblem); continue; }
+          }
           if (!matchesManagedBody(priorBody, identity, existing.hash)) { pending(result, identity, "CHANNEL_REMOTE_MISMATCH"); continue; }
           records[identity] = { ...existing, hash, status: "intent", operation: "move", from_hash: existing.hash }; await save();
           try { payload(await cli(["feed", "move-feed", "--guild-id", String(guildId), "--channel-id", String(target), "--original-channel-id", String(remote.channel_id), "--feed-id", remote.feed_id, "--json"])); }
@@ -540,14 +580,24 @@ async function publishItems(items, { guildId = DEFAULT_GUILD_ID, channelIds = {}
             }
           }
           if (!remote) {
+            const figureIntent = existing?.status === "intent" && existing.figure_sha256;
+            const exactFigureMatches = [];
+            let invalidFigureMarker = false;
             for (const candidate of scans.get(scanKey).feeds) {
               const found = await detail(cli, guildId, candidate);
               const currentBody = String(remoteBody(found));
-              if (matchesManagedBody(currentBody, identity, hash)) { remote = candidate; break; }
+              if (matchesManagedBody(currentBody, identity, hash)) {
+                if (figureIntent) exactFigureMatches.push(candidate);
+                else { remote = candidate; break; }
+              } else if (figureIntent && currentBody.includes(`<!-- astrolineage-channel:${identity}:`)) invalidFigureMarker = true;
               if (kind === "weekly" && currentBody === body && String(found.title ?? found.feed?.title ?? "") === title) { remote = candidate; break; }
               if (kind === "weekly" && existing?.status !== "intent" && (currentBody.includes(item.week_id) || remoteTitle(found).includes(item.week_id))) { pending(result, identity, "CHANNEL_WEEKLY_AMBIGUOUS"); remote = "pending_weekly"; break; }
               if (kind === "daily" && currentBody.includes(`arXiv:${item.arxiv_id}v${item.revision}`) && currentBody === body) { remote = candidate; break; }
             }
+            if (figureIntent && (invalidFigureMarker || !scans.get(scanKey).complete || exactFigureMatches.length !== 1)) {
+              pending(result, identity, "CHANNEL_UNKNOWN_OUTCOME"); continue;
+            }
+            if (figureIntent) remote = exactFigureMatches[0];
           }
           if (remote === "pending_weekly") continue;
           if (!remote && !scans.get(scanKey).complete) { pending(result, identity, existing?.status === "intent" ? "CHANNEL_UNKNOWN_OUTCOME" : "CHANNEL_PAGINATION_INCOMPLETE"); continue; }
@@ -557,6 +607,13 @@ async function publishItems(items, { guildId = DEFAULT_GUILD_ID, channelIds = {}
           const current = await detail(cli, guildId, remote);
           const currentBody = String(remoteBody(current));
           const currentIdentity = remoteIdentity(current);
+          if (existing?.figure_sha256) {
+            const figureProblem = figureReadbackProblem(current, remote, identity, title, existing, target);
+            if (figureProblem) { pending(result, identity, figureProblem); continue; }
+          }
+          if (existing?.status === "published" && currentBody === marked && remoteTitle(current) !== title) {
+            pending(result, identity, "CHANNEL_REMOTE_TITLE_DRIFT"); continue;
+          }
           const retainedFigureIsUnchanged = retainPublishedFigure && existing?.status === "published" &&
             existing.channel_id === String(target) && currentIdentity?.feed_id === String(existing.feed_id) &&
             currentIdentity.create_time === String(existing.create_time) && currentIdentity.channel_id === String(target) &&
@@ -575,15 +632,43 @@ async function publishItems(items, { guildId = DEFAULT_GUILD_ID, channelIds = {}
             result.updated += 1;
           } else if (movedThisTime) result.updated += 1;
           else result.unchanged += 1;
-          records[identity] = { hash, status: "published", feed_id: remote.feed_id, create_time: remote.create_time, channel_id: remote.channel_id, ...(figure ? { figure_sha256: figure.sha256 } : {}) }; await save();
+          records[identity] = { hash, status: "published", feed_id: remote.feed_id, create_time: remote.create_time, channel_id: remote.channel_id,
+            ...(figure ? { figure_sha256: figure.sha256, figure_media_sha256: remoteMediaFingerprint(current) } : {}) }; await save();
         } else {
           records[identity] = { hash, status: "intent", channel_id: String(target), ...(figure ? { figure_sha256: figure.sha256 } : {}) }; await save();
           const args = ["feed", "publish-feed", "--guild-id", String(guildId), "--channel-id", String(target), "--title", title, "--markdown-content", marked];
           if (figure) args.push("--image", figure.path);
           args.push("--json");
-          const created = remoteIdentity(payload(await cli(args)));
+          const createdResponse = payload(await cli(args));
+          const created = remoteIdentity(createdResponse);
           if (!created) throw new Error("CHANNEL_CREATE_IDENTITY_MISSING");
-          records[identity] = { hash, status: "published", feed_id: created.feed_id, create_time: created.create_time, channel_id: String(target), ...(figure ? { figure_sha256: figure.sha256 } : {}) }; await save();
+          let figureMediaSha256;
+          if (figure) {
+            const publishedFeed = await detail(cli, guildId, { ...created, channel_id: String(target) });
+            const verified = remoteIdentity(publishedFeed);
+            const responseMediaFingerprint = remoteMediaFingerprint(createdResponse);
+            const responseHasMedia = remoteHasMedia(createdResponse);
+            figureMediaSha256 = remoteMediaFingerprint(publishedFeed);
+            if (!verified || verified.feed_id !== created.feed_id || verified.create_time !== created.create_time ||
+                verified.channel_id !== String(target) || !figureMediaSha256 ||
+                !responseHasMedia || !responseMediaFingerprint || responseMediaFingerprint !== figureMediaSha256) {
+              pending(result, identity, "CHANNEL_CREATE_MEDIA_UNVERIFIED");
+              continue;
+            }
+            if (!matchesManagedBody(remoteBody(publishedFeed), identity, hash)) {
+              pending(result, identity, "CHANNEL_CREATE_BODY_UNVERIFIED");
+              continue;
+            }
+            if (remoteTitle(publishedFeed) !== title) {
+              pending(result, identity, "CHANNEL_CREATE_TITLE_UNVERIFIED");
+              continue;
+            }
+            records[identity] = { ...records[identity], feed_id: created.feed_id, create_time: created.create_time,
+              channel_id: String(target), figure_media_sha256: figureMediaSha256 };
+            await save();
+          }
+          records[identity] = { hash, status: "published", feed_id: created.feed_id, create_time: created.create_time, channel_id: String(target),
+            ...(figure ? { figure_sha256: figure.sha256, figure_media_sha256: figureMediaSha256 } : {}) }; await save();
           result.published += 1;
         }
       } catch (error) {

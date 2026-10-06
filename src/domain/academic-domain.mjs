@@ -363,7 +363,7 @@ export function formatAnnouncementInBeijing(usDateStr, usWeekday) {
     shortDate,
     chineseWeekday,
     displayLabel: `${beijingDate} (${chineseWeekday})`,
-    batchKicker: `${chineseWeekday}监测批次 · 截稿于 02:00（北京时间）`,
+    batchKicker: `${chineseWeekday}监测批次 · 截稿于 02:00`,
     usDate: usDateStr,
     usWeekday: usWeekday || "",
   };

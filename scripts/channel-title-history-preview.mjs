@@ -2,7 +2,7 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { capturePublishedSourceBinding, hashBody, readDailyArchive, routePaper } from "./channel-publication.mjs";
 import { deriveTitleDecision } from "./channel-title-policy.mjs";
-import { generateDailyMarkdown, generateWeeklyMarkdown, paperMarkdown, renderEventRankingPost } from "./tencent-channel-publisher.mjs";
+import { generateDailyMarkdown, generateWeeklyMarkdown, matchesManagedBody, paperMarkdown, renderEventRankingPost } from "./tencent-channel-publisher.mjs";
 
 function firstLine(body) { return String(body).split(/\r?\n/u).find(line => line.trim()) || ""; }
 function feedOf(value) { return value?.feed ?? value?.feed_info ?? value; }
@@ -135,7 +135,13 @@ export async function previewTitleHistory({ ledger, sourceBinding, currentBindin
           row.media_before = snapshot.media;
           row.media_sha256_before = hashBody(JSON.stringify(snapshot.media));
           row.media_after = structuredClone(snapshot.media);
-          if (record.status !== "published") { row.reason = "ledger_intent"; row.classification = "intent_unresolved"; }
+          const ledgerBodyMatches = record.status === "published" && matchesManagedBody(snapshot.markdown_content, identity, record.hash);
+          if (record.status === "published" && !ledgerBodyMatches) {
+            row.reason = "remote_body_drift";
+            row.classification = "remote_drift";
+            row.risk_flags.push("remote_body_differs_from_ledger");
+          }
+          else if (record.status !== "published") { row.reason = "ledger_intent"; row.classification = "intent_unresolved"; }
           else if (!source || source.error || !source.title) {
             row.reason = source?.error || "source_missing";
             row.classification = source?.error?.includes("title_unavailable") ? "scientific_title_needs_manual_review" : "source_missing";

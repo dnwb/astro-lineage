@@ -1,0 +1,288 @@
+---
+import { matchScientificTags, TOPIC_FILTER_SPECS } from "../domain/academic-domain.mjs";
+
+interface Props {
+  groups?: {
+    must_read?: any[];
+    worth_knowing?: any[];
+    skip?: any[];
+  };
+}
+
+const { groups = {} } = Astro.props;
+const mustItems = groups.must_read || [];
+const worthItems = groups.worth_knowing || [];
+const skipItems = groups.skip || [];
+const allItems = [...mustItems, ...worthItems, ...skipItems];
+const totalCount = allItems.length;
+const mustCount = mustItems.length;
+const worthCount = worthItems.length;
+const skipCount = skipItems.length;
+
+const topicCounts: Record<string, number> = {};
+for (const item of allItems) {
+  const tags = matchScientificTags(item);
+  for (const t of tags) {
+    topicCounts[t] = (topicCounts[t] || 0) + 1;
+  }
+}
+
+const activeTopicFilters = TOPIC_FILTER_SPECS
+  .map((spec) => ({ ...spec, count: topicCounts[spec.id] || 0 }))
+  .filter((spec) => spec.count > 0);
+---
+
+{totalCount > 0 && (
+  <div class="daily-filter-bar" role="tablist" aria-label="按主题与标签筛选日报论文">
+    <span class="daily-filter-title">🏷️ 标签筛选：</span>
+
+    <input type="radio" name="daily-topic-filter" id="filter-daily-all" class="daily-topic-radio" checked />
+    <label for="filter-daily-all" class="daily-filter-pill">全部 ({totalCount})</label>
+
+    {mustCount > 0 && (
+      <>
+        <input type="radio" name="daily-topic-filter" id="filter-daily-must" class="daily-topic-radio" />
+        <label for="filter-daily-must" class="daily-filter-pill pill-must">⭐ 必读 ({mustCount})</label>
+      </>
+    )}
+
+    {worthCount > 0 && (
+      <>
+        <input type="radio" name="daily-topic-filter" id="filter-daily-worth" class="daily-topic-radio" />
+        <label for="filter-daily-worth" class="daily-filter-pill pill-worth">📌 关注 ({worthCount})</label>
+      </>
+    )}
+
+    {skipCount > 0 && (
+      <>
+        <input type="radio" name="daily-topic-filter" id="filter-daily-skim" class="daily-topic-radio" />
+        <label for="filter-daily-skim" class="daily-filter-pill pill-skim">⚡ 略读 ({skipCount})</label>
+      </>
+    )}
+
+    {activeTopicFilters.map((t) => (
+      <>
+        <input type="radio" name="daily-topic-filter" id={`filter-daily-${t.id.toLowerCase()}`} class="daily-topic-radio" />
+        <label for={`filter-daily-${t.id.toLowerCase()}`} class="daily-filter-pill pill-topic">
+          {t.emoji ? `${t.emoji} ` : ""}{t.short} ({t.count})
+        </label>
+      </>
+    ))}
+  </div>
+)}
+
+<style>
+  .daily-filter-bar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin: 0.5rem 0 1.25rem;
+    padding: 0.55rem 0.85rem;
+    background: var(--code-bg, #f8fafc);
+    border: 1px solid var(--border-color, #e2e8f0);
+    border-radius: 0.5rem;
+  }
+  .daily-filter-title {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-muted, #64748b);
+    margin-right: 0.15rem;
+    user-select: none;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .daily-filter-title {
+    color: #94a3b8;
+  }
+
+  .daily-topic-radio {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+    width: 0;
+    height: 0;
+  }
+
+  .daily-filter-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.22rem 0.65rem;
+    font-size: 0.78rem;
+    font-weight: 500;
+    border-radius: 9999px;
+    background: var(--card-bg, #ffffff);
+    border: 1px solid var(--card-border, #cbd5e1);
+    color: var(--text-secondary, #475569);
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.15s ease;
+  }
+  .daily-filter-pill:hover {
+    background: var(--code-bg, #f1f5f9);
+    border-color: #94a3b8;
+    color: var(--text-primary, #0f172a);
+    transform: translateY(-1px);
+  }
+
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .daily-filter-pill {
+    background: #0f172a;
+    border-color: #334155;
+    color: #cbd5e1;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .daily-filter-pill:hover {
+    background: #334155;
+    border-color: #64748b;
+    color: #f8fafc;
+  }
+
+  /* Active Pill Highlights */
+  .daily-filter-bar:has(#filter-daily-all:checked) label[for="filter-daily-all"],
+  .daily-filter-bar:has(#filter-daily-must:checked) label[for="filter-daily-must"],
+  .daily-filter-bar:has(#filter-daily-worth:checked) label[for="filter-daily-worth"],
+  .daily-filter-bar:has(#filter-daily-skim:checked) label[for="filter-daily-skim"],
+  .daily-filter-bar:has(#filter-daily-frb:checked) label[for="filter-daily-frb"],
+  .daily-filter-bar:has(#filter-daily-sn:checked) label[for="filter-daily-sn"],
+  .daily-filter-bar:has(#filter-daily-grb:checked) label[for="filter-daily-grb"],
+  .daily-filter-bar:has(#filter-daily-gw:checked) label[for="filter-daily-gw"],
+  .daily-filter-bar:has(#filter-daily-mag:checked) label[for="filter-daily-mag"],
+  .daily-filter-bar:has(#filter-daily-tde:checked) label[for="filter-daily-tde"],
+  .daily-filter-bar:has(#filter-daily-multi:checked) label[for="filter-daily-multi"] {
+    background: #2563eb;
+    color: #ffffff;
+    border-color: #1d4ed8;
+    font-weight: 600;
+    box-shadow: 0 1px 3px rgba(37, 99, 235, 0.25);
+  }
+
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .daily-filter-bar:has(#filter-daily-all:checked) label[for="filter-daily-all"],
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .daily-filter-bar:has(#filter-daily-must:checked) label[for="filter-daily-must"],
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .daily-filter-bar:has(#filter-daily-worth:checked) label[for="filter-daily-worth"],
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .daily-filter-bar:has(#filter-daily-skim:checked) label[for="filter-daily-skim"],
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .daily-filter-bar:has(#filter-daily-frb:checked) label[for="filter-daily-frb"],
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .daily-filter-bar:has(#filter-daily-sn:checked) label[for="filter-daily-sn"],
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .daily-filter-bar:has(#filter-daily-grb:checked) label[for="filter-daily-grb"],
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .daily-filter-bar:has(#filter-daily-gw:checked) label[for="filter-daily-gw"],
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .daily-filter-bar:has(#filter-daily-mag:checked) label[for="filter-daily-mag"],
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .daily-filter-bar:has(#filter-daily-tde:checked) label[for="filter-daily-tde"],
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .daily-filter-bar:has(#filter-daily-multi:checked) label[for="filter-daily-multi"] {
+    background: rgba(37, 99, 235, 0.28);
+    border-color: rgba(96, 165, 250, 0.45);
+    color: #93c5fd;
+  }
+
+  /* Global Filtering Cascades for Priority & Scientific Topics */
+  :global(.daily-radar-content-wrap:has(#filter-daily-must:checked) .radar-list-item:not([data-priority="must_read"])) {
+    display: none !important;
+  }
+  :global(.daily-radar-content-wrap:has(#filter-daily-must:checked) #worth-knowing),
+  :global(.daily-radar-content-wrap:has(#filter-daily-must:checked) .skip-section) {
+    display: none !important;
+  }
+
+  :global(.daily-radar-content-wrap:has(#filter-daily-worth:checked) .radar-list-item:not([data-priority="worth_knowing"])) {
+    display: none !important;
+  }
+  :global(.daily-radar-content-wrap:has(#filter-daily-worth:checked) #must-read),
+  :global(.daily-radar-content-wrap:has(#filter-daily-worth:checked) .skip-section) {
+    display: none !important;
+  }
+
+  :global(.daily-radar-content-wrap:has(#filter-daily-skim:checked) .radar-list-item:not([data-priority="skip"])) {
+    display: none !important;
+  }
+  :global(.daily-radar-content-wrap:has(#filter-daily-skim:checked) #must-read),
+  :global(.daily-radar-content-wrap:has(#filter-daily-skim:checked) #worth-knowing) {
+    display: none !important;
+  }
+
+  :global(.daily-radar-content-wrap:has(#filter-daily-frb:checked) .radar-list-item:not([data-tags*="FRB"])) {
+    display: none !important;
+  }
+  :global(.daily-radar-content-wrap:has(#filter-daily-frb:checked) #must-read:not(:has(.radar-list-item[data-tags*="FRB"]))) {
+    display: none !important;
+  }
+  :global(.daily-radar-content-wrap:has(#filter-daily-frb:checked) #worth-knowing:not(:has(.radar-list-item[data-tags*="FRB"]))) {
+    display: none !important;
+  }
+  :global(.daily-radar-content-wrap:has(#filter-daily-frb:checked) .skip-section:not(:has(.radar-list-item[data-tags*="FRB"]))) {
+    display: none !important;
+  }
+
+  :global(.daily-radar-content-wrap:has(#filter-daily-sn:checked) .radar-list-item:not([data-tags*="SN"])) {
+    display: none !important;
+  }
+  :global(.daily-radar-content-wrap:has(#filter-daily-sn:checked) #must-read:not(:has(.radar-list-item[data-tags*="SN"]))) {
+    display: none !important;
+  }
+  :global(.daily-radar-content-wrap:has(#filter-daily-sn:checked) #worth-knowing:not(:has(.radar-list-item[data-tags*="SN"]))) {
+    display: none !important;
+  }
+  :global(.daily-radar-content-wrap:has(#filter-daily-sn:checked) .skip-section:not(:has(.radar-list-item[data-tags*="SN"]))) {
+    display: none !important;
+  }
+
+  :global(.daily-radar-content-wrap:has(#filter-daily-grb:checked) .radar-list-item:not([data-tags*="GRB"])) {
+    display: none !important;
+  }
+  :global(.daily-radar-content-wrap:has(#filter-daily-grb:checked) #must-read:not(:has(.radar-list-item[data-tags*="GRB"]))) {
+    display: none !important;
+  }
+  :global(.daily-radar-content-wrap:has(#filter-daily-grb:checked) #worth-knowing:not(:has(.radar-list-item[data-tags*="GRB"]))) {
+    display: none !important;
+  }
+  :global(.daily-radar-content-wrap:has(#filter-daily-grb:checked) .skip-section:not(:has(.radar-list-item[data-tags*="GRB"]))) {
+    display: none !important;
+  }
+
+  :global(.daily-radar-content-wrap:has(#filter-daily-gw:checked) .radar-list-item:not([data-tags*="GW"])) {
+    display: none !important;
+  }
+  :global(.daily-radar-content-wrap:has(#filter-daily-gw:checked) #must-read:not(:has(.radar-list-item[data-tags*="GW"]))) {
+    display: none !important;
+  }
+  :global(.daily-radar-content-wrap:has(#filter-daily-gw:checked) #worth-knowing:not(:has(.radar-list-item[data-tags*="GW"]))) {
+    display: none !important;
+  }
+  :global(.daily-radar-content-wrap:has(#filter-daily-gw:checked) .skip-section:not(:has(.radar-list-item[data-tags*="GW"]))) {
+    display: none !important;
+  }
+
+  :global(.daily-radar-content-wrap:has(#filter-daily-mag:checked) .radar-list-item:not([data-tags*="MAG"])) {
+    display: none !important;
+  }
+  :global(.daily-radar-content-wrap:has(#filter-daily-mag:checked) #must-read:not(:has(.radar-list-item[data-tags*="MAG"]))) {
+    display: none !important;
+  }
+  :global(.daily-radar-content-wrap:has(#filter-daily-mag:checked) #worth-knowing:not(:has(.radar-list-item[data-tags*="MAG"]))) {
+    display: none !important;
+  }
+  :global(.daily-radar-content-wrap:has(#filter-daily-mag:checked) .skip-section:not(:has(.radar-list-item[data-tags*="MAG"]))) {
+    display: none !important;
+  }
+
+  :global(.daily-radar-content-wrap:has(#filter-daily-tde:checked) .radar-list-item:not([data-tags*="TDE"])) {
+    display: none !important;
+  }
+  :global(.daily-radar-content-wrap:has(#filter-daily-tde:checked) #must-read:not(:has(.radar-list-item[data-tags*="TDE"]))) {
+    display: none !important;
+  }
+  :global(.daily-radar-content-wrap:has(#filter-daily-tde:checked) #worth-knowing:not(:has(.radar-list-item[data-tags*="TDE"]))) {
+    display: none !important;
+  }
+  :global(.daily-radar-content-wrap:has(#filter-daily-tde:checked) .skip-section:not(:has(.radar-list-item[data-tags*="TDE"]))) {
+    display: none !important;
+  }
+
+  :global(.daily-radar-content-wrap:has(#filter-daily-multi:checked) .radar-list-item:not([data-tags*="MULTI"])) {
+    display: none !important;
+  }
+  :global(.daily-radar-content-wrap:has(#filter-daily-multi:checked) #must-read:not(:has(.radar-list-item[data-tags*="MULTI"]))) {
+    display: none !important;
+  }
+  :global(.daily-radar-content-wrap:has(#filter-daily-multi:checked) #worth-knowing:not(:has(.radar-list-item[data-tags*="MULTI"]))) {
+    display: none !important;
+  }
+  :global(.daily-radar-content-wrap:has(#filter-daily-multi:checked) .skip-section:not(:has(.radar-list-item[data-tags*="MULTI"]))) {
+    display: none !important;
+  }
+</style>

@@ -8,6 +8,7 @@ import DailyRadarPendingCard from "../../components/DailyRadarPendingCard.astro"
 import DailyRadarPrioritySection from "../../components/DailyRadarPrioritySection.astro";
 import DailyKnowledgePoint from "../../components/DailyKnowledgePoint.astro";
 import DailyDateSwitcher from "../../components/DailyDateSwitcher.astro";
+import DailyTopicFilter from "../../components/DailyTopicFilter.astro";
 import { formatAnnouncementInBeijing } from "../../domain/academic-domain.mjs";
 import { loadSiteConfig } from "../../lib/site-config";
 import "../../styles/global.css";
@@ -191,37 +192,41 @@ const bjtInfo = formatAnnouncementInBeijing(archive.date, archive.weekday);
         </div>
       </nav>
 
-      <DailyRadarPrioritySection
-        id="must-read"
-        items={priorityGroups.must_read}
-        primaryLabel="必读"
-        englishLabel="Must Read"
-        visibleWorkLinks={visibleWorkLinks}
-      />
+      <div class="daily-radar-content-wrap">
+        <DailyTopicFilter groups={priorityGroups} />
 
-      <DailyRadarPrioritySection
-        id="worth-knowing"
-        items={priorityGroups.worth_knowing}
-        primaryLabel="关注"
-        englishLabel="Worth Knowing"
-        visibleWorkLinks={visibleWorkLinks}
-      />
+        <DailyRadarPrioritySection
+          id="must-read"
+          items={priorityGroups.must_read}
+          primaryLabel="必读"
+          englishLabel="Must Read"
+          visibleWorkLinks={visibleWorkLinks}
+        />
 
-      {priorityGroups.skip && priorityGroups.skip.length > 0 && (
-        <details class="radar-priority-section skip-section">
-          <summary>
-            <span class="language-primary">快速浏览 · Skim（默认收起）</span>
-            <span class="language-english" lang="en">Skim (collapsed by default)</span>
-          </summary>
-          <DailyRadarPrioritySection
-            id="skim"
-            items={priorityGroups.skip}
-            primaryLabel="快速浏览"
-            englishLabel="Skim"
-            visibleWorkLinks={visibleWorkLinks}
-          />
-        </details>
-      )}
+        <DailyRadarPrioritySection
+          id="worth-knowing"
+          items={priorityGroups.worth_knowing}
+          primaryLabel="关注"
+          englishLabel="Worth Knowing"
+          visibleWorkLinks={visibleWorkLinks}
+        />
+
+        {priorityGroups.skip && priorityGroups.skip.length > 0 && (
+          <details class="radar-priority-section skip-section">
+            <summary>
+              <span class="language-primary">快速浏览 · Skim（默认收起）</span>
+              <span class="language-english" lang="en">Skim (collapsed by default)</span>
+            </summary>
+            <DailyRadarPrioritySection
+              id="skim"
+              items={priorityGroups.skip}
+              primaryLabel="快速浏览"
+              englishLabel="Skim"
+              visibleWorkLinks={visibleWorkLinks}
+            />
+          </details>
+        )}
+      </div>
 
       {model.knowledge_points && model.knowledge_points.length > 0 && (
         <section class="radar-section" id="knowledge-points">

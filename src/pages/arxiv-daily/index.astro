@@ -12,6 +12,7 @@ import DailyRadarPendingCard from "../../components/DailyRadarPendingCard.astro"
 import DailyRadarPrioritySection from "../../components/DailyRadarPrioritySection.astro";
 import DailyKnowledgePoint from "../../components/DailyKnowledgePoint.astro";
 import DailyDateSwitcher from "../../components/DailyDateSwitcher.astro";
+import DailyTopicFilter from "../../components/DailyTopicFilter.astro";
 import { formatAnnouncementInBeijing } from "../../domain/academic-domain.mjs";
 import { loadSiteConfig } from "../../lib/site-config";
 import "../../styles/global.css";
@@ -157,31 +158,35 @@ const bjtInfo = formatAnnouncementInBeijing(currentDate, announcementWindow?.ann
         </div>
       </details>
 
-      <DailyRadarPrioritySection
-        id="must-read"
-        items={priorityGroups.must_read}
-        primaryLabel="必读"
-        englishLabel="Must Read"
-        visibleWorkLinks={visibleWorkLinks}
-      />
-      <DailyRadarPrioritySection
-        id="worth-knowing"
-        items={priorityGroups.worth_knowing}
-        primaryLabel="关注"
-        englishLabel="Worth Knowing"
-        visibleWorkLinks={visibleWorkLinks}
-      />
+      <div class="daily-radar-content-wrap">
+        <DailyTopicFilter groups={priorityGroups} />
 
-      <details class="radar-priority-section skip-section">
-        <summary><span class="language-primary">快速浏览 · Skim（默认收起）</span><span class="language-english" lang="en">Skim (collapsed by default)</span></summary>
         <DailyRadarPrioritySection
-          id="skim"
-          items={priorityGroups.skip}
-          primaryLabel="快速浏览"
-          englishLabel="Skim"
+          id="must-read"
+          items={priorityGroups.must_read}
+          primaryLabel="必读"
+          englishLabel="Must Read"
           visibleWorkLinks={visibleWorkLinks}
         />
-      </details>
+        <DailyRadarPrioritySection
+          id="worth-knowing"
+          items={priorityGroups.worth_knowing}
+          primaryLabel="关注"
+          englishLabel="Worth Knowing"
+          visibleWorkLinks={visibleWorkLinks}
+        />
+
+        <details class="radar-priority-section skip-section">
+          <summary><span class="language-primary">快速浏览 · Skim（默认收起）</span><span class="language-english" lang="en">Skim (collapsed by default)</span></summary>
+          <DailyRadarPrioritySection
+            id="skim"
+            items={priorityGroups.skip}
+            primaryLabel="快速浏览"
+            englishLabel="Skim"
+            visibleWorkLinks={visibleWorkLinks}
+          />
+        </details>
+      </div>
 
       <section class="radar-section" id="knowledge-points">
         <p class="section-kicker"><span class="language-primary">学习补充</span><span class="language-english" lang="en">Learning supplement</span></p>

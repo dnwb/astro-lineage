@@ -20,6 +20,16 @@ export const SCIENTIFIC_TAGS = [
   { id: "MULTI", label: "多信使与高能中微子", englishLabel: "Multi-Messenger & Neutrinos", pattern: /\b(?:neutrino|multi[- ]messenger|IceCube|高能中微子|多信使)\b/i },
 ];
 
+export const TOPIC_FILTER_SPECS = [
+  { id: "FRB", label: "FRB 快速射电暴", short: "FRB 射电暴", emoji: "⚡" },
+  { id: "SN", label: "SN 超新星与介质", short: "SN 超新星", emoji: "💥" },
+  { id: "GRB", label: "GRB 伽马暴喷流", short: "GRB 喷流", emoji: "🌌" },
+  { id: "GW", label: "GW 引力波致密星", short: "GW 引力波", emoji: "🌊" },
+  { id: "MAG", label: "磁星与脉冲星", short: "磁星脉冲星", emoji: "🧲" },
+  { id: "TDE", label: "TDE 潮汐瓦解", short: "TDE 潮汐瓦解", emoji: "🕳️" },
+  { id: "MULTI", label: "多信使中微子", short: "多信使中微子", emoji: "🛰️" },
+];
+
 // 2. Transient Observational Identifier Regexes (for Scientific Event Clustering)
 export const TRANSIENT_IDENTIFIER_PATTERNS = [
   // GRBs: e.g. GRB 221009A, GRB 250419A, GRB230307A

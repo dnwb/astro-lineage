@@ -3,7 +3,7 @@ import ReaderText from "../ReaderText.astro";
 import DailyRadarGuide from "../DailyRadarGuide.astro";
 import DailyRadarSource from "../DailyRadarSource.astro";
 import { radarCardAnchor } from "../../../scripts/daily-radar.mjs";
-import { matchScientificTags, extractTransientIdentifiers, formatAnnouncementInBeijing } from "../../domain/academic-domain.mjs";
+import { matchScientificTags, extractTransientIdentifiers, formatAnnouncementInBeijing, TOPIC_FILTER_SPECS } from "../../domain/academic-domain.mjs";
 
 interface Props {
   topPicks: any[];
@@ -90,16 +90,6 @@ function formatCitation(paper: any) {
   const year = paper.published ? new Date(paper.published).getFullYear() : (weekId?.slice(0, 4) || new Date().getFullYear());
   return `${firstAuthor} et al. (${year}), arXiv:${cleanId}`;
 }
-
-const TOPIC_FILTER_SPECS = [
-  { id: "FRB", label: "FRB 快速射电暴", short: "FRB 射电暴" },
-  { id: "SN", label: "SN 超新星与介质", short: "SN 超新星" },
-  { id: "GRB", label: "GRB 伽马暴喷流", short: "GRB 喷流" },
-  { id: "GW", label: "GW 引力波致密星", short: "GW 引力波" },
-  { id: "MAG", label: "磁星与脉冲星", short: "磁星脉冲星" },
-  { id: "TDE", label: "TDE 潮汐瓦解", short: "TDE 潮汐瓦解" },
-  { id: "MULTI", label: "多信使中微子", short: "多信使中微子" },
-];
 
 const topicCounts: Record<string, number> = {};
 const totalCount = topPicks?.length ?? 0;

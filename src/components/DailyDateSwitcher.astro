@@ -85,7 +85,7 @@ const recentDays = allDays.slice(0, 8);
                     <span class="day-item-us-hint">（美东 {d.date}）</span>
                   </div>
                   <div class="day-item-right">
-                    {d.must_read_count > 0 && <span class="badge-must">{d.must_read_count}重点</span>}
+                    {d.must_read_count > 0 && <span class="badge-must">{d.must_read_count}必读</span>}
                     <span class="badge-total">{d.total_papers}篇</span>
                   </div>
                 </a>
@@ -98,10 +98,10 @@ const recentDays = allDays.slice(0, 8);
 
     <!-- Integrated Section Filter Pills on the Right -->
     {groups && (
-      <div class="ribbon-section-pills" aria-label="本期重点分类直达">
+      <div class="ribbon-section-pills" aria-label="本期分类直达">
         <span class="ribbon-divider" aria-hidden="true">|</span>
         <a href="#must-read" class="section-nav-pill pill-must">
-          ⭐ 重点 ({groups.must_read?.length ?? 0})
+          ⭐ 必读 ({groups.must_read?.length ?? 0})
         </a>
         <a href="#worth-knowing" class="section-nav-pill pill-worth">
           📌 关注 ({groups.worth_knowing?.length ?? 0})

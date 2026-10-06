@@ -150,8 +150,8 @@ const dateCoverage = weeks.length > 0
               <div class="weekly-card-footer">
                 <div class="footer-stats-strip">
                   <span class="pill-stat">已研判 <strong>{w.statistics?.total_analyzed ?? 0}</strong> 篇</span>
-                  <span class="pill-stat must">精读必读 <strong>{w.statistics?.must_read_count ?? w.top_picks_count ?? 0}</strong></span>
-                  <span class="pill-stat worth">值得关注 <strong>{w.statistics?.worth_knowing_count ?? 0}</strong></span>
+                  <span class="pill-stat must">必读 <strong>{w.statistics?.must_read_count ?? w.top_picks_count ?? 0}</strong></span>
+                  <span class="pill-stat worth">关注 <strong>{w.statistics?.worth_knowing_count ?? 0}</strong></span>
                   <span class="pill-stat">批次数 <strong>{w.days?.length ?? 0}</strong></span>
                 </div>
 

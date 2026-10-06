@@ -385,7 +385,7 @@ async function syncArxivArchivesWithLockHeld({
       pending_count: model.pending?.length || 0,
       brief_status: model.opening_brief?.status || "unavailable",
       brief_intro: model.opening_brief?.intro || (highlights[0] ? `重点关注 ${highlights[0].title}` : "常规高能天体物理监测批次"),
-      highlights: highlights.slice(0, 10),
+      highlights: highlights.filter((h) => h.priority === "must_read"),
       data_file: `daily/${date}.json`,
     });
   }

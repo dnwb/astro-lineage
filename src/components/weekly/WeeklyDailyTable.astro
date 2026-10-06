@@ -24,7 +24,7 @@ const { weekDays, latestDailyDate } = Astro.props;
       <h2><span class="language-primary">必读文献目录</span><span class="language-english" lang="en">Must-Read Directory</span></h2>
     </div>
     <div class="daily-table-toolbar">
-      <span class="daily-table-meta">收录本周 <strong>{weekDays.length}</strong> 个批次重点文献</span>
+      <span class="daily-table-meta">收录本周 <strong>{weekDays.length}</strong> 个批次必读文献</span>
       <a class="daily-all-archive-link" href="/arxiv-daily/">查看全部历史日报归档 →</a>
     </div>
     <div class="daily-breakdown-table-wrap">
@@ -40,6 +40,7 @@ const { weekDays, latestDailyDate } = Astro.props;
         <tbody>
           {weekDays.map((day) => {
             const dInfo = formatAnnouncementInBeijing(day.date, day.weekday);
+            const mustList = (day.highlights || []).filter((h) => h.priority === "must_read");
             return (
               <tr class={day.date === latestDailyDate ? "row-latest" : ""}>
                 <td class="col-date">
@@ -67,12 +68,12 @@ const { weekDays, latestDailyDate } = Astro.props;
               </td>
               <td class="col-topics">
                 <div class="daily-table-topics-cell">
-                  {day.highlights && day.highlights.length > 0 ? (
+                  {mustList.length > 0 ? (
                     <div class="table-highlights-list">
-                      {day.highlights.slice(0, 3).map((h) => (
+                      {mustList.slice(0, 3).map((h) => (
                         <div class="table-highlight-row">
                           <a
-                            class={`table-paper-badge ${h.priority === "must_read" ? "must" : "worth"}`}
+                            class="table-paper-badge must"
                             href={`https://arxiv.org/abs/${h.arxiv_id}`}
                             target="_blank"
                             rel="noopener noreferrer"
@@ -85,16 +86,16 @@ const { weekDays, latestDailyDate } = Astro.props;
                           )}
                         </div>
                       ))}
-                      {day.highlights.length > 3 && (
+                      {mustList.length > 3 && (
                         <details class="table-highlights-more">
                           <summary class="more-toggle-btn">
-                            展开其余 {day.highlights.length - 3} 篇文献 ▾
+                            展开其余 {mustList.length - 3} 篇必读文献 ▾
                           </summary>
                           <div class="more-highlights-list">
-                            {day.highlights.slice(3).map((h) => (
+                            {mustList.slice(3).map((h) => (
                               <div class="table-highlight-row">
                                 <a
-                                  class={`table-paper-badge ${h.priority === "must_read" ? "must" : "worth"}`}
+                                  class="table-paper-badge must"
                                   href={`https://arxiv.org/abs/${h.arxiv_id}`}
                                   target="_blank"
                                   rel="noopener noreferrer"
@@ -111,10 +112,8 @@ const { weekDays, latestDailyDate } = Astro.props;
                         </details>
                       )}
                     </div>
-                  ) : day.brief_intro ? (
-                    <p class="table-brief-intro">{day.brief_intro}</p>
                   ) : (
-                    <span class="table-empty-hint">-</span>
+                    <span class="table-empty-hint">本批次无必读文献</span>
                   )}
                 </div>
               </td>

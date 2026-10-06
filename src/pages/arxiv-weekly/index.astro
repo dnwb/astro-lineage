@@ -105,7 +105,7 @@ ${(weeklyData.thematic_highlights ?? []).map((t: any, i: number) => `### 专题 
 ${t.summary}
 关联论文: ${(t.paper_ids ?? []).map((id: string) => `arXiv:${id}`).join(", ")}`).join("\n\n")}
 
-## 本周精选重点解读
+## 本周必读精选解读
 ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read" ? "必读" : "关注"}] arXiv:${p.arxiv_id} - ${p.title}
 - **推荐理由**: ${p.recommendation_reason}
 - **核心突破**: ${p.core_insight}
@@ -161,15 +161,15 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
         </div>
         <div class="stat-card stat-must-read">
           <span class="stat-num">{stats.must_read_count}</span>
-          <span class="stat-name"><span class="language-primary">重点精读 (Must Read)</span><span class="language-english" lang="en">Must Read</span></span>
+          <span class="stat-name"><span class="language-primary">必读论文 (Must Read)</span><span class="language-english" lang="en">Must Read</span></span>
         </div>
         <div class="stat-card stat-worth-knowing">
           <span class="stat-num">{stats.worth_knowing_count}</span>
-          <span class="stat-name"><span class="language-primary">值得追踪 (Worth Knowing)</span><span class="language-english" lang="en">Worth Knowing</span></span>
+          <span class="stat-name"><span class="language-primary">关注论文 (Worth Knowing)</span><span class="language-english" lang="en">Worth Knowing</span></span>
         </div>
         <div class="stat-card stat-skip">
           <span class="stat-num">{stats.skip_count}</span>
-          <span class="stat-name"><span class="language-primary">浏览略读 (Skim)</span><span class="language-english" lang="en">Skim</span></span>
+          <span class="stat-name"><span class="language-primary">略读论文 (Skim)</span><span class="language-english" lang="en">Skim</span></span>
         </div>
       </section>
 

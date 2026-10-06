@@ -1,5 +1,4 @@
 ---
-import ProductBoundary from "../copy/product-boundary.md";
 import { loadCanonicalContent } from "../../scripts/content-loader.mjs";
 import { projectBaselineSnapshot, projectVisibleSnapshot } from "../../scripts/reader-projection.mjs";
 import { learningPathReaderPath, researchLineReaderPath } from "../lib/reader-routes";
@@ -126,13 +125,6 @@ const bjtDailyInfo = formatAnnouncementInBeijing(latestDate, radarWeekday);
         <div class="home-title-line">
           <h1 id="home-title">{site.title}</h1>
         </div>
-        <p class="home-lead language-primary">理解高能瞬变天体物理中的思想如何演化。</p>
-        <p class="home-sub-desc language-primary">聚焦超新星、相对论喷流、磁星、FRB 及多信使瞬变源 · 每日提取可核验证据 · 每周厘清学术脉络</p>
-        <div class="language-english" lang="en">
-          <p class="home-lead">Understand how ideas in high-energy astrophysics evolve.</p>
-          <p class="home-sub-desc">A curated scientific reading map tracking supernovae, relativistic jets, magnetars, FRBs, and multimessenger transients.</p>
-        </div>
-        <ProductBoundary />
       </header>
 
       <!-- Primary Feature Section: Daily & Weekly arXiv Papers -->
@@ -192,7 +184,7 @@ const bjtDailyInfo = formatAnnouncementInBeijing(latestDate, radarWeekday);
 
             {weeklyTopPicks.length > 0 && (
               <div class="intel-picks-box">
-                <p class="intel-picks-label">本周重点论文（精选 {Math.min(weeklyTopPicks.length, 4)}/{weeklyTopPicks.length} 篇）：</p>
+                <p class="intel-picks-label">本周必读精选（{Math.min(weeklyTopPicks.length, 4)}/{weeklyTopPicks.length} 篇）：</p>
                 <ul class="intel-picks-list">
                   {weeklyTopPicks.slice(0, 4).map((pick: any) => {
                     const dailyDate = paperDailyDateMap.get(pick.arxiv_id) || latestDate;
@@ -245,7 +237,7 @@ const bjtDailyInfo = formatAnnouncementInBeijing(latestDate, radarWeekday);
 
             <div class="intel-card-footer">
               <a class="btn-primary" href="/arxiv-weekly/">
-                <span>查看完整周报（共 {weeklyTopPicks.length} 篇重点精选）</span>
+                <span>查看完整周报（共 {weeklyTopPicks.length} 篇精选论文）</span>
                 <span aria-hidden="true">→</span>
               </a>
             </div>
@@ -289,7 +281,7 @@ const bjtDailyInfo = formatAnnouncementInBeijing(latestDate, radarWeekday);
             <!-- 一句话极简导读 -->
             <div class="intel-daily-summary-lead">
               <p class="intel-daily-one-liner">
-                今日监测 <strong>{dailyStats.total_papers}</strong> 篇高能瞬变论文，严格筛选提炼 <strong>{dailyStats.must_read_count}</strong> 篇必读重点；核心物理机制、数学公式与原文证据链已生成完毕。
+                今日监测 <strong>{dailyStats.total_papers}</strong> 篇高能瞬变论文，严格筛选提炼 <strong>{dailyStats.must_read_count}</strong> 篇必读文献；核心物理机制、数学公式与原文证据链已生成完毕。
               </p>
             </div>
 
@@ -429,8 +421,8 @@ const bjtDailyInfo = formatAnnouncementInBeijing(latestDate, radarWeekday);
 
     <style is:global>
       .home-header {
-        margin-top: 3rem;
-        margin-bottom: 2.5rem;
+        margin-top: 1rem;
+        margin-bottom: 1.25rem;
       }
       .intel-pick-header,
       .intel-radar-item-top {

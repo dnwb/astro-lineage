@@ -11,61 +11,29 @@ const DEFAULT_DAILY_RADAR = resolve(fileURLToPath(new URL("../src/data/daily-rad
 const DEFAULT_WEEKLY_FILE = resolve(fileURLToPath(new URL("../src/data/arxiv-weekly.json", import.meta.url)));
 const DEFAULT_DAILY_CACHE = resolve(fileURLToPath(new URL("../.cache/arxiv-daily/generations", import.meta.url)));
 const DEFAULT_WEEKLY_CACHE = resolve(fileURLToPath(new URL("../.cache/arxiv-weekly/archives", import.meta.url)));
+import {
+  getDirtyWeeks as ledgerGetDirtyWeeks,
+  markWeekDirty as ledgerMarkWeekDirty,
+  clearDirtyWeek as ledgerClearDirtyWeek,
+  clearAllDirtyWeeks as ledgerClearAllDirtyWeeks,
+} from "./edition-ledger.mjs";
+
 export const DEFAULT_DIRTY_WEEKS_PATH = resolve(fileURLToPath(new URL("../.cache/dirty-weeks.json", import.meta.url)));
 
 export async function getDirtyWeeks(path = DEFAULT_DIRTY_WEEKS_PATH) {
-  try {
-    if (!existsSync(path)) return [];
-    const data = JSON.parse(await readFile(path, "utf8"));
-    return Array.isArray(data) ? data : [];
-  } catch {
-    return [];
-  }
+  return await ledgerGetDirtyWeeks({ dirtyWeeksPath: path });
 }
 
 export async function markWeekDirty(weekId, path = DEFAULT_DIRTY_WEEKS_PATH) {
-  if (!weekId) return;
-  const lock = `${path}.lock`;
-  await acquireRefreshLock(lock);
-  try {
-    await mkdir(dirname(path), { recursive: true });
-    const current = await getDirtyWeeks(path);
-    if (!current.includes(weekId)) {
-      current.push(weekId);
-      current.sort();
-      await writeJsonAtomically(path, current);
-      console.log(`[Archive] Marked natural week ${weekId} as dirty in ${path}`);
-    }
-  } catch (err) {
-    console.warn(`[Archive] Could not mark week dirty ${weekId}:`, err.message);
-  } finally {
-    await releaseRefreshLock(lock);
-  }
+  return await ledgerMarkWeekDirty(weekId, { dirtyWeeksPath: path });
 }
 
 export async function clearDirtyWeek(weekId, path = DEFAULT_DIRTY_WEEKS_PATH) {
-  if (!weekId) return;
-  const lock = `${path}.lock`;
-  await acquireRefreshLock(lock);
-  try {
-    const current = await getDirtyWeeks(path);
-    const next = current.filter((w) => w !== weekId);
-    if (next.length !== current.length) {
-      await writeJsonAtomically(path, next);
-    }
-  } catch {} finally {
-    await releaseRefreshLock(lock);
-  }
+  return await ledgerClearDirtyWeek(weekId, { dirtyWeeksPath: path });
 }
 
 export async function clearAllDirtyWeeks(path = DEFAULT_DIRTY_WEEKS_PATH) {
-  const lock = `${path}.lock`;
-  await acquireRefreshLock(lock);
-  try {
-    await writeJsonAtomically(path, []);
-  } catch {} finally {
-    await releaseRefreshLock(lock);
-  }
+  return await ledgerClearAllDirtyWeeks({ dirtyWeeksPath: path });
 }
 
 export function getIsoWeek(dateStr) {

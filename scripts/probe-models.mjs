@@ -69,7 +69,7 @@ async function main() {
   const primaryCandidates = buildModelCandidates(DEFAULT_MODEL, DEFAULT_FALLBACK_MODELS);
   console.log(`[网关服务] ${DEFAULT_BASE_URL}`);
   console.log(`• 初筛 (Triage):      ${(process.env.AI_MODEL_TRIAGE || "gpt-6-luna")} -> ${(process.env.AI_TRIAGE_FALLBACK_MODELS || "gemini-3.5-flash-lite,claude-sonnet-4-6")}`);
-  console.log(`• 深度精读 (Reading):  ${(process.env.AI_MODEL_BODY || "gpt-6.1-sol")} -> ${(process.env.AI_BODY_FALLBACK_MODELS || "gemini-3.8-flash-high,claude-opus-4-6-thinking")}`);
+  console.log(`• 深度精读 (Reading):  ${(process.env.AI_MODEL_BODY || "gemini-3.8-flash-high")} -> ${(process.env.AI_BODY_FALLBACK_MODELS || "gpt-6.1-sol,claude-opus-4-6-thinking")}`);
   console.log(`• 即时问答 (QA Bot):   ${DEFAULT_MODEL} -> ${DEFAULT_FALLBACK_MODELS.join(" -> ")}\n`);
 
   const triageCandidates = buildModelCandidates(
@@ -77,8 +77,8 @@ async function main() {
     (process.env.AI_TRIAGE_FALLBACK_MODELS || "gemini-3.5-flash-lite,claude-sonnet-4-6").split(",").map(m => m.trim()).filter(Boolean)
   );
   const bodyCandidates = buildModelCandidates(
-    process.env.AI_MODEL_BODY || "gpt-6.1-sol",
-    (process.env.AI_BODY_FALLBACK_MODELS || "gemini-3.8-flash-high,claude-opus-4-6-thinking").split(",").map(m => m.trim()).filter(Boolean)
+    process.env.AI_MODEL_BODY || "gemini-3.8-flash-high",
+    (process.env.AI_BODY_FALLBACK_MODELS || "gpt-6.1-sol,claude-opus-4-6-thinking").split(",").map(m => m.trim()).filter(Boolean)
   );
   const botCandidates = buildModelCandidates(DEFAULT_MODEL, DEFAULT_FALLBACK_MODELS);
   const allUniqueModels = [...new Set([...triageCandidates, ...bodyCandidates, ...botCandidates])];

@@ -32,6 +32,8 @@ import {
 import { triageBatch } from "./arxiv-triage.mjs";
 import { extractPaperFigures } from "./arxiv-figures.mjs";
 import { defaultGatewayCircuitBreaker, defaultModelHealthRegistry, normalizeModelName, loadProjectEnv } from "./agent-core.mjs";
+import { sanitizeModelJsonString, evaluateEvidenceGate } from "./pipeline-evidence-gate.mjs";
+import { PIPELINE_STAGES, resolveRoutingLadder, classifyModelError } from "./pipeline-routing.mjs";
 
 loadProjectEnv();
 
@@ -57,14 +59,14 @@ const DEFAULT_CONCURRENCY = Number(process.env.AI_CONCURRENCY) || 2;
 const DEFAULT_RUN_LIMIT = Number(process.env.AI_RUN_LIMIT) || 10;
 const FALLBACK_BASE_URL = process.env.FALLBACK_OPENAI_BASE_URL || "";
 const FALLBACK_API_KEY = process.env.FALLBACK_OPENAI_API_KEY || process.env.ZHANG_API_KEY || "";
-export const FALLBACK_MODEL = process.env.FALLBACK_AI_MODEL || "gpt-6.1-sol";
+export const FALLBACK_MODEL = process.env.FALLBACK_AI_MODEL || "gemini-3.8-flash-high";
 const DEFAULT_TRIAGE_MODEL = process.env.AI_MODEL_TRIAGE || process.env.AI_MODEL_SKIM || "gpt-6-luna";
-const DEFAULT_BODY_MODEL = process.env.AI_MODEL_BODY || process.env.AI_MODEL_READING || "gpt-6.1-sol";
+const DEFAULT_BODY_MODEL = process.env.AI_MODEL_BODY || process.env.AI_MODEL_READING || "gemini-3.8-flash-high";
 const DEFAULT_TRIAGE_FALLBACKS = (process.env.AI_TRIAGE_FALLBACK_MODELS || "gemini-3.5-flash-lite,claude-sonnet-4-6")
   .split(",")
   .map((s) => normalizeModelName(s.trim()))
   .filter(Boolean);
-const DEFAULT_BODY_FALLBACKS = (process.env.AI_BODY_FALLBACK_MODELS || "gemini-3.8-flash-high,claude-opus-4-6-thinking")
+const DEFAULT_BODY_FALLBACKS = (process.env.AI_BODY_FALLBACK_MODELS || "gpt-6.1-sol,claude-opus-4-6-thinking")
   .split(",")
   .map((s) => normalizeModelName(s.trim()))
   .filter(Boolean);
@@ -84,9 +86,7 @@ const SOURCE_TIMEOUT_MS = 30_000;
 const MODEL_TIMEOUT_MS = 120_000;
 
 export function cleanJsonContent(raw) {
-  let cleaned = String(raw ?? "").trim();
-  cleaned = cleaned.replace(/^```(?:json)?\s*/iu, "").replace(/\s*```$/u, "").trim();
-  return cleaned;
+  return sanitizeModelJsonString(raw);
 }
 
 function repairMathInRawJson(raw) {
@@ -318,6 +318,11 @@ async function executeChatCompletion({
       }
 
       defaultModelHealthRegistry.recordFailure(candidateModel, lastError);
+      const classification = classifyModelError(lastError);
+      if (!classification.shouldFallback) {
+        console.warn(`[AI Analyzer] 检测到确定性不可恢复错误 (${classification.reason}): ${lastError.message}，终止降级链以防 Token 损耗。`);
+        throw lastError;
+      }
       if (mIdx < candidates.length - 1) {
         console.warn(`[AI Analyzer] 所有供应商对模型 (${candidateModel}) 均不可用，正在降级切换至候选模型 (${candidates[mIdx + 1]})...`);
       }
@@ -1783,6 +1788,13 @@ export async function runAiAnalyzer({
           const figures = await extractPaperFigures(item.entry.arxiv_id, item.entry.revision).catch(() => []);
           checked.figures = figures;
           item.analysis = buildAnalysisRecord(item.entry, bodyOutput, checked, { modelName: model, source });
+          const gate = evaluateEvidenceGate(item.analysis, {
+            bodyText: source.bodyText,
+            sections: source.sections,
+          });
+          if (gate.downgraded && gate.downgradeReason) {
+            console.log(`[Evidence Gate] arXiv:${item.entry.arxiv_id} 证据闸门判定: ${gate.diagnostic}`);
+          }
           item.state = "complete";
           item.reading_status = "read";
           item.last_error = null;

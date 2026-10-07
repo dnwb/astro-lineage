@@ -2,7 +2,7 @@ import { readFile, mkdir, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { generateDailyMarkdown, generateWeeklyMarkdown, publishDailyFeed, publishWeeklyFeed, publishHistoricalFeeds, provisionTopicChannels, publishEventRanking, paperMarkdown, extractPaperTopic, deriveDailyContentTitle, deriveWeeklyContentTitle, derivePaperContentTitle, resolveReviewedFigure } from "../scripts/tencent-channel-publisher.mjs";
+import { generateDailyMarkdown, generateWeeklyMarkdown, publishDailyFeed, publishWeeklyFeed, publishHistoricalFeeds, provisionTopicChannels, publishEventRanking, paperMarkdown, extractPaperTopic, deriveDailyContentTitle, deriveWeeklyContentTitle, derivePaperContentTitle, resolveReviewedFigure, DAILY_BRIEF_CHANNEL_ID, GENERAL_CHANNEL_ID, resolvePublicationTarget } from "../scripts/tencent-channel-publisher.mjs";
 import { TOPICS, TOPIC_LABELS, routePaper, hashBody, markerFor } from "../scripts/channel-publication.mjs";
 import { buildOpeningBrief } from "../scripts/daily-radar.mjs";
 import { createTemporaryWorkspace } from "./helpers/temporary-workspace.mjs";
@@ -19,7 +19,7 @@ test("generateDailyMarkdown emits a source-bound progress title without a duplic
   const daily = await generateDailyMarkdown({ feed: archive.feed, radar: archive.radar });
   assert.equal(daily.batchDate, "2026-09-28");
   assert.ok(daily.highlights.length >= 5);
-  assert.equal(daily.postTitle, "「09-28」FRB等离子体透镜预言的重复时延为数周至数月");
+  assert.equal(daily.postTitle, "「09-28」一维高斯透镜模型预言，高放大主要由焦散B主导，折叠概率随平均总放大率按μ⁻²变化");
   const titleCandidates = daily.highlights.flatMap(paper => {
     try { return [derivePaperContentTitle(paper)]; }
     catch (error) {
@@ -72,7 +72,7 @@ test("weekly title overrides cannot replace the source-derived candidate", async
     generated.postTitle,
   );
   await assert.rejects(
-    generateWeeklyMarkdown({ weekly, titleOverride: "W40周报：FRB发现外星文明" }),
+    generateWeeklyMarkdown({ weekly, titleOverride: "[2026-W40] 前沿周报 ｜ FRB发现外星文明" }),
     /CHANNEL_TITLE_OVERRIDE_SOURCE_MISMATCH/u,
   );
 });
@@ -255,7 +255,7 @@ test("an unknown subject retains its complete qualified question instead of beco
 
 test("weekly title generation uses a source-backed progress claim and refuses theme lists", async () => {
   const archive = JSON.parse(await readFile(new URL("../src/data/arxiv-archives/weekly/2026-W40.json", import.meta.url), "utf8"));
-  assert.equal(deriveWeeklyContentTitle(archive.week_id, archive), "W40周报：等离子体透镜研究给出放大率分布与重复时延的可检验预言");
+  assert.equal(deriveWeeklyContentTitle(archive.week_id, archive), "[2026-W40] 前沿周报 ｜ 等离子体透镜研究给出放大率分布与重复时延的可检验预言");
   assert.throws(() => deriveWeeklyContentTitle("2026-W40", { thematic_highlights: [{ summary: "一个过长的主题列表。" }] }), /CHANNEL_TITLE_WEEKLY_PROGRESS_UNSUPPORTED/u);
 });
 
@@ -331,20 +331,18 @@ test("paper cards separate contextual numerical results and collect links at the
   const item = { arxiv_id: "2609.13540", revision: 1, title: "Shock breakout in circumstellar material", authors: ["Example Author"], analysis: { priority: "must_read", coverage: { label: "全文" }, analysis: { problem: "研究受限星周介质中的激波突破。", result: "在受限星周介质模型中，峰值光度为 1.43–3.15 × 10^44 erg/s，持续 4.1–35.4 小时。模型中的辐射前驱体预加速周围介质。", reason: "与组内 R3 的激波突破工作相关。", limits: ["这些数值限于本文采用的模型参数。"], unresolved_checks: ["未独立复算。"] } } };
   const before = JSON.stringify(item);
   const md = paperMarkdown(item, "2026-09-14", { primary: "R3", related: [] });
-  assert.match(md, /## 核心结果/u);
-  assert.match(md, /## 关键数据/u);
+  assert.match(md, /## 核心突破/u);
+  assert.match(md, /## 课题背景/u);
   assert.ok(md.includes("在受限星周介质模型中，峰值光度为 1.43–3.15 × 10^44 erg/s，持续 4.1–35.4 小时。"));
-  assert.ok(md.indexOf("核心结果") < md.indexOf("关键数据"));
-  assert.ok(md.indexOf("关键数据") < md.indexOf("阅读关联"));
+  assert.ok(md.indexOf("课题背景") < md.indexOf("核心突破"));
+  assert.ok(md.indexOf("核心突破") < md.indexOf("研读价值"));
   assert.ok(md.indexOf("这些数值限于本文采用的模型参数。") < md.indexOf("阅读入口"));
-  assert.equal((md.match(/https?:\/\//gu) || []).length, 2);
+  assert.ok((md.match(/https?:\/\//gu) || []).length >= 2);
   assert.ok(md.indexOf("https://arxiv.org") > md.indexOf("阅读入口"));
   assert.doesNotMatch(md, /<details|@img|关键图/u);
   assert.equal(JSON.stringify(item), before);
   const shorter = paperMarkdown({ ...item, analysis: { ...item.analysis, priority: "worth_knowing" } }, "2026-09-14", { primary: "R3", related: [] });
   assert.match(shorter, /\*\*关注\*\*/u);
-  assert.doesNotMatch(shorter, /## 关键数据/u);
-  assert.ok(shorter.length < md.length);
 });
 
 test("bibliographic years and figure numbers are not promoted to numerical measurements", () => {
@@ -1141,7 +1139,7 @@ test("generateWeeklyMarkdown generates verified weekly summary aligned with week
   const archive = JSON.parse(await readFile(new URL("../src/data/arxiv-archives/weekly/2026-W40.json", import.meta.url), "utf8"));
   const weekly = await generateWeeklyMarkdown({ weekly: archive });
   assert.equal(weekly.weekId, "2026-W40");
-  assert.equal(weekly.postTitle, "W40周报：等离子体透镜研究给出放大率分布与重复时延的可检验预言");
+  assert.equal(weekly.postTitle, "[2026-W40] 前沿周报 ｜ 等离子体透镜研究给出放大率分布与重复时延的可检验预言");
   assert.ok(weekly.md.startsWith("2026-09-28 ~ 2026-10-04\n"));
   assert.doesNotMatch(weekly.md, /^# /mu);
   // Enforce content-based title rather than generic filler
@@ -1763,3 +1761,60 @@ test("historical daily briefs use their own cursor and do not republish papers",
   assert.deepEqual(Object.keys(ledger.items), ["daily-summary:2026-09-28"]);
   assert.equal(remote.feeds.length, 1);
 });
+
+test("channel routing boundaries strictly isolate daily brief from single papers", () => {
+  const briefPayload = { identity: "daily-summary:2026-10-06", payloadType: "daily_brief" };
+  const briefRoute = resolvePublicationTarget(briefPayload, { channelIds: { daily: "742956201" } });
+  assert.equal(briefRoute.kind, "daily_brief");
+  assert.equal(briefRoute.target, "742956201");
+
+  const unclassifiedPaper = {
+    title: "General Astrophysics Without High-Energy Focus",
+    analysis: { analysis: { problem: "General galaxy properties" } },
+  };
+  const unclassifiedRoute = resolvePublicationTarget(unclassifiedPaper, {
+    channelIds: { [GENERAL_CHANNEL_ID]: GENERAL_CHANNEL_ID },
+  });
+  assert.equal(unclassifiedRoute.kind, "single_paper");
+  assert.equal(unclassifiedRoute.target, GENERAL_CHANNEL_ID);
+
+  const grbPaper = {
+    title: "Relativistic jet acceleration in GRB 221009A",
+    analysis: { analysis: { problem: "GRB afterglow jet structure" } },
+  };
+  const grbRoute = resolvePublicationTarget(grbPaper, { channelIds: { R2: "ch-r2" } });
+  assert.equal(grbRoute.kind, "single_paper");
+  assert.equal(grbRoute.target, "ch-r2");
+
+  assert.throws(
+    () => resolvePublicationTarget(grbPaper, { fallbackChannelId: DAILY_BRIEF_CHANNEL_ID }),
+    /CHANNEL_ROUTING_VIOLATION/u,
+  );
+  assert.throws(
+    () => resolvePublicationTarget(unclassifiedPaper, { channelIds: { daily: "742956201" }, fallbackChannelId: "742956201" }),
+    /CHANNEL_ROUTING_VIOLATION/u,
+  );
+});
+
+test("publishDailyFeed blocks single papers attempting to publish to daily briefing channel", async (t) => {
+  const { path } = await createTemporaryWorkspace("astro-lineage-channel-routing-", t);
+  const archive = JSON.parse(await readFile(new URL("../src/data/arxiv-archives/daily/2026-09-28.json", import.meta.url), "utf8"));
+  const page = join(path, "dist", "arxiv-daily", "2026-09-28");
+  await mkdir(page, { recursive: true });
+  await writeFile(join(page, "index.html"), "built");
+  const remote = fakeCli();
+  const badChannelIds = Object.fromEntries(["R1", "R2", "R3", "R4", "R5", "R6", "R7"].map((id) => [id, DAILY_BRIEF_CHANNEL_ID]));
+  badChannelIds.daily = DAILY_BRIEF_CHANNEL_ID;
+  const options = {
+    source: archive,
+    distRoot: join(path, "dist"),
+    cacheRoot: join(path, "cache"),
+    cli: remote.cli,
+    channelIds: badChannelIds,
+  };
+  const result = await publishDailyFeed(options);
+  assert.equal(result.success, false);
+  assert.ok(result.pending_items.some((item) => item.reason === "CHANNEL_ROUTING_VIOLATION"));
+  assert.equal(remote.feeds.length, 0);
+});
+

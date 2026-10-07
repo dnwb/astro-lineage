@@ -56,6 +56,39 @@ export function routePaper(item) {
   return { primary: matches[0]?.id || null, related: matches.slice(1).map(({ id }) => id) };
 }
 
+export const DAILY_BRIEF_CHANNEL_ID = "742956201";
+export const GENERAL_CHANNEL_ID = "742956184";
+
+export function resolvePublicationTarget(item, { channelIds = {}, fallbackChannelId = GENERAL_CHANNEL_ID } = {}) {
+  const isDailyBrief = item?.payloadType === "daily_brief" ||
+    item?.identity?.startsWith("daily-summary:") ||
+    item?.topic?.primary === "daily" ||
+    item?.kind === "brief";
+
+  if (isDailyBrief) {
+    const target = channelIds.daily || DAILY_BRIEF_CHANNEL_ID;
+    return { kind: "daily_brief", target: String(target) };
+  }
+
+  // Single paper routing
+  const topic = item?.topic || routePaper(item || {});
+  let target;
+  if (topic.primary && channelIds[topic.primary]) {
+    target = channelIds[topic.primary];
+  } else if (fallbackChannelId) {
+    target = channelIds[fallbackChannelId] || fallbackChannelId;
+  } else {
+    target = channelIds[GENERAL_CHANNEL_ID] || channelIds.general || GENERAL_CHANNEL_ID;
+  }
+
+  const dailyBriefId = String(channelIds.daily || DAILY_BRIEF_CHANNEL_ID);
+  if (String(target) === dailyBriefId) {
+    throw new Error(`CHANNEL_ROUTING_VIOLATION: Single paper cards cannot be published to Daily Briefing channel (${DAILY_BRIEF_CHANNEL_ID})`);
+  }
+
+  return { kind: "single_paper", target: String(target) };
+}
+
 export function hashBody(body) { return createHash("sha256").update(body).digest("hex"); }
 export function markerFor(identity, hash) { return `<!-- astrolineage-channel:${identity}:${hash} -->`; }
 

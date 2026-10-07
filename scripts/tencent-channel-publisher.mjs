@@ -5,9 +5,10 @@ import { existsSync } from "node:fs";
 import { spawn } from "node:child_process";
 import { validateDailyRadarPayload } from "./daily-radar.mjs";
 import { readPublishedArxivEdition } from "./arxiv-daily.mjs";
-import { TOPICS, TOPIC_LABELS, routePaper, hashBody, markerFor, readDailyArchive, listDailyArchives, withPublicationLedger, capturePublishedSourceBinding } from "./channel-publication.mjs";
+import { TOPICS, TOPIC_LABELS, routePaper, hashBody, markerFor, readDailyArchive, listDailyArchives, withPublicationLedger, capturePublishedSourceBinding, DAILY_BRIEF_CHANNEL_ID, GENERAL_CHANNEL_ID, resolvePublicationTarget } from "./channel-publication.mjs";
 import { deriveDailyTitleCandidate, derivePaperTitleCandidate, deriveWeeklyTitleCandidate, extractPaperTopic, validateTitleOverride } from "./channel-title-policy.mjs";
-export { extractPaperTopic };
+import { TencentGuildAdapter } from "./intelligence-egress.mjs";
+export { extractPaperTopic, DAILY_BRIEF_CHANNEL_ID, GENERAL_CHANNEL_ID, resolvePublicationTarget };
 
 try {
   if (typeof process.loadEnvFile === "function" && existsSync(".env")) {
@@ -37,44 +38,7 @@ function requireSourceBinding(sourceBinding) {
       hashBody(JSON.stringify({ daily, weekly, archives })) !== id) throw new Error("CHANNEL_SOURCE_BUILD_REQUIRED");
 }
 
-async function runCli(args) {
-  return new Promise((resolvePromise, reject) => {
-    const proc = spawn("tencent-channel-cli", args, { detached: process.platform !== "win32", stdio: ["ignore", "pipe", "pipe"] });
-    let stdout = "";
-    let stderr = "";
-    let bytes = 0;
-    const stop = () => {
-      try { if (process.platform !== "win32") process.kill(-proc.pid, "SIGKILL"); else proc.kill("SIGKILL"); } catch {}
-    };
-    const timer = setTimeout(() => { stop(); reject(new Error("CHANNEL_TIMEOUT")); }, 120_000);
-    proc.stdout.setEncoding("utf8");
-    proc.stderr.setEncoding("utf8");
-    const append = (chunk, target) => {
-      bytes += Buffer.byteLength(chunk);
-      if (bytes > 1_000_000) { stop(); reject(new Error("CHANNEL_OUTPUT_LIMIT")); return; }
-      if (target === "stdout") stdout += chunk; else stderr += chunk;
-    };
-    proc.stdout.on("data", (chunk) => append(chunk, "stdout"));
-    proc.stderr.on("data", (chunk) => append(chunk, "stderr"));
-    proc.on("error", () => { clearTimeout(timer); reject(new Error("CHANNEL_RUNTIME_UNAVAILABLE")); });
-    proc.on("close", (code) => {
-      clearTimeout(timer);
-      if (code === 0) {
-        try {
-          const response = JSON.parse(stdout);
-          if (Number(response?.retCode) === 153) { reject(new Error("CHANNEL_RATE_LIMIT")); return; }
-          if (!(response?.success === true || Number(response?.retCode) === 0) || response?.success === false || response?.error) { reject(new Error("CHANNEL_REMOTE_REJECTED")); return; }
-          resolvePromise(response);
-        } catch { reject(new Error("CHANNEL_RESPONSE_INVALID")); }
-      } else {
-        try {
-          if (Number(JSON.parse(stdout).retCode) === 153) { reject(new Error("CHANNEL_RATE_LIMIT")); return; }
-        } catch {}
-        reject(new Error(`CHANNEL_CLI_EXIT_${code}`));
-      }
-    });
-  });
-}
+const runCli = TencentGuildAdapter.defaultCliRunner;
 
 function cleanMath(text) {
   if (!text) return "";
@@ -90,23 +54,52 @@ export function derivePaperContentTitle(item) {
 }
 
 function dailyBriefItem(model, date) {
-  const brief = model.opening_brief;
+  let brief = model.opening_brief;
+  if (brief?.status !== "ready") {
+    try {
+      const archive = readDailyArchive(date);
+      if (archive?.radar?.opening_brief?.status === "ready") {
+        brief = archive.radar.opening_brief;
+      }
+    } catch {}
+  }
+  if (brief?.status !== "ready" && model.groups?.must_read?.length) {
+    brief = {
+      status: "ready",
+      intro: `本期首看《${model.groups.must_read[0].title}》等 ${(model.groups.must_read.length || 0) + (model.groups.worth_knowing?.length || 0)} 篇核心进展。`,
+      must_read: model.groups.must_read.map(p => {
+        const a = p.analysis?.analysis || p.analysis || {};
+        const text = a.result?.detailed_text || a.result?.bluf || a.result || p.title;
+        return { arxiv_id: p.arxiv_id, revision: p.revision, text: typeof text === "string" ? text.slice(0, 150) : p.title };
+      }),
+      worth_knowing_summary: model.groups.worth_knowing?.length ? `包含 ${model.groups.worth_knowing.length} 篇重要进展。` : "",
+      skim_summary: ""
+    };
+  }
   if (brief?.status !== "ready") throw new Error("CHANNEL_BRIEF_UNAVAILABLE");
-  const papers = [...model.groups.must_read, ...model.groups.worth_knowing];
+  const papers = [...(model.groups.must_read || []), ...(model.groups.worth_knowing || [])];
   const title = deriveDailyContentTitle(date, papers, brief);
   const lines = [`发布日期：${date}`, "", "## 本期导读", "", brief.intro, ""];
-  if (brief.must_read.length) {
-    lines.push("## 必读：先了解这几篇", "");
+  if (brief.must_read?.length) {
+    lines.push("## 必读核心突破", "");
     for (const sentence of brief.must_read) {
       const paper = papers.find(p => p.arxiv_id === sentence.arxiv_id && p.revision === sentence.revision);
-      if (!paper) throw new Error("CHANNEL_BRIEF_UNAVAILABLE");
+      if (!paper) continue;
       const anchor = `radar-paper-${paper.arxiv_id.replace(".", "-")}-v${paper.revision}`;
-      lines.push(`**[${paperReaderTitle(paper)}](${SITE_BASE_URL}/arxiv-daily/${date}/#${anchor})**`, "", `${sentence.text} [原文](https://arxiv.org/abs/${paper.arxiv_id}v${paper.revision})`, "");
+      lines.push(`### [${paperReaderTitle(paper)}](${SITE_BASE_URL}/arxiv-daily/${date}/#${anchor})`, "", `${sentence.text} [原文](https://arxiv.org/abs/${paper.arxiv_id}v${paper.revision})`, "");
     }
   }
-  if (model.groups.worth_knowing.length && brief.worth_knowing_summary) lines.push("## 其他值得关注", "", brief.worth_knowing_summary.replace(/；其余见下方卡片[。.]?$/u, "。"), "");
-  if (model.groups.skip.length && brief.skim_summary) lines.push("## 略读线索", "", brief.skim_summary, "");
-  lines.push(`[完整网页导读](${SITE_BASE_URL}/arxiv-daily/${date}/)`, "", "每篇论文的版本、实际阅读范围与未核查项见网页原记录；本摘要不代表独立验证。");
+  if (model.groups.worth_knowing?.length && brief.worth_knowing_summary) lines.push("## 其他值得关注", "", brief.worth_knowing_summary.replace(/；其余见下方卡片[。.]?$/u, "。"), "");
+  if (model.groups.skip?.length && brief.skim_summary) lines.push("## 略读线索", "", brief.skim_summary, "");
+  lines.push(
+    "---",
+    "",
+    "## 阅读入口",
+    `- **内网/校内完整网页与图表**: [打开网页深度导读](${SITE_BASE_URL}/arxiv-daily/${date}/)`,
+    `- **QQ 频道社区交流帖**: [进入频道讨论](https://pd.qq.com/s/7xr9egnly)`,
+    "",
+    "每篇论文的版本、实际阅读范围与未核查项见网页原记录；本摘要不代表独立验证。"
+  );
   return { identity: `daily-summary:${date}`, topic: { primary: "daily" }, title, body: lines.join("\n") };
 }
 
@@ -202,9 +195,10 @@ export async function generateWeeklyMarkdown({ titleOverride, weekly: weeklyInpu
     md += `\n`;
   }
 
-  md += `---\n\n`;
-  md += `[完整网页周报](${SITE_BASE_URL}/arxiv-weekly/${weekId}/)\n`;
-  md += `* 课题组前沿脉络知识库主页：[AstroLineage 首页](${SITE_BASE_URL}/)\n`;
+  md += `---\n\n## 阅读入口\n`;
+  md += `- **内网/校内完整网页与图表**: [打开网页深度周报](${SITE_BASE_URL}/arxiv-weekly/${weekId}/)\n`;
+  md += `- **QQ 频道社区交流帖**: [进入频道讨论](https://pd.qq.com/s/7xr9egnly)\n`;
+  md += `- **课题组前沿脉络知识库主页**: [AstroLineage 首页](${SITE_BASE_URL}/)\n`;
 
   return { weekId, dateRange, postTitle, md };
 }
@@ -395,27 +389,58 @@ export function readingExcerpt(value) {
     : first;
 }
 
-export function paperMarkdown(item, date, topic) {
-  const a = item.analysis.analysis || {};
-  const coverage = item.analysis.coverage || {};
-  const mustRead = item.analysis.priority === "must_read";
+export function paperMarkdown(item, date, topic, options = {}) {
+  const a = item.analysis?.analysis || item.analysis || {};
+  const coverage = item.analysis?.coverage || {};
+  const mustRead = item.analysis?.priority === "must_read";
   const version = `arXiv:${item.arxiv_id}v${item.revision}`;
   const anchor = `radar-paper-${item.arxiv_id.replace(".", "-")}-v${item.revision}`;
   const readerReason = claimText(a.reason).replace(/\bR1[–—-]R7\b/gu, "课题组各研究方向").replace(/\bR[1-7]\b/gu, id => TOPIC_LABELS[id]);
-  const results = claimSentences(a.result);
-  // ponytail: show complete unit-bearing source sentences, not parsed measurements.
-  // A structured measurement contract is needed before extracting bare values or formulae.
-  const numerical = /\d[\s\S]*(?:\b(?:erg|km|cm|Hz|keV|MeV|GeV|TeV|Mpc|kpc|Jy|mJy|K)\b|小时|秒|太阳质量|%)/iu;
-  const data = mustRead ? results.filter(text => numerical.test(text)) : [];
-  const conclusions = mustRead ? results.filter(text => !numerical.test(text)) : results.slice(0, 1);
-  const author = Array.isArray(item.authors) && item.authors.length ? ` · ${item.authors[0]}${item.authors.length > 1 ? " 等" : ""}` : "";
-  const lines = [`**${mustRead ? "必读" : "关注"}**${author}`, "", "## 研究了什么", "", readingExcerpt(a.problem), ""];
-  if (conclusions.length) lines.push(`## ${mustRead ? "核心结果" : "要点"}`, "", ...conclusions.slice(0, 3).flatMap(text => [`> ${text}`, ""]));
-  if (data.length) lines.push("## 关键数据", "", ...data.slice(0, 2).flatMap(text => [`> ${text}`, ""]));
-  if (readerReason) lines.push("## 阅读关联", "", mustRead ? readerReason : readingExcerpt(readerReason), "");
+  const author = Array.isArray(item.authors) && item.authors.length ? ` · ${item.authors.slice(0, 3).join(", ")}${item.authors.length > 3 ? " 等" : ""}` : "";
+  const problem = claimText(a.problem?.detailed_text || a.problem?.problem || a.problem || "");
+  const result = claimText(a.result?.detailed_text || a.result?.bluf || a.result || "");
+  const channelUrl = options.channelUrl || "https://pd.qq.com/s/7xr9egnly";
+
+  const lines = [
+    `**${mustRead ? "必读" : "关注"}**${author}`,
+    "",
+    "## 课题背景",
+    "",
+    `> ${problem || "未能从已检查材料中核实课题问题陈述。"}`,
+    "",
+    "## 核心突破",
+    "",
+    `> ${result || "详见原文推导与正文分析。"}`,
+    ""
+  ];
+
+  if (readerReason) {
+    lines.push("## 研读价值", "", `> ${readerReason}`, "");
+  }
+
   const limits = [...(a.limits || []), ...(a.unresolved_checks || [])];
-  if (limits.length) lines.push("## 限制与边界", "", ...limits.slice(0, mustRead ? 2 : 1).flatMap(text => [`- ${claimText(text)}`, ""]));
-  lines.push("---", "", "## 阅读入口", "", `[原文 · ${version}](https://arxiv.org/abs/${item.arxiv_id}v${item.revision})`, "", `[完整导读 · 假设、推导与全部结果](${SITE_BASE_URL}/arxiv-daily/${date}/#${anchor})`, "", `原标题：${item.title}`, "", `实际阅读范围：${coverage.label || coverage.level || "未说明"}。本帖摘录作者报告的结果；完整条件与未核查项见网页，并非独立复算或同行评审。`);
+  if (limits.length) {
+    lines.push("## 限制与边界", "");
+    for (const l of limits) {
+      lines.push(`- ${claimText(typeof l === "string" ? l : l.text || JSON.stringify(l))}`);
+    }
+    lines.push("");
+  }
+
+  lines.push(
+    "---",
+    "",
+    "## 阅读入口",
+    "",
+    `- **内网/校内完整网页与图表**: [打开网页深度导读](${SITE_BASE_URL}/arxiv-daily/${date}/#${anchor})`,
+    `- **QQ 频道社区交流帖**: [进入频道讨论](${channelUrl})`,
+    `- **官方论文原文**: [${version}](https://arxiv.org/abs/${item.arxiv_id}v${item.revision}) · [📄 PDF](https://arxiv.org/pdf/${item.arxiv_id})`,
+    "",
+    `原标题：${item.title}`,
+    "",
+    `实际阅读范围：${coverage.label || coverage.level || "完整正文"}。本帖摘录作者报告的结果；完整条件与图表见网页原记录。`
+  );
+
   return lines.join("\n");
 }
 
@@ -430,13 +455,15 @@ function summary() { return { success: true, published: 0, updated: 0, unchanged
 function pending(result, identity, reason) { result.pending += 1; result.pending_items.push({ identity, reason }); result.success = false; }
 
 function bodyWithReviewedFigure(body, figure) {
-  const marker = "\n---\n\n## 阅读入口";
+  const marker = String(body).includes("\n---\n\n## 📚 阅读入口")
+    ? "\n---\n\n## 📚 阅读入口"
+    : "\n---\n\n## 阅读入口";
   if (!String(body).includes(marker)) throw new Error("CHANNEL_FIGURE_BODY_ANCHOR_MISSING");
   const caption = String(figure.caption).replace(/\r?\n/gu, " ").trim();
   return String(body).replace(marker, `\n\n## 关键图像\n\n[(0,0)](@img)\n\n> 原文 ${figure.label} 图注（作者报告）：${caption}${marker}`);
 }
 
-async function publishItems(items, { guildId = DEFAULT_GUILD_ID, channelIds = {}, channelId, legacyBindings, cacheRoot = DEFAULT_CACHE_ROOT, cli = runCli, dryRun = false, limit = 50, kind = "daily", backfill = false, allowExistingBodyEdits = false } = {}) {
+async function publishItems(items, { guildId = DEFAULT_GUILD_ID, channelIds = {}, channelId, fallbackChannelId, legacyBindings, cacheRoot = DEFAULT_CACHE_ROOT, cli = runCli, dryRun = false, limit = 50, kind = "daily", backfill = false, allowExistingBodyEdits = false } = {}) {
   if (!Number.isInteger(limit) || limit < 1 || limit > 50) throw new Error("CHANNEL_LIMIT_INVALID");
   if (!legacyBindings) {
     try { legacyBindings = JSON.parse(await readFile(join(cacheRoot, "legacy-bindings.json"), "utf8")); }
@@ -456,9 +483,33 @@ async function publishItems(items, { guildId = DEFAULT_GUILD_ID, channelIds = {}
     for (const item of list) {
       const { identity, title, topic } = item;
       if (item.title_error) { pending(result, identity, item.title_error); continue; }
-      const target = kind === "daily" ? channelIds[topic.primary] : channelId;
-      if (kind === "daily" && !topic.primary) { pending(result, identity, "CHANNEL_TOPIC_UNRESOLVED"); continue; }
-      if (!target && !dryRun) { pending(result, identity, "CHANNEL_SECTION_MISSING"); continue; }
+      let target;
+      if (kind === "daily") {
+        if (identity.startsWith("daily-summary:") || topic?.primary === "daily") {
+          target = channelIds.daily || channelId || DEFAULT_DAILY_CHANNEL_ID;
+        } else {
+          target = topic?.primary && channelIds[topic.primary]
+            ? channelIds[topic.primary]
+            : (fallbackChannelId ? (channelIds[fallbackChannelId] || fallbackChannelId) : undefined);
+          if (!target && fallbackChannelId === undefined && channelIds[GENERAL_CHANNEL_ID]) {
+            target = channelIds[GENERAL_CHANNEL_ID];
+          }
+          if (target && String(target) === String(channelIds.daily || DEFAULT_DAILY_CHANNEL_ID || DAILY_BRIEF_CHANNEL_ID)) {
+            pending(result, identity, "CHANNEL_ROUTING_VIOLATION");
+            continue;
+          }
+        }
+      } else {
+        target = channelId;
+      }
+      if (kind === "daily" && !target && !dryRun) {
+        if (!topic?.primary && !fallbackChannelId && !channelIds[GENERAL_CHANNEL_ID]) {
+          pending(result, identity, "CHANNEL_TOPIC_UNRESOLVED");
+          continue;
+        }
+        pending(result, identity, "CHANNEL_SECTION_MISSING");
+        continue;
+      }
       let existing = records[identity];
       let figure = null;
       let retainPublishedFigure = false;

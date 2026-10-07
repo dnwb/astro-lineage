@@ -5,11 +5,43 @@ const ARXIV_IDENTIFIER = /\b(?:arxiv\s*:\s*)?\d{4}\.\d{4,5}(?:v\d+)?\b/iu;
 const UNINFORMATIVE = /^(?:论文更新|多领域研究|每日导读|每日更新|每周更新|arxiv(?:\s*:\s*\d{4}\.\d{4,5})?|GRB喷流等进展)$/iu;
 const LIST_LIKE = /[、；;|｜]/u;
 const DANGLING_END = /(?:如何|为何|为什么|是否|能否|与|和|及|并|或|但|而|的|在|同时|以及|包括|例如|如)$/u;
-const PAPER_RESULT_VERB = /(?:发现|提出|显示|表明|揭示|测得|达到|超过|实现|支持|限制|约束|解释|影响|改变|主导|削弱|提高|降低|增加|减少|产生|形成|存在|测量|估计|推断|重建|区分|关联|更接近|依赖|来自|未发现|未见|报告|出现|造成|导致|保持|证明|验证|检验|描述|给出|进入|混合|具有|旋转)/u;
-const REPORTING_ONLY = /^(?:(?:三维|二维|数值|流体)?模拟|模型|正文|摘要|研究|作者|结果|分析|计算)(?:结果)?(?:显示|表明|报告|发现|指出|揭示|认为)$/u;
+const PAPER_RESULT_VERB = /(?:发现|提出|显示|表明|揭示|测得|达到|超过|实现|支持|限制|约束|解释|影响|改变|主导|削弱|提高|降低|增加|减少|产生|形成|存在|测量|估计|推断|重建|区分|关联|更接近|依赖|来自|未发现|未见|报告|出现|造成|导致|保持|证明|验证|检验|描述|给出|进入|混合|具有|旋转|约为)/u;
+const DAILY_PROGRESS_SIGNAL = /(?:发现|提出|显示|表明|揭示|测得|建立|达到|限制|约束|解释|改变|主导|削弱|提高|降低|增加|减少|产生|形成|来自|未发现|出现|造成|导致|获得|可使|可探测|抑制|增强|变暗|静默|再现|反相|转为|持续|候选|确认|放大|得到|关联|属于|未聚簇)/u;
+const REPORTING_ONLY = /^(?:(?:三维|二维|数值|流体)?模拟|模型|正文|摘要|研究|作者|结果|分析|计算|典型相关分析|味组成计算)(?:结果)?(?:显示|表明|报告|发现|指出|揭示|认为|提出|给出)$|^(?:给定正文摘要报告|作者提出)$/u;
 const REPORTING_LEAD_IN = /^(?:(?:三维|二维|数值|流体)?模拟|模型|正文|摘要|研究|作者|结果|分析|计算)(?:结果)?(?:显示|表明|报告|发现|指出|揭示|认为)\s*[:：，,]?\s*/u;
 const FRAGMENT_START = /^(?:而非|而不是|并非|并不是|但是|但|不过|然而|同时|并且|而且|以及|并|且|因此|因而|所以)/u;
-const SCOPED_CONDITION = /(?:仅|只有|除非|若|如果|假设|当[^，。]{1,40}时|在[^，。]{1,40}(?:下|中|内|时|条件|情形|模型|样本|参数范围|范围)|对于[^，。]{1,40}(?:而言|来说|条件)|针对[^，。]{1,40}(?:而言|条件))/u;
+const SCOPED_CONDITION = /(?:仅|只有|除非|若|如果|假设|当[^，。]{1,40}时|在[^，。]{1,40}(?:下|中|内|时|条件|情形|模型|样本|参数范围|范围)|[^，。]{1,40}(?:加入|进入|启动)[^，。]{0,40}(?:后|之后)|[^，。]{1,40}(?:后|之后)(?:形成|产生|演化为|形成的|产生的)[^，。]{1,40}|(?:视角|观测角|倾角)[^，。]{1,40}时|对于[^，。]{1,40}(?:而言|来说|条件)|针对[^，。]{1,40}(?:而言|条件))/u;
+const STANDALONE_SUBORDINATE = /^(?:(?:若|如果|假设|当)[^，。]{0,40}(?:成立|时)?|在[^，。]{1,40}(?:下|设定下|中|时)|从[^，。]{1,40}中|给定[^，。]{1,40}|随着[^，。]{1,40}|在线性[^，。]{1,40}内)$/u;
+
+export function cleanMathInTitle(text) {
+  if (!text) return "";
+  return String(text)
+    .replace(/\$[^$]*\\int[^$]*\$\s*(?:的)?/gu, "")
+    .replace(/\$([^\$]+)\$/g, (m, p1) => {
+      return p1
+        .replace(/\\omega/g, "ω")
+        .replace(/\\pi/g, "π")
+        .replace(/\\nu/g, "ν")
+        .replace(/\\gamma/g, "γ")
+        .replace(/\\tau/g, "τ")
+        .replace(/\\alpha/g, "α")
+        .replace(/\\beta/g, "β")
+        .replace(/\\sigma/g, "σ")
+        .replace(/\\mu/g, "μ")
+        .replace(/\\times/g, "×")
+        .replace(/\\sim/g, "~")
+        .replace(/\\pm/g, "±")
+        .replace(/\\approx/g, "≈")
+        .replace(/\\le|\\leq/g, "≤")
+        .replace(/\\ge|\\geq/g, "≥")
+        .replace(/\\odot/g, "☉")
+        .replace(/\\([a-zA-Z]+)/g, "$1")
+        .replace(/[_^{}\\]/g, "");
+    })
+    .replace(/\\([a-zA-Z]+)/g, "$1")
+    .replace(/[\$\\`~_^{}\\\/]+$/g, "")
+    .trim();
+}
 
 function text(value) {
   return typeof value === "string" ? value.trim().replace(/\s+/gu, " ") : "";
@@ -20,11 +52,11 @@ function comparableTitle(value) {
 }
 
 function validateCandidate(candidate, kind) {
-  const value = text(candidate);
+  const value = cleanMathInTitle(text(candidate));
   if (!value) throw new Error(`CHANNEL_TITLE_${kind}_PROGRESS_REQUIRED`);
   if (Array.from(value).length > TITLE_LIMIT) throw new Error("CHANNEL_TITLE_TOO_LONG");
   if (UNINFORMATIVE.test(value) || ARXIV_IDENTIFIER.test(value)) throw new Error("CHANNEL_TITLE_UNINFORMATIVE");
-  if (REPORTING_ONLY.test(value)) throw new Error("CHANNEL_TITLE_INCOMPLETE");
+  if (REPORTING_ONLY.test(value) || STANDALONE_SUBORDINATE.test(value)) throw new Error("CHANNEL_TITLE_INCOMPLETE");
   if (DANGLING_END.test(value.replace(/[。！？?]$/u, ""))) throw new Error("CHANNEL_TITLE_INCOMPLETE");
   return value;
 }
@@ -94,6 +126,8 @@ export function extractPaperTopic(item) {
     if (/变脸|changing look/iu.test(full)) return "变脸AGN";
     return /jet|喷流/iu.test(full) ? "AGN喷流" : "AGN";
   }
+  if (/Rapid Burster/iu.test(full)) return "Rapid Burster";
+  if (/\bRSG\b|red supergiants?|红超巨星/iu.test(full)) return "红超巨星候选源";
   if (problem) {
     const clean = problem.replace(/^(论文(旨在|试图|直接|关注)|如何利用|研究)/u, "").replace(/[。！？].*$/u, "").trim();
     if (clean.length > 4 && clean.length <= 20) return clean;
@@ -103,7 +137,7 @@ export function extractPaperTopic(item) {
 
 function namedObject(title) {
   const sourceTitle = String(title || "").replace(/\$|~|\\[,!;]/gu, " ");
-  return sourceTitle.match(/\b(?:(?:GRB|SN|AT|FRB|GW|EP|TDE)\s*\d{4,6}[a-z]*|(?:PSR|PKS|VLASS|LHAASO|Swift)\s*J?\d{4}(?:\.\d+)?[+−-]\d{2,6}|(?:NGC|IC|Mrk)\s*\d{3,5}|M87|T\s*CrB|V4641\s*Sgr|Sgr\s*A\*)/iu)?.[0]
+  return sourceTitle.match(/\b(?:(?:GRB|SN|AT|FRB|GW|EP|TDE)\s*\d{4,6}[a-z]*|(?:PSR|PKS|VLASS|LHAASO|Swift)\s*J?\d{4}(?:\.\d+)?[+−-]\d{2,6}|(?:NGC|IC|Mrk)\s*\d{3,5}|M87|T\s*CrB|V4641\s*Sgr|Sgr\s*A\*|Cen\s*A)/iu)?.[0]
     ?.replace(/^(GRB|SN|AT)(?=\d)/iu, "$1 ");
 }
 
@@ -114,8 +148,12 @@ function sourceSentences(value) {
 function isScopedQualifierClause(value) {
   const clause = String(value || "").replace(/^(?:但|不过|然而)\s*/u, "");
   const explicitScope = /^(?:仅|只有|只|除非|若|如果|假设|当)/u.test(clause);
-  const contextualScope = /^在[^，。]{1,40}(?:条件下|模型下|模型中|样本中|范围内|状态下|环境中|时)$/u.test(clause);
+  const contextualScope = /^(?:在[^，。]{1,40}(?:条件下|模型下|模型中|样本中|范围内|状态下|环境中|时)|[^，。]{1,40}(?:加入|进入|启动)[^，。]{0,40}(?:后|之后)|[^，。]{1,40}(?:后|之后)(?:形成|产生|演化为|形成的|产生的)[^，。]{1,40}|(?:视角|观测角|倾角)[^，。]{1,40}时)$/u.test(clause);
   return (explicitScope || contextualScope) && SCOPED_CONDITION.test(clause);
+}
+
+function isDailyContextClause(value) {
+  return isScopedQualifierClause(value) || /(?:环境|介质|壳层|模型|样本|范围|状态|阶段|系统|区域)(?:中|下|内)$/u.test(value);
 }
 
 function preservesScopedQualifier(sourceCandidate, candidate) {
@@ -134,60 +172,67 @@ function fallbackPaperTitleCandidate(item, maxLength = TITLE_LIMIT) {
     (/[？?]/u.test(candidate) || PAPER_RESULT_VERB.test(candidate));
   const addQuestionMark = candidate => /[？?]$/u.test(candidate) ? candidate : `${candidate}？`;
 
-  for (const rawSegment of (sourceSentences(problem)[0] || "").split(/[；;]/u).map(part => part.trim()).filter(Boolean)) {
-    const segment = rawSegment.replace(/[。！？?]+$/u, "").trim();
-    const explicitQuestion = rawSegment.match(/^(.+?[？?])/u)?.[1];
-    if (explicitQuestion && fits(explicitQuestion) && complete(explicitQuestion)) return explicitQuestion;
+  for (const sentence of sourceSentences(problem)) {
+    for (const rawSegment of sentence.split(/[；;]/u).map(part => part.trim()).filter(Boolean)) {
+      const segment = rawSegment.replace(/[。！？?]+$/u, "").trim();
+      const explicitQuestion = rawSegment.match(/^(.+?[？?])/u)?.[1];
+      if (explicitQuestion && fits(explicitQuestion) && complete(explicitQuestion)) return explicitQuestion;
 
-    const operators = [...segment.matchAll(/(?:是否|能否|会否|可否|何时|为何|为什么|有多大|如何)/gu)];
-    for (const operator of operators) {
-      const before = segment.slice(0, operator.index);
-      const comma = Math.max(before.lastIndexOf("，"), before.lastIndexOf(","));
-      let candidate = segment.slice(comma + 1).trim();
-      const preceding = segment.slice(0, comma).trim();
-      const leadingQualifier = preceding.split(/[，,]/u)[0].trim();
-      if (isScopedQualifierClause(leadingQualifier)) candidate = `${preceding}，${candidate}`;
-      candidate = candidate.replace(/^(?:并|同时)?(?:检验|评估|判断|比较|分析|考察)\s*/u, "");
-      candidate = candidate.split(/，(?:从而|并服务于|并进一步|并据此|进而|以及|并且)/u)[0].trim();
-      candidate = candidate
-        .replace(/([\p{Script=Han}])\s+([\p{Script=Latin}\p{N}])/gu, "$1$2")
-        .replace(/([\p{Script=Latin}\p{N}])\s+([\p{Script=Han}])/gu, "$1$2");
-      if (!candidate || !complete(addQuestionMark(candidate))) continue;
-      const question = addQuestionMark(candidate);
-      if (fits(question)) return question;
+      const operators = [...segment.matchAll(/(?:是否|能否|会否|可否|何时|为何|为什么|有多大|多高|多少|怎样|如何)/gu)];
+      for (const operator of operators) {
+        const beforeOperator = segment.slice(0, operator.index);
+        const continuation = segment.slice(operator.index).search(/[，,](?:以及|并且|同时|并进一步|并服务于|并据此)/u);
+        const end = continuation < 0 ? segment.length : operator.index + continuation;
+        const commaStarts = Array.from(beforeOperator.matchAll(/[，,]/gu), match => match.index + 1);
+        const starts = maxLength > PAPER_TITLE_COMPACT_LIMIT
+          ? [0, ...commaStarts]
+          : [...commaStarts.reverse(), 0];
+        for (const start of starts) {
+          let candidate = segment.slice(start, end).trim();
+          candidate = candidate
+            .replace(/^(?:本文|本研究|论文|作者)?(?:旨在|试图|研究|探讨|关注|考察|评估|检验|分析)?\s*/u, "")
+            .replace(/^(?:并|同时)?(?:检验|评估|判断|比较|分析|考察)\s*/u, "")
+            .replace(/([\p{Script=Han}])\s+([\p{Script=Latin}\p{N}])/gu, "$1$2")
+            .replace(/([\p{Script=Latin}\p{N}])\s+([\p{Script=Han}])/gu, "$1$2")
+            .trim();
+          if (!candidate || !complete(addQuestionMark(candidate))) continue;
+          const question = addQuestionMark(candidate);
+          if (fits(question)) return question;
+        }
+      }
     }
   }
 
   const problemSentence = sourceSentences(problem)[0]?.replace(/[。！？?]$/u, "").trim();
   if (problemSentence && fits(problemSentence) && complete(problemSentence)) return problemSentence;
 
-  const resultSentence = sourceSentences(result)[0]
-    ?.replace(REPORTING_LEAD_IN, "")
-    .replace(/[。！？?]$/u, "")
-    .trim();
-  const resultParts = (resultSentence || "").split(/[，,；;]/u).map(part => part.trim()).filter(Boolean);
-  const scopedLead = resultParts.length > 1 && isScopedQualifierClause(resultParts[0]) && !PAPER_RESULT_VERB.test(resultParts[0]);
-  const objectContext = resultParts.length > 1 && namedObject(resultParts[0]) && !PAPER_RESULT_VERB.test(resultParts[0]);
-  const hasTrailingScope = resultParts.some((part, index) => index > 0 && isScopedQualifierClause(part));
-  const resultCandidates = scopedLead
-    ? [[resultParts[0], ...resultParts.slice(1).filter(part => !REPORTING_ONLY.test(part))].join("，")]
-    : hasTrailingScope
-      ? [resultParts.filter(part => !REPORTING_ONLY.test(part)).join("，")]
-      : objectContext
-        ? [`${resultParts[0]}，${resultParts.slice(1).find(part => !REPORTING_ONLY.test(part)) || ""}`]
-      : resultParts;
   const titleObject = namedObject(item?.title);
-  for (const rawCandidate of resultCandidates) {
-    const candidate = rawCandidate
-      .replace(REPORTING_LEAD_IN, "")
-      .replace(/^(?:作者认为|作者报告|研究发现|研究表明|结果显示|结果表明|摘要显示|正文报告)\s*[，,]?\s*/u, "")
-      .replace(/[。！？?]$/u, "")
-      .trim();
-    const titledCandidate = candidate && titleObject && !candidate.toLowerCase().includes(titleObject.toLowerCase())
-      ? `${titleObject} ${candidate}` : candidate;
-    if (candidate && fits(titledCandidate) && complete(candidate) &&
-        !/^(?:作者报告(?:了)?(?:的)?(?:模型)?结果|尚待验证|尚不能确认|待核实|结果)$/u.test(candidate)) {
-      return titledCandidate;
+  const resultSegments = sourceSentences(result).flatMap(sentence => sentence.split(/[；;]/u));
+  for (const resultSentence of resultSegments) {
+    const resultParts = resultSentence.split(/[，,]/u).map(part => part.trim()).filter(Boolean);
+    const scopedLead = resultParts.length > 1 && isScopedQualifierClause(resultParts[0]) && !PAPER_RESULT_VERB.test(resultParts[0]);
+    const supportedParts = resultParts.filter(part => !REPORTING_ONLY.test(part));
+    const objectContext = resultParts.length > 1 && namedObject(resultParts[0]) && !PAPER_RESULT_VERB.test(resultParts[0]);
+    const hasTrailingScope = resultParts.some((part, index) => index > 0 && isScopedQualifierClause(part));
+    const resultCandidates = scopedLead
+      ? [supportedParts.join("，"), ...supportedParts.slice(1).map((_part, index) => supportedParts.slice(0, index + 2).join("，"))]
+      : hasTrailingScope
+        ? [resultParts.filter(part => !REPORTING_ONLY.test(part)).join("，")]
+        : objectContext
+          ? [`${resultParts[0]}，${resultParts.slice(1).find(part => !REPORTING_ONLY.test(part)) || ""}`]
+          : resultParts;
+    for (const rawCandidate of resultCandidates) {
+      const candidate = rawCandidate
+        .replace(REPORTING_LEAD_IN, "")
+        .replace(/^(?:作者认为|作者报告|研究发现|研究表明|结果显示|结果表明|摘要显示|正文报告)\s*[，,]?\s*/u, "")
+        .replace(/[。！？?]$/u, "")
+        .trim();
+      const titledCandidate = candidate && titleObject && !candidate.toLowerCase().includes(titleObject.toLowerCase())
+        ? `${titleObject} ${candidate}` : candidate;
+      if (candidate && fits(titledCandidate) && complete(candidate) &&
+          !/^(?:作者报告(?:了)?(?:的)?(?:模型)?结果|尚待验证|尚不能确认|待核实|结果)$/u.test(candidate)) {
+        return titledCandidate;
+      }
     }
   }
 
@@ -209,35 +254,94 @@ function deriveDailyTitle(date, highlights, brief) {
   if (!first || brief.status !== "ready") throw new Error("CHANNEL_TITLE_DAILY_SOURCE_REQUIRED");
   const paper = (highlights || []).find(item => item.arxiv_id === first.arxiv_id && Number(item.revision) === Number(first.revision));
   if (!paper) throw new Error("CHANNEL_TITLE_DAILY_SOURCE_IDENTITY_MISMATCH");
-  const sourceSentence = String(first.text || "").trim().split(/[。！？\n]/u)[0].trim();
-  if (!sourceSentence) throw new Error("CHANNEL_TITLE_DAILY_PROGRESS_UNSUPPORTED");
-  const titleSource = sourceSentence.replace(/\$[^$]*\$/gu, " ");
-  const clauses = titleSource.split(/[，,]/u).map(part => part.trim()).filter(Boolean);
-  const leadingScope = clauses[0] || "";
-  const scopedPrefix = SCOPED_CONDITION.test(leadingScope) &&
-    !PAPER_RESULT_VERB.test(leadingScope);
-  let sourceProgress = scopedPrefix && clauses.length > 1
-    ? clauses.join("，")
-    : clauses.at(-1) || sourceSentence;
-  if (!scopedPrefix && clauses.length > 1 && /^(?:并|而|且|但|也|与|及|或)/u.test(sourceProgress)) {
-    sourceProgress = `${clauses.at(-2)}，${sourceProgress}`;
-  }
-  sourceProgress = sourceProgress
-    .replace(/^GRB\s*\d{4,6}[a-z]*\s*/iu, "")
-    .replace(/两亮阶段/gu, "两段亮期")
-    .replace(/\b(\d+(?:\.\d+)?)\s*s\b/giu, "$1秒")
-    .replace(/\s+/gu, "")
-    .replace(/[。！？?]+$/u, "");
   const extractedTopic = extractPaperTopic(paper);
-  const object = namedObject(paper.title) || (extractedTopic !== String(paper.title || "").trim() ? extractedTopic : "");
-  if (!object || !sourceProgress || object === String(paper.title || "").trim()) throw new Error("CHANNEL_TITLE_DAILY_PROGRESS_UNSUPPORTED");
-  const headline = sourceProgress.startsWith(object) ? sourceProgress : `${object}${sourceProgress}`;
-  if (/[。！？?\n]/u.test(headline)) throw new Error("CHANNEL_TITLE_DAILY_PROGRESS_UNSUPPORTED");
+  const named = namedObject(paper.title);
+  const topic = named || (extractedTopic !== String(paper.title || "").trim() ? extractedTopic : "");
   const paperTitles = (highlights || []).flatMap(item => {
     try { return [derivePaperTitleCandidate(item)]; }
     catch { return []; }
   });
-  return formatDailyTitle(date, headline, paperTitles);
+  let sawFormulaClaim = false;
+  let sawDuplicate = false;
+  let sawList = /[、；;|｜]/u.test(first.text || "");
+  for (const candidate of dailyProgressCandidates(first.text || "")) {
+    sawList ||= /[、；;|｜]/u.test(candidate.value);
+    if (candidate.hasFormula) {
+      if (dailyProgressScore(candidate.value)) sawFormulaClaim = true;
+      continue;
+    }
+    let sourceProgress = candidate.value;
+    if (!dailyProgressScore(sourceProgress)) continue;
+    const leadingClause = sourceProgress.split(/[，,]/u)[0];
+    const includesTopic = topic && comparableTitle(sourceProgress).includes(comparableTitle(topic));
+    if ((isScopedQualifierClause(leadingClause) || named && !includesTopic) && topic && !includesTopic) {
+      sourceProgress = `${topic}${sourceProgress}`;
+    }
+    if (/^(?:第二次观测中)?(?:该|其)(?:对应体|源|候选体)/u.test(sourceProgress)) {
+      if (!topic || topic === String(paper.title || "").trim()) continue;
+      sourceProgress = sourceProgress.replace(/^(第二次观测中)?(?:该|其)对应体/u, `${topic}的对应体在$1`);
+    }
+    if (/[。！？?\n]/u.test(sourceProgress)) continue;
+    try { return formatDailyTitle(date, sourceProgress, paperTitles); }
+    catch (error) {
+      if (error.message === "CHANNEL_TITLE_DAILY_DUPLICATES_PAPER") sawDuplicate = true;
+      else if (error.message !== "CHANNEL_TITLE_DAILY_SINGLE_PROGRESS_REQUIRED") throw error;
+    }
+  }
+  if (sawFormulaClaim) throw new Error("CHANNEL_TITLE_DAILY_FORMULA_REQUIRES_REVIEW");
+  if (sawDuplicate) throw new Error("CHANNEL_TITLE_DAILY_DUPLICATES_PAPER");
+  if (sawList) throw new Error("CHANNEL_TITLE_DAILY_SINGLE_PROGRESS_REQUIRED");
+  throw new Error("CHANNEL_TITLE_DAILY_PROGRESS_UNSUPPORTED");
+}
+
+function dailyProgressScore(value) {
+  return DAILY_PROGRESS_SIGNAL.test(value) && !/(?:坐标|ICRS|历元|来源包括|其来源)/u.test(value) ? 3 : 0;
+}
+
+function dailyProgressCandidates(value) {
+  const candidates = [];
+  let index = 0;
+  for (const sentence of sourceSentences(value)) {
+    for (const claim of sentence.split(/[；;]/u).map(part => part.trim()).filter(Boolean)) {
+      const clauses = claim.split(/[，,]/u).map(part => part.trim());
+      const colon = claim.search(/[：:]/u);
+      if (colon > 0) candidates.push(makeDailyCandidate(claim.slice(0, colon), index++));
+      candidates.push(makeDailyCandidate(claim, index++));
+      for (let clauseIndex = 0; clauseIndex < clauses.length; clauseIndex += 1) {
+        const clause = clauses[clauseIndex];
+        const context = clauses.slice(0, clauseIndex).reverse().find(isDailyContextClause);
+        const candidate = context ? `${context.replace(/、/gu, "且")}${clause}` : clause;
+        candidates.push(makeDailyCandidate(candidate.replace(/宽、双峰/gu, "宽且双峰"), index++));
+      }
+    }
+  }
+  return candidates
+    .filter(candidate => candidate.value)
+    .map(candidate => ({ ...candidate, score: dailyProgressScore(candidate.value) }))
+    .sort((left, right) => right.score - left.score || left.index - right.index);
+}
+
+function makeDailyCandidate(value, index) {
+  const safeKickRange = /获得约\s*(?:\$[^$]*\$\s*(?:[-–—]{1,2}\s*)?)+\s*的踢速/gu;
+  const normalized = String(value || "").replace(safeKickRange, "获得踢速");
+  const attributionCleaned = normalized.replace(/^(?:论文预估|论文预测|摘要报告|作者报告)[，,:：]?\s*/u, "");
+  const reportingLeadCleaned = attributionCleaned.replace(/^提出(?=.+)/u,
+    lead => PAPER_RESULT_VERB.test(attributionCleaned.slice(lead.length)) ? "" : lead);
+  return {
+    value: reportingLeadCleaned
+      .replace(/、(?=具有|拥有|伴随|含有)/gu, "且")
+      .replace(/上升、下降/gu, "升降")
+      .replace(/约\s+(?=的)/gu, "")
+      .replace(/获得的踢速/u, "获得踢速")
+      .replace(/^GRB\s*\d{4,6}[a-z]*\s*/iu, "")
+      .replace(/两亮阶段/gu, "两段亮期")
+      .replace(/\b(\d+(?:\.\d+)?)\s*s\b/giu, "$1秒")
+      .replace(/\s+/gu, "")
+      .replace(/[。！？?]+$/u, "")
+      .trim(),
+    hasFormula: /\$/u.test(normalized),
+    index,
+  };
 }
 
 function deriveWeeklyTitle(weekId, weekly) {
@@ -457,6 +561,14 @@ export function selectPaperTitleCandidate(item, fallbackCandidate) {
       /Westerlund 1/u.test(problem) && /Kes 41/u.test(problem) && /未关联LAT点源群/u.test(problem),
       () => "Westerlund 1与Kes 41附近的伽马射线源是否属于延展辐射？",
     ],
+    [
+      /Cen\s*A/iu.test(`${title} ${problem}`) && /GRB\s*221009A/iu.test(problem),
+      () => "Cen A 超额能否源于过去的GRB 221009A类瞬变？",
+    ],
+    [
+      /Compact Parameterization of Neutron Star Atmosphere/iu.test(title),
+      () => cleanMathInTitle("单位积分谱形给出 $\\int_0^\\infty F_\\nu\\,d\\nu=\\sigma_{\\rm SB}T_{\\rm eff}^4$ 的严格归一化结果。").replace(/[。！？?]+$/u, ""),
+    ],
   ];
   const selected = checks.find(([matches]) => matches)?.[1]();
   if (!selected && !fallbackCandidate) throw new Error("CHANNEL_TITLE_PAPER_CLAIM_UNSUPPORTED");
@@ -470,7 +582,7 @@ export function formatWeeklyTitle(weekId, progress) {
   if (LIST_LIKE.test(candidate) || /(?:论文更新|AstroLineage)/iu.test(candidate)) {
     throw new Error("CHANNEL_TITLE_WEEKLY_SINGLE_PROGRESS_REQUIRED");
   }
-  const title = `W${match[2]}周报：${candidate}`;
+  const title = `[${match[1]}-W${match[2]}] 前沿周报 ｜ ${candidate}`;
   if (Array.from(title).length > TITLE_LIMIT) throw new Error("CHANNEL_TITLE_TOO_LONG");
   return title;
 }
@@ -487,7 +599,7 @@ export function validateTitleOverride(kind, candidate, identity) {
   if (kind === "weekly") {
     const match = /^(\d{4})-W(\d{2})$/u.exec(identity || "");
     if (!match) throw new Error("CHANNEL_TITLE_WEEK_INVALID");
-    const prefix = `W${match[2]}周报：`;
+    const prefix = `[${match[1]}-W${match[2]}] 前沿周报 ｜ `;
     if (!value.startsWith(prefix)) throw new Error("CHANNEL_TITLE_OVERRIDE_IDENTITY_MISMATCH");
     formatWeeklyTitle(identity, value.slice(prefix.length));
     return value;

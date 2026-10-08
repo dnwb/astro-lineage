@@ -102,11 +102,11 @@ function sanitizeTitle(rawTitle, maxLength = 35) {
     .trim();
 }
 
-async function runCli(args, maxRetries = 3) {
+async function runCli(args, maxRetries = 4) {
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
       const { stdout, stderr } = await execFileAsync("tencent-channel-cli", args, {
-        timeout: 30_000,
+        timeout: 60_000,
         env: { ...process.env, PATH: process.env.PATH },
       });
       const data = JSON.parse(stdout);
@@ -118,6 +118,17 @@ async function runCli(args, maxRetries = 3) {
           `[sync-all] 触发腾讯频道接口频率限制 (153)，自动等待 72 秒后重试 (第 ${attempt}/${maxRetries} 次)...`
         );
         await sleep(72_000);
+        continue;
+      }
+      if (
+        output.includes("timeout") ||
+        output.includes("TLS handshake") ||
+        output.includes("network")
+      ) {
+        console.warn(
+          `[sync-all] 遇到网络波动 (${err.message.slice(0, 80)}...)，等待 ${attempt * 4} 秒后重试 (第 ${attempt}/${maxRetries} 次)...`
+        );
+        await sleep(attempt * 4000);
         continue;
       }
       if (attempt === maxRetries) {

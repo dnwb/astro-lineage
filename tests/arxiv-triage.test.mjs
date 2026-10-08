@@ -1,7 +1,14 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { deterministicTriageFilter } from "../scripts/arxiv-triage-filter.mjs";
-import { buildTriagePrompt, buildBatchTriagePrompt, normalizeTriageOutput, triagePaper, triageBatch } from "../scripts/arxiv-triage.mjs";
+import {
+  buildTriagePrompt,
+  buildBatchTriagePrompt,
+  normalizeTriageOutput,
+  triagePaper,
+  triageBatch,
+  safeParseTriageJson,
+} from "../scripts/arxiv-triage.mjs";
 
 test("deterministicTriageFilter filters obvious off-domain papers without HE category", () => {
   const exoplanetEntry = {
@@ -152,7 +159,8 @@ test("deterministicTriageFilter filters pure instrumentation papers without HE c
     revision: 1,
     title: "Wavefront sensing and pointing accuracy calibration for adaptive optics",
     categories: ["astro-ph.IM"],
-    abstract: "We evaluate the wavefront sensor pointing accuracy under dynamic atmospheric turbulence.",
+    abstract:
+      "We evaluate the wavefront sensor pointing accuracy under dynamic atmospheric turbulence.",
   };
 
   const filtered = deterministicTriageFilter(imEntry);
@@ -163,8 +171,20 @@ test("deterministicTriageFilter filters pure instrumentation papers without HE c
 
 test("buildBatchTriagePrompt formats multi-paper indexed prompt with JSON array contract", () => {
   const entries = [
-    { arxiv_id: "2609.00001", revision: 1, title: "Paper One", categories: ["astro-ph.HE"], abstract: "Abstract 1" },
-    { arxiv_id: "2609.00002", revision: 1, title: "Paper Two", categories: ["astro-ph.HE"], abstract: "Abstract 2" },
+    {
+      arxiv_id: "2609.00001",
+      revision: 1,
+      title: "Paper One",
+      categories: ["astro-ph.HE"],
+      abstract: "Abstract 1",
+    },
+    {
+      arxiv_id: "2609.00002",
+      revision: 1,
+      title: "Paper Two",
+      categories: ["astro-ph.HE"],
+      abstract: "Abstract 2",
+    },
   ];
 
   const prompt = buildBatchTriagePrompt(entries);
@@ -189,7 +209,8 @@ test("triageBatch processes mixed entries with deterministic shortcuts and micro
       revision: 1,
       title: "Repeating Fast Radio Burst from a magnetar wind nebula",
       categories: ["astro-ph.HE"],
-      abstract: "We report radio observations of a repeating Fast Radio Burst embedded in a magnetar nebula.",
+      abstract:
+        "We report radio observations of a repeating Fast Radio Burst embedded in a magnetar nebula.",
     },
     {
       arxiv_id: "2609.00013",
@@ -212,7 +233,8 @@ test("triageBatch processes mixed entries with deterministic shortcuts and micro
           arxiv_id: "2609.00012",
           priority: "must_read",
           reason: "FRB 磁星风云宿主环境重要突破",
-          quote: "We report radio observations of a repeating Fast Radio Burst embedded in a magnetar nebula.",
+          quote:
+            "We report radio observations of a repeating Fast Radio Burst embedded in a magnetar nebula.",
         },
         {
           arxiv_id: "2609.00013",
@@ -235,10 +257,27 @@ test("triageBatch processes mixed entries with deterministic shortcuts and micro
   const res2 = results.get("2609.00012");
   assert.equal(res2.priority, "must_read");
   assert.ok(res2.reason.includes("FRB"));
-  assert.equal(res2.evidence[0].quote, "We report radio observations of a repeating Fast Radio Burst embedded in a magnetar nebula.");
+  assert.equal(
+    res2.evidence[0].quote,
+    "We report radio observations of a repeating Fast Radio Burst embedded in a magnetar nebula."
+  );
 
   const res3 = results.get("2609.00013");
   assert.equal(res3.priority, "worth_knowing");
   assert.ok(res3.reason.includes("激波破越"));
 });
 
+test("safeParseTriageJson parses JSON with unescaped TeX commands without throwing Bad escaped character", () => {
+  // Simulates model responses containing raw TeX math escapes
+  const rawWithSingleEscapes =
+    '{\n  "priority": "skip",\n  "reason": "研究中微子通量 $\\nu$ 与激波角 $\\theta_j$ 及标度律 $\\alpha$",\n  "quote": "neutrino flux and shock angle"\n}';
+  const parsed = safeParseTriageJson(rawWithSingleEscapes);
+  assert.equal(parsed.priority, "skip");
+  assert.ok(parsed.reason.includes("中微子通量"));
+
+  const rawWithDoubleEscapes =
+    '{\n  "priority": "skip",\n  "reason": "衰变至 \\\\alpha 粒子与 \\\\gamma 射线",\n  "quote": "alpha particles"\n}';
+  const parsed2 = safeParseTriageJson(rawWithDoubleEscapes);
+  assert.equal(parsed2.priority, "skip");
+  assert.ok(parsed2.reason.includes("粒子"));
+});

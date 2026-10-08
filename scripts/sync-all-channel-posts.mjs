@@ -22,9 +22,10 @@ import {
   generateDailyMarkdown,
   generateWeeklyMarkdown,
   derivePaperContentTitle,
-  paperMarkdown
+  paperMarkdown,
 } from "./tencent-channel-publisher.mjs";
 import { readDailyArchive, routePaper } from "./channel-publication.mjs";
+import { cleanMathInTitle } from "./channel-title-policy.mjs";
 
 const execFileAsync = promisify(execFile);
 const PROJECT_ROOT = resolve(fileURLToPath(new URL("..", import.meta.url)));
@@ -35,37 +36,14 @@ const WEEKLY_ARCHIVE_ROOT = join(PROJECT_ROOT, "src/data/arxiv-archives/weekly")
 const DIST_ROOT = join(PROJECT_ROOT, "dist");
 
 function sleep(ms) {
-  return new Promise(r => setTimeout(r, ms));
+  return new Promise((r) => setTimeout(r, ms));
 }
 
 function sanitizeTitle(rawTitle, maxLength = 35) {
-  let clean = String(rawTitle || "")
-    .replace(/\$[^$]*\\int[^$]*\$/gu, "严格满足积分归一化")
-    .replace(/\$([^\$]+)\$/g, (m, p1) => {
-      return p1
-        .replace(/\\omega/g, "ω")
-        .replace(/\\pi/g, "π")
-        .replace(/\\nu/g, "ν")
-        .replace(/\\gamma/g, "γ")
-        .replace(/\\tau/g, "τ")
-        .replace(/\\alpha/g, "α")
-        .replace(/\\beta/g, "β")
-        .replace(/\\sigma/g, "σ")
-        .replace(/\\mu/g, "μ")
-        .replace(/\\times/g, "×")
-        .replace(/\\sim/g, "~")
-        .replace(/\\pm/g, "±")
-        .replace(/\\approx/g, "≈")
-        .replace(/\\le|\\leq/g, "≤")
-        .replace(/\\ge|\\geq/g, "≥")
-        .replace(/\\odot/g, "☉")
-        .replace(/\\([a-zA-Z]+)/g, "$1")
-        .replace(/[_^{}\\]/g, "");
-    })
-    .replace(/\\([a-zA-Z]+)/g, "$1")
-    .trim();
+  let clean = cleanMathInTitle(rawTitle);
 
-  const DEPENDENT_LEAD = /^(?:若(?:该解释|上述|此)?成立|对比之下|相比之下|总体而言|研究表明|分析指出|计算显示|典型相关分析显示|味组成计算显示|作者提出(?:了)?|作者认为|给定正文摘要报告|正文报告(?:了)?|研究发现|结果显示|通过模拟)[，,:：]?\s*/u;
+  const DEPENDENT_LEAD =
+    /^(?:若(?:该解释|上述|此)?成立|对比之下|相比之下|总体而言|研究表明|分析指出|计算显示|典型相关分析显示|味组成计算显示|作者提出(?:了)?|作者认为|给定正文摘要报告|正文报告(?:了)?|研究发现|结果显示|通过模拟)[，,:：]?\s*/u;
   clean = clean.replace(DEPENDENT_LEAD, "");
 
   if (Array.from(clean).length <= maxLength) {
@@ -78,13 +56,23 @@ function sanitizeTitle(rawTitle, maxLength = 35) {
   const body = clean.slice(prefix.length);
 
   const isDependentClause = (str) => {
-    return Array.from(str).length < 12 ||
-      /^(?:若|如果|假设|当|在|从|基于|随着|针对|对于|根据|通过|由于|在线性|在不包含|在具有|在核燃烧)\b/u.test(str) ||
-      !/(?:能否|是否|如何|为何|产生|形成|主导|改变|解释|限制|约束|发现|给出|推断|演化|衰减|削弱|增强|模型|结构|特征|率|能量|喷流|超额|联系|双星)/u.test(str);
+    return (
+      Array.from(str).length < 12 ||
+      /^(?:若|如果|假设|当|在|从|基于|随着|针对|对于|根据|通过|由于|在线性|在不包含|在具有|在核燃烧)\b/u.test(
+        str
+      ) ||
+      !/(?:能否|是否|如何|为何|产生|形成|主导|改变|解释|限制|约束|发现|给出|推断|演化|衰减|削弱|增强|模型|结构|特征|率|能量|喷流|超额|联系|双星)/u.test(
+        str
+      )
+    );
   };
 
   const parts = body.split(/[，,；;：:。]/u).filter(Boolean);
-  if (parts.length > 1 && !isDependentClause(parts[0]) && Array.from(prefix + parts[0]).length <= maxLength) {
+  if (
+    parts.length > 1 &&
+    !isDependentClause(parts[0]) &&
+    Array.from(prefix + parts[0]).length <= maxLength
+  ) {
     return (prefix + parts[0])
       .replace(/(?:在中|在|与|和|且|但|因|为|的)$/u, "")
       .replace(/[\$\\`~_^{}\\\/]+$/g, "")
@@ -92,7 +80,13 @@ function sanitizeTitle(rawTitle, maxLength = 35) {
   }
 
   // 如果首句是依赖从句，且第二句是完整科学命题，优先取第二句
-  if (parts.length > 1 && isDependentClause(parts[0]) && parts[1] && !isDependentClause(parts[1]) && Array.from(prefix + parts[1]).length <= maxLength) {
+  if (
+    parts.length > 1 &&
+    isDependentClause(parts[0]) &&
+    parts[1] &&
+    !isDependentClause(parts[1]) &&
+    Array.from(prefix + parts[1]).length <= maxLength
+  ) {
     return (prefix + parts[1])
       .replace(/(?:在中|在|与|和|且|但|因|为|的)$/u, "")
       .replace(/[\$\\`~_^{}\\\/]+$/g, "")
@@ -113,14 +107,16 @@ async function runCli(args, maxRetries = 3) {
     try {
       const { stdout, stderr } = await execFileAsync("tencent-channel-cli", args, {
         timeout: 30_000,
-        env: { ...process.env, PATH: process.env.PATH }
+        env: { ...process.env, PATH: process.env.PATH },
       });
       const data = JSON.parse(stdout);
       return data;
     } catch (err) {
       const output = (err.stdout || "") + (err.stderr || "") + (err.message || "");
       if (output.includes("153") || output.includes("频率上限") || output.includes("rate limit")) {
-        console.warn(`[sync-all] 触发腾讯频道接口频率限制 (153)，自动等待 72 秒后重试 (第 ${attempt}/${maxRetries} 次)...`);
+        console.warn(
+          `[sync-all] 触发腾讯频道接口频率限制 (153)，自动等待 72 秒后重试 (第 ${attempt}/${maxRetries} 次)...`
+        );
         await sleep(72_000);
         continue;
       }
@@ -133,7 +129,15 @@ async function runCli(args, maxRetries = 3) {
   }
 }
 
-async function alterPost({ guildId, channelId, feedId, createTime, title, markdownContent, dryRun = false }) {
+async function alterPost({
+  guildId,
+  channelId,
+  feedId,
+  createTime,
+  title,
+  markdownContent,
+  dryRun = false,
+}) {
   const safeTitle = sanitizeTitle(title, 35);
   if (dryRun) {
     console.log(`[DRY-RUN] 将更新 feedId=${feedId} channelId=${channelId} title="${safeTitle}"`);
@@ -141,23 +145,35 @@ async function alterPost({ guildId, channelId, feedId, createTime, title, markdo
   }
 
   const args = [
-    "feed", "alter-feed",
-    "--guild-id", String(guildId),
-    "--channel-id", String(channelId),
-    "--feed-id", String(feedId),
-    "--create-time", String(createTime),
-    "--title", String(safeTitle),
-    "--markdown-content", String(markdownContent),
-    "--json"
+    "feed",
+    "alter-feed",
+    "--guild-id",
+    String(guildId),
+    "--channel-id",
+    String(channelId),
+    "--feed-id",
+    String(feedId),
+    "--create-time",
+    String(createTime),
+    "--title",
+    String(safeTitle),
+    "--markdown-content",
+    String(markdownContent),
+    "--json",
   ];
 
   const res = await runCli(args);
   return res;
 }
 
-export async function buildScopedPaperIndex({ archiveRoot = ARCHIVE_ROOT, distRoot = DIST_ROOT } = {}) {
+export async function buildScopedPaperIndex({
+  archiveRoot = ARCHIVE_ROOT,
+  distRoot = DIST_ROOT,
+} = {}) {
   const { readdir } = await import("node:fs/promises");
-  const archiveFiles = (await readdir(archiveRoot)).filter(f => /^\d{4}-\d{2}-\d{2}\.json$/u.test(f));
+  const archiveFiles = (await readdir(archiveRoot)).filter((f) =>
+    /^\d{4}-\d{2}-\d{2}\.json$/u.test(f)
+  );
   const paperIndex = new Map();
 
   for (const f of archiveFiles) {
@@ -178,15 +194,17 @@ export async function buildScopedPaperIndex({ archiveRoot = ARCHIVE_ROOT, distRo
 
 export async function syncAllChannelPosts(options = {}) {
   const {
-    dryRun = false,
+    dryRun = true,
     limit = Infinity,
     types = ["weekly", "daily-summary", "single"],
-    delayMs = 1500
+    delayMs = 1500,
   } = options;
 
   console.log(`========================================================`);
   console.log(`[sync-all] 正在加载发布账本: ${LEDGER_PATH}`);
-  console.log(`[sync-all] 模式: ${dryRun ? "DRY-RUN (仅预演)" : "LIVE (正式同步)"} | 目标类型: ${types.join(", ")}`);
+  console.log(
+    `[sync-all] 模式: ${dryRun ? "DRY-RUN (仅预演)" : "LIVE (正式同步)"} | 目标类型: ${types.join(", ")}`
+  );
   console.log(`========================================================`);
 
   const ledgerRaw = await readFile(LEDGER_PATH, "utf8");
@@ -198,7 +216,7 @@ export async function syncAllChannelPosts(options = {}) {
     updated: 0,
     skipped: 0,
     failed: 0,
-    errors: []
+    errors: [],
   };
 
   // 1. 周报处理
@@ -212,9 +230,13 @@ export async function syncAllChannelPosts(options = {}) {
       try {
         let weeklyData;
         try {
-          weeklyData = JSON.parse(await readFile(join(WEEKLY_ARCHIVE_ROOT, `${weekId}.json`), "utf8"));
+          weeklyData = JSON.parse(
+            await readFile(join(WEEKLY_ARCHIVE_ROOT, `${weekId}.json`), "utf8")
+          );
         } catch {
-          weeklyData = JSON.parse(await readFile(join(PROJECT_ROOT, "src/data/arxiv-weekly.json"), "utf8"));
+          weeklyData = JSON.parse(
+            await readFile(join(PROJECT_ROOT, "src/data/arxiv-weekly.json"), "utf8")
+          );
         }
 
         const { postTitle, md } = await generateWeeklyMarkdown({ weekly: weeklyData });
@@ -228,7 +250,7 @@ export async function syncAllChannelPosts(options = {}) {
           createTime: rec.create_time,
           title: finalTitle,
           markdownContent: md,
-          dryRun
+          dryRun,
         });
 
         console.log(`[周报 ${weekId}] ✓ 同步更新成功！`);
@@ -259,15 +281,22 @@ export async function syncAllChannelPosts(options = {}) {
           dailyArchive = JSON.parse(await readFile(join(ARCHIVE_ROOT, `${date}.json`), "utf8"));
         } catch {
           dailyArchive = {
-            feed: JSON.parse(await readFile(join(PROJECT_ROOT, "src/data/arxiv-daily.json"), "utf8")),
-            radar: JSON.parse(await readFile(join(PROJECT_ROOT, "src/data/daily-radar.json"), "utf8"))
+            feed: JSON.parse(
+              await readFile(join(PROJECT_ROOT, "src/data/arxiv-daily.json"), "utf8")
+            ),
+            radar: JSON.parse(
+              await readFile(join(PROJECT_ROOT, "src/data/daily-radar.json"), "utf8")
+            ),
           };
         }
 
         let postTitle;
         let md;
         try {
-          const res = await generateDailyMarkdown({ feed: dailyArchive.feed, radar: dailyArchive.radar });
+          const res = await generateDailyMarkdown({
+            feed: dailyArchive.feed,
+            radar: dailyArchive.radar,
+          });
           postTitle = res.postTitle;
           md = res.md;
         } catch (err) {
@@ -282,13 +311,17 @@ export async function syncAllChannelPosts(options = {}) {
           const model = await readDailyArchive(join(ARCHIVE_ROOT, `${date}.json`), date, DIST_ROOT);
           const first = (model.groups?.must_read || [])[0];
           const lines = [
-            `发布日期：${date}`, "",
-            "## 本期导读", "",
-            `本期重点追踪高能天体物理最新前沿，首看《${first?.title || "重点前沿论文"}》等核心突破。`, "",
+            `发布日期：${date}`,
+            "",
+            "## 本期导读",
+            "",
+            `本期重点追踪高能天体物理最新前沿，首看《${first?.title || "重点前沿论文"}》等核心突破。`,
+            "",
             "## 阅读入口",
             `- **内网/校内完整网页与图表**: [打开网页深度导读](http://10.131.43.83:4321/arxiv-daily/${date}/)`,
-            `- **QQ 频道社区交流帖**: [进入频道讨论](https://pd.qq.com/s/7xr9egnly)`, "",
-            "每篇论文的版本、实际阅读范围与未核查项见网页原记录；本摘要不代表独立验证。"
+            `- **QQ 频道社区交流帖**: [进入频道讨论](https://pd.qq.com/s/7xr9egnly)`,
+            "",
+            "每篇论文的版本、实际阅读范围与未核查项见网页原记录；本摘要不代表独立验证。",
           ];
           md = lines.join("\n");
         }
@@ -303,7 +336,7 @@ export async function syncAllChannelPosts(options = {}) {
           createTime: rec.create_time,
           title: finalTitle,
           markdownContent: md,
-          dryRun
+          dryRun,
         });
 
         console.log(`[导读 ${date}] ✓ 同步更新成功！`);
@@ -325,7 +358,10 @@ export async function syncAllChannelPosts(options = {}) {
 
     console.log(`\n--- [3/3] 正在同步单篇精读专帖 (共 ${singleEntries.length} 篇) ---`);
     console.log(`[sync-all] 正在构建全局论文索引...`);
-    const paperIndex = await buildScopedPaperIndex({ archiveRoot: ARCHIVE_ROOT, distRoot: DIST_ROOT });
+    const paperIndex = await buildScopedPaperIndex({
+      archiveRoot: ARCHIVE_ROOT,
+      distRoot: DIST_ROOT,
+    });
     console.log(`[sync-all] 论文全局索引构建完成，收录 ${paperIndex.size} 篇。`);
 
     for (let i = 0; i < singleEntries.length; i++) {
@@ -355,7 +391,9 @@ export async function syncAllChannelPosts(options = {}) {
         const finalTitle = sanitizeTitle(title, 35);
         const md = paperMarkdown(foundPaper, archiveDate, topic);
 
-        console.log(`[单篇 ${i + 1}/${singleEntries.length} | ${arxivId}v${revision}] 拟更新: "${finalTitle}"`);
+        console.log(
+          `[单篇 ${i + 1}/${singleEntries.length} | ${arxivId}v${revision}] 拟更新: "${finalTitle}"`
+        );
 
         await alterPost({
           guildId: GUILD_ID,
@@ -364,7 +402,7 @@ export async function syncAllChannelPosts(options = {}) {
           createTime: rec.create_time,
           title: finalTitle,
           markdownContent: md,
-          dryRun
+          dryRun,
         });
 
         console.log(`[单篇 ${arxivId}v${revision}] ✓ 同步更新成功！`);
@@ -379,7 +417,9 @@ export async function syncAllChannelPosts(options = {}) {
   }
 
   console.log(`\n========================================================`);
-  console.log(`[sync-all] 同步完成统计: 总计 ${stats.total} 篇 | 成功更新 ${stats.updated} 篇 | 跳过 ${stats.skipped} 篇 | 失败 ${stats.failed} 篇`);
+  console.log(
+    `[sync-all] 同步完成统计: 总计 ${stats.total} 篇 | 成功更新 ${stats.updated} 篇 | 跳过 ${stats.skipped} 篇 | 失败 ${stats.failed} 篇`
+  );
   console.log(`========================================================\n`);
 
   return stats;
@@ -387,11 +427,14 @@ export async function syncAllChannelPosts(options = {}) {
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1])) {
   const args = process.argv.slice(2);
-  const dryRun = args.includes("--dry-run");
+  const apply =
+    args.includes("--apply") || args.includes("--no-dry-run") || args.includes("--live");
+  const dryRun = !apply;
   const limitIdx = args.indexOf("--limit");
   const limit = limitIdx !== -1 ? Number(args[limitIdx + 1]) : Infinity;
   const typesIdx = args.indexOf("--types");
-  const types = typesIdx !== -1 ? args[typesIdx + 1].split(",") : ["weekly", "daily-summary", "single"];
+  const types =
+    typesIdx !== -1 ? args[typesIdx + 1].split(",") : ["weekly", "daily-summary", "single"];
 
   await syncAllChannelPosts({ dryRun, limit, types });
 }

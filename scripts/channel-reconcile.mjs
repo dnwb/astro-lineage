@@ -17,8 +17,11 @@ import { resolve, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { parseArgs } from "node:util";
 import { TencentGuildAdapter } from "./intelligence-egress.mjs";
+import { writeJsonAtomically } from "./arxiv-daily.mjs";
 
-const DEFAULT_CACHE_ROOT = resolve(fileURLToPath(new URL("../.cache/channel-publication", import.meta.url)));
+const DEFAULT_CACHE_ROOT = resolve(
+  fileURLToPath(new URL("../.cache/channel-publication", import.meta.url))
+);
 const DEFAULT_GUILD_ID = process.env.TENCENT_GUILD_ID || "612912874093545504";
 
 /**
@@ -82,8 +85,12 @@ export function computeReconciliationDiff({ ledgerItems = {}, remoteFeeds = [] }
           actualHash: marker?.hash || null,
           title: feed.title || "",
           reasons: [
-            channelMismatch ? `channel_drift(expected=${expectedChannel}, actual=${channelId})` : null,
-            hashMismatch ? `hash_mismatch(expected=${expectedHash.slice(0, 8)}, actual=${marker?.hash?.slice(0, 8)})` : null,
+            channelMismatch
+              ? `channel_drift(expected=${expectedChannel}, actual=${channelId})`
+              : null,
+            hashMismatch
+              ? `hash_mismatch(expected=${expectedHash.slice(0, 8)}, actual=${marker?.hash?.slice(0, 8)})`
+              : null,
           ].filter(Boolean),
         });
       } else {
@@ -103,7 +110,9 @@ export function computeReconciliationDiff({ ledgerItems = {}, remoteFeeds = [] }
           feed_id: feedId,
           channel_id: channelId,
           title: feed.title || "",
-          reasons: [`remote_duplicate_marker(ledger_feed_id=${ledgerItems[marker.identity].feed_id})`],
+          reasons: [
+            `remote_duplicate_marker(ledger_feed_id=${ledgerItems[marker.identity].feed_id})`,
+          ],
         });
       } else {
         // 纯孤立帖
@@ -166,21 +175,27 @@ export function formatDiffReport(diff) {
   if (orphanRemote.length > 0) {
     lines.push("\n[远端孤立帖清单 (Orphan Remote Feeds)]");
     for (const item of orphanRemote) {
-      lines.push(`- feed_id: ${item.feed_id} | channel: ${item.channel_id} | title: "${item.title}"`);
+      lines.push(
+        `- feed_id: ${item.feed_id} | channel: ${item.channel_id} | title: "${item.title}"`
+      );
     }
   }
 
   if (missingRemote.length > 0) {
     lines.push("\n[远端缺失帖清单 (Missing Remote Feeds in Ledger)]");
     for (const item of missingRemote) {
-      lines.push(`- identity: ${item.identity} | feed_id: ${item.feed_id} | channel: ${item.channel_id}`);
+      lines.push(
+        `- identity: ${item.identity} | feed_id: ${item.feed_id} | channel: ${item.channel_id}`
+      );
     }
   }
 
   if (drifted.length > 0) {
     lines.push("\n[漂移条目清单 (Drifted Items)]");
     for (const item of drifted) {
-      lines.push(`- identity: ${item.identity} | feed_id: ${item.feed_id} | reasons: ${item.reasons.join(", ")}`);
+      lines.push(
+        `- identity: ${item.identity} | feed_id: ${item.feed_id} | reasons: ${item.reasons.join(", ")}`
+      );
     }
   }
 
@@ -196,28 +211,56 @@ export function formatDiffReport(diff) {
 /**
  * 扫描指定 guild 的所有版块帖子
  */
-export async function fetchRemoteInventory({ guildId, cli = TencentGuildAdapter.defaultCliRunner } = {}) {
-  const channelsRes = await cli(["manage", "get-guild-channel-list", "--guild-id", String(guildId), "--json"]);
-  const rawData = JSON.parse(channelsRes.stdout || "{}");
-  const data = rawData.data ?? rawData;
-  const channels = Array.isArray(data) ? data : data?.channels ?? data?.channel_list ?? [];
+export async function fetchRemoteInventory({
+  guildId,
+  channelId = null,
+  cli = TencentGuildAdapter.defaultCliRunner,
+} = {}) {
+  let targetChannelIds = [];
+  if (channelId) {
+    targetChannelIds = [String(channelId)];
+  } else {
+    const channelsRes = await cli([
+      "manage",
+      "get-guild-channel-list",
+      "--guild-id",
+      String(guildId),
+      "--json",
+    ]);
+    const rawData =
+      typeof channelsRes === "string"
+        ? JSON.parse(channelsRes)
+        : channelsRes?.stdout
+          ? JSON.parse(channelsRes.stdout)
+          : channelsRes;
+    const data = rawData?.data ?? rawData;
+    const channels = Array.isArray(data) ? data : (data?.channels ?? data?.channel_list ?? []);
+    targetChannelIds = channels.map((ch) => String(ch.channel_id ?? ch.id ?? "")).filter(Boolean);
+  }
 
   const allFeeds = [];
-  for (const ch of channels) {
-    const channelId = String(ch.channel_id ?? ch.id ?? "");
-    if (!channelId) continue;
+  for (const chId of targetChannelIds) {
     try {
       const feedRes = await cli([
-        "feed", "get-channel-timeline-feeds",
-        "--guild-id", String(guildId),
-        "--channel-id", channelId,
-        "--count", "100",
+        "feed",
+        "get-channel-timeline-feeds",
+        "--guild-id",
+        String(guildId),
+        "--channel-id",
+        chId,
+        "--count",
+        "100",
         "--json",
       ]);
-      const rawFeeds = JSON.parse(feedRes.stdout || "{}");
-      const list = rawFeeds.data?.feeds || rawFeeds.feeds || [];
+      const rawFeeds =
+        typeof feedRes === "string"
+          ? JSON.parse(feedRes)
+          : feedRes?.stdout
+            ? JSON.parse(feedRes.stdout)
+            : feedRes;
+      const list = rawFeeds?.data?.feeds || rawFeeds?.feeds || [];
       for (const item of list) {
-        allFeeds.push({ ...item, channel_id: channelId });
+        allFeeds.push({ ...item, channel_id: chId });
       }
     } catch {
       // 忽略无法读取的临时错误
@@ -228,6 +271,7 @@ export async function fetchRemoteInventory({ guildId, cli = TencentGuildAdapter.
 
 export async function runReconciliation({
   guildId = DEFAULT_GUILD_ID,
+  channelId = null,
   cacheRoot = DEFAULT_CACHE_ROOT,
   apply = false,
   yes = false,
@@ -242,15 +286,51 @@ export async function runReconciliation({
     if (err.code !== "ENOENT") throw err;
   }
 
-  const remoteFeeds = await fetchRemoteInventory({ guildId, cli });
-  const diff = computeReconciliationDiff({ ledgerItems: ledger.items || {}, remoteFeeds });
+  const remoteFeeds = await fetchRemoteInventory({ guildId, channelId, cli });
+  let ledgerItems = ledger.items || {};
+  if (channelId) {
+    ledgerItems = Object.fromEntries(
+      Object.entries(ledgerItems).filter(
+        ([, item]) => String(item?.channel_id) === String(channelId)
+      )
+    );
+  }
+  const diff = computeReconciliationDiff({ ledgerItems, remoteFeeds });
 
   if (apply) {
     if (!yes) {
-      throw new Error("RECONCILIATION_SAFETY_LOCK: Destructive or state modifications require explicit '--yes' flag.");
+      throw new Error(
+        "RECONCILIATION_SAFETY_LOCK: Destructive or state modifications require explicit '--yes' flag."
+      );
     }
     // 当带有 --apply --yes 时执行审核确认逻辑
-    // 保护原则：永远不对远端执行未人工确认的批量物理删除
+    // 保护原则：永远不对远端执行未人工确认的批量物理删除，仅安全标记本地账本并修正漂移
+    let ledgerModified = false;
+    for (const item of diff.missingRemote) {
+      if (ledger.items[item.identity]) {
+        ledger.items[item.identity] = {
+          ...ledger.items[item.identity],
+          status: "remote_missing",
+          missing_at: new Date().toISOString(),
+        };
+        ledgerModified = true;
+      }
+    }
+    for (const item of diff.drifted) {
+      if (ledger.items[item.identity] && item.channel_id) {
+        ledger.items[item.identity] = {
+          ...ledger.items[item.identity],
+          channel_id: String(item.channel_id),
+          drift_reasons: item.reasons,
+          drift_reconciled_at: new Date().toISOString(),
+        };
+        ledgerModified = true;
+      }
+    }
+    if (ledgerModified) {
+      await writeJsonAtomically(ledgerPath, ledger);
+      diff.applied = true;
+    }
   }
 
   return diff;
@@ -261,6 +341,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1
   const { values } = parseArgs({
     options: {
       "guild-id": { type: "string", default: DEFAULT_GUILD_ID },
+      "channel-id": { type: "string" },
       "cache-root": { type: "string", default: DEFAULT_CACHE_ROOT },
       apply: { type: "boolean", default: false },
       yes: { type: "boolean", default: false },
@@ -272,6 +353,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1
   try {
     const diff = await runReconciliation({
       guildId: values["guild-id"],
+      channelId: values["channel-id"],
       cacheRoot: values["cache-root"],
       apply: values.apply,
       yes: values.yes,

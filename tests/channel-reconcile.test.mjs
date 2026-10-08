@@ -11,7 +11,8 @@ import {
 import { createTemporaryWorkspace } from "./helpers/temporary-workspace.mjs";
 
 test("extractFeedMarker parses identity and sha256 hash from markdown comments", () => {
-  const content = "# Title\n\nBody content\n\n<!-- astrolineage-channel:daily:2609.12345v1:abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890 -->";
+  const content =
+    "# Title\n\nBody content\n\n<!-- astrolineage-channel:daily:2609.12345v1:abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890 -->";
   const marker = extractFeedMarker(content);
   assert.ok(marker);
   assert.equal(marker.identity, "daily:2609.12345v1");
@@ -108,8 +109,8 @@ test("computeReconciliationDiff identifies drifted channel and content hash", ()
   assert.equal(diff.summary.matched, 0);
   assert.equal(diff.summary.drifted, 1);
   assert.equal(diff.drifted[0].identity, "daily:2609.00003v1");
-  assert.ok(diff.drifted[0].reasons.some(r => r.includes("channel_drift")));
-  assert.ok(diff.drifted[0].reasons.some(r => r.includes("hash_mismatch")));
+  assert.ok(diff.drifted[0].reasons.some((r) => r.includes("channel_drift")));
+  assert.ok(diff.drifted[0].reasons.some((r) => r.includes("hash_mismatch")));
 });
 
 test("formatDiffReport generates readable report string", () => {
@@ -140,7 +141,10 @@ test("runReconciliation safety lock rejects --apply without --yes", async (t) =>
   const { path } = await createTemporaryWorkspace("astro-lineage-reconcile-", t);
   const cacheRoot = join(path, "cache");
   await mkdir(cacheRoot, { recursive: true });
-  await writeFile(join(cacheRoot, "guild-test.json"), JSON.stringify({ version: 1, guild_id: "test", items: {} }));
+  await writeFile(
+    join(cacheRoot, "guild-test.json"),
+    JSON.stringify({ version: 1, guild_id: "test", items: {} })
+  );
 
   const fakeCli = async (args) => {
     if (args[1] === "get-guild-channel-list") return { stdout: JSON.stringify({ channels: [] }) };
@@ -149,14 +153,15 @@ test("runReconciliation safety lock rejects --apply without --yes", async (t) =>
   };
 
   await assert.rejects(
-    () => runReconciliation({
-      guildId: "test",
-      cacheRoot,
-      apply: true,
-      yes: false,
-      cli: fakeCli,
-    }),
-    /RECONCILIATION_SAFETY_LOCK/u,
+    () =>
+      runReconciliation({
+        guildId: "test",
+        cacheRoot,
+        apply: true,
+        yes: false,
+        cli: fakeCli,
+      }),
+    /RECONCILIATION_SAFETY_LOCK/u
   );
 
   // Read-only run (default) executes successfully without error
@@ -168,4 +173,65 @@ test("runReconciliation safety lock rejects --apply without --yes", async (t) =>
   });
   assert.equal(report.summary.totalRemote, 0);
   assert.equal(report.summary.matched, 0);
+});
+
+test("runReconciliation updates ledger items with --apply --yes", async (t) => {
+  const { path } = await createTemporaryWorkspace("astro-lineage-reconcile-apply-", t);
+  const cacheRoot = join(path, "cache");
+  await mkdir(cacheRoot, { recursive: true });
+  const initialLedger = {
+    version: 1,
+    guild_id: "test",
+    items: {
+      "daily:missing1": { status: "published", feed_id: "feed-missing-1", channel_id: "ch-1" },
+      "daily:drifted1": {
+        status: "published",
+        feed_id: "feed-drift-1",
+        channel_id: "ch-old",
+        hash: "hash1",
+      },
+    },
+  };
+  await writeFile(join(cacheRoot, "guild-test.json"), JSON.stringify(initialLedger));
+
+  const fakeCli = async (args) => {
+    if (args[1] === "get-guild-channel-list")
+      return { stdout: JSON.stringify({ channels: [{ channel_id: "ch-new" }] }) };
+    if (args[1] === "get-channel-timeline-feeds") {
+      return {
+        stdout: JSON.stringify({
+          feeds: [
+            {
+              feed_id: "feed-drift-1",
+              channel_id: "ch-new",
+              title: "Drifted Paper",
+              markdown_content: "Body\n\n<!-- astrolineage-channel:daily:drifted1:hash1 -->",
+            },
+          ],
+        }),
+      };
+    }
+    return { stdout: "{}" };
+  };
+
+  const diff = await runReconciliation({
+    guildId: "test",
+    cacheRoot,
+    apply: true,
+    yes: true,
+    cli: fakeCli,
+  });
+
+  assert.equal(diff.applied, true);
+  assert.equal(diff.summary.missingRemote, 1);
+  assert.equal(diff.summary.drifted, 1);
+
+  const updatedRaw = await import("node:fs/promises").then((fs) =>
+    fs.readFile(join(cacheRoot, "guild-test.json"), "utf8")
+  );
+  const updatedLedger = JSON.parse(updatedRaw);
+  assert.equal(updatedLedger.items["daily:missing1"].status, "remote_missing");
+  assert.ok(updatedLedger.items["daily:missing1"].missing_at);
+  assert.equal(updatedLedger.items["daily:drifted1"].channel_id, "ch-new");
+  assert.ok(updatedLedger.items["daily:drifted1"].drift_reconciled_at);
 });

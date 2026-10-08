@@ -3,10 +3,20 @@ import assert from "node:assert/strict";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { createTemporaryWorkspace } from "./helpers/temporary-workspace.mjs";
-import { buildBoundTitleSources, previewTitleHistory, readOnlyTitleInventory, snapshotFeed } from "../scripts/channel-title-history-preview.mjs";
+import {
+  buildBoundTitleSources,
+  candidateStatus,
+  previewTitleHistory,
+  readOnlyTitleInventory,
+  snapshotFeed,
+} from "../scripts/channel-title-history-preview.mjs";
 import * as titleSync from "../scripts/channel-title-only-sync.mjs";
 import { refreshArxivFeed } from "../scripts/arxiv-daily.mjs";
-import { capturePublishedSourceBinding, hashBody, markerFor } from "../scripts/channel-publication.mjs";
+import {
+  capturePublishedSourceBinding,
+  hashBody,
+  markerFor,
+} from "../scripts/channel-publication.mjs";
 import { saveNewPreview } from "../scripts/channel-title-audit.mjs";
 import { approvedDailyTitleFixture } from "./helpers/approved-daily-title-fixture.mjs";
 
@@ -19,9 +29,33 @@ function fixture(title = DAILY_TITLE) {
   const body = "old body";
   const hash = hashBody(body);
   const marked = `${body}\n\n${markerFor(DAILY, hash)}`;
-  const record = { status: "published", hash, feed_id: "feed-1", create_time: "123", channel_id: "section-1" };
-  const feed = { feed_id: "feed-1", create_time_raw: "123", channel_id: "section-1", title: "old title", markdown_content: marked, image_paths: [] };
-  return { ledger: { guild_id: "guild-1", items: { [DAILY]: record } }, feed, sources: { [DAILY]: { title, firstLine: "new body", evidence: "archive:2026-10-04" } } };
+  const record = {
+    status: "published",
+    hash,
+    feed_id: "feed-1",
+    create_time: "123",
+    channel_id: "section-1",
+  };
+  const feed = {
+    feed_id: "feed-1",
+    create_time_raw: "123",
+    channel_id: "section-1",
+    title: "old title",
+    markdown_content: marked,
+    image_paths: [],
+  };
+  return {
+    ledger: { guild_id: "guild-1", items: { [DAILY]: record } },
+    feed,
+    sources: {
+      [DAILY]: {
+        source_status: "bound",
+        title,
+        firstLine: "new body",
+        evidence: "archive:2026-10-04",
+      },
+    },
+  };
 }
 
 async function prepareSyncFixture(t, { identity = DAILY, alterArchive } = {}) {
@@ -42,14 +76,39 @@ async function prepareSyncFixture(t, { identity = DAILY, alterArchive } = {}) {
   const page = join(distRoot, "arxiv-daily", "2026-10-04");
   await mkdir(page, { recursive: true });
   await writeFile(join(page, "index.html"), "built");
-  await writeFile(weeklyPath, await readFile(new URL("../src/data/arxiv-weekly.json", import.meta.url)));
+  await writeFile(
+    weeklyPath,
+    await readFile(new URL("../src/data/arxiv-weekly.json", import.meta.url))
+  );
 
-  await refreshArxivFeed({ output: feedPath, radarOutput: radarPath, artifactRoot,
-    announcementDate: "2026-09-07", minRequestIntervalMs: 0,
-    manualSnapshot: { entries: [{ arxiv_id: "2609.00001", revision: 1, title: "Source binding fixture",
-      abstract: "Fixture only.", authors: ["Test"], published: "2026-09-07T12:00:00Z",
-      updated: "2026-09-07T12:00:00Z", url: "https://arxiv.org/abs/2609.00001v1" }] } });
-  const binding = await capturePublishedSourceBinding({ feedPath, radarPath, artifactRoot, archiveRoot, weeklyPath });
+  await refreshArxivFeed({
+    output: feedPath,
+    radarOutput: radarPath,
+    artifactRoot,
+    announcementDate: "2026-09-07",
+    minRequestIntervalMs: 0,
+    manualSnapshot: {
+      entries: [
+        {
+          arxiv_id: "2609.00001",
+          revision: 1,
+          title: "Source binding fixture",
+          abstract: "Fixture only.",
+          authors: ["Test"],
+          published: "2026-09-07T12:00:00Z",
+          updated: "2026-09-07T12:00:00Z",
+          url: "https://arxiv.org/abs/2609.00001v1",
+        },
+      ],
+    },
+  });
+  const binding = await capturePublishedSourceBinding({
+    feedPath,
+    radarPath,
+    artifactRoot,
+    archiveRoot,
+    weeklyPath,
+  });
   await writeFile(websitePath, JSON.stringify({ status: "success", source_binding: binding }));
 
   const body = "old body";
@@ -57,49 +116,135 @@ async function prepareSyncFixture(t, { identity = DAILY, alterArchive } = {}) {
   const feedId = identity === DAILY ? "feed-1" : "feed-2";
   const createTime = identity === DAILY ? "123" : "124";
   const channelId = identity === DAILY ? "section-1" : "section-2";
-  const feed = { feed_id: feedId, create_time_raw: createTime, channel_id: channelId,
-    title: "old title", markdown_content: `${body}\n\n${markerFor(identity, hash)}`, image_paths: [] };
+  const feed = {
+    feed_id: feedId,
+    create_time_raw: createTime,
+    channel_id: channelId,
+    title: "old title",
+    markdown_content: `${body}\n\n${markerFor(identity, hash)}`,
+    image_paths: [],
+  };
   const approvalBaselinePath = join(workspace.path, "approved-title-baselines.json");
   const snapshot = snapshotFeed(feed);
-  await writeFile(approvalBaselinePath, JSON.stringify({ version: 1, items: { [identity]: {
-    status: "approved", identity, source_binding_id: binding.id,
-    target_title: titleSync.APPROVED_TITLES[identity], approved_at: "2026-10-05T12:00:00.000Z",
-    before: { feed_id: snapshot.feed_id, create_time: snapshot.create_time, channel_id: snapshot.channel_id,
-      title: snapshot.title, body_sha256: hashBody(snapshot.markdown_content), media_sha256: hashBody(JSON.stringify(snapshot.media)) },
-  } } }));
-  const ledger = { guild_id: "guild-1", items: { [identity]: {
-    status: "published", hash, feed_id: feedId, create_time: createTime, channel_id: channelId,
-  } } };
+  await writeFile(
+    approvalBaselinePath,
+    JSON.stringify({
+      version: 1,
+      items: {
+        [identity]: {
+          status: "approved",
+          identity,
+          source_binding_id: binding.id,
+          target_title: titleSync.APPROVED_TITLES[identity],
+          approved_at: "2026-10-05T12:00:00.000Z",
+          before: {
+            feed_id: snapshot.feed_id,
+            create_time: snapshot.create_time,
+            channel_id: snapshot.channel_id,
+            title: snapshot.title,
+            body_sha256: hashBody(snapshot.markdown_content),
+            media_sha256: hashBody(JSON.stringify(snapshot.media)),
+          },
+        },
+      },
+    })
+  );
+  const ledger = {
+    guild_id: "guild-1",
+    items: {
+      [identity]: {
+        status: "published",
+        hash,
+        feed_id: feedId,
+        create_time: createTime,
+        channel_id: channelId,
+      },
+    },
+  };
   await writeFile(ledgerPath, JSON.stringify(ledger));
   const calls = [];
   let edits = 0;
-  let editHandler = async args => {
+  let editHandler = async (args) => {
     feed.title = args[args.indexOf("--title") + 1];
     return { stdout: JSON.stringify({ retCode: 0, data: { success: true } }) };
   };
-  const cli = async args => {
+  const cli = async (args) => {
     calls.push(args);
-    if (args[1] === "get-feed-detail") return { stdout: JSON.stringify({ retCode: 0, data: structuredClone(feed) }) };
-    if (args[1] === "alter-feed") { edits += 1; return editHandler(args); }
+    if (args[1] === "get-feed-detail")
+      return { stdout: JSON.stringify({ retCode: 0, data: structuredClone(feed) }) };
+    if (args[1] === "alter-feed") {
+      edits += 1;
+      return editHandler(args);
+    }
     throw new Error("unexpected_cli_command");
   };
-  const run = options => titleSync.syncCurrentApprovedTitles({ ledgerPath, websitePath, feedPath, radarPath,
-    artifactRoot, archiveRoot, distRoot, weeklyPath, cli, snapshotDir, approvalBaselinePath, dryRun: false, ...options });
-  return { workspace, feed, binding, ledger, approvalBaselinePath, calls, get edits() { return edits; }, set editHandler(value) { editHandler = value; }, run };
+  const run = (options) =>
+    titleSync.syncCurrentApprovedTitles({
+      ledgerPath,
+      websitePath,
+      feedPath,
+      radarPath,
+      artifactRoot,
+      archiveRoot,
+      distRoot,
+      weeklyPath,
+      cli,
+      snapshotDir,
+      approvalBaselinePath,
+      dryRun: false,
+      ...options,
+    });
+  return {
+    workspace,
+    feed,
+    binding,
+    ledger,
+    approvalBaselinePath,
+    calls,
+    get edits() {
+      return edits;
+    },
+    set editHandler(value) {
+      editHandler = value;
+    },
+    run,
+  };
 }
 
 test("history preview conserves rows and uses read-only inventory/detail", async () => {
   const { ledger, feed, sources } = fixture();
-  ledger.items[WEEKLY] = { status: "intent", feed_id: "feed-2", create_time: "124", channel_id: "section-2" };
+  ledger.items[WEEKLY] = {
+    status: "intent",
+    feed_id: "feed-2",
+    create_time: "124",
+    channel_id: "section-2",
+  };
   const calls = [];
-  const preview = await previewTitleHistory({ ledger, sourceBinding, currentBinding: sourceBinding,
-    sources, listInventory: async () => { calls.push("inventory"); return { complete: true, feeds: [feed] }; },
-    getDetail: async () => { calls.push("detail"); return feed; } });
+  const preview = await previewTitleHistory({
+    ledger,
+    sourceBinding,
+    currentBinding: sourceBinding,
+    sources,
+    listInventory: async () => {
+      calls.push("inventory");
+      return { complete: true, feeds: [feed] };
+    },
+    getDetail: async () => {
+      calls.push("detail");
+      return feed;
+    },
+  });
   assert.equal(preview.total, 2);
-  assert.equal(Object.values(preview.counts).reduce((sum, count) => sum + count, 0), 2);
+  assert.equal(
+    Object.values(preview.counts).reduce((sum, count) => sum + count, 0),
+    2
+  );
   assert.deepEqual(preview.classification_counts, { body_review: 1, remote_drift: 1 });
-  assert.equal(Object.values(preview.classification_counts).reduce((sum, count) => sum + count, 0), preview.total);
-  assert.equal(preview.rows.find(row => row.identity === WEEKLY).status, "pending");
+  assert.equal(
+    Object.values(preview.classification_counts).reduce((sum, count) => sum + count, 0),
+    preview.total
+  );
+  assert.equal(preview.rows.find((row) => row.identity === WEEKLY).status, "pending");
   assert.deepEqual(calls, ["inventory", "detail", "detail"]);
   assert.equal(preview.rows[0].media_before.length, 0);
   assert.equal(preview.rows[0].body_sha256_before, hashBody(feed.markdown_content));
@@ -114,9 +259,14 @@ test("history preview marks body drift after the matching first line as pending"
   sources[DAILY] = { ...sources[DAILY], title: feed.title, firstLine: "old body" };
   feed.markdown_content = `old body\nChanged paragraph\n\n${markerFor(DAILY, ledger.items[DAILY].hash)}`;
 
-  const preview = await previewTitleHistory({ ledger, sourceBinding, currentBinding: sourceBinding,
-    sources, listInventory: async () => ({ complete: true, feeds: [feed] }),
-    getDetail: async () => feed });
+  const preview = await previewTitleHistory({
+    ledger,
+    sourceBinding,
+    currentBinding: sourceBinding,
+    sources,
+    listInventory: async () => ({ complete: true, feeds: [feed] }),
+    getDetail: async () => feed,
+  });
 
   assert.equal(preview.rows[0].status, "pending");
   assert.equal(preview.rows[0].classification, "remote_drift");
@@ -129,9 +279,14 @@ test("history preview treats a missing managed-body marker as remote drift", asy
     sources[DAILY] = { ...sources[DAILY], title: feed.title, firstLine: "old body" };
     feed.markdown_content = `old body${marker}`;
 
-    const preview = await previewTitleHistory({ ledger, sourceBinding, currentBinding: sourceBinding,
-      sources, listInventory: async () => ({ complete: true, feeds: [feed] }),
-      getDetail: async () => feed });
+    const preview = await previewTitleHistory({
+      ledger,
+      sourceBinding,
+      currentBinding: sourceBinding,
+      sources,
+      listInventory: async () => ({ complete: true, feeds: [feed] }),
+      getDetail: async () => feed,
+    });
 
     assert.equal(preview.rows[0].status, "pending");
     assert.equal(preview.rows[0].classification, "remote_drift");
@@ -143,15 +298,39 @@ test("history preview surfaces a paper-title human-review diagnostic", async () 
   const identity = "daily:2609.31850v1";
   const body = "paper body";
   const hash = hashBody(body);
-  const record = { status: "published", hash, feed_id: "paper-feed", create_time: "456", channel_id: "section-1" };
+  const record = {
+    status: "published",
+    hash,
+    feed_id: "paper-feed",
+    create_time: "456",
+    channel_id: "section-1",
+  };
   const ledger = { guild_id: "guild-1", items: { [identity]: record } };
-  const feed = { feed_id: "paper-feed", create_time_raw: "456", channel_id: "section-1", title: "old title",
-    markdown_content: `${body}\n\n${markerFor(identity, hash)}`, image_paths: [] };
-  const sources = { [identity]: { title: "长论文候选", firstLine: "paper body", evidence: "archive:test",
-    diagnostics: ["CHANNEL_TITLE_HUMAN_REVIEW_RECOMMENDED"] } };
-  const preview = await previewTitleHistory({ ledger, sourceBinding, currentBinding: sourceBinding,
-    sources, listInventory: async () => ({ complete: true, feeds: [feed] }),
-    getDetail: async () => feed });
+  const feed = {
+    feed_id: "paper-feed",
+    create_time_raw: "456",
+    channel_id: "section-1",
+    title: "old title",
+    markdown_content: `${body}\n\n${markerFor(identity, hash)}`,
+    image_paths: [],
+  };
+  const sources = {
+    [identity]: {
+      source_status: "bound",
+      title: "长论文候选",
+      firstLine: "paper body",
+      evidence: "archive:test",
+      diagnostics: ["CHANNEL_TITLE_HUMAN_REVIEW_RECOMMENDED"],
+    },
+  };
+  const preview = await previewTitleHistory({
+    ledger,
+    sourceBinding,
+    currentBinding: sourceBinding,
+    sources,
+    listInventory: async () => ({ complete: true, feeds: [feed] }),
+    getDetail: async () => feed,
+  });
 
   assert.equal(preview.rows[0].identity, identity);
   assert.ok(preview.rows[0].risk_flags.includes("title_human_review_recommended"));
@@ -159,9 +338,14 @@ test("history preview surfaces a paper-title human-review diagnostic", async () 
 
 test("a feed missing from a complete inventory stays pending even when detail lookup succeeds", async () => {
   const { ledger, feed, sources } = fixture();
-  const preview = await previewTitleHistory({ ledger, sourceBinding, currentBinding: sourceBinding,
-    sources, listInventory: async () => ({ complete: true, feeds: [] }),
-    getDetail: async () => feed });
+  const preview = await previewTitleHistory({
+    ledger,
+    sourceBinding,
+    currentBinding: sourceBinding,
+    sources,
+    listInventory: async () => ({ complete: true, feeds: [] }),
+    getDetail: async () => feed,
+  });
   assert.equal(preview.rows[0].status, "pending");
   assert.equal(preview.rows[0].reason, "remote_not_in_complete_inventory");
   assert.equal(preview.rows[0].classification, "remote_not_visible");
@@ -169,9 +353,16 @@ test("a feed missing from a complete inventory stays pending even when detail lo
 
 test("history preview retains a safe inventory failure code while leaving the feed pending", async () => {
   const { ledger, feed, sources } = fixture();
-  const preview = await previewTitleHistory({ ledger, sourceBinding, currentBinding: sourceBinding,
-    sources, listInventory: async () => { throw new Error("CHANNEL_RATE_LIMITED"); },
-    getDetail: async () => feed });
+  const preview = await previewTitleHistory({
+    ledger,
+    sourceBinding,
+    currentBinding: sourceBinding,
+    sources,
+    listInventory: async () => {
+      throw new Error("CHANNEL_RATE_LIMITED");
+    },
+    getDetail: async () => feed,
+  });
 
   assert.equal(preview.inventory_complete, false);
   assert.equal(preview.rows[0].status, "pending");
@@ -181,9 +372,16 @@ test("history preview retains a safe inventory failure code while leaving the fe
 
 test("history preview preserves a bounded detail error code without exposing the response", async () => {
   const { ledger, feed, sources } = fixture();
-  const preview = await previewTitleHistory({ ledger, sourceBinding, currentBinding: sourceBinding,
-    sources, listInventory: async () => ({ complete: true, feeds: [feed] }),
-    getDetail: async () => { throw Object.assign(new Error("token=secret response body"), { code: "ECONNRESET" }); } });
+  const preview = await previewTitleHistory({
+    ledger,
+    sourceBinding,
+    currentBinding: sourceBinding,
+    sources,
+    listInventory: async () => ({ complete: true, feeds: [feed] }),
+    getDetail: async () => {
+      throw Object.assign(new Error("token=secret response body"), { code: "ECONNRESET" });
+    },
+  });
 
   assert.equal(preview.rows[0].status, "pending");
   assert.equal(preview.rows[0].classification, "remote_unavailable");
@@ -191,32 +389,81 @@ test("history preview preserves a bounded detail error code without exposing the
   assert.doesNotMatch(JSON.stringify(preview), /secret|token=/u);
 });
 
+test("offline history preview marks remote reads not checked instead of unavailable", async () => {
+  const { ledger, sources } = fixture();
+  let detailCalls = 0;
+  const preview = await previewTitleHistory({
+    ledger,
+    sourceBinding,
+    currentBinding: sourceBinding,
+    sources,
+    listInventory: async () => ({ status: "not_checked", complete: false, feeds: [] }),
+    getDetail: async () => {
+      detailCalls += 1;
+      throw new Error("offline");
+    },
+  });
+
+  assert.equal(detailCalls, 0);
+  assert.equal(preview.inventory_status, "not_checked");
+  assert.deepEqual(preview.classification_counts, { remote_not_checked: 1 });
+  assert.equal(preview.rows[0].reason, "remote_not_checked");
+  assert.equal(preview.rows[0].source_status, "bound");
+  assert.equal(preview.rows[0].candidate_status, "available");
+});
+
 test("history preview reads every section through the channel timeline API and follows pagination", async () => {
   const { feed } = fixture();
   const calls = [];
-  const { listInventory } = readOnlyTitleInventory(async args => {
+  const { listInventory } = readOnlyTitleInventory(async (args) => {
     calls.push(args);
-    if (args[0] === "manage") return { retCode: 0, data: { channels: [{ channel_id: "section-1", channel_name: "Daily" }] } };
+    if (args[0] === "manage")
+      return {
+        retCode: 0,
+        data: { channels: [{ channel_id: "section-1", channel_name: "Daily" }] },
+      };
     if (args[1] !== "get-channel-timeline-feeds") throw new Error("unexpected_command");
-    if (args.includes("--feed-attach-info")) return { retCode: 0, data: { feeds: [], has_more: false } };
+    if (args.includes("--feed-attach-info"))
+      return { retCode: 0, data: { feeds: [], has_more: false } };
     return { retCode: 0, data: { feeds: [feed], has_more: true, feed_attch_info: "page=2" } };
   }, "guild-1");
   const inventory = await listInventory();
   assert.equal(inventory.complete, true);
-  assert.deepEqual(inventory.feeds.map(row => row.feed_id), ["feed-1"]);
-  assert.deepEqual(calls.map(args => args[1]), ["get-guild-channel-list", "get-channel-timeline-feeds", "get-channel-timeline-feeds"]);
+  assert.deepEqual(
+    inventory.feeds.map((row) => row.feed_id),
+    ["feed-1"]
+  );
+  assert.deepEqual(
+    calls.map((args) => args[1]),
+    ["get-guild-channel-list", "get-channel-timeline-feeds", "get-channel-timeline-feeds"]
+  );
+});
+
+test("read-only CLI responses support Buffer stdout from execFile", async () => {
+  const { feed } = fixture();
+  const { getDetail } = readOnlyTitleInventory(
+    async () => ({ stdout: Buffer.from(JSON.stringify({ retCode: 0, data: feed })) }),
+    "guild-1"
+  );
+  assert.equal((await getDetail({ channel_id: "section-1", feed_id: "feed-1" })).feed_id, "feed-1");
 });
 
 test("an empty section inventory is not treated as complete proof of remote absence", async () => {
-  const { listInventory } = readOnlyTitleInventory(async () => ({ retCode: 0, data: { channels: [] } }), "guild-1");
+  const { listInventory } = readOnlyTitleInventory(
+    async () => ({ retCode: 0, data: { channels: [] } }),
+    "guild-1"
+  );
   assert.deepEqual(await listInventory(), { complete: false, feeds: [] });
 });
 
 test("read-only inventory preserves a numeric platform error code without exposing remote text", async () => {
-  const { listInventory } = readOnlyTitleInventory(async () => ({
-    retCode: 401011,
-    error: "sensitive platform response detail",
-  }), "guild-1");
+  const { listInventory } = readOnlyTitleInventory(
+    async () => ({
+      retCode: 401011,
+      error: "sensitive platform response detail",
+    }),
+    "guild-1"
+  );
 
   await assert.rejects(listInventory(), { message: "CHANNEL_READ_FAILED_401011" });
 });
@@ -227,22 +474,43 @@ test("paper candidates remain available when a daily-brief title is not supporta
   const distRoot = join(workspace.path, "dist");
   const weeklyPath = join(workspace.path, "weekly.json");
   await mkdir(archiveRoot, { recursive: true });
-  const archive = JSON.parse(await readFile(new URL("../src/data/arxiv-archives/daily/2026-09-28.json", import.meta.url), "utf8"));
+  const archive = JSON.parse(
+    await readFile(
+      new URL("../src/data/arxiv-archives/daily/2026-09-28.json", import.meta.url),
+      "utf8"
+    )
+  );
   archive.radar.opening_brief.must_read[0].text = "一项进展、另一项进展。";
   const bytes = Buffer.from(JSON.stringify(archive));
   await writeFile(join(archiveRoot, "2026-09-28.json"), bytes);
   await mkdir(join(distRoot, "arxiv-daily", "2026-09-28"), { recursive: true });
   await writeFile(join(distRoot, "arxiv-daily", "2026-09-28", "index.html"), "built");
-  const weekly = { week_id: "2026-W40", executive_summary: "磁星模型显示喷流能量发生转变。", thematic_highlights: [] };
+  const weekly = {
+    week_id: "2026-W40",
+    executive_summary: "磁星模型显示喷流能量发生转变。",
+    thematic_highlights: [],
+  };
   const weeklyBytes = Buffer.from(JSON.stringify(weekly));
   await writeFile(weeklyPath, weeklyBytes);
   const sources = await buildBoundTitleSources({
-    sourceBinding: { id: "bound", archives: { "2026-09-28": hashBody(bytes) }, weekly: { hash: hashBody(weeklyBytes) } },
-    currentBinding: { id: "bound" }, archiveRoot, distRoot, weeklyPath,
+    sourceBinding: {
+      id: "bound",
+      archives: { "2026-09-28": hashBody(bytes) },
+      weekly: { hash: hashBody(weeklyBytes) },
+    },
+    currentBinding: { id: "bound" },
+    archiveRoot,
+    distRoot,
+    weeklyPath,
   });
-  assert.match(sources["daily-summary:2026-09-28"].error, /CHANNEL_TITLE_DAILY_SINGLE_PROGRESS_REQUIRED/u);
+  assert.match(
+    sources["daily-summary:2026-09-28"].error,
+    /CHANNEL_TITLE_DAILY_SINGLE_PROGRESS_REQUIRED/u
+  );
   assert.ok(sources["daily:2609.31842v1"].title);
-  assert.deepEqual(sources["daily:2609.31850v1"].diagnostics, ["CHANNEL_TITLE_HUMAN_REVIEW_RECOMMENDED"]);
+  assert.deepEqual(sources["daily:2609.31850v1"].diagnostics, [
+    "CHANNEL_TITLE_HUMAN_REVIEW_RECOMMENDED",
+  ]);
 });
 
 test("bound daily and weekly title diagnostics reach history preview risk flags", async (t) => {
@@ -251,19 +519,35 @@ test("bound daily and weekly title diagnostics reach history preview risk flags"
   const distRoot = join(workspace.path, "dist");
   const weeklyPath = join(workspace.path, "weekly.json");
   await mkdir(archiveRoot, { recursive: true });
-  const archive = JSON.parse(await readFile(new URL("../src/data/arxiv-archives/daily/2026-09-28.json", import.meta.url), "utf8"));
+  const archive = JSON.parse(
+    await readFile(
+      new URL("../src/data/arxiv-archives/daily/2026-09-28.json", import.meta.url),
+      "utf8"
+    )
+  );
   const condition = `仅在${"极端条件".repeat(9)}下`;
   archive.radar.opening_brief.must_read[0].text = `GRB 220627A${condition}，辐射强度提高。`;
   const archiveBytes = Buffer.from(JSON.stringify(archive));
   await writeFile(join(archiveRoot, "2026-09-28.json"), archiveBytes);
   await mkdir(join(distRoot, "arxiv-daily", "2026-09-28"), { recursive: true });
   await writeFile(join(distRoot, "arxiv-daily", "2026-09-28", "index.html"), "built");
-  const weekly = { week_id: "2026-W40", executive_summary: `本周结果：${condition}，超新星光度提高。`, thematic_highlights: [] };
+  const weekly = {
+    week_id: "2026-W40",
+    executive_summary: `本周结果：${condition}，超新星光度提高。`,
+    thematic_highlights: [],
+  };
   const weeklyBytes = Buffer.from(JSON.stringify(weekly));
   await writeFile(weeklyPath, weeklyBytes);
   const sources = await buildBoundTitleSources({
-    sourceBinding: { id: "bound", archives: { "2026-09-28": hashBody(archiveBytes) }, weekly: { hash: hashBody(weeklyBytes) } },
-    currentBinding: { id: "bound" }, archiveRoot, distRoot, weeklyPath,
+    sourceBinding: {
+      id: "bound",
+      archives: { "2026-09-28": hashBody(archiveBytes) },
+      weekly: { hash: hashBody(weeklyBytes) },
+    },
+    currentBinding: { id: "bound" },
+    archiveRoot,
+    distRoot,
+    weeklyPath,
   });
   const identities = ["daily-summary:2026-09-28", "weekly:2026-W40"];
   const feeds = identities.map((identity, index) => {
@@ -271,46 +555,265 @@ test("bound daily and weekly title diagnostics reach history preview risk flags"
     assert.deepEqual(source.diagnostics, ["CHANNEL_TITLE_HUMAN_REVIEW_RECOMMENDED"]);
     const feedId = `feed-${index}`;
     const hash = hashBody(source.firstLine);
-    return { feed_id: feedId, create_time_raw: String(index + 1), channel_id: "section-1", title: source.title,
-      markdown_content: `${source.firstLine}\n\n${markerFor(identity, hash)}`, image_paths: [] };
+    return {
+      feed_id: feedId,
+      create_time_raw: String(index + 1),
+      channel_id: "section-1",
+      title: source.title,
+      markdown_content: `${source.firstLine}\n\n${markerFor(identity, hash)}`,
+      image_paths: [],
+    };
   });
-  const ledger = { guild_id: "guild-1", items: Object.fromEntries(identities.map((identity, index) => [identity, {
-    status: "published", hash: hashBody(sources[identity].firstLine), feed_id: `feed-${index}`, create_time: String(index + 1), channel_id: "section-1",
-  }])) };
-  const preview = await previewTitleHistory({ ledger, sourceBinding, currentBinding: sourceBinding, sources,
+  const ledger = {
+    guild_id: "guild-1",
+    items: Object.fromEntries(
+      identities.map((identity, index) => [
+        identity,
+        {
+          status: "published",
+          hash: hashBody(sources[identity].firstLine),
+          feed_id: `feed-${index}`,
+          create_time: String(index + 1),
+          channel_id: "section-1",
+        },
+      ])
+    ),
+  };
+  const preview = await previewTitleHistory({
+    ledger,
+    sourceBinding,
+    currentBinding: sourceBinding,
+    sources,
     listInventory: async () => ({ complete: true, feeds }),
-    getDetail: async record => feeds.find(feed => feed.feed_id === record.feed_id) });
+    getDetail: async (record) => feeds.find((feed) => feed.feed_id === record.feed_id),
+  });
 
-  assert.deepEqual(preview.rows.map(row => row.status), ["unchanged", "unchanged"]);
-  for (const row of preview.rows) assert.ok(row.risk_flags.includes("title_human_review_recommended"));
+  assert.deepEqual(
+    preview.rows.map((row) => row.status),
+    ["unchanged", "unchanged"]
+  );
+  for (const row of preview.rows)
+    assert.ok(row.risk_flags.includes("title_human_review_recommended"));
+});
+
+test("history preview keeps the local source failure visible when remote reads fail", async () => {
+  const dailyIdentity = "daily-summary:2026-09-10";
+  const eventIdentity = "events:top5";
+  const sourceError = "title_unavailable:CHANNEL_TITLE_DAILY_SINGLE_PROGRESS_REQUIRED";
+  const eventError = "source_unavailable:event_snapshot_mismatch";
+  const preview = await previewTitleHistory({
+    ledger: {
+      guild_id: "guild-1",
+      items: {
+        [dailyIdentity]: {
+          status: "published",
+          feed_id: "feed-1",
+          create_time: "123",
+          channel_id: "section-1",
+        },
+        [eventIdentity]: {
+          status: "published",
+          feed_id: "feed-2",
+          create_time: "124",
+          channel_id: "section-1",
+        },
+      },
+    },
+    sourceBinding,
+    currentBinding: sourceBinding,
+    sources: {
+      [dailyIdentity]: {
+        source_status: "bound",
+        error: sourceError,
+        evidence: "archive:2026-09-10:bound",
+      },
+      [eventIdentity]: { source_status: "unavailable", error: eventError },
+    },
+    listInventory: async () => {
+      throw new Error("CHANNEL_READ_FAILED");
+    },
+    getDetail: async () => {
+      throw new Error("CHANNEL_READ_FAILED");
+    },
+  });
+
+  assert.deepEqual(preview.counts, { pending: 2 });
+  assert.deepEqual(preview.classification_counts, { remote_unavailable: 2 });
+  assert.deepEqual(preview.source_status_counts, { bound: 1, unavailable: 1 });
+  assert.deepEqual(preview.candidate_status_counts, { manual_review: 1, unavailable: 1 });
+  assert.equal(preview.rows[0].reason, "remote_unavailable");
+  assert.equal(preview.rows[0].source_status, "bound");
+  assert.equal(preview.rows[0].candidate_status, "manual_review");
+  assert.equal(preview.rows[0].source_diagnostic, sourceError);
+  assert.equal(preview.rows[0].source, "archive:2026-09-10:bound");
+  assert.equal(preview.rows[1].source_status, "unavailable");
+  assert.equal(preview.rows[1].candidate_status, "unavailable");
+  assert.equal(preview.rows[1].source_diagnostic, eventError);
+});
+
+test("unbound, ambiguous, and missing sources cannot produce usable title candidates", async () => {
+  const identities = ["daily:2609.00001v1", "daily:2609.00002v1", "daily:2609.00003v1"];
+  const feeds = identities.map((identity, index) => {
+    const body = `body-${index}`;
+    const hash = hashBody(body);
+    return {
+      feed_id: `feed-${index}`,
+      create_time_raw: String(index + 1),
+      channel_id: "section-1",
+      title: "existing title",
+      markdown_content: `${body}\n\n${markerFor(identity, hash)}`,
+      image_paths: [],
+    };
+  });
+  const ledger = {
+    guild_id: "guild-1",
+    items: Object.fromEntries(
+      identities.map((identity, index) => [
+        identity,
+        {
+          status: "published",
+          hash: hashBody(`body-${index}`),
+          feed_id: `feed-${index}`,
+          create_time: String(index + 1),
+          channel_id: "section-1",
+        },
+      ])
+    ),
+  };
+  const preview = await previewTitleHistory({
+    ledger,
+    sourceBinding,
+    currentBinding: sourceBinding,
+    sources: {
+      [identities[0]]: { title: "unbound title", firstLine: "body-0", evidence: "archive:unknown" },
+      [identities[1]]: { source_status: "ambiguous", error: "source_ambiguous" },
+    },
+    listInventory: async () => ({ complete: true, feeds }),
+    getDetail: async (record) => feeds.find((feed) => feed.feed_id === record.feed_id),
+  });
+
+  assert.deepEqual(
+    preview.rows.map((row) => [row.source_status, row.candidate_status, row.classification]),
+    [
+      ["unbound", "unavailable", "source_unbound"],
+      ["ambiguous", "unavailable", "source_ambiguous"],
+      ["missing", "unavailable", "source_missing"],
+    ]
+  );
+  assert.ok(preview.rows.every((row) => row.status === "pending"));
+  assert.deepEqual(preview.source_status_counts, { unbound: 1, ambiguous: 1, missing: 1 });
+  assert.deepEqual(preview.candidate_status_counts, { unavailable: 3 });
+});
+
+test("only known title-policy decisions are classified for manual review", () => {
+  assert.equal(
+    candidateStatus({
+      source_status: "bound",
+      error: "title_unavailable:CHANNEL_TITLE_DAILY_FORMULA_REQUIRES_REVIEW",
+    }),
+    "manual_review"
+  );
+  assert.equal(
+    candidateStatus({
+      source_status: "bound",
+      error: "title_unavailable:CHANNEL_TITLE_SOURCE_MISMATCH",
+    }),
+    "unavailable"
+  );
 });
 
 test("weekly source failures are not assigned to an unrelated fixed week", async (t) => {
   const workspace = await createTemporaryWorkspace("astro-lineage-title-sources-", t);
   const sources = await buildBoundTitleSources({
     sourceBinding: { id: "bound", archives: {}, weekly: { hash: "0".repeat(64) } },
-    currentBinding: { id: "bound" }, archiveRoot: join(workspace.path, "archives"),
-    distRoot: join(workspace.path, "dist"), weeklyPath: join(workspace.path, "missing-weekly.json"),
+    currentBinding: { id: "bound" },
+    archiveRoot: join(workspace.path, "archives"),
+    distRoot: join(workspace.path, "dist"),
+    weeklyPath: join(workspace.path, "missing-weekly.json"),
   });
   assert.match(sources["weekly:source"].error, /source_unavailable/u);
   assert.equal(sources[WEEKLY], undefined);
 });
 
+test("a hash-bound weekly file without a valid identity is not assigned to a ledger week", async (t) => {
+  const workspace = await createTemporaryWorkspace("astro-lineage-title-sources-", t);
+  const weeklyPath = join(workspace.path, "weekly.json");
+  const weeklyBytes = Buffer.from(JSON.stringify({ executive_summary: "A source result." }));
+  await writeFile(weeklyPath, weeklyBytes);
+  const binding = { id: "bound", archives: {}, weekly: { hash: hashBody(weeklyBytes) } };
+  const sources = await buildBoundTitleSources({
+    sourceBinding: binding,
+    currentBinding: binding,
+    archiveRoot: join(workspace.path, "archives"),
+    weeklyPath,
+  });
+  const identity = "weekly:2026-W40";
+  const body = "weekly body";
+  const hash = hashBody(body);
+  const record = {
+    status: "published",
+    hash,
+    feed_id: "weekly-feed",
+    create_time: "123",
+    channel_id: "section-1",
+  };
+  const feed = {
+    feed_id: record.feed_id,
+    create_time_raw: record.create_time,
+    channel_id: record.channel_id,
+    title: "old title",
+    markdown_content: `${body}\n\n${markerFor(identity, hash)}`,
+    image_paths: [],
+  };
+  const preview = await previewTitleHistory({
+    ledger: { guild_id: "guild-1", items: { [identity]: record } },
+    sourceBinding: binding,
+    currentBinding: binding,
+    sources,
+    listInventory: async () => ({ complete: true, feeds: [feed] }),
+    getDetail: async () => feed,
+  });
+
+  assert.equal(sources["weekly:source"].source_status, "unbound");
+  assert.equal(preview.rows[0].source_status, "unbound");
+  assert.equal(preview.rows[0].candidate_status, "unavailable");
+  assert.equal(preview.rows[0].classification, "source_unbound");
+});
+
 test("history title sources include the current bound Top 5 post template", async (t) => {
   const workspace = await createTemporaryWorkspace("astro-lineage-title-sources-", t);
   const eventsPath = join(workspace.path, "events.json");
-  const events = { generated_at: "2026-10-05T12:00:00.000Z", events: [{
-    event_id: "GRB 2609.12345", heat_score: 25, paper_count: 1, last_updated: "2026-10-04",
-    papers: [{ priority: "must_read", arxiv_id: "2609.12345", bluf_problem: "该事件是否来自坍缩星爆发？" }],
-  }] };
+  const events = {
+    generated_at: "2026-10-05T12:00:00.000Z",
+    events: [
+      {
+        event_id: "GRB 2609.12345",
+        heat_score: 25,
+        paper_count: 1,
+        last_updated: "2026-10-04",
+        papers: [
+          {
+            priority: "must_read",
+            arxiv_id: "2609.12345",
+            bluf_problem: "该事件是否来自坍缩星爆发？",
+          },
+        ],
+      },
+    ],
+  };
   const eventBytes = Buffer.from(JSON.stringify(events));
   await writeFile(eventsPath, eventBytes);
   const eventSnapshot = { hash: hashBody(eventBytes), generated_at: events.generated_at };
 
-  const sources = await buildBoundTitleSources({ sourceBinding: { id: "bound", archives: {} },
-    currentBinding: { id: "bound" }, eventSnapshot, eventsPath });
+  const sources = await buildBoundTitleSources({
+    sourceBinding: { id: "bound", archives: {} },
+    currentBinding: { id: "bound" },
+    eventSnapshot,
+    eventsPath,
+  });
 
   assert.deepEqual(sources["events:top5"], {
+    source_status: "bound",
     title: "瞬变源 Top 5",
     firstLine: "数据更新：2026-10-05T12:00:00.000Z",
     evidence: `events:${eventSnapshot.hash}`,
@@ -323,16 +826,20 @@ test("the module exposes no title writer that accepts caller-supplied candidate 
 
 test("an approved W40 title mismatch remains pending and issues no edit", async (t) => {
   const target = await prepareSyncFixture(t, { identity: WEEKLY });
-  const result = await target.run({ candidates: { [WEEKLY]: "W40周报：前兆非探测收紧超新星失质量约束" } });
+  const result = await target.run({
+    candidates: { [WEEKLY]: "W40周报：前兆非探测收紧超新星失质量约束" },
+  });
   assert.equal(result.items[WEEKLY].status, "pending");
   assert.equal(result.items[WEEKLY].reason, "candidate_not_exactly_approved");
   assert.equal(target.edits, 0);
 });
 
 test("caller-supplied title cannot bypass the current bound daily archive", async (t) => {
-  const target = await prepareSyncFixture(t, { alterArchive: archive => {
-    archive.radar.opening_brief.must_read[0].text = "GRB 220627A两段亮期之间静默约610秒。";
-  } });
+  const target = await prepareSyncFixture(t, {
+    alterArchive: (archive) => {
+      archive.radar.opening_brief.must_read[0].text = "GRB 220627A两段亮期之间静默约610秒。";
+    },
+  });
   const result = await target.run({ candidates: { [DAILY]: DAILY_TITLE } });
   assert.equal(result.items[DAILY].status, "pending");
   assert.equal(result.items[DAILY].reason, "candidate_not_exactly_approved");
@@ -351,12 +858,15 @@ test("a human-edited title after approval remains untouched", async (t) => {
 
 test("an exact approved baseline edits the title only and verifies read-back", async (t) => {
   const target = await prepareSyncFixture(t);
-  target.editHandler = async args => {
+  target.editHandler = async (args) => {
     assert.deepEqual(args.slice(0, 2), ["feed", "alter-feed"]);
     assert.equal(args.includes("--markdown-content"), false);
     assert.equal(args.includes("--image"), false);
     assert.equal(args.includes("--title"), true);
-    const snapshots = await readFile(join(target.workspace.path, "snapshots", "daily-summary_2026-10-04.json"), "utf8");
+    const snapshots = await readFile(
+      join(target.workspace.path, "snapshots", "daily-summary_2026-10-04.json"),
+      "utf8"
+    );
     assert.equal(JSON.parse(snapshots).before.markdown_content, target.feed.markdown_content);
     target.feed.title = args[args.indexOf("--title") + 1];
     return { stdout: JSON.stringify({ retCode: 0, data: { success: true } }) };
@@ -371,9 +881,26 @@ test("an exact approved baseline edits the title only and verifies read-back", a
 
 test("a missing approval baseline blocks the write", async (t) => {
   const target = await prepareSyncFixture(t);
-  const result = await target.run({ approvalBaselinePath: join(target.workspace.path, "missing.json") });
+  const result = await target.run({
+    approvalBaselinePath: join(target.workspace.path, "missing.json"),
+  });
   assert.equal(result.items[DAILY].status, "pending");
   assert.equal(result.items[DAILY].reason, "approved_baseline_missing");
+  assert.equal(target.edits, 0);
+});
+
+test("title sync preserves a safe remote-auth failure code without exposing response text", async (t) => {
+  const target = await prepareSyncFixture(t);
+  const result = await target.run({
+    cli: async () => {
+      const error = new Error("command failed");
+      error.stderr = JSON.stringify({ error: { message: "未登录", token: "do-not-expose" } });
+      throw error;
+    },
+  });
+  assert.equal(result.items[DAILY].status, "pending");
+  assert.equal(result.items[DAILY].reason, "CHANNEL_NOT_AUTHENTICATED");
+  assert.doesNotMatch(JSON.stringify(result), /do-not-expose/u);
   assert.equal(target.edits, 0);
 });
 
@@ -406,14 +933,30 @@ test("unverifiable media and body drift stay pending before any write", async (t
 test("a title already equal to the approved candidate is unchanged without a write", async (t) => {
   const target = await prepareSyncFixture(t);
   target.feed.title = DAILY_TITLE;
+  const baseline = JSON.parse(await readFile(target.approvalBaselinePath, "utf8"));
+  baseline.items[DAILY].before.title = DAILY_TITLE;
+  await writeFile(target.approvalBaselinePath, JSON.stringify(baseline));
   const result = await target.run();
   assert.equal(result.items[DAILY].status, "unchanged");
   assert.equal(target.edits, 0);
 });
 
+test("an already-matching title remains pending without its approved baseline", async (t) => {
+  const target = await prepareSyncFixture(t);
+  target.feed.title = DAILY_TITLE;
+  const result = await target.run({
+    approvalBaselinePath: join(target.workspace.path, "missing.json"),
+  });
+  assert.equal(result.items[DAILY].status, "pending");
+  assert.equal(result.items[DAILY].reason, "approved_baseline_missing");
+  assert.equal(target.edits, 0);
+});
+
 test("rejected JSON write responses stay pending and do not replay", async (t) => {
   const target = await prepareSyncFixture(t);
-  target.editHandler = async () => ({ stdout: JSON.stringify({ success: false, error: "permission denied" }) });
+  target.editHandler = async () => ({
+    stdout: JSON.stringify({ success: false, error: "permission denied" }),
+  });
   const first = await target.run();
   assert.equal(first.items[DAILY].status, "pending");
   assert.match(first.items[DAILY].reason, /unknown_outcome:remote_rejected/u);
@@ -424,10 +967,17 @@ test("rejected JSON write responses stay pending and do not replay", async (t) =
 
 test("an unknown write is recorded and never replayed automatically", async (t) => {
   const target = await prepareSyncFixture(t);
-  target.editHandler = async () => { throw new Error("timeout"); };
+  target.editHandler = async () => {
+    throw new Error("timeout");
+  };
   const first = await target.run();
   assert.equal(first.items[DAILY].status, "pending");
-  const intent = JSON.parse(await readFile(join(target.workspace.path, "snapshots", "daily-summary_2026-10-04.intent.json"), "utf8"));
+  const intent = JSON.parse(
+    await readFile(
+      join(target.workspace.path, "snapshots", "daily-summary_2026-10-04.intent.json"),
+      "utf8"
+    )
+  );
   assert.equal(intent.status, "pending");
   assert.equal(intent.target_title, DAILY_TITLE);
   const second = await target.run();
@@ -437,7 +987,7 @@ test("an unknown write is recorded and never replayed automatically", async (t) 
 
 test("an unknown write that changed the title is reconciled without another edit", async (t) => {
   const target = await prepareSyncFixture(t);
-  target.editHandler = async args => {
+  target.editHandler = async (args) => {
     target.feed.title = args[args.indexOf("--title") + 1];
     throw new Error("timeout");
   };
@@ -446,16 +996,26 @@ test("an unknown write that changed the title is reconciled without another edit
   const second = await target.run();
   assert.equal(second.items[DAILY].status, "verified");
   assert.equal(target.edits, 1);
-  const intent = JSON.parse(await readFile(join(target.workspace.path, "snapshots", "daily-summary_2026-10-04.intent.json"), "utf8"));
+  const intent = JSON.parse(
+    await readFile(
+      join(target.workspace.path, "snapshots", "daily-summary_2026-10-04.intent.json"),
+      "utf8"
+    )
+  );
   assert.equal(intent.status, "verified");
 });
 
 test("an orphaned before-snapshot blocks a fresh write until intent state is reconciled", async (t) => {
   const target = await prepareSyncFixture(t);
   await mkdir(join(target.workspace.path, "snapshots"), { recursive: true });
-  await writeFile(join(target.workspace.path, "snapshots", "daily-summary_2026-10-04.json"), JSON.stringify({
-    identity: DAILY, source_binding_id: target.binding.id, before: snapshotFeed(target.feed),
-  }));
+  await writeFile(
+    join(target.workspace.path, "snapshots", "daily-summary_2026-10-04.json"),
+    JSON.stringify({
+      identity: DAILY,
+      source_binding_id: target.binding.id,
+      before: snapshotFeed(target.feed),
+    })
+  );
   const result = await target.run();
   assert.equal(result.items[DAILY].status, "pending");
   assert.equal(result.items[DAILY].reason, "snapshot_without_intent");

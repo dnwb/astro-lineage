@@ -1,6 +1,6 @@
 /**
  * scripts/arxiv-triage.mjs
- * 
+ *
  * Deep module for paper triage (初筛).
  * Encapsulates:
  * 1. Deterministic pre-filter seam (scripts/arxiv-triage-filter.mjs)
@@ -9,6 +9,7 @@
  */
 
 import { deterministicTriageFilter } from "./arxiv-triage-filter.mjs";
+import { safeParseJson } from "./pipeline-evidence-gate.mjs";
 
 export function buildTriagePrompt(entry) {
   return `阶段：摘要初筛（Triage）。
@@ -72,7 +73,10 @@ ${entry.abstract}
 }
 
 function isUnknown(value) {
-  return typeof value === "string" && /^(?:unknown|not stated|not specified|未说明|未知)$/iu.test(value.trim());
+  return (
+    typeof value === "string" &&
+    /^(?:unknown|not stated|not specified|未说明|未知)$/iu.test(value.trim())
+  );
 }
 
 export function normalizeTriageOutput(parsed, _entry = null) {
@@ -83,23 +87,33 @@ export function normalizeTriageOutput(parsed, _entry = null) {
 
     return {
       priority: "skip",
-      reason: typeof parsed.reason === "string" && parsed.reason.trim()
-        ? parsed.reason.trim()
-        : "与高能瞬变天体物理及致密天体重点研究方向无实质联系。",
-      result: typeof parsed.result === "string" && !isUnknown(parsed.result) ? parsed.result : "unknown",
-      problem: typeof parsed.problem === "string" && !isUnknown(parsed.problem) ? parsed.problem : "unknown",
-      method: typeof parsed.method === "string" && !isUnknown(parsed.method) ? parsed.method : "unknown",
+      reason:
+        typeof parsed.reason === "string" && parsed.reason.trim()
+          ? parsed.reason.trim()
+          : "与高能瞬变天体物理及致密天体重点研究方向无实质联系。",
+      result:
+        typeof parsed.result === "string" && !isUnknown(parsed.result) ? parsed.result : "unknown",
+      problem:
+        typeof parsed.problem === "string" && !isUnknown(parsed.problem)
+          ? parsed.problem
+          : "unknown",
+      method:
+        typeof parsed.method === "string" && !isUnknown(parsed.method) ? parsed.method : "unknown",
       reading_entry: typeof parsed.reading_entry === "string" ? parsed.reading_entry : "摘要",
-      research_progress: typeof parsed.research_progress === "string" && !isUnknown(parsed.research_progress) ? parsed.research_progress : "unknown",
+      research_progress:
+        typeof parsed.research_progress === "string" && !isUnknown(parsed.research_progress)
+          ? parsed.research_progress
+          : "unknown",
       assumptions: Array.isArray(parsed.assumptions) ? parsed.assumptions : [],
       limits: Array.isArray(parsed.limits) ? parsed.limits : [],
       inspected_sections: ["Abstract"],
       evidence: evidence.map((item) => ({
         section: "Abstract",
         quote: String(item?.quote || "").trim(),
-        supports: Array.isArray(item?.supports) && item.supports.length > 0
-          ? Array.from(new Set([...item.supports, "reason", "result"]))
-          : ["reason", "result"],
+        supports:
+          Array.isArray(item?.supports) && item.supports.length > 0
+            ? Array.from(new Set([...item.supports, "reason", "result"]))
+            : ["reason", "result"],
       })),
       filter_source: parsed.filter_source || "llm_asymmetric",
     };
@@ -112,15 +126,18 @@ export function normalizeTriageOutput(parsed, _entry = null) {
     problem: typeof parsed.problem === "string" ? parsed.problem : "unknown",
     method: typeof parsed.method === "string" ? parsed.method : "unknown",
     reading_entry: typeof parsed.reading_entry === "string" ? parsed.reading_entry : "摘要",
-    research_progress: typeof parsed.research_progress === "string" ? parsed.research_progress : "unknown",
+    research_progress:
+      typeof parsed.research_progress === "string" ? parsed.research_progress : "unknown",
     assumptions: Array.isArray(parsed.assumptions) ? parsed.assumptions : [],
     limits: Array.isArray(parsed.limits) ? parsed.limits : [],
     inspected_sections: ["Abstract"],
-    evidence: Array.isArray(parsed.evidence) ? parsed.evidence.map((item) => ({
-      section: "Abstract",
-      quote: String(item?.quote || "").trim(),
-      supports: Array.isArray(item?.supports) ? item.supports : ["reason", "result"],
-    })) : [],
+    evidence: Array.isArray(parsed.evidence)
+      ? parsed.evidence.map((item) => ({
+          section: "Abstract",
+          quote: String(item?.quote || "").trim(),
+          supports: Array.isArray(item?.supports) ? item.supports : ["reason", "result"],
+        }))
+      : [],
   };
 }
 
@@ -148,37 +165,29 @@ export async function triagePaper(entry, { modelCall }) {
 
 export function cleanJsonContent(raw) {
   let cleaned = String(raw ?? "").trim();
-  cleaned = cleaned.replace(/^```(?:json)?\s*/iu, "").replace(/\s*```$/u, "").trim();
+  cleaned = cleaned
+    .replace(/^```(?:json)?\s*/iu, "")
+    .replace(/\s*```$/u, "")
+    .trim();
   return cleaned;
 }
 
 export function safeParseTriageJson(raw) {
-  if (raw && typeof raw === "object") return raw;
-  const text = cleanJsonContent(raw);
-  try {
-    return JSON.parse(text);
-  } catch (initialErr) {
-    const match = text.match(/[\[\{][\s\S]*[\]\}]/u);
-    if (!match) throw initialErr;
-    try {
-      return JSON.parse(match[0]);
-    } catch {
-      const fixed = match[0].replace(/\\(?!["\\/bfnrt]|u[0-9a-fA-F]{4})/g, "\\\\");
-      return JSON.parse(fixed);
-    }
-  }
+  return safeParseJson(raw);
 }
 
 export function buildBatchTriagePrompt(entries) {
-  const paperBlocks = entries.map((entry, idx) => {
-    return `--- 论文 [${idx + 1}/${entries.length}] ---
+  const paperBlocks = entries
+    .map((entry, idx) => {
+      return `--- 论文 [${idx + 1}/${entries.length}] ---
 arXiv ID: ${entry.arxiv_id} (v${entry.revision})
 标题: ${entry.title}
 分类: ${(entry.categories || []).join(", ")}
 摘要:
 ${entry.abstract}
 `;
-  }).join("\n");
+    })
+    .join("\n");
 
   return `阶段：批量摘要初筛（Batch Triage）。
 目标：逐篇评估下列 ${entries.length} 篇论文是否属于高能瞬变天体物理核心研究方向（FRB/PRS 及其环境、超新星中心引擎、激波破越与周星介质相互作用、平台期、光电离与色散测量、相对论喷流、中微子及致密天体高能观测）。
@@ -204,7 +213,7 @@ ${paperBlocks}
 摘录必须从对应论文的摘要中逐字复制。不得在 JSON 前后输出任何非 JSON 文本。`;
 }
 
-export async function triageBatch(entries, { modelCall, batchSize = 4, concurrency = 4 } = {}) {
+export async function triageBatch(entries, { modelCall, batchSize = 4, concurrency = 3 } = {}) {
   const results = new Map();
   const needModel = [];
 
@@ -269,8 +278,14 @@ export async function triageBatch(entries, { modelCall, batchSize = 4, concurren
         }
 
         for (const entry of batch) {
-          const item = parsedById.get(entry.arxiv_id) || parsedById.get(entry.arxiv_id.replace(/^arxiv:/i, ""));
-          if (!item || !["must_read", "worth_knowing", "skip"].includes(item?.priority) || !item?.reason) {
+          const item =
+            parsedById.get(entry.arxiv_id) ||
+            parsedById.get(entry.arxiv_id.replace(/^arxiv:/i, ""));
+          if (
+            !item ||
+            !["must_read", "worth_knowing", "skip"].includes(item?.priority) ||
+            !item?.reason
+          ) {
             try {
               const singleRaw = await modelCall({
                 stage: "abstract",
@@ -285,9 +300,10 @@ export async function triageBatch(entries, { modelCall, batchSize = 4, concurren
           } else {
             const abstractText = String(entry.abstract || "");
             const quote = String(item.quote || "").trim();
-            const validQuote = quote.length >= 10 && abstractText.includes(quote)
-              ? quote
-              : abstractText.slice(0, Math.min(100, abstractText.length));
+            const validQuote =
+              quote.length >= 10 && abstractText.includes(quote)
+                ? quote
+                : abstractText.slice(0, Math.min(100, abstractText.length));
 
             const structured = {
               priority: item.priority,
@@ -304,7 +320,10 @@ export async function triageBatch(entries, { modelCall, batchSize = 4, concurren
                 {
                   section: "Abstract",
                   quote: validQuote,
-                  supports: item.priority === "skip" ? ["reason", "result"] : ["reason", "result", "problem", "method"],
+                  supports:
+                    item.priority === "skip"
+                      ? ["reason", "result"]
+                      : ["reason", "result", "problem", "method"],
                 },
               ],
             };

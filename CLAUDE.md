@@ -2,7 +2,7 @@
 
 ### Issue tracker
 
-Issues and specs use the local Markdown tracker. See `docs/agents/issue-tracker.md`.
+Issues and specs use GitHub Issues. See `docs/agents/issue-tracker.md`.
 
 ### Triage labels
 

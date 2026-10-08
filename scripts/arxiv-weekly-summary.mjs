@@ -2,7 +2,12 @@ import { readFile, mkdir } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { resolve, dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { DEFAULT_RADAR_OUTPUT, DEFAULT_OUTPUT, readPublishedArxivEdition, writeJsonAtomically } from "./arxiv-daily.mjs";
+import {
+  DEFAULT_RADAR_OUTPUT,
+  DEFAULT_OUTPUT,
+  readPublishedArxivEdition,
+  writeJsonAtomically,
+} from "./arxiv-daily.mjs";
 import { normalizeArxivId, sourceFingerprint, validateDailyRadarPayload } from "./daily-radar.mjs";
 import { getDirtyWeeks, clearDirtyWeek } from "./arxiv-archive.mjs";
 
@@ -30,11 +35,16 @@ function resolveDefaultApiKey() {
 const DEFAULT_API_KEY = resolveDefaultApiKey();
 const FALLBACK_BASE_URL = process.env.FALLBACK_OPENAI_BASE_URL || "";
 const FALLBACK_API_KEY = process.env.FALLBACK_OPENAI_API_KEY || process.env.ZHANG_API_KEY || "";
-const DEFAULT_MODEL = process.env.AI_MODEL || "gpt-6-luna";
-const DEFAULT_EFFORT = process.env.REASONING_EFFORT || "xhigh";
-const DEFAULT_TIMEOUT_MS = 120_000;
-const DEFAULT_WEEKLY_OUTPUT = resolve(fileURLToPath(new URL("../src/data/arxiv-weekly.json", import.meta.url)));
-const DEFAULT_DAILY_ARCHIVE = resolve(fileURLToPath(new URL("../src/data/arxiv-archives/daily", import.meta.url)));
+const DEFAULT_MODEL =
+  process.env.AI_MODEL_WEEKLY || process.env.AI_MODEL_BODY || "gemini-3.8-flash-high";
+const DEFAULT_EFFORT = process.env.REASONING_EFFORT || "medium";
+const DEFAULT_TIMEOUT_MS = Number(process.env.WEEKLY_TIMEOUT_MS) || 180_000;
+const DEFAULT_WEEKLY_OUTPUT = resolve(
+  fileURLToPath(new URL("../src/data/arxiv-weekly.json", import.meta.url))
+);
+const DEFAULT_DAILY_ARCHIVE = resolve(
+  fileURLToPath(new URL("../src/data/arxiv-archives/daily", import.meta.url))
+);
 
 import { cleanJsonContent, safeParseJson } from "./arxiv-ai-analyzer.mjs";
 
@@ -55,13 +65,15 @@ function parseCliArgs(args) {
     else if (arg.startsWith("--output=")) options.output = arg.slice("--output=".length);
     else if (arg.startsWith("--model=")) options.model = arg.slice("--model=".length);
     else if (arg.startsWith("--effort=")) options.effort = arg.slice("--effort=".length);
-    else if (arg.startsWith("--reasoning-effort=")) options.effort = arg.slice("--reasoning-effort=".length);
+    else if (arg.startsWith("--reasoning-effort="))
+      options.effort = arg.slice("--reasoning-effort=".length);
     else if (arg.startsWith("--base-url=")) options.baseUrl = arg.slice("--base-url=".length);
     else if (arg.startsWith("--api-key=")) options.apiKey = arg.slice("--api-key=".length);
     else if (arg.startsWith("--days=")) options.days = Number(arg.slice("--days=".length));
     else if (arg.startsWith("--week=")) options.weekId = arg.slice("--week=".length);
     else if (arg.startsWith("--week-id=")) options.weekId = arg.slice("--week-id=".length);
-    else if (arg.startsWith("--artifact-root=")) options.artifactRoot = arg.slice("--artifact-root=".length);
+    else if (arg.startsWith("--artifact-root="))
+      options.artifactRoot = arg.slice("--artifact-root=".length);
     else if (arg === "--write-archives" || arg === "--sync-archives") options.writeArchives = true;
     else if (arg === "--cascade") options.cascade = true;
   }
@@ -75,7 +87,7 @@ function currentWeekId(date = new Date()) {
   const firstThursday = target.valueOf();
   target.setUTCMonth(0, 1);
   if (target.getUTCDay() !== 4) {
-    target.setUTCMonth(0, 1 + ((4 - target.getUTCDay()) + 7) % 7);
+    target.setUTCMonth(0, 1 + ((4 - target.getUTCDay() + 7) % 7));
   }
   const weekNumber = 1 + Math.ceil((firstThursday - target) / 604800000);
   return `${target.getUTCFullYear()}-W${String(weekNumber).padStart(2, "0")}`;
@@ -111,7 +123,10 @@ function safeProviderError(error) {
   if (/^API returned HTTP \d{3}$/u.test(error?.message ?? "")) {
     return new Error(`Weekly summary API request failed: ${error.message}.`);
   }
-  if (error?.message === "Empty model response" || error?.message === "Invalid model response JSON") {
+  if (
+    error?.message === "Empty model response" ||
+    error?.message === "Invalid model response JSON"
+  ) {
     return error;
   }
   return new Error("Weekly summary API request failed.");
@@ -144,7 +159,7 @@ export async function executeChatCompletion({
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${targetKey}`,
+        Authorization: `Bearer ${targetKey}`,
       },
       body: JSON.stringify(payload),
       signal: AbortSignal.timeout(targetTimeout),
@@ -174,16 +189,29 @@ export async function executeChatCompletion({
       key: apiKey,
     });
   }
-  if (FALLBACK_BASE_URL && FALLBACK_API_KEY && (FALLBACK_BASE_URL !== baseUrl || FALLBACK_API_KEY !== apiKey)) {
+  if (
+    FALLBACK_BASE_URL &&
+    FALLBACK_API_KEY &&
+    (FALLBACK_BASE_URL !== baseUrl || FALLBACK_API_KEY !== apiKey)
+  ) {
     pool.push({
       name: "Secondary (fallback)",
       url: `${FALLBACK_BASE_URL.replace(/\/+$/u, "")}/chat/completions`,
       key: FALLBACK_API_KEY,
     });
   }
-  if (pool.length === 0) throw new Error("Missing API key; set IOA_API_KEY, WU_API_KEY or OPENAI_API_KEY");
+  if (pool.length === 0)
+    throw new Error("Missing API key; set IOA_API_KEY, WU_API_KEY or OPENAI_API_KEY");
 
-  const candidateModels = [model, "gpt-6-sol", "gpt-6-luna"].filter((m, i, arr) => arr.indexOf(m) === i);
+  const candidateModels = [
+    model,
+    "gemini-3.8-flash-high",
+    "gpt-6.1-sol",
+    "claude-sonnet-4-6",
+    "gpt-6-luna",
+  ]
+    .filter(Boolean)
+    .filter((m, i, arr) => arr.indexOf(m) === i);
   let lastError;
   for (const currentModel of candidateModels) {
     const isPrimary = currentModel === model;
@@ -193,18 +221,25 @@ export async function executeChatCompletion({
       for (let pIdx = 0; pIdx < pool.length; pIdx++) {
         const provider = pool[pIdx];
         try {
-          if (!isPrimary) console.log(`[Weekly Summary] 正在通过供应商 ${provider.name} 降级尝试备选模型: ${currentModel}...`);
+          if (!isPrimary)
+            console.log(
+              `[Weekly Summary] 正在通过供应商 ${provider.name} 降级尝试备选模型: ${currentModel}...`
+            );
           return await tryCall(provider.url, provider.key, currentModel, currentEffort, timeoutMs);
         } catch (err) {
           lastError = safeProviderError(err);
           if (pool.length > 1 && pIdx < pool.length - 1) {
-            console.warn(`[Weekly Summary] 供应商 ${provider.name} 模型 (${currentModel}) 请求失败 (${lastError.message})，切换至对等供应商重试同一模型...`);
+            console.warn(
+              `[Weekly Summary] 供应商 ${provider.name} 模型 (${currentModel}) 请求失败 (${lastError.message})，切换至对等供应商重试同一模型...`
+            );
           }
         }
       }
       if (attempt < currentRetries) {
         const delay = Math.pow(2, attempt) * 1000;
-        console.warn(`[Weekly Summary] ${currentModel} 请求失败 (${lastError.message})，将在 ${delay}ms 后重试...`);
+        console.warn(
+          `[Weekly Summary] ${currentModel} 请求失败 (${lastError.message})，将在 ${delay}ms 后重试...`
+        );
         await new Promise((r) => setTimeout(r, delay));
       }
     }
@@ -240,16 +275,19 @@ function buildWeeklyPrompt(papers, dateRange, weekId) {
   const totalImportant = mustReadPapers.length + worthKnowingPapers.length;
   const skipCount = papers.length - totalImportant;
 
-  const papersText = importantPapers.length > 0
-    ? importantPapers.map((p, index) => {
-        const guide = p.guide || p.analysis?.analysis || p.analysis || {};
-        return `[${index + 1}] arXiv:${p.arxiv_id}v${p.revision} [${p.priority.toUpperCase()}] ${p.title}
+  const papersText =
+    importantPapers.length > 0
+      ? importantPapers
+          .map((p, index) => {
+            const guide = p.guide || p.analysis?.analysis || p.analysis || {};
+            return `[${index + 1}] arXiv:${p.arxiv_id}v${p.revision} [${p.priority.toUpperCase()}] ${p.title}
 - announcement_date: ${p.announcement_date}; historical_edition: ${p.historical_edition}; source_fingerprint: ${p.source_fingerprint}
 - 核心物理问题: ${guide.problem || p.problem || "探讨相关高能物理现象"}
 - 主要发现与结论: ${guide.result || p.result || "观测或模型结果"}
 - 采用方法: ${guide.method || p.method || "数据分析与模型模拟"}`;
-      }).join("\n\n")
-    : "（本周无符合爆发现象核心 R1~R7 方向的重点研读论文）";
+          })
+          .join("\n\n")
+      : "（本周无符合爆发现象核心 R1~R7 方向的重点研读论文）";
 
   return `【周报元数据】
 周期: ${weekId} (${dateRange})
@@ -325,7 +363,11 @@ export async function runWeeklySummary({
   }
 
   const resolvedOutput = resolve(outputPath);
-  const { feed: activeFeed, radar } = await readPublishedArxivEdition({ output: feedPath, radarOutput: radarPath, artifactRoot });
+  const { feed: activeFeed, radar } = await readPublishedArxivEdition({
+    output: feedPath,
+    radarOutput: radarPath,
+    artifactRoot,
+  });
 
   const now = new Date();
   const dateFromWindow = radar.edition?.window?.announcement_date
@@ -342,20 +384,33 @@ export async function runWeeklySummary({
   const addEdition = (date, feed, editionRadar, preferCurrent = false) => {
     const radarWindow = editionRadar?.edition?.window;
     const feedDate = feed?.window?.announcement_date ?? radarWindow?.announcement_date ?? date;
-    if (feed?.window?.announcement_date && radarWindow?.announcement_date && feed.window.announcement_date !== radarWindow.announcement_date) return;
-    if (feed?.window?.batch_id && radarWindow?.batch_id && feed.window.batch_id !== radarWindow.batch_id) return;
+    if (
+      feed?.window?.announcement_date &&
+      radarWindow?.announcement_date &&
+      feed.window.announcement_date !== radarWindow.announcement_date
+    )
+      return;
+    if (
+      feed?.window?.batch_id &&
+      radarWindow?.batch_id &&
+      feed.window.batch_id !== radarWindow.batch_id
+    )
+      return;
     if (feedDate !== date || !targetDateSet.has(date) || !Array.isArray(feed?.entries)) return;
     const batchId = feed.window?.batch_id ?? radarWindow?.batch_id ?? `announcement-${date}`;
     const key = `${date}\u0000${batchId}`;
     const edition = editions.get(key) ?? { date, batchId, papers: new Map() };
     if (preferCurrent) {
-      const activeEntries = new Map(feed.entries.map((entry) => [
-        `${normalizeArxivId(entry.arxiv_id)}\u0000${entry.revision}`,
-        sourceFingerprint(entry),
-      ]));
+      const activeEntries = new Map(
+        feed.entries.map((entry) => [
+          `${normalizeArxivId(entry.arxiv_id)}\u0000${entry.revision}`,
+          sourceFingerprint(entry),
+        ])
+      );
       for (const [paperKey, paper] of edition.papers) {
         const identity = `${normalizeArxivId(paper.arxiv_id)}\u0000${paper.revision}`;
-        if (activeEntries.get(identity) !== paper.source_fingerprint) edition.papers.delete(paperKey);
+        if (activeEntries.get(identity) !== paper.source_fingerprint)
+          edition.papers.delete(paperKey);
       }
     }
     const { model: dailyModel } = validateDailyRadarPayload(feed, editionRadar);
@@ -396,19 +451,26 @@ export async function runWeeklySummary({
   }
 
   // Include the active pair only when it is an edition in the requested week.
-  const activeDate = activeFeed?.window?.announcement_date ?? radar.edition?.window?.announcement_date;
+  const activeDate =
+    activeFeed?.window?.announcement_date ?? radar.edition?.window?.announcement_date;
   if (activeDate && targetDateSet.has(activeDate)) {
     addEdition(activeDate, activeFeed, radar, true);
   }
 
   // Keep the newest exact revision for each paper across this week's editions.
   const latestById = new Map();
-  for (const edition of [...editions.values()].sort((a, b) => a.date.localeCompare(b.date) || a.batchId.localeCompare(b.batchId))) {
+  for (const edition of [...editions.values()].sort(
+    (a, b) => a.date.localeCompare(b.date) || a.batchId.localeCompare(b.batchId)
+  )) {
     for (const paper of edition.papers.values()) {
       const id = normalizeArxivId(paper.arxiv_id);
       const previous = latestById.get(id);
-      if (!previous || paper.announcement_date > previous.announcement_date ||
-        (paper.announcement_date === previous.announcement_date && Number(paper.revision) > Number(previous.revision))) {
+      if (
+        !previous ||
+        paper.announcement_date > previous.announcement_date ||
+        (paper.announcement_date === previous.announcement_date &&
+          Number(paper.revision) > Number(previous.revision))
+      ) {
         latestById.set(id, paper);
       }
     }
@@ -426,13 +488,17 @@ export async function runWeeklySummary({
 
   console.log(`[Weekly Summary] 目标自然周: ${weekId} (${dateRange})`);
   console.log(`[Weekly Summary] 自然周日期: [${targetDates.join(", ")}]`);
-  console.log(`[Weekly Summary] 实际纳入归档批次: ${Array.from(foundDates).sort().join(", ") || "无"} (${foundDates.size}/7)`);
+  console.log(
+    `[Weekly Summary] 实际纳入归档批次: ${Array.from(foundDates).sort().join(", ") || "无"} (${foundDates.size}/7)`
+  );
   if (foundDates.size === 7) {
     console.log(`[Weekly Summary] ✓ 本自然周全部 7 天的批次均已收齐！`);
   } else {
     console.log(`[Weekly Summary] 提示: 本自然周当前包含 ${foundDates.size}/7 天的批次。`);
   }
-  console.log(`[Weekly Summary] 共聚合 ${papers.length} 篇已分析论文（Must Read: ${mustReadCount}, Worth Knowing: ${worthKnowingCount}, Skim: ${skipCount}）。`);
+  console.log(
+    `[Weekly Summary] 共聚合 ${papers.length} 篇已分析论文（Must Read: ${mustReadCount}, Worth Knowing: ${worthKnowingCount}, Skim: ${skipCount}）。`
+  );
 
   console.log(`[Weekly Summary] 正在调用模型 ${model} 生成第 ${weekId} 期学术周报综述...`);
   const prompt = buildWeeklyPrompt(papers, dateRange, weekId);
@@ -446,42 +512,67 @@ export async function runWeeklySummary({
   });
 
   const parsed = safeParseJson(rawJson);
-  const eligiblePapers = new Map(papers
-    .filter((paper) => ["must_read", "worth_knowing"].includes(paper.priority))
-    .map((paper) => [
-      `${normalizeArxivId(paper.arxiv_id)}@${paper.revision}@${paper.historical_edition}@${paper.source_fingerprint}`,
-      paper,
-    ]));
-  const eligibleIds = new Set([...eligiblePapers.values()].map((paper) => normalizeArxivId(paper.arxiv_id)));
-  const thematicHighlights = (Array.isArray(parsed.thematic_highlights) ? parsed.thematic_highlights : [])
-    .map((theme) => ({ ...theme, paper_ids: [...new Set((Array.isArray(theme?.paper_ids) ? theme.paper_ids : [])
-      .map((id) => normalizeArxivId(id)).filter((id) => eligibleIds.has(id)))] }))
+  const eligiblePapers = new Map(
+    papers
+      .filter((paper) => ["must_read", "worth_knowing"].includes(paper.priority))
+      .map((paper) => [
+        `${normalizeArxivId(paper.arxiv_id)}@${paper.revision}@${paper.historical_edition}@${paper.source_fingerprint}`,
+        paper,
+      ])
+  );
+  const eligibleIds = new Set(
+    [...eligiblePapers.values()].map((paper) => normalizeArxivId(paper.arxiv_id))
+  );
+  const thematicHighlights = (
+    Array.isArray(parsed.thematic_highlights) ? parsed.thematic_highlights : []
+  )
+    .map((theme) => ({
+      ...theme,
+      paper_ids: [
+        ...new Set(
+          (Array.isArray(theme?.paper_ids) ? theme.paper_ids : [])
+            .map((id) => normalizeArxivId(id))
+            .filter((id) => eligibleIds.has(id))
+        ),
+      ],
+    }))
     .filter((theme) => theme.paper_ids.length > 0);
   const usedPicks = new Set();
   const topPicks = (Array.isArray(parsed.top_picks) ? parsed.top_picks : []).flatMap((pick) => {
-    if (!Number.isInteger(Number(pick?.revision)) || Number(pick.revision) < 1 ||
-      typeof pick?.historical_edition !== "string" || typeof pick?.source_fingerprint !== "string") return [];
+    if (
+      !Number.isInteger(Number(pick?.revision)) ||
+      Number(pick.revision) < 1 ||
+      typeof pick?.historical_edition !== "string" ||
+      typeof pick?.source_fingerprint !== "string"
+    )
+      return [];
     const identity = `${normalizeArxivId(pick.arxiv_id)}@${Number(pick.revision)}@${pick.historical_edition}@${pick.source_fingerprint}`;
     const paper = eligiblePapers.get(identity);
     const key = `${normalizeArxivId(paper?.arxiv_id)}@${paper?.revision}@${paper?.historical_edition}@${paper?.source_fingerprint}`;
     if (!paper || paper.priority !== pick.priority || usedPicks.has(key)) return [];
     usedPicks.add(key);
-    return [{
-      ...pick,
-      authors: Array.isArray(paper.authors) ? paper.authors : [],
-      revision: paper.revision,
-      historical_edition: paper.historical_edition,
-      source_fingerprint: paper.source_fingerprint,
-    }];
+    return [
+      {
+        ...pick,
+        authors: Array.isArray(paper.authors) ? paper.authors : [],
+        revision: paper.revision,
+        historical_edition: paper.historical_edition,
+        source_fingerprint: paper.source_fingerprint,
+      },
+    ];
   });
 
   const overviewMatrix = (Array.isArray(parsed.overview_matrix) ? parsed.overview_matrix : [])
     .map((row) => {
-      const citedInText = (String(row?.core_findings || "").match(/\b\d{4}\.\d{4,5}[a-z]?(?:v\d+)?\b/gi) || [])
-        .map((id) => normalizeArxivId(id));
-      const declared = (Array.isArray(row?.representative_papers) ? row.representative_papers : [])
-        .map((id) => normalizeArxivId(id));
-      const combined = [...new Set([...declared, ...citedInText])].filter((id) => eligibleIds.has(id));
+      const citedInText = (
+        String(row?.core_findings || "").match(/\b\d{4}\.\d{4,5}[a-z]?(?:v\d+)?\b/gi) || []
+      ).map((id) => normalizeArxivId(id));
+      const declared = (
+        Array.isArray(row?.representative_papers) ? row.representative_papers : []
+      ).map((id) => normalizeArxivId(id));
+      const combined = [...new Set([...declared, ...citedInText])].filter((id) =>
+        eligibleIds.has(id)
+      );
       if (combined.length === 0 && !row?.domain) return null;
       return {
         domain: row.domain || "前沿物理方向",
@@ -532,11 +623,15 @@ export async function runWeeklySummary({
   await mkdir(dirname(resolvedOutput), { recursive: true });
   await writeJsonAtomically(resolvedOutput, weeklyPayload);
 
-  const productionPaths = resolvedOutput === DEFAULT_WEEKLY_OUTPUT &&
-    resolve(radarPath) === DEFAULT_RADAR_OUTPUT && resolve(feedPath) === DEFAULT_OUTPUT &&
+  const productionPaths =
+    resolvedOutput === DEFAULT_WEEKLY_OUTPUT &&
+    resolve(radarPath) === DEFAULT_RADAR_OUTPUT &&
+    resolve(feedPath) === DEFAULT_OUTPUT &&
     resolve(dailyArchiveDir) === DEFAULT_DAILY_ARCHIVE;
   const shouldWriteArchives = writeArchives ?? productionPaths;
-  const archivePath = shouldWriteArchives ? join(resolve(".cache/arxiv-weekly/archives"), `${weekId}.json`) : null;
+  const archivePath = shouldWriteArchives
+    ? join(resolve(".cache/arxiv-weekly/archives"), `${weekId}.json`)
+    : null;
   if (shouldWriteArchives) {
     await mkdir(dirname(archivePath), { recursive: true });
     await writeJsonAtomically(archivePath, weeklyPayload);
@@ -544,14 +639,19 @@ export async function runWeeklySummary({
       const { syncArxivArchives } = await import("./arxiv-archive.mjs");
       await syncArxivArchives();
     } catch (archiveErr) {
-      console.warn("[Weekly Summary] Warning: Failed to sync archive manifest:", archiveErr.message);
+      console.warn(
+        "[Weekly Summary] Warning: Failed to sync archive manifest:",
+        archiveErr.message
+      );
     }
   }
 
   console.log(`[Weekly Summary] ✓ 周报生成成功并落盘：`);
   console.log(`  - 生产数据: ${resolvedOutput}`);
   if (archivePath) console.log(`  - 历史归档: ${archivePath}`);
-  console.log(`  - 本期必读 Top Picks: ${weeklyPayload.top_picks.length} 篇，专题分类: ${weeklyPayload.thematic_highlights.length} 个。`);
+  console.log(
+    `  - 本期必读 Top Picks: ${weeklyPayload.top_picks.length} 篇，专题分类: ${weeklyPayload.thematic_highlights.length} 个。`
+  );
 
   try {
     await clearDirtyWeek(weekId);
@@ -567,7 +667,9 @@ export async function runCascadeWeeklySummaries(options = {}) {
     return [];
   }
 
-  console.log(`[Weekly Summary:Cascade] 检测到 ${dirtyWeeks.length} 个待更新自然周: ${dirtyWeeks.join(", ")}`);
+  console.log(
+    `[Weekly Summary:Cascade] 检测到 ${dirtyWeeks.length} 个待更新自然周: ${dirtyWeeks.join(", ")}`
+  );
   const results = [];
   for (const weekId of dirtyWeeks) {
     console.log(`[Weekly Summary:Cascade] 正在级联重新生成自然周周报: ${weekId}...`);

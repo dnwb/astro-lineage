@@ -18,6 +18,7 @@ import { generateAcademicAnswer } from "./agent-core.mjs";
 import { readChannelShareUrl } from "./channel-publication.mjs";
 import { createSessionMemory } from "./qq-memory.mjs";
 import { defaultUserManager } from "./qq-users.mjs";
+import { matchBotCommand, executeBotCommand, handleBotCommand } from "./bot-commands.mjs";
 
 // Node >=22.20 provides WebSocket; no undeclared ws package is needed.
 async function request(url, options = {}) {
@@ -376,6 +377,8 @@ export async function startOfficialBot({
   const gatewayUrl = await gateway();
   console.log(`[QQ Official Bot] 正在连接官方网关: ${gatewayUrl} (沙箱模式: ${IS_SANDBOX})...`);
 
+  const resolveChannelLink =
+    typeof channelLink === "function" ? channelLink : async () => undefined;
   const ws = new WebSocketImpl(gatewayUrl);
   const sweepMemory = () => {
     try {
@@ -489,64 +492,25 @@ export async function startOfficialBot({
             }
 
             if (query && groupOpenid && authorId) {
-              if (/^\/(start|help|id|groupid)$/i.test(query)) {
+              const cmd = matchBotCommand(query);
+              if (cmd) {
                 try {
-                  const replyText = `👋 大家好！我是 AstroLineage 高能天体物理学术助手。\n\n在群里 @ 我并附带论文题目、arXiv 编号或具体物理问题（例如：“@我 总结今天的必读论文”），我会结合每日雷达与学术脉络知识库为大家提供研讨解答！`;
+                  const replyResult = executeBotCommand(cmd, {
+                    resolveChannelLink,
+                  });
+                  const rawReply =
+                    typeof replyResult?.then === "function" ? await replyResult : replyResult;
+                  const replyText = /https?:\/\/\S+/iu.test(rawReply || "")
+                    ? await appendChannelShareLinkToReply(rawReply, resolveChannelLink)
+                    : rawReply;
                   if (!dryRun) {
                     await replyGroupMessage({ groupOpenid, msgId, content: replyText });
-                    console.log(`[QQ Official Bot] ✓ 已回复群 /start 欢迎消息（已自动记录群 ID）`);
+                    console.log(`[QQ Official Bot] ✓ 已回复群指令: ${query}`);
                   }
                   memory.append(sessionKey, "user", query);
                   memory.append(sessionKey, "assistant", replyText);
                 } catch (err) {
-                  console.error(`[QQ Official Bot] ✗ 回复群 /start 失败: ${err.message}`);
-                }
-                break;
-              }
-
-              if (/^\/(today|daily|radar)|今日导读|雷达|今日/i.test(query)) {
-                try {
-                  const { generateGroupBrief } = await import("./qq-send.mjs");
-                  const brief = await generateGroupBrief("daily");
-                  if (!dryRun) {
-                    await replyGroupMessage({ groupOpenid, msgId, content: brief });
-                    console.log(`[QQ Official Bot] ✓ 已回复群今日导读 Markdown 卡片`);
-                  }
-                  memory.append(sessionKey, "user", query);
-                  memory.append(sessionKey, "assistant", brief);
-                } catch (err) {
-                  console.error(`[QQ Official Bot] ✗ 回复群今日导读失败: ${err.message}`);
-                }
-                break;
-              }
-
-              if (/^\/(weekly|week)|本周周报|周报/i.test(query)) {
-                try {
-                  const { generateGroupBrief } = await import("./qq-send.mjs");
-                  const brief = await generateGroupBrief("weekly");
-                  if (!dryRun) {
-                    await replyGroupMessage({ groupOpenid, msgId, content: brief });
-                    console.log(`[QQ Official Bot] ✓ 已回复群前沿周报 Markdown 卡片`);
-                  }
-                  memory.append(sessionKey, "user", query);
-                  memory.append(sessionKey, "assistant", brief);
-                } catch (err) {
-                  console.error(`[QQ Official Bot] ✗ 回复群前沿周报失败: ${err.message}`);
-                }
-                break;
-              }
-
-              if (/^\/(test|ping)$/i.test(query)) {
-                try {
-                  const replyText = `[AstroLineage] 连通性测试通过！Markdown 与 LaTeX 渲染模式已启用。可通过发送「今日导读」或「前沿周报」查看完整学术情报卡片。`;
-                  if (!dryRun) {
-                    await replyGroupMessage({ groupOpenid, msgId, content: replyText });
-                    console.log(`[QQ Official Bot] ✓ 已回复群测试指令`);
-                  }
-                  memory.append(sessionKey, "user", query);
-                  memory.append(sessionKey, "assistant", replyText);
-                } catch (err) {
-                  console.error(`[QQ Official Bot] ✗ 回复群测试指令失败: ${err.message}`);
+                  console.error(`[QQ Official Bot] ✗ 回复群指令失败: ${err.message}`);
                 }
                 break;
               }
@@ -560,7 +524,7 @@ export async function startOfficialBot({
                   history,
                 });
                 const replyText = /https?:\/\/\S+/iu.test(result)
-                  ? await appendChannelShareLinkToReply(result, channelLink)
+                  ? await appendChannelShareLinkToReply(result, resolveChannelLink)
                   : result;
 
                 console.log("[QQ Official Bot] 正在派发群回复");
@@ -582,6 +546,29 @@ export async function startOfficialBot({
             console.log("[QQ Official Bot] 收到频道子频道 @ 提问");
 
             if (query && channelId && authorId) {
+              const cmd = matchBotCommand(query);
+              if (cmd) {
+                try {
+                  const replyResult = executeBotCommand(cmd, {
+                    resolveChannelLink,
+                  });
+                  const rawReply =
+                    typeof replyResult?.then === "function" ? await replyResult : replyResult;
+                  const replyText = /https?:\/\/\S+/iu.test(rawReply || "")
+                    ? await appendChannelShareLinkToReply(rawReply, resolveChannelLink)
+                    : rawReply;
+                  if (!dryRun) {
+                    await replyChannelMessage({ channelId, msgId, content: replyText });
+                    console.log(`[QQ Official Bot] ✓ 已回复频道指令: ${query}`);
+                  }
+                  memory.append(sessionKey, "user", query);
+                  memory.append(sessionKey, "assistant", replyText);
+                } catch (err) {
+                  console.error(`[QQ Official Bot] ✗ 回复频道指令失败: ${err.message}`);
+                }
+                break;
+              }
+
               try {
                 const history = memory.get(sessionKey);
                 memory.append(sessionKey, "user", query);
@@ -591,7 +578,7 @@ export async function startOfficialBot({
                   history,
                 });
                 const replyText = /https?:\/\/\S+/iu.test(result)
-                  ? await appendChannelShareLinkToReply(result, channelLink)
+                  ? await appendChannelShareLinkToReply(result, resolveChannelLink)
                   : result;
 
                 if (!dryRun) {
@@ -619,32 +606,25 @@ export async function startOfficialBot({
             }
 
             if (query && userOpenid) {
-              if (/^\/(start|help|id|whoami|bind)$/i.test(query)) {
+              const cmd = matchBotCommand(query);
+              if (cmd) {
                 try {
-                  const replyText = `👋 你好！我是 AstroLineage 高能天体物理前沿文献助手。\n\n我可以为你提供：\n• 每日 arXiv 重点论文导读与前沿雷达（快速射电暴、相对论喷流、超新星及致密天体等）\n• 论文核心突破、物理机制与阅读抓手深度解读\n• 课题组研究主线（R1~R7）与学术脉络梳理\n\n💬 直接发送论文题目、arXiv 编号或物理问题（如“总结今天的必读论文”），即可开始研讨！`;
+                  const replyResult = executeBotCommand(cmd, {
+                    resolveChannelLink,
+                  });
+                  const rawReply =
+                    typeof replyResult?.then === "function" ? await replyResult : replyResult;
+                  const replyText = /https?:\/\/\S+/iu.test(rawReply || "")
+                    ? await appendChannelShareLinkToReply(rawReply, resolveChannelLink)
+                    : rawReply;
                   if (!dryRun) {
                     await replyC2CMessage({ userOpenid, msgId, content: replyText });
-                    console.log(`[QQ Official Bot] ✓ 已回复 /start 欢迎消息（已自动记录 OpenID）`);
+                    console.log(`[QQ Official Bot] ✓ 已回复私聊指令: ${query}`);
                   }
                   memory.append(sessionKey, "user", query);
                   memory.append(sessionKey, "assistant", replyText);
                 } catch (err) {
-                  console.error(`[QQ Official Bot] ✗ 回复 /start 失败: ${err.message}`);
-                }
-                break;
-              }
-
-              if (/^\/test-c2c$/i.test(query)) {
-                try {
-                  const replyText = `[AstroLineage 测试] 收到私聊测试请求！双向连通状态：正常。`;
-                  if (!dryRun) {
-                    await replyC2CMessage({ userOpenid, msgId, content: replyText });
-                    console.log(`[QQ Official Bot] ✓ 已完成 /test-c2c 私聊应答`);
-                  }
-                  memory.append(sessionKey, "user", query);
-                  memory.append(sessionKey, "assistant", replyText);
-                } catch (err) {
-                  console.error(`[QQ Official Bot] ✗ 回复 /test-c2c 失败: ${err.message}`);
+                  console.error(`[QQ Official Bot] ✗ 回复私聊指令失败: ${err.message}`);
                 }
                 break;
               }
@@ -658,7 +638,7 @@ export async function startOfficialBot({
                   history,
                 });
                 const replyText = /https?:\/\/\S+/iu.test(result)
-                  ? await appendChannelShareLinkToReply(result, channelLink)
+                  ? await appendChannelShareLinkToReply(result, resolveChannelLink)
                   : result;
 
                 if (!dryRun) {

@@ -40,6 +40,7 @@ test("pinFeed properly formats CLI flags and validates required fields", async (
     topType: 1,
     cli: mockCli,
   });
+  assert.ok(res);
   assert.ok(executedArgs);
   assert.equal(executedArgs[0], "feed");
   assert.equal(executedArgs[1], "top-feed");

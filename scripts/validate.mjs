@@ -2,19 +2,13 @@ import { execFileSync } from "node:child_process";
 import { readFile } from "node:fs/promises";
 import { join, resolve } from "node:path";
 
-import { createDiagnostic } from "./diagnostic.mjs";
+import { createDiagnostic, runDiagnostic } from "./diagnostic.mjs";
 import { runValidation } from "./content-validator.mjs";
 
 const projectRoot = resolve(process.cwd());
 const packageFile = "package.json";
 const packageRecordId = "package";
-const requiredNpmScripts = Object.freeze([
-  "validate",
-  "test",
-  "check",
-  "build",
-  "verify",
-]);
+const requiredNpmScripts = Object.freeze(["validate", "test", "check", "build", "verify"]);
 const forbiddenDependencies = Object.freeze(["pagefind", "@astrojs/mdx"]);
 
 function projectDiagnostic({
@@ -47,11 +41,10 @@ function isObject(value) {
 
 function collectGitDiagnostics(root) {
   try {
-    const gitRoot = execFileSync(
-      "git",
-      ["-C", root, "rev-parse", "--show-toplevel"],
-      { encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] },
-    ).trim();
+    const gitRoot = execFileSync("git", ["-C", root, "rev-parse", "--show-toplevel"], {
+      encoding: "utf8",
+      stdio: ["ignore", "pipe", "pipe"],
+    }).trim();
 
     if (resolve(gitRoot) !== root) {
       return [
@@ -83,11 +76,12 @@ async function readProjectPackage(root, diagnostics) {
   } catch (error) {
     diagnostics.push(
       projectDiagnostic({
-        code: error?.name === "SyntaxError"
-          ? "PROJECT_PACKAGE_JSON_INVALID"
-          : "PROJECT_PACKAGE_READ_ERROR",
+        code:
+          error?.name === "SyntaxError"
+            ? "PROJECT_PACKAGE_JSON_INVALID"
+            : "PROJECT_PACKAGE_READ_ERROR",
         message: `Could not read a valid ${packageFile}: ${error.message}`,
-      }),
+      })
     );
     return null;
   }
@@ -111,14 +105,14 @@ function collectPackageDiagnostics(packageJson) {
           code: "PROJECT_NPM_SCRIPT_MISSING",
           fieldPath: `/scripts/${pointerSegment(command)}`,
           message: `Required npm script is missing: ${command}.`,
-        }),
+        })
       );
     }
   }
 
   for (const forbidden of forbiddenDependencies) {
     const section = ["dependencies", "devDependencies"].find(
-      (name) => isObject(packageJson[name]) && Object.hasOwn(packageJson[name], forbidden),
+      (name) => isObject(packageJson[name]) && Object.hasOwn(packageJson[name], forbidden)
     );
     if (section) {
       diagnostics.push(
@@ -126,7 +120,7 @@ function collectPackageDiagnostics(packageJson) {
           code: "PROJECT_FORBIDDEN_DEPENDENCY",
           fieldPath: `/${section}/${pointerSegment(forbidden)}`,
           message: `Deferred dependency is not allowed in V0.1: ${forbidden}.`,
-        }),
+        })
       );
     }
   }
@@ -153,6 +147,7 @@ if (!report.valid) {
   process.exitCode = 1;
 } else {
   console.log(
-    `Validation passed (${report.statistics.works} Works, digest ${report.canonical_content_digest}).`,
+    `Validation passed (${report.statistics.works} Works, digest ${report.canonical_content_digest}).`
   );
+  await runDiagnostic({ strict: true });
 }

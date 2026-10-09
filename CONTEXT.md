@@ -82,9 +82,17 @@ _Avoid_: Scientific explicit/inferred basis
 
 ### Daily Radar
 
+**Must Read**:
+The highest Daily Radar reading priority, presented canonically as “必读” in Chinese reader interfaces.
+_Avoid_: “核心推荐”, “重点突破”, “Must Read” in reader-facing Chinese text
+
 **Worth Knowing**:
-The existing middle Daily Radar reading priority, shown as “关注” in Chinese. It is the same priority, not a separate followed-paper state or an additional reading class.
-_Avoid_: Separate “关注” priority, followed-paper state
+The existing middle Daily Radar reading priority, shown strictly as “关注” in Chinese reader interfaces. “Worth Knowing” is an internal backend classification and schema field; it must not be leaked into reader-facing text.
+_Avoid_: Separate “关注” priority, “重点关注”, “Worth Knowing” in reader-facing text, followed-paper state
+
+**No-Must-Read Edition**:
+A valid Daily Edition where zero analyzed papers meet the Must Read threshold. It is an authentic published state, not an editorial failure or skip condition. The edition must be delivered with an explicit batch note clarifying the absence of Must Read breakthroughs, and must present the “关注” papers as the primary reading targets. It must never fall back to an earlier date solely because no Must Read papers were identified.
+_Avoid_: Fallback to previous date on zero Must Read, omitting No-Must-Read editions, masking quiet publication windows
 
 ### Publication Relations
 

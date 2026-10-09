@@ -181,7 +181,7 @@ export async function generateGroupBrief(type = "daily", options = {}) {
       }
 
       if (worthKnowingPicks.length > 0) {
-        lines.push("---", "### 📌 重点关注 (Worth Knowing)", "");
+        lines.push("---", "### 📌 关注", "");
         for (const pick of worthKnowingPicks) {
           const rev = pick.revision || 1;
           lines.push(
@@ -302,55 +302,61 @@ export async function generateGroupBrief(type = "daily", options = {}) {
       const papers = [...(model.groups.must_read || []), ...(model.groups.worth_knowing || [])];
       dailyTitle = deriveDailyTitleCandidate(date, papers, brief);
     } catch (titleErr) {
-      const archiveDir = resolve(
-        fileURLToPath(new URL("../src/data/arxiv-archives/daily", import.meta.url))
-      );
-      const files = (await (await import("node:fs/promises")).readdir(archiveDir))
-        .filter((f) => f.endsWith(".json") && f !== `${date}.json`)
-        .sort()
-        .reverse();
-      for (const f of files) {
-        try {
-          const prevDate = f.replace(/\.json$/u, "");
-          const archivePath = resolve(archiveDir, f);
-          const bytes = await readFile(archivePath);
-          const prevModel = await readDailyArchive(
-            archivePath,
-            prevDate,
-            options.distRoot || "dist",
-            bytes
-          );
-          const prevBrief =
-            prevModel.opening_brief?.status === "ready"
-              ? prevModel.opening_brief
-              : JSON.parse(bytes).radar?.opening_brief;
-          const prevPapers = [
-            ...(prevModel.groups.must_read || []),
-            ...(prevModel.groups.worth_knowing || []),
-          ];
-          if (prevBrief?.status === "ready" && prevPapers.length > 0) {
-            dailyTitle = deriveDailyTitleCandidate(prevDate, prevPapers, prevBrief);
-            const hasApiFailure = (model?.radar?.analyses || []).some((a) => a.status === "failed");
-            const originalReason = hasApiFailure
-              ? "当期论文深度研读出现异常，正在等待恢复"
-              : model?.groups?.must_read?.length === 0
-                ? "当期未检出达到 Must Read 门槛的精读突破，官方无新增核心论文"
+      const topPaper = (model.groups.must_read || [])[0] || (model.groups.worth_knowing || [])[0];
+      if (topPaper && brief?.status === "ready") {
+        const topic = extractPaperTopic(topPaper);
+        dailyTitle = `「${date}」${topic}`;
+      } else {
+        const archiveDir = resolve(
+          fileURLToPath(new URL("../src/data/arxiv-archives/daily", import.meta.url))
+        );
+        const files = (await (await import("node:fs/promises")).readdir(archiveDir))
+          .filter((f) => f.endsWith(".json") && f !== `${date}.json`)
+          .sort()
+          .reverse();
+        for (const f of files) {
+          try {
+            const prevDate = f.replace(/\.json$/u, "");
+            const archivePath = resolve(archiveDir, f);
+            const bytes = await readFile(archivePath);
+            const prevModel = await readDailyArchive(
+              archivePath,
+              prevDate,
+              options.distRoot || "dist",
+              bytes
+            );
+            const prevBrief =
+              prevModel.opening_brief?.status === "ready"
+                ? prevModel.opening_brief
+                : JSON.parse(bytes).radar?.opening_brief;
+            const prevPapers = [
+              ...(prevModel.groups.must_read || []),
+              ...(prevModel.groups.worth_knowing || []),
+            ];
+            if (prevBrief?.status === "ready" && prevPapers.length > 0) {
+              dailyTitle = deriveDailyTitleCandidate(prevDate, prevPapers, prevBrief);
+              const hasApiFailure = (model?.radar?.analyses || []).some(
+                (a) => a.status === "failed"
+              );
+              const originalReason = hasApiFailure
+                ? "当期论文深度研读出现异常，正在等待恢复"
                 : brief?.status !== "ready"
                   ? "当期前沿论文研判正在处理中"
                   : "当期官方（arXiv）休刊或无新增论文公布";
-            fallbackInfo = {
-              requestedDate: date,
-              fallbackDate: prevDate,
-              reason: originalReason,
-            };
-            date = prevDate;
-            model = prevModel;
-            brief = prevBrief;
-            break;
-          }
-        } catch {}
+              fallbackInfo = {
+                requestedDate: date,
+                fallbackDate: prevDate,
+                reason: originalReason,
+              };
+              date = prevDate;
+              model = prevModel;
+              brief = prevBrief;
+              break;
+            }
+          } catch {}
+        }
+        if (!dailyTitle) throw titleErr;
       }
-      if (!dailyTitle) throw titleErr;
     }
     if (isMarkdown) {
       const beijingInfo = formatAnnouncementInBeijing(date);
@@ -406,44 +412,130 @@ export async function generateGroupBrief(type = "daily", options = {}) {
             reason ? `> **【价值】** ${reason}\n` : ""
           );
         }
+      } else {
+        lines.push("> ℹ️ **【批次说明】** 当期无必读突破，关注以下进展。", "");
       }
 
       const worthKnowingList = (model.groups.worth_knowing || []).slice(0, 5);
       if (worthKnowingList.length > 0) {
-        lines.push("---", "### 📌 重点关注 (Worth Knowing)", "");
-        for (const paper of worthKnowingList) {
-          const topic = extractPaperTopic(paper);
-          const rev = paper.revision || 1;
-          lines.push(
-            `- **${topic}** ｜ [${paper.title}](https://arxiv.org/abs/${paper.arxiv_id}v${rev}) · [arXiv:${paper.arxiv_id}](https://arxiv.org/abs/${paper.arxiv_id}v${rev}) · [频道交流](${channelUrl})`
-          );
+        if (mustReadList.length === 0) {
+          for (const paper of worthKnowingList.slice(0, 3)) {
+            const authors = paper.entry?.authors || paper.authors;
+            const authorStr =
+              Array.isArray(authors) && authors.length > 0
+                ? authors.length > 2
+                  ? `${authors[0]} 等`
+                  : authors.join(", ")
+                : "";
+            const authorSuffix = authorStr ? ` · ${authorStr}` : "";
+            const a = paper.analysis?.analysis || paper.analysis || {};
+            const problem = (
+              a.problem?.detailed_text ||
+              a.problem?.problem ||
+              a.problem ||
+              ""
+            ).trim();
+            const result = (
+              a.result?.detailed_text ||
+              a.result?.bluf ||
+              a.result ||
+              a.research_progress ||
+              ""
+            ).trim();
+            const reason = (a.reason?.detailed_text || a.reason?.reason || a.reason || "").trim();
+            const anchor = `radar-paper-${paper.arxiv_id.replace(".", "-")}-v${paper.revision || 1}`;
+            lines.push(
+              "---",
+              `### 📌 关注｜[${extractPaperTopic(paper)}](${channelUrl})${authorSuffix}`,
+              `**[${paper.title}](https://arxiv.org/abs/${paper.arxiv_id}v${paper.revision || 1})**`,
+              `- **arXiv 原文**: [arXiv:${paper.arxiv_id}v${paper.revision || 1}](https://arxiv.org/abs/${paper.arxiv_id}v${paper.revision || 1}) · [📄 PDF](https://arxiv.org/pdf/${paper.arxiv_id})`,
+              `- **频道研讨**: [进入对应频道研讨帖](${channelUrl})`,
+              `- **网页精读**: [查看网页完整图表与证据链](${websiteBase}/arxiv-daily/${date}/#${anchor})`,
+              "",
+              problem ? `> **【背景】** ${problem}\n` : "",
+              result ? `> **【进展】** ${result}\n` : "",
+              reason ? `> **【价值】** ${reason}\n` : ""
+            );
+          }
+          if (worthKnowingList.length > 3) {
+            lines.push("---", "### 📌 更多关注", "");
+            for (const paper of worthKnowingList.slice(3)) {
+              const topic = extractPaperTopic(paper);
+              const rev = paper.revision || 1;
+              lines.push(
+                `- **${topic}** ｜ [${paper.title}](https://arxiv.org/abs/${paper.arxiv_id}v${rev}) · [arXiv:${paper.arxiv_id}](https://arxiv.org/abs/${paper.arxiv_id}v${rev}) · [频道交流](${channelUrl})`
+              );
+            }
+            lines.push("");
+          }
+        } else {
+          lines.push("---", "### 📌 关注", "");
+          for (const paper of worthKnowingList) {
+            const topic = extractPaperTopic(paper);
+            const rev = paper.revision || 1;
+            lines.push(
+              `- **${topic}** ｜ [${paper.title}](https://arxiv.org/abs/${paper.arxiv_id}v${rev}) · [arXiv:${paper.arxiv_id}](https://arxiv.org/abs/${paper.arxiv_id}v${rev}) · [频道交流](${channelUrl})`
+            );
+          }
+          lines.push("");
         }
-        lines.push("");
       }
     } else {
       lines.push(dailyTitle, date, "", brief.intro, "");
-      for (const sentence of (brief.must_read || []).slice(0, 3)) {
-        const paper = (model.groups.must_read || []).find(
-          (p) => p.arxiv_id === sentence.arxiv_id && p.revision === sentence.revision
-        );
-        if (!paper) throw new Error("QQ_SOURCE_INVALID");
-        const authors = paper.entry?.authors || paper.authors;
-        const authorStr =
-          Array.isArray(authors) && authors.length > 0
-            ? authors.length > 2
-              ? `${authors[0]} 等`
-              : authors.join(", ")
-            : "";
-        const authorSuffix = authorStr ? ` (${authorStr})` : "";
-        lines.push(
-          `• 必读｜${extractPaperTopic(paper)}${authorSuffix}`,
-          sentence.text,
-          `原文：https://arxiv.org/abs/${paper.arxiv_id}v${paper.revision}`,
-          ""
-        );
+      const mustReadList = (brief.must_read || []).slice(0, 3);
+      if (mustReadList.length > 0) {
+        for (const sentence of mustReadList) {
+          const paper = (model.groups.must_read || []).find(
+            (p) => p.arxiv_id === sentence.arxiv_id && p.revision === sentence.revision
+          );
+          if (!paper) throw new Error("QQ_SOURCE_INVALID");
+          const authors = paper.entry?.authors || paper.authors;
+          const authorStr =
+            Array.isArray(authors) && authors.length > 0
+              ? authors.length > 2
+                ? `${authors[0]} 等`
+                : authors.join(", ")
+              : "";
+          const authorSuffix = authorStr ? ` (${authorStr})` : "";
+          lines.push(
+            `• 必读｜${extractPaperTopic(paper)}${authorSuffix}`,
+            sentence.text,
+            `原文：https://arxiv.org/abs/${paper.arxiv_id}v${paper.revision}`,
+            ""
+          );
+        }
+      } else {
+        lines.push("【批次说明】当期无必读突破，关注以下进展。", "");
+        for (const paper of (model.groups.worth_knowing || []).slice(0, 3)) {
+          const authors = paper.entry?.authors || paper.authors;
+          const authorStr =
+            Array.isArray(authors) && authors.length > 0
+              ? authors.length > 2
+                ? `${authors[0]} 等`
+                : authors.join(", ")
+              : "";
+          const authorSuffix = authorStr ? ` (${authorStr})` : "";
+          const a = paper.analysis?.analysis || paper.analysis || {};
+          const text =
+            a.result?.detailed_text ||
+            a.result?.bluf ||
+            a.result ||
+            a.research_progress ||
+            paper.title;
+          lines.push(
+            `• 关注｜${extractPaperTopic(paper)}${authorSuffix}`,
+            typeof text === "string" ? text.slice(0, 150) : paper.title,
+            `原文：https://arxiv.org/abs/${paper.arxiv_id}v${paper.revision || 1}`,
+            ""
+          );
+        }
       }
-      if (model.groups.worth_knowing?.length && brief.worth_knowing_summary) {
-        lines.push("其他关注", readingExcerpt(brief.worth_knowing_summary), "");
+      if (
+        mustReadList.length > 0 &&
+        model.groups.worth_knowing?.length &&
+        brief.worth_knowing_summary
+      ) {
+        lines.push("关注", readingExcerpt(brief.worth_knowing_summary), "");
       }
     }
   }

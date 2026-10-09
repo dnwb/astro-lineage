@@ -178,6 +178,17 @@ test("handleBotCommand handles \\list_day and returns formatted daily list", asy
   assert.equal(res.matched, true);
   assert.match(res.replyText, /每日前沿导读归档列表/u);
   assert.match(res.replyText, /\\day 2026-/u);
+  assert.match(res.replyText, /关注 \d+ 篇/u);
+  assert.doesNotMatch(res.replyText, /重点关注/u);
+});
+
+test("handleBotCommand on an edition without must-read includes batch note and canonical 关注 without backend jargon", async () => {
+  const res = await handleBotCommand("\\day 2026-10-07");
+  assert.equal(res.matched, true);
+  assert.match(res.replyText, /【批次说明】\*\* 当期无必读突破，关注以下进展/u);
+  assert.match(res.replyText, /### 📌 关注/u);
+  assert.doesNotMatch(res.replyText, /重点关注/u);
+  assert.doesNotMatch(res.replyText, /Worth Knowing/u);
 });
 
 test("handleBotCommand handles \\list_week and returns formatted weekly list", async () => {

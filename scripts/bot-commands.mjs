@@ -134,7 +134,7 @@ export async function formatDailyList(options = {}) {
         data.counts?.worth_knowing ??
         (data.radar?.groups?.worth_knowing?.length || data.groups?.worth_knowing?.length || 0);
       const total = data.counts?.total || data.feed?.items?.length || 0;
-      statsStr = ` ｜ 必读 ${mustRead} 篇 · 重点关注 ${worthKnowing} 篇 (共 ${total} 篇)`;
+      statsStr = ` ｜ 必读 ${mustRead} 篇 · 关注 ${worthKnowing} 篇 (共 ${total} 篇)`;
     } catch {}
 
     const d = new Date(`${date}T00:00:00Z`);

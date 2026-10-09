@@ -412,11 +412,22 @@ function deriveDailyTitle(date, highlights, brief) {
 
   const candidatesList = hasBriefMustRead
     ? [brief.must_read[0]]
-    : (highlights || []).slice(0, 10).map((p) => ({
-        arxiv_id: p.arxiv_id,
-        revision: p.revision || 1,
-        text: p.analysis?.analysis?.result || p.analysis?.result || p.analysis?.reason || p.title,
-      }));
+    : (highlights || [])
+        .slice(0, 10)
+        .flatMap((p) => [
+          {
+            arxiv_id: p.arxiv_id,
+            revision: p.revision || 1,
+            text: p.analysis?.analysis?.research_progress || p.analysis?.research_progress || "",
+          },
+          {
+            arxiv_id: p.arxiv_id,
+            revision: p.revision || 1,
+            text:
+              p.analysis?.analysis?.result || p.analysis?.result || p.analysis?.reason || p.title,
+          },
+        ])
+        .filter((item) => item.text);
 
   if (candidatesList.length === 0 || brief?.status !== "ready")
     throw new Error("CHANNEL_TITLE_DAILY_SOURCE_REQUIRED");
@@ -483,8 +494,8 @@ function deriveDailyTitle(date, highlights, brief) {
       try {
         return formatDailyTitle(date, sourceProgress, paperTitles);
       } catch (error) {
+        lastError = error;
         if (error.message === "CHANNEL_TITLE_DAILY_DUPLICATES_PAPER") sawDuplicate = true;
-        else if (error.message !== "CHANNEL_TITLE_DAILY_SINGLE_PROGRESS_REQUIRED") throw error;
       }
     }
     if (sawFormulaClaim) lastError = new Error("CHANNEL_TITLE_DAILY_FORMULA_REQUIRES_REVIEW");

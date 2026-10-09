@@ -5,6 +5,8 @@
 对于页面 UI，严禁编写任何落地页风格的产品介绍段落（Hero Decks）；
 功能标题使用最简日常词汇。
 
+所有发布的时间一律已北京时间UTC+8为准
+
 ### Agent context policy.md
 
 see docs/agent-context-policy.md

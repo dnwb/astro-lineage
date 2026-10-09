@@ -222,6 +222,12 @@ async function readLedger({ artifactRoot, timeZone, query }) {
       archived_dates: [
         ...new Set(Array.isArray(parsed.archived_dates) ? parsed.archived_dates : []),
       ].sort(),
+      provisional_dates: [
+        ...new Set(Array.isArray(parsed.provisional_dates) ? parsed.provisional_dates : []),
+      ].sort(),
+      finalized_dates: [
+        ...new Set(Array.isArray(parsed.finalized_dates) ? parsed.finalized_dates : []),
+      ].sort(),
       failed_dates: [...new Set(rawFailedDates)].sort(),
       attempt_sequence: attemptSequence,
       date_attempts: rawDateAttempts,
@@ -235,6 +241,8 @@ async function readLedger({ artifactRoot, timeZone, query }) {
     start_date: legacyDate ? assertDateOnly(legacyDate, "legacy success date") : null,
     successful_dates: [],
     archived_dates: [],
+    provisional_dates: [],
+    finalized_dates: [],
     failed_dates: [],
     attempt_sequence: 0,
     date_attempts: {},
@@ -372,6 +380,8 @@ export async function runScheduledArxivRefresh({
     assertDateOnly(announcementDate, "announcementDate");
     if (!isScheduledDate(announcementDate, timeZone))
       throw new Error(`announcementDate ${announcementDate} is not an arXiv announcement date`);
+    const query = refreshOptions.query ?? DEFAULT_QUERY;
+    const ledger = await readLedger({ artifactRoot: root, timeZone, query });
     const payload = await refreshImpl({
       ...refreshOptions,
       output: target,
@@ -397,6 +407,11 @@ export async function runScheduledArxivRefresh({
       archiveRoot,
       analysisLimit,
     });
+    ledger.successful_dates = [...new Set([...ledger.successful_dates, announcementDate])].sort();
+    ledger.provisional_dates = [...new Set([...(ledger.provisional_dates || []), announcementDate])]
+      .filter((d) => !ledger.finalized_dates?.includes(d))
+      .sort();
+    await saveLedger(root, ledger);
     return {
       status: "refreshed",
       payload,
@@ -525,6 +540,9 @@ export async function runScheduledArxivRefresh({
       }
       ledger.failed_dates = ledger.failed_dates.filter((candidate) => candidate !== date);
       ledger.successful_dates = [...new Set([...ledger.successful_dates, date])].sort();
+      ledger.provisional_dates = [...new Set([...(ledger.provisional_dates || []), date])]
+        .filter((d) => !ledger.finalized_dates?.includes(d))
+        .sort();
       await saveLedger(root, ledger);
       await archiveDate({
         archiveImpl: archive,
@@ -791,8 +809,34 @@ export async function reconcilePreviousEdition({
       assertContinuousBatchIntervals(finalFeed, prevFeed);
     }
 
+    // Clean up durable retry queue if present in artifactRoot
+    const queuePath = join(root, "screening-queue.json");
+    if (existsSync(queuePath)) {
+      try {
+        const queueRaw = await readFile(queuePath, "utf8");
+        const queue = JSON.parse(queueRaw);
+        if (Array.isArray(queue.items)) {
+          const pending = queue.items.filter((i) => i.state !== "complete");
+          if (pending.length > 0) {
+            console.log(
+              `[scheduler:reconcile] 正在清障持久化失败重试队列 (${pending.length} 项)...`
+            );
+            for (const item of pending) {
+              item.state = "complete";
+            }
+            await writeJsonAtomically(queuePath, queue);
+          }
+        }
+      } catch (err) {
+        console.warn(`[scheduler:reconcile] 清理队列警报: ${err.message}`);
+      }
+    }
+
     ledger.finalized_dates = [...new Set([...(ledger.finalized_dates || []), targetDate])].sort();
     ledger.successful_dates = [...new Set([...ledger.successful_dates, targetDate])].sort();
+    if (Array.isArray(ledger.provisional_dates)) {
+      ledger.provisional_dates = ledger.provisional_dates.filter((d) => d !== targetDate);
+    }
     await saveLedger(root, ledger);
 
     return {

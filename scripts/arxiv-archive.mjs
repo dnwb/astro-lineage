@@ -554,7 +554,12 @@ export async function syncArxivArchives(options = {}) {
   const lockPath = join(archiveRoot, ".sync.lock");
   await acquireRefreshLock(lockPath);
   try {
-    return await syncArxivArchivesWithLockHeld({ ...options, archiveRoot });
+    const dirtyWeeksPath =
+      options.dirtyWeeksPath ??
+      (archiveRoot !== resolve(DEFAULT_ARCHIVE_ROOT)
+        ? join(archiveRoot, "dirty-weeks.json")
+        : DEFAULT_DIRTY_WEEKS_PATH);
+    return await syncArxivArchivesWithLockHeld({ ...options, archiveRoot, dirtyWeeksPath });
   } finally {
     await releaseRefreshLock(lockPath);
   }

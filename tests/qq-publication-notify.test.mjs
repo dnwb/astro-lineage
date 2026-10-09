@@ -407,3 +407,12 @@ test("notifyGroupPublication broadcasts to multiple groups with independent ledg
   assert.equal(second.targets.daily.groups[0].status, "unchanged");
   assert.equal(second.targets.daily.groups[1].status, "success");
 });
+
+test("generateGroupBrief with specific week option loads targeted historical weekly summary (e.g. previous academic week)", async () => {
+  const text = await generateGroupBrief("weekly", {
+    week: "2026-W40",
+    interactive: true,
+  });
+  assert.ok(text.includes("[2026-W40]"), "Brief must reflect targeted week 2026-W40");
+  assert.ok(text.includes("/arxiv-weekly/2026-W40/"), "Link must point to 2026-W40");
+});

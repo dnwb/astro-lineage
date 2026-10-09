@@ -68,3 +68,35 @@ test("Active weekly summary contains papers from Monday morning (Sunday ET batch
     );
   }
 });
+
+test("Weekly archives and manifest have strictly disjoint batches across all historical weeks (no overlap)", async () => {
+  const manifest = JSON.parse(
+    await readFile(resolve(projectRoot, "src/data/arxiv-archives/manifest.json"), "utf8")
+  );
+  const seenDates = new Map();
+  for (const week of manifest.weeks) {
+    for (const day of week.days) {
+      assert.ok(
+        !seenDates.has(day.date),
+        `Date ${day.date} appears in both ${seenDates.get(day.date)} and ${week.week_id}`
+      );
+      seenDates.set(day.date, week.week_id);
+    }
+  }
+
+  // Verify weekly archive files do not share announcement dates:
+  const w38 = JSON.parse(
+    await readFile(resolve(projectRoot, "src/data/arxiv-archives/weekly/2026-W38.json"), "utf8")
+  );
+  const w39 = JSON.parse(
+    await readFile(resolve(projectRoot, "src/data/arxiv-archives/weekly/2026-W39.json"), "utf8")
+  );
+  const w38Dates = new Set(w38.papers.map((p) => p.announcement_date));
+  const w39Dates = new Set(w39.papers.map((p) => p.announcement_date));
+  for (const d of w38Dates) {
+    assert.ok(
+      !w39Dates.has(d),
+      `Date ${d} is present in both 2026-W38 and 2026-W39 weekly summaries`
+    );
+  }
+});

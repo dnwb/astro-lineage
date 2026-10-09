@@ -76,12 +76,33 @@ export async function generateGroupBrief(type = "daily", options = {}) {
           }
         }
         if (!model) {
-          const published = await (options.readEdition || readPublishedArxivEdition)();
+          let published;
+          try {
+            published = await (options.readEdition || readPublishedArxivEdition)({
+              allowMissing: true,
+            });
+          } catch {}
+          if (
+            (!published?.feed || !published?.radar) &&
+            existsSync(options.feedPath || "src/data/arxiv-daily.json")
+          ) {
+            try {
+              const feed = JSON.parse(
+                await readFile(options.feedPath || "src/data/arxiv-daily.json", "utf8")
+              );
+              const radar = existsSync(options.radarPath || "src/data/daily-radar.json")
+                ? JSON.parse(
+                    await readFile(options.radarPath || "src/data/daily-radar.json", "utf8")
+                  )
+                : { edition: { window: feed?.window }, analyses: [] };
+              published = { feed, radar };
+            } catch {}
+          }
           const beijingToday = new Intl.DateTimeFormat("en-CA", {
             timeZone: "Asia/Shanghai",
           }).format(new Date());
-          date = options.date || published.feed?.window?.announcement_date || beijingToday;
-          const checked = validateDailyRadarPayload(published.feed, published.radar);
+          date = options.date || published?.feed?.window?.announcement_date || beijingToday;
+          const checked = validateDailyRadarPayload(published?.feed, published?.radar);
           if (!checked.valid) throw new Error("QQ_SOURCE_INVALID");
           model = checked.model;
           publicationHash = hashBody(
@@ -89,7 +110,9 @@ export async function generateGroupBrief(type = "daily", options = {}) {
           );
         }
       } else {
-        const weeklyPath = options.weeklyPath || "src/data/arxiv-weekly.json";
+        const weeklyPath = options.week
+          ? resolve(options.archiveRoot || "src/data/arxiv-archives/weekly", `${options.week}.json`)
+          : options.weeklyPath || "src/data/arxiv-weekly.json";
         const bytes = await readFile(weeklyPath);
         weekly = JSON.parse(bytes);
         publicationHash = hashBody(bytes);
@@ -109,12 +132,15 @@ export async function generateGroupBrief(type = "daily", options = {}) {
       )
         throw new Error("QQ_SOURCE_BUILD_REQUIRED");
       if (type === "weekly") {
-        const weeklyPath = options.weeklyPath || "src/data/arxiv-weekly.json";
+        const weeklyPath = options.week
+          ? resolve(options.archiveRoot || "src/data/arxiv-archives/weekly", `${options.week}.json`)
+          : options.weeklyPath || "src/data/arxiv-weekly.json";
         if ((await stat(weeklyPath)).size > 20_000_000) throw new Error("QQ_SOURCE_INVALID");
         const bytes = await readFile(weeklyPath);
-        if (hashBody(bytes) !== weeklyBinding.hash) throw new Error("QQ_SOURCE_BUILD_MISMATCH");
+        if (!options.week && hashBody(bytes) !== weeklyBinding.hash)
+          throw new Error("QQ_SOURCE_BUILD_MISMATCH");
         weekly = JSON.parse(bytes);
-        publicationHash = weeklyBinding.hash;
+        publicationHash = hashBody(bytes);
       } else {
         const published = await (options.readEdition || readPublishedArxivEdition)();
         if (
@@ -1041,8 +1067,13 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1
       const bIdx = args.indexOf("--brief");
       const bType = args[bIdx + 1] === "weekly" ? "weekly" : "daily";
       const dateArg = args.includes("--date") ? args[args.indexOf("--date") + 1] : undefined;
+      const weekArg = args.includes("--week") ? args[args.indexOf("--week") + 1] : undefined;
       const isText = args.includes("--text");
-      content = await generateGroupBrief(bType, { date: dateArg, markdown: !isText });
+      content = await generateGroupBrief(bType, {
+        date: dateArg,
+        week: weekArg,
+        markdown: !isText,
+      });
       const nextArg = args[gIdx + 1];
       if (nextArg && !nextArg.startsWith("-")) {
         targetGroup = nextArg;

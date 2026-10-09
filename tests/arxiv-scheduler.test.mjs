@@ -564,6 +564,42 @@ test("reconcilePreviousEdition detects new upstream entries and updates feed and
     const updated = JSON.parse(await readFile(output, "utf8"));
     assert.equal(updated.entries.length, 2);
     assert.ok(updated.entries.some((e) => e.arxiv_id === "2610.12359"));
+
+    const ledger = JSON.parse(await readFile(join(artifactRoot, "scheduler-ledger.json"), "utf8"));
+    assert.deepEqual(ledger.finalized_dates, [date]);
+    assert.ok(
+      !ledger.provisional_dates?.includes(date),
+      "Date must not remain provisional after finalization"
+    );
+  } finally {
+    await rm(directory, { recursive: true, force: true });
+  }
+});
+
+test("runScheduledArxivRefresh records provisional status before finalization", async () => {
+  const directory = await mkdtemp(join(tmpdir(), "arxiv-scheduler-provisional-"));
+  const output = join(directory, "feed.json");
+  const artifactRoot = join(directory, "artifacts");
+  const date = "2026-10-08";
+
+  try {
+    await runScheduledArxivRefresh({
+      announcementDate: date,
+      output,
+      artifactRoot,
+      refreshImpl: async (options) => writeFakeEdition(options.output, options.announcementDate),
+      analyzeImpl: async () => ({ pending_count: 0 }),
+    });
+
+    const ledger = JSON.parse(await readFile(join(artifactRoot, "scheduler-ledger.json"), "utf8"));
+    assert.ok(
+      ledger.provisional_dates?.includes(date),
+      "Scheduled refresh must mark date as provisional"
+    );
+    assert.ok(
+      !ledger.finalized_dates?.includes(date),
+      "Scheduled refresh must not mark date as finalized"
+    );
   } finally {
     await rm(directory, { recursive: true, force: true });
   }

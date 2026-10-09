@@ -79,7 +79,7 @@ export const TOPICS = [
   ],
   [
     "R6",
-    /(?:neutrino|multi.messenger|kilonova|tidal disruption|\bTDE\b|AGN disk|gravitational.wave counterpart|gravitational.wave follow.up|neutron.star merger universality|post.merger gravitational.wave|neutron stars? with third.generation gravitational.wave detectors?|中微子|千新星|潮汐瓦解|多信使|致密环境)/iu,
+    /(?:neutrino|multi.messenger|kilonova|Wien fireball|merger nebula|funnel leakage|tidal disruption|\bTDE\b|AGN disk|gravitational.wave counterpart|gravitational.wave follow.up|neutron.star merger universality|post.merger gravitational.wave|neutron stars? with third.generation gravitational.wave detectors?|中微子|千新星|潮汐瓦解|多信使|致密环境)/iu,
   ],
   [
     "R7",

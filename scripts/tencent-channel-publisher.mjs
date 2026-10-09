@@ -1471,6 +1471,7 @@ export async function publishDailyFeed({
   sourceBinding,
   channelIds,
   includeBrief = false,
+  mustReadOnly = false,
   dailyChannelId = DEFAULT_DAILY_CHANNEL_ID,
   resolveFigure = resolveReviewedFigure,
   ...options
@@ -1493,7 +1494,7 @@ export async function publishDailyFeed({
     const date = edition.feed.window?.announcement_date;
     if (!/^\d{4}-\d\d-\d\d$/u.test(date || "")) throw new Error("CHANNEL_SOURCE_DATE_INVALID");
     await stat(join(distRoot, "arxiv-daily", date, "index.html"));
-    const items = await dailyItems(checked.model, date, resolveFigure, { distRoot });
+    const items = await dailyItems(checked.model, date, resolveFigure, { distRoot, mustReadOnly });
     let briefError;
     if (includeBrief) {
       try {
@@ -1665,7 +1666,9 @@ export async function resolveReviewedFigure(
 }
 
 async function dailyItems(model, date, resolveFigure = resolveReviewedFigure, figureOptions = {}) {
-  const papers = [...model.groups.must_read, ...model.groups.worth_knowing];
+  const papers = figureOptions.mustReadOnly
+    ? model.groups.must_read || []
+    : [...(model.groups.must_read || []), ...(model.groups.worth_knowing || [])];
   return Promise.all(
     papers.map(async (item) => {
       const topic = routePaper(item);

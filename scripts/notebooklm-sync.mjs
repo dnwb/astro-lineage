@@ -455,6 +455,8 @@ export async function deliverPublication({
   includeEvents = channel === undefined,
   notebookSync = syncAnnualNotebooks,
   groupNotifier,
+  mustReadOnly = false,
+  includeBrief = true,
 } = {}) {
   if (
     !validBuildId(buildId) ||
@@ -487,7 +489,11 @@ export async function deliverPublication({
         return publisher.publishEventRanking({ sourceBinding, eventSnapshot: website.events });
       return kind === "weekly"
         ? publisher.publishWeeklyFeed({ sourceBinding })
-        : publisher.publishDailyFeed({ sourceBinding, includeBrief: true });
+        : publisher.publishDailyFeed({
+            sourceBinding,
+            includeBrief: !mustReadOnly && includeBrief,
+            mustReadOnly,
+          });
     };
   }
   // Targets fail independently, but failure is recorded rather than swallowed.
@@ -525,40 +531,49 @@ export async function deliverPublication({
       status.channel[kind] = { status: "failed", code: safeChannelCode(error) };
     }
   }
-  let snapshot;
-  try {
-    snapshot = await readJson(resolve(cache, "export.json"), null);
-  } catch {
-    status.notebooklm = { status: "blocked", code: "NOTEBOOKLM_EXPORT_INVALID" };
-  }
-  if (!status.notebooklm && snapshot?.build_id !== buildId)
-    status.notebooklm = { status: "blocked", code: "NOTEBOOKLM_EXPORT_STALE" };
-  if (!status.notebooklm) {
+  if (mustReadOnly) {
+    status.notebooklm = { status: "skipped", reason: "preliminary_run" };
+    status.qq = { status: "skipped", reason: "preliminary_run_no_group_broadcast" };
+  } else {
+    let snapshot;
     try {
-      status.notebooklm = await notebookSync({ cache, expectedBuildId: buildId });
-    } catch (error) {
-      status.notebooklm = {
-        status: "blocked",
-        code: SAFE_NOTEBOOKLM_CODES.has(error.message)
-          ? error.message
-          : "NOTEBOOKLM_DELIVERY_FAILED",
-      };
+      snapshot = await readJson(resolve(cache, "export.json"), null);
+    } catch {
+      status.notebooklm = { status: "blocked", code: "NOTEBOOKLM_EXPORT_INVALID" };
     }
-  }
-  try {
-    groupNotifier ||= async (options) =>
-      (await import("./qq-send.mjs")).notifyGroupPublication(options);
-    const notification = await groupNotifier({
-      kinds,
-      sourceBinding: website.source_binding,
-      delivery: { website: status.website, channel: status.channel, notebooklm: status.notebooklm },
-      cache: resolve(cache, "qq-notifications"),
-    });
-    if (!["success", "blocked", "waiting_permission"].includes(notification?.status))
-      throw new Error("QQ_NOTIFY_RESULT_INVALID");
-    status.qq = notification;
-  } catch {
-    status.qq = { status: "blocked", code: "QQ_NOTIFY_DELIVERY_FAILED" };
+    if (!status.notebooklm && snapshot?.build_id !== buildId)
+      status.notebooklm = { status: "blocked", code: "NOTEBOOKLM_EXPORT_STALE" };
+    if (!status.notebooklm) {
+      try {
+        status.notebooklm = await notebookSync({ cache, expectedBuildId: buildId });
+      } catch (error) {
+        status.notebooklm = {
+          status: "blocked",
+          code: SAFE_NOTEBOOKLM_CODES.has(error.message)
+            ? error.message
+            : "NOTEBOOKLM_DELIVERY_FAILED",
+        };
+      }
+    }
+    try {
+      groupNotifier ||= async (options) =>
+        (await import("./qq-send.mjs")).notifyGroupPublication(options);
+      const notification = await groupNotifier({
+        kinds,
+        sourceBinding: website.source_binding,
+        delivery: {
+          website: status.website,
+          channel: status.channel,
+          notebooklm: status.notebooklm,
+        },
+        cache: resolve(cache, "qq-notifications"),
+      });
+      if (!["success", "blocked", "waiting_permission"].includes(notification?.status))
+        throw new Error("QQ_NOTIFY_RESULT_INVALID");
+      status.qq = notification;
+    } catch {
+      status.qq = { status: "blocked", code: "QQ_NOTIFY_DELIVERY_FAILED" };
+    }
   }
   await writeJsonAtomically(resolve(cache, "delivery.json"), status);
   return status;
@@ -593,10 +608,14 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
       if (result.code) throw new Error(result.code);
     } else if (args[0] === "--deliver" && args.length === 3) {
       const mode = args[1];
-      if (!["daily", "weekly", "both"].includes(mode)) throw new Error("INVALID_DELIVERY_MODE");
+      if (!["daily", "weekly", "both", "preliminary"].includes(mode))
+        throw new Error("INVALID_DELIVERY_MODE");
+      const isPreliminary = mode === "preliminary";
       result = await deliverPublication({
-        kinds: mode === "both" ? ["daily", "weekly"] : [mode],
+        kinds: mode === "both" ? ["daily", "weekly"] : mode === "weekly" ? ["weekly"] : ["daily"],
         buildId: args[2],
+        mustReadOnly: isPreliminary,
+        includeBrief: !isPreliminary,
       });
     } else if (args.length === 0 || (args.length === 1 && args[0] === "--dry-run"))
       result = await syncAnnualNotebooks({ dryRun: args[0] === "--dry-run" });

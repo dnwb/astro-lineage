@@ -80,7 +80,7 @@ export function getAnnouncementWeekId(dateStr, weekday) {
   const isSunday = weekday === "Sun" || d.getUTCDay() === 0;
   // arXiv announcements released on Sunday evening (20:00 US EDT) arrive on Monday morning (08:00 BJT),
   // which belongs to the incoming academic week (W+1), not the closed preceding week.
-  if (isSunday && dateStr >= "2026-10-04") {
+  if (isSunday) {
     const nextDay = new Date(d.valueOf() + 86400000).toISOString().slice(0, 10);
     return getIsoWeek(nextDay);
   }

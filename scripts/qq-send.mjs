@@ -57,49 +57,88 @@ export async function generateGroupBrief(type = "daily", options = {}) {
     "http://localhost:4321"
   ).replace(/\/+$/u, "");
   if (!(type === "daily" ? model : weekly)) {
-    if (!sourceBinding) {
-      const website = JSON.parse(await readFile(".cache/notebooklm/website.json", "utf8"));
-      if (website.status !== "success") throw new Error("QQ_SOURCE_BUILD_REQUIRED");
-      sourceBinding = website.source_binding;
-    }
-    const { daily, weekly: weeklyBinding, archives, id } = sourceBinding || {};
-    if (
-      !daily?.generation_id ||
-      !weeklyBinding?.hash ||
-      !archives ||
-      hashBody(JSON.stringify({ daily, weekly: weeklyBinding, archives })) !== id
-    )
-      throw new Error("QQ_SOURCE_BUILD_REQUIRED");
-    if (type === "weekly") {
-      const weeklyPath = options.weeklyPath || "src/data/arxiv-weekly.json";
-      if ((await stat(weeklyPath)).size > 20_000_000) throw new Error("QQ_SOURCE_INVALID");
-      const bytes = await readFile(weeklyPath);
-      if (hashBody(bytes) !== weeklyBinding.hash) throw new Error("QQ_SOURCE_BUILD_MISMATCH");
-      weekly = JSON.parse(bytes);
-      publicationHash = weeklyBinding.hash;
-    } else {
-      const published = await (options.readEdition || readPublishedArxivEdition)();
-      if (
-        published.generation_id !== daily.generation_id ||
-        hashBody(JSON.stringify({ feed: published.feed, radar: published.radar })) !== daily.hash
-      )
-        throw new Error("QQ_SOURCE_BUILD_MISMATCH");
-      date = published.feed.window?.announcement_date;
-      if (!/^\d{4}-\d\d-\d\d$/u.test(date || "")) throw new Error("QQ_SOURCE_INVALID");
-      if (archives[date]) {
-        const path = resolve(
-          options.archiveRoot || "src/data/arxiv-archives/daily",
-          `${date}.json`
-        );
-        const bytes = await readFile(path);
-        if (hashBody(bytes) !== archives[date]) throw new Error("QQ_SOURCE_BUILD_MISMATCH");
-        model = await readDailyArchive(path, date, options.distRoot || "dist", bytes);
-        publicationHash = archives[date];
+    if (options.interactive) {
+      if (type === "daily") {
+        if (options.date) {
+          const path = resolve(
+            options.archiveRoot || "src/data/arxiv-archives/daily",
+            `${options.date}.json`
+          );
+          if (existsSync(path)) {
+            const bytes = await readFile(path);
+            const arch = JSON.parse(bytes);
+            const checked = validateDailyRadarPayload(arch.feed, arch.radar);
+            if (checked.valid) {
+              model = checked.model;
+              date = options.date;
+              publicationHash = hashBody(bytes);
+            }
+          }
+        }
+        if (!model) {
+          const published = await (options.readEdition || readPublishedArxivEdition)();
+          const beijingToday = new Intl.DateTimeFormat("en-CA", {
+            timeZone: "Asia/Shanghai",
+          }).format(new Date());
+          date = options.date || published.feed?.window?.announcement_date || beijingToday;
+          const checked = validateDailyRadarPayload(published.feed, published.radar);
+          if (!checked.valid) throw new Error("QQ_SOURCE_INVALID");
+          model = checked.model;
+          publicationHash = hashBody(
+            JSON.stringify({ feed: published.feed, radar: published.radar })
+          );
+        }
       } else {
-        const checked = validateDailyRadarPayload(published.feed, published.radar);
-        if (!checked.valid) throw new Error("QQ_SOURCE_INVALID");
-        model = checked.model;
-        publicationHash = daily.hash;
+        const weeklyPath = options.weeklyPath || "src/data/arxiv-weekly.json";
+        const bytes = await readFile(weeklyPath);
+        weekly = JSON.parse(bytes);
+        publicationHash = hashBody(bytes);
+      }
+    } else {
+      if (!sourceBinding) {
+        const website = JSON.parse(await readFile(".cache/notebooklm/website.json", "utf8"));
+        if (website.status !== "success") throw new Error("QQ_SOURCE_BUILD_REQUIRED");
+        sourceBinding = website.source_binding;
+      }
+      const { daily, weekly: weeklyBinding, archives, id } = sourceBinding || {};
+      if (
+        !daily?.generation_id ||
+        !weeklyBinding?.hash ||
+        !archives ||
+        hashBody(JSON.stringify({ daily, weekly: weeklyBinding, archives })) !== id
+      )
+        throw new Error("QQ_SOURCE_BUILD_REQUIRED");
+      if (type === "weekly") {
+        const weeklyPath = options.weeklyPath || "src/data/arxiv-weekly.json";
+        if ((await stat(weeklyPath)).size > 20_000_000) throw new Error("QQ_SOURCE_INVALID");
+        const bytes = await readFile(weeklyPath);
+        if (hashBody(bytes) !== weeklyBinding.hash) throw new Error("QQ_SOURCE_BUILD_MISMATCH");
+        weekly = JSON.parse(bytes);
+        publicationHash = weeklyBinding.hash;
+      } else {
+        const published = await (options.readEdition || readPublishedArxivEdition)();
+        if (
+          published.generation_id !== daily.generation_id ||
+          hashBody(JSON.stringify({ feed: published.feed, radar: published.radar })) !== daily.hash
+        )
+          throw new Error("QQ_SOURCE_BUILD_MISMATCH");
+        date = published.feed.window?.announcement_date;
+        if (!/^\d{4}-\d\d-\d\d$/u.test(date || "")) throw new Error("QQ_SOURCE_INVALID");
+        if (archives[date]) {
+          const path = resolve(
+            options.archiveRoot || "src/data/arxiv-archives/daily",
+            `${date}.json`
+          );
+          const bytes = await readFile(path);
+          if (hashBody(bytes) !== archives[date]) throw new Error("QQ_SOURCE_BUILD_MISMATCH");
+          model = await readDailyArchive(path, date, options.distRoot || "dist", bytes);
+          publicationHash = archives[date];
+        } else {
+          const checked = validateDailyRadarPayload(published.feed, published.radar);
+          if (!checked.valid) throw new Error("QQ_SOURCE_INVALID");
+          model = checked.model;
+          publicationHash = daily.hash;
+        }
       }
     }
   }

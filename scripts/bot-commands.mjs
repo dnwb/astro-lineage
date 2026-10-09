@@ -334,6 +334,7 @@ export async function executeBotCommand(cmd, options = {}) {
           markdown: true,
           websiteBase,
           channelUrl,
+          interactive: true,
         });
       } catch (err) {
         return `[AstroLineage] 获取今日导读失败: ${err.message}。可发送 \`\\list_day\` 查看历史可用导读。`;
@@ -351,6 +352,7 @@ export async function executeBotCommand(cmd, options = {}) {
           markdown: true,
           websiteBase,
           channelUrl,
+          interactive: true,
         });
       } catch (err) {
         return `[AstroLineage] 获取昨日导读失败: ${err.message}。可发送 \`\\list_day\` 查看历史可用导读。`;
@@ -376,6 +378,7 @@ export async function executeBotCommand(cmd, options = {}) {
           markdown: true,
           websiteBase,
           channelUrl,
+          interactive: true,
         });
       } catch (err) {
         return `[AstroLineage] 获取 ${normalizedDate} 导读失败: ${err.message}`;
@@ -405,6 +408,7 @@ export async function executeBotCommand(cmd, options = {}) {
           markdown: true,
           websiteBase,
           channelUrl,
+          interactive: true,
         });
       } catch (err) {
         return `[AstroLineage] 获取本周周报失败: ${err.message}。可发送 \`\\list_week\` 查看所有周报。`;
@@ -428,6 +432,7 @@ export async function executeBotCommand(cmd, options = {}) {
           markdown: true,
           websiteBase,
           channelUrl,
+          interactive: true,
         });
       } catch (err) {
         return `[AstroLineage] 获取上周周报失败: ${err.message}。可发送 \`\\list_week\` 查看所有周报。`;

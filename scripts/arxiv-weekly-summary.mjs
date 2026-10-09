@@ -389,10 +389,7 @@ export async function runWeeklySummary({
   const sundayPrior = new Date(new Date(`${bounds.monday}T00:00:00Z`).valueOf() - 86400000)
     .toISOString()
     .slice(0, 10);
-  const scanDates =
-    weekId >= "2026-W41"
-      ? [sundayPrior, ...targetDates.filter((d) => d !== bounds.sunday)]
-      : targetDates;
+  const scanDates = bounds.academicAnnouncementDates;
   const scanDateSet = new Set(scanDates);
   const dateRange = bounds.dateRange;
   const editions = new Map();

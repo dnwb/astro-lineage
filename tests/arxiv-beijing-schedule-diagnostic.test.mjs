@@ -28,9 +28,32 @@ test("Beijing academic week maps exactly 5 arXiv announcement batches (Sun-Thu E
   );
 });
 
-test("Announcement week ID correctly assigns Sunday ET batch to incoming week for 2026-W41", () => {
-  assert.equal(getAnnouncementWeekId("2026-10-04", "Sun"), "2026-W41");
-  assert.equal(getAnnouncementWeekId("2026-10-08", "Thu"), "2026-W41");
+test("Announcement week ID correctly assigns Sunday ET batch to incoming week across all academic weeks", () => {
+  assert.equal(
+    getAnnouncementWeekId("2026-09-13", "Sun"),
+    "2026-W38",
+    "2026-09-13 Sun ET must map to W38 (Mon BJT 09-14)"
+  );
+  assert.equal(
+    getAnnouncementWeekId("2026-09-27", "Sun"),
+    "2026-W40",
+    "2026-09-27 Sun ET must map to W40 (Mon BJT 09-28)"
+  );
+  assert.equal(
+    getAnnouncementWeekId("2026-10-04", "Sun"),
+    "2026-W41",
+    "2026-10-04 Sun ET must map to W41 (Mon BJT 10-05)"
+  );
+  assert.equal(
+    getAnnouncementWeekId("2026-10-08", "Thu"),
+    "2026-W41",
+    "2026-10-08 Thu ET must map to W41 (Fri BJT 10-09)"
+  );
+  assert.equal(
+    getAnnouncementWeekId("2026-10-01", "Thu"),
+    "2026-W40",
+    "2026-10-01 Thu ET must map to W40 (Fri BJT 10-02)"
+  );
 });
 
 test("Active weekly summary contains papers from Monday morning (Sunday ET batch 2026-10-04)", async () => {

@@ -625,6 +625,188 @@ export async function runScheduledArxivRefresh({
   }
 }
 
+export function assertContinuousBatchIntervals(currentFeed, previousFeed) {
+  if (previousFeed?.window?.submitted_date_range && currentFeed?.window?.submitted_date_range) {
+    const prevTo = previousFeed.window.submitted_date_range.to;
+    const currFrom = currentFeed.window.submitted_date_range.from;
+    if (prevTo && currFrom && prevTo !== currFrom) {
+      throw new Error(
+        `BATCH_TIME_GAP_DETECTED: previous batch ended at ${prevTo} but current batch started at ${currFrom}`
+      );
+    }
+  }
+
+  if (Array.isArray(currentFeed?.entries) && currentFeed.entries.length > 1) {
+    const validTimes = currentFeed.entries
+      .map((e) => (e.published ? new Date(e.published).getTime() : null))
+      .filter((t) => t !== null && !Number.isNaN(t))
+      .sort((a, b) => a - b);
+    for (let i = 1; i < validTimes.length; i++) {
+      const diffHours = (validTimes[i] - validTimes[i - 1]) / (1000 * 3600);
+      if (diffHours > 10) {
+        console.warn(
+          `[scheduler:gap-warning] 批次内提交时间存在较大跨度: ${diffHours.toFixed(1)} 小时`
+        );
+      }
+    }
+  }
+
+  if (Array.isArray(currentFeed?.entries) && currentFeed.entries.length < 5) {
+    console.warn(
+      `[scheduler:baseline-warning] 批次论文数量 (${currentFeed.entries.length}) 低于预期基线 (5篇)，可能存在上游延迟`
+    );
+  }
+}
+
+export async function reconcilePreviousEdition({
+  now = new Date(),
+  announcementDate,
+  timeZone = DEFAULT_TIME_ZONE,
+  output = DEFAULT_OUTPUT,
+  radarOutput,
+  artifactRoot,
+  archiveRoot,
+  refreshImpl = refreshArxivFeed,
+  archiveImpl,
+  analyzeImpl,
+  analysisLimit,
+  ...refreshOptions
+} = {}) {
+  const target = resolve(output);
+  const radar = radarPathFor(target, radarOutput);
+  const root = artifactRootFor({ output: target, artifactRoot });
+  const targetDate = announcementDate ?? latestCompletedAnnouncementDate({ now, timeZone });
+  assertDateOnly(targetDate, "targetDate");
+
+  const schedulerLock = join(root, "scheduler.lock");
+  await acquireRefreshLock(schedulerLock);
+  try {
+    const query = refreshOptions.query ?? DEFAULT_QUERY;
+    const ledger = await readLedger({ artifactRoot: root, timeZone, query });
+
+    let localFeed = null;
+    try {
+      const feedBytes = await readFile(target, "utf8");
+      const parsed = JSON.parse(feedBytes);
+      if (parsed?.window?.announcement_date === targetDate) {
+        localFeed = parsed;
+      }
+    } catch {}
+
+    const archiveDir =
+      archiveRoot ??
+      resolve(fileURLToPath(new URL("../src/data/arxiv-archives/daily", import.meta.url)));
+    const archivePath = join(archiveDir, `${targetDate}.json`);
+    if (!localFeed) {
+      try {
+        const archBytes = await readFile(archivePath, "utf8");
+        const parsed = JSON.parse(archBytes);
+        if (parsed?.feed) localFeed = parsed.feed;
+      } catch {}
+    }
+
+    const probeRoot = join(root, "reconcile-probe");
+    const tempStagingPath = join(probeRoot, "arxiv-daily.json");
+    const tempRadarPath = join(probeRoot, "daily-radar.json");
+    let upstreamPayload = null;
+    try {
+      upstreamPayload = await refreshImpl({
+        ...refreshOptions,
+        output: tempStagingPath,
+        radarOutput: tempRadarPath,
+        artifactRoot: probeRoot,
+        announcementDate: targetDate,
+        timeZone,
+        rejectEmpty: false,
+      });
+    } catch (err) {
+      console.warn(`[scheduler:reconcile] 上游探测出错: ${err.message}`);
+    }
+
+    const localEntries = localFeed?.entries || [];
+    const localIds = new Set(localEntries.map((e) => e.arxiv_id));
+    const upstreamEntries = upstreamPayload?.entries || [];
+    const newEntries = upstreamEntries.filter((e) => !localIds.has(e.arxiv_id));
+
+    let finalFeed = localFeed || upstreamPayload;
+    let newlyAddedCount = 0;
+
+    if (newEntries.length > 0 && localFeed) {
+      console.log(
+        `[scheduler:reconcile] 发现上游增量论文: ${newEntries.length} 篇 (例如 ${newEntries[0]?.arxiv_id})`
+      );
+      if (localFeed.window?.announcement_date === targetDate) {
+        finalFeed = await refreshImpl({
+          ...refreshOptions,
+          output: target,
+          radarOutput: radar,
+          artifactRoot: root,
+          announcementDate: targetDate,
+          timeZone,
+          rejectEmpty: true,
+        });
+      } else {
+        finalFeed = {
+          ...localFeed,
+          entries: [...localEntries, ...newEntries],
+        };
+      }
+      if (finalFeed) {
+        await writeJsonAtomically(target, finalFeed);
+      }
+      const archive =
+        archiveImpl ?? (target === resolve(DEFAULT_OUTPUT) ? defaultArchiveSync : null);
+      await archiveDate({
+        archiveImpl: archive,
+        archiveRoot,
+        feed: target,
+        radar,
+        artifactRoot: root,
+        defaultOutput: target,
+      });
+      newlyAddedCount = newEntries.length;
+    }
+
+    const priorityIds = newEntries.map((e) => e.arxiv_id).filter(Boolean);
+    if (analyzeImpl && (priorityIds.length > 0 || (await hasPrimaryFeed(target)))) {
+      await analyzePrimary({
+        analyzeImpl,
+        output: target,
+        radar,
+        artifactRoot: root,
+        archiveRoot,
+        analysisLimit: analysisLimit ?? 0,
+      });
+    }
+
+    const prevDate = addCalendarDay(targetDate, -1);
+    let prevFeed = null;
+    try {
+      const prevArchPath = join(archiveDir, `${prevDate}.json`);
+      if (existsSync(prevArchPath)) {
+        prevFeed = JSON.parse(await readFile(prevArchPath, "utf8"))?.feed;
+      }
+    } catch {}
+    if (finalFeed && prevFeed) {
+      assertContinuousBatchIntervals(finalFeed, prevFeed);
+    }
+
+    ledger.finalized_dates = [...new Set([...(ledger.finalized_dates || []), targetDate])].sort();
+    ledger.successful_dates = [...new Set([...ledger.successful_dates, targetDate])].sort();
+    await saveLedger(root, ledger);
+
+    return {
+      status: "reconciled",
+      target_date: targetDate,
+      total_entries: finalFeed?.entries?.length || 0,
+      newly_added: newlyAddedCount,
+      finalized: true,
+    };
+  } finally {
+    await releaseRefreshLock(schedulerLock);
+  }
+}
+
 function cliValue(args, name) {
   const prefix = `${name}=`;
   const argument = args.find((value) => value.startsWith(prefix));
@@ -657,6 +839,21 @@ if (process.argv[1] && resolve(process.argv[1]) === resolve(fileURLToPath(import
   const hasCredentials = Boolean(
     process.env.IOA_API_KEY || process.env.WU_API_KEY || process.env.OPENAI_API_KEY
   );
+
+  if (hasFlag(args, "--reconcile-previous") || hasFlag(args, "--reconcile")) {
+    console.log("[scheduler] 执行次日兜底清障与增量对账扫描...");
+    const recResult = await reconcilePreviousEdition({
+      output,
+      announcementDate,
+      analyzeImpl: !hasFlag(args, "--no-analyze") && hasCredentials ? defaultAnalyzer : undefined,
+      analysisLimit: requestedAnalysisLimit,
+    });
+    console.log(
+      `[scheduler] 对账完成: 日期 ${recResult.target_date}, 增量论文 ${recResult.newly_added} 篇, 批次总数 ${recResult.total_entries} 篇, 已封板`
+    );
+    process.exit(0);
+  }
+
   const result = await runScheduledArxivRefresh({
     output,
     announcementDate,

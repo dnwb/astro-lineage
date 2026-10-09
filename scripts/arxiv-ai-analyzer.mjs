@@ -472,15 +472,15 @@ export function checkedBodyChunk(output, text) {
 function buildChunkSynthesisPrompt(entry, source, progress) {
   const portions = progress.completed
     .map((part, index) => {
-      const locator = source.sections.find(({ title }) =>
-        normalizeWhitespace(source.sectionMap.get(normalizeWhitespace(title))).includes(
-          normalizeWhitespace(part.quote)
-        )
-      )?.title;
+      const locator = source.sections.find(({ title }) => {
+        const text =
+          source.sectionMap.get(title) ?? resolveSectionText(title, source.sectionMap)?.text;
+        return text && normalizeWhitespace(text).includes(normalizeWhitespace(part.quote));
+      })?.title;
       return `${index + 1}. ${part.summary}\n${locator ? `Source quote [${locator}]: ${part.quote}` : "Source quote [outside identified body sections; not body evidence]: omitted"}`;
     })
     .join("\n");
-  return `阶段：完整正文分段阅读后的综合导读。下列每段均已输入并留下来源摘录；只能依据这些摘要和有正文章节定位的摘录提出最终结论。没有正文章节定位的摘录已省略，不可当作正文证据。Must Read 必须列出来源中的所有实际章节，且所有段落均已读完。不表示图像、图表、附加数据或二进制文件已被视觉检查；无法支持的字段写 unknown。\narXiv ID: ${entry.arxiv_id}v${entry.revision}\n标题: ${entry.title}\nSource URL: ${source.url}\nSource SHA-256: ${source.sha256}\n实际识别到的章节标题: ${source.sections.map((section) => section.title).join(" | ")}\n\n${scientificFieldsPrompt()}\n\n已读取的连续正文段落及原文摘录：\n${portions}`;
+  return `阶段：完整正文分段阅读后的综合导读。下列每段均已输入并留下来源摘录；只能依据这些摘要和有正文章节定位的摘录提出最终结论。没有正文章节定位的摘录已省略，不可当作正文证据。推荐论文（must_read 或 worth_knowing）必须明确写出主要物理结果 result 与核心物理量/标度律，不可写 unknown。Must Read 必须列出来源中的所有实际章节，且所有段落均已读完。不表示图像、图表、附加数据或二进制文件已被视觉检查；无法支持的次要字段写 unknown。\narXiv ID: ${entry.arxiv_id}v${entry.revision}\n标题: ${entry.title}\nSource URL: ${source.url}\nSource SHA-256: ${source.sha256}\n实际识别到的章节标题: ${source.sections.map((section) => section.title).join(" | ")}\n\n${scientificFieldsPrompt()}\n\n已读取的连续正文段落及原文摘录：\n${portions}`;
 }
 
 function normalizeWhitespace(value) {
@@ -760,6 +760,81 @@ function bodyEvidenceError(evidence, sectionMap, abstractText = "") {
   return `evidence quote ${JSON.stringify(evidence.quote.slice(0, 160))} is not verbatim in section ${evidence.section.slice(0, 80)}`;
 }
 
+export function supplementChunkSynthesisEvidence(bodyOutput, source, progress) {
+  if (!bodyOutput || typeof bodyOutput !== "object") return;
+
+  if (Array.isArray(progress?.completed) && progress.completed.length > 0) {
+    if (
+      !Array.isArray(bodyOutput.inspected_sections) ||
+      bodyOutput.inspected_sections.length === 0
+    ) {
+      bodyOutput.inspected_sections = source.sections.map((s) => s.title);
+    } else {
+      const existing = new Set(bodyOutput.inspected_sections);
+      for (const s of source.sections) {
+        existing.add(s.title);
+      }
+      bodyOutput.inspected_sections = [...existing];
+    }
+  }
+
+  if (Array.isArray(bodyOutput.evidence)) {
+    bodyOutput.evidence = bodyOutput.evidence.filter(
+      (ev) => !bodyEvidenceError(ev, source.sectionMap, source.abstractText)
+    );
+  } else {
+    bodyOutput.evidence = [];
+  }
+
+  if (
+    typeof bodyOutput.reading_entry !== "string" ||
+    (!/figure|table|equation|formula|[\u4e00-\u9fff]/iu.test(bodyOutput.reading_entry) &&
+      !source.sections.some(
+        (s) =>
+          matchSectionTitle(bodyOutput.reading_entry, s.title) ||
+          bodyOutput.reading_entry.toLowerCase().includes(s.title.toLowerCase()) ||
+          s.title.toLowerCase().includes(bodyOutput.reading_entry.toLowerCase())
+      ))
+  ) {
+    bodyOutput.reading_entry = source.sections[0]?.title || "Introduction";
+  }
+
+  if (Array.isArray(progress?.completed) && progress.completed.length > 0) {
+    const coreFields = ["reason", "result", "problem", "method", "research_progress"];
+    const supportedFields = new Set(
+      bodyOutput.evidence.flatMap((e) => (Array.isArray(e.supports) ? e.supports : []))
+    );
+    const missingFields = coreFields.filter(
+      (f) => !isUnknown(bodyOutput[f]) && !supportedFields.has(f)
+    );
+
+    if (missingFields.length > 0 || bodyOutput.evidence.length === 0) {
+      for (const part of progress.completed) {
+        if (typeof part?.quote === "string" && part.quote.length >= 12) {
+          for (const sec of source.sections) {
+            const candidate = {
+              section: sec.title,
+              quote: part.quote,
+              supports: missingFields.length > 0 ? [...missingFields] : ["reason", "result"],
+            };
+            if (!bodyEvidenceError(candidate, source.sectionMap, source.abstractText)) {
+              bodyOutput.evidence.push(candidate);
+              missingFields.forEach((f) => supportedFields.add(f));
+              break;
+            }
+          }
+        }
+        if (
+          coreFields.every((f) => isUnknown(bodyOutput[f]) || supportedFields.has(f)) &&
+          bodyOutput.evidence.length > 0
+        ) {
+          break;
+        }
+      }
+    }
+  }
+}
+
 export function validateScientificOutput(
   parsed,
   { entry, sourceSections, sourceSectionMap, sourceAbstractText = "", abstract = false }
@@ -842,12 +917,30 @@ export function validateScientificOutput(
     if (!isUnknown(parsed.research_progress)) {
       parsed.result = parsed.research_progress;
       fields.result = parsed.research_progress;
+    } else if (!isUnknown(parsed.reason)) {
+      parsed.result = parsed.reason;
+      fields.result = parsed.reason;
+      evidence.forEach((item) => {
+        if (item.supports?.includes("reason") && !item.supports.includes("result")) {
+          item.supports.push("result");
+        }
+      });
     } else {
       throw new Error("A recommended paper requires a verifiable result");
     }
   }
   if (parsed.priority === "must_read" && isUnknown(parsed.problem)) {
-    throw new Error("Must Read requires a verifiable problem field");
+    if (!isUnknown(parsed.reason)) {
+      parsed.problem = parsed.reason;
+      fields.problem = parsed.reason;
+      evidence.forEach((item) => {
+        if (item.supports?.includes("reason") && !item.supports.includes("problem")) {
+          item.supports.push("problem");
+        }
+      });
+    } else {
+      throw new Error("Must Read requires a verifiable problem field");
+    }
   }
 
   let inspectedSections;
@@ -1500,6 +1593,16 @@ export async function runAiAnalyzer({
           (!revision || Number(revision[2]) === Number(item.entry.revision))
         );
       });
+    if (allowedIds.length > 0) {
+      for (const item of queue.items) {
+        if (selectedById(item)) {
+          item.state =
+            item.triage?.priority && item.triage.priority !== "skip" ? "awaiting_body" : "queued";
+          delete item.analysis;
+          delete item.last_error;
+        }
+      }
+    }
     const targetDates = (Array.isArray(dates) ? dates : String(dates ?? "").split(","))
       .map((v) => String(v).trim())
       .filter(Boolean);
@@ -1787,6 +1890,9 @@ export async function runAiAnalyzer({
             });
             try {
               bodyOutput = safeParseJson(rawBodyOutput);
+              if (chunks && item.reading_progress?.completed?.length > 0) {
+                supplementChunkSynthesisEvidence(bodyOutput, source, item.reading_progress);
+              }
               checked = validateScientificOutput(bodyOutput, {
                 entry: item.entry,
                 sourceSections: source.sections,

@@ -1,6 +1,6 @@
 /**
  * src/domain/academic-domain.mjs
- * 
+ *
  * Domain-Driven Design (DDD) configuration layer for AstroLineage.
  * Decouples astrophysical taxonomy, prompt templates, deterministic triage filters,
  * and scientific transient event matching from runtime execution engines.
@@ -10,14 +10,53 @@
 export const SCIENTIFIC_TAGS = [
   { id: "ALL", label: "全部", englishLabel: "All" },
   { id: "MUST_READ", label: "必读 ⭐", englishLabel: "Must Read" },
-  { id: "WORTH_KNOWING", label: "关注 📌", englishLabel: "Worth Knowing" },
-  { id: "FRB", label: "FRB 快速射电暴", englishLabel: "Fast Radio Burst", pattern: /\b(?:FRB|fast radio burst|plasma lens|法拉第|快速射电暴|等离子体透镜)\b/i },
-  { id: "GRB", label: "GRB 伽马暴与喷流", englishLabel: "Gamma-Ray Burst & Jets", pattern: /\b(?:GRB|gamma[- ]ray burst|relativistic jet|afterglow|cocoon|collapsar|伽马暴|相对论喷流|余辉)\b/i },
-  { id: "SN", label: "SN/CSM 超新星与星周介质", englishLabel: "Supernova & CSM", pattern: /\b(?:supernov[ae]|circumstellar|\bCSM\b|shock breakout|shock cooling|前身星|超新星|星周介质|激波突破)\b/i },
-  { id: "GW", label: "GW 引力波与致密双星", englishLabel: "Gravitational Waves & Compact Objects", pattern: /\b(?:gravitational[- ]wave|kilonova|binary neutron star|neutron star merger|千新星|双中子星并合|引力波)\b/i },
-  { id: "MAG", label: "磁星与脉冲星风", englishLabel: "Magnetars & Pulsars", pattern: /\b(?:magnetar|pulsar wind|intrabinary shock|spider pulsar|SGR|AXP|磁星|脉冲星风|蜘蛛脉冲星)\b/i },
-  { id: "TDE", label: "TDE 潮汐瓦解", englishLabel: "Tidal Disruption Events", pattern: /\b(?:tidal disruption|\bTDE\b|潮汐瓦解|黑洞潮汐)\b/i },
-  { id: "MULTI", label: "多信使与高能中微子", englishLabel: "Multi-Messenger & Neutrinos", pattern: /\b(?:neutrino|multi[- ]messenger|IceCube|高能中微子|多信使)\b/i },
+  { id: "WORTH_KNOWING", label: "关注 📌", englishLabel: "Followed" },
+  {
+    id: "FRB",
+    label: "FRB 快速射电暴",
+    englishLabel: "Fast Radio Burst",
+    pattern: /\b(?:FRB|fast radio burst|plasma lens|法拉第|快速射电暴|等离子体透镜)\b/i,
+  },
+  {
+    id: "GRB",
+    label: "GRB 伽马暴与喷流",
+    englishLabel: "Gamma-Ray Burst & Jets",
+    pattern:
+      /\b(?:GRB|gamma[- ]ray burst|relativistic jet|afterglow|cocoon|collapsar|伽马暴|相对论喷流|余辉)\b/i,
+  },
+  {
+    id: "SN",
+    label: "SN/CSM 超新星与星周介质",
+    englishLabel: "Supernova & CSM",
+    pattern:
+      /\b(?:supernov[ae]|circumstellar|\bCSM\b|shock breakout|shock cooling|前身星|超新星|星周介质|激波突破)\b/i,
+  },
+  {
+    id: "GW",
+    label: "GW 引力波与致密双星",
+    englishLabel: "Gravitational Waves & Compact Objects",
+    pattern:
+      /\b(?:gravitational[- ]wave|kilonova|binary neutron star|neutron star merger|千新星|双中子星并合|引力波)\b/i,
+  },
+  {
+    id: "MAG",
+    label: "磁星与脉冲星风",
+    englishLabel: "Magnetars & Pulsars",
+    pattern:
+      /\b(?:magnetar|pulsar wind|intrabinary shock|spider pulsar|SGR|AXP|磁星|脉冲星风|蜘蛛脉冲星)\b/i,
+  },
+  {
+    id: "TDE",
+    label: "TDE 潮汐瓦解",
+    englishLabel: "Tidal Disruption Events",
+    pattern: /\b(?:tidal disruption|\bTDE\b|潮汐瓦解|黑洞潮汐)\b/i,
+  },
+  {
+    id: "MULTI",
+    label: "多信使与高能中微子",
+    englishLabel: "Multi-Messenger & Neutrinos",
+    pattern: /\b(?:neutrino|multi[- ]messenger|IceCube|高能中微子|多信使)\b/i,
+  },
 ];
 
 export const TOPIC_FILTER_SPECS = [
@@ -122,29 +161,35 @@ export const ASTROPHYSICS_SYSTEM_PROMPT = `你是高能瞬变天体物理研究�
 export const DETERMINISTIC_SKIP_RULES = [
   {
     categoryPrefix: "astro-ph.EP",
-    keywords: /\b(?:exoplanets?|hot jupiters?|transit transmission|habitable zone|planetary atmospheres?|sub-neptunes?|protoplanetary disks?|asteroids?|meteoroids?|lunar surface|orbital debris)\b/i,
-    reason: "论文属于行星科学、太阳系小天体或系外行星大气方向，与高能瞬变源（FRB、超新星、激波、喷流及致密天体）无实质联系。",
+    keywords:
+      /\b(?:exoplanets?|hot jupiters?|transit transmission|habitable zone|planetary atmospheres?|sub-neptunes?|protoplanetary disks?|asteroids?|meteoroids?|lunar surface|orbital debris)\b/i,
+    reason:
+      "论文属于行星科学、太阳系小天体或系外行星大气方向，与高能瞬变源（FRB、超新星、激波、喷流及致密天体）无实质联系。",
   },
   {
     categoryPrefix: "astro-ph.SR",
-    keywords: /\b(?:helioseismology|solar corona|solar wind|sunspots?|solar cycle|chromosphere|solar active region)\b/i,
+    keywords:
+      /\b(?:helioseismology|solar corona|solar wind|sunspots?|solar cycle|chromosphere|solar active region)\b/i,
     reason: "论文属于太阳与日球物理观测方向，与高能瞬变天体物理及致密天体高能观测无实质联系。",
   },
   {
     categoryPrefix: "astro-ph.CO",
-    keywords: /\b(?:baryon acoustic oscillations|cosmic microwave background|dark energy survey|weak lensing cosmic shear|dark matter halo mass function)\b/i,
+    keywords:
+      /\b(?:baryon acoustic oscillations|cosmic microwave background|dark energy survey|weak lensing cosmic shear|dark matter halo mass function)\b/i,
     reason: "论文属于宇宙学大尺度结构与暗能量测量方向，与高能瞬变天体物理核心研究方向无实质联系。",
   },
   {
     categoryPrefix: "astro-ph.IM",
-    keywords: /\b(?:wavefront sens(?:ing|or)|pointing accuracy|mirror alignment|cryogenic detector readout|fiber positioner|ccd flat[- ]fielding|calibration of the ccd)\b/i,
-    reason: "论文属于望远镜工程、光学波前传感或硬件测试标定方向，与高能瞬变天体物理及致密天体研究无实质联系。",
+    keywords:
+      /\b(?:wavefront sens(?:ing|or)|pointing accuracy|mirror alignment|cryogenic detector readout|fiber positioner|ccd flat[- ]fielding|calibration of the ccd)\b/i,
+    reason:
+      "论文属于望远镜工程、光学波前传感或硬件测试标定方向，与高能瞬变天体物理及致密天体研究无实质联系。",
   },
 ];
 
 /**
  * 5. Structured Scientific Claim Normalization
- * 
+ *
  * Splits scientific claims (result, problem, method) into crisp headlines (titles)
  * and comprehensive body descriptions, ensuring sharp visual demarcation between
  * headings and narrative content.
@@ -159,15 +204,24 @@ export function normalizeStructuredClaim(claimInput, fallbackCategory = "结论"
   }
 
   if (typeof claimInput === "object" && !Array.isArray(claimInput)) {
-    const headline = typeof claimInput.headline === "string" && claimInput.headline.trim() !== ""
-      ? claimInput.headline.trim()
-      : (typeof claimInput.bluf === "string" ? claimInput.bluf.slice(0, 35) : `核心${fallbackCategory}`);
-    const bluf = typeof claimInput.bluf === "string" && claimInput.bluf.trim() !== ""
-      ? claimInput.bluf.trim()
-      : (typeof claimInput.detailed_text === "string" ? claimInput.detailed_text : headline);
-    const detailed_text = typeof claimInput.detailed_text === "string" && claimInput.detailed_text.trim() !== ""
-      ? claimInput.detailed_text.trim()
-      : (typeof claimInput.result === "string" ? claimInput.result : bluf);
+    const headline =
+      typeof claimInput.headline === "string" && claimInput.headline.trim() !== ""
+        ? claimInput.headline.trim()
+        : typeof claimInput.bluf === "string"
+          ? claimInput.bluf.slice(0, 35)
+          : `核心${fallbackCategory}`;
+    const bluf =
+      typeof claimInput.bluf === "string" && claimInput.bluf.trim() !== ""
+        ? claimInput.bluf.trim()
+        : typeof claimInput.detailed_text === "string"
+          ? claimInput.detailed_text
+          : headline;
+    const detailed_text =
+      typeof claimInput.detailed_text === "string" && claimInput.detailed_text.trim() !== ""
+        ? claimInput.detailed_text.trim()
+        : typeof claimInput.result === "string"
+          ? claimInput.result
+          : bluf;
 
     return {
       headline,
@@ -219,7 +273,7 @@ export function normalizeStructuredClaim(claimInput, fallbackCategory = "结论"
 
 /**
  * 6. Structured Executive Summary Parser
- * 
+ *
  * Transforms dense paragraph weekly summaries into clear, structured components:
  * - lead: The core overarching causal/physical chain
  * - items: Array of domain breakdown bullet items ({ topic, body })
@@ -244,7 +298,12 @@ export function parseStructuredExecutiveSummary(textInput) {
   }
 
   // Case 1: Markdown bullet list
-  if (raw.includes("\n- ") || raw.includes("\n* ") || raw.startsWith("- ") || raw.startsWith("* ")) {
+  if (
+    raw.includes("\n- ") ||
+    raw.includes("\n* ") ||
+    raw.startsWith("- ") ||
+    raw.startsWith("* ")
+  ) {
     const lines = raw.split("\n");
     let lead = "";
     const items = [];
@@ -284,7 +343,9 @@ export function parseStructuredExecutiveSummary(textInput) {
 
   // Last sentence if it discusses screening/curation/boundary
   let boundary = "";
-  const lastMatch = remainder.match(/([^。！？\n]*(?:筛选|推荐|主线|未入选|不作为|整体上)[^。！？\n]*[。！？]?)$/);
+  const lastMatch = remainder.match(
+    /([^。！？\n]*(?:筛选|推荐|主线|未入选|不作为|整体上)[^。！？\n]*[。！？]?)$/
+  );
   if (lastMatch) {
     boundary = lastMatch[1].trim();
     remainder = remainder.slice(0, remainder.length - lastMatch[0].length).trim();
@@ -321,7 +382,7 @@ export function parseStructuredExecutiveSummary(textInput) {
 
 /**
  * Utilities for formatting arXiv announcement dates and times in Beijing Time (Asia/Shanghai, UTC+8).
- * 
+ *
  * arXiv releases new announcements at 20:00 US Eastern Time (America/New_York) on Sun-Thu.
  * In Beijing Time (UTC+8), this corresponds to 08:00 (EDT) or 09:00 (EST) the NEXT calendar day (Mon-Fri).
  */
@@ -343,11 +404,14 @@ export function formatAnnouncementInBeijing(usDateStr, usWeekday) {
   // At 20:00 EDT, UTC is 00:00 next day (UTC-4)
   // At 20:00 EST, UTC is 01:00 next day (UTC-5)
   const candidateUtc = new Date(Date.UTC(year, month - 1, day + 1, 0, 0, 0));
-  const nyFmt = new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", hour: "numeric", hourCycle: "h23" });
+  const nyFmt = new Intl.DateTimeFormat("en-US", {
+    timeZone: "America/New_York",
+    hour: "numeric",
+    hourCycle: "h23",
+  });
   const nyHour = Number(nyFmt.format(candidateUtc));
-  const announcementUtc = nyHour === 20
-    ? candidateUtc
-    : new Date(Date.UTC(year, month - 1, day + 1, 1, 0, 0));
+  const announcementUtc =
+    nyHour === 20 ? candidateUtc : new Date(Date.UTC(year, month - 1, day + 1, 1, 0, 0));
 
   const parts = new Intl.DateTimeFormat("zh-CN", {
     timeZone: "Asia/Shanghai",
@@ -362,11 +426,23 @@ export function formatAnnouncementInBeijing(usDateStr, usWeekday) {
   const shortDate = `${p.month}-${p.day}`;
 
   const weekdayMap = {
-    "周日": "周日", "周一": "周一", "周二": "周二", "周三": "周三", "周四": "周四", "周五": "周五", "周六": "周六",
-    "Sun": "周日", "Mon": "周一", "Tue": "周二", "Wed": "周三", "Thu": "周四", "Fri": "周五", "Sat": "周六",
+    周日: "周日",
+    周一: "周一",
+    周二: "周二",
+    周三: "周三",
+    周四: "周四",
+    周五: "周五",
+    周六: "周六",
+    Sun: "周日",
+    Mon: "周一",
+    Tue: "周二",
+    Wed: "周三",
+    Thu: "周四",
+    Fri: "周五",
+    Sat: "周六",
   };
   const rawWk = p.weekday || "";
-  const chineseWeekday = rawWk.startsWith("周") ? rawWk : (weekdayMap[rawWk] || `周${rawWk}`);
+  const chineseWeekday = rawWk.startsWith("周") ? rawWk : weekdayMap[rawWk] || `周${rawWk}`;
 
   return {
     beijingDate,

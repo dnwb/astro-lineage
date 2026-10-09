@@ -458,7 +458,7 @@ export async function generateGroupBrief(type = "daily", options = {}) {
             );
           }
           if (worthKnowingList.length > 3) {
-            lines.push("---", "### 📌 更多关注", "");
+            lines.push("---", "### 📌 关注", "");
             for (const paper of worthKnowingList.slice(3)) {
               const topic = extractPaperTopic(paper);
               const rev = paper.revision || 1;

@@ -4378,4 +4378,35 @@ small {
   font-weight: 600;
 }
 
+.no-must-read-notice {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem 1.15rem;
+  margin: 1.25rem 0 0.75rem;
+  background: var(--card-bg, #ffffff);
+  border: 1px solid var(--border-color, #cbd5e1);
+  border-left: 4px solid var(--worth-knowing-border, #3b82f6);
+  border-radius: 6px;
+  font-size: 0.95rem;
+}
+.no-must-read-notice .notice-icon {
+  font-size: 1.2rem;
+  line-height: 1;
+}
+.no-must-read-notice .notice-body {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.no-must-read-notice .notice-title {
+  color: var(--text-heading, #0f172a);
+  font-weight: 600;
+}
+.no-must-read-notice .notice-text {
+  margin: 0;
+  color: var(--text-secondary, #5d6470);
+}
+
 

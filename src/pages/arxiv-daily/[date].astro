@@ -192,6 +192,16 @@ const bjtInfo = formatAnnouncementInBeijing(archive.date, archive.weekday);
         </div>
       </nav>
 
+      {priorityGroups.must_read.length === 0 && (
+        <aside class="no-must-read-notice" role="status">
+          <div class="notice-icon">ℹ️</div>
+          <div class="notice-body">
+            <strong class="notice-title">批次说明</strong>
+            <p class="notice-text">当期无必读突破，重点聚焦以下“关注”进展。</p>
+          </div>
+        </aside>
+      )}
+
       <div class="daily-radar-content-wrap">
         <DailyTopicFilter groups={priorityGroups} />
 
@@ -207,7 +217,7 @@ const bjtInfo = formatAnnouncementInBeijing(archive.date, archive.weekday);
           id="worth-knowing"
           items={priorityGroups.worth_knowing}
           primaryLabel="关注"
-          englishLabel="Worth Knowing"
+          englishLabel="Followed"
           visibleWorkLinks={visibleWorkLinks}
         />
 

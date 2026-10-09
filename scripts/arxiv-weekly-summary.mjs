@@ -108,10 +108,19 @@ export function getNaturalWeekBounds(weekId) {
     announcementDates.push(d.toISOString().slice(0, 10));
   }
   const sunday = announcementDates.at(-1);
+  const sundayPrior = new Date(mondayTarget.valueOf() - 86400000).toISOString().slice(0, 10);
+  const academicAnnouncementDates = [
+    sundayPrior,
+    announcementDates[0],
+    announcementDates[1],
+    announcementDates[2],
+    announcementDates[3],
+  ];
   return {
     monday: announcementDates[0],
     sunday,
     announcementDates,
+    academicAnnouncementDates,
     dateRange: `${announcementDates[0]} ~ ${sunday}`,
   };
 }
@@ -377,6 +386,14 @@ export async function runWeeklySummary({
   const bounds = getNaturalWeekBounds(weekId);
   const targetDates = bounds.announcementDates;
   const targetDateSet = new Set(targetDates);
+  const sundayPrior = new Date(new Date(`${bounds.monday}T00:00:00Z`).valueOf() - 86400000)
+    .toISOString()
+    .slice(0, 10);
+  const scanDates =
+    weekId >= "2026-W41"
+      ? [sundayPrior, ...targetDates.filter((d) => d !== bounds.sunday)]
+      : targetDates;
+  const scanDateSet = new Set(scanDates);
   const dateRange = bounds.dateRange;
   const editions = new Map();
   const foundDates = new Set();
@@ -396,7 +413,7 @@ export async function runWeeklySummary({
       feed.window.batch_id !== radarWindow.batch_id
     )
       return;
-    if (feedDate !== date || !targetDateSet.has(date) || !Array.isArray(feed?.entries)) return;
+    if (feedDate !== date || !scanDateSet.has(date) || !Array.isArray(feed?.entries)) return;
     const batchId = feed.window?.batch_id ?? radarWindow?.batch_id ?? `announcement-${date}`;
     const key = `${date}\u0000${batchId}`;
     const edition = editions.get(key) ?? { date, batchId, papers: new Map() };
@@ -438,12 +455,17 @@ export async function runWeeklySummary({
   };
 
   // Load only edition-bound archives within the requested natural week.
-  for (const date of targetDates) {
+  for (const date of scanDates) {
     const dailyPath = join(dailyArchiveDir, `${date}.json`);
     if (existsSync(dailyPath)) {
       try {
         const dailyData = JSON.parse(await readFile(dailyPath, "utf8"));
-        if (dailyData.date === date) addEdition(date, dailyData.feed, dailyData.radar);
+        const matchesWeek = dailyData.week_id
+          ? dailyData.week_id === weekId
+          : scanDateSet.has(date);
+        if (dailyData.date === date && matchesWeek) {
+          addEdition(date, dailyData.feed, dailyData.radar);
+        }
       } catch (err) {
         console.warn(`[Weekly Summary] Warning reading daily archive ${dailyPath}:`, err.message);
       }
@@ -453,7 +475,7 @@ export async function runWeeklySummary({
   // Include the active pair only when it is an edition in the requested week.
   const activeDate =
     activeFeed?.window?.announcement_date ?? radar.edition?.window?.announcement_date;
-  if (activeDate && targetDateSet.has(activeDate)) {
+  if (activeDate && (scanDateSet.has(activeDate) || targetDateSet.has(activeDate))) {
     addEdition(activeDate, activeFeed, radar, true);
   }
 
@@ -487,14 +509,16 @@ export async function runWeeklySummary({
   const skipCount = papers.filter((p) => p.priority === "skip").length;
 
   console.log(`[Weekly Summary] 目标自然周: ${weekId} (${dateRange})`);
-  console.log(`[Weekly Summary] 自然周日期: [${targetDates.join(", ")}]`);
   console.log(
-    `[Weekly Summary] 实际纳入归档批次: ${Array.from(foundDates).sort().join(", ") || "无"} (${foundDates.size}/7)`
+    `[Weekly Summary] 自然周发文批次: [${(bounds.academicAnnouncementDates || targetDates.slice(0, 5)).join(", ")}]`
   );
-  if (foundDates.size === 7) {
-    console.log(`[Weekly Summary] ✓ 本自然周全部 7 天的批次均已收齐！`);
+  console.log(
+    `[Weekly Summary] 实际纳入归档批次: ${Array.from(foundDates).sort().join(", ") || "无"} (${foundDates.size}/5)`
+  );
+  if (foundDates.size >= 5) {
+    console.log(`[Weekly Summary] ✓ 本自然周全部 5 个发文批次均已收齐！`);
   } else {
-    console.log(`[Weekly Summary] 提示: 本自然周当前包含 ${foundDates.size}/7 天的批次。`);
+    console.log(`[Weekly Summary] 提示: 本自然周当前包含 ${foundDates.size}/5 个批次。`);
   }
   console.log(
     `[Weekly Summary] 共聚合 ${papers.length} 篇已分析论文（Must Read: ${mustReadCount}, Worth Knowing: ${worthKnowingCount}, Skim: ${skipCount}）。`

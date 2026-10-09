@@ -15,7 +15,7 @@ import { fileURLToPath } from "node:url";
 import { resolve } from "node:path";
 import { readFile, mkdir, chmod, stat } from "node:fs/promises";
 import { createHash } from "node:crypto";
-import { defaultUserManager } from "./qq-users.mjs";
+import { defaultUserManager, maskOpenid } from "./qq-users.mjs";
 import { sendProactiveC2CMessage, sendProactiveGroupMessage } from "./qq-official-bot.mjs";
 import {
   readPublishedArxivEdition,
@@ -699,7 +699,8 @@ export async function notifyGroupPublication({
   delivery,
   cache = ".cache/notebooklm/qq-notifications",
   enabled = process.env.QQ_GROUP_NOTIFY_ENABLED === "true",
-  groupOpenid = process.env.QQ_NOTIFY_GROUP_OPENID,
+  groupOpenid,
+  groupOpenids,
   brief = generateGroupBrief,
   send = sendProactiveGroupMessage,
   markdown = true,
@@ -711,6 +712,23 @@ export async function notifyGroupPublication({
     new Set(kinds).size !== kinds.length
   )
     throw new Error("QQ_NOTIFY_KIND_INVALID");
+
+  // Determine target group list
+  let targetGroups = [];
+  if (Array.isArray(groupOpenids) && groupOpenids.length > 0) {
+    targetGroups = groupOpenids.map((g) => (typeof g === "string" ? g.trim() : "")).filter(Boolean);
+  } else if (groupOpenid !== undefined) {
+    targetGroups =
+      typeof groupOpenid === "string" && groupOpenid.trim() ? [groupOpenid.trim()] : [""];
+  } else {
+    targetGroups = defaultUserManager.getNotificationGroupOpenids();
+    if (targetGroups.length === 0) {
+      const fallback =
+        process.env.QQ_NOTIFY_GROUP_OPENID || defaultUserManager.getLatestGroupOpenid();
+      if (fallback) targetGroups = [fallback.trim()];
+    }
+  }
+
   const targets = {},
     outbox = {};
   await mkdir(cache, { recursive: true, mode: 0o700 });
@@ -737,6 +755,7 @@ export async function notifyGroupPublication({
       await writeJsonAtomically(resolve(cache, "ledger.json"), ledger);
       await chmod(resolve(cache, "ledger.json"), 0o600);
     };
+
     for (const kind of kinds) {
       let content, publicationHash;
       try {
@@ -772,7 +791,10 @@ export async function notifyGroupPublication({
         targets[kind] = { status: "waiting_permission" };
         continue;
       }
-      if (typeof groupOpenid !== "string" || !/^[a-zA-Z0-9_-]{1,128}$/u.test(groupOpenid)) {
+      if (
+        targetGroups.length === 0 ||
+        targetGroups.some((g) => !/^[a-zA-Z0-9_-]{1,128}$/u.test(g))
+      ) {
         targets[kind] = { status: "blocked", code: "QQ_GROUP_TARGET_REQUIRED" };
         continue;
       }
@@ -780,41 +802,76 @@ export async function notifyGroupPublication({
         targets[kind] = { status: "blocked", code: "QQ_SOURCE_BUILD_REQUIRED" };
         continue;
       }
-      const groupHash = createHash("sha256").update(groupOpenid).digest("hex");
-      // Delivery warnings can change on retry without creating a new publication.
-      const key = `${kind}:${groupHash}:${publicationHash}`;
-      const previous = ledger.items[key];
-      if (previous?.status === "sent") {
-        targets[kind] = { status: "unchanged" };
-        continue;
-      }
-      if (previous) {
-        targets[kind] = { status: "blocked", code: "QQ_NOTIFY_UNKNOWN_OUTCOME" };
-        continue;
-      }
-      ledger.items[key] = {
-        status: "intent",
-        content_hash: outbox[kind].hash,
-        created_at: new Date().toISOString(),
-      };
-      await save();
-      try {
-        const receipt = await send({ groupOpenid, content });
-        if (!receipt?.id) throw new Error("QQ_NOTIFY_UNKNOWN_OUTCOME");
+
+      // Send to each target group
+      const perGroupOutcomes = [];
+      for (const targetG of targetGroups) {
+        const groupHash = createHash("sha256").update(targetG).digest("hex");
+        const key = `${kind}:${groupHash}:${publicationHash}`;
+        const previous = ledger.items[key];
+        if (previous?.status === "sent") {
+          perGroupOutcomes.push({ groupOpenid: targetG, status: "unchanged" });
+          continue;
+        }
+        if (previous) {
+          perGroupOutcomes.push({
+            groupOpenid: targetG,
+            status: "blocked",
+            code: "QQ_NOTIFY_UNKNOWN_OUTCOME",
+          });
+          continue;
+        }
         ledger.items[key] = {
-          status: "sent",
+          status: "intent",
           content_hash: outbox[kind].hash,
-          sent_at: new Date().toISOString(),
+          created_at: new Date().toISOString(),
         };
         await save();
-        targets[kind] = { status: "success" };
-      } catch (error) {
-        // A definite HTTP rejection did not commit a message; transport errors might have.
-        if (/^发送主动群消息失败 HTTP (?:400|401|403|404|429):/u.test(error?.message || "")) {
-          delete ledger.items[key];
+        try {
+          const receipt = await send({ groupOpenid: targetG, content });
+          if (!receipt?.id) throw new Error("QQ_NOTIFY_UNKNOWN_OUTCOME");
+          ledger.items[key] = {
+            status: "sent",
+            content_hash: outbox[kind].hash,
+            sent_at: new Date().toISOString(),
+          };
           await save();
-          targets[kind] = { status: "blocked", code: "QQ_NOTIFY_REMOTE_REJECTED" };
-        } else targets[kind] = { status: "blocked", code: "QQ_NOTIFY_UNKNOWN_OUTCOME" };
+          perGroupOutcomes.push({ groupOpenid: targetG, status: "success" });
+        } catch (error) {
+          if (/^发送主动群消息失败 HTTP (?:400|401|403|404|429):/u.test(error?.message || "")) {
+            delete ledger.items[key];
+            await save();
+            perGroupOutcomes.push({
+              groupOpenid: targetG,
+              status: "blocked",
+              code: "QQ_NOTIFY_REMOTE_REJECTED",
+            });
+          } else {
+            perGroupOutcomes.push({
+              groupOpenid: targetG,
+              status: "blocked",
+              code: "QQ_NOTIFY_UNKNOWN_OUTCOME",
+            });
+          }
+        }
+      }
+
+      if (targetGroups.length === 1) {
+        targets[kind] = perGroupOutcomes[0];
+      } else {
+        const allSentOrUnchanged = perGroupOutcomes.every((o) =>
+          ["success", "unchanged"].includes(o.status)
+        );
+        const anyBlockedGroup = perGroupOutcomes.find((o) => o.status === "blocked");
+        targets[kind] = {
+          status: allSentOrUnchanged
+            ? "success"
+            : anyBlockedGroup
+              ? "blocked"
+              : "waiting_permission",
+          ...(anyBlockedGroup ? { code: anyBlockedGroup.code } : {}),
+          groups: perGroupOutcomes,
+        };
       }
     }
     await writeJsonAtomically(resolve(cache, "outbox.json"), outbox);
@@ -872,6 +929,41 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1
     }
   }
 
+  if (args.includes("--add-group")) {
+    const idx = args.indexOf("--add-group");
+    const target = args[idx + 1];
+    const name = args[idx + 2] && !args[idx + 2].startsWith("-") ? args[idx + 2] : undefined;
+    if (!target) {
+      console.error("[qq-send] 用法: node scripts/qq-send.mjs --add-group <groupOpenid> [名称]");
+      process.exit(1);
+    }
+    const ok = defaultUserManager.subscribeGroup(target, { name });
+    if (ok) {
+      console.log(`[qq-send] ✓ 成功添加/启用群聊订阅: ${maskOpenid(target)}`);
+    } else {
+      console.error(`[qq-send] ✗ 添加群聊失败，无效的 GroupOpenID`);
+      process.exit(1);
+    }
+    process.exit(0);
+  }
+
+  if (args.includes("--remove-group")) {
+    const idx = args.indexOf("--remove-group");
+    const target = args[idx + 1];
+    if (!target) {
+      console.error("[qq-send] 用法: node scripts/qq-send.mjs --remove-group <groupOpenid>");
+      process.exit(1);
+    }
+    const ok = defaultUserManager.unsubscribeGroup(target);
+    if (ok) {
+      console.log(`[qq-send] ✓ 成功取消群聊订阅: ${maskOpenid(target)}`);
+    } else {
+      console.error(`[qq-send] ✗ 未找到该群聊记录`);
+      process.exit(1);
+    }
+    process.exit(0);
+  }
+
   if (args.includes("--list") || args.includes("-l")) {
     const users = defaultUserManager.getUsers();
     const groups = defaultUserManager.getGroups();
@@ -880,18 +972,20 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1
 
     console.log(`[qq-send] 用户列表：共记录 ${uEntries.length} 个用户 OpenID`);
     for (const [id, u] of uEntries) {
-      console.log(`  - UserOpenID: ${id}`);
+      console.log(`  - UserOpenID: ${maskOpenid(id)}`);
       console.log(
-        `    交互: ${u.interaction_count} 次 | 最近: ${new Date(u.last_seen).toLocaleString()}`
+        `    交互: ${u.interaction_count} 次 | 最近: ${new Date(u.last_seen).toLocaleString("zh-CN", { timeZone: "Asia/Shanghai" })}`
       );
       if (u.last_query) console.log(`    最后提问: ${u.last_query}`);
     }
 
     console.log(`\n[qq-send] 群聊列表：共记录 ${gEntries.length} 个群聊 GroupOpenID`);
     for (const [id, g] of gEntries) {
-      console.log(`  - GroupOpenID: ${id}`);
+      const statusLabel = g.subscribed === false ? "[已停用订阅]" : "[已启用订阅]";
+      const nameLabel = g.name ? ` (${g.name})` : "";
+      console.log(`  - GroupOpenID: ${maskOpenid(id)}${nameLabel} ${statusLabel}`);
       console.log(
-        `    交互: ${g.interaction_count} 次 | 最近: ${new Date(g.last_seen).toLocaleString()}`
+        `    交互: ${g.interaction_count} 次 | 最近: ${new Date(g.last_seen).toLocaleString("zh-CN", { timeZone: "Asia/Shanghai" })}`
       );
       if (g.last_query) console.log(`    最后提问: ${g.last_query}`);
     }
@@ -944,7 +1038,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1
       process.exit(1);
     }
 
-    console.log(`[qq-send] 目标群聊 GroupOpenID: ${targetGroup}`);
+    console.log(`[qq-send] 目标群聊 GroupOpenID: ${maskOpenid(targetGroup)}`);
     console.log(`[qq-send] 群发内容: ${content}`);
 
     try {
@@ -993,7 +1087,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1
     process.exit(1);
   }
 
-  console.log(`[qq-send] 目标用户 OpenID: ${targetOpenid}`);
+  console.log(`[qq-send] 目标用户 OpenID: ${maskOpenid(targetOpenid)}`);
   console.log(`[qq-send] 私信内容: ${content}`);
 
   try {

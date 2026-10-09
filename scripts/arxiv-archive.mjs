@@ -108,10 +108,19 @@ export function getNaturalWeekBounds(weekId) {
   const announcementDates = Array.from({ length: 7 }, (_, i) =>
     new Date(start.valueOf() + i * 86400000).toISOString().slice(0, 10)
   );
+  const sundayPrior = new Date(start.valueOf() - 86400000).toISOString().slice(0, 10);
+  const academicAnnouncementDates = [
+    sundayPrior,
+    announcementDates[0],
+    announcementDates[1],
+    announcementDates[2],
+    announcementDates[3],
+  ];
   return {
     monday,
     sunday,
     announcementDates,
+    academicAnnouncementDates,
     dateRange: `${monday} ~ ${sunday}`,
   };
 }

@@ -368,3 +368,42 @@ test("a summary without a stable publication identity cannot be sent", async (t)
   assert.equal(result.targets.daily.code, "QQ_SOURCE_BUILD_REQUIRED");
   assert.equal(sends, 0);
 });
+
+test("notifyGroupPublication broadcasts to multiple groups with independent ledger states", async (t) => {
+  const { path } = await createTemporaryWorkspace("astro-lineage-qq-multigroup-", t);
+  const sentGroups = [];
+  const options = {
+    sourceBinding,
+    kinds: ["daily"],
+    cache: path,
+    enabled: true,
+    groupOpenids: ["group_alpha", "group_beta"],
+    brief: async () => "daily broadcast",
+    send: async ({ groupOpenid }) => {
+      sentGroups.push(groupOpenid);
+      if (groupOpenid === "group_beta") throw new Error("发送主动群消息失败 HTTP 403: rejected");
+      return { id: `msg-${groupOpenid}` };
+    },
+  };
+
+  const first = await notifyGroupPublication(options);
+  assert.equal(first.status, "blocked");
+  assert.equal(first.targets.daily.groups.length, 2);
+  assert.equal(first.targets.daily.groups[0].groupOpenid, "group_alpha");
+  assert.equal(first.targets.daily.groups[0].status, "success");
+  assert.equal(first.targets.daily.groups[1].groupOpenid, "group_beta");
+  assert.equal(first.targets.daily.groups[1].status, "blocked");
+  assert.equal(first.targets.daily.groups[1].code, "QQ_NOTIFY_REMOTE_REJECTED");
+
+  // Retry: alpha should be unchanged, beta will be attempted again
+  const second = await notifyGroupPublication({
+    ...options,
+    send: async ({ groupOpenid }) => {
+      sentGroups.push(groupOpenid);
+      return { id: `msg-${groupOpenid}-retry` };
+    },
+  });
+  assert.equal(second.status, "success");
+  assert.equal(second.targets.daily.groups[0].status, "unchanged");
+  assert.equal(second.targets.daily.groups[1].status, "success");
+});

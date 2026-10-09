@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { createUserManager } from "../scripts/qq-users.mjs";
+import { createUserManager, maskOpenid } from "../scripts/qq-users.mjs";
 import { createTemporaryWorkspace } from "./helpers/temporary-workspace.mjs";
 import { join } from "node:path";
 import { stat } from "node:fs/promises";
@@ -56,4 +56,31 @@ test("userManager validates invalid openids", async (t) => {
   assert.equal(manager.recordUser(12345), null);
   assert.equal(manager.recordUser("a".repeat(200)), null);
   assert.deepEqual(manager.getUsers(), {});
+});
+
+test("maskOpenid masks middle characters and handles edge cases", () => {
+  // Using imported maskOpenid
+  assert.equal(maskOpenid(null), "****");
+  assert.equal(maskOpenid(""), "****");
+  assert.equal(maskOpenid("12345678"), "12****78");
+  assert.equal(maskOpenid("9A3D1234567868BF"), "9A3D****68BF");
+});
+
+test("userManager supports group subscriptions and multi-group notifications", async (t) => {
+  const { path } = await createTemporaryWorkspace("astro-lineage-qq-groups-", t);
+  const manager = createUserManager({ filePath: join(path, "users.json"), root: path });
+
+  assert.deepEqual(manager.getNotificationGroupOpenids(), []);
+
+  manager.subscribeGroup("group_1", { name: "天文主群" });
+  manager.subscribeGroup("group_2", { name: "学术交流二群" });
+
+  assert.deepEqual(manager.getNotificationGroupOpenids(), ["group_1", "group_2"]);
+  assert.equal(manager.getLatestGroupOpenid(), "group_2");
+
+  manager.unsubscribeGroup("group_1");
+  assert.deepEqual(manager.getNotificationGroupOpenids(), ["group_2"]);
+
+  manager.subscribeGroup("group_1");
+  assert.deepEqual(manager.getNotificationGroupOpenids().sort(), ["group_1", "group_2"]);
 });

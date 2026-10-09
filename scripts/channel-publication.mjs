@@ -83,7 +83,7 @@ export const TOPICS = [
   ],
   [
     "R7",
-    /(?:X.ray pulsar|accretion column|accreting neutron star|accreting magnetar|X.ray binar|X.ray spectral (?:analysis|evolution)|X.ray reverberation|\bNS binary system\b|\bUCXB\b|IXPE.{0,60}magnetar|magnetar.{0,60}IXPE|\bQPO\b|\bCRSF\b|\bXRISM\b|\bNICER\b|\bNuSTAR\b|\bHXMT\b|吸积柱|X射线脉冲星|X射线双星|回旋吸收线)/iu,
+    /(?:X.ray pulsar|accretion column|accreting neutron star|accreting magnetar|X.ray binar|X.ray spectral (?:analysis|evolution)|X.ray reverberation|X.ray corona[e]?|\bNS binary system\b|\bUCXB\b|IXPE.{0,60}magnetar|magnetar.{0,60}IXPE|\bQPO\b|\bCRSF\b|\bXRISM\b|\bNICER\b|\bNuSTAR\b|\bHXMT\b|吸积柱|X射线脉冲星|X射线双星|回旋吸收线|X射线日冕)/iu,
   ],
 ].map(([id, pattern]) => [id, directionTitles.get(id), pattern]);
 

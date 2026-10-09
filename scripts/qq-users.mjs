@@ -1,10 +1,25 @@
 import { randomUUID } from "node:crypto";
-import { mkdirSync, chmodSync, readFileSync, writeFileSync, renameSync, unlinkSync, existsSync } from "node:fs";
+import {
+  mkdirSync,
+  chmodSync,
+  readFileSync,
+  writeFileSync,
+  renameSync,
+  unlinkSync,
+  existsSync,
+} from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const DEFAULT_USERS_FILE = fileURLToPath(new URL("../.cache/qq-bot/users.json", import.meta.url));
 const MAX_RECORDS = 1000;
+
+export function maskOpenid(id) {
+  if (!id || typeof id !== "string") return "****";
+  const str = id.trim();
+  if (str.length <= 8) return str.slice(0, 2) + "****" + str.slice(-2);
+  return str.slice(0, 4) + "****" + str.slice(-4);
+}
 
 export function createUserManager(options = {}) {
   const filePath = options.filePath || DEFAULT_USERS_FILE;
@@ -12,24 +27,47 @@ export function createUserManager(options = {}) {
 
   function ensureDir() {
     mkdirSync(root, { recursive: true, mode: 0o700 });
-    try { chmodSync(root, 0o700); } catch {}
+    try {
+      chmodSync(root, 0o700);
+    } catch {}
   }
 
   function load() {
-    if (!existsSync(filePath)) {
-      return { users: {}, groups: {}, latest_user_openid: null, latest_group_openid: null };
+    let result = { users: {}, groups: {}, latest_user_openid: null, latest_group_openid: null };
+    if (existsSync(filePath)) {
+      try {
+        const data = JSON.parse(readFileSync(filePath, "utf8"));
+        if (typeof data === "object" && data !== null) {
+          result.users = typeof data.users === "object" && data.users !== null ? data.users : {};
+          result.groups =
+            typeof data.groups === "object" && data.groups !== null ? data.groups : {};
+          result.latest_user_openid = data.latest_user_openid || null;
+          result.latest_group_openid = data.latest_group_openid || null;
+        }
+      } catch {}
     }
-    try {
-      const data = JSON.parse(readFileSync(filePath, "utf8"));
-      if (typeof data !== "object" || data === null) {
-        return { users: {}, groups: {}, latest_user_openid: null, latest_group_openid: null };
+    // Auto-seed groups from env if empty
+    if (Object.keys(result.groups).length === 0) {
+      const envGroups = [
+        ...(process.env.QQ_NOTIFY_GROUP_OPENIDS
+          ? process.env.QQ_NOTIFY_GROUP_OPENIDS.split(",")
+          : []),
+        ...(process.env.QQ_NOTIFY_GROUP_OPENID ? [process.env.QQ_NOTIFY_GROUP_OPENID] : []),
+      ]
+        .map((s) => s.trim())
+        .filter(Boolean);
+      for (const g of envGroups) {
+        result.groups[g] = {
+          group_openid: g,
+          first_seen: Date.now(),
+          last_seen: Date.now(),
+          interaction_count: 0,
+          subscribed: true,
+        };
+        result.latest_group_openid = g;
       }
-      data.users = typeof data.users === "object" && data.users !== null ? data.users : {};
-      data.groups = typeof data.groups === "object" && data.groups !== null ? data.groups : {};
-      return data;
-    } catch {
-      return { users: {}, groups: {}, latest_user_openid: null, latest_group_openid: null };
     }
+    return result;
   }
 
   function save(data) {
@@ -39,7 +77,11 @@ export function createUserManager(options = {}) {
       writeFileSync(temp, JSON.stringify(data, null, 2), { mode: 0o600, flag: "wx" });
       renameSync(temp, filePath);
     } finally {
-      try { unlinkSync(temp); } catch (e) { if (e.code !== "ENOENT") throw e; }
+      try {
+        unlinkSync(temp);
+      } catch (e) {
+        if (e.code !== "ENOENT") throw e;
+      }
     }
   }
 
@@ -136,6 +178,55 @@ export function createUserManager(options = {}) {
     getLatestGroupOpenid() {
       const store = load();
       return store.latest_group_openid || Object.keys(store.groups).pop() || null;
+    },
+
+    getNotificationGroupOpenids() {
+      const store = load();
+      const groups = store.groups || {};
+      const envGroups = [
+        ...(process.env.QQ_NOTIFY_GROUP_OPENIDS
+          ? process.env.QQ_NOTIFY_GROUP_OPENIDS.split(",")
+          : []),
+        ...(process.env.QQ_NOTIFY_GROUP_OPENID ? [process.env.QQ_NOTIFY_GROUP_OPENID] : []),
+      ]
+        .map((s) => s.trim())
+        .filter(Boolean);
+      const set = new Set(envGroups);
+      for (const [id, g] of Object.entries(groups)) {
+        if (g.subscribed !== false) set.add(id);
+      }
+      return Array.from(set);
+    },
+
+    subscribeGroup(groupOpenid, meta = {}, now = Date.now()) {
+      if (!groupOpenid || typeof groupOpenid !== "string") return false;
+      const cleanId = groupOpenid.trim();
+      if (!cleanId || cleanId.length > 128) return false;
+      const store = load();
+      const existing = store.groups[cleanId] || {
+        group_openid: cleanId,
+        first_seen: now,
+        interaction_count: 0,
+      };
+      existing.subscribed = true;
+      existing.last_seen = now;
+      if (meta.name) existing.name = String(meta.name).slice(0, 100);
+      store.groups[cleanId] = existing;
+      store.latest_group_openid = cleanId;
+      save(store);
+      return true;
+    },
+
+    unsubscribeGroup(groupOpenid) {
+      if (!groupOpenid || typeof groupOpenid !== "string") return false;
+      const cleanId = groupOpenid.trim();
+      const store = load();
+      if (store.groups[cleanId]) {
+        store.groups[cleanId].subscribed = false;
+        save(store);
+        return true;
+      }
+      return false;
     },
   };
 }

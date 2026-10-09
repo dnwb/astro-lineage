@@ -33,6 +33,12 @@ import {
 } from "./channel-title-policy.mjs";
 import { formatAnnouncementInBeijing } from "../src/domain/academic-domain.mjs";
 import { OfficialQqBotAdapter, dispatchIntelligence } from "./intelligence-egress.mjs";
+import {
+  resolveFeedShareUrl,
+  resolveWeeklyFeedShareUrl,
+  resolvePaperFeedShareUrl,
+  resolveDailySummaryShareUrl,
+} from "./channel-feed-resolver.mjs";
 
 try {
   if (typeof process.loadEnvFile === "function" && existsSync(".env")) {
@@ -126,13 +132,14 @@ export async function generateGroupBrief(type = "daily", options = {}) {
     if (!/^\d{4}-W\d\d$/u.test(weekly.week_id || "") || !weekly.executive_summary)
       throw new Error("QQ_SOURCE_INVALID");
     const weeklyTitle = deriveWeeklyTitleCandidate(weekly.week_id, weekly);
+    const weeklyPostUrl = resolveWeeklyFeedShareUrl(weekly.week_id, { fallbackUrl: channelUrl });
     if (isMarkdown) {
-      lines.push(`# [${weeklyTitle}](${channelUrl})`, "");
+      lines.push(`# [${weeklyTitle}](${weeklyPostUrl})`, "");
       const topPick = (weekly.top_picks || [])[0];
       if (topPick) {
         const rev = topPick.revision || 1;
         lines.push(
-          `- **信源**: [arXiv:${topPick.arxiv_id}v${rev}](https://arxiv.org/abs/${topPick.arxiv_id}v${rev}) · [📄 PDF](https://arxiv.org/pdf/${topPick.arxiv_id}) · **频道交流**: [进入 QQ 频道讨论](${channelUrl})`,
+          `- **信源**: [arXiv:${topPick.arxiv_id}v${rev}](https://arxiv.org/abs/${topPick.arxiv_id}v${rev}) · [📄 PDF](https://arxiv.org/pdf/${topPick.arxiv_id}) · **频道交流**: [进入周报讨论帖](${weeklyPostUrl})`,
           ""
         );
       }
@@ -166,12 +173,13 @@ export async function generateGroupBrief(type = "daily", options = {}) {
               : authors.join(", ")
             : "";
         const authorSuffix = authorStr ? ` (${authorStr})` : "";
+        const paperPostUrl = resolvePaperFeedShareUrl(pick.arxiv_id, { fallbackUrl: channelUrl });
         lines.push(
           "---",
           `### ⭐ 必读｜${extractPaperTopic(pick)}${authorSuffix}`,
           `**[${pick.title || ""}](${pick.url || `https://arxiv.org/abs/${pick.arxiv_id}${suffix}`})**`,
           `- **arXiv 原文**: [arXiv:${pick.arxiv_id}${suffix}](https://arxiv.org/abs/${pick.arxiv_id}${suffix}) · [📄 PDF](https://arxiv.org/pdf/${pick.arxiv_id})`,
-          `- **频道研讨**: [进入对应频道研讨帖](${channelUrl})`,
+          `- **频道研讨**: [进入对应频道研讨帖](${paperPostUrl})`,
           `- **网页精读**: [查看网页周报综述](${websiteBase}/arxiv-weekly/${weekly.week_id}/)`,
           "",
           `> **【核心洞察】** ${pick.core_insight || pick.reason || ""}`,
@@ -184,8 +192,9 @@ export async function generateGroupBrief(type = "daily", options = {}) {
         lines.push("---", "### 📌 关注", "");
         for (const pick of worthKnowingPicks) {
           const rev = pick.revision || 1;
+          const paperPostUrl = resolvePaperFeedShareUrl(pick.arxiv_id, { fallbackUrl: channelUrl });
           lines.push(
-            `- **${extractPaperTopic(pick)}** ｜ [${pick.title || ""}](${pick.url || `https://arxiv.org/abs/${pick.arxiv_id}v${rev}`}) · [arXiv:${pick.arxiv_id}](https://arxiv.org/abs/${pick.arxiv_id}v${rev}) · [频道交流](${channelUrl})`
+            `- **${extractPaperTopic(pick)}** ｜ [${pick.title || ""}](${pick.url || `https://arxiv.org/abs/${pick.arxiv_id}v${rev}`}) · [arXiv:${pick.arxiv_id}](https://arxiv.org/abs/${pick.arxiv_id}v${rev}) · [频道交流](${paperPostUrl})`
           );
         }
         lines.push("");
@@ -617,12 +626,14 @@ export function renderSinglePaperCardMarkdown(p, options = {}) {
     lines.push("");
   }
 
+  const paperPostUrl = resolvePaperFeedShareUrl(p.arxiv_id, { fallbackUrl: channelUrl });
+
   lines.push(
     "---",
     "",
     "### 📚 完整阅读入口",
     `- **内网/校内完整网页与图表**: [打开网页深度导读](${websiteBase}/arxiv-daily/${date}/#${anchor})`,
-    `- **QQ 频道社区交流帖**: [进入频道讨论](${channelUrl})`,
+    `- **QQ 频道社区交流帖**: [进入频道讨论](${paperPostUrl})`,
     `- **官方论文原文**: [arXiv:${p.arxiv_id}v${revision}](https://arxiv.org/abs/${p.arxiv_id}v${revision})`
   );
 

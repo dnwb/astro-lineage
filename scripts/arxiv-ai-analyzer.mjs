@@ -804,16 +804,6 @@ export function validateScientificOutput(
   if (evidenceError)
     throw new Error(`Model response includes unverifiable evidence: ${evidenceError}`);
 
-  if (parsed.priority === "skip" && evidence.length === 0) {
-    const rawQuote = (entry?.abstract || "").slice(0, 100).trim();
-    if (rawQuote) {
-      evidence.push({
-        section: abstract ? "Abstract" : sourceSections?.[0]?.title || "Introduction",
-        quote: rawQuote,
-        supports: ["reason"],
-      });
-    }
-  }
   if (evidence.length > 0) {
     for (const item of evidence) {
       if (Array.isArray(item?.supports)) {

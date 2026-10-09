@@ -315,7 +315,10 @@ test("weekly titles select the concrete scientific claim after a thematic framin
 
 test("current W40 title selection ignores the thematic frame and multi-item topic list", async () => {
   const weekly = JSON.parse(
-    await readFile(new URL("../src/data/arxiv-weekly.json", import.meta.url), "utf8")
+    await readFile(
+      new URL("../src/data/arxiv-archives/weekly/2026-W40.json", import.meta.url),
+      "utf8"
+    )
   );
   assert.equal(
     deriveWeeklyTitleCandidate(weekly.week_id, weekly),

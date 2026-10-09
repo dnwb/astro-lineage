@@ -1226,12 +1226,32 @@ async function publishItems(
             result.updated += 1;
           } else if (movedThisTime) result.updated += 1;
           else result.unchanged += 1;
+          let shareUrl = existing?.share_url;
+          if (!shareUrl && remote?.feed_id && remote?.channel_id) {
+            try {
+              const shareRes = payload(
+                await cli([
+                  "feed",
+                  "get-feed-share-url",
+                  "--guild-id",
+                  String(guildId),
+                  "--channel-id",
+                  String(remote.channel_id),
+                  "--feed-id",
+                  String(remote.feed_id),
+                  "--json",
+                ])
+              );
+              if (shareRes?.share_url) shareUrl = shareRes.share_url;
+            } catch {}
+          }
           records[identity] = {
             hash,
             status: "published",
             feed_id: remote.feed_id,
             create_time: remote.create_time,
             channel_id: remote.channel_id,
+            ...(shareUrl ? { share_url: shareUrl } : {}),
             ...(figure
               ? {
                   figure_sha256: figure.sha256,
@@ -1305,12 +1325,30 @@ async function publishItems(
             };
             await save();
           }
+          let shareUrl = null;
+          try {
+            const shareRes = payload(
+              await cli([
+                "feed",
+                "get-feed-share-url",
+                "--guild-id",
+                String(guildId),
+                "--channel-id",
+                String(target),
+                "--feed-id",
+                String(created.feed_id),
+                "--json",
+              ])
+            );
+            if (shareRes?.share_url) shareUrl = shareRes.share_url;
+          } catch {}
           records[identity] = {
             hash,
             status: "published",
             feed_id: created.feed_id,
             create_time: created.create_time,
             channel_id: String(target),
+            ...(shareUrl ? { share_url: shareUrl } : {}),
             ...(figure
               ? { figure_sha256: figure.sha256, figure_media_sha256: figureMediaSha256 }
               : {}),

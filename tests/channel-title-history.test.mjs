@@ -78,7 +78,7 @@ async function prepareSyncFixture(t, { identity = DAILY, alterArchive } = {}) {
   await writeFile(join(page, "index.html"), "built");
   await writeFile(
     weeklyPath,
-    await readFile(new URL("../src/data/arxiv-weekly.json", import.meta.url))
+    await readFile(new URL("../src/data/arxiv-archives/weekly/2026-W40.json", import.meta.url))
   );
 
   await refreshArxivFeed({

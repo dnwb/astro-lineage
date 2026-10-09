@@ -996,3 +996,63 @@ export function validateTitleOverride(kind, candidate, identity) {
   if (kind === "paper") return formatPaperTitle(value);
   throw new Error("CHANNEL_TITLE_KIND_INVALID");
 }
+
+export function sanitizeTitleForDisplay(rawTitle, maxLength = 35) {
+  let clean = cleanMathInTitle(rawTitle);
+
+  const DEPENDENT_LEAD =
+    /^(?:若(?:该解释|上述|此)?成立|对比之下|相比之下|总体而言|研究表明|分析指出|计算显示|典型相关分析显示|味组成计算显示|作者提出(?:了)?|作者认为|给定正文摘要报告|正文报告(?:了)?|研究发现|结果显示|通过模拟)[，,:：]?\s*/u;
+  clean = clean.replace(DEPENDENT_LEAD, "");
+
+  if (Array.from(clean).length <= maxLength) {
+    return clean.replace(/[\$\\`~_^{}\\\/]+$/g, "").trim();
+  }
+
+  const matchPrefix = clean.match(/^(「\d{2}-\d{2}」|\[\d{4}-W\d{2}\][^｜]*｜\s*)/u);
+  const prefix = matchPrefix ? matchPrefix[0] : "";
+  const body = clean.slice(prefix.length);
+
+  const isDependentClause = (str) => {
+    return (
+      Array.from(str).length < 12 ||
+      /^(?:若|如果|假设|当|在|从|基于|随着|针对|对于|根据|通过|由于|在线性|在不包含|在具有|在核燃烧)\b/u.test(
+        str
+      ) ||
+      !/(?:能否|是否|如何|为何|产生|形成|主导|改变|解释|限制|约束|发现|给出|推断|演化|衰减|削弱|增强|模型|结构|特征|率|能量|喷流|超额|联系|双星)/u.test(
+        str
+      )
+    );
+  };
+
+  const parts = body.split(/[，,；;：:。]/u).filter(Boolean);
+  if (
+    parts.length > 1 &&
+    !isDependentClause(parts[0]) &&
+    Array.from(prefix + parts[0]).length <= maxLength
+  ) {
+    return (prefix + parts[0])
+      .replace(/(?:在中|在|与|和|且|但|因|为|的)$/u, "")
+      .replace(/[\$\\`~_^{}\\\/]+$/g, "")
+      .trim();
+  }
+
+  if (
+    parts.length > 1 &&
+    isDependentClause(parts[0]) &&
+    parts[1] &&
+    !isDependentClause(parts[1]) &&
+    Array.from(prefix + parts[1]).length <= maxLength
+  ) {
+    return (prefix + parts[1])
+      .replace(/(?:在中|在|与|和|且|但|因|为|的)$/u, "")
+      .replace(/[\$\\`~_^{}\\\/]+$/g, "")
+      .trim();
+  }
+
+  const maxBodyLen = maxLength - Array.from(prefix).length;
+  let truncated = prefix + Array.from(body).slice(0, maxBodyLen).join("");
+  return truncated
+    .replace(/(?:在中|在|与|和|且|但|因|为|的)$/u, "")
+    .replace(/[\$\\`~_^{}\\\/]+$/g, "")
+    .trim();
+}

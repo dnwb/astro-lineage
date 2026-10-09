@@ -1,81 +1,66 @@
 {
   "schema_version": "astrolineage-weekly-summary-v1",
-  "generated_at": "2026-10-08T02:35:12.431Z",
+  "generated_at": "2026-10-09T02:10:34.484Z",
   "week_id": "2026-W41",
   "title": "每周学术脉络 · 2026-W41",
   "date_range": "2026-10-05 ~ 2026-10-11",
-  "executive_summary": "本周高能天体物理重点工作聚焦于激波相互作用、相对论外流能谱遗迹、中子星致密结构与双星演化通道的因果链条检验。具体进展包括：\n- **周星介质激波破越**：arXiv:2610.04367 论证爱因斯坦探针捕获的快速 X 射线暂现源 EP260321a 无法由裸 WR 星破越解释，提出其 $\\sim 690\\,\\mathrm{s}$ 上升与软 X 射线能谱来自脱离星体的延展 CSM 壳层激波破越，推断 CSM 总光深达 $\\tau=34^{+17}_{-10}$。\n- **极端粒子加速与遗迹辐射**：arXiv:2610.03886 提出 Cen A 方向的超高能宇宙线（UHECR）角超额可能源自 Cen A/M83 星系群内过去的 GRB 221009A 类瞬变源经星系际磁场偏转的时延遗迹，要求单次事件重子能量 $E_{\\mathrm{CR}}\\sim 10^{51}\\,\\mathrm{erg}$；arXiv:2610.03881 论证 Virgo/M87 核心的弥散软 X 射线可能混入了古老宇宙线轻子的 CMB 逆康普顿连续谱，使传统纯热辐射模型严重高估冷却流质量率。\n- **致密双星演化与动力学踢速**：arXiv:2610.04005 联合拟合 Gaia 宽轨双星、Be+NS 系统及年轻孤立脉冲星，建立包含低速（$\\sim 6.5\\,\\mathrm{km\\,s^{-1}}$，占比 $\\sim 13\\%$）与高速分量的一致中子星诞生踢速母体分布；arXiv:2610.05773 基于 POSYDON 网格揭示共同包层演化在 $10^{-4}Z_\\odot$ 至太阳丰度下均主导双中子星形成，并在极低金属丰度下因 Case C 转移使形成效率提高近一个数量级；arXiv:2610.05769 则通过辐射流体动力学将发光红新星 AT 2025abao 归因于快速共同包层旋入诱发的非对称激波破越。\n- **致密星内部物理与时变时钟**：arXiv:2610.04341 通过 Swift/BAT 与 Fermi/GBM 长期监测厘清 Hercules X-1 在 2025–2026 延长低态下的超轨道时钟渐进衰退过程，排除中子星自由进动作为主要诱因；arXiv:2610.04481 构建具有无涡旋通道的非均匀钉扎雪崩模型，定量连接了脉冲星跃变上升时间与涡旋方位向输运；arXiv:2610.04282 在完全广义相对论框架下计算了含玻色暗物质核/晕的双流体中子星非径向极向振荡，$f$ 模呈现独特的暗物质主导分支；arXiv:2610.05720 针对热 X 射线脉冲轮廓拟合提出严格保通量的大气辐射能量-角度紧凑解析参数化。\n> 🎯 **筛选边界**：本周重点聚焦高能激波破越、宇宙线高能辐射、中子星内禀性质与演化动力学，已滤除缺乏致密物理机制的泛星系巡天与低能段统计研究。",
+  "executive_summary": "本周高能天体物理重点工作聚焦于激波与星周介质相互作用的非平衡辐射转移、强场时空与致密星内部物理机制，以及双星演化在引力波瞬变中的主导通道约束。具体进展如下：\n- **激波破越与CSM相互作用**：arXiv:2610.04367 论证了快速X射线瞬变 EP260321a 的约 $690\\,{\\rm s}$ 上升时标与约 $0.1\\,{\\rm keV}$ 能谱特征源于脱离恒星的扩展CSM壳层激波破越，其后验参数表明抛射物动能 $E_{\\rm ej}=6.3^{+1.2}_{-0.8}\\times10^{51}\\,{\\rm erg}$，外径达 $612.2^{+46.9}_{-35.2}R_\\odot$。\n- **超高能宇宙线起源与瞬变关联**：arXiv:2610.03886 提出 Cen A 方向约 $15^\\circ$ 的中等角尺度 UHECR 超额可由过去爆发的 GRB 221009A 类窄喷流暂现源经星系群磁场延迟产生，要求单次事件重子能量负载 $\\eta_{\\rm CR}\\sim1-3$。\n- **致密天体与双星演化统计**：arXiv:2610.04005 构建了统一的中子星诞生踢速双峰模型，证实存活的 Gaia 宽双星中约 87% 来自中位速度仅 $6.5\\,{\\rm km\\,s^{-1}}$ 的极低踢速分支；arXiv:2610.05773 基于详细恒星演化网格证实共同包层通道在极低金属丰度下仍贡献了 $\\gtrsim95\\%$ 的双中子星并合系统。\n- **X射线双星与脉冲星多尺度时变**：arXiv:2610.04341 利用长达 18 年的硬X射线监测揭示 Hercules X-1 在延长低态中的 35 日超轨道时钟具有相位记忆的渐进式退相干，排除了自由进动机制；arXiv:2610.05720 提出了一种严格保持角积分通量归一化的中子星大气角向辐射参数化方案，隔离了纯几何推断与能谱伪信号。\n> 🎯 **筛选边界**：本周重点聚焦具备明确辐射流体因果推断、时变时钟物理验证及致密星族群约束的研究，剔除纯数据流水线发布与无物理建模的宽视场巡天论文。",
   "overview_matrix": [
     {
       "domain": "爆发瞬变与周星介质相互作用 (CSM)",
-      "key_question": "EP260321a 等软 X 射线快速暂现源与发光红新星的峰值光度与时标能否由致密星周介质破越统一解释？",
+      "key_question": "宽线Ic型超新星关联的快速X射线瞬变（FXT）能否用裸致密前身星破越解释？扩展CSM在辐射扩散中的几何与非平衡效应如何体现？",
       "representative_papers": [
-        "2610.04367",
-        "2610.05769"
+        "2610.04367"
       ],
-      "core_findings": "- 【arXiv:2610.04367】(第一作者等)：证明 EP260321a 的 $690\\,\\mathrm{s}$ 上升与 $\\sim 0.1\\,\\mathrm{keV}$ 能谱要求脱离恒星的延展 CSM 壳层（$R_{\\mathrm{in}}\\approx 160R_\\odot$，$R_{\\mathrm{out}}\\approx 612R_\\odot$），激波在 $\\tau\\sim c/v_{\\mathrm{s}}$ 处破越且光深达 $\\tau=34^{+17}_{-10}$。\n- 【arXiv:2610.05769】(第一作者等)：将 AT 2025abao 解释为伴星快速旋入包层诱发的激波破越，注入能量 $E_{\\mathrm{tot}}\\approx 1.25\\times 10^{47}\\,\\mathrm{erg}$，部分包层（$\\sim 0.57\\,M_\\odot$）在辐射压与动力学激波驱动下成功解绑。",
-      "significance": "确证在各类超新星爆发前夕普遍存在大质量剧烈质量损失形成的高光深 CSM 壳层，其破越扩散时标主导了早型高能暂现信号。"
+      "core_findings": "- 【arXiv:2610.04367】(arXiv:2610.04367 论文作者等)：常规裸WR星破越时标（几秒）无法解释 EP260321a 的 $t_{\\rm rise}\\approx690\\,{\\rm s}$；通过具有脱离恒星边界的扩展CSM壳层（$R_{\\rm in}\\approx160R_\\odot$，$R_{\\rm out}\\approx612R_\\odot$，$M_{\\rm csm}\\approx5\\times10^{-4}M_\\odot$），数值非平衡激波加热与 Monte Carlo 逃逸成功复现了软X射线光变与约 $0.1\\,{\\rm keV}$ 的能谱演化。",
+      "significance": "确立了EP探测到的部分Ic-BL关联FXT本质上是激波在晚期大质量恒星脉冲抛射出的脱离型致密CSM壳层中的破越扩散，而非喷流内禀暴发或裸星表面激波破越。"
     },
     {
-      "domain": "极高能宇宙线与高能粒子输运",
-      "key_question": "邻近星系群中局域粒子加速超额与冷核团冷却流差异是否反映了过往相对论外流的非热辐射遗迹？",
+      "domain": "相对论喷流与伽马射线暴 (GRB)",
+      "key_question": "本地宇宙超高能宇宙线（UHECR）点源各向异性是否必须由邻近活动星系核（如 Cen A）持续驱动，抑或由极端GRB的磁偏转瞬变遗迹贡献？",
       "representative_papers": [
-        "2610.03886",
-        "2610.03881"
+        "2610.03886"
       ],
-      "core_findings": "- 【arXiv:2610.03886】(第一作者等)：提出 Cen A 方向 $15^\\circ$ 的 UHECR 超额符合过去 $\\sim 2\\times 10^5\\,\\mathrm{yr}$ 前 GRB 221009A 类窄喷流爆发经 $\\sim 0.55\\,\\mathrm{nG}$ 磁场偏转的几何时延，预言近邻宇宙存在 $3-7$ 个类似角超额。\n- 【arXiv:2610.03881】(第一作者等)：论证 Virgo/M87 核心 $0.1-1\\,\\mathrm{GeV}$ 老化宇宙线轻子的 CMB 逆康普顿辐射可显著稀释热 X 射线连续谱，使真实气体冷却率降至 $\\dot M_{\\mathrm{true}}\\lesssim 0.1\\,M_\\odot\\,\\mathrm{yr^{-1}}$。",
-      "significance": "揭示瞬变外流与历史非热活动对当前星系/星团尺度高能背景与宇宙线各向异性具有决定性的延迟印记。"
+      "core_findings": "- 【arXiv:2610.03886】(arXiv:2610.03886 论文作者等)：将 Cen A 方向 $15^\\circ$ 的超额解释为过去 $2\\times10^5\\,{\\rm yr}$ 内发生在 Cen A/M83 群的 GRB 221009A 类似事件；在 $B\\approx0.55\\,{\\rm nG}$ 偏转下，预言全天应有 $N_{\\rm excess}\\sim3-7$ 个瞬变残留热点，要求能量收支满足 $\\eta_{\\rm CR}=E_{\\rm CR}/E_\\gamma\\sim1-3$。",
+      "significance": "为超高能宇宙线中等角尺度超额提供了非稳态喷流新视角，建立了极端GRB族群发生率与全天宇宙线热点数目的定量映射。"
     },
     {
-      "domain": "中子星演化通道与动力学踢速",
-      "key_question": "年轻孤立中子星的高动能踢速与宽轨/致密双星的低系统反冲能否在统一的超新星不对称性母体中自洽？",
+      "domain": "致密星物理与双星演化",
+      "key_question": "中子星诞生踢速母体分布是否存在普适双峰？超新星前的不同通道如何影响双中子星（DNS）在宇宙历史中的产率？",
       "representative_papers": [
         "2610.04005",
         "2610.05773"
       ],
-      "core_findings": "- 【arXiv:2610.04005】(第一作者等)：构建双峰诞生踢速母体，发现中位数仅 $6.5^{+5.9}_{-2.7}\\,\\mathrm{km\\,s^{-1}}$ 的低速成分（仅占诞生总量的 $12.6\\%$）在观测筛选下主导了 $87\\%$ 的存活 Gaia NS 候选体。\n- 【arXiv:2610.05773】(第一作者等)：通过 POSYDON 模型证明无论金属丰度如何共同包层演化均主导双中子星形成，但在 $Z\\le 10^{-2}Z_\\odot$ 处受 Case C 质量转移驱动，内禀并合效率提升近一个数量级。",
-      "significance": "澄清了双星观测样本中的存活偏倚对反演中子星超新星机制的掩盖效应，确立了从低金属丰度到银河系环境下双中子星并合率的理论定标。"
+      "core_findings": "- 【arXiv:2610.04005】(arXiv:2610.04005 论文作者等)：联合 Gaia 宽双星、Be+NS 及孤立脉冲星证明诞生踢速包含占比 $f_{\\rm low}\\approx12.6\\%$、中位值仅 $6.5\\,{\\rm km\\,s^{-1}}$ 的极低速分支，排除了单一宽对数正态模型。\n- 【arXiv:2610.05773】(arXiv:2610.05773 论文作者等)：利用POSYDON网格证实共同包层在全金属丰度区间（$10^{-4}-2Z_\\odot$）主导DNS形成（占比 $\\ge95\\%$）；极低金属丰度下单位恒星形成质量的并合产率比太阳丰度高约1个数量级。",
+      "significance": "厘清了双星存活筛选对表观踢速的强偏置效应，同时锁定了共同包层通道在第一代恒星向近邻宇宙演化中对致密双星合并率的绝对主导地位。"
     },
     {
-      "domain": "致密星X射线时变、结构与脉冲星物理",
-      "key_question": "吸积脉冲星长周期调制受何种吸积盘进动机制主导，致密星物态与多流体扰动如何映射至时变信号？",
+      "domain": "致密星X射线时变、能谱与双星观测",
+      "key_question": "X射线脉冲星的超轨道周期调制机制是盘遮蔽进动还是恒星自由进动？大气偏振与角向发射模型如何无偏约束中子星状态方程？",
       "representative_papers": [
         "2610.04341",
-        "2610.04481",
-        "2610.04282",
-        "2610.05720",
-        "2610.03943"
+        "2610.05720"
       ],
-      "core_findings": "- 【arXiv:2610.04341】(第一作者等)：在 Her X-1 延长低态中测得 $\\dot\\nu=-(4.7\\pm0.3)\\times 10^{-13}\\,\\mathrm{Hz\\,s^{-1}}$，证伪中子星自由进动模型，确证超轨道时钟的衰退由翘曲盘几何遮蔽驱动。\n- 【arXiv:2610.04481】(第一作者等)：提出中子星内部解钉超流涡旋沿方位向扩散引发雪崩，以无涡旋通道成功解释 Vela 突变上升时间 $\\Delta t_{\\mathrm{Ava}}<12.6\\,\\mathrm{s}$。\n- 【arXiv:2610.04282】(第一作者等)：在完全广义相对论下解出双流体中子星中暗物质主导的非径向 $f$ 模分支，其阻尼时间随暗核比例增加呈 $\\tau_{\\mathrm{DM}}\\propto F_{\\mathrm{DM}}^{-(2.0-2.3)}$ 陡峭下降。\n- 【arXiv:2610.05720】(第一作者等)：构造了严格保证角积分与总热通量归一化的 13 参数大气辐射能谱模型，定量隔离了角分布系统误差对中子星质量半径推断的偏差。\n- 【arXiv:2610.03943】(第一作者等)：在 Kerr 时空薄同步辐射层中建立直接像与光子环偏振相关量，指出高阶像偏振差值可消除外部法拉第旋转，但测量黑洞自旋存在内在简并。",
-      "significance": "从内部超流动力学、宏观吸积盘翘曲到外层大气辐射转移，构筑了高精度 X 射线脉冲星观测反演致密物态与黑洞参数的物理基准。"
+      "core_findings": "- 【arXiv:2610.04341】(arXiv:2610.04341 论文作者等)：监测 Hercules X-1 的延长低态（ELS）发现 35 日调制衰减且在第 219–221 周期保持原有相位记忆，且脉冲剖面在力矩反转下保持不变，强力排除了自由进动作为主钟模型。\n- 【arXiv:2610.05720】(arXiv:2610.05720 论文作者等)：提出了严格保流归一化的紧凑大气角分布经验函数，证明忽略正确的角向临边变暗/变亮可导致中子星半径反演产生高达 $\\sim0.7\\,{\\rm km}$ 的系统偏移。",
+      "significance": "为吸积脉冲星吸积力矩与几何进动的退耦提供了坚实的长期观测证据，同时为 NICER 等X射线脉冲轮廓高精度半径约束提供了自洽的大气参数化基准。"
     }
   ],
   "thematic_highlights": [
     {
-      "theme_name": "星周介质相互作用与高能破越暂现源",
-      "summary": "以爱因斯坦探针（EP）新发现的 EP260321a 为代表，快速软 X 射线暂现源展现出与传统裸 WR 星超新星破越显著相悖的长上升时标（$\\sim 690\\,\\mathrm{s}$）与软能谱特性。arXiv:2610.04367 深入探索了脱离星体表面的扩展 CSM 壳层（$R_{\\mathrm{out}}\\sim 600R_\\odot$），数值论证激波在 $\\tau\\sim c/v_{\\mathrm{s}}$ 区域发生破越，Monte Carlo 辐射转移计算揭示光子在非平衡层与散射壳层中的扩散效应能够自然压缩逃逸峰间隔，自洽拟合 X 射线光变与温度演化；类似地，arXiv:2610.05769 证明致密双星在共同包层快速旋入阶段激发的动力学激波破越同样能够重现发光红新星的多波段峰值。这些成果将激波破越理论从单一星体表面拓展到高度结构化的星周环状/壳状介质中。",
+      "theme_name": "星周相互作用与极端激波动力学",
+      "summary": "围绕早期高能瞬变的星周介质特征，研究从快瞬变X射线源（FXT）拓展到了激波与致密星风的非平衡相互作用。EP260321a 的观测表明，Ic-BL 型超新星爆发前夕存在短期剧烈的物质抛射，形成了径向跨度在 $150-600R_\\odot$ 的致密壳层，光子在扩散过程中通过非平衡态逆康普顿与热平衡转化，塑造了特征软X射线峰。另一方面，在富密吸积或共同包层事件（如 AT 2025abao）中，动力学旋入导致的激波破越及复合波前不透明度调制同样主导了千新星/亮红新星量级的高能与光学早期辐射输出。",
       "paper_ids": [
         "2610.04367",
         "2610.05769"
       ]
     },
     {
-      "theme_name": "致密星系统演化、诞生机制与动力学反演",
-      "summary": "中子星的诞生反冲（kick）机制与双星演化通道直接制约引力波源的形成率与银河系致密星族群分布。arXiv:2610.04005 针对 Gaia DR3 宽轨中子星样本开展系统反演，揭示观测到的低速偏好源于双星解绑存活的选择效应，其实际母体存在一个弥散低速分支（$\\sim 6.5\\,\\mathrm{km\\,s^{-1}}$，占 $\\sim 13\\%$）和高速脉冲星分支；arXiv:2610.05773 则利用 POSYDON 完整双星网格系统评估了金属丰度对双中子星形成演化的影响，确立共同包层阶段的主导地位，并指出在极低金属丰度下膨胀抑制带来的 Case C 质量转移会显著抬高双中子星的内禀并合效率。两项工作分别从动力学校准与全宇宙演化维度加深了对中子星源项的统计约束。",
+      "theme_name": "致密天体强引力场、内部动力学与多信使辐射",
+      "summary": "本周理论研究在致密星内部与近极端视界环境的探测技术上取得重要进展。在黑洞极区，通过 Kerr 度规下单锥同步辐射模型与 Penrose-Walker 常数，建立了干涉偏振阶次差 $\\Delta$ 和和值 $\\Sigma$ 分别对磁场俯仰角和黑洞自旋的解耦映射关系。中子星方面，全广义相对论双流体扰动方程揭示了暗物质核/晕诱导的独特极向 $f$-模态，其引力波阻尼时标在暗核占比增至 $20\\%$ 时骤降至秒级；同时非均匀涡旋钉扎景观中的方位雪崩模型定量再现了脉冲星突变（Glitch）的快速上升时标（$\\le12.6\\,{\\rm s}$）与自转跃迁行为。",
       "paper_ids": [
-        "2610.04005",
-        "2610.05773"
-      ]
-    },
-    {
-      "theme_name": "致密星内部物理、时变相干性与高能诊断",
-      "summary": "高能 X 射线时变与微观物理过程的精密建模是探测致密星内部物态与极端时空的核心工具。arXiv:2610.04341 利用 Swift 与 Fermi 对 Hercules X-1 在 2025–2026 延长低态的长期监测，发现其 35 天超轨道周期在衰退阶段仍保持严格同相，脉冲轮廓无形态漂移，有力排除了中子星自由进动理论；arXiv:2610.04481 从微观超流体角动量守恒出发，提出二维非均匀钉扎景观与解钉涡旋方位向运动机制，优雅再现了 Vela 脉冲星瞬时跃变时标；arXiv:2610.04282 则拓展了中子星物态理论，在完全广义相对论框架下计算了双流体星的引力波 $f$ 模本征频率，指认出独特的暗物质驱动振动分支；arXiv:2610.05720 则为 NICER 等探测器的大气能谱-角度依赖提供了紧凑解析参数化工具，大幅降低了脉冲轮廓模拟的系统偏差。",
-      "paper_ids": [
-        "2610.04341",
-        "2610.04481",
+        "2610.03943",
         "2610.04282",
-        "2610.05720",
-        "2610.03943"
+        "2610.04481"
       ]
     }
   ],
@@ -87,9 +72,9 @@
       "source_fingerprint": "28734e30d7c7befc71adca3d4c1b43209848b5bdd6a24f1935be56152e25e77c",
       "title": "Fast X-ray Transient EP260321a: Shock Breakout through an Extended Circumstellar Matter",
       "priority": "must_read",
-      "recommendation_reason": "爱因斯坦探针（EP）快速暂现源与 Ic-BL 超新星关联的关键理论突破，确立了延展星周壳层激波破越模型。",
-      "core_insight": "数值论证 EP260321a 的 $690\\,\\mathrm{s}$ 软 X 射线暂现信号源于半脱离致密星的延展 CSM 壳层（$R_{\\mathrm{out}}\\approx 612R_\\odot$），破越发生在未激波层光深 $\\tau\\sim c/v_{\\mathrm{s}}$ 处且总光深达 $\\tau=34^{+17}_{-10}$。",
-      "reading_guide": "重点研读第 3 节非平衡辐射能量平衡方程与 Monte Carlo 逃逸扩散时间压缩机制的物理推导。",
+      "recommendation_reason": "爱因斯坦探针（EP）FXT与大质量恒星死亡激波物理结合的代表性工作，严密论证了扩展CSM对于再现慢上升与软能谱的必要性。",
+      "core_insight": "指出 EP260321a 的百秒级上升时标与 $0.1\\,{\\rm keV}$ 能谱必须由脱离母星的扩展 CSM 壳层（$R_{\\rm out}\\approx612R_\\odot$，$E_{\\rm ej}\\approx6.3\\times10^{51}\\,{\\rm erg}$）激波破越解释，否定了单纯致密星风破越机制。",
+      "reading_guide": "重点阅读第三节激波辐射热平衡与非平衡温度修正公式，以及 Monte Carlo 散射逃逸时标压缩效应的数值验证。",
       "authors": [
         "Maokai Hu",
         "Yi Yang",
@@ -104,9 +89,9 @@
       "source_fingerprint": "8fc58725c3f7553b058bd36ca8aebe38625dd873bc23cf0499c79b9248ec9b16",
       "title": "Blasts from the Past: UHECR Excesses from a Population of GRB 21009A-like Transients",
       "priority": "worth_knowing",
-      "recommendation_reason": "为 Cen A 方向的超高能宇宙线（UHECR）角超额提供了极具启发性的伽马射线暴历史遗迹新视角。",
-      "core_insight": "通过湍流磁场偏转时延（$\\sim 2.1\\times 10^5\\,\\mathrm{yr}$）将 Cen A 超额与过去的 GRB 221009A 类窄喷流关联，理论预言本地 GZK 体积内全天可存在 $3-7$ 个可辨超额。",
-      "reading_guide": "聚焦解析磁偏转时延公式与局部高能瞬变体积发生率的交叉验证部分。",
+      "recommendation_reason": "为邻近星系团方向超高能宇宙线（UHECR）超出提供了喷流磁时延瞬变模型，将瞬变事件率与UHECR热点成功定量挂钩。",
+      "core_insight": "在磁场 $B\\approx0.55\\,{\\rm nG}$ 下，过去的 GRB 221009A 类似爆发可产生时延 $\\sim2\\times10^5\\,{\\rm yr}$、张角 $15^\\circ$ 的 UHECR 热点，单源重子负载预算为 $\\eta_{\\rm CR}\\sim1-3$。",
+      "reading_guide": "聚焦时延估算式与全天残余可见超额热点数计数积分，对比近邻源连续注入与单次爆发假说的空间分布差异。",
       "authors": [
         "Nestor Mirabal"
       ]
@@ -118,9 +103,9 @@
       "source_fingerprint": "cf36f1239cdff82d84b7139bc034b042f4f1397f7948c43cfe03933e7ccd2a1c",
       "title": "A concordance model of neutron star kicks",
       "priority": "worth_knowing",
-      "recommendation_reason": "打破了 Gaia 宽轨致密天体低速偏好为孤立现象的假象，建立了自洽的中子星反冲母体统一模型。",
-      "core_insight": "发现具有极低诞生踢速（$\\sim 6.5\\,\\mathrm{km\\,s^{-1}}$）的中子星分量虽仅占真实诞生的 $12.6\\%$，但在双星破裂选择效应下构成了观测中 $87\\%$ 的 Gaia NS 候选体。",
-      "reading_guide": "建议重点阅读选择效应修正与双峰对数正态反冲分布在三类族群间的联合似然拟合流程。",
+      "recommendation_reason": "综合考虑 Gaia 巡天选择效应与双星存活条件的中子星反冲速度母体建模，澄清了长期存在的低速踢速争议。",
+      "core_insight": "揭示中子星诞生母体中低踢速分量（中位值仅 $6.5\\,{\\rm km\\,s^{-1}}$）占比仅为 $12.6\\%$，但在存活的 Gaia 宽双星中被筛选富集至 $87\\%$。",
+      "reading_guide": "关注 Gaia DR3 选择函数对长周期双星反演的影响，以及超新星对称抛质反冲与内禀踢速矢量的正交分离方法。",
       "authors": [
         "Cheyanne Shariat",
         "Kareem El-Badry",
@@ -134,9 +119,9 @@
       "source_fingerprint": "625f7fbd6f1ea9cfd2388884b9ac43b149cb29fcbdaa2c7e57f7231673b6ee6b",
       "title": "The fading superorbital clock of Hercules X-1 in its 2025--2026 extended low state",
       "priority": "worth_knowing",
-      "recommendation_reason": "高能双星长期监测的典范工作，清晰排除了致密天体自由进动假说。",
-      "core_insight": "在 Her X-1 延长低态衰退期证实其 35 日超轨道时钟严格保持原始几何相位，能谱脉冲形态在 18 年跨度内无演化，确立了吸积盘翘曲遮挡的物理本质。",
-      "reading_guide": "建议阅读滑动窗口周期分析与主高态脉冲轮廓稳定性检验方法。",
+      "recommendation_reason": "高能双星吸积盘进动物理的一流长周期时变分析，排除了经典中子星自由进动假说。",
+      "core_insight": "Hercules X-1 在持续超过 380 天的延长低态中残余的 35 日调制仍保持与衰减前相同的超轨道时钟相位，脉冲轮廓不变，严格限制了吸积盘翘曲与几何遮蔽机制。",
+      "reading_guide": "重点查看滑窗 Lomb-Scargle 周期图与模板加权互相关检验方法，评估微弱相干信号置信度的统计细节。",
       "authors": [
         "Zhenxuan Liao",
         "Xinrui Tie",
@@ -145,37 +130,26 @@
       ]
     },
     {
-      "arxiv_id": "2610.05773",
+      "arxiv_id": "2610.05720",
       "revision": 1,
       "historical_edition": "announcement-2026-10-05",
-      "source_fingerprint": "a2a0329df06a54009a0641c55aa2e9d40ec553f889b5ee9bb942c73eb367edae",
-      "title": "From the Milky Way to the Early Universe: How Metallicity Shapes the Formation of Double Neutron Stars",
+      "source_fingerprint": "b409d42f007e41a8baf73c9189633b684ad8005d21613f45c2d5da9a24ea98df",
+      "title": "A Physically Motivated Compact Parameterization of Neutron Star Atmosphere Emission for Thermal X-ray Pulse-Profile Modeling",
       "priority": "worth_knowing",
-      "recommendation_reason": "利用最先进详细演化网格全面重估了全宇宙双中子星形成率对金属丰度的依赖规律。",
-      "core_insight": "揭示共同包层演化在低至 $10^{-4}Z_\\odot$ 环境下仍绝对主导双中子星形成，低金属丰度下 Case C 转移的引入使内禀并合效率相较太阳金属丰度提升约一个量级。",
-      "reading_guide": "重点关注图示中不同质量转移通道（Case B vs Case C）随金属丰度变化的临界转折机制。",
+      "recommendation_reason": "直接服务于 NICER 脉冲轮廓反演的紧致解析大气模型，解决了传统参数化违背能流守恒的关键缺陷。",
+      "core_insight": "建立了严格满足角向流归一化的中子星大气角分布经验函数，证明错误的各向异性角假设在脉冲轮廓拟合中可引入高达 $\\sim0.7\\,{\\rm km}$ 的假性半径偏移。",
+      "reading_guide": "核对正文中解析谱核 $\\mathcal S(x)$ 与角度分布因子 $K, p$ 的组合公式，以及用于隔离纯角向效应的归一化控制试验。",
       "authors": [
-        "Abhishek Chattaraj",
-        "Jeff J. Andrews",
-        "Monica Gallegos-Garcia",
-        "Max M. Briel",
-        "Michael Zevin",
-        "Tassos Fragos",
-        "Emmanouil Zapartas",
-        "David R. Aguilera-Dena",
-        "Seth Gossage",
-        "Anarya Ray",
-        "Vicky Kalogera",
-        "Philipp M. Srivastava",
-        "Zepei Xing"
+        "Tong Zhao",
+        "Renxin Xu"
       ]
     }
   ],
   "statistics": {
-    "total_analyzed": 129,
+    "total_analyzed": 169,
     "must_read_count": 1,
-    "worth_knowing_count": 14,
-    "skip_count": 114
+    "worth_knowing_count": 16,
+    "skip_count": 152
   },
   "papers": [
     {
@@ -2921,6 +2895,29 @@
       "source_fingerprint": "4b834d61dfef309610985c3fa969f469b4e1863f9d8c6d19bf20fca943dce5a9"
     },
     {
+      "arxiv_id": "2610.09199",
+      "revision": 1,
+      "title": "Toward a complete understanding of the properties of GW190521",
+      "authors": [
+        "Aasim Jan",
+        "Sophia Nicolella",
+        "Aaron Zimmerman",
+        "Deirdre Shoemaker",
+        "Katerina Chatziioannou",
+        "Richard O'Shaughnessy",
+        "Muhammed Saleem"
+      ],
+      "priority": "skip",
+      "result": "未能从已检查材料中核实论文结果。",
+      "problem": "未能从已检查材料中核实论文问题陈述。",
+      "method": "未能从已检查正文中核实方法说明。",
+      "reason": "已检查材料没有提供可核验的说明。",
+      "url": "https://arxiv.org/abs/2610.09199v1",
+      "announcement_date": "2026-10-07",
+      "historical_edition": "announcement-2026-10-07",
+      "source_fingerprint": "a8fede5c575cde3620bce31b9971e1e754e31e2d073ed9117a071839274f9a43"
+    },
+    {
       "arxiv_id": "2610.09432",
       "revision": 1,
       "title": "Anisotropic Fluid Model for Massive Boson Stars: Spherically Symmetric Configurations",
@@ -2939,6 +2936,29 @@
       "announcement_date": "2026-10-07",
       "historical_edition": "announcement-2026-10-07",
       "source_fingerprint": "b7a66538620fd58aa6eb60f49d7b648effe4a8aa766ded6c07c90621e9455c59"
+    },
+    {
+      "arxiv_id": "2610.09463",
+      "revision": 1,
+      "title": "The Prompt Emission of Gamma-Ray Bursts from Population III Stars",
+      "authors": [
+        "Nathan Walker",
+        "Davide Lazzati",
+        "Tyler Parsotan",
+        "Rosalba Perna",
+        "Matteo Cantiello",
+        "Jake Hassan",
+        "Brian Morsony"
+      ],
+      "priority": "skip",
+      "result": "未能从已检查材料中核实论文结果。",
+      "problem": "未能从已检查材料中核实论文问题陈述。",
+      "method": "未能从已检查正文中核实方法说明。",
+      "reason": "已检查材料没有提供可核验的说明。",
+      "url": "https://arxiv.org/abs/2610.09463v1",
+      "announcement_date": "2026-10-07",
+      "historical_edition": "announcement-2026-10-07",
+      "source_fingerprint": "7b87afeabc9cf923d1fd38fe36ced66a492b9865533f326a7433ad4c51bc4483"
     },
     {
       "arxiv_id": "2610.09477",
@@ -3678,6 +3698,912 @@
       "announcement_date": "2026-10-07",
       "historical_edition": "announcement-2026-10-07",
       "source_fingerprint": "80941b5a95724fc6dd4b2a9bc5fef8c7375fe98c2c782b53bd28182e82e76770"
+    },
+    {
+      "arxiv_id": "2610.10681",
+      "revision": 1,
+      "title": "Wind-Fed Magnetic Flux and the Emergence of X-ray Coronae in Active Galactic Nuclei",
+      "authors": [
+        "Rostom Mbarek"
+      ],
+      "priority": "worth_knowing",
+      "result": "推导了日冕磁饱和半径 $r_c/r_g \\simeq (r_0/r_g) q_c^{1/(p-g)} \\sim 10\\,r_g$、内部饱和磁通标度 $B_r \\propto r^{-2}$ 及归一化磁通 $\\phi \\sim 50$（与 MAD 饱和平台相符）。给出日冕 X 射线光度标度律 $\\frac{L_X}{\\dot M_c c^2} \\simeq \\frac{\\mathcal{A}_X\\phi^2(1+q_c^2)}{8\\pi^2\\kappa_{\\rm x}}\\left(\\frac{r_c}{r_g}\\right)^{-2}$，证明 $L_X/L_{\\rm bol}$ 主要取决于载入日冕的质量流比例 $\\dot M_c/\\dot M_{\\rm tot}$，与黑洞质量 $M_\\bullet$ 无显式依赖。",
+      "problem": "在辐射高效吸积模式（radiative-mode）AGN 中，标准吸积盘如何在缺乏大尺度几何粗盘拖曳的情况下，向内平流足够强的极向磁通以形成小尺度致密硬 X 射线日冕并维持日冕动力学平衡。",
+      "method": "结合核周恒星形成风的磁通弹道捕获模型、吸积盘内外应力（平均麦克斯韦应力与 MRI 湍流）转换准则，建立准无力场近似下的磁化楔形体动力学方程，求解径向有效电磁力 $f_r$ 与极向力 $f_\\theta$ 的力平衡条件及临界磁扭缠度 $q_c$。",
+      "reason": "该工作建立了核周星暴风输送有序磁通量至辐射高效吸积盘、并在此基础上自洽形成致密 X 射线日冕（$r_c \\sim 10\\,r_g$）与解释喷流-日冕功率分配的完整解析理论，对理解高能致密天体吸积物理、黑洞日冕形成及射电宁静/射电噪转变具有参考价值。",
+      "url": "https://arxiv.org/abs/2610.10681v1",
+      "announcement_date": "2026-10-08",
+      "historical_edition": "announcement-2026-10-08",
+      "source_fingerprint": "8c107663f3746ffb635563a01cfd3500d20c692d80bc8f5d0aa22284ff3c0e9e"
+    },
+    {
+      "arxiv_id": "2610.10951",
+      "revision": 1,
+      "title": "Flux Dependence of the 1\\,keV Soft X-ray Feature in SAX J1808.4-3658 with \\textit{NICER}",
+      "authors": [
+        "Katherine Bruce",
+        "Anne M. Lohfink",
+        "Jaiverdhan Chauhan",
+        "Suchismito Chattopadhyay",
+        "Sachiko Tsuruta",
+        "Andrew C. Liebmann"
+      ],
+      "priority": "worth_knowing",
+      "result": "在 0.9--1.0 keV 探测到的软 X 射线特征与源亮度紧密耦合：2019 年高斯线归一化与计数率 ($r=0.8^{+0.1}_{-0.3}$)、主连续谱通量 ($r=0.9\\pm0.1$)、黑体通量 ($r=0.8\\pm0.1$) 及反射通量 ($r=0.7^{+0.1}_{-0.2}$) 呈显著正相关；2022 年同样与连续谱 ($r=0.9\\pm0.1$) 和黑体通量 ($r=0.9\\pm0.1$) 强相关，但与反射通量相关性不显著 ($r=0.1^{+0.5}_{-0.6}$)。Deming 回归斜率从 2019 年的 $(4.0\\pm0.3)\\times10^{6}$（连续谱）和 $(7.3\\pm0.5)\\times10^{7}$（黑体）降至 2022 年的 $(1.8\\pm0.2)\\times10^{6}$ 和 $(3.3\\pm0.3)\\times10^{7}$。高斯线能量分布与强度的差异与再处理器电子数密度的变化一致（2019 年 $\\log (n_e/\\mathrm{cm^{-3}}) \\approx 19.1$，2022 年 $\\approx 17.3$）。",
+      "problem": "中子星低质量 X 射线双星及毫秒脉冲星长期存在 ~1 keV 软 X 射线超额辐射的起源争议，缺乏在完整爆发周期内检验该结构是否随吸积流量与辐射组分系统性演化的观测证据。",
+      "method": "利用 HEASoft/NICERDAS 分析 2019 与 2022 年 81 组高质量 NICER 能谱（0.7--10.0 keV），以基线模型 \\texttt{TBfeo} $\\times$ (\\texttt{relxillCp} + \\texttt{bbodyrad}) 拟合连续谱，并以 0.1 keV 步长在 0.7--1.4 keV 网格搜索零线宽高斯成分（以 $\\Delta\\chi^2 \\ge 9$ 即 $3\\sigma$ 作为单次检测阈值）；通过 20,000 次 Monte Carlo 模拟评估各辐射组分通量与高斯线强度的 Pearson 相关系数及 Deming 回归斜率。",
+      "reason": "文章系统分析了著名吸积毫秒脉冲星 SAX J1808.4-3658 在 2019 与 2022 年爆发期间的 NICER 光谱，首次量化证实了 ~1 keV 软 X 射线超额发射与连续谱及黑体热点通量的正相关性，并基于高密度反射模型解释了谱特征的演化，为致密天体吸积物理与高能观测提供了观测约束。",
+      "url": "https://arxiv.org/abs/2610.10951v1",
+      "announcement_date": "2026-10-08",
+      "historical_edition": "announcement-2026-10-08",
+      "source_fingerprint": "eaa02d5ffef98d5dc2a64178543bc68d41f3fe5478b00784dfe209266122ba64"
+    },
+    {
+      "arxiv_id": "2610.10669",
+      "revision": 1,
+      "title": "Impact of site-dependent noise configurations on Einstein Telescope science at low frequency",
+      "authors": [
+        "Francesco Crescimbeni",
+        "Matteo Di Giovanni",
+        "Davide Rozza",
+        "Andrea Contu",
+        "Alessandro Cardini",
+        "Domenico D'Urso",
+        "Carlo Giunchi",
+        "Luca Naticchioni",
+        "Marco Olivieri",
+        "Mike Lindner",
+        "Andreas Rietbrock",
+        "Paolo Pani"
+      ],
+      "priority": "skip",
+      "result": "未能从已检查材料中核实论文结果。",
+      "problem": "未能从已检查材料中核实论文问题陈述。",
+      "method": "未能从已检查正文中核实方法说明。",
+      "reason": "已检查材料没有提供可核验的说明。",
+      "url": "https://arxiv.org/abs/2610.10669v1",
+      "announcement_date": "2026-10-08",
+      "historical_edition": "announcement-2026-10-08",
+      "source_fingerprint": "535be40d26fac1db9f91f287416664b730da7313e3b298ffc094a243d6919310"
+    },
+    {
+      "arxiv_id": "2610.10675",
+      "revision": 1,
+      "title": "Kinematic and Dynamical Properties of Solar Neighborhood White Dwarfs from SDSS DR19 and Gaia DR3",
+      "authors": [
+        "O. Caliskan",
+        "M. Kilic",
+        "S. Bilir"
+      ],
+      "priority": "skip",
+      "result": "未能从已检查材料中核实论文结果。",
+      "problem": "未能从已检查材料中核实论文问题陈述。",
+      "method": "未能从已检查摘要中核实方法说明。",
+      "reason": "论文研究太阳邻域白矮星的银河系运动学、动力学与结构演化，没有涉及指定的高能瞬变、致密天体高能观测或相关环境问题。",
+      "url": "https://arxiv.org/abs/2610.10675v1",
+      "announcement_date": "2026-10-08",
+      "historical_edition": "announcement-2026-10-08",
+      "source_fingerprint": "6e9a144b69ac610a446f8424b8c4b6ae3be360f900c7569c8fd929343011a0e5"
+    },
+    {
+      "arxiv_id": "2610.10676",
+      "revision": 1,
+      "title": "Global and Local Infall in the ASHES Sample (GLASHES). III. Physical Parameters of Contracting Motion onto Dense Cores in 70 $μ$m Dark Massive Clumps",
+      "authors": [
+        "Kaho Morii",
+        "Patricio Sanhueza",
+        "Qizhou Zhang",
+        "Philip C. Myers",
+        "James M. Jackson",
+        "Fumiaki Yoshida"
+      ],
+      "priority": "skip",
+      "result": "未能从已检查材料中核实论文结果。",
+      "problem": "未能从已检查材料中核实论文问题陈述。",
+      "method": "未能从已检查摘要中核实方法说明。",
+      "reason": "论文关注高质量恒星形成区致密核的吸积与收缩，不涉及指定的高能瞬变天体物理方向；其质量吸积标度与超新星中心引擎或致密天体环境无实质联系。",
+      "url": "https://arxiv.org/abs/2610.10676v1",
+      "announcement_date": "2026-10-08",
+      "historical_edition": "announcement-2026-10-08",
+      "source_fingerprint": "08e35bdcba73740ac134ac88d3f2b873d3420496ef8fc374445ac7e196a55231"
+    },
+    {
+      "arxiv_id": "2610.10680",
+      "revision": 1,
+      "title": "Exemplary Merging Clusters II: XMM-Newton and Chandra X-ray Observations of MACS J1752.0+4440 and ZwCl 1856.8+6616",
+      "authors": [
+        "K. HyeongHan",
+        "K. Finner",
+        "W. Lee",
+        "E. Silich",
+        "W. Forman",
+        "C. Jones",
+        "A. Tümer",
+        "S. Randall",
+        "J. ZuHone",
+        "M. James Jee",
+        "D. Wittman",
+        "R. J. van Weeren",
+        "M. Troxel"
+      ],
+      "priority": "skip",
+      "result": "未能从已检查材料中核实论文结果。",
+      "problem": "未能从已检查材料中核实论文问题陈述。",
+      "method": "未能从已检查摘要中核实方法说明。",
+      "reason": "论文研究星系团并合及其射电遗迹对应的星系团尺度激波和 X 射线形态，与所列超新星或致密天体相关的激波、喷流及高能瞬变研究没有实质联系。",
+      "url": "https://arxiv.org/abs/2610.10680v1",
+      "announcement_date": "2026-10-08",
+      "historical_edition": "announcement-2026-10-08",
+      "source_fingerprint": "ae4ebed1cbec55051bc8ff15b316519043bb7d52819a1343d83d0413c76e2391"
+    },
+    {
+      "arxiv_id": "2610.10683",
+      "revision": 1,
+      "title": "A Multi-dimensional Analysis of the Open Clusters NGC 2423 and NGC 2482 with Gaia DR3",
+      "authors": [
+        "W. H. Elsanhoury",
+        "Deniz Cennet Çınar",
+        "A. Ahmed"
+      ],
+      "priority": "skip",
+      "result": "未能从已检查材料中核实论文结果。",
+      "problem": "未能从已检查材料中核实论文问题陈述。",
+      "method": "未能从已检查摘要中核实方法说明。",
+      "reason": "论文聚焦疏散星团的 Gaia 天体测量、光度和运动学性质，与指定的高能瞬变天体物理方向无实质联系。",
+      "url": "https://arxiv.org/abs/2610.10683v1",
+      "announcement_date": "2026-10-08",
+      "historical_edition": "announcement-2026-10-08",
+      "source_fingerprint": "a3acf48ada8d700dc97bce0b2b707acd3f58efe95abc1901007831c42577cf14"
+    },
+    {
+      "arxiv_id": "2610.10687",
+      "revision": 1,
+      "title": "Cosmic Duets II. Growth and accretion in Gaia Multi-Peak dual AGN at Cosmic Noon",
+      "authors": [
+        "M. Scialpi",
+        "F. Mannucci",
+        "D. Izquierdo-Villalba",
+        "A. Marconi",
+        "J. Singh",
+        "M. Volonteri",
+        "C. Marconcini",
+        "Q. D'Amato",
+        "B. Moreschini",
+        "M. V. Zanchettin",
+        "G. Tozzi",
+        "M. Ceci",
+        "L. Ulivi",
+        "E. Bertola",
+        "S. Bonoli",
+        "C. Bracci",
+        "E. Cataldi",
+        "C. Cicone",
+        "A. Ciurlo",
+        "M. Colpi",
+        "G. Cresci",
+        "A. De Rosa",
+        "M. Dotti",
+        "M. Fumagalli",
+        "M. Ginolfi",
+        "I. Lamperti",
+        "E. Nardini",
+        "M. Parvatikar",
+        "M. Perna",
+        "F. Rigamonti",
+        "K. Rubinur",
+        "B. Sala",
+        "A. Sesana",
+        "P. Severgnini",
+        "C. Spingola",
+        "D. Spinoso",
+        "G. Venturi",
+        "C. Vignali",
+        "S. Yeh"
+      ],
+      "priority": "skip",
+      "result": "未能从已检查材料中核实论文结果。",
+      "problem": "未能从已检查材料中核实论文问题陈述。",
+      "method": "未能从已检查摘要中核实方法说明。",
+      "reason": "论文研究宇宙正午时期双 AGN 的黑洞增长、吸积及其与星系形成模型的比较；虽涉及 AGN，但摘要未显示与指定的瞬变、相对论喷流或致密天体高能观测方向有实质联系。",
+      "url": "https://arxiv.org/abs/2610.10687v1",
+      "announcement_date": "2026-10-08",
+      "historical_edition": "announcement-2026-10-08",
+      "source_fingerprint": "ccd9009fc32f2cdd2c2909461921b163bdce6363b27f105d6430da895d93bbbe"
+    },
+    {
+      "arxiv_id": "2610.10689",
+      "revision": 1,
+      "title": "Discovery of a Nearby Ultra-fast Magnetic White Dwarf Propeller: Common Pathways to Magnetic Cataclysmic Variables",
+      "authors": [
+        "Antonio C. Rodriguez",
+        "Kareem El-Badry",
+        "R. Michael Rich",
+        "Kevin N. Ortiz Ceballos",
+        "Ingrid Pelisoli",
+        "Casey J. Law",
+        "Kaya Mori",
+        "Boris Gaensicke",
+        "Edo Berger",
+        "Liam Connor",
+        "Ilkham Galiullin",
+        "Ilaria Caiazzo",
+        "Matthew Graham",
+        "Samuel Whitebook"
+      ],
+      "priority": "skip",
+      "result": "未能从已检查材料中核实论文结果。",
+      "problem": "未能从已检查材料中核实论文问题陈述。",
+      "method": "未能从已检查正文中核实方法说明。",
+      "reason": "已检查材料没有提供可核验的说明。",
+      "url": "https://arxiv.org/abs/2610.10689v1",
+      "announcement_date": "2026-10-08",
+      "historical_edition": "announcement-2026-10-08",
+      "source_fingerprint": "e6d9395c775b6b0583547a58d5237774251800a78c4e7afbd6fc50215713adda"
+    },
+    {
+      "arxiv_id": "2610.10691",
+      "revision": 1,
+      "title": "Accreting Neutron Stars in Low-Mass X-ray Binaries",
+      "authors": [
+        "M. C. Baglio",
+        "S. E. Motta",
+        "A. P. Nitindala",
+        "J. Poutanen"
+      ],
+      "priority": "skip",
+      "result": "未能从已检查材料中核实论文结果。",
+      "problem": "未能从已检查材料中核实论文问题陈述。",
+      "method": "未能从已检查正文中核实方法说明。",
+      "reason": "已检查材料没有提供可核验的说明。",
+      "url": "https://arxiv.org/abs/2610.10691v1",
+      "announcement_date": "2026-10-08",
+      "historical_edition": "announcement-2026-10-08",
+      "source_fingerprint": "36cd64ab8d74867ea89df490257e17a93a46d741e197f4c4f2d8315f45365f5f"
+    },
+    {
+      "arxiv_id": "2610.10695",
+      "revision": 1,
+      "title": "The Origin of the Fermi Halo-like Emission: A New Model of the Fermi Bubbles",
+      "authors": [
+        "Ilias Cholis",
+        "Leo Qiyuan Hu",
+        "Yi-Ming Zhong"
+      ],
+      "priority": "skip",
+      "result": "未能从已检查材料中核实论文结果。",
+      "problem": "未能从已检查材料中核实论文问题陈述。",
+      "method": "未能从已检查摘要中核实方法说明。",
+      "reason": "论文研究高纬伽马射线天空中的类晕发射及费米气泡模板，主要涉及银河系伽马射线背景建模；摘要未显示其与指定的瞬变天体、中心引擎或致密天体观测方向有实质联系。",
+      "url": "https://arxiv.org/abs/2610.10695v1",
+      "announcement_date": "2026-10-08",
+      "historical_edition": "announcement-2026-10-08",
+      "source_fingerprint": "0c75606957c694e3c48bd30e96bc58d78f240fbb6ceb031958f42ae892187fcc"
+    },
+    {
+      "arxiv_id": "2610.10698",
+      "revision": 1,
+      "title": "A \"universal\" supernova efficiency to drive the HI turbulence in nearby star-forming galaxies",
+      "authors": [
+        "Lauri Sassali",
+        "Cecilia Bacchini",
+        "Aku Venhola",
+        "Giuliano Iorio",
+        "Antonino Marasco"
+      ],
+      "priority": "skip",
+      "result": "未能从已检查材料中核实论文结果。",
+      "problem": "未能从已检查材料中核实论文问题陈述。",
+      "method": "未能从已检查摘要中核实方法说明。",
+      "reason": "论文讨论矮不规则星系中超新星反馈维持中性氢湍流的效率，属于星系尺度气体动力学与反馈研究；与超新星中心引擎、激波破越或周星介质相互作用等指定方向无实质联系。",
+      "url": "https://arxiv.org/abs/2610.10698v1",
+      "announcement_date": "2026-10-08",
+      "historical_edition": "announcement-2026-10-08",
+      "source_fingerprint": "d1384db6909b761220459d666bdd9ac336cb058501cdf2e92e651cf870f7eb5e"
+    },
+    {
+      "arxiv_id": "2610.10699",
+      "revision": 1,
+      "title": "Atypical White Dwarfs in Open Clusters",
+      "authors": [
+        "David R. Miller",
+        "Ilaria Caiazzo",
+        "Jeremy Heyl",
+        "Pier-Emmanuel Tremblay"
+      ],
+      "priority": "skip",
+      "result": "未能从已检查材料中核实论文结果。",
+      "problem": "未能从已检查材料中核实论文问题陈述。",
+      "method": "未能从已检查摘要中核实方法说明。",
+      "reason": "论文聚焦疏散星团中的白矮星人口、形成与磁场演化，与指定的高能瞬变天体及其环境研究方向无实质联系。",
+      "url": "https://arxiv.org/abs/2610.10699v1",
+      "announcement_date": "2026-10-08",
+      "historical_edition": "announcement-2026-10-08",
+      "source_fingerprint": "083be7f6b58df30aca23daa1e3414590019279aa09ceba6093faac120ce402c2"
+    },
+    {
+      "arxiv_id": "2610.10701",
+      "revision": 1,
+      "title": "EK Cha b: multi-tracer detection of a protoplanet candidate in a gas-rich environment",
+      "authors": [
+        "Felipe Alarcón",
+        "C. Swastik",
+        "Stefano Facchini",
+        "Edwin A. Bergin",
+        "Gabriele Cugno"
+      ],
+      "priority": "skip",
+      "result": "未能从已检查材料中核实论文结果。",
+      "problem": "未能从已检查材料中核实论文问题陈述。",
+      "method": "未能从已检查摘要中核实方法说明。",
+      "reason": "论文研究原行星候选体及其气体环境，属于行星形成研究，与指定的高能瞬变天体物理方向无实质联系。",
+      "url": "https://arxiv.org/abs/2610.10701v1",
+      "announcement_date": "2026-10-08",
+      "historical_edition": "announcement-2026-10-08",
+      "source_fingerprint": "6fc89df765aa1668941a2dbdc75ec0871def5948ab4af572dcfa5b1d5ff46a74"
+    },
+    {
+      "arxiv_id": "2610.10719",
+      "revision": 1,
+      "title": "Prevalence of radio Active Galactic Nuclei in galaxy groups since z=3.5 in the COSMOS-Web field",
+      "authors": [
+        "F. Ubertosi",
+        "I. Delvecchio",
+        "I. Prandoni",
+        "G. Toni",
+        "G. Zamorani",
+        "E. Daddi",
+        "M. Gitti",
+        "M. Sargent",
+        "A. Traina",
+        "C. Spingola",
+        "F. Vito",
+        "L. Moscardini",
+        "G. Gozaliasl",
+        "D. Kakkad",
+        "W. Wang",
+        "S. Sanjaripour",
+        "Z. Ghaffari",
+        "M. N. Isla Llave",
+        "R. M. Samir",
+        "G. Peluso",
+        "M. Maturi",
+        "V. Smolcic",
+        "C. Casey",
+        "J. Kartaltepe",
+        "H. J. McCracken",
+        "J. Rhodes",
+        "B. Robertson",
+        "M. Franco",
+        "D. Liu",
+        "M. Shuntov",
+        "H. Akins",
+        "O. Ilbert",
+        "A. A. Khostovan"
+      ],
+      "priority": "skip",
+      "result": "未能从已检查材料中核实论文结果。",
+      "problem": "未能从已检查材料中核实论文问题陈述。",
+      "method": "未能从已检查摘要中核实方法说明。",
+      "reason": "论文考察星系群环境中射电活动星系核的发生率及其宇宙演化；摘要未涉及相对论喷流或高能瞬变观测，与目标方向无实质联系。",
+      "url": "https://arxiv.org/abs/2610.10719v1",
+      "announcement_date": "2026-10-08",
+      "historical_edition": "announcement-2026-10-08",
+      "source_fingerprint": "7cb567c82cd923f4c1879f877e042bdf2b1ed0b98a3179781ee799a3ccbeacd0"
+    },
+    {
+      "arxiv_id": "2610.10721",
+      "revision": 1,
+      "title": "NGC 4936: abundant multi-phase medium in the central weak X-ray cool core and optically dark H I clouds in the group",
+      "authors": [
+        "Prathamesh Tamhane",
+        "Ming Sun",
+        "Hao Chen",
+        "Thomas Connor",
+        "Megan Donahue",
+        "Mark Voit",
+        "Mpati Ramatsoku",
+        "Kokoro Hosogi",
+        "Tim Edge"
+      ],
+      "priority": "skip",
+      "result": "未能从已检查材料中核实论文结果。",
+      "problem": "未能从已检查材料中核实论文问题陈述。",
+      "method": "未能从已检查摘要中核实方法说明。",
+      "reason": "论文研究星系群中心星系的多相气体、冷却与凝结；虽提及 AGN 的亚毫米和 X 射线变异，但摘要没有显示其针对高能瞬变或相关核心问题开展研究。",
+      "url": "https://arxiv.org/abs/2610.10721v1",
+      "announcement_date": "2026-10-08",
+      "historical_edition": "announcement-2026-10-08",
+      "source_fingerprint": "df133723ad54a634687b29f8de7f68332e1757306f4132caea766a32ebe4bc45"
+    },
+    {
+      "arxiv_id": "2610.10726",
+      "revision": 1,
+      "title": "First uGMRT Constraints on Rotation Measure in the Radio-Quiet Seyfert Galaxy NGC 4235",
+      "authors": [
+        "Salmoli Ghosh",
+        "Preeti Kharb",
+        "Janhavi Baghel"
+      ],
+      "priority": "skip",
+      "result": "未能从已检查材料中核实论文结果。",
+      "problem": "未能从已检查材料中核实论文问题陈述。",
+      "method": "未能从已检查摘要中核实方法说明。",
+      "reason": "研究对象是射电宁静 Seyfert 星系的千秒差距尺度射电源及其法拉第旋转介质，与指定的 FRB/PRS 环境、超新星中心引擎或致密天体高能瞬变方向无实质联系。",
+      "url": "https://arxiv.org/abs/2610.10726v1",
+      "announcement_date": "2026-10-08",
+      "historical_edition": "announcement-2026-10-08",
+      "source_fingerprint": "11ddd732985d3124244333ecbf1df6b753babb0f37f1305539f4bd014363f91b"
+    },
+    {
+      "arxiv_id": "2610.10728",
+      "revision": 1,
+      "title": "Descalarization bursts from Galactic supramassive neutron stars: a kHz continuous-wave target",
+      "authors": [
+        "José Carlos Olvera M.",
+        "Daniela D. Doneva",
+        "Pablo Cerdá-Durán",
+        "José A. Font",
+        "Stoytcho S. Yazadjiev"
+      ],
+      "priority": "skip",
+      "result": "未能从已检查材料中核实论文结果。",
+      "problem": "未能从已检查材料中核实论文问题陈述。",
+      "method": "未能从已检查正文中核实方法说明。",
+      "reason": "已检查材料没有提供可核验的说明。",
+      "url": "https://arxiv.org/abs/2610.10728v1",
+      "announcement_date": "2026-10-08",
+      "historical_edition": "announcement-2026-10-08",
+      "source_fingerprint": "1e65ca4148718563e6ff43b3ab0c104bb487124a8c239fd60fb2a5410bf725f7"
+    },
+    {
+      "arxiv_id": "2610.10739",
+      "revision": 1,
+      "title": "Population II Post-AGB Stars. I. Methodology, Initial Results, and the First Luminosity Function",
+      "authors": [
+        "S. Jean Feeser",
+        "Robin Ciardullo",
+        "Michael H. Siegel",
+        "C. J. Hapich",
+        "Akshat S. Chaturvedi"
+      ],
+      "priority": "skip",
+      "result": "未能从已检查材料中核实论文结果。",
+      "problem": "未能从已检查材料中核实论文问题陈述。",
+      "method": "未能从已检查摘要中核实方法说明。",
+      "reason": "论文聚焦球状星团中的后渐近巨星支星及其作为星族 II 标准烛光的用途，与指定的高能瞬变天体物理方向无实质联系。",
+      "url": "https://arxiv.org/abs/2610.10739v1",
+      "announcement_date": "2026-10-08",
+      "historical_edition": "announcement-2026-10-08",
+      "source_fingerprint": "e766c82b0453ef629ad4a4deb548dc15192be135d59892aec8ef781f75590a06"
+    },
+    {
+      "arxiv_id": "2610.10755",
+      "revision": 1,
+      "title": "Pushing Variability Searches to Extreme Dwarf Galaxies with the Vera C. Rubin Observatory Data Preview 2",
+      "authors": [
+        "Fan Zou",
+        "W. N. Brandt",
+        "Elena Gallo",
+        "Franz E. Bauer",
+        "Angela Bongiorno",
+        "Colin J. Burke",
+        "Alister W. Graham",
+        "Hengxiao Guo",
+        "Lorena Hernández-García",
+        "Marcin Marculewicz",
+        "Dieu D. Nguyen",
+        "Swayamtrupta Panda",
+        "Alessandro Peca",
+        "Bindu Rani",
+        "Claudio Ricci",
+        "Ohad Shemmer",
+        "Wei Leong Tee",
+        "Zhibo Yu"
+      ],
+      "priority": "skip",
+      "result": "未能从已检查材料中核实论文结果。",
+      "problem": "未能从已检查材料中核实论文问题陈述。",
+      "method": "未能从已检查摘要中核实方法说明。",
+      "reason": "论文主要开展极端矮星系中的光学变源搜索，目标是研究中等质量黑洞人口；虽然候选体中包含超新星，但摘要未显示其研究超新星中心引擎或其他指定的高能瞬变问题。",
+      "url": "https://arxiv.org/abs/2610.10755v1",
+      "announcement_date": "2026-10-08",
+      "historical_edition": "announcement-2026-10-08",
+      "source_fingerprint": "b0d41909dacdf222056236d3bae2cd95d3d46c19199b269f4301d200383236a4"
+    },
+    {
+      "arxiv_id": "2610.10785",
+      "revision": 1,
+      "title": "The progenitor galaxies of the intracluster light",
+      "authors": [
+        "Rebecca J. Mayes",
+        "Facundo A. Gómez",
+        "Antonela Monachesi"
+      ],
+      "priority": "skip",
+      "result": "未能从已检查材料中核实论文结果。",
+      "problem": "未能从已检查材料中核实论文问题陈述。",
+      "method": "未能从已检查摘要中核实方法说明。",
+      "reason": "论文研究星系团内星光的起源及其前身星系，与高能瞬变、致密天体观测或相关辐射环境无实质联系。",
+      "url": "https://arxiv.org/abs/2610.10785v1",
+      "announcement_date": "2026-10-08",
+      "historical_edition": "announcement-2026-10-08",
+      "source_fingerprint": "540d8aaaebb5c33da73a814d6345c6e0dae90ec7be7e34ba7da8f6872442f22d"
+    },
+    {
+      "arxiv_id": "2610.10815",
+      "revision": 1,
+      "title": "Shortening the Baseline: Characterising Type Ia Supernovae Using $Δm_{10}(X)$",
+      "authors": [
+        "Joel M. Velasco",
+        "Paolo A. Mazzali",
+        "Christopher Ashall",
+        "Christopher R. Burns",
+        "Mark M. Phillips",
+        "Lluis Galbany",
+        "Nidia Morrell",
+        "Maximilian D. Stritzinger",
+        "Peter Hoeflich",
+        "Eric Y. Hsiao",
+        "Syed A. Uddin"
+      ],
+      "priority": "skip",
+      "result": "未能从已检查材料中核实论文结果。",
+      "problem": "未能从已检查材料中核实论文问题陈述。",
+      "method": "未能从已检查摘要中核实方法说明。",
+      "reason": "论文讨论 Ia 型超新星的光变衰减率与光度—宽度关系，但摘要未涉及中心引擎、平台期、激波破越或周星介质相互作用等目标问题。",
+      "url": "https://arxiv.org/abs/2610.10815v1",
+      "announcement_date": "2026-10-08",
+      "historical_edition": "announcement-2026-10-08",
+      "source_fingerprint": "540ababc706653be3bd955c0c1b607e826c0022cdc4bc7facb2ae170341057e1"
+    },
+    {
+      "arxiv_id": "2610.10901",
+      "revision": 1,
+      "title": "Mass Proxy Quality of Halo Properties in IllustrisTNG and FLAMINGO Simulations: II. Galaxies, Stars, and Black Holes",
+      "authors": [
+        "Eddie Aljamal",
+        "August E. Evrard",
+        "Arya Farahi",
+        "Dylan Nelson"
+      ],
+      "priority": "skip",
+      "result": "未能从已检查材料中核实论文结果。",
+      "problem": "未能从已检查材料中核实论文问题陈述。",
+      "method": "未能从已检查摘要中核实方法说明。",
+      "reason": "论文比较星系团尺度晕的星系、恒星和黑洞群体及质量代理性质，属于大尺度结构与星系形成研究，与目标高能瞬变方向无实质联系。",
+      "url": "https://arxiv.org/abs/2610.10901v1",
+      "announcement_date": "2026-10-08",
+      "historical_edition": "announcement-2026-10-08",
+      "source_fingerprint": "3fff4366cdb153c0f2e6cb9713da7d030a2326bdf138542879a29b346026cdb5"
+    },
+    {
+      "arxiv_id": "2610.10910",
+      "revision": 1,
+      "title": "Understanding how Coronal Heating and Magnetic Field Scaling Affect Global Properties of the Low and Middle Corona",
+      "authors": [
+        "Caroline L. Evans",
+        "Cooper Downs",
+        "Donald Schmit"
+      ],
+      "priority": "skip",
+      "result": "未能从已检查材料中核实论文结果。",
+      "problem": "未能从已检查材料中核实论文问题陈述。",
+      "method": "未能从已检查摘要中核实方法说明。",
+      "reason": "研究太阳日冕加热、太阳风及日冕磁场形态，与指定的高能瞬变天体物理方向无实质联系。",
+      "url": "https://arxiv.org/abs/2610.10910v1",
+      "announcement_date": "2026-10-08",
+      "historical_edition": "announcement-2026-10-08",
+      "source_fingerprint": "d38e325f6f3653213f07e3d04ead8609c302f44c57571a0bdb4cb1d4978e16e0"
+    },
+    {
+      "arxiv_id": "2610.10936",
+      "revision": 1,
+      "title": "The conditional colour-magnitude distribution: III. A study of galaxy colour- and luminosity-dependent counts-in-cells statistics",
+      "authors": [
+        "Raymon Isaac",
+        "Zheng Zheng"
+      ],
+      "priority": "skip",
+      "result": "未能从已检查材料中核实论文结果。",
+      "problem": "未能从已检查材料中核实论文问题陈述。",
+      "method": "未能从已检查摘要中核实方法说明。",
+      "reason": "论文研究星系颜色—光度分布、暗物质晕及 counts-in-cells 统计，与指定的高能瞬变天体物理方向无实质联系。",
+      "url": "https://arxiv.org/abs/2610.10936v1",
+      "announcement_date": "2026-10-08",
+      "historical_edition": "announcement-2026-10-08",
+      "source_fingerprint": "ff2d6a13d914536042d82c353411a9318102567291d6c0ca974fcea59fee9fa2"
+    },
+    {
+      "arxiv_id": "2610.10941",
+      "revision": 1,
+      "title": "Central stellar depletion in the Draco dwarf from Subaru photometry",
+      "authors": [
+        "Eduardo Vitral",
+        "Kyosuke S. Sato",
+        "Jorge Peñarrubia",
+        "Sakurako Okamoto",
+        "Veronika Dornan"
+      ],
+      "priority": "skip",
+      "result": "未能从已检查材料中核实论文结果。",
+      "problem": "未能从已检查材料中核实论文问题陈述。",
+      "method": "未能从已检查摘要中核实方法说明。",
+      "reason": "论文研究矮星系 Draco 的恒星表面密度结构及暗物质子晕线索，与指定的高能瞬变天体物理方向无实质联系。",
+      "url": "https://arxiv.org/abs/2610.10941v1",
+      "announcement_date": "2026-10-08",
+      "historical_edition": "announcement-2026-10-08",
+      "source_fingerprint": "c5448f8b8eaf7a78781e6e3c1640285db6b2078e3394ebb37f3a22566924fe58"
+    },
+    {
+      "arxiv_id": "2610.11016",
+      "revision": 1,
+      "title": "NGC 6426: Colour-Magnitude diagram and variable star population as indicators of metallicity, distance, and age",
+      "authors": [
+        "A. Arellano Ferro",
+        "R. Michel",
+        "D. Deras",
+        "M. Vaca Montejano",
+        "S. Muneer",
+        "I. Bustos Fierro"
+      ],
+      "priority": "skip",
+      "result": "未能从已检查材料中核实论文结果。",
+      "problem": "未能从已检查材料中核实论文问题陈述。",
+      "method": "未能从已检查摘要中核实方法说明。",
+      "reason": "论文研究球状星团的色—星等图、变星及其金属丰度、距离和年龄，与指定的高能瞬变天体物理方向无实质联系。",
+      "url": "https://arxiv.org/abs/2610.11016v1",
+      "announcement_date": "2026-10-08",
+      "historical_edition": "announcement-2026-10-08",
+      "source_fingerprint": "eb61ce51a58700b4e57d53477cde47ba3600c316a8dafddff3d78ee878589ef2"
+    },
+    {
+      "arxiv_id": "2610.11091",
+      "revision": 1,
+      "title": "Systematic Uncertainties in Ultralight Boson Constraints from Superradiance",
+      "authors": [
+        "P. S. Aswathi",
+        "Ling Sun"
+      ],
+      "priority": "skip",
+      "result": "未能从已检查材料中核实论文结果。",
+      "problem": "未能从已检查材料中核实论文问题陈述。",
+      "method": "未能从已检查正文中核实方法说明。",
+      "reason": "已检查材料没有提供可核验的说明。",
+      "url": "https://arxiv.org/abs/2610.11091v1",
+      "announcement_date": "2026-10-08",
+      "historical_edition": "announcement-2026-10-08",
+      "source_fingerprint": "89b9523833b61756ec3e4f48648b9f54b0c367b9649553c14006ae5dd3a0db11"
+    },
+    {
+      "arxiv_id": "2610.11095",
+      "revision": 1,
+      "title": "Production Memory of the $^{225}\\mathrm{Ra}$-$^{225}\\mathrm{Ac}$ Clock in Neutron-Star Merger Ejecta",
+      "authors": [
+        "Hisham Anwer"
+      ],
+      "priority": "skip",
+      "result": "推导出了纯 Ra 衰变通道下 Ac 存活分额的精确反演最小时间下限公式：$$T_{\\min}(p) = -\\frac{1}{\\lambda_{\\rm Ac}-\\lambda_{\\rm Ra}} \\ln\\left[1 - \\frac{\\lambda_{\\rm Ac}-\\lambda_{\\rm Ra}}{\\lambda_{\\rm Ra}} \\frac{p}{1-p}\\right]$$ 对于采用的衰变常数，达到 $p=0.1$ 的 Ac 分额至少需要 $T_{\\min} \\ge 2.45594\\;\\mathrm{d}$；对任意核产生分布 $g(u)$，给出了产额注入后期的特征反转零点表达式：$$t_g = t_n + \\frac{K_g(\\lambda_{\\rm Ac})-K_g(\\lambda_{\\rm Ra})}{\\lambda_{\\rm Ac}-\\lambda_{\\rm Ra}} \\approx t_n + \\mu + \\frac{\\lambda_{\\rm Ac}+\\lambda_{\\rm Ra}}{2}\\sigma^2 + O(\\epsilon^3)$$ 其中纯脉冲交叉时刻为 $t_n = 17.4942\\;\\mathrm{d}$，方差 $\\sigma^2$ 提供一阶正修正。结合粒子热化与灰体光子扩散计算后，光子交叉时刻被推迟至 $25.592\\;\\mathrm{d}$，且在固定转移条件下所有分额共享一个无依赖的光变交汇枢纽点（pivot）。",
+      "problem": "在双中子星并合抛射物中，晚期快中子俘获过程同位素产额与母核衰变历史之间存在简并，如何从核衰变链时序中提取放射性母核的产生历程，并确定粒子能量沉积与光子扩散如何改变晚期光变观测特征。",
+      "method": "利用两阶段 Bateman 方程结合生成函数与累积量展开（cumulant expansion）推导活度矩与交叉时标解析解；采用 Hotokezaka & Nakar (2020) 处方进行多成分粒子能量沉积计算，并结合球对称同源膨胀抛射物（密度 $\\rho \\propto t^{-3}v^{-4.5}$）的灰体扩散模型追踪辐射逃逸，计算差分光度响应 $L_{p_1}-L_{p_0}=Y_{225}(p_1-p_0)(G_A-G_U)$。",
+      "reason": "本研究专注于双中子星并合抛射物中 $^{225}\\mathrm{Ra}$-$^{225}\\mathrm{Ac}$ 衰变链的核反应产生历史、带电粒子能量沉积及晚期千新星灰体光度演化，不涉及 FRB/PRS、超新星中心引擎、激波破越与 CSM 相互作用、相对论喷流、中微子探测或高能观测等本组核心关注方向。",
+      "url": "https://arxiv.org/abs/2610.11095v1",
+      "announcement_date": "2026-10-08",
+      "historical_edition": "announcement-2026-10-08",
+      "source_fingerprint": "3b8c002932fb2ac7d716ba473b8a5214370bb4ea124b63894a6a250186187651"
+    },
+    {
+      "arxiv_id": "2610.11102",
+      "revision": 1,
+      "title": "The Binary Fraction of Milky Way Field Stars in DESI: Dependence on Chemical Abundance",
+      "authors": [
+        "Tian Qiu",
+        "Wenting Wang",
+        "Sergey E. Koposov",
+        "Songting Li",
+        "Nathan Sandford",
+        "Ting S. Li",
+        "Joan Najita",
+        "Jessica Nicole Aguilar",
+        "Steven Ahlen",
+        "Davide Bianchi",
+        "David Brooks",
+        "Aurelio Carnero Rosell",
+        "Todd Claybaugh",
+        "Andrei Cuceu",
+        "Axel de la Macorra",
+        "Arjun Dey",
+        "Peter Doel",
+        "Jaime E. Forero-Romero",
+        "Enrique Gaztañaga",
+        "Satya Gontcho A Gontcho",
+        "Gaston Gutierrez",
+        "Stephanie Juneau",
+        "Robert Kehoe",
+        "Martin Landriau",
+        "Laurent Le Guillou",
+        "Aaron Meisner",
+        "Ramon Miquel",
+        "Enrique Paillas",
+        "Will Percival",
+        "Francisco Prada",
+        "Ignasi Pérez-Ràfols",
+        "Corentin Ravoux",
+        "Graziano Rossi",
+        "Eusebio Sanchez",
+        "Christoph Saulder",
+        "Edward Schlafly",
+        "David Schlegel",
+        "Michael Schubnell",
+        "Joseph Harry Silber",
+        "Małgorzata Siudek",
+        "Gregory Tarlé",
+        "Benjamin Alan Weaver"
+      ],
+      "priority": "skip",
+      "result": "未能从已检查材料中核实论文结果。",
+      "problem": "未能从已检查材料中核实论文问题陈述。",
+      "method": "未能从已检查摘要中核实方法说明。",
+      "reason": "论文研究银河系场星的双星比例及其与化学丰度的关系，摘要未涉及指定的高能瞬变、致密天体高能观测或相关环境问题。",
+      "url": "https://arxiv.org/abs/2610.11102v1",
+      "announcement_date": "2026-10-08",
+      "historical_edition": "announcement-2026-10-08",
+      "source_fingerprint": "da24e72ca82f53df03ea03c59f64122f1a9406961ec5610492d0074160045dcb"
+    },
+    {
+      "arxiv_id": "2610.11127",
+      "revision": 1,
+      "title": "Improved analysis of time delays between radio wavelengths and X-ray of Sgr A* flares in the shock oscillation model",
+      "authors": [
+        "Ramiz Aktar",
+        "Toru Okuda",
+        "Chandra B. Singh"
+      ],
+      "priority": "skip",
+      "result": "未能从已检查材料中核实论文结果。",
+      "problem": "未能从已检查材料中核实论文问题陈述。",
+      "method": "未能从已检查正文中核实方法说明。",
+      "reason": "已检查材料没有提供可核验的说明。",
+      "url": "https://arxiv.org/abs/2610.11127v1",
+      "announcement_date": "2026-10-08",
+      "historical_edition": "announcement-2026-10-08",
+      "source_fingerprint": "7180b43e6b01e583604cc6b0b52bbb7b7c044febee92cd1aad8e04a15db5373a"
+    },
+    {
+      "arxiv_id": "2610.11166",
+      "revision": 1,
+      "title": "Analysis of p-Wave Sommerfeld Resonance Behavior in Finite-Size Dark Matter",
+      "authors": [
+        "Wu-Long Xu",
+        "Jin Min Yang",
+        "Rui Zhu"
+      ],
+      "priority": "skip",
+      "result": "未能从已检查材料中核实论文结果。",
+      "problem": "未能从已检查材料中核实论文问题陈述。",
+      "method": "未能从已检查摘要中核实方法说明。",
+      "reason": "论文研究有限尺寸暗物质的 p 波 Sommerfeld 共振，虽有 astro-ph.HE 分类，但摘要未显示其与 FRB、超新星、激波、相对论喷流、中微子或致密天体高能观测有实质联系。",
+      "url": "https://arxiv.org/abs/2610.11166v1",
+      "announcement_date": "2026-10-08",
+      "historical_edition": "announcement-2026-10-08",
+      "source_fingerprint": "436ca274debc9a86623cece68176f241baf56d212e50dfcd00ce5d320249091d"
+    },
+    {
+      "arxiv_id": "2610.11182",
+      "revision": 1,
+      "title": "Direct Numerical Comparison of Data Driving Strategies for Solar Flux Emergence in Magnetohydrodynamics: B-driving vs E-driving",
+      "authors": [
+        "Kyriakos Christos Tapinou",
+        "Axel Raboonik",
+        "David I. Pontin",
+        "Michael S. Wheatland",
+        "Mark C. M. Cheung",
+        "Hannah Schunker"
+      ],
+      "priority": "skip",
+      "result": "未能从已检查材料中核实论文结果。",
+      "problem": "未能从已检查材料中核实论文问题陈述。",
+      "method": "未能从已检查摘要中核实方法说明。",
+      "reason": "论文比较太阳大气磁流体模拟中的两种数据驱动边界策略，主题是太阳磁通浮现数值建模，与指定的高能瞬变天体物理方向无实质联系。",
+      "url": "https://arxiv.org/abs/2610.11182v1",
+      "announcement_date": "2026-10-08",
+      "historical_edition": "announcement-2026-10-08",
+      "source_fingerprint": "adada83422f109c17e3c2b177c9d5307267652bbcd5c58e54349ec8227776d0f"
+    },
+    {
+      "arxiv_id": "2610.11404",
+      "revision": 1,
+      "title": "Oxygen isotopic ratio in open cluster RGB stars: A new method for accurate mass and age estimations",
+      "authors": [
+        "O. Straniero",
+        "C. Abia",
+        "I. Domínguez",
+        "P. de Laverny"
+      ],
+      "priority": "skip",
+      "result": "未能从已检查材料中核实论文结果。",
+      "problem": "未能从已检查材料中核实论文问题陈述。",
+      "method": "未能从已检查摘要中核实方法说明。",
+      "reason": "论文利用 RGB 星的氧同位素比估算疏散星团年龄和恒星质量，属于恒星演化与银河考古研究，与指定的高能瞬变天体物理方向无实质联系。",
+      "url": "https://arxiv.org/abs/2610.11404v1",
+      "announcement_date": "2026-10-08",
+      "historical_edition": "announcement-2026-10-08",
+      "source_fingerprint": "75a142abf8f7d828ba5ff8a5ce348b6e14b6df1b5ebeef1e37073c518926972c"
+    },
+    {
+      "arxiv_id": "2610.11530",
+      "revision": 1,
+      "title": "Gaseous SiO and Silicate Clouds in Three Benchmark Early-L Dwarfs",
+      "authors": [
+        "Zhijun Tu",
+        "Shu Wang",
+        "Xiaodian Chen",
+        "Haomiao Huang",
+        "Jifeng Liu"
+      ],
+      "priority": "skip",
+      "result": "未能从已检查材料中核实论文结果。",
+      "problem": "未能从已检查材料中核实论文问题陈述。",
+      "method": "未能从已检查摘要中核实方法说明。",
+      "reason": "论文研究早 L 型矮星大气中的气态 SiO 与硅酸盐云，与高能瞬变天体物理及所列核心方向无实质联系。",
+      "url": "https://arxiv.org/abs/2610.11530v1",
+      "announcement_date": "2026-10-08",
+      "historical_edition": "announcement-2026-10-08",
+      "source_fingerprint": "8b551cc7d949f85695b214849b2de69cd00754f243b45a10a76f7289ead4df0f"
+    },
+    {
+      "arxiv_id": "2610.11541",
+      "revision": 1,
+      "title": "Isotopic ratios as probes of star formation and the origin of molecular gas in the Central Molecular Zone",
+      "authors": [
+        "Laura Colzi"
+      ],
+      "priority": "skip",
+      "result": "未能从已检查材料中核实论文结果。",
+      "problem": "未能从已检查材料中核实论文问题陈述。",
+      "method": "未能从已检查摘要中核实方法说明。",
+      "reason": "论文通过同位素比研究银河系中央分子区的气体条件、恒星形成与气体来源，与所列高能瞬变天体物理方向无实质联系。",
+      "url": "https://arxiv.org/abs/2610.11541v1",
+      "announcement_date": "2026-10-08",
+      "historical_edition": "announcement-2026-10-08",
+      "source_fingerprint": "d75512839a56e4a66ea55683345d1c9c8da542518da5f9391f96c3572495ea47"
+    },
+    {
+      "arxiv_id": "2610.11588",
+      "revision": 1,
+      "title": "Measuring radial flows in disc galaxies",
+      "authors": [
+        "Yi He",
+        "Filippo Fraternali",
+        "Pavel E. Mancera Piña",
+        "Enrico M. Di Teodoro"
+      ],
+      "priority": "skip",
+      "result": "未能从已检查材料中核实论文结果。",
+      "problem": "未能从已检查材料中核实论文问题陈述。",
+      "method": "未能从已检查摘要中核实方法说明。",
+      "reason": "论文开发盘星系轴对称径向流的测量方法，主题是星系气体流动，与所列高能瞬变天体物理方向无实质联系。",
+      "url": "https://arxiv.org/abs/2610.11588v1",
+      "announcement_date": "2026-10-08",
+      "historical_edition": "announcement-2026-10-08",
+      "source_fingerprint": "c66852892efc431a0ccb5ef9f487cfe7385e591b790fcca5d4130db8df845aa1"
+    },
+    {
+      "arxiv_id": "2610.11637",
+      "revision": 1,
+      "title": "Gravitational Microlensing",
+      "authors": [
+        "Aikaterini Vandorou",
+        "Stela Ishitani Silva"
+      ],
+      "priority": "skip",
+      "result": "未能从已检查材料中核实论文结果。",
+      "problem": "未能从已检查材料中核实论文问题陈述。",
+      "method": "未能从已检查摘要中核实方法说明。",
+      "reason": "论文讨论引力微透镜探测系外行星及行星形成，与指定的高能瞬变天体物理方向无实质联系。",
+      "url": "https://arxiv.org/abs/2610.11637v1",
+      "announcement_date": "2026-10-08",
+      "historical_edition": "announcement-2026-10-08",
+      "source_fingerprint": "3ffb2dc07eaf7f33a26c44d9e6f31326e50ceecabbb4855aaf57ebd8ca890ae5"
     }
   ]
 }

@@ -43,7 +43,7 @@ export async function manageHotEventPin({
     const feedId = String(item.feed_id);
     const createTime = String(item.create_time);
 
-    let authorId = "144115221380239833";
+    let authorId = process.env.TENCENT_BOT_USER_ID || item.author_id || "";
     try {
       const detailRes = await cli([
         "feed",
@@ -60,7 +60,10 @@ export async function manageHotEventPin({
       const feed = data.data?.feed || data.data || {};
       authorId = feed.author_id ?? feed.author?.user_id ?? authorId;
     } catch (err) {
-      // 容错使用已记录的默认发帖人 ID
+      // 容错使用已记录的发帖人 ID 或环境变量
+    }
+    if (!authorId && !dryRun) {
+      authorId = "system";
     }
 
     if (dryRun) {

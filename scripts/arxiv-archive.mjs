@@ -87,42 +87,12 @@ export function getAnnouncementWeekId(dateStr, weekday) {
   return getIsoWeek(dateStr);
 }
 
-export function getWeekMondayAndSunday(weekId) {
-  const [yearStr, weekStr] = weekId.split("-W");
-  const year = parseInt(yearStr, 10);
-  const week = parseInt(weekStr, 10);
-  const jan4 = new Date(Date.UTC(year, 0, 4));
-  const day = (jan4.getUTCDay() + 6) % 7;
-  const mondayWeek1 = new Date(jan4.valueOf() - day * 86400000);
-  const mondayTarget = new Date(mondayWeek1.valueOf() + (week - 1) * 7 * 86400000);
-  const sundayTarget = new Date(mondayTarget.valueOf() + 6 * 86400000);
-  return {
-    monday: mondayTarget.toISOString().slice(0, 10),
-    sunday: sundayTarget.toISOString().slice(0, 10),
-  };
-}
+export { getNaturalWeekBounds } from "../src/domain/academic-domain.mjs";
+import { getNaturalWeekBounds } from "../src/domain/academic-domain.mjs";
 
-export function getNaturalWeekBounds(weekId) {
-  const { monday, sunday } = getWeekMondayAndSunday(weekId);
-  const start = new Date(`${monday}T00:00:00Z`);
-  const announcementDates = Array.from({ length: 7 }, (_, i) =>
-    new Date(start.valueOf() + i * 86400000).toISOString().slice(0, 10)
-  );
-  const sundayPrior = new Date(start.valueOf() - 86400000).toISOString().slice(0, 10);
-  const academicAnnouncementDates = [
-    sundayPrior,
-    announcementDates[0],
-    announcementDates[1],
-    announcementDates[2],
-    announcementDates[3],
-  ];
-  return {
-    monday,
-    sunday,
-    announcementDates,
-    academicAnnouncementDates,
-    dateRange: `${monday} ~ ${sunday}`,
-  };
+export function getWeekMondayAndSunday(weekId) {
+  const { monday, sunday } = getNaturalWeekBounds(weekId);
+  return { monday, sunday };
 }
 
 function batchIdFor(feed, radar, date) {

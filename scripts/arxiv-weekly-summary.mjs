@@ -80,49 +80,11 @@ function parseCliArgs(args) {
   return options;
 }
 
+export { getNaturalWeekBounds } from "../src/domain/academic-domain.mjs";
+import { getNaturalWeekBounds, getBeijingWeekId } from "../src/domain/academic-domain.mjs";
+
 function currentWeekId(date = new Date()) {
-  const target = new Date(date.valueOf());
-  const dayNr = (date.getUTCDay() + 6) % 7;
-  target.setUTCDate(target.getUTCDate() - dayNr + 3);
-  const firstThursday = target.valueOf();
-  target.setUTCMonth(0, 1);
-  if (target.getUTCDay() !== 4) {
-    target.setUTCMonth(0, 1 + ((4 - target.getUTCDay() + 7) % 7));
-  }
-  const weekNumber = 1 + Math.ceil((firstThursday - target) / 604800000);
-  return `${target.getUTCFullYear()}-W${String(weekNumber).padStart(2, "0")}`;
-}
-
-export function getNaturalWeekBounds(weekId) {
-  const [yearStr, weekStr] = weekId.split("-W");
-  const year = parseInt(yearStr, 10);
-  const week = parseInt(weekStr, 10);
-  const jan4 = new Date(Date.UTC(year, 0, 4));
-  const day = (jan4.getUTCDay() + 6) % 7;
-  const mondayWeek1 = new Date(jan4.valueOf() - day * 86400000);
-  const mondayTarget = new Date(mondayWeek1.valueOf() + (week - 1) * 7 * 86400000);
-
-  const announcementDates = [];
-  for (let i = 0; i < 7; i++) {
-    const d = new Date(mondayTarget.valueOf() + i * 86400000);
-    announcementDates.push(d.toISOString().slice(0, 10));
-  }
-  const sunday = announcementDates.at(-1);
-  const sundayPrior = new Date(mondayTarget.valueOf() - 86400000).toISOString().slice(0, 10);
-  const academicAnnouncementDates = [
-    sundayPrior,
-    announcementDates[0],
-    announcementDates[1],
-    announcementDates[2],
-    announcementDates[3],
-  ];
-  return {
-    monday: announcementDates[0],
-    sunday,
-    announcementDates,
-    academicAnnouncementDates,
-    dateRange: `${announcementDates[0]} ~ ${sunday}`,
-  };
+  return getBeijingWeekId(date);
 }
 
 function safeProviderError(error) {

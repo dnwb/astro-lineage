@@ -454,3 +454,120 @@ export function formatAnnouncementInBeijing(usDateStr, usWeekday) {
     usWeekday: usWeekday || "",
   };
 }
+
+/**
+ * Format a Date or timestamp as Beijing Time string (YYYY-MM-DD HH:mm:ss, Asia/Shanghai, UTC+8).
+ *
+ * @param {Date|string|number} [date=new Date()]
+ * @returns {string} e.g. "2026/10/10 02:00:00"
+ */
+export function formatBeijingTimestamp(date = new Date()) {
+  const d = typeof date === "string" || typeof date === "number" ? new Date(date) : date;
+  return new Intl.DateTimeFormat("zh-CN", {
+    timeZone: "Asia/Shanghai",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hourCycle: "h23",
+  }).format(d);
+}
+
+/**
+ * Get the Beijing Date string (YYYY-MM-DD, Asia/Shanghai, UTC+8) for any given timestamp.
+ *
+ * @param {Date|string|number} [date=new Date()]
+ * @returns {string} e.g. "2026-10-10"
+ */
+export function getBeijingDateString(date = new Date()) {
+  const d = typeof date === "string" || typeof date === "number" ? new Date(date) : date;
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Shanghai",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(d);
+}
+
+/**
+ * Calculate the ISO week identifier (e.g. "2026-W41") for a given date in Beijing Time (Asia/Shanghai, UTC+8).
+ *
+ * @param {Date|string|number} [dateInput=new Date()]
+ * @returns {string} weekId
+ */
+export function getBeijingWeekId(dateInput = new Date()) {
+  const d =
+    typeof dateInput === "string" || typeof dateInput === "number"
+      ? new Date(dateInput)
+      : new Date(dateInput.getTime());
+
+  const beijingStr = getBeijingDateString(d);
+  const [year, month, day] = beijingStr.split("-").map(Number);
+  const target = new Date(Date.UTC(year, month - 1, day));
+  const dayNr = (target.getUTCDay() + 6) % 7;
+  target.setUTCDate(target.getUTCDate() - dayNr + 3);
+  const firstThursday = target.valueOf();
+  target.setUTCMonth(0, 1);
+  if (target.getUTCDay() !== 4) {
+    target.setUTCMonth(0, 1 + ((4 - target.getUTCDay() + 7) % 7));
+  }
+  const weekNumber = 1 + Math.ceil((firstThursday - target) / 604800000);
+  return `${target.getUTCFullYear()}-W${String(weekNumber).padStart(2, "0")}`;
+}
+
+/**
+ * Calculate the previous academic week ID (prior week in Beijing Time, e.g. for Monday 08:00 group broadcasts).
+ *
+ * @param {Date|string|number} [dateInput=new Date()]
+ * @returns {string} weekId
+ */
+export function getPreviousAcademicWeekId(dateInput = new Date()) {
+  const d =
+    typeof dateInput === "string" || typeof dateInput === "number"
+      ? new Date(dateInput)
+      : new Date(dateInput.getTime());
+  const lastWeekTime = d.getTime() - 7 * 86400000;
+  return getBeijingWeekId(new Date(lastWeekTime));
+}
+
+/**
+ * Calculate academic natural week bounds for an ISO week ID (e.g. "2026-W41").
+ *
+ * Natural calendar bounds: Monday to Sunday.
+ * Academic announcement batches: [Sunday_prior, Monday, Tuesday, Wednesday, Thursday] (US Eastern announcement dates).
+ *
+ * @param {string} weekId
+ */
+export function getNaturalWeekBounds(weekId) {
+  const [yearStr, weekStr] = weekId.split("-W");
+  const year = parseInt(yearStr, 10);
+  const week = parseInt(weekStr, 10);
+  const jan4 = new Date(Date.UTC(year, 0, 4));
+  const day = (jan4.getUTCDay() + 6) % 7;
+  const mondayWeek1 = new Date(jan4.valueOf() - day * 86400000);
+  const mondayTarget = new Date(mondayWeek1.valueOf() + (week - 1) * 7 * 86400000);
+
+  const announcementDates = [];
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(mondayTarget.valueOf() + i * 86400000);
+    announcementDates.push(d.toISOString().slice(0, 10));
+  }
+  const sunday = announcementDates.at(-1);
+  const sundayPrior = new Date(mondayTarget.valueOf() - 86400000).toISOString().slice(0, 10);
+  const academicAnnouncementDates = [
+    sundayPrior,
+    announcementDates[0],
+    announcementDates[1],
+    announcementDates[2],
+    announcementDates[3],
+  ];
+  return {
+    monday: announcementDates[0],
+    sunday,
+    announcementDates,
+    academicAnnouncementDates,
+    dateRange: `${announcementDates[0]} ~ ${sunday}`,
+  };
+}

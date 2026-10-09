@@ -107,16 +107,7 @@ case "${TASK}" in
 
   group-weekly)
     echo "[cron-runner] 执行周一上午 08:00 前一周学术周报群广播..."
-    PREV_WEEK="$(node -e '
-      const now = new Date();
-      const lastWeek = new Date(now.getTime() - 7 * 86400000);
-      const d = new Date(Date.UTC(lastWeek.getFullYear(), lastWeek.getMonth(), lastWeek.getDate()));
-      const dayNum = d.getUTCDay() || 7;
-      d.setUTCDate(d.getUTCDate() + 4 - dayNum);
-      const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
-      const weekNo = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
-      console.log(`${d.getUTCFullYear()}-W${String(weekNo).padStart(2, "0")}`);
-    ')"
+    PREV_WEEK="$(node -e 'import("./src/domain/academic-domain.mjs").then(m => console.log(m.getPreviousAcademicWeekId()))')"
     echo "[cron-runner] 上一周学术周标识: ${PREV_WEEK}"
     node scripts/qq-send.mjs --group --brief weekly --week "${PREV_WEEK}"
     ;;

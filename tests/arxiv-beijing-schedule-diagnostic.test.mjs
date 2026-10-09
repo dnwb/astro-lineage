@@ -100,3 +100,46 @@ test("Weekly archives and manifest have strictly disjoint batches across all his
     );
   }
 });
+
+test("Unified academic-domain week functions provide single source of truth across modules", async () => {
+  const {
+    getBeijingWeekId,
+    getPreviousAcademicWeekId,
+    getNaturalWeekBounds: getDomainBounds,
+  } = await import("../src/domain/academic-domain.mjs");
+  const { getNaturalWeekBounds: getArchiveBounds } = await import("../scripts/arxiv-archive.mjs");
+
+  for (const wid of ["2026-W38", "2026-W39", "2026-W40", "2026-W41"]) {
+    const domainB = getDomainBounds(wid);
+    const archiveB = getArchiveBounds(wid);
+    const weeklyB = getWeeklyNaturalWeekBounds(wid);
+    assert.deepEqual(domainB, archiveB, `Domain and Archive bounds mismatch for ${wid}`);
+    assert.deepEqual(domainB, weeklyB, `Domain and Weekly summary bounds mismatch for ${wid}`);
+  }
+
+  // Test Monday 08:00 BJT boundary (2026-10-12 08:00:00 BJT = 2026-10-12T00:00:00.000Z)
+  const mondayMorningUtc = new Date("2026-10-12T00:00:00.000Z");
+  assert.equal(
+    getBeijingWeekId(mondayMorningUtc),
+    "2026-W42",
+    "Monday 08:00 BJT must evaluate to new academic week W42"
+  );
+  assert.equal(
+    getPreviousAcademicWeekId(mondayMorningUtc),
+    "2026-W41",
+    "Group broadcast on Monday 08:00 BJT must accurately evaluate to previous week W41"
+  );
+
+  // Test Sunday night BJT boundary (2026-10-11 23:59:59 BJT = 2026-10-11T15:59:59.000Z)
+  const sundayNightUtc = new Date("2026-10-11T15:59:59.000Z");
+  assert.equal(
+    getBeijingWeekId(sundayNightUtc),
+    "2026-W41",
+    "Sunday 23:59 BJT must still belong to W41"
+  );
+  assert.equal(
+    getPreviousAcademicWeekId(sundayNightUtc),
+    "2026-W40",
+    "Previous week from Sunday 23:59 BJT evaluates to W40"
+  );
+});

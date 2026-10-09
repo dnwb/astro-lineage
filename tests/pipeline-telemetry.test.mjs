@@ -1,8 +1,8 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { mkdtemp, rm, readFile, writeFile } from "node:fs/promises";
-import { tmpdir } from "node:os";
+import { readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
+import { createTemporaryWorkspace } from "./helpers/temporary-workspace.mjs";
 import {
   startTrace,
   queryTraces,
@@ -61,102 +61,97 @@ test("startTrace records lifecycle events conforming to PipelineTraceEvent schem
   assert.equal(evidenceEvent.details.verified_quotes_count, 3);
 });
 
-test("AppendOnlyJsonlAdapter persists events to disk and queryTraces retrieves by paperId and stage", async () => {
-  const testDir = await mkdtemp(join(tmpdir(), "axv-test-telemetry-"));
-  try {
-    const fileAdapter = new AppendOnlyJsonlAdapter({ telemetryDir: testDir });
-    const trace1 = startTrace({
-      paperId: "2609.11111v1",
-      date: "2026-10-06",
-      sinkAdapter: fileAdapter,
-    });
-    trace1.recordStage(PIPELINE_STAGES.ACQUISITION, {
-      status: TRACE_STATUSES.COMPLETED,
-      details: { source_kind: "deepxiv" },
-    });
-    trace1.finish(TRACE_STATUSES.COMPLETED);
+test("AppendOnlyJsonlAdapter persists events to disk and queryTraces retrieves by paperId and stage", async (t) => {
+  const ws = await createTemporaryWorkspace("astro-lineage-test-telemetry-", t);
+  const testDir = ws.path;
+  const fileAdapter = new AppendOnlyJsonlAdapter({ telemetryDir: testDir });
+  const trace1 = startTrace({
+    paperId: "2609.11111v1",
+    date: "2026-10-06",
+    sinkAdapter: fileAdapter,
+  });
+  trace1.recordStage(PIPELINE_STAGES.ACQUISITION, {
+    status: TRACE_STATUSES.COMPLETED,
+    details: { source_kind: "deepxiv" },
+  });
+  trace1.finish(TRACE_STATUSES.COMPLETED);
 
-    const trace2 = startTrace({
-      paperId: "2609.22222v1",
-      date: "2026-10-06",
-      sinkAdapter: fileAdapter,
-    });
-    trace2.recordStage(PIPELINE_STAGES.ACQUISITION, {
-      status: TRACE_STATUSES.FAILED,
-      details: { error: "timeout" },
-    });
-    trace2.finish(TRACE_STATUSES.FAILED);
+  const trace2 = startTrace({
+    paperId: "2609.22222v1",
+    date: "2026-10-06",
+    sinkAdapter: fileAdapter,
+  });
+  trace2.recordStage(PIPELINE_STAGES.ACQUISITION, {
+    status: TRACE_STATUSES.FAILED,
+    details: { error: "timeout" },
+  });
+  trace2.finish(TRACE_STATUSES.FAILED);
 
-    // Allow async writes to settle
-    await fileAdapter.flush();
+  // Allow async writes to settle
+  await fileAdapter.flush();
 
-    // Query all for date
-    const allEvents = await queryTraces({ date: "2026-10-06", telemetryDir: testDir });
-    assert.equal(allEvents.length, 4);
+  // Query all for date
+  const allEvents = await queryTraces({ date: "2026-10-06", telemetryDir: testDir });
+  assert.equal(allEvents.length, 4);
 
-    // Query filtered by paperId
-    const paper1Events = await queryTraces({
-      date: "2026-10-06",
-      paperId: "2609.11111v1",
-      telemetryDir: testDir,
-    });
-    assert.equal(paper1Events.length, 2);
-    assert.equal(paper1Events[0].paper_id, "2609.11111v1");
+  // Query filtered by paperId
+  const paper1Events = await queryTraces({
+    date: "2026-10-06",
+    paperId: "2609.11111v1",
+    telemetryDir: testDir,
+  });
+  assert.equal(paper1Events.length, 2);
+  assert.equal(paper1Events[0].paper_id, "2609.11111v1");
 
-    // Query filtered by stage
-    const acqEvents = await queryTraces({
-      date: "2026-10-06",
-      stage: PIPELINE_STAGES.ACQUISITION,
-      telemetryDir: testDir,
-    });
-    assert.equal(acqEvents.length, 2);
-  } finally {
-    await rm(testDir, { recursive: true, force: true }).catch(() => {});
+  // Query filtered by stage
+  const acqEvents = await queryTraces({
+    date: "2026-10-06",
+    stage: PIPELINE_STAGES.ACQUISITION,
+    telemetryDir: testDir,
+  });
+  assert.equal(acqEvents.length, 2);
+});
+
+test("AppendOnlyJsonlAdapter handles concurrent multi-trace writes safely", async (t) => {
+  const ws = await createTemporaryWorkspace("astro-lineage-test-telemetry-concurrent-", t);
+  const testDir = ws.path;
+  const fileAdapter = new AppendOnlyJsonlAdapter({ telemetryDir: testDir });
+  const promises = [];
+
+  for (let i = 0; i < 20; i++) {
+    promises.push(
+      (async () => {
+        const trace = startTrace({
+          paperId: `2609.${String(i).padStart(5, "0")}v1`,
+          date: "2026-10-06",
+          sinkAdapter: fileAdapter,
+        });
+        trace.recordStage(PIPELINE_STAGES.TRIAGE, { status: TRACE_STATUSES.STARTED });
+        trace.recordStage(PIPELINE_STAGES.SYNTHESIS, { status: TRACE_STATUSES.COMPLETED });
+        trace.finish(TRACE_STATUSES.COMPLETED);
+      })()
+    );
+  }
+
+  await Promise.all(promises);
+  await fileAdapter.flush();
+
+  const events = await queryTraces({ date: "2026-10-06", telemetryDir: testDir });
+  assert.equal(events.length, 60);
+
+  // Verify all JSON records are valid without corruption
+  const filePath = join(testDir, "traces-2026-10-06.jsonl");
+  const raw = await readFile(filePath, "utf8");
+  const lines = raw.trim().split("\n").filter(Boolean);
+  assert.equal(lines.length, 60);
+  for (const line of lines) {
+    assert.doesNotThrow(() => JSON.parse(line));
   }
 });
 
-test("AppendOnlyJsonlAdapter handles concurrent multi-trace writes safely", async () => {
-  const testDir = await mkdtemp(join(tmpdir(), "axv-test-telemetry-concurrent-"));
-  try {
-    const fileAdapter = new AppendOnlyJsonlAdapter({ telemetryDir: testDir });
-    const promises = [];
-
-    for (let i = 0; i < 20; i++) {
-      promises.push(
-        (async () => {
-          const trace = startTrace({
-            paperId: `2609.${String(i).padStart(5, "0")}v1`,
-            date: "2026-10-06",
-            sinkAdapter: fileAdapter,
-          });
-          trace.recordStage(PIPELINE_STAGES.TRIAGE, { status: TRACE_STATUSES.STARTED });
-          trace.recordStage(PIPELINE_STAGES.SYNTHESIS, { status: TRACE_STATUSES.COMPLETED });
-          trace.finish(TRACE_STATUSES.COMPLETED);
-        })()
-      );
-    }
-
-    await Promise.all(promises);
-    await fileAdapter.flush();
-
-    const events = await queryTraces({ date: "2026-10-06", telemetryDir: testDir });
-    assert.equal(events.length, 60);
-
-    // Verify all JSON records are valid without corruption
-    const filePath = join(testDir, "traces-2026-10-06.jsonl");
-    const raw = await readFile(filePath, "utf8");
-    const lines = raw.trim().split("\n").filter(Boolean);
-    assert.equal(lines.length, 60);
-    for (const line of lines) {
-      assert.doesNotThrow(() => JSON.parse(line));
-    }
-  } finally {
-    await rm(testDir, { recursive: true, force: true }).catch(() => {});
-  }
-});
-
-test("runAiAnalyzer generates structured telemetry events for processed paper", async () => {
-  const testDir = await mkdtemp(join(tmpdir(), "axv-test-analyzer-telemetry-"));
+test("runAiAnalyzer generates structured telemetry events for processed paper", async (t) => {
+  const ws = await createTemporaryWorkspace("astro-lineage-test-analyzer-telemetry-", t);
+  const testDir = ws.path;
   const feedPath = join(testDir, "arxiv-daily.json");
   const radarPath = join(testDir, "daily-radar.json");
   const statePath = join(testDir, "screening-queue.json");
@@ -234,6 +229,4 @@ test("runAiAnalyzer generates structured telemetry events for processed paper", 
   const triageEvent = events.find((e) => e.stage === PIPELINE_STAGES.TRIAGE);
   assert.ok(triageEvent, "Should have recorded TRIAGE stage event");
   assert.equal(triageEvent.paper_id, "2609.88888v1");
-
-  await rm(testDir, { recursive: true, force: true }).catch(() => {});
 });

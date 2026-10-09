@@ -142,6 +142,8 @@ export function resolvePublicationTarget(item, { channelIds = {}, fallbackChanne
     (channelIds[GENERAL_CHANNEL_ID] || channelIds.general)
   ) {
     target = channelIds[GENERAL_CHANNEL_ID] || channelIds.general;
+  } else if (fallbackChannelId === undefined && Object.keys(channelIds).length === 0) {
+    target = GENERAL_CHANNEL_ID;
   }
 
   if (target) {

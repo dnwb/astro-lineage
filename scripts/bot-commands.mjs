@@ -281,7 +281,7 @@ export function matchBotCommand(rawQuery) {
  * @param {Object} [options]
  * @returns {string | Promise<string>}
  */
-export function executeBotCommand(cmd, options = {}) {
+export async function executeBotCommand(cmd, options = {}) {
   const websiteBase = (
     options.websiteBase ||
     process.env.SITE_BASE_URL ||
@@ -316,145 +316,145 @@ export function executeBotCommand(cmd, options = {}) {
   }
 
   // 2. 异步指令执行
-  return (async () => {
-    const resolveChannel = async () => {
-      if (options.channelUrl) return options.channelUrl;
-      if (typeof options.resolveChannelLink === "function") {
-        const link = await options.resolveChannelLink();
-        if (link) return link;
-      }
-      return await readChannelShareUrl({ url: process.env.ASTRO_CHANNEL_URL });
-    };
-
-    switch (cmd.type) {
-      case "today": {
-        try {
-          const channelUrl = await resolveChannel();
-          return await generateGroupBrief("daily", {
-            format: "markdown",
-            markdown: true,
-            websiteBase,
-            channelUrl,
-          });
-        } catch (err) {
-          return `[AstroLineage] 获取今日导读失败: ${err.message}。可发送 \`\\list_day\` 查看历史可用导读。`;
-        }
-      }
-
-      case "yesterday": {
-        try {
-          const dates = await getAvailableDailyDates();
-          const yesterdayDate = dates.length >= 2 ? dates[1] : dates[0];
-          const channelUrl = await resolveChannel();
-          return await generateGroupBrief("daily", {
-            date: yesterdayDate,
-            format: "markdown",
-            markdown: true,
-            websiteBase,
-            channelUrl,
-          });
-        } catch (err) {
-          return `[AstroLineage] 获取昨日导读失败: ${err.message}。可发送 \`\\list_day\` 查看历史可用导读。`;
-        }
-      }
-
-      case "day": {
-        const rawDateArg = cmd.arg;
-        const normalizedDate = normalizeDateInput(rawDateArg);
-        if (!normalizedDate) {
-          return `⚠️ 日期格式未能识别：“${rawDateArg}”。\n\n请使用标准格式，例如：\n• \`\\day 2026-10-05\`\n• \`\\day 10-05\`\n\n发送 \`\\list_day\` 可查看所有可用日期列表。`;
-        }
-        try {
-          const dates = await getAvailableDailyDates();
-          if (!dates.includes(normalizedDate)) {
-            const recentSamples = dates.slice(0, 5).join(", ");
-            return `ℹ️ 未找到 **${normalizedDate}** 的导读归档（可能为 arXiv 官方周末/休刊日）。\n\n📌 最近可用日期：${recentSamples}\n发送 \`\\list_day\` 查看完整日期列表。`;
-          }
-          const channelUrl = await resolveChannel();
-          return await generateGroupBrief("daily", {
-            date: normalizedDate,
-            format: "markdown",
-            markdown: true,
-            websiteBase,
-            channelUrl,
-          });
-        } catch (err) {
-          return `[AstroLineage] 获取 ${normalizedDate} 导读失败: ${err.message}`;
-        }
-      }
-
-      case "day_help": {
-        const dates = await getAvailableDailyDates();
-        const sample = dates[0] || "2026-10-05";
-        return `请指定查询日期，例如：\n• \`\\day ${sample}\`\n• \`\\day ${sample.slice(5)}\`\n\n发送 \`\\list_day\` 可查看所有可用日期列表。`;
-      }
-
-      case "week": {
-        try {
-          const weekIds = await getAvailableWeeklyIds();
-          let weeklyData;
-          if (weekIds.length > 0) {
-            const latestWeekId = weekIds[0];
-            const weeklyPath = join(DEFAULT_WEEKLY_ARCHIVES_DIR, `${latestWeekId}.json`);
-            const bytes = await readFile(weeklyPath, "utf8");
-            weeklyData = JSON.parse(bytes);
-          }
-          const channelUrl = await resolveChannel();
-          return await generateGroupBrief("weekly", {
-            weekly: weeklyData,
-            format: "markdown",
-            markdown: true,
-            websiteBase,
-            channelUrl,
-          });
-        } catch (err) {
-          return `[AstroLineage] 获取本周周报失败: ${err.message}。可发送 \`\\list_week\` 查看所有周报。`;
-        }
-      }
-
-      case "last_week": {
-        try {
-          const weekIds = await getAvailableWeeklyIds();
-          let weeklyData;
-          if (weekIds.length >= 2) {
-            const lastWeekId = weekIds[1];
-            const weeklyPath = join(DEFAULT_WEEKLY_ARCHIVES_DIR, `${lastWeekId}.json`);
-            const bytes = await readFile(weeklyPath, "utf8");
-            weeklyData = JSON.parse(bytes);
-          }
-          const channelUrl = await resolveChannel();
-          return await generateGroupBrief("weekly", {
-            weekly: weeklyData,
-            format: "markdown",
-            markdown: true,
-            websiteBase,
-            channelUrl,
-          });
-        } catch (err) {
-          return `[AstroLineage] 获取上周周报失败: ${err.message}。可发送 \`\\list_week\` 查看所有周报。`;
-        }
-      }
-
-      case "list_day": {
-        try {
-          return await formatDailyList({ websiteBase });
-        } catch (err) {
-          return `[AstroLineage] 获取导读列表失败: ${err.message}`;
-        }
-      }
-
-      case "list_week": {
-        try {
-          return await formatWeeklyList({ websiteBase });
-        } catch (err) {
-          return `[AstroLineage] 获取周报列表失败: ${err.message}`;
-        }
-      }
-
-      default:
-        return "";
+  const resolveChannel = async () => {
+    if (options.channelUrl) return options.channelUrl;
+    if (typeof options.resolveChannelLink === "function") {
+      const link = await options.resolveChannelLink();
+      if (link) return link;
     }
-  })();
+    return await readChannelShareUrl({ url: process.env.ASTRO_CHANNEL_URL });
+  };
+
+  switch (cmd.type) {
+    case "today": {
+      try {
+        const channelUrl = await resolveChannel();
+        return await generateGroupBrief("daily", {
+          format: "markdown",
+          markdown: true,
+          websiteBase,
+          channelUrl,
+        });
+      } catch (err) {
+        return `[AstroLineage] 获取今日导读失败: ${err.message}。可发送 \`\\list_day\` 查看历史可用导读。`;
+      }
+    }
+
+    case "yesterday": {
+      try {
+        const dates = await getAvailableDailyDates();
+        const yesterdayDate = dates.length >= 2 ? dates[1] : dates[0];
+        const channelUrl = await resolveChannel();
+        return await generateGroupBrief("daily", {
+          date: yesterdayDate,
+          format: "markdown",
+          markdown: true,
+          websiteBase,
+          channelUrl,
+        });
+      } catch (err) {
+        return `[AstroLineage] 获取昨日导读失败: ${err.message}。可发送 \`\\list_day\` 查看历史可用导读。`;
+      }
+    }
+
+    case "day": {
+      const rawDateArg = cmd.arg;
+      const normalizedDate = normalizeDateInput(rawDateArg);
+      if (!normalizedDate) {
+        return `⚠️ 日期格式未能识别：“${rawDateArg}”。\n\n请使用标准格式，例如：\n• \`\\day 2026-10-05\`\n• \`\\day 10-05\`\n\n发送 \`\\list_day\` 可查看所有可用日期列表。`;
+      }
+      try {
+        const dates = await getAvailableDailyDates();
+        if (!dates.includes(normalizedDate)) {
+          const recentSamples = dates.slice(0, 5).join(", ");
+          return `ℹ️ 未找到 **${normalizedDate}** 的导读归档（可能为 arXiv 官方周末/休刊日）。\n\n📌 最近可用日期：${recentSamples}\n发送 \`\\list_day\` 查看完整日期列表。`;
+        }
+        const channelUrl = await resolveChannel();
+        return await generateGroupBrief("daily", {
+          date: normalizedDate,
+          format: "markdown",
+          markdown: true,
+          websiteBase,
+          channelUrl,
+        });
+      } catch (err) {
+        return `[AstroLineage] 获取 ${normalizedDate} 导读失败: ${err.message}`;
+      }
+    }
+
+    case "day_help": {
+      const dates = await getAvailableDailyDates();
+      const sample = dates[0] || "2026-10-05";
+      return `请指定查询日期，例如：\n• \`\\day ${sample}\`\n• \`\\day ${sample.slice(5)}\`\n\n发送 \`\\list_day\` 可查看所有可用日期列表。`;
+    }
+
+    case "week": {
+      try {
+        const weekIds = await getAvailableWeeklyIds();
+        let weeklyData;
+        if (weekIds.length > 0) {
+          const latestWeekId = weekIds[0];
+          const weeklyPath = join(DEFAULT_WEEKLY_ARCHIVES_DIR, `${latestWeekId}.json`);
+          const bytes = await readFile(weeklyPath, "utf8");
+          weeklyData = JSON.parse(bytes);
+        }
+        const channelUrl = await resolveChannel();
+        return await generateGroupBrief("weekly", {
+          weekly: weeklyData,
+          format: "markdown",
+          markdown: true,
+          websiteBase,
+          channelUrl,
+        });
+      } catch (err) {
+        return `[AstroLineage] 获取本周周报失败: ${err.message}。可发送 \`\\list_week\` 查看所有周报。`;
+      }
+    }
+
+    case "last_week": {
+      try {
+        const weekIds = await getAvailableWeeklyIds();
+        let weeklyData;
+        if (weekIds.length >= 2) {
+          const lastWeekId = weekIds[1];
+          const weeklyPath = join(DEFAULT_WEEKLY_ARCHIVES_DIR, `${lastWeekId}.json`);
+          const bytes = await readFile(weeklyPath, "utf8");
+          weeklyData = JSON.parse(bytes);
+        }
+        const channelUrl = await resolveChannel();
+        return await generateGroupBrief("weekly", {
+          weekly: weeklyData,
+          format: "markdown",
+          markdown: true,
+          websiteBase,
+          channelUrl,
+        });
+      } catch (err) {
+        return `[AstroLineage] 获取上周周报失败: ${err.message}。可发送 \`\\list_week\` 查看所有周报。`;
+      }
+    }
+
+    case "list_day": {
+      try {
+        const channelUrl = await resolveChannel();
+        return await formatDailyList({ websiteBase, channelUrl });
+      } catch (err) {
+        return `[AstroLineage] 获取导读列表失败: ${err.message}`;
+      }
+    }
+
+    case "list_week": {
+      try {
+        const channelUrl = await resolveChannel();
+        return await formatWeeklyList({ websiteBase, channelUrl });
+      } catch (err) {
+        return `[AstroLineage] 获取周报列表失败: ${err.message}`;
+      }
+    }
+
+    default:
+      return "";
+  }
 }
 
 /**
@@ -466,7 +466,6 @@ export function executeBotCommand(cmd, options = {}) {
 export async function handleBotCommand(rawQuery, options = {}) {
   const cmd = matchBotCommand(rawQuery);
   if (!cmd) return { matched: false };
-  const res = executeBotCommand(cmd, options);
-  const replyText = typeof res?.then === "function" ? await res : res;
+  const replyText = await executeBotCommand(cmd, options);
   return { matched: true, replyText };
 }

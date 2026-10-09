@@ -18,7 +18,7 @@ import { generateAcademicAnswer } from "./agent-core.mjs";
 import { readChannelShareUrl } from "./channel-publication.mjs";
 import { createSessionMemory } from "./qq-memory.mjs";
 import { defaultUserManager } from "./qq-users.mjs";
-import { matchBotCommand, executeBotCommand, handleBotCommand } from "./bot-commands.mjs";
+import { matchBotCommand, executeBotCommand } from "./bot-commands.mjs";
 
 // Node >=22.20 provides WebSocket; no undeclared ws package is needed.
 async function request(url, options = {}) {
@@ -379,6 +379,30 @@ export async function startOfficialBot({
 
   const resolveChannelLink =
     typeof channelLink === "function" ? channelLink : async () => undefined;
+
+  const dispatchMatchedCommand = async ({
+    cmd,
+    query,
+    replyFn,
+    sessionKey,
+    contextLabel = "指令",
+  }) => {
+    try {
+      const rawReply = await executeBotCommand(cmd, { resolveChannelLink });
+      const replyText = /https?:\/\/\S+/iu.test(rawReply || "")
+        ? await appendChannelShareLinkToReply(rawReply, resolveChannelLink)
+        : rawReply;
+      if (!dryRun) {
+        await replyFn(replyText);
+        console.log(`[QQ Official Bot] ✓ 已回复${contextLabel}: ${query}`);
+      }
+      memory.append(sessionKey, "user", query);
+      memory.append(sessionKey, "assistant", replyText);
+    } catch (err) {
+      console.error(`[QQ Official Bot] ✗ 回复${contextLabel}失败: ${err.message}`);
+    }
+  };
+
   const ws = new WebSocketImpl(gatewayUrl);
   const sweepMemory = () => {
     try {
@@ -494,24 +518,13 @@ export async function startOfficialBot({
             if (query && groupOpenid && authorId) {
               const cmd = matchBotCommand(query);
               if (cmd) {
-                try {
-                  const replyResult = executeBotCommand(cmd, {
-                    resolveChannelLink,
-                  });
-                  const rawReply =
-                    typeof replyResult?.then === "function" ? await replyResult : replyResult;
-                  const replyText = /https?:\/\/\S+/iu.test(rawReply || "")
-                    ? await appendChannelShareLinkToReply(rawReply, resolveChannelLink)
-                    : rawReply;
-                  if (!dryRun) {
-                    await replyGroupMessage({ groupOpenid, msgId, content: replyText });
-                    console.log(`[QQ Official Bot] ✓ 已回复群指令: ${query}`);
-                  }
-                  memory.append(sessionKey, "user", query);
-                  memory.append(sessionKey, "assistant", replyText);
-                } catch (err) {
-                  console.error(`[QQ Official Bot] ✗ 回复群指令失败: ${err.message}`);
-                }
+                await dispatchMatchedCommand({
+                  cmd,
+                  query,
+                  replyFn: (content) => replyGroupMessage({ groupOpenid, msgId, content }),
+                  sessionKey,
+                  contextLabel: "群指令",
+                });
                 break;
               }
 
@@ -548,24 +561,13 @@ export async function startOfficialBot({
             if (query && channelId && authorId) {
               const cmd = matchBotCommand(query);
               if (cmd) {
-                try {
-                  const replyResult = executeBotCommand(cmd, {
-                    resolveChannelLink,
-                  });
-                  const rawReply =
-                    typeof replyResult?.then === "function" ? await replyResult : replyResult;
-                  const replyText = /https?:\/\/\S+/iu.test(rawReply || "")
-                    ? await appendChannelShareLinkToReply(rawReply, resolveChannelLink)
-                    : rawReply;
-                  if (!dryRun) {
-                    await replyChannelMessage({ channelId, msgId, content: replyText });
-                    console.log(`[QQ Official Bot] ✓ 已回复频道指令: ${query}`);
-                  }
-                  memory.append(sessionKey, "user", query);
-                  memory.append(sessionKey, "assistant", replyText);
-                } catch (err) {
-                  console.error(`[QQ Official Bot] ✗ 回复频道指令失败: ${err.message}`);
-                }
+                await dispatchMatchedCommand({
+                  cmd,
+                  query,
+                  replyFn: (content) => replyChannelMessage({ channelId, msgId, content }),
+                  sessionKey,
+                  contextLabel: "频道指令",
+                });
                 break;
               }
 
@@ -608,24 +610,13 @@ export async function startOfficialBot({
             if (query && userOpenid) {
               const cmd = matchBotCommand(query);
               if (cmd) {
-                try {
-                  const replyResult = executeBotCommand(cmd, {
-                    resolveChannelLink,
-                  });
-                  const rawReply =
-                    typeof replyResult?.then === "function" ? await replyResult : replyResult;
-                  const replyText = /https?:\/\/\S+/iu.test(rawReply || "")
-                    ? await appendChannelShareLinkToReply(rawReply, resolveChannelLink)
-                    : rawReply;
-                  if (!dryRun) {
-                    await replyC2CMessage({ userOpenid, msgId, content: replyText });
-                    console.log(`[QQ Official Bot] ✓ 已回复私聊指令: ${query}`);
-                  }
-                  memory.append(sessionKey, "user", query);
-                  memory.append(sessionKey, "assistant", replyText);
-                } catch (err) {
-                  console.error(`[QQ Official Bot] ✗ 回复私聊指令失败: ${err.message}`);
-                }
+                await dispatchMatchedCommand({
+                  cmd,
+                  query,
+                  replyFn: (content) => replyC2CMessage({ userOpenid, msgId, content }),
+                  sessionKey,
+                  contextLabel: "私聊指令",
+                });
                 break;
               }
 

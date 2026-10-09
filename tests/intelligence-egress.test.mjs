@@ -1,8 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { mkdtemp, rm, readFile } from "node:fs/promises";
-import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { createTemporaryWorkspace } from "./helpers/temporary-workspace.mjs";
 import {
   dispatchIntelligence,
   validateIntelligencePayload,
@@ -97,47 +95,44 @@ test("TencentGuildAdapter transforms payload into guild post markdown and respec
   assert.ok(cliCalls[0].includes("channel-daily-101") || cliCalls[0].includes("channel-r1-103"));
 });
 
-test("OfficialQqBotAdapter formats group brief within safe limits and logs to ledger", async () => {
-  const testDir = await mkdtemp(join(tmpdir(), "axv-test-egress-ledger-"));
-  try {
-    const sentMessages = [];
-    const mockSender = async (msg) => {
-      sentMessages.push(msg);
-      return { id: "qq-msg-999" };
-    };
+test("OfficialQqBotAdapter formats group brief within safe limits and logs to ledger", async (t) => {
+  const ws = await createTemporaryWorkspace("astro-lineage-test-egress-", t);
+  const testDir = ws.path;
+  const sentMessages = [];
+  const mockSender = async (msg) => {
+    sentMessages.push(msg);
+    return { id: "qq-msg-999" };
+  };
 
-    const ledger = new PublicationLedger({ cacheDir: testDir });
-    const adapter = new OfficialQqBotAdapter({
-      groupOpenid: "test-group-openid",
-      ledger,
-      sender: mockSender,
-      enabled: true,
-    });
+  const ledger = new PublicationLedger({ cacheDir: testDir });
+  const adapter = new OfficialQqBotAdapter({
+    groupOpenid: "test-group-openid",
+    ledger,
+    sender: mockSender,
+    enabled: true,
+  });
 
-    const payload = {
-      id: "daily:2026-10-06",
-      kind: "daily",
-      title: "「10-06」高能天体物理每日雷达",
-      summary: "今日重要突破：GRB 260907A 偏振探测",
-      body_markdown: "完整正文与详细模型数据分析...",
-      source_version: "c".repeat(64),
-      url: "https://example.com/daily/2026-10-06",
-    };
+  const payload = {
+    id: "daily:2026-10-06",
+    kind: "daily",
+    title: "「10-06」高能天体物理每日雷达",
+    summary: "今日重要突破：GRB 260907A 偏振探测",
+    body_markdown: "完整正文与详细模型数据分析...",
+    source_version: "c".repeat(64),
+    url: "https://example.com/daily/2026-10-06",
+  };
 
-    // First send
-    const res1 = await adapter.publish(payload);
-    assert.equal(res1.status, "success");
-    assert.equal(res1.messageId, "qq-msg-999");
-    assert.equal(sentMessages.length, 1);
-    assert.ok(sentMessages[0].content.length <= 500);
+  // First send
+  const res1 = await adapter.publish(payload);
+  assert.equal(res1.status, "success");
+  assert.equal(res1.messageId, "qq-msg-999");
+  assert.equal(sentMessages.length, 1);
+  assert.ok(sentMessages[0].content.length <= 500);
 
-    // Second send (idempotency check via ledger)
-    const res2 = await adapter.publish(payload);
-    assert.equal(res2.status, "unchanged");
-    assert.equal(sentMessages.length, 1); // No new send
-  } finally {
-    await rm(testDir, { recursive: true, force: true }).catch(() => {});
-  }
+  // Second send (idempotency check via ledger)
+  const res2 = await adapter.publish(payload);
+  assert.equal(res2.status, "unchanged");
+  assert.equal(sentMessages.length, 1); // No new send
 });
 
 test("dispatchIntelligence achieves fault isolation across adapters and returns DispatchReceipt", async () => {

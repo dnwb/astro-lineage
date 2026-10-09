@@ -168,7 +168,7 @@ export async function generateGroupBrief(type = "daily", options = {}) {
         const authorSuffix = authorStr ? ` (${authorStr})` : "";
         lines.push(
           "---",
-          `### ⭐ 必读推荐｜${extractPaperTopic(pick)}${authorSuffix}`,
+          `### ⭐ 必读｜${extractPaperTopic(pick)}${authorSuffix}`,
           `**[${pick.title || ""}](${pick.url || `https://arxiv.org/abs/${pick.arxiv_id}${suffix}`})**`,
           `- **arXiv 原文**: [arXiv:${pick.arxiv_id}${suffix}](https://arxiv.org/abs/${pick.arxiv_id}${suffix}) · [📄 PDF](https://arxiv.org/pdf/${pick.arxiv_id})`,
           `- **频道研讨**: [进入对应频道研讨帖](${channelUrl})`,

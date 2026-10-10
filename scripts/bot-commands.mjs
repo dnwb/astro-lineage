@@ -20,6 +20,7 @@ import { generateGroupBrief } from "./qq-send.mjs";
 import { readChannelShareUrl } from "./channel-publication.mjs";
 import {
   formatAnnouncementInBeijing,
+  getBeijingDateString,
   getBeijingWeekId,
   getPreviousAcademicWeekId,
 } from "../src/domain/academic-domain.mjs";
@@ -38,7 +39,10 @@ const DEFAULT_WEEKLY_ARCHIVES_DIR = fileURLToPath(
  *   YYYYMMDD
  *   MM-DD, MM/DD, MM.DD, MM月DD日
  */
-export function normalizeDateInput(rawDate, defaultYear = new Date().getFullYear()) {
+export function normalizeDateInput(
+  rawDate,
+  defaultYear = parseInt(getBeijingDateString().slice(0, 4), 10)
+) {
   if (!rawDate || typeof rawDate !== "string") return null;
   const trimmed = rawDate.trim();
 
@@ -199,6 +203,41 @@ export async function formatWeeklyList(options = {}) {
   lines.push("", "💡 **使用提示**：输入 `\\week` 查看最新周报，输入 `\\last_week` 查看上周周报！");
 
   return lines.join("\n");
+}
+
+/**
+ * 辅助函数：根据周号或回退索引获取并格式化学术周报简报
+ */
+async function resolveAndFormatWeeklyBrief({
+  requestedWeekId,
+  label,
+  fallbackIndex = 0,
+  resolveChannel,
+  websiteBase,
+}) {
+  try {
+    const weekIds = await getAvailableWeeklyIds();
+    const targetWeekId = weekIds.includes(requestedWeekId)
+      ? requestedWeekId
+      : weekIds[fallbackIndex] || weekIds[0];
+    let weeklyData;
+    if (targetWeekId) {
+      const weeklyPath = join(DEFAULT_WEEKLY_ARCHIVES_DIR, `${targetWeekId}.json`);
+      const bytes = await readFile(weeklyPath, "utf8");
+      weeklyData = JSON.parse(bytes);
+    }
+    const channelUrl = await resolveChannel();
+    return await generateGroupBrief("weekly", {
+      weekly: weeklyData,
+      format: "markdown",
+      markdown: true,
+      websiteBase,
+      channelUrl,
+      interactive: true,
+    });
+  } catch (err) {
+    return `[AstroLineage] 获取${label}失败: ${err.message}。可发送 \`\\list_week\` 查看所有周报。`;
+  }
 }
 
 /**
@@ -395,53 +434,23 @@ export async function executeBotCommand(cmd, options = {}) {
     }
 
     case "week": {
-      try {
-        const currentWeekId = getBeijingWeekId();
-        const weekIds = await getAvailableWeeklyIds();
-        const targetWeekId = weekIds.includes(currentWeekId) ? currentWeekId : weekIds[0];
-        let weeklyData;
-        if (targetWeekId) {
-          const weeklyPath = join(DEFAULT_WEEKLY_ARCHIVES_DIR, `${targetWeekId}.json`);
-          const bytes = await readFile(weeklyPath, "utf8");
-          weeklyData = JSON.parse(bytes);
-        }
-        const channelUrl = await resolveChannel();
-        return await generateGroupBrief("weekly", {
-          weekly: weeklyData,
-          format: "markdown",
-          markdown: true,
-          websiteBase,
-          channelUrl,
-          interactive: true,
-        });
-      } catch (err) {
-        return `[AstroLineage] 获取本周周报失败: ${err.message}。可发送 \`\\list_week\` 查看所有周报。`;
-      }
+      return await resolveAndFormatWeeklyBrief({
+        requestedWeekId: getBeijingWeekId(),
+        label: "本周周报",
+        fallbackIndex: 0,
+        resolveChannel,
+        websiteBase,
+      });
     }
 
     case "last_week": {
-      try {
-        const prevWeekId = getPreviousAcademicWeekId();
-        const weekIds = await getAvailableWeeklyIds();
-        const targetWeekId = weekIds.includes(prevWeekId) ? prevWeekId : weekIds[1] || weekIds[0];
-        let weeklyData;
-        if (targetWeekId) {
-          const weeklyPath = join(DEFAULT_WEEKLY_ARCHIVES_DIR, `${targetWeekId}.json`);
-          const bytes = await readFile(weeklyPath, "utf8");
-          weeklyData = JSON.parse(bytes);
-        }
-        const channelUrl = await resolveChannel();
-        return await generateGroupBrief("weekly", {
-          weekly: weeklyData,
-          format: "markdown",
-          markdown: true,
-          websiteBase,
-          channelUrl,
-          interactive: true,
-        });
-      } catch (err) {
-        return `[AstroLineage] 获取上周周报失败: ${err.message}。可发送 \`\\list_week\` 查看所有周报。`;
-      }
+      return await resolveAndFormatWeeklyBrief({
+        requestedWeekId: getPreviousAcademicWeekId(),
+        label: "上周周报",
+        fallbackIndex: 1,
+        resolveChannel,
+        websiteBase,
+      });
     }
 
     case "list_day": {

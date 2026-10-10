@@ -499,13 +499,13 @@ export async function startOfficialBot({
             console.log(
               `[QQ Official Bot] ✓ 机器人登录就绪！Bot名称: ${d.user?.username || "AstroBot"} (ID: ${d.user?.id}, Session: ${sessionId})`
             );
-          } else if (t === "GROUP_AT_MESSAGE_CREATE") {
+          } else if (t === "GROUP_AT_MESSAGE_CREATE" || t === "GROUP_MESSAGE_CREATE") {
             const query = cleanMessageContent(d.content);
             const groupOpenid = d.group_openid;
             const authorId = d.author?.member_openid || d.author?.id;
             const sessionKey = `group_${groupOpenid}_${authorId}`;
             const msgId = d.id;
-            console.log("[QQ Official Bot] 收到 QQ 群 @ 提问");
+            console.log(`[QQ Official Bot] 收到 QQ 群消息 (${t})`);
 
             if (groupOpenid) {
               try {
@@ -513,6 +513,11 @@ export async function startOfficialBot({
               } catch (recErr) {
                 console.warn("[QQ Official Bot] 记录 groupOpenid 失败:", recErr.message);
               }
+            }
+
+            // 非 @ 机器人的普通群消息仅记录群身份活跃，不自动回复，避免群内闲聊刷屏
+            if (t === "GROUP_MESSAGE_CREATE") {
+              break;
             }
 
             if (query && groupOpenid && authorId) {

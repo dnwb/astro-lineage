@@ -109,7 +109,7 @@ case "${TASK}" in
     echo "[cron-runner] 执行周一上午 08:00 前一周学术周报群广播..."
     PREV_WEEK="$(node -e 'import("./src/domain/academic-domain.mjs").then(m => console.log(m.getPreviousAcademicWeekId()))')"
     echo "[cron-runner] 上一周学术周标识: ${PREV_WEEK}"
-    node scripts/qq-send.mjs --group --brief weekly --week "${PREV_WEEK}"
+    node scripts/qq-send.mjs --group --brief weekly --week "${PREV_WEEK}" --broadcast
     ;;
 
   daily)

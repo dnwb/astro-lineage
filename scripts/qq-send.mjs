@@ -1077,14 +1077,26 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1
       const nextArg = args[gIdx + 1];
       if (nextArg && !nextArg.startsWith("-")) {
         targetGroup = nextArg;
+      } else if (process.env.QQ_TEST_GROUP_OPENID && !args.includes("--broadcast")) {
+        targetGroup = process.env.QQ_TEST_GROUP_OPENID.trim();
+        console.log(
+          `[qq-send] 🛡️ 调试测试保护已激活：自动定向至测试群 [${maskOpenid(targetGroup)}]（正式全发请带 --broadcast）`
+        );
       } else {
         targetGroup = defaultUserManager.getLatestGroupOpenid();
       }
     } else {
-      const remaining = args.filter((_, i) => i !== gIdx);
+      const remaining = args.filter((_, i) => i !== gIdx && i !== args.indexOf("--broadcast"));
       if (remaining.length === 1) {
         content = remaining[0];
-        targetGroup = defaultUserManager.getLatestGroupOpenid();
+        if (process.env.QQ_TEST_GROUP_OPENID && !args.includes("--broadcast")) {
+          targetGroup = process.env.QQ_TEST_GROUP_OPENID.trim();
+          console.log(
+            `[qq-send] 🛡️ 调试测试保护已激活：自动定向至测试群 [${maskOpenid(targetGroup)}]（正式全发请带 --broadcast）`
+          );
+        } else {
+          targetGroup = defaultUserManager.getLatestGroupOpenid();
+        }
       } else if (remaining.length >= 2) {
         targetGroup = remaining[0];
         content = remaining.slice(1).join(" ");

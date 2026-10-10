@@ -1,4 +1,5 @@
 ---
+import ProductBoundary from "../copy/product-boundary.md";
 import { loadCanonicalContent } from "../../scripts/content-loader.mjs";
 import { projectBaselineSnapshot, projectVisibleSnapshot } from "../../scripts/reader-projection.mjs";
 import { learningPathReaderPath, researchLineReaderPath } from "../lib/reader-routes";
@@ -110,7 +111,7 @@ const bjtDailyInfo = formatAnnouncementInBeijing(latestDate, radarWeekday);
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
       content="A curated scientific reading map for high-energy transient astrophysics."
@@ -124,6 +125,10 @@ const bjtDailyInfo = formatAnnouncementInBeijing(latestDate, radarWeekday);
       <header class="home-header" aria-labelledby="home-title">
         <div class="home-title-line">
           <h1 id="home-title">{site.title}</h1>
+        </div>
+        <p class="home-lead language-primary">理解高能瞬变天体物理中的思想如何演化。</p>
+        <div class="language-english" lang="en">
+          <p class="home-lead">Understand how ideas in high-energy astrophysics evolve.</p>
         </div>
       </header>
 
@@ -402,6 +407,7 @@ const bjtDailyInfo = formatAnnouncementInBeijing(latestDate, radarWeekday);
           <div class="footer-left">
             <span class="footer-brand">AstroLineage</span>
             <span class="footer-desc">面向高能天体物理前沿的自动化文献情报与学术脉络跟踪平台</span>
+            <ProductBoundary />
           </div>
           <div class="footer-links">
             <a href="https://github.com/dnwb/astro-lineage/issues" target="_blank" rel="noopener noreferrer" class="footer-feedback-link">

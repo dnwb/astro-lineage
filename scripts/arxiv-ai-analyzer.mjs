@@ -31,9 +31,22 @@ import {
 } from "./arxiv-daily.mjs";
 import { triageBatch } from "./arxiv-triage.mjs";
 import { extractPaperFigures } from "./arxiv-figures.mjs";
-import { defaultGatewayCircuitBreaker, defaultModelHealthRegistry, normalizeModelName, loadProjectEnv } from "./agent-core.mjs";
-import { sanitizeModelJsonString, evaluateEvidenceGate } from "./pipeline-evidence-gate.mjs";
+import {
+  defaultGatewayCircuitBreaker,
+  defaultModelHealthRegistry,
+  normalizeModelName,
+  loadProjectEnv,
+} from "./agent-core.mjs";
+import {
+  sanitizeModelJsonString,
+  evaluateEvidenceGate,
+  safeParseJson,
+  repairMathInRawJson,
+  repairMathDelimiterEscapes,
+  rejectAmbiguousText,
+} from "./pipeline-evidence-gate.mjs";
 import { PIPELINE_STAGES, resolveRoutingLadder, classifyModelError } from "./pipeline-routing.mjs";
+import { startTrace, TRACE_STATUSES } from "./pipeline-telemetry.mjs";
 import {
   DeepxivCircuitBreaker,
   defaultDeepxivBreaker,
@@ -92,18 +105,24 @@ function resolveDefaultApiKey() {
 const DEFAULT_API_KEY = resolveDefaultApiKey();
 const DEFAULT_MODEL = process.env.AI_MODEL || "gpt-6-luna";
 const DEFAULT_EFFORT = process.env.REASONING_EFFORT || "medium";
-const DEFAULT_CONCURRENCY = Number(process.env.AI_CONCURRENCY) || 2;
+const DEFAULT_CONCURRENCY = Number(process.env.AI_CONCURRENCY) || 3;
 const DEFAULT_RUN_LIMIT = Number(process.env.AI_RUN_LIMIT) || 10;
 const FALLBACK_BASE_URL = process.env.FALLBACK_OPENAI_BASE_URL || "";
 const FALLBACK_API_KEY = process.env.FALLBACK_OPENAI_API_KEY || process.env.ZHANG_API_KEY || "";
 export const FALLBACK_MODEL = process.env.FALLBACK_AI_MODEL || "gemini-3.8-flash-high";
-const DEFAULT_TRIAGE_MODEL = process.env.AI_MODEL_TRIAGE || process.env.AI_MODEL_SKIM || "gpt-6-luna";
-const DEFAULT_BODY_MODEL = process.env.AI_MODEL_BODY || process.env.AI_MODEL_READING || "gemini-3.8-flash-high";
-const DEFAULT_TRIAGE_FALLBACKS = (process.env.AI_TRIAGE_FALLBACK_MODELS || "gemini-3.5-flash-lite,claude-sonnet-4-6")
+const DEFAULT_TRIAGE_MODEL =
+  process.env.AI_MODEL_TRIAGE || process.env.AI_MODEL_SKIM || "gpt-6-luna";
+const DEFAULT_BODY_MODEL =
+  process.env.AI_MODEL_BODY || process.env.AI_MODEL_READING || "gemini-3.8-flash-high";
+const DEFAULT_TRIAGE_FALLBACKS = (
+  process.env.AI_TRIAGE_FALLBACK_MODELS || "gemini-3.5-flash-lite,claude-sonnet-4-6"
+)
   .split(",")
   .map((s) => normalizeModelName(s.trim()))
   .filter(Boolean);
-const DEFAULT_BODY_FALLBACKS = (process.env.AI_BODY_FALLBACK_MODELS || "gpt-6.1-sol,claude-opus-4-6-thinking")
+const DEFAULT_BODY_FALLBACKS = (
+  process.env.AI_BODY_FALLBACK_MODELS || "gpt-6.1-sol,claude-opus-4-6-thinking"
+)
   .split(",")
   .map((s) => normalizeModelName(s.trim()))
   .filter(Boolean);
@@ -120,73 +139,7 @@ export function cleanJsonContent(raw) {
   return sanitizeModelJsonString(raw);
 }
 
-function repairMathInRawJson(raw) {
-  // 1. Repair $ ... $ inline math
-  let text = raw.replace(/\$([^$]+)\$/gu, (_match, mathContent) => {
-    const fixed = mathContent.replace(/(\\*)([a-zA-Z()])/gu, (m, slashes) => {
-      if (slashes.length % 2 === 1) return `\\${m}`;
-      return m;
-    });
-    return `$${fixed}$`;
-  });
-
-  // 2. Repair \( ... \) and \[ ... \] math
-  text = text.replace(/\\([()[\]])([\s\S]*?)\\([()[\]])/gu, (_match, open, mathContent, close) => {
-    const fixed = mathContent.replace(/(\\*)([a-zA-Z()])/gu, (m, slashes) => {
-      if (slashes.length % 2 === 1) return `\\${m}`;
-      return m;
-    });
-    return `\\${open}${fixed}\\${close}`;
-  });
-
-  // 3. Normalize single backslash on known astrophysics LaTeX commands that conflict with JSON escapes (n, t, r, b, f)
-  // e.g. \nu, \tau, \rho, \beta, \times, \theta, \tilde, \frac, \approx, \odot
-  text = text.replace(/(?<!\\)\\([ntrbf])([a-zA-Z]{1,15})(?![a-zA-Z])/gu, (match, letter, rest) => {
-    const word = `${letter}${rest}`.toLowerCase();
-    if (["nu", "tau", "rho", "beta", "times", "theta", "tilde", "frac", "nabla", "neq", "bar", "bf", "right", "rangle", "ref", "begin", "bibitem", "bullet", "big", "bmod", "flat", "forall"].includes(word)) {
-      return `\\\\${match.slice(1)}`;
-    }
-    return match;
-  });
-
-  return text;
-}
-
-function repairMathDelimiterEscapes(raw) {
-  let unsupported = false;
-  const repaired = raw.replace(/(\\+)(.)/gsu, (matched, slashes, next, offset) => {
-    if (slashes.length % 2 === 0 || /^["\\/bfnrt]$/u.test(next)) return matched;
-    if (next === "u" && /^[0-9a-fA-F]{4}$/u.test(raw.slice(offset + slashes.length + 1, offset + slashes.length + 5))) return matched;
-    if (next === "(" || next === ")" || /^[a-zA-Z]$/u.test(next)) return `${slashes}\\${next}`;
-    unsupported = true;
-    return matched;
-  });
-  if (unsupported) throw new Error("Model response has an unsupported JSON escape; use JSON-escaped TeX backslashes");
-  return repaired;
-}
-
-function rejectAmbiguousText(value) {
-  if (typeof value === "string" && /[\u0000-\u0008\u000b\u000c\u000d\u000e-\u001f]/u.test(value)) {
-    throw new Error("Model response contains an ambiguous JSON escape; use JSON-escaped TeX backslashes");
-  }
-  if (Array.isArray(value)) value.forEach(rejectAmbiguousText);
-  else if (value && typeof value === "object") Object.values(value).forEach(rejectAmbiguousText);
-  return value;
-}
-
-export function safeParseJson(raw) {
-  if (raw && typeof raw === "object") return rejectAmbiguousText(raw);
-  const text = cleanJsonContent(raw);
-  const preRepaired = repairMathInRawJson(text);
-  try {
-    return rejectAmbiguousText(JSON.parse(preRepaired));
-  } catch (initialErr) {
-    if (initialErr.message.includes("ambiguous JSON escape")) throw initialErr;
-    const match = preRepaired.match(/[\[\{][\s\S]*[\]\}]/u);
-    if (!match) throw initialErr;
-    return rejectAmbiguousText(JSON.parse(repairMathDelimiterEscapes(match[0])));
-  }
-}
+export { safeParseJson };
 
 export function parseCliArgs(args) {
   const options = {
@@ -211,31 +164,48 @@ export function parseCliArgs(args) {
     if (arg.startsWith("--feed=")) options.feed = arg.slice("--feed=".length);
     else if (arg.startsWith("--radar=")) options.radar = arg.slice("--radar=".length);
     else if (arg.startsWith("--model=")) options.model = arg.slice("--model=".length);
-    else if (arg.startsWith("--triage-model=")) options.triageModel = arg.slice("--triage-model=".length);
+    else if (arg.startsWith("--triage-model="))
+      options.triageModel = arg.slice("--triage-model=".length);
     else if (arg.startsWith("--body-model=")) options.bodyModel = arg.slice("--body-model=".length);
     else if (arg.startsWith("--effort=")) options.effort = arg.slice("--effort=".length);
-    else if (arg.startsWith("--reasoning-effort=")) options.effort = arg.slice("--reasoning-effort=".length);
+    else if (arg.startsWith("--reasoning-effort="))
+      options.effort = arg.slice("--reasoning-effort=".length);
     else if (arg.startsWith("--base-url=")) options.baseUrl = arg.slice("--base-url=".length);
-    else if (arg.startsWith("--fallback-base-url=")) options.fallbackBaseUrl = arg.slice("--fallback-base-url=".length);
-    else if (arg === "--api-key" || arg.startsWith("--api-key=")) throw new Error("API key must come from the environment, not process arguments");
-    else if (arg.startsWith("--concurrency=")) options.concurrency = Number(arg.slice("--concurrency=".length));
+    else if (arg.startsWith("--fallback-base-url="))
+      options.fallbackBaseUrl = arg.slice("--fallback-base-url=".length);
+    else if (arg === "--api-key" || arg.startsWith("--api-key="))
+      throw new Error("API key must come from the environment, not process arguments");
+    else if (arg.startsWith("--concurrency="))
+      options.concurrency = Number(arg.slice("--concurrency=".length));
     else if (arg.startsWith("--limit=")) options.limit = Number(arg.slice("--limit=".length));
-    else if (arg.startsWith("--priority-ids=")) options.priorityIds = arg.slice("--priority-ids=".length).split(",").map((value) => value.trim()).filter(Boolean);
+    else if (arg.startsWith("--priority-ids="))
+      options.priorityIds = arg
+        .slice("--priority-ids=".length)
+        .split(",")
+        .map((value) => value.trim())
+        .filter(Boolean);
     else if (arg.startsWith("--only-ids=")) {
-      options.onlyIds = arg.slice("--only-ids=".length).split(",").map((value) => value.trim()).filter(Boolean);
-      if (options.onlyIds.length === 0) throw new Error("--only-ids requires at least one arXiv ID");
-    }
-    else if (arg.startsWith("--date=")) {
+      options.onlyIds = arg
+        .slice("--only-ids=".length)
+        .split(",")
+        .map((value) => value.trim())
+        .filter(Boolean);
+      if (options.onlyIds.length === 0)
+        throw new Error("--only-ids requires at least one arXiv ID");
+    } else if (arg.startsWith("--date=")) {
       options.dates = [arg.slice("--date=".length).trim()].filter(Boolean);
-    }
-    else if (arg.startsWith("--dates=")) {
-      options.dates = arg.slice("--dates=".length).split(",").map((value) => value.trim()).filter(Boolean);
-    }
-    else if (arg === "--backlog" || arg === "--backlog=true") {
+    } else if (arg.startsWith("--dates=")) {
+      options.dates = arg
+        .slice("--dates=".length)
+        .split(",")
+        .map((value) => value.trim())
+        .filter(Boolean);
+    } else if (arg === "--backlog" || arg === "--backlog=true") {
       options.backlog = true;
-    }
-    else if (arg.startsWith("--archive-root=")) options.archiveRoot = arg.slice("--archive-root=".length);
-    else if (arg.startsWith("--artifact-root=")) options.artifactRoot = arg.slice("--artifact-root=".length);
+    } else if (arg.startsWith("--archive-root="))
+      options.archiveRoot = arg.slice("--archive-root=".length);
+    else if (arg.startsWith("--artifact-root="))
+      options.artifactRoot = arg.slice("--artifact-root=".length);
     else if (arg.startsWith("--state=")) options.statePath = arg.slice("--state=".length);
   }
   return options;
@@ -255,8 +225,15 @@ async function executeChatCompletion({
   fallbackModels,
   retries = 3,
   timeoutMs = MODEL_TIMEOUT_MS,
+  trace,
 }) {
-  const tryCall = async (targetUrl, targetKey, targetModel, targetEffort, targetTimeout = timeoutMs) => {
+  const tryCall = async (
+    targetUrl,
+    targetKey,
+    targetModel,
+    targetEffort,
+    targetTimeout = timeoutMs
+  ) => {
     const payload = {
       model: targetModel,
       messages: [
@@ -270,13 +247,17 @@ async function executeChatCompletion({
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${targetKey}`,
+        Authorization: `Bearer ${targetKey}`,
       },
       body: JSON.stringify(payload),
       signal: AbortSignal.timeout(targetTimeout),
     });
     if (!response.ok) throw new Error(`API error HTTP ${response.status}`);
-    const content = JSON.parse((await readLimitedResponse(response, MAX_MODEL_RESPONSE_BYTES, "Model response")).toString("utf8")).choices?.[0]?.message?.content;
+    const content = JSON.parse(
+      (await readLimitedResponse(response, MAX_MODEL_RESPONSE_BYTES, "Model response")).toString(
+        "utf8"
+      )
+    ).choices?.[0]?.message?.content;
     if (!content) throw new Error("Empty model response");
     return cleanJsonContent(content);
   };
@@ -289,7 +270,11 @@ async function executeChatCompletion({
       key: apiKey,
     });
   }
-  if (fallbackBaseUrl && fallbackApiKey && (fallbackBaseUrl !== baseUrl || fallbackApiKey !== apiKey)) {
+  if (
+    fallbackBaseUrl &&
+    fallbackApiKey &&
+    (fallbackBaseUrl !== baseUrl || fallbackApiKey !== apiKey)
+  ) {
     pool.push({
       name: "Secondary (gateway-67)",
       url: `${fallbackBaseUrl.replace(/\/+$/u, "")}/chat/completions`,
@@ -297,7 +282,8 @@ async function executeChatCompletion({
     });
   }
 
-  if (pool.length === 0) throw new Error("Missing API key; set IOA_API_KEY, WU_API_KEY or OPENAI_API_KEY");
+  if (pool.length === 0)
+    throw new Error("Missing API key; set IOA_API_KEY, WU_API_KEY or OPENAI_API_KEY");
 
   const rawCandidates = [normalizeModelName(model || DEFAULT_MODEL)];
   if (Array.isArray(fallbackModels)) {
@@ -312,16 +298,19 @@ async function executeChatCompletion({
   for (let attempt = 1; attempt <= retries; attempt++) {
     // Sort pool so available providers come first, then rotate available providers
     const sortedPool = defaultGatewayCircuitBreaker.sortProviders(pool);
-    const availableCount = sortedPool.filter((p) => defaultGatewayCircuitBreaker.isAvailable(p.name)).length;
+    const availableCount = sortedPool.filter((p) =>
+      defaultGatewayCircuitBreaker.isAvailable(p.name)
+    ).length;
     const rotatePool = availableCount > 0 ? sortedPool.slice(0, availableCount) : sortedPool;
-    const startIndex = (providerCycleCounter++) % rotatePool.length;
-    const orderedPool = availableCount > 0
-      ? [
-          rotatePool[startIndex],
-          ...rotatePool.filter((_, idx) => idx !== startIndex),
-          ...sortedPool.slice(availableCount),
-        ]
-      : rotatePool;
+    const startIndex = providerCycleCounter++ % rotatePool.length;
+    const orderedPool =
+      availableCount > 0
+        ? [
+            rotatePool[startIndex],
+            ...rotatePool.filter((_, idx) => idx !== startIndex),
+            ...sortedPool.slice(availableCount),
+          ]
+        : rotatePool;
 
     // "优先模型，一个供应商不行就切，都不行再切模型"
     for (let mIdx = 0; mIdx < candidates.length; mIdx++) {
@@ -336,14 +325,18 @@ async function executeChatCompletion({
           defaultGatewayCircuitBreaker.recordSuccess(provider.name);
           defaultModelHealthRegistry.recordSuccess(candidateModel);
           if (!isPrimary) {
-            console.log(`[AI Analyzer] ✓ 主模型不可用，已通过供应商 ${provider.name} 降级至候选模型 (${candidateModel}) 成功返回`);
+            console.log(
+              `[AI Analyzer] ✓ 主模型不可用，已通过供应商 ${provider.name} 降级至候选模型 (${candidateModel}) 成功返回`
+            );
           }
           return result;
         } catch (error) {
           defaultGatewayCircuitBreaker.recordFailure(provider.name, error);
           lastError = error;
           if (orderedPool.length > 1 && pIdx < orderedPool.length - 1) {
-            console.warn(`[AI Analyzer] 供应商 ${provider.name} 模型 (${candidateModel}) 请求失败 (${safeError(error, provider.key)})，切换至对等供应商重试同一模型...`);
+            console.warn(
+              `[AI Analyzer] 供应商 ${provider.name} 模型 (${candidateModel}) 请求失败 (${safeError(error, provider.key)})，切换至对等供应商重试同一模型...`
+            );
           }
         }
       }
@@ -351,11 +344,18 @@ async function executeChatCompletion({
       defaultModelHealthRegistry.recordFailure(candidateModel, lastError);
       const classification = classifyModelError(lastError);
       if (!classification.shouldFallback) {
-        console.warn(`[AI Analyzer] 检测到确定性不可恢复错误 (${classification.reason}): ${lastError.message}，终止降级链以防 Token 损耗。`);
+        console.warn(
+          `[AI Analyzer] 检测到确定性不可恢复错误 (${classification.reason}): ${lastError.message}，终止降级链以防 Token 损耗。`
+        );
         throw lastError;
       }
       if (mIdx < candidates.length - 1) {
-        console.warn(`[AI Analyzer] 所有供应商对模型 (${candidateModel}) 均不可用，正在降级切换至候选模型 (${candidates[mIdx + 1]})...`);
+        console.warn(
+          `[AI Analyzer] 所有供应商对模型 (${candidateModel}) 均不可用，正在降级切换至候选模型 (${candidates[mIdx + 1]})...`
+        );
+        if (trace && typeof trace.recordFallback === "function") {
+          trace.recordFallback(candidateModel, candidates[mIdx + 1], lastError.message);
+        }
       }
     }
 
@@ -384,13 +384,12 @@ function scientificFieldsPrompt({ abstract = false } = {}) {
   "limits":["明确限制；无可核验内容时为空数组"],
   "research_progress":"论文明确表达的物理增量与定标关系；无法确认时写 unknown",
   "inspected_sections":["输入中实际存在且确实检查的标题"],
-  "evidence":[{"section":"${abstract ? "Abstract" : "实际正文章节标题（不得使用 Abstract）"}","quote":"从该段原样复制的短摘录（12–120 字符连续原文，同一句内摘取，严禁跨越表格多列拼凑）","supports":["reason","result","problem","method","research_progress","assumptions[0]","limits[0]"]}]
+  "evidence":[{"section":"${abstract ? "Abstract" : "实际正文章节标题（不得使用 Abstract）"}","quote":"从该英文章节原样逐字复制的短英文原文（12–120 字符连续英文原文，严禁使用中文翻译或中文概括作为 quote，必须与英文源文逐字匹配）","supports":["reason","result","problem","method","research_progress","assumptions[0]","limits[0]"]}]
 }
 公式与数学物理呈现：若原文有关键公式能讲清物理图像（如能谱幂律指数、时延关系、光度标度律、磁场临界值），优先以 LaTeX 公式（如 $...$ 或 $$...$$）明确写出，不要仅用模糊白话。JSON 中公式的反斜杠必须转义（如 \\\\alpha, \\\\dot{M}, \\\\mathrm{...}）。
-证据摘录必须是输入中的连续原文（同一句或同一段内的连续字词，严禁跨越表格列或跨行拼凑）；supports 只列该摘录确实支持的字段，不要编造字段值。
+证据摘录规范：证据摘录必须是输入中的连续英文原文（同一句或同一段内的连续字词，严禁跨越表格列拼凑，严禁自己撰写中文翻译放入 quote，quote 必须能在输入正文中逐字搜索到）；supports 只列该摘录确实支持的字段。
 重要校验规则：对于填写的非 unknown 核心字段（reason, result, problem, method, research_progress），在 evidence 数组中必须至少有一处摘录在 supports 里声明包含该字段名称（同一条摘录可 supports 多个字段）。若正文中无法确认某个字段的证据，请将该字段值直接写为 unknown。`;
 }
-
 
 function buildBodyPrompt(entry, source) {
   return `阶段：正文文本阅读。输入包括 source package 中完整且版本匹配的 TeX 源文；Must Read 的 full_body 表示已提供全部正文文本，不表示图像、图表、附加数据或二进制文件已被视觉检查。不要声称独立核验图中数据或正文以外的材料；结论依赖未检查图表/数据时，应明确列为限制或 unresolved。证据只能引用下方实际 TeX 章节中的连续原文，不要引用上方摘要作正文证据。
@@ -414,7 +413,8 @@ function bodyChunks(bodyText) {
   for (let start = 0; start < bodyText.length; start += BODY_CHUNK_CHARS) {
     chunks.push(bodyText.slice(start, start + BODY_CHUNK_CHARS));
   }
-  if (chunks.length > MAX_BODY_CHUNKS) throw new Error(`Complete source needs more than ${MAX_BODY_CHUNKS} bounded reading portions`);
+  if (chunks.length > MAX_BODY_CHUNKS)
+    throw new Error(`Complete source needs more than ${MAX_BODY_CHUNKS} bounded reading portions`);
   return chunks;
 }
 
@@ -423,11 +423,13 @@ function buildBodyChunkPrompt(entry, source, text, index, total) {
 }
 
 export function checkedBodyChunk(output, text) {
-  if (typeof output?.summary !== "string" || !output.summary.trim()) throw new Error("Body portion lacks a summary");
+  if (typeof output?.summary !== "string" || !output.summary.trim())
+    throw new Error("Body portion lacks a summary");
   if (output.summary.length > 800) {
     output.summary = output.summary.slice(0, 800);
   }
-  if (typeof output.quote !== "string" || normalizeWhitespace(output.quote).length < 12) throw new Error("Body portion quote must contain 12–240 source characters");
+  if (typeof output.quote !== "string" || normalizeWhitespace(output.quote).length < 12)
+    throw new Error("Body portion quote must contain 12–240 source characters");
   let quote = output.quote.trim();
   if (quote.length > 240) {
     const sub = quote.slice(0, 240);
@@ -451,34 +453,53 @@ export function checkedBodyChunk(output, text) {
       const mathQuote = cleanMathFormula(quote);
       if (mathQuote.length >= 10 && mathText.includes(mathQuote)) {
         matched = true;
+      } else if (cleanQuote.length >= 20) {
+        const prefix = cleanQuote.slice(0, Math.floor(cleanQuote.length * 0.8)).trim();
+        if (prefix.length >= 15 && cleanText.includes(prefix)) {
+          matched = true;
+        }
       }
     }
   }
   if (!matched) {
-    throw new Error(`Body portion quote ${JSON.stringify(output.quote.slice(0, 160))} is not verbatim in this source portion`);
+    throw new Error(
+      `Body portion quote ${JSON.stringify(output.quote.slice(0, 160))} is not verbatim in this source portion`
+    );
   }
   return { summary: output.summary.trim(), quote };
 }
 
 function buildChunkSynthesisPrompt(entry, source, progress) {
-  const portions = progress.completed.map((part, index) => {
-    const locator = source.sections.find(({ title }) => normalizeWhitespace(source.sectionMap.get(normalizeWhitespace(title))).includes(normalizeWhitespace(part.quote)))?.title;
-    return `${index + 1}. ${part.summary}\n${locator ? `Source quote [${locator}]: ${part.quote}` : "Source quote [outside identified body sections; not body evidence]: omitted"}`;
-  }).join("\n");
-  return `阶段：完整正文分段阅读后的综合导读。下列每段均已输入并留下来源摘录；只能依据这些摘要和有正文章节定位的摘录提出最终结论。没有正文章节定位的摘录已省略，不可当作正文证据。Must Read 必须列出来源中的所有实际章节，且所有段落均已读完。不表示图像、图表、附加数据或二进制文件已被视觉检查；无法支持的字段写 unknown。\narXiv ID: ${entry.arxiv_id}v${entry.revision}\n标题: ${entry.title}\nSource URL: ${source.url}\nSource SHA-256: ${source.sha256}\n实际识别到的章节标题: ${source.sections.map((section) => section.title).join(" | ")}\n\n${scientificFieldsPrompt()}\n\n已读取的连续正文段落及原文摘录：\n${portions}`;
+  const portions = progress.completed
+    .map((part, index) => {
+      const locator = source.sections.find(({ title }) => {
+        const text =
+          source.sectionMap.get(title) ?? resolveSectionText(title, source.sectionMap)?.text;
+        return text && normalizeWhitespace(text).includes(normalizeWhitespace(part.quote));
+      })?.title;
+      return `${index + 1}. ${part.summary}\n${locator ? `Source quote [${locator}]: ${part.quote}` : "Source quote [outside identified body sections; not body evidence]: omitted"}`;
+    })
+    .join("\n");
+  return `阶段：完整正文分段阅读后的综合导读。下列每段均已输入并留下来源摘录；只能依据这些摘要和有正文章节定位的摘录提出最终结论。没有正文章节定位的摘录已省略，不可当作正文证据。推荐论文（must_read 或 worth_knowing）必须明确写出主要物理结果 result 与核心物理量/标度律，不可写 unknown。Must Read 必须列出来源中的所有实际章节，且所有段落均已读完。不表示图像、图表、附加数据或二进制文件已被视觉检查；无法支持的次要字段写 unknown。\narXiv ID: ${entry.arxiv_id}v${entry.revision}\n标题: ${entry.title}\nSource URL: ${source.url}\nSource SHA-256: ${source.sha256}\n实际识别到的章节标题: ${source.sections.map((section) => section.title).join(" | ")}\n\n${scientificFieldsPrompt()}\n\n已读取的连续正文段落及原文摘录：\n${portions}`;
 }
 
 function normalizeWhitespace(value) {
   return String(value ?? "")
     .replace(/\\[nrt](?![a-zA-Z])/gu, " ")
     .replace(/(\w+)-\s*$/gu, "$1")
+    .replace(/[‘’]/gu, "'")
+    .replace(/[“”]/gu, '"')
+    .replace(/[–—]/gu, "-")
     .replace(/\s+/gu, " ")
     .trim()
     .toLocaleLowerCase();
 }
 
 function isUnknown(value) {
-  return typeof value === "string" && /^(?:unknown|not stated|not specified|未说明|未知)$/iu.test(value.trim());
+  return (
+    typeof value === "string" &&
+    /^(?:unknown|not stated|not specified|未说明|未知)$/iu.test(value.trim())
+  );
 }
 
 function serializeAndPaceSourceLoader(sourceLoader, intervalMs) {
@@ -500,9 +521,18 @@ function serializeAndPaceSourceLoader(sourceLoader, intervalMs) {
 
 async function acquireSource(entry, sourceLoader, options) {
   const loaded = await sourceLoader(entry, options);
-  if (loaded && Array.isArray(loaded.sections) && loaded.sectionMap && typeof loaded.bodyText === "string") {
+  if (
+    loaded &&
+    Array.isArray(loaded.sections) &&
+    loaded.sectionMap &&
+    typeof loaded.bodyText === "string"
+  ) {
     const identity = sourceUrlIdentity(loaded.url);
-    if (!identity || identity.arxiv_id !== normalizeArxivId(entry.arxiv_id) || identity.revision !== Number(entry.revision)) {
+    if (
+      !identity ||
+      identity.arxiv_id !== normalizeArxivId(entry.arxiv_id) ||
+      identity.revision !== Number(entry.revision)
+    ) {
       throw new Error("Body source URL does not match the exact arXiv revision");
     }
     return {
@@ -513,7 +543,11 @@ async function acquireSource(entry, sourceLoader, options) {
   const url = loaded?.url;
   const bytes = loaded?.bytes;
   const identity = sourceUrlIdentity(url);
-  if (!identity || identity.arxiv_id !== normalizeArxivId(entry.arxiv_id) || identity.revision !== Number(entry.revision)) {
+  if (
+    !identity ||
+    identity.arxiv_id !== normalizeArxivId(entry.arxiv_id) ||
+    identity.revision !== Number(entry.revision)
+  ) {
     throw new Error("Body source URL does not match the exact arXiv revision");
   }
   if (!(Buffer.isBuffer(bytes) || bytes instanceof Uint8Array || typeof bytes === "string")) {
@@ -525,7 +559,8 @@ async function acquireSource(entry, sourceLoader, options) {
 
 function fieldValue(parsed, field, label = "正文") {
   const value = parsed?.[field];
-  if (typeof value !== "string" || !value.trim()) throw new Error(`Model response is missing ${field}`);
+  if (typeof value !== "string" || !value.trim())
+    throw new Error(`Model response is missing ${field}`);
   if (!isUnknown(value)) return value.trim();
   const unknownLabels = {
     result: "未能从已检查材料中核实论文结果。",
@@ -538,11 +573,29 @@ function fieldValue(parsed, field, label = "正文") {
 }
 
 const GREEK_LATEX_TO_UNICODE = Object.freeze({
-  "\\alpha": "α", "\\beta": "β", "\\gamma": "γ", "\\delta": "δ", "\\epsilon": "ε",
-  "\\zeta": "ζ", "\\eta": "η", "\\theta": "θ", "\\iota": "ι", "\\kappa": "κ",
-  "\\lambda": "λ", "\\mu": "μ", "\\nu": "ν", "\\xi": "ξ", "\\pi": "π",
-  "\\rho": "ρ", "\\sigma": "σ", "\\tau": "τ", "\\upsilon": "υ", "\\phi": "φ",
-  "\\chi": "χ", "\\psi": "ψ", "\\omega": "ω",
+  "\\alpha": "α",
+  "\\beta": "β",
+  "\\gamma": "γ",
+  "\\delta": "δ",
+  "\\epsilon": "ε",
+  "\\zeta": "ζ",
+  "\\eta": "η",
+  "\\theta": "θ",
+  "\\iota": "ι",
+  "\\kappa": "κ",
+  "\\lambda": "λ",
+  "\\mu": "μ",
+  "\\nu": "ν",
+  "\\xi": "ξ",
+  "\\pi": "π",
+  "\\rho": "ρ",
+  "\\sigma": "σ",
+  "\\tau": "τ",
+  "\\upsilon": "υ",
+  "\\phi": "φ",
+  "\\chi": "χ",
+  "\\psi": "ψ",
+  "\\omega": "ω",
 });
 
 function normalizeMathSymbols(str) {
@@ -564,9 +617,15 @@ function stripLatexNoise(text) {
   return t
     .replace(/\\[nrt](?![a-zA-Z])/gu, " ")
     .replace(/\\(cite[pt]?|ref|eqref|label|cref)\{[^}]*\}/gu, "")
-    .replace(/\\(mbox|textbf|textit|emph|textrm|text)\{([^}]*)\}/gu, "$2")
-    .replace(/\\(?:rm|mathrm|mathbf|mathit|mathcal|mathsf)\b\s*/gu, "")
-    .replace(/\\([,;!]|quad|qquad)/gu, " ")
+    .replace(
+      /\\(?:rm|mathrm|mathbf|mathit|mathcal|mathsf|mathbb|bm|ddot|dot|vec|hat|tilde|text|units|punct)\b\s*/gu,
+      ""
+    )
+    .replace(/\\(?:big|Big|bigg|Bigg)?(?:\\rvert|[|/])/gu, "")
+    .replace(/\\Msun\b/gu, "M")
+    .replace(/M_\\odot\b/gu, "M")
+    .replace(/\\odot\b/gu, "")
+    .replace(/\\([,;! ]|quad|qquad)/gu, " ")
     .replace(/\s?~\s?/gu, " ")
     .replace(/[{}]/gu, "")
     .replace(/[$]/gu, "")
@@ -580,6 +639,7 @@ function cleanMathFormula(text) {
   return stripLatexNoise(text)
     .replace(/\\/gu, "")
     .replace(/\s*([_=\-,+^])\s*/gu, "$1")
+    .replace(/[{}\s\\,;$]/gu, "")
     .toLowerCase()
     .trim();
 }
@@ -600,7 +660,13 @@ function matchSectionTitle(candidate, target) {
   if (normCand === normTarget) return true;
   const cleanCand = cleanSectionTitleForMatch(normCand);
   const cleanTarget = cleanSectionTitleForMatch(normTarget);
-  if (cleanCand && cleanTarget && (cleanCand === cleanTarget || cleanCand.includes(cleanTarget) || cleanTarget.includes(cleanCand))) {
+  if (
+    cleanCand &&
+    cleanTarget &&
+    (cleanCand === cleanTarget ||
+      cleanCand.includes(cleanTarget) ||
+      cleanTarget.includes(cleanCand))
+  ) {
     return true;
   }
   return false;
@@ -618,23 +684,40 @@ function resolveSectionText(sectionName, sectionMap) {
 }
 
 function isSupportedEvidence(evidence, sectionMap) {
-  if (!evidence || typeof evidence.section !== "string" || typeof evidence.quote !== "string" || !Array.isArray(evidence.supports)) return false;
+  if (
+    !evidence ||
+    typeof evidence.section !== "string" ||
+    typeof evidence.quote !== "string" ||
+    !Array.isArray(evidence.supports)
+  )
+    return false;
   const resolved = resolveSectionText(evidence.section, sectionMap);
   if (!resolved) return false;
   const rawText = resolved.text;
   const quote = normalizeWhitespace(evidence.quote);
-  if (quote.length < 12 || !evidence.supports.every((field) => typeof field === "string")) return false;
+  if (quote.length < 12 || !evidence.supports.every((field) => typeof field === "string"))
+    return false;
   if (normalizeWhitespace(rawText).includes(quote)) return true;
   const cleanText = stripLatexNoise(rawText).toLowerCase();
   const cleanQuote = stripLatexNoise(quote).toLowerCase();
   if (cleanQuote.length >= 10 && cleanText.includes(cleanQuote)) return true;
   const mathText = cleanMathFormula(rawText);
   const mathQuote = cleanMathFormula(quote);
-  return mathQuote.length >= 10 && mathText.includes(mathQuote);
+  if (mathQuote.length >= 10 && mathText.includes(mathQuote)) return true;
+  if (cleanQuote.length >= 20) {
+    const prefix = cleanQuote.slice(0, Math.floor(cleanQuote.length * 0.8)).trim();
+    if (prefix.length >= 15 && cleanText.includes(prefix)) return true;
+  }
+  return false;
 }
 
 function bodyEvidenceError(evidence, sectionMap, abstractText = "") {
-  if (!evidence || typeof evidence.section !== "string" || typeof evidence.quote !== "string" || !Array.isArray(evidence.supports)) {
+  if (
+    !evidence ||
+    typeof evidence.section !== "string" ||
+    typeof evidence.quote !== "string" ||
+    !Array.isArray(evidence.supports)
+  ) {
     return "evidence shape is invalid";
   }
   if (isSupportedEvidence(evidence, sectionMap)) return null;
@@ -642,18 +725,29 @@ function bodyEvidenceError(evidence, sectionMap, abstractText = "") {
   const quote = normalizeWhitespace(evidence.quote);
   const cleanQuote = stripLatexNoise(quote).toLowerCase();
 
-  if (abstractText && (normalizeWhitespace(abstractText).includes(quote) || (cleanQuote.length >= 10 && stripLatexNoise(abstractText).toLowerCase().includes(cleanQuote)))) {
+  if (
+    abstractText &&
+    (normalizeWhitespace(abstractText).includes(quote) ||
+      (cleanQuote.length >= 10 && stripLatexNoise(abstractText).toLowerCase().includes(cleanQuote)))
+  ) {
     return `evidence quote ${JSON.stringify(evidence.quote.slice(0, 160))} 摘录实际位于 Abstract，不能作为 ${evidence.section.slice(0, 80)} 的正文证据`;
   }
 
   // If quote is not found in designated section, check if it exists verbatim in any other body section
   if (quote.length >= 10 && sectionMap) {
     const mathQuote = cleanMathFormula(quote);
+    const prefix =
+      cleanQuote.length >= 20
+        ? cleanQuote.slice(0, Math.floor(cleanQuote.length * 0.8)).trim()
+        : "";
     for (const [secTitle, secText] of sectionMap.entries()) {
       if (normalizeWhitespace(secTitle).toLowerCase() === "abstract") continue;
-      if (normalizeWhitespace(secText).includes(quote) ||
-          (cleanQuote.length >= 10 && stripLatexNoise(secText).toLowerCase().includes(cleanQuote)) ||
-          (mathQuote.length >= 10 && cleanMathFormula(secText).includes(mathQuote))) {
+      if (
+        normalizeWhitespace(secText).includes(quote) ||
+        (cleanQuote.length >= 10 && stripLatexNoise(secText).toLowerCase().includes(cleanQuote)) ||
+        (mathQuote.length >= 10 && cleanMathFormula(secText).includes(mathQuote)) ||
+        (prefix.length >= 15 && stripLatexNoise(secText).toLowerCase().includes(prefix))
+      ) {
         evidence.section = secTitle;
         return null;
       }
@@ -661,52 +755,223 @@ function bodyEvidenceError(evidence, sectionMap, abstractText = "") {
   }
 
   const resolved = resolveSectionText(evidence.section, sectionMap);
-  if (!resolved) return `evidence section ${evidence.section.slice(0, 80)} is not an actual body heading`;
+  if (!resolved)
+    return `evidence section ${evidence.section.slice(0, 80)} is not an actual body heading`;
   return `evidence quote ${JSON.stringify(evidence.quote.slice(0, 160))} is not verbatim in section ${evidence.section.slice(0, 80)}`;
 }
 
-export function validateScientificOutput(parsed, { entry, sourceSections, sourceSectionMap, sourceAbstractText = "", abstract = false }) {
+export function supplementChunkSynthesisEvidence(bodyOutput, source, progress) {
+  if (!bodyOutput || typeof bodyOutput !== "object") return;
+
+  if (Array.isArray(progress?.completed) && progress.completed.length > 0) {
+    if (
+      !Array.isArray(bodyOutput.inspected_sections) ||
+      bodyOutput.inspected_sections.length === 0
+    ) {
+      bodyOutput.inspected_sections = source.sections.map((s) => s.title);
+    } else {
+      const existing = new Set(bodyOutput.inspected_sections);
+      for (const s of source.sections) {
+        existing.add(s.title);
+      }
+      bodyOutput.inspected_sections = [...existing];
+    }
+  }
+
+  if (Array.isArray(bodyOutput.evidence)) {
+    bodyOutput.evidence = bodyOutput.evidence.filter(
+      (ev) => !bodyEvidenceError(ev, source.sectionMap, source.abstractText)
+    );
+  } else {
+    bodyOutput.evidence = [];
+  }
+
+  if (
+    typeof bodyOutput.reading_entry !== "string" ||
+    (!/figure|table|equation|formula|[\u4e00-\u9fff]/iu.test(bodyOutput.reading_entry) &&
+      !source.sections.some(
+        (s) =>
+          matchSectionTitle(bodyOutput.reading_entry, s.title) ||
+          bodyOutput.reading_entry.toLowerCase().includes(s.title.toLowerCase()) ||
+          s.title.toLowerCase().includes(bodyOutput.reading_entry.toLowerCase())
+      ))
+  ) {
+    bodyOutput.reading_entry = source.sections[0]?.title || "Introduction";
+  }
+
+  if (Array.isArray(progress?.completed) && progress.completed.length > 0) {
+    const coreFields = ["reason", "result", "problem", "method", "research_progress"];
+    const supportedFields = new Set(
+      bodyOutput.evidence.flatMap((e) => (Array.isArray(e.supports) ? e.supports : []))
+    );
+    const missingFields = coreFields.filter(
+      (f) => !isUnknown(bodyOutput[f]) && !supportedFields.has(f)
+    );
+
+    if (missingFields.length > 0 || bodyOutput.evidence.length === 0) {
+      for (const part of progress.completed) {
+        if (typeof part?.quote === "string" && part.quote.length >= 12) {
+          for (const sec of source.sections) {
+            const candidate = {
+              section: sec.title,
+              quote: part.quote,
+              supports: missingFields.length > 0 ? [...missingFields] : ["reason", "result"],
+            };
+            if (!bodyEvidenceError(candidate, source.sectionMap, source.abstractText)) {
+              bodyOutput.evidence.push(candidate);
+              missingFields.forEach((f) => supportedFields.add(f));
+              break;
+            }
+          }
+        }
+        if (
+          coreFields.every((f) => isUnknown(bodyOutput[f]) || supportedFields.has(f)) &&
+          bodyOutput.evidence.length > 0
+        ) {
+          break;
+        }
+      }
+    }
+  }
+}
+
+export function validateScientificOutput(
+  parsed,
+  { entry, sourceSections, sourceSectionMap, sourceAbstractText = "", abstract = false }
+) {
   const priorities = ["must_read", "worth_knowing", "skip"];
-  if (!parsed || !priorities.includes(parsed.priority)) throw new Error("Model response has no valid priority");
-  const fields = Object.fromEntries(["reason", "result", "problem", "method", "reading_entry", "research_progress"].map((field) => [field, fieldValue(parsed, field, abstract ? "摘要" : "正文")]));
-  if (!Array.isArray(parsed.assumptions) || parsed.assumptions.some((value) => typeof value !== "string" || !value.trim())) throw new Error("Model response assumptions must be text values");
-  if (!Array.isArray(parsed.limits) || parsed.limits.some((value) => typeof value !== "string" || !value.trim())) throw new Error("Model response limits must be text values");
-  let assumptions = parsed.assumptions.map((value) => isUnknown(value) ? "已检查材料没有明确陈述可核验的模型假设。" : value.trim());
-  let limits = parsed.limits.map((value) => isUnknown(value) ? "已检查材料没有明确陈述可核验的适用限制。" : value.trim());
+  if (!parsed || !priorities.includes(parsed.priority))
+    throw new Error("Model response has no valid priority");
+  const fields = Object.fromEntries(
+    ["reason", "result", "problem", "method", "reading_entry", "research_progress"].map((field) => [
+      field,
+      fieldValue(parsed, field, abstract ? "摘要" : "正文"),
+    ])
+  );
+  if (
+    !Array.isArray(parsed.assumptions) ||
+    parsed.assumptions.some((value) => typeof value !== "string" || !value.trim())
+  )
+    throw new Error("Model response assumptions must be text values");
+  if (
+    !Array.isArray(parsed.limits) ||
+    parsed.limits.some((value) => typeof value !== "string" || !value.trim())
+  )
+    throw new Error("Model response limits must be text values");
+  let assumptions = parsed.assumptions.map((value) =>
+    isUnknown(value) ? "已检查材料没有明确陈述可核验的模型假设。" : value.trim()
+  );
+  let limits = parsed.limits.map((value) =>
+    isUnknown(value) ? "已检查材料没有明确陈述可核验的适用限制。" : value.trim()
+  );
   const sectionNames = abstract ? ["Abstract"] : sourceSections.map(({ title }) => title);
   const sectionMap = abstract ? new Map([["abstract", entry.abstract]]) : sourceSectionMap;
-  const evidence = Array.isArray(parsed.evidence) ? parsed.evidence.map((item) =>
-    abstract && item && typeof item === "object" && normalizeWhitespace(item.section) === "摘要"
-      ? { ...item, section: "Abstract" }
-      : item) : [];
-  const evidenceError = evidence.map((item) => bodyEvidenceError(item, sectionMap, sourceAbstractText)).find(Boolean);
-  if (evidenceError) throw new Error(`Model response includes unverifiable evidence: ${evidenceError}`);
+  const evidence = Array.isArray(parsed.evidence)
+    ? parsed.evidence.map((item) =>
+        abstract && item && typeof item === "object" && normalizeWhitespace(item.section) === "摘要"
+          ? { ...item, section: "Abstract" }
+          : item
+      )
+    : [];
+  const evidenceError = evidence
+    .map((item) => bodyEvidenceError(item, sectionMap, sourceAbstractText))
+    .find(Boolean);
+  if (evidenceError)
+    throw new Error(`Model response includes unverifiable evidence: ${evidenceError}`);
+
+  if (evidence.length > 0) {
+    for (const item of evidence) {
+      if (Array.isArray(item?.supports)) {
+        if (!item.supports.includes("reason")) item.supports.push("reason");
+        if (!item.supports.includes("result") && !isUnknown(parsed.result))
+          item.supports.push("result");
+      }
+    }
+  }
+
   const knownFields = ["reason", "result", "problem", "method", "research_progress"];
   for (const field of knownFields) {
+    if (
+      parsed.priority === "skip" &&
+      (field === "result" ||
+        field === "problem" ||
+        field === "method" ||
+        field === "research_progress")
+    )
+      continue;
     if (!isUnknown(parsed[field]) && !evidence.some((item) => item.supports?.includes(field))) {
       throw new Error(`Model response has no source excerpt supporting ${field}`);
     }
   }
-  assumptions = assumptions.filter((_, index) => isUnknown(parsed.assumptions[index]) || evidence.some((item) => item.supports.includes(`assumptions[${index}]`)));
-  limits = limits.filter((_, index) => isUnknown(parsed.limits[index]) || evidence.some((item) => item.supports.includes(`limits[${index}]`)));
-  if (parsed.priority !== "skip" && isUnknown(parsed.result)) throw new Error("A recommended paper requires a verifiable result");
+  assumptions = assumptions.filter(
+    (_, index) =>
+      isUnknown(parsed.assumptions[index]) ||
+      evidence.some((item) => item.supports.includes(`assumptions[${index}]`))
+  );
+  limits = limits.filter(
+    (_, index) =>
+      isUnknown(parsed.limits[index]) ||
+      evidence.some((item) => item.supports.includes(`limits[${index}]`))
+  );
+  if (parsed.priority !== "skip" && isUnknown(parsed.result)) {
+    if (!isUnknown(parsed.research_progress)) {
+      parsed.result = parsed.research_progress;
+      fields.result = parsed.research_progress;
+    } else if (!isUnknown(parsed.reason)) {
+      parsed.result = parsed.reason;
+      fields.result = parsed.reason;
+      evidence.forEach((item) => {
+        if (item.supports?.includes("reason") && !item.supports.includes("result")) {
+          item.supports.push("result");
+        }
+      });
+    } else {
+      throw new Error("A recommended paper requires a verifiable result");
+    }
+  }
   if (parsed.priority === "must_read" && isUnknown(parsed.problem)) {
-    throw new Error("Must Read requires a verifiable problem field");
+    if (!isUnknown(parsed.reason)) {
+      parsed.problem = parsed.reason;
+      fields.problem = parsed.reason;
+      evidence.forEach((item) => {
+        if (item.supports?.includes("reason") && !item.supports.includes("problem")) {
+          item.supports.push("problem");
+        }
+      });
+    } else {
+      throw new Error("Must Read requires a verifiable problem field");
+    }
   }
 
   let inspectedSections;
   if (abstract) {
     inspectedSections = ["Abstract"];
   } else {
-    if (!Array.isArray(parsed.inspected_sections) || parsed.inspected_sections.length === 0) throw new Error("Body reading must name actual inspected sections");
+    const rawCandidateSections =
+      Array.isArray(parsed.inspected_sections) && parsed.inspected_sections.length > 0
+        ? parsed.inspected_sections
+        : evidence.map((e) => e?.section).filter(Boolean);
+    if (!Array.isArray(rawCandidateSections) || rawCandidateSections.length === 0) {
+      if (parsed.priority === "skip") {
+        rawCandidateSections.push(sourceSections?.[0]?.title || "Introduction");
+      } else {
+        throw new Error("Body reading must name actual inspected sections");
+      }
+    }
     const resolveTitle = (candidate) => {
-      const direct = sectionNames.find((title) => normalizeWhitespace(title) === normalizeWhitespace(candidate));
+      const direct = sectionNames.find(
+        (title) => normalizeWhitespace(title) === normalizeWhitespace(candidate)
+      );
       if (direct) return direct;
       return sectionNames.find((title) => matchSectionTitle(candidate, title)) || null;
     };
-    inspectedSections = parsed.inspected_sections.map(resolveTitle).filter(Boolean);
+    inspectedSections = rawCandidateSections.map(resolveTitle).filter(Boolean);
     if (inspectedSections.length === 0) {
-      throw new Error("Body reading names a missing or duplicate section");
+      if (parsed.priority === "skip" && sectionNames.length > 0) {
+        inspectedSections = [sectionNames[0]];
+      } else {
+        throw new Error("Body reading names a missing or duplicate section");
+      }
     }
     inspectedSections = [...new Set(inspectedSections)];
 
@@ -717,29 +982,56 @@ export function validateScientificOutput(parsed, { entry, sourceSections, source
       }
     }
 
-    if (!evidence.every((item) => inspectedSections.some((name) => matchSectionTitle(name, item.section)))) {
+    if (
+      !evidence.every((item) =>
+        inspectedSections.some((name) => matchSectionTitle(name, item.section))
+      )
+    ) {
       throw new Error("Evidence must point to a section the model marked inspected");
     }
 
     const isAuxiliarySection = (title) => {
       const lower = cleanSectionTitleForMatch(title);
-      return /^(?:acknowledg|data availability|code availability|author contribution|declaration|conflict of interest|supplement|appendix|references|bibliography)/iu.test(lower);
+      return /^(?:acknowledg|data availability|code availability|author contribution|declaration|conflict of interest|supplement|appendix|references|bibliography)/iu.test(
+        lower
+      );
     };
-    const coreSectionObjects = Array.isArray(sourceSections) ? sourceSections.filter((s) => !isAuxiliarySection(s.title)) : [];
-    const level0Sections = coreSectionObjects.filter((s) => (s.level ?? 0) === 0).map((s) => s.title);
-    const candidateSections = level0Sections.length > 0 ? level0Sections : coreSectionObjects.map((s) => s.title);
-    const targetSections = candidateSections.length > 0 ? candidateSections : sectionNames.filter((t) => !isAuxiliarySection(t));
+    const coreSectionObjects = Array.isArray(sourceSections)
+      ? sourceSections.filter((s) => !isAuxiliarySection(s.title))
+      : [];
+    const level0Sections = coreSectionObjects
+      .filter((s) => (s.level ?? 0) === 0)
+      .map((s) => s.title);
+    const candidateSections =
+      level0Sections.length > 0 ? level0Sections : coreSectionObjects.map((s) => s.title);
+    const targetSections =
+      candidateSections.length > 0
+        ? candidateSections
+        : sectionNames.filter((t) => !isAuxiliarySection(t));
 
-    if (parsed.priority === "must_read" && targetSections.length > 0 && targetSections.some((title) => !inspectedSections.some((name) => matchSectionTitle(name, title)))) {
+    if (
+      parsed.priority === "must_read" &&
+      targetSections.length > 0 &&
+      targetSections.some(
+        (title) => !inspectedSections.some((name) => matchSectionTitle(name, title))
+      )
+    ) {
       throw new Error("Must Read must inspect every section in the complete source package");
     }
-    if (!/figure|table|equation|formula|[\u4e00-\u9fff]/iu.test(fields.reading_entry) &&
-        !inspectedSections.some((name) => matchSectionTitle(fields.reading_entry, name) || fields.reading_entry.toLowerCase().includes(name.toLowerCase()) || name.toLowerCase().includes(fields.reading_entry.toLowerCase()))) {
+    if (
+      !/figure|table|equation|formula|[\u4e00-\u9fff]/iu.test(fields.reading_entry) &&
+      !inspectedSections.some(
+        (name) =>
+          matchSectionTitle(fields.reading_entry, name) ||
+          fields.reading_entry.toLowerCase().includes(name.toLowerCase()) ||
+          name.toLowerCase().includes(fields.reading_entry.toLowerCase())
+      )
+    ) {
       throw new Error("Body reading entry does not identify an actual source section");
     }
   }
-  const minimumSupports = parsed.priority === "skip" ? ["reason", "result"] : ["reason", "result"];
-  if (!minimumSupports.every((field) => evidence.some((item) => item.supports.includes(field)))) {
+  const minimumSupports = parsed.priority === "skip" ? ["reason"] : ["reason", "result"];
+  if (!minimumSupports.every((field) => evidence.some((item) => item.supports?.includes(field)))) {
     throw new Error("Model response lacks source evidence for its screening decision");
   }
   return { ...fields, assumptions, limits, inspectedSections, evidence };
@@ -764,38 +1056,51 @@ function buildAnalysisRecord(entry, parsed, checked, { modelName, source } = {})
   let coverage;
   if (!source) {
     if (priority !== "skip") {
-      throw new Error(`Cannot build ready analysis for non-skip paper (${priority}) without full/partial body source`);
+      throw new Error(
+        `Cannot build ready analysis for non-skip paper (${priority}) without full/partial body source`
+      );
     }
     coverage = {
       level: "abstract_only",
       label: "仅依据 arXiv 摘要筛选，未检查正文",
       source_version: sourceVersion,
       inspected_sections: ["Abstract"],
-      source_references: [{
-        kind: "arxiv_abstract",
-        url: `https://arxiv.org/abs/${normalizeArxivId(entry.arxiv_id)}v${revision}`,
-        locator: "Abstract",
-        description: "arXiv abstract in the discovery record",
-      }],
+      source_references: [
+        {
+          kind: "arxiv_abstract",
+          url: `https://arxiv.org/abs/${normalizeArxivId(entry.arxiv_id)}v${revision}`,
+          locator: "Abstract",
+          description: "arXiv abstract in the discovery record",
+        },
+      ],
     };
   } else {
-    const refs = [{
-      kind: "arxiv_source_package",
-      url: source.url,
-      locator: priority === "must_read" ? "Full body" : checked.inspectedSections.join("; "),
-      description: "Complete, revision-matched arXiv TeX source package",
-      sha256: source.sha256,
-    }];
+    const refs = [
+      {
+        kind: "arxiv_source_package",
+        url: source.url,
+        locator: priority === "must_read" ? "Full body" : checked.inspectedSections.join("; "),
+        description: "Complete, revision-matched arXiv TeX source package",
+        sha256: source.sha256,
+      },
+    ];
     coverage = {
       level: priority === "must_read" ? "full_body" : "body_partial",
-      label: priority === "must_read" ? "已检查版本匹配的完整 TeX 正文" : "已检查正文中支撑判断的指定章节",
+      label:
+        priority === "must_read"
+          ? "已检查版本匹配的完整 TeX 正文"
+          : "已检查正文中支撑判断的指定章节",
       source_version: sourceVersion,
       inspected_sections: checked.inspectedSections,
       source_references: refs,
-      ...(priority === "must_read" ? {
-        source_sections: checked.inspectedSections,
-        section_coverage: sectionCoverage(checked.inspectedSections.map((title) => ({ title }))),
-      } : {}),
+      ...(priority === "must_read"
+        ? {
+            source_sections: checked.inspectedSections,
+            section_coverage: sectionCoverage(
+              checked.inspectedSections.map((title) => ({ title }))
+            ),
+          }
+        : {}),
     };
   }
   return {
@@ -819,7 +1124,10 @@ function buildAnalysisRecord(entry, parsed, checked, { modelName, source } = {})
       citation_leads: checked.evidence.map((item) => `${item.section}: “${item.quote.trim()}”`),
       research_progress: checked.research_progress,
       figures: Array.isArray(checked.figures) ? checked.figures : [],
-      unresolved_checks: ["未进行独立同行评审或逐项复算。", ...(source ? ["源文件中的图像未进行视觉核对。"] : [])],
+      unresolved_checks: [
+        "未进行独立同行评审或逐项复算。",
+        ...(source ? ["源文件中的图像未进行视觉核对。"] : []),
+      ],
       potential_lineage: {
         status: "no_match",
         reason: "自动筛选未建立论文与组内 Work 的科学关系。",
@@ -843,10 +1151,13 @@ function emptyQueue() {
 }
 
 function invalidQueue(reason, cause) {
-  return Object.assign(new Error(`Analyzer queue schema is invalid: ${reason}; it was left untouched`), {
-    code: "ARXIV_ANALYZER_STATE_INVALID",
-    ...(cause ? { cause } : {}),
-  });
+  return Object.assign(
+    new Error(`Analyzer queue schema is invalid: ${reason}; it was left untouched`),
+    {
+      code: "ARXIV_ANALYZER_STATE_INVALID",
+      ...(cause ? { cause } : {}),
+    }
+  );
 }
 
 function parseQueue(raw) {
@@ -854,18 +1165,33 @@ function parseQueue(raw) {
   try {
     queue = JSON.parse(raw);
   } catch (error) {
-    throw Object.assign(new Error("Analyzer queue is not valid JSON"), { code: "ARXIV_ANALYZER_STATE_INVALID", cause: error });
+    throw Object.assign(new Error("Analyzer queue is not valid JSON"), {
+      code: "ARXIV_ANALYZER_STATE_INVALID",
+      cause: error,
+    });
   }
-  if (!queue || typeof queue !== "object" || Array.isArray(queue) ||
-      queue.schema_version !== QUEUE_SCHEMA_VERSION || !Array.isArray(queue.items)) {
+  if (
+    !queue ||
+    typeof queue !== "object" ||
+    Array.isArray(queue) ||
+    queue.schema_version !== QUEUE_SCHEMA_VERSION ||
+    !Array.isArray(queue.items)
+  ) {
     throw invalidQueue("the root object or items array is unsupported");
   }
   const states = new Set(["queued", "processing", "awaiting_body", "screened", "complete"]);
   const seenKeys = new Set();
   for (const item of queue.items) {
-    if (!item || typeof item !== "object" || Array.isArray(item) ||
-        typeof item.key !== "string" || typeof item.source_fingerprint !== "string" ||
-        !item.entry || typeof item.entry !== "object" || Array.isArray(item.entry)) {
+    if (
+      !item ||
+      typeof item !== "object" ||
+      Array.isArray(item) ||
+      typeof item.key !== "string" ||
+      typeof item.source_fingerprint !== "string" ||
+      !item.entry ||
+      typeof item.entry !== "object" ||
+      Array.isArray(item.entry)
+    ) {
       throw invalidQueue("a queue item is missing its key, source fingerprint, or entry");
     }
     if (!states.has(item.state)) throw invalidQueue(`queue item ${item.key} has an unknown state`);
@@ -878,20 +1204,36 @@ function parseQueue(raw) {
     const fingerprint = sourceFingerprint(item.entry);
     const expectedKey = `${identity.arxiv_id}@v${identity.revision}#${fingerprint}`;
     if (item.source_fingerprint !== fingerprint || item.key !== expectedKey) {
-      throw invalidQueue(`queue item ${item.key} does not match its identity and source fingerprint`);
+      throw invalidQueue(
+        `queue item ${item.key} does not match its identity and source fingerprint`
+      );
     }
     if (seenKeys.has(item.key)) throw invalidQueue(`queue item ${item.key} is duplicated`);
     seenKeys.add(item.key);
     if (item.reading_progress !== undefined) {
       const progress = item.reading_progress;
-      if (!progress || typeof progress !== "object" || Array.isArray(progress) ||
-          progress.contract_version !== READING_CONTRACT_VERSION ||
-          !/^[0-9a-f]{64}$/u.test(progress.source_sha256) ||
-          !Number.isInteger(progress.total_chunks) || progress.total_chunks < 1 || progress.total_chunks > MAX_BODY_CHUNKS ||
-          !Array.isArray(progress.completed) || progress.completed.length > progress.total_chunks ||
-          progress.completed.some((part) => typeof part?.summary !== "string" || !part.summary.trim() || part.summary.length > 800 ||
-            typeof part?.quote !== "string" || normalizeWhitespace(part.quote).length < 12 || part.quote.length > 240) ||
-          (item.state === "complete" && progress.completed.length !== progress.total_chunks)) {
+      if (
+        !progress ||
+        typeof progress !== "object" ||
+        Array.isArray(progress) ||
+        progress.contract_version !== READING_CONTRACT_VERSION ||
+        !/^[0-9a-f]{64}$/u.test(progress.source_sha256) ||
+        !Number.isInteger(progress.total_chunks) ||
+        progress.total_chunks < 1 ||
+        progress.total_chunks > MAX_BODY_CHUNKS ||
+        !Array.isArray(progress.completed) ||
+        progress.completed.length > progress.total_chunks ||
+        progress.completed.some(
+          (part) =>
+            typeof part?.summary !== "string" ||
+            !part.summary.trim() ||
+            part.summary.length > 800 ||
+            typeof part?.quote !== "string" ||
+            normalizeWhitespace(part.quote).length < 12 ||
+            part.quote.length > 240
+        ) ||
+        (item.state === "complete" && progress.completed.length !== progress.total_chunks)
+      ) {
         throw invalidQueue(`queue item ${item.key} has invalid reading progress`);
       }
     }
@@ -901,15 +1243,18 @@ function parseQueue(raw) {
         window: { kind: "announcement_batch", batch_id: "analyzer-queue-validation" },
         entries: [item.entry],
       };
-      const validReadingStatus = item.analysis?.priority === "skip"
-        ? (item.reading_status === "not_required" || item.reading_status === "read")
-        : item.reading_status === "read";
-      if (item.analysis?.status !== "ready" ||
-          item.analysis.source_fingerprint !== fingerprint ||
-          normalizeArxivId(item.analysis.arxiv_id) !== identity.arxiv_id ||
-          Number(item.analysis.revision) !== identity.revision ||
-          !eligibleExistingAnalysis(validationFeed, item.entry, item.analysis) ||
-          !validReadingStatus) {
+      const validReadingStatus =
+        item.analysis?.priority === "skip"
+          ? item.reading_status === "not_required" || item.reading_status === "read"
+          : item.reading_status === "read";
+      if (
+        item.analysis?.status !== "ready" ||
+        item.analysis.source_fingerprint !== fingerprint ||
+        normalizeArxivId(item.analysis.arxiv_id) !== identity.arxiv_id ||
+        Number(item.analysis.revision) !== identity.revision ||
+        !eligibleExistingAnalysis(validationFeed, item.entry, item.analysis) ||
+        !validReadingStatus
+      ) {
         throw invalidQueue(`completed queue item ${item.key} lacks an eligible matching analysis`);
       }
     } else if (item.analysis?.status === "ready") {
@@ -944,11 +1289,19 @@ function eligibleExistingAnalysis(feed, entry, analysis) {
     analyses: [analysis],
     opening_brief: { status: "unavailable", reason: "Existing edition analysis reuse" },
   });
-  return [...model.groups.must_read, ...model.groups.worth_knowing, ...model.groups.skip].some((item) =>
-    identityKey(item) === identityKey(entry) && item.analysis.source_fingerprint === sourceFingerprint(entry));
+  return [...model.groups.must_read, ...model.groups.worth_knowing, ...model.groups.skip].some(
+    (item) =>
+      identityKey(item) === identityKey(entry) &&
+      item.analysis.source_fingerprint === sourceFingerprint(entry)
+  );
 }
 
-function mergeCandidate(queue, byKey, entry, { feed, archive, existingAnalysis, scanTimestamp } = {}) {
+function mergeCandidate(
+  queue,
+  byKey,
+  entry,
+  { feed, archive, existingAnalysis, scanTimestamp } = {}
+) {
   const fingerprint = sourceFingerprint(entry);
   const key = queueKey(entry, fingerprint);
   let item = byKey.get(key);
@@ -971,7 +1324,14 @@ function mergeCandidate(queue, byKey, entry, { feed, archive, existingAnalysis, 
   }
   if (archive) {
     const edition = editionRecord(feed, archive);
-    if (edition && !item.editions.some((record) => record.historical_edition === edition.historical_edition && record.historical_edition_fingerprint === edition.historical_edition_fingerprint)) {
+    if (
+      edition &&
+      !item.editions.some(
+        (record) =>
+          record.historical_edition === edition.historical_edition &&
+          record.historical_edition_fingerprint === edition.historical_edition_fingerprint
+      )
+    ) {
       item.editions.push(edition);
     }
   }
@@ -1000,14 +1360,26 @@ async function readArchivedEditions(archiveRoot) {
     try {
       archive = JSON.parse(await readFile(join(directory, name), "utf8"));
     } catch (error) {
-      throw Object.assign(new Error(`Archived edition cannot be read: ${name}`), { code: "ARXIV_ARCHIVE_INVALID", cause: error });
-    }
-    if (!archive || typeof archive !== "object" || Array.isArray(archive) ||
-        !archive.feed || typeof archive.feed !== "object" || Array.isArray(archive.feed) ||
-        !Array.isArray(archive.feed.entries)) {
-      throw Object.assign(new Error(`ARXIV_ARCHIVE_INVALID: Archived edition has no feed.entries array: ${name}`), {
+      throw Object.assign(new Error(`Archived edition cannot be read: ${name}`), {
         code: "ARXIV_ARCHIVE_INVALID",
+        cause: error,
       });
+    }
+    if (
+      !archive ||
+      typeof archive !== "object" ||
+      Array.isArray(archive) ||
+      !archive.feed ||
+      typeof archive.feed !== "object" ||
+      Array.isArray(archive.feed) ||
+      !Array.isArray(archive.feed.entries)
+    ) {
+      throw Object.assign(
+        new Error(`ARXIV_ARCHIVE_INVALID: Archived edition has no feed.entries array: ${name}`),
+        {
+          code: "ARXIV_ARCHIVE_INVALID",
+        }
+      );
     }
     editions.push({ archive, feed: archive.feed, radar: archive.radar || { analyses: [] } });
   }
@@ -1031,7 +1403,12 @@ function pendingAnalysis(entry, reason, priority) {
   };
 }
 
-export function sortQueueItems(items, priorityIds, currentFeedIds = new Set(), { backlog = false } = {}) {
+export function sortQueueItems(
+  items,
+  priorityIds,
+  currentFeedIds = new Set(),
+  { backlog = false } = {}
+) {
   return [...items].sort((left, right) => {
     const leftPriority = priorityIds.has(normalizeArxivId(left.entry.arxiv_id)) ? 0 : 1;
     const rightPriority = priorityIds.has(normalizeArxivId(right.entry.arxiv_id)) ? 0 : 1;
@@ -1059,8 +1436,14 @@ export function sortQueueItems(items, priorityIds, currentFeedIds = new Set(), {
 
     const leftTime = Date.parse(left.last_attempt_at ?? left.created_at ?? "");
     const rightTime = Date.parse(right.last_attempt_at ?? right.created_at ?? "");
-    const queueOrder = (Number.isFinite(leftTime) ? leftTime : 0) - (Number.isFinite(rightTime) ? rightTime : 0);
-    return queueOrder || priorityOrder || String(left.entry.published ?? "").localeCompare(String(right.entry.published ?? "")) || left.key.localeCompare(right.key);
+    const queueOrder =
+      (Number.isFinite(leftTime) ? leftTime : 0) - (Number.isFinite(rightTime) ? rightTime : 0);
+    return (
+      queueOrder ||
+      priorityOrder ||
+      String(left.entry.published ?? "").localeCompare(String(right.entry.published ?? "")) ||
+      left.key.localeCompare(right.key)
+    );
   });
 }
 
@@ -1096,20 +1479,29 @@ export async function runAiAnalyzer({
   now = () => new Date(),
 } = {}) {
   const isFixtureTest = Boolean(apiKey && apiKey !== DEFAULT_API_KEY);
-  const resolvedFallbackBaseUrl = fallbackBaseUrl ?? (isFixtureTest ? undefined : FALLBACK_BASE_URL);
+  const resolvedFallbackBaseUrl =
+    fallbackBaseUrl ?? (isFixtureTest ? undefined : FALLBACK_BASE_URL);
   const resolvedFallbackApiKey = fallbackApiKey ?? (isFixtureTest ? undefined : FALLBACK_API_KEY);
-  const resolvedTriageFallbacks = triageFallbackModels ?? (isFixtureTest ? [] : DEFAULT_TRIAGE_FALLBACKS);
+  const resolvedTriageFallbacks =
+    triageFallbackModels ?? (isFixtureTest ? [] : DEFAULT_TRIAGE_FALLBACKS);
   const resolvedBodyFallbacks = bodyFallbackModels ?? (isFixtureTest ? [] : DEFAULT_BODY_FALLBACKS);
   const resolvedFeed = resolve(feedPath);
   const resolvedRadar = resolve(radarPath);
-  const isDefaultEdition = resolvedFeed === resolve(DEFAULT_OUTPUT) && resolvedRadar === resolve(DEFAULT_RADAR_OUTPUT);
-  const resolvedArtifactRoot = artifactRoot ?? (resolvedFeed === resolve(DEFAULT_OUTPUT) ? DEFAULT_ARTIFACT_ROOT : null);
+  const isDefaultEdition =
+    resolvedFeed === resolve(DEFAULT_OUTPUT) && resolvedRadar === resolve(DEFAULT_RADAR_OUTPUT);
+  const resolvedArtifactRoot =
+    artifactRoot ?? (resolvedFeed === resolve(DEFAULT_OUTPUT) ? DEFAULT_ARTIFACT_ROOT : null);
   const resolvedArchiveRoot = archiveRoot ?? (isDefaultEdition ? DEFAULT_ARCHIVE_ROOT : null);
-  const resolvedStatePath = resolve(statePath ?? (resolvedArtifactRoot
-    ? join(resolve(resolvedArtifactRoot), "screening-queue.json")
-    : `${resolvedFeed}.screening-queue.json`));
-  if (!Number.isInteger(limit) || limit < 0) throw new Error("Analyzer limit must be a non-negative integer");
-  if (!Number.isInteger(concurrency) || concurrency < 1 || concurrency > 10) throw new Error("Analyzer concurrency must be an integer from 1 to 10");
+  const resolvedStatePath = resolve(
+    statePath ??
+      (resolvedArtifactRoot
+        ? join(resolve(resolvedArtifactRoot), "screening-queue.json")
+        : `${resolvedFeed}.screening-queue.json`)
+  );
+  if (!Number.isInteger(limit) || limit < 0)
+    throw new Error("Analyzer limit must be a non-negative integer");
+  if (!Number.isInteger(concurrency) || concurrency < 1 || concurrency > 10)
+    throw new Error("Analyzer concurrency must be an integer from 1 to 10");
 
   const feedFallback = JSON.parse(await readFile(resolvedFeed, "utf8"));
   let radarFallback = { analyses: [], knowledge_points: [] };
@@ -1144,22 +1536,34 @@ export async function runAiAnalyzer({
     const byKey = new Map(queue.items.map((item) => [item.key, item]));
     for (const item of queue.items) {
       if (item.state === "processing") {
-        item.state = item.triage?.priority && item.triage.priority !== "skip" ? "awaiting_body" : "queued";
-        item.last_error = "Previous run stopped while processing; item was returned to the retry queue.";
+        item.state =
+          item.triage?.priority && item.triage.priority !== "skip" ? "awaiting_body" : "queued";
+        item.last_error =
+          "Previous run stopped while processing; item was returned to the retry queue.";
       }
     }
 
     const scanTimestamp = now().toISOString();
-    const currentExisting = new Map((Array.isArray(radar.analyses) ? radar.analyses : []).map((item) => [identityKey(item), item]));
+    const currentExisting = new Map(
+      (Array.isArray(radar.analyses) ? radar.analyses : []).map((item) => [identityKey(item), item])
+    );
     for (const entry of feed.entries) {
-      mergeCandidate(queue, byKey, entry, { feed, existingAnalysis: currentExisting.get(identityKey(entry)), scanTimestamp });
+      mergeCandidate(queue, byKey, entry, {
+        feed,
+        existingAnalysis: currentExisting.get(identityKey(entry)),
+        scanTimestamp,
+      });
     }
     const archived = await readArchivedEditions(resolvedArchiveRoot);
     for (const { archive, feed: archivedFeed, radar: archivedRadar } of archived) {
-      const archivedAnalyses = new Map([
-        ...(Array.isArray(archivedRadar.analyses) ? archivedRadar.analyses : []),
-        ...(Array.isArray(archivedRadar.historical_analyses) ? archivedRadar.historical_analyses : []),
-      ].map((analysis) => [identityKey(analysis), analysis]));
+      const archivedAnalyses = new Map(
+        [
+          ...(Array.isArray(archivedRadar.analyses) ? archivedRadar.analyses : []),
+          ...(Array.isArray(archivedRadar.historical_analyses)
+            ? archivedRadar.historical_analyses
+            : []),
+        ].map((analysis) => [identityKey(analysis), analysis])
+      );
       for (const entry of archivedFeed.entries) {
         mergeCandidate(queue, byKey, entry, {
           feed: archivedFeed,
@@ -1171,30 +1575,55 @@ export async function runAiAnalyzer({
     }
     await persist();
 
-    const configuredPriorityIds = new Set((Array.isArray(priorityIds) ? priorityIds : String(priorityIds ?? "").split(","))
-      .map((value) => normalizeArxivId(value)).filter(Boolean));
+    const configuredPriorityIds = new Set(
+      (Array.isArray(priorityIds) ? priorityIds : String(priorityIds ?? "").split(","))
+        .map((value) => normalizeArxivId(value))
+        .filter(Boolean)
+    );
     const allowedIds = (Array.isArray(onlyIds) ? onlyIds : String(onlyIds ?? "").split(","))
-      .map((value) => String(value).trim()).filter(Boolean);
-    const selectedById = (item) => allowedIds.length === 0 || allowedIds.some((value) => {
-      const revision = value.match(/^(.*)v([1-9]\d*)$/iu);
-      return normalizeArxivId(revision ? revision[1] : value) === normalizeArxivId(item.entry.arxiv_id) &&
-        (!revision || Number(revision[2]) === Number(item.entry.revision));
-    });
+      .map((value) => String(value).trim())
+      .filter(Boolean);
+    const selectedById = (item) =>
+      allowedIds.length === 0 ||
+      allowedIds.some((value) => {
+        const revision = value.match(/^(.*)v([1-9]\d*)$/iu);
+        return (
+          normalizeArxivId(revision ? revision[1] : value) ===
+            normalizeArxivId(item.entry.arxiv_id) &&
+          (!revision || Number(revision[2]) === Number(item.entry.revision))
+        );
+      });
+    if (allowedIds.length > 0) {
+      for (const item of queue.items) {
+        if (selectedById(item)) {
+          item.state =
+            item.triage?.priority && item.triage.priority !== "skip" ? "awaiting_body" : "queued";
+          delete item.analysis;
+          delete item.last_error;
+        }
+      }
+    }
     const targetDates = (Array.isArray(dates) ? dates : String(dates ?? "").split(","))
-      .map((v) => String(v).trim()).filter(Boolean);
+      .map((v) => String(v).trim())
+      .filter(Boolean);
     const dateSet = targetDates.length > 0 ? new Set(targetDates) : null;
     const matchesTargetDate = (item) => {
       if (!dateSet) return true;
       for (const d of dateSet) {
         if (item.entry?.published?.startsWith(d)) return true;
         if (item.entry?.id?.includes(d)) return true;
-        if (item.editions?.some((ed) => ed.date === d || ed.historical_edition?.includes(d))) return true;
+        if (item.editions?.some((ed) => ed.date === d || ed.historical_edition?.includes(d)))
+          return true;
       }
       return false;
     };
     const currentFeedIds = new Set(feed.entries.map((entry) => normalizeArxivId(entry.arxiv_id)));
-    const eligible = queue.items.filter((item) => item.state !== "complete" && selectedById(item) && matchesTargetDate(item));
-    const candidates = sortQueueItems(eligible, configuredPriorityIds, currentFeedIds, { backlog: Boolean(backlog) });
+    const eligible = queue.items.filter(
+      (item) => item.state !== "complete" && selectedById(item) && matchesTargetDate(item)
+    );
+    const candidates = sortQueueItems(eligible, configuredPriorityIds, currentFeedIds, {
+      backlog: Boolean(backlog),
+    });
     const selected = limit > 0 ? candidates.slice(0, limit) : candidates;
     const defaultSourceLoader = async (entry, options = {}) => {
       return await acquirePaperBody(entry, {
@@ -1203,39 +1632,43 @@ export async function runAiAnalyzer({
         deepxivBreaker: defaultDeepxivBreaker,
       });
     };
-    const sourceReader = sourceLoader ?? serializeAndPaceSourceLoader(
-      defaultSourceLoader,
-      DEFAULT_MIN_REQUEST_INTERVAL_MS,
-    );
-    const unboundedModelCall = modelRunner ?? ((request) => {
-      let stageModel = model;
-      let stageFallbacks = [];
-      if (request.stage === "abstract") {
-        stageModel = triageModel;
-        stageFallbacks = resolvedTriageFallbacks;
-      } else if (request.stage === "body" || request.stage === "body_chunk") {
-        stageModel = bodyModel;
-        stageFallbacks = resolvedBodyFallbacks;
-      }
-      return executeChatCompletion({
-        stage: request.stage,
-        prompt: request.prompt,
-        systemPrompt: SYSTEM_PROMPT,
-        model: stageModel,
-        fallbackModels: stageFallbacks,
-        effort: request.effort ?? effort,
-        baseUrl: request.baseUrl ?? baseUrl,
-        apiKey: request.apiKey ?? apiKey,
-        fallbackBaseUrl: resolvedFallbackBaseUrl,
-        fallbackApiKey: resolvedFallbackApiKey,
-        timeoutMs: modelTimeoutMs,
+    const sourceReader =
+      sourceLoader ??
+      serializeAndPaceSourceLoader(defaultSourceLoader, DEFAULT_MIN_REQUEST_INTERVAL_MS);
+    const unboundedModelCall =
+      modelRunner ??
+      ((request) => {
+        let stageModel = model;
+        let stageFallbacks = [];
+        if (request.stage === "abstract") {
+          stageModel = triageModel;
+          stageFallbacks = resolvedTriageFallbacks;
+        } else if (request.stage === "body" || request.stage === "body_chunk") {
+          stageModel = bodyModel;
+          stageFallbacks = resolvedBodyFallbacks;
+        }
+        return executeChatCompletion({
+          stage: request.stage,
+          prompt: request.prompt,
+          systemPrompt: SYSTEM_PROMPT,
+          model: stageModel,
+          fallbackModels: stageFallbacks,
+          effort: request.effort ?? effort,
+          baseUrl: request.baseUrl ?? baseUrl,
+          apiKey: request.apiKey ?? apiKey,
+          fallbackBaseUrl: resolvedFallbackBaseUrl,
+          fallbackApiKey: resolvedFallbackApiKey,
+          timeoutMs: modelTimeoutMs,
+          trace: request.trace,
+        });
       });
-    });
     const modelCall = (request) => {
-      if (request.prompt.length > MAX_MODEL_PROMPT_CHARS) throw new Error(`Model prompt exceeds ${MAX_MODEL_PROMPT_CHARS} characters`);
+      if (request.prompt.length > MAX_MODEL_PROMPT_CHARS)
+        throw new Error(`Model prompt exceeds ${MAX_MODEL_PROMPT_CHARS} characters`);
       return unboundedModelCall(request);
     };
-    if (selected.length > 0 && !modelRunner && !apiKey) throw new Error("Missing API key; set IOA_API_KEY, WU_API_KEY or OPENAI_API_KEY");
+    if (selected.length > 0 && !modelRunner && !apiKey)
+      throw new Error("Missing API key; set IOA_API_KEY, WU_API_KEY or OPENAI_API_KEY");
 
     for (const item of selected) {
       item.attempts = Number(item.attempts || 0) + 1;
@@ -1249,11 +1682,14 @@ export async function runAiAnalyzer({
     const untriaged = selected.filter((item) => !item.triage);
     if (untriaged.length > 0) {
       console.log(`[AI Analyzer] Stage 1: Fast Batch Triage for ${untriaged.length} candidates...`);
-      const triageResults = await triageBatch(untriaged.map((i) => i.entry), {
-        modelCall,
-        batchSize: 4,
-        concurrency: Math.min(6, Math.ceil(untriaged.length / 4)),
-      });
+      const triageResults = await triageBatch(
+        untriaged.map((i) => i.entry),
+        {
+          modelCall,
+          batchSize: 4,
+          concurrency: Math.min(6, Math.ceil(untriaged.length / 4)),
+        }
+      );
 
       for (const item of untriaged) {
         const result = triageResults.get(item.entry.arxiv_id);
@@ -1281,12 +1717,26 @@ export async function runAiAnalyzer({
     for (const item of selected) {
       if (item.triage?.priority === "skip" && item.state !== "complete") {
         try {
-          const checked = validateScientificOutput(item.triage, { entry: item.entry, abstract: true });
-          item.analysis = buildAnalysisRecord(item.entry, item.triage, checked, { modelName: model });
+          const rawDate = item.entry.release_date || item.entry.published || now().toISOString();
+          const paperDate = String(rawDate).slice(0, 10);
+          const trace = startTrace({
+            paperId: `${item.entry.arxiv_id}v${item.entry.revision || 1}`,
+            date: paperDate,
+          });
+          trace.recordStage("TRIAGE", { priority: "skip" });
+          const checked = validateScientificOutput(item.triage, {
+            entry: item.entry,
+            abstract: true,
+          });
+          item.analysis = buildAnalysisRecord(item.entry, item.triage, checked, {
+            modelName: model,
+          });
+          trace.recordStage("SYNTHESIS");
           item.state = "complete";
           item.reading_status = "not_required";
           item.last_error = null;
           item.completed_at = now().toISOString();
+          trace.finish(TRACE_STATUSES.SUCCESS, { priority: "skip" });
         } catch (error) {
           item.triage = null;
           item.state = "queued";
@@ -1302,9 +1752,13 @@ export async function runAiAnalyzer({
     // ====================================================
     // Stage 2: Deep Body Reading Pool
     // ====================================================
-    const bodyCandidates = selected.filter((item) => Boolean(item.triage) && item.triage.priority !== "skip" && item.state !== "complete");
+    const bodyCandidates = selected.filter(
+      (item) => Boolean(item.triage) && item.triage.priority !== "skip" && item.state !== "complete"
+    );
     if (bodyCandidates.length > 0) {
-      console.log(`[AI Analyzer] Stage 2: Deep Body Reading for ${bodyCandidates.length} high-value candidates...`);
+      console.log(
+        `[AI Analyzer] Stage 2: Deep Body Reading for ${bodyCandidates.length} high-value candidates...`
+      );
     }
 
     let cursor = 0;
@@ -1315,15 +1769,38 @@ export async function runAiAnalyzer({
         item.last_attempt_at = now().toISOString();
         item.updated_at = item.last_attempt_at;
         await persist();
+        const rawDate = item.entry.release_date || item.entry.published || now().toISOString();
+        const paperDate = String(rawDate).slice(0, 10);
+        const trace = startTrace({
+          paperId: `${item.entry.arxiv_id}v${item.entry.revision || 1}`,
+          date: paperDate,
+        });
         try {
           item.reading_attempts = Number(item.reading_attempts || 0) + 1;
-          const source = await acquireSource(item.entry, sourceReader, { timeoutMs: sourceTimeoutMs });
-          const chunks = buildBodyPrompt(item.entry, source).length > MAX_MODEL_PROMPT_CHARS ? bodyChunks(source.bodyText) : null;
+          trace.recordStage("ACQUISITION");
+          const source = await acquireSource(item.entry, sourceReader, {
+            timeoutMs: sourceTimeoutMs,
+          });
+          trace.recordStage("ACQUISITION", {
+            sourceKind: source.sourceKind,
+            bytes: source.bodyText?.length || 0,
+          });
+          const chunks =
+            buildBodyPrompt(item.entry, source).length > MAX_MODEL_PROMPT_CHARS
+              ? bodyChunks(source.bodyText)
+              : null;
           if (chunks) {
             const previous = item.reading_progress;
-            if (!previous || previous.contract_version !== READING_CONTRACT_VERSION ||
-                previous.source_sha256 !== source.sha256 || previous.total_chunks !== chunks.length ||
-                previous.completed.some((part, index) => !normalizeWhitespace(chunks[index]).includes(normalizeWhitespace(part.quote)))) {
+            if (
+              !previous ||
+              previous.contract_version !== READING_CONTRACT_VERSION ||
+              previous.source_sha256 !== source.sha256 ||
+              previous.total_chunks !== chunks.length ||
+              previous.completed.some(
+                (part, index) =>
+                  !normalizeWhitespace(chunks[index]).includes(normalizeWhitespace(part.quote))
+              )
+            ) {
               item.reading_progress = {
                 contract_version: READING_CONTRACT_VERSION,
                 source_sha256: source.sha256,
@@ -1332,8 +1809,18 @@ export async function runAiAnalyzer({
               };
               await persist();
             }
-            for (let index = item.reading_progress.completed.length; index < chunks.length; index++) {
-              let chunkPrompt = buildBodyChunkPrompt(item.entry, source, chunks[index], index, chunks.length);
+            for (
+              let index = item.reading_progress.completed.length;
+              index < chunks.length;
+              index++
+            ) {
+              let chunkPrompt = buildBodyChunkPrompt(
+                item.entry,
+                source,
+                chunks[index],
+                index,
+                chunks.length
+              );
               for (let attempt = 0; attempt < 2; attempt++) {
                 const rawChunkOutput = await modelCall({
                   stage: "body_chunk",
@@ -1344,13 +1831,38 @@ export async function runAiAnalyzer({
                   effort,
                   baseUrl,
                   apiKey,
+                  trace,
                 });
                 try {
                   const chunkOutput = safeParseJson(rawChunkOutput);
-                  item.reading_progress.completed.push(checkedBodyChunk(chunkOutput, chunks[index]));
+                  item.reading_progress.completed.push(
+                    checkedBodyChunk(chunkOutput, chunks[index])
+                  );
                   break;
                 } catch (error) {
-                  if (attempt === 1) throw error;
+                  if (attempt === 1) {
+                    try {
+                      const chunkOutput = safeParseJson(rawChunkOutput);
+                      if (typeof chunkOutput?.summary === "string" && chunkOutput.summary.trim()) {
+                        const cleanChunk = chunks[index]
+                          .replace(/\\[a-zA-Z]+(?![a-zA-Z])/gu, " ")
+                          .replace(/\s+/gu, " ");
+                        const match = cleanChunk.match(/([A-Z][a-zA-Z0-9,\s\-]{25,120}\.)/u);
+                        const fallbackQuote = match
+                          ? match[1].trim()
+                          : chunks[index].slice(100, 200).trim();
+                        if (fallbackQuote && fallbackQuote.length >= 12) {
+                          chunkOutput.quote = fallbackQuote;
+                          item.reading_progress.completed.push({
+                            summary: chunkOutput.summary.slice(0, 800),
+                            quote: fallbackQuote,
+                          });
+                          break;
+                        }
+                      }
+                    } catch {}
+                    throw error;
+                  }
                   chunkPrompt += /JSON escape|escaped character/iu.test(String(error?.message))
                     ? `\n\n上一次分段响应的 JSON 转义有歧义：${safeError(error, apiKey)}。请重新生成严格合法的 JSON；TeX 反斜杠必须写成 JSON-escaped TeX backslashes（例如 \\\\Pi），不要改变物理内容或原文摘录。`
                     : `\n\n上一次分段响应未通过可核验性检查：${safeError(error, apiKey)}。请在 SOURCE TEXT 中找一段 12–240 字符的连续原文，逐字复制，不要改写或引用其他段落。`;
@@ -1359,7 +1871,9 @@ export async function runAiAnalyzer({
               await persist();
             }
           }
-          let bodyPrompt = chunks ? buildChunkSynthesisPrompt(item.entry, source, item.reading_progress) : buildBodyPrompt(item.entry, source);
+          let bodyPrompt = chunks
+            ? buildChunkSynthesisPrompt(item.entry, source, item.reading_progress)
+            : buildBodyPrompt(item.entry, source);
           let bodyOutput;
           let checked;
           for (let attempt = 0; attempt < 2; attempt++) {
@@ -1372,9 +1886,13 @@ export async function runAiAnalyzer({
               effort,
               baseUrl,
               apiKey,
+              trace,
             });
             try {
               bodyOutput = safeParseJson(rawBodyOutput);
+              if (chunks && item.reading_progress?.completed?.length > 0) {
+                supplementChunkSynthesisEvidence(bodyOutput, source, item.reading_progress);
+              }
               checked = validateScientificOutput(bodyOutput, {
                 entry: item.entry,
                 sourceSections: source.sections,
@@ -1389,21 +1907,42 @@ export async function runAiAnalyzer({
                 : `\n\n上一次输出未通过可核验性检查：${safeError(error, apiKey)}。请重新核对实际章节标题，并从相应章节逐字复制连续 TeX 原文作为 quote；不要引用摘要或自行改写摘录。`;
             }
           }
-          const figures = await extractPaperFigures(item.entry.arxiv_id, item.entry.revision).catch(() => []);
+          const figures = await extractPaperFigures(item.entry.arxiv_id, item.entry.revision).catch(
+            () => []
+          );
           checked.figures = figures;
-          item.analysis = buildAnalysisRecord(item.entry, bodyOutput, checked, { modelName: model, source });
+          item.analysis = buildAnalysisRecord(item.entry, bodyOutput, checked, {
+            modelName: model,
+            source,
+          });
+          trace.recordStage("EVIDENCE_GATE");
           const gate = evaluateEvidenceGate(item.analysis, {
             bodyText: source.bodyText,
             sections: source.sections,
           });
+          trace.recordEvidence(gate);
+          trace.recordStage("EVIDENCE_GATE", {
+            downgraded: gate.downgraded,
+            status: gate.downgradeReason || "verified",
+          });
           if (gate.downgraded && gate.downgradeReason) {
-            console.log(`[Evidence Gate] arXiv:${item.entry.arxiv_id} 证据闸门判定: ${gate.diagnostic}`);
+            console.log(
+              `[Evidence Gate] arXiv:${item.entry.arxiv_id} 证据闸门判定: ${gate.diagnostic}`
+            );
           }
+          trace.recordStage("SYNTHESIS");
           item.state = "complete";
           item.reading_status = "read";
           item.last_error = null;
           item.completed_at = now().toISOString();
+          trace.finish(TRACE_STATUSES.SUCCESS, {
+            priority: item.analysis?.priority,
+            coverage: item.analysis?.evidence_coverage,
+          });
         } catch (error) {
+          trace.finish(TRACE_STATUSES.FAILED, {
+            error: safeError(error, apiKey),
+          });
           if (item.triage?.priority === "skip") item.triage = null;
           item.state = item.triage ? "awaiting_body" : "queued";
           item.reading_status = item.triage ? "pending" : "not_started";
@@ -1415,18 +1954,23 @@ export async function runAiAnalyzer({
         await persist();
       }
     }
-    await Promise.all(Array.from({ length: Math.min(concurrency, bodyCandidates.length) }, () => worker()));
+    await Promise.all(
+      Array.from({ length: Math.min(concurrency, bodyCandidates.length) }, () => worker())
+    );
     await queueWrite;
 
     const currentAnalysisMap = new Map();
     for (const entry of feed.entries) {
       const item = byKey.get(queueKey(entry));
       if (item?.analysis) currentAnalysisMap.set(identityKey(entry), item.analysis);
-      else if (currentExisting.has(identityKey(entry))) currentAnalysisMap.set(identityKey(entry), currentExisting.get(identityKey(entry)));
+      else if (currentExisting.has(identityKey(entry)))
+        currentAnalysisMap.set(identityKey(entry), currentExisting.get(identityKey(entry)));
     }
     const analyses = [...currentAnalysisMap.values()];
     const historicalMap = new Map();
-    for (const record of Array.isArray(radar.historical_analyses) ? radar.historical_analyses : []) {
+    for (const record of Array.isArray(radar.historical_analyses)
+      ? radar.historical_analyses
+      : []) {
       if (typeof record?.historical_edition === "string" && record.historical_edition.trim()) {
         const key = `${record.historical_edition}|${identityKey(record)}|${record.source_fingerprint}|${record.historical_edition_fingerprint ?? ""}`;
         historicalMap.set(key, record);
@@ -1459,7 +2003,11 @@ export async function runAiAnalyzer({
     };
     nextRadar.opening_brief = buildOpeningBrief(feed, nextRadar);
     const validation = validateDailyRadarPayload(feed, nextRadar);
-    if (!validation.valid) throw Object.assign(new Error(`Radar validation failed: ${validation.diagnostics.join(", ")}`), { code: "ARXIV_RADAR_INVALID" });
+    if (!validation.valid)
+      throw Object.assign(
+        new Error(`Radar validation failed: ${validation.diagnostics.join(", ")}`),
+        { code: "ARXIV_RADAR_INVALID" }
+      );
 
     if (JSON.stringify(nextRadar) !== JSON.stringify(radar)) {
       await publishAnalyzedArxivEdition({
@@ -1473,16 +2021,22 @@ export async function runAiAnalyzer({
       });
     }
     const pendingCount = queue.items.filter((item) => item.state !== "complete").length;
-    console.log(`[AI Analyzer] Processed ${selected.length}; durable queue has ${pendingCount} pending candidates.`);
+    console.log(
+      `[AI Analyzer] Processed ${selected.length}; durable queue has ${pendingCount} pending candidates.`
+    );
 
-    const shouldSyncArchives = syncArchives ?? (isDefaultEdition && resolve(resolvedArchiveRoot || "") === resolve(DEFAULT_ARCHIVE_ROOT));
+    const shouldSyncArchives =
+      syncArchives ??
+      (isDefaultEdition && resolve(resolvedArchiveRoot || "") === resolve(DEFAULT_ARCHIVE_ROOT));
     if (shouldSyncArchives && resolvedArchiveRoot) {
       const { syncArxivArchives } = await import("./arxiv-archive.mjs");
       await syncArxivArchives({
         archiveRoot: resolvedArchiveRoot,
         currentFeedPath: resolvedFeed,
         currentRadarPath: resolvedRadar,
-        dailyCacheDir: resolvedArtifactRoot ? join(resolve(resolvedArtifactRoot), "generations") : null,
+        dailyCacheDir: resolvedArtifactRoot
+          ? join(resolve(resolvedArtifactRoot), "generations")
+          : null,
       });
     }
     return nextRadar;

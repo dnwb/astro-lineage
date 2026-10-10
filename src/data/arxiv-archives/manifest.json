@@ -1,24 +1,160 @@
 {
   "schema_version": "astrolineage-arxiv-archive-manifest-v1",
-  "updated_at": "2026-10-03T01:12:49.388Z",
-  "total_weeks": 4,
-  "total_daily_editions": 19,
-  "latest_week_id": "2026-W40",
-  "latest_daily_date": "2026-10-01",
+  "updated_at": "2026-10-09T18:03:14.068Z",
+  "total_weeks": 5,
+  "total_daily_editions": 24,
+  "latest_week_id": "2026-W41",
+  "latest_daily_date": "2026-10-08",
   "weeks": [
     {
+      "week_id": "2026-W41",
+      "title": "每周学术脉络 · 2026-W41",
+      "date_range": "2026-10-05 ~ 2026-10-11",
+      "has_weekly_summary": true,
+      "executive_summary": "本周高能天体物理聚焦于“致密天体中心引擎能量注入—激波破越与外流多波段辐射—相对论粒子加速”全链条的动力学与观测印证。\n\n- **中央引擎与极端瞬变**：arXiv:2610.12359 (Dai et al.) 论证双中子星并合后早期星云处于饱和正负对级联主导的深光学厚状态（$\\tau_{\\rm n} \\sim 10^3$），极区漏斗中的相对论对流外流主导了饱和 Wien 火球（$kT \\sim 10\\text{--}100\\,\\mathrm{keV}$）的准热泄漏，成功重现了短 GRB 延展辐射与 X 射线平台期的非热/准热演化特征；arXiv:2610.02889 (Chen et al.) 针对双阶段超长爆发 GRB 220627A（$E_{\\rm iso} = (1.56\\pm0.14)\\times10^{54}\\,\\mathrm{erg}$），通过时变谱分析揭示其低能指数由 slow-cooling 向 fast-cooling 演化，并结合静默间隔与潜在热成分指出其前身星倾向于蓝超巨星（BSG）坍缩星而非单纯磁星回落。\n- **激波动力学与周星介质相互作用**：arXiv:2610.04367 (Gao et al.) 结合爱因斯坦探针（EP）对快速 X 射线暂现源 EP260321a 的观测，利用 Monte Carlo 光子输运模拟表明该事件源自剥离包层超新星激波在致密延伸 CSM 壳层（$R_{\\rm in} \\sim 160R_\\odot$，$R_{\\rm out} \\sim 612R_\\odot$，$M_{\\rm csm} \\sim 5\\times10^{-4}M_\\odot$）内的辐射扩散破越，排除了传统裸 WR 星极短破越模型的解释；arXiv:2610.02988 (Mooley et al.) 利用 VLBI 测量 GRB 221009A 射电余辉角尺寸膨胀率（$s \\propto t^{0.52}$），发现基于标准均匀前向激波的现有理论模型均无法自洽复现晚期角尺寸与光变曲线，向标准喷流演化范式提出关键挑战。\n- **微类星体粒子加速与超高能辐射起源**：arXiv:2610.02962 (Zhang et al.) 与 arXiv:2610.02966 (Safi-Harb et al.) 联合 EP-FXT 与 XMM-Newton 空间分辨观测，确认微类星体 PeVatron 候选体 V4641 Sgr 沿喷流轴存在数十秒差距量级的弥散 X 射线结（n1、s1），其非热同步拟合给出微高斯量级磁场（$B \\sim 1.3\\text{--}5\\,\\mu\\mathrm{G}$），直接约束了极高能电子在对流与 Bohm 扩散极限下的多波段输运物理。\n\n> 🎯 **筛选边界**：本周重点聚焦具备中心引擎能量注入、激波辐射转移定量求解或多信使观测约束的爆发现象工作，已严格排除低能段常规测光普查及缺乏物理自洽建模的巡天统计报告。",
+      "statistics": {
+        "total_analyzed": 240,
+        "must_read_count": 6,
+        "worth_knowing_count": 34,
+        "skip_count": 200
+      },
+      "top_picks_count": 16,
+      "days": [
+        {
+          "date": "2026-10-08",
+          "weekday": "Thu",
+          "week_id": "2026-W41",
+          "batch_id": "announcement-2026-10-08",
+          "total_papers": 72,
+          "analyzed_count": 72,
+          "must_read_count": 1,
+          "worth_knowing_count": 12,
+          "skip_count": 59,
+          "pending_count": 0,
+          "brief_status": "ready",
+          "brief_intro": "本期首看《Funnel Leakage of the Wien Fireball in the Early Nebula after a Binary Neutron Star Merger》等 13 篇核心进展。",
+          "highlights": [
+            {
+              "arxiv_id": "2610.12359",
+              "priority": "must_read",
+              "title": "Funnel Leakage of the Wien Fireball in the Early Nebula after a Binary Neutron Star Merger",
+              "reason": "本文建立了双中子星并合后新生毫秒磁星驱动早期星云火球在极区漏斗（polar funnel）中泄漏的解析与数值演化模型，完美连接了短 GRB 早期 X 射线延展辐射/平台期（准热 Wien 谱向非热谱转变）与千新星中心引擎供能过程，为高能瞬变源平台期辐射起源提供了核心动力学与辐射传输理论。"
+            }
+          ],
+          "data_file": "daily/2026-10-08.json"
+        },
+        {
+          "date": "2026-10-07",
+          "weekday": "Wed",
+          "week_id": "2026-W41",
+          "batch_id": "announcement-2026-10-07",
+          "total_papers": 46,
+          "analyzed_count": 46,
+          "must_read_count": 0,
+          "worth_knowing_count": 1,
+          "skip_count": 45,
+          "pending_count": 0,
+          "brief_status": "ready",
+          "brief_intro": "本期首看《Can LISA See Inside the Little Red Dots?》。",
+          "highlights": [],
+          "data_file": "daily/2026-10-07.json"
+        },
+        {
+          "date": "2026-10-06",
+          "weekday": "Tue",
+          "week_id": "2026-W41",
+          "batch_id": "announcement-2026-10-06",
+          "total_papers": 50,
+          "analyzed_count": 50,
+          "must_read_count": 0,
+          "worth_knowing_count": 3,
+          "skip_count": 47,
+          "pending_count": 0,
+          "brief_status": "ready",
+          "brief_intro": "本期首看《Magnus: neutrino oscillation probabilities for any Hermitian Hamiltonian, any number of flavors, and any matter profile》等 3 篇核心进展。",
+          "highlights": [],
+          "data_file": "daily/2026-10-06.json"
+        },
+        {
+          "date": "2026-10-05",
+          "weekday": "Mon",
+          "week_id": "2026-W41",
+          "batch_id": "announcement-2026-10-05",
+          "total_papers": 35,
+          "analyzed_count": 35,
+          "must_read_count": 1,
+          "worth_knowing_count": 10,
+          "skip_count": 24,
+          "pending_count": 0,
+          "brief_status": "ready",
+          "brief_intro": "本期首看《Fast X-ray Transient EP260321a: Shock Breakout through an Extended Circumstellar Matter》等 11 篇核心进展。",
+          "highlights": [
+            {
+              "arxiv_id": "2610.04367",
+              "priority": "must_read",
+              "title": "Fast X-ray Transient EP260321a: Shock Breakout through an Extended Circumstellar Matter",
+              "reason": "直接涉及研究组关注的激波破越与周星介质相互作用：以扩展 CSM 内的破越及未激波 CSM 中的光子扩散解释 EP260321a 的软 X 射线时标与温度，并给出爆炸前数日质量损失的模型依赖约束。其研究价值在于可检验的机制区分和 CSM 定量反演，而非是否构成突破。"
+            }
+          ],
+          "data_file": "daily/2026-10-05.json"
+        },
+        {
+          "date": "2026-10-04",
+          "weekday": "Sun",
+          "week_id": "2026-W41",
+          "batch_id": "announcement-2026-10-04",
+          "total_papers": 37,
+          "analyzed_count": 37,
+          "must_read_count": 4,
+          "worth_knowing_count": 8,
+          "skip_count": 25,
+          "pending_count": 0,
+          "brief_status": "ready",
+          "brief_intro": "本期首看《Study of the Ultra-Long GRB 220627A: Exploring a Possible Blue Supergiant Collapsar Origin》等 12 篇核心进展。",
+          "highlights": [
+            {
+              "arxiv_id": "2610.02889",
+              "priority": "must_read",
+              "title": "Study of the Ultra-Long GRB 220627A: Exploring a Possible Blue Supergiant Collapsar Origin",
+              "reason": "与长寿命中心引擎、相对论喷流内部耗散和喷流—茧热辐射直接相关。双阶段GBM/LAT观测可用于检验蓝超巨星坍缩与磁星引擎的简并，并约束高能辐射机制；研究价值在于联合时域、谱演化及能量预算的检验，而非已经唯一确定前身星。"
+            },
+            {
+              "arxiv_id": "2610.02962",
+              "priority": "must_read",
+              "title": "Candidate X-ray Counterparts of Ultra-High-Energy Emission of the Galactic Microquasar V4641 Sgr Revealed by Einstein Probe",
+              "reason": "直接关联研究组的相对论喷流、致密天体高能观测及超高能粒子输运方向。本文提供微类星体 V4641 Sgr 周围候选弥散 X 射线对应体，并利用 X 射线与伽马射线联合建模限制磁场、电子冷却和传播条件。其研究效用在于检验轻子解释与中心源注入假设，而非已经确立超高能辐射起源。"
+            },
+            {
+              "arxiv_id": "2610.02966",
+              "priority": "must_read",
+              "title": "XMM-Newton Resolves Parsec-scale X-ray Jets in the PeVatron Microquasar V4641 Sgr",
+              "reason": "与研究组的相对论喷流、致密天体高能观测及粒子加速方向直接相关。论文将V4641 Sgr的延展X射线结构与TeV辐射区联系起来，利用谱形、空间尺度和宽带建模约束非热辐射、局部磁场及粒子输运；即使结构起源尚未确定，这些观测和限制也具有研究效用。"
+            },
+            {
+              "arxiv_id": "2610.02988",
+              "priority": "must_read",
+              "title": "Comparing the size evolution of GRB 221009A with afterglow models",
+              "reason": "直接关联相对论喷流动力学、周围介质及余辉辐射机制。论文以VLBI角尺寸提供独立于光变和能谱的模型检验，约束喷流能量与环境密度的组合，并揭示能够复现的既有余辉模型与尺寸观测之间的张力，适合用于检验喷流结构、侧向膨胀和射电辐射来源假设。"
+            }
+          ],
+          "data_file": "daily/2026-10-04.json"
+        }
+      ],
+      "weekly_data_file": "weekly/2026-W41.json"
+    },
+    {
       "week_id": "2026-W40",
-      "title": "高能天体物理 arXiv 每周学术脉络与前沿精选",
+      "title": "每周学术脉络 · 2026-W40",
       "date_range": "2026-09-28 ~ 2026-10-04",
       "has_weekly_summary": true,
-      "executive_summary": "本周重点工作沿着“发动机与前身星—喷流或外流—周围介质—辐射与多信使信号”的因果链条展开。FRB方向一方面提出可由重复爆发检验的等离子体透镜统计预言，另一方面发展磁星极区火球受激康普顿上散射模型，但后者的高光度实现仍依赖密度加载与饱和处方。超新星工作将爆前前兆搜索、射电约束的CSM密度结构与前身星三维壳层燃烧联系起来；GRB工作则通过多波段余辉限制软X射线闪的喷流参数，并以层级贝叶斯方法重新评估短暴率和并合延迟。多信使方向涵盖并合千新星的元素谱线、塌缩星盘碎裂引力波背景及潮汐瓦解事件的高能中微子产额。整体上，本周最值得关注的共同问题不是单一辐射机制是否可行，而是模型参数、选择效应与传播环境能否被独立观测交叉验证。",
+      "executive_summary": "本周高能天体物理重点工作沿着“中心引擎动能与辐射释放 $\\rightarrow$ 激波/相对论外流动力学 $\\rightarrow$ 周星/星际介质多波段瞬变响应”的因果链条展开。- **快速射电暴与磁星辐射机制**：arXiv:2609.30494 利用 3D PIC 模拟阐明磁化电子—正电子激波同步辐射脉泽经球面积分后仍以线偏振为主，表观超窄谱与某些具有显著圆偏振的重复暴难以兼顾；arXiv:2609.30616 通过 DSA-110 定位样本推断宿主 $\\mathrm{DM}$ 中位数为 $241\\text{--}242\\text{ pc cm}^{-3}$ 并与 $\\mathrm{RM}$ 显著相关，支持年轻核心坍缩磁星通道；arXiv:2609.31106 论证了利用宇宙网冷湍流云团对银河系闪烁的抑制效应探测晕内气体体积填充因子的可行性；arXiv:2609.31842 提出一维高斯等离子体透镜中折叠概率随平均总放大率满足 $\\mu^{-2}$ 的特征幂律；arXiv:2609.36114 基于受激康普顿上散射模型推导出极区火球在光子—对冻结密度极限下可达 $\\sim 1.1\\times 10^{45}\\text{ erg s}^{-1}$ 射电各向同性等效光度；arXiv:2609.38344 确立了 CHIME/FRB Outriggers 约 $50\\text{ mas}$ 的绝对射电干涉定位能力。- **超新星前身星失质量与周星介质相互作用**：arXiv:2609.31362 结合 ALMA 的 CO $J=2\\text{--}1$ 探测发现银河星团红超巨星分子风包层紧致，反映爆发前百年尺度的强质量损失（$\\dot{M} \\sim 10^{-5.5}\\text{--}10^{-3}\\ M_\\odot\\text{ yr}^{-1}$）；arXiv:2609.31844 通过 ATLAS 爆前光变对 SN 2024ggi 排除产生致密 $\\mathrm{CSM}$ 的强爆发前兆，并由后续射电观测限定其外围风区 $\\dot{M} \\approx 8\\times 10^{-5}\\ M_\\odot\\text{ yr}^{-1}$；arXiv:2610.01239 利用 3D 流体模拟揭示超新星前身星氧—氖壳合并区呈现 Damköhler 数接近 1 的准稳态对流—反应分层。- **伽马射线暴、相对论喷流与极端瞬变**：arXiv:2609.35994 依托 Fermi/GBM 短暴样本进行分层贝叶斯反演，测得 Type I GRB 本地发生率为 $22.6^{+15.0}_{-10.6}\\text{ Gpc}^{-3}\\text{ yr}^{-1}$；arXiv:2610.00508 结合多波段观测论证软 X 射线闪 GRB 250419A 具备初始洛伦兹因子 $\\Gamma_0 \\gtrsim 100$ 的超相对论喷流，否定了低 $\\Gamma_0$ 脏火球模型；arXiv:2610.00632 模拟证实 AT2018hyz 的晚期射电再亮起由视角 $30^\\circ\\text{--}90^\\circ$ 且延迟 $\\sim 900\\text{--}1000\\text{ 天}$ 启动的偏轴喷流所驱动；arXiv:2610.01061 针对 8 例 Fermi/GBM 明亮长暴的时间分辨光谱分解表明，增大初始喷流半径会系统性降低热成分份额并提升磁化度。- **致密双星、吸积与多信使过程**：arXiv:2609.32164 建立了吸积中子星在力矩平衡点的 Ornstein–Uhlenbeck 自旋游走模型，指出盘闪烁噪声可引起 $\\gtrsim 10^{-5}\\text{ Hz}$ 漂移；arXiv:2609.35956 借助 JWST/NIRCam 成功在球状星团 Liller 1 核心分离出 Rapid Burster 的红外对应体；arXiv:2609.36005 预测塌缩星吸积盘内碎裂中子星与黑洞并合将主导高频引力波背景截断；arXiv:2609.38682 与 arXiv:2609.38341 分别从 GW170817 晚期光谱中辨认出 $\\mathrm{Te\\ III}$、$\\mathrm{La\\ III}$、$\\mathrm{Ce\\ III}$ 等 $r$ 过程元素，并提出 TeV 源 HESS J1507$-$622 的千新星遗迹轻子辐射机制；arXiv:2610.00965 指出高密度红外 TDE 中强辐射冷却激波可极大提升质子 $pp$ 量热效率，主导高能中微子发射。> 🎯 **筛选边界**：本周重点聚焦相对论激波辐射相干性、磁层与宇宙网等离子体效应、前身星极端抛射、喷流多波段演化及致密天体多信使信号；已排除低能段常规测光统计及无瞬变物理背景的星系巡天工作。",
       "statistics": {
-        "total_analyzed": 141,
-        "must_read_count": 20,
-        "worth_knowing_count": 31,
-        "skip_count": 90
+        "total_analyzed": 189,
+        "must_read_count": 24,
+        "worth_knowing_count": 40,
+        "skip_count": 125
       },
-      "top_picks_count": 8,
+      "top_picks_count": 14,
       "days": [
         {
           "date": "2026-10-01",
@@ -51,6 +187,30 @@
               "priority": "must_read",
               "title": "AT2018hyz: Predictions for a Sky Projection from a Delayed Off-Axis Jet",
               "reason": "论文直接研究 AT2018hyz 晚期射电增亮，涉及延迟相对论喷流、离轴观测、喷流与星际介质相互作用、余辉光变及未来 VLBI 可检验预言，与研究方向高度相关。"
+            },
+            {
+              "arxiv_id": "2610.00699",
+              "priority": "must_read",
+              "title": "Coexistence of strange quark stars and neutron stars: metastability and nucleation in proto-neutron stars",
+              "reason": "论文直接研究原中子星中的奇异夸克物质热成核、NS-QS转化条件及转化后可能的中微子、引力波和GRB信号，与超新星中心引擎、致密天体高能观测和状态方程约束高度相关。"
+            },
+            {
+              "arxiv_id": "2610.00965",
+              "priority": "must_read",
+              "title": "High-energy neutrinos from shocked circumnuclear material around optically-bright and infrared-only tidal disruption events",
+              "reason": "论文直接研究非喷流TDE外流与核周介质相互作用、激波冷却与压缩、宇宙线加速、pp相互作用及高能中微子产生，并给出弥散中微子通量和未来探测器堆叠搜索预期，与研究组关注的激波—周介质相互作用、致密环境和中微子观测高度相关。"
+            },
+            {
+              "arxiv_id": "2610.01061",
+              "priority": "must_read",
+              "title": "Eight Gamma-Ray Bursts Observed with the Fermi Gamma-ray Burst Monitor: Significant Quasi-Thermal Components and Conditional Jet Constraints",
+              "reason": "与研究组的相对论喷流、GRB中心引擎及辐射机制方向直接相关。其主要研究效用在于区分谱成分的统计偏好、模型内的热通量占比和光球起源识别，并展示喷流初始热份额与磁化度对发射半径、效率及谱分解假设的敏感性。适合用于审查由准热谱反演喷流组成的可靠性，而不是作为统一喷流类别或唯一辐射机制的确证。"
+            },
+            {
+              "arxiv_id": "2610.01239",
+              "priority": "must_read",
+              "title": "Structure of Convective-Reactive Zone in a Supernova Progenitor",
+              "reason": "论文直接研究超新星前身星氧—氖壳层合并中的对流、核燃烧、湍流输运及反应分层，与超新星中心引擎前身结构、激波破越前的周星环境和恒星演化建模高度相关。"
             }
           ],
           "data_file": "daily/2026-10-01.json"
@@ -86,6 +246,12 @@
               "priority": "must_read",
               "title": "VLBI Astrometric Procedure and Performance with CHIME/FRB Outriggers",
               "reason": "与FRB宿主关联、局部环境及磁离子介质研究直接相关：本文提供一次性FRB精密定位的实现方法、校准策略和误差检验，是构建可解析宿主内部环境样本的方法基础。研究效用在于定位流程与可信区间的可靠性，而非直接给出FRB起源或环境的物理结论。"
+            },
+            {
+              "arxiv_id": "2609.38682",
+              "priority": "must_read",
+              "title": "New Constraints on $r$-process Nucleosynthesis in Neutron Star Mergers from GW170817 Late-Phase Spectra",
+              "reason": "论文直接研究中子星并合事件GW170817对应千新星AT2017gfo的晚期光谱，并给出r过程元素丰度和未检出元素的定量约束，与中子星并合、r过程核合成及光谱诊断方向高度相关。"
             }
           ],
           "data_file": "daily/2026-09-30.json"
@@ -121,6 +287,18 @@
               "priority": "must_read",
               "title": "Hierarchical Bayesian Inference on the intrinsic event rate of Type I gamma-ray bursts from the {\\it Fermi}/GBM catalogue",
               "reason": "与研究组的相对论喷流、致密天体高能观测及并合种群研究直接相关。论文同时推断结构化喷流参数、光度分布和本征事件率，并讨论选择效应、缺失红移和样本污染如何影响结论；其分层贝叶斯方法和系统误差分析具有研究效用，不依赖结果是否构成突破。全部11段输入均已阅读；此判断不表示图像、图表、附加数据或二进制文件已经过视觉检查。"
+            },
+            {
+              "arxiv_id": "2609.36005",
+              "priority": "must_read",
+              "title": "Stochastic gravitational-wave background from subsolar neutron stars in collapsar disks",
+              "reason": "与超新星中心引擎及致密天体高能观测方向有实质联系：论文把塌缩星吸积盘碎裂、亚太阳质量中子星形成与可检验的引力波信号联系起来，并利用当前背景非探测限制发生此类并合的塌缩星比例。研究效用尤其在于区分现有数据的真实约束、依赖专用搜索的潜在灵敏度，以及受致密双星前景影响的下一代探测器预报；不应将这些预报统一理解为已获得的限制。"
+            },
+            {
+              "arxiv_id": "2609.36114",
+              "priority": "must_read",
+              "title": "Fast Radio Bursts from Induced Upscattering. I. Magnetar Polar Fireballs",
+              "reason": "直接研究FRB相干辐射的磁星起源，连接X射线爆发、相对论电子–正电子外流、受激散射及射电可观测性质，与研究组的FRB和致密天体高能方向高度相关。研究效用在于提供可检验的光度、带宽及能量预算关系，并明确额外对加载、加热和传播逃逸等关键缺口；推荐精读不代表这些物理条件已经得到验证。"
             }
           ],
           "data_file": "daily/2026-09-29.json"
@@ -156,31 +334,20 @@
               "priority": "must_read",
               "title": "Spin wandering of an accreting neutron star near torque balance: implications for gravitational wave searches",
               "reason": "论文直接研究吸积中子星在力矩平衡附近的自旋游走，并将其与连续引力波搜索、X射线通量、吸积盘—磁层相互作用及多信使测量联系起来，对致密天体高能观测和引力波搜索策略具有直接研究效用。"
+            },
+            {
+              "arxiv_id": "2609.32726",
+              "priority": "must_read",
+              "title": "Pulse profiles of tall accretion columns in X-ray pulsars",
+              "reason": "与致密天体高能观测直接相关：研究高吸积率 X 射线脉冲星的脉冲轮廓，以及吸积柱和柱上方流动对辐射的影响；其中对脉冲非对称性、脉冲分数和相位变化的分析可用于理解和检验脉冲星观测。价值在于提供模型和定量限制，并非以是否取得突破作为判断依据。"
             }
           ],
           "data_file": "daily/2026-09-28.json"
-        }
-      ],
-      "weekly_data_file": "weekly/2026-W40.json"
-    },
-    {
-      "week_id": "2026-W39",
-      "title": "高能天体物理 arXiv 每周学术脉络与前沿精选",
-      "date_range": "2026-09-21 ~ 2026-09-27",
-      "has_weekly_summary": true,
-      "executive_summary": "本周进展沿着“引擎供能—外流动力学—周围介质—辐射与观测反演”形成清晰脉络：超长 GRB 的极晚期活动与高光度超新星把中心引擎寿命和前身星通道推到约数十天尺度；磁星及 FRB 研究分别从新源偏振、宿主金属丰度和相对论磁化激波辐射推进对源环境与辐射机制的约束；超新星工作利用 CSM、尘埃回声与激波破越追踪爆前质量损失，而高时间分辨率余辉观测则检验刷新激波和粒子注入。另有中微子—伽马回声、原中子星相变等多信使方案提供可检验的模型预测，但尚非观测发现。整体看，本周最重要的物理联系，是源内引擎或前身星性质如何经由外流与环境耦合，最终塑造可观测时标、谱形及偏振。",
-      "statistics": {
-        "total_analyzed": 328,
-        "must_read_count": 24,
-        "worth_knowing_count": 65,
-        "skip_count": 239
-      },
-      "top_picks_count": 8,
-      "days": [
+        },
         {
           "date": "2026-09-27",
           "weekday": "Sun",
-          "week_id": "2026-W39",
+          "week_id": "2026-W40",
           "batch_id": "announcement-2026-09-27",
           "total_papers": 48,
           "analyzed_count": 48,
@@ -208,10 +375,33 @@
               "priority": "must_read",
               "title": "Probing the cosmic web with fast radio bursts: II. Scintillation",
               "reason": "与研究组的 FRB 周围环境、传播效应及多屏散射判别直接相关。论文将前景宇宙网冷云团造成的源展宽转化为银河系闪烁抑制这一可检验信号，并讨论宿主屏混淆、观测分辨率和模型偏离，适合用于高红移 FRB 样本设计及环境约束。其研究效用在于理论预测与诊断方法，不依赖是否已有观测发现。"
+            },
+            {
+              "arxiv_id": "2609.31362",
+              "priority": "must_read",
+              "title": "The Molecular Circumstellar Environments of Red Supergiants in Galactic Open Clusters",
+              "reason": "本文直接约束红超巨星的爆炸前周星气体，是研究II-P型超新星周星介质及后期激波相互作用的有用输入。其研究价值不只是质量损失率测量，还包括揭示紧致CO包层、空间尺度与质量损失率之间的退化，以及简化估算方法可能产生的偏差。正文综合指出，所测气体区域对应超新星爆炸后约1–3年激波到达的位置，而不是闪光光谱探测的近星区域；使用这些结果时应区分两类尺度。"
             }
           ],
           "data_file": "daily/2026-09-27.json"
-        },
+        }
+      ],
+      "weekly_data_file": "weekly/2026-W40.json"
+    },
+    {
+      "week_id": "2026-W39",
+      "title": "每周学术脉络 · 2026-W39",
+      "date_range": "2026-09-21 ~ 2026-09-27",
+      "has_weekly_summary": true,
+      "executive_summary": "本周高能天体物理聚焦于从前身星结构扰动与双星剥离、磁星/黑洞中心引擎多尺度能量耗散，到相对论外流激波及其复杂星周/星系介质相互作用的完整因果链条。\n- **快速射电暴与磁星辐射机制**：arXiv:2609.21076 提出磁星外磁层相对论脉冲内的快磁声波参数衰变（$F\\to F+A$）机制，解释了 GHz 辐射放大及 $\\sim 0.5$ 的相对窄谱宽；arXiv:2609.21177 基于 CRAFT 样本测量了 64 例非重复 FRB 的偏振，给出河外 $|\\mathrm{RM}|$ 中位数 $119.8\\,\\mathrm{rad\\,m^{-2}}$ 并测得约 $6\\%$ 的谱去偏振发生率；arXiv:2609.24240 证实携带持续射电源（PRS）的 FRB 宿主显著偏好贫金属、高比恒星形成率矮星系，与贫氢超亮超新星（SLSN-I）宿主环境高度吻合；arXiv:2609.27282 在考虑重复率分布的前提下进行多巡天联合种群拟合，推得重复率斜率 $R_\\gamma=-2.20$ 且源形成率约为 $1$--$400\\,\\mathrm{Gpc^{-3}\\,yr^{-1}}$；arXiv:2609.28629 结合 CHIME Outriggers 定位确认重复 FRB 宿主的气相氧丰度显著低于非重复宿主（$p=0.001$）。\n- **磁星爆发与磁重联物理**：arXiv:2609.25958 与 arXiv:2609.25990 利用 EP 与 IXPE 联合确认新磁星 EP J223759.5+531421，测得自转周期 $P\\simeq6\\,\\mathrm{s}$、磁场 $B\\simeq2.6\\times10^{14}\\,\\mathrm{G}$ 以及硬能段高达 $\\sim 63\\%$ 的脉冲偏振度；arXiv:2609.26897 利用 Fermi/GBM 开展相干搜索构建了含 1720 次爆发的磁星爆发星表并证认出 7 个新候选体；arXiv:2609.21118 借助二维与三维 PIC 模拟揭示了相对论对-离子磁重联中离子能量份额随质量比 $\\mu$ 和磁化度 $\\sigma$ 的幂律衰减标度 $\\varepsilon_i/\\varepsilon_e\\propto(\\sigma/\\mu)^{-1/3}$。\n- **相对论喷流与伽马射线暴**：arXiv:2609.22426 在超长暴 GRB 220706A 中证认出持续至静止系约 27 天的极晚期中心引擎耀发及峰值 $M_r\\le -20.25$ 的超亮超新星伴随物；arXiv:2609.25342 利用高时间采样光学监测结合外激波模型，论证 GRB 251013C 余辉中的多尺度起伏源于刷新激波与新注入硬电子群；arXiv:2609.26910 提出仅持续 2 秒的中心引擎通过结构喷流扩展与高纬度辐射叠加可自然重现长达数百秒的延展辐射；arXiv:2609.27127 在红移 $z=5.47$ 的快速 X 射线暂现源 EP260119a 中通过轴上慢冷却前向激波拟合，推得各向同性能量 $E_{\\mathrm{k,iso}}=10^{52.89}\\,\\mathrm{erg}$，证实其为被伽马触发遗漏的高红移相对论爆发；arXiv:2609.27649 构建了磁星驱动的“喷流+准各向同性风”双分量模型，自洽解释了 GRB 060218/SN 2006aj 的软 X 射线激波破越与早期紫外/光学演化。\n- **超新星前身星、星周相互作用与致密星演化**：arXiv:2609.28667 通过三维流体模拟发现氧燃烧对流激发的内重力波可在数小时内削弱碳燃烧壳底 $N^2$ 浮力峰约 $35\\%$--$40\\%$；arXiv:2609.21836 与 arXiv:2609.21742 针对剥层超新星 SN 2026dix 和相互作用超新星 SN 2022prr 确立了相互作用双星起源与闪光电离周星介质结构；arXiv:2609.25233 在 IIn 型 SN 2024kgi 中探测到早期红外回声并测得包层外密度分布 $\\rho_{\\mathrm{csm}}\\propto r^{-2.74}$；arXiv:2609.29211 利用 POPKIN 种群合成预言银河系内约有 $3.8\\times10^7$ 个孤立恒星级黑洞并在 $13$--$17\\,M_\\odot$ 处存在质量缺口。\n- **高能多信使辐射与黑洞吸积流**：arXiv:2609.26436 综述了高能中微子观测现状，强调弥散折断幂律谱达 $4.7\\sigma$ 偏好而瞬变源仍缺乏确定性关联；arXiv:2609.29761 预言吸积驱动的原中子星一阶强子-夸克相变将先后激发 kHz 结构重组与 MHz 声学剪切引力波并伴随约 2 秒延迟的中微子次级脉冲；arXiv:2609.27608 利用 NICER 与 HXMT 同步观测发现黑洞双星 MAXI J1820+070 在硬态低频段低于 $1\\,\\mathrm{keV}$ 与高于 $80\\,\\mathrm{keV}$ 的 X 射线通量呈现约 $\\pi$ 反相关相位滞后；arXiv:2609.29787 建立了潮汐瓦解事件（TDE）翘曲吸积盘的自照射与遮挡模型，定量解释了光学变红与延迟 X 射线增强现象。\n> 🎯 **筛选边界**：本周重点保留直接推动中心引擎动力学、磁重联粒子加速、激波辐射机制及前身星物理的精细观测与第一性原理模拟，筛除非瞬变泛星系巡天统计与未约束物理机制的常规低能段数据工作。",
+      "statistics": {
+        "total_analyzed": 358,
+        "must_read_count": 25,
+        "worth_knowing_count": 68,
+        "skip_count": 265
+      },
+      "top_picks_count": 10,
+      "days": [
         {
           "date": "2026-09-24",
           "weekday": "Thu",
@@ -243,6 +433,24 @@
               "priority": "must_read",
               "title": "SN 2025aedz: A typical short-plateau type IIP supernova with rapid post-peak decline",
               "reason": "与研究组的平台期、低质量氢包层及超新星—周星介质相互作用方向直接相关。其研究价值在于将短平台、快速峰后下降和光谱速度演化结合起来，并用辐射流体动力学模型检验早期额外光度是否来自周星介质相互作用；同时明确提示模型简并和质量损失史推断的限制。并非对中心引擎或激波破越的直接探测。"
+            },
+            {
+              "arxiv_id": "2609.29211",
+              "priority": "must_read",
+              "title": "A Census of Stellar-mass Black Holes in the Milky Way with POPKIN. I. Isolated Black Holes",
+              "reason": "与超新星遗迹质量、出生踢、双星解体、银河系致密天体种群及X射线和微引力透镜可探测性直接相关，可为超新星中心引擎、致密天体形成和高能观测建模提供种群层面的限制。"
+            },
+            {
+              "arxiv_id": "2609.29761",
+              "priority": "must_read",
+              "title": "Multi-messenger and multi-band signal from first-order phase transitions in proto-neutron stars",
+              "reason": "直接涉及原中子星一阶相变、致密星高能过程及延迟中微子信号，与研究组的超新星中心引擎、中微子和致密天体多信使研究有实质联系。其价值在于以同一后验加权状态方程集合连接宏观结构调整与微观相变动力学，提供可用于检验中心引擎假设的双频段引力波预测，而不取决于是否构成突破。输入中的全部正文段落均已读完；不表示图像、图表或附加数据已被视觉检查。"
+            },
+            {
+              "arxiv_id": "2609.29787",
+              "priority": "must_read",
+              "title": "Observational signatures of warped accretion flows in tidal disruption events",
+              "reason": "论文直接研究TDE中的翘曲吸积盘及其观测后果，覆盖光学/UV辐照与颜色、内盘X射线遮挡和延迟显露、回响、平台期演化及候选事件比较，与超新星中心引擎无关但与TDE吸积流、光电离/再处理、X射线观测和致密天体高能瞬变高度相关。"
             }
           ],
           "data_file": "daily/2026-09-24.json"
@@ -278,6 +486,30 @@
               "priority": "must_read",
               "title": "Waiting in the wings: extended emission GRBs from high latitude emission and jet expansion",
               "reason": "与相对论喷流、致密天体并合后的中心引擎及平台状高能辐射直接相关。论文检验短时引擎活动能否通过高纬度辐射和喷流扩展产生长时延展辐射，并给出光学厚度筛选和谱演化不足的限制，对区分引擎持续供能与几何、运动学延迟具有研究效用。分类不依赖其是否构成突破。"
+            },
+            {
+              "arxiv_id": "2609.27127",
+              "priority": "must_read",
+              "title": "EP260119a: A High-Redshift Gamma-Ray Quiet Fast X-ray Transient Probing a Potentially Hidden Population of Relativistic Explosions",
+              "reason": "与相对论喷流、外部介质结构及高能暂现源选择效应直接相关。该高红移事件在多台伽马射线仪器覆盖下未被检出，但光学和X射线余辉可用标准相对论前向激波解释，适合检验软X射线选择是否揭示伽马触发遗漏的爆发群体。其研究价值在于多波段观测约束及明确的模型退化，而不是已经证明存在新的物理类别。"
+            },
+            {
+              "arxiv_id": "2609.27282",
+              "priority": "must_read",
+              "title": "A multi-telescope fit to the FRB population, allowing for FRB repetition",
+              "reason": "直接关联 FRB 重复性、宿主环境与色散测量：将重复探测选择效应纳入多望远镜种群联合拟合，能用于检验“所有 FRB 均会重复”的工作假设，并约束源演化及磁星形成率解释。其价值在于方法与限制的增量，而非仅在于作者所称的首次分析。研读时必须区分条件性模型结论与对单一种群假设的独立验证。"
+            },
+            {
+              "arxiv_id": "2609.27608",
+              "priority": "must_read",
+              "title": "Broad-band spectral-timing: simultaneous NICER and HXMT observations reveal an anticorrelation between the softest and hardest X-ray fluxes in MAXI J1820+070",
+              "reason": "论文直接研究黑洞X射线双星的宽能段光变、相位滞后与相干性，涉及吸积盘—日冕耦合、热/非热康普顿化及高能致密天体观测，与研究组的致密天体高能观测和X射线瞬变方向有实质联系。其主要价值是提供跨越0.3–250 keV的同时谱-时序约束，并提出可检验的高能谱成分和变异机制假设。"
+            },
+            {
+              "arxiv_id": "2609.27649",
+              "priority": "must_read",
+              "title": "A magnetar-powered jet-wind outflow in gamma-ray burst-associated supernovae: Application to the thermal components of GRB 060218-SN 2006aj",
+              "reason": "与超新新星中心引擎、磁星注能、相对论喷流及激波破越方向直接相关。论文用同一磁星的喷流与准各向同性风解释GRB 060218–SN 2006aj不同时间尺度的热辐射，并明确展示参数退化、消光依赖及谱形假设的影响。其研究效用不仅在于多波段拟合，也在于提供可检验的双通道注能框架及清晰的适用边界；不能将拟合成功视为磁星引擎的唯一证明。"
             }
           ],
           "data_file": "daily/2026-09-23.json"
@@ -313,6 +545,18 @@
               "priority": "must_read",
               "title": "IXPE observation of the new magnetar source EP J223759.5+531421",
               "reason": "该工作首次对新发现的银河系磁星 EP J223759.5+531421 给出显著的相位分辨 X 射线偏振探测，直接约束磁星表面辐射区、磁场几何与辐射转移，紧密关联 R5 和 R7。"
+            },
+            {
+              "arxiv_id": "2609.25990",
+              "priority": "must_read",
+              "title": "Einstein Probe discovery of the magnetar EP J223759.5+531421",
+              "reason": "该文报道一颗新银河系磁星的发现及爆发首月演化，直接关联 R5 的磁星爆发机制与 R7 的致密星 X 射线时变研究。多波段计时、宽能段能谱和短暴发探测共同提供了关键物理约束。"
+            },
+            {
+              "arxiv_id": "2609.26436",
+              "priority": "must_read",
+              "title": "Neutrino Astronomy at High Energies - An Experimental Review",
+              "reason": "与研究组的高能中微子、相对论喷流、超新星及多信使瞬变观测直接相关。其价值在于系统汇总探测器响应、源关联证据、非探测约束及联合观测方法，可用于判断强子加速和伽马不透明环境假设，也能帮助设计瞬变后随搜索。它是实验综述，而非新的单项发现；研究效用不依赖是否具有突破性。输入的全部11段已读完。"
             }
           ],
           "data_file": "daily/2026-09-22.json"
@@ -342,37 +586,14 @@
               "priority": "must_read",
               "title": "Fast Radio Bursts Associated with Persistent Radio Sources Prefer Hydrogen-poor Superluminous Supernova Host Environments",
               "reason": "该论文直接连接 FRB-PRS、SLSN-I 主体环境与年轻磁星形成通道，涉及 R1 中的 SLSN/磁星引擎和 R5 中的 FRB 环境，是对 FRB 起源及其前身通道的重要观测约束。其结果还为 FRB-PRS 周围抛射物的自由-自由吸收透明时间提供了与 SLSN-I 类环境相关的物理解释。"
-            },
-            {
-              "arxiv_id": "2609.22437",
-              "priority": "worth_knowing",
-              "title": "Super-Chandrasekhar white dwarfs by the evolution of magnetized main-sequence stars: New mass-limits from STARS simulation",
-              "reason": "论文聚焦磁化白矮星的形成与稳定质量上限，并试图解释超亮Ia型超新星的潜在前身，因此与爆发前身系统和Ia型超新星物理存在直接联系。但其核心是恒星演化与白矮星结构建模，未直接研究爆发动力学、辐射转移或高能瞬变观测。"
             }
           ],
           "data_file": "daily/2026-09-21.json"
-        }
-      ],
-      "weekly_data_file": "weekly/2026-W39.json"
-    },
-    {
-      "week_id": "2026-W38",
-      "title": "高能天体物理 arXiv 每周学术脉络与前沿精选",
-      "date_range": "2026-09-14 ~ 2026-09-20",
-      "has_weekly_summary": true,
-      "executive_summary": "本周高能瞬变研究沿着“前身星与环境—爆发动力学—能量耗散—多信使辐射—观测反演”形成清晰链条。超新星与致密周星介质工作将多维辐射流体、晚期光变和高能伽马射线联系起来；短暴茧冷却、长暴无超新星候选及并合遗迹研究拓展了致密星并合的电磁与引力波诊断；GRB 能谱截止和结构化喷流研究则强调参数反演的模型依赖与简并。磁星方向出现从磁层粒子级联到爆炸脉冲产生窄谱 FRB 的跨尺度机制探索，但观测验证仍是关键。吸积双星与射电喷流的同步观测进一步表明，QPO 滞后不能仅由频率决定，须结合吸积状态和喷流耦合解释。",
-      "statistics": {
-        "total_analyzed": 369,
-        "must_read_count": 35,
-        "worth_knowing_count": 65,
-        "skip_count": 269
-      },
-      "top_picks_count": 7,
-      "days": [
+        },
         {
           "date": "2026-09-20",
           "weekday": "Sun",
-          "week_id": "2026-W38",
+          "week_id": "2026-W39",
           "batch_id": "announcement-2026-09-20",
           "total_papers": 78,
           "analyzed_count": 78,
@@ -400,10 +621,39 @@
               "priority": "must_read",
               "title": "CRAFT HTR2: Polarimetry of 64 non-repeating fast radio bursts from the updated CRAFT catalogue",
               "reason": "直接服务于FRB周围磁离子化环境、传播去偏振及FRB/PRS关联研究。64个表观非重复FRB的偏振样本、跨巡天RM比较及谱去偏振观测，可用于检验环境复杂度与爆发宽度、光度和偏振之间的关系。研究效用主要在于新增观测和统计约束，而非已经确立新的物理关联。"
+            },
+            {
+              "arxiv_id": "2609.21742",
+              "priority": "must_read",
+              "title": "Core-collapse supernovae 2022prr, 2023ucy, and 2024ljc in the luminous infrared galaxy NGC 6745",
+              "reason": "论文直接涉及核心坍缩超新星、激波破越与致密周星介质相互作用、闪光电离、偏振、宿主消光、星暴环境及LIRG中超新星漏检率，对研究组关注方向具有直接相关性。"
+            },
+            {
+              "arxiv_id": "2609.21836",
+              "priority": "must_read",
+              "title": "SN 2026dix: a nearby, transitional Type IIb/Ib supernova consistent with a warm supergiant progenitor",
+              "reason": "论文直接研究IIb/Ib过渡型超新星、剥离包层前身星、双星相互作用、激波冷却信号以及光变曲线和辐射转移建模，与超新星中心引擎、激波破越和前身星环境研究高度相关。"
             }
           ],
           "data_file": "daily/2026-09-20.json"
-        },
+        }
+      ],
+      "weekly_data_file": "weekly/2026-W39.json"
+    },
+    {
+      "week_id": "2026-W38",
+      "title": "每周学术脉络 · 2026-W38",
+      "date_range": "2026-09-14 ~ 2026-09-20",
+      "has_weekly_summary": true,
+      "executive_summary": "本周高能天体物理聚焦于从前身星晚期质量损失到致密天体中心引擎驱动及其相对论流相互作用的全因果链条解析：\n- **超新星激波与周星介质相互作用**：arXiv:2609.13540v1 基于二维多群辐射流体动力学揭示辐射前驱体预加速受限 CSM 并维持显著 $\\mathrm{He\\;II}$ 闪光电离发射；arXiv:2609.16394v1 将不稳定对超新星候选体 SN 2018ibb 约 $300$–$430$ 天的光变转折归因于外边缘截断在 $8.5\\times10^{16}\\,\\mathrm{cm}$ 的致密风壳相互作用；arXiv:2609.18226v1 计算了红超巨星激波在光球与背景辐射严重衰减下产生 $\\ge100\\,\\mathrm{TeV}$ 强子伽马射线的 CTA 探测窗口；arXiv:2609.19344v1 则利用 JWST/NIRCam 构建了包含超十万颗红超巨星的大样本参数库并找回超新星前身星。\n- **相对论喷流、茧冷却与伽马射线暴**：arXiv:2609.14508v1 论证中子星并合短暴喷流的激波茧在破越后产生光度达 $10^{46}$–$10^{48}\\,\\mathrm{erg\\,s^{-1}}$、峰值能量 $0.3$–$3\\,\\mathrm{keV}$ 的早期离轴软 X 射线冷却辐射；arXiv:2609.14411v1 联合 Fermi 谱截止分析约束了外流洛伦兹因子 $\\Gamma\\sim10^1$–$10^3$ 及辐射半径，并确立静止系截止与峰值能量强相关；arXiv:2609.20787v1 实施体积限制近邻长暴系统搜寻，证明约 15 例无伴随超新星事件难以被常规坍缩星模型解释。\n- **磁星动力学、等离子体微观物理与快速射电暴**：arXiv:2609.17661v1 通过一维 PIC 模拟揭示共振逆康普顿辐射阻力在磁星磁层触发单半球加速间隙与不对称对级联；arXiv:2609.21076v1 提出磁星外流压缩 MHD 激波中的三波参数不稳定性能够将低频快磁声波上转换并天然再现窄谱 FRB；arXiv:2609.17275v1 报告首个 300 MHz 以下非定向巡天 FRB 20191203A 并给出膨胀超新星遗迹环境的下限约束；arXiv:2609.21177v1 扩展了 CRAFT 高时间分辨偏振星表并发现约 6% 的谱去偏振现象；arXiv:2609.21118v1 借助二维与三维 PIC 模拟给出了相对论正负电子-离子重联中能量分配随质量比与磁化度的定量标度律。\n- **致密双星并合与强场多信使检验**：arXiv:2609.16330v1 与 arXiv:2609.17936v1 分别利用夸克-强子平滑交叉态方程与多信使综合先验，更新了双中子星并合后引力波能释放及 $M_{\\mathrm{TOV}}$ 上限（$2.18\\pm0.09\\,M_\\odot$）；arXiv:2609.18523v1 基于 WFST 快速后随将亚太阳质量双星候选体 S251112cm 的千新星抛射物质量与快速光学暂现源峰值施加了严苛限制。\n> 🎯 **筛选边界**：本周保留并深度剖析了 45 篇紧扣高能爆发现象因果链条的核心文献，严格剔除 269 篇缺乏时域或高能机制联系的静态星系场巡天及低频低能例行天测论文。",
+      "statistics": {
+        "total_analyzed": 369,
+        "must_read_count": 35,
+        "worth_knowing_count": 65,
+        "skip_count": 269
+      },
+      "top_picks_count": 15,
+      "days": [
         {
           "date": "2026-09-17",
           "weekday": "Thu",
@@ -435,6 +685,18 @@
               "priority": "must_read",
               "title": "A 32-day Quasi-periodic Modulation in the Post-peak Light Curve of the Superluminous Supernova SN 2018bsz",
               "reason": "与超新星中心引擎及激波—结构化周星介质相互作用直接相关。全文提供了一个可用于检验物理时钟的多波段观测案例：约32天的准周期调制、跨波段相位一致性及向蓝端增强的振幅，可约束磁星回落盘进动、爆前周期性质量损失和爆后伴星吸积模型。研究价值在于新增观测约束及稳健性检验，而非已经确定供能机制。"
+            },
+            {
+              "arxiv_id": "2609.20787",
+              "priority": "must_read",
+              "title": "A systematic search for long GRBs without supernovae: global properties and rate of events",
+              "reason": "论文直接关联超新星—相对论喷流联系、非坍缩星长伽马暴及致密双星并合的高能观测。其研究效用不仅在于候选事件整理，还在于将宿主关联可靠性、SN/KN非探测和仪器选择效应结合起来，约束前身通道及事件率。适合用于检验“长持续时间是否意味着大质量恒星坍缩”和“并合通道能否解释无SN长暴群体”等研究假设。"
+            },
+            {
+              "arxiv_id": "2609.20795",
+              "priority": "must_read",
+              "title": "Systematic Effects of Hydrogen and Helium Atmosphere Mismatch on Radius Inference in PSR~J0740+6620-like Synthetic NICER Data",
+              "reason": "与研究组的致密天体高能观测及其参数推断系统误差直接相关。本文用NICER类合成数据展示：大气成分误配可能在拟合优度仍可接受时显著偏移中子星半径，而贝叶斯证据可提供补充诊断。其研究效用在于检验半径推断的可靠性和模型选择方法，不依赖是否构成突破；结论不应直接外推到FRB或超新星环境。"
             }
           ],
           "data_file": "daily/2026-09-17.json"
@@ -470,6 +732,36 @@
               "priority": "must_read",
               "title": "Updated estimates of post-merger gravitational wave energy released in GW170817 and the maximum neutron star mass",
               "reason": "论文直接研究GW170817并合后的引力波能量、超大质量中子星遗迹及最大非旋转中子星质量约束，与致密天体高能观测、并合后演化和状态方程研究高度相关。"
+            },
+            {
+              "arxiv_id": "2609.18086",
+              "priority": "must_read",
+              "title": "FRB 20250607A: Weirder Than Fiction",
+              "reason": "与FRB近源环境、色散测量、磁化等离子体传播及偏振诊断直接相关。研究将分量DM、散射、闪烁和时间分辨偏振联合分析，既提供双屏传播几何的条件性限制，也展示了表观DM和RM可能受分析方法及散射混合影响的情形。其研究效用在于检验环境解释和识别诊断退化，而非确认了唯一机制。"
+            },
+            {
+              "arxiv_id": "2609.18226",
+              "priority": "must_read",
+              "title": "Detectability of 100 TeV Gamma Rays from PeV Cosmic Rays Accelerated in the Early Phase of a Supernova Shock Wave",
+              "reason": "直接关联早期超新星激波、致密周星介质相互作用、PeV宇宙线加速和高能多信使观测。论文将动力学-MHD加速计算与伽马射线产生、光球吸收及CTA可探测性联系起来，能够检验致密CSM是否支持早期PeV加速的研究假设；其吸收修正与环境限制也具有实际研究效用。"
+            },
+            {
+              "arxiv_id": "2609.18233",
+              "priority": "must_read",
+              "title": "Toward Autonomous Radio Follow-up of Multi-messenger Transients with RADAR: From Alert Parsing to Inference and Observation Scheduling",
+              "reason": "论文直接面向多信使瞬变的射电自动随访，涵盖GCN告警解析、结构化喷流余辉推断加速、联邦数据分析以及VLA调度块生成与合规评估，与引力波瞬变、相对论喷流和射电随访研究高度相关。其结果既包括性能增量，也明确给出了自动化闭环的验证条件和限制。"
+            },
+            {
+              "arxiv_id": "2609.18247",
+              "priority": "must_read",
+              "title": "Probing Feebly Interacting Particles with 511 keV Line from Circumstellar Medium of Supernovae",
+              "reason": "与研究组的超新星周星介质、激波破越前环境及致密天体高能瞬变观测直接相关。论文将CSM中的正电子减速、湮灭和伽马射线逃逸连接为可观测的511 keV前兆信号，提供了环境参数如何影响高能信号时标和粒子物理灵敏度的具体计算框架，具有研究效用；其价值不依赖于是否构成突破。"
+            },
+            {
+              "arxiv_id": "2609.18523",
+              "priority": "must_read",
+              "title": "WFST Follow-up of S251112cm: Searching for an Optical Counterpart to a Subsolar-mass Compact-binary Merger Candidate",
+              "reason": "论文直接研究次太阳质量致密双星并合候选体 S251112cm 的光学对应体搜索、千新星模型约束和快速光学暂现源限制，与致密天体高能观测、激波/抛射物环境及电磁对应体研究高度相关。"
             }
           ],
           "data_file": "daily/2026-09-16.json"
@@ -505,6 +797,48 @@
               "priority": "must_read",
               "title": "Neutron Star Merger Universality Relations for a Quark--Hadron Crossover Equation of State",
               "reason": "论文直接研究双中子星并合中的夸克—强子交叉相变、后并合引力波及普适关系，能够为相变观测判据和后并合引力波分析提供模型限制，与致密天体高能观测和状态方程研究高度相关。"
+            },
+            {
+              "arxiv_id": "2609.16335",
+              "priority": "must_read",
+              "title": "Determination of the Angular Distributions of Dynamical and Emission Parameters of GRB Relativistic Outflows",
+              "reason": "与相对论喷流角结构、GRB平台期及瞬时—延迟辐射的统一解释直接相关。论文提供可用于检验大角度辐射模型的时间分界、光变曲率和联合光学/X射线约束，并明确讨论参数退化与模型失配；其研究效用在于提供替代解释及可检验限制，而非证明该模型已成立。"
+            },
+            {
+              "arxiv_id": "2609.16394",
+              "priority": "must_read",
+              "title": "Properties of the circumstellar matter around the pair-instability supernova candidate SN 2018ibb revealed by its light curve",
+              "reason": "与研究组的超新星抛射物—周星介质相互作用及爆前质量损失方向直接相关。论文用辐射流体模型和解析模型解释晚期额外光度及光变转折，并讨论如何分别约束爆炸与 CSM 参数；对检验晚期相互作用供能和有限半径致密 CSM 的研究假设有直接效用。"
+            },
+            {
+              "arxiv_id": "2609.16447",
+              "priority": "must_read",
+              "title": "Charging of rotating black holes: kinetic simulations of black hole magnetospheres",
+              "reason": "论文直接研究旋转黑洞磁层中的电荷分离、等离子体选择性吸积和平衡电荷，并涉及Blandford–Znajek能量提取过程，与黑洞磁层、相对论等离子体和高能瞬变中心引擎研究高度相关。"
+            },
+            {
+              "arxiv_id": "2609.16826",
+              "priority": "must_read",
+              "title": "Testing a Pre-Supernova Contribution to $^{44}$Ti in Cassiopeia A",
+              "reason": "论文直接研究超新星爆炸前壳层并合、爆炸性核合成及其对 Cas A 中 44Ti 来源的贡献，并利用 XRISM 稳定铁族元素丰度比对核心坍缩超新星模型进行约束，与超新星中心引擎、爆炸核合成和喷出物环境研究高度相关。"
+            },
+            {
+              "arxiv_id": "2609.17275",
+              "priority": "must_read",
+              "title": "A fast radio burst from a non-targeted low-frequency survey",
+              "reason": "与研究组的FRB传播及周围环境方向直接相关。非定向巡天在200 MHz以下的探测、低频事件率估计和透明性条件，可用于检验低频散射或吸收导致FRB缺失的假设；基于局部DM和自由—自由吸收的超新星遗迹尺度、年龄限制尤其值得研读。其价值既包括观测增量，也包括可复用的成像搜索方法，但不能把单次探测解释为对所有低频抑制模型的排除。"
+            },
+            {
+              "arxiv_id": "2609.17365",
+              "priority": "must_read",
+              "title": "Large ${\\rm Pm}$ small-scale kinematic dynamo in protoneutron stars",
+              "reason": "研究直接涉及原中子星对流发电机与磁星强磁场的形成条件，对超新星中心引擎及磁星相关高能瞬变模型具有实质研究效用。其价值在于结合全球模拟与高 Pm 外推，检验有限对流寿命内磁场能否快速放大，并明确区分小尺度磁能增长与大尺度表面偶极场形成；并未直接预测 FRB 或 PRS 观测。"
+            },
+            {
+              "arxiv_id": "2609.17507",
+              "priority": "must_read",
+              "title": "Constraints on the central engine of merger-driven long gamma-ray bursts",
+              "reason": "论文直接研究并合型长GRB的磁星中心引擎、晚期抛射物—环境激波辐射及相对论喷流，与研究组的中心引擎、环境相互作用和致密天体高能观测方向有实质联系。其研究效用在于将环境密度敏感的射电限制与回落吸积、喷流重子负载下的能量—持续时间检验结合，能够检验长时间辐射是否足以支持长寿命磁星假设，而非仅提供事件分类。"
             }
           ],
           "data_file": "daily/2026-09-15.json"
@@ -540,31 +874,38 @@
               "priority": "must_read",
               "title": "High-energy spectral cutoffs in the prompt emission of Fermi gamma-ray bursts: bulk Lorentz factors, emission radii, and a cutoff-peak energy relation",
               "reason": "论文直接研究伽马暴 prompt emission 的高能谱截止，并利用内部 γγ 不透明度和最小变异时标约束相对论外流的洛伦兹因子与辐射半径，同时检验截止能量与谱峰能量的关系，与相对论喷流、激波破越及高能瞬变观测方向高度相关。"
+            },
+            {
+              "arxiv_id": "2609.14508",
+              "priority": "must_read",
+              "title": "First Light of Neutron Star Mergers: Off-axis Cocoon Cooling X-ray Emission from Short Gamma-Ray Burst Jets",
+              "reason": "与研究组的相对论喷流、致密天体高能观测及激波破越相关方向直接相连。论文把中子星并合喷流产生的茧冷却软X射线与早期激波破越辐射区分，提供视角相关的光变、能谱、EP探测率和多波段验证方案，可用于判断快速X射线暂现源的并合起源及检验喷流—抛射物模型。其研究效用来自可检验的辐射预测和模型限制，而不依赖是否属于突破性结果。"
+            },
+            {
+              "arxiv_id": "2609.15672",
+              "priority": "must_read",
+              "title": "Compelling evidence of a link between the lags of the quasi-periodic oscillations and the radio jet in the black-hole X-ray binary GRS 1915+105",
+              "reason": "论文直接研究黑洞X射线双星中的QPO相位滞后、射电喷流及吸积—喷流耦合，对相对论喷流、致密天体高能观测和日冕—喷流几何研究具有直接参考价值。"
+            },
+            {
+              "arxiv_id": "2609.15896",
+              "priority": "must_read",
+              "title": "Impact of uncertainties on the cosmic optical and infrared backgrounds on the propagation of astroparticles",
+              "reason": "论文直接研究宇宙光学/红外背景不确定性对甚高能伽马射线传播和超高能宇宙线传播、能谱及质量组成推断的影响，与高能天体粒子传播和高能观测研究高度相关。"
+            },
+            {
+              "arxiv_id": "2609.15913",
+              "priority": "must_read",
+              "title": "Common Excitation Patterns of Star Formation, Active Galactic Nuclei, and Shocks in Seyfert Galaxies",
+              "reason": "论文直接研究恒星形成、AGN光电离与激波的分离，并讨论AGN反馈、喷流或风与周围ISM的相互作用，和研究组关注的激波破越、周星介质相互作用、光电离及AGN环境高度相关。"
             }
           ],
           "data_file": "daily/2026-09-14.json"
-        }
-      ],
-      "weekly_data_file": "weekly/2026-W38.json"
-    },
-    {
-      "week_id": "2026-W37",
-      "title": "高能天体物理 arXiv 每周学术脉络与前沿精选",
-      "date_range": "2026-09-07 ~ 2026-09-13",
-      "has_weekly_summary": true,
-      "executive_summary": "本周论文覆盖磁星与快速射电暴、引擎驱动超新星、伽马射线暴、致密星并合及高能粒子等多个方向。值得关注的共同脉络是：从辐射与多信使观测反推引擎和外流性质，并进一步检验外流与周围介质相互作用的动力学。T CrB 下一次新星爆发的多信使预报、SN 2025fhm 与 X 射线瞬变的关联，以及千新星中自由中子衰变的辐射后果，分别提供了不同爆发系统中连接源区物理与可观测信号的切入点。",
-      "statistics": {
-        "total_analyzed": 312,
-        "must_read_count": 26,
-        "worth_knowing_count": 89,
-        "skip_count": 197
-      },
-      "top_picks_count": 7,
-      "days": [
+        },
         {
           "date": "2026-09-13",
           "weekday": "Sun",
-          "week_id": "2026-W37",
+          "week_id": "2026-W38",
           "batch_id": "announcement-2026-09-13",
           "total_papers": 51,
           "analyzed_count": 51,
@@ -595,7 +936,24 @@
             }
           ],
           "data_file": "daily/2026-09-13.json"
-        },
+        }
+      ],
+      "weekly_data_file": "weekly/2026-W38.json"
+    },
+    {
+      "week_id": "2026-W37",
+      "title": "高能天体物理 arXiv 每周学术脉络与前沿精选",
+      "date_range": "2026-09-07 ~ 2026-09-13",
+      "has_weekly_summary": true,
+      "executive_summary": "本周论文覆盖磁星与快速射电暴、引擎驱动超新星、伽马射线暴、致密星并合及高能粒子等多个方向。值得关注的共同脉络是：从辐射与多信使观测反推引擎和外流性质，并进一步检验外流与周围介质相互作用的动力学。T CrB 下一次新星爆发的多信使预报、SN 2025fhm 与 X 射线瞬变的关联，以及千新星中自由中子衰变的辐射后果，分别提供了不同爆发系统中连接源区物理与可观测信号的切入点。",
+      "statistics": {
+        "total_analyzed": 312,
+        "must_read_count": 26,
+        "worth_knowing_count": 89,
+        "skip_count": 197
+      },
+      "top_picks_count": 7,
+      "days": [
         {
           "date": "2026-09-10",
           "weekday": "Thu",
@@ -627,6 +985,18 @@
               "priority": "must_read",
               "title": "A prolonged plateau-to-tail transition in the Type II supernova SN2025abyc",
               "reason": "与研究组的平台期演化及周星介质相互作用方向直接相关。论文提供一个平台—尾部过渡延长的II型超新星观测案例，并比较周星介质、56Ni分布和氢包层结构三类解释，可用于检验光变形态与物理机制之间的对应关系。其研究效用主要在增量观测和模型简并限制，而非确定发现相互作用或中心引擎。"
+            },
+            {
+              "arxiv_id": "2609.11479",
+              "priority": "must_read",
+              "title": "Spin-down of the accreting magnetar candidate 4U 0114+65: possible first evidence for a strong coupling regime",
+              "reason": "论文直接研究吸积中子星候选体的自转减慢、磁层耦合、吸积效率和可能的部分离心抑制，涉及致密天体高能观测、吸积流与磁层相互作用，和研究组关注方向有实质联系。"
+            },
+            {
+              "arxiv_id": "2609.11629",
+              "priority": "must_read",
+              "title": "One Precessing Jet Pair, Diverse Core-Collapse Supernova Remnant Morphologies",
+              "reason": "论文直接研究抖动喷流爆炸机制、核心坍缩超新星抛射物及超新星遗迹形态，并讨论喷流不稳定性、团块和细丝形成，与研究组关注的超新星中心引擎、激波及周围环境高度相关。"
             }
           ],
           "data_file": "daily/2026-09-10.json"
@@ -662,6 +1032,42 @@
               "priority": "must_read",
               "title": "cuDART: a GPU-accelerated ray tracing code for generating synthetic observations of relativistic astrophysical sources",
               "reason": "与研究组的相对论喷流和超新星—喷流相互作用方向有直接方法学联系。其研究效用在于将时间演化模拟转换为可比较的合成观测，并检验仅做相对论束射或使用单快照会引入的运动、形态和通量偏差；这是可用于检验观测解释和模拟假设的方法改进，而非新的瞬变观测发现。"
+            },
+            {
+              "arxiv_id": "2609.09520",
+              "priority": "must_read",
+              "title": "Multi-Wavelength Identification of a Luminous Mid-Infrared Supernova Powered by Circumstellar Interaction with Binary-Driven Pre-supernova Mass Loss",
+              "reason": "与研究组的超新星—周星介质相互作用、致密介质中的激波破越、爆炸前质量损失及双星环境方向直接相关。本文结合晚期中红外筛选、紫外探测和光学线型，检验单幂律与分段周星介质密度模型，并讨论持续相互作用和尘埃回声的区别，具有观测约束和模型检验价值。所有输入段落均已读完；此判断不表示图像、图表、附加数据或二进制文件已被视觉检查。"
+            },
+            {
+              "arxiv_id": "2609.09539",
+              "priority": "must_read",
+              "title": "First Detection of Radio Polarization During Jet Formation in the Changing-Look AGN 1ES 1927+654",
+              "reason": "与研究组的相对论喷流、磁化周围介质及法拉第传播效应方向直接相关。论文将新生喷流的空间结构、宽带射电谱和时间分辨偏振联系起来，可用于检验连续外流、磁化鞘层及传播扰动引起磁场重组等假设。其价值在于喷流形成阶段的增量观测和模型限制，而不只在于首次偏振探测；不能据此直接推断FRB/PRS环境具有相同性质。"
+            },
+            {
+              "arxiv_id": "2609.09710",
+              "priority": "must_read",
+              "title": "The Evolution of Thermal and Non-thermal Emission Components in GRB 250920C",
+              "reason": "与相对论喷流及高能瞬变中心引擎研究直接相关：同一GRB的两个活动阶段提供了比较热光球辐射与非热同步辐射、检验外流成分演化的案例。其研究效用不仅在于提出喷流转变解释，还在于区分谱模型可辨识性、模型内一致性检查与磁化约束的适用范围。所有输入段落均已读完；这不表示图像、图表或附加文件已被视觉检查。"
+            },
+            {
+              "arxiv_id": "2609.10041",
+              "priority": "must_read",
+              "title": "Evidence of a Low-Energy Cutoff in the Injected Spectrum of a Pulsar Wind Nebula",
+              "reason": "论文直接研究脉冲星风云中注入粒子的低能谱形及其与激波加速、磁重联和同步辐射冷却的关系，并利用Mouse的多波段SED约束GeV粒子注入分布，与PWN周围环境和高能辐射研究高度相关。"
+            },
+            {
+              "arxiv_id": "2609.10128",
+              "priority": "must_read",
+              "title": "Hadronic origin of gamma rays and neutrinos from blazars: Multi-messenger implications and observational constraints",
+              "reason": "与相对论喷流、强子加速、高能中微子及多信使观测约束直接相关。研究效用主要在于区分喷流本征辐射与UHECR传播次级辐射，量化磁场对到达比例的影响，并指出将宇生分量加入点源SED可能高估可探测性。这些限制可用于检验耀变体强子情景，而非将伽马射线探测直接等同于宇生中微子点源证据。"
+            },
+            {
+              "arxiv_id": "2609.10213",
+              "priority": "must_read",
+              "title": "Anisotropic wind in tidal disruption events",
+              "reason": "论文直接研究潮汐瓦解事件中的喷嘴激波、超爱丁顿各向异性风、辐射再处理、视角依赖光变与谱线，并讨论风与周核介质相互作用产生同步辐射的可能性，与超新星中心引擎、激波—周介质相互作用、光电离和高能瞬变观测等研究方向具有实质联系。"
             }
           ],
           "data_file": "daily/2026-09-09.json"
@@ -697,6 +1103,24 @@
               "priority": "must_read",
               "title": "SN 2025fhm: A central-engine powered Ic-BL supernova associated with X-ray transient EP250304a",
               "reason": "与超新新星中心引擎、激波加热喷流茧、相对论喷流及高能瞬变多波段观测直接相关。本文将快速X射线瞬变、Ic-BL超新星、早期光学冷却和晚期额外供能联系起来，可用于检验放射性衰变与持续中心引擎注能的区分，以及无已探测GRB的相对论超新星与GRB-SN之间的联系。其研究效用不依赖磁星解释是否具有唯一性。"
+            },
+            {
+              "arxiv_id": "2609.08430",
+              "priority": "must_read",
+              "title": "Near-Horizon Tidal Disruption Events",
+              "reason": "论文系统研究高自旋超大质量黑洞附近的近视界潮汐瓦解事件，涉及相对论轨道、碎片能量—角动量分布、回落率、质量亏损及观测诊断，与高能瞬变和致密天体环境研究具有直接相关性。"
+            },
+            {
+              "arxiv_id": "2609.08456",
+              "priority": "must_read",
+              "title": "Sharpening the Mass Measurement of PSR J1048+2339 via High-Cadence Photometry",
+              "reason": "论文直接研究蜘蛛脉冲星的质量测量、星内双星激波、光学与伽马射线掩食差异及伴星磁场约束，与致密天体高能观测和激波环境研究高度相关。"
+            },
+            {
+              "arxiv_id": "2609.08668",
+              "priority": "must_read",
+              "title": "Constraints on the Low-frequency Radio Emission of the Galactic FRB Source SGR 1935+2154",
+              "reason": "直接研究银河系FRB源SGR 1935+2154的低频射电辐射，与FRB及磁星高能瞬变研究有实质联系。其价值在于约110 MHz的非探测约束、对爆发率模型依赖性的量化，以及针对散射展宽和弱周期信号的搜索方法检验，而非确认新的射电探测。可用于检验低频辐射可见性和活动期爆发统计假设，但不能据此单独判定吸收或辐射机制。"
             }
           ],
           "data_file": "daily/2026-09-08.json"

@@ -32,7 +32,7 @@ const dateCoverage = weeks.length > 0
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="AstroLineage 往期学术归档与历史雷达库：历期每周宏观学术脉络周报与每日高能瞬变研读雷达独立静态归档。" />
     <title>往期学术归档 · 历期周报与每日雷达库 · {site.title}</title>
   </head>
@@ -100,7 +100,7 @@ const dateCoverage = weeks.length > 0
         <div class="section-title-wrap">
           <span class="section-kicker">宏观全景 · 旗舰周报</span>
           <h2 class="section-heading">历期学术脉络周报归档</h2>
-          <p class="section-intro">每周五自动对当周周一至周四（全部 4 个发布批次）的高能天体物理论文执行宏观因果动力学归纳，提炼核心争议与突破。</p>
+          <p class="section-intro">每周五自动对当周全部 5 个发布批次的高能天体物理论文执行宏观因果动力学归纳，提炼核心争议与突破。</p>
         </div>
 
         <div class="weekly-cards-stack">
@@ -159,13 +159,16 @@ const dateCoverage = weeks.length > 0
                   <div class="included-days-wrap">
                     <span class="included-days-label">包含批次：</span>
                     <div class="included-days-chips">
-                      {w.days.map((d: any) => (
-                        <a class="day-chip" href={`/arxiv-daily/${d.date}/`} title={`查看 ${d.date} (${d.weekday}) 每日研读雷达`}>
-                          <span class="chip-date">{d.date.slice(5)}</span>
-                          <span class="chip-weekday">{d.weekday}</span>
-                          <span class="chip-count">({d.total_papers}篇)</span>
-                        </a>
-                      ))}
+                      {w.days.map((d: any) => {
+                        const dInfo = formatAnnouncementInBeijing(d.date, d.weekday);
+                        return (
+                          <a class="day-chip" href={`/arxiv-daily/${d.date}/`} title={`查看 ${dInfo.displayLabel} 每日研读雷达`}>
+                            <span class="chip-date">{dInfo.shortDate}</span>
+                            <span class="chip-weekday">{dInfo.chineseWeekday}</span>
+                            <span class="chip-count">({d.total_papers}篇)</span>
+                          </a>
+                        );
+                      })}
                     </div>
                   </div>
                 )}

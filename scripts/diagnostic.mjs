@@ -37,6 +37,9 @@ import { fileURLToPath } from "node:url";
 import { buildDailyRadarModel } from "./daily-radar.mjs";
 
 const ARCHIVE_ROOT = resolve(fileURLToPath(new URL("../src/data/arxiv-archives", import.meta.url)));
+const DEFAULT_WEEKLY_PATH = resolve(
+  fileURLToPath(new URL("../src/data/arxiv-weekly.json", import.meta.url))
+);
 
 export async function runDiagnostic({ archiveRoot = ARCHIVE_ROOT, strict = false } = {}) {
   const dailyDir = join(archiveRoot, "daily");
@@ -72,9 +75,10 @@ export async function runDiagnostic({ archiveRoot = ARCHIVE_ROOT, strict = false
     totalSkip += sk;
     totalPending += pending;
 
-    const coverageInsufficient = (model.pending || []).filter((item) =>
-      item.pending_reason === "coverage_insufficient_must_read" ||
-      item.pending_reason === "coverage_insufficient_worth_knowing"
+    const coverageInsufficient = (model.pending || []).filter(
+      (item) =>
+        item.pending_reason === "coverage_insufficient_must_read" ||
+        item.pending_reason === "coverage_insufficient_worth_knowing"
     );
 
     if (coverageInsufficient.length > 0) {
@@ -87,8 +91,15 @@ export async function runDiagnostic({ archiveRoot = ARCHIVE_ROOT, strict = false
       });
     }
 
-    const flag = coverageInsufficient.length > 0 ? "❌ COVERAGE_INSUFFICIENT" : (pending > 0 ? "⚠️ pending" : "✅ healthy");
-    console.log(`  ${date}: MR=${mr.toString().padStart(2)} | WK=${wk.toString().padStart(2)} | Skim=${sk.toString().padStart(2)} | Pending=${pending.toString().padStart(2)}  [${flag}]`);
+    const flag =
+      coverageInsufficient.length > 0
+        ? "❌ COVERAGE_INSUFFICIENT"
+        : pending > 0
+          ? "⚠️ pending"
+          : "✅ healthy";
+    console.log(
+      `  ${date}: MR=${mr.toString().padStart(2)} | WK=${wk.toString().padStart(2)} | Skim=${sk.toString().padStart(2)} | Pending=${pending.toString().padStart(2)}  [${flag}]`
+    );
   }
 
   // Scan weekly archives
@@ -104,7 +115,23 @@ export async function runDiagnostic({ archiveRoot = ARCHIVE_ROOT, strict = false
     const topPicks = weekData.top_picks?.length || 0;
     const highlights = weekData.thematic_highlights?.length || 0;
     const totalPapers = weekData.papers?.length || 0;
-    console.log(`  ${wFile.replace(".json", "")}: Papers=${totalPapers} | TopPicks=${topPicks} | Highlights=${highlights}`);
+    console.log(
+      `  ${wFile.replace(".json", "")}: Papers=${totalPapers} | TopPicks=${topPicks} | Highlights=${highlights}`
+    );
+  }
+
+  let weeklyMismatch = null;
+  if (weeklyFiles.length > 0) {
+    const latestArchiveWeek = weeklyFiles[weeklyFiles.length - 1].replace(".json", "");
+    try {
+      const activeWeeklyRaw = await readFile(DEFAULT_WEEKLY_PATH, "utf8");
+      const activeWeekly = JSON.parse(activeWeeklyRaw);
+      if (activeWeekly.week_id !== latestArchiveWeek) {
+        weeklyMismatch = `Active weekly file (${activeWeekly.week_id}) does not match latest archive (${latestArchiveWeek})`;
+      }
+    } catch (err) {
+      weeklyMismatch = `Could not read active weekly file: ${err.message}`;
+    }
   }
 
   console.log("\n=================== Diagnostic Summary ===================");
@@ -113,6 +140,12 @@ export async function runDiagnostic({ archiveRoot = ARCHIVE_ROOT, strict = false
   console.log(`Total Screened: MR=${totalMustRead}, WK=${totalWorthKnowing}, Skim=${totalSkip}`);
   console.log(`Total Pending:  ${totalPending}`);
   console.log(`Coverage Insufficient (Illegal Gatekeeper State): ${totalCoverageInsufficient}`);
+
+  if (weeklyMismatch) {
+    console.warn(`\n❌ WEEKLY_ARCHIVE_MISMATCH: ${weeklyMismatch}`);
+  } else {
+    console.log("✅ Weekly active edition aligned with latest archive.");
+  }
 
   if (issues.length > 0) {
     console.warn(`\n⚠️ Found ${issues.length} dates with coverage_insufficient papers:`);
@@ -124,10 +157,19 @@ export async function runDiagnostic({ archiveRoot = ARCHIVE_ROOT, strict = false
   }
   console.log("==========================================================\n");
 
-  if (strict && totalCoverageInsufficient > 0) {
+  if (strict && (totalCoverageInsufficient > 0 || weeklyMismatch)) {
     process.exit(1);
   }
-  return { totalEntries, totalMustRead, totalWorthKnowing, totalSkip, totalPending, totalCoverageInsufficient, issues };
+  return {
+    totalEntries,
+    totalMustRead,
+    totalWorthKnowing,
+    totalSkip,
+    totalPending,
+    totalCoverageInsufficient,
+    weeklyMismatch,
+    issues,
+  };
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === resolve(fileURLToPath(import.meta.url))) {

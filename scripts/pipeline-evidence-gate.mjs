@@ -1,6 +1,6 @@
 /**
  * scripts/pipeline-evidence-gate.mjs
- * 
+ *
  * Evidence Gate (证据闸门) and LaTeX text sanitization engine for AstroLineage.
  * Implements defensive checks inspired by agent-fullstack-template:
  * - Robust parsing of LaTeX math formulas within JSON
@@ -18,15 +18,128 @@ export function sanitizeModelJsonString(raw) {
 
   // 1. Strip markdown fences
   let text = raw.trim();
-  text = text.replace(/^```(?:json)?\s*/iu, "").replace(/\s*```$/u, "").trim();
+  text = text
+    .replace(/^```(?:json)?\s*/iu, "")
+    .replace(/\s*```$/u, "")
+    .trim();
 
   // 2. Fix LaTeX commands that start with valid JSON escape characters (\n, \t)
-  text = text.replace(/\\(nu|nabla|neq|natural|newcommand|noindent|times|tau|theta|tilde|text|textbf|textit|mathrm|mathbf|mathit|tag|top|to)(?![a-zA-Z])/g, "\\\\$1");
+  text = text.replace(
+    /(?<!\\)\\(nu|nabla|neq|natural|newcommand|noindent|times|tau|theta|tilde|text|textbf|textit|mathrm|mathbf|mathit|tag|top|to)(?![a-zA-Z])/g,
+    "\\\\$1"
+  );
 
   // 3. Fix any single backslash not followed by a valid JSON escape (\", \\, \/, \b, \f, \n, \r, \t, \uXXXX)
   text = text.replace(/(?<!\\)\\(?![\\"/bfnrt]|u[0-9a-fA-F]{4})/g, "\\\\");
 
   return text;
+}
+
+export function repairMathInRawJson(raw) {
+  if (typeof raw !== "string") return "";
+  // 1. Repair $ ... $ inline math
+  let text = raw.replace(/\$([^$]+)\$/gu, (_match, mathContent) => {
+    const fixed = mathContent.replace(/(\\*)([a-zA-Z()])/gu, (m, slashes) => {
+      if (slashes.length % 2 === 1) return `\\${m}`;
+      return m;
+    });
+    return `$${fixed}$`;
+  });
+
+  // 2. Repair \( ... \) and \[ ... \] math
+  text = text.replace(/\\([()[\]])([\s\S]*?)\\([()[\]])/gu, (_match, open, mathContent, close) => {
+    const fixed = mathContent.replace(/(\\*)([a-zA-Z()])/gu, (m, slashes) => {
+      if (slashes.length % 2 === 1) return `\\${m}`;
+      return m;
+    });
+    return `\\${open}${fixed}\\${close}`;
+  });
+
+  // 3. Normalize single backslash on known astrophysics LaTeX commands that conflict with JSON escapes (n, t, r, b, f)
+  text = text.replace(/(?<!\\)\\([ntrbf])([a-zA-Z]{1,15})(?![a-zA-Z])/gu, (match, letter, rest) => {
+    const word = `${letter}${rest}`.toLowerCase();
+    if (
+      [
+        "nu",
+        "tau",
+        "rho",
+        "beta",
+        "times",
+        "theta",
+        "tilde",
+        "frac",
+        "nabla",
+        "neq",
+        "bar",
+        "bf",
+        "right",
+        "rangle",
+        "ref",
+        "begin",
+        "bibitem",
+        "bullet",
+        "big",
+        "bmod",
+        "flat",
+        "forall",
+      ].includes(word)
+    ) {
+      return `\\\\${match.slice(1)}`;
+    }
+    return match;
+  });
+
+  return text;
+}
+
+export function repairMathDelimiterEscapes(raw) {
+  let unsupported = false;
+  const repaired = raw.replace(/(\\+)(.)/gsu, (matched, slashes, next, offset) => {
+    if (slashes.length % 2 === 0 || /^["\\/bfnrt]$/u.test(next)) return matched;
+    if (
+      next === "u" &&
+      /^[0-9a-fA-F]{4}$/u.test(raw.slice(offset + slashes.length + 1, offset + slashes.length + 5))
+    )
+      return matched;
+    if (next === "(" || next === ")" || /^[a-zA-Z]$/u.test(next)) return `${slashes}\\${next}`;
+    unsupported = true;
+    return matched;
+  });
+  if (unsupported)
+    throw new Error(
+      "Model response has an unsupported JSON escape; use JSON-escaped TeX backslashes"
+    );
+  return repaired;
+}
+
+export function rejectAmbiguousText(value) {
+  if (typeof value === "string" && /[\u0000-\u0008\u000b\u000c\u000d\u000e-\u001f]/u.test(value)) {
+    throw new Error(
+      "Model response contains an ambiguous JSON escape; use JSON-escaped TeX backslashes"
+    );
+  }
+  if (Array.isArray(value)) value.forEach(rejectAmbiguousText);
+  else if (value && typeof value === "object") Object.values(value).forEach(rejectAmbiguousText);
+  return value;
+}
+
+export function safeParseJson(raw) {
+  if (raw && typeof raw === "object") return rejectAmbiguousText(raw);
+  const text = sanitizeModelJsonString(raw);
+  const preRepaired = repairMathInRawJson(text);
+  try {
+    return rejectAmbiguousText(JSON.parse(preRepaired));
+  } catch (initialErr) {
+    if (initialErr.message?.includes("ambiguous JSON escape")) throw initialErr;
+    const match = preRepaired.match(/[\[\{][\s\S]*[\]\}]/u);
+    if (!match) throw initialErr;
+    try {
+      return rejectAmbiguousText(JSON.parse(repairMathDelimiterEscapes(match[0])));
+    } catch {
+      const fixed = match[0].replace(/(?<!\\)\\(?!["\\/bfnrt]|u[0-9a-fA-F]{4})/g, "\\\\");
+      return rejectAmbiguousText(JSON.parse(fixed));
+    }
+  }
 }
 
 /**
@@ -36,26 +149,28 @@ export function sanitizeModelJsonString(raw) {
 export function stripLatexFormatting(text) {
   if (!text || typeof text !== "string") return "";
 
-  return text
-    // Strip comments
-    .replace(/(?<!\\)%.*$/gm, "")
-    // Strip citations: \cite{...}, \citep{...}, \citet{...}
-    .replace(/\\cite[pt]?\{[^}]*\}/g, "")
-    // Strip cross-references: \ref{...}, \eqref{...}, \label{...}
-    .replace(/\\(?:eq)?ref\{[^}]*\}/g, "")
-    .replace(/\\label\{[^}]*\}/g, "")
-    // Strip text formatting macros but keep inner text: \textbf{abc} -> abc
-    .replace(/\\(?:textbf|textit|emph|textrm|texttt|underline)\{([^}]*)\}/g, "$1")
-    // Replace non-breaking spaces ~ with normal space
-    .replace(/~/g, " ")
-    // Collapse consecutive whitespace
-    .replace(/\s+/g, " ")
-    .trim();
+  return (
+    text
+      // Strip comments
+      .replace(/(?<!\\)%.*$/gm, "")
+      // Strip citations: \cite{...}, \citep{...}, \citet{...}
+      .replace(/\\cite[pt]?\{[^}]*\}/g, "")
+      // Strip cross-references: \ref{...}, \eqref{...}, \label{...}
+      .replace(/\\(?:eq)?ref\{[^}]*\}/g, "")
+      .replace(/\\label\{[^}]*\}/g, "")
+      // Strip text formatting macros but keep inner text: \textbf{abc} -> abc
+      .replace(/\\(?:textbf|textit|emph|textrm|texttt|underline)\{([^}]*)\}/g, "$1")
+      // Replace non-breaking spaces ~ with normal space
+      .replace(/~/g, " ")
+      // Collapse consecutive whitespace
+      .replace(/\s+/g, " ")
+      .trim()
+  );
 }
 
 /**
  * Verifies whether a claimed evidence quote can be verified in the body text or sections.
- * 
+ *
  * @param {string} claimedQuote - The short evidence quote produced by the LLM
  * @param {string} bodyText - The full article text extracted from TeX / PDF
  * @param {Array<{ title: string, text: string }>} sections - Parsed article sections
@@ -145,7 +260,8 @@ export function evaluateEvidenceGate(analysisRecord, bodyContext = {}) {
   // Must Read validation
   if (priority === "must_read") {
     const hasFullBody = coverageLevel === "full_body";
-    const hasSufficientEvidence = verifiedQuotesCount >= 1 || (bodyText.length > 2000 && sections.length >= 2);
+    const hasSufficientEvidence =
+      verifiedQuotesCount >= 1 || (bodyText.length > 2000 && sections.length >= 2);
 
     if (hasFullBody && hasSufficientEvidence) {
       return {
@@ -169,7 +285,8 @@ export function evaluateEvidenceGate(analysisRecord, bodyContext = {}) {
   // Worth Knowing validation
   if (priority === "worth_knowing") {
     const hasBodyPartial = coverageLevel === "body_partial" || coverageLevel === "full_body";
-    const hasSufficientEvidence = verifiedQuotesCount >= 1 || (bodyText.length > 500 && sections.length >= 1);
+    const hasSufficientEvidence =
+      verifiedQuotesCount >= 1 || (bodyText.length > 500 && sections.length >= 1);
 
     if (hasBodyPartial && hasSufficientEvidence) {
       return {

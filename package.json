@@ -18,18 +18,23 @@
     "arxiv:quick": "bash scripts/cron-runner.sh daily",
     "notebooklm:sync": "node scripts/notebooklm-sync.mjs",
     "notebooklm:login": "node scripts/notebooklm-sync.mjs --login",
+    "channel:reconcile": "node scripts/channel-reconcile.mjs",
+    "channel:sync": "node scripts/sync-all-channel-posts.mjs",
+    "channel:pin-events": "node scripts/channel-pin-events.mjs",
     "bot:doctor": "node scripts/qq-official-bot.mjs --doctor",
     "bot:probe": "node scripts/probe-models.mjs",
-    "test:bot": "node --test tests/agent-core.test.mjs tests/qq-official-bot.test.mjs tests/qq-users.test.mjs tests/tencent-channel-publisher.test.mjs",
-    "test:fast": "node --test tests/agent-core.test.mjs tests/qq-official-bot.test.mjs tests/qq-users.test.mjs tests/tencent-channel-publisher.test.mjs tests/arxiv-scheduler.test.mjs tests/paper-acquisition.test.mjs tests/edition-ledger.test.mjs",
+    "test:bot": "node --test tests/agent-core.test.mjs tests/qq-official-bot.test.mjs tests/qq-users.test.mjs tests/qq-cli-isolation.test.mjs tests/tencent-channel-publisher.test.mjs tests/bot-commands.test.mjs",
+    "test:fast": "node --test tests/agent-core.test.mjs tests/qq-official-bot.test.mjs tests/qq-users.test.mjs tests/qq-cli-isolation.test.mjs tests/tencent-channel-publisher.test.mjs tests/channel-title-policy.test.mjs tests/channel-reconcile.test.mjs tests/arxiv-scheduler.test.mjs tests/paper-acquisition.test.mjs tests/edition-ledger.test.mjs tests/pipeline-telemetry.test.mjs tests/intelligence-egress.test.mjs tests/bot-commands.test.mjs tests/arxiv-beijing-schedule-diagnostic.test.mjs",
     "test:hygiene": "node --test tests/copy-hygiene.test.mjs",
     "validate": "node scripts/validate.mjs",
     "pretest": "node scripts/cleanup-test-tmp.mjs",
     "test": "node --test --test-concurrency=1 tests/*.test.mjs",
     "posttest": "node scripts/cleanup-test-tmp.mjs",
     "check": "astro check",
+    "typecheck": "astro check",
     "build": "npm run validate && node scripts/editorial-index.mjs && astro build",
-    "verify": "npm run validate && npm run test && npm run check && npm run build"
+    "verify": "npm run validate && npm run test && npm run check && npm run build",
+    "prepare": "husky"
   },
   "dependencies": {
     "astro": "6.4.8",
@@ -38,6 +43,9 @@
   },
   "devDependencies": {
     "@astrojs/check": "0.9.10",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.6.0",
+    "prettier": "^3.9.9",
     "typescript": "6.0.3"
   }
 }

@@ -7,9 +7,16 @@ Changes crossing discovery -> screening -> body reading -> daily/weekly reader. 
 ## 2. Signatures
 
 ```js
-runScheduledArxivRefresh({ fromDate, throughDate, maxBatchesPerRun, analyzeImpl, analysisLimit })
-runAiAnalyzer({ feed, radar, archiveRoot, artifactRoot, limit, modelRunner, sourceLoader })
-publishAnalyzedArxivEdition({ output, radarOutput, artifactRoot, expectedFeed, expectedRadar, radar })
+runScheduledArxivRefresh({ fromDate, throughDate, maxBatchesPerRun, analyzeImpl, analysisLimit });
+runAiAnalyzer({ feed, radar, archiveRoot, artifactRoot, limit, modelRunner, sourceLoader });
+publishAnalyzedArxivEdition({
+  output,
+  radarOutput,
+  artifactRoot,
+  expectedFeed,
+  expectedRadar,
+  radar,
+});
 ```
 
 ## 3. Contracts
@@ -21,22 +28,26 @@ publishAnalyzedArxivEdition({ output, radarOutput, artifactRoot, expectedFeed, e
 - Model credentials come from environment/configuration, never literal keys in source or diagnostic logs. No provider/network access during production verification.
 - QQ/Channel assistants read `readPublishedArxivEdition` and `buildDailyRadarModel`; missing or invalid guides remain pending, never a negative scientific judgement. Canonical booklists use validated `projectVisibleSnapshot`; project direction labels come from `PROJECT_CONTEXT.md`, not hand-written duplicates. Bot `--doctor` is offline unless `--live` is explicit. Model endpoints require HTTPS, no redirects, bounded requests/responses and timeouts. Native Node WebSocket avoids an undeclared `ws` runtime dependency.
 - Channel delivery binds immutable daily generation and weekly/archive hashes to a source capture taken before and checked after the successful build. File/page existence alone cannot authorize publishing a changed source. Persist per-version/week remote identities and intents; known originals are edited or moved, while unknown write outcomes and incomplete remote pagination remain pending. Use the installed CLI schema: section inventory uses `get-channel-timeline-feeds`, and `get-feed-detail` has no `create-time` parameter. A channel target failure must not block unrelated delivery targets or trigger unauthorized QQ proactive sends.
+- Channel routing boundaries strictly isolate the Daily Briefing channel (`742956201`) from single papers: single-paper cards route exclusively to R1–R7 topic channels according to physical causality or fall back to General Frontier Discussion (`742956184`). Any dispatch of single papers to the Daily Briefing channel throws `CHANNEL_ROUTING_VIOLATION` and keeps the item pending.
+- Channel publication ledger reconciliation (`npm run channel:reconcile`) treats the local ledger (`guild-*.json`) as the single source of truth and operates in read-only audit mode by default. Destructive or state modifications require explicit `--apply --yes` flags to mark `remote_missing` or correct drifted `channel_id`. Remote posts are never automatically deleted without human review.
 - The persistent event chart consumes only the exact built events hash/timestamp recorded after a successful build. Chart/brief recovery after ledger loss requires complete inventory and exactly one self-consistent identity marker; invalid or duplicate markers stay pending. Before updating a known original, verify the prior body hash so human corrections cannot be overwritten.
-- Channel titles come from one source-bound policy. A single-paper title names the object and one complete, source-backed question or result; unsupported claims, dangling phrases and topic-tag fallbacks remain pending. A daily title uses `「MM-DD」` plus one complete progress statement from that dated archive; it must not reuse a single-paper title or turn into a topic list. A weekly title uses `Wxx周报：` plus one source-backed progress statement from that week. Preserve material conditions and uncertainty. If the source cannot support one complete statement, block the title and request review. Keep the full source prose, publication identity and section routing unchanged.
-- Legacy `alter-daily` and `alter-weekly` commands are disabled. Existing-post title changes use only the approved title-only sync, with a durable intent, a recoverable before snapshot, and a verified read-back. An unresolved write outcome blocks automatic reentry.
+- Channel titles come from one source-bound policy. Mathematical formulas strip LaTeX delimiters and map symbols to Unicode equivalents without leaving dangling syntax. Single-paper titles enforce a 3-tier deterministic fallback ladder capped at 35 characters: Tier 1 (Core physical question from problem proposition), Tier 2 (Headline conclusion assertion), and Tier 3 (Safe entity fallback `{NamedEntity} {EnglishTitle}` with `needs_human_review` diagnostic tag). Subordinate conditional clauses ("若该解释成立") and dangling reporting verbs ("作者提出") are rejected. A daily title uses `「MM-DD」` plus one complete progress statement from that dated archive; it must not reuse a single-paper title or turn into a topic list. A weekly title uses `Wxx周报：` plus one source-backed progress statement from that week. Preserve material conditions and uncertainty. If the source cannot support one complete statement, block the title and request review. Keep the full source prose, publication identity and section routing unchanged.
+- Legacy `alter-daily` and `alter-weekly` commands are disabled. Existing-post title changes use only the approved title-only sync, with a durable intent, a recoverable before snapshot, and a verified read-back. Bulk synchronization (`npm run channel:sync`) defaults to dry-run mode and requires explicit `--apply` or `--no-dry-run` to execute remote updates. An unresolved write outcome blocks automatic reentry.
 - Automatic QQ completion summaries are group-only and run after independent publication outcomes. Require explicit permission enablement and group target; bind deduplication to recipient, report kind and the verified source actually rendered (dated archive hash when used, otherwise daily/weekly hash), not changing delivery-warning text. Never send without stable source identity. Persist intent before sending; an unknown outcome blocks reentry. A source/preparation failure remains `blocked` even when sending permission is disabled. Keep original-paper links beside highlights and channel/web entry points in separate labelled blocks.
+- Academic Week Boundary and Disjoint Batches: Each arXiv academic week comprises up to 5 announcement batches (Sunday–Thursday US Eastern Time, corresponding to Monday–Friday Beijing Time UTC+8). The batch date sets for distinct weeks in `manifest.json` and weekly archive records must be strictly disjoint with zero date overlaps. Reorganizing batches or migrating dates must verify global disjointness across all historical editions.
+- Beijing Time Academic Week Calculation SSOT: All academic week identifiers, previous-week calculations for group broadcasts, and scheduled release evaluations must be performed through `src/domain/academic-domain.mjs` (`getBeijingWeekId`, `getPreviousAcademicWeekId`, `getNaturalWeekBounds`). Hardcoding host-local timezone calculations or running unanchored `new Date()` without `Asia/Shanghai` in shell or Node commands is prohibited to prevent UTC/PDT host skew.
 
 ## 4. Validation and errors
 
-| Condition | Required behavior |
-| --- | --- |
-| Empty scheduler fetch | `ARXIV_EMPTY_BATCH`; retryable, last-good unchanged |
-| Feed/radar changed while model ran | `ARXIV_ANALYSIS_STALE`; keep queued result for retry |
-| Invalid radar publication | `ARXIV_RADAR_INVALID`; no pointer replacement |
-| Live writer lock | Refuse concurrent write; no lost update |
-| Missing/truncated/wrong-revision body | Pending reading, not eligible MR/WK |
-| Malformed persisted queue | `ARXIV_ANALYZER_STATE_INVALID`; validate identity/fingerprint and eligible completed analysis, preserve bytes |
-| Date-named archive without `feed.entries` | `ARXIV_ARCHIVE_INVALID`; never silently omit backlog |
+| Condition                                 | Required behavior                                                                                             |
+| ----------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| Empty scheduler fetch                     | `ARXIV_EMPTY_BATCH`; retryable, last-good unchanged                                                           |
+| Feed/radar changed while model ran        | `ARXIV_ANALYSIS_STALE`; keep queued result for retry                                                          |
+| Invalid radar publication                 | `ARXIV_RADAR_INVALID`; no pointer replacement                                                                 |
+| Live writer lock                          | Refuse concurrent write; no lost update                                                                       |
+| Missing/truncated/wrong-revision body     | Pending reading, not eligible MR/WK                                                                           |
+| Malformed persisted queue                 | `ARXIV_ANALYZER_STATE_INVALID`; validate identity/fingerprint and eligible completed analysis, preserve bytes |
+| Date-named archive without `feed.entries` | `ARXIV_ARCHIVE_INVALID`; never silently omit backlog                                                          |
 
 ## 5. Good / base / bad cases
 

@@ -8,6 +8,7 @@ import "../../styles/global.css";
 
 const site = loadSiteConfig();
 const allEvents = eventsData.events || [];
+const topEvents = [...allEvents].sort((a, b) => (b.heat_score || 0) - (a.heat_score || 0)).slice(0, 5);
 
 // Calculate type counts
 const counts: Record<string, number> = {
@@ -237,7 +238,7 @@ const dynamicCalendarCss = dynamicMonthCss + "\n" + dynamicDateCss;
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="AstroLineage 瞬变源爆发日历与演化时间轴：提供科学月历网格与真实时间线轨道，按天体物理爆发时刻与 arXiv 跟踪批次双视点追踪 68 个高能事件。" />
     <title>瞬变源爆发日历与脉络时间轴 · {site.title}</title>
   </head>
@@ -507,6 +508,53 @@ const dynamicCalendarCss = dynamicMonthCss + "\n" + dynamicDateCss;
               </div>
             ))}
           </div>
+        </section>
+
+        <!-- Hot Events Top 5 (Foldable under calendar) -->
+        <section class="calendar-hot-events-section" aria-label="瞬变源热度榜单">
+          <details class="calendar-hot-events-fold">
+            <summary class="calendar-hot-events-summary">
+              <span class="summary-left">
+                <span class="summary-icon">🔥</span>
+                <span class="summary-title">瞬变源热度 Top 5 聚簇榜单</span>
+              </span>
+              <span class="summary-hint font-mono">点击展开 / 折叠</span>
+            </summary>
+            <div class="calendar-hot-events-body">
+              <p class="hot-events-note">更新时间：{eventsData.generated_at}。热度按 7 天半衰期衰减，反映近期 arXiv 论文讨论活跃度。</p>
+              <div class="agent-events-list">
+                {topEvents.map((event, idx) => (
+                  <div class="agent-event-row">
+                    <div class="event-rank font-mono">#{idx + 1}</div>
+                    <div class="event-info">
+                      <div class="event-header">
+                        <span class="event-id font-mono">{event.event_id}</span>
+                        <span class={`event-type-badge ${typeBadgeColor(event.event_type)}`}>{event.event_type}</span>
+                        <span class="event-heat">🔥 热度 {event.heat_score}</span>
+                        <span class="event-papers-count font-mono">共 {event.paper_count} 篇论文关联</span>
+                      </div>
+                      <div class="event-meta">
+                        <span>首次记录: {event.first_seen}</span> · <span>最近更新: {event.last_updated}</span>
+                      </div>
+                      <ul class="event-papers">
+                        {event.papers.map((p) => {
+                          const priority = priorityPill(p.priority);
+                          const dailyAnchor = `/arxiv-daily/${p.date}/#card-${p.arxiv_id}-v${p.revision || 1}`;
+                          return (
+                            <li>
+                              <span class={`priority-badge ${priority.cls}`}>{priority.label}</span>
+                              <a href={dailyAnchor} class="paper-arxiv-id font-mono">arXiv:{p.arxiv_id}</a>
+                              <span class="p-title">{p.title}</span>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </details>
         </section>
 
         <!-- VIEW 1: Follow-up Timeline Spine (Real Chronological Axis) -->
@@ -850,6 +898,7 @@ const dynamicCalendarCss = dynamicMonthCss + "\n" + dynamicDateCss;
     display: none;
   }
   #view-epoch-timeline:checked ~ .calendar-matrix-section,
+  #view-epoch-timeline:checked ~ .calendar-hot-events-section,
   #view-epoch-timeline:checked ~ .timeline-followup-container {
     display: none;
   }
@@ -1260,6 +1309,127 @@ const dynamicCalendarCss = dynamicMonthCss + "\n" + dynamicDateCss;
     font-weight: 700;
     color: #ffffff;
     font-size: 0.78rem;
+  }
+
+  /* Calendar Hot Events Fold */
+  .calendar-hot-events-section {
+    margin: 1.5rem 0 2rem;
+  }
+  .calendar-hot-events-fold {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
+    transition: border-color 0.15s ease;
+  }
+  .calendar-hot-events-fold[open] {
+    border-color: #cbd5e1;
+  }
+  .calendar-hot-events-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.85rem 1.25rem;
+    cursor: pointer;
+    background: #f8fafc;
+    user-select: none;
+    font-weight: 700;
+    color: #1e293b;
+    transition: background 0.15s ease;
+  }
+  .calendar-hot-events-summary:hover {
+    background: #f1f5f9;
+  }
+  .summary-left {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .summary-icon {
+    font-size: 1.1rem;
+  }
+  .summary-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+  }
+  .summary-hint {
+    font-size: 0.78rem;
+    color: #64748b;
+  }
+  .calendar-hot-events-body {
+    padding: 1.25rem;
+    border-top: 1px solid #e2e8f0;
+    background: #ffffff;
+  }
+  .hot-events-note {
+    font-size: 0.82rem;
+    color: #64748b;
+    margin: 0 0 1rem;
+  }
+  .agent-events-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+  .agent-event-row {
+    display: flex;
+    gap: 1rem;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    align-items: flex-start;
+  }
+  .event-rank {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #94a3b8;
+    min-width: 2rem;
+    line-height: 1.2;
+  }
+  .event-info {
+    flex-grow: 1;
+    min-width: 0;
+  }
+  .event-header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.3rem;
+  }
+  .event-id {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #0f172a;
+  }
+  .event-heat {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #ea580c;
+  }
+  .event-papers-count {
+    font-size: 0.78rem;
+    color: #64748b;
+  }
+  .event-meta {
+    font-size: 0.78rem;
+    color: #64748b;
+    margin-bottom: 0.6rem;
+  }
+  .event-papers {
+    margin: 0;
+    padding-left: 1.2rem;
+    font-size: 0.85rem;
+  }
+  .event-papers li {
+    margin-bottom: 0.3rem;
+    line-height: 1.45;
+  }
+  .p-title {
+    margin-left: 0.35rem;
+    color: #334155;
   }
 
   /* Timeline Axis Header */
@@ -1809,6 +1979,46 @@ const dynamicCalendarCss = dynamicMonthCss + "\n" + dynamicDateCss;
   :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .link-arxiv-origin {
     color: #94a3b8;
   }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .calendar-hot-events-fold {
+    background: #1e293b;
+    border-color: #334155;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .calendar-hot-events-summary {
+    background: #0f172a;
+    color: #f8fafc;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .calendar-hot-events-summary:hover {
+    background: #1e293b;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .summary-hint {
+    color: #94a3b8;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .calendar-hot-events-body {
+    background: #1e293b;
+    border-top-color: #334155;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .hot-events-note {
+    color: #94a3b8;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .agent-event-row {
+    background: #0f172a;
+    border-color: #334155;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .event-rank {
+    color: #64748b;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .event-id {
+    color: #f8fafc;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .event-papers-count {
+    color: #94a3b8;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .event-meta {
+    color: #94a3b8;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .p-title {
+    color: #cbd5e1;
+  }
 
   @media (prefers-color-scheme: dark) {
     :global(body:not(:has(#site-theme-toggle:checked))) .controls-card { background: #1e293b; border-color: #334155; }
@@ -1861,5 +2071,17 @@ const dynamicCalendarCss = dynamicMonthCss + "\n" + dynamicDateCss;
     :global(body:not(:has(#site-theme-toggle:checked))) .paper-bluf-row { background: #1e293b; border-color: #334155; color: #cbd5e1; }
     :global(body:not(:has(#site-theme-toggle:checked))) .link-radar-deep { color: #86efac; }
     :global(body:not(:has(#site-theme-toggle:checked))) .link-arxiv-origin { color: #94a3b8; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .calendar-hot-events-fold { background: #1e293b; border-color: #334155; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .calendar-hot-events-summary { background: #0f172a; color: #f8fafc; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .calendar-hot-events-summary:hover { background: #1e293b; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .summary-hint { color: #94a3b8; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .calendar-hot-events-body { background: #1e293b; border-top-color: #334155; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .hot-events-note { color: #94a3b8; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .agent-event-row { background: #0f172a; border-color: #334155; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .event-rank { color: #64748b; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .event-id { color: #f8fafc; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .event-papers-count { color: #94a3b8; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .event-meta { color: #94a3b8; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .p-title { color: #cbd5e1; }
   }
 </style>

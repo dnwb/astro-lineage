@@ -69,7 +69,7 @@ const generatedLabel = Number.isNaN(generatedAt.valueOf())
 
 const priorityLabels: Record<string, { zh: string; en: string; class: string }> = {
   must_read: { zh: "必读", en: "Must Read", class: "badge-must-read" },
-  worth_knowing: { zh: "关注", en: "Worth Knowing", class: "badge-worth-knowing" },
+  worth_knowing: { zh: "关注", en: "Followed", class: "badge-worth-knowing" },
   skip: { zh: "快速浏览", en: "Skim", class: "badge-skip" },
 };
 
@@ -153,7 +153,7 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>高能天体物理 arXiv 每周学术脉络 · {weeklyData.week_id} | {site.title}</title>
     <meta
       name="description"
@@ -161,9 +161,9 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
     />
   </head>
   <body>
-    <SiteNav />
+    <main class="site-shell weekly-page">
+      <SiteNav />
 
-    <main class="page-container weekly-page">
       <header class="page-header weekly-header">
         <p class="eyebrow"><a href="/">{site.title}</a> · <a href="/arxiv-daily/">arXiv Radar</a> · <a href="/arxiv-weekly/">Weekly Synthesis</a> · {weeklyData.week_id}</p>
         <h1 class="page-title"><span class="language-primary">每周学术脉络 · {weeklyData.week_id}</span><span class="language-english" lang="en">Weekly Synthesis · {weeklyData.week_id}</span></h1>
@@ -227,7 +227,7 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
         </div>
         <div class="stat-card stat-worth-knowing">
           <span class="stat-num">{stats.worth_knowing_count}</span>
-          <span class="stat-name"><span class="language-primary">关注论文</span><span class="language-english" lang="en">Worth Knowing</span></span>
+          <span class="stat-name"><span class="language-primary">关注论文</span><span class="language-english" lang="en">Followed</span></span>
         </div>
         <div class="stat-card stat-skip">
           <span class="stat-num">{stats.total_analyzed - stats.must_read_count - stats.worth_knowing_count}</span>

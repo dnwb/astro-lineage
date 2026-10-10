@@ -111,7 +111,7 @@ const bjtInfo = formatAnnouncementInBeijing(currentDate, announcementWindow?.ann
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Daily Radar 首期缓存版：按阅读优先级整理的 arXiv 论文和有证据边界的科学导读。" />
     <title>Daily Radar · {site.title}</title>
   </head>
@@ -158,6 +158,16 @@ const bjtInfo = formatAnnouncementInBeijing(currentDate, announcementWindow?.ann
         </div>
       </details>
 
+      {priorityGroups.must_read.length === 0 && (
+        <aside class="no-must-read-notice" role="status">
+          <div class="notice-icon">ℹ️</div>
+          <div class="notice-body">
+            <strong class="notice-title">批次说明</strong>
+            <p class="notice-text">当期无必读突破，重点聚焦以下“关注”进展。</p>
+          </div>
+        </aside>
+      )}
+
       <div class="daily-radar-content-wrap">
         <DailyTopicFilter groups={priorityGroups} />
 
@@ -172,7 +182,7 @@ const bjtInfo = formatAnnouncementInBeijing(currentDate, announcementWindow?.ann
           id="worth-knowing"
           items={priorityGroups.worth_knowing}
           primaryLabel="关注"
-          englishLabel="Worth Knowing"
+          englishLabel="Followed"
           visibleWorkLinks={visibleWorkLinks}
         />
 

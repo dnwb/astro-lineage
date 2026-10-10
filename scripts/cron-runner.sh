@@ -74,17 +74,42 @@ case "${TASK}" in
     record_current_build
     systemctl --user restart astrolineage-web.service || true
 
-    echo "[cron-runner] 步骤 3/4: 同步腾讯频道社区与年度 NotebookLM 知识库..."
-    WEEKDAY="$(TZ="Asia/Shanghai" date +%u)"
-    if [ "${WEEKDAY}" -eq 5 ]; then
-      node scripts/notebooklm-sync.mjs --deliver both "${BUILD_ID}" || DELIVERY_FAILED=1
-    else
-      node scripts/notebooklm-sync.mjs --deliver daily "${BUILD_ID}" || DELIVERY_FAILED=1
-    fi
+    echo "[cron-runner] 步骤 3/4: 预运行发布（仅推送必读单篇讨论帖，不发布整期导读与周报）..."
+    node scripts/notebooklm-sync.mjs --deliver preliminary "${BUILD_ID}" || DELIVERY_FAILED=1
 
     echo "[cron-runner] 检查并确保 AstroLineage 智能体机器人守护进程运行正常..."
     systemctl --user is-active --quiet astrolineage-bot.service || systemctl --user start astrolineage-bot.service || true
     systemctl --user is-active --quiet astrolineage-qq-bot.service || systemctl --user start astrolineage-qq-bot.service || true
+    ;;
+
+  reconcile|fallback)
+    echo "[cron-runner] 执行次日 02:00 兜底扫描与增量对账封板..."
+    node scripts/arxiv-daily-scheduler.mjs --reconcile-previous
+
+    echo "[cron-runner] 步骤 1.5/4: 执行每周学术脉络总结与脏周级联更新..."
+    node scripts/arxiv-weekly-summary.mjs || true
+    node scripts/arxiv-weekly-summary.mjs --cascade || true
+
+    echo "[cron-runner] 重新构建全站静态发布页面并热加载 Web 服务..."
+    capture_current_build
+    npm run build
+    record_current_build
+    systemctl --user restart astrolineage-web.service || true
+
+    echo "[cron-runner] 兜底定稿发布到腾讯频道社区与年度 NotebookLM..."
+    WEEKDAY="$(TZ="Asia/Shanghai" date +%u)"
+    if [ "${WEEKDAY}" -eq 6 ]; then
+      node scripts/notebooklm-sync.mjs --deliver both "${BUILD_ID}" || DELIVERY_FAILED=1
+    else
+      node scripts/notebooklm-sync.mjs --deliver daily "${BUILD_ID}" || DELIVERY_FAILED=1
+    fi
+    ;;
+
+  group-weekly)
+    echo "[cron-runner] 执行周一上午 08:00 前一周学术周报群广播..."
+    PREV_WEEK="$(node -e 'import("./src/domain/academic-domain.mjs").then(m => console.log(m.getPreviousAcademicWeekId()))')"
+    echo "[cron-runner] 上一周学术周标识: ${PREV_WEEK}"
+    node scripts/qq-send.mjs --group --brief weekly --week "${PREV_WEEK}" --broadcast
     ;;
 
   daily)
@@ -129,7 +154,7 @@ case "${TASK}" in
     ;;
 
   *)
-    echo "[cron-runner] 错误：未知任务 '${TASK}'。可用参数: auto, daily, weekly, agent, build, notebook" >&2
+    echo "[cron-runner] 错误：未知任务 '${TASK}'。可用参数: auto, reconcile, group-weekly, daily, weekly, agent, build, notebook" >&2
     exit 1
     ;;
 esac

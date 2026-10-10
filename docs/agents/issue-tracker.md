@@ -1,28 +1,22 @@
-# Issue tracker: Local Markdown
+# Issue tracker: GitHub Issues
 
-Issues and specs for this repo live as markdown files in `.scratch/`.
+Issues and specs for this repo live in GitHub Issues.
 
 ## Conventions
 
-- One feature per directory: `.scratch/<feature-slug>/`
-- The spec is `.scratch/<feature-slug>/spec.md`
-- Implementation issues are one file per ticket at `.scratch/<feature-slug>/issues/<NN>-<slug>.md`, numbered from `01`, never a single combined tickets file
-- Triage state is recorded as a `Status:` line near the top of each issue file
-- Comments and conversation history append under a `## Comments` heading
+- Issues are accessed via the `gh` CLI.
+- The repository is inferred from `git remote` (or set via `GH_REPO`).
+- Triage state is recorded as issue labels matching the triage label vocabulary in `docs/agents/triage-labels.md`.
+- Comments and conversation history are posted as GitHub issue comments using `gh issue comment`.
 
 ## When a skill says "publish to the issue tracker"
 
-Create a new file under `.scratch/<feature-slug>/`, creating the directory when needed.
+Create an issue using `gh issue create --title "<title>" --body "<body>" --label "<label>"`.
 
 ## When a skill says "fetch the relevant ticket"
 
-Read the referenced file. The user will normally provide its path or issue number.
+Read the issue using `gh issue view <issue-number> --comments`.
 
-## Wayfinding operations
+## Pull requests as a request surface
 
-- Map: `.scratch/<effort>/map.md`
-- Child ticket: `.scratch/<effort>/issues/NN-<slug>.md`
-- Blocking: a `Blocked by: NN, NN` line
-- Frontier: open, unblocked, unclaimed tickets; lowest number first
-- Claim: set `Status: claimed`
-- Resolve: append an `## Answer`, set `Status: resolved`, and update the map
+PRs as a request surface: off

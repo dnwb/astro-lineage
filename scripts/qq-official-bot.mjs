@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 /**
  * AstroLineage 官方 QQ 机器人接入适配器 (QQ Open Platform Official Bot)
- * 
+ *
  * 基于腾讯 QQ 开放平台官方 WebSocket Gateway 与 REST API，支持：
  * 1. QQ 频道公域 @ 消息 (AT_MESSAGE_CREATE)
  * 2. QQ 群聊 @ 消息 (GROUP_AT_MESSAGE_CREATE)
  * 3. QQ C2C 私聊消息 (C2C_MESSAGE_CREATE)
- * 
+ *
  * 对接 scripts/agent-core.mjs（模型问答 + 已发布导读状态 / 可见书目，不是全文 RAG）
  */
 
@@ -18,6 +18,7 @@ import { generateAcademicAnswer } from "./agent-core.mjs";
 import { readChannelShareUrl } from "./channel-publication.mjs";
 import { createSessionMemory } from "./qq-memory.mjs";
 import { defaultUserManager } from "./qq-users.mjs";
+import { matchBotCommand, executeBotCommand } from "./bot-commands.mjs";
 
 // Node >=22.20 provides WebSocket; no undeclared ws package is needed.
 async function request(url, options = {}) {
@@ -47,9 +48,7 @@ const BOT_TOKEN = process.env.QQ_BOT_TOKEN || "";
 const APP_SECRET = process.env.QQ_APP_SECRET || "";
 const IS_SANDBOX = process.env.QQ_BOT_SANDBOX === "true";
 
-const API_BASE = IS_SANDBOX
-  ? "https://sandbox.api.sgroup.qq.com"
-  : "https://api.sgroup.qq.com";
+const API_BASE = IS_SANDBOX ? "https://sandbox.api.sgroup.qq.com" : "https://api.sgroup.qq.com";
 
 // Intents 事件掩码
 // PUBLIC_GUILD_MESSAGES = 1 << 30 (1073741824) - 频道公域
@@ -60,7 +59,9 @@ const INTENTS = (1 << 30) | (1 << 25) | (1 << 12);
 let accessTokenCache = null;
 let accessTokenExpiresAt = 0;
 
-const sessionMemory = createSessionMemory(fileURLToPath(new URL("../.cache/qq-bot/memory/", import.meta.url)));
+const sessionMemory = createSessionMemory(
+  fileURLToPath(new URL("../.cache/qq-bot/memory/", import.meta.url))
+);
 
 /**
  * 获取官方开放平台 Access Token (OAuth2 Client Credentials)
@@ -93,7 +94,9 @@ async function getAppAccessToken() {
 
     accessTokenCache = json.access_token;
     accessTokenExpiresAt = now + (Number(json.expires_in) || 7200) * 1000;
-    console.log(`[QQ Official Bot] 成功获取/刷新官方 AccessToken (有效期至 ${new Date(accessTokenExpiresAt).toLocaleTimeString()})`);
+    console.log(
+      `[QQ Official Bot] 成功获取/刷新官方 AccessToken (有效期至 ${new Date(accessTokenExpiresAt).toLocaleTimeString()})`
+    );
     return accessTokenCache;
   } catch (err) {
     console.error(`[QQ Official Bot] 获取 AccessToken 失败: ${err.message}`);
@@ -128,7 +131,8 @@ async function getGatewayUrl() {
     throw new Error(`查询网关失败 HTTP ${res.status}`);
   }
   const json = await res.json();
-  if (typeof json.url !== "string" || !json.url.startsWith("wss://")) throw new Error("Invalid secure gateway URL");
+  if (typeof json.url !== "string" || !json.url.startsWith("wss://"))
+    throw new Error("Invalid secure gateway URL");
   return json.url;
 }
 
@@ -143,7 +147,10 @@ export function cleanMessageContent(rawText) {
     .trim();
 }
 
-export async function appendChannelShareLinkToReply(content, getChannelShareUrl = readChannelShareUrl) {
+export async function appendChannelShareLinkToReply(
+  content,
+  getChannelShareUrl = readChannelShareUrl
+) {
   const text = typeof content === "string" ? content : String(content ?? "");
   if (!/https?:\/\/\S+/iu.test(text)) return text;
   const channelUrl = await getChannelShareUrl();
@@ -152,15 +159,32 @@ export async function appendChannelShareLinkToReply(content, getChannelShareUrl 
 }
 
 /**
- * 回复 QQ 群聊消息
+ * 回复 QQ 群聊消息（优先尝试 Markdown 模式，失败降级为普通文本）
  */
 async function replyGroupMessage({ groupOpenid, msgId, content }) {
   const auth = await getAuthHeader();
   const url = `${API_BASE}/v2/groups/${groupOpenid}/messages`;
+  try {
+    const mdRes = await request(url, {
+      method: "POST",
+      headers: {
+        Authorization: auth,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        msg_type: 2,
+        markdown: { content },
+        msg_id: msgId,
+      }),
+    });
+    if (mdRes.ok) return await mdRes.json();
+    await mdRes.body?.cancel();
+  } catch {}
+
   const res = await request(url, {
     method: "POST",
     headers: {
-      "Authorization": auth,
+      Authorization: auth,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
@@ -185,7 +209,7 @@ async function replyChannelMessage({ channelId, msgId, content }) {
   const res = await request(url, {
     method: "POST",
     headers: {
-      "Authorization": auth,
+      Authorization: auth,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
@@ -201,15 +225,32 @@ async function replyChannelMessage({ channelId, msgId, content }) {
 }
 
 /**
- * 回复 C2C 私聊消息
+ * 回复 C2C 私聊消息（优先尝试 Markdown 模式，失败降级为普通文本）
  */
 async function replyC2CMessage({ userOpenid, msgId, content }) {
   const auth = await getAuthHeader();
   const url = `${API_BASE}/v2/users/${userOpenid}/messages`;
+  try {
+    const mdRes = await request(url, {
+      method: "POST",
+      headers: {
+        Authorization: auth,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        msg_type: 2,
+        markdown: { content },
+        msg_id: msgId,
+      }),
+    });
+    if (mdRes.ok) return await mdRes.json();
+    await mdRes.body?.cancel();
+  } catch {}
+
   const res = await request(url, {
     method: "POST",
     headers: {
-      "Authorization": auth,
+      Authorization: auth,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
@@ -226,21 +267,39 @@ async function replyC2CMessage({ userOpenid, msgId, content }) {
 }
 
 /**
- * 主动推送 C2C 私聊消息
+ * 主动推送 C2C 私聊消息（优先尝试 Markdown 模式，失败降级为普通文本）
  */
 export async function sendProactiveC2CMessage({ userOpenid, content, msgSeq }) {
   const auth = await getAuthHeader();
   const url = `${API_BASE}/v2/users/${userOpenid}/messages`;
+  const seq = msgSeq || Math.floor(Date.now() / 1000);
+  try {
+    const mdRes = await request(url, {
+      method: "POST",
+      headers: {
+        Authorization: auth,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        msg_type: 2,
+        markdown: { content },
+        msg_seq: seq,
+      }),
+    });
+    if (mdRes.ok) return await mdRes.json();
+    await mdRes.body?.cancel();
+  } catch {}
+
   const res = await request(url, {
     method: "POST",
     headers: {
-      "Authorization": auth,
+      Authorization: auth,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
       content,
       msg_type: 0,
-      msg_seq: msgSeq || Math.floor(Date.now() / 1000),
+      msg_seq: seq,
     }),
   });
   if (!res.ok) {
@@ -251,21 +310,39 @@ export async function sendProactiveC2CMessage({ userOpenid, content, msgSeq }) {
 }
 
 /**
- * 主动推送 QQ 群聊消息
+ * 主动推送 QQ 群聊消息（优先尝试 Markdown 模式，失败降级为普通文本）
  */
 export async function sendProactiveGroupMessage({ groupOpenid, content, msgSeq }) {
   const auth = await getAuthHeader();
   const url = `${API_BASE}/v2/groups/${groupOpenid}/messages`;
+  const seq = msgSeq || Math.floor(Date.now() / 1000);
+  try {
+    const mdRes = await request(url, {
+      method: "POST",
+      headers: {
+        Authorization: auth,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        msg_type: 2,
+        markdown: { content },
+        msg_seq: seq,
+      }),
+    });
+    if (mdRes.ok) return await mdRes.json();
+    await mdRes.body?.cancel();
+  } catch {}
+
   const res = await request(url, {
     method: "POST",
     headers: {
-      "Authorization": auth,
+      Authorization: auth,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
       content,
       msg_type: 0,
-      msg_seq: msgSeq || Math.floor(Date.now() / 1000),
+      msg_seq: seq,
     }),
   });
   if (!res.ok) {
@@ -278,20 +355,61 @@ export async function sendProactiveGroupMessage({ groupOpenid, content, msgSeq }
 /**
  * 启动官方 QQ 机器人 Gateway 长连接
  */
-export async function startOfficialBot({ dryRun = false, WebSocketImpl = WebSocket, gateway = getGatewayUrl, authorize = getAuthHeader, answer = generateAcademicAnswer, memory = sessionMemory, users = defaultUserManager, channelLink = readChannelShareUrl } = {}) {
+export async function startOfficialBot({
+  dryRun = false,
+  WebSocketImpl = WebSocket,
+  gateway = getGatewayUrl,
+  authorize = getAuthHeader,
+  answer = generateAcademicAnswer,
+  memory = sessionMemory,
+  users = defaultUserManager,
+  channelLink = readChannelShareUrl,
+} = {}) {
   if (!APP_ID && gateway === getGatewayUrl) {
     console.warn(`[QQ Official Bot] 警告: 未在环境变量检测到 QQ_APP_ID。`);
     console.warn(`[QQ Official Bot] 请在 .env 中设置 QQ_APP_ID、QQ_APP_SECRET 或 QQ_BOT_TOKEN。`);
-    console.warn(`[QQ Official Bot] 申请途径: https://q.qq.com/ (QQ 开放平台 -> 应用管理 -> 机器人配置)`);
+    console.warn(
+      `[QQ Official Bot] 申请途径: https://q.qq.com/ (QQ 开放平台 -> 应用管理 -> 机器人配置)`
+    );
     throw new Error("QQ_APP_ID is not configured");
   }
 
   const gatewayUrl = await gateway();
   console.log(`[QQ Official Bot] 正在连接官方网关: ${gatewayUrl} (沙箱模式: ${IS_SANDBOX})...`);
 
+  const resolveChannelLink =
+    typeof channelLink === "function" ? channelLink : async () => undefined;
+
+  const dispatchMatchedCommand = async ({
+    cmd,
+    query,
+    replyFn,
+    sessionKey,
+    contextLabel = "指令",
+  }) => {
+    try {
+      const rawReply = await executeBotCommand(cmd, { resolveChannelLink });
+      const replyText = /https?:\/\/\S+/iu.test(rawReply || "")
+        ? await appendChannelShareLinkToReply(rawReply, resolveChannelLink)
+        : rawReply;
+      if (!dryRun) {
+        await replyFn(replyText);
+        console.log(`[QQ Official Bot] ✓ 已回复${contextLabel}: ${query}`);
+      }
+      memory.append(sessionKey, "user", query);
+      memory.append(sessionKey, "assistant", replyText);
+    } catch (err) {
+      console.error(`[QQ Official Bot] ✗ 回复${contextLabel}失败: ${err.message}`);
+    }
+  };
+
   const ws = new WebSocketImpl(gatewayUrl);
   const sweepMemory = () => {
-    try { memory.sweep(); } catch { console.warn("[QQ Official Bot] Memory cleanup failed; inspect local storage"); }
+    try {
+      memory.sweep();
+    } catch {
+      console.warn("[QQ Official Bot] Memory cleanup failed; inspect local storage");
+    }
   };
   sweepMemory();
   const memoryTimer = setInterval(sweepMemory, 60 * 60_000);
@@ -308,20 +426,28 @@ export async function startOfficialBot({ dryRun = false, WebSocketImpl = WebSock
   ws.addEventListener("message", async ({ data }) => {
     let handlingReply = false;
     try {
-      const payload = JSON.parse(typeof data === "string" ? data : Buffer.from(data).toString("utf8"));
+      const payload = JSON.parse(
+        typeof data === "string" ? data : Buffer.from(data).toString("utf8")
+      );
       const { op, d, s, t } = payload;
       if (s !== undefined && s !== null) lastSeq = s;
 
       switch (op) {
-        case 10: { // Hello
+        case 10: {
+          // Hello
           const heartbeatInterval = d.heartbeat_interval || 45000;
-          console.log(`[QQ Official Bot] 握手成功，心跳周期: ${heartbeatInterval}ms，正在发送 Identify 认证...`);
+          console.log(
+            `[QQ Official Bot] 握手成功，心跳周期: ${heartbeatInterval}ms，正在发送 Identify 认证...`
+          );
 
           // 启动心跳
           clearInterval(heartbeatTimer);
           heartbeatTimer = setInterval(() => {
             if (ws.readyState === WebSocketImpl.OPEN) {
-              if (!heartbeatAcknowledged) { ws.close(); return; }
+              if (!heartbeatAcknowledged) {
+                ws.close();
+                return;
+              }
               heartbeatAcknowledged = false;
               ws.send(JSON.stringify({ op: 1, d: lastSeq }));
             }
@@ -329,18 +455,21 @@ export async function startOfficialBot({ dryRun = false, WebSocketImpl = WebSock
 
           // 发送 Identify 认证
           const auth = await authorize();
-          ws.send(JSON.stringify({
-            op: 2,
-            d: {
-              token: auth,
-              intents: INTENTS,
-              shard: [0, 1],
-            },
-          }));
+          ws.send(
+            JSON.stringify({
+              op: 2,
+              d: {
+                token: auth,
+                intents: INTENTS,
+                shard: [0, 1],
+              },
+            })
+          );
           break;
         }
 
-        case 11: { // Heartbeat ACK
+        case 11: {
+          // Heartbeat ACK
           heartbeatAcknowledged = true;
           break;
         }
@@ -350,23 +479,33 @@ export async function startOfficialBot({ dryRun = false, WebSocketImpl = WebSock
           ws.close();
           break;
 
-        case 0: { // Dispatch 业务事件
+        case 0: {
+          // Dispatch 业务事件
           if (["GROUP_AT_MESSAGE_CREATE", "AT_MESSAGE_CREATE", "C2C_MESSAGE_CREATE"].includes(t)) {
-            if (activeReplies >= 4 || typeof d?.content !== "string" || d.content.length > 4096 || !d.id || !claimMessage(`${t}:${d.id}`)) break;
+            if (
+              activeReplies >= 4 ||
+              typeof d?.content !== "string" ||
+              d.content.length > 4096 ||
+              !d.id ||
+              !claimMessage(`${t}:${d.id}`)
+            )
+              break;
             activeReplies++;
             handlingReply = true;
           }
           console.log(`[QQ Official Bot] 收到 Dispatch 事件: ${t}`);
           if (t === "READY") {
             sessionId = d.session_id;
-            console.log(`[QQ Official Bot] ✓ 机器人登录就绪！Bot名称: ${d.user?.username || "AstroBot"} (ID: ${d.user?.id}, Session: ${sessionId})`);
-          } else if (t === "GROUP_AT_MESSAGE_CREATE") {
+            console.log(
+              `[QQ Official Bot] ✓ 机器人登录就绪！Bot名称: ${d.user?.username || "AstroBot"} (ID: ${d.user?.id}, Session: ${sessionId})`
+            );
+          } else if (t === "GROUP_AT_MESSAGE_CREATE" || t === "GROUP_MESSAGE_CREATE") {
             const query = cleanMessageContent(d.content);
             const groupOpenid = d.group_openid;
             const authorId = d.author?.member_openid || d.author?.id;
             const sessionKey = `group_${groupOpenid}_${authorId}`;
             const msgId = d.id;
-            console.log("[QQ Official Bot] 收到 QQ 群 @ 提问");
+            console.log(`[QQ Official Bot] 收到 QQ 群消息 (${t})`);
 
             if (groupOpenid) {
               try {
@@ -376,19 +515,21 @@ export async function startOfficialBot({ dryRun = false, WebSocketImpl = WebSock
               }
             }
 
+            // 非 @ 机器人的普通群消息仅记录群身份活跃，不自动回复，避免群内闲聊刷屏
+            if (t === "GROUP_MESSAGE_CREATE") {
+              break;
+            }
+
             if (query && groupOpenid && authorId) {
-              if (/^\/(start|help|id|groupid)$/i.test(query)) {
-                try {
-                  const replyText = `👋 大家好！我是 AstroLineage 高能天体物理学术助手。\n\n在群里 @ 我并附带论文题目、arXiv 编号或具体物理问题（例如：“@我 总结今天的必读论文”），我会结合每日雷达与学术脉络知识库为大家提供研讨解答！`;
-                  if (!dryRun) {
-                    await replyGroupMessage({ groupOpenid, msgId, content: replyText });
-                    console.log(`[QQ Official Bot] ✓ 已回复群 /start 欢迎消息（已自动记录群 ID）`);
-                  }
-                  memory.append(sessionKey, "user", query);
-                  memory.append(sessionKey, "assistant", replyText);
-                } catch (err) {
-                  console.error(`[QQ Official Bot] ✗ 回复群 /start 失败: ${err.message}`);
-                }
+              const cmd = matchBotCommand(query);
+              if (cmd) {
+                await dispatchMatchedCommand({
+                  cmd,
+                  query,
+                  replyFn: (content) => replyGroupMessage({ groupOpenid, msgId, content }),
+                  sessionKey,
+                  contextLabel: "群指令",
+                });
                 break;
               }
 
@@ -401,7 +542,7 @@ export async function startOfficialBot({ dryRun = false, WebSocketImpl = WebSock
                   history,
                 });
                 const replyText = /https?:\/\/\S+/iu.test(result)
-                  ? await appendChannelShareLinkToReply(result, channelLink)
+                  ? await appendChannelShareLinkToReply(result, resolveChannelLink)
                   : result;
 
                 console.log("[QQ Official Bot] 正在派发群回复");
@@ -423,6 +564,18 @@ export async function startOfficialBot({ dryRun = false, WebSocketImpl = WebSock
             console.log("[QQ Official Bot] 收到频道子频道 @ 提问");
 
             if (query && channelId && authorId) {
+              const cmd = matchBotCommand(query);
+              if (cmd) {
+                await dispatchMatchedCommand({
+                  cmd,
+                  query,
+                  replyFn: (content) => replyChannelMessage({ channelId, msgId, content }),
+                  sessionKey,
+                  contextLabel: "频道指令",
+                });
+                break;
+              }
+
               try {
                 const history = memory.get(sessionKey);
                 memory.append(sessionKey, "user", query);
@@ -432,7 +585,7 @@ export async function startOfficialBot({ dryRun = false, WebSocketImpl = WebSock
                   history,
                 });
                 const replyText = /https?:\/\/\S+/iu.test(result)
-                  ? await appendChannelShareLinkToReply(result, channelLink)
+                  ? await appendChannelShareLinkToReply(result, resolveChannelLink)
                   : result;
 
                 if (!dryRun) {
@@ -460,33 +613,15 @@ export async function startOfficialBot({ dryRun = false, WebSocketImpl = WebSock
             }
 
             if (query && userOpenid) {
-              if (/^\/(start|help|id|whoami|bind)$/i.test(query)) {
-                try {
-                  const replyText = `👋 你好！我是 AstroLineage 高能天体物理前沿文献助手。\n\n我可以为你提供：\n• 每日 arXiv 重点论文导读与前沿雷达（快速射电暴、相对论喷流、超新星及致密天体等）\n• 论文核心突破、物理机制与阅读抓手深度解读\n• 课题组研究主线（R1~R7）与学术脉络梳理\n\n💬 直接发送论文题目、arXiv 编号或物理问题（如“总结今天的必读论文”），即可开始研讨！`;
-                  if (!dryRun) {
-                    await replyC2CMessage({ userOpenid, msgId, content: replyText });
-                    console.log(`[QQ Official Bot] ✓ 已回复 /start 欢迎消息（已自动记录 OpenID）`);
-                  }
-                  memory.append(sessionKey, "user", query);
-                  memory.append(sessionKey, "assistant", replyText);
-                } catch (err) {
-                  console.error(`[QQ Official Bot] ✗ 回复 /start 失败: ${err.message}`);
-                }
-                break;
-              }
-
-              if (/^\/test-c2c$/i.test(query)) {
-                try {
-                  const replyText = `[AstroLineage 测试] 收到私聊测试请求！双向连通状态：正常。`;
-                  if (!dryRun) {
-                    await replyC2CMessage({ userOpenid, msgId, content: replyText });
-                    console.log(`[QQ Official Bot] ✓ 已完成 /test-c2c 私聊应答`);
-                  }
-                  memory.append(sessionKey, "user", query);
-                  memory.append(sessionKey, "assistant", replyText);
-                } catch (err) {
-                  console.error(`[QQ Official Bot] ✗ 回复 /test-c2c 失败: ${err.message}`);
-                }
+              const cmd = matchBotCommand(query);
+              if (cmd) {
+                await dispatchMatchedCommand({
+                  cmd,
+                  query,
+                  replyFn: (content) => replyC2CMessage({ userOpenid, msgId, content }),
+                  sessionKey,
+                  contextLabel: "私聊指令",
+                });
                 break;
               }
 
@@ -499,7 +634,7 @@ export async function startOfficialBot({ dryRun = false, WebSocketImpl = WebSock
                   history,
                 });
                 const replyText = /https?:\/\/\S+/iu.test(result)
-                  ? await appendChannelShareLinkToReply(result, channelLink)
+                  ? await appendChannelShareLinkToReply(result, resolveChannelLink)
                   : result;
 
                 if (!dryRun) {
@@ -529,10 +664,11 @@ export async function startOfficialBot({ dryRun = false, WebSocketImpl = WebSock
     clearInterval(heartbeatTimer);
     clearInterval(memoryTimer);
     console.warn(`[QQ Official Bot] 连接断开 (code: ${code})，将在 5 秒后重试...`);
-    const reconnect = () => startOfficialBot({ dryRun, WebSocketImpl, gateway, authorize, answer, memory }).catch(() => {
-      console.warn("[QQ Official Bot] 重连失败，30 秒后重试");
-      setTimeout(reconnect, 30_000);
-    });
+    const reconnect = () =>
+      startOfficialBot({ dryRun, WebSocketImpl, gateway, authorize, answer, memory }).catch(() => {
+        console.warn("[QQ Official Bot] 重连失败，30 秒后重试");
+        setTimeout(reconnect, 30_000);
+      });
     setTimeout(reconnect, 5000);
   });
 
@@ -571,10 +707,14 @@ export async function runDoctor({ live = false } = {}) {
   } else {
     console.log(`  ✓ QQ_APP_SECRET 已配置 (长度: ${APP_SECRET.length})`);
   }
-  console.log(`  ✓ 运行模式: ${IS_SANDBOX ? "沙箱环境 (sandbox.api.sgroup.qq.com)" : "正式生产环境 (api.sgroup.qq.com)"}`);
+  console.log(
+    `  ✓ 运行模式: ${IS_SANDBOX ? "沙箱环境 (sandbox.api.sgroup.qq.com)" : "正式生产环境 (api.sgroup.qq.com)"}`
+  );
 
   if (!live) {
-    console.log("离线配置检查完成；未验证凭据、网关或模型连通性。显式 --doctor --live 才会联网并调用模型。");
+    console.log(
+      "离线配置检查完成；未验证凭据、网关或模型连通性。显式 --doctor --live 才会联网并调用模型。"
+    );
     return passed;
   }
 
@@ -628,15 +768,27 @@ export async function runDoctor({ live = false } = {}) {
 
   // 5. 检查本地知识库与文献数据完整性
   console.log("\n[5/5] 检查本地文献雷达与周报数据缓存...");
-  const dailyPath = resolve(fileURLToPath(new URL("../src/data/arxiv-daily.json", import.meta.url)));
-  const radarPath = resolve(fileURLToPath(new URL("../src/data/daily-radar.json", import.meta.url)));
-  const weeklyPath = resolve(fileURLToPath(new URL("../src/data/arxiv-weekly.json", import.meta.url)));
+  const dailyPath = resolve(
+    fileURLToPath(new URL("../src/data/arxiv-daily.json", import.meta.url))
+  );
+  const radarPath = resolve(
+    fileURLToPath(new URL("../src/data/daily-radar.json", import.meta.url))
+  );
+  const weeklyPath = resolve(
+    fileURLToPath(new URL("../src/data/arxiv-weekly.json", import.meta.url))
+  );
 
-  for (const [name, p] of [["每日抓取 (arxiv-daily)", dailyPath], ["每日雷达 (daily-radar)", radarPath], ["学术周报 (arxiv-weekly)", weeklyPath]]) {
+  for (const [name, p] of [
+    ["每日抓取 (arxiv-daily)", dailyPath],
+    ["每日雷达 (daily-radar)", radarPath],
+    ["学术周报 (arxiv-weekly)", weeklyPath],
+  ]) {
     if (existsSync(p)) {
       try {
         const raw = JSON.parse(await readFile(p, "utf8"));
-        console.log(`  ✓ ${name}: 正常 (条目数/标识: ${raw.entries?.length || raw.analyses?.length || raw.week_id || "有效"})`);
+        console.log(
+          `  ✓ ${name}: 正常 (条目数/标识: ${raw.entries?.length || raw.analyses?.length || raw.week_id || "有效"})`
+        );
       } catch (e) {
         console.warn(`  ! ${name}: JSON 解析异常: ${e.message}`);
       }
@@ -658,19 +810,23 @@ export async function runDoctor({ live = false } = {}) {
 // CLI 直接运行入口
 if (process.argv[1] && process.argv[1].endsWith("qq-official-bot.mjs")) {
   if (process.argv.includes("--doctor") || process.argv.includes("-d")) {
-    runDoctor({ live: process.argv.includes("--live") }).then((ok) => {
-      process.exit(ok ? 0 : 1);
-    }).catch((err) => {
-      console.error(`Doctor 异常: ${err.message}`);
-      process.exit(1);
-    });
+    runDoctor({ live: process.argv.includes("--live") })
+      .then((ok) => {
+        process.exit(ok ? 0 : 1);
+      })
+      .catch((err) => {
+        console.error(`Doctor 异常: ${err.message}`);
+        process.exit(1);
+      });
   } else if (process.argv.includes("--list-users")) {
     const users = defaultUserManager.getUsers();
     const entries = Object.entries(users);
     console.log(`[QQ Official Bot] 当前共记录 ${entries.length} 个用户 OpenID：`);
     for (const [id, u] of entries) {
       console.log(`- OpenID: ${id}`);
-      console.log(`  交互次数: ${u.interaction_count} | 首次: ${new Date(u.first_seen).toLocaleString()} | 最近: ${new Date(u.last_seen).toLocaleString()}`);
+      console.log(
+        `  交互次数: ${u.interaction_count} | 首次: ${new Date(u.first_seen).toLocaleString()} | 最近: ${new Date(u.last_seen).toLocaleString()}`
+      );
       if (u.last_query) console.log(`  最后提问: ${u.last_query}`);
     }
   } else if (process.argv.includes("--send-c2c")) {

@@ -24,7 +24,7 @@
     "bot:doctor": "node scripts/qq-official-bot.mjs --doctor",
     "bot:probe": "node scripts/probe-models.mjs",
     "test:bot": "node --test tests/agent-core.test.mjs tests/qq-official-bot.test.mjs tests/qq-users.test.mjs tests/tencent-channel-publisher.test.mjs tests/bot-commands.test.mjs",
-    "test:fast": "node --test tests/agent-core.test.mjs tests/qq-official-bot.test.mjs tests/qq-users.test.mjs tests/tencent-channel-publisher.test.mjs tests/channel-title-policy.test.mjs tests/channel-reconcile.test.mjs tests/arxiv-scheduler.test.mjs tests/paper-acquisition.test.mjs tests/edition-ledger.test.mjs tests/pipeline-telemetry.test.mjs tests/intelligence-egress.test.mjs tests/bot-commands.test.mjs",
+    "test:fast": "node --test tests/agent-core.test.mjs tests/qq-official-bot.test.mjs tests/qq-users.test.mjs tests/tencent-channel-publisher.test.mjs tests/channel-title-policy.test.mjs tests/channel-reconcile.test.mjs tests/arxiv-scheduler.test.mjs tests/paper-acquisition.test.mjs tests/edition-ledger.test.mjs tests/pipeline-telemetry.test.mjs tests/intelligence-egress.test.mjs tests/bot-commands.test.mjs tests/arxiv-beijing-schedule-diagnostic.test.mjs",
     "test:hygiene": "node --test tests/copy-hygiene.test.mjs",
     "validate": "node scripts/validate.mjs",
     "pretest": "node scripts/cleanup-test-tmp.mjs",

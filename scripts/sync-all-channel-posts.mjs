@@ -14,7 +14,7 @@
  */
 
 import { execFile } from "node:child_process";
-import { readFile, writeFile } from "node:fs/promises";
+import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { resolve, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { promisify } from "node:util";
@@ -24,7 +24,7 @@ import {
   derivePaperContentTitle,
   paperMarkdown,
 } from "./tencent-channel-publisher.mjs";
-import { readDailyArchive, routePaper } from "./channel-publication.mjs";
+import { DAILY_BRIEF_CHANNEL_ID, readDailyArchive, routePaper } from "./channel-publication.mjs";
 import { sanitizeTitleForDisplay } from "./channel-title-policy.mjs";
 
 const execFileAsync = promisify(execFile);
@@ -34,6 +34,7 @@ const LEDGER_PATH = join(PROJECT_ROOT, `.cache/channel-publication/guild-${GUILD
 const ARCHIVE_ROOT = join(PROJECT_ROOT, "src/data/arxiv-archives/daily");
 const WEEKLY_ARCHIVE_ROOT = join(PROJECT_ROOT, "src/data/arxiv-archives/weekly");
 const DIST_ROOT = join(PROJECT_ROOT, "dist");
+const BACKUP_DIR = join(PROJECT_ROOT, ".cache/channel-publication/backups/sync-all");
 
 function sleep(ms) {
   return new Promise((r) => setTimeout(r, ms));
@@ -46,7 +47,7 @@ function sanitizeTitle(rawTitle, maxLength = 35) {
 async function runCli(args, maxRetries = 4) {
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
-      const { stdout, stderr } = await execFileAsync("tencent-channel-cli", args, {
+      const { stdout } = await execFileAsync("tencent-channel-cli", args, {
         timeout: 60_000,
         env: { ...process.env, PATH: process.env.PATH },
       });
@@ -82,6 +83,7 @@ async function runCli(args, maxRetries = 4) {
 }
 
 async function alterPost({
+  identity = "unknown",
   guildId,
   channelId,
   feedId,
@@ -92,8 +94,29 @@ async function alterPost({
 }) {
   const safeTitle = sanitizeTitle(title, 35);
   if (dryRun) {
-    console.log(`[DRY-RUN] 将更新 feedId=${feedId} channelId=${channelId} title="${safeTitle}"`);
+    console.log(
+      `[DRY-RUN] 将更新 [${identity}] feedId=${feedId} channelId=${channelId} title="${safeTitle}"`
+    );
     return { success: true, dryRun: true };
+  }
+
+  // Title Sync Protocol: persist intent & snapshot backup before remote alter
+  try {
+    await mkdir(BACKUP_DIR, { recursive: true });
+    const snapshotPath = join(BACKUP_DIR, `${identity.replaceAll(":", "_")}.json`);
+    const snapshot = {
+      identity,
+      guild_id: guildId,
+      channel_id: channelId,
+      feed_id: feedId,
+      create_time: createTime,
+      target_title: safeTitle,
+      target_markdown: markdownContent,
+      backup_at: new Date().toISOString(),
+    };
+    await writeFile(snapshotPath, JSON.stringify(snapshot, null, 2), "utf8");
+  } catch (err) {
+    console.warn(`[sync-all:backup] 写入快照备份失败 (非阻塞): ${err.message}`);
   }
 
   const args = [
@@ -115,6 +138,16 @@ async function alterPost({
   ];
 
   const res = await runCli(args);
+  if (typeof res?.stdout === "string") {
+    try {
+      const parsed = JSON.parse(res.stdout);
+      if (parsed?.retCode !== undefined && Number(parsed.retCode) !== 0) {
+        throw new Error(`REMOTE_ALTER_REJECTED: retCode=${parsed.retCode}`);
+      }
+    } catch (e) {
+      if (e.message.startsWith("REMOTE_ALTER_REJECTED")) throw e;
+    }
+  }
   return res;
 }
 
@@ -196,6 +229,7 @@ export async function syncAllChannelPosts(options = {}) {
         console.log(`[周报 ${weekId}] 拟更新标题: "${finalTitle}"`);
 
         await alterPost({
+          identity,
           guildId: GUILD_ID,
           channelId: rec.channel_id,
           feedId: rec.feed_id,
@@ -262,6 +296,8 @@ export async function syncAllChannelPosts(options = {}) {
           }
           const model = await readDailyArchive(join(ARCHIVE_ROOT, `${date}.json`), date, DIST_ROOT);
           const first = (model.groups?.must_read || [])[0];
+          const siteBaseUrl =
+            process.env.ASTRO_SITE_URL || process.env.PUBLIC_SITE_URL || "http://10.131.43.83:4321";
           const lines = [
             `发布日期：${date}`,
             "",
@@ -270,7 +306,7 @@ export async function syncAllChannelPosts(options = {}) {
             `本期重点追踪高能天体物理最新前沿，首看《${first?.title || "重点前沿论文"}》等核心突破。`,
             "",
             "## 阅读入口",
-            `- **内网/校内完整网页与图表**: [打开网页深度导读](http://10.131.43.83:4321/arxiv-daily/${date}/)`,
+            `- **内网/校内完整网页与图表**: [打开网页深度导读](${siteBaseUrl}/arxiv-daily/${date}/)`,
             `- **QQ 频道社区交流帖**: [进入频道讨论](https://pd.qq.com/s/7xr9egnly)`,
             "",
             "每篇论文的版本、实际阅读范围与未核查项见网页原记录；本摘要不代表独立验证。",
@@ -282,6 +318,7 @@ export async function syncAllChannelPosts(options = {}) {
         console.log(`[导读 ${date}] 拟更新标题: "${finalTitle}"`);
 
         await alterPost({
+          identity,
           guildId: GUILD_ID,
           channelId: rec.channel_id,
           feedId: rec.feed_id,
@@ -332,6 +369,13 @@ export async function syncAllChannelPosts(options = {}) {
         }
         const { paper: foundPaper, date: archiveDate } = indexed;
 
+        const targetChannelId = String(rec.channel_id);
+        if (targetChannelId === DAILY_BRIEF_CHANNEL_ID) {
+          throw new Error(
+            `CHANNEL_ROUTING_VIOLATION: Single paper cards cannot be published to Daily Briefing channel (${DAILY_BRIEF_CHANNEL_ID})`
+          );
+        }
+
         const topic = routePaper(foundPaper);
         let title;
         try {
@@ -348,8 +392,9 @@ export async function syncAllChannelPosts(options = {}) {
         );
 
         await alterPost({
+          identity,
           guildId: GUILD_ID,
-          channelId: rec.channel_id,
+          channelId: targetChannelId,
           feedId: rec.feed_id,
           createTime: rec.create_time,
           title: finalTitle,

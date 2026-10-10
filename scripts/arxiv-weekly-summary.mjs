@@ -348,9 +348,6 @@ export async function runWeeklySummary({
   const bounds = getNaturalWeekBounds(weekId);
   const targetDates = bounds.announcementDates;
   const targetDateSet = new Set(targetDates);
-  const sundayPrior = new Date(new Date(`${bounds.monday}T00:00:00Z`).valueOf() - 86400000)
-    .toISOString()
-    .slice(0, 10);
   const scanDates = bounds.academicAnnouncementDates;
   const scanDateSet = new Set(scanDates);
   const dateRange = bounds.dateRange;

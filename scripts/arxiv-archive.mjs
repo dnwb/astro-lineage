@@ -61,18 +61,11 @@ export async function clearAllDirtyWeeks(path = DEFAULT_DIRTY_WEEKS_PATH) {
   return await ledgerClearAllDirtyWeeks({ dirtyWeeksPath: path });
 }
 
+export { getNaturalWeekBounds, getBeijingWeekId } from "../src/domain/academic-domain.mjs";
+import { getNaturalWeekBounds, getBeijingWeekId } from "../src/domain/academic-domain.mjs";
+
 export function getIsoWeek(dateStr) {
-  const d = new Date(dateStr + "T12:00:00Z");
-  const target = new Date(d.valueOf());
-  const dayNr = (d.getUTCDay() + 6) % 7;
-  target.setUTCDate(target.getUTCDate() - dayNr + 3);
-  const firstThursday = target.valueOf();
-  target.setUTCMonth(0, 1);
-  if (target.getUTCDay() !== 4) {
-    target.setUTCMonth(0, 1 + ((4 - target.getUTCDay() + 7) % 7));
-  }
-  const weekNumber = 1 + Math.ceil((firstThursday - target) / 604800000);
-  return `${target.getUTCFullYear()}-W${String(weekNumber).padStart(2, "0")}`;
+  return getBeijingWeekId(new Date(dateStr + "T12:00:00Z"));
 }
 
 export function getAnnouncementWeekId(dateStr, weekday) {
@@ -86,9 +79,6 @@ export function getAnnouncementWeekId(dateStr, weekday) {
   }
   return getIsoWeek(dateStr);
 }
-
-export { getNaturalWeekBounds } from "../src/domain/academic-domain.mjs";
-import { getNaturalWeekBounds } from "../src/domain/academic-domain.mjs";
 
 export function getWeekMondayAndSunday(weekId) {
   const { monday, sunday } = getNaturalWeekBounds(weekId);

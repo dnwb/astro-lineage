@@ -13,11 +13,16 @@
  */
 
 import { readdir, readFile } from "node:fs/promises";
-import { resolve, join } from "node:path";
+import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { existsSync } from "node:fs";
 import { generateGroupBrief } from "./qq-send.mjs";
 import { readChannelShareUrl } from "./channel-publication.mjs";
+import {
+  formatAnnouncementInBeijing,
+  getBeijingWeekId,
+  getPreviousAcademicWeekId,
+} from "../src/domain/academic-domain.mjs";
 
 const DEFAULT_DAILY_ARCHIVES_DIR = fileURLToPath(
   new URL("../src/data/arxiv-archives/daily", import.meta.url)
@@ -115,7 +120,6 @@ export async function formatDailyList(options = {}) {
 
   const limit = options.limit || 12;
   const recentDates = dates.slice(0, limit);
-  const weekdays = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];
 
   const lines = [
     `📅 **AstroLineage 每日前沿导读归档列表** (最近 ${recentDates.length} 期 / 共 ${dates.length} 期)`,
@@ -137,8 +141,7 @@ export async function formatDailyList(options = {}) {
       statsStr = ` ｜ 必读 ${mustRead} 篇 · 关注 ${worthKnowing} 篇 (共 ${total} 篇)`;
     } catch {}
 
-    const d = new Date(`${date}T00:00:00Z`);
-    const weekday = weekdays[d.getUTCDay()];
+    const weekday = formatAnnouncementInBeijing(date).chineseWeekday;
 
     lines.push(
       `• **${date}** (${weekday})${statsStr}`,
@@ -393,11 +396,12 @@ export async function executeBotCommand(cmd, options = {}) {
 
     case "week": {
       try {
+        const currentWeekId = getBeijingWeekId();
         const weekIds = await getAvailableWeeklyIds();
+        const targetWeekId = weekIds.includes(currentWeekId) ? currentWeekId : weekIds[0];
         let weeklyData;
-        if (weekIds.length > 0) {
-          const latestWeekId = weekIds[0];
-          const weeklyPath = join(DEFAULT_WEEKLY_ARCHIVES_DIR, `${latestWeekId}.json`);
+        if (targetWeekId) {
+          const weeklyPath = join(DEFAULT_WEEKLY_ARCHIVES_DIR, `${targetWeekId}.json`);
           const bytes = await readFile(weeklyPath, "utf8");
           weeklyData = JSON.parse(bytes);
         }
@@ -417,11 +421,12 @@ export async function executeBotCommand(cmd, options = {}) {
 
     case "last_week": {
       try {
+        const prevWeekId = getPreviousAcademicWeekId();
         const weekIds = await getAvailableWeeklyIds();
+        const targetWeekId = weekIds.includes(prevWeekId) ? prevWeekId : weekIds[1] || weekIds[0];
         let weeklyData;
-        if (weekIds.length >= 2) {
-          const lastWeekId = weekIds[1];
-          const weeklyPath = join(DEFAULT_WEEKLY_ARCHIVES_DIR, `${lastWeekId}.json`);
+        if (targetWeekId) {
+          const weeklyPath = join(DEFAULT_WEEKLY_ARCHIVES_DIR, `${targetWeekId}.json`);
           const bytes = await readFile(weeklyPath, "utf8");
           weeklyData = JSON.parse(bytes);
         }

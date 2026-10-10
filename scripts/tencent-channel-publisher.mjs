@@ -2026,10 +2026,18 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1
       throw new Error("CHANNEL_SOURCE_BUILD_REQUIRED");
     }
   }
-  if (task === "daily") {
+  if (task === "daily" || task === "preliminary") {
+    const mustReadOnly = task === "preliminary" || process.argv.includes("--must-read-only");
+    const includeBrief = !mustReadOnly && !process.argv.includes("--skip-brief");
     console.log(
       JSON.stringify(
-        await publishDailyFeed({ dryRun, legacyBindings, sourceBinding, includeBrief: true })
+        await publishDailyFeed({
+          dryRun,
+          legacyBindings,
+          sourceBinding,
+          includeBrief,
+          mustReadOnly,
+        })
       )
     );
   } else if (task === "weekly") {
@@ -2065,7 +2073,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1
     const createTime = process.argv[4];
     await alterWeeklyFeed({ feedId, createTime });
   } else {
-    console.error(`未知任务类型: ${task}。可用参数: daily, weekly, events, backfill`);
+    console.error(`未知任务类型: ${task}。可用参数: daily, preliminary, weekly, events, backfill`);
     process.exit(1);
   }
 }

@@ -9,12 +9,14 @@ import {
   ASTROPHYSICS_SYSTEM_PROMPT,
   formatAnnouncementInBeijing,
   parseTransientEpoch,
+  normalizeStructuredClaim,
 } from "../src/domain/academic-domain.mjs";
 
 test("academic-domain: extractTransientIdentifiers parses standard transient names", () => {
   assert.ok(SCIENTIFIC_TAGS.length > 5);
   assert.ok(TRANSIENT_IDENTIFIER_PATTERNS.length > 3);
-  const sample = "Follow-up of GRB 250419A and early optical observation of SN 2024ggi with AT2018hyz and FRB 20240114A. Also GW170817 and SGR 1935+2154.";
+  const sample =
+    "Follow-up of GRB 250419A and early optical observation of SN 2024ggi with AT2018hyz and FRB 20240114A. Also GW170817 and SGR 1935+2154.";
   const identifiers = extractTransientIdentifiers(sample);
 
   assert.ok(identifiers.includes("GRB 250419A"));
@@ -39,7 +41,8 @@ test("academic-domain: matchScientificTags matches relevant high-energy tags", (
   assert.ok(tags1.includes("MAG"));
 
   const item2 = {
-    title: "Relativistic jet propagation in a collapsar wind: afterglow modeling of a long gamma-ray burst",
+    title:
+      "Relativistic jet propagation in a collapsar wind: afterglow modeling of a long gamma-ray burst",
     analysis: {
       problem: "Jet deceleration and shock acceleration in GRB afterglows",
       result: "Lorentz factor Gamma > 100",
@@ -54,7 +57,9 @@ test("academic-domain: deterministic skip rules catch off-domain papers", () => 
   assert.equal(DETERMINISTIC_SKIP_RULES.length, 4);
   const epRule = DETERMINISTIC_SKIP_RULES.find((r) => r.categoryPrefix === "astro-ph.EP");
   assert.ok(epRule);
-  assert.ok(epRule.keywords.test("Transmission spectroscopy of hot Jupiters with transit observation"));
+  assert.ok(
+    epRule.keywords.test("Transmission spectroscopy of hot Jupiters with transit observation")
+  );
   assert.ok(!epRule.keywords.test("Supernova shock breakout in dense CSM"));
 
   assert.ok(ASTROPHYSICS_SYSTEM_PROMPT.includes("高能瞬变天体物理"));
@@ -94,4 +99,24 @@ test("academic-domain: parseTransientEpoch accurately extracts discovery/eruptio
   assert.equal(parseTransientEpoch("AT 2018hyz"), "2018");
   assert.equal(parseTransientEpoch("FRB 20201124A"), "2020-11-24");
   assert.equal(parseTransientEpoch("UNKNOWN"), null);
+});
+
+test("academic-domain: normalizeStructuredClaim does not truncate on em-dash compound terms or leave unclosed parentheses", () => {
+  const text =
+    "强一级相变虽可在静态质量—半径关系中产生同引力质量、不同半径的孪生星，但这些解是否能由超新星产生的PNS沿守恒重子质量的冷却轨迹形成？尤其需要区分引力质量孪生与重子质量孪生，以及稳定强子解对混合分支可达性的限制。";
+  const claim = normalizeStructuredClaim(text, "研究课题");
+
+  assert.doesNotMatch(
+    claim.headline,
+    /静态质量$/u,
+    "Headline must not be truncated right at em-dash in '静态质量—半径关系'"
+  );
+  assert.doesNotMatch(
+    claim.headline,
+    /[（(][^）)]*$/u,
+    "Headline must not have unclosed opening parenthesis"
+  );
+  assert.notEqual(claim.headline, "强一级相变虽可在静态质量");
+  assert.ok(claim.headline.length <= 35, "Headline should be within 35 characters");
+  assert.equal(claim.detailed_text, text);
 });

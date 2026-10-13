@@ -18,7 +18,7 @@ test("splitMath preserves intentional multi-line display equations", () => {
         display: true,
       },
       { kind: "text", value: " 后置" },
-    ],
+    ]
   );
   assert.deepEqual(
     splitMath(String.raw`前置 \[\begin{aligned}
@@ -36,14 +36,14 @@ F &= ma
         display: true,
       },
       { kind: "text", value: " 后置" },
-    ],
+    ]
   );
 });
 
 test("renderMathMarkup emits static KaTeX visuals and semantic MathML for multi-line equations", () => {
   const markup = renderMathMarkup(
     String.raw`\begin{aligned} E_{\rm data} &= f_{\rm bol}L_{\rm X}\tau_{\rm obs} \\ \epsilon &= \frac{E_{\rm data}}{E_{\rm sh}} \end{aligned}`,
-    true,
+    true
   );
   assert.match(markup, /^<span class="katex-display"><span class="katex">/u);
   assert.match(markup, /<math\b[^>]*display="block"/u);
@@ -63,7 +63,10 @@ test("renderMathMarkup separates named operators from adjacent Unicode symbols",
 });
 
 test("verified arXiv author macros render with their source definitions", () => {
-  const markup = renderMathMarkup(String.raw`\betag_{\perp}=\hat{\mathbf{k}}\times\partial_t(p_x,p_y),\quad \Pvec=\mathbf{P}`, false);
+  const markup = renderMathMarkup(
+    String.raw`\betag_{\perp}=\hat{\mathbf{k}}\times\partial_t(p_x,p_y),\quad \Pvec=\mathbf{P}`,
+    false
+  );
   assert.match(markup, /<math\b/u);
   assert.doesNotMatch(markup, /reader-math-error/u);
   assert.match(markup, /mathvariant="bold-italic"/u);
@@ -71,8 +74,30 @@ test("verified arXiv author macros render with their source definitions", () => 
   assert.match(markup, /<annotation encoding="application\/x-tex">\\betag/u);
 });
 
+test("renders astrophysics author macros (bb, degrees, DM, textsc, rg, Rsph)", () => {
+  const cases = [
+    String.raw`kT_{\rm C} \simeq \Lambda kT_{\bb} \sim 10\,\mathrm{keV}`,
+    String.raw`i=90\degrees`,
+    String.raw`\DMCosmic{} + \DMHost{}`,
+    String.raw`[\mathrm{O\,\textsc{iii}}]`,
+    String.raw`\Rsph=(1.2--1.8)\times10^{3}\,\rg`,
+    String.raw`\Ruv=(2.6--2.9)\times10^{3}\,\rg`,
+    String.raw`\sim10^{3}\rg`,
+    String.raw`\Delta\betaUV=+0.08`,
+    String.raw`Y_\\nu=0`,
+  ];
+  for (const expr of cases) {
+    const markup = renderMathMarkup(expr, false);
+    assert.doesNotMatch(markup, /reader-math-error/u, `Expression failed to render: ${expr}`);
+    assert.match(markup, /<math\b/u, `Expression missing math tag: ${expr}`);
+  }
+});
+
 test("unsupported TeX is escaped and visibly marked as not rendered", () => {
-  const markup = renderMathMarkup(String.raw`\unknownReaderMacro{<script>alert(1)</script>}`, false);
+  const markup = renderMathMarkup(
+    String.raw`\unknownReaderMacro{<script>alert(1)</script>}`,
+    false
+  );
   assert.match(markup, /class="reader-math-error"/u);
   assert.match(markup, /公式暂未渲染/u);
   assert.match(markup, /\\unknownReaderMacro/u);
@@ -85,7 +110,11 @@ test("renderer emits static KaTeX visuals with one semantic MathML tree", () => 
   assert.match(markup, /class="katex-mathml"/u);
   assert.match(markup, /<math[^>]*xmlns="http:\/\/www\.w3\.org\/1998\/Math\/MathML"/u);
   assert.match(markup, /class="katex-html"[^>]*aria-hidden="true"/u);
-  assert.ok(markup.includes(`<annotation encoding="application/x-tex">${String.raw`\frac{a}{b} + \alpha`}</annotation>`));
+  assert.ok(
+    markup.includes(
+      `<annotation encoding="application/x-tex">${String.raw`\frac{a}{b} + \alpha`}</annotation>`
+    )
+  );
 });
 
 test("formula CSS uses local KaTeX assets and a bounded wide-equation viewport", async () => {
@@ -95,7 +124,10 @@ test("formula CSS uses local KaTeX assets and a bounded wide-equation viewport",
   assert.match(css, /\.reader-math\s*>\s*\.katex\s*\{/u);
   assert.match(css, /\.reader-math\s+\.katex-mathml\s*\{/u);
   assert.match(css, /\.reader-math-display\s*\{[\s\S]*overflow-x:\s*auto/u);
-  assert.match(css, /\.reader-math-display\s*>\s*\.katex-display\s*\{[\s\S]*min-inline-size:\s*100%/u);
+  assert.match(
+    css,
+    /\.reader-math-display\s*>\s*\.katex-display\s*\{[\s\S]*min-inline-size:\s*100%/u
+  );
   assert.match(css, /\.reader-math-display:focus-visible\s*\{/u);
   assert.match(css, /@media print[\s\S]*\.reader-math-display\s*\{[\s\S]*overflow: visible/u);
 

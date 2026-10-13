@@ -187,89 +187,20 @@ export const DETERMINISTIC_SKIP_RULES = [
   },
 ];
 
-/**
- * 5. Structured Scientific Claim Normalization
- *
- * Splits scientific claims (result, problem, method) into crisp headlines (titles)
- * and comprehensive body descriptions, ensuring sharp visual demarcation between
- * headings and narrative content.
- */
-export function normalizeStructuredClaim(claimInput, fallbackCategory = "结论") {
-  if (!claimInput) {
-    return {
-      headline: `未记录${fallbackCategory}`,
-      bluf: `未能从已检查材料中获得${fallbackCategory}。`,
-      detailed_text: `未能从已检查材料中获得${fallbackCategory}。`,
-    };
-  }
+import {
+  normalizeStructuredScientificClaim,
+  extractDisplayTitle,
+  cleanLatexMathInTitle,
+  splitOutsideMath,
+} from "./scientific-claim-title.mjs";
 
-  if (typeof claimInput === "object" && !Array.isArray(claimInput)) {
-    const headline =
-      typeof claimInput.headline === "string" && claimInput.headline.trim() !== ""
-        ? claimInput.headline.trim()
-        : typeof claimInput.bluf === "string"
-          ? claimInput.bluf.slice(0, 35)
-          : `核心${fallbackCategory}`;
-    const bluf =
-      typeof claimInput.bluf === "string" && claimInput.bluf.trim() !== ""
-        ? claimInput.bluf.trim()
-        : typeof claimInput.detailed_text === "string"
-          ? claimInput.detailed_text
-          : headline;
-    const detailed_text =
-      typeof claimInput.detailed_text === "string" && claimInput.detailed_text.trim() !== ""
-        ? claimInput.detailed_text.trim()
-        : typeof claimInput.result === "string"
-          ? claimInput.result
-          : bluf;
-
-    return {
-      headline,
-      bluf,
-      detailed_text,
-      evidence_locator: claimInput.evidence_locator || claimInput.locator || undefined,
-    };
-  }
-
-  // If claimInput is a legacy string:
-  const text = String(claimInput).trim();
-  if (!text || text === "unknown" || text.startsWith("未能从已检查材料")) {
-    return {
-      headline: `未形成${fallbackCategory}`,
-      bluf: text || `未能从已检查材料中核实${fallbackCategory}。`,
-      detailed_text: text || `未能从已检查材料中核实${fallbackCategory}。`,
-    };
-  }
-
-  // Check if there's an explicit separator: "模型总结：...", "突破点：..."
-  const separatorMatch = text.match(/^([^：:——–—\n]{4,30})[：:——–—]\s*(.+)$/su);
-  if (separatorMatch) {
-    return {
-      headline: separatorMatch[1].trim(),
-      bluf: separatorMatch[2].trim(),
-      detailed_text: text,
-    };
-  }
-
-  // Extract first sentence or first clause as headline
-  const sentenceMatch = text.match(/^([^。！？；;!\?\n]+[。！？；;!\?]?)/u);
-  let headline = sentenceMatch ? sentenceMatch[1].trim() : text;
-
-  if (headline.length > 35) {
-    const commaMatch = headline.match(/^([^，,]+)/u);
-    if (commaMatch && commaMatch[1].length >= 6 && commaMatch[1].length <= 32) {
-      headline = commaMatch[1].trim();
-    } else {
-      headline = headline.slice(0, 32) + "...";
-    }
-  }
-
-  return {
-    headline,
-    bluf: sentenceMatch ? sentenceMatch[1].trim() : text,
-    detailed_text: text,
-  };
-}
+export {
+  extractDisplayTitle,
+  cleanLatexMathInTitle,
+  splitOutsideMath,
+  normalizeStructuredScientificClaim,
+  normalizeStructuredScientificClaim as normalizeStructuredClaim,
+};
 
 /**
  * 6. Structured Executive Summary Parser

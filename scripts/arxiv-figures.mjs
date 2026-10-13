@@ -2,6 +2,7 @@ import { mkdir, writeFile } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { resolve, join, basename } from "node:path";
 import { fileURLToPath } from "node:url";
+import { safeParseJson } from "./pipeline-evidence-gate.mjs";
 
 const ROOT = fileURLToPath(new URL("../", import.meta.url));
 const FIGURES_DIR = resolve(ROOT, "public/arxiv-figures");
@@ -16,24 +17,33 @@ export const SCIENTIFIC_FIGURE_CRITERIA = [
   {
     type: "theoretical",
     badge: "物理模型示意图",
-    pattern: /\b(schematic|cartoon|illustration|geometry|scenario|sketch|setup|model\s+overview|system\s+geometry|configuration|concept|framework|analytic\s+model|physical\s+picture|jet\s+structure|binary\s+orbit)\b/i,
+    pattern:
+      /\b(schematic|cartoon|illustrat\w*|geometry|scenario|sketch|setup|model\s+overview|system\s+geometry|configuration|concept|framework|analytic\s+model|physical\s+picture|jet\s+structure|binary\s+orbit|adiabatic\s+loss|funnel\s+leakage|temperature|luminosity|density\s+profile|radiation\s+field)\b/i,
     baseScore: 30,
   },
   {
     type: "observational",
     badge: "观测总体曲线/能谱",
-    pattern: /\b(light\s*curve|multi-wavelength|broadband|photometric\s+evolution|full\s+spectrum|spectral\s+energy\s+distribution|sed|sky\s*map|waterfall|flux\s+density|dynamic\s+spectrum|polarization\s+evolution)\b/i,
+    pattern:
+      /\b(light\s*curve|multi-wavelength|broadband|photometric\s+evolution|full\s+spectrum|spectral\s+energy\s+distribution|sed|sky\s*map|waterfall|flux\s+density|dynamic\s+spectrum|polarization\s+evolution|dispersion\s+measure|\bdmhost\b|\bdm_host\b|color-magnitude|spectra)\b/i,
     baseScore: 25,
   },
   {
     type: "fitting",
     badge: "数据拟合与模型对比",
-    pattern: /\b(best-fit|model\s+fit|fitting\s+comparison|model\s+vs\s+data|comparison\s+between\s+data\s+and\s+model|residuals|posterior\s+distribution|mcmc\s+corner|parameter\s+constraints)\b/i,
+    pattern:
+      /\b(best-fit|model\s+fit|fitting\s+comparison|model\s+vs\s+data|comparison\s+between\s+data\s+and\s+model|residuals|posterior\s+distribution|mcmc\s+corner|parameter\s+constraints|linear\s+fit|correlation|scaling\s+relation)\b/i,
     baseScore: 20,
   },
 ];
 
-const NEGATIVE_KEYWORDS = /\b(flowchart|pipeline\s+diagram|software|architecture\s+of\s+the\s+code|training\s+loss|loss\s+curve|confusion\s+matrix|detector\s+efficiency|camera\s+response|calibration\s+curve|instrumental\s+setup|table\s+as\s+image)\b/i;
+function defaultCategoryBadge(type) {
+  const matched = SCIENTIFIC_FIGURE_CRITERIA.find((c) => c.type === type);
+  return matched ? matched.badge : "物理模型示意图";
+}
+
+const NEGATIVE_KEYWORDS =
+  /\b(flowchart|pipeline\s+diagram|software|architecture\s+of\s+the\s+code|training\s+loss|loss\s+curve|confusion\s+matrix|detector\s+efficiency|camera\s+response|calibration\s+curve|instrumental\s+setup|table\s+as\s+image)\b/i;
 
 /**
  * Clean HTML tags from caption
@@ -71,62 +81,169 @@ export function classifyScientificFigure(caption) {
 }
 
 /**
+ * Build a model-driven figure selector function using the AI analysis model.
+ */
+export function buildModelFigureSelector({ modelCall, model, baseUrl, apiKey } = {}) {
+  return async ({ candidates, arxivId, title, abstract }) => {
+    if (!modelCall || !Array.isArray(candidates) || candidates.length === 0) return [];
+    const prompt = `你是一名严谨的高能天体物理审稿人。请从以下这篇论文的候选插图中，挑选出最具物理洞察力和科学价值的插图（最多 2 张）。
+
+【论文信息】
+- arXiv ID: ${arxivId}
+- 标题: ${title || "未提供"}
+- 摘要: ${abstract || "未提供"}
+
+【优先选择标准】
+1. theoretical (物理模型示意图 / 几何结构 / 核心理论演化光度/温度曲线) -> categoryBadge 填 "物理模型示意图" 或 "核心物理演化图"
+2. observational (全波段光变 / 宽波段能谱 SED / 核心观测样本对比) -> categoryBadge 填 "观测总体曲线/能谱" 或 "核心观测结果"
+3. fitting (核心数据拟合与理论模型对比 / 残差与参数后验约束) -> categoryBadge 填 "数据拟合与模型对比"
+
+【严禁选择】
+- 纯软件流程图 (flowchart/pipeline)、代码架构、网络拓扑
+- 标定曲线、仪器探测效率响应
+- 纯数据表格转成的图片、巡天网格图
+
+【候选插图列表】
+${candidates.map((c) => `[插图 ${c.index}] 标签: ${c.label}\n图题: ${c.caption}`).join("\n\n")}
+
+请返回严格的 JSON 数组（若无符合物理价值的插图则返回 []），格式如下：
+[
+  {
+    "index": 0,
+    "category": "theoretical",
+    "categoryBadge": "物理模型示意图",
+    "reason": "简述选择理由"
+  }
+]`;
+
+    try {
+      const raw = await modelCall({
+        stage: "figure_selection",
+        prompt,
+        model,
+        baseUrl,
+        apiKey,
+      });
+      const parsed = safeParseJson(raw);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch {
+      return [];
+    }
+  };
+}
+
+/**
  * Extract intuitive, high-value scientific figures for an arXiv paper.
  * Reads arXiv's public HTML5 presentation and extracts high-res web images.
- * Strict fail-closed: only figures strictly matching Theoretical, Observational,
- * or Fitting categories are extracted. Random or unclear figures are dropped.
+ * Prioritizes model evaluation if options.modelSelector is supplied; falls back to heuristic rules.
  */
 export async function extractPaperFigures(arxivId, revision = 1, options = {}) {
-  const { maxFigures = 2, fetchImpl = fetch } = options;
-  const cleanId = String(arxivId).replace(/^arXiv:/i, "").trim();
+  const { maxFigures = 2, fetchImpl = fetch, modelSelector, figuresDir = FIGURES_DIR } = options;
+  const cleanId = String(arxivId)
+    .replace(/^arXiv:/i, "")
+    .trim();
   const htmlUrl = `https://arxiv.org/html/${cleanId}v${revision}`;
 
   try {
     const res = await fetchImpl(htmlUrl, {
       headers: { "User-Agent": "AstroLineage-FigureExtractor/1.0 (academic research robot)" },
-      signal: AbortSignal.timeout(15_000),
+      signal: AbortSignal.timeout(45_000),
     });
-    if (!res.ok) return [];
+    if (!res.ok) {
+      if (res.status === 404) {
+        console.warn(`[arxiv-figures] arXiv HTML5 暂不可用 (404): ${htmlUrl}`);
+      }
+      return [];
+    }
 
     const html = await res.text();
     const figureMatches = [...html.matchAll(/<figure[\s\S]*?<\/figure>/gi)];
     if (figureMatches.length === 0) return [];
 
     const candidates = [];
+    let figureIndex = 0;
     for (const match of figureMatches) {
       const block = match[0];
       const imgMatch = block.match(/<img[^>]+src="([^">]+)"/i);
       if (!imgMatch) continue;
-
       const rawSrc = imgMatch[1];
+
       const capMatch = block.match(/<figcaption[^>]*>([\s\S]*?)<\/figcaption>/i);
       const caption = cleanCaption(capMatch ? capMatch[1] : "");
 
-      const classification = classifyScientificFigure(caption);
-      // Fail-closed: only accept distinct, intuitive figures matching one of the 3 classes
-      if (!classification) continue;
-
       const labelMatch = caption.match(/^(?:Figure|Fig\.?)\s*(\d+[a-z]?)/i);
-      const label = labelMatch ? `Fig. ${labelMatch[1]}` : classification.badge;
+      const label = labelMatch ? `Fig. ${labelMatch[1]}` : `Fig. ${figureIndex + 1}`;
 
       candidates.push({
+        index: figureIndex,
         rawSrc,
         caption,
         label,
-        category: classification.type,
-        categoryBadge: classification.badge,
-        isSchematic: classification.type === "theoretical",
-        score: classification.score,
       });
+      figureIndex += 1;
     }
 
     if (candidates.length === 0) return [];
 
-    // Sort by scientific score descending
-    candidates.sort((a, b) => b.score - a.score);
-    const selected = candidates.slice(0, maxFigures);
+    // Filter out candidates with negative keywords (e.g. software flowcharts)
+    const validCandidates = candidates.filter((c) => !NEGATIVE_KEYWORDS.test(c.caption));
+    if (validCandidates.length === 0) return [];
 
-    const outDir = join(FIGURES_DIR, cleanId);
+    let selected = [];
+    if (typeof modelSelector === "function") {
+      try {
+        const modelPicks = await modelSelector({
+          candidates: validCandidates,
+          arxivId: cleanId,
+          title: options.paperTitle,
+          abstract: options.paperAbstract,
+        });
+
+        if (Array.isArray(modelPicks) && modelPicks.length > 0) {
+          for (const pick of modelPicks.slice(0, maxFigures)) {
+            const matched =
+              (typeof pick.index === "number" &&
+                validCandidates.find((c) => c.index === pick.index)) ||
+              (pick.label && validCandidates.find((c) => c.label === pick.label));
+            if (matched && !NEGATIVE_KEYWORDS.test(matched.caption)) {
+              const category = pick.category || "theoretical";
+              selected.push({
+                ...matched,
+                category,
+                categoryBadge: pick.categoryBadge || defaultCategoryBadge(category),
+                isSchematic: category === "theoretical",
+                score: 100,
+              });
+            }
+          }
+        }
+      } catch (err) {
+        // Fall back to rule-based classification
+      }
+    }
+
+    if (selected.length === 0) {
+      const classified = [];
+      for (const item of validCandidates) {
+        const classification = classifyScientificFigure(item.caption);
+        if (!classification) continue;
+
+        classified.push({
+          ...item,
+          category: classification.type,
+          categoryBadge: classification.badge,
+          isSchematic: classification.type === "theoretical",
+          score: classification.score,
+        });
+      }
+
+      if (classified.length === 0) return [];
+
+      classified.sort((a, b) => b.score - a.score);
+      selected = classified.slice(0, maxFigures);
+    }
+
+    const outDir = join(figuresDir, cleanId);
     await mkdir(outDir, { recursive: true });
 
     const results = [];
@@ -148,7 +265,10 @@ export async function extractPaperFigures(arxivId, revision = 1, options = {}) {
       const publicUrl = `/arxiv-figures/${cleanId}/${fileName}`;
 
       if (!existsSync(destPath)) {
-        const imgRes = await fetchImpl(imgUrl, { signal: AbortSignal.timeout(20_000) });
+        const imgRes = await fetchImpl(imgUrl, {
+          headers: { "User-Agent": "AstroLineage-FigureExtractor/1.0 (academic research robot)" },
+          signal: AbortSignal.timeout(45_000),
+        });
         if (imgRes.ok) {
           const buf = Buffer.from(await imgRes.arrayBuffer());
           await writeFile(destPath, buf);
@@ -169,7 +289,7 @@ export async function extractPaperFigures(arxivId, revision = 1, options = {}) {
 
     return results;
   } catch (err) {
-    // Fail gracefully without breaking parent analysis
+    console.warn(`[arxiv-figures] 提取插图异常 (arXiv:${cleanId}): ${err.message}`);
     return [];
   }
 }

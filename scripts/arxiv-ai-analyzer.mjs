@@ -30,7 +30,7 @@ import {
   writeJsonAtomically,
 } from "./arxiv-daily.mjs";
 import { triageBatch } from "./arxiv-triage.mjs";
-import { extractPaperFigures } from "./arxiv-figures.mjs";
+import { extractPaperFigures, buildModelFigureSelector } from "./arxiv-figures.mjs";
 import {
   defaultGatewayCircuitBreaker,
   defaultModelHealthRegistry,
@@ -1907,9 +1907,16 @@ export async function runAiAnalyzer({
                 : `\n\n上一次输出未通过可核验性检查：${safeError(error, apiKey)}。请重新核对实际章节标题，并从相应章节逐字复制连续 TeX 原文作为 quote；不要引用摘要或自行改写摘录。`;
             }
           }
-          const figures = await extractPaperFigures(item.entry.arxiv_id, item.entry.revision).catch(
-            () => []
-          );
+          const figures = await extractPaperFigures(item.entry.arxiv_id, item.entry.revision, {
+            modelSelector: buildModelFigureSelector({
+              modelCall,
+              model,
+              baseUrl,
+              apiKey,
+            }),
+            paperTitle: item.entry.title,
+            paperAbstract: item.entry.abstract,
+          }).catch(() => []);
           checked.figures = figures;
           item.analysis = buildAnalysisRecord(item.entry, bodyOutput, checked, {
             modelName: model,

@@ -61,3 +61,72 @@ test("cleanMathInTitle cleans complex LaTeX macros without leaving dangling word
   assert.equal(cleanMathInTitle("$\\sigma_{K_{\\rm sym}}$"), "σK,sym");
   assert.equal(cleanMathInTitle("$88\\,\\mathrm{km}$"), "88 km");
 });
+
+test("2610.13062 single paper title does not get truncated inside parentheses", async () => {
+  const data = JSON.parse(await readFile("src/data/arxiv-archives/daily/2026-10-11.json", "utf8"));
+  const model = buildDailyRadarModel(data.feed, data.radar);
+  const paper = model.groups.must_read.find((x) => x.arxiv_id === "2610.13062");
+
+  const title = derivePaperTitleCandidate(paper);
+  assert.doesNotMatch(
+    title,
+    /未发现针对侧向（edge-on$/u,
+    "Title must not be cut off inside parentheses"
+  );
+  assert.doesNotMatch(title, /（[^）]*$/u, "Title must not have unclosed opening parenthesis");
+  assert.doesNotMatch(title, /\([^)]*$/u, "Title must not have unclosed ASCII opening parenthesis");
+  assert.ok(
+    title.endsWith("？") || title.endsWith("?"),
+    "Title should be a complete physical question"
+  );
+});
+
+test("2610.12356 single paper title does not get cut off inside probability parentheses", async () => {
+  const data = JSON.parse(await readFile("src/data/arxiv-archives/daily/2026-10-08.json", "utf8"));
+  const model = buildDailyRadarModel(data.feed, data.radar);
+  const paper = model.groups.worth_knowing.find((x) => x.arxiv_id === "2610.12356");
+
+  const title = derivePaperTitleCandidate(paper);
+  assert.doesNotMatch(title, /（期望 1\.3 个$/u, "Title must not be cut off inside parentheses");
+  assert.doesNotMatch(title, /（[^）]*$/u, "Title must not have unclosed opening parenthesis");
+});
+
+test("2610.13926 single paper title does not get cut off into standalone subordinate condition", async () => {
+  const data = JSON.parse(await readFile("src/data/arxiv-archives/daily/2026-10-11.json", "utf8"));
+  const model = buildDailyRadarModel(data.feed, data.radar);
+  const paper = model.groups.worth_knowing.find((x) => x.arxiv_id === "2610.13926");
+
+  const title = derivePaperTitleCandidate(paper);
+  assert.doesNotMatch(title, /^1\.\s*/u, "Title must not start with bullet or list numbering");
+  assert.doesNotMatch(
+    title,
+    /条件下$/u,
+    "Title must not be a dangling conditional clause ending with 条件下"
+  );
+  assert.doesNotMatch(
+    title,
+    /零温非旋转（T=0）条件下$/u,
+    "Title must not be truncated to the leading condition"
+  );
+  assert.match(
+    title,
+    /中微子囚禁效应会降低给定重子数密度下的奇异数（超子）丰度/u,
+    "Title should select the complete physical finding"
+  );
+  assert.ok(Array.from(title).length <= 35, "Title must fit within 35 characters");
+});
+
+test("2610.00459 single paper title does not split on thousands separator comma", async () => {
+  const data = JSON.parse(await readFile("src/data/arxiv-archives/daily/2026-10-01.json", "utf8"));
+  const model = buildDailyRadarModel(data.feed, data.radar);
+  const paper = model.groups.worth_knowing.find((x) => x.arxiv_id === "2610.00459");
+
+  const title = derivePaperTitleCandidate(paper);
+  assert.doesNotMatch(title, /^374个源/u, "Title must not split 11,374 across thousands comma");
+  assert.doesNotMatch(
+    title,
+    /五折交叉验证中$/u,
+    "Title must not be a dangling subordinate clause ending with 中"
+  );
+  assert.ok(Array.from(title).length <= 35, "Title must fit within 35 characters");
+});

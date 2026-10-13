@@ -208,18 +208,20 @@ export async function formatWeeklyList(options = {}) {
 /**
  * 辅助函数：根据周号或回退索引获取并格式化学术周报简报
  */
-async function resolveAndFormatWeeklyBrief({
-  requestedWeekId,
-  label,
-  fallbackIndex = 0,
-  resolveChannel,
-  websiteBase,
-}) {
+async function resolveAndFormatWeeklyBrief({ offset = 0, label, resolveChannel, websiteBase }) {
   try {
+    const currentWeekId = getBeijingWeekId();
     const weekIds = await getAvailableWeeklyIds();
-    const targetWeekId = weekIds.includes(requestedWeekId)
-      ? requestedWeekId
-      : weekIds[fallbackIndex] || weekIds[0];
+    // If the active current week has been generated/archived, offset 0 is currentWeekId, offset 1 is previous.
+    // If the current week is not yet archived (weekIds[0] is the most recently completed week),
+    // then weekIds[0] represents the latest completed week, and weekIds[offset] represents the offset from latest archived week.
+    let targetWeekId;
+    if (weekIds.includes(currentWeekId)) {
+      const idx = weekIds.indexOf(currentWeekId);
+      targetWeekId = weekIds[idx + offset] || weekIds.at(-1);
+    } else {
+      targetWeekId = weekIds[offset] || weekIds.at(-1);
+    }
     let weeklyData;
     if (targetWeekId) {
       const weeklyPath = join(DEFAULT_WEEKLY_ARCHIVES_DIR, `${targetWeekId}.json`);
@@ -435,9 +437,8 @@ export async function executeBotCommand(cmd, options = {}) {
 
     case "week": {
       return await resolveAndFormatWeeklyBrief({
-        requestedWeekId: getBeijingWeekId(),
+        offset: 0,
         label: "本周周报",
-        fallbackIndex: 0,
         resolveChannel,
         websiteBase,
       });
@@ -445,9 +446,8 @@ export async function executeBotCommand(cmd, options = {}) {
 
     case "last_week": {
       return await resolveAndFormatWeeklyBrief({
-        requestedWeekId: getPreviousAcademicWeekId(),
+        offset: 1,
         label: "上周周报",
-        fallbackIndex: 1,
         resolveChannel,
         websiteBase,
       });

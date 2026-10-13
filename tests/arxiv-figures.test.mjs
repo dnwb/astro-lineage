@@ -3,7 +3,8 @@ import assert from "node:assert/strict";
 import { classifyScientificFigure, cleanCaption } from "../scripts/arxiv-figures.mjs";
 
 test("arxiv-figures: classifyScientificFigure detects theoretical schematic", () => {
-  const caption = "Figure 1: Schematic illustration of the jet interaction geometry with the dense circumstellar envelope.";
+  const caption =
+    "Figure 1: Schematic illustration of the jet interaction geometry with the dense circumstellar envelope.";
   const result = classifyScientificFigure(caption);
   assert.ok(result);
   assert.equal(result.type, "theoretical");
@@ -12,7 +13,8 @@ test("arxiv-figures: classifyScientificFigure detects theoretical schematic", ()
 });
 
 test("arxiv-figures: classifyScientificFigure detects observational multi-wavelength light curve", () => {
-  const caption = "Figure 2: Multi-wavelength light curve of AT2018cow from radio to gamma-rays, showing rapid temporal decay.";
+  const caption =
+    "Figure 2: Multi-wavelength light curve of AT2018cow from radio to gamma-rays, showing rapid temporal decay.";
   const result = classifyScientificFigure(caption);
   assert.ok(result);
   assert.equal(result.type, "observational");
@@ -21,7 +23,8 @@ test("arxiv-figures: classifyScientificFigure detects observational multi-wavele
 });
 
 test("arxiv-figures: classifyScientificFigure detects model vs data fitting comparison", () => {
-  const caption = "Figure 4: Best-fit synchrotron self-absorption model compared with observed radio flux densities. Bottom panel shows residuals.";
+  const caption =
+    "Figure 4: Best-fit synchrotron self-absorption model compared with observed radio flux densities. Bottom panel shows residuals.";
   const result = classifyScientificFigure(caption);
   assert.ok(result);
   assert.equal(result.type, "fitting");
@@ -55,4 +58,75 @@ test("arxiv-figures: classifyScientificFigure rejects negative figures (flowchar
     const result = classifyScientificFigure(cap);
     assert.equal(result, null, `Should reject negative caption: ${cap}`);
   }
+});
+
+test("arxiv-figures: classifyScientificFigure detects broadened physical and observational figures", () => {
+  const captions = [
+    {
+      caption:
+        "Figure 1: A diagram illustrating host galaxy inclination, demonstrating the increasing path length with inclination.",
+      expectedType: "theoretical",
+    },
+    {
+      caption:
+        "Figure 6: Adiabatic loss power, total funnel leakage L_fun, and isotropic-equivalent luminosity as functions of time.",
+      expectedType: "theoretical",
+    },
+    {
+      caption:
+        "Figure 8: Correlation between host galaxy axis ratio and DMHost with empirical linear fit.",
+      expectedType: "observational",
+    },
+  ];
+
+  for (const { caption, expectedType } of captions) {
+    const result = classifyScientificFigure(caption);
+    assert.ok(result, `Should classify caption: ${caption}`);
+    assert.equal(result.type, expectedType);
+  }
+});
+
+test("arxiv-figures: extractPaperFigures prioritizes model selection when modelSelector is provided", async (t) => {
+  const { createTemporaryWorkspace } = await import("./helpers/temporary-workspace.mjs");
+  const ws = await createTemporaryWorkspace("astro-lineage-figures-", t);
+
+  const { extractPaperFigures } = await import("../scripts/arxiv-figures.mjs");
+  const fakeHtml = `
+    <html>
+      <body>
+        <figure id="fig1"><img src="fig1.png"><figcaption>Figure 1: A diagram illustrating host galaxy geometry.</figcaption></figure>
+        <figure id="fig2"><img src="fig2.png"><figcaption>Figure 2: Flowchart of code.</figcaption></figure>
+        <figure id="fig3"><img src="fig3.png"><figcaption>Figure 3: Key luminosity evolution curve.</figcaption></figure>
+      </body>
+    </html>
+  `;
+
+  const mockFetch = async (url) => {
+    if (url.endsWith(".png")) {
+      return { ok: true, arrayBuffer: async () => new Uint8Array([1, 2, 3]).buffer };
+    }
+    return { ok: true, text: async () => fakeHtml };
+  };
+
+  const modelSelector = async ({ candidates }) => {
+    return [
+      {
+        index: 2, // fig3
+        category: "theoretical",
+        categoryBadge: "核心物理演化图",
+        reason: "展示中心引擎光度随时间演化",
+      },
+    ];
+  };
+
+  const results = await extractPaperFigures("2610.99999", 1, {
+    fetchImpl: mockFetch,
+    modelSelector,
+    figuresDir: ws.path,
+  });
+
+  assert.equal(results.length, 1);
+  assert.equal(results[0].category, "theoretical");
+  assert.equal(results[0].category_badge, "核心物理演化图");
+  assert.match(results[0].caption, /Figure 3/);
 });

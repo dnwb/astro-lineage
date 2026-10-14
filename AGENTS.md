@@ -1,11 +1,16 @@
 ## Agent skills
 
 技术文档和回复参考 `~/STE.md`
+系统核心架构与规范以 `ARCHITECTURE.md` 为唯一蓝图，`docs/adr/` 为历史归档决策（日常开发无需阅读）。
 
 对于页面 UI，严禁编写任何落地页风格的产品介绍段落（Hero Decks）；
 功能标题使用最简日常词汇。
 
 所有发布的时间一律已北京时间UTC+8为准
+
+### Architecture blueprint
+
+see `ARCHITECTURE.md`
 
 ### Agent context policy.md
 

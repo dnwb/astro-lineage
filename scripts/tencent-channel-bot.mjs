@@ -22,7 +22,10 @@ import {
 
 const DEFAULT_GUILD_ID = process.env.TENCENT_GUILD_ID || "";
 
-const STATE_PATH = resolve(fileURLToPath(new URL("../src/data/tencent-bot-state.json", import.meta.url)));
+const STATE_PATH = resolve(
+  process.env.BOT_STATE_PATH ||
+    fileURLToPath(new URL("../.local-state/tencent-bot-state.json", import.meta.url))
+);
 
 async function runCli(args, { input = null, timeout = 30000 } = {}) {
   return new Promise((resolvePromise, reject) => {
@@ -41,8 +44,12 @@ async function runCli(args, { input = null, timeout = 30000 } = {}) {
       proc.stdin.end();
     }
 
-    proc.stdout.on("data", (chunk) => { stdout += chunk; });
-    proc.stderr.on("data", (chunk) => { stderr += chunk; });
+    proc.stdout.on("data", (chunk) => {
+      stdout += chunk;
+    });
+    proc.stderr.on("data", (chunk) => {
+      stderr += chunk;
+    });
     proc.on("close", (code) => {
       clearTimeout(timer);
       if (code === 0) {
@@ -81,9 +88,11 @@ async function saveState(state) {
     replied_notices: Array.from(state.replied_notices),
     last_check: new Date().toISOString(),
   };
+  const { dirname } = await import("node:path");
+  const { mkdir } = await import("node:fs/promises");
+  await mkdir(dirname(STATE_PATH), { recursive: true });
   await writeFile(STATE_PATH, JSON.stringify(data, null, 2), "utf8");
 }
-
 
 async function getBotUserInfo() {
   const fallbackId = process.env.TENCENT_BOT_USER_ID || "";
@@ -113,7 +122,9 @@ export async function runAgentCycle({
   const botUser = await getBotUserInfo();
   const knowledge = await loadAcademicKnowledge();
 
-  console.log(`[Agent Bot] 正在检查腾讯频道互动消息与评论 (频道: ${guildId}, 机器人: ${botUser.nickname}, 模型: ${model}, effort: ${effort})...`);
+  console.log(
+    `[Agent Bot] 正在检查腾讯频道互动消息与评论 (频道: ${guildId}, 机器人: ${botUser.nickname}, 模型: ${model}, effort: ${effort})...`
+  );
 
   // 1. 获取主页动态与各版块帖子
   let feeds = [];
@@ -138,10 +149,14 @@ export async function runAgentCycle({
       let comments = [];
       try {
         const commentsRes = await runCli([
-          "feed", "get-feed-comments",
-          "--feed-id", feedId,
-          "--guild-id", String(guildId),
-          "--reply-list-num", "10",
+          "feed",
+          "get-feed-comments",
+          "--feed-id",
+          feedId,
+          "--guild-id",
+          String(guildId),
+          "--reply-list-num",
+          "10",
           "-j",
         ]);
         const parsed = JSON.parse(commentsRes.stdout);
@@ -164,13 +179,16 @@ export async function runAgentCycle({
         // 判断是否需要回复：
         // 1. 评论中包含 @astrolineage 或 @机器人
         // 2. 或者该帖子本身是机器人发布的（每日导读/学术周报），读者在评论区提出问题或讨论
-        const isMentioned = commentContent.includes(`@${botUser.nickname}`) ||
+        const isMentioned =
+          commentContent.includes(`@${botUser.nickname}`) ||
           commentContent.includes("@机器人") ||
           commentContent.includes("@[astrolineage]");
         const isFeedByBot = feedAuthorId === botUser.id;
 
         if ((isMentioned || isFeedByBot) && !state.replied_comments.has(commentId)) {
-          console.log(`[Agent Bot] 发现待回复评论 [${commentAuthorNick}]: "${commentContent.slice(0, 50)}" (来自帖子: ${feed.title || feedId})`);
+          console.log(
+            `[Agent Bot] 发现待回复评论 [${commentAuthorNick}]: "${commentContent.slice(0, 50)}" (来自帖子: ${feed.title || feedId})`
+          );
 
           const systemPrompt = `你是由前沿高能天体物理课题组打造的 AstroLineage 学术智能体（Research Agent）。
 你正在与课题组同学或学术频道的学者在腾讯频道帖子下学术互动。
@@ -207,19 +225,32 @@ ${knowledge}
               console.log(`[Agent Bot] [预演模式] 将发表回复到评论 ${commentId}:`, answer);
             } else {
               const replyRes = await runCli([
-                "feed", "do-reply",
-                "--feed-id", feedId,
-                "--feed-author-id", feedAuthorId,
-                "--feed-create-time", String(feedCreateTime),
-                "--comment-id", commentId,
-                "--comment-author-id", commentAuthorId,
-                "--comment-create-time", String(comment.create_time_raw || Math.floor(Date.now() / 1000)),
-                "--replier-id", botUser.id,
-                "--target-user-id", commentAuthorId,
-                "--target-user-nick", commentAuthorNick,
-                "--guild-id", String(guildId),
-                "--channel-id", String(channelId),
-                "--content", answer,
+                "feed",
+                "do-reply",
+                "--feed-id",
+                feedId,
+                "--feed-author-id",
+                feedAuthorId,
+                "--feed-create-time",
+                String(feedCreateTime),
+                "--comment-id",
+                commentId,
+                "--comment-author-id",
+                commentAuthorId,
+                "--comment-create-time",
+                String(comment.create_time_raw || Math.floor(Date.now() / 1000)),
+                "--replier-id",
+                botUser.id,
+                "--target-user-id",
+                commentAuthorId,
+                "--target-user-nick",
+                commentAuthorNick,
+                "--guild-id",
+                String(guildId),
+                "--channel-id",
+                String(channelId),
+                "--content",
+                answer,
                 "--json",
               ]);
               console.log(`[Agent Bot] ✓ 回复成功:`, replyRes.stdout);
@@ -239,7 +270,8 @@ ${knowledge}
     if (feedAuthorId !== botUser.id && !state.replied_feeds.has(feedId)) {
       const feedTitle = feed.title || "";
       const feedSnippet = feed.content_snippet || "";
-      const isMentioned = feedTitle.includes(`@${botUser.nickname}`) ||
+      const isMentioned =
+        feedTitle.includes(`@${botUser.nickname}`) ||
         feedSnippet.includes(`@${botUser.nickname}`) ||
         feedSnippet.includes("@机器人");
 
@@ -265,12 +297,18 @@ ${knowledge}
             console.log(`[Agent Bot] [预演模式] 将对主贴发表评论:`, answer);
           } else {
             const commentRes = await runCli([
-              "feed", "do-comment",
-              "--feed-id", feedId,
-              "--feed-create-time", String(feedCreateTime),
-              "--guild-id", String(guildId),
-              "--channel-id", String(channelId),
-              "--content", answer,
+              "feed",
+              "do-comment",
+              "--feed-id",
+              feedId,
+              "--feed-create-time",
+              String(feedCreateTime),
+              "--guild-id",
+              String(guildId),
+              "--channel-id",
+              String(channelId),
+              "--content",
+              answer,
               "--json",
             ]);
             console.log(`[Agent Bot] ✓ 评论成功:`, commentRes.stdout);
@@ -327,7 +365,9 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1
     await runAgentCycle({ model, effort, dryRun, verbose });
     process.exit(0);
   } else {
-    console.log(`[Agent Bot] 启动守护进程模式 (模型: ${model}, effort: ${effort}, 轮询间隔: ${intervalSeconds}秒, 退出请按 Ctrl+C)...`);
+    console.log(
+      `[Agent Bot] 启动守护进程模式 (模型: ${model}, effort: ${effort}, 轮询间隔: ${intervalSeconds}秒, 退出请按 Ctrl+C)...`
+    );
     let running = true;
 
     const cleanup = () => {

@@ -1995,6 +1995,14 @@ export async function runAiAnalyzer({
         historicalMap.set(key, record);
       }
     }
+    const allHistoricalRecords = [...historicalMap.values()];
+    const distinctEditions = Array.from(
+      new Set(allHistoricalRecords.map((r) => r.historical_edition).filter(Boolean))
+    ).sort();
+    const keptEditions = new Set(distinctEditions.slice(-2));
+    const boundedHistoricalAnalyses = allHistoricalRecords.filter((r) =>
+      keptEditions.has(r.historical_edition)
+    );
     const nextRadar = {
       ...radar,
       edition: {
@@ -2005,7 +2013,7 @@ export async function runAiAnalyzer({
         window: feed.window || radar.edition?.window || null,
       },
       analyses,
-      historical_analyses: [...historicalMap.values()],
+      historical_analyses: boundedHistoricalAnalyses,
       opening_brief: { status: "unavailable", reason: "正在汇总已核验导读。" },
     };
     nextRadar.opening_brief = buildOpeningBrief(feed, nextRadar);

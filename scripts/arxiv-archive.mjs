@@ -356,7 +356,10 @@ async function syncArxivArchivesWithLockHeld({
       opening_brief: model.opening_brief || null,
       highlights,
       feed,
-      radar,
+      radar: {
+        ...radar,
+        historical_analyses: [],
+      },
     };
 
     let fileChanged = true;

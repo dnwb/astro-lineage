@@ -12,56 +12,15 @@ function escapeHtml(value) {
     .replaceAll("'", "&#39;");
 }
 
-/**
- * Declarative High-Energy Astrophysics Custom TeX Macro Table.
- * Definitions verified in arXiv source packages and astro-ph abstracts.
- */
-export const ASTRO_LATEX_MACROS = [
-  [/\\betag(?![A-Za-z])/gu, "\\boldsymbol{\\beta}"],
-  [/\\Pvec(?![A-Za-z])/gu, "\\mathbf{P}"],
-  [/\\rm(?![A-Za-z])/gu, "\\mathrm"],
-  [/\\bf(?![A-Za-z])/gu, "\\mathbf"],
-  [/\\it(?![A-Za-z])/gu, "\\mathit"],
-  [/\\cal(?![A-Za-z])/gu, "\\mathcal"],
-  [/\\Msun(?![A-Za-z])/gu, "M_\\odot"],
-  [/\\Gyr(?![A-Za-z])/gu, "\\mathrm{Gyr}"],
-  [/\\kpc(?![A-Za-z])/gu, "\\mathrm{kpc}"],
-  [/\\kms(?![A-Za-z])/gu, "\\mathrm{km}\\,\\mathrm{s}^{-1}"],
-  [/\\sigmam(?![A-Za-z])/gu, "\\sigma_{\\mathrm{m}}"],
-  [/\\TeV(?![A-Za-z])/gu, "\\mathrm{TeV}"],
-  [/\\GeV(?![A-Za-z])/gu, "\\mathrm{GeV}"],
-  [/\\MeV(?![A-Za-z])/gu, "\\mathrm{MeV}"],
-  [/\\keV(?![A-Za-z])/gu, "\\mathrm{keV}"],
-  [/\\eV(?![A-Za-z])/gu, "\\mathrm{eV}"],
-  [/\\Spix(?![A-Za-z])/gu, "S_{\\mathrm{pix}}"],
-  [/\\Sscale(?![A-Za-z])/gu, "S_{\\mathrm{scale}}"],
-  [/\\bb(?![A-Za-z])/gu, "{\\mathrm{bb}}"],
-  [/\\degrees(?![A-Za-z])/gu, "^{\\circ}"],
-  [/\\degree(?![A-Za-z])/gu, "^{\\circ}"],
-  [/\\DMCosmic(?:\{\})?/gu, "{\\mathrm{DM}_{\\mathrm{cosmic}}}"],
-  [/\\DMHost(?:\{\})?/gu, "{\\mathrm{DM}_{\\mathrm{host}}}"],
-  [/\\DMSI\{([^}]+)\}/gu, "$1\\,\\mathrm{pc}\\,\\mathrm{cm}^{-3}"],
-  [/\\galfit(?:\{\})?/gu, "\\mathrm{GALFIT}"],
-  [/\\ba(?![A-Za-z])/gu, "(b/a)"],
-  [/\\Rsph(?![A-Za-z])/gu, "R_{\\mathrm{sph}}"],
-  [/\\Ruv(?![A-Za-z])/gu, "R_{\\mathrm{uv}}"],
-  [/\\rg(?![A-Za-z])/gu, "r_{\\mathrm{g}}"],
-  [/\\betaUV(?![A-Za-z])/gu, "\\beta_{\\mathrm{UV}}"],
-  [/\\textsc\{([^}]+)\}/gu, (_, s) => `\\mathrm{${s.toUpperCase()}}`],
-];
+import {
+  ASTRO_LATEX_MACROS,
+  expandAstrophysicsMacros,
+} from "../src/domain/scientific-text/index.mjs";
+
+export { ASTRO_LATEX_MACROS };
 
 export function normalizeLegacyTex(source) {
-  let text = String(source);
-  for (const [pattern, replacement] of ASTRO_LATEX_MACROS) {
-    text = text.replace(pattern, replacement);
-  }
-  return (
-    text
-      .replace(/\\\\([A-Za-z]+)\b/gu, "\\$1")
-      // TeX tokenizes a control word before a Unicode symbol, while KaTeX
-      // needs the boundary made explicit (for example, `\\logξ`).
-      .replace(/\\(log|ln|exp|sin|cos|tan|max|min|lim|det)(?=[^A-Za-z\s])/gu, "\\$1 ")
-  );
+  return expandAstrophysicsMacros(source);
 }
 
 function mathErrorMarkup(source, reason) {

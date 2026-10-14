@@ -102,12 +102,18 @@
    ```bash
    npm run test:fast
    ```
-   耗时约 2 秒，覆盖核心领域逻辑、标题策略、公式渲染、频道发帖与机器人指令。
-2. **知识图谱与静态构建验证**：
+   耗时约 2 秒，覆盖核心领域逻辑、标题策略、公式渲染、频道发帖、机器人指令以及**归档与周报一致性诊断（Consistency Diagnostics）**。
+2. **统一 CLI 校验门禁**：
+   ```bash
+   node scripts/cli.mjs validate
+   ```
+   集成执行学术图谱引用校验（41+ Works 校验）与全量归档/周报/雷达一致性诊断（覆盖 25+ 每日归档、全部周报、顶尖精读 top_picks 引用完整性与文件体积预算）。
+3. **知识图谱与静态构建验证**：
    ```bash
    npm run build
    ```
-   执行 `scripts/validate.mjs` 校验学术图谱，并由 Astro 构建全站静态 HTML。
-3. **安全规范**：
+   执行 `scripts/validate.mjs` 校验学术图谱，并由 Astro 构建全站静态 HTML（90+ 页面全绿）。
+4. **安全与 Git 卫生规范**：
+   - 差异审查**优先使用 `git diff --stat`**，严禁对 `src/data/` 目录运行无约束的裸 `git diff`，避免 Token 与上下文被海量数据污染。
    - 绝不硬编码内网 192 IP，统一使用 `10.131.43.83:4321`。
    - 绝不把临时状态写入 `src/data/`，运行时状态仅限 `.local-state/`。

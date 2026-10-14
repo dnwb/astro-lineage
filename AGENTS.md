@@ -6,7 +6,8 @@
 对于页面 UI，严禁编写任何落地页风格的产品介绍段落（Hero Decks）；
 功能标题使用最简日常词汇。
 
-所有发布的时间一律已北京时间UTC+8为准
+所有发布的时间一律以北京时间 UTC+8 为准。
+代码审查与差异检查优先使用 `git diff --stat`，严禁对 `src/data/` 等大规模数据目录运行无约束的裸 `git diff`。
 
 ### Architecture blueprint
 

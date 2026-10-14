@@ -160,20 +160,23 @@ test("handleBotCommand handles \\day with valid date and invalid date fallback",
 });
 
 test("handleBotCommand handles \\week and returns latest weekly synthesis", async () => {
+  const weekIds = await getAvailableWeeklyIds();
   const res = await handleBotCommand("\\week");
   assert.equal(res.matched, true);
   assert.match(res.replyText, /# \[\[\d{4}-W\d\d\] 前沿周报/u);
-  assert.match(res.replyText, /\[2026-W41\]/u);
+  assert.match(res.replyText, new RegExp(`\\[${weekIds[0]}\\]`, "u"));
   assert.match(res.replyText, /研读共 \d+ 篇/u);
   assert.match(res.replyText, /https:\/\/pd\.qq\.com\/s\/[a-zA-Z0-9]+/u);
   assert.match(res.replyText, /进入周报讨论帖/u);
 });
 
 test("handleBotCommand handles \\last_week and returns previous week", async () => {
+  const weekIds = await getAvailableWeeklyIds();
+  const expectedPrev = weekIds[1] || weekIds[0];
   const res = await handleBotCommand("\\last_week");
   assert.equal(res.matched, true);
   assert.match(res.replyText, /# \[\[\d{4}-W\d\d\] 前沿周报/u);
-  assert.match(res.replyText, /\[2026-W40\]/u);
+  assert.match(res.replyText, new RegExp(`\\[${expectedPrev}\\]`, "u"));
   assert.match(res.replyText, /研读共 \d+ 篇/u);
   assert.match(res.replyText, /https:\/\/pd\.qq\.com\/s\/[a-zA-Z0-9]+/u);
 });

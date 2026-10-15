@@ -405,27 +405,27 @@ async function syncArxivArchivesWithLockHeld({
     });
   }
 
-  // 4. Scan weekly summaries
+  // 4. Scan weekly summaries (Committed archives take precedence over ephemeral build cache)
   const discoveredWeekly = new Map();
-  if (existsSync(weeklyCacheDir)) {
-    try {
-      const files = await readdir(weeklyCacheDir);
-      for (const f of files) {
-        if (!f.endsWith(".json")) continue;
-        const weekId = f.slice(0, -5);
-        const data = await readJsonSafe(join(weeklyCacheDir, f));
-        if (data?.week_id) discoveredWeekly.set(weekId, data);
-      }
-    } catch {}
-  }
   if (existsSync(weeklyArchiveDir)) {
     try {
       const files = await readdir(weeklyArchiveDir);
       for (const f of files) {
         if (!f.endsWith(".json")) continue;
         const weekId = f.slice(0, -5);
+        const data = await readJsonSafe(join(weeklyArchiveDir, f));
+        if (data?.week_id) discoveredWeekly.set(weekId, data);
+      }
+    } catch {}
+  }
+  if (existsSync(weeklyCacheDir)) {
+    try {
+      const files = await readdir(weeklyCacheDir);
+      for (const f of files) {
+        if (!f.endsWith(".json")) continue;
+        const weekId = f.slice(0, -5);
         if (!discoveredWeekly.has(weekId)) {
-          const data = await readJsonSafe(join(weeklyArchiveDir, f));
+          const data = await readJsonSafe(join(weeklyCacheDir, f));
           if (data?.week_id) discoveredWeekly.set(weekId, data);
         }
       }

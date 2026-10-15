@@ -1,9 +1,9 @@
 name: Scheduled arXiv Daily & Weekly Sync
 
 on:
-  schedule:
-    # Runs at 00:45 UTC Monday through Friday (20:45 EDT Sun-Thu / 08:45 CST Mon-Fri)
-    - cron: '45 0 * * 1-5'
+  # 定时抓取由主机端 crontab (scripts/cron-runner.sh) 统一执行，此处禁用云端重复调度
+  # schedule:
+  #   - cron: '45 0 * * 1-5'
   workflow_dispatch:
     inputs:
       force_weekly:
@@ -71,8 +71,8 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          if [[ -n "$(git status --porcelain src/data/ .cache/)" ]]; then
-            git add src/data/ .cache/
+          if [[ -n "$(git status --porcelain src/data/)" ]]; then
+            git add src/data/
             git commit -m "chore(arxiv): automated daily & weekly sync [skip ci]"
             git push origin HEAD:${{ github.ref_name }}
             echo "Changes successfully pushed."

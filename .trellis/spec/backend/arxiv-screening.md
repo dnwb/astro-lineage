@@ -9,6 +9,18 @@ Changes crossing discovery -> screening -> body reading -> daily/weekly reader. 
 ```js
 runScheduledArxivRefresh({ fromDate, throughDate, maxBatchesPerRun, analyzeImpl, analysisLimit });
 runAiAnalyzer({ feed, radar, archiveRoot, artifactRoot, limit, modelRunner, sourceLoader });
+reconcilePreviousEdition({
+  now,
+  announcementDate,
+  timeZone,
+  output,
+  radar,
+  artifactRoot,
+  archiveRoot,
+  analysisLimit,
+});
+readLedger({ artifactRoot, timeZone, query });
+assertContinuousBatchIntervals(currentFeed, previousFeed);
 publishAnalyzedArxivEdition({
   output,
   radarOutput,
@@ -23,6 +35,9 @@ publishAnalyzedArxivEdition({
 
 - Discovery success belongs to an individual announcement date and exact query scope; include Sunday. Reusing a narrower query's completion loses recall. Persist failed dates and rotate attempts within the run bound; return `pending_dates` and `failed_dates` arrays, including empty arrays for explicit-date runs.
 - Queue identity binds arXiv ID, revision and source fingerprint. Run limits, errors and edition rollover must not discard queued work. Order reading retries by enqueue/last-attempt time, not lowest attempt count: continuous new arrivals must not starve failed reads.
+- Truthful Reconciliation & Unforced Completion: `reconcilePreviousEdition` must reflect true execution status. When upstream data is missing, empty, or fails during fetch/probe (`!finalFeed`), the target date must stay in `failed_dates` and must be excluded from `successful_dates` and `finalized_dates`. Queue items with incomplete or failed analyses (`analysis.status === "failed"`) must NEVER be force-marked with `state: "complete"`. Such items must remain pending (`queued` / `awaiting_body`) for genuine future retries. `parseQueue` must auto-heal corrupted queue records: any item marked with `state === "complete"` whose inner `analysis.status === "failed"` must be restored to `awaiting_body` / `queued`.
+- Scheduler Ledger Sanitization & Gap Recovery: `readLedger` must sanitize `successful_dates` and `finalized_dates` by stripping any dates recorded in `failed_dates`. The missing catch-up calculation must explicitly include `failed_dates` alongside unattempted dates (`!successes.has(date) || ledger.failed_dates.includes(date)`). A failed catch-up date must never be dropped from subsequent scheduler runs.
+- Continuous Batch Intervals & Scheduled Announcement Dates: `assertContinuousBatchIntervals` verifies continuous time boundaries between successive announcement batches (`previousFeed.window.submitted_date_range.to === currentFeed.window.submitted_date_range.from`). Previous edition inspection across calendar days must reference the preceding scheduled announcement date (`previousScheduledDate`), taking into account the non-announcing Friday/Saturday window in Beijing time UTC+8.
 - A model's abstract priority is a reading request, not permission to publish Must Read or Worth Knowing. Body records retain source URL/hash, inspected sections and bounded evidence. Raw TeX reading does not prove figures were visually inspected or claims independently verified.
 - Historical results additionally bind `historical_edition`; never join across dates by base ID alone.
 - Model credentials come from environment/configuration, never literal keys in source or diagnostic logs. No provider/network access during production verification.
@@ -48,20 +63,30 @@ publishAnalyzedArxivEdition({
 | Missing/truncated/wrong-revision body     | Pending reading, not eligible MR/WK                                                                           |
 | Malformed persisted queue                 | `ARXIV_ANALYZER_STATE_INVALID`; validate identity/fingerprint and eligible completed analysis, preserve bytes |
 | Date-named archive without `feed.entries` | `ARXIV_ARCHIVE_INVALID`; never silently omit backlog                                                          |
+| Reconciliation without valid batch feed   | `status: "unreconciled"`; retain date in `failed_dates`, strip from `successful_dates` / `finalized_dates`    |
+| Queue item complete with failed analysis  | Auto-healed by `parseQueue` into `awaiting_body` / `queued`; never counts as completed                        |
+| Failed catch-up batch date                | Retained in `failed_dates` and included in subsequent `missing` dates for retry; never skipped                |
+| Discontinuous batch submitted interval    | `BATCH_TIME_GAP_DETECTED`; previous batch `to` must match current batch `from`                                |
 
 ## 5. Good / base / bad cases
 
-Good: Sunday gap recovered into isolated history, matching result joins the correct weekly edition.
+Good: Monday catch-up encounters HTTP 429; ledger records it in `failed_dates`; next scheduled run recognizes it as pending retry, executes catch-up when upstream recovers, archives the day, and cascades weekly update.
 
 Base: abstract-only Skim needs no body retrieval.
 
-Bad: ten unavailable oldest sources consume every run forever; fair retry ordering must prevent this.
+Bad: Reconciliation encounters missing batch data or unanalyzed queue items, force-marks `item.state = "complete"` and marks the date in `successful_dates`, creating permanent gaps in `src/data/arxiv-archives/daily/` and publishing corrupted weekly summaries.
 
 ## 6. Required tests
 
-Assert immutable source generations and last-good pointers; stale expected feed/radar rejection; empty first-run bootstrap; query migration and Sunday catch-up; bounded queue/rollover/failure fairness; body input and evidence gates; exact weekly joins and archive preservation. Five-paper synthetic model fixtures do not establish live scientific recall.
+Assert immutable source generations and last-good pointers; stale expected feed/radar rejection; empty first-run bootstrap; query migration and Sunday catch-up; bounded queue/rollover/failure fairness; body input and evidence gates; exact weekly joins and archive preservation.
+Assert `reconcilePreviousEdition` keeps target date in `failed_dates` when data is missing; assert queue items with failed analysis are not corrupted into complete state; assert `parseQueue` self-heals corrupted complete items; assert `readLedger` strips `failed_dates` from `successful_dates`; assert `assertContinuousBatchIntervals` validates interval continuity across scheduled announcement dates, including weekend boundaries.
+Five-paper synthetic model fixtures do not establish live scientific recall.
 
 ## 7. Wrong vs correct
+
+Wrong: When an edition lacks data or queue items fail, force `item.state = "complete"` to suppress warnings and append the date to `successful_dates` to move forward.
+
+Correct: Truthfully record execution state. If a task failed or lacked data, retain it in `failed_dates` and `awaiting_body`/`queued` for genuine retries. Never force-complete failed workloads.
 
 Wrong: rewrite an existing generation's radar file and update its hash; mark every date before last_success as complete.
 

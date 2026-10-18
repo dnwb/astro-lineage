@@ -5,12 +5,29 @@ import { join } from "node:path";
 import { tmpdir } from "node:os";
 import { test } from "node:test";
 import { gzipSync } from "node:zlib";
-import { buildDailyRadarModel, sourceFingerprint, validateDailyRadarPayload, normalizeArxivId } from "../scripts/daily-radar.mjs";
-import { parseCliArgs, runAiAnalyzer, parseMarkdownSections, DeepxivCircuitBreaker, validateScientificOutput, sortQueueItems, checkedBodyChunk } from "../scripts/arxiv-ai-analyzer.mjs";
+import {
+  buildDailyRadarModel,
+  sourceFingerprint,
+  validateDailyRadarPayload,
+  normalizeArxivId,
+} from "../scripts/daily-radar.mjs";
+import {
+  parseCliArgs,
+  runAiAnalyzer,
+  parseMarkdownSections,
+  DeepxivCircuitBreaker,
+  validateScientificOutput,
+  sortQueueItems,
+  checkedBodyChunk,
+} from "../scripts/arxiv-ai-analyzer.mjs";
 import { syncArxivArchives } from "../scripts/arxiv-archive.mjs";
 import { runWeeklySummary } from "../scripts/arxiv-weekly-summary.mjs";
 
-function entry(arxiv_id, day, abstract = "This paper studies dense environments and radio transients.") {
+function entry(
+  arxiv_id,
+  day,
+  abstract = "This paper studies dense environments and radio transients."
+) {
   return {
     arxiv_id,
     revision: 1,
@@ -34,7 +51,12 @@ function feed(entries, day = "2026-09-07") {
 }
 
 function emptyRadar() {
-  return { edition: {}, analyses: [], knowledge_points: [], opening_brief: { status: "unavailable", reason: "fixture" } };
+  return {
+    edition: {},
+    analyses: [],
+    knowledge_points: [],
+    opening_brief: { status: "unavailable", reason: "fixture" },
+  };
 }
 
 function abstractSkip() {
@@ -48,16 +70,22 @@ function abstractSkip() {
     research_progress: "unknown",
     assumptions: [],
     limits: [],
-    evidence: [{
-      section: "Abstract",
-      quote: "This paper studies galaxy clustering and reports a measured bias in large scale structure.",
-      supports: ["reason", "result"],
-    }],
+    evidence: [
+      {
+        section: "Abstract",
+        quote:
+          "This paper studies galaxy clustering and reports a measured bias in large scale structure.",
+        supports: ["reason", "result"],
+      },
+    ],
   };
 }
 
 function abstractWorthKnowing() {
-  return { priority: "worth_knowing", reason: "This may constrain the group's environment models." };
+  return {
+    priority: "worth_knowing",
+    reason: "This may constrain the group's environment models.",
+  };
 }
 
 const BODY_TEX = String.raw`\documentclass{article}
@@ -85,11 +113,29 @@ function fullBodyOutput(priority = "must_read") {
     assumptions: [],
     limits: [],
     research_progress: "The model yields a measurable radio transient.",
-    inspected_sections: ["Introduction", "Model assumptions", "Methods", "Results", "Discussion and conclusion"],
+    inspected_sections: [
+      "Introduction",
+      "Model assumptions",
+      "Methods",
+      "Results",
+      "Discussion and conclusion",
+    ],
     evidence: [
-      { section: "Introduction", quote: "This study asks how dense surroundings shape radio transients.", supports: ["reason", "problem"] },
-      { section: "Methods", quote: "We solve radiation hydrodynamics with a numerical transport model.", supports: ["method"] },
-      { section: "Results", quote: "The model produces a measurable radio transient.", supports: ["result", "research_progress"] },
+      {
+        section: "Introduction",
+        quote: "This study asks how dense surroundings shape radio transients.",
+        supports: ["reason", "problem"],
+      },
+      {
+        section: "Methods",
+        quote: "We solve radiation hydrodynamics with a numerical transport model.",
+        supports: ["method"],
+      },
+      {
+        section: "Results",
+        quote: "The model produces a measurable radio transient.",
+        supports: ["result", "research_progress"],
+      },
     ],
   };
 }
@@ -106,7 +152,13 @@ function worthBodyOutput() {
     limits: [],
     research_progress: "The model produces a measurable radio transient.",
     inspected_sections: ["Results"],
-    evidence: [{ section: "Results", quote: "The model produces a measurable radio transient.", supports: ["reason", "result", "research_progress"] }],
+    evidence: [
+      {
+        section: "Results",
+        quote: "The model produces a measurable radio transient.",
+        supports: ["reason", "result", "research_progress"],
+      },
+    ],
   };
 }
 
@@ -179,7 +231,7 @@ function tarArchive(files) {
     header.write(checksum.toString(8).padStart(6, "0"), 148, 6, "ascii");
     header[154] = 0;
     header[155] = 0x20;
-    chunks.push(header, body, Buffer.alloc((512 - body.length % 512) % 512));
+    chunks.push(header, body, Buffer.alloc((512 - (body.length % 512)) % 512));
   }
   chunks.push(Buffer.alloc(1024));
   return Buffer.concat(chunks);
@@ -187,7 +239,11 @@ function tarArchive(files) {
 
 test("abstract skips need no body source and bootstrap a missing radar safely", async (t) => {
   const paths = await setup(t, { withRadar: false });
-  const item = entry("2609.90001", "2026-09-07", "This paper studies galaxy clustering and reports a measured bias in large scale structure.");
+  const item = entry(
+    "2609.90001",
+    "2026-09-07",
+    "This paper studies galaxy clustering and reports a measured bias in large scale structure."
+  );
   await writeFeed(paths, feed([item]));
   let sourceCalls = 0;
 
@@ -216,7 +272,11 @@ test("abstract skips need no body source and bootstrap a missing radar safely", 
 
 test("a Chinese abstract locator normalizes to Abstract only for abstract-level Skim", async (t) => {
   const paths = await setup(t);
-  const item = entry("2609.90009", "2026-09-07", "This paper studies galaxy clustering and reports a measured bias in large scale structure.");
+  const item = entry(
+    "2609.90009",
+    "2026-09-07",
+    "This paper studies galaxy clustering and reports a measured bias in large scale structure."
+  );
   await writeFeed(paths, feed([item]));
   await runAiAnalyzer({
     ...paths,
@@ -228,21 +288,28 @@ test("a Chinese abstract locator normalizes to Abstract only for abstract-level 
       output.evidence[0].section = "摘要";
       return output;
     },
-    sourceLoader: async () => { throw new Error("Skim must not fetch body"); },
+    sourceLoader: async () => {
+      throw new Error("Skim must not fetch body");
+    },
   });
   const model = buildDailyRadarModel(feed([item]), JSON.parse(await readFile(paths.radar, "utf8")));
   assert.equal(model.groups.skip.length, 1);
-  assert.equal(model.groups.skip[0].analysis.analysis.citation_leads[0].startsWith("Abstract:"), true);
+  assert.equal(
+    model.groups.skip[0].analysis.analysis.citation_leads[0].startsWith("Abstract:"),
+    true
+  );
 });
 
 test("a figure-heavy source package reads the complete TeX without passing binary figures to the model", async (t) => {
   const paths = await setup(t);
   const item = entry("2609.93540", "2026-09-07");
   await writeFeed(paths, feed([item]));
-  const source = gzipSync(tarArchive({
-    "main.tex": BODY_TEX,
-    "figure.png": randomBytes(9 * 1024 * 1024),
-  }));
+  const source = gzipSync(
+    tarArchive({
+      "main.tex": BODY_TEX,
+      "figure.png": randomBytes(9 * 1024 * 1024),
+    })
+  );
   const observedPrompts = [];
   await runAiAnalyzer({
     ...paths,
@@ -254,7 +321,10 @@ test("a figure-heavy source package reads the complete TeX without passing binar
       observedPrompts.push(prompt);
       return { ...fullBodyOutput(), result: "模型产生可测的射电瞬变。环境密度仍不确定。" };
     },
-    sourceLoader: async () => ({ url: `https://export.arxiv.org/src/${item.arxiv_id}v1`, bytes: source }),
+    sourceLoader: async () => ({
+      url: `https://export.arxiv.org/src/${item.arxiv_id}v1`,
+      bytes: source,
+    }),
   });
   const model = buildDailyRadarModel(feed([item]), JSON.parse(await readFile(paths.radar, "utf8")));
   assert.equal(model.groups.must_read.length, 1);
@@ -283,16 +353,27 @@ test("an unresolved include or expanded source over the package cap remains pend
     },
     sourceLoader: async (candidate) => ({
       url: `https://export.arxiv.org/src/${candidate.arxiv_id}v1`,
-      bytes: candidate.arxiv_id === missing.arxiv_id
-        ? Buffer.from(BODY_TEX.replace("\\section{Methods}", "\\input{missing-section}\n\\section{Methods}"))
-        : oversizedGzip,
+      bytes:
+        candidate.arxiv_id === missing.arxiv_id
+          ? Buffer.from(
+              BODY_TEX.replace("\\section{Methods}", "\\input{missing-section}\n\\section{Methods}")
+            )
+          : oversizedGzip,
     }),
   });
   const queue = JSON.parse(await readFile(paths.statePath, "utf8"));
   assert.equal(bodyCalls, 0);
-  assert.ok(queue.items.every((item) => item.state === "awaiting_body" && item.analysis.status === "failed"));
-  assert.match(queue.items.find((item) => item.entry.arxiv_id === missing.arxiv_id).last_error, /unresolved TeX include/u);
-  assert.match(queue.items.find((item) => item.entry.arxiv_id === expanded.arxiv_id).last_error, /larger than|exceeds|too large/iu);
+  assert.ok(
+    queue.items.every((item) => item.state === "awaiting_body" && item.analysis.status === "failed")
+  );
+  assert.match(
+    queue.items.find((item) => item.entry.arxiv_id === missing.arxiv_id).last_error,
+    /unresolved TeX include/u
+  );
+  assert.match(
+    queue.items.find((item) => item.entry.arxiv_id === expanded.arxiv_id).last_error,
+    /larger than|exceeds|too large/iu
+  );
 });
 
 test("a macro-expanded missing include cannot publish a full-body recommendation", async (t) => {
@@ -304,7 +385,7 @@ test("a macro-expanded missing include cannot publish a full-body recommendation
     "\\section{Methods}",
     String.raw`\newcommand{\missingfile}{missing.tex}
 \input\missingfile
-\section{Methods}`,
+\section{Methods}`
   );
   let bodyCalls = 0;
 
@@ -318,7 +399,10 @@ test("a macro-expanded missing include cannot publish a full-body recommendation
       bodyCalls += 1;
       return fullBodyOutput();
     },
-    sourceLoader: async () => ({ url: `https://export.arxiv.org/src/${item.arxiv_id}v1`, bytes: Buffer.from(source) }),
+    sourceLoader: async () => ({
+      url: `https://export.arxiv.org/src/${item.arxiv_id}v1`,
+      bytes: Buffer.from(source),
+    }),
   });
 
   const queue = JSON.parse(await readFile(paths.statePath, "utf8"));
@@ -340,21 +424,27 @@ test("literal braced and unbraced includes remain readable while commented inclu
     String.raw`\input{first}
 \include second.tex
 % \input{missing.tex}
-\section{Methods}`,
+\section{Methods}`
   );
-  const source = gzipSync(tarArchive({
-    "main.tex": main,
-    "first.tex": "Additional physical context from a complete source file.",
-    "second.tex": "Further complete source material.",
-  }));
+  const source = gzipSync(
+    tarArchive({
+      "main.tex": main,
+      "first.tex": "Additional physical context from a complete source file.",
+      "second.tex": "Further complete source material.",
+    })
+  );
 
   await runAiAnalyzer({
     ...paths,
     limit: 1,
     concurrency: 1,
     syncArchives: false,
-    modelRunner: async ({ stage }) => stage === "abstract" ? abstractWorthKnowing() : fullBodyOutput(),
-    sourceLoader: async () => ({ url: `https://export.arxiv.org/src/${item.arxiv_id}v1`, bytes: source }),
+    modelRunner: async ({ stage }) =>
+      stage === "abstract" ? abstractWorthKnowing() : fullBodyOutput(),
+    sourceLoader: async () => ({
+      url: `https://export.arxiv.org/src/${item.arxiv_id}v1`,
+      bytes: source,
+    }),
   });
 
   const publishedRadar = JSON.parse(await readFile(paths.radar, "utf8"));
@@ -367,29 +457,39 @@ test("a long body resumes bounded portion reading and publishes only after every
   const paths = await setup(t);
   const item = entry("2609.91230", "2026-09-07");
   await writeFeed(paths, feed([item]));
-  const longTex = BODY_TEX.replace("We solve radiation", `${"Physical detail about transport and cooling. ".repeat(2600)}\nWe solve radiation`);
+  const longTex = BODY_TEX.replace(
+    "We solve radiation",
+    `${"Physical detail about transport and cooling. ".repeat(2600)}\nWe solve radiation`
+  );
   const stages = [];
   let failOnce = true;
-  const run = () => runAiAnalyzer({
-    ...paths,
-    limit: 1,
-    concurrency: 1,
-    syncArchives: false,
-    modelRunner: async ({ stage, prompt }) => {
-      stages.push({ stage, length: prompt.length });
-      if (stage === "abstract") return abstractWorthKnowing();
-      if (stage === "body_chunk") {
-        if (failOnce && stages.filter((call) => call.stage === "body_chunk").length === 3) {
-          failOnce = false;
-          throw new Error("temporary chunk outage");
+  const run = () =>
+    runAiAnalyzer({
+      ...paths,
+      limit: 1,
+      concurrency: 1,
+      syncArchives: false,
+      modelRunner: async ({ stage, prompt }) => {
+        stages.push({ stage, length: prompt.length });
+        if (stage === "abstract") return abstractWorthKnowing();
+        if (stage === "body_chunk") {
+          if (failOnce && stages.filter((call) => call.stage === "body_chunk").length === 3) {
+            failOnce = false;
+            throw new Error("temporary chunk outage");
+          }
+          const chunk = prompt.split("SOURCE TEXT:\n")[1];
+          return {
+            summary: "Text discusses transport and cooling or adjacent sections.",
+            quote: chunk.match(/[A-Za-z][A-Za-z ]{20,}/u)?.[0]?.slice(0, 40),
+          };
         }
-        const chunk = prompt.split("SOURCE TEXT:\n")[1];
-        return { summary: "Text discusses transport and cooling or adjacent sections.", quote: chunk.match(/[A-Za-z][A-Za-z ]{20,}/u)?.[0]?.slice(0, 40) };
-      }
-      return fullBodyOutput();
-    },
-    sourceLoader: async () => ({ url: `https://export.arxiv.org/src/${item.arxiv_id}v1`, bytes: Buffer.from(longTex) }),
-  });
+        return fullBodyOutput();
+      },
+      sourceLoader: async () => ({
+        url: `https://export.arxiv.org/src/${item.arxiv_id}v1`,
+        bytes: Buffer.from(longTex),
+      }),
+    });
 
   await run();
   let queue = JSON.parse(await readFile(paths.statePath, "utf8"));
@@ -402,10 +502,19 @@ test("a long body resumes bounded portion reading and publishes only after every
   assert.equal(queue.items[0].state, "complete");
   assert.ok(queue.items[0].reading_progress.completed.length > completedBeforeRetry);
   assert.equal(stages.filter((call) => call.stage === "abstract").length, 1);
-  assert.equal(stages.filter((call) => call.stage === "body_chunk").length, queue.items[0].reading_progress.total_chunks + 1);
-  assert.ok(stages.filter((call) => call.stage === "body_chunk").every((call) => call.length < 20_000));
+  assert.equal(
+    stages.filter((call) => call.stage === "body_chunk").length,
+    queue.items[0].reading_progress.total_chunks + 1
+  );
+  assert.ok(
+    stages.filter((call) => call.stage === "body_chunk").every((call) => call.length < 20_000)
+  );
   assert.equal(chunkCallsBeforeRetry, 3);
-  assert.equal(buildDailyRadarModel(feed([item]), JSON.parse(await readFile(paths.radar, "utf8"))).groups.must_read.length, 1);
+  assert.equal(
+    buildDailyRadarModel(feed([item]), JSON.parse(await readFile(paths.radar, "utf8"))).groups
+      .must_read.length,
+    1
+  );
 });
 
 test("resumed body progress rechecks source completeness before any further chunk", async (t) => {
@@ -413,45 +522,69 @@ test("resumed body progress rechecks source completeness before any further chun
   const item = entry("2609.91239", "2026-09-07");
   const expectedFeed = feed([item]);
   await writeFeed(paths, expectedFeed);
-  let sourceText = BODY_TEX.replace("We solve radiation", `${"Physical detail about transport and cooling. ".repeat(2600)}\nWe solve radiation`);
+  let sourceText = BODY_TEX.replace(
+    "We solve radiation",
+    `${"Physical detail about transport and cooling. ".repeat(2600)}\nWe solve radiation`
+  );
   let chunkCalls = 0;
-  const run = () => runAiAnalyzer({
-    ...paths,
-    limit: 1,
-    concurrency: 1,
-    syncArchives: false,
-    modelRunner: async ({ stage, prompt }) => {
-      if (stage === "abstract") return abstractWorthKnowing();
-      if (stage === "body_chunk") {
-        chunkCalls += 1;
-        if (chunkCalls === 2) throw new Error("interrupted body read");
-        const chunk = prompt.split("SOURCE TEXT:\n")[1];
-        return { summary: "The source discusses transport.", quote: chunk.match(/[A-Za-z][A-Za-z ]{20,}/u)?.[0]?.slice(0, 40) };
-      }
-      return fullBodyOutput();
-    },
-    sourceLoader: async () => ({ url: `https://export.arxiv.org/src/${item.arxiv_id}v1`, bytes: Buffer.from(sourceText) }),
-  });
+  const run = () =>
+    runAiAnalyzer({
+      ...paths,
+      limit: 1,
+      concurrency: 1,
+      syncArchives: false,
+      modelRunner: async ({ stage, prompt }) => {
+        if (stage === "abstract") return abstractWorthKnowing();
+        if (stage === "body_chunk") {
+          chunkCalls += 1;
+          if (chunkCalls === 2) throw new Error("interrupted body read");
+          const chunk = prompt.split("SOURCE TEXT:\n")[1];
+          return {
+            summary: "The source discusses transport.",
+            quote: chunk.match(/[A-Za-z][A-Za-z ]{20,}/u)?.[0]?.slice(0, 40),
+          };
+        }
+        return fullBodyOutput();
+      },
+      sourceLoader: async () => ({
+        url: `https://export.arxiv.org/src/${item.arxiv_id}v1`,
+        bytes: Buffer.from(sourceText),
+      }),
+    });
 
   await run();
   let queue = JSON.parse(await readFile(paths.statePath, "utf8"));
   assert.equal(queue.items[0].reading_progress.completed.length, 1);
-  sourceText = sourceText.replace("\\section{Methods}", String.raw`\newcommand{\missingfile}{missing.tex}
+  sourceText = sourceText.replace(
+    "\\section{Methods}",
+    String.raw`\newcommand{\missingfile}{missing.tex}
 \input\missingfile
-\section{Methods}`);
+\section{Methods}`
+  );
   await run();
   queue = JSON.parse(await readFile(paths.statePath, "utf8"));
   assert.equal(chunkCalls, 2);
   assert.equal(queue.items[0].state, "awaiting_body");
   assert.match(queue.items[0].last_error, /unsupported dynamic TeX include/u);
-  assert.equal(buildDailyRadarModel(expectedFeed, JSON.parse(await readFile(paths.radar, "utf8"))).groups.must_read.length, 0);
+  assert.equal(
+    buildDailyRadarModel(expectedFeed, JSON.parse(await readFile(paths.radar, "utf8"))).groups
+      .must_read.length,
+    0
+  );
 });
 
 test("assembled body prompts remain bounded even when source text is below the chunk threshold", async (t) => {
   const paths = await setup(t);
-  const item = entry("2609.91232", "2026-09-07", `Dense-environment transients. ${"A".repeat(3000)}`);
+  const item = entry(
+    "2609.91232",
+    "2026-09-07",
+    `Dense-environment transients. ${"A".repeat(3000)}`
+  );
   await writeFeed(paths, feed([item]));
-  const longTex = BODY_TEX.replace("We solve radiation", `${"Physical detail about transport and cooling. ".repeat(1700)}\nWe solve radiation`);
+  const longTex = BODY_TEX.replace(
+    "We solve radiation",
+    `${"Physical detail about transport and cooling. ".repeat(1700)}\nWe solve radiation`
+  );
   const promptLengths = [];
 
   await runAiAnalyzer({
@@ -461,15 +594,22 @@ test("assembled body prompts remain bounded even when source text is below the c
     syncArchives: false,
     modelRunner: async ({ stage, prompt }) => {
       promptLengths.push(prompt.length);
-      if (prompt.length > 80_000) throw new Error("assembled model prompt exceeds the accepted 80000-character bound");
+      if (prompt.length > 80_000)
+        throw new Error("assembled model prompt exceeds the accepted 80000-character bound");
       if (stage === "abstract") return abstractWorthKnowing();
       if (stage === "body_chunk") {
         const chunk = prompt.split("SOURCE TEXT:\n")[1];
-        return { summary: "Transport and cooling in the source text.", quote: chunk.match(/[A-Za-z][A-Za-z ]{20,}/u)?.[0]?.slice(0, 40) };
+        return {
+          summary: "Transport and cooling in the source text.",
+          quote: chunk.match(/[A-Za-z][A-Za-z ]{20,}/u)?.[0]?.slice(0, 40),
+        };
       }
       return fullBodyOutput();
     },
-    sourceLoader: async () => ({ url: `https://export.arxiv.org/src/${item.arxiv_id}v1`, bytes: Buffer.from(longTex) }),
+    sourceLoader: async () => ({
+      url: `https://export.arxiv.org/src/${item.arxiv_id}v1`,
+      bytes: Buffer.from(longTex),
+    }),
   });
 
   const queue = JSON.parse(await readFile(paths.statePath, "utf8"));
@@ -481,7 +621,10 @@ test("a real-model JSON escape pattern keeps LaTeX slashes intact in a body chun
   const paths = await setup(t);
   const item = entry("2609.91234", "2026-09-07");
   await writeFeed(paths, feed([item]));
-  const longTex = BODY_TEX.replace("We solve radiation", `${"Physical detail about transport and cooling. ".repeat(2100)}\nWe solve radiation`);
+  const longTex = BODY_TEX.replace(
+    "We solve radiation",
+    `${"Physical detail about transport and cooling. ".repeat(2100)}\nWe solve radiation`
+  );
   // Redacted minimal form of the captured seventh-chunk response: an invalid \( escape
   // precedes an already-valid \\Pi escape. Scientific prose is intentionally omitted.
   const capturedPattern = String.raw`{"summary":"\( and \\Pi","quote":"This study asks how dense surroundings shape radio transients."}`;
@@ -498,11 +641,17 @@ test("a real-model JSON escape pattern keeps LaTeX slashes intact in a body chun
         chunkCalls += 1;
         if (chunkCalls === 1) return capturedPattern;
         const chunk = prompt.split("SOURCE TEXT:\n")[1];
-        return { summary: "Transport and cooling in the source text.", quote: chunk.match(/[A-Za-z][A-Za-z ]{20,}/u)?.[0]?.slice(0, 40) };
+        return {
+          summary: "Transport and cooling in the source text.",
+          quote: chunk.match(/[A-Za-z][A-Za-z ]{20,}/u)?.[0]?.slice(0, 40),
+        };
       }
       return fullBodyOutput();
     },
-    sourceLoader: async () => ({ url: `https://export.arxiv.org/src/${item.arxiv_id}v1`, bytes: Buffer.from(longTex) }),
+    sourceLoader: async () => ({
+      url: `https://export.arxiv.org/src/${item.arxiv_id}v1`,
+      bytes: Buffer.from(longTex),
+    }),
   });
 
   const queue = JSON.parse(await readFile(paths.statePath, "utf8"));
@@ -515,7 +664,10 @@ test("an ambiguous TeX JSON escape cannot publish a corrupted body summary", asy
   const paths = await setup(t);
   const item = entry("2609.91235", "2026-09-07");
   await writeFeed(paths, feed([item]));
-  const longTex = BODY_TEX.replace("We solve radiation", `${"Physical detail about transport and cooling. ".repeat(2100)}\nWe solve radiation`);
+  const longTex = BODY_TEX.replace(
+    "We solve radiation",
+    `${"Physical detail about transport and cooling. ".repeat(2100)}\nWe solve radiation`
+  );
   const ambiguous = String.raw`{"summary":"\( and \rm and \\Pi","quote":"This study asks how dense surroundings shape radio transients."}`;
   let chunkCalls = 0;
 
@@ -528,12 +680,18 @@ test("an ambiguous TeX JSON escape cannot publish a corrupted body summary", asy
       if (stage === "abstract") return abstractWorthKnowing();
       if (stage === "body_chunk") {
         chunkCalls += 1;
-        assert.ok(chunkCalls <= 2, `unexpected further chunk after two ambiguous responses: ${prompt.length}`);
+        assert.ok(
+          chunkCalls <= 2,
+          `unexpected further chunk after two ambiguous responses: ${prompt.length}`
+        );
         return ambiguous;
       }
       assert.fail(`unexpected ${stage} model call after ambiguous chunk`);
     },
-    sourceLoader: async () => ({ url: `https://export.arxiv.org/src/${item.arxiv_id}v1`, bytes: Buffer.from(longTex) }),
+    sourceLoader: async () => ({
+      url: `https://export.arxiv.org/src/${item.arxiv_id}v1`,
+      bytes: Buffer.from(longTex),
+    }),
   });
 
   const queue = JSON.parse(await readFile(paths.statePath, "utf8"));
@@ -549,7 +707,10 @@ test("an ambiguous seventh-style body chunk gets one JSON-escaping correction be
   const paths = await setup(t);
   const item = entry("2609.91236", "2026-09-07");
   await writeFeed(paths, feed([item]));
-  const longTex = BODY_TEX.replace("We solve radiation", `${"Physical detail about transport and cooling. ".repeat(2100)}\nWe solve radiation`);
+  const longTex = BODY_TEX.replace(
+    "We solve radiation",
+    `${"Physical detail about transport and cooling. ".repeat(2100)}\nWe solve radiation`
+  );
   const ambiguous = String.raw`{"summary":"\( and \rm and \\Pi","quote":"This study asks how dense surroundings shape radio transients."}`;
   let firstChunkCalls = 0;
 
@@ -565,29 +726,44 @@ test("an ambiguous seventh-style body chunk gets one JSON-escaping correction be
           firstChunkCalls += 1;
           if (firstChunkCalls === 1) return ambiguous;
           assert.match(prompt, /JSON-escaped TeX backslashes/u);
-          return { summary: String.raw`\( and \rm and \Pi`, quote: "This study asks how dense surroundings shape radio transients." };
+          return {
+            summary: String.raw`\( and \rm and \Pi`,
+            quote: "This study asks how dense surroundings shape radio transients.",
+          };
         }
         const chunk = prompt.split("SOURCE TEXT:\n")[1];
-        return { summary: "Transport and cooling in the source text.", quote: chunk.match(/[A-Za-z][A-Za-z ]{20,}/u)?.[0]?.slice(0, 40) };
+        return {
+          summary: "Transport and cooling in the source text.",
+          quote: chunk.match(/[A-Za-z][A-Za-z ]{20,}/u)?.[0]?.slice(0, 40),
+        };
       }
       return fullBodyOutput();
     },
-    sourceLoader: async () => ({ url: `https://export.arxiv.org/src/${item.arxiv_id}v1`, bytes: Buffer.from(longTex) }),
+    sourceLoader: async () => ({
+      url: `https://export.arxiv.org/src/${item.arxiv_id}v1`,
+      bytes: Buffer.from(longTex),
+    }),
   });
 
   const queue = JSON.parse(await readFile(paths.statePath, "utf8"));
   assert.equal(firstChunkCalls, 2);
   assert.equal(queue.items[0].state, "complete");
-  assert.equal(queue.items[0].reading_progress.completed[0].summary, String.raw`\( and \rm and \Pi`);
+  assert.equal(
+    queue.items[0].reading_progress.completed[0].summary,
+    String.raw`\( and \rm and \Pi`
+  );
 });
 
 test("the analyzer CLI rejects a process-argument API key without echoing it", () => {
   const secret = "fixture-secret-do-not-log";
-  assert.throws(() => parseCliArgs([`--api-key=${secret}`]), (error) => {
-    assert.match(error.message, /API key.*environment|environment.*API key/iu);
-    assert.doesNotMatch(error.message, new RegExp(secret, "u"));
-    return true;
-  });
+  assert.throws(
+    () => parseCliArgs([`--api-key=${secret}`]),
+    (error) => {
+      assert.match(error.message, /API key.*environment|environment.*API key/iu);
+      assert.doesNotMatch(error.message, new RegExp(secret, "u"));
+      return true;
+    }
+  );
   assert.throws(() => parseCliArgs(["--only-ids="]), /only-ids requires at least one arXiv ID/u);
 });
 
@@ -599,9 +775,13 @@ test("an oversized model response leaves screening pending without promoting a r
   const originalFetch = globalThis.fetch;
   globalThis.fetch = async () => {
     requests += 1;
-    return new Response('{"choices":[]}', { headers: { "content-length": String(2 * 1024 * 1024 + 1) } });
+    return new Response('{"choices":[]}', {
+      headers: { "content-length": String(2 * 1024 * 1024 + 1) },
+    });
   };
-  t.after(() => { globalThis.fetch = originalFetch; });
+  t.after(() => {
+    globalThis.fetch = originalFetch;
+  });
 
   await runAiAnalyzer({
     ...paths,
@@ -625,25 +805,35 @@ test("a changed source package cannot reuse previously read body portions", asyn
   const paths = await setup(t);
   const item = entry("2609.91231", "2026-09-07");
   await writeFeed(paths, feed([item]));
-  let sourceText = BODY_TEX.replace("We solve radiation", `${"Physical detail about transport and cooling. ".repeat(2600)}\nWe solve radiation`);
+  let sourceText = BODY_TEX.replace(
+    "We solve radiation",
+    `${"Physical detail about transport and cooling. ".repeat(2600)}\nWe solve radiation`
+  );
   let chunkCalls = 0;
-  const run = () => runAiAnalyzer({
-    ...paths,
-    limit: 1,
-    concurrency: 1,
-    syncArchives: false,
-    modelRunner: async ({ stage, prompt }) => {
-      if (stage === "abstract") return abstractWorthKnowing();
-      if (stage === "body_chunk") {
-        chunkCalls += 1;
-        if (chunkCalls === 2) throw new Error("first package interrupted");
-        const chunk = prompt.split("SOURCE TEXT:\n")[1];
-        return { summary: "This portion contains source text.", quote: chunk.match(/[A-Za-z][A-Za-z ]{20,}/u)?.[0]?.slice(0, 40) };
-      }
-      return fullBodyOutput();
-    },
-    sourceLoader: async () => ({ url: `https://export.arxiv.org/src/${item.arxiv_id}v1`, bytes: Buffer.from(sourceText) }),
-  });
+  const run = () =>
+    runAiAnalyzer({
+      ...paths,
+      limit: 1,
+      concurrency: 1,
+      syncArchives: false,
+      modelRunner: async ({ stage, prompt }) => {
+        if (stage === "abstract") return abstractWorthKnowing();
+        if (stage === "body_chunk") {
+          chunkCalls += 1;
+          if (chunkCalls === 2) throw new Error("first package interrupted");
+          const chunk = prompt.split("SOURCE TEXT:\n")[1];
+          return {
+            summary: "This portion contains source text.",
+            quote: chunk.match(/[A-Za-z][A-Za-z ]{20,}/u)?.[0]?.slice(0, 40),
+          };
+        }
+        return fullBodyOutput();
+      },
+      sourceLoader: async () => ({
+        url: `https://export.arxiv.org/src/${item.arxiv_id}v1`,
+        bytes: Buffer.from(sourceText),
+      }),
+    });
 
   await run();
   const first = JSON.parse(await readFile(paths.statePath, "utf8")).items[0].reading_progress;
@@ -659,7 +849,10 @@ test("an unverifiable body portion gets one correction before it is counted as r
   const paths = await setup(t);
   const item = entry("2609.91237", "2026-09-07");
   await writeFeed(paths, feed([item]));
-  const longTex = BODY_TEX.replace("We solve radiation", `${"Physical detail about transport and cooling. ".repeat(2600)}\nWe solve radiation`);
+  const longTex = BODY_TEX.replace(
+    "We solve radiation",
+    `${"Physical detail about transport and cooling. ".repeat(2600)}\nWe solve radiation`
+  );
   let chunkCalls = 0;
   const prompts = [];
   await runAiAnalyzer({
@@ -672,13 +865,23 @@ test("an unverifiable body portion gets one correction before it is counted as r
       if (stage === "body_chunk") {
         chunkCalls += 1;
         prompts.push(prompt);
-        if (chunkCalls === 1) return { summary: "The text describes transport.", quote: "This is absent from the source." };
+        if (chunkCalls === 1)
+          return {
+            summary: "The text describes transport.",
+            quote: "This is absent from the source.",
+          };
         const chunk = prompt.split("SOURCE TEXT:\n")[1].split("\n\n上一次")[0];
-        return { summary: "The text describes transport.", quote: chunk.match(/[A-Za-z][A-Za-z ]{20,}/u)?.[0]?.slice(0, 40) };
+        return {
+          summary: "The text describes transport.",
+          quote: chunk.match(/[A-Za-z][A-Za-z ]{20,}/u)?.[0]?.slice(0, 40),
+        };
       }
       return fullBodyOutput();
     },
-    sourceLoader: async () => ({ url: `https://export.arxiv.org/src/${item.arxiv_id}v1`, bytes: Buffer.from(longTex) }),
+    sourceLoader: async () => ({
+      url: `https://export.arxiv.org/src/${item.arxiv_id}v1`,
+      bytes: Buffer.from(longTex),
+    }),
   });
   const queue = JSON.parse(await readFile(paths.statePath, "utf8"));
   assert.equal(queue.items[0].state, "complete");
@@ -690,7 +893,10 @@ test("a macro-named body section remains an identifiable reading locator", async
   const paths = await setup(t);
   const item = entry("2609.91232", "2026-09-07");
   await writeFeed(paths, feed([item]));
-  const sourceText = BODY_TEX.replace("\\section{Methods}", "\\subsection{\\CASTRO}\nThe radiation code is described here.\n\\subsection{Transport in \\CCSM\\ Interaction}\nThe surrounding medium is described here.\n\\section{Methods}");
+  const sourceText = BODY_TEX.replace(
+    "\\section{Methods}",
+    "\\subsection{\\CASTRO}\nThe radiation code is described here.\n\\subsection{Transport in \\CCSM\\ Interaction}\nThe surrounding medium is described here.\n\\section{Methods}"
+  );
   let sectionNames;
   await runAiAnalyzer({
     ...paths,
@@ -702,7 +908,10 @@ test("a macro-named body section remains an identifiable reading locator", async
       sectionNames = source.sections.map(({ title }) => title);
       return worthBodyOutput();
     },
-    sourceLoader: async () => ({ url: `https://export.arxiv.org/src/${item.arxiv_id}v1`, bytes: Buffer.from(sourceText) }),
+    sourceLoader: async () => ({
+      url: `https://export.arxiv.org/src/${item.arxiv_id}v1`,
+      bytes: Buffer.from(sourceText),
+    }),
   });
   assert.ok(sectionNames.includes("CASTRO"));
   assert.ok(sectionNames.includes("Transport in CCSM Interaction"));
@@ -743,10 +952,13 @@ test("an abstract quote cannot support a body section and repair identifies its 
   const paths = await setup(t);
   const item = entry("2609.91238", "2026-09-07");
   await writeFeed(paths, feed([item]));
-  const sourceText = BODY_TEX.replace("\\begin{document}", String.raw`\begin{document}
+  const sourceText = BODY_TEX.replace(
+    "\\begin{document}",
+    String.raw`\begin{document}
 \begin{abstract}
 Here we argue that dispersion changes can trace the photoionized surroundings.
-\end{abstract}`);
+\end{abstract}`
+  );
   const prompts = [];
   await runAiAnalyzer({
     ...paths,
@@ -758,26 +970,41 @@ Here we argue that dispersion changes can trace the photoionized surroundings.
       prompts.push(prompt);
       if (prompts.length === 1) {
         const output = fullBodyOutput();
-        output.evidence[0].quote = "Here we argue that dispersion changes can trace the photoionized surroundings.";
+        output.evidence[0].quote =
+          "Here we argue that dispersion changes can trace the photoionized surroundings.";
         return output;
       }
       return fullBodyOutput();
     },
-    sourceLoader: async () => ({ url: `https://export.arxiv.org/src/${item.arxiv_id}v1`, bytes: Buffer.from(sourceText) }),
+    sourceLoader: async () => ({
+      url: `https://export.arxiv.org/src/${item.arxiv_id}v1`,
+      bytes: Buffer.from(sourceText),
+    }),
   });
   assert.equal(prompts.length, 2);
   assert.match(prompts[1], /摘录实际位于 Abstract/u);
   assert.match(prompts[1], /Here we argue that dispersion changes/u);
   const model = buildDailyRadarModel(feed([item]), JSON.parse(await readFile(paths.radar, "utf8")));
   assert.equal(model.groups.must_read.length, 1);
-  assert.ok(model.groups.must_read[0].analysis.analysis.citation_leads.every((lead) => !lead.includes("Here we argue")));
+  assert.ok(
+    model.groups.must_read[0].analysis.analysis.citation_leads.every(
+      (lead) => !lead.includes("Here we argue")
+    )
+  );
 });
 
 test("long-body synthesis does not offer the discovery abstract as body evidence", async (t) => {
   const paths = await setup(t);
-  const item = entry("2609.91239", "2026-09-07", "Discovery abstract only: this sentence is not in the source body.");
+  const item = entry(
+    "2609.91239",
+    "2026-09-07",
+    "Discovery abstract only: this sentence is not in the source body."
+  );
   await writeFeed(paths, feed([item]));
-  const longTex = BODY_TEX.replace("We solve radiation", `${"Physical detail about transport and cooling. ".repeat(2600)}\nWe solve radiation`);
+  const longTex = BODY_TEX.replace(
+    "We solve radiation",
+    `${"Physical detail about transport and cooling. ".repeat(2600)}\nWe solve radiation`
+  );
   let synthesisPrompt = "";
   await runAiAnalyzer({
     ...paths,
@@ -788,23 +1015,39 @@ test("long-body synthesis does not offer the discovery abstract as body evidence
       if (stage === "abstract") return abstractWorthKnowing();
       if (stage === "body_chunk") {
         const chunk = prompt.split("SOURCE TEXT:\n")[1];
-        return { summary: "This portion describes source physics.", quote: chunk.match(/[A-Za-z][A-Za-z ]{20,}/u)?.[0]?.slice(0, 40) };
+        return {
+          summary: "This portion describes source physics.",
+          quote: chunk.match(/[A-Za-z][A-Za-z ]{20,}/u)?.[0]?.slice(0, 40),
+        };
       }
       synthesisPrompt = prompt;
       return fullBodyOutput();
     },
-    sourceLoader: async () => ({ url: `https://export.arxiv.org/src/${item.arxiv_id}v1`, bytes: Buffer.from(longTex) }),
+    sourceLoader: async () => ({
+      url: `https://export.arxiv.org/src/${item.arxiv_id}v1`,
+      bytes: Buffer.from(longTex),
+    }),
   });
-  assert.doesNotMatch(synthesisPrompt, /Discovery abstract only: this sentence is not in the source body/u);
+  assert.doesNotMatch(
+    synthesisPrompt,
+    /Discovery abstract only: this sentence is not in the source body/u
+  );
   assert.doesNotMatch(synthesisPrompt, /实际标题或 Abstract/u);
-  assert.equal(buildDailyRadarModel(feed([item]), JSON.parse(await readFile(paths.radar, "utf8"))).groups.must_read.length, 1);
+  assert.equal(
+    buildDailyRadarModel(feed([item]), JSON.parse(await readFile(paths.radar, "utf8"))).groups
+      .must_read.length,
+    1
+  );
 });
 
 test("a parent section supports a verbatim quote from its named subsection", async (t) => {
   const paths = await setup(t);
   const item = entry("2609.91234", "2026-09-07");
   await writeFeed(paths, feed([item]));
-  const sourceText = BODY_TEX.replace("\\section{Methods}", "\\section{Methods}\n\\subsection{Transport code}");
+  const sourceText = BODY_TEX.replace(
+    "\\section{Methods}",
+    "\\section{Methods}\n\\subsection{Transport code}"
+  );
   await runAiAnalyzer({
     ...paths,
     limit: 1,
@@ -816,7 +1059,10 @@ test("a parent section supports a verbatim quote from its named subsection", asy
       output.inspected_sections.splice(3, 0, "Transport code");
       return output;
     },
-    sourceLoader: async () => ({ url: `https://export.arxiv.org/src/${item.arxiv_id}v1`, bytes: Buffer.from(sourceText) }),
+    sourceLoader: async () => ({
+      url: `https://export.arxiv.org/src/${item.arxiv_id}v1`,
+      bytes: Buffer.from(sourceText),
+    }),
   });
   const model = buildDailyRadarModel(feed([item]), JSON.parse(await readFile(paths.radar, "utf8")));
   assert.equal(model.groups.must_read.length, 1);
@@ -840,26 +1086,46 @@ Joint observations provide complementary constraints on the engine.
     limit: 1,
     concurrency: 1,
     syncArchives: false,
-    modelRunner: async ({ stage }) => stage === "abstract" ? abstractWorthKnowing() : {
-      priority: "must_read",
-      reason: "This review surveys electromagnetic probes of stellar explosions.",
-      result: "Joint observations provide complementary constraints on the engine.",
-      problem: "This review surveys electromagnetic probes of stellar explosions.",
-      method: "unknown",
-      reading_entry: "Summary",
-      research_progress: "Joint observations provide complementary constraints on the engine.",
-      assumptions: [], limits: [],
-      inspected_sections: ["Introduction", "Observations", "Summary"],
-      evidence: [
-        { section: "Introduction", quote: "This review surveys electromagnetic probes of stellar explosions.", supports: ["reason", "problem"] },
-        { section: "Summary", quote: "Joint observations provide complementary constraints on the engine.", supports: ["result", "research_progress"] },
-      ],
-    },
-    sourceLoader: async () => ({ url: `https://export.arxiv.org/src/${item.arxiv_id}v1`, bytes: Buffer.from(sourceText) }),
+    modelRunner: async ({ stage }) =>
+      stage === "abstract"
+        ? abstractWorthKnowing()
+        : {
+            priority: "must_read",
+            reason: "This review surveys electromagnetic probes of stellar explosions.",
+            result: "Joint observations provide complementary constraints on the engine.",
+            problem: "This review surveys electromagnetic probes of stellar explosions.",
+            method: "unknown",
+            reading_entry: "Summary",
+            research_progress:
+              "Joint observations provide complementary constraints on the engine.",
+            assumptions: [],
+            limits: [],
+            inspected_sections: ["Introduction", "Observations", "Summary"],
+            evidence: [
+              {
+                section: "Introduction",
+                quote: "This review surveys electromagnetic probes of stellar explosions.",
+                supports: ["reason", "problem"],
+              },
+              {
+                section: "Summary",
+                quote: "Joint observations provide complementary constraints on the engine.",
+                supports: ["result", "research_progress"],
+              },
+            ],
+          },
+    sourceLoader: async () => ({
+      url: `https://export.arxiv.org/src/${item.arxiv_id}v1`,
+      bytes: Buffer.from(sourceText),
+    }),
   });
   const model = buildDailyRadarModel(feed([item]), JSON.parse(await readFile(paths.radar, "utf8")));
   assert.equal(model.groups.must_read.length, 1);
-  assert.deepEqual(model.groups.must_read[0].analysis.coverage.source_sections, ["Introduction", "Observations", "Summary"]);
+  assert.deepEqual(model.groups.must_read[0].analysis.coverage.source_sections, [
+    "Introduction",
+    "Observations",
+    "Summary",
+  ]);
 });
 
 test("unsupported optional limitations are omitted from an otherwise evidenced recommendation", async (t) => {
@@ -874,15 +1140,24 @@ test("unsupported optional limitations are omitted from an otherwise evidenced r
     modelRunner: async ({ stage }) => {
       if (stage === "abstract") return abstractWorthKnowing();
       const output = fullBodyOutput();
-      output.limits = ["The inferred density remains uncertain.", "Unsupported unrelated limitation."];
-      output.evidence.push({ section: "Discussion and conclusion", quote: "The inferred density remains uncertain.", supports: ["limits[0]"] });
+      output.limits = [
+        "The inferred density remains uncertain.",
+        "Unsupported unrelated limitation.",
+      ];
+      output.evidence.push({
+        section: "Discussion and conclusion",
+        quote: "The inferred density remains uncertain.",
+        supports: ["limits[0]"],
+      });
       return output;
     },
     sourceLoader: async () => sourceFor(item),
   });
   const model = buildDailyRadarModel(feed([item]), JSON.parse(await readFile(paths.radar, "utf8")));
   assert.equal(model.groups.must_read.length, 1);
-  assert.deepEqual(model.groups.must_read[0].analysis.analysis.limits, ["The inferred density remains uncertain."]);
+  assert.deepEqual(model.groups.must_read[0].analysis.analysis.limits, [
+    "The inferred density remains uncertain.",
+  ]);
 });
 
 test("the bounded queue resumes body retries, drains archive rollover, and does not let an older failure starve new work", async (t) => {
@@ -905,22 +1180,48 @@ test("the bounded queue resumes body retries, drains archive rollover, and does 
     }
     return sourceFor(candidate);
   };
-  const run = () => runAiAnalyzer({ ...paths, limit: 1, concurrency: 1, syncArchives: false, modelRunner, sourceLoader });
+  const run = () =>
+    runAiAnalyzer({
+      ...paths,
+      limit: 1,
+      concurrency: 1,
+      syncArchives: false,
+      modelRunner,
+      sourceLoader,
+    });
 
   await run();
   let queue = JSON.parse(await readFile(paths.statePath, "utf8"));
-  const firstItem = queue.items.find(({ entry: candidate }) => candidate.arxiv_id === first.arxiv_id);
-  const archivedItem = queue.items.find(({ entry: candidate }) => candidate.arxiv_id === archived.arxiv_id);
+  const firstItem = queue.items.find(
+    ({ entry: candidate }) => candidate.arxiv_id === first.arxiv_id
+  );
+  const archivedItem = queue.items.find(
+    ({ entry: candidate }) => candidate.arxiv_id === archived.arxiv_id
+  );
   assert.equal(firstItem.state, "awaiting_body");
   assert.equal(firstItem.attempts, 1);
   assert.equal(firstItem.reading_attempts, 1);
-  assert.equal(archivedItem.attempts, 0, "the run limit leaves unselected archive candidates durable");
+  assert.equal(
+    archivedItem.attempts,
+    0,
+    "the run limit leaves unselected archive candidates durable"
+  );
 
   await run();
   queue = JSON.parse(await readFile(paths.statePath, "utf8"));
-  assert.equal(queue.items.find(({ entry: candidate }) => candidate.arxiv_id === archived.arxiv_id).state, "complete");
-  assert.equal(queue.items.find(({ entry: candidate }) => candidate.arxiv_id === first.arxiv_id).state, "awaiting_body");
-  assert.match(bodyPrompts[0], /The model produces a measurable radio transient\./u, "the body prompt includes actual source text");
+  assert.equal(
+    queue.items.find(({ entry: candidate }) => candidate.arxiv_id === archived.arxiv_id).state,
+    "complete"
+  );
+  assert.equal(
+    queue.items.find(({ entry: candidate }) => candidate.arxiv_id === first.arxiv_id).state,
+    "awaiting_body"
+  );
+  assert.match(
+    bodyPrompts[0],
+    /The model produces a measurable radio transient\./u,
+    "the body prompt includes actual source text"
+  );
   assert.match(bodyPrompts[0], /不表示图像、图表、附加数据或二进制文件已被视觉检查/u);
 
   await run();
@@ -929,9 +1230,15 @@ test("the bounded queue resumes body retries, drains archive rollover, and does 
   const currentRadar = JSON.parse(await readFile(paths.radar, "utf8"));
   assert.equal(currentRadar.analyses[0].arxiv_id, first.arxiv_id);
   assert.equal(currentRadar.analyses[0].coverage.level, "full_body");
-  const historical = currentRadar.historical_analyses.find((item) => item.arxiv_id === archived.arxiv_id);
+  const historical = currentRadar.historical_analyses.find(
+    (item) => item.arxiv_id === archived.arxiv_id
+  );
   assert.equal(historical.historical_edition, "announcement-2026-09-02");
-  assert.equal(historical.historical_edition_fingerprint, queue.items.find(({ entry: candidate }) => candidate.arxiv_id === archived.arxiv_id).editions[0].historical_edition_fingerprint);
+  assert.equal(
+    historical.historical_edition_fingerprint,
+    queue.items.find(({ entry: candidate }) => candidate.arxiv_id === archived.arxiv_id).editions[0]
+      .historical_edition_fingerprint
+  );
   assert.equal(historical.source_fingerprint, sourceFingerprint(archived));
 });
 
@@ -946,31 +1253,37 @@ test("FIFO retries and age prevent failed reads or teacher priorities from starv
     entry("2609.90025", "2026-09-06"),
     entry("2609.90026", "2026-09-07"),
   ];
-  const priorityIds = [arrivals[1].arxiv_id, arrivals[3].arxiv_id, arrivals[4].arxiv_id, arrivals[5].arxiv_id];
+  const priorityIds = [
+    arrivals[1].arxiv_id,
+    arrivals[3].arxiv_id,
+    arrivals[4].arxiv_id,
+    arrivals[5].arxiv_id,
+  ];
   const screened = [];
   const sourceAttempts = [];
   let clock = Date.now();
-  const now = () => new Date(clock += 1000);
-  const analyze = () => runAiAnalyzer({
-    ...paths,
-    limit: 1,
-    concurrency: 1,
-    priorityIds,
-    syncArchives: false,
-    now,
-    modelRunner: async ({ stage, entry: candidate }) => {
-      if (stage === "abstract") {
-        screened.push(candidate.arxiv_id);
-        return abstractWorthKnowing();
-      }
-      return worthBodyOutput();
-    },
-    sourceLoader: async (candidate) => {
-      sourceAttempts.push(candidate.arxiv_id);
-      if (candidate.arxiv_id === first.arxiv_id) throw new Error("temporary source outage");
-      return sourceFor(candidate);
-    },
-  });
+  const now = () => new Date((clock += 1000));
+  const analyze = () =>
+    runAiAnalyzer({
+      ...paths,
+      limit: 1,
+      concurrency: 1,
+      priorityIds,
+      syncArchives: false,
+      now,
+      modelRunner: async ({ stage, entry: candidate }) => {
+        if (stage === "abstract") {
+          screened.push(candidate.arxiv_id);
+          return abstractWorthKnowing();
+        }
+        return worthBodyOutput();
+      },
+      sourceLoader: async (candidate) => {
+        sourceAttempts.push(candidate.arxiv_id);
+        if (candidate.arxiv_id === first.arxiv_id) throw new Error("temporary source outage");
+        return sourceFor(candidate);
+      },
+    });
 
   const observed = [first];
   for (let run = 0; run < 7; run += 1) {
@@ -983,21 +1296,59 @@ test("FIFO retries and age prevent failed reads or teacher priorities from starv
     await analyze();
   }
 
-  assert.deepEqual(screened, [first.arxiv_id, arrivals[0].arxiv_id, arrivals[1].arxiv_id, arrivals[2].arxiv_id]);
-  assert.equal(sourceAttempts.filter((arxiv_id) => arxiv_id === first.arxiv_id).length, 4, "the failed body's retry is not permanently pushed behind later arrivals");
+  assert.deepEqual(screened, [
+    first.arxiv_id,
+    arrivals[0].arxiv_id,
+    arrivals[1].arxiv_id,
+    arrivals[2].arxiv_id,
+  ]);
+  assert.equal(
+    sourceAttempts.filter((arxiv_id) => arxiv_id === first.arxiv_id).length,
+    4,
+    "the failed body's retry is not permanently pushed behind later arrivals"
+  );
   const queue = JSON.parse(await readFile(paths.statePath, "utf8"));
   for (const candidate of [arrivals[0], arrivals[1], arrivals[2]]) {
-    assert.equal(queue.items.find(({ entry: queued }) => queued.arxiv_id === candidate.arxiv_id).state, "complete");
+    assert.equal(
+      queue.items.find(({ entry: queued }) => queued.arxiv_id === candidate.arxiv_id).state,
+      "complete"
+    );
   }
 });
 
 test("corrupt queue identities, states, and completed records fail closed without rewriting state", async (t) => {
   const corruptions = [
-    ["unknown state", (item) => { item.state = "finished"; }],
-    ["mismatched key", (item) => { item.key = "2609.90030@v2#wrong"; }],
-    ["invalid identity", (item) => { item.entry.arxiv_id = "not-an-arxiv-id"; }],
-    ["changed fingerprint", (item) => { item.source_fingerprint = "0".repeat(64); }],
-    ["missing completed analysis", (item) => { item.state = "complete"; item.reading_status = "read"; }],
+    [
+      "unknown state",
+      (item) => {
+        item.state = "finished";
+      },
+    ],
+    [
+      "mismatched key",
+      (item) => {
+        item.key = "2609.90030@v2#wrong";
+      },
+    ],
+    [
+      "invalid identity",
+      (item) => {
+        item.entry.arxiv_id = "not-an-arxiv-id";
+      },
+    ],
+    [
+      "changed fingerprint",
+      (item) => {
+        item.source_fingerprint = "0".repeat(64);
+      },
+    ],
+    [
+      "missing completed analysis",
+      (item) => {
+        item.state = "complete";
+        item.reading_status = "read";
+      },
+    ],
   ];
 
   for (const [label, corrupt] of corruptions) {
@@ -1016,12 +1367,27 @@ test("corrupt queue identities, states, and completed records fail closed withou
     await writeFile(paths.statePath, rawQueue);
     const rawRadar = await readFile(paths.radar, "utf8");
 
-    await assert.rejects(runAiAnalyzer({ ...paths, syncArchives: false, modelRunner: async () => assert.fail("corrupt state must fail before model work") }), (error) => {
-      assert.equal(error.code, "ARXIV_ANALYZER_STATE_INVALID", label);
-      return true;
-    });
-    assert.equal(await readFile(paths.statePath, "utf8"), rawQueue, `${label} queue bytes are preserved`);
-    assert.equal(await readFile(paths.radar, "utf8"), rawRadar, `${label} Radar bytes are preserved`);
+    await assert.rejects(
+      runAiAnalyzer({
+        ...paths,
+        syncArchives: false,
+        modelRunner: async () => assert.fail("corrupt state must fail before model work"),
+      }),
+      (error) => {
+        assert.equal(error.code, "ARXIV_ANALYZER_STATE_INVALID", label);
+        return true;
+      }
+    );
+    assert.equal(
+      await readFile(paths.statePath, "utf8"),
+      rawQueue,
+      `${label} queue bytes are preserved`
+    );
+    assert.equal(
+      await readFile(paths.radar, "utf8"),
+      rawRadar,
+      `${label} Radar bytes are preserved`
+    );
   }
 });
 
@@ -1034,13 +1400,23 @@ test("malformed parsed archive entries fail closed before queue or Radar publica
   const rawRadar = await readFile(paths.radar, "utf8");
   const archivePath = join(paths.archiveRoot, "daily", "2026-09-08.json");
   await mkdir(join(paths.archiveRoot, "daily"), { recursive: true });
-  await writeFile(archivePath, `${JSON.stringify({ schema_version: "astrolineage-daily-archive-v1", date: "2026-09-08", feed: { window: {} } })}\n`);
+  await writeFile(
+    archivePath,
+    `${JSON.stringify({ schema_version: "astrolineage-daily-archive-v1", date: "2026-09-08", feed: { window: {} } })}\n`
+  );
 
-  await assert.rejects(runAiAnalyzer({ ...paths, syncArchives: false, modelRunner: async () => assert.fail("malformed archive must fail before model work") }), (error) => {
-    assert.equal(error.code, "ARXIV_ARCHIVE_INVALID");
-    assert.match(error.message, /2026-09-08\.json/u);
-    return true;
-  });
+  await assert.rejects(
+    runAiAnalyzer({
+      ...paths,
+      syncArchives: false,
+      modelRunner: async () => assert.fail("malformed archive must fail before model work"),
+    }),
+    (error) => {
+      assert.equal(error.code, "ARXIV_ARCHIVE_INVALID");
+      assert.match(error.message, /2026-09-08\.json/u);
+      return true;
+    }
+  );
   assert.equal(await readFile(paths.statePath, "utf8"), rawQueue);
   assert.equal(await readFile(paths.radar, "utf8"), rawRadar);
 });
@@ -1066,23 +1442,24 @@ test("Worth Knowing records supporting body sections, while incomplete Must Read
     concurrency: 1,
     syncArchives: false,
     modelRunner,
-    sourceLoader: async (candidate) => candidate.arxiv_id === worth.arxiv_id
-      ? {
-        url: `https://export.arxiv.org/src/${candidate.arxiv_id}v${candidate.revision}`,
-        bytes: tarArchive({
-          "main.tex": String.raw`\documentclass{article}
+    sourceLoader: async (candidate) =>
+      candidate.arxiv_id === worth.arxiv_id
+        ? {
+            url: `https://export.arxiv.org/src/${candidate.arxiv_id}v${candidate.revision}`,
+            bytes: tarArchive({
+              "main.tex": String.raw`\documentclass{article}
 \begin{document}
 \section{Introduction}
 This study asks how dense surroundings shape radio transients.
 \\% \input{missing-file}
 \input{sections/results}
 \end{document}`,
-          "sections/results.tex": String.raw`\section{Results}
+              "sections/results.tex": String.raw`\section{Results}
 The model produces a measurable radio transient.
 The result is robust to a 10\% threshold.`,
-        }),
-      }
-      : sourceFor(candidate),
+            }),
+          }
+        : sourceFor(candidate),
   });
 
   const radar = JSON.parse(await readFile(paths.radar, "utf8"));
@@ -1090,11 +1467,20 @@ The result is robust to a 10\% threshold.`,
   assert.equal(model.groups.worth_knowing.length, 1);
   assert.equal(model.groups.worth_knowing[0].analysis.coverage.level, "body_partial");
   assert.deepEqual(model.groups.worth_knowing[0].analysis.coverage.inspected_sections, ["Results"]);
-  assert.equal(model.pending.some(({ arxiv_id }) => arxiv_id === incomplete.arxiv_id), true);
-  assert.equal(model.groups.must_read.some(({ arxiv_id }) => arxiv_id === incomplete.arxiv_id), false);
+  assert.equal(
+    model.pending.some(({ arxiv_id }) => arxiv_id === incomplete.arxiv_id),
+    true
+  );
+  assert.equal(
+    model.groups.must_read.some(({ arxiv_id }) => arxiv_id === incomplete.arxiv_id),
+    false
+  );
   assert.equal(model.opening_brief.status, "ready");
   assert.equal(model.opening_brief.must_read.length, 0);
-  assert.deepEqual(model.opening_brief.worth_knowing.map(({ arxiv_id }) => arxiv_id), [worth.arxiv_id]);
+  assert.deepEqual(
+    model.opening_brief.worth_knowing.map(({ arxiv_id }) => arxiv_id),
+    [worth.arxiv_id]
+  );
   assert.doesNotMatch(JSON.stringify(model.opening_brief), new RegExp(incomplete.arxiv_id, "u"));
 });
 
@@ -1115,9 +1501,15 @@ test("wrong-revision and truncated source packages remain retryable and never be
       bodyCalls += 1;
       return fullBodyOutput();
     },
-    sourceLoader: async (candidate) => candidate.arxiv_id === wrongRevision.arxiv_id
-      ? { ...sourceFor(candidate), url: `https://export.arxiv.org/src/${candidate.arxiv_id}v2` }
-      : { ...sourceFor(candidate), bytes: Buffer.from(String.raw`\documentclass{article}\begin{document}\section{Results}truncated`) },
+    sourceLoader: async (candidate) =>
+      candidate.arxiv_id === wrongRevision.arxiv_id
+        ? { ...sourceFor(candidate), url: `https://export.arxiv.org/src/${candidate.arxiv_id}v2` }
+        : {
+            ...sourceFor(candidate),
+            bytes: Buffer.from(
+              String.raw`\documentclass{article}\begin{document}\section{Results}truncated`
+            ),
+          },
   });
 
   assert.equal(bodyCalls, 0);
@@ -1126,7 +1518,9 @@ test("wrong-revision and truncated source packages remain retryable and never be
   assert.equal(model.groups.worth_knowing.length, 0);
   assert.equal(model.pending.length, 2);
   const queue = JSON.parse(await readFile(paths.statePath, "utf8"));
-  assert.ok(queue.items.every((item) => item.state === "awaiting_body" && item.reading_status === "pending"));
+  assert.ok(
+    queue.items.every((item) => item.state === "awaiting_body" && item.reading_status === "pending")
+  );
   assert.ok(queue.items.every((item) => item.last_error));
 });
 
@@ -1148,7 +1542,9 @@ test("unbraced missing TeX input stays pending instead of publishing a full-body
     },
     sourceLoader: async (candidate) => ({
       url: `https://export.arxiv.org/src/${candidate.arxiv_id}v${candidate.revision}`,
-      bytes: Buffer.from(BODY_TEX.replace("\\section{Methods}", "\\input missing.tex\n\\section{Methods}")),
+      bytes: Buffer.from(
+        BODY_TEX.replace("\\section{Methods}", "\\input missing.tex\n\\section{Methods}")
+      ),
     }),
   });
 
@@ -1164,7 +1560,11 @@ test("unbraced missing TeX input stays pending instead of publishing a full-body
 
 test("an invalid abstract skip is not sticky and gets rescreened on a later run", async (t) => {
   const paths = await setup(t);
-  const item = entry("2609.90008", "2026-09-07", "This paper studies galaxy clustering and reports a measured bias in large scale structure.");
+  const item = entry(
+    "2609.90008",
+    "2026-09-07",
+    "This paper studies galaxy clustering and reports a measured bias in large scale structure."
+  );
   await writeFeed(paths, feed([item]));
   let abstractCalls = 0;
   const options = {
@@ -1172,7 +1572,9 @@ test("an invalid abstract skip is not sticky and gets rescreened on a later run"
     limit: 1,
     concurrency: 1,
     syncArchives: false,
-    sourceLoader: async () => { throw new Error("skip should not fetch body"); },
+    sourceLoader: async () => {
+      throw new Error("skip should not fetch body");
+    },
     modelRunner: async () => {
       abstractCalls += 1;
       return abstractCalls === 1 ? { priority: "skip", reason: "unrelated" } : abstractSkip();
@@ -1188,13 +1590,21 @@ test("an invalid abstract skip is not sticky and gets rescreened on a later run"
   assert.equal(abstractCalls, 2);
   assert.equal(queue.items[0].state, "complete");
   assert.equal(queue.items[0].screening_attempts, 2);
-  assert.equal(buildDailyRadarModel(feed([item]), JSON.parse(await readFile(paths.radar, "utf8"))).groups.skip.length, 1);
+  assert.equal(
+    buildDailyRadarModel(feed([item]), JSON.parse(await readFile(paths.radar, "utf8"))).groups.skip
+      .length,
+    1
+  );
 });
 
 test("runtime teacher-priority IDs affect ordering only and are not embedded in analyzer defaults", async (t) => {
   const paths = await setup(t);
   const current = entry("2609.90009", "2026-09-08");
-  const archived = entry("2609.90010", "2026-09-09", "This paper studies galaxy clustering and reports a measured bias in large scale structure.");
+  const archived = entry(
+    "2609.90010",
+    "2026-09-09",
+    "This paper studies galaxy clustering and reports a measured bias in large scale structure."
+  );
   await writeFeed(paths, feed([current]));
   await writeArchive(paths, archived, "2026-09-09");
   const called = [];
@@ -1214,7 +1624,11 @@ test("runtime teacher-priority IDs affect ordering only and are not embedded in 
 
   assert.equal(called[0][1], archived.arxiv_id);
   const radar = JSON.parse(await readFile(paths.radar, "utf8"));
-  assert.deepEqual(radar.analyses, [], "a priority ID changes queue order, not the current-edition membership or scientific decision");
+  assert.deepEqual(
+    radar.analyses,
+    [],
+    "a priority ID changes queue order, not the current-edition membership or scientific decision"
+  );
   const queue = JSON.parse(await readFile(paths.statePath, "utf8"));
   const item = queue.items.find(({ entry: candidate }) => candidate.arxiv_id === archived.arxiv_id);
   assert.equal(item.analysis.priority, "skip");
@@ -1223,8 +1637,16 @@ test("runtime teacher-priority IDs affect ordering only and are not embedded in 
 
 test("an explicit only-IDs retry leaves every other queued candidate untouched", async (t) => {
   const paths = await setup(t);
-  const older = entry("2609.90021", "2026-09-01", "This paper studies galaxy clustering and reports a measured bias in large scale structure.");
-  const target = entry("2609.90022", "2026-09-02", "This paper studies galaxy clustering and reports a measured bias in large scale structure.");
+  const older = entry(
+    "2609.90021",
+    "2026-09-01",
+    "This paper studies galaxy clustering and reports a measured bias in large scale structure."
+  );
+  const target = entry(
+    "2609.90022",
+    "2026-09-02",
+    "This paper studies galaxy clustering and reports a measured bias in large scale structure."
+  );
   await writeFeed(paths, feed([older, target]));
   const called = [];
 
@@ -1243,8 +1665,14 @@ test("an explicit only-IDs retry leaves every other queued candidate untouched",
 
   const queue = JSON.parse(await readFile(paths.statePath, "utf8"));
   assert.deepEqual(called, [target.arxiv_id]);
-  assert.equal(queue.items.find(({ entry: candidate }) => candidate.arxiv_id === older.arxiv_id).attempts, 0);
-  assert.equal(queue.items.find(({ entry: candidate }) => candidate.arxiv_id === target.arxiv_id).state, "complete");
+  assert.equal(
+    queue.items.find(({ entry: candidate }) => candidate.arxiv_id === older.arxiv_id).attempts,
+    0
+  );
+  assert.equal(
+    queue.items.find(({ entry: candidate }) => candidate.arxiv_id === target.arxiv_id).state,
+    "complete"
+  );
 });
 
 test("five regression IDs survive bounded screening, daily archive sync, and weekly eligibility without forced picks", async (t) => {
@@ -1252,12 +1680,21 @@ test("five regression IDs survive bounded screening, daily archive sync, and wee
   const samples = [
     entry("2609.24240", "2026-09-07"),
     entry("2609.13540", "2026-09-07"),
-    entry("2609.12308", "2026-09-08", "This paper studies galaxy clustering and reports a measured bias in large scale structure."),
+    entry(
+      "2609.12308",
+      "2026-09-08",
+      "This paper studies galaxy clustering and reports a measured bias in large scale structure."
+    ),
     entry("2609.11031", "2026-09-09"),
     entry("2609.09285", "2026-09-10"),
   ].map((item, index) => ({
     ...item,
-    title: index === 2 ? `Skim sample ${item.arxiv_id}` : index === 1 || index === 4 ? `Worth Knowing sample ${item.arxiv_id}` : `Must Read sample ${item.arxiv_id}`,
+    title:
+      index === 2
+        ? `Skim sample ${item.arxiv_id}`
+        : index === 1 || index === 4
+          ? `Worth Knowing sample ${item.arxiv_id}`
+          : `Must Read sample ${item.arxiv_id}`,
   }));
   const currentItems = samples.slice(0, 2);
   await writeFeed(paths, feed(currentItems, "2026-09-07"));
@@ -1266,18 +1703,20 @@ test("five regression IDs survive bounded screening, daily archive sync, and wee
   await writeArchive(paths, samples[4], "2026-09-10");
   const priorityIds = samples.map(({ arxiv_id }) => arxiv_id);
   const modelRunner = async ({ stage, entry: candidate }) => {
-    if (stage === "abstract") return candidate.title.startsWith("Skim") ? abstractSkip() : abstractWorthKnowing();
+    if (stage === "abstract")
+      return candidate.title.startsWith("Skim") ? abstractSkip() : abstractWorthKnowing();
     return candidate.title.startsWith("Worth Knowing") ? worthBodyOutput() : fullBodyOutput();
   };
-  const analyze = () => runAiAnalyzer({
-    ...paths,
-    limit: 2,
-    concurrency: 2,
-    priorityIds,
-    syncArchives: false,
-    modelRunner,
-    sourceLoader: async (candidate) => sourceFor(candidate),
-  });
+  const analyze = () =>
+    runAiAnalyzer({
+      ...paths,
+      limit: 2,
+      concurrency: 2,
+      priorityIds,
+      syncArchives: false,
+      modelRunner,
+      sourceLoader: async (candidate) => sourceFor(candidate),
+    });
 
   await analyze();
   await analyze();
@@ -1285,13 +1724,25 @@ test("five regression IDs survive bounded screening, daily archive sync, and wee
   const queue = JSON.parse(await readFile(paths.statePath, "utf8"));
   assert.equal(queue.items.length, 5);
   assert.ok(queue.items.every((item) => item.state === "complete"));
-  assert.deepEqual(new Set(queue.items.map(({ entry: candidate }) => candidate.arxiv_id)), new Set(priorityIds));
+  assert.deepEqual(
+    new Set(queue.items.map(({ entry: candidate }) => candidate.arxiv_id)),
+    new Set(priorityIds)
+  );
   const currentRadar = JSON.parse(await readFile(paths.radar, "utf8"));
-  assert.equal(validateDailyRadarPayload(feed(currentItems, "2026-09-07"), currentRadar).valid, true);
+  assert.equal(
+    validateDailyRadarPayload(feed(currentItems, "2026-09-07"), currentRadar).valid,
+    true
+  );
   assert.equal(currentRadar.analyses.length, 2);
-  assert.equal(currentRadar.historical_analyses.length, 3);
-  assert.equal(currentRadar.analyses.find(({ arxiv_id }) => arxiv_id === samples[0].arxiv_id).priority, "must_read");
-  assert.equal(currentRadar.analyses.find(({ arxiv_id }) => arxiv_id === samples[1].arxiv_id).priority, "worth_knowing");
+  assert.equal(currentRadar.historical_analyses.length, 2);
+  assert.equal(
+    currentRadar.analyses.find(({ arxiv_id }) => arxiv_id === samples[0].arxiv_id).priority,
+    "must_read"
+  );
+  assert.equal(
+    currentRadar.analyses.find(({ arxiv_id }) => arxiv_id === samples[1].arxiv_id).priority,
+    "worth_knowing"
+  );
 
   const generations = join(paths.artifactRoot, "generations");
   const temporaryWeeklyCache = join(paths.directory, "weekly-cache");
@@ -1306,10 +1757,20 @@ test("five regression IDs survive bounded screening, daily archive sync, and wee
 
   for (const item of samples) {
     const date = item.published.slice(0, 10);
-    const daily = JSON.parse(await readFile(join(paths.archiveRoot, "daily", `${date}.json`), "utf8"));
+    const daily = JSON.parse(
+      await readFile(join(paths.archiveRoot, "daily", `${date}.json`), "utf8")
+    );
     const validation = validateDailyRadarPayload(daily.feed, daily.radar);
-    assert.equal(validation.valid, true, `${item.arxiv_id} archive edition remains source-valid (${validation.diagnostics.join(", ")})`);
-    const visible = [...validation.model.groups.must_read, ...validation.model.groups.worth_knowing, ...validation.model.groups.skip];
+    assert.equal(
+      validation.valid,
+      true,
+      `${item.arxiv_id} archive edition remains source-valid (${validation.diagnostics.join(", ")})`
+    );
+    const visible = [
+      ...validation.model.groups.must_read,
+      ...validation.model.groups.worth_knowing,
+      ...validation.model.groups.skip,
+    ];
     const included = visible.find(({ arxiv_id }) => arxiv_id === item.arxiv_id);
     assert.ok(included, `${item.arxiv_id} is represented by its exact archived edition`);
     assert.equal(included.analysis.source_fingerprint, sourceFingerprint(item));
@@ -1323,15 +1784,34 @@ test("five regression IDs survive bounded screening, daily archive sync, and wee
     weekId: "2026-W37",
     writeArchives: false,
     generateSummary: async ({ prompt }) => {
-      for (const item of samples.filter(({ title }) => !title.startsWith("Skim"))) assert.match(prompt, new RegExp(item.arxiv_id));
+      for (const item of samples.filter(({ title }) => !title.startsWith("Skim")))
+        assert.match(prompt, new RegExp(item.arxiv_id));
       const mr = samples[0];
       const skim = samples[2];
       return JSON.stringify({
         executive_summary: "Synthetic fixture summary; no real scientific conclusion is asserted.",
         thematic_highlights: [],
         top_picks: [
-          { arxiv_id: mr.arxiv_id, revision: 1, historical_edition: "announcement-2026-09-07", source_fingerprint: sourceFingerprint(mr), priority: "must_read", recommendation_reason: "fixture", core_insight: "fixture", reading_guide: "fixture" },
-          { arxiv_id: skim.arxiv_id, revision: 1, historical_edition: "announcement-2026-09-08", source_fingerprint: sourceFingerprint(skim), priority: "skip", recommendation_reason: "fixture", core_insight: "fixture", reading_guide: "fixture" },
+          {
+            arxiv_id: mr.arxiv_id,
+            revision: 1,
+            historical_edition: "announcement-2026-09-07",
+            source_fingerprint: sourceFingerprint(mr),
+            priority: "must_read",
+            recommendation_reason: "fixture",
+            core_insight: "fixture",
+            reading_guide: "fixture",
+          },
+          {
+            arxiv_id: skim.arxiv_id,
+            revision: 1,
+            historical_edition: "announcement-2026-09-08",
+            source_fingerprint: sourceFingerprint(skim),
+            priority: "skip",
+            recommendation_reason: "fixture",
+            core_insight: "fixture",
+            reading_guide: "fixture",
+          },
         ],
       });
     },
@@ -1339,8 +1819,14 @@ test("five regression IDs survive bounded screening, daily archive sync, and wee
 
   assert.equal(weekly.papers.length, 5);
   assert.deepEqual(new Set(weekly.papers.map(({ arxiv_id }) => arxiv_id)), new Set(priorityIds));
-  assert.deepEqual(weekly.top_picks.map(({ arxiv_id }) => arxiv_id), [samples[0].arxiv_id]);
-  assert.equal(weekly.papers.find(({ arxiv_id }) => arxiv_id === samples[2].arxiv_id).priority, "skip");
+  assert.deepEqual(
+    weekly.top_picks.map(({ arxiv_id }) => arxiv_id),
+    [samples[0].arxiv_id]
+  );
+  assert.equal(
+    weekly.papers.find(({ arxiv_id }) => arxiv_id === samples[2].arxiv_id).priority,
+    "skip"
+  );
 });
 
 test("parseMarkdownSections cleanly extracts headings and sectionMap from Markdown and text", () => {
@@ -1377,7 +1863,12 @@ test("DeepxivCircuitBreaker trips upon quota error and cools down", () => {
 });
 
 test("CLI argument parsing accepts --date, --dates, --backlog, --triage-model, and --body-model", () => {
-  const parsedSingle = parseCliArgs(["--date=2026-09-23", "--limit=5", "--triage-model=gpt-6-luna", "--body-model=gpt-6.1-sol"]);
+  const parsedSingle = parseCliArgs([
+    "--date=2026-09-23",
+    "--limit=5",
+    "--triage-model=gpt-6-luna",
+    "--body-model=gpt-6.1-sol",
+  ]);
   assert.deepEqual(parsedSingle.dates, ["2026-09-23"]);
   assert.equal(parsedSingle.limit, 5);
   assert.equal(parsedSingle.backlog, false);
@@ -1426,7 +1917,10 @@ test("validateScientificOutput refuses to fabricate evidence supports and fails 
     () => validateScientificOutput(fakeParsed, options),
     /Model response has no source excerpt supporting method/
   );
-  assert.ok(!fakeParsed.evidence[0].supports.includes("method"), "must not mutate or fake support for unevidenced field");
+  assert.ok(
+    !fakeParsed.evidence[0].supports.includes("method"),
+    "must not mutate or fake support for unevidenced field"
+  );
 });
 
 test("sortQueueItems does not let unattempted arrivals starve older failed reads waiting for retry", () => {
@@ -1449,11 +1943,16 @@ test("sortQueueItems does not let unattempted arrivals starve older failed reads
   const priorityIds = new Set();
 
   const sorted = sortQueueItems([newArrival, olderFailedRetry], priorityIds, currentFeedIds);
-  assert.equal(sorted[0].key, olderFailedRetry.key, "older retry must not be starved by new unattempted arrival");
+  assert.equal(
+    sorted[0].key,
+    olderFailedRetry.key,
+    "older retry must not be starved by new unattempted arrival"
+  );
 });
 
 test("checkedBodyChunk accepts verbatim quotes with LaTeX math and Unicode transliteration", () => {
-  const rawSourceChunk = "Here the distribution is evaluated. The median $\\chi^2_\\mathrm{red}$ is $\\sim$177, with only $\\sim$10\\% of sources achieving $\\chi^2_\\mathrm{red} < 10$. However, we note that a high value does not imply failure.";
+  const rawSourceChunk =
+    "Here the distribution is evaluated. The median $\\chi^2_\\mathrm{red}$ is $\\sim$177, with only $\\sim$10\\% of sources achieving $\\chi^2_\\mathrm{red} < 10$. However, we note that a high value does not imply failure.";
   const modelOutput = {
     summary: "评估卡方分布及高卡方值的成因。",
     quote: "The median χ2red is ∼177, with only ∼10% of sources achieving χ2red < 10.",
@@ -1462,4 +1961,3 @@ test("checkedBodyChunk accepts verbatim quotes with LaTeX math and Unicode trans
   assert.equal(verified.summary, modelOutput.summary);
   assert.ok(verified.quote.includes("177"));
 });
-

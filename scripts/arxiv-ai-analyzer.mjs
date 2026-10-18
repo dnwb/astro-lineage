@@ -1238,6 +1238,12 @@ function parseQueue(raw) {
       }
     }
 
+    if (item.state === "complete" && item.analysis?.status === "failed") {
+      item.state =
+        item.triage?.priority && item.triage.priority !== "skip" ? "awaiting_body" : "queued";
+      item.reading_status = item.triage ? "pending" : "not_started";
+    }
+
     if (item.state === "complete") {
       const validationFeed = {
         window: { kind: "announcement_batch", batch_id: "analyzer-queue-validation" },

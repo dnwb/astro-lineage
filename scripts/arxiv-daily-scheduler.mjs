@@ -87,6 +87,12 @@ function nextScheduledDate(dateOnly, timeZone) {
   return candidate;
 }
 
+function previousScheduledDate(dateOnly, timeZone) {
+  let candidate = addCalendarDay(dateOnly, -1);
+  while (!isScheduledDate(candidate, timeZone)) candidate = addCalendarDay(candidate, -1);
+  return candidate;
+}
+
 function scheduledDatesBetween(startDate, throughDate, timeZone) {
   const dates = [];
   for (let date = startDate; date <= throughDate; date = addCalendarDay(date, 1)) {
@@ -137,7 +143,7 @@ function radarPathFor(output, radarOutput) {
     : `${target}.radar.json`;
 }
 
-async function readLedger({ artifactRoot, timeZone, query }) {
+export async function readLedger({ artifactRoot, timeZone, query }) {
   const path = join(artifactRoot, "scheduler-ledger.json");
   let parsed;
   try {
@@ -214,11 +220,14 @@ async function readLedger({ artifactRoot, timeZone, query }) {
       if (!isScheduledDate(date, timeZone))
         throw new Error(`ARXIV_SCHEDULER_LEDGER_INVALID: ${date} is not an announcement date`);
     }
+    const failedSet = new Set(rawFailedDates);
     return {
       schema_version: LEDGER_SCHEMA,
       scope: query,
       start_date: parsed.start_date ?? null,
-      successful_dates: [...new Set(parsed.successful_dates)].sort(),
+      successful_dates: [...new Set(parsed.successful_dates)]
+        .filter((d) => !failedSet.has(d))
+        .sort(),
       archived_dates: [
         ...new Set(Array.isArray(parsed.archived_dates) ? parsed.archived_dates : []),
       ].sort(),
@@ -227,8 +236,10 @@ async function readLedger({ artifactRoot, timeZone, query }) {
       ].sort(),
       finalized_dates: [
         ...new Set(Array.isArray(parsed.finalized_dates) ? parsed.finalized_dates : []),
-      ].sort(),
-      failed_dates: [...new Set(rawFailedDates)].sort(),
+      ]
+        .filter((d) => !failedSet.has(d))
+        .sort(),
+      failed_dates: [...failedSet].sort(),
       attempt_sequence: attemptSequence,
       date_attempts: rawDateAttempts,
     };
@@ -500,7 +511,9 @@ export async function runScheduledArxivRefresh({
         await saveLedger(root, ledger);
       }
     }
-    const missing = dates.filter((date) => !successes.has(date));
+    const missing = dates.filter(
+      (date) => !successes.has(date) || ledger.failed_dates.includes(date)
+    );
     const activeIsCurrent = existingCurrentDate !== null && existingCurrentDate >= through;
     const publishNewest = (date) =>
       date === latestDate && date >= (existingCurrentDate ?? "0000-00-00");
@@ -746,8 +759,51 @@ export async function reconcilePreviousEdition({
     const upstreamEntries = upstreamPayload?.entries || [];
     const newEntries = upstreamEntries.filter((e) => !localIds.has(e.arxiv_id));
 
+    function markLedgerDateFailure(ledger, date) {
+      ledger.failed_dates = [...new Set([...(ledger.failed_dates || []), date])].sort();
+      ledger.successful_dates = (ledger.successful_dates || []).filter((d) => d !== date);
+      ledger.finalized_dates = (ledger.finalized_dates || []).filter((d) => d !== date);
+    }
+
+    function markLedgerDateSuccess(ledger, date) {
+      ledger.finalized_dates = [...new Set([...(ledger.finalized_dates || []), date])].sort();
+      ledger.successful_dates = [...new Set([...(ledger.successful_dates || []), date])].sort();
+      ledger.failed_dates = (ledger.failed_dates || []).filter((d) => d !== date);
+      if (Array.isArray(ledger.provisional_dates)) {
+        ledger.provisional_dates = ledger.provisional_dates.filter((d) => d !== date);
+      }
+    }
+
     let finalFeed = localFeed || upstreamPayload;
     let newlyAddedCount = 0;
+
+    const hasValidFeed =
+      Boolean(finalFeed) && Array.isArray(finalFeed?.entries) && finalFeed.entries.length > 0;
+
+    if (!hasValidFeed) {
+      console.warn(`[scheduler:reconcile] 对账未获得 ${targetDate} 的有效批次数据，保持待重试状态`);
+      markLedgerDateFailure(ledger, targetDate);
+      await saveLedger(root, ledger);
+      return {
+        status: "unreconciled",
+        target_date: targetDate,
+        total_entries: 0,
+        newly_added: 0,
+        finalized: false,
+      };
+    }
+
+    const prevDate = previousScheduledDate(targetDate, timeZone);
+    let prevFeed = null;
+    try {
+      const prevArchPath = join(archiveDir, `${prevDate}.json`);
+      if (existsSync(prevArchPath)) {
+        prevFeed = JSON.parse(await readFile(prevArchPath, "utf8"))?.feed;
+      }
+    } catch {}
+    if (finalFeed && prevFeed) {
+      assertContinuousBatchIntervals(finalFeed, prevFeed);
+    }
 
     if (newEntries.length > 0 && localFeed) {
       console.log(
@@ -797,19 +853,6 @@ export async function reconcilePreviousEdition({
       });
     }
 
-    const prevDate = addCalendarDay(targetDate, -1);
-    let prevFeed = null;
-    try {
-      const prevArchPath = join(archiveDir, `${prevDate}.json`);
-      if (existsSync(prevArchPath)) {
-        prevFeed = JSON.parse(await readFile(prevArchPath, "utf8"))?.feed;
-      }
-    } catch {}
-    if (finalFeed && prevFeed) {
-      assertContinuousBatchIntervals(finalFeed, prevFeed);
-    }
-
-    // Clean up durable retry queue if present in artifactRoot
     const queuePath = join(root, "screening-queue.json");
     if (existsSync(queuePath)) {
       try {
@@ -819,24 +862,16 @@ export async function reconcilePreviousEdition({
           const pending = queue.items.filter((i) => i.state !== "complete");
           if (pending.length > 0) {
             console.log(
-              `[scheduler:reconcile] 正在清障持久化失败重试队列 (${pending.length} 项)...`
+              `[scheduler:reconcile] 发现未完成队列项 (${pending.length} 项)，保持其真实状态等待后续轮次重试`
             );
-            for (const item of pending) {
-              item.state = "complete";
-            }
-            await writeJsonAtomically(queuePath, queue);
           }
         }
       } catch (err) {
-        console.warn(`[scheduler:reconcile] 清理队列警报: ${err.message}`);
+        console.warn(`[scheduler:reconcile] 检查队列警报: ${err.message}`);
       }
     }
 
-    ledger.finalized_dates = [...new Set([...(ledger.finalized_dates || []), targetDate])].sort();
-    ledger.successful_dates = [...new Set([...ledger.successful_dates, targetDate])].sort();
-    if (Array.isArray(ledger.provisional_dates)) {
-      ledger.provisional_dates = ledger.provisional_dates.filter((d) => d !== targetDate);
-    }
+    markLedgerDateSuccess(ledger, targetDate);
     await saveLedger(root, ledger);
 
     return {

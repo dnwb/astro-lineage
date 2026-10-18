@@ -6,7 +6,7 @@ const UNINFORMATIVE =
   /^(?:论文更新|多领域研究|每日导读|每日更新|每周更新|arxiv(?:\s*:\s*\d{4}\.\d{4,5})?|GRB喷流等进展)$/iu;
 const LIST_LIKE = /[、；;|｜]/u;
 const DANGLING_END =
-  /(?:如何|为何|为什么|是否|能否|与|和|及|并|或|但|而|的|在|同时|以及|包括|例如|如)$/u;
+  /(?:如何|为何|为什么|是否|能否|与|和|及|并|或|但|而|的|在|同时|以及|包括|例如|如|中|内|下|条件下|情形下|模型下|样本中|设定下|前提下|背景下)$/u;
 const PAPER_RESULT_VERB =
   /(?:发现|提出|显示|表明|揭示|测得|确立|证实|达到|超过|实现|支持|限制|约束|解释|影响|改变|主导|削弱|提高|降低|增加|减少|产生|形成|存在|测量|估计|推断|重建|区分|关联|更接近|依赖|来自|未发现|未见|报告|出现|造成|导致|保持|证明|验证|检验|描述|给出|进入|混合|具有|旋转|约为|得到|获得|满足|归一化)/u;
 const DAILY_PROGRESS_SIGNAL =
@@ -16,11 +16,11 @@ const REPORTING_ONLY =
 const REPORTING_LEAD_IN =
   /^(?:(?:三维|二维|数值|流体)?模拟|模型|正文|摘要|研究|作者|结果|分析|计算)(?:结果)?(?:显示|表明|报告|发现|指出|揭示|认为)\s*[:：，,]?\s*/u;
 const FRAGMENT_START =
-  /^(?:而非|而不是|并非|并不是|但是|但|不过|然而|同时|并且|而且|以及|并|且|因此|因而|所以)/u;
+  /^(?:而非|而不是|并非|并不是|但是|但|不过|然而|同时|并且|而且|以及|并|且|因此|因而|所以|而(?![^，。]{0,10}言之))/u;
 const SCOPED_CONDITION =
   /(?:仅|只有|除非|若|如果|假设|当[^，。]{1,40}时|在[^，。]{1,40}(?:下|中|内|时|条件|情形|模型|样本|参数范围|范围)|[^，。]{1,40}(?:加入|进入|启动)[^，。]{0,40}(?:后|之后)|[^，。]{1,40}(?:后|之后)(?:形成|产生|演化为|形成的|产生的)[^，。]{1,40}|(?:视角|观测角|倾角)[^，。]{1,40}时|对于[^，。]{1,40}(?:而言|来说|条件)|针对[^，。]{1,40}(?:而言|条件))/u;
 const STANDALONE_SUBORDINATE =
-  /^(?:(?:若|如果|假设|当)[^，。]{0,40}(?:成立|时)?|在[^，。]{1,40}(?:下|设定下|中|时)|从[^，。]{1,40}中|给定[^，。]{1,40}|随着[^，。]{1,40}|在线性[^，。]{1,40}内)$/u;
+  /^(?:(?:若|如果|假设|当)[^，。]{0,40}(?:成立|时)?|在[^，。]{1,40}(?:下|设定下|中|时|条件下|情形下|模型下|样本中)|从[^，。]{1,40}中|给定[^，。]{1,40}|随着[^，。]{1,40}|在线性[^，。]{1,40}内)$/u;
 
 export function cleanMathInTitle(text) {
   if (!text) return "";
@@ -86,6 +86,7 @@ export function splitOutsideMath(text, pattern = /[，,]/u) {
   const normalized = normalizeLatexText(text);
   const parts = [];
   let inMath = false;
+  let parenDepth = 0;
   let current = "";
 
   for (let i = 0; i < normalized.length; i++) {
@@ -95,7 +96,18 @@ export function splitOutsideMath(text, pattern = /[，,]/u) {
       current += char;
       continue;
     }
-    if (!inMath && pattern.test(char)) {
+    if (!inMath) {
+      if (char === "(" || char === "（" || char === "[" || char === "【") parenDepth++;
+      else if ((char === ")" || char === "）" || char === "]" || char === "】") && parenDepth > 0)
+        parenDepth--;
+    }
+    const isThousandsComma =
+      char === "," &&
+      i > 0 &&
+      i < normalized.length - 1 &&
+      /\d/.test(normalized[i - 1]) &&
+      /\d/.test(normalized[i + 1]);
+    if (!inMath && parenDepth === 0 && !isThousandsComma && pattern.test(char)) {
       parts.push(current);
       current = "";
     } else {
@@ -233,7 +245,10 @@ function sourceSentences(value) {
 }
 
 function isScopedQualifierClause(value) {
-  const clause = String(value || "").replace(/^(?:但|不过|然而)\s*/u, "");
+  const clause = String(value || "")
+    .replace(/^(?:\d+[\.、]|[（(]\d+[）)])\s*/u, "")
+    .replace(/^(?:但|不过|然而)\s*/u, "")
+    .trim();
   const explicitScope = /^(?:仅|只有|只|除非|若|如果|假设|当)/u.test(clause);
   const contextualScope =
     /^(?:在[^，。]{1,40}(?:条件下|模型下|模型中|样本中|范围内|状态下|环境中|时)|[^，。]{1,40}(?:加入|进入|启动)[^，。]{0,40}(?:后|之后)|[^，。]{1,40}(?:后|之后)(?:形成|产生|演化为|形成的|产生的)[^，。]{1,40}|(?:视角|观测角|倾角)[^，。]{1,40}时)$/u.test(
@@ -264,6 +279,7 @@ function fallbackPaperTitleCandidate(item, maxLength = TITLE_LIMIT) {
     candidate &&
     !REPORTING_ONLY.test(candidate) &&
     !FRAGMENT_START.test(candidate) &&
+    !STANDALONE_SUBORDINATE.test(candidate) &&
     !DANGLING_END.test(candidate.replace(/[。！？?]$/u, "")) &&
     (/[？?]/u.test(candidate) || PAPER_RESULT_VERB.test(candidate));
   const addQuestionMark = (candidate) => (/[？?]$/u.test(candidate) ? candidate : `${candidate}？`);
@@ -284,12 +300,23 @@ function fallbackPaperTitleCandidate(item, maxLength = TITLE_LIMIT) {
         const beforeOperator = segment.slice(0, operator.index);
         const continuation = segment
           .slice(operator.index)
-          .search(/[，,](?:以及|并且|同时|并进一步|并服务于|并据此)/u);
+          .search(/[，,](?:以及|并且|同时|并进一步|并服务于|并据此|并借此)/u);
         const end = continuation < 0 ? segment.length : operator.index + continuation;
-        const commaStarts = Array.from(
-          beforeOperator.matchAll(/[，,]/gu),
-          (match) => match.index + 1
-        );
+        const commaStarts = [];
+        let pDepth = 0;
+        let mMode = false;
+        for (let i = 0; i < beforeOperator.length; i++) {
+          const ch = beforeOperator[i];
+          if (ch === "$" && (i === 0 || beforeOperator[i - 1] !== "\\")) mMode = !mMode;
+          if (!mMode) {
+            if (ch === "(" || ch === "（" || ch === "[" || ch === "【") pDepth++;
+            else if ((ch === ")" || ch === "）" || ch === "]" || ch === "】") && pDepth > 0)
+              pDepth--;
+            if (pDepth === 0 && /[，,]/.test(ch)) {
+              commaStarts.push(i + 1);
+            }
+          }
+        }
         const starts =
           maxLength > PAPER_TITLE_COMPACT_LIMIT
             ? [0, ...commaStarts]
@@ -327,7 +354,8 @@ function fallbackPaperTitleCandidate(item, maxLength = TITLE_LIMIT) {
     const scopedLead =
       resultParts.length > 1 &&
       isScopedQualifierClause(resultParts[0]) &&
-      !PAPER_RESULT_VERB.test(resultParts[0]);
+      (!PAPER_RESULT_VERB.test(resultParts[0]) ||
+        /(?:条件下|情形下|模型下|样本中|范围内|状态下|环境中)$/u.test(resultParts[0].trim()));
     const supportedParts = resultParts.filter((part) => !REPORTING_ONLY.test(part));
     const objectContext =
       resultParts.length > 1 &&
@@ -353,12 +381,14 @@ function fallbackPaperTitleCandidate(item, maxLength = TITLE_LIMIT) {
     for (const rawCandidate of resultCandidates) {
       const candidate = cleanMathInTitle(
         rawCandidate
+          .replace(/^(?:\d+[\.、]|[（(]\d+[）)])\s*/u, "")
           .replace(REPORTING_LEAD_IN, "")
           .replace(
             /^(?:作者认为|作者报告|研究发现|研究表明|结果显示|结果表明|摘要显示|正文报告)\s*[，,]?\s*/u,
             ""
           )
           .replace(/[。！？?]$/u, "")
+          .replace(/[（(][^）)]*$/u, "")
           .trim()
       );
       const titledCandidate =

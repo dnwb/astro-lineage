@@ -54,19 +54,20 @@ publishAnalyzedArxivEdition({
 
 ## 4. Validation and errors
 
-| Condition                                 | Required behavior                                                                                             |
-| ----------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| Empty scheduler fetch                     | `ARXIV_EMPTY_BATCH`; retryable, last-good unchanged                                                           |
-| Feed/radar changed while model ran        | `ARXIV_ANALYSIS_STALE`; keep queued result for retry                                                          |
-| Invalid radar publication                 | `ARXIV_RADAR_INVALID`; no pointer replacement                                                                 |
-| Live writer lock                          | Refuse concurrent write; no lost update                                                                       |
-| Missing/truncated/wrong-revision body     | Pending reading, not eligible MR/WK                                                                           |
-| Malformed persisted queue                 | `ARXIV_ANALYZER_STATE_INVALID`; validate identity/fingerprint and eligible completed analysis, preserve bytes |
-| Date-named archive without `feed.entries` | `ARXIV_ARCHIVE_INVALID`; never silently omit backlog                                                          |
-| Reconciliation without valid batch feed   | `status: "unreconciled"`; retain date in `failed_dates`, strip from `successful_dates` / `finalized_dates`    |
-| Queue item complete with failed analysis  | Auto-healed by `parseQueue` into `awaiting_body` / `queued`; never counts as completed                        |
-| Failed catch-up batch date                | Retained in `failed_dates` and included in subsequent `missing` dates for retry; never skipped                |
-| Discontinuous batch submitted interval    | `BATCH_TIME_GAP_DETECTED`; previous batch `to` must match current batch `from`                                |
+| Condition                                 | Required behavior                                                                                              |
+| ----------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| Empty scheduler fetch                     | `ARXIV_EMPTY_BATCH`; retryable, last-good unchanged                                                            |
+| Feed/radar changed while model ran        | `ARXIV_ANALYSIS_STALE`; keep queued result for retry                                                           |
+| Invalid radar publication                 | `ARXIV_RADAR_INVALID`; no pointer replacement                                                                  |
+| Live writer lock                          | Refuse concurrent write; no lost update                                                                        |
+| Missing/truncated/wrong-revision body     | Pending reading, not eligible MR/WK                                                                            |
+| Malformed persisted queue                 | `ARXIV_ANALYZER_STATE_INVALID`; validate identity/fingerprint and eligible completed analysis, preserve bytes  |
+| Date-named archive without `feed.entries` | `ARXIV_ARCHIVE_INVALID`; never silently omit backlog                                                           |
+| Reconciliation without valid batch feed   | `status: "unreconciled"`; retain date in `failed_dates`, strip from `successful_dates` / `finalized_dates`     |
+| Queue item complete with failed analysis  | Auto-healed by `parseQueue` into `awaiting_body` / `queued`; never counts as completed                         |
+| Failed catch-up batch date                | Retained in `failed_dates` and included in subsequent `missing` dates for retry; never skipped                 |
+| Discontinuous batch submitted interval    | `BATCH_TIME_GAP_DETECTED`; previous batch `to` must match current batch `from`                                 |
+| Regenerated weekly summary in cache       | `syncArxivArchives` updates weekly archives when `weeklyCacheDir` has newer `generated_at` than committed file |
 
 ## 5. Good / base / bad cases
 

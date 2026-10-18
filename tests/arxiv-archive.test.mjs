@@ -1,10 +1,20 @@
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
+import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { test } from "node:test";
-import { getIsoWeek, getAnnouncementWeekId, getWeekMondayAndSunday, getDirtyWeeks, markWeekDirty, clearDirtyWeek, clearAllDirtyWeeks } from "../scripts/arxiv-archive.mjs";
+import {
+  getIsoWeek,
+  getAnnouncementWeekId,
+  getWeekMondayAndSunday,
+  getDirtyWeeks,
+  markWeekDirty,
+  clearDirtyWeek,
+  clearAllDirtyWeeks,
+  syncArxivArchives,
+} from "../scripts/arxiv-archive.mjs";
+import { createTemporaryWorkspace } from "./helpers/temporary-workspace.mjs";
 
 const projectRoot = fileURLToPath(new URL("..", import.meta.url));
 const manifestUrl = new URL("../src/data/arxiv-archives/manifest.json", import.meta.url);
@@ -39,14 +49,30 @@ test("archive manifest conforms to schema and indexes daily editions grouped by 
   for (const week of manifest.weeks) {
     assert.ok(/^\d{4}-W\d{2}$/u.test(week.week_id), `week_id ${week.week_id} must match YYYY-Www`);
     assert.ok(typeof week.title === "string", "week title must be a string");
-    assert.ok(Array.isArray(week.days) && week.days.length > 0, "week must have non-empty days list");
+    assert.ok(
+      Array.isArray(week.days) && week.days.length > 0,
+      "week must have non-empty days list"
+    );
 
     for (const day of week.days) {
-      assert.ok(/^\d{4}-\d{2}-\d{2}$/u.test(day.date), `day date ${day.date} must match YYYY-MM-DD`);
-      assert.equal(getAnnouncementWeekId(day.date, day.weekday), week.week_id, `day ${day.date} must belong to week ${week.week_id}`);
-      assert.ok(typeof day.total_papers === "number" && day.total_papers > 0, "day total_papers must be positive");
+      assert.ok(
+        /^\d{4}-\d{2}-\d{2}$/u.test(day.date),
+        `day date ${day.date} must match YYYY-MM-DD`
+      );
+      assert.equal(
+        getAnnouncementWeekId(day.date, day.weekday),
+        week.week_id,
+        `day ${day.date} must belong to week ${week.week_id}`
+      );
+      assert.ok(
+        typeof day.total_papers === "number" && day.total_papers > 0,
+        "day total_papers must be positive"
+      );
       assert.ok(typeof day.analyzed_count === "number", "analyzed_count must be a number");
-      assert.ok(existsSync(join(projectRoot, "src/data/arxiv-archives", day.data_file)), `data file ${day.data_file} must exist`);
+      assert.ok(
+        existsSync(join(projectRoot, "src/data/arxiv-archives", day.data_file)),
+        `data file ${day.data_file} must exist`
+      );
     }
   }
 });
@@ -92,8 +118,14 @@ test("arXiv weekly HTML exposes daily breakdown section with links to daily edit
     assert.match(html, /(?:必读文献目录|(?:当周|本周)每日批次与日报归档)/u);
     assert.match(html, /href="\/arxiv-daily\/"/u);
     const manifest = JSON.parse(await readFile(fileURLToPath(manifestUrl), "utf8"));
-    const weeklyData = JSON.parse(await readFile(fileURLToPath(new URL("../src/data/arxiv-weekly.json", import.meta.url)), "utf8"));
-    const currentWeek = manifest.weeks?.find((w) => w.week_id === weeklyData.week_id) || manifest.weeks?.[0];
+    const weeklyData = JSON.parse(
+      await readFile(
+        fileURLToPath(new URL("../src/data/arxiv-weekly.json", import.meta.url)),
+        "utf8"
+      )
+    );
+    const currentWeek =
+      manifest.weeks?.find((w) => w.week_id === weeklyData.week_id) || manifest.weeks?.[0];
     if (currentWeek?.days?.length > 0) {
       assert.match(html, new RegExp(currentWeek.days[0].date, "u"));
     }
@@ -116,7 +148,10 @@ test("arXiv daily standalone static pages are generated for all archived edition
 test("dirty weeks tracking supports marking, deduping, clearing, and bulk reset", async (t) => {
   const tmpFile = join(projectRoot, ".cache", `test-dirty-weeks-${Date.now()}.json`);
   t.after(async () => {
-    try { const { unlink } = await import("node:fs/promises"); await unlink(tmpFile); } catch {}
+    try {
+      const { unlink } = await import("node:fs/promises");
+      await unlink(tmpFile);
+    } catch {}
   });
 
   assert.deepEqual(await getDirtyWeeks(tmpFile), []);
@@ -134,3 +169,55 @@ test("dirty weeks tracking supports marking, deduping, clearing, and bulk reset"
   assert.deepEqual(await getDirtyWeeks(tmpFile), []);
 });
 
+test("syncArxivArchives updates weekly archives when weeklyCacheDir contains newer generated_at", async (t) => {
+  const ws = await createTemporaryWorkspace("astro-lineage-archive-test-", t);
+  const archiveRoot = join(ws.path, "archives");
+  const weeklyCacheDir = join(ws.path, "weekly-cache");
+  const dailyCacheDir = join(ws.path, "daily-cache");
+  const dirtyWeeksPath = join(ws.path, "dirty-weeks.json");
+  const currentWeeklyPath = join(ws.path, "arxiv-weekly.json");
+  const currentFeedPath = join(ws.path, "arxiv-daily.json");
+  const currentRadarPath = join(ws.path, "daily-radar.json");
+
+  await mkdir(join(archiveRoot, "weekly"), { recursive: true });
+  await mkdir(join(archiveRoot, "daily"), { recursive: true });
+  await mkdir(weeklyCacheDir, { recursive: true });
+  await mkdir(dailyCacheDir, { recursive: true });
+
+  const olderWeekly = {
+    schema_version: "astrolineage-weekly-summary-v1",
+    generated_at: "2026-10-12T10:00:00.000Z",
+    week_id: "2026-W42",
+    title: "Old Weekly",
+    top_picks: [],
+  };
+  const newerWeekly = {
+    schema_version: "astrolineage-weekly-summary-v1",
+    generated_at: "2026-10-18T10:00:00.000Z",
+    week_id: "2026-W42",
+    title: "New Weekly",
+    top_picks: [{ arxiv_id: "2610.99999" }],
+  };
+
+  await writeFile(join(archiveRoot, "weekly", "2026-W42.json"), JSON.stringify(olderWeekly));
+  await writeFile(join(weeklyCacheDir, "2026-W42.json"), JSON.stringify(newerWeekly));
+
+  await syncArxivArchives({
+    archiveRoot,
+    weeklyCacheDir,
+    dailyCacheDir,
+    dirtyWeeksPath,
+    currentWeeklyPath,
+    currentFeedPath,
+    currentRadarPath,
+  });
+
+  const updatedArchive = JSON.parse(
+    await readFile(join(archiveRoot, "weekly", "2026-W42.json"), "utf8")
+  );
+  assert.equal(updatedArchive.title, "New Weekly");
+  assert.equal(updatedArchive.generated_at, "2026-10-18T10:00:00.000Z");
+
+  const currentWeekly = JSON.parse(await readFile(currentWeeklyPath, "utf8"));
+  assert.equal(currentWeekly.title, "New Weekly");
+});

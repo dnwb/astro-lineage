@@ -1,40 +1,133 @@
 {
   "schema_version": "astrolineage-arxiv-archive-manifest-v1",
-  "updated_at": "2026-10-15T05:46:37.226Z",
+  "updated_at": "2026-10-18T08:35:26.872Z",
   "total_weeks": 6,
-  "total_daily_editions": 26,
+  "total_daily_editions": 29,
   "latest_week_id": "2026-W42",
-  "latest_daily_date": "2026-10-14",
+  "latest_daily_date": "2026-10-15",
   "weeks": [
     {
       "week_id": "2026-W42",
       "title": "每周学术脉络 · 2026-W42",
       "date_range": "2026-10-12 ~ 2026-10-18",
       "has_weekly_summary": true,
-      "executive_summary": "本周高能天体物理进展紧密围绕“中心引擎磁层耗散/致密星演化 -> 抛射物/相对论风激波相互作用 -> 宽波段多信使辐射与传播效应反演”的完整物理因果链条展开。\n- **快速射电暴宿主环境与传播反演 (R5)**：arXiv:2610.13062 利用 34 个 ASKAP/CRAFT 定位的 FRB 宿主星系样本，证伪了侧向（edge-on）宿主星系观测选择偏倚（K-S 检验 $p_{\\mathrm{KS}} \\ge 0.495$），发现宿主星系椭圆轴比 $q = b/a$ 与静止系过剩色散量 $\\mathrm{DM_{excess,rest}}$ 呈显著负相关（$r_P = -0.402, p = 0.018$），并据此构建倾角修正模型将理论 Macquart 关系（$\\mathrm{DM_{cosmic}}$–$z$）的均方根误差从 $181\\,\\mathrm{pc\\,cm^{-3}}$ 大幅压低 $40\\%$ 至 $107\\,\\mathrm{pc\\,cm^{-3}}$。\n- **超新星周星介质 (CSM) 与遗迹运动学 (R3)**：arXiv:2610.13011 基于 ASKAP 在 $943\\,\\mathrm{MHz}$ 对 Rubin 深钻天区的准实时监测，通过自由-自由吸收（$\\tau_{\\rm ff}(1\\,\\mathrm{GHz})\\simeq 0.9$）与同步辐射自吸收建模，限制出超新星 SN2024abfo 在暴前约 $350\\,\\mathrm{yr}$ 处质量损失率达 $\\dot{M} \\approx 2.5\\times 10^{-5}\\,M_{\\odot}\\,\\mathrm{yr^{-1}}$（积分 CSM 质量 $0.0084\\,M_{\\odot}$）；arXiv:2610.12880 基于 LAMOST 中分辨率光谱巡天（$R \\sim 7500$）解耦出超新星遗迹 S147 的双峰速度分布（空腔壁停滞激波 $|V_{\\mathrm{LSR}}| < 20\\,\\mathrm{km\\,s^{-1}}$ 与腔内抛射物 $\\sim 70 \\pm 30\\,\\mathrm{km\\,s^{-1}}$），以前身星风吹泡演化（$R \\propto t^{3/5}$）解决了脉冲星运动学年龄（$\\sim 37.6\\,\\mathrm{kyr}$）与表观膨胀年龄（$\\approx 0.39\\,\\mathrm{Myr}$）的矛盾，并由东侧“耳”状结构的极端激波激发（$[\\mathrm{S\\,II}]/\\mathrm{H}\\alpha > 1.3$）支持双极喷流破出机制。\n- **中央引擎磁层动力学与致密星物态演化 (R1/R2/R6)**：arXiv:2610.13288 结合解析微扰与三维 resistive-GRMHD 模拟，证明倾斜黑洞磁层通过二阶自旋形变 $O(a_*^2)$ 与赤道电流片电阻耗散实现磁轴与自旋轴的不可逆对齐，导出视界处对齐衰减率标度律 $\\Gamma_\\chi = 0.48510 \\frac{\\eta_{\\rm m} a_\\star^2}{M^2} + O(a_\\star^4)$；arXiv:2610.13926 构建了包含有限温度、超子自由度、中微子囚禁与较差自转的相对论平均场（DDME2）准静态绝热演化序列，发现中微子囚禁显著抑制奇异数丰度，并判定 GW190425（$M_G \\sim 3.50\\,M_\\odot$）发生直接坍缩而 GW170817（$M_G \\sim 2.74\\,M_\\odot$）形成长寿命残骸。\n- **脉冲星风云 (PWN) 演化与高能时变定标 (R4/R7)**：arXiv:2610.13182 结合 NICER、IXPE、EP/FXT 及 Fermi/LAT 数据，证实 PSR B0540–69 在 2011 年自转减慢率跃变（SRT）后脉冲光度恒定（$L_{\\mathrm{pulsed}} \\approx 0.34 \\times 10^{37}\\,\\mathrm{erg\\,s^{-1}}$），而 PWN 的 1–10 keV 光度增长 $26.3 \\pm 0.5\\%$ 并维持平台期逾 14 年，其宽波段 SED 需由紧凑强磁场内区（$B_{\\mathrm{in}} \\approx 1.01\\,\\mathrm{mG}$）与延展弱磁场外区（$B \\approx 8.16\\,\\mu\\mathrm{G}$）双区模型解释；arXiv:2610.13771 利用 HAWC 3071 天数据将 PWN DA 495 在 $1\\,\\mathrm{TeV}$ 处的微分流强精确测定为 $(3.89\\pm1.27_{\\mathrm{stat}})\\times10^{-13}\\,\\mathrm{TeV}^{-1}\\mathrm{cm}^{-2}\\mathrm{s}^{-1}$（与 VERITAS 在 $1\\sigma$ 内一致，由 $B\\sim10\\,\\mu\\mathrm{G}$ 轻子过程主导），并证认两个邻近 TeV 晕候选体；arXiv:2610.12943 完成了“爱因斯坦探针”（EP）后随 X 射线望远镜（FXT）三种读出模式的在轨时间定标，确立本地时钟相对偏差在 $10^{-6}$ 量级、长期漂移率低至 $2.9\\times 10^{-10}\\,\\mathrm{day}^{-1}$（FXTA）与 $1.3\\times 10^{-9}\\,\\mathrm{day}^{-1}$（FXTB）。\n> 🎯 **筛选边界**：本周共扫描 38 篇文献，严格剔除 30 篇非瞬变及泛星系背景巡天论文，聚焦保留 8 篇直接服务于课题组七大主线（R1–R7）的高能爆发、激波相互作用与致密星物理研究。",
+      "executive_summary": "本周高能天体物理重点工作系统揭示了从中心天体能量注入、磁层耗散到激波演化及周围介质反馈的完整动力学链条。\n- **快速射电暴与磁星环境**：Bhardwaj 等 (arXiv:2610.13062) 发现 FRB 宿主星系轴比 $q$ 与静止系过剩色散量呈显著负相关（$r_P = -0.402$），修正后使 Macquart 关系色散降低 $40\\%$；Zheng 等 (arXiv:2610.14581) 基于 Fermi/GECAM 统计论证磁星 X 射线爆发等待时间服从双组分分布，能量释放标度指数 $\\gamma = 0.94\\pm 0.29$ 强力支持自组织临界磁重联机制；Curtin 等 (arXiv:2610.18710) 利用无似然贝叶斯推断确认 CHIME/FRB Catalog 2 倾向于包含独立的真正单发星族（$\\Delta\\ln\\mathrm{BF} = 114.41$）。\n- **伽马射线暴与相对论喷流**：Gao 等 (arXiv:2610.15703) 构建 PNS 磁偶极辐射接力黑洞回落吸积盘（BZ 机制）的两阶段引擎模型，并揭示了辐射力矩瓦解（RATD）导致的宿主消光非单调演化；Perley 等 (arXiv:2610.20741) 阐明了毫米波快速响应干涉阵列在捕获反向激波谱拐折 $\\nu_{\\mathrm{a}}$ 及打破初始洛伦兹因子 $\\Gamma$ 与磁化度 $\\sigma$ 简并中的核心作用。\n- **超新星前身星与周星介质**：Dessart 等 (arXiv:2610.16527) 证明宽线富氢超亮超新星（SLSNe II）早期紫外超额来自非热星周介质相互作用（$\\dot{M} \\sim 10^{-4}\\text{--}0.03\\,\\mathrm{M_\\odot\\,yr^{-1}}$），而巨大辐射能量排除纯中微子激波并确证中心引擎驱动；Rose 等 (arXiv:2610.13011) 基于 ASKAP 监测测定 SN 2024abfo 暴前质量损失率达 $\\dot{M} \\approx 2.5\\times 10^{-5}\\,M_\\odot\\,\\mathrm{yr^{-1}}$；Zhang 等 (arXiv:2610.12880) 通过 LAMOST 中分辨率光谱分解证认 S147 处于星风吹泡空腔膨胀阶段。\n- **致密天体动力学与极端吸积**：Pons 等 (arXiv:2610.18475) 在全相对论流体哈密顿框架下严格求解潮汐准简正模激发；Salganik 等 (arXiv:2610.17982) 证认 A0538-66 为具有 $v_{\\rm LOS} \\approx -0.12c$ 相对论光电离外流与软硬能段相位翻转（$\\Delta\\phi \\approx 0.5$）的暂现 ULXP。\n> 🎯 **筛选边界**：本周重点聚焦具备自洽物理机制推断、高精度多波段观测约束或严格微扰论解析的高能爆发工作，已剔除纯唯象星系大样本巡天及低信噪比边缘事件。",
       "statistics": {
-        "total_analyzed": 38,
-        "must_read_count": 1,
-        "worth_knowing_count": 7,
-        "skip_count": 30
+        "total_analyzed": 364,
+        "must_read_count": 8,
+        "worth_knowing_count": 77,
+        "skip_count": 279
       },
-      "top_picks_count": 5,
+      "top_picks_count": 18,
       "days": [
+        {
+          "date": "2026-10-15",
+          "weekday": "Thu",
+          "week_id": "2026-W42",
+          "batch_id": "announcement-2026-10-15",
+          "total_papers": 93,
+          "analyzed_count": 93,
+          "must_read_count": 1,
+          "worth_knowing_count": 17,
+          "skip_count": 75,
+          "pending_count": 0,
+          "brief_status": "ready",
+          "brief_intro": "本期首看《mm-jets in the multi-messenger era》等 18 篇核心进展。",
+          "highlights": [
+            {
+              "arxiv_id": "2610.20741",
+              "priority": "must_read",
+              "title": "mm-jets in the multi-messenger era",
+              "reason": "该白皮书系统规划了下一代毫米/亚毫米波阵列（ALMA2040）在相对论喷流物理（GRB、jetted-TDE、XRB、AGN 及双中子星并合引力波对应体）中的科学前沿。毫米波段直接锁定相对论外流自吸收拐折（synchrotron turnover）频段，对解决喷流初始体洛伦兹因子 $\\Gamma$、磁化参数 $\\sigma$、早期反向激波及多信使（中微子、引力波）耗散机制至关重要，与本组关于高能瞬变天体物理、激波与中心引擎的研究高度吻合。"
+            }
+          ],
+          "data_file": "daily/2026-10-15.json"
+        },
         {
           "date": "2026-10-14",
           "weekday": "Wed",
           "week_id": "2026-W42",
           "batch_id": "announcement-2026-10-14",
-          "total_papers": 69,
-          "analyzed_count": 68,
+          "total_papers": 93,
+          "analyzed_count": 93,
           "must_read_count": 0,
-          "worth_knowing_count": 11,
-          "skip_count": 57,
-          "pending_count": 1,
+          "worth_knowing_count": 15,
+          "skip_count": 78,
+          "pending_count": 0,
           "brief_status": "ready",
-          "brief_intro": "本期首看《Nonlinear Perturbations of Relativistic Stars》等 11 篇核心进展。",
+          "brief_intro": "本期首看《Nonlinear Perturbations of Relativistic Stars》等 15 篇核心进展。",
           "highlights": [],
           "data_file": "daily/2026-10-14.json"
+        },
+        {
+          "date": "2026-10-13",
+          "weekday": "Tue",
+          "week_id": "2026-W42",
+          "batch_id": "announcement-2026-10-13",
+          "total_papers": 65,
+          "analyzed_count": 65,
+          "must_read_count": 3,
+          "worth_knowing_count": 18,
+          "skip_count": 44,
+          "pending_count": 0,
+          "brief_status": "ready",
+          "brief_intro": "本期首看《A0538-66: A transient ultraluminous X-ray source with a relativistic outflow, 69ms pulsations, and anomalous optical activity》等 21 篇核心进展。",
+          "highlights": [
+            {
+              "arxiv_id": "2610.17982",
+              "priority": "must_read",
+              "title": "A0538-66: A transient ultraluminous X-ray source with a relativistic outflow, 69ms pulsations, and anomalous optical activity",
+              "reason": "该工作报道了大麦哲伦云著名 Be/X 射线双星 A0538-66 在沉寂约 45 年后重返超爱丁顿光度（$L_{\\rm X} \\approx 1.5\\times 10^{39}\\,\\mathrm{erg\\,s^{-1}}$）的超亮 X 射线脉冲星（ULXP）爆发。高分辨率光谱探测到速度高达 $v_{\\rm LOS} \\approx -0.12c$ 的相对论超爱丁顿外流，并确证了 $69\\,\\mathrm{ms}$ 的脉动演化以及反常的光学-X射线去耦现象，为揭示中子星超临界吸积动力学与漏斗几何遮蔽效应提供了关键观测锚点。"
+            },
+            {
+              "arxiv_id": "2610.18475",
+              "priority": "must_read",
+              "title": "Tidal Excitation of Relativistic Stars",
+              "reason": "该工作首次构建了相对论致密星在含时潮汐外力驱动下的完全因果格林函数与准正则模（QNM）正交展开理论，解决了相对论非厄米辐射系统无法使用简正模展开的基础难题，对中子星双星潮汐共振激发、引力波波形建模及动态 Love 数物理机制有重大理论价值。"
+            },
+            {
+              "arxiv_id": "2610.18710",
+              "priority": "must_read",
+              "title": "Evidence for Distinct One-Off and Repeating Subpopulations in CHIME/FRB Catalog 2",
+              "reason": "该工作利用模拟推断（SBI）框架对 CHIME/FRB Catalog 2 进行星族统计建模，首次在统计上决定性地证实了 FRB 存在独立的本质单发（truly one-off）和重复（repeating）两个子星族，并给出了重复源总数上限及体积发生率，直接关乎 FRB 起源与中心引擎的本质划分。"
+            }
+          ],
+          "data_file": "daily/2026-10-13.json"
+        },
+        {
+          "date": "2026-10-12",
+          "weekday": "Mon",
+          "week_id": "2026-W42",
+          "batch_id": "announcement-2026-10-12",
+          "total_papers": 75,
+          "analyzed_count": 75,
+          "must_read_count": 3,
+          "worth_knowing_count": 20,
+          "skip_count": 52,
+          "pending_count": 0,
+          "brief_status": "ready",
+          "brief_intro": "本期首看《Magnetar X-ray flares as elementary reconnection events in a self-organized critical magnetosphere》等 23 篇核心进展。",
+          "highlights": [
+            {
+              "arxiv_id": "2610.14581",
+              "priority": "must_read",
+              "title": "Magnetar X-ray flares as elementary reconnection events in a self-organized critical magnetosphere",
+              "reason": "该研究基于 Fermi/GBM 与 GECAM 对磁星 SGR J1935+2154 活跃期 789 个 X 射线耀斑（MXFs）进行时间与热力学统计，证实其具有三维分形扩散自组织临界（FD-SOC）磁层雪崩行为，为理解磁星磁层重联机制及 FRB 与高能 X 射线爆发的一对一关联机制提供了核心标度律约束。"
+            },
+            {
+              "arxiv_id": "2610.15703",
+              "priority": "must_read",
+              "title": "Revisiting the Multiwavelength Data of GRB 240825A: Implications for a Two-Stage Central Engine and a Dusty Environment",
+              "reason": "该工作深入探讨了 GRB 240825A 的两阶段中心引擎（原中子星磁偶极辐射过渡到黑洞回落吸积 BZ 喷流）演化以及时变尘埃环境与超新星关联，与中心引擎、相对论喷流和周星环境高度契合。"
+            },
+            {
+              "arxiv_id": "2610.16527",
+              "priority": "must_read",
+              "title": "Blackbody evolution and circumstellar medium properties of broad-lined H-rich superluminous supernovae",
+              "reason": "系统分析了15例宽线富氢超亮超新星（SLSNe II）的多波段SED黑体演化、近紫外超额与晚期光谱，限制了前身星质量损失率，并指出盘状非对称CSM相互作用几何（填充因子 $f \\ll 1$）与高达 $(1\\text{--}3) \\times 10^{51}\\,\\mathrm{erg}$ 的辐射能量强烈支持磁星等中心引擎机制，与本组周星介质相互作用和中心引擎研究高度契合。"
+            }
+          ],
+          "data_file": "daily/2026-10-12.json"
         },
         {
           "date": "2026-10-11",

@@ -418,25 +418,35 @@ async function syncArxivArchivesWithLockHeld({
       }
     } catch {}
   }
+  const updateWeeklyIfNewer = (weekId, data) => {
+    if (!data?.week_id) return;
+    const existing = discoveredWeekly.get(weekId);
+    if (!existing) {
+      discoveredWeekly.set(weekId, data);
+      return;
+    }
+    const existingTime = existing.generated_at ? new Date(existing.generated_at).getTime() : 0;
+    const newTime = data.generated_at ? new Date(data.generated_at).getTime() : 0;
+    if (newTime > existingTime) {
+      discoveredWeekly.set(weekId, data);
+    }
+  };
+
   if (existsSync(weeklyCacheDir)) {
     try {
       const files = await readdir(weeklyCacheDir);
       for (const f of files) {
         if (!f.endsWith(".json")) continue;
         const weekId = f.slice(0, -5);
-        if (!discoveredWeekly.has(weekId)) {
-          const data = await readJsonSafe(join(weeklyCacheDir, f));
-          if (data?.week_id) discoveredWeekly.set(weekId, data);
-        }
+        const data = await readJsonSafe(join(weeklyCacheDir, f));
+        updateWeeklyIfNewer(weekId, data);
       }
     } catch {}
   }
   if (existsSync(currentWeeklyPath)) {
     const curWeekly = await readJsonSafe(currentWeeklyPath);
     if (curWeekly?.week_id) {
-      if (!discoveredWeekly.has(curWeekly.week_id)) {
-        discoveredWeekly.set(curWeekly.week_id, curWeekly);
-      }
+      updateWeeklyIfNewer(curWeekly.week_id, curWeekly);
     }
   }
 

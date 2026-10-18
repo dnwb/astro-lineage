@@ -53,6 +53,7 @@ export const AnalysisBodySchema = z
     origin: z.string().optional(),
     model: z.string().optional(),
     analyzed_at: z.string().optional(),
+    title_zh: z.string().optional(),
     reason: z.string().default(""),
     result: z.string().default(""),
     reading_entry: z.string().optional(),

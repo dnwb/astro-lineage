@@ -51,6 +51,7 @@ ${entry.abstract}
 2. 若论文具有实质学术价值（must_read 或 worth_knowing）：
 严格返回如下结构化格式：
 {
+  "title_zh": "论文题目的中文学术翻译（准确、精炼，遵循中文天文学界通用定名）",
   "priority": "must_read" 或 "worth_knowing",
   "reason": "说明为何该论文有价值以及与核心方向的关系（中文 1-2 句）",
   "result": "主要结果（无法确认时写 unknown）",
@@ -81,12 +82,17 @@ function isUnknown(value) {
 
 export function normalizeTriageOutput(parsed, _entry = null) {
   if (!parsed || typeof parsed !== "object") return parsed;
+  const title_zh =
+    typeof parsed.title_zh === "string" && parsed.title_zh.trim()
+      ? parsed.title_zh.trim()
+      : undefined;
 
   if (parsed.priority === "skip") {
     const evidence = Array.isArray(parsed.evidence) ? parsed.evidence : [];
 
     return {
       priority: "skip",
+      ...(title_zh ? { title_zh } : {}),
       reason:
         typeof parsed.reason === "string" && parsed.reason.trim()
           ? parsed.reason.trim()
@@ -122,6 +128,7 @@ export function normalizeTriageOutput(parsed, _entry = null) {
   // For must_read / worth_knowing, ensure defaults and evidence normalization
   return {
     ...parsed,
+    ...(title_zh ? { title_zh } : {}),
     result: typeof parsed.result === "string" ? parsed.result : "unknown",
     problem: typeof parsed.problem === "string" ? parsed.problem : "unknown",
     method: typeof parsed.method === "string" ? parsed.method : "unknown",

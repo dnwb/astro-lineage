@@ -26,6 +26,7 @@ import {
   extractPaperTopic,
   validateTitleOverride,
 } from "./channel-title-policy.mjs";
+import { resolvePaperTitleZhAsync, resolvePaperTitleZhSync } from "./paper-translation.mjs";
 import { TencentGuildAdapter } from "./intelligence-egress.mjs";
 export { extractPaperTopic, DAILY_BRIEF_CHANNEL_ID, GENERAL_CHANNEL_ID, resolvePublicationTarget };
 
@@ -84,12 +85,12 @@ function cleanMath(text) {
   return String(text).replace(/\\\\/g, "\\");
 }
 
-function paperReaderTitle(item) {
-  return derivePaperTitleCandidate(item);
+function paperReaderTitle(item, options = {}) {
+  return derivePaperTitleCandidate(item, options);
 }
 
-export function derivePaperContentTitle(item) {
-  return paperReaderTitle(item);
+export function derivePaperContentTitle(item, options = {}) {
+  return paperReaderTitle(item, options);
 }
 
 function dailyBriefItem(model, date) {
@@ -1675,7 +1676,10 @@ async function dailyItems(model, date, resolveFigure = resolveReviewedFigure, fi
       const identity = `daily:${item.arxiv_id}v${item.revision}`;
       let title;
       try {
-        title = paperReaderTitle(item);
+        if (!resolvePaperTitleZhSync(item, figureOptions)) {
+          await resolvePaperTitleZhAsync(item, figureOptions);
+        }
+        title = paperReaderTitle(item, figureOptions);
       } catch (error) {
         return {
           identity,

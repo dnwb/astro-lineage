@@ -1,3 +1,5 @@
+import { resolvePaperTitleZhSync, formatTranslatedPaperTitle } from "./paper-translation.mjs";
+
 const TITLE_LIMIT = 200;
 const PAPER_TITLE_COMPACT_LIMIT = 60;
 const TITLE_REVIEW_HAN_LIMIT = 35;
@@ -130,10 +132,22 @@ function comparableTitle(value) {
     .replace(/[。.!！？?]+$/gu, "");
 }
 
+export const TRANSLATED_PAPER_TITLE = /^\[(?:arxiv\s*:\s*)?(\d{4}\.\d{4,5}(?:v\d+)?)\]\s+(.+)$/iu;
+
+export function isTranslatedPaperTitle(title) {
+  const match = String(title || "").match(TRANSLATED_PAPER_TITLE);
+  if (!match) return false;
+  const content = match[2].trim();
+  return content.length > 0 && !UNINFORMATIVE.test(content);
+}
+
 function validateCandidate(candidate, kind) {
   const value = cleanMathInTitle(text(candidate));
   if (!value) throw new Error(`CHANNEL_TITLE_${kind}_PROGRESS_REQUIRED`);
   if (Array.from(value).length > TITLE_LIMIT) throw new Error("CHANNEL_TITLE_TOO_LONG");
+  if (kind === "PAPER" && isTranslatedPaperTitle(value)) {
+    return value;
+  }
   if (UNINFORMATIVE.test(value) || ARXIV_IDENTIFIER.test(value))
     throw new Error("CHANNEL_TITLE_UNINFORMATIVE");
   if (REPORTING_ONLY.test(value) || STANDALONE_SUBORDINATE.test(value))
@@ -164,6 +178,9 @@ export function formatDailyTitle(date, progress, paperTitles = []) {
 }
 
 export function formatPaperTitle(candidate) {
+  if (isTranslatedPaperTitle(candidate)) {
+    return validateCandidate(candidate, "PAPER");
+  }
   const value = validateCandidate(candidate, "PAPER");
   if (/^(?:必读|关注|略读|R[1-7]|研究方向|arxiv)/iu.test(value))
     throw new Error("CHANNEL_TITLE_UNINFORMATIVE");
@@ -411,7 +428,11 @@ function fallbackPaperTitleCandidate(item, maxLength = TITLE_LIMIT) {
   return null;
 }
 
-function derivePaperTitle(item) {
+function derivePaperTitle(item, options = {}) {
+  const titleZh = resolvePaperTitleZhSync(item, options);
+  if (item?.arxiv_id && titleZh) {
+    return formatTranslatedPaperTitle(item.arxiv_id, titleZh);
+  }
   const completeCandidate = fallbackPaperTitleCandidate(item);
   const compactCandidate = fallbackPaperTitleCandidate(item, PAPER_TITLE_COMPACT_LIMIT);
   const fallbackCandidate =
@@ -718,7 +739,7 @@ export function deriveTitleDecision(request = {}) {
   const sourceIdentity = titleSourceIdentity(request);
   try {
     let title;
-    if (request.kind === "paper") title = derivePaperTitle(request.item);
+    if (request.kind === "paper") title = derivePaperTitle(request.item, request);
     else if (request.kind === "daily")
       title = deriveDailyTitle(request.date, request.highlights, request.brief);
     else if (request.kind === "weekly") title = deriveWeeklyTitle(request.weekId, request.weekly);

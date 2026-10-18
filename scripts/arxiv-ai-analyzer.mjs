@@ -213,7 +213,7 @@ export function parseCliArgs(args) {
 
 let providerCycleCounter = 0;
 
-async function executeChatCompletion({
+export async function executeChatCompletion({
   prompt,
   systemPrompt,
   model,
@@ -374,6 +374,7 @@ const SYSTEM_PROMPT = ASTROPHYSICS_SYSTEM_PROMPT;
 function scientificFieldsPrompt({ abstract = false } = {}) {
   return `严格返回 JSON，字段为：
 {
+  "title_zh":"论文题目的精准中文学术翻译（准确、精炼、学术规范）",
   "priority":"must_read|worth_knowing|skip",
   "reason":"分类理由",
   "result":"主要物理结果与定量结论；对于关键机制或标度律，应包含核心物理量与 LaTeX 标度公式（如 $L_{\\rm iso}$、$t_{\\rm delay} \\propto \\nu^{-2}$ 等），无法确认时写 unknown",
@@ -1034,7 +1035,18 @@ export function validateScientificOutput(
   if (!minimumSupports.every((field) => evidence.some((item) => item.supports?.includes(field)))) {
     throw new Error("Model response lacks source evidence for its screening decision");
   }
-  return { ...fields, assumptions, limits, inspectedSections, evidence };
+  const title_zh =
+    typeof parsed.title_zh === "string" && parsed.title_zh.trim()
+      ? parsed.title_zh.trim()
+      : undefined;
+  return {
+    ...fields,
+    assumptions,
+    limits,
+    inspectedSections,
+    evidence,
+    ...(title_zh ? { title_zh } : {}),
+  };
 }
 
 function sectionCoverage(sections) {
@@ -1114,6 +1126,9 @@ function buildAnalysisRecord(entry, parsed, checked, { modelName, source } = {})
       origin: "ai",
       model: modelName,
       analyzed_at: new Date().toISOString(),
+      ...(checked.title_zh || parsed.title_zh
+        ? { title_zh: checked.title_zh || parsed.title_zh }
+        : {}),
       reason: checked.reason,
       result: checked.result,
       reading_entry: checked.reading_entry,

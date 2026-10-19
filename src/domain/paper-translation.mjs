@@ -109,7 +109,13 @@ export function cleanTitleZh(text) {
     .replace(/超亮X射线源\s*(ULX)/giu, "$1")
     .replace(/脉冲星风(?:星)?云\s*(PWN)/giu, "$1")
     .replace(/(?:环星物质|星周介质)\s*(CSM)/giu, "$1")
-    .replace(/准周期振荡\s*(QPO)/giu, "$1");
+    .replace(/准周期振荡\s*(QPO)/giu, "$1")
+    .replace(/(?:软伽马(?:射线)?重复暴|软伽马重复源)\s*(SGR(?:\s*\d{4,6}[+-]\d{2,4})?)/giu, "$1")
+    .replace(/软伽马(?:射线)?重复暴/gu, "SGR")
+    .replace(/反常X射线脉冲星\s*(AXP)/giu, "$1")
+    .replace(/双中子星(?:并合)?\s*(BNS)/giu, "$1")
+    .replace(/中子星[-—]黑洞(?:并合)?\s*(NSBH)/giu, "$1")
+    .replace(/双黑洞(?:并合)?\s*(BBH)/giu, "$1");
 
   return clean.replace(/\s+/g, " ").trim();
 }

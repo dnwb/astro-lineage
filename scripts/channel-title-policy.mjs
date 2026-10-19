@@ -431,8 +431,9 @@ function fallbackPaperTitleCandidate(item, maxLength = TITLE_LIMIT) {
 function derivePaperTitle(item, options = {}) {
   if (options.useTranslation !== false) {
     const titleZh = resolvePaperTitleZhSync(item, options);
-    if (item?.arxiv_id && titleZh) {
-      return formatTranslatedPaperTitle(item.arxiv_id, titleZh);
+    const paperId = item?.arxiv_id || item?.id;
+    if (paperId && titleZh) {
+      return formatTranslatedPaperTitle(paperId, titleZh);
     }
   }
   const completeCandidate = fallbackPaperTitleCandidate(item);

@@ -30,12 +30,14 @@ test("cleanTitleZh removes book marks, quotes, trailing punctuation, and LaTeX",
   );
 });
 
-test("cleanTitleZh preserves astrophysics acronyms (GRB, FRB, SN, AGN, GW)", () => {
+test("cleanTitleZh preserves astrophysics acronyms (GRB, FRB, SN, AGN, GW, SGR, BNS)", () => {
   assert.equal(cleanTitleZh("伽马射线暴 GRB 240825A 的多波段观测"), "GRB 240825A 的多波段观测");
   assert.equal(cleanTitleZh("快速射电暴 20201124A 的偏振性质"), "FRB 20201124A 的偏振性质");
   assert.equal(cleanTitleZh("超新星 SN 2024ggi 的早期光谱分析"), "SN 2024ggi 的早期光谱分析");
   assert.equal(cleanTitleZh("超新星 2024ggi 的光变曲线演化"), "SN 2024ggi 的光变曲线演化");
   assert.equal(cleanTitleZh("引力波 GW 170817 与电磁对应体"), "GW 170817 与电磁对应体");
+  assert.equal(cleanTitleZh("软伽马重复暴 SGR 1935+2154 的X射线爆发"), "SGR 1935+2154 的X射线爆发");
+  assert.equal(cleanTitleZh("双中子星并合 BNS 的数值相对论模拟"), "BNS 的数值相对论模拟");
 });
 
 test("formatTranslatedPaperTitle builds canonical [arxiv_id] title_zh format", () => {

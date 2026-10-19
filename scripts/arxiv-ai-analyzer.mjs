@@ -369,13 +369,14 @@ export async function executeChatCompletion({
 }
 
 import { ASTROPHYSICS_SYSTEM_PROMPT } from "../src/domain/academic-domain.mjs";
+import { cleanTitleZh } from "../src/domain/paper-translation.mjs";
 
 const SYSTEM_PROMPT = ASTROPHYSICS_SYSTEM_PROMPT;
 
 function scientificFieldsPrompt({ abstract = false } = {}) {
   return `严格返回 JSON，字段为：
 {
-  "title_zh":"论文题目的精准中文学术翻译（准确、精炼、学术规范，保留国际通用天文英文缩写如 GRB, FRB, SN, AGN, TDE 等，不要全译为冗长中文）",
+  "title_zh":"论文题目的精准中文学术翻译（准确、精炼、学术规范，保留国际通用天文英文缩写如 GRB, FRB, SN, GW, AGN, TDE 等，不要全译为冗长中文）",
   "priority":"must_read|worth_knowing|skip",
   "reason":"分类理由",
   "result":"主要物理结果与定量结论；对于关键机制或标度律，应包含核心物理量与 LaTeX 标度公式（如 $L_{\\rm iso}$、$t_{\\rm delay} \\propto \\nu^{-2}$ 等），无法确认时写 unknown",
@@ -1038,7 +1039,7 @@ export function validateScientificOutput(
   }
   const title_zh =
     typeof parsed.title_zh === "string" && parsed.title_zh.trim()
-      ? parsed.title_zh.trim()
+      ? cleanTitleZh(parsed.title_zh)
       : undefined;
   return {
     ...fields,
@@ -1128,7 +1129,7 @@ function buildAnalysisRecord(entry, parsed, checked, { modelName, source } = {})
       model: modelName,
       analyzed_at: new Date().toISOString(),
       ...(checked.title_zh || parsed.title_zh
-        ? { title_zh: checked.title_zh || parsed.title_zh }
+        ? { title_zh: checked.title_zh || cleanTitleZh(parsed.title_zh) }
         : {}),
       reason: checked.reason,
       result: checked.result,

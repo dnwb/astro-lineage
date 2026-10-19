@@ -17,6 +17,7 @@ import archiveManifest from "../data/arxiv-archives/manifest.json";
 import ScientificEventTimeline from "../components/ScientificEventTimeline.astro";
 import { radarCardAnchor } from "../../scripts/daily-radar.mjs";
 import { parseStructuredExecutiveSummary, formatAnnouncementInBeijing } from "../domain/academic-domain.mjs";
+import { resolvePaperTitleZhSync } from "../domain/paper-translation.mjs";
 import "../styles/global.css";
 
 const dailyArchiveModules = import.meta.glob<{ default: any }>("../data/arxiv-archives/daily/*.json", { eager: true });
@@ -215,7 +216,17 @@ const bjtDailyInfo = formatAnnouncementInBeijing(latestDate, radarWeekday);
                         </div>
                         <h4 class="intel-pick-title">
                           <a href={pickTargetUrl} class="intel-paper-title-link" title="点击直接进入本文深度精读">
-                            <ReaderText text={pick.title} />
+                            {(() => {
+                              const titleZh = resolvePaperTitleZhSync(pick);
+                              return titleZh ? (
+                                <span class="home-paper-title-bilingual">
+                                  <span class="home-paper-title-en"><ReaderText text={pick.title} /></span>
+                                  <span class="home-paper-title-zh"><ReaderText text={titleZh} /></span>
+                                </span>
+                              ) : (
+                                <ReaderText text={pick.title} />
+                              );
+                            })()}
                           </a>
                         </h4>
                         {authorStr && (
@@ -310,7 +321,17 @@ const bjtDailyInfo = formatAnnouncementInBeijing(latestDate, radarWeekday);
                         </div>
                         <h4 class="quick-paper-title">
                           <a href={paperTargetUrl} class="intel-paper-title-link" title="点击直接进入本文当日完整精读">
-                            <ReaderText text={paper.entry?.title || paper.arxiv_id} />
+                            {(() => {
+                              const titleZh = resolvePaperTitleZhSync(paper) || (paper.entry ? resolvePaperTitleZhSync(paper.entry) : null);
+                              return titleZh ? (
+                                <span class="home-paper-title-bilingual">
+                                  <span class="home-paper-title-en"><ReaderText text={paper.entry?.title || paper.arxiv_id} /></span>
+                                  <span class="home-paper-title-zh"><ReaderText text={titleZh} /></span>
+                                </span>
+                              ) : (
+                                <ReaderText text={paper.entry?.title || paper.arxiv_id} />
+                              );
+                            })()}
                           </a>
                         </h4>
                         {result && result !== "unknown" && !result.startsWith("未能从已检查材料") && (
@@ -513,6 +534,25 @@ const bjtDailyInfo = formatAnnouncementInBeijing(latestDate, radarWeekday);
       }
       :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .intel-pick-pdf {
         color: #fca5a5;
+      }
+      .home-paper-title-bilingual {
+        display: flex;
+        flex-direction: column;
+        gap: 0.2rem;
+      }
+      .home-paper-title-en {
+        display: block;
+        line-height: 1.4;
+      }
+      .home-paper-title-zh {
+        display: block;
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: var(--text-secondary, #475569);
+        line-height: 1.4;
+      }
+      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .home-paper-title-zh {
+        color: #94a3b8;
       }
       .intel-bluf-stream,
       .intel-pick-bluf {

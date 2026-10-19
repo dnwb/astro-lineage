@@ -2,6 +2,7 @@
 import ReaderText from "./ReaderText.astro";
 import eventsData from "../data/scientific-events.json";
 import { formatAnnouncementInBeijing, parseTransientEpoch } from "../domain/academic-domain.mjs";
+import { resolvePaperTitleZhSync } from "../domain/paper-translation.mjs";
 
 interface Props {
   maxEvents?: number;
@@ -127,7 +128,15 @@ function priorityPill(priority: string) {
 
                     <h5 class="event-paper-title">
                       <a href={dailyCardAnchor}>
-                        <ReaderText text={paper.title || paper.arxiv_id} />
+                        {(() => {
+                          const titleZh = resolvePaperTitleZhSync(paper);
+                          return (
+                            <span class="event-paper-title-bilingual">
+                              <span class="event-title-en"><ReaderText text={paper.title || paper.arxiv_id} /></span>
+                              {titleZh ? <span class="event-title-zh"><ReaderText text={titleZh} /></span> : null}
+                            </span>
+                          );
+                        })()}
                       </a>
                     </h5>
 
@@ -675,6 +684,25 @@ function priorityPill(priority: string) {
   }
   :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .event-paper-title a:hover {
     color: #60a5fa;
+  }
+  .event-paper-title-bilingual {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+  .event-title-en {
+    display: block;
+    line-height: 1.4;
+  }
+  .event-title-zh {
+    display: block;
+    font-size: 0.86rem;
+    font-weight: 500;
+    color: var(--text-secondary, #475569);
+    line-height: 1.4;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .event-title-zh {
+    color: #94a3b8;
   }
 
   .paper-bluf-brief {

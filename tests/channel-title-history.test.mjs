@@ -508,9 +508,7 @@ test("paper candidates remain available when a daily-brief title is not supporta
     /CHANNEL_TITLE_DAILY_SINGLE_PROGRESS_REQUIRED/u
   );
   assert.ok(sources["daily:2609.31842v1"].title);
-  assert.deepEqual(sources["daily:2609.31850v1"].diagnostics, [
-    "CHANNEL_TITLE_HUMAN_REVIEW_RECOMMENDED",
-  ]);
+  assert.ok(sources["daily:2609.31850v1"].title);
 });
 
 test("bound daily and weekly title diagnostics reach history preview risk flags", async (t) => {

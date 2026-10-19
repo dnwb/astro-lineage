@@ -4,7 +4,7 @@ import DailyRadarGuide from "../DailyRadarGuide.astro";
 import DailyRadarSource from "../DailyRadarSource.astro";
 import { radarCardAnchor } from "../../../scripts/daily-radar.mjs";
 import { matchScientificTags, extractTransientIdentifiers, formatAnnouncementInBeijing, TOPIC_FILTER_SPECS } from "../../domain/academic-domain.mjs";
-import { resolvePaperTitleZhSync } from "../../../scripts/paper-translation.mjs";
+import { resolvePaperTitleZhSync } from "../../domain/paper-translation.mjs";
 
 interface Props {
   topPicks: any[];

@@ -1,6 +1,6 @@
 ---
 import { formatAnnouncementInBeijing } from "../../domain/academic-domain.mjs";
-import { resolvePaperTitleZhSync } from "../../../scripts/paper-translation.mjs";
+import { resolvePaperTitleZhSync } from "../../domain/paper-translation.mjs";
 
 interface Props {
   weekDays: Array<{
@@ -82,15 +82,15 @@ const { weekDays, latestDailyDate } = Astro.props;
                           >
                             arXiv:{h.arxiv_id} ↗
                           </a>
-                          {h.title && (
-                            <span class="table-paper-title" title={resolvePaperTitleZhSync(h) ? `${resolvePaperTitleZhSync(h)} (${h.title})` : h.title}>
-                              {resolvePaperTitleZhSync(h) ? (
-                                <span class="table-paper-zh">{resolvePaperTitleZhSync(h)}</span>
-                              ) : (
-                                h.title
-                              )}
-                            </span>
-                          )}
+                          {h.title && (() => {
+                            const titleZh = resolvePaperTitleZhSync(h);
+                            return (
+                              <span class="table-paper-title" title={titleZh ? `${titleZh} (${h.title})` : h.title}>
+                                <span class="table-paper-en">{h.title}</span>
+                                {titleZh && <span class="table-paper-zh">「{titleZh}」</span>}
+                              </span>
+                            );
+                          })()}
                         </div>
                       ))}
                       {mustList.length > 3 && (
@@ -110,15 +110,15 @@ const { weekDays, latestDailyDate } = Astro.props;
                                 >
                                   arXiv:{h.arxiv_id} ↗
                                 </a>
-                                {h.title && (
-                                  <span class="table-paper-title" title={resolvePaperTitleZhSync(h) ? `${resolvePaperTitleZhSync(h)} (${h.title})` : h.title}>
-                                    {resolvePaperTitleZhSync(h) ? (
-                                      <span class="table-paper-zh">{resolvePaperTitleZhSync(h)}</span>
-                                    ) : (
-                                      h.title
-                                    )}
-                                  </span>
-                                )}
+                                {h.title && (() => {
+                                  const titleZh = resolvePaperTitleZhSync(h);
+                                  return (
+                                    <span class="table-paper-title" title={titleZh ? `${titleZh} (${h.title})` : h.title}>
+                                      <span class="table-paper-en">{h.title}</span>
+                                      {titleZh && <span class="table-paper-zh">「{titleZh}」</span>}
+                                    </span>
+                                  );
+                                })()}
                               </div>
                             ))}
                           </div>
@@ -363,10 +363,21 @@ const { weekDays, latestDailyDate } = Astro.props;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    max-width: 380px;
+    max-width: 480px;
   }
   :global([data-theme="dark"]) .table-paper-title {
     color: #cbd5e1;
+  }
+  .table-paper-en {
+    color: inherit;
+  }
+  .table-paper-zh {
+    color: #0284c7;
+    margin-left: 0.35rem;
+    font-size: 0.85em;
+  }
+  :global([data-theme="dark"]) .table-paper-zh {
+    color: #38bdf8;
   }
   .table-highlights-more {
     margin-top: 0.25rem;

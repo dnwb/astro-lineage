@@ -4,7 +4,7 @@ import DailyRadarGuide from "./DailyRadarGuide.astro";
 import DailyRadarSource from "./DailyRadarSource.astro";
 import { projectPotentialLineage, radarCardAnchor, radarCoverageDescription } from "../../scripts/daily-radar.mjs";
 import { matchScientificTags, extractTransientIdentifiers, normalizeStructuredClaim } from "../domain/academic-domain.mjs";
-import { resolvePaperTitleZhSync } from "../../scripts/paper-translation.mjs";
+import { resolvePaperTitleZhSync } from "../domain/paper-translation.mjs";
 
 type AnyRecord = Record<string, any>;
 type CoverageLevel = "abstract_only" | "body_partial" | "full_body";

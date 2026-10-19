@@ -7,6 +7,7 @@
 ## 1. AI-HOT Date Switching & Route Decoupling Pattern
 
 ### Rules
+
 1. **Latest First by Default**: The root `/arxiv-daily/` route always defaults to the latest published monitoring batch.
 2. **Independent Date Routes**: Historical daily editions live at `/arxiv-daily/[date]/`. Each edition is a self-contained static HTML document.
 3. **Decoupled Capsule Switchers**:
@@ -21,6 +22,7 @@
 ## 2. Caveman High-Density Data Principle
 
 ### Rules
+
 1. **Pure Data, Metrics, and Direct Links**: Present physics hypotheses, observational evidence, formulas, tables, and direct links (`arXiv:XXXX.XXXXX ↗`, `📄 PDF ↗`, `ADS ↗`).
 2. **Strict Ban on Meta-Engineering & Navigational Jargon**:
    - **Forbidden Phrases**: `免跳转`, `平滑跳转`, `对齐原则`, `一一对齐`, `工程实现`, `底层逻辑`.
@@ -34,6 +36,7 @@
 ## 3. Zero Client-Script UI Contract
 
 ### Rules
+
 1. **Semantic HTML & Native CSS Interactivity**:
    - Popover dialogs use native browser `popover="auto"` and `popovertarget="..."`.
    - Menus, dropdowns, and citations use native `<details>` and `<summary>`.
@@ -47,6 +50,7 @@
 ## 4. Weekly Component Modularization & Copy Precision
 
 All weekly synthesis pages (`src/pages/arxiv-weekly/index.astro` and `src/pages/arxiv-weekly/[week].astro`) MUST delegate to modular components under `src/components/weekly/`:
+
 - `WeeklyWeekSwitcher.astro`: AI-HOT style quick natural week ribbon with historical dropdown.
 - `WeeklyDomainMatrix.astro`: Unified 2-column matrix: Left column displays physical domain; right column directly heads with a dedicated scientific debate banner (`🎯 核心科学争论 / 关键未决问题`), followed by 1-to-1 answering paper cardlets and physical mechanism takeaways.
 - `WeeklyDailyTable.astro`: High-density directory table linking to daily monitoring editions.
@@ -56,4 +60,20 @@ All weekly synthesis pages (`src/pages/arxiv-weekly/index.astro` and `src/pages/
 Both weekly page routes MUST stay under 600 lines of code.
 
 ### Executive Summary Subject Precision Rule
+
 In `executive_summary`, every scientific breakthrough bullet MUST use specific papers or first authors as the grammatical subject (e.g., `Author et al. (arXiv:xxxx.xxxxx) 提出/约束...` or `arXiv:xxxx.xxxxx (Author et al.) 论证...`). Impersonal, passive, and subjectless formulations are strictly forbidden.
+
+---
+
+## 5. Bilingual Paper Title Presentation & Domain Decoupling
+
+### Rules
+
+1. **Bilingual Hierarchy in Reader Cards & Lists**:
+   - Academic papers displayed in reader cards (`DailyRadarCard.astro`, `DailyRadarPendingCard.astro`, `WeeklyTopPicks.astro`), timeline events (`ScientificEventTimeline.astro`), tables (`WeeklyDailyTable.astro`), and event streams (`src/pages/events/index.astro`) must render both the English original title and the translated Chinese title when available.
+   - English original serves as primary identifier (`.paper-title-en`); Chinese translation displays underneath or alongside as contextual reading aid (`.paper-title-zh` or `.event-title-zh`).
+2. **Domain Import Rule (Strict Separation)**:
+   - UI `.astro` components and pages MUST import translation helpers exclusively from `src/domain/paper-translation.mjs` (`resolvePaperTitleZhSync`, `cleanTitleZh`, `formatTranslatedPaperTitle`).
+   - Importing from `scripts/` (e.g. `scripts/paper-translation.mjs`) inside `.astro` files is strictly forbidden to preserve pure static UI decoupling.
+3. **Acronym Preservation**:
+   - Astrophysics acronyms (`GRB`, `FRB`, `SN`, `AGN`, `TDE`, `ULX`, `PWN`, `CSM`, `QPO`, `GW`, and catalog numbers like `SN 2024ggi`) are preserved in uppercase and never translated into long descriptive Chinese phrases.

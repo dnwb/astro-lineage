@@ -1,8 +1,8 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import fs from "node:fs";
 import path from "node:path";
-import os from "node:os";
+
+import { createTemporaryWorkspace } from "./helpers/temporary-workspace.mjs";
 
 import {
   cleanTitleZh,
@@ -10,7 +10,7 @@ import {
   saveTranslationsCacheSync,
   resolvePaperTitleZhSync,
   resetTranslationMemoryCache,
-} from "../scripts/paper-translation.mjs";
+} from "../src/domain/paper-translation.mjs";
 
 import {
   derivePaperTitleCandidate,
@@ -30,10 +30,12 @@ test("cleanTitleZh removes book marks, quotes, trailing punctuation, and LaTeX",
   );
 });
 
-test("cleanTitleZh preserves astrophysics acronyms (GRB, FRB, SN, AGN)", () => {
+test("cleanTitleZh preserves astrophysics acronyms (GRB, FRB, SN, AGN, GW)", () => {
   assert.equal(cleanTitleZh("伽马射线暴 GRB 240825A 的多波段观测"), "GRB 240825A 的多波段观测");
   assert.equal(cleanTitleZh("快速射电暴 20201124A 的偏振性质"), "FRB 20201124A 的偏振性质");
   assert.equal(cleanTitleZh("超新星 SN 2024ggi 的早期光谱分析"), "SN 2024ggi 的早期光谱分析");
+  assert.equal(cleanTitleZh("超新星 2024ggi 的光变曲线演化"), "SN 2024ggi 的光变曲线演化");
+  assert.equal(cleanTitleZh("引力波 GW 170817 与电磁对应体"), "GW 170817 与电磁对应体");
 });
 
 test("formatTranslatedPaperTitle builds canonical [arxiv_id] title_zh format", () => {
@@ -68,9 +70,9 @@ test("formatPaperTitle accepts valid translated title and rejects uninformative 
   assert.throws(() => formatPaperTitle("arXiv:2610.02653"), /CHANNEL_TITLE_UNINFORMATIVE/u);
 });
 
-test("resolvePaperTitleZhSync resolves title_zh from item, analysis, or cache", () => {
+test("resolvePaperTitleZhSync resolves title_zh from item, analysis, or cache", async (t) => {
   resetTranslationMemoryCache();
-  const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "paper-trans-test-"));
+  const { path: tmpDir } = await createTemporaryWorkspace("astro-lineage-test-", t);
   const tmpCachePath = path.join(tmpDir, "translations.json");
 
   try {
@@ -97,14 +99,13 @@ test("resolvePaperTitleZhSync resolves title_zh from item, analysis, or cache", 
     const item4 = { arxiv_id: "2610.00004" };
     assert.equal(resolvePaperTitleZhSync(item4, { cachePath: tmpCachePath }), null);
   } finally {
-    fs.rmSync(tmpDir, { recursive: true, force: true });
     resetTranslationMemoryCache();
   }
 });
 
-test("derivePaperTitleCandidate produces canonical [arxiv_id] title_zh when available and falls back cleanly", () => {
+test("derivePaperTitleCandidate produces canonical [arxiv_id] title_zh when available and falls back cleanly", async (t) => {
   resetTranslationMemoryCache();
-  const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "paper-trans-test-"));
+  const { path: tmpDir } = await createTemporaryWorkspace("astro-lineage-test-", t);
   const tmpCachePath = path.join(tmpDir, "translations.json");
 
   try {
@@ -144,7 +145,6 @@ test("derivePaperTitleCandidate produces canonical [arxiv_id] title_zh when avai
     const titleC = derivePaperTitleCandidate(itemFallback, { cachePath: tmpCachePath });
     assert.equal(titleC, "GRB 220627A是否来自蓝超巨星坍缩？");
   } finally {
-    fs.rmSync(tmpDir, { recursive: true, force: true });
     resetTranslationMemoryCache();
   }
 });

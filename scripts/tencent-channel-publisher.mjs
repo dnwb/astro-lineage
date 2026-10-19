@@ -1475,6 +1475,7 @@ export async function publishDailyFeed({
   mustReadOnly = false,
   dailyChannelId = DEFAULT_DAILY_CHANNEL_ID,
   resolveFigure = resolveReviewedFigure,
+  cacheRoot = DEFAULT_CACHE_ROOT,
   ...options
 } = {}) {
   try {
@@ -1495,7 +1496,12 @@ export async function publishDailyFeed({
     const date = edition.feed.window?.announcement_date;
     if (!/^\d{4}-\d\d-\d\d$/u.test(date || "")) throw new Error("CHANNEL_SOURCE_DATE_INVALID");
     await stat(join(distRoot, "arxiv-daily", date, "index.html"));
-    const items = await dailyItems(checked.model, date, resolveFigure, { distRoot, mustReadOnly });
+    const items = await dailyItems(checked.model, date, resolveFigure, {
+      distRoot,
+      cacheRoot,
+      cachePath: cacheRoot ? join(cacheRoot, "paper-translations.json") : undefined,
+      mustReadOnly,
+    });
     let briefError;
     if (includeBrief) {
       try {
@@ -1520,6 +1526,7 @@ export async function publishDailyFeed({
     const ids = channelIds ?? (options.dryRun ? {} : await provisionTopicChannels(options));
     const result = await publishItems(items, {
       ...options,
+      cacheRoot,
       channelIds: { ...ids, daily: dailyChannelId },
     });
     if (briefError) {
@@ -1677,7 +1684,9 @@ async function dailyItems(model, date, resolveFigure = resolveReviewedFigure, fi
       let title;
       try {
         if (!resolvePaperTitleZhSync(item, figureOptions)) {
-          await resolvePaperTitleZhAsync(item, figureOptions);
+          if (figureOptions.translate === true) {
+            await resolvePaperTitleZhAsync(item, figureOptions);
+          }
         }
         title = paperReaderTitle(item, figureOptions);
       } catch (error) {
@@ -1878,6 +1887,7 @@ export async function publishHistoricalFeeds({
   briefs = false,
   channelId = DEFAULT_DAILY_CHANNEL_ID,
   resolveFigure = resolveReviewedFigure,
+  cacheRoot = DEFAULT_CACHE_ROOT,
   ...options
 } = {}) {
   try {
@@ -1915,7 +1925,11 @@ export async function publishHistoricalFeeds({
                 },
                 date,
                 resolveFigure,
-                { distRoot }
+                {
+                  distRoot,
+                  cacheRoot,
+                  cachePath: cacheRoot ? join(cacheRoot, "paper-translations.json") : undefined,
+                }
               )
             )[0];
             if (!seen.has(item.identity)) {
@@ -1931,6 +1945,7 @@ export async function publishHistoricalFeeds({
     const ids = channelIds ?? (dryRun || briefs ? {} : await provisionTopicChannels(options));
     const result = await publishItems([...must, ...worth], {
       ...options,
+      cacheRoot,
       channelIds: ids,
       channelId,
       kind: briefs ? "brief" : "daily",

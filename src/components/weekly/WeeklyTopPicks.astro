@@ -4,6 +4,7 @@ import DailyRadarGuide from "../DailyRadarGuide.astro";
 import DailyRadarSource from "../DailyRadarSource.astro";
 import { radarCardAnchor } from "../../../scripts/daily-radar.mjs";
 import { matchScientificTags, extractTransientIdentifiers, formatAnnouncementInBeijing, TOPIC_FILTER_SPECS } from "../../domain/academic-domain.mjs";
+import { resolvePaperTitleZhSync } from "../../../scripts/paper-translation.mjs";
 
 interface Props {
   topPicks: any[];
@@ -188,6 +189,7 @@ const activeTopicFilters = TOPIC_FILTER_SPECS
   <div class="picks-list">
     {enrichedPicks && enrichedPicks.length > 0 ? (
       enrichedPicks.map(({ pick, paperObj, dailyDate, dailyItem, modalId, badge, tags, transientIds }) => {
+        const titleZh = resolvePaperTitleZhSync(pick) || resolvePaperTitleZhSync(paperObj) || (dailyItem ? resolvePaperTitleZhSync(dailyItem) : null);
         return (
           <article
             class={`pick-card ${pick.priority === "must_read" ? "pick-card-must" : "pick-card-worth"}`}
@@ -239,14 +241,19 @@ const activeTopicFilters = TOPIC_FILTER_SPECS
                   popovertarget={modalId}
                   title="点击直接精读本文"
                 >
-                  {pick.title}
+                  <span class="pick-title-en">{pick.title}</span>
+                  {titleZh ? <span class="pick-title-zh">{titleZh}</span> : null}
                 </button>
               ) : dailyDate ? (
                 <a href={`/arxiv-daily/${dailyDate}/#${radarCardAnchor(pick.arxiv_id, pick.revision || 1)}`} class="pick-title-link" title="点击直接进入本文当日深度精读">
-                  {pick.title}
+                  <span class="pick-title-en">{pick.title}</span>
+                  {titleZh ? <span class="pick-title-zh">{titleZh}</span> : null}
                 </a>
               ) : (
-                pick.title
+                <span class="pick-title-plain">
+                  <span class="pick-title-en">{pick.title}</span>
+                  {titleZh ? <span class="pick-title-zh">{titleZh}</span> : null}
+                </span>
               )}
             </h3>
             {resolveAuthors(pick.arxiv_id, pick).length > 0 ? (
@@ -326,6 +333,7 @@ const activeTopicFilters = TOPIC_FILTER_SPECS
                     </div>
                     <h2 class="radar-modal-title" id={`modal-title-${modalId}`}>
                       <ReaderText text={pick.title} />
+                      {titleZh ? <span class="modal-title-zh">{titleZh}</span> : null}
                     </h2>
                     {resolveAuthors(pick.arxiv_id, pick).length > 0 && (
                       <p class="radar-modal-authors">作者：{resolveAuthors(pick.arxiv_id, pick).join(", ")}</p>
@@ -706,6 +714,35 @@ const activeTopicFilters = TOPIC_FILTER_SPECS
     color: #f8fafc;
   }
   :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .pick-title-btn:hover {
+    color: #60a5fa;
+  }
+  .pick-title-btn,
+  .pick-title-link,
+  .pick-title-plain {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  .pick-title-en {
+    display: block;
+    line-height: 1.4;
+  }
+  .pick-title-zh {
+    display: block;
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: #475569;
+    line-height: 1.45;
+  }
+  .pick-title-btn:hover .pick-title-zh,
+  .pick-title-link:hover .pick-title-zh {
+    color: #2563eb;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .pick-title-zh {
+    color: #94a3b8;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .pick-title-btn:hover .pick-title-zh,
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .pick-title-link:hover .pick-title-zh {
     color: #60a5fa;
   }
   .pick-title-link {

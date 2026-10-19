@@ -4,6 +4,7 @@ import DailyRadarGuide from "./DailyRadarGuide.astro";
 import DailyRadarSource from "./DailyRadarSource.astro";
 import { projectPotentialLineage, radarCardAnchor, radarCoverageDescription } from "../../scripts/daily-radar.mjs";
 import { matchScientificTags, extractTransientIdentifiers, normalizeStructuredClaim } from "../domain/academic-domain.mjs";
+import { resolvePaperTitleZhSync } from "../../scripts/paper-translation.mjs";
 
 type AnyRecord = Record<string, any>;
 type CoverageLevel = "abstract_only" | "body_partial" | "full_body";
@@ -36,11 +37,12 @@ const resultClaim = normalizeStructuredClaim(record.analysis.result || guide.res
 const problemClaim = normalizeStructuredClaim(guide.problem, "课题目标");
 const reasonClaim = normalizeStructuredClaim(guide.reason, "阅读价值");
 
+const titleZh = resolvePaperTitleZhSync(item);
 const scientificTags = matchScientificTags(item);
 const transientIds = extractTransientIdentifiers(
-  `${item.title} ${guide.problem || ""} ${record.analysis.result || ""} ${guide.reason || ""}`
+  `${item.title} ${titleZh || ""} ${guide.problem || ""} ${record.analysis.result || ""} ${guide.reason || ""}`
 );
-const searchIndex = `${item.title} ${item.arxiv_id} ${(item.authors || []).join(" ")} ${guide.problem || ""} ${record.analysis.result || ""} ${guide.reason || ""} ${scientificTags.join(" ")} ${transientIds.join(" ")}`.toLowerCase();
+const searchIndex = `${item.title} ${titleZh || ""} ${item.arxiv_id} ${(item.authors || []).join(" ")} ${guide.problem || ""} ${record.analysis.result || ""} ${guide.reason || ""} ${scientificTags.join(" ")} ${transientIds.join(" ")}`.toLowerCase();
 
 const relationLabels: Record<string, string> = {
   builds_on: "建立在其上",
@@ -95,7 +97,12 @@ function priorityLabel(priority: string) {
       ) : null}
     </div>
 
-    <h3 class="radar-card-title"><a class="paper-title" href={item.url}>{item.title}</a></h3>
+    <h3 class="radar-card-title">
+      <a class="paper-title" href={item.url}>
+        <span class="paper-title-en">{item.title}</span>
+        {titleZh ? <span class="paper-title-zh">{titleZh}</span> : null}
+      </a>
+    </h3>
 
     <!-- AIHOT-style Direct & Scannable BLUF Area -->
     <div class="radar-bluf-brief">
@@ -191,6 +198,7 @@ function priorityLabel(priority: string) {
           </div>
           <h2 class="radar-modal-title" id={`modal-title-${item.arxiv_id.replace(/\./g, "-")}-v${item.revision || 1}`}>
             <ReaderText text={item.title} />
+            {titleZh ? <span class="modal-title-zh">{titleZh}</span> : null}
           </h2>
           {Array.isArray(item.authors) && item.authors.length > 0 && (
             <p class="radar-modal-authors">作者：{item.authors.slice(0, 3).join(", ")}{item.authors.length > 3 ? " 等" : ""}</p>
@@ -433,6 +441,42 @@ function priorityLabel(priority: string) {
   }
   :global([data-theme="dark"]) .radar-card-title a:hover {
     color: #60a5fa;
+  }
+  .paper-title {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  .paper-title-en {
+    display: block;
+    line-height: 1.4;
+  }
+  .paper-title-zh {
+    display: block;
+    font-size: 0.98rem;
+    font-weight: 500;
+    color: var(--text-secondary, #475569);
+    line-height: 1.45;
+  }
+  .radar-card-title a:hover .paper-title-zh {
+    color: var(--link-color, #2563eb);
+  }
+  :global([data-theme="dark"]) .paper-title-zh {
+    color: #94a3b8;
+  }
+  :global([data-theme="dark"]) .radar-card-title a:hover .paper-title-zh {
+    color: #60a5fa;
+  }
+  .modal-title-zh {
+    display: block;
+    margin-top: 0.35rem;
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: var(--text-secondary, #475569);
+    line-height: 1.45;
+  }
+  :global([data-theme="dark"]) .modal-title-zh {
+    color: #94a3b8;
   }
 
   /* AIHOT-style Direct & Scannable BLUF Brief (Clean Borderless Flow) */

@@ -51,7 +51,7 @@ ${entry.abstract}
 2. 若论文具有实质学术价值（must_read 或 worth_knowing）：
 严格返回如下结构化格式：
 {
-  "title_zh": "论文题目的中文学术翻译（准确、精炼，遵循中文天文学界通用定名）",
+  "title_zh": "论文题目的中文学术翻译（准确、精炼，保留 GRB, FRB, SN 等通用英文字母缩写与事件编号）",
   "priority": "must_read" 或 "worth_knowing",
   "reason": "说明为何该论文有价值以及与核心方向的关系（中文 1-2 句）",
   "result": "主要结果（无法确认时写 unknown）",

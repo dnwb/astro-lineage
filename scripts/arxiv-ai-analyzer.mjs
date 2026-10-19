@@ -94,7 +94,7 @@ function resolveDefaultBaseUrl() {
   }
   return "http://localhost:8318/v1";
 }
-const DEFAULT_BASE_URL = resolveDefaultBaseUrl();
+export const DEFAULT_BASE_URL = resolveDefaultBaseUrl();
 function resolveDefaultApiKey() {
   const ioaKey = process.env.IOA_API_KEY;
   if (ioaKey) return ioaKey;
@@ -102,13 +102,14 @@ function resolveDefaultApiKey() {
   if (legacy && !legacy.startsWith("sk-cpa")) return legacy;
   return "";
 }
-const DEFAULT_API_KEY = resolveDefaultApiKey();
-const DEFAULT_MODEL = process.env.AI_MODEL || "gpt-6-luna";
+export const DEFAULT_API_KEY = resolveDefaultApiKey();
+export const DEFAULT_MODEL = process.env.AI_MODEL || "gpt-6-luna";
 const DEFAULT_EFFORT = process.env.REASONING_EFFORT || "medium";
 const DEFAULT_CONCURRENCY = Number(process.env.AI_CONCURRENCY) || 3;
 const DEFAULT_RUN_LIMIT = Number(process.env.AI_RUN_LIMIT) || 10;
-const FALLBACK_BASE_URL = process.env.FALLBACK_OPENAI_BASE_URL || "";
-const FALLBACK_API_KEY = process.env.FALLBACK_OPENAI_API_KEY || process.env.ZHANG_API_KEY || "";
+export const FALLBACK_BASE_URL = process.env.FALLBACK_OPENAI_BASE_URL || "";
+export const FALLBACK_API_KEY =
+  process.env.FALLBACK_OPENAI_API_KEY || process.env.ZHANG_API_KEY || "";
 export const FALLBACK_MODEL = process.env.FALLBACK_AI_MODEL || "gemini-3.8-flash-high";
 const DEFAULT_TRIAGE_MODEL =
   process.env.AI_MODEL_TRIAGE || process.env.AI_MODEL_SKIM || "gpt-6-luna";
@@ -374,7 +375,7 @@ const SYSTEM_PROMPT = ASTROPHYSICS_SYSTEM_PROMPT;
 function scientificFieldsPrompt({ abstract = false } = {}) {
   return `严格返回 JSON，字段为：
 {
-  "title_zh":"论文题目的精准中文学术翻译（准确、精炼、学术规范）",
+  "title_zh":"论文题目的精准中文学术翻译（准确、精炼、学术规范，保留国际通用天文英文缩写如 GRB, FRB, SN, AGN, TDE 等，不要全译为冗长中文）",
   "priority":"must_read|worth_knowing|skip",
   "reason":"分类理由",
   "result":"主要物理结果与定量结论；对于关键机制或标度律，应包含核心物理量与 LaTeX 标度公式（如 $L_{\\rm iso}$、$t_{\\rm delay} \\propto \\nu^{-2}$ 等），无法确认时写 unknown",

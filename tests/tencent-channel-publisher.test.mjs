@@ -145,7 +145,7 @@ test("daily title generation refuses missing or stale source-bound opening claim
   );
 });
 
-test("individual-paper headline candidates use the matching source results", async () => {
+test("individual-paper headline candidates use translated titles when available and fall back to source results", async () => {
   const archive = JSON.parse(
     await readFile(
       new URL("../src/data/arxiv-archives/daily/2026-09-28.json", import.meta.url),
@@ -154,10 +154,18 @@ test("individual-paper headline candidates use the matching source results", asy
   );
   const daily = await generateDailyMarkdown({ feed: archive.feed, radar: archive.radar });
   assert.deepEqual(daily.highlights.slice(0, 3).map(derivePaperContentTitle), [
-    "如何利用重复FRB检验等离子体透镜解释？",
-    "SN 2024ggi的爆前光变中是否存在显著前兆发射？",
-    "该游走如何限制连续引力波搜索的相干时长、灵敏度和候选信号的物理一致性检验？",
+    "[2609.31842] FRB中等离子体透镜效应的相关特征",
+    "[2609.31844] 探测 SN 2024ggi 周围环星物质的性质：前兆辐射搜寻与射电观测约束",
+    "[2609.32164] 力矩平衡附近吸积中子星的自旋游走：对引力波搜寻的启示",
   ]);
+  assert.deepEqual(
+    daily.highlights.slice(0, 3).map((p) => derivePaperContentTitle(p, { useTranslation: false })),
+    [
+      "如何利用重复FRB检验等离子体透镜解释？",
+      "SN 2024ggi的爆前光变中是否存在显著前兆发射？",
+      "该游走如何限制连续引力波搜索的相干时长、灵敏度和候选信号的物理一致性检验？",
+    ]
+  );
 });
 
 test("daily title generation requires a ready, revision-matched opening brief", () => {

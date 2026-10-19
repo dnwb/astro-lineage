@@ -429,9 +429,11 @@ function fallbackPaperTitleCandidate(item, maxLength = TITLE_LIMIT) {
 }
 
 function derivePaperTitle(item, options = {}) {
-  const titleZh = resolvePaperTitleZhSync(item, options);
-  if (item?.arxiv_id && titleZh) {
-    return formatTranslatedPaperTitle(item.arxiv_id, titleZh);
+  if (options.useTranslation !== false) {
+    const titleZh = resolvePaperTitleZhSync(item, options);
+    if (item?.arxiv_id && titleZh) {
+      return formatTranslatedPaperTitle(item.arxiv_id, titleZh);
+    }
   }
   const completeCandidate = fallbackPaperTitleCandidate(item);
   const compactCandidate = fallbackPaperTitleCandidate(item, PAPER_TITLE_COMPACT_LIMIT);

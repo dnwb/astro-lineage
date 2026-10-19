@@ -3,6 +3,7 @@ import SiteNav from "../../components/SiteNav.astro";
 import ReaderText from "../../components/ReaderText.astro";
 import eventsData from "../../data/scientific-events.json";
 import { formatAnnouncementInBeijing, parseTransientEpoch } from "../../domain/academic-domain.mjs";
+import { resolvePaperTitleZhSync } from "../../../scripts/paper-translation.mjs";
 import { loadSiteConfig } from "../../lib/site-config";
 import "../../styles/global.css";
 
@@ -479,7 +480,7 @@ const dynamicCalendarCss = dynamicMonthCss + "\n" + dynamicDateCss;
                                           <div class="paper-item-top">
                                             <span class={`priority-badge ${priority.cls}`}>{priority.label}</span>
                                             <a href={dailyAnchor} class="paper-title-anchor">
-                                              <span class="paper-arxiv-id font-mono">[{paper.arxiv_id}]</span> {paper.title}
+                                              <span class="paper-arxiv-id font-mono">[{paper.arxiv_id}]</span> {resolvePaperTitleZhSync(paper) ? `${resolvePaperTitleZhSync(paper)} (${paper.title})` : paper.title}
                                             </a>
                                           </div>
                                           {paper.bluf_result && (
@@ -628,7 +629,7 @@ const dynamicCalendarCss = dynamicMonthCss + "\n" + dynamicDateCss;
                                     <div class="paper-item-top">
                                       <span class={`priority-badge ${priority.cls}`}>{priority.label}</span>
                                       <a href={dailyAnchor} class="paper-title-anchor">
-                                        <span class="paper-arxiv-id font-mono">[{paper.arxiv_id}]</span> {paper.title}
+                                        <span class="paper-arxiv-id font-mono">[{paper.arxiv_id}]</span> {resolvePaperTitleZhSync(paper) ? `${resolvePaperTitleZhSync(paper)} (${paper.title})` : paper.title}
                                       </a>
                                     </div>
                                     {paper.bluf_result && (
@@ -721,7 +722,7 @@ const dynamicCalendarCss = dynamicMonthCss + "\n" + dynamicDateCss;
                                       <span class={`priority-badge ${priority.cls}`}>{priority.label}</span>
                                       <span class="paper-date-pill font-mono">{paper.date}</span>
                                       <a href={dailyAnchor} class="paper-title-anchor">
-                                        <span class="paper-arxiv-id font-mono">[{paper.arxiv_id}]</span> {paper.title}
+                                        <span class="paper-arxiv-id font-mono">[{paper.arxiv_id}]</span> {resolvePaperTitleZhSync(paper) ? `${resolvePaperTitleZhSync(paper)} (${paper.title})` : paper.title}
                                       </a>
                                     </div>
                                     <div class="paper-links-bar">

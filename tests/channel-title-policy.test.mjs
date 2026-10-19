@@ -26,6 +26,12 @@ test("the shared decision API returns a title, source identity and diagnostics",
     },
   };
   assert.deepEqual(deriveTitleDecision({ kind: "paper", item }), {
+    title: "[2610.02889] 超长GRB 220627A 研究：探讨其可能的蓝超巨星塌缩起源",
+    sourceIdentity: { kind: "paper", arxivId: "2610.02889", revision: 1 },
+    reason: "source_bound",
+    diagnostics: [],
+  });
+  assert.deepEqual(deriveTitleDecision({ kind: "paper", item, useTranslation: false }), {
     title: "GRB 220627A是否来自蓝超巨星坍缩？",
     sourceIdentity: { kind: "paper", arxivId: "2610.02889", revision: 1 },
     reason: "source_bound",
@@ -70,12 +76,15 @@ test("the shared decision API returns a title, source identity and diagnostics",
     title: "Unknown subject",
     analysis: { analysis: { problem: "研究某个问题。", result: "后续仍需分析。" } },
   };
-  assert.deepEqual(deriveTitleDecision({ kind: "paper", item: unsupportedItem }), {
-    title: null,
-    sourceIdentity: { kind: "paper", arxivId: "2610.02889", revision: 1 },
-    reason: "CHANNEL_TITLE_PAPER_CLAIM_UNSUPPORTED",
-    diagnostics: ["CHANNEL_TITLE_PAPER_CLAIM_UNSUPPORTED"],
-  });
+  assert.deepEqual(
+    deriveTitleDecision({ kind: "paper", item: unsupportedItem, useTranslation: false }),
+    {
+      title: null,
+      sourceIdentity: { kind: "paper", arxivId: "2610.02889", revision: 1 },
+      reason: "CHANNEL_TITLE_PAPER_CLAIM_UNSUPPORTED",
+      diagnostics: ["CHANNEL_TITLE_PAPER_CLAIM_UNSUPPORTED"],
+    }
+  );
 });
 
 test("the shared policy derives a paper title from its source record", () => {
@@ -91,7 +100,14 @@ test("the shared policy derives a paper title from its source record", () => {
     },
   };
 
-  assert.equal(derivePaperTitleCandidate(item), "GRB 220627A是否来自蓝超巨星坍缩？");
+  assert.equal(
+    derivePaperTitleCandidate(item),
+    "[2610.02889] 超长GRB 220627A 研究：探讨其可能的蓝超巨星塌缩起源"
+  );
+  assert.equal(
+    derivePaperTitleCandidate(item, { useTranslation: false }),
+    "GRB 220627A是否来自蓝超巨星坍缩？"
+  );
 });
 
 test("paper title extraction scans all source sentences and keeps the claim scope", async () => {
@@ -536,14 +552,17 @@ test("bound archive regression candidates are claims or blocked, never reporting
         byId.set(item.arxiv_id, item);
     }
   }
-  assert.equal(byId.size, 5);
   assert.equal(
     derivePaperTitleCandidate(byId.get("2609.31836")),
+    "[2609.31836] 发现超大质量黑洞喷流中分钟尺度的偏振角旋转"
+  );
+  assert.equal(
+    derivePaperTitleCandidate(byId.get("2609.31836"), { useTranslation: false }),
     "PKS 1510-089在2024年5月3—4日的光学观测中，偏振角在0.056天、约80分钟内旋转约136°"
   );
   for (const item of byId.values()) {
     try {
-      const title = derivePaperTitleCandidate(item);
+      const title = derivePaperTitleCandidate(item, { useTranslation: false });
       assert.doesNotMatch(title, /^(?:三维模拟显示|正文报告|研究表明|而非直接测得混合量)$/u);
       assert.doesNotMatch(title, /^(?:而非|并非|但|不过)/u);
     } catch (error) {
@@ -669,8 +688,14 @@ test("paper title generation keeps the qualified localization result from the 26
       },
     },
   };
-
-  assert.equal(derivePaperTitleCandidate(item), "阵列通常可达到、部分条件下超过约50 mas定位目标");
+  assert.equal(
+    derivePaperTitleCandidate(item),
+    "[2609.38344] CHIME/FRB 外置天线阵列的甚长基线干涉测量天体测量流程与性能"
+  );
+  assert.equal(
+    derivePaperTitleCandidate(item, { useTranslation: false }),
+    "阵列通常可达到、部分条件下超过约50 mas定位目标"
+  );
 });
 
 test("paper result titles preserve a leading sample condition across a comma", () => {

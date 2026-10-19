@@ -23,11 +23,17 @@ test("cleanTitleZh removes book marks, quotes, trailing punctuation, and LaTeX",
     cleanTitleZh("《超新星残骸中的磁流体动力学演化》"),
     "超新星残骸中的磁流体动力学演化"
   );
-  assert.equal(cleanTitleZh('"快速射电暴的偏振机制探讨。"'), "快速射电暴的偏振机制探讨");
+  assert.equal(cleanTitleZh('"快速射电暴的偏振机制探讨。"'), "FRB的偏振机制探讨");
   assert.equal(
     cleanTitleZh("论文标题：关于 $L_{\\rm iso}$ 标度律的数值检验？"),
     "关于 L,iso 标度律的数值检验"
   );
+});
+
+test("cleanTitleZh preserves astrophysics acronyms (GRB, FRB, SN, AGN)", () => {
+  assert.equal(cleanTitleZh("伽马射线暴 GRB 240825A 的多波段观测"), "GRB 240825A 的多波段观测");
+  assert.equal(cleanTitleZh("快速射电暴 20201124A 的偏振性质"), "FRB 20201124A 的偏振性质");
+  assert.equal(cleanTitleZh("超新星 SN 2024ggi 的早期光谱分析"), "SN 2024ggi 的早期光谱分析");
 });
 
 test("formatTranslatedPaperTitle builds canonical [arxiv_id] title_zh format", () => {

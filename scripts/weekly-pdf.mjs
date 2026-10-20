@@ -134,6 +134,73 @@ export async function loadWeeklyAndDailyData({
 }
 
 /**
+ * 汇总全周所有重点关注（worth_knowing）文献：
+ * 优先保留模型选出的 top_picks 重点关注条目（置顶），随后包含全周其余所有 worth_knowing 论文
+ * @param {Object} weeklyData
+ * @param {Map<string, any>} dailyAnalysisMap
+ * @returns {Array<Object>}
+ */
+export function collectWorthKnowingPapers(weeklyData, dailyAnalysisMap = new Map()) {
+  const topPicks = weeklyData.top_picks || [];
+  const topWorths = topPicks.filter((p) => p.priority !== "must_read");
+  const seen = new Set();
+  const list = [];
+
+  // 1. 精选 top_picks 重点关注（保持原有精选顺序，置顶展示）
+  for (const p of topWorths) {
+    if (!p.arxiv_id || seen.has(p.arxiv_id)) continue;
+    seen.add(p.arxiv_id);
+    list.push({
+      ...p,
+      isTopPick: true,
+      recommendation_reason: p.recommendation_reason || p.reason || "",
+      core_insight: p.core_insight || p.result || "",
+      reading_guide: p.reading_guide || "",
+    });
+  }
+
+  // 2. 纳入 weeklyData.papers 中全周所有的 worth_knowing 论文
+  const allPapers = weeklyData.papers || [];
+  const otherWorths = allPapers.filter(
+    (p) => p.priority === "worth_knowing" && !seen.has(p.arxiv_id)
+  );
+
+  // 按发布/公布日期或 arXiv ID 逆序排列
+  otherWorths.sort((a, b) => {
+    const da = a.announcement_date || "";
+    const db = b.announcement_date || "";
+    if (da !== db) return db.localeCompare(da);
+    return (b.arxiv_id || "").localeCompare(a.arxiv_id || "");
+  });
+
+  for (const p of otherWorths) {
+    if (seen.has(p.arxiv_id)) continue;
+    seen.add(p.arxiv_id);
+    const dailyA = dailyAnalysisMap.get(p.arxiv_id);
+    const reason =
+      p.recommendation_reason || p.reason || dailyA?.reason || dailyA?.analysis?.reason || "";
+    const coreInsight =
+      p.core_insight || p.result || dailyA?.result || dailyA?.analysis?.result || "";
+    const readingGuide =
+      p.reading_guide ||
+      p.reading_entry ||
+      dailyA?.reading_entry ||
+      dailyA?.analysis?.reading_entry ||
+      "";
+
+    list.push({
+      ...p,
+      isTopPick: false,
+      recommendation_reason: reason,
+      core_insight: coreInsight,
+      reading_guide: readingGuide,
+    });
+  }
+
+  return list;
+}
+
+/**
  * 解析并生成本期周报的结构化学术 Markdown 文档
  * @param {Object} options
  * @returns {Promise<string>}
@@ -154,7 +221,7 @@ export async function generateWeeklyMarkdownDocument({
   const dateRange = weeklyData.date_range || "";
   const topPicks = weeklyData.top_picks || [];
   const mustReads = topPicks.filter((p) => p.priority === "must_read");
-  const worths = topPicks.filter((p) => p.priority !== "must_read");
+  const worths = collectWorthKnowingPapers(weeklyData, dailyAnalysisMap);
 
   const weekZh = formatWeekIdZh(weekId);
   const weekLabel = weekZh ? `${weekZh} (${weekId})` : weekId;
@@ -262,9 +329,11 @@ export async function generateWeeklyMarkdownDocument({
     lines.push("---\n");
   }
 
-  // 4. 📌 本周重点关注文献（精简条目，精读不展开）
-  lines.push("## 4. 📌 本周重点关注文献 (Worth-Knowing Selected Works · 精简条目)");
-  lines.push("以下文献针对特定机制或子方向提供重要观测线索，保持精炼摘要，不展开精读详情。\n");
+  // 4. 📌 本周重点关注文献（全量紧凑条目，精读不展开）
+  lines.push(`## 4. 📌 本周重点关注文献 (Worth-Knowing Selected Works · 共 ${worths.length} 篇)`);
+  lines.push(
+    "以下文献针对特定机制或子方向提供重要观测线索与实测约束，保持精炼条目，不展开精读详情。\n"
+  );
 
   for (const p of worths) {
     const aid = p.arxiv_id;
@@ -273,12 +342,17 @@ export async function generateWeeklyMarkdownDocument({
     const feed = dailyEntryMap.get(aid);
     const authors = (p.authors && p.authors.length > 0 ? p.authors : feed?.authors) || [];
     const authorStr = authors.slice(0, 3).join(", ") + (authors.length > 3 ? " 等" : "");
+    const pickBadge = p.isTopPick ? " [⭐ 重点关注]" : "";
 
-    lines.push(`### [arXiv:${aid}](https://arxiv.org/abs/${aid}) ${titleZh}`);
+    lines.push(`### [arXiv:${aid}](https://arxiv.org/abs/${aid}) ${titleZh}${pickBadge}`);
     lines.push(`- **英文原题**：${titleEn}`);
     lines.push(`- **作者**：${authorStr}`);
-    lines.push(`- **推荐理由**：${p.recommendation_reason || "无"}`);
-    lines.push(`- **核心要点**：${p.core_insight || "无"}`);
+    if (p.recommendation_reason) {
+      lines.push(`- **推荐理由**：${p.recommendation_reason}`);
+    }
+    if (p.core_insight) {
+      lines.push(`- **核心要点**：${p.core_insight}`);
+    }
     if (p.reading_guide) {
       lines.push(`- **阅读切入**：${p.reading_guide}`);
     }
@@ -348,7 +422,7 @@ export async function generatePublicationWeeklyHtml({
   const dateRange = weeklyData.date_range || "";
   const topPicks = weeklyData.top_picks || [];
   const mustReads = topPicks.filter((p) => p.priority === "must_read");
-  const worths = topPicks.filter((p) => p.priority !== "must_read");
+  const worths = collectWorthKnowingPapers(weeklyData, dailyAnalysisMap);
   const weekZh = formatWeekIdZh(weekId);
   const weekLabel = weekZh ? `${weekZh} (${weekId})` : weekId;
   const searchDirs = [publicDir, distDir, resolve(".")];
@@ -804,8 +878,8 @@ export async function generatePublicationWeeklyHtml({
   </section>
 
   <section>
-    <div class="section-title">4. 📌 本周重点关注文献 (Worth-Knowing Selected Works · 精简条目)</div>
-    <p style="font-size: 8pt; color: #64748b; margin-top: -3px; margin-bottom: 8px;">以下文献针对特定机制或子方向提供重要观测线索，保持精炼条目，不展开精读详情。</p>
+    <div class="section-title">4. 📌 本周重点关注文献 (Worth-Knowing Works · 共 ${worths.length} 篇)</div>
+    <p style="font-size: 8pt; color: #64748b; margin-top: -3px; margin-bottom: 8px;">以下文献针对特定机制或子方向提供重要观测线索与实测约束，保持精炼条目，不展开精读详情。</p>
     <div class="worth-grid">
 `);
 
@@ -820,12 +894,12 @@ export async function generatePublicationWeeklyHtml({
     html.push(`
       <div class="worth-card">
         <div>
-          <span class="badge-worth">📌 关注</span>
-          <div class="worth-title-zh"><a href="https://arxiv.org/abs/${aid}">[arXiv:${aid}] ${titleZh}</a></div>
+          <span class="${p.isTopPick ? "badge-must" : "badge-worth"}" style="${p.isTopPick ? "background:#fef3c7;color:#92400e;border-color:#fde68a;" : ""}">${p.isTopPick ? "⭐ 重点关注" : "📌 关注"}</span>
+          <div class="worth-title-zh"><a href="https://arxiv.org/abs/${aid}">[arXiv:${aid}] ${escapeHtml(titleZh)}</a></div>
         </div>
-        <div class="worth-meta"><strong>原题：</strong>${titleEn} ｜ <strong>作者：</strong>${authorStr}</div>
-        <div class="worth-desc"><strong>【推荐理由】：</strong>${renderInlineMarkdownWithMath(p.recommendation_reason || "无")}</div>
-        <div class="worth-desc"><strong>【核心要点】：</strong>${renderInlineMarkdownWithMath(p.core_insight || "无")}</div>
+        <div class="worth-meta"><strong>原题：</strong>${escapeHtml(titleEn)} ｜ <strong>作者：</strong>${escapeHtml(authorStr)}</div>
+        ${p.recommendation_reason ? `<div class="worth-desc"><strong>【推荐理由】：</strong>${renderInlineMarkdownWithMath(p.recommendation_reason)}</div>` : ""}
+        ${p.core_insight ? `<div class="worth-desc"><strong>【核心要点】：</strong>${renderInlineMarkdownWithMath(p.core_insight)}</div>` : ""}
         ${p.reading_guide ? `<div class="worth-desc" style="color: #64748b;"><strong>【阅读切入】：</strong>${renderInlineMarkdownWithMath(p.reading_guide)}</div>` : ""}
       </div>
 `);

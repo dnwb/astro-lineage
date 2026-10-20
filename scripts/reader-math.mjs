@@ -1,21 +1,12 @@
-import katex from "katex";
-
-const renderedMathCache = new Map();
-const warnedMathFailures = new Set();
-
-function escapeHtml(value) {
-  return String(value)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#39;");
-}
-
 import {
   ASTRO_LATEX_MACROS,
   expandAstrophysicsMacros,
+  renderKatexFormula,
+  escapeHtml,
 } from "../src/domain/scientific-text/index.mjs";
+
+const renderedMathCache = new Map();
+const warnedMathFailures = new Set();
 
 export { ASTRO_LATEX_MACROS };
 
@@ -37,35 +28,9 @@ function isUnsafeMarkup(value) {
 }
 
 function renderWithKatex(source, display) {
-  const normalizedSource = normalizeLegacyTex(source);
   try {
-    let markup = katex.renderToString(normalizedSource, {
-      displayMode: display,
-      output: "htmlAndMathml",
-      throwOnError: true,
-      trust: false,
-      strict: "ignore",
-    });
-    if (!/<span\b[^>]*class=["']katex["'][\s\S]*<math\b[\s\S]*<\/math>/u.test(markup)) {
-      return mathErrorMarkup(source, "TeX 未生成 KaTeX 和 MathML");
-    }
-    if (
-      !/<semantics\b[\s\S]*<annotation\b[^>]*encoding=["']application\/x-tex["'][\s\S]*<\/annotation>/u.test(
-        markup
-      )
-    ) {
-      return mathErrorMarkup(source, "MathML 缺少原始 TeX annotation");
-    }
+    const markup = renderKatexFormula(source, { display });
     if (isUnsafeMarkup(markup)) return mathErrorMarkup(source, "KaTeX 输出包含不安全标记");
-
-    // KaTeX emits both a visual HTML tree and an aria-hidden MathML tree. The
-    // HTML is what browsers paint; MathML remains the single accessible and
-    // copyable semantic representation. Restore the exact source annotation
-    // after the explicitly verified aliases have been normalized for parsing.
-    markup = markup.replace(
-      /<annotation\b[^>]*encoding=["']application\/x-tex["'][^>]*>[\s\S]*?<\/annotation>/u,
-      `<annotation encoding="application/x-tex">${escapeHtml(source)}</annotation>`
-    );
     return markup;
   } catch (error) {
     const detail = error instanceof Error ? error.message : String(error);

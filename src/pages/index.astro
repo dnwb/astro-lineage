@@ -16,7 +16,7 @@ import dailyFeed from "../data/arxiv-daily.json";
 import archiveManifest from "../data/arxiv-archives/manifest.json";
 import ScientificEventTimeline from "../components/ScientificEventTimeline.astro";
 import { radarCardAnchor } from "../../scripts/daily-radar.mjs";
-import { parseStructuredExecutiveSummary, formatAnnouncementInBeijing } from "../domain/academic-domain.mjs";
+import { parseStructuredExecutiveSummary, formatAnnouncementInBeijing, formatWeekIdZh } from "../domain/academic-domain.mjs";
 import { resolvePaperTitleZhSync } from "../domain/paper-translation.mjs";
 import "../styles/global.css";
 
@@ -137,11 +137,115 @@ const bjtDailyInfo = formatAnnouncementInBeijing(latestDate, radarWeekday);
       <section class="intelligence-hero-section" aria-label="前沿追踪与学术脉络">
 
         <div class="intelligence-grid asymmetric-hero-grid">
-          <!-- Weekly Synthesis Card -->
+          <!-- Daily Radar Card (Lightweight Portal — first) -->
+          <article class="intel-card intel-card-daily intel-daily-portal">
+            <div class="intel-card-top">
+              <div class="intel-meta-group">
+                <span class="intel-meta-kicker">今日雷达 · {bjtDailyInfo.beijingDate}</span>
+                <span class="intel-meta-batch">{bjtDailyInfo.chineseWeekday}监测批次</span>
+              </div>
+              <a class="intel-view-all-link" href="/arxiv-daily/">进入今日雷达 →</a>
+            </div>
+
+            <h3 class="intel-card-title">
+              <a href="/arxiv-daily/">
+                <span class="intel-title-prefix">{bjtDailyInfo.beijingDate}</span> 今日论文雷达
+              </a>
+            </h3>
+
+            <!-- 快速切换往期日报 -->
+            <div class="intel-daily-date-pills">
+              <span class="pills-label">批次速选：</span>
+              <div class="pills-scroll">
+                {(archiveManifest.weeks || []).flatMap((w: any) => w.days || []).slice(0, 5).map((d: any) => {
+                  const dInfo = formatAnnouncementInBeijing(d.date, d.weekday);
+                  return (
+                    <a
+                      class={`daily-date-chip ${d.date === latestDate ? "active" : ""}`}
+                      href={d.date === latestDate ? `/arxiv-daily/` : `/arxiv-daily/${d.date}/`}
+                      title={`进入 ${dInfo.beijingDate} (${dInfo.chineseWeekday}) 导读雷达`}
+                    >
+                      {dInfo.shortDate} {dInfo.chineseWeekday}
+                    </a>
+                  );
+                })}
+              </div>
+            </div>
+
+            <!-- 一句话极简导读 -->
+            <div class="intel-daily-summary-lead">
+              <p class="intel-daily-one-liner">
+                今日监测 <strong>{dailyStats.total_papers}</strong> 篇高能瞬变论文，严格筛选提炼 <strong>{dailyStats.must_read_count}</strong> 篇必读文献；核心物理机制、数学公式与原文证据链已生成完毕。
+              </p>
+            </div>
+
+            <!-- 今日必读精简链接直达列表 -->
+            <div class="intel-daily-quick-box">
+              <p class="intel-quick-label">今日核心突破速达：</p>
+              {dailyMustReads.length > 0 ? (
+                <ul class="intel-daily-quick-list">
+                  {dailyMustReads.map((paper: any) => {
+                    const paperDate = paperDailyDateMap.get(paper.arxiv_id) || latestDate;
+                    const paperTargetUrl = `/arxiv-daily/${paperDate}/#${radarCardAnchor(paper.arxiv_id, paper.revision || 1)}`;
+                    const authorStr = paperAuthorsMap.get(paper.arxiv_id) || (Array.isArray(paper.entry?.authors) && paper.entry.authors.length > 0 ? (paper.entry.authors.length > 2 ? `${paper.entry.authors[0]} et al.` : paper.entry.authors.join(", ")) : "");
+                    const analysis = paper.analysis?.analysis || paper.analysis || {};
+                    const result = analysis.result;
+                    return (
+                      <li class="intel-daily-quick-item">
+                        <div class="quick-item-top">
+                          <span class="quick-tier-pill">⭐ 必读</span>
+                          <span class="quick-arxiv-id">arXiv:{paper.arxiv_id}</span>
+                          {authorStr && <span class="quick-authors">作者：{authorStr}</span>}
+                        </div>
+                        <h4 class="quick-paper-title">
+                          <a href={paperTargetUrl} class="intel-paper-title-link" title="点击直接进入本文当日完整精读">
+                            {(() => {
+                              const titleZh = resolvePaperTitleZhSync(paper) || (paper.entry ? resolvePaperTitleZhSync(paper.entry) : null);
+                              return titleZh ? (
+                                <span class="home-paper-title-bilingual">
+                                  <span class="home-paper-title-en"><ReaderText text={paper.entry?.title || paper.arxiv_id} /></span>
+                                  <span class="home-paper-title-zh"><ReaderText text={titleZh} /></span>
+                                </span>
+                              ) : (
+                                <ReaderText text={paper.entry?.title || paper.arxiv_id} />
+                              );
+                            })()}
+                          </a>
+                        </h4>
+                        {result && result !== "unknown" && !result.startsWith("未能从已检查材料") && (
+                          <p class="quick-paper-result">
+                            <strong class="quick-res-lead">突破：</strong>
+                            <span class="quick-res-text"><ReaderText text={result} /></span>
+                          </p>
+                        )}
+                      </li>
+                    );
+                  })}
+                </ul>
+              ) : (
+                <div class="intel-radar-empty">
+                  <p>今日暂无必读推荐，可查看完整雷达中的关注论文与速览列表。</p>
+                </div>
+              )}
+            </div>
+
+            <div class="intel-card-footer intel-daily-footer">
+              <a class="btn-primary" href="/arxiv-daily/">
+                <span>查看今日完整导读（含 {dailyStats.total_papers} 篇研判）</span>
+                <span aria-hidden="true">→</span>
+              </a>
+              <div class="intel-daily-portal-meta">
+                <span class="telemetry-pill">已过滤背景 {filterNoiseReductionRate}%</span>
+                <a class="archive-sub-link" href="/arxiv-archives/">历史日报归档 →</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Weekly Synthesis Card (Full-width below daily) -->
           <article class="intel-card intel-card-weekly flagship-stage">
             <div class="intel-card-top">
               <div class="intel-meta-group">
-                <span class="intel-meta-kicker">本周综述 · {(weeklyData as any).week_id}</span>
+                <span class="intel-meta-kicker">本周综述 · {formatWeekIdZh((weeklyData as any).week_id, { withCode: true })}</span>
                 <span class="intel-meta-date">{(weeklyData as any).date_range}</span>
               </div>
               <a class="intel-view-all-link" href="/arxiv-weekly/">查看完整周报 →</a>
@@ -149,7 +253,7 @@ const bjtDailyInfo = formatAnnouncementInBeijing(latestDate, radarWeekday);
 
             <h3 class="intel-card-title">
               <a href="/arxiv-weekly/">
-                <span class="intel-title-prefix">{(weeklyData as any).week_id}</span> 每周学术脉络
+                <span class="intel-title-prefix">{formatWeekIdZh((weeklyData as any).week_id)}</span> 每周学术脉络
               </a>
             </h3>
 
@@ -256,110 +360,6 @@ const bjtDailyInfo = formatAnnouncementInBeijing(latestDate, radarWeekday);
                 <span>查看完整周报（共 {weeklyTopPicks.length} 篇精选论文）</span>
                 <span aria-hidden="true">→</span>
               </a>
-            </div>
-          </article>
-
-          <!-- Daily Radar Card (Streamlined Portal) -->
-          <article class="intel-card intel-card-daily intel-daily-portal">
-            <div class="intel-card-top">
-              <div class="intel-meta-group">
-                <span class="intel-meta-kicker">今日雷达 · {bjtDailyInfo.beijingDate}</span>
-                <span class="intel-meta-batch">{bjtDailyInfo.chineseWeekday}监测批次</span>
-              </div>
-              <a class="intel-view-all-link" href="/arxiv-daily/">进入今日雷达 →</a>
-            </div>
-
-            <h3 class="intel-card-title">
-              <a href="/arxiv-daily/">
-                <span class="intel-title-prefix">{bjtDailyInfo.beijingDate}</span> 今日论文雷达
-              </a>
-            </h3>
-
-            <!-- 快速切换往期日报 -->
-            <div class="intel-daily-date-pills">
-              <span class="pills-label">批次速选：</span>
-              <div class="pills-scroll">
-                {(archiveManifest.weeks || []).flatMap((w: any) => w.days || []).slice(0, 5).map((d: any) => {
-                  const dInfo = formatAnnouncementInBeijing(d.date, d.weekday);
-                  return (
-                    <a
-                      class={`daily-date-chip ${d.date === latestDate ? "active" : ""}`}
-                      href={d.date === latestDate ? `/arxiv-daily/` : `/arxiv-daily/${d.date}/`}
-                      title={`进入 ${dInfo.beijingDate} (${dInfo.chineseWeekday}) 导读雷达`}
-                    >
-                      {dInfo.shortDate} {dInfo.chineseWeekday}
-                    </a>
-                  );
-                })}
-              </div>
-            </div>
-
-            <!-- 一句话极简导读 -->
-            <div class="intel-daily-summary-lead">
-              <p class="intel-daily-one-liner">
-                今日监测 <strong>{dailyStats.total_papers}</strong> 篇高能瞬变论文，严格筛选提炼 <strong>{dailyStats.must_read_count}</strong> 篇必读文献；核心物理机制、数学公式与原文证据链已生成完毕。
-              </p>
-            </div>
-
-            <!-- 今日必读精简链接直达列表 -->
-            <div class="intel-daily-quick-box">
-              <p class="intel-quick-label">今日核心突破速达：</p>
-              {dailyMustReads.length > 0 ? (
-                <ul class="intel-daily-quick-list">
-                  {dailyMustReads.map((paper: any) => {
-                    const paperDate = paperDailyDateMap.get(paper.arxiv_id) || latestDate;
-                    const paperTargetUrl = `/arxiv-daily/${paperDate}/#${radarCardAnchor(paper.arxiv_id, paper.revision || 1)}`;
-                    const authorStr = paperAuthorsMap.get(paper.arxiv_id) || (Array.isArray(paper.entry?.authors) && paper.entry.authors.length > 0 ? (paper.entry.authors.length > 2 ? `${paper.entry.authors[0]} et al.` : paper.entry.authors.join(", ")) : "");
-                    const analysis = paper.analysis?.analysis || paper.analysis || {};
-                    const result = analysis.result;
-                    return (
-                      <li class="intel-daily-quick-item">
-                        <div class="quick-item-top">
-                          <span class="quick-tier-pill">⭐ 必读</span>
-                          <span class="quick-arxiv-id">arXiv:{paper.arxiv_id}</span>
-                          {authorStr && <span class="quick-authors">作者：{authorStr}</span>}
-                        </div>
-                        <h4 class="quick-paper-title">
-                          <a href={paperTargetUrl} class="intel-paper-title-link" title="点击直接进入本文当日完整精读">
-                            {(() => {
-                              const titleZh = resolvePaperTitleZhSync(paper) || (paper.entry ? resolvePaperTitleZhSync(paper.entry) : null);
-                              return titleZh ? (
-                                <span class="home-paper-title-bilingual">
-                                  <span class="home-paper-title-en"><ReaderText text={paper.entry?.title || paper.arxiv_id} /></span>
-                                  <span class="home-paper-title-zh"><ReaderText text={titleZh} /></span>
-                                </span>
-                              ) : (
-                                <ReaderText text={paper.entry?.title || paper.arxiv_id} />
-                              );
-                            })()}
-                          </a>
-                        </h4>
-                        {result && result !== "unknown" && !result.startsWith("未能从已检查材料") && (
-                          <p class="quick-paper-result">
-                            <strong class="quick-res-lead">突破：</strong>
-                            <span class="quick-res-text"><ReaderText text={result} /></span>
-                          </p>
-                        )}
-                      </li>
-                    );
-                  })}
-                </ul>
-              ) : (
-                <div class="intel-radar-empty">
-                  <p>今日暂无必读推荐，可查看完整雷达中的关注论文与速览列表。</p>
-                </div>
-              )}
-            </div>
-
-            <div class="intel-card-footer intel-daily-footer">
-              <a class="btn-primary" href="/arxiv-daily/">
-                <span>查看今日完整导读（含 {dailyStats.total_papers} 篇研判）</span>
-                <span aria-hidden="true">→</span>
-              </a>
-              <div class="intel-daily-portal-meta">
-                <span class="telemetry-pill">已过滤背景 {filterNoiseReductionRate}%</span>
-                <a class="archive-sub-link" href="/arxiv-archives/">历史日报归档 →</a>
-              </div>
             </div>
           </article>
         </div>

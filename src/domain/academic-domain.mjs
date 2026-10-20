@@ -502,3 +502,66 @@ export function getNaturalWeekBounds(weekId) {
     dateRange: `${announcementDates[0]} ~ ${sunday}`,
   };
 }
+
+/**
+ * Format ISO week ID (e.g. "2026-W42") into natural language Chinese.
+ *
+ * @param {string} weekId - e.g. "2026-W42" or "2026-W05"
+ * @param {Object} [options]
+ * @param {boolean} [options.withCode=false] - Whether to include the code e.g. " (2026-W42)"
+ * @returns {string} e.g. "2026 年第 42 周" or "2026 年第 42 周 (2026-W42)"
+ */
+export function formatWeekIdZh(weekId, { withCode = true } = {}) {
+  if (!weekId) return "";
+  const match = String(weekId).match(/^(\d{4})-W(\d{1,2})$/i);
+  if (!match) return String(weekId);
+  const year = match[1];
+  const weekNum = parseInt(match[2], 10);
+  const zh = `${year} 年第 ${weekNum} 周`;
+  return withCode ? `${zh} (${match[1]}-W${match[2]})` : zh;
+}
+
+/**
+ * Format ISO week ID (e.g. "2026-W42") into natural English.
+ *
+ * @param {string} weekId
+ * @returns {string} e.g. "Week 42, 2026"
+ */
+export function formatWeekIdEn(weekId) {
+  if (!weekId) return "";
+  const match = String(weekId).match(/^(\d{4})-W(\d{1,2})$/i);
+  if (!match) return String(weekId);
+  return `Week ${parseInt(match[2], 10)}, ${match[1]}`;
+}
+
+export const DEFAULT_CANONICAL_HOST = "10.131.43.83";
+export const DEFAULT_CANONICAL_PORT = "4321";
+export const DEFAULT_WEBSITE_BASE = `http://${DEFAULT_CANONICAL_HOST}:${DEFAULT_CANONICAL_PORT}`;
+
+/**
+ * Sanitize website base URL to strip localhost / 127.0.0.1 and trailing slashes.
+ * Replaces localhost or loopback addresses with the canonical host.
+ *
+ * @param {string} [url]
+ * @returns {string}
+ */
+export function sanitizeWebsiteBase(url) {
+  if (!url) return DEFAULT_WEBSITE_BASE;
+  return String(url)
+    .replace("localhost", DEFAULT_CANONICAL_HOST)
+    .replace("127.0.0.1", DEFAULT_CANONICAL_HOST)
+    .replace(/\/+$/u, "");
+}
+
+/**
+ * Get default sanitized website base from environment variables or canonical fallback.
+ *
+ * @returns {string}
+ */
+export function getDefaultWebsiteBase() {
+  const envUrl =
+    typeof process !== "undefined" && process?.env
+      ? process.env.SITE_BASE_URL || process.env.PUBLIC_SITE_URL || process.env.ASTRO_SITE_URL
+      : undefined;
+  return sanitizeWebsiteBase(envUrl || DEFAULT_WEBSITE_BASE);
+}

@@ -1,5 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
+import { join } from "node:path";
+import { createTemporaryWorkspace } from "./helpers/temporary-workspace.mjs";
 import {
   normalizeDateInput,
   matchBotCommand,
@@ -67,19 +69,78 @@ test("matchBotCommand correctly classifies all regular commands with \\ and / an
   assert.deepEqual(matchBotCommand("\\day")?.type, "day_help");
   assert.deepEqual(matchBotCommand("/day")?.type, "day_help");
 
-  // 5. \week
+  // 5. \week & \week pdf
   assert.deepEqual(matchBotCommand("\\week")?.type, "week");
   assert.deepEqual(matchBotCommand("/week")?.type, "week");
   assert.deepEqual(matchBotCommand("\\weekly")?.type, "week");
   assert.deepEqual(matchBotCommand("本周周报")?.type, "week");
   assert.deepEqual(matchBotCommand("周报")?.type, "week");
 
-  // 6. \last_week
+  assert.deepEqual(matchBotCommand("\\week pdf"), {
+    type: "week_pdf",
+    arg: null,
+    offset: 0,
+    query: "\\week pdf",
+  });
+  assert.deepEqual(matchBotCommand("/week pdf"), {
+    type: "week_pdf",
+    arg: null,
+    offset: 0,
+    query: "/week pdf",
+  });
+  assert.deepEqual(matchBotCommand("周报 pdf"), {
+    type: "week_pdf",
+    arg: null,
+    offset: 0,
+    query: "周报 pdf",
+  });
+  assert.deepEqual(matchBotCommand("本周周报 pdf"), {
+    type: "week_pdf",
+    arg: null,
+    offset: 0,
+    query: "本周周报 pdf",
+  });
+  assert.deepEqual(matchBotCommand("周报pdf"), {
+    type: "week_pdf",
+    arg: null,
+    offset: 0,
+    query: "周报pdf",
+  });
+  assert.deepEqual(matchBotCommand("/week 2026-W41 pdf"), {
+    type: "week_pdf",
+    arg: "2026-W41",
+    offset: 0,
+    query: "/week 2026-W41 pdf",
+  });
+  assert.deepEqual(matchBotCommand("/week pdf 2026-W41"), {
+    type: "week_pdf",
+    arg: "2026-W41",
+    offset: 0,
+    query: "/week pdf 2026-W41",
+  });
+
+  // 6. \last_week & \last_week pdf
   assert.deepEqual(matchBotCommand("\\last_week")?.type, "last_week");
   assert.deepEqual(matchBotCommand("/last_week")?.type, "last_week");
   assert.deepEqual(matchBotCommand("\\lastweek")?.type, "last_week");
   assert.deepEqual(matchBotCommand("上周周报")?.type, "last_week");
   assert.deepEqual(matchBotCommand("上周")?.type, "last_week");
+
+  assert.deepEqual(matchBotCommand("\\last_week pdf"), {
+    type: "week_pdf",
+    offset: 1,
+    query: "\\last_week pdf",
+  });
+  assert.deepEqual(matchBotCommand("/last_week pdf"), {
+    type: "week_pdf",
+    offset: 1,
+    query: "/last_week pdf",
+  });
+  assert.deepEqual(matchBotCommand("上周周报 pdf"), {
+    type: "week_pdf",
+    offset: 1,
+    query: "上周周报 pdf",
+  });
 
   // 7. \list_day
   assert.deepEqual(matchBotCommand("\\list_day")?.type, "list_day");
@@ -111,6 +172,7 @@ test("handleBotCommand handles \\start and returns command manual", async () => 
   assert.match(res.replyText, /\\yesterday/u);
   assert.match(res.replyText, /\\day/u);
   assert.match(res.replyText, /\\week/u);
+  assert.match(res.replyText, /\\week pdf/u);
   assert.match(res.replyText, /\\last_week/u);
   assert.match(res.replyText, /\\list_day/u);
   assert.match(res.replyText, /\\list_week/u);
@@ -179,6 +241,57 @@ test("handleBotCommand handles \\last_week and returns previous week", async () 
   assert.match(res.replyText, new RegExp(`\\[${expectedPrev}\\]`, "u"));
   assert.match(res.replyText, /研读共 \d+ 篇/u);
   assert.match(res.replyText, /https:\/\/pd\.qq\.com\/s\/[a-zA-Z0-9]+/u);
+});
+
+test("handleBotCommand handles \\week pdf and returns weekly PDF report package", async (t) => {
+  const ws = await createTemporaryWorkspace("astro-lineage-bot-week-pdf-", t);
+  const testOptions = {
+    publicDir: ws.path,
+    distDir: join(ws.path, "dist"),
+  };
+
+  const weekIds = await getAvailableWeeklyIds();
+  const latestWeek = weekIds[0];
+
+  // 1. \week pdf
+  const res = await handleBotCommand("\\week pdf", testOptions);
+  assert.equal(res.matched, true);
+  assert.match(
+    res.replyText,
+    /📄 \*\*AstroLineage 前沿学术周报 · .+ 年第 \d+ 周 \(.+\) PDF 精读版\*\*/u
+  );
+  assert.match(res.replyText, /📥 \*\*PDF 完整报告下载\*\*/u);
+  assert.match(
+    res.replyText,
+    new RegExp(`/arxiv-weekly/${latestWeek}/weekly-${latestWeek}\\.pdf`, "u")
+  );
+  assert.match(res.replyText, /🌐 \*\*周报网页在线精读入口\*\*/u);
+  assert.match(res.replyText, /📊 \*\*报告概览\*\*：共研读 \d+ 篇文献/u);
+
+  // 2. /week pdf
+  const resSlash = await handleBotCommand("/week pdf", testOptions);
+  assert.equal(resSlash.matched, true);
+  assert.match(resSlash.replyText, /PDF 精读版/u);
+
+  // 3. \last_week pdf
+  const expectedPrev = weekIds[1] || weekIds[0];
+  const resLastWeek = await handleBotCommand("\\last_week pdf", testOptions);
+  assert.equal(resLastWeek.matched, true);
+  assert.match(resLastWeek.replyText, new RegExp(`\\(${expectedPrev}\\)`, "u"));
+  assert.match(
+    resLastWeek.replyText,
+    new RegExp(`/arxiv-weekly/${expectedPrev}/weekly-${expectedPrev}\\.pdf`, "u")
+  );
+
+  // 4. \week <specificWeek> pdf
+  const specificWeek = weekIds.find((w) => w === "2026-W41") || weekIds[0];
+  const resSpecific = await handleBotCommand(`\\week ${specificWeek} pdf`, testOptions);
+  assert.equal(resSpecific.matched, true);
+  assert.match(resSpecific.replyText, new RegExp(`\\(${specificWeek}\\)`, "u"));
+  assert.match(
+    resSpecific.replyText,
+    new RegExp(`/arxiv-weekly/${specificWeek}/weekly-${specificWeek}\\.pdf`, "u")
+  );
 });
 
 test("handleBotCommand handles \\list_day and returns formatted daily list", async () => {

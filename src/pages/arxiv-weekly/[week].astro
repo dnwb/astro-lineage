@@ -8,7 +8,11 @@ import WeeklyTopPicks from "../../components/weekly/WeeklyTopPicks.astro";
 import WeeklyWeekSwitcher from "../../components/weekly/WeeklyWeekSwitcher.astro";
 import { loadSiteConfig } from "../../lib/site-config";
 import { radarCardAnchor } from "../../../scripts/daily-radar.mjs";
-import { parseStructuredExecutiveSummary } from "../../domain/academic-domain.mjs";
+import {
+  parseStructuredExecutiveSummary,
+  formatWeekIdZh,
+  formatWeekIdEn,
+} from "../../domain/academic-domain.mjs";
 import "../../styles/global.css";
 import "../../styles/weekly.css";
 
@@ -129,8 +133,13 @@ function resolveAuthors(id: string, direct?: any): string[] {
   return authorMap.get(id) || [];
 }
 
-const exportMarkdown = `# 高能天体物理 arXiv 每周学术脉络 · ${weeklyData.week_id}
-周期: ${weeklyData.week_id} (${weeklyData.date_range})
+const weekLabelZh = formatWeekIdZh(weeklyData.week_id);
+const weekLabelEn = formatWeekIdEn(weeklyData.week_id);
+const olderWeekLabelZh = olderWeekId ? formatWeekIdZh(olderWeekId) : "";
+const newerWeekLabelZh = newerWeekId ? formatWeekIdZh(newerWeekId) : "";
+
+const exportMarkdown = `# 高能天体物理 arXiv 每周学术脉络 · ${weekLabelZh} (${weeklyData.week_id})
+周期: ${weekLabelZh} (${weeklyData.week_id}) ｜ 时间跨度: ${weeklyData.date_range}
 整理时间: ${generatedLabel}
 
 ## 本周综述
@@ -154,10 +163,10 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>高能天体物理 arXiv 每周学术脉络 · {weeklyData.week_id} | {site.title}</title>
+    <title>高能天体物理 arXiv 每周学术脉络 · {weekLabelZh} ({weeklyData.week_id}) | {site.title}</title>
     <meta
       name="description"
-      content={`高能天体物理 arXiv 每周学术脉络 (${weeklyData.date_range})。梳理宏观演进趋势、核心科学争论与重点前沿工作。`}
+      content={`高能天体物理 arXiv 每周学术脉络 · ${weekLabelZh} (${weeklyData.date_range})。梳理宏观演进趋势、核心科学争论与重点前沿工作。`}
     />
   </head>
   <body>
@@ -165,16 +174,24 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
       <SiteNav />
 
       <header class="page-header weekly-header">
-        <p class="eyebrow"><a href="/">{site.title}</a> · <a href="/arxiv-daily/">arXiv Radar</a> · <a href="/arxiv-weekly/">Weekly Synthesis</a> · {weeklyData.week_id}</p>
-        <h1 class="page-title"><span class="language-primary">每周学术脉络 · {weeklyData.week_id}</span><span class="language-english" lang="en">Weekly Synthesis · {weeklyData.week_id}</span></h1>
+        <p class="eyebrow"><a href="/">{site.title}</a> · <a href="/arxiv-daily/">arXiv Radar</a> · <a href="/arxiv-weekly/">Weekly Synthesis</a> · {weekLabelZh} ({weeklyData.week_id})</p>
+        <h1 class="page-title"><span class="language-primary">每周学术脉络 · {weekLabelZh}</span><span class="language-english" lang="en">Weekly Synthesis · {weekLabelEn}</span></h1>
 
         <div class="weekly-meta-bar">
-          <span class="meta-badge week-badge">📅 自然周：{weeklyData.week_id}</span>
+          <span class="meta-badge week-badge">📅 报告周期：{weekLabelZh} ({weeklyData.week_id})</span>
           <span class="meta-badge range-badge">⏱ 时间跨度：{weeklyData.date_range}</span>
           <span class="meta-badge time-badge">🕒 整理时间：{generatedLabel}</span>
           {weekDays.length > 0 && (
             <span class="meta-badge daily-count-badge">含 {weekDays.length} 个每日监测批次</span>
           )}
+          <a
+            class="meta-link pdf-download-link"
+            href={`/arxiv-weekly/${weeklyData.week_id}/weekly-${weeklyData.week_id}.pdf`}
+            download={`weekly-${weeklyData.week_id}.pdf`}
+            title="下载包含完整切图与超链接的 PDF 周报"
+          >
+            📥 下载周报 PDF
+          </a>
           <a class="meta-link" href="#daily-breakdown">必读文献目录 ↓</a>
         </div>
 
@@ -194,7 +211,7 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
         <div class="pager-prev">
           {olderWeekId ? (
             <a class="pager-btn" href={`/arxiv-weekly/${olderWeekId}/`}>
-              ← 上一周 ({olderWeekId})
+              ← 上一周 ({olderWeekLabelZh || olderWeekId})
             </a>
           ) : (
             <span class="pager-btn disabled">← 上一周 (已是最早)</span>
@@ -207,7 +224,7 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
         <div class="pager-next">
           {newerWeekId ? (
             <a class="pager-btn" href={`/arxiv-weekly/${newerWeekId}/`}>
-              下一周 ({newerWeekId}) →
+              下一周 ({newerWeekLabelZh || newerWeekId}) →
             </a>
           ) : (
             <span class="pager-btn disabled">下一周 (已是最新) →</span>

@@ -10,6 +10,8 @@ import {
   formatAnnouncementInBeijing,
   parseTransientEpoch,
   normalizeStructuredClaim,
+  formatWeekIdZh,
+  formatWeekIdEn,
 } from "../src/domain/academic-domain.mjs";
 
 test("academic-domain: extractTransientIdentifiers parses standard transient names", () => {
@@ -119,4 +121,15 @@ test("academic-domain: normalizeStructuredClaim does not truncate on em-dash com
   assert.notEqual(claim.headline, "强一级相变虽可在静态质量");
   assert.ok(claim.headline.length <= 35, "Headline should be within 35 characters");
   assert.equal(claim.detailed_text, text);
+});
+
+test("academic-domain: formatWeekIdZh and formatWeekIdEn format week identifiers naturally", () => {
+  assert.equal(formatWeekIdZh("2026-W42"), "2026 年第 42 周 (2026-W42)");
+  assert.equal(formatWeekIdZh("2026-W05"), "2026 年第 5 周 (2026-W05)");
+  assert.equal(formatWeekIdZh("2026-W42", { withCode: false }), "2026 年第 42 周");
+  assert.equal(formatWeekIdZh(""), "");
+  assert.equal(formatWeekIdZh(null), "");
+
+  assert.equal(formatWeekIdEn("2026-W42"), "Week 42, 2026");
+  assert.equal(formatWeekIdEn("2026-W05"), "Week 5, 2026");
 });

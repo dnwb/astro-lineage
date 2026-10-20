@@ -2309,12 +2309,12 @@ small {
   margin: 0;
 }
 
-/* Asymmetric Dual Hero (Weekly Synthesis 7 : Daily Radar 5) */
+/* Vertical Hero Stack: Daily portal (compact) on top, Weekly synthesis (full-width) below */
 .intelligence-grid,
 .asymmetric-hero-grid {
   display: grid;
-  grid-template-columns: 7fr 5fr;
-  gap: 1.5rem;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
   align-items: stretch;
 }
 
@@ -3575,14 +3575,7 @@ small {
   background-color: #faf8f5;
 }
 
-/* Responsive adjustment for intelligence grid */
-@media (max-width: 1023px) {
-  .intelligence-grid,
-  .asymmetric-hero-grid {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
-}
+/* Grid is now vertical-stacked at all widths; no breakpoint override needed */
 
 @media (max-width: 640px) {
   .intel-metrics-strip {

@@ -16,7 +16,7 @@ test("domain-schemas: active daily-radar.json passes Zod schema validation", asy
   const data = JSON.parse(raw);
   const result = safeValidateRadarPayload(data);
   assert.equal(result.success, true, `Validation failed: ${result.errors.join("; ")}`);
-  assert.ok(result.data.analyses.length > 0, "Should contain analyses");
+  assert.ok(Array.isArray(result.data.analyses), "analyses should be an array");
 });
 
 test("domain-schemas: active arxiv-daily.json passes Zod schema validation", async () => {

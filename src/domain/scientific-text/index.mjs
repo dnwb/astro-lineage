@@ -8,9 +8,12 @@
  * 2. expandAstrophysicsMacros: Declarative astrophysicist TeX macro expansion dictionary.
  * 3. renderScientificHtml: Static KaTeX HTML + accessible MathML output for Astro UI.
  * 4. renderScientificPlainText: Unicode-faithful degradation for QQ Channel titles, Bot cards, and plain-text feeds.
+ * 5. renderScientificMarkdownWithMath: Unified Markdown + KaTeX rendering with MathML support.
+ * 6. renderInlineScientificMarkdownWithMath: Single-line markdown + math without wrapping <p>.
  */
 
 import katex from "katex";
+import { micromark } from "micromark";
 
 export const ASTRO_LATEX_MACROS = [
   [/\\betag(?![A-Za-z])/gu, "\\boldsymbol{\\beta}"],
@@ -136,13 +139,100 @@ export function tokenizeScientificText(sourceText) {
   return tokens.length > 0 ? tokens : [{ kind: "text", value: source }];
 }
 
-function escapeHtml(val) {
+export function escapeHtml(val) {
   return String(val)
     .replaceAll("&", "&amp;")
     .replaceAll("<", "&lt;")
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#39;");
+}
+
+/**
+ * Compile text containing Markdown syntax and LaTeX formulas into clean, accessible HTML.
+ * Preserves math delimiters from being altered by the Markdown parser using placeholder protection.
+ *
+ * @param {string} source
+ * @returns {string}
+ */
+export function renderScientificMarkdownWithMath(source) {
+  if (!source) return "";
+  const tokens = tokenizeScientificText(source);
+  const mathPlaceholders = [];
+  let protectedText = "";
+
+  for (const token of tokens) {
+    if (token.kind === "text") {
+      protectedText += token.value;
+    } else {
+      const idx = mathPlaceholders.length;
+      const placeholder = `%%%MATH_PLACEHOLDER_${idx}%%%`;
+      const expanded = expandAstrophysicsMacros(token.value);
+      let mathHtml;
+      try {
+        mathHtml = katex.renderToString(expanded, {
+          displayMode: Boolean(token.display),
+          output: "htmlAndMathml",
+          strict: "ignore",
+        });
+      } catch {
+        mathHtml = `<code class="math-raw">${escapeHtml(token.value)}</code>`;
+      }
+      mathPlaceholders.push({ placeholder, mathHtml });
+      protectedText += placeholder;
+    }
+  }
+
+  let html = micromark(protectedText);
+  for (const item of mathPlaceholders) {
+    html = html.replaceAll(item.placeholder, item.mathHtml);
+  }
+  return html;
+}
+
+/**
+ * Render single-line markdown text with math, stripping outer <p>...</p> wrapper.
+ *
+ * @param {string} source
+ * @returns {string}
+ */
+export function renderInlineScientificMarkdownWithMath(source) {
+  const html = renderScientificMarkdownWithMath(source);
+  return html.replace(/^<p>\s*([\s\S]*?)\s*<\/p>$/u, "$1");
+}
+
+/**
+ * Compile a single LaTeX formula string into static KaTeX visual HTML and MathML.
+ *
+ * @param {string} source
+ * @param {Object} [options]
+ * @param {boolean} [options.display=false]
+ * @returns {string}
+ */
+export function renderKatexFormula(source, { display = false } = {}) {
+  const normalizedSource = expandAstrophysicsMacros(source);
+  let markup = katex.renderToString(normalizedSource, {
+    displayMode: display,
+    output: "htmlAndMathml",
+    throwOnError: true,
+    trust: false,
+    strict: "ignore",
+  });
+  if (!/<span\b[^>]*class=["']katex["'][\s\S]*<math\b[\s\S]*<\/math>/u.test(markup)) {
+    throw new Error("TeX 未生成 KaTeX 和 MathML");
+  }
+  if (
+    !/<semantics\b[\s\S]*<annotation\b[^>]*encoding=["']application\/x-tex["'][\s\S]*<\/annotation>/u.test(
+      markup
+    )
+  ) {
+    throw new Error("MathML 缺少原始 TeX annotation");
+  }
+  markup = markup.replace(
+    /<annotation\b[^>]*encoding=["']application\/x-tex["'][^>]*>[\s\S]*?<\/annotation>/u,
+    `<annotation encoding="application/x-tex">${escapeHtml(source)}</annotation>`
+  );
+  return markup;
 }
 
 export function renderScientificHtml(textInput) {

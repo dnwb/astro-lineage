@@ -1,3 +1,4 @@
 npx lint-staged
+npm run test:hygiene
 npm run typecheck
 npm run test:fast

@@ -15,3 +15,8 @@ All tests that create temporary filesystem workspaces must guarantee determinist
 
 3. **No Heavy or Unused Dependencies**:
    - Bot clients and testing mocks must rely on Node.js built-ins (`node:test`, `node:assert`, `fetch`, native `ws`) without installing unused SDK wrappers.
+
+4. **Zero Untracked Artifact Leakage in Working Tree**:
+   - All file-producing functions (PDF generators, markdown exporters, caches) MUST accept configurable destination directories (`publicDir`, `distDir`, `outputDir`).
+   - Tests exercising file-generation logic MUST inject temporary directories allocated via `createTemporaryWorkspace(prefix, t)`.
+   - Never allow test runs to create untracked files in `public/` or repository roots. Enforced by `tests/architecture-hygiene.test.mjs` via `git status --porcelain public/`.

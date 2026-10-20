@@ -8,7 +8,11 @@ import WeeklyDailyTable from "../../components/weekly/WeeklyDailyTable.astro";
 import WeeklyTopPicks from "../../components/weekly/WeeklyTopPicks.astro";
 import WeeklyWeekSwitcher from "../../components/weekly/WeeklyWeekSwitcher.astro";
 import { loadSiteConfig } from "../../lib/site-config";
-import { parseStructuredExecutiveSummary } from "../../domain/academic-domain.mjs";
+import {
+  parseStructuredExecutiveSummary,
+  formatWeekIdZh,
+  formatWeekIdEn,
+} from "../../domain/academic-domain.mjs";
 import { radarCardAnchor } from "../../../scripts/daily-radar.mjs";
 import "../../styles/global.css";
 import "../../styles/weekly.css";
@@ -93,8 +97,11 @@ function resolveAuthors(id: string, direct?: any): string[] {
   return authorMap.get(id) || [];
 }
 
-const exportMarkdown = `# 高能天体物理 arXiv 每周学术脉络 · ${weeklyData.week_id}
-周期: ${weeklyData.week_id} (${weeklyData.date_range})
+const weekLabelZh = formatWeekIdZh(weeklyData.week_id);
+const weekLabelEn = formatWeekIdEn(weeklyData.week_id);
+
+const exportMarkdown = `# 高能天体物理 arXiv 每周学术脉络 · ${weekLabelZh}
+周期: ${weekLabelZh} ｜ 时间跨度: ${weeklyData.date_range}
 整理时间: ${generatedLabel}
 
 ## 本周综述
@@ -119,7 +126,7 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="AstroLineage 每周 arXiv 学术脉络与深度综述：聚合周度论文，梳理因果动力学脉络与精选必读。" />
-    <title>每周总结 · {weeklyData.week_id || "Weekly"} · {site.title}</title>
+    <title>高能天体物理 arXiv 每周学术脉络 · {weekLabelZh} | {site.title}</title>
   </head>
   <body>
     <main class="site-shell index-page reader-page weekly-page">
@@ -129,15 +136,24 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
 
       <header class="reader-header">
         <h1>
-          <span class="language-primary">每周学术脉络 · {weeklyData.week_id}</span>
-          <span class="language-english" lang="en">Weekly Synthesis · {weeklyData.week_id}</span>
+          <span class="language-primary">每周学术脉络 · {weekLabelZh}</span>
+          <span class="language-english" lang="en">Weekly Synthesis · {weekLabelEn}</span>
         </h1>
         <div class="weekly-meta-bar">
-          <span class="meta-badge week-badge">周期：{weeklyData.week_id}（{weeklyData.date_range}）</span>
-          <span class="meta-badge update-badge">整理时间：{generatedLabel}</span>
+          <span class="meta-badge week-badge">📅 报告周期：{weekLabelZh}</span>
+          <span class="meta-badge range-badge">⏱ 时间跨度：{weeklyData.date_range}</span>
+          <span class="meta-badge update-badge">🕒 整理时间：{generatedLabel}</span>
           {weekDays.length > 0 && (
             <span class="meta-badge daily-count-badge">含 {weekDays.length} 个每日监测批次</span>
           )}
+          <a
+            class="meta-link pdf-download-link"
+            href={`/arxiv-weekly/${weeklyData.week_id}/weekly-${weeklyData.week_id}.pdf`}
+            download={`weekly-${weeklyData.week_id}.pdf`}
+            title="下载包含完整切图与超链接的 PDF 周报"
+          >
+            📥 下载周报 PDF
+          </a>
           <a class="meta-link" href="/arxiv-archives/">往期归档全库 →</a>
           <a class="meta-link" href="/arxiv-daily/">查看今日雷达 →</a>
           <a class="meta-link" href="#daily-breakdown">必读文献目录 ↓</a>

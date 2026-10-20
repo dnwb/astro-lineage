@@ -13,6 +13,13 @@
 
 see `ARCHITECTURE.md`
 
+### Architecture & Hygiene Guardrails
+
+- 零测试泄漏：任何生成文件或 PDF 的脚本/函数必须支持目标目录注入；测试必须使用沙盒工作区并在 `t.after` 清除，严禁在 `public/` 等工作区遗留未跟踪文件。
+- 数学排版统一收敛：数学公式渲染（KaTeX/Markdown）的唯一真实源（SSOT）是 `src/domain/scientific-text/`，外部脚本与页面严禁直接 `import katex`。
+- 领域模型单向流动：严禁在 `scripts/` 中二次 re-export 领域函数；调用方一律直接从 `src/domain/` 引用。
+- 路由功能对齐：聚合首页/列表页展示最新一期时，核心交互（如 PDF 下载）与文案格式必须与单期详情页保持对齐。
+
 ### Agent context policy.md
 
 see docs/agent-context-policy.md

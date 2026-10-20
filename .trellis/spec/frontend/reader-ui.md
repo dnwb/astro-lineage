@@ -59,6 +59,10 @@ All weekly synthesis pages (`src/pages/arxiv-weekly/index.astro` and `src/pages/
 
 Both weekly page routes MUST stay under 600 lines of code.
 
+### Root & Dynamic Route Feature Parity Rule
+
+Any user-facing capability, meta badge, or action button added to dynamic edition routes (`[week].astro` / `[date].astro`) MUST simultaneously be reflected in the corresponding root route (`index.astro`), using identical domain formatters (`formatWeekIdZh`, `formatWeekIdEn`).
+
 ### Executive Summary Subject Precision Rule
 
 In `executive_summary`, every scientific breakthrough bullet MUST use specific papers or first authors as the grammatical subject (e.g., `Author et al. (arXiv:xxxx.xxxxx) 提出/约束...` or `arXiv:xxxx.xxxxx (Author et al.) 论证...`). Impersonal, passive, and subjectless formulations are strictly forbidden.

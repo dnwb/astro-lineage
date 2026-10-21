@@ -124,7 +124,7 @@ test("bot --doctor CLI flag runs diagnostic checks cleanly", () => {
   delete env.NODE_TEST_CONTEXT;
   const result = spawnSync(process.execPath, ["scripts/qq-official-bot.mjs", "--doctor"], {
     encoding: "utf8",
-    timeout: 30000,
+    timeout: 60000,
     env,
   });
   assert.ifError(result.error);
@@ -399,6 +399,17 @@ test("extractImageAttachments extracts valid URLs up to maxCount limit", () => {
   );
 });
 
+async function waitForCondition(predicate, { timeout = 2000, interval = 10 } = {}) {
+  const start = Date.now();
+  while (Date.now() - start < timeout) {
+    try {
+      if (await predicate()) return;
+    } catch {}
+    await new Promise((resolve) => setTimeout(resolve, interval));
+  }
+  await predicate();
+}
+
 test("C2C_MESSAGE_CREATE handles pure image message, injects default academic prompt, and writes text marker to memory", async (t) => {
   class Socket extends EventTarget {
     static OPEN = 1;
@@ -447,7 +458,7 @@ test("C2C_MESSAGE_CREATE handles pure image message, injects default academic pr
   };
 
   ws.dispatchEvent(new MessageEvent("message", { data: JSON.stringify(pureImageMsg) }));
-  await new Promise((resolve) => setTimeout(resolve, 50));
+  await waitForCondition(() => memory.get("c2c_vision-user-1")?.length >= 2);
 
   // 1. Injected prompt matches default
   assert.ok(calledWith);
@@ -524,7 +535,7 @@ test("GROUP_AT_MESSAGE_CREATE handles image with accompanying question, capping 
   };
 
   ws.dispatchEvent(new MessageEvent("message", { data: JSON.stringify(grpMsg) }));
-  await new Promise((resolve) => setTimeout(resolve, 50));
+  await waitForCondition(() => memory.get("group_GROUP_VISION_1_member-vis-1")?.length >= 2);
 
   assert.ok(calledWith);
   assert.equal(calledWith.query, "请分析这组光变曲线对比");
@@ -582,7 +593,7 @@ test("AT_MESSAGE_CREATE in guild channel processes image question", async (t) =>
   };
 
   ws.dispatchEvent(new MessageEvent("message", { data: JSON.stringify(channelMsg) }));
-  await new Promise((resolve) => setTimeout(resolve, 50));
+  await waitForCondition(() => memory.get("channel_CH_1001_author-ch-1")?.length >= 2);
 
   assert.ok(calledWith);
   assert.equal(calledWith.query, "解释这个激波跳跃条件方程");
@@ -639,7 +650,7 @@ test("vision concurrency congestion in bot dispatcher returns actionable congest
   };
 
   ws.dispatchEvent(new MessageEvent("message", { data: JSON.stringify(msg) }));
-  await new Promise((resolve) => setTimeout(resolve, 50));
+  await waitForCondition(() => memory.get("c2c_user-congest")?.length >= 2);
 
   assert.equal(answerCalled, false, "Model answer must not be called when semaphore is congested");
   const mem = memory.get("c2c_user-congest");

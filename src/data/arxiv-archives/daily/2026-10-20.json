@@ -4,19 +4,19 @@
   "week_id": "2026-W43",
   "weekday": "Tue",
   "batch_id": "announcement-2026-10-20",
-  "generated_at": "2026-10-21T02:00:10.076Z",
+  "generated_at": "2026-10-21T18:00:09.778Z",
   "counts": {
-    "total": 57,
-    "analyzed": 57,
+    "total": 78,
+    "analyzed": 78,
     "must_read": 3,
-    "worth_knowing": 18,
-    "skip": 36,
+    "worth_knowing": 23,
+    "skip": 52,
     "pending": 0
   },
   "opening_brief": {
     "status": "ready",
-    "edition_fingerprint": "4836bb480ff54e4602c5b0f4622fd21cd91cccde1b81ddcd103c09dae7582e0f",
-    "intro": "本期首看《Source velocities of fast radio bursts constrained by their dispersion measure variations》等 21 篇核心进展。",
+    "edition_fingerprint": "cb9fc6585af361bc0b28972e42dbd36c9bac22416a0d5e882594d8ae48780711",
+    "intro": "本期首看《Source velocities of fast radio bursts constrained by their dispersion measure variations》等 26 篇核心进展。",
     "must_read": [
       {
         "arxiv_id": "2610.27311",
@@ -130,6 +130,36 @@
         "revision": 1,
         "source_fingerprint": "12459f8aef340a87912a6e4fb20200a3a6af895f5e6601760933494cd21e3ce8",
         "guide_fingerprint": "4aed67b0d5c077db4b7de4f28fa7922a41f49a79d5af6beb04829a529c94adc1"
+      },
+      {
+        "arxiv_id": "2610.28023",
+        "revision": 1,
+        "source_fingerprint": "d18e83030c59355e3b684c1e344d3d1b93b1cb56a8646f732130532b6c41507b",
+        "guide_fingerprint": "7c8b43c3d47845c63727c4b041e8fa71202108b4d8ea3ea0a57eb99d1f27c1e9"
+      },
+      {
+        "arxiv_id": "2610.28034",
+        "revision": 1,
+        "source_fingerprint": "f6e22c9a0bcd84ae3105eabdacf7c1fb8177f24493462dc567fa4daf51615e15",
+        "guide_fingerprint": "2e11e1916037bb4c68ead366a03fbe4cebc755e147ec08f12707338ccba87bfd"
+      },
+      {
+        "arxiv_id": "2610.28049",
+        "revision": 1,
+        "source_fingerprint": "3e31df5e857f322f320b5b80a48e5108a3fa370b232a2ddf360c6755fd4f00f0",
+        "guide_fingerprint": "19154c25033b191c0eac3013bad41c683f613eba6e5c07619d9436012c14e9d4"
+      },
+      {
+        "arxiv_id": "2610.28073",
+        "revision": 1,
+        "source_fingerprint": "3a960658a1b2076b0f36ef78f55a8298ee2980a1d69533437633795a6000c0a0",
+        "guide_fingerprint": "7478aa919cd7b3189b00936028562bb1063ed880268c94d1f2ba99b27e8e1036"
+      },
+      {
+        "arxiv_id": "2610.28182",
+        "revision": 1,
+        "source_fingerprint": "cfdda1004779da1158a09d742b408ebdd31d79c39fa0d2e383212ea1b1d8f8de",
+        "guide_fingerprint": "a24a348b0a95cc4b3b4695635851f15e83aabda534595a6849900158abddce73"
       },
       {
         "arxiv_id": "2610.28408",
@@ -314,6 +344,102 @@
         "guide_fingerprint": "df9298ff8b49007d3d5c296d9af65079ca21c03d81786e57d105f3f728c48283"
       },
       {
+        "arxiv_id": "2610.27949",
+        "revision": 1,
+        "source_fingerprint": "ffe5b73fed76d6ff03e856b2abdaf04a0e621cf582535089b55de8f037532068",
+        "guide_fingerprint": "445eb4fdf7457439473540211b7d95c1d0de5609853da7daf0676444e98c9245"
+      },
+      {
+        "arxiv_id": "2610.27969",
+        "revision": 1,
+        "source_fingerprint": "301db13219ccfc53bab00e3d8412cf1f468e90f267f03a75c6ee9f4786ead11a",
+        "guide_fingerprint": "6d1a5172d844ab8649c91285c325ab9ea33c5fd57d166ae4bb882f9908f56658"
+      },
+      {
+        "arxiv_id": "2610.27985",
+        "revision": 1,
+        "source_fingerprint": "3966d0b76f4bdc793e5f126e443a6144493934f25294dde40da1adaf916d5030",
+        "guide_fingerprint": "812e409c11841ead831b67f6a05ef82ed3e1b5b1e5eef2bde0c6025c7c79cb99"
+      },
+      {
+        "arxiv_id": "2610.28005",
+        "revision": 1,
+        "source_fingerprint": "c0e03ac171efca92f5e47aaf8d4432d49aa5dc0655d72eb424ff2503ed951fed",
+        "guide_fingerprint": "bf091ab43f86300bd0575bc23db7513602640616ef190723afbacc2f4dbb07df"
+      },
+      {
+        "arxiv_id": "2610.28013",
+        "revision": 1,
+        "source_fingerprint": "88e40edff76d8599569947420902733a1145fe763910f7ecaa994d8df7f6b554",
+        "guide_fingerprint": "b418e9720054e199c6a3af13e94bc16d1641b02461b7b7b3862d278287aaafd1"
+      },
+      {
+        "arxiv_id": "2610.28068",
+        "revision": 1,
+        "source_fingerprint": "60c7f70779821cc20024ac80238c2ab981c4a643a39efdff08b7fe010b44028e",
+        "guide_fingerprint": "7e535c1e28c88d4cce6932a9cec756ad054162931f8bccdff81dd3935812845e"
+      },
+      {
+        "arxiv_id": "2610.28123",
+        "revision": 1,
+        "source_fingerprint": "00988e0d3bf98db86f9adbe7213944c619453fcbd8870044646bd9472a06f527",
+        "guide_fingerprint": "44c2f4e6e0dfd824a440f30191624f477bcfa93534aab4d9c9cb3bcdcd43befd"
+      },
+      {
+        "arxiv_id": "2610.28139",
+        "revision": 1,
+        "source_fingerprint": "a2abdb6468047a3b034ea1fbf6f70f7920578c548088ec048e4dd1200755e8a5",
+        "guide_fingerprint": "dc53ecb877bcd0f93e7323175a2df57afb879e8136287f18c3f0aae673fe41ce"
+      },
+      {
+        "arxiv_id": "2610.28140",
+        "revision": 1,
+        "source_fingerprint": "c6284534bb2467574b9bd7c755ea5b3c823261f2bba8f6a69521ae4c12639dfa",
+        "guide_fingerprint": "6f349080f26b95c1c62b1f704a04b8d97d1f59a9da604493170a62112b974c53"
+      },
+      {
+        "arxiv_id": "2610.28220",
+        "revision": 1,
+        "source_fingerprint": "2fe85b12318b14849c9e0c7a0832438d2b349603c9289a4d5a6f80f2aa6eb123",
+        "guide_fingerprint": "1e463dcd7e399f3babd7b3bb25e79c66397ff0649990a7a9f1b0bd7985ba9d32"
+      },
+      {
+        "arxiv_id": "2610.28274",
+        "revision": 1,
+        "source_fingerprint": "49a134c8495e07482494528c2e1e6ca75781e338e143ffac521a70be52a0928e",
+        "guide_fingerprint": "3e3d161575e3a9c5b9de6613ad507d9bea50fd066fa78641c6eae0aa168ed9ad"
+      },
+      {
+        "arxiv_id": "2610.28292",
+        "revision": 1,
+        "source_fingerprint": "06610980f0132925256a90ec00afd7b8a4b5ff4fb25bb93fe72195407c9cc9e5",
+        "guide_fingerprint": "a424f3d17ee6fd5dc6f033575887d85862af758a9452c260ef90873726283a91"
+      },
+      {
+        "arxiv_id": "2610.28331",
+        "revision": 1,
+        "source_fingerprint": "53e3c57617beb6d023e2ae56c8b3274b673c227974eb9926263200e1504a516f",
+        "guide_fingerprint": "d03612bdbb7cd5843d3699ddf7a617a2078ab02eea5249f47ea20e9ba1d59150"
+      },
+      {
+        "arxiv_id": "2610.28345",
+        "revision": 1,
+        "source_fingerprint": "cea66839bb7a28411bc51b1222721bd0b367b820a70680d0174baeb5dda6f4f3",
+        "guide_fingerprint": "daeb7a512e8cac82709b3340ad58e559f1294ec6b8c686913241f0983f11d43b"
+      },
+      {
+        "arxiv_id": "2610.28352",
+        "revision": 1,
+        "source_fingerprint": "07cca5c3357f2f3dc9b6a0061f12a501e00c933064aa74124bb8ff01130adee3",
+        "guide_fingerprint": "2af3acfda2bd9b1272dc7f49a1534580c1eb0d855cae4bbdd2f3e421ff04c06f"
+      },
+      {
+        "arxiv_id": "2610.28374",
+        "revision": 1,
+        "source_fingerprint": "b10e58b4236ea132fab3c9f23d991be8a0ac90c357042aeb3c1f3bb62fc85671",
+        "guide_fingerprint": "32aa4882bf36f4bf03f0d83908518905b168f17dee25f8272f63e9d7d75dd385"
+      },
+      {
         "arxiv_id": "2610.28424",
         "revision": 1,
         "source_fingerprint": "21295cf9e62d4d15cd6a8a7ecfe55504baedb4cdf620afea8244dcda307143df",
@@ -481,6 +607,36 @@
       "reason": "该工作利用 VLT/MUSE 积分视场光谱（IFS）对 24 个 Ibn 型超新星宿主星系展开环境空间分辨研究，通过 $\\mathrm{H}\\alpha$ 归一化累积排名（NCR）和强发射线比值测量，揭示其与极端恒星形成区及沃尔夫-拉叶（WR）星的紧密联系，对确定富氦周星介质（CSM）相互作用起源及超新星前身星剥蚀通道具有直接参考价值。"
     },
     {
+      "arxiv_id": "2610.28023",
+      "priority": "worth_knowing",
+      "title": "Direct Urca process facilitated by non-Fermi-liquid quantum criticality",
+      "reason": "该工作将强关联凝聚态中的非费米液体（NFL）量子临界理论引入致密核物质，揭示中子超流与质子超导相变量子临界点（QCP）附近费米面的抹平机制，为低质量中子星以及软 X 射线暂现源中反常快速冷却与中微子辐射提供了全新的理论解释，密切关联中子星热演化与高能致密天体观测。"
+    },
+    {
+      "arxiv_id": "2610.28034",
+      "priority": "worth_knowing",
+      "title": "Rapid Variability of Radiative Signatures from Driven Relativistic Reconnection",
+      "reason": "文章利用大尺度 2.5D PIC 模拟研究驱动相对论磁重联（力游磁通量管碰撞并合）过程中的同步辐射光变与非热能谱演化，揭示了光变上升时标与黑洞/脉冲星耀变特征尺度的定标关系，对理解相对论喷流、磁星耀发及高能瞬变源的亚时标爆发机制具有重要物理参考价值。"
+    },
+    {
+      "arxiv_id": "2610.28049",
+      "priority": "worth_knowing",
+      "title": "On the superbursts as photodisintegrators of ashes from the rp-process -- Numerical simulations of superbursts with MESA II",
+      "reason": "该工作聚焦低质量X射线双星中子星表面的超级爆发（superbursts，致密天体表面由碳燃烧驱动的高能热核瞬变现象），利用 MESA 进行多区流体和扩展核反应网络计算，深入研究了 rp-过程灰烬的光致蜕变及其粒子再捕获反应对超级爆发点火条件、辐射光度与核合成的影响，属于致密天体高能瞬变辐射机制研究。"
+    },
+    {
+      "arxiv_id": "2610.28073",
+      "priority": "worth_knowing",
+      "title": "Pulsar J1909+0749 and Supernova Remnant G42.1-0.2: A case of a pulsar that has exited the shell of its associated supernova remnant",
+      "reason": "该工作证认了一个极其罕见的脉冲星逃出母超新星遗迹（SNR）壳层的系统，通过射电非热能谱（$\\alpha = -0.36 \\pm 0.08$）确认新 SNR G42.1-0.2，并揭示了 PSR J1909+0749 具有高达 $v_{\\perp} \\sim 1460\\,\\mathrm{km\\,s^{-1}}$ 的极端横向切向速度，为大质量恒星超新星爆发中心引擎的原初踢力（kick）机制及致密天体与星际环境相互作用提供了关键观测样本。"
+    },
+    {
+      "arxiv_id": "2610.28182",
+      "priority": "worth_knowing",
+      "title": "Hidden engines in tidal disruption events: multimessenger signatures in a lepto-hadronic framework",
+      "reason": "该工作构建了非喷流/隐藏引擎潮汐瓦解事件（TDE）的多区稳态轻-强子（lepto-hadronic）辐射与光学厚度模型，系统澄清了光致介子产生中微子与高能光子衰减级联之间的物理权衡，对致密天体多信使及中微子源证认具有直接参考价值。"
+    },
+    {
       "arxiv_id": "2610.28408",
       "priority": "worth_knowing",
       "title": "Hybrid Stars with Different Amount of Quark Matter",
@@ -507,7 +663,7 @@
   ],
   "feed": {
     "schema_version": "arxiv-daily-discovery-v1",
-    "generated_at": "2026-10-21T02:00:10.076Z",
+    "generated_at": "2026-10-21T18:00:09.778Z",
     "query": "(cat:astro-ph.HE OR cat:astro-ph.GA OR cat:astro-ph.SR) AND submittedDate:[202610191800 TO 202610201800]",
     "base_query": "cat:astro-ph.HE OR cat:astro-ph.GA OR cat:astro-ph.SR",
     "source_url": "https://export.arxiv.org/api/query?search_query=%28cat%3Aastro-ph.HE+OR+cat%3Aastro-ph.GA+OR+cat%3Aastro-ph.SR%29+AND+submittedDate%3A%5B202610191800+TO+202610201800%5D&sortBy=submittedDate&sortOrder=descending&start=0&max_results=2000",
@@ -515,7 +671,7 @@
       "https://export.arxiv.org/api/query?search_query=%28cat%3Aastro-ph.HE+OR+cat%3Aastro-ph.GA+OR+cat%3Aastro-ph.SR%29+AND+submittedDate%3A%5B202610191800+TO+202610201800%5D&sortBy=submittedDate&sortOrder=descending&start=0&max_results=2000"
     ],
     "parser_version": "2026-09-08.atom-v2",
-    "response_sha256": "5e68075c4530f906ca9c96fde61738240a1ee50640ae5be58f87de3027af10d9",
+    "response_sha256": "1f9998d6ecf30f5b45194c854732ca58a2d5a46c32fe2002e05b4af7ab6009b3",
     "window": {
       "kind": "announcement_batch",
       "batch_id": "announcement-2026-10-20",
@@ -536,7 +692,7 @@
     "provenance": {
       "source_type": "api",
       "source_url": "https://export.arxiv.org/api/query?search_query=%28cat%3Aastro-ph.HE+OR+cat%3Aastro-ph.GA+OR+cat%3Aastro-ph.SR%29+AND+submittedDate%3A%5B202610191800+TO+202610201800%5D&sortBy=submittedDate&sortOrder=descending&start=0&max_results=2000",
-      "retrieved_at": "2026-10-21T02:00:10.076Z",
+      "retrieved_at": "2026-10-21T18:00:09.778Z",
       "query": "(cat:astro-ph.HE OR cat:astro-ph.GA OR cat:astro-ph.SR) AND submittedDate:[202610191800 TO 202610201800]",
       "evidence_scope": "discovery_metadata_only",
       "attempts": [
@@ -548,18 +704,18 @@
     },
     "page_size": 2000,
     "page_count": 1,
-    "total_results": 57,
+    "total_results": 78,
     "pages": [
       {
         "index": 0,
         "start": 0,
         "requested_max_results": 2000,
         "source_url": "https://export.arxiv.org/api/query?search_query=%28cat%3Aastro-ph.HE+OR+cat%3Aastro-ph.GA+OR+cat%3Aastro-ph.SR%29+AND+submittedDate%3A%5B202610191800+TO+202610201800%5D&sortBy=submittedDate&sortOrder=descending&start=0&max_results=2000",
-        "response_sha256": "b2e16269d0725ed8893dd30593adaeac2ccd31c8ecb7e78aa975311ba50c4c43",
-        "total_results": 57,
+        "response_sha256": "7a27df86374f150b8a836a4aa01b6152088f2b4453358a7da6fecc3b3781fbfa",
+        "total_results": 78,
         "items_per_page": 2000,
-        "entry_count": 57,
-        "window_entry_count": 57
+        "entry_count": 78,
+        "window_entry_count": 78
       }
     ],
     "entries": [
@@ -1660,6 +1816,484 @@
         "primary_category": "astro-ph.HE"
       },
       {
+        "arxiv_id": "2610.27949",
+        "revision": 1,
+        "title": "Constraining Solid HNCO and Its Environment in Open JWST Data with Laboratory Spectra",
+        "abstract": "The presence of HNCO in the gaseous phase is well known for the interstellar medium, but the molecule is not detected yet in the solid phase. We report the first laboratory-confirmed identification of solid HNCO at 2260 cm$^{-1}$ in open JWST data using laboratory infrared spectra. For that, we grew binary mixtures of HNCO with main constituents of interstellar ice using ISEAge setup at 10 K: HNCO:H$_2$O = 1:10, HNCO:CO = 1:10, HNCO:CO$_2$ = 1:10, HNCO:CH$_3$OH~=~1:10. We present transmission infrared spectra of pure HNCO and HNCO-bearing ices along with the corresponding band strengths at 10 K. The fitting of open JWST observational data with the laboratory reference spectra in a 10--23 K temperature range show that solid HNCO is predominantly located in the apolar layer rich in CO. The abundance of solid HNCO is approximately estimated as 0.04--0.15\\% relative to solid H$_2$O. The positive correlation between HNCO and N$_2$O suggests their co-formation via the chemical route that includes solid N$_2$. The results are also supported by the numerical modeling of HNCO formation in protostellar objects with predicted abundance of 0.06--0.11\\%. We calculated the upper limits for CH$_3$CN toward two protostars and evaluated its abundance to solid water using the spectroscopic fitting and modeling.",
+        "published": "2026-10-20T09:56:46Z",
+        "updated": "2026-10-20T09:56:46Z",
+        "authors": [
+          "Ruslan Nakibov",
+          "Varvara Karteyeva",
+          "Katerina Borshcheva",
+          "Igor Petrashkevich",
+          "Mikhail Medvedev",
+          "Anton Vasyunin"
+        ],
+        "url": "https://arxiv.org/abs/2610.27949v1",
+        "categories": [
+          "astro-ph.GA",
+          "astro-ph.SR"
+        ],
+        "primary_category": "astro-ph.GA"
+      },
+      {
+        "arxiv_id": "2610.27969",
+        "revision": 1,
+        "title": "VVV CL001: A strong candidate for the most ancient star cluster in the Galaxy",
+        "abstract": "Finding the oldest globular cluster of the Galaxy is important to constrain a lower limit on the age of the Galaxy and the Universe. VVV CL001 ([l,b]= [5.26,0.77]) is perhaps the most metal-poor ([Fe/H]~-2.2 dex) globular cluster in the Galactic bulge and a promising candidate to be the oldest globular cluster in the entire Milky Way. Due to its recent discovery and high extinction, its physical parameters, especially the distance and age, remain highly uncertain, yet they are essential to define it as an ancient native stellar system of the Milky Way. We aim to refine the distance and age of VVV CL001 using deep and high-quality photometry, to study its role in the formation of the Milky Way, and to determine whether it is the oldest Galactic globular cluster. We used J and KS observations to construct the deepest CMD of VVV CL001 to date, based on FourStar/Baade PSF photometry combined with HST near-IR wide-filter PSF photometry. We selected cluster members through proper motion calculations and the HDBSCAN algorithm, and assigned membership probabilities via Markov-Chain Monte Carlo iterations in a 5-dimensional parameter space. Using r band data from DECam/Blanco, we optically identified horizontal branch members and applied an isochrone-fitting technique to determine the cluster distance, while members around the main-sequence turn-off yielded the age from different isochrone sets. Finally, we refined the cluster orbital parameters. We obtained a distance of d = 7.34 +- 0.46 kpc, the most precise to date. We derived an age of 13.4 +- 0.4 Gyr, indicating that VVV CL001 is one of the oldest globular clusters in the Galaxy. The orbit confirms that the cluster belongs to the Galactic bulge, which, together with its age and metallicity, could link it to the early proto-Milky Way assembly, extending the metal-poor end of the known in situ globular clusters.",
+        "published": "2026-10-20T10:14:48Z",
+        "updated": "2026-10-20T10:14:48Z",
+        "authors": [
+          "J. Olivares Carvajal",
+          "Á. Valenzuela Navarro",
+          "C. Salvo-Guajardo",
+          "C. Ordenes-Huanca",
+          "B. Acosta-Tripailao",
+          "C. Quezada",
+          "F. Gran",
+          "M. Zoccali",
+          "M. Dall'Ora",
+          "M. De Leo",
+          "S. Villanova",
+          "D. Geisler"
+        ],
+        "url": "https://arxiv.org/abs/2610.27969v1",
+        "categories": [
+          "astro-ph.GA"
+        ],
+        "primary_category": "astro-ph.GA"
+      },
+      {
+        "arxiv_id": "2610.27985",
+        "revision": 1,
+        "title": "Understanding the formation of alpha-Fe bimodality in the Milky Way using constrained cosmological simulations of the Local Group",
+        "abstract": "We use a novel suite of constrained cosmological simulations of the Local Group to investigate the formation of alpha--Fe bimodalities in stellar discs of Milky Way analogues. In agreement with past studies using the Auriga model, we show that in our simulations the high-alpha sequence forms in a merger-induced starburst, which further quenches star formation, allowing the new stellar populations to form at low [alpha/Fe]. Producing a bimodality that is prominent at large radii, with a significant [alpha/Fe] gap and overlapping metallicity as in the Milky Way, requires the quenching of star formation across all radii where the bimodality is observed. The quenching can be achieved either with a galaxy-wide starburst, or with a retrograde merger reducing angular momentum in the outer disc and allowing more efficient dilution by the metal-poor gas in the circumgalactic medium (CGM). We show that mergers can also tilt the disc, changing the direction of galactic outflows and enriching a larger volume of the CGM with galactic metals, leading to low [alpha/Fe] scatter in the subsequently formed low-alpha sequence. We argue that the slopes in [alpha/Fe] of the two alpha sequences are crucial in narrowing down the mechanism that leads to their formation. We additionally uncover an indirect role that mergers play in enhancing the accretion of metal-poor gas onto galaxies. The smoothly accreted gas can dominate the gas content in the CGM and aid in the formation of distinct chemical sequences, especially at the low-metallicity end.",
+        "published": "2026-10-20T10:25:26Z",
+        "updated": "2026-10-20T10:25:26Z",
+        "authors": [
+          "Anna Genina",
+          "Ewoud Wempe",
+          "Amina Helmi",
+          "Hanneke C. Woudenberg",
+          "Simon D. M. White",
+          "Robert J. J. Grand",
+          "Ruediger Pakmor",
+          "Guilhem Lavaux",
+          "Jens Jasche"
+        ],
+        "url": "https://arxiv.org/abs/2610.27985v1",
+        "categories": [
+          "astro-ph.GA"
+        ],
+        "primary_category": "astro-ph.GA"
+      },
+      {
+        "arxiv_id": "2610.28005",
+        "revision": 1,
+        "title": "Phakoseismology: Asteroseismology of gravitationally microlensed stars",
+        "abstract": "Asteroseismology relies on disk-integrated photometry or radial velocities, in which geometric cancellation suppresses modes of high spherical degree ($l\\geq4$). Observations are thus limited to deeply penetrating, low-degree modes, leaving the outer envelope inaccessible. We investigate whether a high-magnification microlensing event can temporarily lift this limitation by differentially magnifying the surface of an oscillating source star. We modelled the visibility of solar-like oscillations during microlensing, weighting the surface by limb darkening and the local magnification. We computed multiplet visibilities and the power distribution among azimuthal components, and built a likelihood model for recovering the 3D spin-axis orientation from resolved rotational multiplets. When the lens-source separation becomes comparable to the source's angular radius, the magnification gradient acts as a transient spatial filter that breaks the symmetry of disk integration, raising high-degree mode visibilities by up to three orders of magnitude. The same non-axisymmetric weighting makes the relative power of azimuthal components depend on both the inclination and sky-projected azimuth of the spin axis, imprinting the full spin orientation onto the power spectrum. With $5\\%$ relative-power uncertainties, we recover the orientation to $σ_i=2.9^\\circ$ and $σ_γ=11.5^\\circ$. Microlensing thus does more than amplify distant stars: its magnification pattern enables spatially selective asteroseismology. The effect is strongest for rare close encounters and unlikely to support large samples, and the newly visible high-degree modes will overlap with rotationally split and mixed modes, complicating mode identification. Nevertheless, individual high-quality events may open a window on envelope physics and spin geometries for stars in the Galactic bulge and beyond.",
+        "published": "2026-10-20T10:50:25Z",
+        "updated": "2026-10-20T10:50:25Z",
+        "authors": [
+          "Marcus L. Marcussen",
+          "Mikkel N. Lund"
+        ],
+        "url": "https://arxiv.org/abs/2610.28005v1",
+        "categories": [
+          "astro-ph.SR",
+          "astro-ph.EP",
+          "astro-ph.GA",
+          "astro-ph.IM"
+        ],
+        "primary_category": "astro-ph.SR"
+      },
+      {
+        "arxiv_id": "2610.28013",
+        "revision": 1,
+        "title": "Kinematically isolating intracluster light in AS1063: a distinct stellar population tracing the dark matter core",
+        "abstract": "We present a technique using integral-field spectroscopy to kinematically isolate intracluster light (ICL) from the brightest cluster galaxy (BCG), enabling insights into their contrasting stellar populations and the inner dark matter halo profile. Applying this technique to MUSE data of Abell S1063, we find that both components are old (~9 Gyr), but the ICL is more metal-poor than the BCG, implying distinct progenitor pathways. Within 100 kpc, the ICL comprises 55 per cent of the BCG+ICL stellar mass - substantially more than inferred from photometric decompositions. The BCG and ICL possess distinct velocity distributions, which remain nearly constant with radius, with an ICL velocity dispersion more than twice that of the BCG, and a line-of-sight velocity offset of 86 +- 18 km/s. Two-dimensional Sérsic fits yield an ICL centroid offset of 5.2 +- 1.5 kpc from the BCG. These phase-space offsets are indicative of the BCG oscillating in a broad potential minimum. Furthermore, the ICL surface-brightness profile matches that of strong-lensing estimates assuming a cored halo. Simulations indicate that the inner halo profile varies systematically for different dark matter models. Applied to larger samples, our method therefore offers a complementary route to testing the nature of dark matter, while simultaneously revealing the stellar origins of the ICL.",
+        "published": "2026-10-20T11:02:28Z",
+        "updated": "2026-10-20T11:02:28Z",
+        "authors": [
+          "Callum Bellhouse",
+          "Steven Bamford",
+          "Nina Hatch",
+          "Tutku Kolcu",
+          "Johan Richard"
+        ],
+        "url": "https://arxiv.org/abs/2610.28013v1",
+        "categories": [
+          "astro-ph.GA",
+          "astro-ph.CO"
+        ],
+        "primary_category": "astro-ph.GA"
+      },
+      {
+        "arxiv_id": "2610.28023",
+        "revision": 1,
+        "title": "Direct Urca process facilitated by non-Fermi-liquid quantum criticality",
+        "abstract": "Conventional Fermi-liquid theories of dense nuclear matter predict that the direct Urca process requires a proton fraction above a threshold of $Y_p \\approx 0.11$--$0.15$, which is rarely reached in low-mass neutron stars. Here we show that this stringent kinematic constraint is drastically relaxed by the non-Fermi liquid behavior arising from superfluid and superconducting quantum criticality in neutron stars. In the non-Fermi-liquid regimes, nucleons have a smooth momentum occupation without a sharp Fermi surface, and their chemical potentials develop a logarithmic temperature dependence. These intrinsic features fundamentally alter the standard $β$-equilibrium relation. Consequently, direct Urca neutrino emission can be activated even at low nuclear densities. This modifies the long-standing Urca-threshold paradigm and indicates that direct Urca process has the opportunity to occur in low-mass neutron stars.",
+        "published": "2026-10-20T11:12:01Z",
+        "updated": "2026-10-20T11:12:01Z",
+        "authors": [
+          "Hao-Fu Zhu",
+          "Guo-Zhu Liu"
+        ],
+        "url": "https://arxiv.org/abs/2610.28023v1",
+        "categories": [
+          "nucl-th",
+          "astro-ph.HE",
+          "cond-mat.str-el"
+        ],
+        "primary_category": "nucl-th"
+      },
+      {
+        "arxiv_id": "2610.28034",
+        "revision": 1,
+        "title": "Rapid Variability of Radiative Signatures from Driven Relativistic Reconnection",
+        "abstract": "Rapid variability in energetic flares is a distinctive feature of high-energy emission from many magnetically dominated astrophysical sources. We investigate the radiative variability of driven relativistic magnetic reconnection using Particle-in-Cell simulations of strongly magnetized flux tubes pushed to merge at driving speed $v_{\\rm push}$. This setup captures the onset of reconnection and provides a controlled model for single reconnection-driven flares near compact objects, where magnetic structures can be twisted, sheared, and forced to merge by turbulent accretion flows or relativistic frame dragging. We find that the merger efficiently accelerates particles into nonthermal distributions, producing synchrotron emission whose variability tracks the reconnection phases. We identify two regimes: a quasi-steady, weakly driven regime for $v_{push}\\leq0.1\\,c$, and strongly driven regime for $v_{\\rm push}>0.1\\,c$. The transition occurs when the driving exceeds the typical inflow-to-outflow velocity ratio of $\\sim0.1$ in steady collisionless relativistic reconnection, i.e., the average rate at which reconnection can process incoming flux, potentially providing an additional source of variability. The lightcurves rise on $1$--$3$ light-crossing times of the reconnecting region, and the particle spectra develop power laws with index $p\\simeq1.8$--$2.4$. These timescales are compatible with observed variability in high-energy sources, including the very-high-energy flares of M87$^*$ and the $γ$-ray flares of the Crab Nebula, making this model a viable framework for rapid flaring in active galactic nuclei and pulsar wind nebulae.",
+        "published": "2026-10-20T11:23:45Z",
+        "updated": "2026-10-20T11:23:45Z",
+        "authors": [
+          "Clarissa Mora",
+          "Fabio Bacchini",
+          "Camille Granier",
+          "Daniel Groselj"
+        ],
+        "url": "https://arxiv.org/abs/2610.28034v1",
+        "categories": [
+          "astro-ph.HE",
+          "physics.plasm-ph"
+        ],
+        "primary_category": "astro-ph.HE"
+      },
+      {
+        "arxiv_id": "2610.28049",
+        "revision": 1,
+        "title": "On the superbursts as photodisintegrators of ashes from the rp-process -- Numerical simulations of superbursts with MESA II",
+        "abstract": "Context: Superbursts are energetic explosions in the crusts of neutron stars in Low-Mass X-ray Binaries (LMXBs). At temperatures above 4 GK, photodisintegration of heavy rp-process ashes may play a major role alongside $^{12}$C fusion. Aims: We investigate how photodisintegration of rp-process ashes affects superburst properties and the initial $^{12}$C abundance required for ignition. Methods: We simulate superbursts with MESA v.24.08.1. Besides the canonical fuel of $20\\%$ $^{12}$C and $80\\%$ $^{56}$Fe, we test different $^{12}$C abundances mixed with scaled rp-process ashes. Results: Superbursts can ignite with only $10\\%$ $^{12}$C when the remaining $90\\%$ consists of rp-process ashes. Their luminosity is comparable to that of the canonical fuel, whereas $10\\%$ $^{12}$C mixed with $90\\%$ $^{56}$Fe yields lower luminosity. $^{56}$Fe remains the most abundant ash nuclide. Although photodisintegration drives nucleosynthesis, neutron, proton and alpha captures release energy at late times. We also find that $A=64$ nuclides or $^{20}$Ne help reduce the $^{12}$C abundance needed for ignition. Conclusions: The composition of accreted material - not just its $^{12}$C content - substantially affects superburst ignition, luminosity and nucleosynthesis.",
+        "published": "2026-10-20T11:37:57Z",
+        "updated": "2026-10-20T11:37:57Z",
+        "authors": [
+          "M. Nava-Callejas",
+          "S. Goriely",
+          "N. Chamel"
+        ],
+        "url": "https://arxiv.org/abs/2610.28049v1",
+        "categories": [
+          "astro-ph.HE",
+          "astro-ph.SR"
+        ],
+        "primary_category": "astro-ph.HE"
+      },
+      {
+        "arxiv_id": "2610.28068",
+        "revision": 1,
+        "title": "Constraints on Dark Matter Annihilation from Starlight-Induced Inverse Compton Emission in Omega Centauri",
+        "abstract": "The search for the particle identity of dark matter (DM) remains one of the foremost challenges in modern physics. In this work, we derive new constraints on the DM annihilation cross section $\\langleσv\\rangle$ by considering the inverse Compton (IC) scattering of DM annihilation injected $e^+e^-$ off the starlight radiation field in Omega Centauri. As a likely remnant core of a dwarf galaxy, Omega Centauri provides a dense stellar environment that enhances the predict IC signal. Using multi-wavelength observations from Chandra and Fermi-LAT, we establish upper limits on $\\langleσv\\rangle$ over a wide DM mass range from MeV to TeV. Notably, in the tens-of-MeV range, our results surpass existing constraints by approximately two orders of magnitude, exceeding $\\langleσv\\rangle \\sim 10^{-31}~{\\rm cm^3\\,s^{-1}}$. At several GeV to the TeV DM masses range, our constraints also remain stronger than existing limits. Our results demonstrate that starlight induced IC emission is an important component for indirect DM searches in dense stellar systems, establishing Omega Centauri as a powerful probe of the nature of DM.",
+        "published": "2026-10-20T11:51:00Z",
+        "updated": "2026-10-20T11:51:00Z",
+        "authors": [
+          "Guan-Sen Wang",
+          "Xu Pan",
+          "Lei Feng"
+        ],
+        "url": "https://arxiv.org/abs/2610.28068v1",
+        "categories": [
+          "astro-ph.HE",
+          "hep-ph"
+        ],
+        "primary_category": "astro-ph.HE"
+      },
+      {
+        "arxiv_id": "2610.28073",
+        "revision": 1,
+        "title": "Pulsar J1909+0749 and Supernova Remnant G42.1-0.2: A case of a pulsar that has exited the shell of its associated supernova remnant",
+        "abstract": "(Abridged) The ATNF pulsar catalogue features only 63 pulsars that are possibly associated with a supernova remnant (SNR). Even rarer is the scenario in which the pulsar has escaped the physical extent of its corresponding SNR. We aim to identify the serendipitously discovered shell-type object G42.1-0.2 as a SNR. The known pulsar (PSR) J1909+0749 lies well outside the shell of SNR G42.1-0.2, but it has a cometary tail pointing towards the centre of the SNR; we propose that the SNR and the pulsar originated from the same supernova explosion. By measuring the flux densities of the shell G42.1-0.2 from ${\\sim}$200 MHz to ${\\sim}$6 GHz, we establish the nonthermal nature of its emission. With the characteristic age of the pulsar, its distance from the Sun estimated from the dispersion measure (DM), and the angular separation between the pulsar and the centre of the shell, we infer the evolutionary state of the SNR and the transverse velocity of the pulsar. Using proper motion measurements, we compare the SNR-pulsar direction with the velocity of the pulsar. The radio spectral index of the shell is $-0.36 \\pm 0.08$, confirming that the emission is primarily nonthermal synchrotron. The proper motion measurements are not well constrained, but the amplitude and the direction are consistent with the interpretation that the SNR and the pulsar are associated. If the characteristic age and the DM-based distance represent the true age and the true distance of the pulsar and the SNR, then the standard evolution equations suggest that the SNR must still be in the Sedov-Taylor phase, evolving in a medium with a density of about 1.5 cm$^{-3}$. In addition, as a result of the PSR-SNR association, the transverse velocity of the pulsar PSR J1909+0749 is estimated to be ${\\sim}1460~\\mathrm{km\\,s}^{-1}$, ranking it among the highest transverse velocities observed for pulsars in the Milky Way.",
+        "published": "2026-10-20T11:53:36Z",
+        "updated": "2026-10-20T11:53:36Z",
+        "authors": [
+          "R. Dokara",
+          "M. Kramer",
+          "A. Brunthaler",
+          "M. J. Keith",
+          "B. W. Stappers"
+        ],
+        "url": "https://arxiv.org/abs/2610.28073v1",
+        "categories": [
+          "astro-ph.HE",
+          "astro-ph.GA"
+        ],
+        "primary_category": "astro-ph.HE"
+      },
+      {
+        "arxiv_id": "2610.28123",
+        "revision": 1,
+        "title": "Deriving Interplanetary Sector Boundary Crossings using Potential Field Source Surface Modeling",
+        "abstract": "The Heliospheric Current Sheet (HCS) and associated interplanetary sector boundaries fundamentally structure the solar wind environment, modulating coronal mass ejection (CME) evolution and solar energetic particle transport. In this study, we evaluate the capability of a static Potential Field Source Surface (PFSS; $R_{ss}=2.5R_\\odot$) coronal model to directly map interplanetary sector boundary crossings from the Sun to 1 au without dynamic heliospheric propagation models. We compare ballistically transported HCS crossings derived from GONG-ADAPT and SDO/HMI magnetic maps against sector boundary crossing observations from the SBCross catalog. PFSS modeling reproduces the large-scale interplanetary magnetic field topology well ($J\\approx0.50$), achieving hit rates (POD) of 0.64 for GONG-ADAPT and 0.76 for HMI. Carrington synoptic maps outperform flux-transport modeled maps, suggesting that the short-term observational noise from data assimilation degrades topological matching more than map \"aging\". Predictive skill shows a strong solar cycle dependence, performing significantly better during solar maxima (POD=0.70-0.81) than solar minima (POD=0.56-0.67), attributed to more distinct crossings due to higher HCS inclination angles during maximum. Matched events exhibit travel times close to ballistic estimates of 4.8-4.9 days with an average timing difference centered near zero ($\\pm1.1$ days) and 90% of events within $\\pm 1.8$ days. The hit rate of HCS structures that interact with CMEs does not degrade (POD = 0.67-0.83), despite propagating $\\approx7$ hours faster on average, implying that the CME interaction causes only minor structural changes to the HCS. Larger timing differences (>24 hours) are associated with flatter current sheets. Overall, static PFSS extrapolations offer a computationally inexpensive, effective approach for mapping global sector boundary structure.",
+        "published": "2026-10-20T12:30:59Z",
+        "updated": "2026-10-20T12:30:59Z",
+        "authors": [
+          "Stephan G. Heinemann",
+          "Manuela Temmer",
+          "Jens Pomoell",
+          "Mathew Owens",
+          "Emilia Kilpua",
+          "Matti ala-Lahti",
+          "Andreas Wagner"
+        ],
+        "url": "https://arxiv.org/abs/2610.28123v1",
+        "categories": [
+          "astro-ph.SR",
+          "physics.space-ph"
+        ],
+        "primary_category": "astro-ph.SR"
+      },
+      {
+        "arxiv_id": "2610.28139",
+        "revision": 1,
+        "title": "Detection and Statistics of large-scale Sector Boundary Crossings in the Solar Wind: The SBCross Catalog",
+        "abstract": "Heliospheric sector boundary crossings (SBCs), composed of the Heliospheric Current Sheet (HCS), Heliospheric Plasma Sheet (HPS), and surrounding plasma halo, represent fundamental structures in the solar wind that influence interplanetary dynamics and space weather. We present the \\textsc{SBCross} catalog, an automated, publicly available database containing 1,076 SBC events derived from in-situ observations spanning more than 30 years (1995--2026), covering Solar Cycles 23 and 24 alongside the rising and maximum phases of Solar Cycle 25. By combining interplanetary magnetic field (IMF) and 255~eV suprathermal electron pitch angle distributions (PAD) data, our algorithm reliably captures large-scale polarity transitions, with $76\\%$ of detected SBCs exhibiting clear HPS signatures ($β> 1$, $n_{\\mathrm{peak}} > 10\\mathrm{\\,cm^{-3}}$). Across the catalog, we find an average occurrence rate of $\\approx 2.6$ events per Carrington rotation, a median event duration of $\\approx 9.0$\\,hours, and a median physical thickness of $\\approx 7.4 \\times 10^6$\\,km. Furthermore, approximately $\\approx 15\\%$ of detected SBCs interact with interplanetary coronal mass ejections (CMEs) on average, with this proportion rising up to $33\\%$ during solar maximum. These CME-associated events exhibit systematically longer durations (median of $10.0$\\,hours), $54\\%$ larger physical thicknesses, and higher average solar wind velocities. Notably, all high-velocity SBC events ($> 600\\mathrm{\\,km\\,s^{-1}}$) are exclusively driven by CME interactions, demonstrating local plasma pile-up and structural entanglement resulting from fast CMEs overtaking the ambient slow background. The \\textsc{SBCross} catalog serves as an updated successor to the classic SBC list by L. Svalgaard, delivering a standardized, open-access resource for the heliophysics community to systematically investigate sector boundary transitions.",
+        "published": "2026-10-20T12:47:06Z",
+        "updated": "2026-10-20T12:47:06Z",
+        "authors": [
+          "Stephan G. Heinemann",
+          "Manuela Temmer",
+          "Mathew Owens",
+          "Emilia Kilpua",
+          "Charles Farrugia",
+          "Daniel Price"
+        ],
+        "url": "https://arxiv.org/abs/2610.28139v1",
+        "categories": [
+          "astro-ph.SR",
+          "physics.space-ph"
+        ],
+        "primary_category": "astro-ph.SR"
+      },
+      {
+        "arxiv_id": "2610.28140",
+        "revision": 1,
+        "title": "On the Stability of Tolman Oppenheimer Volkoff Fireholes",
+        "abstract": "We investigate the radial stability of singular Tolman--Oppenheimer--Volkoff fireholes with a radiation equation of state. These configurations contain a naked, negative point-mass singularity surrounded by a positive-density fluid, whose mass profile develops a Schwarzschild-like plateau before approaching an extended, self-similar atmosphere. Using the Prüfer phase method to identify the fundamental radial mode, we consider two outer boundary conditions: vanishing Lagrangian pressure perturbation (open firehole) and vanishing radial displacement (boxed firehole). For both, the fundamental squared frequency changes from positive to negative as the outer boundary exceeds a critical radius $R_c$. We find that $R_c$ follows approximately the same scaling with the central mass parameter as the equilibrium firehole radius $R$. However, the stability thresholds differ significantly: $R_c^{\\rm O}<R$ for the open firehole, whereas $R_c^{\\rm B}\\simeq R$ for the boxed one. The regular zero mode is the derivative of the equilibrium family with respect to the inner lapse normalization at fixed central mass. This gives the boxed threshold a turning-point interpretation and, together with a scaling symmetry of the TOV equations, implies $R_c^{\\rm B}\\to R$ in the limit of large central mass. Variational bounds show that the rigid wall is the most stabilizing separated, self-adjoint outer boundary condition and that the unbounded configuration is unstable. Tolman--Oppenheimer--Volkoff fireholes are therefore radially unstable unless confined within approximately their firehole radius.",
+        "published": "2026-10-20T12:47:44Z",
+        "updated": "2026-10-20T12:47:44Z",
+        "authors": [
+          "Pablo Laguna",
+          "Octavio Guerrero",
+          "Kostas Kokkotas"
+        ],
+        "url": "https://arxiv.org/abs/2610.28140v1",
+        "categories": [
+          "gr-qc",
+          "astro-ph.HE"
+        ],
+        "primary_category": "gr-qc"
+      },
+      {
+        "arxiv_id": "2610.28182",
+        "revision": 1,
+        "title": "Hidden engines in tidal disruption events: multimessenger signatures in a lepto-hadronic framework",
+        "abstract": "Tidal disruption events (TDEs) provide a unique laboratory for studying transient accretion, outflows, particle acceleration, and the possible connection between stellar disruptions and high-energy neutrinos. Motivated by recent candidate TDE-neutrino associations and by the forthcoming sensitivity of multimessenger facilities, we investigate under which physical conditions TDEs can be detected in MeV, GeV, and TeV gamma rays, and in high-energy neutrinos. We develop a lepto-hadronic emission framework and apply it to three representative sources: AT2019dsg, AT2019ehz, and ASASSN-14li. For each source we explore a set of physically motivated models that vary the proton and electron spectral indices, the minimum Lorentz factor of non-thermal protons, the particle energy partition, the acceleration efficiency, the magnetic compactness, and the presence of a compact corona. We compute the broadband spectral energy distributions, the associated muon-neutrino spectra, and compare them with reference sensitivities for COSI, Fermi/LAT, CTAO, and KM3NeT/ARCA. We find that hard proton spectra and/or large minimum proton Lorentz factors are the most favourable conditions for TeV gamma-ray and neutrino detectability, while GeV-bright models can be predominantly leptonic and neutrino quiet. AT2019dsg and AT2019ehz can reach the CTAO and KM3NeT benchmarks in hadronically favourable configurations, whereas ASASSN-14li is more naturally bright in the MeV-GeV band and constrained by its radio synchrotron emission. Our results highlight the importance of combining MeV, GeV, TeV, radio, and neutrino observations to distinguish between transparent, hidden, and lepton-dominated TDE emission regimes.",
+        "published": "2026-10-20T13:21:01Z",
+        "updated": "2026-10-20T13:21:01Z",
+        "authors": [
+          "D. Kantzas",
+          "D. A. Langis",
+          "I. Liodakis",
+          "A. Paggi"
+        ],
+        "url": "https://arxiv.org/abs/2610.28182v1",
+        "categories": [
+          "astro-ph.HE"
+        ],
+        "primary_category": "astro-ph.HE"
+      },
+      {
+        "arxiv_id": "2610.28220",
+        "revision": 1,
+        "title": "Orbital Parameters for 65 Wide Binary Systems: no evidence for gravitational anomaly at low acceleration",
+        "abstract": "We use a Monte Carlo analysis to study whether wide binaries can be represented by bound Newtonian orbits, and, if this is the case, whether the distribution of the orbital parameters agrees with expectations. The potential orbits are classified according to the $χ^2$ probability of representing star coordinates, parallaxes, velocity components and masses. We apply this analysis to 44 systems previously published, to which we add 26 wide binaries, consisting of twin low-mass (M) stars. We find orbital solutions for 65 systems, and derive the distribution of their orbital parameters. For one system composed of M-type stars, no Newtonian bound solution can be found; however, this pair is a member of the young Argus association and therefore not a suitable target. The remaining four systems that cannot be fit were already identified as likely disrupted binaries. The uncertainty in the separation between the components, given by the parallax error, is by far the dominant error source, and the main limitation of the present analysis, affecting especially the determination of the orbits' inclination angle and phase. Newtonian dynamics describe well our sample. When dividing the sample into two subsamples, according to the mutual acceleration, the eccentricity and periastron distributions agree with theoretical expectations; inclination and phase are distorted by the parallax-limited separation, more strongly in the high-acceleration (37 systems) than in the low-acceleration ($A_N < 10^{-9} m s^{-2}$, 28 systems) subsample, which is opposite to what a gravitational signal would produce. In particular the ratio between observed velocity difference and circular velocity does not show any excess for the low acceleration sample. When parametrized as a boost $γ$ parameter to the velocity, $0.95 < γ<1.05 (1 σ)$, fully consistent with Newton also for the low acceleration sample.",
+        "published": "2026-10-20T13:55:07Z",
+        "updated": "2026-10-20T13:55:07Z",
+        "authors": [
+          "L. Pasquini",
+          "R. Saglia",
+          "F. Patat",
+          "L. Berni",
+          "D. Bossini",
+          "L. Magrini",
+          "H. -G. Ludwig",
+          "M. T. Murphy",
+          "J. R. de Medeiros",
+          "B. L. Canto Martins",
+          "J. Chanamé"
+        ],
+        "url": "https://arxiv.org/abs/2610.28220v1",
+        "categories": [
+          "astro-ph.SR"
+        ],
+        "primary_category": "astro-ph.SR"
+      },
+      {
+        "arxiv_id": "2610.28274",
+        "revision": 1,
+        "title": "The Effect of Field Line Tracing Height on Wang-Sheeley-Arge Solar Wind Predictions at Earth",
+        "abstract": "(Abridged abstract): A key component of the widely used Wang-Sheeley-Arge model is the tracing of magnetic field lines in the solar corona, as that largely determines the modeled open/closed field regions and in turn the predicted large-scale solar wind structure. We demonstrate that by slightly raising the height from which magnetic field lines are traced from the photosphere (R$_{su}$), we can improve the prediction of solar wind high-speed enhancements (HSEs). We find a higher R$_{su}$ produces more accurate estimates of the HSE start time, duration, and peak speed, and enables the detection of HSEs that were missed with the standard R$_{su}$. These improvements are primarily associated with changes in the great-circle angular distance, while the flux tube expansion factors remain largely unchanged. A higher R$_{su}$ produces smoother open-field boundaries and reduces small-scale fragmentation within open-field regions. These morphological changes lead to more stable magnetic footpoint mappings and consequently more robust GCD calculations. To assess the statistical relevance of these findings, we extend the analysis to 53 Carrington rotations and perform a multi-metric evaluation of model performance. The results indicate that higher R$_{su}$ improves HSE predictions while reducing false alarms. We thus find that the choice of R$_{su}$ represents an important and previously underexplored parameter that can help enhance our ambient solar wind modeling and forecasting capabilities.",
+        "published": "2026-10-20T14:28:39Z",
+        "updated": "2026-10-20T14:28:39Z",
+        "authors": [
+          "Satabdwa Majumdar",
+          "Martin A. Reiss",
+          "Pete Riley",
+          "Charles N. Arge"
+        ],
+        "url": "https://arxiv.org/abs/2610.28274v1",
+        "categories": [
+          "astro-ph.SR"
+        ],
+        "primary_category": "astro-ph.SR"
+      },
+      {
+        "arxiv_id": "2610.28292",
+        "revision": 1,
+        "title": "Real-Time 24-hour Ahead Forecasting of Solar Energetic Particle Events with SEPNET-PRISM-R",
+        "abstract": "Solar energetic particle (SEP) events, operationally defined as proton flux exceeding 10 pfu in the >10 MeV channel, threaten spacecraft systems, astronaut safety, and high latitude aviation, yet continuous real-time forecasting with adequate lead time remains difficult. We present SEPNET-PRISM-R, a near-real-time system that issues hourly, 24 hour ahead probabilistic SEP forecasts. The model integrates multimodal solar data - including active region patches, flare features, coronal mass ejection (CME) characteristics, and historical proton flux - to concurrently predict SEP occurrences, peak proton flux, soft X-ray flux, and CME velocity, with the primary objective being SEP forecasting. Building on existing literature, SEPNET-PRISM-R enhances operational performance by incorporating a postprocessing module that enables cross-validated decision making and interpretable quantification of feature importance. The training dataset spans from February 1986 to September 2025, with subsequent forecasts generated sequentially through the present via a real-time space weather prediction platform that provides predictive probabilities, feature attributions, and historical analogs, enabling more reliable and informed operational decision-making. The proposed framework substantially suppresses false alarm rates while maintaining robust event detection capabilities, as evidenced by case studies and aggregate statistics.",
+        "published": "2026-10-20T14:39:44Z",
+        "updated": "2026-10-20T14:39:44Z",
+        "authors": [
+          "Yian Yu",
+          "Yang Chen",
+          "Lulu Zhao",
+          "Kathryn Whitman",
+          "Ward Manchester",
+          "Tamas Gombosi"
+        ],
+        "url": "https://arxiv.org/abs/2610.28292v1",
+        "categories": [
+          "astro-ph.SR",
+          "physics.space-ph",
+          "stat.AP"
+        ],
+        "primary_category": "astro-ph.SR"
+      },
+      {
+        "arxiv_id": "2610.28331",
+        "revision": 1,
+        "title": "Coevolution of Dust Growth and Gravitational Instability in Massive Protostellar Disks",
+        "abstract": "Massive protostellar disks are expected to sustain high accretion rates through gravitational instability, while dust growth may modify their opacity, cooling efficiency, and stability. Conversely, the time-dependent and nonaxisymmetric structures produced by gravitational instability may regulate the local conditions for dust growth. However, the coupled evolution of dust growth and gravitational instability in massive protostellar disks has not yet been explored self-consistently. We present two-dimensional hydrodynamic simulations that follow gas dynamics, dust growth, and opacity-dependent radiative cooling in a massive protostellar disk. We find that dust grains rapidly grow to millimeter-centimeter sizes shortly after disk formation, substantially reducing the infrared opacity. The enhanced cooling promotes disk fragmentation and produces more frequent accretion-driven luminosity outbursts than in a model without dust growth, with durations and peak luminosities comparable to those observed in massive protostars. Dust growth is broadly regulated by the fragmentation-limited size in dense disk regions, whereas newly formed outer disk regions and low-density regions deviate from this limit because of finite collision timescales and dust transport. These results suggest that dust growth may facilitate episodic accretion and fragmentation, while gravitationally unstable disk structures in turn regulate the dust growth process.",
+        "published": "2026-10-20T15:01:28Z",
+        "updated": "2026-10-20T15:01:28Z",
+        "authors": [
+          "Ryota Yamamuro",
+          "Ryoki Matsukoba",
+          "Kei E. I. Tanaka",
+          "Eduard I. Vorobyov"
+        ],
+        "url": "https://arxiv.org/abs/2610.28331v1",
+        "categories": [
+          "astro-ph.SR",
+          "astro-ph.EP",
+          "astro-ph.GA"
+        ],
+        "primary_category": "astro-ph.SR"
+      },
+      {
+        "arxiv_id": "2610.28345",
+        "revision": 1,
+        "title": "Data-Driven Ages from Asteroseismology for FGK Dwarfs",
+        "abstract": "Age is the one of the most difficult stellar properties to constrain. However, upcoming surveys such as PLATO are about to revolutionize our ability to measure FGK dwarf ages with asteroseismology. Here, we use The Cannon to construct a data-driven model for inferring asteroseismic-quality age measurements from large spectroscopic survey observations and demonstrate that forthcoming asteroseismology datasets from future surveys can be leveraged, together with our model, to obtain stellar age samples larger than can be obtained by those surveys alone. We train The Cannon on 323 FGK dwarf stars with asteroseismic age labels from NASA Kepler photometry and high-resolution spectra from the Apache Point Observatory Galactic Evolution Experiment (APOGEE). We apply our model to FGK dwarfs from the Kepler survey that exhibit solar-like oscillations and reproduce their reported asteroseismic-quality ages with an RMS scatter of 1.0 Gyr. We then apply our model to the sample of 3810 Kepler FGK dwarfs with APOGEE spectra to infer data-driven asteroseismic ages. We repeat this for the larger sample of 48,828 FGK dwarfs with APOGEE spectra. Our work demonstrates that data-driven methods can robustly reproduce asteroseismic ages for FGK dwarfs. These methods will be invaluable tools for extending asteroseimology measurements from upcoming surveys (e.g., PLATO) to much larger stellar samples.",
+        "published": "2026-10-20T15:11:52Z",
+        "updated": "2026-10-20T15:11:52Z",
+        "authors": [
+          "Christopher Lam",
+          "Aida Behmard",
+          "Sarah Ballard",
+          "Andrew R. Casey",
+          "Jamie N. Tayar",
+          "Jared A. Goldberg"
+        ],
+        "url": "https://arxiv.org/abs/2610.28345v1",
+        "categories": [
+          "astro-ph.SR",
+          "astro-ph.EP"
+        ],
+        "primary_category": "astro-ph.SR"
+      },
+      {
+        "arxiv_id": "2610.28352",
+        "revision": 1,
+        "title": "Photometric variability of blue supergiants: Constraints on stellar masses and evolutionary stages",
+        "abstract": "Blue supergiants (BSGs) are crucial to understanding the evolution of massive stars. Although distinguishing between pre- and post-red supergiant (RSG) phases is challenging, stellar pulsations provide valuable constraints on their masses and evolutionary status. This study analyzes TESS light curves of six BSGs with high L/M to identify periodicities. We performed theoretical modeling of the radial unstable modes to characterize the strange modes. We aim to estimate asteroseismic masses, compare them with spectroscopic and evolutionary mass estimates, and assess the evolutionary stage of the stars. We employed the Lomb-Scargle periodogram and the weighted wavelet Z-transform to address quasiperiodic behavior and time-varying signals. A linear nonadiabatic stability analysis was performed to test for radial perturbations, generating eigenfrequencies that enable stellar mass estimation. In addition, we characterized the stochastic low-frequency variability (SLFV). We derive a first guess at the asteroseismic masses. We find that HD 74371 and HD 79186 are evolving blueward following the RSG phase, while the evolutionary stage of HD 115842 cannot be uniquely determined with the available mass estimates. We also find that HD 52382 and HD 99953 are likely in the post-RSG phase; however, their low masses are difficult to reconcile with the available evolutionary models. The extreme supergiant HD 80077 shows the largest mass discrepancy in the sample, suggesting a more complex evolutionary history. The SLFV properties do not provide a clear diagnostic of the evolutionary stage. These results highlight the potential of asteroseismology as a complementary tool for constraining the evolutionary status of BSGs. However, the mass discrepancies found for some objects indicate that additional observational and theoretical efforts are required.",
+        "published": "2026-10-20T15:18:31Z",
+        "updated": "2026-10-20T15:18:31Z",
+        "authors": [
+          "A. Alberici Adam",
+          "L. S. Cidale",
+          "M. Kourniotis",
+          "W. Glatzel",
+          "J. P. Sánchez Arias",
+          "M. Ruíz Díaz",
+          "A. Christen"
+        ],
+        "url": "https://arxiv.org/abs/2610.28352v1",
+        "categories": [
+          "astro-ph.SR"
+        ],
+        "primary_category": "astro-ph.SR"
+      },
+      {
+        "arxiv_id": "2610.28374",
+        "revision": 1,
+        "title": "KMOS Spectroscopic Follow-up of 16 Star Cluster Candidates of the Sagittarius Dwarf Galaxy",
+        "abstract": "The Sagittarius (Sgr) dwarf spheroidal galaxy hosts several known globular clusters and numerous additional cluster candidates identified toward its crowded central regions. Establishing the nature of these candidates is difficult because apparent spatial and astrometric structure can arise from the underlying Sgr population. We investigate sixteen Minni stellar-cluster candidates with KMOS spectroscopy to determine whether the observed stars are compatible with Sgr and whether any candidate field shows evidence for a distinct stellar system. We analyse H-band KMOS spectra of 341 targets from the VVVX-GalCen Spectroscopic Survey, deriving radial velocities (RVs) and empirical metallicities. We compare these with an independent Sgr spectroscopic sample and use VVVX photometry and Gaia DR3 astrometry to test for localized stellar excesses relative to local control fields. Of the 341 KMOS targets, 256 (75%) have RVs within the adopted Sgr interval, and their metallicities broadly overlap the Sgr comparison population. No field shows statistically compelling kinematic evidence for a distinct system after accounting for the multiple candidates examined. Minni 329 shows the strongest spatial excess, but this is not significant after multiple-testing correction and is not accompanied by significant central concentration. The KMOS targets predominantly trace the Sgr population, but Sgr compatibility alone does not confirm the individual candidates as distinct stellar clusters. None of the sixteen fields can be confirmed as a separate stellar system with the present data, although this does not establish that the original candidates are spurious. Deeper imaging and larger spectroscopic samples are required to determine their physical nature.",
+        "published": "2026-10-20T15:30:41Z",
+        "updated": "2026-10-20T15:30:41Z",
+        "authors": [
+          "C. O. Obasi",
+          "J. G. Fernández-Trincado",
+          "D. Minniti",
+          "M. Gómez",
+          "E. R. Garro",
+          "R. K. Saito",
+          "J. Alonso-García",
+          "V. D. Ivanov",
+          "J. Corral-Santana",
+          "A. Luna",
+          "Z. Guo",
+          "R. Kurtev",
+          "J. Borissova",
+          "V. Fermiano",
+          "C. Morris",
+          "B. Dias",
+          "C. Caceres",
+          "S. Saroon",
+          "J. B. Pullen",
+          "P. I. A. Rodríguez Cuevas",
+          "M. Lad",
+          "S. Federle",
+          "I. Petralia",
+          "P. W. Lucas",
+          "D. Bhadrakumar Sindhu",
+          "P. Esteves",
+          "M. G. Navarro",
+          "T. Palma",
+          "L. D. Baravalle",
+          "E. O. Schmidt",
+          "D. Galdeano",
+          "M. V. Alonso",
+          "J. L. Nilo Castellón",
+          "A. -N. Chené",
+          "J. Osses"
+        ],
+        "url": "https://arxiv.org/abs/2610.28374v1",
+        "categories": [
+          "astro-ph.GA"
+        ],
+        "primary_category": "astro-ph.GA"
+      },
+      {
         "arxiv_id": "2610.28408",
         "revision": 1,
         "title": "Hybrid Stars with Different Amount of Quark Matter",
@@ -2107,12 +2741,12 @@
       ],
       "overrides": {}
     },
-    "snapshot_run_id": "20261021T020010076Z-1eff40d7-3673-4316-85b0-4bd633b16dee",
-    "snapshot_manifest": "runs/20261021T020010076Z-1eff40d7-3673-4316-85b0-4bd633b16dee/manifest.json"
+    "snapshot_run_id": "20261021T180009778Z-5ed41192-02da-4d01-b3f4-9f9d089898fc",
+    "snapshot_manifest": "runs/20261021T180009778Z-5ed41192-02da-4d01-b3f4-9f9d089898fc/manifest.json"
   },
   "radar": {
     "edition": {
-      "generated_at": "2026-10-21T02:00:10.076Z",
+      "generated_at": "2026-10-21T18:00:09.778Z",
       "query": "(cat:astro-ph.HE OR cat:astro-ph.GA OR cat:astro-ph.SR) AND submittedDate:[202610191800 TO 202610201800]",
       "source_url": "https://export.arxiv.org/api/query?search_query=%28cat%3Aastro-ph.HE+OR+cat%3Aastro-ph.GA+OR+cat%3Aastro-ph.SR%29+AND+submittedDate%3A%5B202610191800+TO+202610201800%5D&sortBy=submittedDate&sortOrder=descending&start=0&max_results=2000",
       "coverage_kind": "announcement_batch",
@@ -5059,6 +5693,1233 @@
         }
       },
       {
+        "arxiv_id": "2610.27949",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "ffe5b73fed76d6ff03e856b2abdaf04a0e621cf582535089b55de8f037532068",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2610.27949v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2610.27949v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "gpt-6-luna",
+          "analyzed_at": "2026-10-21T18:01:00.184Z",
+          "reason": "论文研究星际冰中固态 HNCO 的实验光谱识别及其在原恒星环境中的丰度，与高能瞬变、致密天体及相关辐射过程无实质联系。",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "摘要",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “The fitting of open JWST observational data with the laboratory reference spectra in a 10--23 K temperature range show that solid HNCO is predominantly located in the apolar layer rich in CO.”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "未进行独立同行评审或逐项复算。"
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "自动筛选未建立论文与组内 Work 的科学关系。",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        }
+      },
+      {
+        "arxiv_id": "2610.27969",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "301db13219ccfc53bab00e3d8412cf1f468e90f267f03a75c6ee9f4786ead11a",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2610.27969v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2610.27969v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "gpt-6-luna",
+          "analyzed_at": "2026-10-21T18:01:00.184Z",
+          "reason": "论文测定银河系球状星团 VVV CL001 的距离、年龄与轨道，属于银河系形成史研究，与指定的高能瞬变天体物理方向无实质联系。",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "摘要",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “We obtained a distance of d = 7.34 +- 0.46 kpc, the most precise to date. We derived an age of 13.4 +- 0.4 Gyr, indicating that VVV CL001 is one of the oldest globular clusters in the Galaxy.”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "未进行独立同行评审或逐项复算。"
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "自动筛选未建立论文与组内 Work 的科学关系。",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        }
+      },
+      {
+        "arxiv_id": "2610.27985",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "3966d0b76f4bdc793e5f126e443a6144493934f25294dde40da1adaf916d5030",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2610.27985v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2610.27985v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "gpt-6-luna",
+          "analyzed_at": "2026-10-21T18:01:00.184Z",
+          "reason": "论文利用宇宙学模拟研究银河系类星系的恒星化学序列形成，讨论并合、恒星形成淬火与气体吸积，与指定的高能瞬变研究方向无实质联系。",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "摘要",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “We use a novel suite of constrained cosmological simulations of the Local Group to investigate the formation of alpha--Fe bimodalities in stellar discs of Milky Way analogues.”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "未进行独立同行评审或逐项复算。"
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "自动筛选未建立论文与组内 Work 的科学关系。",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        }
+      },
+      {
+        "arxiv_id": "2610.28005",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "c0e03ac171efca92f5e47aaf8d4432d49aa5dc0655d72eb424ff2503ed951fed",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2610.28005v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2610.28005v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "gpt-6-luna",
+          "analyzed_at": "2026-10-21T18:01:00.185Z",
+          "reason": "论文研究引力微透镜如何改善恒星振荡模式的可见性及自转轴测量，属于恒星星震学方法，与指定的高能瞬变天体物理方向无实质联系。",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "摘要",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “We investigate whether a high-magnification microlensing event can temporarily lift this limitation by differentially magnifying the surface of an oscillating source star.”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "未进行独立同行评审或逐项复算。"
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "自动筛选未建立论文与组内 Work 的科学关系。",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        }
+      },
+      {
+        "arxiv_id": "2610.28013",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "88e40edff76d8599569947420902733a1145fe763910f7ecaa994d8df7f6b554",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2610.28013v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2610.28013v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "gpt-6-luna",
+          "analyzed_at": "2026-10-21T18:01:00.185Z",
+          "reason": "论文研究星系团内星光、恒星族群与暗物质晕结构，和指定的高能瞬变天体物理方向无实质联系。",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "摘要",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “the ICL is more metal-poor than the BCG, implying distinct progenitor pathways”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "未进行独立同行评审或逐项复算。"
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "自动筛选未建立论文与组内 Work 的科学关系。",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        }
+      },
+      {
+        "arxiv_id": "2610.28023",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "d18e83030c59355e3b684c1e344d3d1b93b1cb56a8646f732130532b6c41507b",
+        "priority": "worth_knowing",
+        "coverage": {
+          "level": "body_partial",
+          "label": "已检查正文中支撑判断的指定章节",
+          "source_version": "arXiv:2610.28023v1",
+          "inspected_sections": [
+            "Introduction",
+            "Direct Urca process facilitated by non-Fermi-liquid quantum criticality",
+            "References",
+            "Supplementary materials",
+            "Appendix A Spectral function and occupation number",
+            "Appendix B Quasiparticle residue and Kramers-Kronig relation",
+            "Appendix C Generalized Luttinger theorem",
+            "Instructions for reporting errors"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_source_package",
+              "url": "https://export.arxiv.org/src/2610.28023v1",
+              "locator": "Introduction; Direct Urca process facilitated by non-Fermi-liquid quantum criticality; References; Supplementary materials; Appendix A Spectral function and occupation number; Appendix B Quasiparticle residue and Kramers-Kronig relation; Appendix C Generalized Luttinger theorem; Instructions for reporting errors",
+              "description": "Complete, revision-matched arXiv TeX source package",
+              "sha256": "5c52869d23d4ecf50526482036f3b148fc12930cfdac314758cbda8be47b861b"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "gpt-6-luna",
+          "analyzed_at": "2026-10-21T18:02:15.470Z",
+          "title_zh": "非费米液体量子临界性促进的中子星直接 Urca 过程",
+          "reason": "该工作将强关联凝聚态中的非费米液体（NFL）量子临界理论引入致密核物质，揭示中子超流与质子超导相变量子临界点（QCP）附近费米面的抹平机制，为低质量中子星以及软 X 射线暂现源中反常快速冷却与中微子辐射提供了全新的理论解释，密切关联中子星热演化与高能致密天体观测。",
+          "result": "研究发现核子在量子临界点附近与序参量量子涨落强耦合导致准粒子残余度 $Z \\to 0$，化学势产生对数温度依赖 $\\mu_i^{\\rm NFL}(T) \\approx \\frac{h_i^2 k_{{\\rm F}i}}{2a_i\\pi^2}\\ln(T_0/T)$。该对数修正打破了常规费米液体理论下的运动学相空间限制，触发直接 Urca 过程的临界条件修正为 $k_{{\\rm F}n}/k_{{\\rm F}p} = [h_p^2 - 8\\pi^2 c\\ln(T_0/T)] / (\\frac{5}{2}h_n^2) < 2$。降温反而因 $\\ln(T_0/T)$ 放大而提高有效质子份额 $Y_p$，使低质量中子星更易开启中微子直接 Urca 反应，其重整化中微子发射率为 $Q^\\mathrm{D}_\\nu / Q^\\mathrm{D}_{\\nu 0} = [1 + \\frac{5h_n^2 M_n^\\ast}{16\\pi^2 k_{\\mathrm{Fn}}}\\ln(T_0/T)][1 + \\frac{h_p^2 M_p^\\ast}{8\\pi^2 k_{\\mathrm{Fp}}}\\ln(T_0/T)]\\Theta(k_{\\mathrm{Fe}}+k_{\\mathrm{Fp}}-k_{\\mathrm{Fn}})$，其中标度基准 $Q^\\mathrm{D}_{\\nu 0} = 4.24\\times 10^{27} (k_{\\mathrm{Fe}}/1.68\\,\\mathrm{fm}^{-1})(M_n^\\ast M_p^\\ast/M_n^2) T_9^6\\,\\mathrm{erg\\,cm^{-3}\\,s^{-1}}$。",
+          "reading_entry": "Direct Urca process facilitated by non-Fermi-liquid quantum criticality",
+          "problem": "常规费米液体理论中，核子直接 Urca（nDU）过程受费米动量三角不等式限制（$k_{\\mathrm{Fe}} + k_{\\mathrm{Fp}} \\ge k_{\\mathrm{Fn}}$），要求质子份额达到极高阈值（$Y_p \\gtrsim 0.11\\text{--}0.15$），常规认为仅在中心密度极高的大质量中子星中开启，无法自然解释低质量中子星或部分软 X 射线暂现源的快速冷却现象。",
+          "method": "利用有效场论与重整化群（RG）方法分析中子 ${}^3P_2$ 超流与质子 ${}^1S_0$ 超导量子临界涨落，结合格林函数色散关系及自能推导准粒子残余度 $Z = \\lim_{\\omega \\to 0} [1 - \\frac{\\partial}{\\partial\\omega}\\mathrm{Re}\\,\\Sigma_R(\\omega)]^{-1}$，运用广义 Luttinger 定理固定费米动量 $k_{{\\rm F}i}$，并求解重整化群流动方程下的费米速度 $v_{\\mathrm{Fi}}(l)$ 与有效化学势 $\\mu_i(l)$，进而重新评估 $\\beta$ 平衡态与中微子发射率标度。",
+          "assumptions": [
+            "相互作用不改变有效模型中的费米体积，费米动量 $k_{\\mathrm{F}i}$ 严格保持固定（广义 Luttinger 定理成立）。"
+          ],
+          "limits": [],
+          "citation_leads": [
+            "Direct Urca process facilitated by non-Fermi-liquid quantum criticality: “Conventional Fermi-liquid theories of dense nuclear matter predict that the direct Urca process requires a proton fraction above a threshold of $Y_{p}\\approx 0.11$–$0.15$, which is rarely reached in low-mass neutron stars. Here we show”",
+            "Direct Urca process facilitated by non-Fermi-liquid quantum criticality: “These logarithmic corrections are a hallmark of NFL physics, in contrast to the $\\sim T^{2}$ corrections in both a DQG and a FL.”",
+            "Appendix A Spectral function and occupation number: “The linear imaginary part implies a vanishing neutron quasiparticle residue $Z=0$ and hence NFL behavior.”",
+            "Appendix C Generalized Luttinger theorem: “This is the generalized Luttinger theorem in the present effective model: interactions do not change the Fermi volume, and the Fermi momentum $k_{\\mathrm{F}i}$ remains fixed.”"
+          ],
+          "research_progress": "打破了传统费米液体理论中 $Y_p \\sim 0.11\\text{--}0.15$ 的静态动量阈值限制，证明临界涨落引发的对数标度修正 $\\ln(T_0/T)$ 能在降温时有效促进直接 Urca 反应，削弱了此前观测到快速冷却中子星必然对应大质量致密星的推论。",
+          "figures": [
+            {
+              "url": "/arxiv-figures/2610.28023/proton_fraction_2d_4panel.png",
+              "caption": "Figure 3: Proton fraction Y p Y_{p} in the ρ − \\rho- T T plane, obtained from the NFL-corrected β \\beta -equilibrium condition Eq. ( 3 ) using the APR EOS with h p = 0.1 h_{p}=0.1 fixed. Top and bottom rows show two representative density regions, ρ ≈ ( 0.1 − CLOSE \\rho\\approx(0.1- OPEN 0.16 ) ​ fm − 3 0.16)~\\mathrm{fm}^{-3} and ρ ≈ ( 0.5 − CLOSE \\rho\\approx(0.5- OPEN 0.8 ) ​ fm − 3 0.8)~\\mathrm{fm}^{-3} , where the neutron superfluid and proton superconducting quantum critical regions overlap. Left and right columns correspond to h n = 0.005 h_{n}=0.005 and h n = 0.5 h_{n}=0.5 , respectively. The dashed black line marks the nDU threshold Y p ≈ 0.14 Y_{p}\\approx 0.14 for the APR EOS with muons included.",
+              "label": "Fig. 3",
+              "category": "theoretical",
+              "category_badge": "核心物理演化图",
+              "is_schematic": true
+            }
+          ],
+          "unresolved_checks": [
+            "未进行独立同行评审或逐项复算。",
+            "源文件中的图像未进行视觉核对。"
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "自动筛选未建立论文与组内 Work 的科学关系。",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        }
+      },
+      {
+        "arxiv_id": "2610.28034",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "f6e22c9a0bcd84ae3105eabdacf7c1fb8177f24493462dc567fa4daf51615e15",
+        "priority": "worth_knowing",
+        "coverage": {
+          "level": "body_partial",
+          "label": "已检查正文中支撑判断的指定章节",
+          "source_version": "arXiv:2610.28034v1",
+          "inspected_sections": [
+            "Introduction",
+            "Rapid Variability of Radiative Signatures from Driven Relativistic Reconnection",
+            "I Introduction",
+            "II Methodology",
+            "II.1 Numerical setup",
+            "II.2 Synchrotron emission",
+            "III Results",
+            "III.1 Lightcurve variability",
+            "III.2 Particle energy spectra",
+            "IV Conclusions",
+            "Appendix A Supplementary diagnostics",
+            "A.1 Strongly driven lightcurves",
+            "A.2 Evolution of the high-energy cutoff",
+            "A.3 Post-merger spectra",
+            "References",
+            "Instructions for reporting errors"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_source_package",
+              "url": "https://export.arxiv.org/src/2610.28034v1",
+              "locator": "Introduction; Rapid Variability of Radiative Signatures from Driven Relativistic Reconnection; I Introduction; II Methodology; II.1 Numerical setup; II.2 Synchrotron emission; III Results; III.1 Lightcurve variability; III.2 Particle energy spectra; IV Conclusions; Appendix A Supplementary diagnostics; A.1 Strongly driven lightcurves; A.2 Evolution of the high-energy cutoff; A.3 Post-merger spectra; References; Instructions for reporting errors",
+              "description": "Complete, revision-matched arXiv TeX source package",
+              "sha256": "f2514647d4672706089de7da642ab6752d8c37f2517d85c2c2f8a20735443702"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "gpt-6-luna",
+          "analyzed_at": "2026-10-21T18:02:22.488Z",
+          "title_zh": "驱动相对论重联辐射特征的快速时变性",
+          "reason": "文章利用大尺度 2.5D PIC 模拟研究驱动相对论磁重联（力游磁通量管碰撞并合）过程中的同步辐射光变与非热能谱演化，揭示了光变上升时标与黑洞/脉冲星耀变特征尺度的定标关系，对理解相对论喷流、磁星耀发及高能瞬变源的亚时标爆发机制具有重要物理参考价值。",
+          "result": "数值模拟揭示以驱动速度 $v_{\\rm push} \\approx 0.1c$ 为临界分界：当 $v_{\\rm push} \\le 0.1c$ 时，重联率为单峰且光变呈现光滑自相似逻辑斯谛增长，上升时标 $\\tau_{\\rm rise} \\approx 3\\,R/c$；当 $v_{\\rm push} \\ge 0.2c$ 时，磁通快速堆积导致两阶段阶梯跃升（压缩相 $\\tau_{\\rm rise} \\sim 1\\,R/c$，并合相 $\\sim 2\\,R/c$），总时标被约束在 $\\tau_{\\rm rise} \\sim (1-3)\\,R/c$。合并后非热粒子谱指数趋于 $p \\in [1.8, 2.4]$，对应的同步辐射谱指数满足 $s=(3-p)/2$，非热截断能量饱和至 $\\gamma_{\\rm cut} \\sim 100\\,\\sigma_{\\rm in}$。",
+          "reading_entry": "III Results",
+          "problem": "在黑洞喷流（如 M87*）与脉冲星风云（如 Crab Nebula）中，观测到的伽马射线/甚高能（VHE）耀变常呈现极短的时变上升时标，传统自发重联模型难以解释外部动力学驱动强弱如何定量影响辐射上升时标与多波段能谱特征。",
+          "method": "采用 2.5D 相对论 PIC 代码 TRISTAN-MP v2，在 $L_x=L_y=4R$（$14336\\times 14336$ 网格，分辨尺度 $R/d_e=896$）的计算域内初始化两个 Lundquist 型力游磁通量管（初始总磁化度 $\\sigma_0=60$，平面内磁化度 $\\sigma_{\\rm in}=10$），通过边界施加 $\\pm v_{\\rm push}\\hat{\\boldsymbol{y}}$（$v_{\\rm push}/c \\in [0.01, 0.5]$）驱动并合；基于粒子局部有效磁场 $\\tilde{B}_\\perp=\\sqrt{(\\boldsymbol{E}+\\boldsymbol{\\beta}\\times\\boldsymbol{B})^2-(\\boldsymbol{\\beta}\\cdot\\boldsymbol{E})^2}$ 与临界频率 $\\nu_c$ 积分计算同步辐射光变 $L(t)$ 与能谱 $\\nu F_\\nu$。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "II.1 Numerical setup: “We initialize two identical cylindrical Lundquist-type force-free flux tubes in a square domain of size $L_{x}=L_{y}=4R$ and $14336\\times 14336$ cells ($R/d_{e}=896$)”",
+            "III.2 Particle energy spectra: “We find a nonthermal power-law index $p$ in the range $1.8$–$2.4$ (including also all other $v_{\\rm push}$ cases, see Appendix”"
+          ],
+          "research_progress": "明确给出了驱动相对论重联辐射光变的普适特征时标 $\\tau_{\\rm rise} \\sim (1-3)\\,R/c$，阐明了强弱驱动下光变曲线从单调光滑上升到两阶段阶梯爆发的相变行为，并证实后并合态饱和高能谱指数 $p \\approx 1.8-2.4$ 具有对驱动速度的稳健弱依赖性。",
+          "figures": [
+            {
+              "url": "/arxiv-figures/2610.28034/002c_case.png",
+              "caption": "Figure 1: Evolution of a single run at different stages for v push = 0.02 ​ c v_{\\rm push}=0.02c : lightcurve temporal evolution (top row); spatial distribution of the out-of-plane current density J z J_{z} with selected magnetic field lines (second row); spatial distribution of the total synchrotron power (third row); zoom in on the current-sheet area for the total synchrotron power spatial distribution of the highest energy particle with Lorentz factor γ &gt; σ in \\gamma&gt;\\sigma_{\\rm in} (bottom row).",
+              "label": "Fig. 1",
+              "category": "theoretical",
+              "category_badge": "核心物理演化图",
+              "is_schematic": true
+            },
+            {
+              "url": "/arxiv-figures/2610.28034/03c_case.png",
+              "caption": "Figure 2: Evolution of a single run at different stages for v push = 0.3 ​ c v_{\\rm push}=0.3c : lightcurve temporal evolution (first row); spatial distribution of the out-of-plane current density J z J_{z} with selected magnetic field lines (second row); spatial distribution of the total synchrotron power (third row); zoom in on the current-sheet area for the total synchrotron power spatial distribution of the highest energy particle with Lorentz factor γ &gt; σ i ​ n \\gamma&gt;\\sigma_{in} (last row).",
+              "label": "Fig. 2",
+              "category": "theoretical",
+              "category_badge": "核心物理演化图",
+              "is_schematic": true
+            }
+          ],
+          "unresolved_checks": [
+            "未进行独立同行评审或逐项复算。",
+            "源文件中的图像未进行视觉核对。"
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "自动筛选未建立论文与组内 Work 的科学关系。",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        }
+      },
+      {
+        "arxiv_id": "2610.28049",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "3e31df5e857f322f320b5b80a48e5108a3fa370b232a2ddf360c6755fd4f00f0",
+        "priority": "worth_knowing",
+        "coverage": {
+          "level": "body_partial",
+          "label": "已检查正文中支撑判断的指定章节",
+          "source_version": "arXiv:2610.28049v1",
+          "inspected_sections": [
+            "1 Introduction",
+            "2 Methodology",
+            "3 Results",
+            "4 Discussion",
+            "5 Conclusions",
+            "Appendix A Calculation of the rp-process ashes",
+            "Appendix B Dependency on the size of the network",
+            "Appendix C Superburst energetic properties",
+            "Appendix D Distribution of superburst ashes at $dotMmathrmhighpenalty $",
+            "Appendix E Net luminosity",
+            "Appendix F Comparison of $(p,gamma)$ reaction rates over 56Fe, 60Ni, 64Ni, 64Zn and 68Ge."
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_source_package",
+              "url": "https://export.arxiv.org/src/2610.28049v1",
+              "locator": "1 Introduction; 2 Methodology; 3 Results; 4 Discussion; 5 Conclusions; Appendix A Calculation of the rp-process ashes; Appendix B Dependency on the size of the network; Appendix C Superburst energetic properties; Appendix D Distribution of superburst ashes at $dotMmathrmhighpenalty $; Appendix E Net luminosity; Appendix F Comparison of $(p,gamma)$ reaction rates over 56Fe, 60Ni, 64Ni, 64Zn and 68Ge.",
+              "description": "Complete, revision-matched arXiv TeX source package",
+              "sha256": "8243e9bb2dff22df07335fc956e27398341c59f07fa2d60abbbe3629e3a4604b"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "gpt-6-luna",
+          "analyzed_at": "2026-10-21T18:02:18.978Z",
+          "title_zh": "超级爆发作为 rp-过程灰烬光致蜕变场所的研究——利用 MESA 进行超级爆发数值模拟（二）",
+          "reason": "该工作聚焦低质量X射线双星中子星表面的超级爆发（superbursts，致密天体表面由碳燃烧驱动的高能热核瞬变现象），利用 MESA 进行多区流体和扩展核反应网络计算，深入研究了 rp-过程灰烬的光致蜕变及其粒子再捕获反应对超级爆发点火条件、辐射光度与核合成的影响，属于致密天体高能瞬变辐射机制研究。",
+          "result": "通过多区 MESA 模拟发现：(1) 当吸积物质包含真实的 rp-过程灰烬时，仅需 $X({}^{12}\\mathrm{C}) = 10\\%$ 即可点火并驱动超级爆发，其峰值光度与总爆发能量（在中等吸积率下 $L_{\\mathrm{max}} = 6.51\\times 10^{37}\\,\\mathrm{erg\\,s^{-1}}$，$E_{\\mathrm{sb}} = 2.04\\times 10^{42}\\,\\mathrm{erg}$）与传统 $20\\%\\,{}^{12}\\mathrm{C} + 80\\%\\,{}^{56}\\mathrm{Fe}$ 的标准配比相当；而单纯 $10\\%\\,{}^{12}\\mathrm{C} + 90\\%\\,{}^{56}\\mathrm{Fe}$ 的光度则显著偏低；(2) 所有模拟的点火柱深均为 $y_{\\mathrm{ignition}}\\approx 10^{11}\\,\\mathrm{g\\,cm^{-2}}$，比经典双参数拟合值低约一个量级；(3) 超级爆发灰烬除了 ${}^{28}\\mathrm{Si}$ 和 ${}^{56}\\mathrm{Fe}$ 主峰外，重核光致蜕变促成了在 ${}^{88}\\mathrm{Sr}$ 处的第三个丰度峰；(4) 光致蜕变释放的中子、质子与 $\\alpha$ 粒子在爆发中后期通过捕获反应（如 ${}^{64}\\mathrm{Ni}(p,\\gamma){}^{65}\\mathrm{Cu}$ 和 ${}^{20}\\mathrm{Ne}(\\alpha,\\gamma){}^{24}\\mathrm{Mg}$）净释放能量；碳点火的保守质量分数下限确定为 $X({}^{12}\\mathrm{C}) > 7\\%$。",
+          "reading_entry": "4 Discussion",
+          "problem": "以往超级爆发模型通常采用 $20\\%\\,{}^{12}\\mathrm{C}$ 与 $80\\%\\,{}^{56}\\mathrm{Fe}$ 的简化燃料假定，或仅依赖无法自洽解析多区动力学演化与加热/冷却相的单区模型。在真实吸积中子星壳层中，常规 X 射线暴产生的丰富 rp-过程灰烬才是超级爆发的真实背景燃料，需明确其光致蜕变与重核反应如何改写超级爆发的点火碳丰度门槛与爆发能量。",
+          "method": "采用一维恒星演化流体代码 MESA（v.24.08.1），对比了包含 190 个核素的 Approx_A56 网络与包含 636 个核素（$A=1$ 至 $A=120$）的 BXL1 大型网络，设定吸积率分别为 $\\dot{M}_{\\mathrm{moderate}}=5.88\\times 10^{-9}\\,M_{\\odot}\\,\\mathrm{yr}^{-1}$（基底光度 $L_b=25L_\\odot$）和 $\\dot{M}_{\\mathrm{high}}=2\\times 10^{-8}\\,M_{\\odot}\\,\\mathrm{yr}^{-1}$（$L_b=50L_\\odot$）。定义净核反应光度 $L_{\\mathrm{nuc,net}} = L_d - L_i$（其中 $L_d = \\int dm\\,\\varepsilon_d$，$L_i = \\int dm\\,\\varepsilon_i$ 分别为正反向反应光度），系统追踪不同燃料组分及各核反应通道的时变能量贡献。",
+          "assumptions": [
+            "采用标准 CF88 的碳聚变反应率 (Caughlan & Fowler 1988)"
+          ],
+          "limits": [
+            "测试的吸积率和基底光度组合有限，仅设定了一个保守的碳丰度点火下界 $X(^{12}\\mathrm{C})>7\\%$"
+          ],
+          "citation_leads": [
+            "1 Introduction: “thermonuclear explosions over the surface of neutron stars, driven by unstable”",
+            "1 Introduction: “Since the rp-process ashes constitute the actual fuel for superbursts, they should be considered as initial conditions”",
+            "2 Methodology: “We perform our numerical simulations using the public code MESA v.24.08.1”",
+            "2 Methodology: “we adopt the standard CF88 rate”",
+            "3 Results: “Similarly to KH11 and NC26, we find $y_{\\mathrm{ignition}}\\approx 10^{11}$ g cm-2 for all our superburst simulations.”",
+            "4 Discussion: “conservative lower bound for the amount of accreted carbon required for triggering superbursts at $X(^{12}\\mathrm{C})>7\\%$.”",
+            "5 Conclusions: “can be reduced from the previously considered $20\\%$ to $10\\%$. We further find a conservative lower bound of $\\sim 7\\%$”"
+          ],
+          "research_progress": "揭示了 rp-过程灰烬在超级爆发中不仅充当光致蜕变吸热体，其释放的粒子发生再捕获反应可在中后期释放关键能量，将传统认为维持超级爆发所需的碳丰度阈值从 $20\\%$ 成功降至 $10\\%$（保守下限为 $7\\%$），并证明了 ${}^{20}\\mathrm{Ne}$ 及 $A=60, 64, 68$ 等高质量数核素对爆发光变与能量预算具有决定性影响。",
+          "figures": [],
+          "unresolved_checks": [
+            "未进行独立同行评审或逐项复算。",
+            "源文件中的图像未进行视觉核对。"
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "自动筛选未建立论文与组内 Work 的科学关系。",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        }
+      },
+      {
+        "arxiv_id": "2610.28068",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "60c7f70779821cc20024ac80238c2ab981c4a643a39efdff08b7fe010b44028e",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2610.28068v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2610.28068v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "gpt-6-luna",
+          "analyzed_at": "2026-10-21T18:01:00.185Z",
+          "reason": "研究聚焦于致密恒星系统中暗物质湮灭产生的逆康普顿辐射及湮灭截面限制，与指定的高能瞬变天体物理方向没有实质联系。",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "摘要",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “we derive new constraints on the DM annihilation cross section”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "未进行独立同行评审或逐项复算。"
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "自动筛选未建立论文与组内 Work 的科学关系。",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        }
+      },
+      {
+        "arxiv_id": "2610.28073",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "3a960658a1b2076b0f36ef78f55a8298ee2980a1d69533437633795a6000c0a0",
+        "priority": "worth_knowing",
+        "coverage": {
+          "level": "body_partial",
+          "label": "已检查正文中支撑判断的指定章节",
+          "source_version": "arXiv:2610.28073v1",
+          "inspected_sections": [
+            "Introduction",
+            "Pulsar J1909+0749 and Supernova Remnant G42.1-0.2",
+            "1 Introduction",
+            "2 Data and methods",
+            "2.1 Radio continuum data",
+            "2.2 Flux density and spectral index",
+            "3 Identification of G42.1-0.2 as a SNR",
+            "3.1 Radio emission from SNRs",
+            "3.2 The shell: G42.1-0.2",
+            "4 PSR J1909+0749",
+            "4.1 Possible Pulsar Wind Nebula (PWN)",
+            "4.2 Implications of the SNR-PSR association",
+            "4.2.1 Proper Motion of the Pulsar",
+            "4.2.2 Proper Motion Direction of the Pulsar via Polarimetry",
+            "5 Summary",
+            "References",
+            "Appendix A The centre of the SNR G42.1-0.2",
+            "Appendix B Surface magnetic field",
+            "Appendix C Pulsar Transverse Velocities",
+            "Instructions for reporting errors"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_source_package",
+              "url": "https://export.arxiv.org/src/2610.28073v1",
+              "locator": "Introduction; Pulsar J1909+0749 and Supernova Remnant G42.1-0.2; 1 Introduction; 2 Data and methods; 2.1 Radio continuum data; 2.2 Flux density and spectral index; 3 Identification of G42.1-0.2 as a SNR; 3.1 Radio emission from SNRs; 3.2 The shell: G42.1-0.2; 4 PSR J1909+0749; 4.1 Possible Pulsar Wind Nebula (PWN); 4.2 Implications of the SNR-PSR association; 4.2.1 Proper Motion of the Pulsar; 4.2.2 Proper Motion Direction of the Pulsar via Polarimetry; 5 Summary; References; Appendix A The centre of the SNR G42.1-0.2; Appendix B Surface magnetic field; Appendix C Pulsar Transverse Velocities; Instructions for reporting errors",
+              "description": "Complete, revision-matched arXiv TeX source package",
+              "sha256": "dec3cf2ab088f3907f2246ed398a434e56907cd3ded5c4241837a11273280412"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "gpt-6-luna",
+          "analyzed_at": "2026-10-21T18:03:48.193Z",
+          "title_zh": "脉冲星 PSR J1909+0749 与超新星遗迹 G42.1-0.2：脉冲星穿出其关联超新星遗迹壳层的实例",
+          "reason": "该工作证认了一个极其罕见的脉冲星逃出母超新星遗迹（SNR）壳层的系统，通过射电非热能谱（$\\alpha = -0.36 \\pm 0.08$）确认新 SNR G42.1-0.2，并揭示了 PSR J1909+0749 具有高达 $v_{\\perp} \\sim 1460\\,\\mathrm{km\\,s^{-1}}$ 的极端横向切向速度，为大质量恒星超新星爆发中心引擎的原初踢力（kick）机制及致密天体与星际环境相互作用提供了关键观测样本。",
+          "result": "测得 SNR 壳层 G42.1-0.2 在 155 MHz 至 5.85 GHz 的能谱指数为 $\\alpha = -0.36 \\pm 0.08$，证实其非热同步辐射本质；脉冲星伴随彗星状脉冲星风云（PWN，$\\alpha = -0.6 \\pm 0.4$）及其延展尾迹（$\\alpha = -0.8 \\pm 0.5$），形态直接指向遗迹几何中心（$l=42.097^\\circ\\pm 0.005^\\circ$, $b=-0.229^\\circ\\pm 0.019^\\circ$）。若两者同源爆发且脉冲星处于特征年龄 $\\tau_c = P/(2\\dot{P}) = 24.7\\,\\mathrm{kyr}$，在 NE2025 模型距离 $d = 9.7\\,\\mathrm{kpc}$ 下，角距离 $13.1^\\prime$ 对应投影物理间距 $37\\,\\mathrm{pc}$，推导出脉冲星横向投影速度高达 $v_\\perp \\sim 1460\\,\\mathrm{km\\,s^{-1}}$，成为已知银河系横向速度最快的孤立脉冲星之一；遗迹在 Sedov-Taylor 阶段要求环境数密度 $n \\sim 1.5\\,\\mathrm{cm^{-3}}$。",
+          "reading_entry": "3.2 The shell: G42.1-0.2",
+          "problem": "在银河系中，脉冲星成功穿透并逃离其母超新星遗迹壳层的系统极其罕见（已知仅有 The Mouse 等少数例子）。如何从多波段连续谱与偏振观测上确凿证认弥散射电壳层 G42.1-0.2 的超新星遗迹性质，并检验脉冲星 PSR J1909+0749 及其风云（PWN）与该遗迹在几何运动学和自转动力学上的物理同源性，是本研究要解决的核心问题。",
+          "method": "利用 MeerKAT (SMGPS)、GLEAM、THOR+VGPS 及 GLOSTAR 多波段射电巡天图像，结合局部二维背景扣除技术测定积分流量密度，利用幂律模型 $S_\\nu \\propto \\nu^\\alpha$ 进行蒙特卡洛拟合以提取能谱指数 $\\alpha$；利用 Bootstrap 椭圆拟合算法计算遗迹中心坐标；结合 MeerKAT 射电偏振数据，经旋转量 $\\mathrm{RM} = -241 \\pm 2\\,\\mathrm{rad\\,m^{-2}}$ 去除法拉第旋转后，采用双磁极联合拟合的旋转矢量模型（RVM）约束脉冲星自转轴投影位置角（$\\mathrm{PPA} = 8.9^\\circ \\pm 6.3^\\circ$），以检验自转轴与自行速度矢量的空间对齐。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "3.2 The shell: G42.1-0.2: “We calculated the spectral index to be $-0.36\\pm 0.08$, which is evidence for nonthermal synchrotron emission. Furthermore, in the $8\\penalty\\ \\micro$m GLIMPSE (Galactic Legacy Infrared Mid-Plane Survey Extraordinaire) and the $24\\penalty\\”",
+            "4.2.2 Proper Motion Direction of the Pulsar via Polarimetry: “Because the pulsar also emits a strongly polarised interpulse from its opposite magnetic pole, the fit is anchored at both poles simultaneously;”",
+            "Appendix A The centre of the SNR G42.1-0.2: “The mean and the standard deviation of these 4000 values of Galactic coordinates are taken as the centre of the SNR and its uncertainty: $l=42.097\\degree\\pm 0.005\\degree$, $b=-0.229\\degree\\pm 0.019\\degree$.”"
+          ],
+          "research_progress": "新发现并确证了一个处于 Sedov-Taylor 阶段的银河系超新星遗迹 G42.1-0.2，并证认脉冲星 PSR J1909+0749 伴有明确指向遗迹中心的尾随彗星状 PWN（昵称“Speedy”）；通过偏振 RVM 双磁极反演与自行几何一致性，确证脉冲星以高达 $v_{\\perp} \\sim 1460\\,\\mathrm{km\\,s^{-1}}$ 的极端切向速度穿出了 SNR 壳层，为极端核心坍缩超新星的不对称踢力提供了重要样本。",
+          "figures": [
+            {
+              "url": "/arxiv-figures/2610.28073/minimouse2.png",
+              "caption": "Figure 1 : Continuum emission from the pulsar PSR J1909+0749 ( Nice et al., 2013 ) and its surroundings, as seen in the SMGPS (top), the THOR+VGPS (bottom left), the GLOSTAR VLA-D+Effelsberg (bottom middle), and the 200 MHz GLEAM (bottom right). In all the panels, PSR J1909+0749 and the new SNR G42.1-0.2 are marked with a white cross and a white dashed circle, respectively. In the top panel, a few additional objects are marked: the known SNR G42.0-0.1 ( Kaplan et al., 2002 ) in black, the SNR candidate G41.95-0.18 ( Anderson et al., 2017 ) in green, and the H II regions from the WISE catalog ( Anderson et al., 2014 ) in magenta.",
+              "label": "Fig. 1",
+              "category": "observational",
+              "category_badge": "核心观测结果",
+              "is_schematic": false
+            },
+            {
+              "url": "/arxiv-figures/2610.28073/minimouse2-points.png",
+              "caption": "Figure 4 : SMGPS image of the SNR G42.1-0.2 and the points used to fit ellipses and estimate the centre of the SNR (marked with gray circles outlined by dark edges). The white ellipse represents the position of the centre of the SNR estimated using bootstrapping, with its width and height representing the 1 ​ σ 1\\sigma -uncertainties. The pulsar PSR J1909+0749 is marked with a white cross. The areas used to calculate the spectral indices of the possible PWN and the cometary tail are marked by a black circle and a black polygon, respectively.",
+              "label": "Fig. 4",
+              "category": "observational",
+              "category_badge": "核心观测结果",
+              "is_schematic": false
+            }
+          ],
+          "unresolved_checks": [
+            "未进行独立同行评审或逐项复算。",
+            "源文件中的图像未进行视觉核对。"
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "自动筛选未建立论文与组内 Work 的科学关系。",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        }
+      },
+      {
+        "arxiv_id": "2610.28123",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "00988e0d3bf98db86f9adbe7213944c619453fcbd8870044646bd9472a06f527",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2610.28123v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2610.28123v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "gpt-6-luna",
+          "analyzed_at": "2026-10-21T18:01:00.185Z",
+          "reason": "论文考察太阳日冕模型对日球层扇区边界的映射能力，主题属于日球物理与空间天气，与指定的高能瞬变天体物理方向没有实质联系。",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "摘要",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “we evaluate the capability of a static Potential Field Source Surface (PFSS; $R_{ss}=2.5R_\\odot$) coronal model”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "未进行独立同行评审或逐项复算。"
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "自动筛选未建立论文与组内 Work 的科学关系。",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        }
+      },
+      {
+        "arxiv_id": "2610.28139",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "a2abdb6468047a3b034ea1fbf6f70f7920578c548088ec048e4dd1200755e8a5",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2610.28139v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2610.28139v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "gpt-6-luna",
+          "analyzed_at": "2026-10-21T18:01:00.186Z",
+          "reason": "论文建立并分析太阳风扇区边界穿越目录，聚焦日球层结构及空间天气，不涉及指定的高能瞬变天体物理研究方向。",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "摘要",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “We present the \\textsc{SBCross} catalog, an automated, publicly available database containing 1,076 SBC events”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "未进行独立同行评审或逐项复算。"
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "自动筛选未建立论文与组内 Work 的科学关系。",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        }
+      },
+      {
+        "arxiv_id": "2610.28140",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "c6284534bb2467574b9bd7c755ea5b3c823261f2bba8f6a69521ae4c12639dfa",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2610.28140v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2610.28140v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "gpt-6-luna",
+          "analyzed_at": "2026-10-21T18:01:00.186Z",
+          "reason": "论文研究辐射状态方程下奇异 TOV firehole 的径向稳定性，未涉及所列瞬变源、辐射观测或相关环境问题，与目标方向无实质联系。",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "摘要",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “Tolman--Oppenheimer--Volkoff fireholes are therefore radially unstable unless confined within approximately their firehole radius.”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "未进行独立同行评审或逐项复算。"
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "自动筛选未建立论文与组内 Work 的科学关系。",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        }
+      },
+      {
+        "arxiv_id": "2610.28182",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "cfdda1004779da1158a09d742b408ebdd31d79c39fa0d2e383212ea1b1d8f8de",
+        "priority": "worth_knowing",
+        "coverage": {
+          "level": "body_partial",
+          "label": "已检查正文中支撑判断的指定章节",
+          "source_version": "arXiv:2610.28182v1",
+          "inspected_sections": [
+            "2.2 Particle acceleration",
+            "2.5.5 Total effective optical depth",
+            "4 Multimessenger emission of AT2019dsg, AT2019ehz and ASASSN–14li",
+            "5.1 Accelerated-proton parameter phase space",
+            "5.2 Comparison between the sources",
+            "B.1.1 High-energy spectral energy distributions",
+            "B.3.2 Muon-neutrino predictions",
+            "Introduction",
+            "Hidden engines in tidal disruption events: multimessenger signatures in a lepto-hadronic framework",
+            "1 Introduction",
+            "2 Model",
+            "2.1 Geometry and dynamical assumptions",
+            "2.3 Radiative processes",
+            "2.4 Illustrative parameter dependence",
+            "2.5 Photon attenuation",
+            "2.5.1 Photon-photon pair production",
+            "2.5.2 Compton scattering",
+            "2.5.3 Bethe–Heitler pair production",
+            "2.5.4 Photoelectric absorption",
+            "3 Multiwavelength observations",
+            "3.1 Data preparation",
+            "3.2 Different observational regimes",
+            "4.1 AT2019dsg",
+            "4.2 AT2019ehz",
+            "4.3 ASASSN–14li",
+            "4.4 Spectral energy distributions",
+            "4.5 Muon-neutrino predictions",
+            "5 Discussion",
+            "5.3 $gamma$-ray and neutrino detections",
+            "6 Summary and conclusions",
+            "References",
+            "Appendix A Detailed radiative-component decompositions",
+            "A.1 AT2019dsg",
+            "A.2 AT2019ehz",
+            "A.3 ASASSN–14li",
+            "Appendix B Extended analysis of all models of AT2019dsg, AT2019ehz and ASASSN–14li",
+            "B.1 AT2019dsg",
+            "B.1.2 Muon-neutrino predictions",
+            "B.1.3 Particle distributions and maximum energies in the reference model",
+            "B.2 AT2019ehz",
+            "B.2.1 High-energy spectral energy distributions of AT2019ehz",
+            "B.2.2 Muon-neutrino predictions",
+            "B.3 ASASSN–14li",
+            "B.3.1 High-energy spectral energy distributions",
+            "Instructions for reporting errors"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_source_package",
+              "url": "https://export.arxiv.org/src/2610.28182v1",
+              "locator": "2.2 Particle acceleration; 2.5.5 Total effective optical depth; 4 Multimessenger emission of AT2019dsg, AT2019ehz and ASASSN–14li; 5.1 Accelerated-proton parameter phase space; 5.2 Comparison between the sources; B.1.1 High-energy spectral energy distributions; B.3.2 Muon-neutrino predictions; Introduction; Hidden engines in tidal disruption events: multimessenger signatures in a lepto-hadronic framework; 1 Introduction; 2 Model; 2.1 Geometry and dynamical assumptions; 2.3 Radiative processes; 2.4 Illustrative parameter dependence; 2.5 Photon attenuation; 2.5.1 Photon-photon pair production; 2.5.2 Compton scattering; 2.5.3 Bethe–Heitler pair production; 2.5.4 Photoelectric absorption; 3 Multiwavelength observations; 3.1 Data preparation; 3.2 Different observational regimes; 4.1 AT2019dsg; 4.2 AT2019ehz; 4.3 ASASSN–14li; 4.4 Spectral energy distributions; 4.5 Muon-neutrino predictions; 5 Discussion; 5.3 $gamma$-ray and neutrino detections; 6 Summary and conclusions; References; Appendix A Detailed radiative-component decompositions; A.1 AT2019dsg; A.2 AT2019ehz; A.3 ASASSN–14li; Appendix B Extended analysis of all models of AT2019dsg, AT2019ehz and ASASSN–14li; B.1 AT2019dsg; B.1.2 Muon-neutrino predictions; B.1.3 Particle distributions and maximum energies in the reference model; B.2 AT2019ehz; B.2.1 High-energy spectral energy distributions of AT2019ehz; B.2.2 Muon-neutrino predictions; B.3 ASASSN–14li; B.3.1 High-energy spectral energy distributions; Instructions for reporting errors",
+              "description": "Complete, revision-matched arXiv TeX source package",
+              "sha256": "fede4b833b9fa9233349b7d947a5a0c3b9a76cc6a3f8413d31d9c15a193dc272"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "gpt-6-luna",
+          "analyzed_at": "2026-10-21T18:04:53.293Z",
+          "title_zh": "潮汐瓦解事件中的隐藏引擎：轻-强子框架下的多信使信号特征",
+          "reason": "该工作构建了非喷流/隐藏引擎潮汐瓦解事件（TDE）的多区稳态轻-强子（lepto-hadronic）辐射与光学厚度模型，系统澄清了光致介子产生中微子与高能光子衰减级联之间的物理权衡，对致密天体多信使及中微子源证认具有直接参考价值。",
+          "result": "通过对 AT2019dsg、AT2019ehz 和 ASASSN–14li 的多信使建模发现：在致密靶光子场环境下，光介子产生反应 $p\\gamma \\to \\pi^0 / \\pi^{\\pm}$ 有效产生多 TeV 至 PeV 能段中微子（AT2019dsg 基准模型预期 IceCube 与 KM3NeT 事例数分别达 0.31 和 0.36），但伴生的高能光子因双光子吸收对产生（阈值满足 $E_{\\gamma}\\epsilon(1-\\cos\\theta) \\ge 2m_e^2 c^4$，对头碰撞阈值 $E_{\\gamma,\\rm thr} \\simeq 260(\\epsilon / 1\\,\\mathrm{keV})^{-1}\\,\\mathrm{MeV}$）而在 GeV–TeV 波段被高度不透明环境强烈遮蔽并级联重分配至 MeV 波段；源的能谱形态主要由非热质子谱指数 $p_p$、注入下限 $\\gamma_{p,\\rm min}$ 以及靶光子场环境的不透明度所调控。",
+          "reading_entry": "5.2 Comparison between the sources",
+          "problem": "部分光学选 TDE 与高能中微子可能关联，但缺乏伴随的 GeV–TeV 伽马射线探测；如何定量评估致密吸积盘、日冕及光学/UV/X射线靶场对强子级联辐射的吸收遮挡，并揭示中微子产生与伽马射线逃逸之间的相互制约机制？",
+          "method": "采用包含初级电子与质子的非热粒子注入模型 $dN_i/dE_i = N_{0,i} E_i^{-p_i} \\exp(-E_i/E_{i,\\mathrm{max}})$；电子最大能量由加速与同步冷却平衡决定 $t_{\\mathrm{acc}}^{-1} \\simeq t_{\\mathrm{syn}}^{-1} = \\sigma_T B^2 E_{e,\\mathrm{max}}\\beta_e^2 / (6\\pi m_e^2 c^3)$，质子最大能量由加速与逃逸时标竞争决定 $t_{\\mathrm{acc}}^{-1} \\simeq t_{\\mathrm{esc}}^{-1} = \\beta_p c / R$；并综合计算光子-光子对产生 $\\tau_{\\gamma\\gamma}$、Klein-Nishina 散射 $\\tau_{\\rm KN}$、Bethe–Heitler 对产生 $\\tau_{\\rm BH}$ 以及光电吸收 $\\tau_{\\rm pe}$ 构成的总有效光学深度 $\\tau_{\\rm eff}$，进而导出逃逸辐射通量 $F_{\\nu,\\mathrm{obs}} = F_{\\nu,\\mathrm{int}} \\exp(-\\tau_{\\mathrm{eff}})$ 及 KM3NeT/ARCA 预期的中微子通量 $N_\\nu = \\Delta t \\sum_\\alpha \\int dE_\\nu A_{\\mathrm{eff},\\alpha} \\phi_{\\nu_\\alpha}$。",
+          "assumptions": [
+            "模型假定源处于准稳态计算历元平均发射态，微观粒子加速、冷却与逃逸时标远短于宏观光变演化时间窗口。"
+          ],
+          "limits": [
+            "在 ASASSN–14li 等具有强光学/UV 及 X 射线辐射场的源中，GeV 以上乃至 TeV 光子极易被强吸收并引发级联，导致高能中微子明亮的模型在 TeV/CTAO 波段表现暗弱。"
+          ],
+          "citation_leads": [
+            "2.2 Particle acceleration: “The maximum particle energy is calculated by comparing the acceleration time-scale with the relevant cooling and escape time-scales.”",
+            "2.5.5 Total effective optical depth: “The relative importance of these terms depends on photon energy, source geometry, viewing angle, coronal density, and the amount of cold gas along the line of sight. The same physical ingredients that enhance neutrino production, namely”",
+            "4 Multimessenger emission of AT2019dsg, AT2019ehz and ASASSN–14li: “Our models calculate epoch-averaged emission states rather than time-dependent light curves. Microscopic particle timescales (acceleration, cooling, escape) are far shorter than the light-curve evolution windows”",
+            "5.1 Accelerated-proton parameter phase space: “across the three sources, the most important particle parameters are those that define the shape of the non-thermal proton distribution.”",
+            "5.2 Comparison between the sources: “Thus, compared to AT2019dsg, AT2019ehz more clearly separates two physical routes to detectability: a photon-rich route that enhances neutrino production, and a transparent route that favors escaping GeV-to-TeV photons.”",
+            "B.1.1 High-energy spectral energy distributions: “Model B demonstrates that, for a softer proton spectrum with $p_{\\rm p}=2$, a much larger $\\gamma_{p,\\rm min}$ is needed to concentrate the non-thermal proton power near energies relevant for pion production.”",
+            "B.3.2 Muon-neutrino predictions: “Thus, the bright optical/UV and X-ray radiation fields in ASASSN–14li can absorb photons from the GeV range upward, and TeV photons are well above the threshold for interactions with the X-ray field.”"
+          ],
+          "research_progress": "明确了非热质子分布参数（尤其是 $p_p$ 与 $\\gamma_{p,\\rm min}$）对产生介子的主导作用：对于较软质子谱（如 $p_p=2$），必须显著增大 $\\gamma_{p,\\rm min}$ 才能将能量集中在介子产生阈值之上；确立了 TDE 的两条物理探测路径分化：高光子密度的中微子增强路径与高透明度的 GeV–TeV 光子逃逸路径。",
+          "figures": [
+            {
+              "url": "/arxiv-figures/2610.28182/AT2019dsg_260527155900.png",
+              "caption": "Figure 12: Spectral energy distributions of reference model A for AT2019dsg (upper), AT2019ehz (middle) and ASASSN–14li (lower panel). The thick black line shows the total model emission after accounting for absorption. The thermal disc, black-body, and coronal components are shown by dashed grey, dash-dotted red, and dotted grey curves, respectively. Hadronic γ \\gamma -ray components are shown by red dashed for synchrotron from secondary electrons from π ± \\pi^{\\pm} decay, and purple dashed for p ​ γ → π 0 p\\gamma\\rightarrow\\pi^{0} . For leptonic components, the dashed green and blue curves show the synchrotron and inverse-Compton emission of primary electrons, respectively. The thin grey curves indicate the COSI, Fermi/LAT, and CTAO reference sensitivities.",
+              "label": "Fig. 12",
+              "category": "observational",
+              "category_badge": "观测总体曲线/能谱",
+              "is_schematic": false
+            },
+            {
+              "url": "/arxiv-figures/2610.28182/AT2019dsg_260527160336_neutrinos.png",
+              "caption": "Figure 18: Muon-neutrino plus antineutrino spectra predicted for Models B–D of AT2019dsg. The black curves show E ν μ 2 ​ ϕ ν μ + ν ¯ μ E_{\\nu_{\\mu}}^{2}\\phi_{\\nu_{\\mu}+\\bar{\\nu}_{\\mu}} , and the grey dash-dotted curves show the nominal ten-year KM3NeT/ARCA230 point-source sensitivity ( Aiello and others, 2024 ) . Model E is not shown because its neutrino flux is negligible on this scale.",
+              "label": "Fig. 18",
+              "category": "observational",
+              "category_badge": "观测总体曲线/能谱",
+              "is_schematic": false
+            }
+          ],
+          "unresolved_checks": [
+            "未进行独立同行评审或逐项复算。",
+            "源文件中的图像未进行视觉核对。"
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "自动筛选未建立论文与组内 Work 的科学关系。",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        }
+      },
+      {
+        "arxiv_id": "2610.28220",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "2fe85b12318b14849c9e0c7a0832438d2b349603c9289a4d5a6f80f2aa6eb123",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2610.28220v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2610.28220v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "gpt-6-luna",
+          "analyzed_at": "2026-10-21T18:01:00.186Z",
+          "reason": "论文研究宽双星的牛顿轨道解及低加速度下的引力异常检验，主题与高能瞬变天体物理及其所列研究方向无实质联系。",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "摘要",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “Newtonian dynamics describe well our sample.”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "未进行独立同行评审或逐项复算。"
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "自动筛选未建立论文与组内 Work 的科学关系。",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        }
+      },
+      {
+        "arxiv_id": "2610.28274",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "49a134c8495e07482494528c2e1e6ca75781e338e143ffac521a70be52a0928e",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2610.28274v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2610.28274v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "gpt-6-luna",
+          "analyzed_at": "2026-10-21T18:01:00.186Z",
+          "reason": "论文属于太阳与日球物理观测方向，与高能瞬变天体物理及致密天体高能观测无实质联系。",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "摘要",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “(Abridged abstract): A key component of the widely used Wang-Sheeley-Arge model is the tracing of ma”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "未进行独立同行评审或逐项复算。"
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "自动筛选未建立论文与组内 Work 的科学关系。",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        }
+      },
+      {
+        "arxiv_id": "2610.28292",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "06610980f0132925256a90ec00afd7b8a4b5ff4fb25bb93fe72195407c9cc9e5",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2610.28292v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2610.28292v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "gpt-6-luna",
+          "analyzed_at": "2026-10-21T18:01:00.186Z",
+          "reason": "论文关注太阳高能粒子事件的业务化空间天气预报，虽涉及太阳粒子事件，但重点是预测系统与运行决策，而非所列高能瞬变天体物理研究方向。",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "摘要",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “Solar energetic particle (SEP) events, operationally defined as proton flux exceeding 10 pfu in the”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "未进行独立同行评审或逐项复算。"
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "自动筛选未建立论文与组内 Work 的科学关系。",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        }
+      },
+      {
+        "arxiv_id": "2610.28331",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "53e3c57617beb6d023e2ae56c8b3274b673c227974eb9926263200e1504a516f",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2610.28331v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2610.28331v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "gpt-6-luna",
+          "analyzed_at": "2026-10-21T18:01:00.187Z",
+          "reason": "研究对象是大质量原恒星盘中的尘埃增长、引力不稳定与吸积爆发，未涉及指定的高能瞬变天体物理方向。",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "摘要",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “The enhanced cooling promotes disk fragmentation and produces more frequent accretion-driven luminosity outbursts”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "未进行独立同行评审或逐项复算。"
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "自动筛选未建立论文与组内 Work 的科学关系。",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        }
+      },
+      {
+        "arxiv_id": "2610.28345",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "cea66839bb7a28411bc51b1222721bd0b367b820a70680d0174baeb5dda6f4f3",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2610.28345v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2610.28345v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "gpt-6-luna",
+          "analyzed_at": "2026-10-21T18:01:00.187Z",
+          "reason": "论文研究 FGK 矮星的星震年龄推断方法，与指定的高能瞬变、致密天体及其环境研究无实质联系。",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "摘要",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “We train The Cannon on 323 FGK dwarf stars with asteroseismic age labels from NASA Kepler photometry”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "未进行独立同行评审或逐项复算。"
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "自动筛选未建立论文与组内 Work 的科学关系。",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        }
+      },
+      {
+        "arxiv_id": "2610.28352",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "07cca5c3357f2f3dc9b6a0061f12a501e00c933064aa74124bb8ff01130adee3",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2610.28352v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2610.28352v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "gpt-6-luna",
+          "analyzed_at": "2026-10-21T18:01:00.187Z",
+          "reason": "论文通过蓝超巨星脉动研究其质量和演化阶段，没有涉及超新星中心引擎、激波相互作用或其他指定的高能瞬变主题。",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "摘要",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “This study analyzes TESS light curves of six BSGs with high L/M to identify periodicities.”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "未进行独立同行评审或逐项复算。"
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "自动筛选未建立论文与组内 Work 的科学关系。",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        }
+      },
+      {
+        "arxiv_id": "2610.28374",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "b10e58b4236ea132fab3c9f23d991be8a0ac90c357042aeb3c1f3bb62fc85671",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2610.28374v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2610.28374v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "gpt-6-luna",
+          "analyzed_at": "2026-10-21T18:01:00.187Z",
+          "reason": "论文以 KMOS 光谱研究人马座矮星系的星团候选体，与指定的高能瞬变天体物理方向无实质联系。",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "摘要",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “We investigate sixteen Minni stellar-cluster candidates with KMOS spectroscopy”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "未进行独立同行评审或逐项复算。"
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "自动筛选未建立论文与组内 Work 的科学关系。",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        }
+      },
+      {
         "arxiv_id": "2610.28408",
         "revision": 1,
         "status": "ready",
@@ -5895,8 +7756,8 @@
     "historical_analyses": [],
     "opening_brief": {
       "status": "ready",
-      "edition_fingerprint": "4836bb480ff54e4602c5b0f4622fd21cd91cccde1b81ddcd103c09dae7582e0f",
-      "intro": "本期首看《Source velocities of fast radio bursts constrained by their dispersion measure variations》等 21 篇核心进展。",
+      "edition_fingerprint": "cb9fc6585af361bc0b28972e42dbd36c9bac22416a0d5e882594d8ae48780711",
+      "intro": "本期首看《Source velocities of fast radio bursts constrained by their dispersion measure variations》等 26 篇核心进展。",
       "must_read": [
         {
           "arxiv_id": "2610.27311",
@@ -6010,6 +7871,36 @@
           "revision": 1,
           "source_fingerprint": "12459f8aef340a87912a6e4fb20200a3a6af895f5e6601760933494cd21e3ce8",
           "guide_fingerprint": "4aed67b0d5c077db4b7de4f28fa7922a41f49a79d5af6beb04829a529c94adc1"
+        },
+        {
+          "arxiv_id": "2610.28023",
+          "revision": 1,
+          "source_fingerprint": "d18e83030c59355e3b684c1e344d3d1b93b1cb56a8646f732130532b6c41507b",
+          "guide_fingerprint": "7c8b43c3d47845c63727c4b041e8fa71202108b4d8ea3ea0a57eb99d1f27c1e9"
+        },
+        {
+          "arxiv_id": "2610.28034",
+          "revision": 1,
+          "source_fingerprint": "f6e22c9a0bcd84ae3105eabdacf7c1fb8177f24493462dc567fa4daf51615e15",
+          "guide_fingerprint": "2e11e1916037bb4c68ead366a03fbe4cebc755e147ec08f12707338ccba87bfd"
+        },
+        {
+          "arxiv_id": "2610.28049",
+          "revision": 1,
+          "source_fingerprint": "3e31df5e857f322f320b5b80a48e5108a3fa370b232a2ddf360c6755fd4f00f0",
+          "guide_fingerprint": "19154c25033b191c0eac3013bad41c683f613eba6e5c07619d9436012c14e9d4"
+        },
+        {
+          "arxiv_id": "2610.28073",
+          "revision": 1,
+          "source_fingerprint": "3a960658a1b2076b0f36ef78f55a8298ee2980a1d69533437633795a6000c0a0",
+          "guide_fingerprint": "7478aa919cd7b3189b00936028562bb1063ed880268c94d1f2ba99b27e8e1036"
+        },
+        {
+          "arxiv_id": "2610.28182",
+          "revision": 1,
+          "source_fingerprint": "cfdda1004779da1158a09d742b408ebdd31d79c39fa0d2e383212ea1b1d8f8de",
+          "guide_fingerprint": "a24a348b0a95cc4b3b4695635851f15e83aabda534595a6849900158abddce73"
         },
         {
           "arxiv_id": "2610.28408",
@@ -6192,6 +8083,102 @@
           "revision": 1,
           "source_fingerprint": "b99575b298f83b93b75912e976ff272ca26270f43687cee787308f6b7794101f",
           "guide_fingerprint": "df9298ff8b49007d3d5c296d9af65079ca21c03d81786e57d105f3f728c48283"
+        },
+        {
+          "arxiv_id": "2610.27949",
+          "revision": 1,
+          "source_fingerprint": "ffe5b73fed76d6ff03e856b2abdaf04a0e621cf582535089b55de8f037532068",
+          "guide_fingerprint": "445eb4fdf7457439473540211b7d95c1d0de5609853da7daf0676444e98c9245"
+        },
+        {
+          "arxiv_id": "2610.27969",
+          "revision": 1,
+          "source_fingerprint": "301db13219ccfc53bab00e3d8412cf1f468e90f267f03a75c6ee9f4786ead11a",
+          "guide_fingerprint": "6d1a5172d844ab8649c91285c325ab9ea33c5fd57d166ae4bb882f9908f56658"
+        },
+        {
+          "arxiv_id": "2610.27985",
+          "revision": 1,
+          "source_fingerprint": "3966d0b76f4bdc793e5f126e443a6144493934f25294dde40da1adaf916d5030",
+          "guide_fingerprint": "812e409c11841ead831b67f6a05ef82ed3e1b5b1e5eef2bde0c6025c7c79cb99"
+        },
+        {
+          "arxiv_id": "2610.28005",
+          "revision": 1,
+          "source_fingerprint": "c0e03ac171efca92f5e47aaf8d4432d49aa5dc0655d72eb424ff2503ed951fed",
+          "guide_fingerprint": "bf091ab43f86300bd0575bc23db7513602640616ef190723afbacc2f4dbb07df"
+        },
+        {
+          "arxiv_id": "2610.28013",
+          "revision": 1,
+          "source_fingerprint": "88e40edff76d8599569947420902733a1145fe763910f7ecaa994d8df7f6b554",
+          "guide_fingerprint": "b418e9720054e199c6a3af13e94bc16d1641b02461b7b7b3862d278287aaafd1"
+        },
+        {
+          "arxiv_id": "2610.28068",
+          "revision": 1,
+          "source_fingerprint": "60c7f70779821cc20024ac80238c2ab981c4a643a39efdff08b7fe010b44028e",
+          "guide_fingerprint": "7e535c1e28c88d4cce6932a9cec756ad054162931f8bccdff81dd3935812845e"
+        },
+        {
+          "arxiv_id": "2610.28123",
+          "revision": 1,
+          "source_fingerprint": "00988e0d3bf98db86f9adbe7213944c619453fcbd8870044646bd9472a06f527",
+          "guide_fingerprint": "44c2f4e6e0dfd824a440f30191624f477bcfa93534aab4d9c9cb3bcdcd43befd"
+        },
+        {
+          "arxiv_id": "2610.28139",
+          "revision": 1,
+          "source_fingerprint": "a2abdb6468047a3b034ea1fbf6f70f7920578c548088ec048e4dd1200755e8a5",
+          "guide_fingerprint": "dc53ecb877bcd0f93e7323175a2df57afb879e8136287f18c3f0aae673fe41ce"
+        },
+        {
+          "arxiv_id": "2610.28140",
+          "revision": 1,
+          "source_fingerprint": "c6284534bb2467574b9bd7c755ea5b3c823261f2bba8f6a69521ae4c12639dfa",
+          "guide_fingerprint": "6f349080f26b95c1c62b1f704a04b8d97d1f59a9da604493170a62112b974c53"
+        },
+        {
+          "arxiv_id": "2610.28220",
+          "revision": 1,
+          "source_fingerprint": "2fe85b12318b14849c9e0c7a0832438d2b349603c9289a4d5a6f80f2aa6eb123",
+          "guide_fingerprint": "1e463dcd7e399f3babd7b3bb25e79c66397ff0649990a7a9f1b0bd7985ba9d32"
+        },
+        {
+          "arxiv_id": "2610.28274",
+          "revision": 1,
+          "source_fingerprint": "49a134c8495e07482494528c2e1e6ca75781e338e143ffac521a70be52a0928e",
+          "guide_fingerprint": "3e3d161575e3a9c5b9de6613ad507d9bea50fd066fa78641c6eae0aa168ed9ad"
+        },
+        {
+          "arxiv_id": "2610.28292",
+          "revision": 1,
+          "source_fingerprint": "06610980f0132925256a90ec00afd7b8a4b5ff4fb25bb93fe72195407c9cc9e5",
+          "guide_fingerprint": "a424f3d17ee6fd5dc6f033575887d85862af758a9452c260ef90873726283a91"
+        },
+        {
+          "arxiv_id": "2610.28331",
+          "revision": 1,
+          "source_fingerprint": "53e3c57617beb6d023e2ae56c8b3274b673c227974eb9926263200e1504a516f",
+          "guide_fingerprint": "d03612bdbb7cd5843d3699ddf7a617a2078ab02eea5249f47ea20e9ba1d59150"
+        },
+        {
+          "arxiv_id": "2610.28345",
+          "revision": 1,
+          "source_fingerprint": "cea66839bb7a28411bc51b1222721bd0b367b820a70680d0174baeb5dda6f4f3",
+          "guide_fingerprint": "daeb7a512e8cac82709b3340ad58e559f1294ec6b8c686913241f0983f11d43b"
+        },
+        {
+          "arxiv_id": "2610.28352",
+          "revision": 1,
+          "source_fingerprint": "07cca5c3357f2f3dc9b6a0061f12a501e00c933064aa74124bb8ff01130adee3",
+          "guide_fingerprint": "2af3acfda2bd9b1272dc7f49a1534580c1eb0d855cae4bbdd2f3e421ff04c06f"
+        },
+        {
+          "arxiv_id": "2610.28374",
+          "revision": 1,
+          "source_fingerprint": "b10e58b4236ea132fab3c9f23d991be8a0ac90c357042aeb3c1f3bb62fc85671",
+          "guide_fingerprint": "32aa4882bf36f4bf03f0d83908518905b168f17dee25f8272f63e9d7d75dd385"
         },
         {
           "arxiv_id": "2610.28424",

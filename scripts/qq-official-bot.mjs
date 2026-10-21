@@ -19,6 +19,24 @@ import { readChannelShareUrl } from "./channel-publication.mjs";
 import { createSessionMemory } from "./qq-memory.mjs";
 import { defaultUserManager } from "./qq-users.mjs";
 import { matchBotCommand, executeBotCommand } from "./bot-commands.mjs";
+import { fetchMediaAsDataUri, defaultVisionSemaphore, VisionCongestionError } from "./qq-media.mjs";
+
+export const DEFAULT_ACADEMIC_VISION_PROMPT =
+  "请结合高能天体物理前沿知识，详细分析图片中的学术图表、公式或文献内容。";
+
+export function extractImageAttachments(attachments, maxCount = 2) {
+  if (!Array.isArray(attachments)) return [];
+  const urls = [];
+  for (const att of attachments) {
+    if (!att) continue;
+    const url = typeof att === "string" ? att : att.url;
+    if (typeof url === "string" && url.trim().length > 0) {
+      urls.push(url.trim());
+      if (urls.length >= maxCount) break;
+    }
+  }
+  return urls;
+}
 
 // Node >=22.20 provides WebSocket; no undeclared ws package is needed.
 async function request(url, options = {}) {
@@ -142,7 +160,7 @@ async function getGatewayUrl() {
 export function cleanMessageContent(rawText) {
   if (!rawText) return "";
   return rawText
-    .replace(/<@!\d+>/g, "")
+    .replace(/<@!?[^>]+>/g, "")
     .replace(/@\S+/g, "")
     .trim();
 }
@@ -364,6 +382,8 @@ export async function startOfficialBot({
   memory = sessionMemory,
   users = defaultUserManager,
   channelLink = readChannelShareUrl,
+  fetchMedia = fetchMediaAsDataUri,
+  visionSemaphore = defaultVisionSemaphore,
 } = {}) {
   if (!APP_ID && gateway === getGatewayUrl) {
     console.warn(`[QQ Official Bot] 警告: 未在环境变量检测到 QQ_APP_ID。`);
@@ -400,6 +420,70 @@ export async function startOfficialBot({
       memory.append(sessionKey, "assistant", replyText);
     } catch (err) {
       console.error(`[QQ Official Bot] ✗ 回复${contextLabel}失败: ${err.message}`);
+    }
+  };
+
+  const processAcademicQuery = async ({
+    query,
+    imageUrls = [],
+    sessionKey,
+    topic,
+    replyFn,
+    contextLabel,
+  }) => {
+    const history = memory.get(sessionKey);
+    const memoryUserEntry = imageUrls.length > 0 ? `[用户发送了图片进行研读: ${query}]` : query;
+    memory.append(sessionKey, "user", memoryUserEntry);
+
+    try {
+      let result;
+      if (imageUrls.length > 0) {
+        result = await visionSemaphore.run(async () => {
+          const images = await Promise.all(imageUrls.map((url) => fetchMedia(url)));
+          return await answer({
+            query,
+            topic,
+            history,
+            images,
+          });
+        });
+      } else {
+        result = await answer({
+          query,
+          topic,
+          history,
+        });
+      }
+
+      const replyText = /https?:\/\/\S+/iu.test(result)
+        ? await appendChannelShareLinkToReply(result, resolveChannelLink)
+        : result;
+
+      console.log(`[QQ Official Bot] 正在派发${contextLabel}回复`);
+      if (!dryRun) {
+        await replyFn(replyText);
+        console.log(`[QQ Official Bot] ✓ ${contextLabel}回复成功`);
+      }
+      memory.append(sessionKey, "assistant", replyText);
+    } catch (err) {
+      console.error(`[QQ Official Bot] ✗ ${contextLabel}回复失败: ${err.message}`);
+      if (imageUrls.length > 0) {
+        const fallbackMsg =
+          err instanceof VisionCongestionError || err.name === "VisionCongestionError"
+            ? err.userMessage || err.message
+            : err.message?.includes("limit of")
+              ? "发送的图片体积超过 8 MB 限制，请压缩后重新发送。"
+              : err.message?.includes("unapproved")
+                ? "图片域名未在白名单内，无法获取分析。"
+                : `图片分析失败: ${err.message}`;
+        if (!dryRun) {
+          try {
+            await replyFn(fallbackMsg);
+          } catch {}
+        } else {
+          memory.append(sessionKey, "assistant", fallbackMsg);
+        }
+      }
     }
   };
 
@@ -482,10 +566,12 @@ export async function startOfficialBot({
         case 0: {
           // Dispatch 业务事件
           if (["GROUP_AT_MESSAGE_CREATE", "AT_MESSAGE_CREATE", "C2C_MESSAGE_CREATE"].includes(t)) {
+            const hasAttachments = Array.isArray(d?.attachments) && d.attachments.length > 0;
+            const hasContent = typeof d?.content === "string" && d.content.trim().length > 0;
             if (
               activeReplies >= 4 ||
-              typeof d?.content !== "string" ||
-              d.content.length > 4096 ||
+              (!hasContent && !hasAttachments) ||
+              (typeof d?.content === "string" && d.content.length > 4096) ||
               !d.id ||
               !claimMessage(`${t}:${d.id}`)
             )
@@ -500,7 +586,9 @@ export async function startOfficialBot({
               `[QQ Official Bot] ✓ 机器人登录就绪！Bot名称: ${d.user?.username || "AstroBot"} (ID: ${d.user?.id}, Session: ${sessionId})`
             );
           } else if (t === "GROUP_AT_MESSAGE_CREATE" || t === "GROUP_MESSAGE_CREATE") {
-            const query = cleanMessageContent(d.content);
+            const rawQuery = cleanMessageContent(d.content);
+            const imageUrls = extractImageAttachments(d.attachments, 2);
+            const query = rawQuery || (imageUrls.length > 0 ? DEFAULT_ACADEMIC_VISION_PROMPT : "");
             const groupOpenid = d.group_openid;
             const authorId = d.author?.member_openid || d.author?.id;
             const sessionKey = `group_${groupOpenid}_${authorId}`;
@@ -521,42 +609,33 @@ export async function startOfficialBot({
             }
 
             if (query && groupOpenid && authorId) {
-              const cmd = matchBotCommand(query);
-              if (cmd) {
-                await dispatchMatchedCommand({
-                  cmd,
-                  query,
-                  replyFn: (content) => replyGroupMessage({ groupOpenid, msgId, content }),
-                  sessionKey,
-                  contextLabel: "群指令",
-                });
-                break;
-              }
-
-              try {
-                const history = memory.get(sessionKey);
-                memory.append(sessionKey, "user", query);
-                const result = await answer({
-                  query,
-                  topic: "QQ群学术研讨",
-                  history,
-                });
-                const replyText = /https?:\/\/\S+/iu.test(result)
-                  ? await appendChannelShareLinkToReply(result, resolveChannelLink)
-                  : result;
-
-                console.log("[QQ Official Bot] 正在派发群回复");
-                if (!dryRun) {
-                  await replyGroupMessage({ groupOpenid, msgId, content: replyText });
-                  console.log(`[QQ Official Bot] ✓ 群回复成功`);
+              if (!imageUrls.length) {
+                const cmd = matchBotCommand(query);
+                if (cmd) {
+                  await dispatchMatchedCommand({
+                    cmd,
+                    query,
+                    replyFn: (content) => replyGroupMessage({ groupOpenid, msgId, content }),
+                    sessionKey,
+                    contextLabel: "群指令",
+                  });
+                  break;
                 }
-                memory.append(sessionKey, "assistant", replyText);
-              } catch (err) {
-                console.error(`[QQ Official Bot] ✗ 群回复失败: ${err.message}`);
               }
+
+              await processAcademicQuery({
+                query,
+                imageUrls,
+                sessionKey,
+                topic: "QQ群学术研讨",
+                replyFn: (content) => replyGroupMessage({ groupOpenid, msgId, content }),
+                contextLabel: "群",
+              });
             }
           } else if (t === "AT_MESSAGE_CREATE") {
-            const query = cleanMessageContent(d.content);
+            const rawQuery = cleanMessageContent(d.content);
+            const imageUrls = extractImageAttachments(d.attachments, 2);
+            const query = rawQuery || (imageUrls.length > 0 ? DEFAULT_ACADEMIC_VISION_PROMPT : "");
             const channelId = d.channel_id;
             const authorId = d.author?.id;
             const sessionKey = `channel_${channelId}_${authorId}`;
@@ -564,41 +643,33 @@ export async function startOfficialBot({
             console.log("[QQ Official Bot] 收到频道子频道 @ 提问");
 
             if (query && channelId && authorId) {
-              const cmd = matchBotCommand(query);
-              if (cmd) {
-                await dispatchMatchedCommand({
-                  cmd,
-                  query,
-                  replyFn: (content) => replyChannelMessage({ channelId, msgId, content }),
-                  sessionKey,
-                  contextLabel: "频道指令",
-                });
-                break;
-              }
-
-              try {
-                const history = memory.get(sessionKey);
-                memory.append(sessionKey, "user", query);
-                const result = await answer({
-                  query,
-                  topic: "频道学术研讨",
-                  history,
-                });
-                const replyText = /https?:\/\/\S+/iu.test(result)
-                  ? await appendChannelShareLinkToReply(result, resolveChannelLink)
-                  : result;
-
-                if (!dryRun) {
-                  await replyChannelMessage({ channelId, msgId, content: replyText });
-                  console.log(`[QQ Official Bot] ✓ 频道回复成功`);
+              if (!imageUrls.length) {
+                const cmd = matchBotCommand(query);
+                if (cmd) {
+                  await dispatchMatchedCommand({
+                    cmd,
+                    query,
+                    replyFn: (content) => replyChannelMessage({ channelId, msgId, content }),
+                    sessionKey,
+                    contextLabel: "频道指令",
+                  });
+                  break;
                 }
-                memory.append(sessionKey, "assistant", replyText);
-              } catch (err) {
-                console.error(`[QQ Official Bot] ✗ 频道回复失败: ${err.message}`);
               }
+
+              await processAcademicQuery({
+                query,
+                imageUrls,
+                sessionKey,
+                topic: "频道学术研讨",
+                replyFn: (content) => replyChannelMessage({ channelId, msgId, content }),
+                contextLabel: "频道",
+              });
             }
           } else if (t === "C2C_MESSAGE_CREATE") {
-            const query = cleanMessageContent(d.content);
+            const rawQuery = cleanMessageContent(d.content);
+            const imageUrls = extractImageAttachments(d.attachments, 2);
+            const query = rawQuery || (imageUrls.length > 0 ? DEFAULT_ACADEMIC_VISION_PROMPT : "");
             const userOpenid = d.author?.user_openid;
             const sessionKey = `c2c_${userOpenid}`;
             const msgId = d.id;
@@ -613,38 +684,28 @@ export async function startOfficialBot({
             }
 
             if (query && userOpenid) {
-              const cmd = matchBotCommand(query);
-              if (cmd) {
-                await dispatchMatchedCommand({
-                  cmd,
-                  query,
-                  replyFn: (content) => replyC2CMessage({ userOpenid, msgId, content }),
-                  sessionKey,
-                  contextLabel: "私聊指令",
-                });
-                break;
-              }
-
-              try {
-                const history = memory.get(sessionKey);
-                memory.append(sessionKey, "user", query);
-                const result = await answer({
-                  query,
-                  topic: "私聊学术研讨",
-                  history,
-                });
-                const replyText = /https?:\/\/\S+/iu.test(result)
-                  ? await appendChannelShareLinkToReply(result, resolveChannelLink)
-                  : result;
-
-                if (!dryRun) {
-                  await replyC2CMessage({ userOpenid, msgId, content: replyText });
-                  console.log(`[QQ Official Bot] ✓ 私聊回复成功`);
+              if (!imageUrls.length) {
+                const cmd = matchBotCommand(query);
+                if (cmd) {
+                  await dispatchMatchedCommand({
+                    cmd,
+                    query,
+                    replyFn: (content) => replyC2CMessage({ userOpenid, msgId, content }),
+                    sessionKey,
+                    contextLabel: "私聊指令",
+                  });
+                  break;
                 }
-                memory.append(sessionKey, "assistant", replyText);
-              } catch (err) {
-                console.error(`[QQ Official Bot] ✗ 私聊回复失败: ${err.message}`);
               }
+
+              await processAcademicQuery({
+                query,
+                imageUrls,
+                sessionKey,
+                topic: "私聊学术研讨",
+                replyFn: (content) => replyC2CMessage({ userOpenid, msgId, content }),
+                contextLabel: "私聊",
+              });
             }
           }
           break;

@@ -6,11 +6,13 @@ import {
   claimMessage,
   startOfficialBot,
   appendChannelShareLinkToReply,
+  DEFAULT_ACADEMIC_VISION_PROMPT,
+  extractImageAttachments,
 } from "../scripts/qq-official-bot.mjs";
 import { createSessionMemory, SESSION_TTL_MS } from "../scripts/qq-memory.mjs";
 import { createUserManager } from "../scripts/qq-users.mjs";
 import { createTemporaryWorkspace } from "./helpers/temporary-workspace.mjs";
-import { readdir, stat, writeFile } from "node:fs/promises";
+import { readdir, readFile, stat, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { loadAcademicKnowledge } from "../scripts/agent-core.mjs";
 
@@ -375,4 +377,272 @@ test("group message dispatch records groupOpenid and handles non-at events safel
   const grpMem = memory.get("group_GROUP_AT_TARGET_member-2");
   assert.ok(grpMem && grpMem.length > 0);
   assert.match(grpMem.at(-1).content, /群学术回答/);
+});
+
+test("extractImageAttachments extracts valid URLs up to maxCount limit", () => {
+  assert.deepEqual(extractImageAttachments(null), []);
+  assert.deepEqual(extractImageAttachments([]), []);
+  assert.deepEqual(
+    extractImageAttachments(
+      [
+        { url: "https://multimedia.qpic.cn/img1.png" },
+        { url: "https://multimedia.qpic.cn/img2.png" },
+        { url: "https://multimedia.qpic.cn/img3.png" },
+      ],
+      2
+    ),
+    ["https://multimedia.qpic.cn/img1.png", "https://multimedia.qpic.cn/img2.png"]
+  );
+  assert.deepEqual(
+    extractImageAttachments(["https://multimedia.qpic.cn/str.png", { invalid: 123 }]),
+    ["https://multimedia.qpic.cn/str.png"]
+  );
+});
+
+test("C2C_MESSAGE_CREATE handles pure image message, injects default academic prompt, and writes text marker to memory", async (t) => {
+  class Socket extends EventTarget {
+    static OPEN = 1;
+    readyState = 1;
+    send() {}
+    close() {
+      this.readyState = 3;
+    }
+  }
+
+  const { path: memPath } = await createTemporaryWorkspace("astro-lineage-c2c-vision-mem-", t);
+  const { path: usersPath } = await createTemporaryWorkspace("astro-lineage-c2c-vision-usr-", t);
+  const memory = createSessionMemory(memPath);
+  const users = createUserManager({ filePath: join(usersPath, "users.json"), root: usersPath });
+
+  let calledWith = null;
+  const mockAnswer = async (args) => {
+    calledWith = args;
+    return "分析结果：该图展示了千新星晚期红外光谱特征。详见 https://arxiv.org/abs/2609.12345";
+  };
+
+  const fakeDataUri = "data:image/jpeg;base64,ZmFrZS1qcGVn";
+  const ws = await startOfficialBot({
+    memory,
+    users,
+    WebSocketImpl: Socket,
+    gateway: async () => "wss://example.com",
+    authorize: async () => "fake-test-token",
+    answer: mockAnswer,
+    fetchMedia: async (url) => {
+      assert.equal(url, "https://c2cpicdw.qpic.cn/offpic_new/0/pic1.jpg");
+      return fakeDataUri;
+    },
+    dryRun: true,
+  });
+
+  const pureImageMsg = {
+    op: 0,
+    t: "C2C_MESSAGE_CREATE",
+    d: {
+      id: "c2c-vision-1",
+      content: "", // Pure image: no text content
+      attachments: [{ url: "https://c2cpicdw.qpic.cn/offpic_new/0/pic1.jpg" }],
+      author: { user_openid: "vision-user-1" },
+    },
+  };
+
+  ws.dispatchEvent(new MessageEvent("message", { data: JSON.stringify(pureImageMsg) }));
+  await new Promise((resolve) => setTimeout(resolve, 50));
+
+  // 1. Injected prompt matches default
+  assert.ok(calledWith);
+  assert.equal(calledWith.query, DEFAULT_ACADEMIC_VISION_PROMPT);
+  assert.deepEqual(calledWith.images, [fakeDataUri]);
+
+  // 2. Memory contains text marker, NOT base64
+  const userHistory = memory.get("c2c_vision-user-1");
+  assert.equal(userHistory.length, 2);
+  assert.equal(
+    userHistory[0].content,
+    `[用户发送了图片进行研读: ${DEFAULT_ACADEMIC_VISION_PROMPT}]`
+  );
+  assert.doesNotMatch(userHistory[0].content, /data:image\/|base64/);
+  assert.match(userHistory[1].content, /千新星晚期红外光谱/);
+  assert.match(userHistory[1].content, /AstroLineage QQ 频道/);
+
+  // 3. Inspect raw JSON on disk: no base64
+  const files = await readdir(memPath);
+  const memJson = await readFile(join(memPath, files[0]), "utf8");
+  assert.doesNotMatch(memJson, /ZmFrZS1qcGVn/);
+});
+
+test("GROUP_AT_MESSAGE_CREATE handles image with accompanying question, capping at 2 images", async (t) => {
+  class Socket extends EventTarget {
+    static OPEN = 1;
+    readyState = 1;
+    send() {}
+    close() {
+      this.readyState = 3;
+    }
+  }
+
+  const { path: memPath } = await createTemporaryWorkspace("astro-lineage-grp-vision-mem-", t);
+  const { path: usersPath } = await createTemporaryWorkspace("astro-lineage-grp-vision-usr-", t);
+  const memory = createSessionMemory(memPath);
+  const users = createUserManager({ filePath: join(usersPath, "users.json"), root: usersPath });
+
+  let calledWith = null;
+  const mockAnswer = async (args) => {
+    calledWith = args;
+    return "光变曲线斜率符合激波破裂模型。";
+  };
+
+  const fetchedUrls = [];
+  const ws = await startOfficialBot({
+    memory,
+    users,
+    WebSocketImpl: Socket,
+    gateway: async () => "wss://example.com",
+    authorize: async () => "fake-test-token",
+    answer: mockAnswer,
+    fetchMedia: async (url) => {
+      fetchedUrls.push(url);
+      return `data:image/png;base64,data-for-${url.split("/").pop()}`;
+    },
+    dryRun: true,
+  });
+
+  const grpMsg = {
+    op: 0,
+    t: "GROUP_AT_MESSAGE_CREATE",
+    d: {
+      id: "grp-vision-1",
+      content: "<@!bot123> 请分析这组光变曲线对比",
+      group_openid: "GROUP_VISION_1",
+      author: { member_openid: "member-vis-1" },
+      attachments: [
+        { url: "https://multimedia.qpic.cn/img1.png" },
+        { url: "https://multimedia.qpic.cn/img2.png" },
+        { url: "https://multimedia.qpic.cn/img3.png" }, // 3rd must be ignored (capped at 2)
+      ],
+    },
+  };
+
+  ws.dispatchEvent(new MessageEvent("message", { data: JSON.stringify(grpMsg) }));
+  await new Promise((resolve) => setTimeout(resolve, 50));
+
+  assert.ok(calledWith);
+  assert.equal(calledWith.query, "请分析这组光变曲线对比");
+  assert.equal(calledWith.images.length, 2);
+  assert.deepEqual(fetchedUrls, [
+    "https://multimedia.qpic.cn/img1.png",
+    "https://multimedia.qpic.cn/img2.png",
+  ]);
+
+  const mem = memory.get("group_GROUP_VISION_1_member-vis-1");
+  assert.equal(mem[0].content, "[用户发送了图片进行研读: 请分析这组光变曲线对比]");
+  assert.match(mem[1].content, /激波破裂模型/);
+});
+
+test("AT_MESSAGE_CREATE in guild channel processes image question", async (t) => {
+  class Socket extends EventTarget {
+    static OPEN = 1;
+    readyState = 1;
+    send() {}
+    close() {
+      this.readyState = 3;
+    }
+  }
+
+  const { path: memPath } = await createTemporaryWorkspace("astro-lineage-ch-vision-mem-", t);
+  const { path: usersPath } = await createTemporaryWorkspace("astro-lineage-ch-vision-usr-", t);
+  const memory = createSessionMemory(memPath);
+  const users = createUserManager({ filePath: join(usersPath, "users.json"), root: usersPath });
+
+  let calledWith = null;
+  const ws = await startOfficialBot({
+    memory,
+    users,
+    WebSocketImpl: Socket,
+    gateway: async () => "wss://example.com",
+    authorize: async () => "fake-test-token",
+    answer: async (args) => {
+      calledWith = args;
+      return "频道讨论：公式推导完成。";
+    },
+    fetchMedia: async () => "data:image/png;base64,formula-png",
+    dryRun: true,
+  });
+
+  const channelMsg = {
+    op: 0,
+    t: "AT_MESSAGE_CREATE",
+    d: {
+      id: "ch-vision-1",
+      content: "<@!bot> 解释这个激波跳跃条件方程",
+      channel_id: "CH_1001",
+      author: { id: "author-ch-1" },
+      attachments: [{ url: "https://multimedia.qpic.cn/formula.png" }],
+    },
+  };
+
+  ws.dispatchEvent(new MessageEvent("message", { data: JSON.stringify(channelMsg) }));
+  await new Promise((resolve) => setTimeout(resolve, 50));
+
+  assert.ok(calledWith);
+  assert.equal(calledWith.query, "解释这个激波跳跃条件方程");
+  assert.deepEqual(calledWith.images, ["data:image/png;base64,formula-png"]);
+
+  const mem = memory.get("channel_CH_1001_author-ch-1");
+  assert.equal(mem[0].content, "[用户发送了图片进行研读: 解释这个激波跳跃条件方程]");
+  assert.match(mem[1].content, /公式推导完成/);
+});
+
+test("vision concurrency congestion in bot dispatcher returns actionable congestion message", async (t) => {
+  class Socket extends EventTarget {
+    static OPEN = 1;
+    readyState = 1;
+    send() {}
+    close() {
+      this.readyState = 3;
+    }
+  }
+
+  const { path: memPath } = await createTemporaryWorkspace("astro-lineage-congest-mem-", t);
+  const { path: usersPath } = await createTemporaryWorkspace("astro-lineage-congest-usr-", t);
+  const memory = createSessionMemory(memPath);
+  const users = createUserManager({ filePath: join(usersPath, "users.json"), root: usersPath });
+
+  const { VisionConcurrencySemaphore } = await import("../scripts/qq-media.mjs");
+  const busySemaphore = new VisionConcurrencySemaphore(0); // 0 capacity triggers immediate congestion
+
+  let answerCalled = false;
+  const ws = await startOfficialBot({
+    memory,
+    users,
+    WebSocketImpl: Socket,
+    gateway: async () => "wss://example.com",
+    authorize: async () => "fake-test-token",
+    answer: async () => {
+      answerCalled = true;
+      return "never reached";
+    },
+    visionSemaphore: busySemaphore,
+    fetchMedia: async () => "data:image/png;base64,xyz",
+    dryRun: true,
+  });
+
+  const msg = {
+    op: 0,
+    t: "C2C_MESSAGE_CREATE",
+    d: {
+      id: "c2c-congest-1",
+      content: "帮我看这张图",
+      attachments: [{ url: "https://c2cpicdw.qpic.cn/test.jpg" }],
+      author: { user_openid: "user-congest" },
+    },
+  };
+
+  ws.dispatchEvent(new MessageEvent("message", { data: JSON.stringify(msg) }));
+  await new Promise((resolve) => setTimeout(resolve, 50));
+
+  assert.equal(answerCalled, false, "Model answer must not be called when semaphore is congested");
+  const mem = memory.get("c2c_user-congest");
+  assert.ok(mem.length > 0);
+  assert.match(mem.at(-1).content, /视觉分析通道繁忙|vision analysis congested/i);
 });

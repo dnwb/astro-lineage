@@ -14,7 +14,13 @@ import { existsSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { generateAcademicAnswer } from "./agent-core.mjs";
+import {
+  generateAcademicAnswer,
+  isMultimodalModel,
+  DEFAULT_MODEL,
+  DEFAULT_FALLBACK_MODELS,
+  buildModelCandidates,
+} from "./agent-core.mjs";
 import { readChannelShareUrl } from "./channel-publication.mjs";
 import { createSessionMemory } from "./qq-memory.mjs";
 import { defaultUserManager } from "./qq-users.mjs";
@@ -471,9 +477,9 @@ export async function startOfficialBot({
         const fallbackMsg =
           err instanceof VisionCongestionError || err.name === "VisionCongestionError"
             ? err.userMessage || err.message
-            : err.message?.includes("limit of")
+            : /limit of/i.test(err.message || "")
               ? "发送的图片体积超过 8 MB 限制，请压缩后重新发送。"
-              : err.message?.includes("unapproved")
+              : /unapproved/i.test(err.message || "")
                 ? "图片域名未在白名单内，无法获取分析。"
                 : `图片分析失败: ${err.message}`;
         if (!dryRun) {
@@ -742,7 +748,7 @@ export async function startOfficialBot({
 /**
  * 诊断环境连通性、凭证合法性与数据完整性 (--doctor)
  */
-export async function runDoctor({ live = false } = {}) {
+export async function runDoctor({ live = false, knowledgeLoader } = {}) {
   console.log("=== AstroLineage 官方 QQ 机器人环境自检诊断 (Doctor) ===\n");
   let passed = true;
 
@@ -771,6 +777,19 @@ export async function runDoctor({ live = false } = {}) {
   console.log(
     `  ✓ 运行模式: ${IS_SANDBOX ? "沙箱环境 (sandbox.api.sgroup.qq.com)" : "正式生产环境 (api.sgroup.qq.com)"}`
   );
+
+  const candidates = buildModelCandidates(DEFAULT_MODEL, DEFAULT_FALLBACK_MODELS);
+  const multimodalCandidates = candidates.filter(isMultimodalModel);
+  const primaryIsMultimodal = isMultimodalModel(DEFAULT_MODEL);
+  if (multimodalCandidates.length > 0) {
+    console.log(
+      `  ✓ 多模态视觉模型: 主模型 ${DEFAULT_MODEL} (${primaryIsMultimodal ? "支持多模态" : "文本模型"})，可用视觉模型: [${multimodalCandidates.join(", ")}]`
+    );
+  } else {
+    console.warn(
+      `  ! 多模态视觉模型: 当前候选模型 [${candidates.join(", ")}] 均非多模态模型，图片研读将受限`
+    );
+  }
 
   if (!live) {
     console.log(
@@ -810,20 +829,42 @@ export async function runDoctor({ live = false } = {}) {
   }
 
   // 4. 检查 AI 研判/学术问答模型连通性
-  console.log("\n[4/5] 检查 AI 学术大脑后端接口...");
+  console.log("\n[4/5] 检查 AI 学术大脑后端接口与多模态端点...");
+  const answerOpts = knowledgeLoader ? { knowledgeLoader } : {};
   try {
     const testAns = await generateAcademicAnswer({
       query: "测试连通性",
       topic: "健康检测",
+      ...answerOpts,
     });
     if (testAns) {
-      console.log(`  ✓ AI 模型响应正常 (${testAns.slice(0, 40)}...)`);
+      console.log(`  ✓ AI 文本模型响应正常 (${testAns.slice(0, 40)}...)`);
     } else {
-      console.error("  ✗ AI 模型返回空结果");
+      console.error("  ✗ AI 文本模型返回空结果");
       passed = false;
     }
   } catch (err) {
-    console.error(`  ✗ AI 模型调用异常: ${err.message}`);
+    console.error(`  ✗ AI 文本模型调用异常: ${err.message}`);
+    passed = false;
+  }
+
+  try {
+    const testVisionAns = await generateAcademicAnswer({
+      query: "图表要素提取连通性自检",
+      topic: "视觉健康检测",
+      ...answerOpts,
+      images: [
+        "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+      ],
+    });
+    if (testVisionAns) {
+      console.log(`  ✓ 多模态视觉推理响应正常 (${testVisionAns.slice(0, 40)}...)`);
+    } else {
+      console.error("  ✗ 多模态视觉模型返回空结果");
+      passed = false;
+    }
+  } catch (visionErr) {
+    console.error(`  ✗ 多模态视觉推理调用异常: ${visionErr.message}`);
     passed = false;
   }
 

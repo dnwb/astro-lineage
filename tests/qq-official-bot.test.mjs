@@ -130,6 +130,7 @@ test("bot --doctor CLI flag runs diagnostic checks cleanly", () => {
   assert.ifError(result.error);
   assert.equal(result.status, 0, result.stderr || result.stdout);
   assert.match(result.stdout, /官方 QQ 机器人环境自检诊断 \(Doctor\)/u);
+  assert.match(result.stdout, /多模态视觉模型/u);
   assert.match(result.stdout, /未验证凭据、网关或模型连通性/u);
   assert.doesNotMatch(result.stdout, /AccessToken 申请成功|AI 模型响应正常/u);
 });

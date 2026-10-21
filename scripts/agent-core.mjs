@@ -515,6 +515,7 @@ export async function generateAcademicAnswer({
   effort = DEFAULT_EFFORT,
   fallbackModels = DEFAULT_FALLBACK_MODELS,
   channelLink = readChannelShareUrl,
+  knowledgeLoader = loadAcademicKnowledge,
 }) {
   if (
     /^\/?channel\s*$/iu.test(String(query)) ||
@@ -526,7 +527,7 @@ export async function generateAcademicAnswer({
       ? `频道讨论：\n${channelUrl}`
       : "频道链接尚未配置或配置无效，暂时不能提供；请管理员核对频道分享地址。";
   }
-  const knowledge = await loadAcademicKnowledge({ channelLink });
+  const knowledge = await knowledgeLoader({ channelLink });
 
   const systemPrompt = `你是由前沿高能天体物理课题组打造的 AstroLineage 学术智能体（Research Agent）。
 你正在学术讨论场景中解答读者/同行提出的文献、学术前沿与系统运行问题。

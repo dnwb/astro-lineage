@@ -1,17 +1,115 @@
 {
   "schema_version": "astrolineage-arxiv-archive-manifest-v1",
-  "updated_at": "2026-10-18T08:35:26.872Z",
-  "total_weeks": 6,
-  "total_daily_editions": 29,
-  "latest_week_id": "2026-W42",
-  "latest_daily_date": "2026-10-15",
+  "updated_at": "2026-10-21T06:44:19.164Z",
+  "total_weeks": 7,
+  "total_daily_editions": 32,
+  "latest_week_id": "2026-W43",
+  "latest_daily_date": "2026-10-20",
   "weeks": [
+    {
+      "week_id": "2026-W43",
+      "title": "每周学术脉络 · 2026-W43",
+      "date_range": "2026-10-19 ~ 2026-10-25",
+      "has_weekly_summary": true,
+      "executive_summary": "本周高能天体物理聚焦于强磁化极端等离子体能量耗散、超临界与外流吸积流动力学演化，以及超大质量恒星最终演化宿命等因果链条的关键环节：\n- **磁层重联与磁星瞬变**：arXiv:2610.22653v1 论证了细长扭缠磁通管在壳层固结下可激发入流速度达 $\\beta_{\\rm rec} \\sim 0.1$ 的动理学非均匀磁重联，并证明仅占体积 $0.1\\% \\sim 3\\%$ 的电荷匮乏区贡献了超 $20\\%$ 的欧姆耗散，为巨耀斑与重子抛射提供了动力学自洽机制。\n- **致密吸积盘内的潮汐瓦解与多信使瞬变**：arXiv:2610.24849v1 借助三维辐射-MHD 模拟阐明了恒星碎屑流撞击活动星系核（AGN）吸积盘引发的辐射俘获（$\\eta \\simeq 0.01$）与磁通量单向汇聚，解释了南北极 Poynting 通量相差 $10\\text{--}100$ 倍的强双极不对称喷流-热辐射二元表象。\n- **快速射电暴环境与中心引擎限制**：arXiv:2610.27311v1 通过重复暴色散量时间导数 $d{\\rm DM}/dt$ 反推导出源的高速空间运动下限达 $20\\text{--}2800\\,{\\rm km\\,s^{-1}}$，直接印证其诞生于年轻中子星反冲；arXiv:2610.27489v1 则通过 FRB 20240114A 的持续射电源月量级多波段光变，将中心磁星相对论注入电子截断洛伦兹因子限制在 $\\gamma_{\\rm b} < 10^3$，推导得出其射电辐射效率仅为 $\\eta_{\\rm r} \\sim 10^{-5}\\text{--}10^{-4}$。\n- **超亮超新星与极高质量恒星塌缩**：arXiv:2610.27312v1 揭示了长上升时标（$t_{\\rm rise} \\gtrsim 88\\,{\\rm d}$）与高辐射能（$E_{\\rm rad} = 4.3\\times 10^{50}\\,{\\rm erg}$）的 SN 2023iop 具有 $0.81\\%$ 的本征偏振与过渡相禁线比，确立了前身星质量达 $\\sim 190\\,M_\\odot$ 的富氢对不稳定超新星（PISN）或非球对称 CSM 相互作用主导的极端晚期演化通道。\n> 🎯 **筛选边界**：本期重点聚焦磁能快速耗散微观-宏观动力学、致密盘强外流/碰撞数值模拟、FRB 周星电离介质反演及极端能源机制超新星，已排除纯巡天星表编制与无高能物理延伸的普通低能段观测。",
+      "statistics": {
+        "total_analyzed": 160,
+        "must_read_count": 5,
+        "worth_knowing_count": 46,
+        "skip_count": 109
+      },
+      "top_picks_count": 10,
+      "days": [
+        {
+          "date": "2026-10-20",
+          "weekday": "Tue",
+          "week_id": "2026-W43",
+          "batch_id": "announcement-2026-10-20",
+          "total_papers": 57,
+          "analyzed_count": 57,
+          "must_read_count": 3,
+          "worth_knowing_count": 18,
+          "skip_count": 36,
+          "pending_count": 0,
+          "brief_status": "ready",
+          "brief_intro": "本期首看《Source velocities of fast radio bursts constrained by their dispersion measure variations》等 21 篇核心进展。",
+          "highlights": [
+            {
+              "arxiv_id": "2610.27311",
+              "priority": "must_read",
+              "title": "Source velocities of fast radio bursts constrained by their dispersion measure variations",
+              "reason": "该工作直接关联 FRB 及其周围介质、致密天体中心引擎的出生反冲（natal kick）速度约束。文章建立了通过重复暴的色散量时变率 $d{\\rm DM}/dt$ 分解并约束源径向速度 $v_r$ 与横向速度 $v_t$ 的理论方法，为检验 FRB 产生通道（如年轻大质量恒星超新星坍缩产生的高速中子星/磁星）提供了直接动力学工具。"
+            },
+            {
+              "arxiv_id": "2610.27312",
+              "priority": "must_read",
+              "title": "SN 2023iop: An Extreme 1987A-like Supernova and the Death of Very Massive Stars",
+              "reason": "该工作详细分析了目前已知光度最高、演化最极端的类 SN 1987A 超新星 SN 2023iop（峰值 $M_r \\approx -20.14~\\mathrm{mag}$，全波段辐射能量 $E_{\\rm rad} \\approx 4.3 \\times 10^{50}~\\mathrm{erg}$）。其极长上升时标（$\\gtrsim 88$ 天）、巨大抛射物质量与 $^{56}\\mathrm{Ni}$ 需求（$\\approx 2.2~M_\\odot$）以及晚期证认出的稳定 $[\\mathrm{Ni\\;II}]\\,\\lambda 7378$（对应 $^{58}\\mathrm{Ni} \\approx 0.02~M_\\odot$），直接挑战了传统中微子驱动核塌缩机制，并为极高质量恒星（$\\sim 190~M_\\odot$）在贫金属环境下发生对不稳定性超新星（PISN）爆发结合星周介质（CSM）相互作用提供了罕见而关键的观测判例。"
+            },
+            {
+              "arxiv_id": "2610.27489",
+              "priority": "must_read",
+              "title": "Constraining the FRB Central Engine from Flux Variations of Persistent Radio Sources: FRB 20240114A as the First Attempt",
+              "reason": "本文高度切合课题组关于 FRB/PRS 及其周围介质、超新星中心引擎的研究方向；首次建立了利用重复暴超活跃期驱动磁星风云（MWN）同步辐射光变以反推 FRB 中心引擎物理参量（能量注入、洛伦兹因子、辐射效率及占空比）的定量建模方案，提供了关键的物理定标关系与判据。"
+            }
+          ],
+          "data_file": "daily/2026-10-20.json"
+        },
+        {
+          "date": "2026-10-19",
+          "weekday": "Mon",
+          "week_id": "2026-W43",
+          "batch_id": "announcement-2026-10-19",
+          "total_papers": 46,
+          "analyzed_count": 46,
+          "must_read_count": 1,
+          "worth_knowing_count": 9,
+          "skip_count": 36,
+          "pending_count": 0,
+          "brief_status": "ready",
+          "brief_intro": "本期首看《Tidal Disruption Events in Active Galactic Nuclei: Thermal Radiation and Jets》等 10 篇核心进展。",
+          "highlights": [
+            {
+              "arxiv_id": "2610.24849",
+              "priority": "must_read",
+              "title": "Tidal Disruption Events in Active Galactic Nuclei: Thermal Radiation and Jets",
+              "reason": "该工作利用三维全辐射磁流体动力学（RMHD）模拟，首次自洽研究了活动星系核（AGN）中超爱丁顿恒星碎屑流撞击磁化吸积盘的动力学、非对称热辐射以及磁通量向黑洞汇聚触发相对论喷流的过程，直接关乎致密天体超爱丁顿吸积、高能辐射及相对论喷流产生机制。"
+            }
+          ],
+          "data_file": "daily/2026-10-19.json"
+        },
+        {
+          "date": "2026-10-18",
+          "weekday": "Sun",
+          "week_id": "2026-W43",
+          "batch_id": "announcement-2026-10-18",
+          "total_papers": 57,
+          "analyzed_count": 57,
+          "must_read_count": 1,
+          "worth_knowing_count": 19,
+          "skip_count": 37,
+          "pending_count": 0,
+          "brief_status": "ready",
+          "brief_intro": "本期首看《Sparking Dynamic, Relativistic Magnetic Reconnection in a Twisted Flux Tube》等 20 篇核心进展。",
+          "highlights": [
+            {
+              "arxiv_id": "2610.22653",
+              "priority": "must_read",
+              "title": "Sparking Dynamic, Relativistic Magnetic Reconnection in a Twisted Flux Tube",
+              "reason": "本文深入研究了磁星磁层细长扭缠磁通管中的相对论磁重联，结合非均匀电阻率与电荷匮乏机制，对解释磁星快速射电暴（FRB）前身辐射微结构、射电瞬变及巨耀斑重子抛射机制具有关键理论指导价值。"
+            }
+          ],
+          "data_file": "daily/2026-10-18.json"
+        }
+      ],
+      "weekly_data_file": "weekly/2026-W43.json"
+    },
     {
       "week_id": "2026-W42",
       "title": "每周学术脉络 · 2026-W42",
       "date_range": "2026-10-12 ~ 2026-10-18",
       "has_weekly_summary": true,
-      "executive_summary": "本周高能天体物理重点工作系统揭示了从中心天体能量注入、磁层耗散到激波演化及周围介质反馈的完整动力学链条。\n- **快速射电暴与磁星环境**：Bhardwaj 等 (arXiv:2610.13062) 发现 FRB 宿主星系轴比 $q$ 与静止系过剩色散量呈显著负相关（$r_P = -0.402$），修正后使 Macquart 关系色散降低 $40\\%$；Zheng 等 (arXiv:2610.14581) 基于 Fermi/GECAM 统计论证磁星 X 射线爆发等待时间服从双组分分布，能量释放标度指数 $\\gamma = 0.94\\pm 0.29$ 强力支持自组织临界磁重联机制；Curtin 等 (arXiv:2610.18710) 利用无似然贝叶斯推断确认 CHIME/FRB Catalog 2 倾向于包含独立的真正单发星族（$\\Delta\\ln\\mathrm{BF} = 114.41$）。\n- **伽马射线暴与相对论喷流**：Gao 等 (arXiv:2610.15703) 构建 PNS 磁偶极辐射接力黑洞回落吸积盘（BZ 机制）的两阶段引擎模型，并揭示了辐射力矩瓦解（RATD）导致的宿主消光非单调演化；Perley 等 (arXiv:2610.20741) 阐明了毫米波快速响应干涉阵列在捕获反向激波谱拐折 $\\nu_{\\mathrm{a}}$ 及打破初始洛伦兹因子 $\\Gamma$ 与磁化度 $\\sigma$ 简并中的核心作用。\n- **超新星前身星与周星介质**：Dessart 等 (arXiv:2610.16527) 证明宽线富氢超亮超新星（SLSNe II）早期紫外超额来自非热星周介质相互作用（$\\dot{M} \\sim 10^{-4}\\text{--}0.03\\,\\mathrm{M_\\odot\\,yr^{-1}}$），而巨大辐射能量排除纯中微子激波并确证中心引擎驱动；Rose 等 (arXiv:2610.13011) 基于 ASKAP 监测测定 SN 2024abfo 暴前质量损失率达 $\\dot{M} \\approx 2.5\\times 10^{-5}\\,M_\\odot\\,\\mathrm{yr^{-1}}$；Zhang 等 (arXiv:2610.12880) 通过 LAMOST 中分辨率光谱分解证认 S147 处于星风吹泡空腔膨胀阶段。\n- **致密天体动力学与极端吸积**：Pons 等 (arXiv:2610.18475) 在全相对论流体哈密顿框架下严格求解潮汐准简正模激发；Salganik 等 (arXiv:2610.17982) 证认 A0538-66 为具有 $v_{\\rm LOS} \\approx -0.12c$ 相对论光电离外流与软硬能段相位翻转（$\\Delta\\phi \\approx 0.5$）的暂现 ULXP。\n> 🎯 **筛选边界**：本周重点聚焦具备自洽物理机制推断、高精度多波段观测约束或严格微扰论解析的高能爆发工作，已剔除纯唯象星系大样本巡天及低信噪比边缘事件。",
+      "executive_summary": "本周高能爆发现象研究聚焦于中心引擎吸积外流转化、多相介质能量耗散与磁层辐射微观物理的完整因果链条。\n\n- **快速射电暴与磁星磁层**：arXiv:2610.13062 (Sharma 等) 通过 34 例 FRB 宿主星系轴比与静止系过剩色散量之间显著负相关（$r_S = -0.437$）排除了对侧向星系的选择偏倚，并成功将 Macquart 关系弥散降低 $40\\%$；arXiv:2610.14581 (Gao 等) 标定磁星 X 射线爆发子结构能通量阈值幂律指数为 $\\alpha_F = 2.23\\pm 0.10$ 与等待时间幂律长尾，确立自组织临界磁重联机制；arXiv:2610.18710 (Spicer 等) 基于 CHIME Catalog 2 利用贝叶斯推断证实单发与重复爆发源呈现内禀分立子群（相对无单发模型 $\\Delta\\ln\\mathrm{BF}=114.41$）。\n- **相对论喷流与伽马射线暴**：arXiv:2610.15703 (Duan 等) 揭示 GRB 240825A 前兆软平台与硬主暴分别起源于原磁星磁偶极辐射与黑洞 BZ 回落吸积喷流，并证实宿主消光非单调时变由强辐射场大颗粒尘埃瓦解（RATD）主导；arXiv:2610.20741 (Laskar 等) 论证了次世代毫米/亚毫米波干涉阵列通过极早期自吸收拐折测量以解除喷流洛伦兹因子 $\\Gamma$ 与磁化度 $\\sigma$ 简并的理论判据；arXiv:2610.13288 (Brodbeck 等) 通过电阻 GRMHD 模拟确立了黑洞磁层与自旋轴对齐率遵循 $\\Gamma_\\chi \\propto \\eta_{\\rm m} a_*^2$ 的电阻耗散标度律。\n- **超亮超新星与周星介质相互作用**：arXiv:2610.16527 (Bricman 等) 通过宽线富氢超亮超新星近紫外超额恒定比值（$L_{\\rm ex}/L_{\\rm bol} \\approx 0.01\\text{--}0.1$）推断前身星暴前质量损失率达 $\\dot{M} \\sim 10^{-4}\\text{--}0.3\\,M_\\odot\\,\\mathrm{yr^{-1}}$，且辐射总能排除了纯中微子驱动而要求中心引擎介入；arXiv:2610.13011 (Dobie 等) 基于 ASKAP 射电无偏监测揭示 SN 2024abfo 爆炸前数百年的变率外流（$\\dot{M} \\approx 2.5\\times 10^{-5}\\,M_\\odot\\,\\mathrm{yr^{-1}}$）。\n- **致密天体动力学与极高能吸积**：arXiv:2610.17982 (Bissaldi 等) 发现 A0538-66 在 $L_{\\rm X} \\approx 1.5\\times 10^{39}\\,\\mathrm{erg\\,s^{-1}}$ 超爱丁顿吸积下存在 $v_{\\rm LOS} \\approx -0.12c$ 相对论外流并伴随脉动能谱半周期相移，提出辐射压主导漏斗盘遮挡解耦模型；arXiv:2610.18475 (Poisson 等) 基于哈密顿复双线性形式严格求解了致密星潮汐微扰的 QNM 激发振幅 $|C_\\ell/\\mathcal{N}_n| \\approx Q_n^{-1}$ 与割线波尾演化。\n\n> 🎯 **筛选边界**：本周重点聚焦高能瞬变动力学演化、极端介质耗散与致密星辐射时变，凡不具备能量释放物理约束的泛低能巡天与静态天体测光已完全排除。",
       "statistics": {
         "total_analyzed": 364,
         "must_read_count": 8,

@@ -2394,12 +2394,24 @@ small {
   font-family: ui-monospace, monospace;
 }
 
+.intel-card-top-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  flex-wrap: wrap;
+}
+
 .intel-view-all-link {
   font-size: 0.82rem;
   font-weight: 700;
   color: #1b1b1a;
   text-decoration: none;
   white-space: nowrap;
+}
+
+.intel-view-all-link.secondary-link {
+  color: #64748b;
+  font-weight: 600;
 }
 
 .intel-view-all-link:hover {

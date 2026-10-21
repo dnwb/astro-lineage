@@ -25,6 +25,7 @@ const latestWeekId = (archiveManifest as any).latest_week_id || (allWeeks[0]?.we
           {allWeeks.map((w: any) => {
             const isCurrent = w.week_id === currentWeek;
             const isLatest = w.week_id === latestWeekId;
+            const isInProgress = (w.days?.length || 0) < 5 && isLatest;
             const targetUrl = isLatest ? "/arxiv-weekly/" : `/arxiv-weekly/${w.week_id}/`;
             const rangeLabel = w.date_range ? w.date_range.split(" ~ ")[0]?.slice(5) : "";
             const paperCount = w.statistics?.total_analyzed ?? w.top_picks_count ?? 0;
@@ -35,7 +36,11 @@ const latestWeekId = (archiveManifest as any).latest_week_id || (allWeeks[0]?.we
                 title={`切换至 ${w.week_id} (${w.date_range}) 学术脉络综述`}
                 aria-current={isCurrent ? "page" : undefined}
               >
-                {isLatest && <span class="pill-fire-badge">最新</span>}
+                {isInProgress ? (
+                  <span class="pill-fire-badge pill-in-progress">进行中</span>
+                ) : isLatest ? (
+                  <span class="pill-fire-badge">最新</span>
+                ) : null}
                 <strong class="pill-date">{w.week_id}</strong>
                 {rangeLabel && <span class="pill-weekday">{rangeLabel}</span>}
                 <span class="pill-count">{paperCount}篇</span>

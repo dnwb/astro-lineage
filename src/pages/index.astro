@@ -248,7 +248,10 @@ const bjtDailyInfo = formatAnnouncementInBeijing(latestDate, radarWeekday);
                 <span class="intel-meta-kicker">本周综述 · {formatWeekIdZh((weeklyData as any).week_id, { withCode: true })}</span>
                 <span class="intel-meta-date">{(weeklyData as any).date_range}</span>
               </div>
-              <a class="intel-view-all-link" href="/arxiv-weekly/">查看完整周报 →</a>
+              <div class="intel-card-top-actions">
+                <a class="intel-view-all-link" href="/arxiv-weekly/">查看本周综述 →</a>
+                <a class="intel-view-all-link secondary-link" href="/arxiv-weekly/2026-W42/" title="查看上一周完整五日学术脉络">完整周报 (W42) →</a>
+              </div>
             </div>
 
             <h3 class="intel-card-title">

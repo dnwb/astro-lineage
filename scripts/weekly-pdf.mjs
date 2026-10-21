@@ -445,11 +445,11 @@ export async function generatePublicationWeeklyHtml({
       box-sizing: border-box;
     }
     body {
-      font-family: "Noto Sans CJK SC", "Source Han Sans CN", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", "Source Han Sans CN", "Noto Sans CJK SC", Arial, sans-serif;
       line-height: 1.42;
       color: #0f172a;
       background: #ffffff;
-      font-size: 8.5pt;
+      font-size: 8.4pt;
       margin: 0;
       padding: 0;
       -webkit-print-color-adjust: exact;
@@ -481,50 +481,99 @@ export async function generatePublicationWeeklyHtml({
       margin: 0;
     }
     ul, ol {
-      margin: 3px 0 4px 0;
-      padding-left: 18px;
+      margin: 2px 0 3px 0;
+      padding-left: 16px;
     }
     li {
-      margin-bottom: 2px;
+      margin-bottom: 1.5px;
+    }
+    .preprint-banner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 7.2pt;
+      color: #64748b;
+      letter-spacing: 0.3px;
+      border-bottom: 1.5px solid #0f172a;
+      padding-bottom: 3px;
+      margin-bottom: 8px;
+    }
+    .preprint-banner strong {
+      color: #0f172a;
     }
     .masthead {
       border-bottom: 2px solid #0284c7;
-      padding-bottom: 6px;
+      padding-bottom: 8px;
       margin-bottom: 10px;
     }
     .masthead-title {
-      font-size: 14pt;
+      font-family: "Source Han Serif CN", "Noto Serif CJK SC", "Songti SC", Georgia, "Times New Roman", serif;
+      font-size: 14.5pt;
       font-weight: 700;
       color: #0f172a;
-      margin: 0 0 3px 0;
+      margin: 0 0 4px 0;
+      line-height: 1.3;
       letter-spacing: -0.2px;
     }
     .masthead-meta {
-      font-size: 8pt;
-      color: #64748b;
+      font-size: 7.8pt;
+      color: #475569;
       display: flex;
       flex-wrap: wrap;
-      gap: 12px;
+      align-items: center;
+      gap: 8px;
       margin: 0;
     }
+    .meta-tag {
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 2px;
+      padding: 1.5px 5px;
+      font-size: 7.4pt;
+      color: #334155;
+    }
+    .meta-tag strong {
+      color: #0f172a;
+    }
     .section-title {
-      font-size: 10.5pt;
+      font-family: "Source Han Serif CN", "Noto Serif CJK SC", Georgia, serif;
+      font-size: 10.8pt;
       font-weight: 700;
       color: #0f172a;
-      border-bottom: 1.2px solid #e2e8f0;
+      border-bottom: 1.5px solid #0f172a;
       padding-bottom: 3px;
       margin: 12px 0 6px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      page-break-after: avoid;
+      break-after: avoid;
+    }
+    .section-title-sub {
+      font-size: 8.8pt;
+      font-weight: 700;
+      color: #1e293b;
+      margin: 8px 0 4px 0;
       page-break-after: avoid;
       break-after: avoid;
     }
     .executive-box {
       background: #f8fafc;
-      border: 1px solid #e2e8f0;
-      border-radius: 4px;
+      border: 1px solid #cbd5e1;
+      border-left: 3.5px solid #0f172a;
+      border-radius: 2px;
       padding: 7px 10px;
-      font-size: 8.3pt;
+      font-size: 8.2pt;
       line-height: 1.45;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
+    }
+    .executive-label {
+      font-size: 7pt;
+      font-weight: 700;
+      letter-spacing: 0.6px;
+      color: #0f172a;
+      text-transform: uppercase;
+      margin-bottom: 3px;
     }
     .executive-box p {
       margin: 0 0 4px 0;
@@ -532,38 +581,43 @@ export async function generatePublicationWeeklyHtml({
     .executive-box p:last-child {
       margin-bottom: 0;
     }
+    .theme-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px;
+      margin-bottom: 6px;
+    }
     .theme-card {
       background: #ffffff;
-      border: 1px solid #e2e8f0;
+      border: 1px solid #cbd5e1;
       border-left: 3px solid #0284c7;
-      border-radius: 3px;
-      padding: 6px 9px;
-      margin-bottom: 6px;
+      border-radius: 2px;
+      padding: 5px 8px;
       break-inside: avoid;
       page-break-inside: avoid;
     }
     .theme-title {
-      font-size: 9.2pt;
+      font-size: 8.8pt;
       font-weight: 700;
-      color: #1e293b;
+      color: #0f172a;
       margin: 0 0 2px 0;
     }
     .theme-summary {
-      font-size: 8.1pt;
+      font-size: 7.8pt;
       color: #334155;
       margin: 0 0 3px 0;
-      line-height: 1.4;
+      line-height: 1.38;
     }
     .theme-summary p {
       margin: 0;
     }
     .theme-papers {
-      font-size: 7.8pt;
+      font-size: 7.4pt;
       color: #64748b;
     }
     .must-read-card {
-      border: 1px solid #cbd5e1;
-      border-radius: 4px;
+      border: 1.2px solid #cbd5e1;
+      border-radius: 3px;
       padding: 8px 10px;
       margin-bottom: 10px;
       background: #ffffff;
@@ -572,81 +626,150 @@ export async function generatePublicationWeeklyHtml({
     }
     .paper-header {
       margin-bottom: 5px;
+      border-bottom: 1px dashed #e2e8f0;
+      padding-bottom: 4px;
+    }
+    .paper-badge-bar {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-bottom: 2px;
+    }
+    .badge-paper-num {
+      background: #0f172a;
+      color: #ffffff;
+      font-size: 6.5pt;
+      font-weight: 700;
+      padding: 1px 4px;
+      border-radius: 2px;
+      letter-spacing: 0.3px;
     }
     .badge-must {
       background: #0284c7;
       color: #ffffff;
-      font-size: 7pt;
+      font-size: 6.8pt;
       font-weight: 700;
       padding: 1.5px 5px;
       border-radius: 2px;
-      margin-right: 5px;
       text-transform: uppercase;
       display: inline-block;
       vertical-align: middle;
     }
     .paper-title-zh {
-      font-size: 10.5pt;
+      font-family: "Source Han Serif CN", "Noto Serif CJK SC", "Songti SC", Georgia, serif;
+      font-size: 10.8pt;
       font-weight: 700;
       color: #0f172a;
-      display: inline;
-      vertical-align: middle;
+      margin: 2px 0;
+      line-height: 1.35;
+    }
+    .paper-title-zh a {
+      color: #0f172a;
+      text-decoration: none;
+    }
+    .paper-title-zh a:hover {
+      color: #0284c7;
+      text-decoration: underline;
     }
     .paper-title-en {
       font-size: 8pt;
       color: #475569;
       font-style: italic;
-      margin: 2px 0 3px 0;
+      margin: 1px 0 2px 0;
+      line-height: 1.28;
     }
     .paper-authors-bar {
-      font-size: 7.8pt;
+      font-size: 7.6pt;
       color: #64748b;
-      margin-bottom: 5px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+    }
+    .paper-links-bar a {
+      color: #0284c7;
+      text-decoration: underline;
     }
     .highlight-callout {
       background: #f0f9ff;
       border: 1px solid #bae6fd;
-      border-left: 3px solid #0284c7;
-      border-radius: 3px;
-      padding: 4px 7px;
-      margin-bottom: 6px;
-      font-size: 8.1pt;
-      line-height: 1.38;
+      border-left: 3.5px solid #0284c7;
+      border-radius: 2px;
+      padding: 5px 8px;
+      margin-bottom: 5px;
+      font-size: 8pt;
+      line-height: 1.4;
     }
-    .highlight-callout p {
-      margin: 0 0 2px 0;
+    .highlight-callout-header {
+      font-size: 6.8pt;
+      font-weight: 700;
+      color: #0369a1;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      margin-bottom: 2px;
     }
-    .highlight-callout p:last-child {
-      margin-bottom: 0;
+    .deep-dive-cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5px;
+      margin-top: 4px;
     }
-    .deep-dive-grid {
+    .deep-dive-col {
       display: flex;
       flex-direction: column;
       gap: 4px;
-      margin-top: 5px;
     }
     .deep-dive-item {
       background: #f8fafc;
       border: 1px solid #e2e8f0;
-      border-radius: 3px;
+      border-radius: 2px;
       padding: 4px 7px;
+      height: 100%;
     }
     .deep-dive-label {
-      font-size: 7.8pt;
+      font-size: 7.5pt;
       font-weight: 700;
       color: #334155;
       margin-bottom: 2px;
+      border-bottom: 1px solid #e2e8f0;
+      padding-bottom: 1.5px;
     }
     .deep-dive-content {
-      font-size: 8.1pt;
+      font-size: 7.9pt;
       color: #1e293b;
-      line-height: 1.4;
+      line-height: 1.38;
     }
     .deep-dive-content p {
       margin: 0 0 3px 0;
     }
     .deep-dive-content p:last-child {
       margin-bottom: 0;
+    }
+    .deep-dive-full {
+      margin-top: 5px;
+    }
+    .deep-dive-result-box {
+      background: #fffdf5;
+      border: 1px solid #fed7aa;
+      border-left: 3.5px solid #ea580c;
+      border-radius: 2px;
+      padding: 5px 8px;
+    }
+    .deep-dive-result-box .deep-dive-label {
+      color: #c2410c;
+      border-bottom: 1px solid #ffedd5;
+    }
+    .deep-dive-guide-box {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-left: 3.5px solid #16a34a;
+      border-radius: 2px;
+      padding: 4px 8px;
+      margin-top: 4px;
+    }
+    .deep-dive-guide-box .deep-dive-label {
+      color: #15803d;
+      border-bottom: 1px solid #dcfce7;
     }
     .figure-block {
       margin: 6px 0;
@@ -655,37 +778,39 @@ export async function generatePublicationWeeklyHtml({
       page-break-inside: avoid;
     }
     .figure-block img {
-      max-width: 72%;
-      max-height: 200px;
+      max-width: 82%;
+      max-height: 250px;
       height: auto;
-      border: 1px solid #e2e8f0;
-      border-radius: 3px;
+      border: 1px solid #cbd5e1;
+      border-radius: 2px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
     }
     .figure-caption {
-      font-size: 7.4pt;
-      color: #64748b;
+      font-size: 7.3pt;
+      color: #475569;
       margin-top: 3px;
-      line-height: 1.3;
+      line-height: 1.32;
       text-align: left;
-      padding: 0 4%;
+      padding: 0 9%;
     }
     .worth-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 6px;
       margin-top: 4px;
+      margin-bottom: 8px;
     }
     .worth-card {
-      border: 1px solid #e2e8f0;
-      border-left: 2.5px solid #94a3b8;
-      border-radius: 3px;
+      border: 1px solid #cbd5e1;
+      border-left: 3px solid #0284c7;
+      border-radius: 2px;
       padding: 5px 8px;
-      background: #fafafa;
+      background: #ffffff;
       break-inside: avoid;
       page-break-inside: avoid;
     }
     .badge-worth {
-      background: #64748b;
+      background: #475569;
       color: #ffffff;
       font-size: 6.5pt;
       font-weight: 700;
@@ -696,50 +821,132 @@ export async function generatePublicationWeeklyHtml({
       vertical-align: middle;
     }
     .worth-title-zh {
-      font-size: 8.8pt;
+      font-size: 8.6pt;
       font-weight: 700;
-      color: #1e293b;
+      color: #0f172a;
       display: inline;
     }
     .worth-meta {
-      font-size: 7.4pt;
+      font-size: 7.3pt;
       color: #64748b;
-      margin: 1px 0 2px 0;
+      margin: 1.5px 0 2.5px 0;
     }
     .worth-desc {
-      font-size: 7.8pt;
+      font-size: 7.7pt;
       color: #334155;
       margin: 1.5px 0;
       line-height: 1.35;
     }
+    .compendium-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 7.4pt;
+      line-height: 1.35;
+      margin-top: 5px;
+      margin-bottom: 10px;
+      border: 1px solid #cbd5e1;
+    }
+    .compendium-table thead {
+      display: table-header-group;
+    }
+    .compendium-table th {
+      background: #0f172a;
+      color: #f8fafc;
+      font-weight: 700;
+      text-align: left;
+      padding: 4px 6px;
+      border: 1px solid #334155;
+      font-size: 7.2pt;
+      letter-spacing: 0.3px;
+    }
+    .compendium-table td {
+      padding: 4px 6px;
+      border: 1px solid #e2e8f0;
+      vertical-align: top;
+    }
+    .compendium-table tbody tr {
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+    .compendium-table tbody tr:nth-child(even) {
+      background: #f8fafc;
+    }
+    .table-aid {
+      font-family: monospace;
+      font-size: 7.4pt;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .table-date {
+      font-size: 6.8pt;
+      color: #64748b;
+      white-space: nowrap;
+    }
+    .table-title-zh {
+      font-weight: 700;
+      color: #0f172a;
+      line-height: 1.3;
+    }
+    .table-title-en {
+      font-size: 7pt;
+      color: #64748b;
+      font-style: italic;
+      line-height: 1.25;
+      margin-top: 1px;
+    }
+    .table-authors {
+      font-size: 6.9pt;
+      color: #475569;
+      margin-top: 2px;
+    }
+    .table-insight {
+      color: #1e293b;
+    }
     .footer {
       margin-top: 14px;
-      border-top: 1px solid #e2e8f0;
-      padding-top: 6px;
-      font-size: 7.5pt;
-      color: #94a3b8;
-      text-align: center;
+      border-top: 1.5px solid #0f172a;
+      padding-top: 5px;
+      font-size: 7.3pt;
+      color: #64748b;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
   </style>
 </head>
 <body>
+  <div class="preprint-banner">
+    <span><strong>AstroLineage Weekly Digest</strong> ｜ 高能天体物理前沿脉络研报</span>
+    <span><strong>Vol. 2026 · ${weekId}</strong> ｜ 周期：${dateRange}</span>
+  </div>
+
   <header class="masthead">
     <h1 class="masthead-title">高能天体物理 arXiv 每周学术脉络 · ${weekZh || weekId} 深度精读研报</h1>
     <div class="masthead-meta">
-      <span><strong>报告周期：</strong>${weekLabel}</span>
-      <span><strong>时间跨度：</strong>${dateRange}</span>
-      <span><strong>纳入精读：</strong>${mustReads.length} 篇必读 ｜ ${worths.length} 篇重点关注</span>
-      <span><strong>在线精读：</strong><a href="${base}/arxiv-weekly/${weekId}/">${base}/arxiv-weekly/${weekId}/</a></span>
+      <span class="meta-tag"><strong>报告周期：</strong>${weekLabel}</span>
+      <span class="meta-tag"><strong>时间跨度：</strong>${dateRange}</span>
+      <span class="meta-tag"><strong>纳入精读：</strong>${mustReads.length} 篇核心必读 ｜ ${worths.length} 篇重点关注</span>
+      <span class="meta-tag"><strong>在线精读：</strong><a href="${base}/arxiv-weekly/${weekId}/">${base}/arxiv-weekly/${weekId}/</a></span>
     </div>
   </header>
 
   <section>
-    <div class="section-title">1. 本周综述与宏观脉络 (Executive Synthesis)</div>
-    <div class="executive-box">${renderMarkdownWithMath(weeklyData.executive_summary || "暂无本周综述。")}</div>
+    <div class="section-title">
+      <span>1. 本周综述与宏观脉络 (Executive Synthesis)</span>
+      <span style="font-size: 7.4pt; color: #64748b; font-family: sans-serif; font-weight: normal;">EDITORIAL OVERVIEW</span>
+    </div>
+    <div class="executive-box">
+      <div class="executive-label">ABSTRACT / 学术总览</div>
+      ${renderMarkdownWithMath(weeklyData.executive_summary || "暂无本周综述。")}
+    </div>
   </section>
 
   <section>
-    <div class="section-title">2. 前沿专题动态与交叉脉络 (Thematic Highlights)</div>
+    <div class="section-title">
+      <span>2. 前沿专题动态与交叉脉络 (Thematic Highlights)</span>
+      <span style="font-size: 7.4pt; color: #64748b; font-family: sans-serif; font-weight: normal;">${(weeklyData.thematic_highlights || []).length} THEMATIC CLUSTERS</span>
+    </div>
+    <div class="theme-grid">
 `);
 
   for (let i = 0; i < (weeklyData.thematic_highlights || []).length; i++) {
@@ -748,22 +955,27 @@ export async function generatePublicationWeeklyHtml({
       .map((pid) => `<a href="https://arxiv.org/abs/${pid}">arXiv:${pid}</a>`)
       .join(" ｜ ");
     html.push(`
-    <div class="theme-card">
-      <div class="theme-title">专题 ${i + 1}：${t.theme_name || ""}</div>
-      <div class="theme-summary">${renderMarkdownWithMath(t.summary || "")}</div>
-      <div class="theme-papers"><strong>代表文献：</strong>${pLinks}</div>
-    </div>
+      <div class="theme-card">
+        <div class="theme-title">专题 ${i + 1}：${t.theme_name || ""}</div>
+        <div class="theme-summary">${renderMarkdownWithMath(t.summary || "")}</div>
+        <div class="theme-papers"><strong>代表文献：</strong>${pLinks}</div>
+      </div>
 `);
   }
 
   html.push(`
+    </div>
   </section>
 
   <section>
-    <div class="section-title">3. ⭐ 核心必读文献深度解析 (Must-Read In-Depth Deep Dives)</div>
+    <div class="section-title">
+      <span>3. ⭐ 核心必读文献深度解析 (Must-Read In-Depth Deep Dives)</span>
+      <span style="font-size: 7.4pt; color: #64748b; font-family: sans-serif; font-weight: normal;">${mustReads.length} ARTICLES EXPANDED</span>
+    </div>
 `);
 
-  for (const p of mustReads) {
+  for (let pIdx = 0; pIdx < mustReads.length; pIdx++) {
+    const p = mustReads[pIdx];
     const aid = p.arxiv_id;
     const titleZh = resolvePaperTitleZhSync(p) || p.title || aid;
     const titleEn = p.title || aid;
@@ -775,53 +987,80 @@ export async function generatePublicationWeeklyHtml({
     html.push(`
     <article class="must-read-card">
       <div class="paper-header">
-        <span class="badge-must">⭐ 必读精选</span>
-        <h2 class="paper-title-zh"><a href="https://arxiv.org/abs/${aid}">[arXiv:${aid}] ${titleZh}</a></h2>
-        <div class="paper-title-en">${titleEn}</div>
+        <div class="paper-badge-bar">
+          <span class="badge-paper-num">PAPER ${String(pIdx + 1).padStart(2, "0")}</span>
+          <span class="badge-must">⭐ 必读精选</span>
+          <span style="font-size: 7.4pt; color: #64748b; font-family: monospace;">arXiv:${aid}</span>
+        </div>
+        <h2 class="paper-title-zh"><a href="https://arxiv.org/abs/${aid}">[arXiv:${aid}] ${escapeHtml(titleZh)}</a></h2>
+        <div class="paper-title-en">${escapeHtml(titleEn)}</div>
         <div class="paper-authors-bar">
-          <strong>作者：</strong>${authorStr} ｜
-          <a href="https://arxiv.org/abs/${aid}">arXiv 原文</a> ｜
-          <a href="https://ui.adsabs.harvard.edu/abs/arXiv:${aid}">NASA ADS</a> ｜
-          <a href="${base}/arxiv-weekly/${weekId}/#paper-${aid}">站内交互雷达</a>
+          <span><strong>作者：</strong>${escapeHtml(authorStr)}</span>
+          <span class="paper-links-bar">
+            <a href="https://arxiv.org/abs/${aid}">arXiv 原文</a> ｜
+            <a href="https://ui.adsabs.harvard.edu/abs/arXiv:${aid}">NASA ADS</a> ｜
+            <a href="${base}/arxiv-weekly/${weekId}/#paper-${aid}">站内交互雷达</a>
+          </span>
         </div>
       </div>
 
       <div class="highlight-callout">
-        <div><strong>【推荐理由】：</strong>${renderInlineMarkdownWithMath(p.recommendation_reason || "无")}</div>
-        <div style="margin-top: 3px;"><strong>【核心突破】：</strong>${renderInlineMarkdownWithMath(p.core_insight || "无")}</div>
+        <div class="highlight-callout-header">RESEARCH HIGHLIGHT & BREAKTHROUGH / 核心突破与推荐理由</div>
+        <div><strong>【核心突破】：</strong>${renderInlineMarkdownWithMath(p.core_insight || "无")}</div>
+        <div style="margin-top: 2.5px;"><strong>【推荐理由】：</strong>${renderInlineMarkdownWithMath(p.recommendation_reason || "无")}</div>
       </div>
 
-      <div class="deep-dive-grid">
-`);
-
-    if (dailyA.problem) {
-      html.push(`
-        <div class="deep-dive-item">
-          <div class="deep-dive-label">🔍 科学问题 (Problem)</div>
-          <div class="deep-dive-content">${renderMarkdownWithMath(dailyA.problem)}</div>
+      <div class="deep-dive-cols">
+        <div class="deep-dive-col">
+          ${
+            dailyA.problem
+              ? `
+          <div class="deep-dive-item">
+            <div class="deep-dive-label">🔍 科学问题与背景 (Problem)</div>
+            <div class="deep-dive-content">${renderMarkdownWithMath(dailyA.problem)}</div>
+          </div>`
+              : ""
+          }
+          ${
+            dailyA.method
+              ? `
+          <div class="deep-dive-item">
+            <div class="deep-dive-label">🛠️ 观测与研究方法 (Methodology)</div>
+            <div class="deep-dive-content">${renderMarkdownWithMath(dailyA.method)}</div>
+          </div>`
+              : ""
+          }
         </div>
-`);
-    }
-    if (dailyA.method) {
-      html.push(`
-        <div class="deep-dive-item">
-          <div class="deep-dive-label">🛠️ 观测与研究方法 (Methodology)</div>
-          <div class="deep-dive-content">${renderMarkdownWithMath(dailyA.method)}</div>
+        <div class="deep-dive-col">
+          ${
+            dailyA.assumptions
+              ? `
+          <div class="deep-dive-item">
+            <div class="deep-dive-label">📐 物理模型与关键假设 (Models & Assumptions)</div>
+            ${
+              Array.isArray(dailyA.assumptions)
+                ? `<ul style="margin: 0; padding-left: 16px;">${dailyA.assumptions.map((a) => `<li>${renderInlineMarkdownWithMath(a)}</li>`).join("")}</ul>`
+                : `<div class="deep-dive-content">${renderMarkdownWithMath(dailyA.assumptions)}</div>`
+            }
+          </div>`
+              : ""
+          }
+          ${
+            dailyA.limits
+              ? `
+          <div class="deep-dive-item">
+            <div class="deep-dive-label">⚠️ 局限性与观测边界 (Limits & Caveats)</div>
+            ${
+              Array.isArray(dailyA.limits)
+                ? `<ul style="margin: 0; padding-left: 16px;">${dailyA.limits.map((l) => `<li>${renderInlineMarkdownWithMath(l)}</li>`).join("")}</ul>`
+                : `<div class="deep-dive-content">${renderMarkdownWithMath(dailyA.limits)}</div>`
+            }
+          </div>`
+              : ""
+          }
         </div>
+      </div>
 `);
-    }
-    if (dailyA.assumptions) {
-      const ass = dailyA.assumptions;
-      const assStr = Array.isArray(ass)
-        ? `<ul style="margin: 0; padding-left: 18px;">${ass.map((a) => `<li>${renderInlineMarkdownWithMath(a)}</li>`).join("")}</ul>`
-        : `<div class="deep-dive-content">${renderMarkdownWithMath(ass)}</div>`;
-      html.push(`
-        <div class="deep-dive-item">
-          <div class="deep-dive-label">📐 物理模型与关键假设 (Models & Assumptions)</div>
-          ${assStr}
-        </div>
-`);
-    }
 
     if (Array.isArray(dailyA.figures) && dailyA.figures.length > 0) {
       for (let fIdx = 0; fIdx < dailyA.figures.length; fIdx++) {
@@ -831,70 +1070,74 @@ export async function generatePublicationWeeklyHtml({
         const badge = fig.category_badge ? ` [${fig.category_badge}]` : "";
         const caption = fig.caption || "";
         html.push(`
-        <div class="figure-block">
-          <img src="${b64Src}" alt="${label}" />
-          <div class="figure-caption"><strong>${label}${badge}：</strong>${renderInlineMarkdownWithMath(caption)}</div>
-        </div>
+      <div class="figure-block">
+        <img src="${b64Src}" alt="${escapeHtml(label)}" />
+        <div class="figure-caption"><strong>${escapeHtml(label)}${escapeHtml(badge)}：</strong>${renderInlineMarkdownWithMath(caption)}</div>
+      </div>
 `);
       }
     }
 
     if (dailyA.result) {
       html.push(`
-        <div class="deep-dive-item">
+      <div class="deep-dive-full">
+        <div class="deep-dive-result-box">
           <div class="deep-dive-label">📊 关键结论与定量测量 (Quantitative Results)</div>
           <div class="deep-dive-content">${renderMarkdownWithMath(dailyA.result)}</div>
         </div>
+      </div>
 `);
     }
-    if (dailyA.limits) {
-      const lims = dailyA.limits;
-      const limStr = Array.isArray(lims)
-        ? `<ul style="margin: 0; padding-left: 18px;">${lims.map((l) => `<li>${renderInlineMarkdownWithMath(l)}</li>`).join("")}</ul>`
-        : `<div class="deep-dive-content">${renderMarkdownWithMath(lims)}</div>`;
-      html.push(`
-        <div class="deep-dive-item">
-          <div class="deep-dive-label">⚠️ 局限性与观测边界 (Limits & Caveats)</div>
-          ${limStr}
-        </div>
-`);
-    }
+
     if (p.reading_guide || dailyA.reading_entry) {
       html.push(`
-        <div class="deep-dive-item" style="border-left: 3px solid #0284c7;">
-          <div class="deep-dive-label">🎯 建议精读切入点 (Reading Guide)</div>
-          <div class="deep-dive-content">${renderInlineMarkdownWithMath(p.reading_guide || dailyA.reading_entry)}</div>
-        </div>
+      <div class="deep-dive-guide-box">
+        <div class="deep-dive-label">🎯 建议精读切入点 (Reading Guide)</div>
+        <div class="deep-dive-content">${renderInlineMarkdownWithMath(p.reading_guide || dailyA.reading_entry)}</div>
+      </div>
 `);
     }
 
     html.push(`
-      </div>
     </article>
 `);
   }
 
   html.push(`
   </section>
+`);
 
+  // 4. 重点关注文献（分层展现：top_picks 精选卡片 + 其余文献学术表格）
+  const topWorths = worths.filter((p) => p.isTopPick);
+  const otherWorths = worths.filter((p) => !p.isTopPick);
+
+  html.push(`
   <section>
-    <div class="section-title">4. 📌 本周重点关注文献 (Worth-Knowing Works · 共 ${worths.length} 篇)</div>
-    <p style="font-size: 8pt; color: #64748b; margin-top: -3px; margin-bottom: 8px;">以下文献针对特定机制或子方向提供重要观测线索与实测约束，保持精炼条目，不展开精读详情。</p>
+    <div class="section-title">
+      <span>4. 📌 本周重点关注文献 (Worth-Knowing Selected Works · 共 ${worths.length} 篇)</span>
+      <span style="font-size: 7.4pt; color: #64748b; font-family: sans-serif; font-weight: normal;">STRUCTURED COMPENDIUM</span>
+    </div>
+    <p style="font-size: 7.8pt; color: #64748b; margin-top: -3px; margin-bottom: 8px;">以下文献针对特定物理机制或子方向提供重要观测线索与实测约束，采用前沿精选卡片与总览表格双轨呈现。</p>
+`);
+
+  if (topWorths.length > 0) {
+    html.push(`
+    <div class="section-title-sub">4.1 重点关注 · 特选导读 (Featured Highlights · 共 ${topWorths.length} 篇)</div>
     <div class="worth-grid">
 `);
 
-  for (const p of worths) {
-    const aid = p.arxiv_id;
-    const titleZh = resolvePaperTitleZhSync(p) || p.title || aid;
-    const titleEn = p.title || aid;
-    const feed = dailyEntryMap.get(aid);
-    const authors = (p.authors && p.authors.length > 0 ? p.authors : feed?.authors) || [];
-    const authorStr = authors.slice(0, 3).join(", ") + (authors.length > 3 ? " 等" : "");
+    for (const p of topWorths) {
+      const aid = p.arxiv_id;
+      const titleZh = resolvePaperTitleZhSync(p) || p.title || aid;
+      const titleEn = p.title || aid;
+      const feed = dailyEntryMap.get(aid);
+      const authors = (p.authors && p.authors.length > 0 ? p.authors : feed?.authors) || [];
+      const authorStr = authors.slice(0, 3).join(", ") + (authors.length > 3 ? " 等" : "");
 
-    html.push(`
+      html.push(`
       <div class="worth-card">
         <div>
-          <span class="${p.isTopPick ? "badge-must" : "badge-worth"}" style="${p.isTopPick ? "background:#fef3c7;color:#92400e;border-color:#fde68a;" : ""}">${p.isTopPick ? "⭐ 重点关注" : "📌 关注"}</span>
+          <span class="badge-worth" style="background:#0284c7;color:#ffffff;">⭐ 重点关注</span>
           <div class="worth-title-zh"><a href="https://arxiv.org/abs/${aid}">[arXiv:${aid}] ${escapeHtml(titleZh)}</a></div>
         </div>
         <div class="worth-meta"><strong>原题：</strong>${escapeHtml(titleEn)} ｜ <strong>作者：</strong>${escapeHtml(authorStr)}</div>
@@ -903,14 +1146,70 @@ export async function generatePublicationWeeklyHtml({
         ${p.reading_guide ? `<div class="worth-desc" style="color: #64748b;"><strong>【阅读切入】：</strong>${renderInlineMarkdownWithMath(p.reading_guide)}</div>` : ""}
       </div>
 `);
+    }
+
+    html.push(`
+    </div>
+`);
+  }
+
+  if (otherWorths.length > 0) {
+    html.push(`
+    <div class="section-title-sub">4.2 重点关注 · 全周论文简表 (Weekly Compendium · 共 ${otherWorths.length} 篇)</div>
+    <table class="compendium-table">
+      <thead>
+        <tr>
+          <th style="width: 14%;">arXiv ID / 日期</th>
+          <th style="width: 32%;">文献题名与作者</th>
+          <th style="width: 41%;">核心要点与观测约束</th>
+          <th style="width: 13%;">阅读切入</th>
+        </tr>
+      </thead>
+      <tbody>
+`);
+
+    for (const p of otherWorths) {
+      const aid = p.arxiv_id;
+      const titleZh = resolvePaperTitleZhSync(p) || p.title || aid;
+      const titleEn = p.title || aid;
+      const feed = dailyEntryMap.get(aid);
+      const authors = (p.authors && p.authors.length > 0 ? p.authors : feed?.authors) || [];
+      const authorStr = authors.slice(0, 3).join(", ") + (authors.length > 3 ? " 等" : "");
+      const date = p.announcement_date || "";
+
+      html.push(`
+        <tr>
+          <td>
+            <a href="https://arxiv.org/abs/${aid}" class="table-aid">arXiv:${aid}</a>
+            ${date ? `<div class="table-date">${escapeHtml(date)}</div>` : ""}
+          </td>
+          <td>
+            <div class="table-title-zh">${escapeHtml(titleZh)}</div>
+            <div class="table-title-en">${escapeHtml(titleEn)}</div>
+            <div class="table-authors">${escapeHtml(authorStr)}</div>
+          </td>
+          <td>
+            <div class="table-insight">${renderInlineMarkdownWithMath(p.core_insight || p.recommendation_reason || "无详细解析。")}</div>
+          </td>
+          <td>
+            <div style="font-size: 7.1pt; color: #475569;">${renderInlineMarkdownWithMath(p.reading_guide || "正文")}</div>
+          </td>
+        </tr>
+`);
+    }
+
+    html.push(`
+      </tbody>
+    </table>
+`);
   }
 
   html.push(`
-    </div>
   </section>
 
   <footer class="footer">
-    AstroLineage 学术雷达团队研报 · 本期编号 ${weekId} ｜ 报告内所有 arXiv 及站内链接均支持直接点击跳转
+    <span>AstroLineage 学术雷达团队 · 期号 ${weekId} ｜ 矢量排版支持全文检索与超链接直达</span>
+    <span>在线入口：<a href="${base}/arxiv-weekly/${weekId}/">${base}/arxiv-weekly/${weekId}/</a></span>
   </footer>
 </body>
 </html>
@@ -1071,7 +1370,9 @@ export async function generateWeeklyPdf({
 // CLI 直调支持
 if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1])) {
   const args = process.argv.slice(2);
-  const targetWeek = args[0] || "2026-W42";
+  const weekArg =
+    args.find((a) => a.startsWith("--week="))?.slice(7) || args.find((a) => !a.startsWith("-"));
+  const targetWeek = weekArg || "2026-W42";
   console.log(`[Weekly PDF] 正在生成周报 PDF 与 Markdown 研报: ${targetWeek}...`);
   generateWeeklyPdf({ weekId: targetWeek, force: true })
     .then((res) => {

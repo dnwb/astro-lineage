@@ -534,6 +534,7 @@ export async function runWeeklySummary({
     return [
       {
         ...pick,
+        arxiv_id: normalizeArxivId(pick.arxiv_id),
         authors: Array.isArray(paper.authors) ? paper.authors : [],
         revision: paper.revision,
         historical_edition: paper.historical_edition,

@@ -805,11 +805,17 @@ export async function reconcilePreviousEdition({
       assertContinuousBatchIntervals(finalFeed, prevFeed);
     }
 
-    if (newEntries.length > 0 && localFeed) {
-      console.log(
-        `[scheduler:reconcile] 发现上游增量论文: ${newEntries.length} 篇 (例如 ${newEntries[0]?.arxiv_id})`
-      );
-      if (localFeed.window?.announcement_date === targetDate) {
+    if ((!localFeed && hasValidFeed) || (newEntries.length > 0 && localFeed)) {
+      if (newEntries.length > 0 && localFeed) {
+        console.log(
+          `[scheduler:reconcile] 发现上游增量论文: ${newEntries.length} 篇 (例如 ${newEntries[0]?.arxiv_id})`
+        );
+      } else if (!localFeed) {
+        console.log(
+          `[scheduler:reconcile] 发现全量缺失批次数据，开始补录归档: ${targetDate} (${upstreamEntries.length} 篇)`
+        );
+      }
+      if (localFeed?.window?.announcement_date === targetDate) {
         finalFeed = await refreshImpl({
           ...refreshOptions,
           output: target,
@@ -820,10 +826,12 @@ export async function reconcilePreviousEdition({
           rejectEmpty: true,
         });
       } else {
-        finalFeed = {
-          ...localFeed,
-          entries: [...localEntries, ...newEntries],
-        };
+        finalFeed = localFeed
+          ? {
+              ...localFeed,
+              entries: [...localEntries, ...newEntries],
+            }
+          : upstreamPayload;
       }
       if (finalFeed) {
         await writeJsonAtomically(target, finalFeed);
@@ -838,7 +846,7 @@ export async function reconcilePreviousEdition({
         artifactRoot: root,
         defaultOutput: target,
       });
-      newlyAddedCount = newEntries.length;
+      newlyAddedCount = localFeed ? newEntries.length : finalFeed.entries?.length || 0;
     }
 
     const priorityIds = newEntries.map((e) => e.arxiv_id).filter(Boolean);

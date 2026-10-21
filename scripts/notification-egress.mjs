@@ -18,7 +18,7 @@ import {
   releaseRefreshLock,
   writeJsonAtomically,
 } from "./arxiv-daily.mjs";
-import { validateDailyRadarPayload } from "./daily-radar.mjs";
+import { validateDailyRadarPayload, normalizeArxivId } from "./daily-radar.mjs";
 import { hashBody, readDailyArchive, readChannelShareUrl } from "./channel-publication.mjs";
 import { readingExcerpt } from "./tencent-channel-publisher.mjs";
 import {
@@ -220,11 +220,14 @@ export async function generateGroupBrief(type = "daily", options = {}) {
         mustReadPicks.length > 0 ? mustReadPicks : (weekly.top_picks || []).slice(0, 1);
 
       for (const pick of targetPicks) {
-        if (!/^\d{4}\.\d{4,5}$/u.test(pick.arxiv_id || "")) throw new Error("QQ_SOURCE_INVALID");
+        const cleanPickId = normalizeArxivId(pick.arxiv_id || "");
+        if (!/^\d{4}\.\d{4,5}$/u.test(cleanPickId)) throw new Error("QQ_SOURCE_INVALID");
         const revision =
-          pick.revision || weekly.papers?.find((p) => p.arxiv_id === pick.arxiv_id)?.revision || 1;
+          pick.revision ||
+          weekly.papers?.find((p) => normalizeArxivId(p.arxiv_id) === cleanPickId)?.revision ||
+          1;
         const suffix = Number.isSafeInteger(revision) && revision > 0 ? `v${revision}` : "";
-        const paperObj = weekly.papers?.find((p) => p.arxiv_id === pick.arxiv_id);
+        const paperObj = weekly.papers?.find((p) => normalizeArxivId(p.arxiv_id) === cleanPickId);
         const authors = paperObj?.authors || pick.authors;
         const authorStr =
           Array.isArray(authors) && authors.length > 0
@@ -233,12 +236,12 @@ export async function generateGroupBrief(type = "daily", options = {}) {
               : authors.join(", ")
             : "";
         const authorSuffix = authorStr ? ` (${authorStr})` : "";
-        const paperPostUrl = resolvePaperFeedShareUrl(pick.arxiv_id, { fallbackUrl: channelUrl });
+        const paperPostUrl = resolvePaperFeedShareUrl(cleanPickId, { fallbackUrl: channelUrl });
         lines.push(
           "---",
           `### ⭐ 必读｜${extractPaperTopic(pick)}${authorSuffix}`,
-          `**[${pick.title || ""}](${pick.url || `https://arxiv.org/abs/${pick.arxiv_id}${suffix}`})**`,
-          `- **arXiv 原文**: [arXiv:${pick.arxiv_id}${suffix}](https://arxiv.org/abs/${pick.arxiv_id}${suffix}) · [📄 PDF](https://arxiv.org/pdf/${pick.arxiv_id})`,
+          `**[${pick.title || ""}](${pick.url || `https://arxiv.org/abs/${cleanPickId}${suffix}`})**`,
+          `- **arXiv 原文**: [arXiv:${cleanPickId}${suffix}](https://arxiv.org/abs/${cleanPickId}${suffix}) · [📄 PDF](https://arxiv.org/pdf/${cleanPickId})`,
           `- **频道研讨**: [进入对应频道研讨帖](${paperPostUrl})`,
           `- **网页精读**: [查看网页周报综述](${websiteBase}/arxiv-weekly/${weekly.week_id}/)`,
           "",
@@ -251,10 +254,11 @@ export async function generateGroupBrief(type = "daily", options = {}) {
       if (worthKnowingPicks.length > 0) {
         lines.push("---", "### 📌 关注", "");
         for (const pick of worthKnowingPicks) {
+          const cleanPickId = normalizeArxivId(pick.arxiv_id || "");
           const rev = pick.revision || 1;
-          const paperPostUrl = resolvePaperFeedShareUrl(pick.arxiv_id, { fallbackUrl: channelUrl });
+          const paperPostUrl = resolvePaperFeedShareUrl(cleanPickId, { fallbackUrl: channelUrl });
           lines.push(
-            `- **${extractPaperTopic(pick)}** ｜ [${pick.title || ""}](${pick.url || `https://arxiv.org/abs/${pick.arxiv_id}v${rev}`}) · [arXiv:${pick.arxiv_id}](https://arxiv.org/abs/${pick.arxiv_id}v${rev}) · [频道交流](${paperPostUrl})`
+            `- **${extractPaperTopic(pick)}** ｜ [${pick.title || ""}](${pick.url || `https://arxiv.org/abs/${cleanPickId}v${rev}`}) · [arXiv:${cleanPickId}](https://arxiv.org/abs/${cleanPickId}v${rev}) · [频道交流](${paperPostUrl})`
           );
         }
         lines.push("");
@@ -268,11 +272,13 @@ export async function generateGroupBrief(type = "daily", options = {}) {
         ""
       );
       for (const pick of (weekly.top_picks || []).slice(0, 3)) {
-        if (!/^\d{4}\.\d{4,5}$/u.test(pick.arxiv_id || "")) throw new Error("QQ_SOURCE_INVALID");
+        const cleanPickId = normalizeArxivId(pick.arxiv_id || "");
+        if (!/^\d{4}\.\d{4,5}$/u.test(cleanPickId)) throw new Error("QQ_SOURCE_INVALID");
         const revision =
-          pick.revision || weekly.papers?.find((p) => p.arxiv_id === pick.arxiv_id)?.revision;
+          pick.revision ||
+          weekly.papers?.find((p) => normalizeArxivId(p.arxiv_id) === cleanPickId)?.revision;
         const suffix = Number.isSafeInteger(revision) && revision > 0 ? `v${revision}` : "";
-        const paperObj = weekly.papers?.find((p) => p.arxiv_id === pick.arxiv_id);
+        const paperObj = weekly.papers?.find((p) => normalizeArxivId(p.arxiv_id) === cleanPickId);
         const authors = paperObj?.authors || pick.authors;
         const authorStr =
           Array.isArray(authors) && authors.length > 0

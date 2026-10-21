@@ -93,7 +93,10 @@ test("generatePublicationWeeklyHtml creates dedicated academic layout with Base6
   assert.match(html, /<math xmlns="http:\/\/www\.w3\.org\/1998\/Math\/MathML"/u);
   assert.match(html, /<strong>/u);
   // 8. Compact layout & zero localhost leaks
+  assert.match(html, /class="preprint-banner"/u);
+  assert.match(html, /class="deep-dive-cols"/u);
   assert.match(html, /class="worth-grid"/u);
+  assert.match(html, /class="compendium-table"/u);
   assert.doesNotMatch(html, /localhost/u);
   assert.doesNotMatch(html, /127\.0\.0\.1/u);
 });

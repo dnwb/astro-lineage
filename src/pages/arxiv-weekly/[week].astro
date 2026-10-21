@@ -138,8 +138,8 @@ const weekLabelEn = formatWeekIdEn(weeklyData.week_id);
 const olderWeekLabelZh = olderWeekId ? formatWeekIdZh(olderWeekId) : "";
 const newerWeekLabelZh = newerWeekId ? formatWeekIdZh(newerWeekId) : "";
 
-const exportMarkdown = `# 高能天体物理 arXiv 每周学术脉络 · ${weekLabelZh} (${weeklyData.week_id})
-周期: ${weekLabelZh} (${weeklyData.week_id}) ｜ 时间跨度: ${weeklyData.date_range}
+const exportMarkdown = `# 高能天体物理 arXiv 每周学术脉络 · ${weekLabelZh}
+周期: ${weekLabelZh} ｜ 时间跨度: ${weeklyData.date_range}
 整理时间: ${generatedLabel}
 
 ## 本周综述
@@ -163,7 +163,7 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>高能天体物理 arXiv 每周学术脉络 · {weekLabelZh} ({weeklyData.week_id}) | {site.title}</title>
+    <title>高能天体物理 arXiv 每周学术脉络 · {weekLabelZh} | {site.title}</title>
     <meta
       name="description"
       content={`高能天体物理 arXiv 每周学术脉络 · ${weekLabelZh} (${weeklyData.date_range})。梳理宏观演进趋势、核心科学争论与重点前沿工作。`}
@@ -174,11 +174,11 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
       <SiteNav />
 
       <header class="page-header weekly-header">
-        <p class="eyebrow"><a href="/">{site.title}</a> · <a href="/arxiv-daily/">arXiv Radar</a> · <a href="/arxiv-weekly/">Weekly Synthesis</a> · {weekLabelZh} ({weeklyData.week_id})</p>
+        <p class="eyebrow"><a href="/">{site.title}</a> · <a href="/arxiv-daily/">arXiv Radar</a> · <a href="/arxiv-weekly/">Weekly Synthesis</a> · {weekLabelZh}</p>
         <h1 class="page-title"><span class="language-primary">每周学术脉络 · {weekLabelZh}</span><span class="language-english" lang="en">Weekly Synthesis · {weekLabelEn}</span></h1>
 
         <div class="weekly-meta-bar">
-          <span class="meta-badge week-badge">📅 报告周期：{weekLabelZh} ({weeklyData.week_id})</span>
+          <span class="meta-badge week-badge">📅 报告周期：{weekLabelZh}</span>
           <span class="meta-badge range-badge">⏱ 时间跨度：{weeklyData.date_range}</span>
           <span class="meta-badge time-badge">🕒 整理时间：{generatedLabel}</span>
           {weekDays.length > 0 && (
@@ -205,6 +205,16 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
 
       <!-- AI HOT Week Switcher Ribbon -->
       <WeeklyWeekSwitcher currentWeek={weeklyData.week_id} />
+
+      {weekDays.length < 5 && (
+        <aside class="weekly-in-progress-notice" role="note">
+          <span class="notice-icon">⏱️</span>
+          <span class="notice-text">
+            当前周次（{weekLabelZh}）学术追踪仍在进行中，已归纳 {weekDays.length} 个每日批次。查阅最近一期完整完结周报：
+            <a href="/arxiv-weekly/2026-W42/">2026 年第 42 周完整脉络综述 →</a>
+          </span>
+        </aside>
+      )}
 
       <!-- Navigation Pager Bar -->
       <nav class="week-pager-bar" aria-label="周报周次翻页">

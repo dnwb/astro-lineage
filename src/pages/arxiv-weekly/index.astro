@@ -169,6 +169,16 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
       <!-- AI HOT Week Switcher Ribbon -->
       <WeeklyWeekSwitcher currentWeek={weeklyData.week_id} />
 
+      {weekDays.length < 5 && (
+        <aside class="weekly-in-progress-notice" role="note">
+          <span class="notice-icon">⏱️</span>
+          <span class="notice-text">
+            当前周次（{weekLabelZh}）学术追踪仍在进行中，已归纳 {weekDays.length} 个每日批次。查阅最近一期完整完结周报：
+            <a href="/arxiv-weekly/2026-W42/">2026 年第 42 周完整脉络综述 →</a>
+          </span>
+        </aside>
+      )}
+
       <!-- Stat Badges -->
       <section class="weekly-stats-strip" aria-label="本周统计">
         <div class="stat-card stat-total">

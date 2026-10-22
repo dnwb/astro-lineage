@@ -407,7 +407,9 @@ export async function startOfficialBot({
   console.log(`[QQ Official Bot] 正在连接官方网关: ${gatewayUrl} (沙箱模式: ${IS_SANDBOX})...`);
 
   const resolveChannelLink =
-    typeof channelLink === "function" ? channelLink : async () => undefined;
+    typeof channelLink === "function"
+      ? channelLink
+      : async () => (await readChannelShareUrl()) || "https://pd.qq.com/s/d4lw4zl0g";
 
   const dispatchMatchedCommand = async ({
     cmd,

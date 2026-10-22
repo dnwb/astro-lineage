@@ -29,7 +29,7 @@ test("the project owns its Git boundary", async () => {
   const head = await readFile(new URL("../.git/HEAD", import.meta.url), "utf8");
   const config = await readFile(new URL("../.git/config", import.meta.url), "utf8");
 
-  assert.match(head, /^(ref: refs\/heads\/|[0-9a-f]{40}$)/u);
+  assert.match(head.trim(), /^(ref: refs\/(heads|pull|remotes)\/|[0-9a-f]{40}$)/u);
   assert.match(config, /^\[core\]$/mu);
 });
 

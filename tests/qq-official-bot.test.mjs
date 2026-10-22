@@ -304,8 +304,13 @@ test("C2C academic replies append the channel link when the answer contains a pa
   assert.match(sentText, /AstroLineage QQ 频道：\nhttps:\/\/pd\.qq\.com\/s\/astrolineage/u);
 });
 
-test("alertAdmin targets admin openid with structured alert content", async () => {
+test("alertAdmin targets admin openid with structured alert content", async (t) => {
   const { alertAdmin } = await import("../scripts/qq-send.mjs");
+  const origFetch = globalThis.fetch;
+  t.after(() => {
+    globalThis.fetch = origFetch;
+  });
+  globalThis.fetch = async () => new Response("network blocked by test", { status: 400 });
   const origEnv = process.env.QQ_ADMIN_OPENID;
   process.env.QQ_ADMIN_OPENID = "TEST_ADMIN_ID";
   try {

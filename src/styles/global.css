@@ -847,8 +847,12 @@ small {
 .reader-math {
   display: inline-block;
   max-inline-size: 100%;
+  max-width: 100%;
   vertical-align: baseline;
   white-space: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: thin;
 }
 
 .reader-math-display {
@@ -2313,7 +2317,7 @@ small {
 .intelligence-grid,
 .asymmetric-hero-grid {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1fr);
   gap: 1.25rem;
   align-items: stretch;
 }
@@ -2327,6 +2331,9 @@ small {
   padding: 1.5rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .intel-card:hover {
@@ -2359,6 +2366,7 @@ small {
   align-items: center;
   gap: 0.8rem;
   margin-bottom: 0.9rem;
+  flex-wrap: wrap;
 }
 
 .intel-badge-group {
@@ -2582,6 +2590,11 @@ small {
   background: #faf8f5;
   border: 1px solid #e2ded4;
   border-radius: 4px;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .intel-pick-header {
@@ -2907,6 +2920,11 @@ small {
   flex-direction: column;
   gap: 0.3rem;
   transition: border-color 0.15s, background-color 0.15s;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 :is([data-theme="dark"], body:has(#site-theme-toggle:checked)) .intel-daily-quick-item {
@@ -3590,6 +3608,9 @@ small {
 /* Grid is now vertical-stacked at all widths; no breakpoint override needed */
 
 @media (max-width: 640px) {
+  .intel-card {
+    padding: 1rem 0.85rem;
+  }
   .intel-metrics-strip {
     grid-template-columns: repeat(2, 1fr);
   }

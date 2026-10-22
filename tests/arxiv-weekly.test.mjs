@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { spawnSync } from "node:child_process";
+import { ensureDistBuilt } from "./helpers/ensure-dist.mjs";
 import { test } from "node:test";
 import { fileURLToPath } from "node:url";
 
@@ -10,14 +11,7 @@ const weeklyJsonUrl = new URL("../src/data/arxiv-weekly.json", import.meta.url);
 const distWeeklyHtmlUrl = new URL("../dist/arxiv-weekly/index.html", import.meta.url);
 
 function ensureWeeklyDist() {
-  if (!existsSync(fileURLToPath(distWeeklyHtmlUrl))) {
-    const build = spawnSync("npm", ["run", "build"], {
-      cwd: projectRoot,
-      encoding: "utf8",
-      stdio: ["ignore", "pipe", "pipe"],
-    });
-    assert.equal(build.status, 0, build.stderr || build.stdout);
-  }
+  ensureDistBuilt(fileURLToPath(distWeeklyHtmlUrl));
 }
 
 test("arXiv weekly data file conforms to weekly summary schema", async () => {

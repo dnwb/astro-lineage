@@ -16,7 +16,7 @@ jobs:
   verify:
     name: Offline V0.1 verification
     runs-on: ubuntu-24.04
-    timeout-minutes: 20
+    timeout-minutes: 10
     env:
       CI: true
       ASTRO_TELEMETRY_DISABLED: "1"

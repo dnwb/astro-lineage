@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
+import { ensureDistBuilt } from "./helpers/ensure-dist.mjs";
 import { existsSync } from "node:fs";
 import { readFile, readdir } from "node:fs/promises";
 import { join } from "node:path";
@@ -44,16 +45,7 @@ test("the public verification commands are stable", async () => {
 });
 
 test("the production build renders the product boundary as static HTML", async () => {
-  const build = spawnSync("npm", ["run", "build"], {
-    cwd: projectRoot,
-    encoding: "utf8",
-    stdio: ["ignore", "pipe", "pipe"],
-  });
-  assert.equal(
-    build.status,
-    0,
-    `production build failed${build.signal ? ` with ${build.signal}` : ""}:\n${build.stderr || build.stdout}`
-  );
+  ensureDistBuilt();
 
   const html = await readFile(new URL("../dist/index.html", import.meta.url), "utf8");
   const papersHtml = await readFile(new URL("../dist/papers/index.html", import.meta.url), "utf8");

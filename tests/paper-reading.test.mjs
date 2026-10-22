@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
+import { ensureDistBuilt } from "./helpers/ensure-dist.mjs";
 import { existsSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
@@ -24,12 +25,7 @@ const workIds = [
 ];
 
 function buildReader() {
-  const build = spawnSync("npm", ["run", "build"], {
-    cwd: projectRoot,
-    encoding: "utf8",
-    stdio: ["ignore", "pipe", "pipe"],
-  });
-  assert.equal(build.status, 0, build.stderr || build.stdout);
+  ensureDistBuilt();
 }
 
 function assertInOrder(source, markers, label) {
@@ -75,7 +71,7 @@ test("Papers index lets readers choose every projected Paper with scientific con
     assert.equal(
       existsSync(join(projectRoot, "dist", href.slice(1), "index.html")),
       true,
-      `missing generated destination for ${href}`,
+      `missing generated destination for ${href}`
     );
   }
   assert.equal((html.match(/>阅读论文<\/a>/gu) ?? []).length, 41);
@@ -85,10 +81,7 @@ test("the reader build preserves canonical and per-Work visibility digests", asy
   const beforeSnapshot = await loadCanonicalContent(productionContent);
   const beforeCanonicalDigest = await computeCanonicalContentDigest(productionContent);
   const beforeVisibilityDigests = new Map(
-    workIds.map((workId) => [
-      workId,
-      computeReaderVisibilityDigest(beforeSnapshot, "work", workId),
-    ]),
+    workIds.map((workId) => [workId, computeReaderVisibilityDigest(beforeSnapshot, "work", workId)])
   );
   const validation = await validateCanonicalContent(productionContent);
   assert.equal(validation.valid, true, JSON.stringify(validation.diagnostics, null, 2));
@@ -99,7 +92,7 @@ test("the reader build preserves canonical and per-Work visibility digests", asy
     assert.equal(
       computeReaderVisibilityDigest(afterSnapshot, "work", workId),
       beforeVisibilityDigests.get(workId),
-      workId,
+      workId
     );
   }
 });
@@ -115,28 +108,47 @@ test("Paper Detail presents the complete scientific reading loop before on-deman
 
   for (const [slug, publicUrl] of papers) {
     const html = await readFile(join(projectRoot, "dist", "papers", slug, "index.html"), "utf8");
-    assertInOrder(html, [
-      "为什么这项工作重要</h2>",
-      "问题</h2>",
-      "科学要点</h2>",
-      "假设</h2>",
-      "科学增量</h2>",
-      "科学关联</h2>",
-      "研究背景</h2>",
-      "溯源与科学证据</summary>",
-    ], slug);
-    assert.match(html, new RegExp(`href="${publicUrl.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&")}"`, "u"));
+    assertInOrder(
+      html,
+      [
+        "为什么这项工作重要</h2>",
+        "问题</h2>",
+        "科学要点</h2>",
+        "假设</h2>",
+        "科学增量</h2>",
+        "科学关联</h2>",
+        "研究背景</h2>",
+        "溯源与科学证据</summary>",
+      ],
+      slug
+    );
+    assert.match(
+      html,
+      new RegExp(`href="${publicUrl.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&")}"`, "u")
+    );
     assert.match(html, /<summary>溯源与科学证据<\/summary>/u, slug);
     assert.doesNotMatch(html, /<details[^>]*\sopen(?:[\s=>])/u, slug);
     assert.doesNotMatch(html, /(?:visibility_approvals|reader_state)/u, slug);
   }
 
-  const arnett = await readFile(join(projectRoot, "dist", "papers", "arnett-1982", "index.html"), "utf8");
-  assert.match(arnett, /Read this Work to see how a compact physical model connects an energy source to transport and a measurable light curve\./u);
-  assert.match(arnett, /Its historical “Type I” language should not be silently rewritten as a modern subtype classification\./u);
+  const arnett = await readFile(
+    join(projectRoot, "dist", "papers", "arnett-1982", "index.html"),
+    "utf8"
+  );
+  assert.match(
+    arnett,
+    /Read this Work to see how a compact physical model connects an energy source to transport and a measurable light curve\./u
+  );
+  assert.match(
+    arnett,
+    /Its historical “Type I” language should not be silently rewritten as a modern subtype classification\./u
+  );
   assert.equal((arnett.match(/Type I supernovae: early light-curve solutions/gu) ?? []).length, 0);
 
-  const longYu = await readFile(join(projectRoot, "dist", "papers", "long-yu-2026", "index.html"), "utf8");
+  const longYu = await readFile(
+    join(projectRoot, "dist", "papers", "long-yu-2026", "index.html"),
+    "utf8"
+  );
   assert.match(longYu, /about 14 percent in the reported comparison/u);
   assert.match(longYu, /breakout cases can be overpredicted by single-state estimates/u);
 });
@@ -151,10 +163,7 @@ test("Paper connections preserve canonical direction while linking both endpoint
 
   for (const [slug, relation, href] of expectations) {
     const html = await readFile(join(projectRoot, "dist", "papers", slug, "index.html"), "utf8");
-    const connections = html.slice(
-      html.indexOf("科学关联</h2>"),
-      html.indexOf("研究背景</h2>"),
-    );
+    const connections = html.slice(html.indexOf("科学关联</h2>"), html.indexOf("研究背景</h2>"));
     assert.match(connections, new RegExp(`>${relation}<`, "u"), slug);
     assert.match(connections, new RegExp(`href="${href}"`, "u"), slug);
   }

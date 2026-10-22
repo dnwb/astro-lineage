@@ -205,69 +205,69 @@ body:not([data-theme]):has(#site-theme-toggle:checked) {
 }
 
 @media (prefers-color-scheme: dark) {
-  body:not(:has(#site-theme-toggle:checked)),
-  body:not(:has(#site-theme-toggle:checked)) .site-shell {
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)),
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .site-shell {
     color: var(--text-primary);
     background: var(--bg-primary);
   }
 
-  body:not(:has(#site-theme-toggle:checked)) .radar-card,
-  body:not(:has(#site-theme-toggle:checked)) .paper-card,
-  body:not(:has(#site-theme-toggle:checked)) .archive-nav-card,
-  body:not(:has(#site-theme-toggle:checked)) .radar-brief,
-  body:not(:has(#site-theme-toggle:checked)) .knowledge-card,
-  body:not(:has(#site-theme-toggle:checked)) .reading-card,
-  body:not(:has(#site-theme-toggle:checked)) .thematic-card,
-  body:not(:has(#site-theme-toggle:checked)) .intel-card,
-  body:not(:has(#site-theme-toggle:checked)) .past-week-card,
-  body:not(:has(#site-theme-toggle:checked)) .panel,
-  body:not(:has(#site-theme-toggle:checked)) .baseline-overview {
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .radar-card,
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .paper-card,
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .archive-nav-card,
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .radar-brief,
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .knowledge-card,
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .reading-card,
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .thematic-card,
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .intel-card,
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .past-week-card,
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .panel,
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .baseline-overview {
     background: var(--card-bg) !important;
     border-color: var(--border-color) !important;
     color: var(--text-primary) !important;
   }
 
-  body:not(:has(#site-theme-toggle:checked)) .paper-title,
-  body:not(:has(#site-theme-toggle:checked)) a {
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .paper-title,
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) a {
     color: var(--link-color);
   }
 
-  body:not(:has(#site-theme-toggle:checked)) .site-nav {
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .site-nav {
     border-bottom-color: var(--border-color);
   }
 
-  body:not(:has(#site-theme-toggle:checked)) .site-brand {
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .site-brand {
     color: var(--text-primary) !important;
   }
 
-  body:not(:has(#site-theme-toggle:checked)) .site-nav a {
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .site-nav a {
     color: var(--text-secondary);
   }
 
-  body:not(:has(#site-theme-toggle:checked)) .site-nav a:hover {
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .site-nav a:hover {
     color: var(--text-primary);
   }
 
-  body:not(:has(#site-theme-toggle:checked)) .site-nav a.active,
-  body:not(:has(#site-theme-toggle:checked)) .site-nav a[aria-current="page"] {
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .site-nav a.active,
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .site-nav a[aria-current="page"] {
     color: #38bdf8;
     box-shadow: inset 0 -2px 0 0 #38bdf8;
   }
 
-  body:not(:has(#site-theme-toggle:checked)) .radar-card-must-read {
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .radar-card-must-read {
     background: var(--must-read-bg) !important;
     border-left-color: var(--must-read-border) !important;
   }
 
-  body:not(:has(#site-theme-toggle:checked)) .radar-card-worth-knowing {
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .radar-card-worth-knowing {
     background: var(--worth-knowing-bg) !important;
     border-left-color: var(--worth-knowing-border) !important;
   }
 
-  body:not(:has(#site-theme-toggle:checked)) .radar-must-summary,
-  body:not(:has(#site-theme-toggle:checked)) .radar-result,
-  body:not(:has(#site-theme-toggle:checked)) .radar-reason,
-  body:not(:has(#site-theme-toggle:checked)) .radar-paper-authors {
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .radar-must-summary,
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .radar-result,
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .radar-reason,
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .radar-paper-authors {
     color: #cbd5e1;
   }
 }
@@ -585,23 +585,23 @@ body:has(#site-language-toggle:checked) .language-english {
 }
 
 @media (prefers-color-scheme: dark) {
-  body:not(:has(#site-theme-toggle:checked)) .home-header {
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .home-header {
     background: #1e293b;
     border-color: #334155;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
   }
-  body:not(:has(#site-theme-toggle:checked)) .home-version-badge {
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .home-version-badge {
     background: rgba(30, 58, 138, 0.28);
     color: #93c5fd;
     border-color: rgba(59, 130, 246, 0.3);
   }
-  body:not(:has(#site-theme-toggle:checked)) .home-page #home-title {
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .home-page #home-title {
     color: #f8fafc;
   }
-  body:not(:has(#site-theme-toggle:checked)) .home-lead {
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .home-lead {
     color: #e2e8f0;
   }
-  body:not(:has(#site-theme-toggle:checked)) .home-sub-desc {
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .home-sub-desc {
     color: #94a3b8;
   }
 }
@@ -3363,47 +3363,92 @@ small {
 }
 
 @media (prefers-color-scheme: dark) {
-  body:not(:has(#site-theme-toggle:checked)) .intelligence-title { color: #f8fafc; }
-  body:not(:has(#site-theme-toggle:checked)) .intelligence-title-sub,
-  body:not(:has(#site-theme-toggle:checked)) .intelligence-desc { color: #94a3b8; }
-  body:not(:has(#site-theme-toggle:checked)) .intel-badge-weekly { background: #334155; color: #f1f5f9; border-color: #475569; }
-  body:not(:has(#site-theme-toggle:checked)) .intel-badge-daily { background: rgba(30, 58, 138, 0.25); color: #93c5fd; border-color: rgba(59, 130, 246, 0.3); }
-  body:not(:has(#site-theme-toggle:checked)) .intel-date,
-  body:not(:has(#site-theme-toggle:checked)) .intel-batch { color: #94a3b8; }
-  body:not(:has(#site-theme-toggle:checked)) .intel-view-all-link { color: #60a5fa; }
-  body:not(:has(#site-theme-toggle:checked)) .intel-card-title a { color: #f8fafc; }
-  body:not(:has(#site-theme-toggle:checked)) .intel-card-title a:hover { color: #60a5fa; }
-  body:not(:has(#site-theme-toggle:checked)) .intel-metrics-strip { background: #0f172a; border-color: #334155; }
-  body:not(:has(#site-theme-toggle:checked)) .intel-metric-val { color: #f8fafc; }
-  body:not(:has(#site-theme-toggle:checked)) .intel-metric-lbl { color: #94a3b8; }
-  body:not(:has(#site-theme-toggle:checked)) .intel-metric-item.highlight-must-read .intel-metric-val { color: #fb923c; }
-  body:not(:has(#site-theme-toggle:checked)) .intel-metric-item.highlight-worth-knowing .intel-metric-val { color: #60a5fa; }
-  body:not(:has(#site-theme-toggle:checked)) .intel-metric-item.highlight-topics .intel-metric-val { color: #f8fafc; }
-  body:not(:has(#site-theme-toggle:checked)) .intel-summary-box { background: #0f172a; border-color: #334155; border-left-color: #3b82f6; }
-  body:not(:has(#site-theme-toggle:checked)) .intel-summary-lead { color: #f1f5f9; }
-  body:not(:has(#site-theme-toggle:checked)) .intel-summary-hl-item { color: #cbd5e1; border-bottom-color: #334155; }
-  body:not(:has(#site-theme-toggle:checked)) .hl-topic-tag { background: rgba(30, 58, 138, 0.25); color: #93c5fd; border-color: rgba(59, 130, 246, 0.25); }
-  body:not(:has(#site-theme-toggle:checked)) .intel-picks-label { color: #f8fafc; }
-  body:not(:has(#site-theme-toggle:checked)) .intel-pick-item { background: #0f172a; border-color: #334155; }
-  body:not(:has(#site-theme-toggle:checked)) .intel-pick-title a { color: #f8fafc; }
-  body:not(:has(#site-theme-toggle:checked)) .intel-pick-title a:hover { color: #60a5fa; }
-  body:not(:has(#site-theme-toggle:checked)) .intel-pick-id { color: #60a5fa; }
-  body:not(:has(#site-theme-toggle:checked)) .intel-pick-insight { color: #cbd5e1; }
-  body:not(:has(#site-theme-toggle:checked)) .intel-card-footer { border-top-color: #334155; }
-  body:not(:has(#site-theme-toggle:checked)) .btn-primary { background: #2563eb; border-color: #2563eb; color: #ffffff; }
-  body:not(:has(#site-theme-toggle:checked)) .btn-primary:hover { background: #1d4ed8; border-color: #1d4ed8; }
-  body:not(:has(#site-theme-toggle:checked)) .btn-secondary { background: #1e293b; border-color: #334155; color: #f1f5f9; }
-  body:not(:has(#site-theme-toggle:checked)) .btn-secondary:hover { background: #334155; }
-  body:not(:has(#site-theme-toggle:checked)) .intel-archives-portal-banner {
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .intelligence-title { color: #f8fafc; }
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .intelligence-title-sub,
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .intelligence-desc { color: #94a3b8; }
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .intel-badge-weekly { background: #334155; color: #f1f5f9; border-color: #475569; }
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .intel-badge-daily { background: rgba(30, 58, 138, 0.25); color: #93c5fd; border-color: rgba(59, 130, 246, 0.3); }
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .intel-date,
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .intel-batch { color: #94a3b8; }
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .intel-view-all-link { color: #60a5fa; }
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .intel-card-title a { color: #f8fafc; }
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .intel-card-title a:hover { color: #60a5fa; }
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .intel-metrics-strip { background: #0f172a; border-color: #334155; }
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .intel-metric-val { color: #f8fafc; }
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .intel-metric-lbl { color: #94a3b8; }
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .intel-metric-item.highlight-must-read .intel-metric-val { color: #fb923c; }
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .intel-metric-item.highlight-worth-knowing .intel-metric-val { color: #60a5fa; }
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .intel-metric-item.highlight-topics .intel-metric-val { color: #f8fafc; }
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .intel-summary-box { background: #0f172a; border-color: #334155; border-left-color: #3b82f6; }
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .intel-summary-lead { color: #f1f5f9; }
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .intel-summary-hl-item { color: #cbd5e1; border-bottom-color: #334155; }
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .hl-topic-tag { background: rgba(30, 58, 138, 0.25); color: #93c5fd; border-color: rgba(59, 130, 246, 0.25); }
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .intel-picks-label { color: #f8fafc; }
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .intel-pick-item { background: #0f172a; border-color: #334155; }
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .intel-pick-title a { color: #f8fafc; }
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .intel-pick-title a:hover { color: #60a5fa; }
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .intel-pick-id { color: #60a5fa; }
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .intel-pick-insight { color: #cbd5e1; }
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .intel-card-footer { border-top-color: #334155; }
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .btn-primary { background: #2563eb; border-color: #2563eb; color: #ffffff; }
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .btn-primary:hover { background: #1d4ed8; border-color: #1d4ed8; }
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .btn-secondary { background: #1e293b; border-color: #334155; color: #f1f5f9; }
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .btn-secondary:hover { background: #334155; }
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .intel-archives-portal-banner {
     background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
     border-color: #334155;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   }
-  body:not(:has(#site-theme-toggle:checked)) .portal-tag { background: rgba(30, 58, 138, 0.28); color: #93c5fd; border: 1px solid rgba(59, 130, 246, 0.25); }
-  body:not(:has(#site-theme-toggle:checked)) .portal-title { color: #f8fafc; }
-  body:not(:has(#site-theme-toggle:checked)) .portal-desc { color: #94a3b8; }
-  body:not(:has(#site-theme-toggle:checked)) .secondary-divider-content { background: var(--bg-primary, #0b0f19); }
-  body:not(:has(#site-theme-toggle:checked)) .secondary-section-divider::before { background: #334155; }
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .portal-tag { background: rgba(30, 58, 138, 0.28); color: #93c5fd; border: 1px solid rgba(59, 130, 246, 0.25); }
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .portal-title { color: #f8fafc; }
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .portal-desc { color: #94a3b8; }
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .secondary-divider-content { background: var(--bg-primary, #0b0f19); }
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .secondary-section-divider::before { background: #334155; }
+}
+
+/* Explicit Light Mode Protection for Intelligence & Paper Cards */
+:root[data-theme="light"] .intel-card {
+  background: #ffffff !important;
+  border-color: #e2ded4 !important;
+  color: #172033 !important;
+}
+
+:root[data-theme="light"] .intel-pick-item,
+:root[data-theme="light"] .intel-daily-quick-item {
+  background: #faf8f5 !important;
+  border-color: #e2ded4 !important;
+  color: #1b1b1a !important;
+}
+
+:root[data-theme="light"] .intel-metrics-strip,
+:root[data-theme="light"] .intel-summary-box {
+  background: #faf8f5 !important;
+  border-color: #e2ded4 !important;
+}
+
+:root[data-theme="light"] .intel-metric-val,
+:root[data-theme="light"] .intel-pick-title a,
+:root[data-theme="light"] .quick-paper-title a,
+:root[data-theme="light"] .intel-card-title a {
+  color: #1b1b1a !important;
+}
+
+:root[data-theme="light"] .intel-pick-title a:hover,
+:root[data-theme="light"] .intel-card-title a:hover {
+  color: #2563eb !important;
+}
+
+:root[data-theme="light"] .intel-pick-insight {
+  color: #334155 !important;
+}
+
+:root[data-theme="light"] .intel-card-footer {
+  border-top-color: #e2ded4 !important;
+}
+
+:root[data-theme="light"] .intel-daily-quick-item:hover {
+  border-color: #0284c7 !important;
+  background: #ffffff !important;
 }
 
 /* Secondary Foundations Section Header */

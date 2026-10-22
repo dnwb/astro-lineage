@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
+import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { spawnSync } from "node:child_process";
@@ -47,7 +48,13 @@ test("mobile responsive contract: homepage paper grid and card constraints", asy
   );
 });
 
-test("mobile viewport rendered layout: 375px mobile screen prevents horizontal overflow", async () => {
+test("mobile viewport rendered layout: 375px mobile screen prevents horizontal overflow", async (t) => {
+  const distHtml = join(projectRoot, "dist/index.html");
+  if (!existsSync(distHtml) || !existsSync("/usr/bin/chromium")) {
+    t.skip("Skipping rendered layout test: dist/index.html or /usr/bin/chromium not available");
+    return;
+  }
+
   // Execute the playwright diagnostic script in scratch or inline
   const result = spawnSync(
     "python3",

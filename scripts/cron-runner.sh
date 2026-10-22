@@ -54,8 +54,8 @@ record_current_build() {
 sync_git_data() {
   if [ "${CRON_GIT_PUSH:-false}" = "true" ]; then
     echo "[cron-runner] 检查并同步数据变更与最近 7 周图表至 Git 仓库以触发 Cloudflare 部署..."
-    # 维护最近 7 周图表滑动窗口暂存入库，解绑过期历史图片
-    node scripts/sync-recent-figures.mjs --weeks "${SYNC_FIGURES_WEEKS:-7}" || true
+    # 维护最近 7 周图表滑动窗口暂存入库，解绑过期历史图片 (预算上限 300MB)
+    node scripts/sync-recent-figures.mjs --weeks "${SYNC_FIGURES_WEEKS:-7}" --max-mb "${SYNC_FIGURES_MAX_MB:-300}" || true
 
     if [ -n "$(git status --porcelain src/data/)" ]; then
       git add src/data/

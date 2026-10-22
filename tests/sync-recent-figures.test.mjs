@@ -40,11 +40,22 @@ test("sync-recent-figures: collectReferencedFiguresForWeeks extracts only existi
 });
 
 test("sync-recent-figures: syncRecentFiguresToGit supports dry-run without mutating git state", async () => {
-  const res = await syncRecentFiguresToGit({ weeks: 7, dryRun: true });
+  const res = await syncRecentFiguresToGit({ weeks: 7, maxMb: 300, dryRun: true });
 
   assert.equal(res.recentWeeks.length, 7);
   assert.ok(res.allowedCount > 0);
   assert.equal(typeof res.stagedCount, "number");
   assert.equal(typeof res.untrackedCount, "number");
   assert.equal(typeof res.totalTracked, "number");
+  assert.equal(typeof res.totalSizeMb, "number");
+  assert.equal(res.maxMb, 300);
+});
+
+test("sync-recent-figures: collects figures with maxMb budget ceiling", async () => {
+  const recentWeeks = await resolveRecentAcademicWeekIds(7);
+  const figuresDefault = await collectReferencedFiguresForWeeks(recentWeeks, { maxMb: 300 });
+  const figuresCapped = await collectReferencedFiguresForWeeks(recentWeeks, { maxMb: 20 });
+
+  assert.ok(figuresCapped.size < figuresDefault.size, "Figures should be capped by smaller budget");
+  assert.ok(figuresCapped.totalBytes <= 20 * 1024 * 1024 + 1024 * 1024);
 });

@@ -220,6 +220,24 @@ reports, and finish with `npm run verify`. Never hand-edit generated indexes or
 use generated output as canonical content. Synthetic adversarial datasets live
 only under `tests/fixtures/` and never affect production discovery or counts.
 
+## Official QQ Bot & Multimodal Vision
+
+AstroLineage integrates an official QQ bot (`scripts/qq-official-bot.mjs`) for astrophysics literature QA, group discussions, and academic figure interpretation across QQ groups, guild channels, and private messages.
+
+### Multimodal Vision Capabilities
+
+- **Academic Plot & Formula QA**: Supports user-submitted academic figures, light curve charts, shock breakout models, and LaTeX equation screenshots.
+- **Default Academic Prompting**: Automatically injects scholarly guidance when images are submitted without accompanying text.
+- **Security & Bounded Acquisition**: Enforces HTTPS and Tencent CDN domain allow-listing (`*.qpic.cn`, `*.qq.com`, `*.tencent.com`) to prevent SSRF, terminates oversized streams (>8 MB) via abort signals, and throttles visual operations with a global concurrency semaphore.
+- **Lightweight Session History**: Stores compact text markers rather than bloated Base64 strings in disk-backed session memory.
+
+### Diagnostics & Testing
+
+```bash
+npm run bot:doctor   # verify multimodal models and gateway health
+npm run test:bot     # run dedicated bot and vision regression test suite
+```
+
 ## Reader coverage
 
 The real-fixture Stored + Validated + Rendered evidence is recorded row by row

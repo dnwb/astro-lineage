@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
+import { ensureDistBuilt } from "./helpers/ensure-dist.mjs";
 import { cp, mkdtemp, readFile, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -40,9 +41,11 @@ async function writeYaml(path, value) {
 
 function diagnosticFor(result, code, context = {}) {
   const diagnostic = result.diagnostics.find(
-    (item) => item.code === code && Object.entries(context).every(
-      ([field, expected]) => JSON.stringify(item[field]) === JSON.stringify(expected),
-    ),
+    (item) =>
+      item.code === code &&
+      Object.entries(context).every(
+        ([field, expected]) => JSON.stringify(item[field]) === JSON.stringify(expected)
+      )
   );
   assert(diagnostic, `missing diagnostic ${code} with expected context`);
   return diagnostic;
@@ -54,9 +57,10 @@ function edgeValue(edge) {
 
 function edgeEndpoint(edge, side) {
   const value = edgeValue(edge);
-  const keys = side === "source"
-    ? ["source_work_id", "source_work", "source"]
-    : ["target_work_id", "target_work", "target"];
+  const keys =
+    side === "source"
+      ? ["source_work_id", "source_work", "source"]
+      : ["target_work_id", "target_work", "target"];
   for (const key of keys) {
     const candidate = value?.[key];
     if (typeof candidate === "string") {
@@ -97,22 +101,26 @@ test("the dynamic-model slice publishes the approved Long & Yu arXiv-only Work",
   assert.equal(versions[0].arxiv_id, "2608.12217");
   assert.equal(versions[0].arxiv_revision, 1);
   assert.equal(work.files["versions.yaml"].publication_relations.length, 0);
-  const workEdges = snapshot.scientificEdges.filter((edge) =>
-    edgeEndpoint(edge, "source") === workId || edgeEndpoint(edge, "target") === workId,
+  const workEdges = snapshot.scientificEdges.filter(
+    (edge) => edgeEndpoint(edge, "source") === workId || edgeEndpoint(edge, "target") === workId
   );
   assert.deepEqual(
     workEdges.map(({ id }) => id),
     ["edge:long-yu-extends-zhu-dynamic-trajectory"],
-    "only the approved Scientific Edge is present for Long & Yu",
+    "only the approved Scientific Edge is present for Long & Yu"
   );
 
   const evidence = work.files["evidence.yaml"].evidence;
   assert(evidence.every(({ version_id }) => version_id === versionId));
   assert(evidence.every(({ source_url }) => /2608\.12217v1/u.test(source_url)));
-  assert(evidence.every(({ review_state, review_provenance }) =>
-    review_state === "reviewed" &&
-    review_provenance.actor_id === "actor:human-curator" &&
-    review_provenance.recorded_at === approvalTime));
+  assert(
+    evidence.every(
+      ({ review_state, review_provenance }) =>
+        review_state === "reviewed" &&
+        review_provenance.actor_id === "actor:human-curator" &&
+        review_provenance.recorded_at === approvalTime
+    )
+  );
   assert.doesNotMatch(JSON.stringify(work.files), /\bRNS\b/u);
 
   const annotations = work.files["annotations.yaml"].annotations;
@@ -121,17 +129,17 @@ test("the dynamic-model slice publishes the approved Long & Yu arXiv-only Work",
   const byAxis = new Map(annotations.map((annotation) => [annotation.axis, annotation]));
   assert.deepEqual(
     byAxis.get("energy_dissipation").assessment.values.map(({ term_id }) => term_id),
-    ["term:jet-head-shock-heating", "term:reverse-shock-particle-acceleration"],
+    ["term:jet-head-shock-heating", "term:reverse-shock-particle-acceleration"]
   );
   assert.deepEqual(
     byAxis.get("phenomenon").assessment.values.map(({ term_id }) => term_id),
-    ["term:relativistic-jet-propagation"],
+    ["term:relativistic-jet-propagation"]
   );
   assert.equal(byAxis.get("photon_band").assessment.state, "not_applicable");
   assert.equal(byAxis.get("observable").assessment.state, "not_applicable");
   assert.deepEqual(
     byAxis.get("inference_target").assessment.values.map(({ term_id }) => term_id),
-    ["term:jet-choking-condition", "term:jet-breakout-time", "term:expected-neutrino-yield"],
+    ["term:jet-choking-condition", "term:jet-breakout-time", "term:expected-neutrino-yield"]
   );
 
   const method = work.files["annotations.yaml"].method_annotations[0];
@@ -142,9 +150,14 @@ test("the dynamic-model slice publishes the approved Long & Yu arXiv-only Work",
 
   const statements = work.files["statements.yaml"].statements;
   assert.equal(statements.length, 4);
-  assert(statements.every(({ basis, review_state, review_provenance }) =>
-    basis === "explicit" && review_state === "reviewed" &&
-    review_provenance.actor_id === "actor:human-curator"));
+  assert(
+    statements.every(
+      ({ basis, review_state, review_provenance }) =>
+        basis === "explicit" &&
+        review_state === "reviewed" &&
+        review_provenance.actor_id === "actor:human-curator"
+    )
+  );
 
   const line = snapshot.researchLines.find(({ id }) => id === lineId);
   const membership = line.line.memberships.find(({ work_id }) => work_id === workId);
@@ -154,10 +167,18 @@ test("the dynamic-model slice publishes the approved Long & Yu arXiv-only Work",
   assert.equal(membership.review_state, "reviewed");
   assert.equal(membership.review_provenance.actor_id, "actor:human-curator");
 
-  assert(work.files["work.yaml"].visibility_approvals.some(({ visibility_digest }) =>
-    visibility_digest === computeReaderVisibilityDigest(snapshot, "work", workId)));
-  assert(line.line.visibility_approvals.some(({ visibility_digest }) =>
-    visibility_digest === computeReaderVisibilityDigest(snapshot, "research_line", lineId)));
+  assert(
+    work.files["work.yaml"].visibility_approvals.some(
+      ({ visibility_digest }) =>
+        visibility_digest === computeReaderVisibilityDigest(snapshot, "work", workId)
+    )
+  );
+  assert(
+    line.line.visibility_approvals.some(
+      ({ visibility_digest }) =>
+        visibility_digest === computeReaderVisibilityDigest(snapshot, "research_line", lineId)
+    )
+  );
 });
 
 test("the approved Physical Account keeps dynamics, inference, and detector projection separate", async () => {
@@ -168,22 +189,38 @@ test("the approved Physical Account keeps dynamics, inference, and detector proj
 
   assert.equal(account.stages.length, 11);
   assert.equal(account.links.length, 11);
-  assert(account.links.every(({ source_stage_id, target_stage_id, evidence_ids }) =>
-    stageIds.has(source_stage_id) && stageIds.has(target_stage_id) &&
-    Array.isArray(evidence_ids) && evidence_ids.length > 0));
+  assert(
+    account.links.every(
+      ({ source_stage_id, target_stage_id, evidence_ids }) =>
+        stageIds.has(source_stage_id) &&
+        stageIds.has(target_stage_id) &&
+        Array.isArray(evidence_ids) &&
+        evidence_ids.length > 0
+    )
+  );
   assert.equal(
-    account.stages.some(({ annotation_id }) => annotation_id === "annotation:long-yu-inference-target"),
+    account.stages.some(
+      ({ annotation_id }) => annotation_id === "annotation:long-yu-inference-target"
+    ),
     false,
-    "the engine-clock classifier is epistemic and must not become a physical causal stage",
+    "the engine-clock classifier is epistemic and must not become a physical causal stage"
   );
   assert.equal(
     account.stages.find(({ id }) => id === "stage:long-yu-choking-breakout").annotation_id,
-    "annotation:long-yu-dynamics",
+    "annotation:long-yu-dynamics"
   );
-  assert(account.stages.some(({ id, label }) =>
-    id === "stage:long-yu-reverse-shock-processing" && /energy processing/iu.test(label)));
-  assert(account.stages.some(({ id, label }) =>
-    id === "stage:long-yu-collisionless-reverse-shock" && /proton acceleration/iu.test(label)));
+  assert(
+    account.stages.some(
+      ({ id, label }) =>
+        id === "stage:long-yu-reverse-shock-processing" && /energy processing/iu.test(label)
+    )
+  );
+  assert(
+    account.stages.some(
+      ({ id, label }) =>
+        id === "stage:long-yu-collisionless-reverse-shock" && /proton acceleration/iu.test(label)
+    )
+  );
   assert.doesNotMatch(JSON.stringify(account), /detector-effective-area|expected event count/iu);
 
   const outgoing = new Map(account.stages.map(({ id }) => [id, 0]));
@@ -208,16 +245,11 @@ test("the approved Physical Account keeps dynamics, inference, and detector proj
 });
 
 test("Long & Yu Reader View renders the arXiv-only dynamic account and provenance", async () => {
-  const build = spawnSync("npm", ["run", "build"], {
-    cwd: projectRoot,
-    encoding: "utf8",
-    stdio: ["ignore", "pipe", "pipe"],
-  });
-  assert.equal(build.status, 0, build.stderr || build.stdout);
+  ensureDistBuilt();
 
   const html = await readFile(
     new URL("../dist/papers/long-yu-2026/index.html", import.meta.url),
-    "utf8",
+    "utf8"
   );
   assert.match(html, /2608\.12217v1/u);
   assert.match(html, /Time-dependent jet-head trajectory/iu);
@@ -260,5 +292,8 @@ test("a Physical Account link with a missing endpoint is quarantined with a stab
     record_id: link.id,
     field_path: "/links/0/target_stage_id",
   });
-  assert.equal(result.diagnostics.some(({ code }) => code === "CAUSAL_ACCOUNT_CYCLE"), false);
+  assert.equal(
+    result.diagnostics.some(({ code }) => code === "CAUSAL_ACCOUNT_CYCLE"),
+    false
+  );
 });

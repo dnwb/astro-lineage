@@ -4,6 +4,7 @@ import { cp, mkdtemp, readFile, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { spawnSync } from "node:child_process";
+import { ensureDistBuilt } from "./helpers/ensure-dist.mjs";
 import { test } from "node:test";
 import { parse, stringify } from "yaml";
 
@@ -102,11 +103,11 @@ test("Research Lines store a reviewed visible Zhu multi-messenger and cross-cont
   const byAxis = new Map(annotations.map((annotation) => [annotation.axis, annotation]));
   assert.deepEqual(
     byAxis.get("messenger").assessment.values.map(({ term_id }) => term_id),
-    ["term:neutrinos", "term:photons", "term:gravitational-waves"],
+    ["term:neutrinos", "term:photons", "term:gravitational-waves"]
   );
   assert.deepEqual(
     byAxis.get("photon_band").assessment.values.map(({ term_id }) => term_id),
-    ["term:gamma-ray-band", "term:optical-band"],
+    ["term:gamma-ray-band", "term:optical-band"]
   );
   assert.deepEqual(
     byAxis.get("observable").assessment.values.map(({ term_id }) => term_id),
@@ -114,11 +115,11 @@ test("Research Lines store a reviewed visible Zhu multi-messenger and cross-cont
       "term:all-flavor-neutrino-fluence",
       "term:detected-neutrino-count",
       "term:shock-breakout-photon-transient",
-    ],
+    ]
   );
   assert.deepEqual(
     byAxis.get("inference_target").assessment.values.map(({ term_id }) => term_id),
-    ["term:jet-choking-condition", "term:expected-neutrino-yield"],
+    ["term:jet-choking-condition", "term:expected-neutrino-yield"]
   );
 
   const method = work.files["annotations.yaml"].method_annotations[0];
@@ -148,7 +149,11 @@ test("Research Lines store a reviewed visible Zhu multi-messenger and cross-cont
     "causal-link:zhu-gamma-band-enables-photon-observable",
     "causal-link:zhu-choking-enables-gw-counterpart",
   ]) {
-    assert.equal(linkIds.has(removedLinkId), false, `${removedLinkId} must not encode taxonomy or co-occurrence as causation`);
+    assert.equal(
+      linkIds.has(removedLinkId),
+      false,
+      `${removedLinkId} must not encode taxonomy or co-occurrence as causation`
+    );
   }
   assert(account.stages.some(({ label }) => /neutrino messenger/iu.test(label)));
   assert(account.stages.some(({ label }) => /photon messenger/iu.test(label)));
@@ -157,23 +162,26 @@ test("Research Lines store a reviewed visible Zhu multi-messenger and cross-cont
   const memberships = snapshot.researchLines.flatMap((line) =>
     line.line.memberships
       .filter(({ work_id, review_state }) => work_id === workId && review_state === "reviewed")
-      .map((membership) => ({ line_id: line.id, ...membership })),
+      .map((membership) => ({ line_id: line.id, ...membership }))
   );
   assert.equal(memberships.length, 2);
   assert.equal(memberships.filter(({ editorial_anchor }) => editorial_anchor).length, 1);
   assert.equal(memberships.find(({ line_id }) => line_id === anchorLineId).editorial_anchor, true);
-  assert.equal(memberships.find(({ line_id }) => line_id === secondaryLineId).editorial_anchor, false);
+  assert.equal(
+    memberships.find(({ line_id }) => line_id === secondaryLineId).editorial_anchor,
+    false
+  );
   assert(memberships.every(({ review_state }) => review_state === "reviewed"));
 
   const index = buildWorkResearchLineIndex(snapshot);
-  assert.deepEqual(index[workId].map(({ line_id }) => line_id), [
-    secondaryLineId,
-    anchorLineId,
-  ]);
+  assert.deepEqual(
+    index[workId].map(({ line_id }) => line_id),
+    [secondaryLineId, anchorLineId]
+  );
   assert.equal(
     JSON.stringify(work.files).includes("membership:central-engines-zhu-2021"),
     false,
-    "editorial memberships must not be copied into Work-owned records",
+    "editorial memberships must not be copied into Work-owned records"
   );
 });
 
@@ -216,7 +224,7 @@ test("an unreviewed secondary membership remains canonical but hidden from rever
   const beforeLineDigest = computeReaderVisibilityDigest(
     hiddenSnapshot,
     "research_line",
-    secondaryLineId,
+    secondaryLineId
   );
   const beforeWorkDigest = computeReaderVisibilityDigest(hiddenSnapshot, "work", workId);
   membership.reason = `${membership.reason} HIDDEN_RESEARCH_LINE_MARKER`;
@@ -241,13 +249,16 @@ test("an unreviewed secondary membership remains canonical but hidden from rever
   const snapshot = await loadCanonicalContent(contentRoot);
   assert.equal(
     computeReaderVisibilityDigest(snapshot, "research_line", secondaryLineId),
-    beforeLineDigest,
+    beforeLineDigest
   );
   assert.equal(computeReaderVisibilityDigest(snapshot, "work", workId), beforeWorkDigest);
   const result = await validateCanonicalContent(contentRoot);
   assert.equal(result.valid, true);
   const index = buildWorkResearchLineIndex(snapshot);
-  assert.deepEqual(index[workId].map(({ line_id }) => line_id), [anchorLineId]);
+  assert.deepEqual(
+    index[workId].map(({ line_id }) => line_id),
+    [anchorLineId]
+  );
   assert.doesNotMatch(JSON.stringify(index[workId]), /HIDDEN_RESEARCH_LINE_MARKER/u);
   const workProjection = projectWorkForReader(snapshot, workId);
   const lineProjection = projectResearchLineForReader(snapshot, secondaryLineId);
@@ -255,48 +266,60 @@ test("an unreviewed secondary membership remains canonical but hidden from rever
   assert.doesNotMatch(JSON.stringify(lineProjection), /HIDDEN_RESEARCH_LINE_MARKER/u);
   assert.equal(
     lineFrom(snapshot, secondaryLineId).line.memberships.some(
-      ({ id }) => id === "membership:central-engines-zhu-2021",
+      ({ id }) => id === "membership:central-engines-zhu-2021"
     ),
-    true,
+    true
   );
 });
 
 test("reader projections isolate hidden Lines, hidden Works, and unreviewed memberships", async () => {
   const productionSnapshot = await loadCanonicalContent(productionContent);
   const productionReader = projectVisibleSnapshot(productionSnapshot);
-  assert.deepEqual(productionReader.research_lines.map(({ line_id }) => line_id), lineIds);
+  assert.deepEqual(
+    productionReader.research_lines.map(({ line_id }) => line_id),
+    lineIds
+  );
   assert.deepEqual(
     projectWorkForReader(productionSnapshot, workId).research_lines.map(({ line_id }) => line_id),
     [secondaryLineId, anchorLineId],
-    "a Work may retain multiple reviewed visible editorial contexts",
+    "a Work may retain multiple reviewed visible editorial contexts"
   );
 
   const fixture = structuredClone(productionSnapshot);
   lineFrom(fixture, explosiveLineId).line.reader_state = "draft";
   fixture.works.find(({ id }) => id === longYuWorkId).files["work.yaml"].reader_state = "draft";
-  const hiddenMembership = lineFrom(fixture, secondaryLineId).line.memberships
-    .find(({ work_id }) => work_id === workId);
+  const hiddenMembership = lineFrom(fixture, secondaryLineId).line.memberships.find(
+    ({ work_id }) => work_id === workId
+  );
   hiddenMembership.review_state = "unreviewed";
   hiddenMembership.reason = "UNREVIEWED_MEMBERSHIP_MUST_NOT_RENDER";
 
   const reader = projectVisibleSnapshot(fixture);
-  assert.deepEqual(reader.research_lines.map(({ line_id }) => line_id), [secondaryLineId, anchorLineId]);
-  assert.equal(reader.works.some(({ work_id }) => work_id === longYuWorkId), false);
+  assert.deepEqual(
+    reader.research_lines.map(({ line_id }) => line_id),
+    [secondaryLineId, anchorLineId]
+  );
+  assert.equal(
+    reader.works.some(({ work_id }) => work_id === longYuWorkId),
+    false
+  );
   assert.equal(projectResearchLineForReader(fixture, explosiveLineId), null);
   assert.equal(projectWorkForReader(fixture, longYuWorkId), null);
   assert.equal(
-    projectResearchLineForReader(fixture, secondaryLineId).memberships
-      .some(({ work_id }) => work_id === workId),
-    false,
+    projectResearchLineForReader(fixture, secondaryLineId).memberships.some(
+      ({ work_id }) => work_id === workId
+    ),
+    false
   );
   assert.equal(
-    projectResearchLineForReader(fixture, anchorLineId).memberships
-      .some(({ work_id }) => work_id === longYuWorkId),
-    false,
+    projectResearchLineForReader(fixture, anchorLineId).memberships.some(
+      ({ work_id }) => work_id === longYuWorkId
+    ),
+    false
   );
   assert.deepEqual(
     projectWorkForReader(fixture, workId).research_lines.map(({ line_id }) => line_id),
-    [anchorLineId],
+    [anchorLineId]
   );
   assert.doesNotMatch(JSON.stringify(reader), /UNREVIEWED_MEMBERSHIP_MUST_NOT_RENDER/u);
 
@@ -322,11 +345,11 @@ test("a malformed secondary membership is quarantined without invalidating its i
   assert.equal(diagnosticCodes.has("VISIBLE_RESEARCH_LINE_MEMBERSHIP_REQUIRED"), false);
   assert.equal(
     result.diagnostics.find(({ code }) => code === "READING_ROLE_REQUIRED").record_id,
-    "membership:central-engines-zhu-2021",
+    "membership:central-engines-zhu-2021"
   );
   assert.equal(
     result.work_inventory.find(({ work_id }) => work_id === workId).visibility_status,
-    "skipped",
+    "skipped"
   );
   for (const unaffectedWorkId of [arnettWorkId, brombergWorkId]) {
     const inventory = result.work_inventory.find(({ work_id }) => work_id === unaffectedWorkId);
@@ -334,19 +357,19 @@ test("a malformed secondary membership is quarantined without invalidating its i
     assert.equal(inventory.visibility_status, "approved", unaffectedWorkId);
   }
   const secondaryInventory = result.research_line_inventory.find(
-    ({ line_id }) => line_id === secondaryLineId,
+    ({ line_id }) => line_id === secondaryLineId
   );
   assert.equal(secondaryInventory.validation_status, "invalid");
   assert.equal(secondaryInventory.visibility_status, "skipped");
   assert.equal(
     result.research_line_inventory.find(({ line_id }) => line_id === anchorLineId)
       .visibility_status,
-    "approved",
+    "approved"
   );
   assert.equal(
     result.research_line_inventory.find(({ line_id }) => line_id === anchorLineId)
       .validation_status,
-    "valid",
+    "valid"
   );
 });
 
@@ -357,25 +380,24 @@ test("Research Line static pages render the projected index, complete prose, lin
     lineIds.map((lineId) => [
       lineId,
       computeReaderVisibilityDigest(beforeSnapshot, "research_line", lineId),
-    ]),
+    ])
   );
-  const build = spawnSync("npm", ["run", "build"], {
-    cwd: projectRoot,
-    encoding: "utf8",
-    stdio: ["ignore", "pipe", "pipe"],
-  });
-  assert.equal(build.status, 0, build.stderr || build.stdout);
+  ensureDistBuilt();
 
   const indexHtml = await readFile(
     new URL("../dist/research-lines/index.html", import.meta.url),
-    "utf8",
+    "utf8"
   );
   assert.match(indexHtml, /7 个研究方向：3 个已审核/u);
-  assertInOrder(indexHtml, [
-    localizedLineTitles[secondaryLineId],
-    localizedLineTitles[anchorLineId],
-    localizedLineTitles[explosiveLineId],
-  ], "研究方向索引");
+  assertInOrder(
+    indexHtml,
+    [
+      localizedLineTitles[secondaryLineId],
+      localizedLineTitles[anchorLineId],
+      localizedLineTitles[explosiveLineId],
+    ],
+    "研究方向索引"
+  );
 
   const expectedRoutes = [
     "/research-lines/baseline-binaries-frb/",
@@ -396,21 +418,33 @@ test("Research Line static pages render the projected index, complete prose, lin
     const bundle = lineFrom(beforeSnapshot, line.line_id);
     const html = await readFile(
       new URL(`../dist/research-lines/${bundle.slug}/index.html`, import.meta.url),
-      "utf8",
+      "utf8"
     );
     const text = htmlText(html);
-    assertInOrder(html, [
-      `<h1>${localizedLineTitles[line.line_id]}</h1>`,
-      "科学问题</p>",
-      "为什么这个方向重要</h2>",
-      "该研究方向中的论文</h2>",
-    ], bundle.slug);
-    assert(text.includes(line.scientific_question), `${bundle.slug}: incomplete scientific question`);
+    assertInOrder(
+      html,
+      [
+        `<h1>${localizedLineTitles[line.line_id]}</h1>`,
+        "科学问题</p>",
+        "为什么这个方向重要</h2>",
+        "该研究方向中的论文</h2>",
+      ],
+      bundle.slug
+    );
+    assert(
+      text.includes(line.scientific_question),
+      `${bundle.slug}: incomplete scientific question`
+    );
 
     const proseBlocks = line.reading
       .replace(/^---\n[\s\S]*?\n---\n/u, "")
       .split(/\n\s*\n/u)
-      .map((block) => block.trim().replace(/^#{1,6}\s+/u, "").replace(/\s+/gu, " "))
+      .map((block) =>
+        block
+          .trim()
+          .replace(/^#{1,6}\s+/u, "")
+          .replace(/\s+/gu, " ")
+      )
       .filter(Boolean);
     for (const block of proseBlocks) {
       assert(text.includes(block), `${bundle.slug}: missing prose block: ${block}`);
@@ -432,11 +466,11 @@ test("Research Line static pages render the projected index, complete prose, lin
 
   const indexSource = await readFile(
     new URL("../src/pages/research-lines/index.astro", import.meta.url),
-    "utf8",
+    "utf8"
   );
   const detailSource = await readFile(
     new URL("../src/pages/research-lines/[id].astro", import.meta.url),
-    "utf8",
+    "utf8"
   );
   assert.match(indexSource, /projectBaselineSnapshot\(snapshot\)/u);
   assert.match(indexSource, /researchLines\.length === 0/u);
@@ -453,14 +487,11 @@ test("Research Line static pages render the projected index, complete prose, lin
 
   const workHtml = await readFile(
     new URL("../dist/papers/zhu-2021/index.html", import.meta.url),
-    "utf8",
+    "utf8"
   );
   const lineHtml = await readFile(
-    new URL(
-      "../dist/research-lines/dense-environment-multimessenger/index.html",
-      import.meta.url,
-    ),
-    "utf8",
+    new URL("../dist/research-lines/dense-environment-multimessenger/index.html", import.meta.url),
+    "utf8"
   );
   assert.match(workHtml, /Jet stalling and choking/iu);
   assert.match(workHtml, /Escaping neutrino messenger/iu);
@@ -482,7 +513,7 @@ test("Research Line static pages render the projected index, complete prose, lin
     assert.equal(
       computeReaderVisibilityDigest(afterSnapshot, "research_line", lineId),
       beforeLineDigests.get(lineId),
-      lineId,
+      lineId
     );
   }
 });

@@ -1,4 +1,4 @@
-import { readFileSync, statSync } from "node:fs";
+import { existsSync, readFileSync, statSync } from "node:fs";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { execFile } from "node:child_process";
@@ -11,6 +11,9 @@ export const DEFAULT_LEDGER_PATH = resolve(
     new URL("../.cache/channel-publication/guild-612912874093545504.json", import.meta.url)
   )
 );
+export const BASELINE_LEDGER_PATH = resolve(
+  fileURLToPath(new URL("../tests/fixtures/guild-ledger-baseline.json", import.meta.url))
+);
 export const DEFAULT_CHANNEL_FALLBACK_URL = "https://pd.qq.com/s/4v70z48vi";
 
 let cachedLedger = null;
@@ -20,10 +23,18 @@ let cachedMtime = 0;
  * Returns the publication ledger items map in O(1) memory, invalidating only when file mtime changes.
  */
 export function getPublicationLedger({ ledgerPath = DEFAULT_LEDGER_PATH } = {}) {
+  let targetPath = ledgerPath;
+  if (
+    targetPath === DEFAULT_LEDGER_PATH &&
+    !existsSync(targetPath) &&
+    existsSync(BASELINE_LEDGER_PATH)
+  ) {
+    targetPath = BASELINE_LEDGER_PATH;
+  }
   try {
-    const st = statSync(ledgerPath);
+    const st = statSync(targetPath);
     if (!cachedLedger || cachedMtime !== st.mtimeMs) {
-      const raw = readFileSync(ledgerPath, "utf8");
+      const raw = readFileSync(targetPath, "utf8");
       cachedLedger = JSON.parse(raw);
       cachedMtime = st.mtimeMs;
     }

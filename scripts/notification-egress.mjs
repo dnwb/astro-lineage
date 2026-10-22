@@ -163,7 +163,12 @@ export async function generateGroupBrief(type = "daily", options = {}) {
       }
     }
   }
-  channelUrl = await readChannelShareUrl({ url: channelUrl || process.env.ASTRO_CHANNEL_URL });
+  const inputChannelUrl = channelUrl || process.env.ASTRO_CHANNEL_URL;
+  if (!inputChannelUrl) {
+    channelUrl = (await readChannelShareUrl()) || "https://pd.qq.com/s/d4lw4zl0g";
+  } else {
+    channelUrl = await readChannelShareUrl({ url: inputChannelUrl });
+  }
   let channelAddress, readerAddress;
   try {
     channelAddress = new URL(channelUrl);

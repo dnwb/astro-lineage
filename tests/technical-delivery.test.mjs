@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { existsSync, readFileSync } from "node:fs";
 import { spawnSync } from "node:child_process";
+import { ensureDistBuilt } from "./helpers/ensure-dist.mjs";
 import { readdir, readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -69,10 +70,14 @@ const learningPathSlugs = [
 ];
 const manifestPath = join(projectRoot, "src/data/arxiv-archives/manifest.json");
 const archivedDailyRoutes = existsSync(manifestPath)
-  ? JSON.parse(readFileSync(manifestPath, "utf8")).weeks.flatMap((w) => w.days.map((d) => `/arxiv-daily/${d.date}/`))
+  ? JSON.parse(readFileSync(manifestPath, "utf8")).weeks.flatMap((w) =>
+      w.days.map((d) => `/arxiv-daily/${d.date}/`)
+    )
   : [];
 const archivedWeeklyRoutes = existsSync(manifestPath)
-  ? JSON.parse(readFileSync(manifestPath, "utf8")).weeks.filter((w) => w.has_weekly_summary && w.weekly_data_file).map((w) => `/arxiv-weekly/${w.week_id}/`)
+  ? JSON.parse(readFileSync(manifestPath, "utf8"))
+      .weeks.filter((w) => w.has_weekly_summary && w.weekly_data_file)
+      .map((w) => `/arxiv-weekly/${w.week_id}/`)
   : [];
 const expectedRoutes = [
   "/",
@@ -95,7 +100,7 @@ async function htmlFiles(directory) {
   const files = [];
   for (const entry of await readdir(directory, { withFileTypes: true })) {
     const path = join(directory, entry.name);
-    if (entry.isDirectory()) files.push(...await htmlFiles(path));
+    if (entry.isDirectory()) files.push(...(await htmlFiles(path)));
     else if (entry.name.endsWith(".html")) files.push(path);
   }
   return files;
@@ -115,12 +120,7 @@ function normalizeInternalRoute(href) {
 }
 
 test("technical delivery exposes the gated dev command, all baseline routes, and closed internal links", async () => {
-  const build = spawnSync("npm", ["run", "build"], {
-    cwd: projectRoot,
-    encoding: "utf8",
-    stdio: ["ignore", "pipe", "pipe"],
-  });
-  assert.equal(build.status, 0, build.stderr || build.stdout);
+  ensureDistBuilt();
   const packageJson = JSON.parse(await readFile(join(projectRoot, "package.json"), "utf8"));
   assert.equal(packageJson.scripts.dev, "node scripts/validate.mjs && astro dev");
   const readme = await readFile(join(projectRoot, "README.md"), "utf8");
@@ -141,7 +141,11 @@ test("technical delivery exposes the gated dev command, all baseline routes, and
   assert.equal(files.length, expectedRoutes.length);
   const allHtml = await Promise.all(files.map((path) => readFile(path, "utf8")));
   const internalLinks = new Set(
-    allHtml.flatMap((html) => [...html.matchAll(/href="([^"]+)"/gu)].map((match) => normalizeInternalRoute(match[1]))).filter(Boolean),
+    allHtml
+      .flatMap((html) =>
+        [...html.matchAll(/href="([^"]+)"/gu)].map((match) => normalizeInternalRoute(match[1]))
+      )
+      .filter(Boolean)
   );
   for (const route of internalLinks) {
     assert.equal(existsSync(routeFile(route)), true, `broken internal route ${route}`);

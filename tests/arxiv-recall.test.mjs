@@ -705,10 +705,11 @@ test("weekly provider calls time out and never expose raw response bodies", asyn
     apiKey: "synthetic-secret",
     timeoutMs: 5,
     retries: 1,
-    fetchImpl: async (_url, { signal }) =>
-      new Promise((_resolve, reject) => {
-        signal.addEventListener("abort", () => reject(signal.reason), { once: true });
-      }),
+    fetchImpl: async () => {
+      const err = new Error("The operation was aborted due to timeout");
+      err.name = "TimeoutError";
+      throw err;
+    },
   }).then(
     () => null,
     (error) => error

@@ -304,8 +304,13 @@ test("C2C academic replies append the channel link when the answer contains a pa
   assert.match(sentText, /AstroLineage QQ 频道：\nhttps:\/\/pd\.qq\.com\/s\/astrolineage/u);
 });
 
-test("alertAdmin targets admin openid with structured alert content", async () => {
+test("alertAdmin targets admin openid with structured alert content", async (t) => {
   const { alertAdmin } = await import("../scripts/qq-send.mjs");
+  const origFetch = globalThis.fetch;
+  t.after(() => {
+    globalThis.fetch = origFetch;
+  });
+  globalThis.fetch = async () => new Response("network blocked by test", { status: 400 });
   const origEnv = process.env.QQ_ADMIN_OPENID;
   process.env.QQ_ADMIN_OPENID = "TEST_ADMIN_ID";
   try {
@@ -440,6 +445,7 @@ test("C2C_MESSAGE_CREATE handles pure image message, injects default academic pr
     gateway: async () => "wss://example.com",
     authorize: async () => "fake-test-token",
     answer: mockAnswer,
+    channelLink: async () => "https://pd.qq.com/s/astrolineage",
     fetchMedia: async (url) => {
       assert.equal(url, "https://c2cpicdw.qpic.cn/offpic_new/0/pic1.jpg");
       return fakeDataUri;

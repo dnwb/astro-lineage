@@ -3,6 +3,7 @@ import { existsSync } from "node:fs";
 import { cp, readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { spawnSync } from "node:child_process";
+import { ensureDistBuilt } from "./helpers/ensure-dist.mjs";
 import { test } from "node:test";
 import { parse, stringify } from "yaml";
 
@@ -48,8 +49,9 @@ function diagnosticFor(result, code, context = {}) {
   const diagnostic = result.diagnostics.find(
     (item) =>
       item.code === code &&
-      Object.entries(context).every(([field, expected]) =>
-        JSON.stringify(item[field]) === JSON.stringify(expected)),
+      Object.entries(context).every(
+        ([field, expected]) => JSON.stringify(item[field]) === JSON.stringify(expected)
+      )
   );
   assert(diagnostic, `missing diagnostic ${code}`);
   for (const [field, expected] of Object.entries(context)) {
@@ -244,7 +246,7 @@ test("Research Line Membership IDs are globally unique across editorial bundles"
     writeFile(
       join(secondRoot, "reading.md"),
       `---\nline_id: ${secondLineId}\n---\n\n# Duplicate-ID fixture\n`,
-      "utf8",
+      "utf8"
     ),
   ]);
 
@@ -269,7 +271,7 @@ test("Membership review is Human-gated and material changes stale its binding", 
     const result = await validateCanonicalContent(contentRoot);
     assert(
       codes(result).has("CURATION_HUMAN_REVIEW_REQUIRED") ||
-        codes(result).has("MEMBERSHIP_REVIEW_BINDING_STALE"),
+        codes(result).has("MEMBERSHIP_REVIEW_BINDING_STALE")
     );
   }
 });
@@ -336,7 +338,10 @@ test("hidden unreviewed records are excluded from the Work visibility projection
 
   const after = await validateCanonicalContent(contentRoot);
   assert.equal(after.valid, true);
-  assert.equal(after.work_inventory[0].visibility_digest, before.work_inventory[0].visibility_digest);
+  assert.equal(
+    after.work_inventory[0].visibility_digest,
+    before.work_inventory[0].visibility_digest
+  );
 
   const { projectVisibleSnapshot } = await import("../scripts/reader-projection.mjs");
   const projection = await projectVisibleSnapshot(await loadCanonicalContent(contentRoot));
@@ -357,25 +362,23 @@ test("generated reverse membership indexes are reproducible and non-canonical", 
   assert.match(first, new RegExp(lineId));
 
   const loaded = await loadCanonicalContent(contentRoot);
-  assert.equal(loaded.discovery.files.some((file) => file.includes("generated")), false);
+  assert.equal(
+    loaded.discovery.files.some((file) => file.includes("generated")),
+    false
+  );
 });
 
 test("the static Paper, Work, and Research Line routes render the visible validated snapshot", async () => {
-  const build = spawnSync("npm", ["run", "build"], {
-    cwd: projectRoot,
-    encoding: "utf8",
-    stdio: ["ignore", "pipe", "pipe"],
-  });
-  assert.equal(build.status, 0, build.stderr || build.stdout);
+  ensureDistBuilt();
 
   const papersHtml = await readFile(new URL("../dist/papers/index.html", import.meta.url), "utf8");
   const workHtml = await readFile(
     new URL("../dist/papers/arnett-1982/index.html", import.meta.url),
-    "utf8",
+    "utf8"
   );
   const lineHtml = await readFile(
     new URL("../dist/research-lines/central-engines/index.html", import.meta.url),
-    "utf8",
+    "utf8"
   );
   assert.match(papersHtml, /Type I supernovae\. I(?:\.| -)/u);
   assert.match(workHtml, /科学陈述/u);

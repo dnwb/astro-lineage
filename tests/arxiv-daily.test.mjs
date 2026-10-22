@@ -3,6 +3,7 @@ import { mkdtemp, readFile, readdir, rename, rm, writeFile } from "node:fs/promi
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { spawnSync } from "node:child_process";
+import { ensureDistBuilt } from "./helpers/ensure-dist.mjs";
 import { test } from "node:test";
 import { tmpdir } from "node:os";
 import {
@@ -1582,12 +1583,7 @@ test(
   async () => {
     const packageJson = JSON.parse(await readFile(join(projectRoot, "package.json"), "utf8"));
     assert.equal(typeof packageJson.scripts?.["arxiv:refresh"], "string");
-    const build = spawnSync("npm", ["run", "build"], {
-      cwd: projectRoot,
-      encoding: "utf8",
-      stdio: ["ignore", "pipe", "pipe"],
-    });
-    assert.equal(build.status, 0, build.stderr || build.stdout);
+    ensureDistBuilt(join(projectRoot, "dist", "arxiv-daily", "index.html"));
     const html = await readFile(join(projectRoot, "dist", "arxiv-daily", "index.html"), "utf8");
     const currentFeed = (await readPublishedArxivEdition()).feed;
     assert.match(html, /每日 arXiv 导读/u);

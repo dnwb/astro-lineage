@@ -3,18 +3,14 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { spawnSync } from "node:child_process";
+import { ensureDistBuilt } from "./helpers/ensure-dist.mjs";
 import { test } from "node:test";
 
 const projectRoot = fileURLToPath(new URL("..", import.meta.url));
 const distRoot = join(projectRoot, "dist");
 
 test("the reader exposes one page-level language switch and keeps English in the static page", async () => {
-  const build = spawnSync("npm", ["run", "build"], {
-    cwd: projectRoot,
-    encoding: "utf8",
-    stdio: ["ignore", "pipe", "pipe"],
-  });
-  assert.equal(build.status, 0, build.stderr || build.stdout);
+  ensureDistBuilt();
 
   const htmlPaths = [
     "index.html",

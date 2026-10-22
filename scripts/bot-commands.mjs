@@ -413,7 +413,8 @@ export async function executeBotCommand(cmd, options = {}) {
       const link = await options.resolveChannelLink();
       if (link) return link;
     }
-    return await readChannelShareUrl({ url: process.env.ASTRO_CHANNEL_URL });
+    const url = await readChannelShareUrl({ url: process.env.ASTRO_CHANNEL_URL });
+    return url || "https://pd.qq.com/s/d4lw4zl0g";
   };
 
   switch (cmd.type) {

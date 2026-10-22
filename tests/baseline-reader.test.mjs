@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { existsSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import { spawnSync } from "node:child_process";
+import { ensureDistBuilt } from "./helpers/ensure-dist.mjs";
 import { test } from "node:test";
 import { fileURLToPath } from "node:url";
 import { loadCanonicalContent } from "../scripts/content-loader.mjs";
@@ -11,12 +12,7 @@ const projectRoot = fileURLToPath(new URL("../", import.meta.url));
 const distRoot = new URL("../dist/", import.meta.url);
 
 function buildReader() {
-  const build = spawnSync("npm", ["run", "build"], {
-    cwd: projectRoot,
-    encoding: "utf8",
-    stdio: ["ignore", "pipe", "pipe"],
-  });
-  assert.equal(build.status, 0, build.stderr || build.stdout);
+  ensureDistBuilt();
 }
 
 test("the baseline projection includes only the marked candidate catalogue", async () => {
@@ -27,14 +23,26 @@ test("the baseline projection includes only the marked candidate catalogue", asy
   assert.equal(reader.works.filter((work) => work.reader_status === "published").length, 6);
   assert.equal(reader.works.filter((work) => work.reader_status === "candidate").length, 35);
   assert.equal(reader.research_lines.length, 7);
-  assert.equal(reader.research_lines.filter((line) => line.reader_status === "candidate").length, 4);
+  assert.equal(
+    reader.research_lines.filter((line) => line.reader_status === "candidate").length,
+    4
+  );
   assert.equal(reader.learning_paths.length, 5);
-  assert.equal(reader.learning_paths.filter((path) => path.reader_status === "candidate").length, 4);
-  assert.equal(reader.works.find((work) => work.work_id === "work:zhu-2021").reader_status, "published");
-  assert.equal(reader.works.find((work) => work.work_id === "work:zhang-agn-jet-2024").reader_status, "published");
+  assert.equal(
+    reader.learning_paths.filter((path) => path.reader_status === "candidate").length,
+    4
+  );
+  assert.equal(
+    reader.works.find((work) => work.work_id === "work:zhu-2021").reader_status,
+    "published"
+  );
+  assert.equal(
+    reader.works.find((work) => work.work_id === "work:zhang-agn-jet-2024").reader_status,
+    "published"
+  );
   assert.equal(
     reader.works.find((work) => work.work_id === "work:blandford-mckee-1976").reader_status,
-    "candidate",
+    "candidate"
   );
 });
 
@@ -87,7 +95,7 @@ test("the reader exposes the complete baseline with candidate status and navigat
 
   const candidatePaper = await readFile(
     new URL("papers/blandford-mckee-1976/index.html", distRoot),
-    "utf8",
+    "utf8"
   );
   assert.match(candidatePaper, /<title>相对论爆炸波的流体动力学 · AstroLineage<\/title>/u);
   assert.match(candidatePaper, /候选基准/u);
@@ -97,7 +105,7 @@ test("the reader exposes the complete baseline with candidate status and navigat
 
   const candidateLine = await readFile(
     new URL("research-lines/baseline-csm-radiative-transients/index.html", distRoot),
-    "utf8",
+    "utf8"
   );
   assert.match(candidateLine, /星周介质相互作用与瞬变光变/u);
   assert.match(candidateLine, /候选基准/u);
@@ -105,7 +113,7 @@ test("the reader exposes the complete baseline with candidate status and navigat
 
   const candidatePath = await readFile(
     new URL("learning-paths/baseline-engine-powered-transients/index.html", distRoot),
-    "utf8",
+    "utf8"
   );
   assert.match(candidatePath, /<title>从放射性加热到引擎驱动瞬变 · AstroLineage<\/title>/u);
   assert.match(candidatePath, /从放射性加热到引擎驱动瞬变/u);

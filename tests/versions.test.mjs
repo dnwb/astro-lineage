@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
+import { ensureDistBuilt } from "./helpers/ensure-dist.mjs";
 import { cp, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -39,13 +40,13 @@ async function copyContent() {
     contentRoot,
     "research-lines",
     "dense-environment-multimessenger",
-    "line.yaml",
+    "line.yaml"
   );
   const explosiveLinePath = join(
     contentRoot,
     "research-lines",
     "explosive-transients-csm",
-    "line.yaml",
+    "line.yaml"
   );
   const versions = parse(await readFile(versionsPath, "utf8"));
   const work = parse(await readFile(workPath, "utf8"));
@@ -95,7 +96,7 @@ function leafPointers(value, prefix = "") {
   }
   if (value !== null && typeof value === "object") {
     return Object.entries(value).flatMap(([key, child]) =>
-      leafPointers(child, `${prefix}/${key.replaceAll("~", "~0").replaceAll("/", "~1")}`),
+      leafPointers(child, `${prefix}/${key.replaceAll("~", "~0").replaceAll("/", "~1")}`)
     );
   }
   return [prefix || "/"];
@@ -107,7 +108,7 @@ function addFieldSources(version, sourceIds) {
   delete fields.kind;
   delete fields.field_sources;
   version.field_sources = Object.fromEntries(
-    leafPointers(fields).map((pointer) => [pointer, [...sourceIds]]),
+    leafPointers(fields).map((pointer) => [pointer, [...sourceIds]])
   );
   return version;
 }
@@ -119,7 +120,8 @@ function relation(overrides = {}) {
     target_version_id: journalVersionId,
     relation: "published_as",
     basis: "source_asserted",
-    reason: "The ADS record explicitly maps the curated arXiv revision to the journal manifestation.",
+    reason:
+      "The ADS record explicitly maps the curated arXiv revision to the journal manifestation.",
     bibliographic_source_ids: [sharedSourceId],
     curation_provenance: {
       actor_id: "actor:human-curator",
@@ -149,26 +151,22 @@ async function makePublicationFixture() {
     source_url: "https://ui.adsabs.harvard.edu/abs/1107.1326/abstract",
     retrieved_at: "2026-09-04T04:50:00Z",
   };
-  const makeArxiv = (id, revision, date) => addFieldSources({
-    id,
-    kind: "arxiv_revision",
-    title: journal.title,
-    authors: structuredClone(journal.authors),
-    release_date: { value: date, precision: "day" },
-    arxiv_id: "1107.1326",
-    arxiv_revision: revision,
-    access_urls: [{ kind: "arxiv", url: `https://arxiv.org/abs/1107.1326v${revision}` }],
-  }, [sharedSourceId]);
-  const arxivV1 = makeArxiv(
-    "version:arnett-1982-arxiv-v1",
-    1,
-    "2011-07-07",
-  );
-  const arxivV2 = makeArxiv(
-    "version:arnett-1982-arxiv-v2",
-    2,
-    "2011-07-08",
-  );
+  const makeArxiv = (id, revision, date) =>
+    addFieldSources(
+      {
+        id,
+        kind: "arxiv_revision",
+        title: journal.title,
+        authors: structuredClone(journal.authors),
+        release_date: { value: date, precision: "day" },
+        arxiv_id: "1107.1326",
+        arxiv_revision: revision,
+        access_urls: [{ kind: "arxiv", url: `https://arxiv.org/abs/1107.1326v${revision}` }],
+      },
+      [sharedSourceId]
+    );
+  const arxivV1 = makeArxiv("version:arnett-1982-arxiv-v1", 1, "2011-07-07");
+  const arxivV2 = makeArxiv("version:arnett-1982-arxiv-v2", 2, "2011-07-08");
   addFieldSources(journal, [sharedSourceId]);
   fixture.versions.bibliographic_sources.push(source);
   fixture.versions.versions = [arxivV1, arxivV2, journal];
@@ -213,15 +211,15 @@ test("production Bromberg is visible and its publication/scientific structures r
   assert.match(approval.visibility_digest, /^[0-9a-f]{64}$/u);
   assert.equal(
     result.work_inventory.find(({ work_id }) => work_id === brombergWorkId)?.visibility_status,
-    "approved",
+    "approved"
   );
 
   const versions = versionsRecord.versions;
   assert.equal(versions.length, 2);
-  assert.deepEqual(
-    versions.map(({ kind }) => kind).sort(),
-    ["arxiv_revision", "journal_manifestation"],
-  );
+  assert.deepEqual(versions.map(({ kind }) => kind).sort(), [
+    "arxiv_revision",
+    "journal_manifestation",
+  ]);
   const arxiv = versions.find(({ kind }) => kind === "arxiv_revision");
   const journal = versions.find(({ kind }) => kind === "journal_manifestation");
   assert.equal(arxiv.arxiv_id, "1107.1326");
@@ -232,8 +230,14 @@ test("production Bromberg is visible and its publication/scientific structures r
   for (const version of versions) {
     assert(version.field_sources, `${version.id} has field-level Bibliographic Provenance`);
     assert(version.field_sources["/title"]?.length > 0, `${version.id} title provenance`);
-    assert(version.field_sources["/authors/0/display_name"]?.length > 0, `${version.id} author provenance`);
-    assert(version.field_sources["/release_date/value"]?.length > 0, `${version.id} date provenance`);
+    assert(
+      version.field_sources["/authors/0/display_name"]?.length > 0,
+      `${version.id} author provenance`
+    );
+    assert(
+      version.field_sources["/release_date/value"]?.length > 0,
+      `${version.id} date provenance`
+    );
   }
 
   const relations = versionsRecord.publication_relations;
@@ -249,7 +253,7 @@ test("production Bromberg is visible and its publication/scientific structures r
   assert.equal(publishedAs.review_provenance.actor_id, "actor:human-curator");
   assert.equal(publishedAs.bibliographic_source_ids.length, 1);
   const source = versionsRecord.bibliographic_sources.find(
-    ({ id }) => id === publishedAs.bibliographic_source_ids[0],
+    ({ id }) => id === publishedAs.bibliographic_source_ids[0]
   );
   assert.equal(source.provider, "arxiv");
   assert.equal(source.record_id, "1107.1326");
@@ -257,16 +261,13 @@ test("production Bromberg is visible and its publication/scientific structures r
   assert.match(source.retrieved_at, /Z$/u);
 
   const productionRelations = snapshot.works.flatMap(
-    ({ files }) => files["versions.yaml"]?.publication_relations ?? [],
+    ({ files }) => files["versions.yaml"]?.publication_relations ?? []
   );
   assert.equal(productionRelations.filter(({ relation }) => relation === "revises").length, 0);
-  assert.deepEqual(
-    snapshot.scientificEdges.map(({ id }) => id).sort(),
-    [
-      "edge:long-yu-extends-zhu-dynamic-trajectory",
-      "edge:transfit-challenges-arnett-maximum-light",
-    ],
-  );
+  assert.deepEqual(snapshot.scientificEdges.map(({ id }) => id).sort(), [
+    "edge:long-yu-extends-zhu-dynamic-trajectory",
+    "edge:transfit-challenges-arnett-maximum-light",
+  ]);
   assert.equal(result.statistics.scientific_edges, 2);
 
   assert.equal(annotationsRecord.annotations.length, 16);
@@ -275,10 +276,10 @@ test("production Bromberg is visible and its publication/scientific structures r
   assert.equal(accountRecord.stages.length, 7);
   assert.equal(accountRecord.links.length, 7);
   const outgoing = accountRecord.links.filter(
-    ({ source_stage_id }) => source_stage_id === "stage:bromberg-cocoon-pressure",
+    ({ source_stage_id }) => source_stage_id === "stage:bromberg-cocoon-pressure"
   );
   const incoming = accountRecord.links.filter(
-    ({ target_stage_id }) => target_stage_id === "stage:bromberg-head-propagation",
+    ({ target_stage_id }) => target_stage_id === "stage:bromberg-head-propagation"
   );
   assert.equal(outgoing.length, 2, "Physical Account has a meaningful branch");
   assert.equal(incoming.length, 2, "Physical Account has a meaningful convergence");
@@ -299,15 +300,10 @@ test("production Bromberg is visible and its publication/scientific structures r
 });
 
 test("Bromberg's static Work page renders publication provenance and the branching account", async () => {
-  const build = spawnSync("npm", ["run", "build"], {
-    cwd: projectRoot,
-    encoding: "utf8",
-    stdio: ["ignore", "pipe", "pipe"],
-  });
-  assert.equal(build.status, 0, build.stderr || build.stdout);
+  ensureDistBuilt();
   const html = await readFile(
     new URL("../dist/papers/bromberg-2011/index.html", import.meta.url),
-    "utf8",
+    "utf8"
   );
   for (const marker of [
     "<h3>版本</h3>",
@@ -340,7 +336,10 @@ test("Version validation accepts an explicit arXiv revision graph and publicatio
     fixture.versions.versions
       .filter(({ kind }) => kind === "arxiv_revision")
       .map(({ arxiv_id, arxiv_revision }) => [arxiv_id, arxiv_revision]),
-    [["1107.1326", 1], ["1107.1326", 2]],
+    [
+      ["1107.1326", 1],
+      ["1107.1326", 2],
+    ]
   );
   assert.equal(fixture.versions.publication_relations[0].relation, "revises");
   assert.equal(fixture.versions.publication_relations[1].relation, "published_as");
@@ -436,8 +435,10 @@ test("Version validation rejects malformed identities and hostile Publication Gr
     ],
     [
       (fixture) => {
-        fixture.versions.publication_relations[0].source_version_id = fixture.versions.versions[0].id;
-        fixture.versions.publication_relations[0].target_version_id = fixture.versions.versions[1].id;
+        fixture.versions.publication_relations[0].source_version_id =
+          fixture.versions.versions[0].id;
+        fixture.versions.publication_relations[0].target_version_id =
+          fixture.versions.versions[1].id;
       },
       "PUBLICATION_REVISES_REVISION_ORDER_INVALID",
     ],
@@ -508,14 +509,42 @@ test("Publication Relation provenance coverage, Human review, and material bindi
 
 test("every semantic Publication Relation field resets review independently", async () => {
   for (const [label, mutate] of [
-    ["source endpoint", (record) => { record.source_version_id = "version:arnett-1982-arxiv-v1"; }],
-    ["target endpoint", (record) => { record.target_version_id = "version:arnett-1982-arxiv-v1"; }],
-    ["relation", (record) => { record.relation = "revises"; }],
-    ["basis", (record) => { record.basis = "curator_matched"; }],
-    ["reason", (record) => { record.reason = "A materially different normalized justification."; }],
-    ["source references", (record) => {
-      record.bibliographic_source_ids = ["source:ads-arnett-1982-20260904-032118z"];
-    }],
+    [
+      "source endpoint",
+      (record) => {
+        record.source_version_id = "version:arnett-1982-arxiv-v1";
+      },
+    ],
+    [
+      "target endpoint",
+      (record) => {
+        record.target_version_id = "version:arnett-1982-arxiv-v1";
+      },
+    ],
+    [
+      "relation",
+      (record) => {
+        record.relation = "revises";
+      },
+    ],
+    [
+      "basis",
+      (record) => {
+        record.basis = "curator_matched";
+      },
+    ],
+    [
+      "reason",
+      (record) => {
+        record.reason = "A materially different normalized justification.";
+      },
+    ],
+    [
+      "source references",
+      (record) => {
+        record.bibliographic_source_ids = ["source:ads-arnett-1982-20260904-032118z"];
+      },
+    ],
   ]) {
     const fixture = await makePublicationFixture();
     mutate(fixture.versions.publication_relations[1]);
@@ -527,18 +556,22 @@ test("every semantic Publication Relation field resets review independently", as
 
 test("Publication Graph detects revision cycles and incoming journal correspondence duplicates", async () => {
   const fixture = await makePublicationFixture();
-  fixture.versions.publication_relations.push(relation({
-    id: "publication-relation:arnett-arxiv-v1-v2",
-    source_version_id: "version:arnett-1982-arxiv-v1",
-    target_version_id: "version:arnett-1982-arxiv-v2",
-    relation: "revises",
-    reason: undefined,
-  }));
-  fixture.versions.publication_relations.push(relation({
-    id: "publication-relation:arnett-arxiv-v1-journal",
-    source_version_id: "version:arnett-1982-arxiv-v1",
-    target_version_id: journalVersionId,
-  }));
+  fixture.versions.publication_relations.push(
+    relation({
+      id: "publication-relation:arnett-arxiv-v1-v2",
+      source_version_id: "version:arnett-1982-arxiv-v1",
+      target_version_id: "version:arnett-1982-arxiv-v2",
+      relation: "revises",
+      reason: undefined,
+    })
+  );
+  fixture.versions.publication_relations.push(
+    relation({
+      id: "publication-relation:arnett-arxiv-v1-journal",
+      source_version_id: "version:arnett-1982-arxiv-v1",
+      target_version_id: journalVersionId,
+    })
+  );
   await writeFile(fixture.versionsPath, stringify(fixture.versions), "utf8");
   const result = await validateFixture(fixture);
   const diagnosticCodes = codes(result);

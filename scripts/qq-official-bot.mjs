@@ -177,7 +177,10 @@ export async function appendChannelShareLinkToReply(
 ) {
   const text = typeof content === "string" ? content : String(content ?? "");
   if (!/https?:\/\/\S+/iu.test(text)) return text;
-  const channelUrl = await getChannelShareUrl();
+  let channelUrl = await getChannelShareUrl();
+  if (channelUrl === undefined) {
+    channelUrl = (await readChannelShareUrl()) || "https://pd.qq.com/s/d4lw4zl0g";
+  }
   if (!channelUrl || text.includes(channelUrl)) return text;
   return `${text.trimEnd()}\n\nAstroLineage QQ 频道：\n${channelUrl}`;
 }

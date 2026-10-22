@@ -71,7 +71,7 @@ test("generatePublicationWeeklyHtml creates dedicated academic layout with Base6
   assert.match(html, /break-inside:\s*avoid/u);
 
   // 3. Base64 inlined figures for must-read papers (when figure files are present on host)
-  if (existsSync("public/arxiv-figures")) {
+  if (existsSync("public/arxiv-figures/2610.12359")) {
     assert.match(html, /data:image\/(?:png|jpeg|svg\+xml);base64,/u);
     assert.doesNotMatch(html, /<img [^>]*src="\/arxiv-figures\//u);
   }

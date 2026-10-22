@@ -445,6 +445,7 @@ test("C2C_MESSAGE_CREATE handles pure image message, injects default academic pr
     gateway: async () => "wss://example.com",
     authorize: async () => "fake-test-token",
     answer: mockAnswer,
+    channelLink: async () => "https://pd.qq.com/s/astrolineage",
     fetchMedia: async (url) => {
       assert.equal(url, "https://c2cpicdw.qpic.cn/offpic_new/0/pic1.jpg");
       return fakeDataUri;

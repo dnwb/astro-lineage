@@ -67,7 +67,7 @@ const resultClaim = normalizeStructuredClaim(result, "核心结果");
                     src={fig.url}
                     alt={fig.caption || "核心科学图表"}
                     loading="lazy"
-                    onerror={`this.onerror=null;this.src='${arxivFallback}';`}
+                    onerror={`this.onerror=null;this.src='${arxivFallback}';if(this.parentElement&&this.parentElement.tagName==='A')this.parentElement.href='${arxivFallback}';`}
                   />
                 </a>
                 {fig.caption && (

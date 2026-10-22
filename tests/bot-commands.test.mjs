@@ -36,6 +36,14 @@ test("matchBotCommand correctly classifies all regular commands with \\ and / an
   assert.deepEqual(matchBotCommand("帮助")?.type, "start");
   assert.deepEqual(matchBotCommand("指南")?.type, "start");
 
+  // 1.1 \site & Chinese aliases
+  assert.deepEqual(matchBotCommand("\\site")?.type, "site");
+  assert.deepEqual(matchBotCommand("/site")?.type, "site");
+  assert.deepEqual(matchBotCommand("/url")?.type, "site");
+  assert.deepEqual(matchBotCommand("公网地址")?.type, "site");
+  assert.deepEqual(matchBotCommand("网站地址")?.type, "site");
+  assert.deepEqual(matchBotCommand("网址")?.type, "site");
+
   // 2. \today
   assert.deepEqual(matchBotCommand("\\today")?.type, "today");
   assert.deepEqual(matchBotCommand("/today")?.type, "today");
@@ -176,6 +184,17 @@ test("handleBotCommand handles \\start and returns command manual", async () => 
   assert.match(res.replyText, /\\last_week/u);
   assert.match(res.replyText, /\\list_day/u);
   assert.match(res.replyText, /\\list_week/u);
+  assert.match(res.replyText, /\\site/u);
+});
+
+test("handleBotCommand handles \\site and returns public and local website URLs", async () => {
+  const res = await handleBotCommand("\\site");
+  assert.equal(res.matched, true);
+  assert.match(res.replyText, /🌐 \*\*AstroLineage 前沿学术知识库入口\*\*/u);
+  assert.match(res.replyText, /astro-lineage\.pages\.dev/u);
+  assert.match(res.replyText, /10\.131\.43\.83:4321/u);
+  assert.match(res.replyText, /arxiv-daily/u);
+  assert.match(res.replyText, /arxiv-weekly/u);
 });
 
 test("handleBotCommand handles \\today and returns today brief card", async () => {

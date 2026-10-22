@@ -57,21 +57,30 @@ const resultClaim = normalizeStructuredClaim(result, "核心结果");
           <span class="guide-tag tag-figure">📊 核心图表</span>
         </div>
         <div class="schematic-figures-grid">
-          {figures.map((fig: any) => (
-            <figure class="paper-schematic-figure">
-              <a href={fig.url} target="_blank" rel="noopener noreferrer" title="点击查看原始高清大图">
-                <img src={fig.url} alt={fig.caption || "核心科学图表"} loading="lazy" />
-              </a>
-              {fig.caption && (
-                <figcaption>
-                  <span class={`fig-badge fig-badge-${fig.category || "theoretical"}`}>
-                    {fig.category_badge || fig.label || "科学图表"}
-                  </span>
-                  <ReaderText text={fig.caption} />
-                </figcaption>
-              )}
-            </figure>
-          ))}
+          {figures.map((fig: any) => {
+            const cleanPath = typeof fig.url === "string" ? fig.url.replace(/^\/arxiv-figures\//u, "") : "";
+            const arxivFallback = cleanPath ? `https://arxiv.org/html/${cleanPath}` : fig.url;
+            return (
+              <figure class="paper-schematic-figure">
+                <a href={fig.url} target="_blank" rel="noopener noreferrer" title="点击查看原始高清大图">
+                  <img
+                    src={fig.url}
+                    alt={fig.caption || "核心科学图表"}
+                    loading="lazy"
+                    onerror={`this.onerror=null;this.src='${arxivFallback}';if(this.parentElement&&this.parentElement.tagName==='A')this.parentElement.href='${arxivFallback}';`}
+                  />
+                </a>
+                {fig.caption && (
+                  <figcaption>
+                    <span class={`fig-badge fig-badge-${fig.category || "theoretical"}`}>
+                      {fig.category_badge || fig.label || "科学图表"}
+                    </span>
+                    <ReaderText text={fig.caption} />
+                  </figcaption>
+                )}
+              </figure>
+            );
+          })}
         </div>
       </div>
     )}

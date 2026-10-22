@@ -537,6 +537,7 @@ export function formatWeekIdEn(weekId) {
 export const DEFAULT_CANONICAL_HOST = "10.131.43.83";
 export const DEFAULT_CANONICAL_PORT = "4321";
 export const DEFAULT_WEBSITE_BASE = `http://${DEFAULT_CANONICAL_HOST}:${DEFAULT_CANONICAL_PORT}`;
+export const DEFAULT_PUBLIC_SITE_URL = "https://astro-lineage.pages.dev";
 
 /**
  * Sanitize website base URL to strip localhost / 127.0.0.1 and trailing slashes.
@@ -561,7 +562,34 @@ export function sanitizeWebsiteBase(url) {
 export function getDefaultWebsiteBase() {
   const envUrl =
     typeof process !== "undefined" && process?.env
-      ? process.env.SITE_BASE_URL || process.env.PUBLIC_SITE_URL || process.env.ASTRO_SITE_URL
+      ? process.env.PUBLIC_SITE_URL || process.env.SITE_BASE_URL || process.env.ASTRO_SITE_URL
       : undefined;
+  return sanitizeWebsiteBase(envUrl || DEFAULT_PUBLIC_SITE_URL);
+}
+
+/**
+ * Get default sanitized local website base (intranet / LAN direct connect).
+ *
+ * @returns {string}
+ */
+export function getDefaultLocalWebsiteBase() {
+  const envUrl =
+    typeof process !== "undefined" && process?.env ? process.env.LOCAL_SITE_URL : undefined;
   return sanitizeWebsiteBase(envUrl || DEFAULT_WEBSITE_BASE);
+}
+
+/**
+ * Resolve public and local website bases with option override support.
+ *
+ * @param {{ websiteBase?: string, localWebsiteBase?: string }} [options]
+ * @returns {{ publicBase: string, localBase: string }}
+ */
+export function resolveWebsiteUrls(options = {}) {
+  const publicBase = options.websiteBase
+    ? sanitizeWebsiteBase(options.websiteBase)
+    : getDefaultWebsiteBase();
+  const localBase = options.localWebsiteBase
+    ? sanitizeWebsiteBase(options.localWebsiteBase)
+    : getDefaultLocalWebsiteBase();
+  return { publicBase, localBase };
 }

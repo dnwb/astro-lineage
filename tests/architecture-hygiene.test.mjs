@@ -29,10 +29,15 @@ test("architecture-hygiene: git working tree must have zero untracked artifacts 
       cwd: projectRoot,
       encoding: "utf8",
     }).trim();
+    const untracked = status
+      .split("\n")
+      .map((l) => l.trim())
+      .filter((l) => l.startsWith("??"))
+      .join("\n");
     assert.equal(
-      status,
+      untracked,
       "",
-      `Detected leaked test or build artifacts in public/:\n${status}\nAll tests must allocate temporary workspaces using createTemporaryWorkspace(prefix, t).`
+      `Detected leaked test or build artifacts in public/:\n${untracked}\nAll tests must allocate temporary workspaces using createTemporaryWorkspace(prefix, t).`
     );
   } catch (err) {
     if (err.code !== "ERR_ASSERTION") throw err;

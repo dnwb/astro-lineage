@@ -9,6 +9,10 @@ import { loadCanonicalContent } from "./content-loader.mjs";
 import { projectVisibleSnapshot } from "./reader-projection.mjs";
 import { validateCanonicalContent } from "./content-validator.mjs";
 import { readChannelShareUrl } from "./channel-publication.mjs";
+import {
+  getDefaultWebsiteBase,
+  getDefaultLocalWebsiteBase,
+} from "../src/domain/academic-domain.mjs";
 
 export function loadProjectEnv(envPath = ".env") {
   const resolved = resolve(process.cwd(), envPath);
@@ -56,11 +60,9 @@ export function normalizeModelName(name) {
   return trimmed;
 }
 
-export const SITE_BASE_URL = (
-  process.env.SITE_BASE_URL ||
-  process.env.ASTRO_SITE_URL ||
-  "http://localhost:4321"
-).replace(/\/+$/u, "");
+export const PUBLIC_SITE_URL = getDefaultWebsiteBase();
+export const LOCAL_SITE_URL = getDefaultLocalWebsiteBase();
+export const SITE_BASE_URL = PUBLIC_SITE_URL;
 export function resolveDefaultBaseUrl() {
   const envUrl = process.env.OPENAI_BASE_URL;
   if (envUrl && !envUrl.includes("ccnulaowu") && !envUrl.includes("67.230")) {
@@ -173,7 +175,7 @@ export async function loadAcademicKnowledge({
       weeklySummary = `缓存周报 ${weekly.week_id}（不代表本期实时状态）：${weekly.executive_summary.slice(0, 600)}`;
     }
   } catch {}
-  return `AstroLineage 课题组资料\n主站：${SITE_BASE_URL}/\n每日雷达：${SITE_BASE_URL}/arxiv-daily/\n周报：${SITE_BASE_URL}/arxiv-weekly/\n频道讨论：${channelUrl || "频道链接尚未配置或配置无效，不得猜测地址。"}\n项目研究方向（来自 PROJECT_CONTEXT.md）：\n${directions}\n可见核心文献（仅书目，不代表已读全文）：\n${canonical}\n${daily}\n${weeklySummary}\n没有接入 NotebookLM，未读取论文全文。定时器是否启用与运行是否成功须查询运行状态，不能由计划日程推断。`;
+  return `AstroLineage 课题组资料\n当前部署公网主站（Cloudflare Pages 全球 CDN）：${PUBLIC_SITE_URL}/\n当前部署校内直连（实验室局域网直连服务器）：${LOCAL_SITE_URL}/\n每日雷达：${PUBLIC_SITE_URL}/arxiv-daily/ (校内：${LOCAL_SITE_URL}/arxiv-daily/)\n周报：${PUBLIC_SITE_URL}/arxiv-weekly/ (校内：${LOCAL_SITE_URL}/arxiv-weekly/)\n频道讨论：${channelUrl || "频道链接尚未配置或配置无效，不得猜测地址。"}\n项目研究方向（来自 PROJECT_CONTEXT.md）：\n${directions}\n可见核心文献（仅书目，不代表已读全文）：\n${canonical}\n${daily}\n${weeklySummary}\n没有接入 NotebookLM，未读取论文全文。定时器是否启用与运行是否成功须查询运行状态，不能由计划日程推断。`;
 }
 export async function executeChatCompletion({
   prompt,
@@ -518,6 +520,30 @@ export async function generateAcademicAnswer({
   knowledgeLoader = loadAcademicKnowledge,
 }) {
   if (
+    /^\/?(?:site|url|website|web)\s*$/iu.test(String(query)) ||
+    (/(?:公网|部署|网站|网页|主站|官网|知识库).*?(?:地址|链接|入口|网址|在哪|哪里|多少|是什么)/u.test(
+      String(query)
+    ) &&
+      !/频道/u.test(String(query))) ||
+    /^(?:网址|网站|公网地址|网站地址|网页地址|部署地址|知识库地址)$/iu.test(String(query).trim())
+  ) {
+    const channelUrl = await channelLink();
+    return [
+      `🌐 **AstroLineage 前沿学术知识库入口**：`,
+      `• **公网在线访问 (Cloudflare Pages)**：${PUBLIC_SITE_URL}/`,
+      `• **校内/局域网直连 (实验室服务器)**：${LOCAL_SITE_URL}/`,
+      "",
+      `📚 **板块直达**：`,
+      `• 每日导读 (Daily)：${PUBLIC_SITE_URL}/arxiv-daily/ (校内：${LOCAL_SITE_URL}/arxiv-daily/)`,
+      `• 前沿周报 (Weekly)：${PUBLIC_SITE_URL}/arxiv-weekly/ (校内：${LOCAL_SITE_URL}/arxiv-weekly/)`,
+      channelUrl ? `• QQ 频道社区交流帖：${channelUrl}` : "",
+      "",
+      `💡 校外推荐使用公网在线访问（Cloudflare CDN 全球加速）；校内/局域网或 VPN 推荐直连实验室服务器（支持周报 PDF 完整报告极速下载）。`,
+    ]
+      .filter(Boolean)
+      .join("\n");
+  }
+  if (
     /^\/?channel\s*$/iu.test(String(query)) ||
     (/频道/u.test(String(query)) &&
       /链接|地址|入口|网址|在哪|哪里|怎么(?:进|加)/u.test(String(query)))
@@ -540,7 +566,7 @@ ${knowledge}
 1. 学术严谨，直奔物理核心，符合高能天体物理科研人员学风。
 2. 抓住核心动力学与多信使机制（如中心引擎注入、喷流相对论流体力学、激波破裂、辐射转移、光变曲线演化等）。
 3. 当问到每日更新、系统日程、文献雷达时，根据上文资料说明；待导读不等于排除，没有运行证据时不声称任务已完成或定时器已启用。
-4. 视情况推荐 AstroLineage 校园网平台页面（如 [AstroLineage 每日雷达](${SITE_BASE_URL}/arxiv-daily/) 或 [前沿学术周报](${SITE_BASE_URL}/arxiv-weekly/)），方便读者深入研读。
+4. 当用户询问网站、公网、网页、在线阅读地址或如何访问时，必须明确告知公网主站（${PUBLIC_SITE_URL}/，基于 Cloudflare 全球 CDN，外网直接访问）与校内局域网直连（${LOCAL_SITE_URL}/，实验室服务器，支持周报 PDF 完整报告下载）。
 5. 控制回答长度适中（约 200~400 字以内），适合在即时通讯与论坛快速阅读。
 6. 不需要精准礼貌称呼或刻意寒暄（严禁前置“@[某某]”、“尊敬的学者”、“你好”等套话），直接以科研同行讨论方式切入本质展开回答。
 `;

@@ -28,6 +28,10 @@ import {
 } from "./channel-title-policy.mjs";
 import { resolvePaperTitleZhAsync, resolvePaperTitleZhSync } from "./paper-translation.mjs";
 import { TencentGuildAdapter } from "./intelligence-egress.mjs";
+import {
+  getDefaultWebsiteBase,
+  getDefaultLocalWebsiteBase,
+} from "../src/domain/academic-domain.mjs";
 export { extractPaperTopic, DAILY_BRIEF_CHANNEL_ID, GENERAL_CHANNEL_ID, resolvePublicationTarget };
 
 try {
@@ -39,11 +43,9 @@ try {
 const DEFAULT_GUILD_ID = process.env.TENCENT_GUILD_ID || "";
 const DEFAULT_DAILY_CHANNEL_ID = process.env.TENCENT_DAILY_CHANNEL_ID || "";
 const DEFAULT_WEEKLY_CHANNEL_ID = process.env.TENCENT_WEEKLY_CHANNEL_ID || "";
-const SITE_BASE_URL = (
-  process.env.SITE_BASE_URL ||
-  process.env.ASTRO_SITE_URL ||
-  "http://localhost:4321"
-).replace(/\/+$/u, "");
+const PUBLIC_SITE_URL = getDefaultWebsiteBase();
+const LOCAL_SITE_URL = getDefaultLocalWebsiteBase();
+const SITE_BASE_URL = PUBLIC_SITE_URL;
 
 const RADAR_PATH = resolve(fileURLToPath(new URL("../src/data/daily-radar.json", import.meta.url)));
 const FEED_PATH = resolve(fileURLToPath(new URL("../src/data/arxiv-daily.json", import.meta.url)));
@@ -155,7 +157,8 @@ function dailyBriefItem(model, date) {
     "---",
     "",
     "## 阅读入口",
-    `- **内网/校内完整网页与图表**: [打开网页深度导读](${SITE_BASE_URL}/arxiv-daily/${date}/)`,
+    `- **公网在线阅读 (Cloudflare)**: [打开网页深度导读](${PUBLIC_SITE_URL}/arxiv-daily/${date}/)`,
+    `- **校内/局域网直连**: [打开校内直连导读](${LOCAL_SITE_URL}/arxiv-daily/${date}/)`,
     `- **QQ 频道社区交流帖**: [进入频道讨论](https://pd.qq.com/s/7xr9egnly)`,
     "",
     "每篇论文的版本、实际阅读范围与未核查项见网页原记录；本摘要不代表独立验证。"
@@ -286,9 +289,10 @@ export async function generateWeeklyMarkdown({
   }
 
   md += `---\n\n## 阅读入口\n`;
-  md += `- **内网/校内完整网页与图表**: [打开网页深度周报](${SITE_BASE_URL}/arxiv-weekly/${weekId}/)\n`;
+  md += `- **公网在线阅读 (Cloudflare)**: [打开网页深度周报](${PUBLIC_SITE_URL}/arxiv-weekly/${weekId}/)\n`;
+  md += `- **校内/局域网直连**: [打开校内直连周报](${LOCAL_SITE_URL}/arxiv-weekly/${weekId}/)\n`;
   md += `- **QQ 频道社区交流帖**: [进入频道讨论](https://pd.qq.com/s/7xr9egnly)\n`;
-  md += `- **课题组前沿脉络知识库主页**: [AstroLineage 首页](${SITE_BASE_URL}/)\n`;
+  md += `- **课题组前沿脉络知识库主页**: [公网主页](${PUBLIC_SITE_URL}/) | [校内直连](${LOCAL_SITE_URL}/)\n`;
 
   return { weekId, dateRange, postTitle, md };
 }
@@ -624,7 +628,8 @@ export function paperMarkdown(item, date, topic, options = {}) {
     "",
     "## 阅读入口",
     "",
-    `- **内网/校内完整网页与图表**: [打开网页深度导读](${SITE_BASE_URL}/arxiv-daily/${date}/#${anchor})`,
+    `- **公网在线阅读 (Cloudflare)**: [打开网页深度导读](${PUBLIC_SITE_URL}/arxiv-daily/${date}/#${anchor})`,
+    `- **校内/局域网直连**: [打开校内直连导读](${LOCAL_SITE_URL}/arxiv-daily/${date}/#${anchor})`,
     `- **QQ 频道社区交流帖**: [进入频道讨论](${channelUrl})`,
     `- **官方论文原文**: [${version}](https://arxiv.org/abs/${item.arxiv_id}v${item.revision}) · [📄 PDF](https://arxiv.org/pdf/${item.arxiv_id})`,
     "",

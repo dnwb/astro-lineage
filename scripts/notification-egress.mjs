@@ -26,7 +26,7 @@ import {
   deriveWeeklyTitleCandidate,
   extractPaperTopic,
 } from "./channel-title-policy.mjs";
-import { formatAnnouncementInBeijing } from "../src/domain/academic-domain.mjs";
+import { formatAnnouncementInBeijing, resolveWebsiteUrls } from "../src/domain/academic-domain.mjs";
 import { OfficialQqBotAdapter, dispatchIntelligence } from "./intelligence-egress.mjs";
 import {
   resolveFeedShareUrl,
@@ -45,12 +45,7 @@ export async function generateGroupBrief(type = "daily", options = {}) {
   if (!["daily", "weekly"].includes(type)) throw new Error("QQ_NOTIFY_KIND_INVALID");
   let { dailyModel: model, weekly, date, sourceBinding, channelUrl } = options;
   let publicationHash;
-  const websiteBase = (
-    options.websiteBase ||
-    process.env.SITE_BASE_URL ||
-    process.env.ASTRO_SITE_URL ||
-    "http://localhost:4321"
-  ).replace(/\/+$/u, "");
+  const { publicBase: websiteBase, localBase: localWebsiteBase } = resolveWebsiteUrls(options);
   if (!(type === "daily" ? model : weekly)) {
     if (options.interactive) {
       if (type === "daily") {
@@ -630,7 +625,8 @@ export async function generateGroupBrief(type = "daily", options = {}) {
       "---",
       "",
       "### 📚 完整阅读入口",
-      `- **内网/校内完整网页与图表**: [打开网页深度导读](${websiteBase}/${route}/)`,
+      `- **公网在线阅读 (Cloudflare)**: [打开网页深度导读](${websiteBase}/${route}/)`,
+      `- **校内/局域网直连**: [打开校内直连导读](${localWebsiteBase}/${route}/)`,
       `- **QQ 频道社区交流帖**: [进入频道讨论](${channelUrl})`
     );
   } else {
@@ -638,8 +634,11 @@ export async function generateGroupBrief(type = "daily", options = {}) {
       "频道讨论",
       channelUrl,
       "",
-      "完整导读 · 图表、推导与证据",
-      `${websiteBase}/${route}/`
+      "公网完整导读 (Cloudflare)",
+      `${websiteBase}/${route}/`,
+      "",
+      "校内/局域网直连",
+      `${localWebsiteBase}/${route}/`
     );
   }
   const text = lines.filter((line) => line !== undefined).join("\n");
@@ -650,11 +649,7 @@ export async function generateGroupBrief(type = "daily", options = {}) {
 export function renderSinglePaperCardMarkdown(p, options = {}) {
   const a = p.analysis?.analysis || p.analysis || {};
   const date = options.date || p.dailyDate || new Date().toISOString().slice(0, 10);
-  const websiteBase = (
-    process.env.SITE_BASE_URL ||
-    process.env.ASTRO_SITE_URL ||
-    "http://10.131.43.83:4321"
-  ).replace(/\/+$/u, "");
+  const { publicBase: websiteBase, localBase: localWebsiteBase } = resolveWebsiteUrls(options);
   const channelUrl = options.channelUrl || "https://pd.qq.com/s/7xr9egnly";
   const mustRead = p.analysis?.priority === "must_read" || p.priority === "must_read";
   const authorStr =
@@ -703,7 +698,8 @@ export function renderSinglePaperCardMarkdown(p, options = {}) {
     "---",
     "",
     "### 📚 完整阅读入口",
-    `- **内网/校内完整网页与图表**: [打开网页深度导读](${websiteBase}/arxiv-daily/${date}/#${anchor})`,
+    `- **公网在线阅读 (Cloudflare)**: [打开网页深度导读](${websiteBase}/arxiv-daily/${date}/#${anchor})`,
+    `- **校内/局域网直连**: [打开校内直连导读](${localWebsiteBase}/arxiv-daily/${date}/#${anchor})`,
     `- **QQ 频道社区交流帖**: [进入频道讨论](${paperPostUrl})`,
     `- **官方论文原文**: [arXiv:${p.arxiv_id}v${revision}](https://arxiv.org/abs/${p.arxiv_id}v${revision})`
   );

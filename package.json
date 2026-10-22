@@ -24,8 +24,11 @@
     "channel:pin-events": "node scripts/channel-pin-events.mjs",
     "bot:doctor": "node scripts/qq-official-bot.mjs --doctor",
     "bot:probe": "node scripts/probe-models.mjs",
+    "doctor": "node scripts/qq-official-bot.mjs --doctor",
+    "deploy:check": "node scripts/qq-official-bot.mjs --doctor",
+    "figures:sync": "node scripts/sync-recent-figures.mjs",
     "test:bot": "node --test tests/agent-core.test.mjs tests/qq-official-bot.test.mjs tests/qq-users.test.mjs tests/qq-cli-isolation.test.mjs tests/tencent-channel-publisher.test.mjs tests/bot-commands.test.mjs tests/qq-media.test.mjs tests/qq-vision-e2e.test.mjs",
-    "test:fast": "node --test tests/agent-core.test.mjs tests/qq-official-bot.test.mjs tests/qq-users.test.mjs tests/qq-cli-isolation.test.mjs tests/tencent-channel-publisher.test.mjs tests/channel-title-policy.test.mjs tests/channel-reconcile.test.mjs tests/arxiv-scheduler.test.mjs tests/paper-acquisition.test.mjs tests/edition-ledger.test.mjs tests/pipeline-telemetry.test.mjs tests/intelligence-egress.test.mjs tests/bot-commands.test.mjs tests/arxiv-beijing-schedule-diagnostic.test.mjs tests/academic-domain.test.mjs tests/formula-renderer.test.mjs tests/scientific-text-pipeline.test.mjs tests/domain-schemas.test.mjs tests/archive-consistency-diagnostic.test.mjs tests/qq-media.test.mjs tests/qq-vision-e2e.test.mjs",
+    "test:fast": "node --test tests/agent-core.test.mjs tests/qq-official-bot.test.mjs tests/qq-users.test.mjs tests/qq-cli-isolation.test.mjs tests/tencent-channel-publisher.test.mjs tests/channel-title-policy.test.mjs tests/channel-reconcile.test.mjs tests/arxiv-scheduler.test.mjs tests/paper-acquisition.test.mjs tests/edition-ledger.test.mjs tests/pipeline-telemetry.test.mjs tests/intelligence-egress.test.mjs tests/bot-commands.test.mjs tests/arxiv-beijing-schedule-diagnostic.test.mjs tests/academic-domain.test.mjs tests/formula-renderer.test.mjs tests/scientific-text-pipeline.test.mjs tests/domain-schemas.test.mjs tests/archive-consistency-diagnostic.test.mjs tests/qq-media.test.mjs tests/qq-vision-e2e.test.mjs tests/sync-recent-figures.test.mjs",
     "test:hygiene": "node --test tests/copy-hygiene.test.mjs tests/architecture-hygiene.test.mjs",
     "validate": "node scripts/validate.mjs",
     "pretest": "node scripts/cleanup-test-tmp.mjs",
@@ -35,6 +38,7 @@
     "typecheck": "astro check",
     "build": "npm run validate && node scripts/editorial-index.mjs && astro build",
     "verify": "npm run validate && npm run test && npm run check && npm run build",
+    "verify:offline": "npm run validate && npm run test && npm run check && npm run build",
     "prepare": "husky"
   },
   "dependencies": {

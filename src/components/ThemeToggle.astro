@@ -7,7 +7,7 @@
   <input
     id="site-theme-toggle"
     type="checkbox"
-    onchange="try{var isDarkOS=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var isDark=isDarkOS?!this.checked:this.checked;var theme=isDark?'dark':'light';localStorage.setItem('astrolineage-theme',theme);document.documentElement.setAttribute('data-theme',theme);}catch(e){}"
+    onchange="try{var isDark=this.checked;var theme=isDark?'dark':'light';localStorage.setItem('astrolineage-theme',theme);document.documentElement.setAttribute('data-theme',theme);if(document.body)document.body.setAttribute('data-theme',theme);}catch(e){}"
   />
   <label for="site-theme-toggle" title="切换深色/浅色模式 (Dark / Light)">
     <span class="theme-btn-content mode-to-dark" aria-hidden="true">
@@ -25,7 +25,7 @@
     width="0"
     height="0"
     style="display:none!important;"
-    onload="try{var isDarkOS=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var saved=localStorage.getItem('astrolineage-theme');var isDark=saved?(saved==='dark'):isDarkOS;document.documentElement.setAttribute('data-theme',isDark?'dark':'light');var el=document.getElementById('site-theme-toggle');if(el){var shouldCheck=isDarkOS?!isDark:isDark;el.checked=shouldCheck;if(shouldCheck){el.setAttribute('checked','');}else{el.removeAttribute('checked');}}}catch(e){}"
+    onload="try{var isDarkOS=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var saved=localStorage.getItem('astrolineage-theme');var isDark=saved?(saved==='dark'):isDarkOS;var theme=isDark?'dark':'light';document.documentElement.setAttribute('data-theme',theme);if(document.body)document.body.setAttribute('data-theme',theme);var el=document.getElementById('site-theme-toggle');if(el){el.checked=isDark;if(isDark){el.setAttribute('checked','');}else{el.removeAttribute('checked');}}}catch(e){}"
   />
 </div>
 
@@ -115,7 +115,7 @@
     display: none !important;
   }
 
-  /* When checked in Light OS (user switched to Dark) */
+  /* When checked (user is in Dark mode) */
   :global(:root:has(#site-theme-toggle:checked)) .theme-switch .mode-to-dark,
   :global(body:has(#site-theme-toggle:checked)) .theme-switch .mode-to-dark {
     display: none;
@@ -133,15 +133,6 @@
     }
     .theme-switch .mode-to-light {
       display: inline-flex;
-    }
-
-    :global(:root:has(#site-theme-toggle:checked)) .theme-switch .mode-to-dark,
-    :global(body:has(#site-theme-toggle:checked)) .theme-switch .mode-to-dark {
-      display: inline-flex;
-    }
-    :global(:root:has(#site-theme-toggle:checked)) .theme-switch .mode-to-light,
-    :global(body:has(#site-theme-toggle:checked)) .theme-switch .mode-to-light {
-      display: none;
     }
   }
 </style>

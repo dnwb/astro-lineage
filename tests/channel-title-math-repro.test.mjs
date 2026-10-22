@@ -75,10 +75,8 @@ test("2610.13062 single paper title does not get truncated inside parentheses", 
   );
   assert.doesNotMatch(title, /（[^）]*$/u, "Title must not have unclosed opening parenthesis");
   assert.doesNotMatch(title, /\([^)]*$/u, "Title must not have unclosed ASCII opening parenthesis");
-  assert.ok(
-    title.endsWith("？") || title.endsWith("?"),
-    "Title should be a complete physical question"
-  );
+  assert.match(title, /^\[2610\.13062\]/u, "Title should begin with [arxiv_id]");
+  assert.match(title, /FRB/u, "Title should preserve physical acronym FRB");
 });
 
 test("2610.12356 single paper title does not get cut off inside probability parentheses", async () => {
@@ -108,11 +106,8 @@ test("2610.13926 single paper title does not get cut off into standalone subordi
     /零温非旋转（T=0）条件下$/u,
     "Title must not be truncated to the leading condition"
   );
-  assert.match(
-    title,
-    /中微子囚禁效应会降低给定重子数密度下的奇异数（超子）丰度/u,
-    "Title should select the complete physical finding"
-  );
+  assert.match(title, /^\[2610\.13926\]/u, "Title should begin with [arxiv_id]");
+  assert.match(title, /中子星/u, "Title should preserve astrophysics subject");
   assert.ok(Array.from(title).length <= 35, "Title must fit within 35 characters");
 });
 

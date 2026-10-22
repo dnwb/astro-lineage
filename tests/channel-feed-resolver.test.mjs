@@ -2,8 +2,6 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {
   getPublicationLedger,
-  resolveFeedRecord,
-  resolveFeedShareUrl,
   resolveWeeklyFeedShareUrl,
   resolveDailySummaryShareUrl,
   resolvePaperFeedShareUrl,

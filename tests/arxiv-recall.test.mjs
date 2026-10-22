@@ -707,7 +707,8 @@ test("weekly provider calls time out and never expose raw response bodies", asyn
     retries: 1,
     fetchImpl: async (_url, { signal }) =>
       new Promise((_resolve, reject) => {
-        signal.addEventListener("abort", () => reject(signal.reason), { once: true });
+        if (signal?.aborted) return reject(signal.reason);
+        signal?.addEventListener("abort", () => reject(signal.reason), { once: true });
       }),
   }).then(
     () => null,

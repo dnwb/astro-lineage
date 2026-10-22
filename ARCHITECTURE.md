@@ -2,7 +2,7 @@
 
 > **版本**：v1.0 (2026-10)  
 > **语言与规范**：参考 `~/STE.md`，所有时间发布一律以北京时间（UTC+8）为准。  
-> **对外访问地址**：`http://10.131.43.83:4321`（严禁输出 192 内网路由器 IP）。  
+> **对外访问地址**：公网在线（Cloudflare Pages）`https://astro-lineage.pages.dev` ｜ 校内/局域网直连 `http://10.131.43.83:4321`（严禁输出 192 内网路由器 IP）。  
 > **AI 开发须知**：`docs/adr/` 为历史决策归档，**日常开发严禁全量读取 ADR 目录**；系统架构与契约以本文件为唯一顶层蓝图。
 
 ---
@@ -96,7 +96,57 @@
 
 ---
 
-## 4. 验证门禁与日常工作流 (Verification Gates)
+## 4. 验证体系三级金字塔与日常工作流 (Verification Pyramid)
+
+为了彻底解耦日常开发、代码评审门禁与生产上线，系统采用严密的**三级金字塔测试体系**：
+
+```text
+                          ▲
+                         / \
+                        /   \     Level 3: 【线上部署与连通性自检】 (Deployment Health Check)
+                       /     \    -> 手动或部署时触发：npm run doctor (或 npm run deploy:check)
+                      /-------\   -> 真正检测：真实 API 连通、真实 QQ 登录、网关权限、凭据自检
+                     /         \
+                    /           \   Level 2: 【本地集成测试】 (Local Integration / E2E)
+                   /             \  -> 本地日常开发时显式运行：npm run test:bot
+                  /---------------\ -> 依托本地 .env 与真实测试群，测功能、测指令、测联调
+                 /                 \
+                /                   \ Level 1: 【GitHub PR 纯净门禁】 (Hermetic CI Verification)
+               /                     \-> GitHub Actions 唯一运行内容：npm run verify:offline (alias: verify)
+              /-----------------------\-> 100% 静态、100% 脱离 API、100% 脱离 QQ 凭据、0 网络泄漏
+```
+
+### 4.1 Level 1：GitHub Check（纯净脱离门禁）
+
+- **核心定位**：给 GitHub PR 和主干推送做守门员。
+- **脱离原则**：
+  - 完全脱离外部 API 调用（不请求任何外部模型或腾讯网关）。
+  - 完全脱离 QQ 凭据与环境（不读线上 `.env`，不依赖真实群号或 Token，零网络泄漏）。
+- **验证范围**：
+  - 核心学术数据模型与格式校验（`validate`）
+  - Astro 前端模板与 TypeScript 静态编译语法（`check`）
+  - 纯内存单元逻辑、数据流转换（纯静态计算）
+  - 纯静态网站 HTML 构建（`build`）
+- **命令**：`npm run verify:offline`（与 `npm run verify` 等价对齐，单 Check 绿灯）。
+
+### 4.2 Level 2：本地集成测试（`npm run test:bot`）
+
+- **核心定位**：本地开发机器人功能时使用。
+- **执行方式**：
+  - 移出 GitHub CI 必选网络链条，本地按需显式执行。
+  - 读取本地 `.env`，可与本地专属测试群进行联调，验证真实指令与多模态图表解析。
+
+### 4.3 Level 3：部署自检（`npm run doctor` / `npm run deploy:check`）
+
+- **核心定位**：服务器上线与常驻进程启动前的一次性健康检查。
+- **执行方式**：
+  - 运行 `node scripts/qq-official-bot.mjs --doctor`。
+  - 检查当前机器环境变量完备性（`QQ_APP_ID`, `QQ_APP_SECRET`, `QQ_BOT_TOKEN`, `QQ_ADMIN_OPENID`）。
+  - 检查 AccessToken 申请与网关握手连通性。
+
+---
+
+## 5. 日常工作流与安全规范
 
 任何修改提交前必须依次满足以下门禁：
 
@@ -119,3 +169,6 @@
    - 差异审查**优先使用 `git diff --stat`**，严禁对 `src/data/` 目录运行无约束的裸 `git diff`，避免 Token 与上下文被海量数据污染。
    - 绝不硬编码内网 192 IP，统一使用 `10.131.43.83:4321`。
    - 绝不把临时状态写入 `src/data/`，运行时状态仅限 `.local-state/`。
+5. **图表同步与 Cloudflare 部署边界**：
+   - 采用最近 7 周滑动窗口机制（`scripts/sync-recent-figures.mjs`）：仅同步最近 7 个学术周文章引用的高清图表至 Git 暂存区与 Cloudflare Pages，超出窗口的历史图表自动从 Git 索引解除跟踪（本地磁盘原图永久保留供局域网直接访问）。
+   - 确保 Git 仓库体积严控在 ~150MB 内，同时保证 Cloudflare 生产环境最新 7 周图表 100% 正常显示。

@@ -18,10 +18,6 @@ import { micromark } from "micromark";
 export const ASTRO_LATEX_MACROS = [
   [/\\betag(?![A-Za-z])/gu, "\\boldsymbol{\\beta}"],
   [/\\Pvec(?![A-Za-z])/gu, "\\mathbf{P}"],
-  [/\\rm(?![A-Za-z])/gu, "\\mathrm"],
-  [/\\bf(?![A-Za-z])/gu, "\\mathbf"],
-  [/\\it(?![A-Za-z])/gu, "\\mathit"],
-  [/\\cal(?![A-Za-z])/gu, "\\mathcal"],
   [/\\Msun(?![A-Za-z])/gu, "M_\\odot"],
   [/\\msun(?![A-Za-z])/gu, "M_\\odot"],
   [/\\Msol(?![A-Za-z])/gu, "M_\\odot"],
@@ -276,6 +272,7 @@ export function renderScientificPlainText(textInput) {
         .replace(/\\text\{([^}]+)\}/gu, "$1")
         .replace(/\\boldsymbol\{([^}]+)\}/gu, "$1")
         .replace(/\\bm\{([^}]+)\}/gu, "$1")
+        .replace(/\\(?:rm|bf|it|cal)\b\s*/gu, "")
         .replace(/\\lesssim\b/gu, "≲")
         .replace(/\\gtrsim\b/gu, "≳")
         .replace(/\\sim\b/gu, "~")

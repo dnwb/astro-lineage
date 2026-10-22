@@ -51,6 +51,25 @@ test("channel link requests return the configured address without calling a mode
   assert.equal(calls, 0);
 });
 
+test("site address queries return public and local links without calling a model", async (t) => {
+  let calls = 0;
+  t.mock.method(globalThis, "fetch", async () => {
+    calls += 1;
+    return new Response(
+      JSON.stringify({ choices: [{ message: { content: "model guessed answer" } }] })
+    );
+  });
+  for (const query of ["公网地址是什么", "网站地址是多少？", "/site", "网页在哪看", "网址"]) {
+    const answer = await generateAcademicAnswer({
+      query,
+      channelLink: async () => "https://pd.qq.com/s/test-channel",
+    });
+    assert.ok(answer.includes("astro-lineage.pages.dev"), `Query failed: ${query}`);
+    assert.ok(answer.includes("10.131.43.83:4321"), `Query missing local: ${query}`);
+  }
+  assert.equal(calls, 0);
+});
+
 test("missing channel address is reported without guessing or contacting a model", async (t) => {
   t.mock.method(globalThis, "fetch", async () => {
     throw new Error("must not call provider");

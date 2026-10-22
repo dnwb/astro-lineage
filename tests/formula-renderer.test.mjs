@@ -77,6 +77,7 @@ test("verified arXiv author macros render with their source definitions", () => 
 test("renders astrophysics author macros (bb, degrees, DM, textsc, rg, Rsph)", () => {
   const cases = [
     String.raw`kT_{\rm C} \simeq \Lambda kT_{\bb} \sim 10\,\mathrm{keV}`,
+    String.raw`M_{\rm ^{56}Ni} \approx 2.2~M_\odot`,
     String.raw`i=90\degrees`,
     String.raw`\DMCosmic{} + \DMHost{}`,
     String.raw`[\mathrm{O\,\textsc{iii}}]`,

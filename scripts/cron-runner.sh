@@ -51,6 +51,39 @@ record_current_build() {
   node scripts/notebooklm-sync.mjs --export "${BUILD_ID}" || DELIVERY_FAILED=1
 }
 
+sync_git_data() {
+  if [ "${CRON_GIT_PUSH:-false}" = "true" ]; then
+    echo "[cron-runner] 检查并同步数据变更与最近 7 周图表至 Git 仓库以触发 Cloudflare 部署..."
+    # 维护最近 7 周图表滑动窗口暂存入库，解绑过期历史图片
+    node scripts/sync-recent-figures.mjs --weeks "${SYNC_FIGURES_WEEKS:-7}" || true
+
+    if [ -n "$(git status --porcelain src/data/)" ]; then
+      git add src/data/
+    fi
+
+    # 检查暂存区是否有更新需要提交
+    if ! git diff --cached --quiet; then
+      if ! git commit -m "chore(arxiv): sync recent 7-week editions, archives & figures"; then
+        echo "[cron-runner] ⚠️ 警告: git commit 失败" >&2
+      fi
+    fi
+
+    # 检查是否有待推送的提交（含本次提交或历史未推送成功的提交）
+    UNPUSHED="$(git log origin/master..HEAD --oneline 2>/dev/null || true)"
+    if [ -n "${UNPUSHED}" ]; then
+      echo "[cron-runner] 检测到待同步提交，正在推送到远程 master 分支..."
+      if git push origin HEAD:master; then
+        echo "[cron-runner] ✓ 数据与图表已成功推送到远程 master 分支"
+      else
+        echo "[cron-runner] ⚠️ 警告: 推送数据至远程 master 分支失败，请检查网络连接或 Git 凭据" >&2
+        DELIVERY_FAILED=1
+      fi
+    else
+      echo "[cron-runner] 暂无新数据需要推送到远程 Git 仓库"
+    fi
+  fi
+}
+
 echo "========================================================"
 echo "[$TIMESTAMP] Starting AstroLineage Task: ${TASK}"
 echo "Project root: ${PROJECT_DIR}"
@@ -80,6 +113,7 @@ case "${TASK}" in
     echo "[cron-runner] 检查并确保 AstroLineage 智能体机器人守护进程运行正常..."
     systemctl --user is-active --quiet astrolineage-bot.service || systemctl --user start astrolineage-bot.service || true
     systemctl --user is-active --quiet astrolineage-qq-bot.service || systemctl --user start astrolineage-qq-bot.service || true
+    sync_git_data
     ;;
 
   reconcile|fallback)
@@ -103,6 +137,7 @@ case "${TASK}" in
     else
       node scripts/notebooklm-sync.mjs --deliver daily "${BUILD_ID}" || DELIVERY_FAILED=1
     fi
+    sync_git_data
     ;;
 
   group-weekly)
@@ -123,6 +158,7 @@ case "${TASK}" in
     record_current_build
     systemctl --user restart astrolineage-web.service || true
     node scripts/notebooklm-sync.mjs --deliver daily "${BUILD_ID}" || DELIVERY_FAILED=1
+    sync_git_data
     ;;
 
   weekly)
@@ -134,6 +170,7 @@ case "${TASK}" in
     record_current_build
     systemctl --user restart astrolineage-web.service || true
     node scripts/notebooklm-sync.mjs --deliver weekly "${BUILD_ID}" || DELIVERY_FAILED=1
+    sync_git_data
     ;;
 
   agent|bot)

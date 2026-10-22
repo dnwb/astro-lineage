@@ -26,6 +26,8 @@ import {
   formatWeekIdZh,
   sanitizeWebsiteBase,
   getDefaultWebsiteBase,
+  getDefaultLocalWebsiteBase,
+  resolveWebsiteUrls,
 } from "../src/domain/academic-domain.mjs";
 import { generateWeeklyPdf } from "./weekly-pdf.mjs";
 
@@ -142,7 +144,7 @@ export async function getAvailableWeeklyIds(weeklyDir = DEFAULT_WEEKLY_ARCHIVES_
  */
 export async function formatDailyList(options = {}) {
   const archiveDir = options.archiveDir || DEFAULT_DAILY_ARCHIVES_DIR;
-  const websiteBase = sanitizeWebsiteBase(options.websiteBase || getDefaultWebsiteBase());
+  const { publicBase: websiteBase, localBase: localWebsiteBase } = resolveWebsiteUrls(options);
   const dates = await getAvailableDailyDates(archiveDir);
 
   if (dates.length === 0) {
@@ -176,7 +178,7 @@ export async function formatDailyList(options = {}) {
 
     lines.push(
       `• **${date}** (${weekday})${statsStr}`,
-      `  🔗 [网页版](${websiteBase}/arxiv-daily/${date}/) ｜ 快速查看指令：\`\\day ${date}\``
+      `  🔗 [公网阅读](${websiteBase}/arxiv-daily/${date}/) ｜ [校内直连](${localWebsiteBase}/arxiv-daily/${date}/) ｜ 指令：\`\\day ${date}\``
     );
   }
 
@@ -193,7 +195,7 @@ export async function formatDailyList(options = {}) {
  */
 export async function formatWeeklyList(options = {}) {
   const weeklyDir = options.weeklyDir || DEFAULT_WEEKLY_ARCHIVES_DIR;
-  const websiteBase = sanitizeWebsiteBase(options.websiteBase || getDefaultWebsiteBase());
+  const { publicBase: websiteBase, localBase: localWebsiteBase } = resolveWebsiteUrls(options);
   const weekIds = await getAvailableWeeklyIds(weeklyDir);
 
   if (weekIds.length === 0) {
@@ -220,7 +222,7 @@ export async function formatWeeklyList(options = {}) {
 
     lines.push(
       `• **${weekDisplay}**${tag}${summaryStr ? ` ｜ ${summaryStr}` : ""}`,
-      `  🔗 [网页精读](${websiteBase}/arxiv-weekly/${weekId}/)${cmdHint ? ` ｜ ${cmdHint}` : ""}`
+      `  🔗 [公网精读](${websiteBase}/arxiv-weekly/${weekId}/) ｜ [校内直连](${localWebsiteBase}/arxiv-weekly/${weekId}/)${cmdHint ? ` ｜ ${cmdHint}` : ""}`
     );
   }
 
@@ -278,6 +280,15 @@ export function matchBotCommand(rawQuery) {
     /^(帮助|指南|菜单|功能列表|指令列表)$/iu.test(query)
   ) {
     return { type: "start", query };
+  }
+
+  // 1.1 \site, /site, \url, /url, 网站, 公网地址, 部署地址
+  if (
+    (isSlash && /^[\\/](site|url|website|link|web)$/iu.test(query)) ||
+    /^(?:网站|公网|部署|主站|官网|网页|知识库)(?:地址|链接|入口|网址|在哪|哪里)?$/iu.test(query) ||
+    /^(?:网址|链接|入口|主页|公网地址|网站地址|网页地址|知识库地址)$/iu.test(query)
+  ) {
+    return { type: "site", query };
   }
 
   if (isSlash && /^[\\/](test|ping|test-c2c)$/iu.test(query)) {
@@ -394,6 +405,7 @@ export async function executeBotCommand(cmd, options = {}) {
       "• `\\list_day` (或 `/list_day`)：查看已归档的每日导读日期列表",
       "• `\\list_week` (或 `/list_week`)：查看所有已归档的周报列表",
       "• `\\start` (或 `/start`)：调出本帮助指南",
+      "• `\\site` (或 `/site`、`网址`)：查看前沿知识库公网地址与校内直连入口",
       "",
       "💬 直接发送论文题目、arXiv 编号（如 2610.05773）或物理问题（如“总结今天的必读论文”），即可开始研讨！",
     ].join("\n");
@@ -418,6 +430,29 @@ export async function executeBotCommand(cmd, options = {}) {
   };
 
   switch (cmd.type) {
+    case "site": {
+      const urls = resolveWebsiteUrls(options);
+      const channelUrl = await resolveChannel();
+      return [
+        `🌐 **AstroLineage 前沿学术知识库入口**`,
+        "",
+        `• **公网在线阅读 (Cloudflare Pages)**：`,
+        `  ${urls.publicBase}/`,
+        "",
+        `• **校内/局域网直连 (实验室服务器)**：`,
+        `  ${urls.localBase}/`,
+        "",
+        `📚 **板块直达**：`,
+        `• 每日导读 (Daily)：${urls.publicBase}/arxiv-daily/ (校内：${urls.localBase}/arxiv-daily/)`,
+        `• 前沿周报 (Weekly)：${urls.publicBase}/arxiv-weekly/ (校内：${urls.localBase}/arxiv-weekly/)`,
+        channelUrl ? `• QQ 频道学术讨论帖：${channelUrl}` : "",
+        "",
+        `💡 **访问建议**：校外及移动端建议访问公网在线地址（Cloudflare 全球 CDN 加速）；校内或连接 VPN 建议访问校内直连（支持周报 PDF 完整报告极速下载）。`,
+      ]
+        .filter((line) => line !== null && line !== undefined)
+        .join("\n");
+    }
+
     case "today": {
       try {
         const channelUrl = await resolveChannel();
@@ -540,9 +575,10 @@ export async function executeBotCommand(cmd, options = {}) {
           }
         }
 
+        const pdfBase = sanitizeWebsiteBase(options.websiteBase || getDefaultLocalWebsiteBase());
         const pdfResult = await generateWeeklyPdf({
           weekId: targetWeekId,
-          websiteBase,
+          websiteBase: pdfBase,
           publicDir: options.publicDir,
           distDir: options.distDir,
         });
@@ -560,10 +596,12 @@ export async function executeBotCommand(cmd, options = {}) {
           "",
           synthesisClaim ? `💡 **核心脉络研判**：\n${synthesisClaim}\n` : "",
           `🌐 **周报网页在线精读入口**：`,
-          `${websiteBase}/arxiv-weekly/${targetWeekId}/`,
+          `- 公网在线 (Cloudflare)：${websiteBase}/arxiv-weekly/${targetWeekId}/`,
+          `- 校内直连 (局域网)：${getDefaultLocalWebsiteBase()}/arxiv-weekly/${targetWeekId}/`,
           "",
           `📥 **PDF 完整报告下载**（含论文高清切图与原文超链接）：`,
-          `${pdfResult.pdfUrl}`,
+          `- 校内/局域网直连下载：${pdfResult.pdfUrl}`,
+          `（注：PDF 由校内工作站实时渲染托管；外网访问请连接校园网/VPN或在网页端直接在线精读）`,
           "",
           channelUrl ? `💬 **QQ 频道学术讨论帖**：\n${channelUrl}\n` : "",
           `📊 **报告概览**：共研读 ${paperCount} 篇文献 ｜ 文件大小：${formattedSize} ｜ 包含完整学术图表与原文引用链接`,

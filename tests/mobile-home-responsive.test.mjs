@@ -48,10 +48,19 @@ test("mobile responsive contract: homepage paper grid and card constraints", asy
   );
 });
 
+function hasPlaywright() {
+  const check = spawnSync("python3", ["-c", "import playwright.sync_api"], {
+    stdio: "ignore",
+  });
+  return check.status === 0;
+}
+
 test("mobile viewport rendered layout: 375px mobile screen prevents horizontal overflow", async (t) => {
   const distHtml = join(projectRoot, "dist/index.html");
-  if (!existsSync(distHtml) || !existsSync("/usr/bin/chromium")) {
-    t.skip("Skipping rendered layout test: dist/index.html or /usr/bin/chromium not available");
+  if (!existsSync(distHtml) || !existsSync("/usr/bin/chromium") || !hasPlaywright()) {
+    t.skip(
+      "Skipping rendered layout test: dist/index.html, chromium or python playwright not available"
+    );
     return;
   }
 

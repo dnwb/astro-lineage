@@ -47,10 +47,19 @@ test("theme consistency contract: ThemeToggle and global.css guards", async () =
   );
 });
 
+function hasPlaywright() {
+  const check = spawnSync("python3", ["-c", "import playwright.sync_api"], {
+    stdio: "ignore",
+  });
+  return check.status === 0;
+}
+
 test("theme rendered matrix: 4-quadrant color verification across OS color schemes", async (t) => {
   const distHtml = join(projectRoot, "dist/index.html");
-  if (!existsSync(distHtml) || !existsSync("/usr/bin/chromium")) {
-    t.skip("Skipping rendered theme test: dist/index.html or /usr/bin/chromium not available");
+  if (!existsSync(distHtml) || !existsSync("/usr/bin/chromium") || !hasPlaywright()) {
+    t.skip(
+      "Skipping rendered theme test: dist/index.html, chromium or python playwright not available"
+    );
     return;
   }
 

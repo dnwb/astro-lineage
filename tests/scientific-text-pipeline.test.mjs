@@ -3,6 +3,8 @@ import assert from "node:assert/strict";
 import {
   tokenizeScientificText,
   expandAstrophysicsMacros,
+  extractLatexMacros,
+  expandAuthorMacros,
   renderScientificHtml,
   renderScientificPlainText,
 } from "../src/domain/scientific-text/index.mjs";
@@ -59,4 +61,47 @@ test("scientific-text: renderScientificPlainText produces crisp Unicode text for
   assert.match(plain, /≈/);
   assert.match(plain, /1\.4\s*M⊙/);
   assert.match(plain, /10\^\{?51\}?\s*erg/);
+});
+
+test("scientific-text: extractLatexMacros accurately parses author macros with balanced braces", () => {
+  const sampleTex = `
+\\documentclass{aastex631}
+\\newcommand{\\moperyear}{M_\\odot\\,\\mathrm{yr}^{-1}}
+\\newcommand\\lstar{L_\\star}
+\\renewcommand{\\wrap}[0]{{\\rm wrap}}
+\\def\\ant{{\\rm ant}}
+\\def\\rec{{\\rm rec}}
+\\DeclareMathOperator{\\sinc}{sinc}
+% parameterized macro that should be ignored
+\\newcommand{\\myfrac}[2]{\\frac{#1}{#2}}
+\\begin{document}
+Body
+\\end{document}
+`;
+
+  const macros = extractLatexMacros(sampleTex);
+  assert.equal(macros.get("moperyear"), String.raw`M_\odot\,\mathrm{yr}^{-1}`);
+  assert.equal(macros.get("lstar"), String.raw`L_\star`);
+  assert.equal(macros.get("wrap"), String.raw`{\rm wrap}`);
+  assert.equal(macros.get("ant"), String.raw`{\rm ant}`);
+  assert.equal(macros.get("rec"), String.raw`{\rm rec}`);
+  assert.equal(macros.get("sinc"), String.raw`\operatorname{sinc}`);
+  assert.equal(macros.has("myfrac"), false);
+});
+
+test("scientific-text: expandAuthorMacros pre-expands author private macros in paper text", () => {
+  const macros = new Map([
+    ["moperyear", String.raw`M_\odot\,\mathrm{yr}^{-1}`],
+    ["lstar", String.raw`L_\star`],
+    ["wrap", String.raw`{\rm wrap}`],
+  ]);
+
+  const raw =
+    "The mass loss is $2\\times 10^{-9}~\\moperyear$ with luminosity $\\lstar$ and timescale $t_\\wrap$.";
+  const expanded = expandAuthorMacros(raw, macros);
+
+  assert.equal(
+    expanded,
+    String.raw`The mass loss is $2\times 10^{-9}~M_\odot\,\mathrm{yr}^{-1}$ with luminosity $L_\star$ and timescale $t_{\rm wrap}$.`
+  );
 });

@@ -1,25 +1,76 @@
 {
   "schema_version": "astrolineage-arxiv-archive-manifest-v1",
-  "updated_at": "2026-10-21T18:06:23.728Z",
+  "updated_at": "2026-10-23T02:20:33.746Z",
   "total_weeks": 7,
-  "total_daily_editions": 32,
+  "total_daily_editions": 34,
   "latest_week_id": "2026-W43",
-  "latest_daily_date": "2026-10-20",
+  "latest_daily_date": "2026-10-22",
   "weeks": [
     {
       "week_id": "2026-W43",
       "title": "每周学术脉络 · 2026-W43",
       "date_range": "2026-10-19 ~ 2026-10-25",
       "has_weekly_summary": true,
-      "executive_summary": "本周高能天体物理重点工作聚焦于从致密星微观非理想等离子体耗散、双星与外流环境演化，到宏观极端瞬变动力学反馈的完整物理链条：\n- **磁星磁层与FRB环境物理**：arXiv:2610.22653 揭示磁星扭缠磁通管在非均匀电阻下的相对论磁重联入流速度可达 $\\beta_{\\rm rec} \\sim 0.1$，且占横截面仅 $0.1\\% \\sim 3\\%$ 的电荷匮乏区承担了 $20\\% \\sim 55\\%$ 的欧姆耗散；arXiv:2610.27489 基于持续射电源（PRS）多波段演化约束 FRB 20240114A 的相对论电子注入截止为 $\\gamma_{\\rm b} \\sim 2 \\times 10^2$ 且射电辐射效率仅 $\\eta_{\\rm r} \\sim 10^{-5} \\text{--} 10^{-4}$；arXiv:2610.27311 推导出重复 FRB 的色散量时变率 $d{\\rm DM}/dt \\sim 1\\,{\\rm pc\\,cm^{-3}\\,yr^{-1}}$ 可由中心致密星以 $|v_s| \\gtrsim 20 \\text{--} 2800\\,{\\rm km\\,s^{-1}}$ 的空间反冲速度穿过湍流介质所解释。\n- **超亮超新星与极端恒星演化**：arXiv:2610.27312 报道了极端 1987A 类超亮爆发 SN 2023iop（$M_r \\approx -20.14~\\mathrm{mag}$），通过长达 $\\gtrsim 88$ 天的上升时标与 $0.81\\%$ 的连续谱偏振度，排除了标准中微子机制并论证其为 $190~M_\\odot$ 富氢对不稳定超新星（PISN）或伴随非球对称 CSM 相互作用。\n- **致密吸积与活动星系核瞬变反馈**：arXiv:2610.24849 通过三维辐射 MHD 模拟论证 TDE 恒星碎屑撞击预存吸积盘可触发南极磁通量跃增 33 倍至 $\\Phi \\simeq 2\\times 10^{29}\\,\\mathrm{G\\,cm^2}$ 并驱动功率 $L_{\\rm BZ} \\simeq 3\\times 10^{42}\\,\\mathrm{erg\\,s^{-1}}$ 的极度不对称 Blandford–Znajek 相对论喷流；arXiv:2610.23028 建立强子量热模型测得塞弗特星系超快外流的量热比仅为 $\\rho_{\\rm wind} \\simeq 0.02$，显著弱于星暴超风；arXiv:2610.23089 利用全极化蒙特卡罗模拟证明超爱丁顿几何集束因子实际上限为 $\\mathcal{B} \\lesssim 10$。\n> 🎯 **筛选边界**：本期重点聚焦磁能快速释放动理学、极端光度瞬变供能物理以及致密吸积与强风反馈，已剔除无爆发物理关联的常规低能星系巡天与静态测光工作。",
+      "executive_summary": "本周高能天体物理与瞬变源研究集中体现了从致密星核心引擎内秉动力学、极端相对论磁重联到外流与复杂介质激波相互作用的全链条物理演进。各主线核心突破如下：\n- **磁星动力学与电磁耗散**：arXiv:2610.22653 模拟论证了磁星扭缠磁通管中非均匀电阻率激发的相对论磁重联速率可达 $\\beta_{\\rm rec} \\sim 0.1$，揭示仅占横截面 $0.1\\% \\sim 3\\%$ 的电荷匮乏区主导了 $20\\% \\sim 55\\%$ 的欧姆耗散，为巨耀斑驱动重子抛射提供了动力学机制。\n- **致密环境与活动星系核瞬变**：arXiv:2610.24849 通过辐射-MHD 模拟阐明了在预先存在的 AGN 吸积盘中，大倾角 TDE 碎屑流碰撞导致吸积率跃升至 $\\sim 10\\text{--}13\\,\\dot{M}_{\\rm Edd}$，通过环向磁场向内平流使单极磁通量增加 33 倍，产生显著的南北极不对称 Blandford–Znajek 喷流（$L_{\\rm BZ} \\simeq 3\\times 10^{42}\\,{\\rm erg\\,s^{-1}}$）。\n- **快速射电暴环境与中心引擎**：arXiv:2610.27311 推导出重复 FRB 的色散量变化率 $d{\\rm DM}/dt \\gtrsim 1\\,{\\rm pc\\,cm^{-3}\\,yr^{-1}}$ 可由高速中子星穿过湍流介质的空间运动解释，反演出源空间速度下限为 $|v_s| \\gtrsim 20\\text{--}2800\\,{\\rm km\\,s^{-1}}$；arXiv:2610.27489 则利用 FRB 20240114A 伴随持续射电源的月量级多波段光变，将相对论电子截断洛伦兹因子限制在 $\\gamma_{\\rm b} < 10^3$，推导射电辐射效率仅为 $\\eta_{\\rm r} \\sim 10^{-5}\\text{--}10^{-4}$。\n- **超新星激波与周星相互作用**：arXiv:2610.27312 报道了极端富氢超新星 SN 2023iop（峰值绝对星等 $M_r \\approx -20.14\\,{\\rm mag}$，总辐射能 $4.3\\times 10^{50}\\,{\\rm erg}$），指出其中微子机制无法驱动，必须要求高达 $2.2\\,M_\\odot$ 的 $^{56}{\\rm Ni}$ 或超大质量恒星（$\\sim 190\\,M_\\odot$）对不稳定爆发并伴随非球对称 CSM 相互作用；arXiv:2610.29226 针对快速 X 射线暂现源 EP260321a 建立了考虑正/反激波非局部热平衡的双激波风破越模型，揭示软 X 射线辐射主要来自处于 LTE 态的低速反激波。\n- **伽马射线暴与软 X 射线暂现源对应**：arXiv:2610.28734 统计给出 68% 的爱因斯坦探针（EP）快速 X 射线源缺乏高能伽马射线对应体，严格约束其初始体洛伦兹因子 $\\Gamma_0 \\lesssim 100$，指示其为低光度中度相对论出流或激波破越事件。\n- **致密双星动力学与极端引力**：arXiv:2610.29838 报道了 FAST 发现的具有极端偏心率（$e = 0.99238692$）与 $79.08\\,{\\rm d}$ 轨道的掩食双中子星系统 PSR J0653+0443，精确测定两星质量分别为 $1.38\\,M_\\odot$ 和 $1.44\\,M_\\odot$，并测得近星点脉冲状引力波辐射峰值频率在 $0.357\\,{\\rm mHz}$。\n> 🎯 **筛选边界**：本周严格聚焦于致密天体高能爆发现象及其因果物理链条（磁星、TDE、FRB、超亮超新星/CSM、双中子星、GRB/FXT），已滤除 222 篇普通低能段巡天、恒星形成与泛星系统计研究。",
       "statistics": {
-        "total_analyzed": 181,
-        "must_read_count": 5,
-        "worth_knowing_count": 51,
-        "skip_count": 125
+        "total_analyzed": 318,
+        "must_read_count": 8,
+        "worth_knowing_count": 88,
+        "skip_count": 222
       },
-      "top_picks_count": 10,
+      "top_picks_count": 18,
       "days": [
+        {
+          "date": "2026-10-22",
+          "weekday": "Thu",
+          "week_id": "2026-W43",
+          "batch_id": "announcement-2026-10-22",
+          "total_papers": 64,
+          "analyzed_count": 62,
+          "must_read_count": 0,
+          "worth_knowing_count": 18,
+          "skip_count": 44,
+          "pending_count": 2,
+          "brief_status": "ready",
+          "brief_intro": "本期首看《General-purpose equations of state for hadron-quark matter: first application to accretion-induced phase transitions in neutron stars》等 18 篇核心进展。",
+          "highlights": [],
+          "data_file": "daily/2026-10-22.json"
+        },
+        {
+          "date": "2026-10-21",
+          "weekday": "Wed",
+          "week_id": "2026-W43",
+          "batch_id": "announcement-2026-10-21",
+          "total_papers": 75,
+          "analyzed_count": 75,
+          "must_read_count": 3,
+          "worth_knowing_count": 19,
+          "skip_count": 53,
+          "pending_count": 0,
+          "brief_status": "ready",
+          "brief_intro": "本期首看《The (missing) gamma-ray counterparts to EP events》等 22 篇核心进展。",
+          "highlights": [
+            {
+              "arxiv_id": "2610.28734",
+              "priority": "must_read",
+              "title": "The (missing) gamma-ray counterparts to EP events",
+              "reason": "系统性分析了爱因斯坦探针（EP/WXT）首年72例河外快速X射线暂现源（FXTs）的高能（keV–GeV）伽马射线辐射特征，联合Fermi/GBM与LAT建立了严格的能谱与光度限制，直接回答了FXT是传统GRB的低能延伸、离轴观测喷流还是超新星激波破越（SBO）的核心物理疑问，契合相对论喷流与高能暂现源中心引擎研究。"
+            },
+            {
+              "arxiv_id": "2610.29226",
+              "priority": "must_read",
+              "title": "Double-Shock Radiation in Supernova Wind Breakout and EP260321a",
+              "reason": "文章系统构建了超新星（SN）抛射物与光学厚致密周星介质（CSM）相互作用的双激波（前向激波 FS 与反向激波 RS）辐射介导激波破越（SBO）模型，并成功应用于解释爱因斯坦探针（EP）新近探测到的软 X 射线暂现源 EP260321a，高度契合本组关于激波破越、周星介质相互作用及早期高能瞬变源观测的研究方向。"
+            },
+            {
+              "arxiv_id": "2610.29838",
+              "priority": "must_read",
+              "title": "PSR J0653+0443: An Eclipsing Millisecond Pulsar in an Extremely Eccentric Double Neutron Star System",
+              "reason": "该工作利用 FAST 发现并测时监测了迄今偏心率最高（$e = 0.99238692$）的银河系双中子星（DNS）系统 PSR J0653+0443，观测到由于近侧向轨道几何引发的伴星磁层掩食效应，精确测量后开普勒参数并限制了双星质量与非相对论进动率，对超新星反冲速度机制、双星演化通道以及极端偏心引力波暴源提供了关键物理基准。"
+            }
+          ],
+          "data_file": "daily/2026-10-21.json"
+        },
         {
           "date": "2026-10-20",
           "weekday": "Tue",

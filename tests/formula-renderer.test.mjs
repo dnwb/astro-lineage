@@ -118,6 +118,44 @@ test("renderer emits static KaTeX visuals with one semantic MathML tree", () => 
   );
 });
 
+test("real-world failure sample formulas render cleanly without reader-math-error", () => {
+  const samples = [
+    String.raw`0\fdg78`,
+    String.raw`\left{|211\rangle,|322\rangle\right}`,
+    String.raw`\Lbol`,
+    String.raw`\REdd`,
+    String.raw`\log(\Mbh/\Msun)=6.2\pm0.3`,
+    String.raw`\Mdot_{\rm out}=3.1`,
+    String.raw`\texttt{source_id}`,
+    String.raw`L=50\mev`,
+    String.raw`\log|{\rm EW}(\niv~\lambda4058)/{\rm EW}(\niii~\lambda4640)|`,
+    String.raw`\simeq 0.005-\n0.043 M_{\odot}`,
+    String.raw`36\penalty\ \mu`,
+    String.raw`\farcs`,
+    String.raw`\Rs`,
+    String.raw`\avg{|B|}\,R^2`,
+    String.raw`ε= B_{\perp,{\rm rms}}/\avg{B_\parallel}`,
+    String.raw`T_{\rm sys}(\nu)=T_{\ant}(\nu)+T_{\rec}(\nu)`,
+    String.raw`N_{\mathrm{H}}=2.64\times 10^{21}\penalty\ \mathrm{cm}^{-2}`,
+    String.raw`\mbf{Y}\equiv(H_1, K, W, X)^T`,
+    String.raw`\mdot`,
+    String.raw`2\times10^{-9}~\moperyear`,
+    String.raw`\log\left(\lstar/L_\odot\right)\approx4.5`,
+    String.raw`\Lambda_{\rm LIV} = M_P/\eta = \qty{5.8e17}{\GeV}`,
+    String.raw`\Delta \DM(t)`,
+    String.raw`t_{\wrap} \sim 2.5\text{ 天}`,
+    String.raw`\dd M/\dd\epsilon`,
+    String.raw`8\penalty\ \micro`,
+    String.raw`\Le\gtrsim1`,
+    String.raw`E_\mathrm{GW} = \qty{e-2}{\solarmass}c^2`,
+    String.raw`K_\rm{ep}`,
+  ];
+  for (const s of samples) {
+    const markup = renderMathMarkup(s, false);
+    assert.doesNotMatch(markup, /reader-math-error/u, `Failed to render: ${s}`);
+  }
+});
+
 test("formula CSS uses local KaTeX assets and a bounded wide-equation viewport", async () => {
   const css = await readFile(join(projectRoot, "src/styles/global.css"), "utf8");
   const workflow = await readFile(join(projectRoot, ".github/workflows/verify.yml"), "utf8");

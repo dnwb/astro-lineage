@@ -5,6 +5,7 @@ import { mkdtemp, rm, readdir, stat } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { normalizeArxivId } from "./daily-radar.mjs";
+import { extractLatexMacros, expandAuthorMacros } from "../src/domain/scientific-text/index.mjs";
 
 export function sourceUrlIdentity(value) {
   try {
@@ -205,8 +206,11 @@ export function parseSourcePackage(bytes) {
     }
   }
 
+  const allCleanTex = files.map(({ text }) => stripLatexComments(text)).join("\n");
+  const authorMacros = extractLatexMacros(allCleanTex);
+
   const sectionMap = new Map();
-  const abstractText = files
+  const rawAbstractText = files
     .flatMap(({ text }) =>
       [
         ...stripLatexComments(text).matchAll(
@@ -215,6 +219,7 @@ export function parseSourcePackage(bytes) {
       ].map((match) => match[1])
     )
     .join("\n");
+  const abstractText = expandAuthorMacros(rawAbstractText, authorMacros);
   const sectionPattern = /\\((?:sub)*section)\*?\s*(?:\[[^\]]*\]\s*)?\{([^}\n]+)\}/gu;
   const headings = [];
   for (const file of files) {
@@ -235,7 +240,8 @@ export function parseSourcePackage(bytes) {
     }
 
     if (firstMatchIdx > docStart) {
-      const preamble = text.slice(docStart, firstMatchIdx).trim();
+      const rawPreamble = text.slice(docStart, firstMatchIdx).trim();
+      const preamble = expandAuthorMacros(rawPreamble, authorMacros);
       if (preamble.length > 200) {
         const title = "Introduction";
         const key = normalizeWhitespace(title);
@@ -247,14 +253,15 @@ export function parseSourcePackage(bytes) {
     }
 
     for (const [index, match] of matches.entries()) {
-      const title = cleanHeading(match[2]);
+      const title = cleanHeading(expandAuthorMacros(match[2], authorMacros));
       if (!title) continue;
       const level = (match[1].match(/sub/gu) || []).length;
       const next = matches
         .slice(index + 1)
         .find((candidate) => (candidate[1].match(/sub/gu) || []).length <= level);
       const end = next ? next.index : text.length;
-      const body = text.slice(match.index + match[0].length, end);
+      const rawBody = text.slice(match.index + match[0].length, end);
+      const body = expandAuthorMacros(rawBody, authorMacros);
       const key = normalizeWhitespace(title);
       sectionMap.set(key, `${sectionMap.get(key) || ""}\n${title}\n${body}`);
       if (!headings.some((item) => normalizeWhitespace(item.title) === key))
@@ -263,9 +270,10 @@ export function parseSourcePackage(bytes) {
   }
   if (headings.length === 0)
     throw new Error("Source package contains no verifiable body section headings");
-  const bodyText = files
+  const rawBodyText = files
     .map(({ name, text }) => `\n===== ${name} =====\n${stripLatexComments(text)}`)
     .join("\n");
+  const bodyText = expandAuthorMacros(rawBodyText, authorMacros);
   if (bodyText.length > MAX_BODY_CHARS)
     throw new Error(
       `Complete source exceeds ${MAX_BODY_CHARS} characters; it is left pending rather than truncated`
@@ -276,6 +284,7 @@ export function parseSourcePackage(bytes) {
     headings,
     sectionMap,
     abstractText,
+    authorMacros: Object.fromEntries(authorMacros),
     sha256: createHash("sha256").update(bytes).digest("hex"),
   };
 }

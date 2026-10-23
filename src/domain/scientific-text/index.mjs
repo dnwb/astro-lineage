@@ -22,7 +22,22 @@ export const ASTRO_LATEX_MACROS = [
   [/\\msun(?![A-Za-z])/gu, "M_\\odot"],
   [/\\Msol(?![A-Za-z])/gu, "M_\\odot"],
   [/\\Rsun(?![A-Za-z])/gu, "R_\\odot"],
+  [/\\Lsun(?![A-Za-z])/gu, "L_\\odot"],
+  [/\\lsun(?![A-Za-z])/gu, "L_\\odot"],
+  [/\\lstar(?![A-Za-z])/gu, "L_\\star"],
   [/\\MBH(?![A-Za-z])/gu, "M_{\\mathrm{BH}}"],
+  [/\\Mbh(?![A-Za-z])/gu, "M_{\\mathrm{BH}}"],
+  [/\\Mdot(?![A-Za-z])/gu, "\\dot{M}"],
+  [/\\mdot(?![A-Za-z])/gu, "\\dot{m}"],
+  [/\\Lbol(?![A-Za-z])/gu, "L_{\\mathrm{bol}}"],
+  [/\\REdd(?![A-Za-z])/gu, "R_{\\mathrm{Edd}}"],
+  [/\\LEdd(?![A-Za-z])/gu, "L_{\\mathrm{Edd}}"],
+  [/\\Rs(?![A-Za-z])/gu, "R_{\\mathrm{s}}"],
+  [/\\fdg(?![A-Za-z])/gu, "^{\\circ}\\mkern-3mu."],
+  [/\\farcs(?![A-Za-z])/gu, "^{\\prime\\prime}\\mkern-4mu."],
+  [/\\farcm(?![A-Za-z])/gu, "^{\\prime}\\mkern-3mu."],
+  [/\\arcsec(?![A-Za-z])/gu, "^{\\prime\\prime}"],
+  [/\\arcmin(?![A-Za-z])/gu, "^{\\prime}"],
   [/\\teff(?![A-Za-z])/gu, "T_{\\mathrm{eff}}"],
   [/\\thd(?![A-Za-z])/gu, "\\theta_{\\mathrm{d}}"],
   [/\\thr(?![A-Za-z])/gu, "\\theta_{\\mathrm{r}}"],
@@ -42,8 +57,17 @@ export const ASTRO_LATEX_MACROS = [
   [/\\TeV(?![A-Za-z])/gu, "\\mathrm{TeV}"],
   [/\\GeV(?![A-Za-z])/gu, "\\mathrm{GeV}"],
   [/\\MeV(?![A-Za-z])/gu, "\\mathrm{MeV}"],
+  [/\\mev(?![A-Za-z])/gu, "\\mathrm{MeV}"],
   [/\\keV(?![A-Za-z])/gu, "\\mathrm{keV}"],
   [/\\eV(?![A-Za-z])/gu, "\\mathrm{eV}"],
+  [/\\solarmass(?![A-Za-z])/gu, "M_\\odot"],
+  [/\\moperyear(?![A-Za-z])/gu, "M_\\odot\\,\\mathrm{yr}^{-1}"],
+  [/\\Le(?![A-Za-z])/gu, "L_{\\mathrm{e}}"],
+  [/\\wrap(?![A-Za-z])/gu, "\\mathrm{wrap}"],
+  [/\\ant(?![A-Za-z])/gu, "\\mathrm{ant}"],
+  [/\\rec(?![A-Za-z])/gu, "\\mathrm{rec}"],
+  [/\\niv(?![A-Za-z])/gu, "\\mathrm{N}\\,\\textsc{iv}"],
+  [/\\niii(?![A-Za-z])/gu, "\\mathrm{N}\\,\\textsc{iii}"],
   [/\\Spix(?![A-Za-z])/gu, "S_{\\mathrm{pix}}"],
   [/\\Sscale(?![A-Za-z])/gu, "S_{\\mathrm{scale}}"],
   [/\\bb(?![A-Za-z])/gu, "{\\mathrm{bb}}"],
@@ -52,6 +76,7 @@ export const ASTRO_LATEX_MACROS = [
   [/\\DMCosmic(?:\{\})?/gu, "{\\mathrm{DM}_{\\mathrm{cosmic}}}"],
   [/\\DMHost(?:\{\})?/gu, "{\\mathrm{DM}_{\\mathrm{host}}}"],
   [/\\DMSI\{([^}]+)\}/gu, "$1\\,\\mathrm{pc}\\,\\mathrm{cm}^{-3}"],
+  [/\\DM(?![A-Za-z])/gu, "\\mathrm{DM}"],
   [/\\galfit(?:\{\})?/gu, "\\mathrm{GALFIT}"],
   [/\\ba(?![A-Za-z])/gu, "(b/a)"],
   [/\\Rsph(?![A-Za-z])/gu, "R_{\\mathrm{sph}}"],
@@ -59,10 +84,120 @@ export const ASTRO_LATEX_MACROS = [
   [/\\rg(?![A-Za-z])/gu, "r_{\\mathrm{g}}"],
   [/\\betaUV(?![A-Za-z])/gu, "\\beta_{\\mathrm{UV}}"],
   [/\\textsc\{([^}]+)\}/gu, (_, s) => `\\mathrm{${s.toUpperCase()}}`],
+  [/\\avg\{([^}]+)\}/gu, "\\langle $1 \\rangle"],
+  [/\\mbf\{([^}]+)\}/gu, "\\mathbf{$1}"],
+  [/\\micro(?![A-Za-z])/gu, "\\mu"],
+  [/\\dd(?![A-Za-z])/gu, "\\mathrm{d}"],
+  [
+    /\\qty\{([^}]+)\}\{([^}]+)\}/gu,
+    (_, val, unit) => {
+      const cleanUnit = unit.replace(/^\\/, "");
+      return `${val}\\,\\mathrm{${cleanUnit}}`;
+    },
+  ],
 ];
 
-export function expandAstrophysicsMacros(source) {
+export function findMatchingBrace(text, startIdx) {
+  if (text[startIdx] !== "{") return -1;
+  let depth = 0;
+  for (let i = startIdx; i < text.length; i++) {
+    if (text[i] === "\\" && i + 1 < text.length) {
+      i++;
+      continue;
+    }
+    if (text[i] === "{") depth++;
+    else if (text[i] === "}") {
+      depth--;
+      if (depth === 0) return i;
+    }
+  }
+  return -1;
+}
+
+export function extractLatexMacros(source) {
+  const macros = new Map();
+  const text = String(source || "");
+
+  const cmdRegex =
+    /\\(?:(?:re|provide)?newcommand\*?|DeclareMathOperator\*?)\s*(?:\{?\\([A-Za-z]+)\}?|\s*\\([A-Za-z]+))/gu;
+  for (const match of text.matchAll(cmdRegex)) {
+    const name = match[1] || match[2];
+    if (!name) continue;
+    let cursor = match.index + match[0].length;
+    const optArgMatch = text.slice(cursor).match(/^\s*\[(\d+)\]/);
+    if (optArgMatch) {
+      const arity = parseInt(optArgMatch[1], 10);
+      cursor += optArgMatch[0].length;
+      if (arity > 0) continue;
+    }
+    const braceStart = text.indexOf("{", cursor);
+    if (braceStart === -1 || braceStart - cursor > 10) continue;
+    const braceEnd = findMatchingBrace(text, braceStart);
+    if (braceEnd !== -1 && !macros.has(name)) {
+      const body = text.slice(braceStart + 1, braceEnd).trim();
+      macros.set(name, match[0].includes("DeclareMathOperator") ? `\\operatorname{${body}}` : body);
+    }
+  }
+
+  const defRegex = /\\def\s*\\([A-Za-z]+)\s*(?=[^{]*\{)/gu;
+  for (const match of text.matchAll(defRegex)) {
+    const name = match[1];
+    if (!name) continue;
+    let cursor = match.index + match[0].length;
+    const between = text.slice(cursor, text.indexOf("{", cursor));
+    if (/#\d/.test(between)) continue;
+    const braceStart = text.indexOf("{", cursor);
+    if (braceStart === -1 || braceStart - cursor > 20) continue;
+    const braceEnd = findMatchingBrace(text, braceStart);
+    if (braceEnd !== -1 && !macros.has(name)) {
+      const body = text.slice(braceStart + 1, braceEnd).trim();
+      macros.set(name, body);
+    }
+  }
+
+  return macros;
+}
+
+export function expandAuthorMacros(source, macros) {
+  if (!macros || (macros instanceof Map ? macros.size === 0 : Object.keys(macros).length === 0)) {
+    return source;
+  }
   let text = String(source || "");
+  const entries = macros instanceof Map ? macros.entries() : Object.entries(macros);
+  for (const [name, repl] of entries) {
+    if (!name || !repl || repl.includes(`\\${name}`)) continue;
+    const re = new RegExp(`\\\\${name}(?![A-Za-z])`, "gu");
+    text = text.replace(re, repl);
+  }
+  return text;
+}
+
+export function sanitizeLatexForKaTeX(source) {
+  let s = String(source || "");
+  // 1. Remove TeX line-breaking penalties
+  s = s.replace(/\\penalty\\[\s]*/gu, " ");
+  s = s.replace(/\\penalty\s+-?\d+\s*/gu, " ");
+
+  // 2. Remove stray JSON newline escapes inside math (\n followed by non-letters)
+  // Preserves valid LaTeX commands like \nu, \nabla, \neq, \notin, \natural
+  s = s.replace(/\\n(?![A-Za-z])/gu, " ");
+
+  // 3. Fix unescaped left/right braces \left{ and \right}
+  s = s.replace(/(^|[^\\])\\left\{/gu, "$1\\left\\{");
+  s = s.replace(/(^|[^\\])\\right\}/gu, "$1\\right\\}");
+
+  // 4. Fix \rm{...} -> \mathrm{...}
+  s = s.replace(/_\\rm\{([^}]+)\}/gu, "_{\\mathrm{$1}}");
+  s = s.replace(/\\rm\{([^}]+)\}/gu, "{\\mathrm{$1}}");
+
+  // 5. Fix bare underscores in \texttt{...}
+  s = s.replace(/\\texttt\{([^}]+)\}/gu, (_, c) => `\\texttt{${c.replace(/_/g, "\\_")}}`);
+
+  return s;
+}
+
+export function expandAstrophysicsMacros(source) {
+  let text = sanitizeLatexForKaTeX(source);
   for (const [pattern, replacement] of ASTRO_LATEX_MACROS) {
     text = text.replace(pattern, replacement);
   }
@@ -126,7 +261,14 @@ export function tokenizeScientificText(sourceText) {
     }
 
     pushText(match.start);
-    tokens.push({ kind: match.kind, value: content.trim(), display: match.display });
+    tokens.push({
+      kind: match.kind,
+      value: content.trim(),
+      display: match.display,
+      delimiter: match.delimiter,
+      closing: match.closing,
+      fullMatch: source.slice(match.start, closing + match.closing.length),
+    });
     cursor = closing + match.closing.length;
     textStart = cursor;
   }
@@ -306,4 +448,36 @@ export function renderScientificPlainText(textInput) {
         .trim();
     })
     .join("");
+}
+
+export function validateFormulaWithKatex(source, { display = false } = {}) {
+  try {
+    renderKatexFormula(source, { display });
+    return { valid: true, error: null };
+  } catch (err) {
+    return { valid: false, error: err instanceof Error ? err.message : String(err) };
+  }
+}
+
+export function findInvalidFormulas(text) {
+  const tokens = tokenizeScientificText(text);
+  const invalid = [];
+  for (const token of tokens) {
+    if (token.kind === "inline_math" || token.kind === "display_math") {
+      const check = validateFormulaWithKatex(token.value, { display: Boolean(token.display) });
+      if (!check.valid) {
+        invalid.push({
+          rawToken: token.value,
+          display: Boolean(token.display),
+          error: check.error,
+          delimiter: token.delimiter || (token.display ? "$$" : "$"),
+          closing: token.closing || (token.display ? "$$" : "$"),
+          fullMatch:
+            token.fullMatch ||
+            `${token.display ? "$$" : "$"}${token.value}${token.display ? "$$" : "$"}`,
+        });
+      }
+    }
+  }
+  return invalid;
 }

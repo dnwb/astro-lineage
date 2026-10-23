@@ -47,6 +47,7 @@ import {
 } from "./pipeline-evidence-gate.mjs";
 import { PIPELINE_STAGES, resolveRoutingLadder, classifyModelError } from "./pipeline-routing.mjs";
 import { startTrace, TRACE_STATUSES } from "./pipeline-telemetry.mjs";
+import { repairScientificObjectFormulasWithModel } from "./repair-broken-formulas.mjs";
 import {
   DeepxivCircuitBreaker,
   defaultDeepxivBreaker,
@@ -389,7 +390,7 @@ function scientificFieldsPrompt({ abstract = false } = {}) {
   "inspected_sections":["输入中实际存在且确实检查的标题"],
   "evidence":[{"section":"${abstract ? "Abstract" : "实际正文章节标题（不得使用 Abstract）"}","quote":"从该英文章节原样逐字复制的短英文原文（12–120 字符连续英文原文，严禁使用中文翻译或中文概括作为 quote，必须与英文源文逐字匹配）","supports":["reason","result","problem","method","research_progress","assumptions[0]","limits[0]"]}]
 }
-公式与数学物理呈现：若原文有关键公式能讲清物理图像（如能谱幂律指数、时延关系、光度标度律、磁场临界值），优先以 LaTeX 公式（如 $...$ 或 $$...$$）明确写出，不要仅用模糊白话。JSON 中公式的反斜杠必须转义（如 \\\\alpha, \\\\dot{M}, \\\\mathrm{...}）。
+公式与数学物理呈现：若原文有关键公式能讲清物理图像（如能谱幂律指数、时延关系、光度标度律、磁场临界值），优先以 LaTeX 公式（如 $...$ 或 $$...$$）明确写出，不要仅用模糊白话。公式中的物理符号与单位必须使用通用标准 LaTeX/KaTeX 规范（如 \\\\mathrm{...}, \\\\dot{M}, M_\\\\odot），严禁使用仅在论文导言区定义的局部作者私有宏（如 \\\\moperyear, \\\\lstar），若原文使用私有缩写必须展开为标准物理符号；严禁混入 TeX 底层排版代码（如 \\\\penalty）。JSON 中公式的反斜杠必须转义（如 \\\\alpha, \\\\dot{M}, \\\\mathrm{...}）。
 证据摘录规范：证据摘录必须是输入中的连续英文原文（同一句或同一段内的连续字词，严禁跨越表格列拼凑，严禁自己撰写中文翻译放入 quote，quote 必须能在输入正文中逐字搜索到）；supports 只列该摘录确实支持的字段。
 重要校验规则：对于填写的非 unknown 核心字段（reason, result, problem, method, research_progress），在 evidence 数组中必须至少有一处摘录在 supports 里声明包含该字段名称（同一条摘录可 supports 多个字段）。若正文中无法确认某个字段的证据，请将该字段值直接写为 unknown。`;
 }
@@ -1727,6 +1728,20 @@ export async function runAiAnalyzer({
           item.analysis = pendingAnalysis(item.entry, item.last_error, null);
           console.warn(`[AI Analyzer] ${item.entry.arxiv_id} remains pending: ${item.last_error}`);
         } else if (result) {
+          await repairScientificObjectFormulasWithModel(result, {
+            chatCompletionFn: async ({ prompt, model: targetModel }) => {
+              return await modelCall({
+                stage: "triage",
+                prompt,
+                entry: item.entry,
+                model: targetModel || triageModel || "gemini-3.8-flash-high",
+                effort: "low",
+                baseUrl,
+                apiKey,
+                trace,
+              });
+            },
+          });
           item.triage = result;
           item.state = result.priority === "skip" ? "screened" : "awaiting_body";
           item.reading_status = result.priority === "skip" ? "not_required" : "pending";
@@ -1916,6 +1931,21 @@ export async function runAiAnalyzer({
               if (chunks && item.reading_progress?.completed?.length > 0) {
                 supplementChunkSynthesisEvidence(bodyOutput, source, item.reading_progress);
               }
+              await repairScientificObjectFormulasWithModel(bodyOutput, {
+                chatCompletionFn: async ({ prompt, model: targetModel }) => {
+                  return await modelCall({
+                    stage: "body",
+                    prompt,
+                    entry: item.entry,
+                    source,
+                    model: targetModel || "gemini-3.8-flash-high",
+                    effort: "low",
+                    baseUrl,
+                    apiKey,
+                    trace,
+                  });
+                },
+              });
               checked = validateScientificOutput(bodyOutput, {
                 entry: item.entry,
                 sourceSections: source.sections,

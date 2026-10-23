@@ -114,6 +114,7 @@ test("arxiv-figures: extractPaperFigures prioritizes model selection when modelS
         index: 2, // fig3
         category: "theoretical",
         categoryBadge: "核心物理演化图",
+        physical_core: "展示黑洞喷流动力学演化与中心引擎光度曲线",
         reason: "展示中心引擎光度随时间演化",
       },
     ];
@@ -128,5 +129,6 @@ test("arxiv-figures: extractPaperFigures prioritizes model selection when modelS
   assert.equal(results.length, 1);
   assert.equal(results[0].category, "theoretical");
   assert.equal(results[0].category_badge, "核心物理演化图");
+  assert.equal(results[0].physical_core, "展示黑洞喷流动力学演化与中心引擎光度曲线");
   assert.match(results[0].caption, /Figure 3/);
 });

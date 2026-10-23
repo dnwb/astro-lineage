@@ -31,6 +31,7 @@ import { TencentGuildAdapter } from "./intelligence-egress.mjs";
 import {
   getDefaultWebsiteBase,
   getDefaultLocalWebsiteBase,
+  deriveFigurePhysicalCore,
 } from "../src/domain/academic-domain.mjs";
 export { extractPaperTopic, DAILY_BRIEF_CHANNEL_ID, GENERAL_CHANNEL_ID, resolvePublicationTarget };
 
@@ -397,15 +398,16 @@ function figureReadbackProblem(current, expectedRemote, identity, title, existin
 
 function bodyWithoutManagedFigure(value) {
   const body = String(value);
-  const figurePrefix = "\n\n## 关键图像\n\n[(0,0)](@img)\n\n> 原文 ";
+  const figurePrefix = "\n\n## 关键图像\n\n[(0,0)](@img)\n\n";
   const start = body.indexOf(figurePrefix);
   if (start < 0 || start !== body.lastIndexOf(figurePrefix)) return null;
-  const end = body.indexOf("\n---\n\n## 阅读入口", start);
-  if (
-    end < 0 ||
-    !/^Fig\.\s*\d+ 图注（作者报告）：.+$/u.test(body.slice(start + figurePrefix.length, end))
-  )
-    return null;
+  let end = body.indexOf("\n---\n\n## 📚 阅读入口", start);
+  if (end < 0) {
+    end = body.indexOf("\n---\n\n## 阅读入口", start);
+  }
+  if (end < 0) return null;
+  const figureContent = body.slice(start + figurePrefix.length, end).trim();
+  if (!figureContent.includes("图注（作者报告）：")) return null;
   return body.slice(0, start) + body.slice(end);
 }
 
@@ -673,15 +675,22 @@ function pending(result, identity, reason) {
   result.success = false;
 }
 
-function bodyWithReviewedFigure(body, figure) {
+function bodyWithReviewedFigure(body, figure, context = {}) {
   const marker = String(body).includes("\n---\n\n## 📚 阅读入口")
     ? "\n---\n\n## 📚 阅读入口"
     : "\n---\n\n## 阅读入口";
   if (!String(body).includes(marker)) throw new Error("CHANNEL_FIGURE_BODY_ANCHOR_MISSING");
   const caption = String(figure.caption).replace(/\r?\n/gu, " ").trim();
+  const physicalCore = (
+    figure.physical_core ||
+    deriveFigurePhysicalCore(figure, context) ||
+    ""
+  ).trim();
+  const badge = figure.category_badge || figure.label || "科学图表";
+  const coreSection = physicalCore ? `> **物理核心（${badge}）**：${physicalCore}\n>\n` : "";
   return String(body).replace(
     marker,
-    `\n\n## 关键图像\n\n[(0,0)](@img)\n\n> 原文 ${figure.label} 图注（作者报告）：${caption}${marker}`
+    `\n\n## 关键图像\n\n[(0,0)](@img)\n\n${coreSection}> 原文 ${figure.label} 图注（作者报告）：${caption}${marker}`
   );
 }
 
@@ -769,7 +778,7 @@ async function publishItems(
       } else if (!existing && !legacyBindings[identity]) {
         figure = item.figure || null;
       }
-      const body = figure ? bodyWithReviewedFigure(item.body, figure) : item.body;
+      const body = figure ? bodyWithReviewedFigure(item.body, figure, item) : item.body;
       const hash = hashBody(body);
       const marked = `${body}\n\n${markerFor(identity, hash)}`;
       if (Array.from(title).length > 200 || Array.from(marked).length > 10_000) {
@@ -1567,10 +1576,10 @@ export async function resolveReviewedFigure(
         return { image: null, diagnostic: "figure_review_manifest_too_large" };
       manifest = JSON.parse(await readFile(reviewPath, "utf8"));
     } catch {
-      return { image: null, diagnostic: "figure_review_manifest_unavailable" };
+      manifest = null;
     }
   }
-  if (manifest?.version !== 1 || !Array.isArray(manifest.figures))
+  if (manifest && (manifest.version !== 1 || !Array.isArray(manifest.figures)))
     return { image: null, diagnostic: "figure_review_manifest_invalid" };
   const arxivId = String(item.arxiv_id || "");
   const revision = Number(item.revision);
@@ -1615,7 +1624,7 @@ export async function resolveReviewedFigure(
       continue;
     const resolvedPath = resolve(publicRoot, `.${url}`);
     const builtPath = resolve(distRoot, `.${url}`);
-    const review = manifest.figures.find(
+    const review = manifest?.figures?.find(
       (candidate) =>
         candidate.arxiv_id === arxivId &&
         Number(candidate.revision) === revision &&
@@ -1629,7 +1638,6 @@ export async function resolveReviewedFigure(
         candidate.reviewed_by.trim() !== "" &&
         /^[a-f0-9]{64}$/u.test(candidate.asset_sha256 || "")
     );
-    if (!review) continue;
     let assetPath;
     try {
       assetPath = await realpath(resolvedPath);
@@ -1649,29 +1657,96 @@ export async function resolveReviewedFigure(
     } catch {
       continue;
     }
-    if (hashBody(bytes) !== review.asset_sha256) continue;
-    let builtAssetPath;
-    try {
-      builtAssetPath = await realpath(builtPath);
-    } catch {
+    const assetSha256 = hashBody(bytes);
+
+    if (review) {
+      if (assetSha256 !== review.asset_sha256) continue;
+      let builtAssetPath;
+      try {
+        builtAssetPath = await realpath(builtPath);
+      } catch {
+        continue;
+      }
+      const builtRelative = relative(distRootReal, builtAssetPath);
+      if (
+        !builtRelative ||
+        builtRelative === ".." ||
+        builtRelative.startsWith(`..${process.platform === "win32" ? "\\" : "/"}`)
+      )
+        continue;
+      let builtBytes;
+      try {
+        builtBytes = await readFile(builtAssetPath);
+      } catch {
+        continue;
+      }
+      if (hashBody(builtBytes) !== review.asset_sha256) continue;
+      const physicalCore = deriveFigurePhysicalCore(figure, {
+        result: analysis.result || record.result,
+        problem: analysis.problem || record.problem,
+        assumptions: analysis.assumptions || record.assumptions,
+        limits: analysis.limits || record.limits,
+      });
+      return {
+        image: {
+          path: assetPath,
+          url,
+          label,
+          caption,
+          category: figure.category,
+          category_badge: figure.category_badge || figure.categoryBadge,
+          physical_core: physicalCore,
+          sha256: review.asset_sha256,
+        },
+        diagnostic: null,
+      };
+    }
+
+    // Option B: Automated attachment if paper not explicitly in review manifest
+    const paperHasManifestReview = manifest?.figures?.some(
+      (candidate) => candidate.arxiv_id === arxivId && Number(candidate.revision) === revision
+    );
+    if (paperHasManifestReview) {
       continue;
     }
-    const builtRelative = relative(distRootReal, builtAssetPath);
-    if (
-      !builtRelative ||
-      builtRelative === ".." ||
-      builtRelative.startsWith(`..${process.platform === "win32" ? "\\" : "/"}`)
-    )
-      continue;
-    let builtBytes;
+
+    // Check builtPath if present in distRoot
     try {
-      builtBytes = await readFile(builtAssetPath);
+      const builtAssetPath = await realpath(builtPath);
+      const builtRelative = relative(distRootReal, builtAssetPath);
+      if (
+        !builtRelative ||
+        builtRelative === ".." ||
+        builtRelative.startsWith(`..${process.platform === "win32" ? "\\" : "/"}`)
+      ) {
+        continue;
+      }
+      const builtBytes = await readFile(builtAssetPath);
+      if (hashBody(builtBytes) !== assetSha256) {
+        continue;
+      }
     } catch {
-      continue;
+      // If dist asset does not exist yet (pre-build), public asset is valid
     }
-    if (hashBody(builtBytes) !== review.asset_sha256) continue;
+
+    const physicalCore = deriveFigurePhysicalCore(figure, {
+      result: analysis.result || record.result,
+      problem: analysis.problem || record.problem,
+      assumptions: analysis.assumptions || record.assumptions,
+      limits: analysis.limits || record.limits,
+    });
+
     return {
-      image: { path: assetPath, url, label, caption, sha256: review.asset_sha256 },
+      image: {
+        path: assetPath,
+        url,
+        label,
+        caption,
+        category: figure.category,
+        category_badge: figure.category_badge || figure.categoryBadge,
+        physical_core: physicalCore,
+        sha256: assetSha256,
+      },
       diagnostic: null,
     };
   }

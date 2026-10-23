@@ -1,11 +1,12 @@
 ---
 import ReaderText from "../ReaderText.astro";
-import { normalizeStructuredClaim } from "../../domain/academic-domain.mjs";
+import { normalizeStructuredClaim, deriveFigurePhysicalCore } from "../../domain/academic-domain.mjs";
 
 interface Props {
   assumptions?: string[];
   figures?: any[];
   result?: string;
+  problem?: string;
   limits?: string[];
   resultSectionLabel?: string;
   resultSectionLabelEnglish?: string;
@@ -15,6 +16,7 @@ const {
   assumptions = [],
   figures = [],
   result,
+  problem,
   limits = [],
   resultSectionLabel = "作者报告的结果与边界",
   resultSectionLabelEnglish = "Author-reported results and limits",
@@ -60,6 +62,7 @@ const resultClaim = normalizeStructuredClaim(result, "核心结果");
           {figures.map((fig: any) => {
             const cleanPath = typeof fig.url === "string" ? fig.url.replace(/^\/arxiv-figures\//u, "") : "";
             const arxivFallback = cleanPath ? `https://arxiv.org/html/${cleanPath}` : fig.url;
+            const physicalCore = deriveFigurePhysicalCore(fig, { result, problem, assumptions, limits });
             return (
               <figure class="paper-schematic-figure">
                 <a href={fig.url} target="_blank" rel="noopener noreferrer" title="点击查看原始高清大图">
@@ -70,12 +73,27 @@ const resultClaim = normalizeStructuredClaim(result, "核心结果");
                     onerror={`this.onerror=null;this.src='${arxivFallback}';if(this.parentElement&&this.parentElement.tagName==='A')this.parentElement.href='${arxivFallback}';`}
                   />
                 </a>
-                {fig.caption && (
+                {(physicalCore || fig.caption) && (
                   <figcaption>
-                    <span class={`fig-badge fig-badge-${fig.category || "theoretical"}`}>
-                      {fig.category_badge || fig.label || "科学图表"}
-                    </span>
-                    <ReaderText text={fig.caption} />
+                    <div class="fig-header-row">
+                      <span class={`fig-badge fig-badge-${fig.category || "theoretical"}`}>
+                        {fig.category_badge || fig.label || "科学图表"}
+                      </span>
+                      {physicalCore && (
+                        <div class="fig-physical-core">
+                          <strong class="fig-core-label">物理核心：</strong>
+                          <ReaderText text={physicalCore} />
+                        </div>
+                      )}
+                    </div>
+                    {fig.caption && (
+                      <details class="fig-caption-details">
+                        <summary>原图说明 ({fig.label || "Caption"})</summary>
+                        <div class="fig-caption-text">
+                          <ReaderText text={fig.caption} />
+                        </div>
+                      </details>
+                    )}
                   </figcaption>
                 )}
               </figure>
@@ -334,5 +352,52 @@ const resultClaim = normalizeStructuredClaim(result, "核心结果");
   :global([data-theme="dark"]) .fig-badge-fitting {
     background: #422006;
     color: #fde047;
+  }
+  .fig-header-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  .fig-core-label {
+    color: var(--accent-color, #2563eb);
+    font-weight: 700;
+  }
+  :global([data-theme="dark"]) .fig-core-label {
+    color: #60a5fa;
+  }
+  .fig-physical-core {
+    font-size: 0.76rem;
+    line-height: 1.45;
+    color: var(--text-heading, #0f172a);
+    margin: 0.15rem 0;
+  }
+  :global([data-theme="dark"]) .fig-physical-core {
+    color: #f1f5f9;
+  }
+  .fig-caption-details {
+    margin-top: 0.35rem;
+    border-top: 1px dashed var(--border-color, #e2e8f0);
+    padding-top: 0.25rem;
+  }
+  :global([data-theme="dark"]) .fig-caption-details {
+    border-top-color: #334155;
+  }
+  .fig-caption-details summary {
+    font-size: 0.7rem;
+    color: var(--text-secondary, #64748b);
+    cursor: pointer;
+    user-select: none;
+  }
+  .fig-caption-details summary:hover {
+    color: var(--text-primary, #0f172a);
+  }
+  .fig-caption-text {
+    margin-top: 0.2rem;
+    font-size: 0.72rem;
+    line-height: 1.4;
+    color: var(--text-secondary, #64748b);
+  }
+  :global([data-theme="dark"]) .fig-caption-text {
+    color: #94a3b8;
   }
 </style>

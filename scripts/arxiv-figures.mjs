@@ -112,6 +112,7 @@ ${candidates.map((c) => `[插图 ${c.index}] 标签: ${c.label}\n图题: ${c.cap
     "index": 0,
     "category": "theoretical",
     "categoryBadge": "物理模型示意图",
+    "physical_core": "说明该图在文章语境下的具体物理核心、演化机制或核心观测特征（中文，紧扣文章课题与结论）",
     "reason": "简述选择理由"
   }
 ]`;
@@ -211,6 +212,7 @@ export async function extractPaperFigures(arxivId, revision = 1, options = {}) {
                 ...matched,
                 category,
                 categoryBadge: pick.categoryBadge || defaultCategoryBadge(category),
+                physical_core: pick.physical_core || pick.physicalCore || "",
                 isSchematic: category === "theoretical",
                 score: 100,
               });
@@ -282,6 +284,7 @@ export async function extractPaperFigures(arxivId, revision = 1, options = {}) {
           label: item.label,
           category: item.category,
           category_badge: item.categoryBadge,
+          physical_core: item.physical_core || "",
           is_schematic: item.isSchematic,
         });
       }

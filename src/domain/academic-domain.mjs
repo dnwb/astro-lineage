@@ -203,6 +203,96 @@ export {
 };
 
 /**
+ * Synthesize or retrieve the specific physical core explanation of a scientific figure
+ * in the context of the paper (e.g., core physical evolution, astrophysical image, observational SED/light curve).
+ *
+ * @param {Object} figure
+ * @param {string} [figure.physical_core]
+ * @param {string} [figure.physicalCore]
+ * @param {string} [figure.category]
+ * @param {string} [figure.category_badge]
+ * @param {string} [figure.caption]
+ * @param {Object} [context]
+ * @param {string} [context.result]
+ * @param {string} [context.problem]
+ * @param {string[]} [context.assumptions]
+ * @param {string[]} [context.limits]
+ * @returns {string}
+ */
+export function deriveFigurePhysicalCore(figure, context = {}) {
+  if (!figure || typeof figure !== "object") return "";
+
+  // 1. Explicit physical core annotation (e.g. from AI selector or review)
+  const explicit = (figure.physical_core || figure.physicalCore || "").trim();
+  if (explicit) return explicit;
+
+  const badge = figure.category_badge || figure.categoryBadge || "";
+  const category = figure.category || "";
+  const caption = figure.caption || "";
+
+  const resolveClaimText = (claimInput) => {
+    if (!claimInput) return "";
+    const claim = normalizeStructuredScientificClaim(claimInput);
+    if (!claim) return "";
+    if (/^(核心结果|主要突破|课题目标|阅读价值|研究课题|方法机制)$/u.test(claim.headline || "")) {
+      return claim.bluf || claim.headline || "";
+    }
+    return claim.headline || claim.bluf || "";
+  };
+
+  const resultClaim = resolveClaimText(context.result);
+  const problemClaim = resolveClaimText(context.problem);
+
+  // Check if theoretical / physical evolution / model
+  const isTheoretical =
+    category === "theoretical" ||
+    /物理演化|模型示意|理论模型|几何结构|演化机制|物理图/u.test(badge) ||
+    /schematic|geometry|evolution|model|mechanism|profile|trajectory/i.test(caption);
+
+  // Check if observational / light curve / SED / sample
+  const isObservational =
+    category === "observational" ||
+    /观测|光变|能谱|图像|巡天/u.test(badge) ||
+    /light\s*curve|spectrum|spectra|SED|image|flux|observation|detection/i.test(caption);
+
+  // Check if fitting / parameter constraint
+  const isFitting =
+    category === "fitting" ||
+    /拟合|约束|后验|残差/u.test(badge) ||
+    /fitting|fit|posterior|constraint|parameter|corner/i.test(caption);
+
+  if (isTheoretical) {
+    if (resultClaim) {
+      return `展示文章关于“${resultClaim}”的核心理论演化过程与物理模型架构，直观解析其物理驱动机制。`;
+    }
+    if (problemClaim) {
+      return `针对“${problemClaim}”，展示理论推演的核心物理演化历程与关键模型参数。`;
+    }
+    return "展示文章探讨的核心天体物理演化历程与理论模型架构。";
+  }
+
+  if (isObservational) {
+    if (resultClaim) {
+      return `展示天体物理辐射演化的核心观测特征与光变/能谱数据，直接支撑“${resultClaim}”的关键发现。`;
+    }
+    return "展示多波段观测光变与宽能谱特征，捕捉天体物理暂现源的关键辐射行为。";
+  }
+
+  if (isFitting) {
+    if (resultClaim) {
+      return `展示理论模型与观测数据的对比拟合与残差分布，对“${resultClaim}”给出严格的参数空间约束。`;
+    }
+    return "展示理论模型与实际观测数据的拟合对比，用以严格约束核心物理参数与置信区间。";
+  }
+
+  if (resultClaim) {
+    return `直观反映论文核心结论（${resultClaim}）的关键科学依据。`;
+  }
+
+  return "";
+}
+
+/**
  * 6. Structured Executive Summary Parser
  *
  * Transforms dense paragraph weekly summaries into clear, structured components:

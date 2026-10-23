@@ -10,6 +10,7 @@ import {
   formatAnnouncementInBeijing,
   parseTransientEpoch,
   normalizeStructuredClaim,
+  deriveFigurePhysicalCore,
   formatWeekIdZh,
   formatWeekIdEn,
 } from "../src/domain/academic-domain.mjs";
@@ -132,4 +133,60 @@ test("academic-domain: formatWeekIdZh and formatWeekIdEn format week identifiers
 
   assert.equal(formatWeekIdEn("2026-W42"), "Week 42, 2026");
   assert.equal(formatWeekIdEn("2026-W05"), "Week 5, 2026");
+});
+
+test("academic-domain: deriveFigurePhysicalCore extracts explicit core or derives in paper context", () => {
+  // 1. Explicit physical core takes precedence
+  const explicitFig = {
+    label: "Fig. 1",
+    caption: "Figure 1: Evolution of magnetic field lines.",
+    physical_core: "展示黑洞吸积盘中磁重联驱动非热电子注入的微观物理演化机制。",
+  };
+  assert.equal(
+    deriveFigurePhysicalCore(explicitFig),
+    "展示黑洞吸积盘中磁重联驱动非热电子注入的微观物理演化机制。"
+  );
+
+  // 2. Theoretical schematic with paper context
+  const theoFig = {
+    label: "Fig. 2",
+    category: "theoretical",
+    category_badge: "核心物理演化图",
+    caption: "Figure 2: Schematic showing jet breakout through the stellar envelope.",
+  };
+  const core1 = deriveFigurePhysicalCore(theoFig, {
+    result: "核心结果：相对论激波突破星周介质时产生超软X射线闪",
+  });
+  assert.ok(core1.includes("相对论激波突破星周介质时产生超软X射线闪"));
+  assert.ok(core1.includes("物理模型架构"));
+
+  // 3. Observational light curve with paper context
+  const obsFig = {
+    label: "Fig. 3",
+    category: "observational",
+    category_badge: "观测总体曲线/能谱",
+    caption: "Figure 3: Multiband radio light curves.",
+  };
+  const core2 = deriveFigurePhysicalCore(obsFig, {
+    result: "发现射电光变存在反常双峰结构",
+  });
+  assert.ok(core2.includes("发现射电光变存在反常双峰结构"));
+  assert.ok(core2.includes("观测特征与光变/能谱数据"));
+
+  // 4. Fitting figure with paper context
+  const fitFig = {
+    label: "Fig. 4",
+    category: "fitting",
+    category_badge: "数据拟合与模型对比",
+    caption: "Figure 4: MCMC posterior parameter distributions.",
+  };
+  const core3 = deriveFigurePhysicalCore(fitFig, {
+    result: "严格限制了前身星质量损失率为每年 1e-4 太阳质量",
+  });
+  assert.ok(core3.includes("严格限制了前身星质量损失率"));
+  assert.ok(core3.includes("参数空间约束"));
+
+  // 5. Empty figure returns empty string
+  assert.equal(deriveFigurePhysicalCore(null), "");
+  assert.equal(deriveFigurePhysicalCore({}), "");
 });

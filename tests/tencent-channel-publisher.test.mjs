@@ -3131,6 +3131,94 @@ test("historical figure resolution uses the archive's active build root", async 
   assert.equal(remote.feeds.filter((feed) => feed.image_paths.length > 0).length, 1);
 });
 
+test("Option B: resolves unreviewed verified figure and explains physical core in context", async (t) => {
+  const { path } = await createTemporaryWorkspace("astro-lineage-channel-option-b-", t);
+  const archive = JSON.parse(
+    await readFile(
+      new URL("../src/data/arxiv-archives/daily/2026-09-28.json", import.meta.url),
+      "utf8"
+    )
+  );
+  const paper = archive.radar.analyses.find((item) => item.priority === "must_read");
+  const caption =
+    "Figure 1: Numerical evolution of the magnetic field and relativistic jet profile.";
+  const label = "Fig. 1";
+  const url = `/arxiv-figures/${paper.arxiv_id}/fig1.png`;
+  paper.analysis.figures = [
+    {
+      url,
+      label,
+      caption,
+      category: "theoretical",
+      category_badge: "核心物理演化图",
+    },
+  ];
+  archive.radar.opening_brief = buildOpeningBrief(archive.feed, archive.radar);
+  const archiveBytes = Buffer.from(JSON.stringify(archive));
+  const archiveRoot = join(path, "archives");
+  const distRoot = join(path, "published-build");
+  const cacheRoot = join(path, "cache");
+  const publicRoot = join(path, "public");
+  const publicAsset = join(publicRoot, url.slice(1));
+  const builtAsset = join(distRoot, url.slice(1));
+  const figureBytes = Buffer.from("option-b figure fixture");
+  await mkdir(archiveRoot, { recursive: true });
+  await writeFile(join(archiveRoot, "2026-09-28.json"), archiveBytes);
+  const page = join(distRoot, "arxiv-daily/2026-09-28");
+  await mkdir(page, { recursive: true });
+  await writeFile(join(page, "index.html"), "built");
+  await mkdir(dirname(publicAsset), { recursive: true });
+  await mkdir(dirname(builtAsset), { recursive: true });
+  await writeFile(publicAsset, figureBytes);
+  await writeFile(builtAsset, figureBytes);
+
+  let selectedFigure;
+  const remote = fakeCli();
+  const options = {
+    archiveRoot,
+    distRoot,
+    cacheRoot,
+    guildId: "test",
+    cli: remote.cli,
+    channelIds: Object.fromEntries(TOPICS.map(([id]) => [id, id])),
+    from: "2026-09-28",
+    through: "2026-09-28",
+    limit: 50,
+    sourceBinding: fixtureBinding({ archives: { "2026-09-28": hashBody(archiveBytes) } }),
+    resolveFigure: async (item, options) => {
+      // Manifest is empty (no manual review) -> triggers Option B automated path
+      const resolved = await resolveReviewedFigure(item, {
+        ...options,
+        publicRoot,
+        manifest: { version: 1, figures: [] },
+      });
+      if (item.arxiv_id === paper.arxiv_id && Number(item.revision) === Number(paper.revision)) {
+        selectedFigure = resolved;
+      }
+      return resolved;
+    },
+  };
+
+  const result = await publishHistoricalFeeds(options);
+  assert.ok(result.published > 0);
+  assert.equal(selectedFigure.diagnostic, null);
+  assert.equal(selectedFigure.image.path, publicAsset);
+  assert.ok(selectedFigure.image.physical_core.length > 0);
+  assert.ok(selectedFigure.image.physical_core.includes("核心理论演化过程与物理模型架构"));
+
+  const imagePosts = remote.feeds.filter((feed) => feed.image_paths.length > 0);
+  assert.equal(imagePosts.length, 1);
+  assert.deepEqual(imagePosts[0].image_paths, [publicAsset]);
+  assert.ok(imagePosts[0].markdown_content.includes("[(0,0)](@img)"));
+  assert.ok(imagePosts[0].markdown_content.includes("**物理核心（核心物理演化图）**："));
+  assert.ok(imagePosts[0].markdown_content.includes(selectedFigure.image.physical_core));
+
+  // Reentry check: figure remains unchanged and idempotent
+  const reentry = await publishHistoricalFeeds(options);
+  assert.equal(reentry.published + reentry.updated, 0);
+  assert.equal(remote.feeds.filter((feed) => feed.image_paths.length > 0).length, 1);
+});
+
 test("reader expands group direction references only in reading reason, preserving scientific model labels and source", () => {
   const item = {
     arxiv_id: "2609.22426",

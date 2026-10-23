@@ -16,6 +16,9 @@ import katex from "katex";
 import { micromark } from "micromark";
 
 export const ASTRO_LATEX_MACROS = [
+  // =========================================================================
+  // 1. AASTeX, MNRAS, IAU, SIunitx & Standard Physics Package Macros
+  // =========================================================================
   [/\\betag(?![A-Za-z])/gu, "\\boldsymbol{\\beta}"],
   [/\\Pvec(?![A-Za-z])/gu, "\\mathbf{P}"],
   [/\\Msun(?![A-Za-z])/gu, "M_\\odot"],
@@ -41,10 +44,6 @@ export const ASTRO_LATEX_MACROS = [
   [/\\teff(?![A-Za-z])/gu, "T_{\\mathrm{eff}}"],
   [/\\thd(?![A-Za-z])/gu, "\\theta_{\\mathrm{d}}"],
   [/\\thr(?![A-Za-z])/gu, "\\theta_{\\mathrm{r}}"],
-  [/\\lpisl(?![A-Za-z])/gu, "\\ell_{\\mathrm{pisl}}"],
-  [/\\Rmw(?![A-Za-z])/gu, "R_{\\mathrm{mw}}"],
-  [/\\ffrbmw(?![A-Za-z])/gu, "f_{\\mathrm{frb,mw}}"],
-  [/\\Rgap(?![A-Za-z])/gu, "R_{\\mathrm{gap}}"],
   [/\\bk(?![A-Za-z])/gu, "\\mathbf{k}"],
   [/\\xx(?![A-Za-z])/gu, "\\mathbf{x}"],
   [/\\PP(?![A-Za-z])/gu, "\\mathbf{P}"],
@@ -61,28 +60,9 @@ export const ASTRO_LATEX_MACROS = [
   [/\\keV(?![A-Za-z])/gu, "\\mathrm{keV}"],
   [/\\eV(?![A-Za-z])/gu, "\\mathrm{eV}"],
   [/\\solarmass(?![A-Za-z])/gu, "M_\\odot"],
-  [/\\moperyear(?![A-Za-z])/gu, "M_\\odot\\,\\mathrm{yr}^{-1}"],
-  [/\\Le(?![A-Za-z])/gu, "L_{\\mathrm{e}}"],
-  [/\\wrap(?![A-Za-z])/gu, "\\mathrm{wrap}"],
-  [/\\ant(?![A-Za-z])/gu, "\\mathrm{ant}"],
-  [/\\rec(?![A-Za-z])/gu, "\\mathrm{rec}"],
-  [/\\niv(?![A-Za-z])/gu, "\\mathrm{N}\\,\\textsc{iv}"],
-  [/\\niii(?![A-Za-z])/gu, "\\mathrm{N}\\,\\textsc{iii}"],
-  [/\\Spix(?![A-Za-z])/gu, "S_{\\mathrm{pix}}"],
-  [/\\Sscale(?![A-Za-z])/gu, "S_{\\mathrm{scale}}"],
-  [/\\bb(?![A-Za-z])/gu, "{\\mathrm{bb}}"],
   [/\\degrees(?![A-Za-z])/gu, "^{\\circ}"],
   [/\\degree(?![A-Za-z])/gu, "^{\\circ}"],
-  [/\\DMCosmic(?:\{\})?/gu, "{\\mathrm{DM}_{\\mathrm{cosmic}}}"],
-  [/\\DMHost(?:\{\})?/gu, "{\\mathrm{DM}_{\\mathrm{host}}}"],
-  [/\\DMSI\{([^}]+)\}/gu, "$1\\,\\mathrm{pc}\\,\\mathrm{cm}^{-3}"],
   [/\\DM(?![A-Za-z])/gu, "\\mathrm{DM}"],
-  [/\\galfit(?:\{\})?/gu, "\\mathrm{GALFIT}"],
-  [/\\ba(?![A-Za-z])/gu, "(b/a)"],
-  [/\\Rsph(?![A-Za-z])/gu, "R_{\\mathrm{sph}}"],
-  [/\\Ruv(?![A-Za-z])/gu, "R_{\\mathrm{uv}}"],
-  [/\\rg(?![A-Za-z])/gu, "r_{\\mathrm{g}}"],
-  [/\\betaUV(?![A-Za-z])/gu, "\\beta_{\\mathrm{UV}}"],
   [/\\textsc\{([^}]+)\}/gu, (_, s) => `\\mathrm{${s.toUpperCase()}}`],
   [/\\avg\{([^}]+)\}/gu, "\\langle $1 \\rangle"],
   [/\\mbf\{([^}]+)\}/gu, "\\mathbf{$1}"],
@@ -95,6 +75,35 @@ export const ASTRO_LATEX_MACROS = [
       return `${val}\\,\\mathrm{${cleanUnit}}`;
     },
   ],
+
+  // =========================================================================
+  // 2. Historical arXiv Fallback Macros (verified across src/data archives)
+  // New papers expand author macros dynamically at acquisition time;
+  // these ensure backward compatibility for committed static historical data.
+  // =========================================================================
+  [/\\moperyear(?![A-Za-z])/gu, "M_\\odot\\,\\mathrm{yr}^{-1}"],
+  [/\\Le(?![A-Za-z])/gu, "L_{\\mathrm{e}}"],
+  [/\\wrap(?![A-Za-z])/gu, "\\mathrm{wrap}"],
+  [/\\ant(?![A-Za-z])/gu, "\\mathrm{ant}"],
+  [/\\rec(?![A-Za-z])/gu, "\\mathrm{rec}"],
+  [/\\niv(?![A-Za-z])/gu, "\\mathrm{N}\\,\\mathrm{IV}"],
+  [/\\niii(?![A-Za-z])/gu, "\\mathrm{N}\\,\\mathrm{III}"],
+  [/\\lpisl(?![A-Za-z])/gu, "\\ell_{\\mathrm{pisl}}"],
+  [/\\Rmw(?![A-Za-z])/gu, "R_{\\mathrm{mw}}"],
+  [/\\ffrbmw(?![A-Za-z])/gu, "f_{\\mathrm{frb,mw}}"],
+  [/\\Rgap(?![A-Za-z])/gu, "R_{\\mathrm{gap}}"],
+  [/\\Spix(?![A-Za-z])/gu, "S_{\\mathrm{pix}}"],
+  [/\\Sscale(?![A-Za-z])/gu, "S_{\\mathrm{scale}}"],
+  [/\\bb(?![A-Za-z])/gu, "{\\mathrm{bb}}"],
+  [/\\DMCosmic(?:\{\})?/gu, "{\\mathrm{DM}_{\\mathrm{cosmic}}}"],
+  [/\\DMHost(?:\{\})?/gu, "{\\mathrm{DM}_{\\mathrm{host}}}"],
+  [/\\DMSI\{([^}]+)\}/gu, "$1\\,\\mathrm{pc}\\,\\mathrm{cm}^{-3}"],
+  [/\\galfit(?:\{\})?/gu, "\\mathrm{GALFIT}"],
+  [/\\ba(?![A-Za-z])/gu, "(b/a)"],
+  [/\\Rsph(?![A-Za-z])/gu, "R_{\\mathrm{sph}}"],
+  [/\\Ruv(?![A-Za-z])/gu, "R_{\\mathrm{uv}}"],
+  [/\\rg(?![A-Za-z])/gu, "r_{\\mathrm{g}}"],
+  [/\\betaUV(?![A-Za-z])/gu, "\\beta_{\\mathrm{UV}}"],
 ];
 
 export function findMatchingBrace(text, startIdx) {
@@ -175,8 +184,7 @@ export function expandAuthorMacros(source, macros) {
 export function sanitizeLatexForKaTeX(source) {
   let s = String(source || "");
   // 1. Remove TeX line-breaking penalties
-  s = s.replace(/\\penalty\\[\s]*/gu, " ");
-  s = s.replace(/\\penalty\s+-?\d+\s*/gu, " ");
+  s = s.replace(/\\penalty(?:\\[\s]*|\s+-?\d+(?:\\[\s]*)?)/gu, " ");
 
   // 2. Remove stray JSON newline escapes inside math (\n followed by non-letters)
   // Preserves valid LaTeX commands like \nu, \nabla, \neq, \notin, \natural

@@ -100,3 +100,28 @@ test("architecture-hygiene: UI components must not import translation from scrip
     );
   }
 });
+
+test("architecture-hygiene: scripts with direct CLI runners must be registered in package.json or cli orchestrator", async () => {
+  const pkg = JSON.parse(await readFile(join(projectRoot, "package.json"), "utf8"));
+  const registeredScripts = Object.values(pkg.scripts || {}).join(" ");
+  const cliContent = await readFile(join(projectRoot, "scripts", "cli.mjs"), "utf8");
+  const cronContent = await readFile(join(projectRoot, "scripts", "cron-runner.sh"), "utf8");
+
+  const scriptFiles = await getCodeFiles(join(projectRoot, "scripts"), [".mjs"]);
+  for (const file of scriptFiles) {
+    const basename = file.split("/").pop();
+    if (basename === "cli.mjs") continue;
+    const content = await readFile(file, "utf8");
+    const hasCliRunner = content.includes("process.argv[1]");
+    if (hasCliRunner) {
+      const isRegistered =
+        registeredScripts.includes(basename) ||
+        cliContent.includes(basename) ||
+        cronContent.includes(basename);
+      assert.ok(
+        isRegistered,
+        `Script scripts/${basename} declares a direct CLI execution runner (process.argv[1]) but is not registered in package.json, scripts/cli.mjs, or cron-runner.sh. Standalone logic modules must export functions cleanly rather than embedding orphan CLI runners.`
+      );
+    }
+  }
+});

@@ -19,6 +19,8 @@ see `ARCHITECTURE.md`
 - 数学排版统一收敛：数学公式渲染（KaTeX/Markdown）的唯一真实源（SSOT）是 `src/domain/scientific-text/`，外部脚本与页面严禁直接 `import katex`。
 - 领域模型单向流动：严禁在 `scripts/` 中二次 re-export 领域函数；调用方一律直接从 `src/domain/` 引用。
 - 路由功能对齐：聚合首页/列表页展示最新一期时，核心交互（如 PDF 下载）与文案格式必须与单期详情页保持对齐。
+- 模块独立与脚本规范：`scripts/` 核心模块严禁嵌入未声明的离线批处理 `main()` 入口，公共能力仅通过 export 暴露；独立 CLI 脚本必须以 `-cli.mjs`、`cli.mjs` 结尾或在 `package.json` 注册执行命令。
+- 审查契约动态提取：执行代码审查时，Spec Reviewer 必须动态从当前会话提取真实需求，严禁继承过往历史会话的过期 spec 上下文。
 
 ### Agent context policy.md
 

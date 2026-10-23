@@ -75,9 +75,36 @@ test("repairTextFormulasWithModel safely rejects model response if repaired outp
   assert.equal(result, text);
 });
 
+test("repairTextFormulasWithModel preserves display math $$ delimiters without JavaScript replace escape degradation", async () => {
+  const text = "核心爆发机制满足如下连续方程：\n$$\\brokenEquation{rho,v}$$\n由此推导光变曲线。";
+  const result = await repairTextFormulasWithModel(text, {
+    chatCompletionFn: async () => {
+      return String.raw`\frac{\partial \rho}{\partial t} + \nabla \cdot (\rho \mathbf{v}) = 0`;
+    },
+  });
+
+  assert.match(
+    result,
+    /\$\$\s*\\frac\{\\partial \\rho\}\{\\partial t\} \+ \\nabla \\cdot \(\\rho \\mathbf\{v\}\) = 0\s*\$\$/,
+    "Display math delimiters ($$) must not be collapsed to single dollar signs"
+  );
+  assert.doesNotMatch(result, /[^\$]\$\\frac/);
+});
+
+test("repairTextFormulasWithModel preserves bracket delimiters \\[...\\]", async () => {
+  const text = "能量守恒：\\[\\brokenBracketEnergy{E}\\]。";
+  const result = await repairTextFormulasWithModel(text, {
+    chatCompletionFn: async () => {
+      return String.raw`E_{\rm tot} = \gamma M c^2`;
+    },
+  });
+
+  assert.equal(result, String.raw`能量守恒：\[E_{\rm tot} = \gamma M c^2\]。`);
+});
+
 test("repairScientificObjectFormulasWithModel repairs all target fields in an AI output object", async () => {
   const paperOutput = {
-    title_zh: "测试论文",
+    title_zh: "具有 $\\brokenTitle{SN}$ 的超新星爆发",
     priority: "must_read",
     reason: "分类理由",
     result: "观测到能谱截止 $\\brokenCutoff{E}$。",
@@ -90,6 +117,7 @@ test("repairScientificObjectFormulasWithModel repairs all target fields in an AI
 
   const repaired = await repairScientificObjectFormulasWithModel(paperOutput, {
     chatCompletionFn: async ({ prompt }) => {
+      if (prompt.includes("brokenTitle")) return String.raw`\mathrm{SN}`;
       if (prompt.includes("brokenCutoff")) return String.raw`E_{\rm cut} = 100\,\mathrm{MeV}`;
       if (prompt.includes("brokenConflict")) return String.raw`\nu_{\rm c} \propto B^{-1}`;
       if (prompt.includes("brokenAssumption")) return String.raw`A \ge 0`;
@@ -98,6 +126,7 @@ test("repairScientificObjectFormulasWithModel repairs all target fields in an AI
     },
   });
 
+  assert.equal(repaired.title_zh, String.raw`具有 $\mathrm{SN}$ 的超新星爆发`);
   assert.equal(repaired.result, String.raw`观测到能谱截止 $E_{\rm cut} = 100\,\mathrm{MeV}$。`);
   assert.equal(repaired.problem, String.raw`待解决物理矛盾 $\nu_{\rm c} \propto B^{-1}$。`);
   assert.equal(repaired.assumptions[0], String.raw`模型假设 $A \ge 0$。`);

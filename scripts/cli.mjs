@@ -37,12 +37,29 @@ const COMMAND_MAP = {
         script: "arxiv-daily-scheduler.mjs",
         desc: "Run Beijing time scheduled task daemon",
       },
+      translate: {
+        script: "paper-translation.mjs",
+        desc: "Backfill paper Chinese title translations",
+      },
+      events: {
+        script: "transient-event-cluster.mjs",
+        desc: "Extract transient physical events and clusters",
+      },
+      pdf: { script: "weekly-pdf.mjs", desc: "Generate weekly intelligence summary PDF" },
     },
   },
   channel: {
     description: "Tencent QQ Channel community operations",
     subcommands: {
       sync: { script: "sync-all-channel-posts.mjs", desc: "Sync all channel posts and feeds" },
+      "sync-title": {
+        script: "channel-title-only-sync.mjs",
+        desc: "Title-only sync for existing channel posts",
+      },
+      publish: {
+        script: "tencent-channel-publisher.mjs",
+        desc: "Publish paper cards or feeds to channel",
+      },
       reconcile: {
         script: "channel-reconcile.mjs",
         desc: "Reconcile posted papers against remote ledger",
@@ -62,6 +79,10 @@ const COMMAND_MAP = {
         desc: "Run bot health check and self-diagnostics",
       },
       probe: { script: "probe-models.mjs", desc: "Probe available LLM models and latency" },
+      send: {
+        script: "qq-send.mjs",
+        desc: "Send active notifications and group broadcasts",
+      },
     },
   },
   validate: {

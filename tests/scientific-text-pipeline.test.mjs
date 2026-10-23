@@ -5,6 +5,7 @@ import {
   expandAstrophysicsMacros,
   extractLatexMacros,
   expandAuthorMacros,
+  sanitizeLatexForKaTeX,
   renderScientificHtml,
   renderScientificPlainText,
 } from "../src/domain/scientific-text/index.mjs";
@@ -103,5 +104,54 @@ test("scientific-text: expandAuthorMacros pre-expands author private macros in p
   assert.equal(
     expanded,
     String.raw`The mass loss is $2\times 10^{-9}~M_\odot\,\mathrm{yr}^{-1}$ with luminosity $L_\star$ and timescale $t_{\rm wrap}$.`
+  );
+});
+
+test("scientific-text: sanitizeLatexForKaTeX protects valid TeX commands while sanitizing artifacts", () => {
+  // 1. Standard commands starting with \n must NOT be mangled
+  const commands = [
+    String.raw`\nu`,
+    String.raw`\nabla`,
+    String.raw`\neq`,
+    String.raw`\notin`,
+    String.raw`\natural`,
+    String.raw`\nearrow`,
+    String.raw`\neg`,
+    String.raw`\niv`,
+    String.raw`\niii`,
+    String.raw`F_\nu \propto \nu^{-\alpha}`,
+    String.raw`\nabla \times \mathbf{B}`,
+    String.raw`A \neq B`,
+    String.raw`x \notin S`,
+  ];
+  for (const cmd of commands) {
+    assert.equal(sanitizeLatexForKaTeX(cmd), cmd, `Failed to protect command: ${cmd}`);
+  }
+
+  // 2. Stray JSON newline escapes (\n followed by non-letters) must be cleaned
+  assert.equal(sanitizeLatexForKaTeX(String.raw`0.005-\n0.043`), String.raw`0.005- 0.043`);
+  assert.equal(sanitizeLatexForKaTeX(String.raw`\n\frac{1}{2}`), String.raw` \frac{1}{2}`);
+  assert.equal(sanitizeLatexForKaTeX(String.raw`E=mc^2\n+ 1`), String.raw`E=mc^2 + 1`);
+  assert.equal(sanitizeLatexForKaTeX(String.raw`\n(a+b)`), String.raw` (a+b)`);
+  assert.equal(sanitizeLatexForKaTeX(String.raw`\n{a+b}`), String.raw` {a+b}`);
+
+  // 3. \penalty artifacts must be removed
+  assert.equal(sanitizeLatexForKaTeX(String.raw`36\penalty\ \mu`), String.raw`36 \mu`);
+  assert.equal(
+    sanitizeLatexForKaTeX(String.raw`2.64\times 10^{21}\penalty 10000\ \mathrm{cm}^{-2}`),
+    String.raw`2.64\times 10^{21} \mathrm{cm}^{-2}`
+  );
+
+  // 4. \left{ and \right} without backslash must be fixed
+  assert.equal(sanitizeLatexForKaTeX(String.raw`\left{a,b\right}`), String.raw`\left\{a,b\right\}`);
+
+  // 5. \rm{...} must be normalized to \mathrm{...}
+  assert.equal(sanitizeLatexForKaTeX(String.raw`E_\rm{data}`), String.raw`E_{\mathrm{data}}`);
+  assert.equal(sanitizeLatexForKaTeX(String.raw`\rm{max}`), String.raw`{\mathrm{max}}`);
+
+  // 6. Bare underscores inside \texttt{...} must be escaped
+  assert.equal(
+    sanitizeLatexForKaTeX(String.raw`\texttt{source_id_test}`),
+    String.raw`\texttt{source\_id\_test}`
   );
 });

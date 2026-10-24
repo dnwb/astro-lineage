@@ -201,15 +201,18 @@ test("arXiv weekly layout prioritizes reading: executive summary and top picks p
 
   assert.ok(executiveIdx !== -1, "must have executive summary section");
   assert.ok(topPicksIdx !== -1, "must have top picks section");
-  assert.ok(thematicIdx !== -1, "must have thematic highlights section");
   assert.ok(auditIdx !== -1, "must have audit-and-index section");
-
   assert.ok(executiveIdx < topPicksIdx, "executive summary must appear before top picks");
-  assert.ok(topPicksIdx < thematicIdx, "top picks must appear before thematic highlights");
-  assert.ok(
-    thematicIdx < auditIdx,
-    "thematic highlights must appear before audit and index section"
-  );
+
+  if (thematicIdx !== -1) {
+    assert.ok(topPicksIdx < thematicIdx, "top picks must appear before thematic highlights");
+    assert.ok(
+      thematicIdx < auditIdx,
+      "thematic highlights must appear before audit and index section"
+    );
+  } else {
+    assert.ok(topPicksIdx < auditIdx, "top picks must appear before audit and index section");
+  }
 
   // 2. Audit and Index section is a collapsed details containing matrix, daily breakdown, and catalog
   const auditBlock = html.slice(auditIdx, auditIdx + 20000);

@@ -35,16 +35,59 @@ export function parseEnv(content) {
       const endQuoteIdx = rawVal.indexOf(quote, 1);
       if (endQuoteIdx !== -1) {
         val = rawVal.slice(1, endQuoteIdx);
+        const remainder = rawVal.slice(endQuoteIdx + 1);
+        const commentIdx = remainder.search(/\s+#/);
+        const trailingUnquoted = commentIdx !== -1 ? remainder.slice(0, commentIdx) : remainder;
+        val += trailingUnquoted.trim();
       } else {
         val = rawVal.slice(1);
       }
     } else {
-      const hashIdx = rawVal.indexOf("#");
-      val = hashIdx !== -1 ? rawVal.slice(0, hashIdx).trim() : rawVal.trim();
+      const commentIdx = rawVal.search(/\s+#/);
+      val = commentIdx !== -1 ? rawVal.slice(0, commentIdx).trim() : rawVal;
     }
     env[key] = val;
   }
   return env;
+}
+
+export function getEffectiveRunnerEnv(projectRoot) {
+  try {
+    const cmd = `bash -c '
+      cd "${projectRoot}" 2>/dev/null || exit 1
+      if [ -f .env ]; then
+        set -a
+        source .env
+        set +a
+      fi
+      printf "%s\\0%s\\0%s\\0%s\\0%s\\0" \\
+        "\${CRON_GIT_PUSH:-}" \\
+        "\${PUBLIC_SITE_URL:-}" \\
+        "\${LOCAL_SITE_URL:-}" \\
+        "\${SYNC_FIGURES_WEEKS:-}" \\
+        "\${SYNC_FIGURES_MAX_MB:-}"
+    '`;
+    const stdout = execSync(cmd, { encoding: "utf8", stdio: ["pipe", "pipe", "pipe"] });
+    const parts = stdout.split("\0");
+    return {
+      CRON_GIT_PUSH: parts[0] || "",
+      PUBLIC_SITE_URL: parts[1] || "",
+      LOCAL_SITE_URL: parts[2] || "",
+      SYNC_FIGURES_WEEKS: parts[3] || "7",
+      SYNC_FIGURES_MAX_MB: parts[4] || "300",
+    };
+  } catch {
+    const envPath = resolve(projectRoot, ".env");
+    const content = existsSync(envPath) ? readFileSync(envPath, "utf8") : "";
+    const parsed = parseEnv(content);
+    return {
+      CRON_GIT_PUSH: parsed.CRON_GIT_PUSH ?? process.env.CRON_GIT_PUSH ?? "",
+      PUBLIC_SITE_URL: parsed.PUBLIC_SITE_URL || process.env.PUBLIC_SITE_URL || "",
+      LOCAL_SITE_URL: parsed.LOCAL_SITE_URL || process.env.LOCAL_SITE_URL || "",
+      SYNC_FIGURES_WEEKS: parsed.SYNC_FIGURES_WEEKS || process.env.SYNC_FIGURES_WEEKS || "7",
+      SYNC_FIGURES_MAX_MB: parsed.SYNC_FIGURES_MAX_MB || process.env.SYNC_FIGURES_MAX_MB || "300",
+    };
+  }
 }
 
 export function classifyWorkingTree(porcelainOutput) {
@@ -90,17 +133,13 @@ export function runDeployDoctor(options = {}) {
   console.log("  AstroLineage 部署与 Cloudflare 同步状态诊断");
   console.log("========================================================\n");
 
-  const envPath = resolve(root, ".env");
-  const envContent = existsSync(envPath) ? readFileSync(envPath, "utf8") : "";
-  const parsedEnv = parseEnv(envContent);
-
-  // 1. 检查环境变量配置 (.env 具有最高优先级，与 cron-runner.sh 的 source .env 语义对齐)
-  const effectiveCronPush = parsedEnv.CRON_GIT_PUSH ?? process.env.CRON_GIT_PUSH ?? "false";
-  const cronPush = effectiveCronPush === "true";
-  const publicUrl = parsedEnv.PUBLIC_SITE_URL || process.env.PUBLIC_SITE_URL || "未配置";
-  const localUrl = parsedEnv.LOCAL_SITE_URL || process.env.LOCAL_SITE_URL || "未配置";
-  const syncWeeks = parsedEnv.SYNC_FIGURES_WEEKS || process.env.SYNC_FIGURES_WEEKS || "7";
-  const syncMaxMb = parsedEnv.SYNC_FIGURES_MAX_MB || process.env.SYNC_FIGURES_MAX_MB || "300";
+  // 1. 检查环境变量配置 (通过 getEffectiveRunnerEnv 保持与 cron-runner.sh source .env 语义 100% 对齐)
+  const effectiveEnv = getEffectiveRunnerEnv(root);
+  const cronPush = effectiveEnv.CRON_GIT_PUSH === "true";
+  const publicUrl = effectiveEnv.PUBLIC_SITE_URL || "未配置";
+  const localUrl = effectiveEnv.LOCAL_SITE_URL || "未配置";
+  const syncWeeks = effectiveEnv.SYNC_FIGURES_WEEKS || "7";
+  const syncMaxMb = effectiveEnv.SYNC_FIGURES_MAX_MB || "300";
 
   console.log("[1/3] 环境与站点配置:");
   console.log(`  - 公网 CDN (Cloudflare): ${publicUrl}`);

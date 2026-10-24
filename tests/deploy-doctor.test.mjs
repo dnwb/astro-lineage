@@ -1,6 +1,9 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { parseEnv, classifyWorkingTree, runDeployDoctor } from "../scripts/deploy-doctor.mjs";
+import { writeFile } from "node:fs/promises";
+import { join } from "node:path";
+import { parseEnv, classifyWorkingTree, getEffectiveRunnerEnv } from "../scripts/deploy-doctor.mjs";
+import { createTemporaryWorkspace } from "./helpers/temporary-workspace.mjs";
 
 test("deploy-doctor: parseEnv handles quoted values, empty values and prevents multiline bleeding", () => {
   const envText = `
@@ -21,16 +24,22 @@ SYNC_FIGURES_WEEKS=5
   assert.equal(env.SYNC_FIGURES_WEEKS, "5");
 });
 
-test("deploy-doctor: parseEnv handles inline shell comments correctly", () => {
+test("deploy-doctor: parseEnv handles inline shell comments and preserves embedded hashes", () => {
   const envText = `
 CRON_GIT_PUSH=true # automatic deployment
 APP_TOKEN="secret#with#hash" # comment with #
-PLAIN_TOKEN=simple_val # comment
+URL_WITH_FRAGMENT=https://example.test/#papers
+PUSH_WITH_HASH=true#disabled
+CONCAT_PUSH="true"false
 `;
   const env = parseEnv(envText);
   assert.equal(env.CRON_GIT_PUSH, "true");
   assert.equal(env.APP_TOKEN, "secret#with#hash");
-  assert.equal(env.PLAIN_TOKEN, "simple_val");
+  assert.equal(env.URL_WITH_FRAGMENT, "https://example.test/#papers");
+  assert.equal(env.PUSH_WITH_HASH, "true#disabled");
+  assert.notEqual(env.PUSH_WITH_HASH, "true");
+  assert.equal(env.CONCAT_PUSH, "truefalse");
+  assert.notEqual(env.CONCAT_PUSH, "true");
 });
 
 test("deploy-doctor: parseEnv distinguishes exact true from prefix truefalse", () => {
@@ -39,6 +48,25 @@ test("deploy-doctor: parseEnv distinguishes exact true from prefix truefalse", (
 
   const env2 = parseEnv("CRON_GIT_PUSH=true");
   assert.equal(env2.CRON_GIT_PUSH, "true");
+});
+
+test("deploy-doctor: getEffectiveRunnerEnv evaluates isolated .env via bash", async (t) => {
+  const ws = await createTemporaryWorkspace("deploy-doctor-test-", t);
+  const mockEnv = `
+CRON_GIT_PUSH=true
+PUBLIC_SITE_URL=https://isolated-test.pages.dev
+LOCAL_SITE_URL=http://localhost:4321
+SYNC_FIGURES_WEEKS=6
+SYNC_FIGURES_MAX_MB=250
+`;
+  await writeFile(join(ws.path, ".env"), mockEnv, "utf8");
+
+  const env = getEffectiveRunnerEnv(ws.path);
+  assert.equal(env.CRON_GIT_PUSH, "true");
+  assert.equal(env.PUBLIC_SITE_URL, "https://isolated-test.pages.dev");
+  assert.equal(env.LOCAL_SITE_URL, "http://localhost:4321");
+  assert.equal(env.SYNC_FIGURES_WEEKS, "6");
+  assert.equal(env.SYNC_FIGURES_MAX_MB, "250");
 });
 
 test("deploy-doctor: classifyWorkingTree preserves leading whitespace and handles porcelain lines", () => {

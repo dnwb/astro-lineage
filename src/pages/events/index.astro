@@ -167,14 +167,14 @@ function getEventOutburstYear(eventId: string): number | null {
 }
 
 const epochGroups = [
-  { id: "epoch-2026", title: "2026 年最新爆发", badge: "当年爆发", desc: "最新发现的高能瞬变现象与快照预警", filter: (yr: number | null) => yr === 2026 },
-  { id: "epoch-2025", title: "2025 年爆发密集反演", badge: "近 1 年", desc: "爆发后近1年内密集跟进，多波段联合反演与喷流减速物理", filter: (yr: number | null) => yr === 2025 },
-  { id: "epoch-2024", title: "2024 年爆发", badge: "近 2 年", desc: "极早期闪光光谱、外流激波与前身星包层作用", filter: (yr: number | null) => yr === 2024 },
-  { id: "epoch-2023", title: "2023 年爆发", badge: "近 3 年", desc: "非热辐射持续观测、晚期余辉与深层介质约束", filter: (yr: number | null) => yr === 2023 },
-  { id: "epoch-2022", title: "2022 年世纪伽马暴", badge: "历史最亮", desc: "史上最亮暴 GRB 221009A 等极端物理对象的长期跨波段监测", filter: (yr: number | null) => yr === 2022 },
-  { id: "epoch-multi", title: "2017–2021 年多信使与引力波突破", badge: "多信使里程碑", desc: "双中子星并合千新星晚期光谱、潮汐瓦解喷流晚期复苏", filter: (yr: number | null) => yr !== null && yr >= 2017 && yr <= 2021 },
-  { id: "epoch-historic", title: "经典历史瞬变与深场监测 (< 2017)", badge: "长周期监测", desc: "SN 1987A 爆发近40年深场演化、历史伽马暴全样本统计", filter: (yr: number | null) => yr !== null && yr < 2017 },
-  { id: "epoch-other", title: "坐标与周期性源", badge: "长期源", desc: "按天球坐标编号的软伽马中继器、磁星与重复快速射电暴", filter: (yr: number | null) => yr === null },
+  { id: "epoch-2026", title: "2026 年爆发", badge: "当年", desc: "最新高能瞬变现象", filter: (yr: number | null) => yr === 2026 },
+  { id: "epoch-2025", title: "2025 年爆发", badge: "近 1 年", desc: "多波段联合反演与喷流减速", filter: (yr: number | null) => yr === 2025 },
+  { id: "epoch-2024", title: "2024 年爆发", badge: "近 2 年", desc: "早期闪光光谱与外流激波", filter: (yr: number | null) => yr === 2024 },
+  { id: "epoch-2023", title: "2023 年爆发", badge: "近 3 年", desc: "非热辐射、晚期余辉与介质约束", filter: (yr: number | null) => yr === 2023 },
+  { id: "epoch-2022", title: "2022 年爆发", badge: "极端事件", desc: "GRB 221009A 等长期跨波段监测", filter: (yr: number | null) => yr === 2022 },
+  { id: "epoch-multi", title: "2017–2021 年爆发", badge: "多信使", desc: "双中子星并合千新星与潮汐瓦解", filter: (yr: number | null) => yr !== null && yr >= 2017 && yr <= 2021 },
+  { id: "epoch-historic", title: "2017 年前爆发", badge: "长周期", desc: "SN 1987A 及历史爆发长期演化", filter: (yr: number | null) => yr !== null && yr < 2017 },
+  { id: "epoch-other", title: "坐标与周期源", badge: "长期源", desc: "软伽马中继器、磁星与重复 FRB", filter: (yr: number | null) => yr === null },
 ];
 
 function typeBadgeColor(type: string): string {
@@ -305,19 +305,19 @@ const dynamicCalendarCss = dynamicMonthCss + "\n" + dynamicDateCss;
         <!-- Dual Dimension Controls Bar -->
         <div class="controls-card">
           <div class="control-row">
-            <span class="control-label">视点模式：</span>
+            <span class="control-label">视图：</span>
             <div class="view-pills-group">
               <label for="view-calendar-timeline" class="view-pill view-pill-calendar">
-                📅 研读日历
+                📅 日历
               </label>
               <label for="view-epoch-timeline" class="view-pill view-pill-epoch">
-                🪐 爆发年代
+                🪐 年代
               </label>
             </div>
           </div>
 
           <div class="control-row">
-            <span class="control-label">事件类型：</span>
+            <span class="control-label">类型：</span>
             <div class="cat-pills-bar" aria-label="事件分类筛选">
               <label for="cat-all" class="cat-pill">全部 ({counts.ALL})</label>
               <label for="cat-grb" class="cat-pill">💥 伽马暴 GRB ({counts.GRB})</label>
@@ -755,19 +755,18 @@ const dynamicCalendarCss = dynamicMonthCss + "\n" + dynamicDateCss;
         <div class="footer-inner">
           <div class="footer-left">
             <span class="footer-brand">AstroLineage</span>
-            <span class="footer-desc">面向高能天体物理前沿的自动化文献情报与学术脉络跟踪平台</span>
           </div>
           <div class="footer-links">
             <a href="https://github.com/dnwb/astro-lineage/issues" target="_blank" rel="noopener noreferrer" class="footer-feedback-link">
-              <span>💬 意见反馈与 Bug 提交 (GitHub Issues)</span>
+              <span>💬 GitHub 反馈</span>
               <span aria-hidden="true">↗</span>
             </a>
             <span class="footer-sep">·</span>
-            <a href="https://pd.qq.com/s/d4lw4zl0g" target="_blank" rel="noopener noreferrer">腾讯频道交流</a>
+            <a href="https://pd.qq.com/s/d4lw4zl0g" target="_blank" rel="noopener noreferrer">腾讯频道</a>
             <span class="footer-sep">·</span>
-            <a href="/agent/">Agent 接入</a>
+            <a href="/agent/">Agent</a>
             <span class="footer-sep">·</span>
-            <a href="/">返回首页</a>
+            <a href="/">首页</a>
           </div>
         </div>
       </footer>

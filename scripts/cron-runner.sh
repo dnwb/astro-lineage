@@ -54,6 +54,24 @@ record_current_build() {
 sync_git_data() {
   if [ "${CRON_GIT_PUSH:-false}" = "true" ]; then
     echo "[cron-runner] 检查并同步数据变更与最近 7 周图表至 Git 仓库以触发 Cloudflare 部署..."
+
+    # 1. 严格分支隔离门禁：仅在 master 分支允许自动提交与推送，防止污染特性分支
+    local current_branch
+    current_branch="$(git symbolic-ref --short HEAD 2>/dev/null || echo '')"
+    if [ "${current_branch}" != "master" ]; then
+      echo "[cron-runner] 当前处于分支 '${current_branch}' (非 master)，安全跳过自动 Git 提交与远程推送以保护工作区"
+      return 0
+    fi
+
+    # 2. 工作区纯净度门禁：除数据和图片外，若存在任何未提交的代码改动，安全跳过提交与推送
+    local dirty_non_data
+    dirty_non_data="$(git status --porcelain | grep -v -E '^..\s+(src/data/|public/figures/)' || true)"
+    if [ -n "${dirty_non_data}" ]; then
+      echo "[cron-runner] 检测到工作区存在未提交的代码改动，为防止代码被误推或污染，安全跳过自动 Git 提交与远程推送："
+      echo "${dirty_non_data}"
+      return 0
+    fi
+
     # 维护最近 7 周图表滑动窗口暂存入库，解绑过期历史图片 (预算上限 300MB)
     node scripts/sync-recent-figures.mjs --weeks "${SYNC_FIGURES_WEEKS:-7}" --max-mb "${SYNC_FIGURES_MAX_MB:-300}" || true
 
@@ -72,7 +90,7 @@ sync_git_data() {
     UNPUSHED="$(git log origin/master..HEAD --oneline 2>/dev/null || true)"
     if [ -n "${UNPUSHED}" ]; then
       echo "[cron-runner] 检测到待同步提交，正在推送到远程 master 分支..."
-      if git push origin HEAD:master; then
+      if git push origin master:master; then
         echo "[cron-runner] ✓ 数据与图表已成功推送到远程 master 分支"
       else
         echo "[cron-runner] ⚠️ 警告: 推送数据至远程 master 分支失败，请检查网络连接或 Git 凭据" >&2
@@ -190,8 +208,12 @@ case "${TASK}" in
     node scripts/notebooklm-sync.mjs || DELIVERY_FAILED=1
     ;;
 
+  sync-git)
+    sync_git_data
+    ;;
+
   *)
-    echo "[cron-runner] 错误：未知任务 '${TASK}'。可用参数: auto, reconcile, group-weekly, daily, weekly, agent, build, notebook" >&2
+    echo "[cron-runner] 错误：未知任务 '${TASK}'。可用参数: auto, reconcile, group-weekly, daily, weekly, agent, build, notebook, sync-git" >&2
     exit 1
     ;;
 esac

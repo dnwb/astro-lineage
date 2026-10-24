@@ -90,3 +90,61 @@ test("runner gives each kind one channel path, blocks stale export, and sends no
       );
   }
 });
+
+test("sync_git_data guards against non-master branch and dirty non-data working tree", async (t) => {
+  const { path } = await createTemporaryWorkspace("astro-lineage-runner-git-", t);
+  await mkdir(resolve(path, "scripts"));
+  await copyFile(runner, resolve(path, "scripts/cron-runner.sh"));
+
+  // 1. When on a feature branch, git push must NOT be attempted
+  const gitLog = resolve(path, "git.log");
+  const gitStub = `
+git() {
+  printf 'git %s\\n' "$*" >> "${gitLog}";
+  if [[ "$*" == "symbolic-ref --short HEAD" ]]; then
+    printf 'feature-test\\n';
+    return 0;
+  fi
+  return 0;
+}
+node() { return 0; }
+export -f git node
+CRON_GIT_PUSH=true bash "${resolve(path, "scripts/cron-runner.sh")}" sync-git
+`;
+  const res1 = spawnSync("bash", ["-c", gitStub], { encoding: "utf8" });
+  assert.equal(res1.status, 0, res1.stderr);
+  const gitCalls1 = (await readFile(gitLog, "utf8")).trim().split("\n");
+  assert.equal(
+    gitCalls1.some((l) => l.includes("push")),
+    false,
+    "must not push on feature branch"
+  );
+
+  // 2. When on master but dirty non-data code exists, git push must NOT be attempted
+  const gitLog2 = resolve(path, "git2.log");
+  const gitStub2 = `
+git() {
+  printf 'git %s\\n' "$*" >> "${gitLog2}";
+  if [[ "$*" == "symbolic-ref --short HEAD" ]]; then
+    printf 'master\\n';
+    return 0;
+  fi
+  if [[ "$*" == "status --porcelain" ]]; then
+    printf ' M src/components/SomeComponent.astro\\n';
+    return 0;
+  fi
+  return 0;
+}
+node() { return 0; }
+export -f git node
+CRON_GIT_PUSH=true bash "${resolve(path, "scripts/cron-runner.sh")}" sync-git
+`;
+  const res2 = spawnSync("bash", ["-c", gitStub2], { encoding: "utf8" });
+  assert.equal(res2.status, 0, res2.stderr);
+  const gitCalls2 = (await readFile(gitLog2, "utf8")).trim().split("\n");
+  assert.equal(
+    gitCalls2.some((l) => l.includes("push")),
+    false,
+    "must not push when non-data files are modified"
+  );
+});

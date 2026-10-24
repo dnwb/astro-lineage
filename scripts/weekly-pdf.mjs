@@ -1341,7 +1341,7 @@ export async function generateWeeklyPdf({
       tmpHtmlPath,
     ];
 
-    execFileSync(binary, args, { stdio: "ignore", timeout: 45000 });
+    execFileSync(binary, args, { stdio: "ignore", timeout: 120000 });
 
     const st = await stat(publicPdfPath);
     if (st.size < 1000) {

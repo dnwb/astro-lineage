@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { join } from "node:path";
+import { mkdir, writeFile } from "node:fs/promises";
 import { createTemporaryWorkspace } from "./helpers/temporary-workspace.mjs";
 import {
   normalizeDateInput,
@@ -271,6 +272,18 @@ test("handleBotCommand handles \\week pdf and returns weekly PDF report package"
 
   const weekIds = await getAvailableWeeklyIds();
   const latestWeek = weekIds[0];
+
+  // Pre-seed cached fixture PDFs and Markdown in ws.path for deterministic bot command reply verification
+  for (const wid of weekIds) {
+    const outDir = join(ws.path, "arxiv-weekly", wid);
+    await mkdir(outDir, { recursive: true });
+    await writeFile(
+      join(outDir, `weekly-${wid}.pdf`),
+      "PDF-FIXTURE-CONTENT-OF-ADEQUATE-SIZE-".repeat(100),
+      "utf8"
+    );
+    await writeFile(join(outDir, `weekly-${wid}.md`), `# Weekly ${wid} Markdown Fixture\n`, "utf8");
+  }
 
   // 1. \week pdf
   const res = await handleBotCommand("\\week pdf", testOptions);

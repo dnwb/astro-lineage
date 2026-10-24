@@ -71,13 +71,21 @@ const DEFAULT_FIGURE_REVIEW_PATH = resolve(
 
 function requireSourceBinding(sourceBinding) {
   const { daily, weekly, archives, id } = sourceBinding || {};
+  const payloadToHash = {
+    daily,
+    weekly,
+    archives,
+    ...(sourceBinding?.weeklyArchives ? { weeklyArchives: sourceBinding.weeklyArchives } : {}),
+  };
+  const legacyPayload = { daily, weekly, archives };
   if (
     !daily?.generation_id ||
     !/^[a-f0-9]{64}$/u.test(daily.hash || "") ||
     !/^[a-f0-9]{64}$/u.test(weekly?.hash || "") ||
     !archives ||
     typeof archives !== "object" ||
-    hashBody(JSON.stringify({ daily, weekly, archives })) !== id
+    (hashBody(JSON.stringify(payloadToHash)) !== id &&
+      hashBody(JSON.stringify(legacyPayload)) !== id)
   )
     throw new Error("CHANNEL_SOURCE_BUILD_REQUIRED");
 }

@@ -24,12 +24,12 @@ const latestDate = (archiveManifest as any).latest_daily_date || (allDays[0]?.da
 const recentDays = allDays.slice(0, 8);
 ---
 
-<nav class="aihot-date-ribbon" aria-label="学术日报日期与分类速选">
+<nav class="aihot-date-ribbon" aria-label="日报日期选择">
   <div class="ribbon-inner">
     <div class="ribbon-left-group">
       <div class="ribbon-brand-tag">
         <span class="ribbon-icon">📅</span>
-        <span class="ribbon-title">日期速选</span>
+        <span class="ribbon-title">日期</span>
       </div>
 
       <!-- Scrollable Recent Dates Track -->
@@ -60,13 +60,13 @@ const recentDays = allDays.slice(0, 8);
       <!-- Pure HTML Dropdown for All Historical Dates -->
       <details class="ribbon-archive-details">
         <summary class="ribbon-archive-summary" title="展开更多历史日期">
-          <span>全部往期 ({allDays.length})</span>
+          <span>往期 ({allDays.length})</span>
           <span class="summary-caret">▾</span>
         </summary>
         <div class="ribbon-archive-dropdown-menu">
           <div class="dropdown-header">
-            <span>历史监测批次归档列表</span>
-            <a class="dropdown-all-link" href="/arxiv-archives/">查看全局存档库 →</a>
+            <span>往期日期列表</span>
+            <a class="dropdown-all-link" href="/arxiv-archives/">查看完整归档 →</a>
           </div>
           <div class="dropdown-grid">
             {allDays.map((d: any) => {

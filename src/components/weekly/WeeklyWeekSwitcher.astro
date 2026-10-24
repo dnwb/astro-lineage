@@ -36,13 +36,13 @@ const olderWeek = currentIndex >= 0 && currentIndex < allWeeks.length - 1 ? allW
       <details class="weekly-archive-details">
         <summary class="weekly-archive-summary" title="展开全部历史周报">
           <span class="summary-current" aria-current="page"><span class="language-primary">当前周：</span><span class="language-english" lang="en">Current: </span><strong>{currentWeek}</strong></span>
-          <span class="summary-badge"><span class="language-primary">全部往期</span><span class="language-english" lang="en">Archives</span> ({allWeeks.length})</span>
+          <span class="summary-badge"><span class="language-primary">往期</span><span class="language-english" lang="en">Archives</span> ({allWeeks.length})</span>
           <span class="summary-caret">▾</span>
         </summary>
         <div class="weekly-archive-dropdown-menu">
           <div class="dropdown-header">
-            <span><span class="language-primary">历史自然周学术脉络归档</span><span class="language-english" lang="en">Weekly Synthesis Archives</span></span>
-            <a class="dropdown-all-link" href="/arxiv-archives/"><span class="language-primary">查看全局存档库 →</span><span class="language-english" lang="en">Global Archives →</span></a>
+            <span><span class="language-primary">往期周报列表</span><span class="language-english" lang="en">Weekly Synthesis Archives</span></span>
+            <a class="dropdown-all-link" href="/arxiv-archives/"><span class="language-primary">查看完整归档 →</span><span class="language-english" lang="en">Global Archives →</span></a>
           </div>
           <div class="dropdown-grid">
             {allWeeks.map((w: any) => {

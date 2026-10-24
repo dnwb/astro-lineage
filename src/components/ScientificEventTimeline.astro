@@ -13,9 +13,9 @@ interface Props {
 
 const {
   maxEvents = 5,
-  title = "瞬变源科学事件追踪与脉络聚簇",
-  titleEnglish = "Transient Event Clustering & Timeline Radar",
-  subtitle = "基于 arXiv 预印本自动识别引力波、超新星、伽马暴与快速射电暴等重大天文瞬变事件，按衰减热度聚簇多篇跟进论文并梳理演化脉络。",
+  title = "爆发事件追踪",
+  titleEnglish = "Transient Events",
+  subtitle = "按事件聚簇高能瞬变论文。",
 } = Astro.props;
 
 type ScientificEvent = (typeof eventsData.events)[number];
@@ -51,7 +51,7 @@ function priorityPill(priority: string) {
     <div class="events-badge-row">
       <div class="events-badge-left">
         <span class="events-kicker-tag">🔭 瞬变源追踪</span>
-        <span class="events-kicker-sub">半衰期热度衰减算法 · 多篇聚簇</span>
+        <span class="events-kicker-sub">事件聚簇</span>
       </div>
       <a href="/events/" class="events-explore-link">📅 浏览全部 68 个爆发事件日历 →</a>
     </div>

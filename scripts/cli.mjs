@@ -93,6 +93,23 @@ const COMMAND_MAP = {
     description: "Run archive health and gatekeeper state diagnostics",
     directScript: "diagnostic.mjs",
   },
+  deploy: {
+    description: "Cloudflare Pages & Git sync deployment operations",
+    subcommands: {
+      doctor: {
+        script: "deploy-doctor.mjs",
+        desc: "Run deployment pipeline and Git sync diagnostics",
+      },
+      check: {
+        script: "deploy-doctor.mjs",
+        desc: "Run deployment pipeline and Git sync diagnostics",
+      },
+    },
+  },
+  doctor: {
+    description: "Run deployment pipeline and Git sync diagnostics",
+    directScript: "deploy-doctor.mjs",
+  },
 };
 
 function printHelp() {

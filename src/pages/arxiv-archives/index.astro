@@ -49,7 +49,7 @@ const dateCoverage = weeks.length > 0
 
       <header class="reader-header">
         <div class="archive-header-badge">
-          <span class="hub-pill">永久学术档案库</span>
+          <span class="hub-pill">归档</span>
           <span class="hub-coverage">覆盖周期：{dateCoverage}</span>
         </div>
         <h1>
@@ -57,17 +57,17 @@ const dateCoverage = weeks.length > 0
           <span class="language-english" lang="en">Historical Archives</span>
         </h1>
         <p class="reader-deck language-primary">
-          历期学术脉络周报与每日研读雷达 · 永久归档索引
+          周报与日报往期索引
         </p>
         <p class="reader-deck language-english" lang="en">
           Permanent index of weekly syntheses and daily transient radars.
         </p>
 
         <div class="archive-quick-nav">
-          <a class="quick-nav-pill" href="#weekly-syntheses">📚 历期学术脉络周报 ({weeks.length} 周) ↓</a>
-          <a class="quick-nav-pill" href="#daily-radars">⚡ 历期每日研读雷达 ({totalDailyEditions} 期) ↓</a>
-          <a class="quick-nav-pill accent" href="/arxiv-weekly/">⚡ 直达最新周报 ({archiveManifest.latest_week_id}) →</a>
-          <a class="quick-nav-pill accent" href="/arxiv-daily/">📡 直达今日雷达 ({archiveManifest.latest_daily_date}) →</a>
+          <a class="quick-nav-pill" href="#weekly-syntheses">📚 周报归档 ({weeks.length} 周) ↓</a>
+          <a class="quick-nav-pill" href="#daily-radars">⚡ 日报归档 ({totalDailyEditions} 期) ↓</a>
+          <a class="quick-nav-pill accent" href="/arxiv-weekly/">⚡ 最新周报 ({archiveManifest.latest_week_id}) →</a>
+          <a class="quick-nav-pill accent" href="/arxiv-daily/">📡 今日日报 ({archiveManifest.latest_daily_date}) →</a>
         </div>
       </header>
 
@@ -75,32 +75,32 @@ const dateCoverage = weeks.length > 0
       <section class="archive-metrics-strip" aria-label="归档数据总览">
         <div class="metric-card">
           <span class="metric-val">{totalWeeksCount}</span>
-          <span class="metric-lbl">收录学术周报</span>
-          <span class="metric-sub">自然周一至周四闭环</span>
+          <span class="metric-lbl">周报</span>
+          <span class="metric-sub">自然周</span>
         </div>
         <div class="metric-card">
           <span class="metric-val">{totalDailyEditions}</span>
-          <span class="metric-lbl">收录每日批次</span>
-          <span class="metric-sub">独立静态导读页</span>
+          <span class="metric-lbl">日报</span>
+          <span class="metric-sub">每日批次</span>
         </div>
         <div class="metric-card highlight-must">
           <span class="metric-val">{totalMustRead}</span>
-          <span class="metric-lbl">核心必读突破</span>
-          <span class="metric-sub">严守宁缺毋滥原则</span>
+          <span class="metric-lbl">必读</span>
+          <span class="metric-sub">重点文献</span>
         </div>
         <div class="metric-card highlight-worth">
           <span class="metric-val">{totalWorthKnowing}</span>
-          <span class="metric-lbl">值得关注追踪</span>
-          <span class="metric-sub">关键动力学进展</span>
+          <span class="metric-lbl">关注</span>
+          <span class="metric-sub">重要进展</span>
         </div>
       </section>
 
       <!-- Section 1: Weekly Synthesis Archives -->
       <section class="archive-section" id="weekly-syntheses">
         <div class="section-title-wrap">
-          <span class="section-kicker">宏观全景 · 旗舰周报</span>
-          <h2 class="section-heading">历期学术脉络周报归档</h2>
-          <p class="section-intro">每周五自动对当周全部 5 个发布批次的高能天体物理论文执行宏观因果动力学归纳，提炼核心争议与突破。</p>
+          <span class="section-kicker">周报</span>
+          <h2 class="section-heading">历期周报归档</h2>
+          <p class="section-intro">每周汇总高能天体物理论文与核心进展。</p>
         </div>
 
         <div class="weekly-cards-stack">
@@ -181,9 +181,9 @@ const dateCoverage = weeks.length > 0
       <!-- Section 2: Daily Radar Archives -->
       <section class="archive-section" id="daily-radars">
         <div class="section-title-wrap">
-          <span class="section-kicker">逐日研读 · 精准雷达</span>
-          <h2 class="section-heading">历期每日高能瞬变雷达归档</h2>
-          <p class="section-intro">每个 arXiv 发布日生成的独立研读雷达，包含高精度科学过滤、单篇分类理由、科学发现与待分析队列：</p>
+          <span class="section-kicker">日报</span>
+          <h2 class="section-heading">历期日报归档</h2>
+          <p class="section-intro">每日论文与分类索引：</p>
         </div>
 
         <div class="daily-weeks-directory">
@@ -196,7 +196,7 @@ const dateCoverage = weeks.length > 0
                 </div>
                 {w.has_weekly_summary ? (
                   <a class="block-weekly-link" href={`/arxiv-weekly/${w.week_id}/`}>
-                    查阅该周学术脉络周报 →
+                    查看本周周报 →
                   </a>
                 ) : (
                   <span class="block-weekly-link" style="opacity: 0.6; cursor: default;">
@@ -225,7 +225,7 @@ const dateCoverage = weeks.length > 0
                     </div>
 
                     <div class="entry-counts-cell">
-                      <span class="entry-badge total">总收录 {d.total_papers} 篇</span>
+                      <span class="entry-badge total">{d.total_papers} 篇</span>
                       {d.must_read_count > 0 && (
                         <span class="entry-badge must">必读 {d.must_read_count}</span>
                       )}
@@ -235,7 +235,7 @@ const dateCoverage = weeks.length > 0
                     </div>
 
                     <div class="entry-action-cell">
-                      <span class="entry-arrow-text">进入独立导读 ↗</span>
+                      <span class="entry-arrow-text">查看 ↗</span>
                     </div>
                   </a>
                 ); })}

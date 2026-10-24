@@ -24,10 +24,7 @@ async function getAstroFiles(dir) {
 test("reader templates enforce Caveman principle and ban meta-engineering jargon", async () => {
   const pagesDir = join(projectRoot, "src", "pages");
   const componentsDir = join(projectRoot, "src", "components");
-  const files = [
-    ...(await getAstroFiles(pagesDir)),
-    ...(await getAstroFiles(componentsDir)),
-  ];
+  const files = [...(await getAstroFiles(pagesDir)), ...(await getAstroFiles(componentsDir))];
 
   const forbiddenTerms = [
     { pattern: /免跳转/u, name: "免跳转" },
@@ -65,4 +62,41 @@ test("static reader dist HTML files do not contain unapproved client scripts", a
       "Daily reader page must not leak unapproved client scripts"
     );
   }
+});
+
+test("weekly reader pages enforce bilingual tags on metadata and navigation bars", async () => {
+  const weeklyPages = [
+    join(projectRoot, "src", "pages", "arxiv-weekly", "index.astro"),
+    join(projectRoot, "src", "pages", "arxiv-weekly", "[week].astro"),
+  ];
+
+  for (const pagePath of weeklyPages) {
+    const content = await readFile(pagePath, "utf8");
+    // 1. 确保元信息栏 (.weekly-meta-bar) 包含中英双语标签
+    assert.match(
+      content,
+      /<div\s+class="weekly-meta-bar">[\s\S]*?class="language-primary"[\s\S]*?class="language-english"/u,
+      `${pagePath} meta-bar 缺少 language-primary / language-english 双语结构`
+    );
+    // 2. 确保周报工具折叠栏 (.weekly-tools-details) 具备双语标签
+    assert.match(
+      content,
+      /<details\s+class="weekly-tools-details">[\s\S]*?class="language-primary"[\s\S]*?class="language-english"/u,
+      `${pagePath} tools-details 缺少 language-primary / language-english 双语结构`
+    );
+  }
+
+  // 3. 确保周次切换组件 (.weekly-nav-bar) 包含中英双语标签与 aria-current
+  const switcherPath = join(projectRoot, "src", "components", "weekly", "WeeklyWeekSwitcher.astro");
+  const switcherContent = await readFile(switcherPath, "utf8");
+  assert.match(
+    switcherContent,
+    /<nav\s+class="weekly-nav-bar"[\s\S]*?class="language-primary"[\s\S]*?class="language-english"/u,
+    "WeeklyWeekSwitcher.astro 缺少双语导航文字"
+  );
+  assert.match(
+    switcherContent,
+    /class="summary-current"[^>]*aria-current="page"/u,
+    "WeeklyWeekSwitcher.astro 缺少当前周 aria-current='page' 无障碍属性"
+  );
 });

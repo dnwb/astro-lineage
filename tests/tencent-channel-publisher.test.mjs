@@ -3204,7 +3204,7 @@ test("Option B: resolves unreviewed verified figure and explains physical core i
   assert.equal(selectedFigure.diagnostic, null);
   assert.equal(selectedFigure.image.path, publicAsset);
   assert.ok(selectedFigure.image.physical_core.length > 0);
-  assert.ok(selectedFigure.image.physical_core.includes("核心理论演化过程与物理模型架构"));
+  assert.ok(selectedFigure.image.physical_core.includes("理论演化模型架构"));
 
   const imagePosts = remote.feeds.filter((feed) => feed.image_paths.length > 0);
   assert.equal(imagePosts.length, 1);
@@ -3217,6 +3217,68 @@ test("Option B: resolves unreviewed verified figure and explains physical core i
   const reentry = await publishHistoricalFeeds(options);
   assert.equal(reentry.published + reentry.updated, 0);
   assert.equal(remote.feeds.filter((feed) => feed.image_paths.length > 0).length, 1);
+});
+
+test("Option B: malformed review manifest fails closed with figure_review_manifest_invalid", async (t) => {
+  const { path } = await createTemporaryWorkspace("astro-lineage-channel-malformed-", t);
+  const badManifestPath = join(path, "bad-reviews.json");
+  await writeFile(badManifestPath, "{ invalid json ... truncated");
+  const result = await resolveReviewedFigure(
+    {
+      arxiv_id: "2609.12345",
+      revision: 1,
+      analysis: {
+        priority: "must_read",
+        source_fingerprint: "a".repeat(64),
+        coverage: { level: "full_body", source_version: "arXiv:2609.12345v1" },
+        analysis: {
+          figures: [
+            {
+              url: "/arxiv-figures/2609.12345/fig1.png",
+              label: "Fig. 1",
+              caption: "Figure 1: test",
+            },
+          ],
+        },
+      },
+    },
+    { reviewPath: badManifestPath }
+  );
+  assert.equal(result.diagnostic, "figure_review_manifest_invalid");
+  assert.equal(result.image, null);
+});
+
+test("Option B: rejects figure with mismatched or stale revision provenance", async (t) => {
+  const { path } = await createTemporaryWorkspace("astro-lineage-channel-stale-rev-", t);
+  const publicRoot = join(path, "public");
+  const figurePath = join(publicRoot, "arxiv-figures/2609.12345/fig1.png");
+  await mkdir(dirname(figurePath), { recursive: true });
+  await writeFile(figurePath, "stale figure");
+  const result = await resolveReviewedFigure(
+    {
+      arxiv_id: "2609.12345",
+      revision: 2, // Paper is revision 2
+      analysis: {
+        priority: "must_read",
+        source_fingerprint: "b".repeat(64),
+        coverage: { level: "full_body", source_version: "arXiv:2609.12345v2" },
+        analysis: {
+          figures: [
+            {
+              url: "/arxiv-figures/2609.12345/fig1.png",
+              label: "Fig. 1",
+              caption: "Figure 1: test",
+              revision: 1, // Stale figure metadata from revision 1
+              source_version: "arXiv:2609.12345v1",
+            },
+          ],
+        },
+      },
+    },
+    { publicRoot, manifest: { version: 1, figures: [] } }
+  );
+  assert.equal(result.diagnostic, "figure_review_or_asset_mismatch");
+  assert.equal(result.image, null);
 });
 
 test("reader expands group direction references only in reading reason, preserving scientific model labels and source", () => {

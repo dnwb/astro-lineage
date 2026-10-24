@@ -1575,8 +1575,12 @@ export async function resolveReviewedFigure(
       if ((await stat(reviewPath)).size > 1_000_000)
         return { image: null, diagnostic: "figure_review_manifest_too_large" };
       manifest = JSON.parse(await readFile(reviewPath, "utf8"));
-    } catch {
-      manifest = null;
+    } catch (error) {
+      if (error?.code === "ENOENT") {
+        manifest = null;
+      } else {
+        return { image: null, diagnostic: "figure_review_manifest_invalid" };
+      }
     }
   }
   if (manifest && (manifest.version !== 1 || !Array.isArray(manifest.figures)))
@@ -1707,6 +1711,20 @@ export async function resolveReviewedFigure(
       (candidate) => candidate.arxiv_id === arxivId && Number(candidate.revision) === revision
     );
     if (paperHasManifestReview) {
+      continue;
+    }
+
+    // Provenance & revision binding check
+    if (figure.revision !== undefined && Number(figure.revision) !== revision) {
+      continue;
+    }
+    if (
+      figure.source_version !== undefined &&
+      figure.source_version !== `arXiv:${arxivId}v${revision}`
+    ) {
+      continue;
+    }
+    if (figure.asset_sha256 !== undefined && figure.asset_sha256 !== assetSha256) {
       continue;
     }
 

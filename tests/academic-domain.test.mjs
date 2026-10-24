@@ -147,46 +147,54 @@ test("academic-domain: deriveFigurePhysicalCore extracts explicit core or derive
     "展示黑洞吸积盘中磁重联驱动非热电子注入的微观物理演化机制。"
   );
 
-  // 2. Theoretical schematic with paper context
+  // 2. Theoretical schematic
   const theoFig = {
     label: "Fig. 2",
     category: "theoretical",
     category_badge: "核心物理演化图",
     caption: "Figure 2: Schematic showing jet breakout through the stellar envelope.",
   };
-  const core1 = deriveFigurePhysicalCore(theoFig, {
-    result: "核心结果：相对论激波突破星周介质时产生超软X射线闪",
-  });
-  assert.ok(core1.includes("相对论激波突破星周介质时产生超软X射线闪"));
-  assert.ok(core1.includes("物理模型架构"));
+  const core1 = deriveFigurePhysicalCore(theoFig);
+  assert.equal(core1, "展示核心天体物理驱动机制、几何拓扑与理论演化模型架构。");
 
-  // 3. Observational light curve with paper context
-  const obsFig = {
-    label: "Fig. 3",
-    category: "observational",
-    category_badge: "观测总体曲线/能谱",
-    caption: "Figure 3: Multiband radio light curves.",
-  };
-  const core2 = deriveFigurePhysicalCore(obsFig, {
-    result: "发现射电光变存在反常双峰结构",
-  });
-  assert.ok(core2.includes("发现射电光变存在反常双峰结构"));
-  assert.ok(core2.includes("观测特征与光变/能谱数据"));
-
-  // 4. Fitting figure with paper context
+  // 3. Category priority: fitting takes precedence over caption mentioning 'model' or 'light curve'
   const fitFig = {
     label: "Fig. 4",
     category: "fitting",
     category_badge: "数据拟合与模型对比",
-    caption: "Figure 4: MCMC posterior parameter distributions.",
+    caption: "Figure 4: Observed light curve and best-fit analytic model with residuals.",
   };
-  const core3 = deriveFigurePhysicalCore(fitFig, {
-    result: "严格限制了前身星质量损失率为每年 1e-4 太阳质量",
-  });
-  assert.ok(core3.includes("严格限制了前身星质量损失率"));
-  assert.ok(core3.includes("参数空间约束"));
+  const coreFit = deriveFigurePhysicalCore(fitFig);
+  assert.equal(coreFit, "展示理论模型与实际观测数据的拟合对比及关键参数后验约束。");
 
-  // 5. Empty figure returns empty string
+  // 4. Grounded observational: sky localization map does not hallucinate light curves
+  const skyMapFig = {
+    category: "observational",
+    caption: "Figure 1: Sky localization probability map.",
+  };
+  assert.equal(deriveFigurePhysicalCore(skyMapFig), "展示暂现源空间天区概率分布与天体物理定位。");
+
+  // 5. Grounded observational: light curve
+  const obsFig = {
+    label: "Fig. 3",
+    category: "observational",
+    category_badge: "观测总体曲线/能谱",
+    caption: "Figure 3: Multiband radio light curve showing temporal decay.",
+  };
+  assert.equal(deriveFigurePhysicalCore(obsFig), "展示暂现源多波段辐射光度与流量随时间演化行为。");
+
+  // 6. Grounded observational: spectra
+  const specFig = {
+    category: "observational",
+    caption: "Figure 5: Optical spectra and broadband spectral energy distribution.",
+  };
+  assert.equal(
+    deriveFigurePhysicalCore(specFig),
+    "展示天体物理辐射宽波段能谱 (SED) 与特征光谱结构。"
+  );
+
+  // 7. Empty or ungrounded figure returns empty string (fail-closed)
   assert.equal(deriveFigurePhysicalCore(null), "");
   assert.equal(deriveFigurePhysicalCore({}), "");
+  assert.equal(deriveFigurePhysicalCore({ category: "unknown", caption: "random plot" }), "");
 });

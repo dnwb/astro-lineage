@@ -1,8 +1,13 @@
-import { mkdir, writeFile } from "node:fs/promises";
+import { mkdir, writeFile, readFile } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { resolve, join, basename } from "node:path";
+import { createHash } from "node:crypto";
 import { fileURLToPath } from "node:url";
 import { safeParseJson } from "./pipeline-evidence-gate.mjs";
+
+function hashBytes(data) {
+  return createHash("sha256").update(data).digest("hex");
+}
 
 const ROOT = fileURLToPath(new URL("../", import.meta.url));
 const FIGURES_DIR = resolve(ROOT, "public/arxiv-figures");
@@ -266,18 +271,33 @@ export async function extractPaperFigures(arxivId, revision = 1, options = {}) {
       const destPath = join(outDir, fileName);
       const publicUrl = `/arxiv-figures/${cleanId}/${fileName}`;
 
+      let fileBytes = null;
       if (!existsSync(destPath)) {
         const imgRes = await fetchImpl(imgUrl, {
           headers: { "User-Agent": "AstroLineage-FigureExtractor/1.0 (academic research robot)" },
           signal: AbortSignal.timeout(45_000),
         });
         if (imgRes.ok) {
-          const buf = Buffer.from(await imgRes.arrayBuffer());
-          await writeFile(destPath, buf);
+          fileBytes = Buffer.from(await imgRes.arrayBuffer());
+          await writeFile(destPath, fileBytes);
+        }
+      } else {
+        try {
+          fileBytes = await readFile(destPath);
+        } catch {
+          fileBytes = null;
         }
       }
 
       if (existsSync(destPath)) {
+        if (!fileBytes) {
+          try {
+            fileBytes = await readFile(destPath);
+          } catch {
+            fileBytes = null;
+          }
+        }
+        const assetSha256 = fileBytes ? hashBytes(fileBytes) : null;
         results.push({
           url: publicUrl,
           caption: item.caption,
@@ -286,6 +306,9 @@ export async function extractPaperFigures(arxivId, revision = 1, options = {}) {
           category_badge: item.categoryBadge,
           physical_core: item.physical_core || "",
           is_schematic: item.isSchematic,
+          revision: Number(revision),
+          source_version: `arXiv:${cleanId}v${revision}`,
+          ...(assetSha256 ? { asset_sha256: assetSha256 } : {}),
         });
       }
     }

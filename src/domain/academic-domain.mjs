@@ -222,71 +222,72 @@ export {
 export function deriveFigurePhysicalCore(figure, context = {}) {
   if (!figure || typeof figure !== "object") return "";
 
-  // 1. Explicit physical core annotation (e.g. from AI selector or review)
+  // 1. Explicit physical core annotation (from AI selector or review)
   const explicit = (figure.physical_core || figure.physicalCore || "").trim();
   if (explicit) return explicit;
 
   const badge = figure.category_badge || figure.categoryBadge || "";
-  const category = figure.category || "";
+  const rawCategory = figure.category || "";
   const caption = figure.caption || "";
 
-  const resolveClaimText = (claimInput) => {
-    if (!claimInput) return "";
-    const claim = normalizeStructuredScientificClaim(claimInput);
-    if (!claim) return "";
-    if (/^(核心结果|主要突破|课题目标|阅读价值|研究课题|方法机制)$/u.test(claim.headline || "")) {
-      return claim.bluf || claim.headline || "";
+  // 2. Resolve primary category: explicit category/badge strictly takes precedence over caption text
+  let primaryType = null;
+  if (rawCategory === "fitting" || /拟合|后验|残差|约束/u.test(badge)) {
+    primaryType = "fitting";
+  } else if (rawCategory === "observational" || /观测|光变|能谱|图像|巡天/u.test(badge)) {
+    primaryType = "observational";
+  } else if (rawCategory === "theoretical" || /物理演化|模型示意|理论模型|几何结构/u.test(badge)) {
+    primaryType = "theoretical";
+  } else {
+    // Only infer from caption keywords when explicit category is absent
+    if (/\b(?:fitting|posterior|constraint|corner\s+plot|residuals?)\b/i.test(caption)) {
+      primaryType = "fitting";
+    } else if (
+      /\b(?:light\s*curve|spectrum|spectra|sed|sky\s*map|flux|photometr|color-magnitude)\b/i.test(
+        caption
+      )
+    ) {
+      primaryType = "observational";
+    } else if (
+      /\b(?:schematic|geometry|evolution|mechanism|hydrodynamic|analytic\s+model)\b/i.test(caption)
+    ) {
+      primaryType = "theoretical";
     }
-    return claim.headline || claim.bluf || "";
-  };
-
-  const resultClaim = resolveClaimText(context.result);
-  const problemClaim = resolveClaimText(context.problem);
-
-  // Check if theoretical / physical evolution / model
-  const isTheoretical =
-    category === "theoretical" ||
-    /物理演化|模型示意|理论模型|几何结构|演化机制|物理图/u.test(badge) ||
-    /schematic|geometry|evolution|model|mechanism|profile|trajectory/i.test(caption);
-
-  // Check if observational / light curve / SED / sample
-  const isObservational =
-    category === "observational" ||
-    /观测|光变|能谱|图像|巡天/u.test(badge) ||
-    /light\s*curve|spectrum|spectra|SED|image|flux|observation|detection/i.test(caption);
-
-  // Check if fitting / parameter constraint
-  const isFitting =
-    category === "fitting" ||
-    /拟合|约束|后验|残差/u.test(badge) ||
-    /fitting|fit|posterior|constraint|parameter|corner/i.test(caption);
-
-  if (isTheoretical) {
-    if (resultClaim) {
-      return `展示文章关于“${resultClaim}”的核心理论演化过程与物理模型架构，直观解析其物理驱动机制。`;
-    }
-    if (problemClaim) {
-      return `针对“${problemClaim}”，展示理论推演的核心物理演化历程与关键模型参数。`;
-    }
-    return "展示文章探讨的核心天体物理演化历程与理论模型架构。";
   }
 
-  if (isObservational) {
-    if (resultClaim) {
-      return `展示天体物理辐射演化的核心观测特征与光变/能谱数据，直接支撑“${resultClaim}”的关键发现。`;
-    }
-    return "展示多波段观测光变与宽能谱特征，捕捉天体物理暂现源的关键辐射行为。";
+  if (!primaryType) return "";
+
+  // 3. Ground explanations strictly in the figure's concrete evidence (no unsupported paper-level claims)
+  if (primaryType === "fitting") {
+    return "展示理论模型与实际观测数据的拟合对比及关键参数后验约束。";
   }
 
-  if (isFitting) {
-    if (resultClaim) {
-      return `展示理论模型与观测数据的对比拟合与残差分布，对“${resultClaim}”给出严格的参数空间约束。`;
-    }
-    return "展示理论模型与实际观测数据的拟合对比，用以严格约束核心物理参数与置信区间。";
+  if (primaryType === "theoretical") {
+    return "展示核心天体物理驱动机制、几何拓扑与理论演化模型架构。";
   }
 
-  if (resultClaim) {
-    return `直观反映论文核心结论（${resultClaim}）的关键科学依据。`;
+  if (primaryType === "observational") {
+    // Discriminate observational evidence based on caption
+    if (/\b(?:sky\s*map|localization|probab\w*|healpix|contour)\b/i.test(caption)) {
+      return "展示暂现源空间天区概率分布与天体物理定位。";
+    }
+    if (/\b(?:spectr\w*|sed|wavelength|frequency|energy\s+distribution)\b/i.test(caption)) {
+      return "展示天体物理辐射宽波段能谱 (SED) 与特征光谱结构。";
+    }
+    if (
+      /\b(?:light\s*curve|photometr\w*|magnitude|flux\s+density|temporal\s+decay|outburst)\b/i.test(
+        caption
+      )
+    ) {
+      return "展示暂现源多波段辐射光度与流量随时间演化行为。";
+    }
+    if (/\b(?:sample|population|distribution|histogram|scatter)\b/i.test(caption)) {
+      return "展示观测样本的关键物理参量统计分布与总体特征对比。";
+    }
+    if (/\b(?:image|spatial|morphology|radio\s+map|slice)\b/i.test(caption)) {
+      return "展示辐射源区的高分辨率成像形态与空间几何结构。";
+    }
+    return "展示天体物理观测数据与多波段暂现源探测特征。";
   }
 
   return "";

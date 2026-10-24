@@ -16,7 +16,7 @@ const newerWeek = currentIndex > 0 ? allWeeks[currentIndex - 1] : null;
 const olderWeek = currentIndex >= 0 && currentIndex < allWeeks.length - 1 ? allWeeks[currentIndex + 1] : null;
 ---
 
-<nav class="weekly-nav-bar" aria-label="周报周次导航">
+<nav class="weekly-nav-bar" aria-label="周报周次导航 / Weekly Navigation">
   <div class="weekly-nav-inner">
     <div class="nav-prev">
       {olderWeek ? (
@@ -25,24 +25,24 @@ const olderWeek = currentIndex >= 0 && currentIndex < allWeeks.length - 1 ? allW
           href={`/arxiv-weekly/${olderWeek.week_id}/`}
           title={`切换至上一周 (${olderWeek.week_id})`}
         >
-          ← 上一周 ({olderWeek.week_id})
+          ← <span class="language-primary">上一周</span><span class="language-english" lang="en">Prev</span> ({olderWeek.week_id})
         </a>
       ) : (
-        <span class="nav-step-btn disabled" aria-disabled="true">← 上一周 (已是最早)</span>
+        <span class="nav-step-btn disabled" aria-disabled="true">← <span class="language-primary">上一周 (已是最早)</span><span class="language-english" lang="en">Prev (Earliest)</span></span>
       )}
     </div>
 
     <div class="nav-center">
       <details class="weekly-archive-details">
         <summary class="weekly-archive-summary" title="展开全部历史周报">
-          <span class="summary-current">当前周：<strong>{currentWeek}</strong></span>
-          <span class="summary-badge">全部往期 ({allWeeks.length})</span>
+          <span class="summary-current" aria-current="page"><span class="language-primary">当前周：</span><span class="language-english" lang="en">Current: </span><strong>{currentWeek}</strong></span>
+          <span class="summary-badge"><span class="language-primary">全部往期</span><span class="language-english" lang="en">Archives</span> ({allWeeks.length})</span>
           <span class="summary-caret">▾</span>
         </summary>
         <div class="weekly-archive-dropdown-menu">
           <div class="dropdown-header">
-            <span>历史自然周学术脉络归档</span>
-            <a class="dropdown-all-link" href="/arxiv-archives/">查看全局存档库 →</a>
+            <span><span class="language-primary">历史自然周学术脉络归档</span><span class="language-english" lang="en">Weekly Synthesis Archives</span></span>
+            <a class="dropdown-all-link" href="/arxiv-archives/"><span class="language-primary">查看全局存档库 →</span><span class="language-english" lang="en">Global Archives →</span></a>
           </div>
           <div class="dropdown-grid">
             {allWeeks.map((w: any) => {
@@ -53,17 +53,17 @@ const olderWeek = currentIndex >= 0 && currentIndex < allWeeks.length - 1 ? allW
               const totalCount = w.statistics?.total_analyzed ?? 0;
               return (
                 <a
-                  class={`dropdown-day-item ${isCurrent ? "active" : ""}`}
+                  class={`dropdown-week-item ${isCurrent ? "active" : ""}`}
                   href={targetUrl}
                   aria-current={isCurrent ? "page" : undefined}
                 >
-                  <div class="day-item-left">
-                    <span class="day-item-date">{w.week_id}</span>
-                    <span class="day-item-weekday">{w.date_range}</span>
+                  <div class="week-item-left">
+                    <span class="week-item-id">{w.week_id}</span>
+                    <span class="week-item-range">{w.date_range}</span>
                   </div>
-                  <div class="day-item-right">
-                    {mustCount > 0 && <span class="badge-must">{mustCount}必读</span>}
-                    <span class="badge-total">{totalCount}篇</span>
+                  <div class="week-item-right">
+                    {mustCount > 0 && <span class="badge-must">{mustCount} <span class="language-primary">必读</span><span class="language-english" lang="en">Must</span></span>}
+                    <span class="badge-total">{totalCount} <span class="language-primary">篇</span><span class="language-english" lang="en">papers</span></span>
                   </div>
                 </a>
               );
@@ -80,10 +80,10 @@ const olderWeek = currentIndex >= 0 && currentIndex < allWeeks.length - 1 ? allW
           href={newerWeek.week_id === latestWeekId ? "/arxiv-weekly/" : `/arxiv-weekly/${newerWeek.week_id}/`}
           title={`切换至下一周 (${newerWeek.week_id})`}
         >
-          下一周 ({newerWeek.week_id}) →
+          <span class="language-primary">下一周</span><span class="language-english" lang="en">Next</span> ({newerWeek.week_id}) →
         </a>
       ) : (
-        <span class="nav-step-btn disabled" aria-disabled="true">下一周 (已是最新) →</span>
+        <span class="nav-step-btn disabled" aria-disabled="true"><span class="language-primary">下一周 (已是最新) →</span><span class="language-english" lang="en">Next (Latest) →</span></span>
       )}
     </div>
   </div>
@@ -225,7 +225,7 @@ const olderWeek = currentIndex >= 0 && currentIndex < allWeeks.length - 1 ? allW
     flex-direction: column;
     gap: 0.35rem;
   }
-  .dropdown-day-item {
+  .dropdown-week-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -236,33 +236,33 @@ const olderWeek = currentIndex >= 0 && currentIndex < allWeeks.length - 1 ? allW
     font-size: 0.8rem;
     transition: background 0.15s;
   }
-  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .dropdown-day-item {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .dropdown-week-item {
     color: #f1f5f9;
   }
-  .dropdown-day-item:hover, .dropdown-day-item.active {
+  .dropdown-week-item:hover, .dropdown-week-item.active {
     background: #eff6ff;
   }
-  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .dropdown-day-item:hover,
-  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .dropdown-day-item.active {
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .dropdown-week-item:hover,
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .dropdown-week-item.active {
     background: #1e3a8a;
   }
-  .dropdown-day-item.active {
+  .dropdown-week-item.active {
     font-weight: 600;
   }
-  .day-item-left {
+  .week-item-left {
     display: flex;
     align-items: baseline;
     gap: 0.4rem;
   }
-  .day-item-date {
+  .week-item-id {
     font-family: ui-monospace, SFMono-Regular, monospace;
     font-size: 0.85rem;
   }
-  .day-item-weekday {
+  .week-item-range {
     font-size: 0.72rem;
     color: var(--text-secondary, #64748b);
   }
-  .day-item-right {
+  .week-item-right {
     display: flex;
     align-items: center;
     gap: 0.35rem;

@@ -304,4 +304,21 @@ test("arXiv weekly layout prioritizes reading: executive summary and top picks p
       "historical week: has tools dropdown"
     );
   }
+
+  // 7. Bilingual elements in meta bar and navigation
+  assert.match(
+    html,
+    /<div class="weekly-meta-bar">[\s\S]*?class="language-primary"[\s\S]*?class="language-english"/u,
+    "metadata bar must support bilingual primary/english markup"
+  );
+  assert.match(
+    html,
+    /<nav class="weekly-nav-bar"[\s\S]*?class="summary-current"[^>]*aria-current="page"/u,
+    "current week summary in nav bar must have aria-current='page'"
+  );
+  assert.match(
+    html,
+    /class=["'][^"']*dropdown-week-item[^"']*["']/u,
+    "dropdown items must use dropdown-week-item domain naming"
+  );
 });

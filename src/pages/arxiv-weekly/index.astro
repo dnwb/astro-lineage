@@ -27,9 +27,12 @@ const latestWeekId = (archiveManifest as any).latest_week_id || (archiveManifest
 const isInProgress = weekDays.length < 5;
 
 // Find the most recent complete week before the current week
-const lastCompleteWeek = (archiveManifest.weeks as any[]).find(
-  (w: any) => w.week_id !== weeklyData.week_id && (w.days?.length ?? 0) >= 5
+const currentWeekIndex = (archiveManifest.weeks as any[]).findIndex(
+  (w: any) => w.week_id === weeklyData.week_id
 );
+const lastCompleteWeek = (archiveManifest.weeks as any[])
+  .slice(currentWeekIndex >= 0 ? currentWeekIndex + 1 : 0)
+  .find((w: any) => (w.days?.length ?? 0) >= 5);
 const lastCompleteWeekId = lastCompleteWeek?.week_id;
 const lastCompleteWeekLabel = lastCompleteWeekId ? formatWeekIdZh(lastCompleteWeekId) : "";
 const lastCompleteWeekUrl = lastCompleteWeekId
@@ -153,22 +156,22 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
           <span class="language-english" lang="en">Weekly Synthesis · {weekLabelEn}</span>
         </h1>
         <div class="weekly-meta-bar">
-          <span class="meta-item">📅 周期：{weekLabelZh}</span>
+          <span class="meta-item">📅 <span class="language-primary">周期：</span><span class="language-english" lang="en">Period: </span>{weekLabelZh}</span>
           <span class="meta-sep">·</span>
-          <span class="meta-item">⏱ 时间跨度：{weeklyData.date_range}</span>
+          <span class="meta-item">⏱ <span class="language-primary">时间跨度：</span><span class="language-english" lang="en">Span: </span>{weeklyData.date_range}</span>
           <span class="meta-sep">·</span>
-          <span class="meta-item">📊 深度研判 <strong>{stats.total_analyzed}</strong> 篇</span>
+          <span class="meta-item">📊 <span class="language-primary">深度研判 <strong>{stats.total_analyzed}</strong> 篇</span><span class="language-english" lang="en">Analyzed: <strong>{stats.total_analyzed}</strong></span></span>
           <span class="meta-sep">·</span>
-          <span class="meta-item highlight-must">必读 <strong>{stats.must_read_count}</strong></span>
+          <span class="meta-item highlight-must"><span class="language-primary">必读 <strong>{stats.must_read_count}</strong></span><span class="language-english" lang="en">Must Read: <strong>{stats.must_read_count}</strong></span></span>
           <span class="meta-sep">·</span>
-          <span class="meta-item highlight-worth">关注 <strong>{stats.worth_knowing_count}</strong></span>
+          <span class="meta-item highlight-worth"><span class="language-primary">关注 <strong>{stats.worth_knowing_count}</strong></span><span class="language-english" lang="en">Followed: <strong>{stats.worth_knowing_count}</strong></span></span>
           {isInProgress ? (
             <>
               <span class="meta-sep">·</span>
-              <span class="meta-item in-progress-badge">⏱️ 进行中 ({weekDays.length}/5 批次)</span>
+              <span class="meta-item in-progress-badge">⏱️ <span class="language-primary">进行中</span><span class="language-english" lang="en">In Progress</span> ({weekDays.length}/5)</span>
               {lastCompleteWeekId && (
                 <span class="meta-item in-progress-link">
-                  <a href={lastCompleteWeekUrl}>最近完整周报 ({lastCompleteWeekLabel}) →</a>
+                  <a href={lastCompleteWeekUrl}><span class="language-primary">最近完整周报 ({lastCompleteWeekLabel}) →</span><span class="language-english" lang="en">Latest Complete ({lastCompleteWeekLabel}) →</span></a>
                 </span>
               )}
             </>
@@ -176,7 +179,7 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
           <div class="meta-tools-wrap">
             <details class="weekly-tools-details">
               <summary class="tools-summary-btn">
-                <span>⚙️ 工具</span>
+                <span>⚙️ <span class="language-primary">工具</span><span class="language-english" lang="en">Tools</span></span>
                 <span class="tools-caret">▾</span>
               </summary>
               <div class="tools-dropdown-body">
@@ -186,7 +189,7 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
                   download={`weekly-${weeklyData.week_id}.pdf`}
                   title="下载包含完整切图与超链接的 PDF 周报"
                 >
-                  📥 下载周报 PDF
+                  📥 <span class="language-primary">下载周报 PDF</span><span class="language-english" lang="en">Download PDF</span>
                 </a>
                 <details class="weekly-markdown-export">
                   <summary class="export-summary-btn">

@@ -361,7 +361,7 @@ function remoteMediaFingerprint(value) {
   if (!populated.length || populated.some((media) => media.length !== 1)) return null;
   const media = populated[0];
   const references = media.map((item) =>
-    typeof item === "string" ? item : (item?.url ?? item?.path)
+    typeof item === "string" ? item : (item?.url ?? item?.picUrl ?? item?.pic_url ?? item?.path)
   );
   if (references.some((reference) => typeof reference !== "string" || !reference)) return null;
   return hashBody(JSON.stringify(references));
@@ -772,11 +772,17 @@ async function publishItems(
       if (existing?.figure_sha256) {
         if (!item.figure && existing.status === "published") retainPublishedFigure = true;
         else if (!item.figure || item.figure.sha256 !== existing.figure_sha256) {
-          pending(result, identity, "CHANNEL_FIGURE_REVIEW_MISMATCH");
-          continue;
+          if (allowExistingBodyEdits && item.figure) {
+            figure = item.figure;
+          } else {
+            pending(result, identity, "CHANNEL_FIGURE_REVIEW_MISMATCH");
+            continue;
+          }
         } else figure = item.figure;
       } else if (!existing && !legacyBindings[identity]) {
         figure = item.figure || null;
+      } else if (allowExistingBodyEdits && item.figure) {
+        figure = item.figure;
       }
       const body = figure ? bodyWithReviewedFigure(item.body, figure, item) : item.body;
       const hash = hashBody(body);
@@ -1191,6 +1197,7 @@ async function publishItems(
             result.unchanged += 1;
             continue;
           }
+          let alterResponse;
           if (currentBody !== marked) {
             const priorHash = existing?.status === "intent" ? existing.from_hash : existing?.hash;
             if (
@@ -1219,25 +1226,27 @@ async function publishItems(
               channel_id: remote.channel_id,
             };
             await save();
-            payload(
-              await cli([
-                "feed",
-                "alter-feed",
-                "--guild-id",
-                String(guildId),
-                "--channel-id",
-                String(remote.channel_id),
-                "--feed-id",
-                remote.feed_id,
-                "--create-time",
-                remote.create_time,
-                "--title",
-                title,
-                "--markdown-content",
-                marked,
-                "--json",
-              ])
-            );
+            const alterArgs = [
+              "feed",
+              "alter-feed",
+              "--guild-id",
+              String(guildId),
+              "--channel-id",
+              String(remote.channel_id),
+              "--feed-id",
+              remote.feed_id,
+              "--create-time",
+              remote.create_time,
+              "--title",
+              title,
+              "--markdown-content",
+              marked,
+            ];
+            if (figure) {
+              alterArgs.push("--clear-images", "--image", figure.path);
+            }
+            alterArgs.push("--json");
+            alterResponse = payload(await cli(alterArgs));
             result.updated += 1;
           } else if (movedThisTime) result.updated += 1;
           else result.unchanged += 1;
@@ -1260,6 +1269,17 @@ async function publishItems(
               if (shareRes?.share_url) shareUrl = shareRes.share_url;
             } catch {}
           }
+          let figureMediaSha256 = existing?.figure_media_sha256;
+          if (figure) {
+            const updatedFeed = await detail(cli, guildId, remote);
+            figureMediaSha256 =
+              remoteMediaFingerprint(updatedFeed) ||
+              (alterResponse ? remoteMediaFingerprint(alterResponse) : null) ||
+              figureMediaSha256;
+            if (!figureMediaSha256 && !dryRun) {
+              throw new Error("CHANNEL_FIGURE_DELIVERY_UNVERIFIED");
+            }
+          }
           records[identity] = {
             hash,
             status: "published",
@@ -1270,7 +1290,7 @@ async function publishItems(
             ...(figure
               ? {
                   figure_sha256: figure.sha256,
-                  figure_media_sha256: remoteMediaFingerprint(current),
+                  figure_media_sha256: figureMediaSha256,
                 }
               : {}),
           };
@@ -1983,6 +2003,8 @@ export async function publishHistoricalFeeds({
   channelIds,
   sourceBinding,
   briefs = false,
+  mustReadOnly = false,
+  cursor = true,
   channelId = DEFAULT_DAILY_CHANNEL_ID,
   resolveFigure = resolveReviewedFigure,
   cacheRoot = DEFAULT_CACHE_ROOT,
@@ -2012,6 +2034,7 @@ export async function publishHistoricalFeeds({
           [model.groups.must_read, must, "must_read"],
           [model.groups.worth_knowing, worth, "worth_knowing"],
         ]) {
+          if (mustReadOnly && kind !== "must_read") continue;
           for (const paper of group) {
             const item = (
               await dailyItems(
@@ -2049,7 +2072,7 @@ export async function publishHistoricalFeeds({
       kind: briefs ? "brief" : "daily",
       dryRun,
       limit,
-      backfill: true,
+      backfill: cursor,
     });
     for (const item of invalid) pending(result, item.date, item.reason);
     return result;
@@ -2167,17 +2190,29 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1
     );
   } else if (task === "backfill" || task === "--backfill") {
     const index = process.argv.indexOf("--limit");
-    const limit = index < 0 ? 20 : Number(process.argv[index + 1]);
+    const limit = index < 0 ? 50 : Number(process.argv[index + 1]);
+    const fromIndex = process.argv.indexOf("--from");
+    const from = fromIndex < 0 ? undefined : process.argv[fromIndex + 1];
+    const throughIndex = process.argv.indexOf("--through");
+    const through = throughIndex < 0 ? undefined : process.argv[throughIndex + 1];
+    const mustReadOnly = process.argv.includes("--must-read-only");
+    const allowExistingBodyEdits = process.argv.includes("--allow-existing-body-edits");
     const currentBinding = await capturePublishedSourceBinding();
     if (currentBinding.id !== sourceBinding.id) throw new Error("CHANNEL_SOURCE_BUILD_MISMATCH");
+    const cursor = !process.argv.includes("--no-cursor") && from === undefined;
     console.log(
       JSON.stringify(
         await publishHistoricalFeeds({
           dryRun,
+          from,
+          through,
           limit,
           legacyBindings,
           sourceBinding,
           briefs: process.argv.includes("--briefs"),
+          mustReadOnly,
+          allowExistingBodyEdits,
+          cursor,
         })
       )
     );

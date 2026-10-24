@@ -774,6 +774,11 @@ function fakeCli() {
       const feed = feeds.find((entry) => entry.feed_id === arg("--feed-id"));
       feed.markdown_content = arg("--markdown-content");
       feed.title = arg("--title");
+      if (args.includes("--clear-images")) feed.image_paths = [];
+      const imageIndex = args.indexOf("--image");
+      if (imageIndex >= 0) {
+        feed.image_paths = [args[imageIndex + 1]];
+      }
       return { retCode: 0, data: feed };
     }
     if (action === "move-feed") {
@@ -3217,6 +3222,98 @@ test("Option B: resolves unreviewed verified figure and explains physical core i
   const reentry = await publishHistoricalFeeds(options);
   assert.equal(reentry.published + reentry.updated, 0);
   assert.equal(remote.feeds.filter((feed) => feed.image_paths.length > 0).length, 1);
+});
+
+test("Option B: upgrades existing non-figure post to figure post when allowExistingBodyEdits is enabled", async (t) => {
+  const { path } = await createTemporaryWorkspace("astro-lineage-channel-upgrade-fig-", t);
+  const archive = JSON.parse(
+    await readFile(
+      new URL("../src/data/arxiv-archives/daily/2026-09-28.json", import.meta.url),
+      "utf8"
+    )
+  );
+  const paper = archive.radar.analyses.find((item) => item.priority === "must_read");
+  const caption =
+    "Figure 1: Numerical evolution of the magnetic field and relativistic jet profile.";
+  const label = "Fig. 1";
+  const url = `/arxiv-figures/${paper.arxiv_id}/fig1.png`;
+  paper.analysis.figures = [
+    {
+      url,
+      label,
+      caption,
+      category: "theoretical",
+      category_badge: "核心物理演化图",
+    },
+  ];
+  archive.radar.opening_brief = buildOpeningBrief(archive.feed, archive.radar);
+  const archiveBytes = Buffer.from(JSON.stringify(archive));
+  const archiveRoot = join(path, "archives");
+  const distRoot = join(path, "published-build");
+  const cacheRoot = join(path, "cache");
+  const publicRoot = join(path, "public");
+  const publicAsset = join(publicRoot, url.slice(1));
+  const builtAsset = join(distRoot, url.slice(1));
+  const figureBytes = Buffer.from("option-b upgrade fixture");
+  await mkdir(archiveRoot, { recursive: true });
+  await writeFile(join(archiveRoot, "2026-09-28.json"), archiveBytes);
+  const page = join(distRoot, "arxiv-daily/2026-09-28");
+  await mkdir(page, { recursive: true });
+  await writeFile(join(page, "index.html"), "built");
+  await mkdir(dirname(publicAsset), { recursive: true });
+  await mkdir(dirname(builtAsset), { recursive: true });
+  await writeFile(publicAsset, figureBytes);
+  await writeFile(builtAsset, figureBytes);
+
+  const remote = fakeCli();
+  // 1. First publish WITHOUT figure (simulate past run)
+  const initialOptions = {
+    archiveRoot,
+    distRoot,
+    cacheRoot,
+    guildId: "test",
+    cli: remote.cli,
+    channelIds: Object.fromEntries(TOPICS.map(([id]) => [id, id])),
+    from: "2026-09-28",
+    through: "2026-09-28",
+    limit: 50,
+    cursor: false,
+    mustReadOnly: true,
+    sourceBinding: fixtureBinding({ archives: { "2026-09-28": hashBody(archiveBytes) } }),
+    resolveFigure: async () => ({ image: null, diagnostic: "figure_review_missing" }),
+  };
+  const initialResult = await publishHistoricalFeeds(initialOptions);
+  assert.equal(initialResult.success, true);
+  assert.ok(initialResult.published > 0);
+  assert.equal(remote.feeds.filter((feed) => feed.image_paths.length > 0).length, 0);
+
+  // 2. Now run with figure available and allowExistingBodyEdits: true
+  const upgradeOptions = {
+    ...initialOptions,
+    allowExistingBodyEdits: true,
+    resolveFigure: async (item, opts) => {
+      return resolveReviewedFigure(item, {
+        ...opts,
+        publicRoot,
+        manifest: { version: 1, figures: [] },
+      });
+    },
+  };
+  const upgradeResult = await publishHistoricalFeeds(upgradeOptions);
+  assert.equal(upgradeResult.success, true);
+  assert.ok(upgradeResult.updated >= 1);
+
+  // Verify the remote post now has the image attached and physical core in body
+  const imagePosts = remote.feeds.filter((feed) => feed.image_paths.length > 0);
+  assert.equal(imagePosts.length, 1);
+  assert.deepEqual(imagePosts[0].image_paths, [publicAsset]);
+  assert.ok(imagePosts[0].markdown_content.includes("[(0,0)](@img)"));
+  assert.ok(imagePosts[0].markdown_content.includes("**物理核心（核心物理演化图）**："));
+
+  // 3. Reentry check: should be unchanged and idempotent
+  const reentry = await publishHistoricalFeeds(upgradeOptions);
+  assert.equal(reentry.published + reentry.updated, 0);
+  assert.ok(reentry.unchanged >= 1);
 });
 
 test("Option B: malformed review manifest fails closed with figure_review_manifest_invalid", async (t) => {

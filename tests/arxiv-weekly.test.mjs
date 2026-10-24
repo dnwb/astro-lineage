@@ -188,3 +188,117 @@ test("arXiv weekly CSS guarantees responsive layout and print optimization", asy
     "print styles must hide site navigation"
   );
 });
+
+test("arXiv weekly layout prioritizes reading: executive summary and top picks precede audit and matrix", async () => {
+  ensureWeeklyDist();
+  const html = await readFile(distWeeklyHtmlUrl, "utf8");
+
+  // 1. Structural section positions
+  const executiveIdx = html.indexOf('id="executive-summary"');
+  const topPicksIdx = html.indexOf('id="top-picks"');
+  const thematicIdx = html.indexOf('id="thematic-highlights"');
+  const auditIdx = html.indexOf('id="audit-and-index"');
+
+  assert.ok(executiveIdx !== -1, "must have executive summary section");
+  assert.ok(topPicksIdx !== -1, "must have top picks section");
+  assert.ok(thematicIdx !== -1, "must have thematic highlights section");
+  assert.ok(auditIdx !== -1, "must have audit-and-index section");
+
+  assert.ok(executiveIdx < topPicksIdx, "executive summary must appear before top picks");
+  assert.ok(topPicksIdx < thematicIdx, "top picks must appear before thematic highlights");
+  assert.ok(
+    thematicIdx < auditIdx,
+    "thematic highlights must appear before audit and index section"
+  );
+
+  // 2. Audit and Index section is a collapsed details containing matrix, daily breakdown, and catalog
+  const auditBlock = html.slice(auditIdx, auditIdx + 20000);
+  assert.match(
+    auditBlock,
+    /<details\b[^>]*class=["'][^"']*audit-details/u,
+    "audit section must be a collapsible details"
+  );
+  assert.ok(
+    auditBlock.includes('id="domain-matrix"') || html.indexOf('id="domain-matrix"') > auditIdx,
+    "domain matrix must be inside or after audit section"
+  );
+  assert.ok(
+    auditBlock.includes('id="daily-breakdown"') || html.indexOf('id="daily-breakdown"') > auditIdx,
+    "daily breakdown must be inside or after audit section"
+  );
+  assert.ok(
+    auditBlock.includes('id="catalog"') || html.indexOf('id="catalog"') > auditIdx,
+    "catalog must be inside or after audit section"
+  );
+
+  // 3. No large stat cards block (.weekly-stats-strip) or duplicate week-pager-bar
+  assert.doesNotMatch(
+    html,
+    /class=["'][^"']*weekly-stats-strip[^"']*["']/u,
+    "must not have bulky weekly-stats-strip cards"
+  );
+  assert.doesNotMatch(
+    html,
+    /class=["'][^"']*week-pager-bar[^"']*["']/u,
+    "must not have separate week-pager-bar"
+  );
+
+  // 4. Tools dropdown (Download PDF + Export Markdown)
+  assert.match(
+    html,
+    /class=["'][^"']*weekly-tools-details[^"']*["']/u,
+    "tools must be grouped in a details dropdown"
+  );
+  assert.match(
+    html,
+    /class=["'][^"']*pdf-download-link[^"']*["']/u,
+    "must still contain pdf-download-link in tools"
+  );
+  assert.match(
+    html,
+    /class=["'][^"']*export-markdown-pre[^"']*["']/u,
+    "must still contain export-markdown-pre"
+  );
+
+  // 5. In-progress banner must not hardcode 2026-W42 if current week is different, but use dynamic week
+  assert.doesNotMatch(
+    html,
+    /href="\/arxiv-weekly\/2026-W42\/"[^>]*>2026 年第 42 周完整脉络综述/u,
+    "in-progress notice must not have hardcoded W42 text"
+  );
+
+  // 6. Historical week pages conform to the same streamlined reading layout
+  const distHistoricalWeekHtmlUrl = new URL(
+    "../dist/arxiv-weekly/2026-W42/index.html",
+    import.meta.url
+  );
+  if (existsSync(fileURLToPath(distHistoricalWeekHtmlUrl))) {
+    const histHtml = await readFile(distHistoricalWeekHtmlUrl, "utf8");
+    const hExecIdx = histHtml.indexOf('id="executive-summary"');
+    const hTopPicksIdx = histHtml.indexOf('id="top-picks"');
+    const hThematicIdx = histHtml.indexOf('id="thematic-highlights"');
+    const hAuditIdx = histHtml.indexOf('id="audit-and-index"');
+
+    assert.ok(hExecIdx < hTopPicksIdx, "historical week: executive summary before top picks");
+    assert.ok(hTopPicksIdx < hThematicIdx, "historical week: top picks before thematic highlights");
+    assert.ok(
+      hThematicIdx < hAuditIdx,
+      "historical week: thematic highlights before audit section"
+    );
+    assert.doesNotMatch(
+      histHtml,
+      /class=["'][^"']*weekly-stats-strip[^"']*["']/u,
+      "historical week: no stats-strip cards"
+    );
+    assert.doesNotMatch(
+      histHtml,
+      /class=["'][^"']*week-pager-bar[^"']*["']/u,
+      "historical week: no duplicate week-pager-bar"
+    );
+    assert.match(
+      histHtml,
+      /class=["'][^"']*weekly-tools-details[^"']*["']/u,
+      "historical week: has tools dropdown"
+    );
+  }
+});

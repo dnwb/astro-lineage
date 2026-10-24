@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { parseEnv, classifyWorkingTree } from "../scripts/deploy-doctor.mjs";
+import { parseEnv, classifyWorkingTree, runDeployDoctor } from "../scripts/deploy-doctor.mjs";
 
 test("deploy-doctor: parseEnv handles quoted values, empty values and prevents multiline bleeding", () => {
   const envText = `
@@ -21,6 +21,18 @@ SYNC_FIGURES_WEEKS=5
   assert.equal(env.SYNC_FIGURES_WEEKS, "5");
 });
 
+test("deploy-doctor: parseEnv handles inline shell comments correctly", () => {
+  const envText = `
+CRON_GIT_PUSH=true # automatic deployment
+APP_TOKEN="secret#with#hash" # comment with #
+PLAIN_TOKEN=simple_val # comment
+`;
+  const env = parseEnv(envText);
+  assert.equal(env.CRON_GIT_PUSH, "true");
+  assert.equal(env.APP_TOKEN, "secret#with#hash");
+  assert.equal(env.PLAIN_TOKEN, "simple_val");
+});
+
 test("deploy-doctor: parseEnv distinguishes exact true from prefix truefalse", () => {
   const env1 = parseEnv("CRON_GIT_PUSH=truefalse");
   assert.notEqual(env1.CRON_GIT_PUSH, "true");
@@ -30,7 +42,6 @@ test("deploy-doctor: parseEnv distinguishes exact true from prefix truefalse", (
 });
 
 test("deploy-doctor: classifyWorkingTree preserves leading whitespace and handles porcelain lines", () => {
-  // Typical porcelain v1: unstaged modification has leading space
   const porcelain = [
     " M src/data/arxiv-daily/2026-10-24.json",
     "?? public/figures/2026/w43/sample.jpg",
@@ -46,6 +57,20 @@ test("deploy-doctor: classifyWorkingTree preserves leading whitespace and handle
   ]);
   assert.equal(result.nonDataFiles.length, 1);
   assert.deepEqual(result.nonDataFiles, ["scripts/deploy-doctor.mjs"]);
+});
+
+test("deploy-doctor: classifyWorkingTree keeps code-to-data renames blocked", () => {
+  // Cross-boundary rename from code to data must be treated as non-data (blocked)
+  const crossPorcelain = "R  scripts/sample.json -> src/data/sample.json";
+  const crossResult = classifyWorkingTree(crossPorcelain);
+  assert.equal(crossResult.nonDataFiles.length, 1);
+  assert.equal(crossResult.dataFiles.length, 0);
+
+  // Rename within data boundary is allowed
+  const dataPorcelain = "R  src/data/old.json -> src/data/new.json";
+  const dataResult = classifyWorkingTree(dataPorcelain);
+  assert.equal(dataResult.nonDataFiles.length, 0);
+  assert.equal(dataResult.dataFiles.length, 1);
 });
 
 test("deploy-doctor: classifyWorkingTree reports clean on empty output", () => {

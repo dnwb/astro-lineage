@@ -27,12 +27,20 @@ export function parseEnv(content) {
     const eqIdx = rawLine.indexOf("=");
     if (eqIdx === -1) continue;
     const key = rawLine.slice(0, eqIdx).trim();
-    let val = rawLine.slice(eqIdx + 1).trim();
-    if (
-      (val.startsWith('"') && val.endsWith('"') && val.length >= 2) ||
-      (val.startsWith("'") && val.endsWith("'") && val.length >= 2)
-    ) {
-      val = val.slice(1, -1);
+    const rawVal = rawLine.slice(eqIdx + 1).trim();
+
+    let val = "";
+    if (rawVal.startsWith('"') || rawVal.startsWith("'")) {
+      const quote = rawVal[0];
+      const endQuoteIdx = rawVal.indexOf(quote, 1);
+      if (endQuoteIdx !== -1) {
+        val = rawVal.slice(1, endQuoteIdx);
+      } else {
+        val = rawVal.slice(1);
+      }
+    } else {
+      const hashIdx = rawVal.indexOf("#");
+      val = hashIdx !== -1 ? rawVal.slice(0, hashIdx).trim() : rawVal.trim();
     }
     env[key] = val;
   }
@@ -47,19 +55,25 @@ export function classifyWorkingTree(porcelainOutput) {
   const dataFiles = [];
   const nonDataFiles = [];
 
+  const isAllowedData = (p) => p.startsWith("src/data/") || p.startsWith("public/figures/");
+
   for (const line of lines) {
     const match = line.match(/^(?:..|[A-Z?]{1,2})\s+(.+)$/u);
-    const filePath = match ? match[1].trim() : line.trim();
-    const isAllowedData =
-      filePath.startsWith("src/data/") ||
-      filePath.startsWith("public/figures/") ||
-      filePath.includes("-> src/data/") ||
-      filePath.includes("-> public/figures/");
+    const rawPath = match ? match[1].trim() : line.trim();
 
-    if (isAllowedData) {
-      dataFiles.push(filePath);
+    let isDataOnly = false;
+    if (rawPath.includes(" -> ")) {
+      const [src, dest] = rawPath.split(" -> ").map((p) => p.trim());
+      // Both source and destination must be data directories
+      isDataOnly = isAllowedData(src) && isAllowedData(dest);
     } else {
-      nonDataFiles.push(filePath);
+      isDataOnly = isAllowedData(rawPath);
+    }
+
+    if (isDataOnly) {
+      dataFiles.push(rawPath);
+    } else {
+      nonDataFiles.push(rawPath);
     }
   }
 
@@ -80,13 +94,13 @@ export function runDeployDoctor(options = {}) {
   const envContent = existsSync(envPath) ? readFileSync(envPath, "utf8") : "";
   const parsedEnv = parseEnv(envContent);
 
-  // 1. 检查环境变量配置 (优先使用环境生效值，兜底读取 .env 文件解析值)
-  const effectiveCronPush = process.env.CRON_GIT_PUSH ?? parsedEnv.CRON_GIT_PUSH ?? "false";
+  // 1. 检查环境变量配置 (.env 具有最高优先级，与 cron-runner.sh 的 source .env 语义对齐)
+  const effectiveCronPush = parsedEnv.CRON_GIT_PUSH ?? process.env.CRON_GIT_PUSH ?? "false";
   const cronPush = effectiveCronPush === "true";
-  const publicUrl = process.env.PUBLIC_SITE_URL || parsedEnv.PUBLIC_SITE_URL || "未配置";
-  const localUrl = process.env.LOCAL_SITE_URL || parsedEnv.LOCAL_SITE_URL || "未配置";
-  const syncWeeks = process.env.SYNC_FIGURES_WEEKS || parsedEnv.SYNC_FIGURES_WEEKS || "7";
-  const syncMaxMb = process.env.SYNC_FIGURES_MAX_MB || parsedEnv.SYNC_FIGURES_MAX_MB || "300";
+  const publicUrl = parsedEnv.PUBLIC_SITE_URL || process.env.PUBLIC_SITE_URL || "未配置";
+  const localUrl = parsedEnv.LOCAL_SITE_URL || process.env.LOCAL_SITE_URL || "未配置";
+  const syncWeeks = parsedEnv.SYNC_FIGURES_WEEKS || process.env.SYNC_FIGURES_WEEKS || "7";
+  const syncMaxMb = parsedEnv.SYNC_FIGURES_MAX_MB || process.env.SYNC_FIGURES_MAX_MB || "300";
 
   console.log("[1/3] 环境与站点配置:");
   console.log(`  - 公网 CDN (Cloudflare): ${publicUrl}`);

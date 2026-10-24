@@ -24,6 +24,7 @@ import {
   derivePaperTitleCandidate,
   deriveWeeklyTitleCandidate,
   extractPaperTopic,
+  formatDailyTitle,
   validateTitleOverride,
 } from "./channel-title-policy.mjs";
 import { resolvePaperTitleZhAsync, resolvePaperTitleZhSync } from "./paper-translation.mjs";
@@ -127,7 +128,14 @@ function dailyBriefItem(model, date) {
   }
   if (brief?.status !== "ready") throw new Error("CHANNEL_BRIEF_UNAVAILABLE");
   const papers = [...(model.groups.must_read || []), ...(model.groups.worth_knowing || [])];
-  const title = deriveDailyContentTitle(date, papers, brief);
+  let title;
+  try {
+    title = deriveDailyContentTitle(date, papers, brief);
+  } catch (error) {
+    const topic = papers[0] ? extractPaperTopic(papers[0]) : "";
+    const candidate = topic ? `${topic}最新突破进展` : "高能天体物理前沿文献精读";
+    title = formatDailyTitle(date, candidate);
+  }
   const lines = [`发布日期：${date}`, "", "## 本期导读", "", brief.intro, ""];
   if (brief.must_read?.length) {
     lines.push("## 必读核心突破", "");
@@ -1506,7 +1514,7 @@ export async function publishDailyFeed({
   sourceBinding,
   channelIds,
   includeBrief = false,
-  mustReadOnly = false,
+  mustReadOnly = true,
   dailyChannelId = DEFAULT_DAILY_CHANNEL_ID,
   resolveFigure = resolveReviewedFigure,
   cacheRoot = DEFAULT_CACHE_ROOT,
@@ -1837,6 +1845,10 @@ export async function publishWeeklyFeed({
   guildId = DEFAULT_GUILD_ID,
   channelId = DEFAULT_WEEKLY_CHANNEL_ID,
   titleOverride,
+  weekId: targetWeekId,
+  archiveWeeklyRoot = resolve(
+    fileURLToPath(new URL("../src/data/arxiv-archives/weekly", import.meta.url))
+  ),
   weeklyPath = WEEKLY_PATH,
   distRoot = DEFAULT_DIST_ROOT,
   cacheRoot,
@@ -1848,10 +1860,29 @@ export async function publishWeeklyFeed({
 } = {}) {
   try {
     requireSourceBinding(sourceBinding);
-    if ((await stat(weeklyPath)).size > 20_000_000) throw new Error("CHANNEL_WEEKLY_INVALID");
-    const weeklyBytes = await readFile(weeklyPath);
-    if (sourceBinding.weekly.hash !== hashBody(weeklyBytes))
-      throw new Error("CHANNEL_SOURCE_BUILD_MISMATCH");
+    let resolvedWeeklyPath = weeklyPath;
+    if (targetWeekId) {
+      if (!/^\d{4}-W\d\d$/u.test(targetWeekId)) throw new Error("CHANNEL_WEEKLY_INVALID");
+      resolvedWeeklyPath = join(archiveWeeklyRoot, `${targetWeekId}.json`);
+    }
+    if ((await stat(resolvedWeeklyPath)).size > 20_000_000)
+      throw new Error("CHANNEL_WEEKLY_INVALID");
+    const weeklyBytes = await readFile(resolvedWeeklyPath);
+    const weeklyBytesHash = hashBody(weeklyBytes);
+    if (!targetWeekId) {
+      if (sourceBinding.weekly.hash !== weeklyBytesHash)
+        throw new Error("CHANNEL_SOURCE_BUILD_MISMATCH");
+    } else {
+      const expectedHash =
+        sourceBinding.weeklyArchives?.[targetWeekId] ||
+        (sourceBinding.weekly?.hash && sourceBinding.weekly?.week_id === targetWeekId
+          ? sourceBinding.weekly.hash
+          : undefined);
+      if (expectedHash && expectedHash !== weeklyBytesHash)
+        throw new Error("CHANNEL_SOURCE_BUILD_MISMATCH");
+      if (!expectedHash && sourceBinding.weeklyArchives)
+        throw new Error("CHANNEL_SOURCE_BUILD_MISMATCH");
+    }
     const weekly = JSON.parse(weeklyBytes);
     if (!/^\d{4}-W\d\d$/u.test(weekly.week_id || "") || !weekly.executive_summary)
       throw new Error("CHANNEL_WEEKLY_INVALID");
@@ -1997,13 +2028,13 @@ export async function publishHistoricalFeeds({
   archiveRoot = DEFAULT_ARCHIVE_ROOT,
   distRoot = DEFAULT_DIST_ROOT,
   from = "2026-09-07",
-  through = "2026-10-01",
+  through = "9999-99-99",
   limit = 50,
   dryRun = false,
   channelIds,
   sourceBinding,
   briefs = false,
-  mustReadOnly = false,
+  mustReadOnly = true,
   cursor = true,
   channelId = DEFAULT_DAILY_CHANNEL_ID,
   resolveFigure = resolveReviewedFigure,
@@ -2167,8 +2198,11 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1
     }
   }
   if (task === "daily" || task === "preliminary") {
-    const mustReadOnly = task === "preliminary" || process.argv.includes("--must-read-only");
-    const includeBrief = !mustReadOnly && !process.argv.includes("--skip-brief");
+    const mustReadOnly =
+      !process.argv.includes("--include-worth-knowing") && !process.argv.includes("--all-levels");
+    const includeBrief =
+      (process.argv.includes("--include-brief") || task !== "preliminary") &&
+      !process.argv.includes("--skip-brief");
     console.log(
       JSON.stringify(
         await publishDailyFeed({
@@ -2181,7 +2215,20 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1
       )
     );
   } else if (task === "weekly") {
-    console.log(JSON.stringify(await publishWeeklyFeed({ dryRun, sourceBinding, legacyBindings })));
+    const weekIndex = process.argv.indexOf("--week");
+    const targetWeekId = weekIndex >= 0 ? process.argv[weekIndex + 1] : undefined;
+    const allowExistingBodyEdits = process.argv.includes("--allow-existing-body-edits");
+    console.log(
+      JSON.stringify(
+        await publishWeeklyFeed({
+          dryRun,
+          sourceBinding,
+          legacyBindings,
+          weekId: targetWeekId,
+          allowExistingBodyEdits,
+        })
+      )
+    );
   } else if (task === "provision") {
     console.log(JSON.stringify(await provisionTopicChannels({ dryRun, rename: true })));
   } else if (task === "events") {
@@ -2195,7 +2242,8 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1
     const from = fromIndex < 0 ? undefined : process.argv[fromIndex + 1];
     const throughIndex = process.argv.indexOf("--through");
     const through = throughIndex < 0 ? undefined : process.argv[throughIndex + 1];
-    const mustReadOnly = process.argv.includes("--must-read-only");
+    const mustReadOnly =
+      !process.argv.includes("--include-worth-knowing") && !process.argv.includes("--all-levels");
     const allowExistingBodyEdits = process.argv.includes("--allow-existing-body-edits");
     const currentBinding = await capturePublishedSourceBinding();
     if (currentBinding.id !== sourceBinding.id) throw new Error("CHANNEL_SOURCE_BUILD_MISMATCH");

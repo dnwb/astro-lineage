@@ -860,6 +860,7 @@ test("daily publishes once per version, then reconciles an unknown committed cre
     cacheRoot: join(path, "cache"),
     cli: remote.cli,
     channelIds,
+    mustReadOnly: false,
   };
   const first = await publishDailyFeed(options);
   assert.equal(first.success, false);
@@ -1013,6 +1014,7 @@ test("a paper without a complete title is pending without blocking valid papers 
     guildId: "test",
     cli: remote.cli,
     channelIds,
+    mustReadOnly: false,
   });
 
   assert.ok(
@@ -1079,6 +1081,7 @@ test("backfill is capped and dry run uses validated built archives", async (t) =
     cacheRoot: join(path, "cache"),
     guildId: "test",
     dryRun: true,
+    mustReadOnly: false,
     limit: 2,
     sourceBinding,
     channelIds: Object.fromEntries(
@@ -2245,6 +2248,48 @@ test("daily rejects G2 after a G1 page build before any remote call", async (t) 
       generation_id: "G2",
       pointer: {},
     }),
+    sourceBinding,
+    distRoot: join(path, "dist"),
+    cli: async () => {
+      calls += 1;
+      throw new Error("remote");
+    },
+  });
+  assert.equal(result.errors[0], "CHANNEL_SOURCE_BUILD_MISMATCH");
+  assert.equal(calls, 0);
+});
+
+test("weekly refuses changed historical archive source after its built binding with weekId", async (t) => {
+  const { path } = await createTemporaryWorkspace("astro-lineage-channel-", t);
+  const weekly = JSON.parse(
+    await readFile(
+      new URL("../src/data/arxiv-archives/weekly/2026-W40.json", import.meta.url),
+      "utf8"
+    )
+  );
+  const archiveWeeklyRoot = join(path, "weekly-archives");
+  await mkdir(archiveWeeklyRoot, { recursive: true });
+  const weeklyArchiveFile = join(archiveWeeklyRoot, "2026-W40.json");
+
+  const sourceBinding = {
+    ...fixtureBinding({ weekly: JSON.stringify(weekly) }),
+    weeklyArchives: {
+      "2026-W40": hashBody(JSON.stringify(weekly)),
+    },
+  };
+
+  await writeFile(
+    weeklyArchiveFile,
+    JSON.stringify({ ...weekly, executive_summary: "changed archive after build" })
+  );
+  const page = join(path, "dist", "arxiv-weekly", weekly.week_id);
+  await mkdir(page, { recursive: true });
+  await writeFile(join(page, "index.html"), "G1 page");
+
+  let calls = 0;
+  const result = await publishWeeklyFeed({
+    weekId: "2026-W40",
+    archiveWeeklyRoot,
     sourceBinding,
     distRoot: join(path, "dist"),
     cli: async () => {

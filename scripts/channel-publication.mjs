@@ -1,6 +1,6 @@
 import { createHash } from "node:crypto";
 import { readFile, readdir, stat } from "node:fs/promises";
-import { readFileSync } from "node:fs";
+import { readFileSync, existsSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import {
@@ -172,6 +172,7 @@ export async function capturePublishedSourceBinding({
   artifactRoot,
   weeklyPath = fileURLToPath(new URL("../src/data/arxiv-weekly.json", import.meta.url)),
   archiveRoot = fileURLToPath(new URL("../src/data/arxiv-archives/daily", import.meta.url)),
+  archiveWeeklyRoot = fileURLToPath(new URL("../src/data/arxiv-archives/weekly", import.meta.url)),
 } = {}) {
   const edition = await readPublishedArxivEdition({
     output: feedPath,
@@ -193,7 +194,22 @@ export async function capturePublishedSourceBinding({
     if ((await stat(path)).size > 20_000_000) throw new Error("CHANNEL_ARCHIVE_TOO_LARGE");
     archives[name.slice(0, 10)] = hashBody(await readFile(path));
   }
-  const binding = { daily, weekly, archives };
+  const weeklyArchives = {};
+  if (existsSync(archiveWeeklyRoot)) {
+    for (const name of (await readdir(archiveWeeklyRoot))
+      .filter((file) => /^\d{4}-W\d\d\.json$/u.test(file))
+      .sort()) {
+      const path = join(archiveWeeklyRoot, name);
+      if ((await stat(path)).size > 20_000_000) throw new Error("CHANNEL_ARCHIVE_TOO_LARGE");
+      weeklyArchives[name.slice(0, 8)] = hashBody(await readFile(path));
+    }
+  }
+  const binding = {
+    daily,
+    weekly,
+    archives,
+    ...(Object.keys(weeklyArchives).length > 0 ? { weeklyArchives } : {}),
+  };
   return { ...binding, id: hashBody(JSON.stringify(binding)) };
 }
 
@@ -215,7 +231,7 @@ export async function readDailyArchive(path, expectedDate, distRoot, contents) {
   return checked.model;
 }
 
-export async function listDailyArchives(archiveRoot, from = "2026-09-07", through = "2026-10-01") {
+export async function listDailyArchives(archiveRoot, from = "2026-09-07", through = "9999-99-99") {
   const names = (await readdir(archiveRoot)).filter((name) =>
     /^\d{4}-\d\d-\d\d\.json$/u.test(name)
   );

@@ -209,41 +209,18 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
       <!-- Weekly Navigation Bar -->
       <WeeklyWeekSwitcher currentWeek={weeklyData.week_id} />
 
-      <!-- 1. Executive Summary (本周综述) -->
+      <!-- 1. Executive Summary as Domain Matrix (本周综述 · 领域研判矩阵) -->
       <section class="weekly-section executive-section" id="executive-summary">
         <div class="section-heading">
           <p class="section-kicker"><span class="language-primary">全景</span><span class="language-english" lang="en">Overview</span></p>
-          <h2><span class="language-primary">本周综述</span><span class="language-english" lang="en">Weekly Summary</span></h2>
+          <h2><span class="language-primary">本周研判矩阵</span><span class="language-english" lang="en">Domain Matrix & Synthesis</span></h2>
         </div>
-        <div class="executive-content-card">
-          {structuredExecutive.lead && (
-            <div class="executive-lead-box">
-              <span class="executive-lead-pill">🌐 核心因果链条</span>
-              <p class="executive-lead"><ReaderText text={structuredExecutive.lead} /></p>
-            </div>
-          )}
-
-          {structuredExecutive.items.length > 0 ? (
-            <ul class="executive-lineage-list">
-              {structuredExecutive.items.map((item: any) => (
-                <li class="executive-lineage-item">
-                  <div class="lineage-item-badge-wrap">
-                    <span class="lineage-topic-badge">{item.topic}</span>
-                  </div>
-                  <div class="lineage-item-body">
-                    <ReaderText text={item.body} />
-                  </div>
-                </li>
-              ))}
-            </ul>
+        <div class="executive-matrix-container" id="domain-matrix">
+          {matrixRows && matrixRows.length > 0 ? (
+            <WeeklyDomainMatrix matrixRows={matrixRows} paperDailyDateMap={paperDailyDateMap} hideTitle={true} />
           ) : (
-            <p class="executive-lead"><ReaderText text={weeklyData.executive_summary} /></p>
-          )}
-
-          {structuredExecutive.boundary && (
-            <div class="executive-boundary-box">
-              <span class="boundary-tag">🎯 筛选与研判边界</span>
-              <p class="boundary-text"><ReaderText text={structuredExecutive.boundary} /></p>
+            <div class="executive-content-card">
+              <p class="executive-lead"><ReaderText text={weeklyData.executive_summary} /></p>
             </div>
           )}
         </div>
@@ -309,15 +286,10 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
       <section class="weekly-section audit-section" id="audit-and-index">
         <details class="audit-details">
           <summary class="audit-summary-btn">
-            <span class="language-primary">📊 索引与核查备查库（领域研判矩阵 · 每日批次目录 · 全目录，点击展开）</span>
-            <span class="language-english" lang="en">Index & Audit Archive (Domain Matrix · Daily Index · Full Catalog, click to expand)</span>
+            <span class="language-primary">📊 备查索引库（每日批次目录 · 全目录，点击展开）</span>
+            <span class="language-english" lang="en">Index & Audit Archive (Daily Index · Full Catalog, click to expand)</span>
           </summary>
           <div class="audit-body">
-            <!-- Domain Matrix (领域研判矩阵) -->
-            <section class="weekly-section matrix-section" id="domain-matrix">
-              <WeeklyDomainMatrix matrixRows={matrixRows} paperDailyDateMap={paperDailyDateMap} />
-            </section>
-
             <!-- Daily Breakdown Table in this Week (必读文献目录) -->
             <WeeklyDailyTable weekDays={weekDays} latestDailyDate={archiveManifest.latest_daily_date} />
 

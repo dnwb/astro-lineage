@@ -3251,8 +3251,10 @@ test("Option B: malformed review manifest fails closed with figure_review_manife
 test("Option B: rejects figure with mismatched or stale revision provenance", async (t) => {
   const { path } = await createTemporaryWorkspace("astro-lineage-channel-stale-rev-", t);
   const publicRoot = join(path, "public");
+  const distRoot = join(path, "dist");
   const figurePath = join(publicRoot, "arxiv-figures/2609.12345/fig1.png");
   await mkdir(dirname(figurePath), { recursive: true });
+  await mkdir(distRoot, { recursive: true });
   await writeFile(figurePath, "stale figure");
   const result = await resolveReviewedFigure(
     {
@@ -3275,7 +3277,7 @@ test("Option B: rejects figure with mismatched or stale revision provenance", as
         },
       },
     },
-    { publicRoot, manifest: { version: 1, figures: [] } }
+    { publicRoot, distRoot, manifest: { version: 1, figures: [] } }
   );
   assert.equal(result.diagnostic, "figure_review_or_asset_mismatch");
   assert.equal(result.image, null);

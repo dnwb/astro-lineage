@@ -230,16 +230,22 @@ export function deriveFigurePhysicalCore(figure, context = {}) {
   const rawCategory = figure.category || "";
   const caption = figure.caption || "";
 
-  // 2. Resolve primary category: explicit category/badge strictly takes precedence over caption text
+  // 2. Resolve primary category: explicit category strictly takes precedence over badge and caption
   let primaryType = null;
-  if (rawCategory === "fitting" || /拟合|后验|残差|约束/u.test(badge)) {
+  if (
+    rawCategory === "fitting" ||
+    rawCategory === "theoretical" ||
+    rawCategory === "observational"
+  ) {
+    primaryType = rawCategory;
+  } else if (/拟合|后验|残差|约束/u.test(badge)) {
     primaryType = "fitting";
-  } else if (rawCategory === "observational" || /观测|光变|能谱|图像|巡天/u.test(badge)) {
-    primaryType = "observational";
-  } else if (rawCategory === "theoretical" || /物理演化|模型示意|理论模型|几何结构/u.test(badge)) {
+  } else if (/物理演化|模型示意|理论模型|几何结构/u.test(badge)) {
     primaryType = "theoretical";
+  } else if (/观测|光变|能谱|图像|巡天/u.test(badge)) {
+    primaryType = "observational";
   } else {
-    // Only infer from caption keywords when explicit category is absent
+    // Only infer from caption keywords when explicit category and badge are absent
     if (/\b(?:fitting|posterior|constraint|corner\s+plot|residuals?)\b/i.test(caption)) {
       primaryType = "fitting";
     } else if (
@@ -268,12 +274,42 @@ export function deriveFigurePhysicalCore(figure, context = {}) {
 
   if (primaryType === "observational") {
     // Discriminate observational evidence based on caption
-    if (/\b(?:sky\s*map|localization|probab\w*|healpix|contour)\b/i.test(caption)) {
+    // Spatial / celestial localization (requires explicit sky/celestial cues, not mere statistical probability)
+    if (
+      /\b(?:sky\s*map|skymap|sky\s+localization|celestial|healpix|all-sky|mollweide)\b/i.test(
+        caption
+      ) ||
+      /\b(?:right\s+ascension|declination|\bRA\b.*\bDec\b)\b/i.test(caption)
+    ) {
       return "展示暂现源空间天区概率分布与天体物理定位。";
     }
-    if (/\b(?:spectr\w*|sed|wavelength|frequency|energy\s+distribution)\b/i.test(caption)) {
+
+    // Temporal timing / Fourier power spectrum (PDS / QPO / oscillation frequency)
+    if (
+      /\b(?:power\s+spectrum|power\s+spectra|power\s+spectral\s+density|\bpds\b|periodogram|fourier\s+frequency|qpo|quasi-periodic)\b/i.test(
+        caption
+      )
+    ) {
+      return "展示时域功率谱密度 (PDS) 与暂现源周期/准周期振荡 (QPO) 演化特征。";
+    }
+
+    // Radiative energy spectrum / photon energy distribution / SED
+    if (
+      /\b(?:spectral\s+energy\s+distribution|\bsed\b|broadband\s+spectr\w*|energy\s+spectrum|energy\s+spectra|optical\s+spectr\w*|x-ray\s+spectr\w*|gamma-ray\s+spectr\w*|emission\s+line|absorption\s+line)\b/i.test(
+        caption
+      )
+    ) {
       return "展示天体物理辐射宽波段能谱 (SED) 与特征光谱结构。";
     }
+
+    // Statistical distribution / sample population / histogram
+    if (
+      /\b(?:sample|population|distribution|histogram|scatter|correlation|fraction)\b/i.test(caption)
+    ) {
+      return "展示观测样本的关键物理参量统计分布与总体特征对比。";
+    }
+
+    // Light curves / photometric evolution
     if (
       /\b(?:light\s*curve|photometr\w*|magnitude|flux\s+density|temporal\s+decay|outburst)\b/i.test(
         caption
@@ -281,12 +317,12 @@ export function deriveFigurePhysicalCore(figure, context = {}) {
     ) {
       return "展示暂现源多波段辐射光度与流量随时间演化行为。";
     }
-    if (/\b(?:sample|population|distribution|histogram|scatter)\b/i.test(caption)) {
-      return "展示观测样本的关键物理参量统计分布与总体特征对比。";
-    }
-    if (/\b(?:image|spatial|morphology|radio\s+map|slice)\b/i.test(caption)) {
+
+    // Spatial imaging / high-resolution morphology
+    if (/\b(?:image|spatial|morphology|radio\s+map|slice|interferom\w*)\b/i.test(caption)) {
       return "展示辐射源区的高分辨率成像形态与空间几何结构。";
     }
+
     return "展示天体物理观测数据与多波段暂现源探测特征。";
   }
 

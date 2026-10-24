@@ -157,7 +157,17 @@ test("academic-domain: deriveFigurePhysicalCore extracts explicit core or derive
   const core1 = deriveFigurePhysicalCore(theoFig);
   assert.equal(core1, "展示核心天体物理驱动机制、几何拓扑与理论演化模型架构。");
 
-  // 3. Category priority: fitting takes precedence over caption mentioning 'model' or 'light curve'
+  // 3. Category priority: explicit category strictly overrides conflicting badge or caption keywords
+  const conflictFig = {
+    category: "theoretical",
+    category_badge: "核心观测结果",
+    caption: "Figure 2: Theoretical magnetic field parameter scan over model space.",
+  };
+  assert.equal(
+    deriveFigurePhysicalCore(conflictFig),
+    "展示核心天体物理驱动机制、几何拓扑与理论演化模型架构。"
+  );
+
   const fitFig = {
     label: "Fig. 4",
     category: "fitting",
@@ -167,23 +177,34 @@ test("academic-domain: deriveFigurePhysicalCore extracts explicit core or derive
   const coreFit = deriveFigurePhysicalCore(fitFig);
   assert.equal(coreFit, "展示理论模型与实际观测数据的拟合对比及关键参数后验约束。");
 
-  // 4. Grounded observational: sky localization map does not hallucinate light curves
+  // 4. Grounded observational: sky localization map requires celestial/sky cues
   const skyMapFig = {
     category: "observational",
-    caption: "Figure 1: Sky localization probability map.",
+    caption: "Figure 1: Sky localization probability map with 90% credible region.",
   };
   assert.equal(deriveFigurePhysicalCore(skyMapFig), "展示暂现源空间天区概率分布与天体物理定位。");
 
-  // 5. Grounded observational: light curve
-  const obsFig = {
-    label: "Fig. 3",
+  // 5. Statistical probability distribution is NOT misclassified as a sky map
+  const probDistFig = {
     category: "observational",
-    category_badge: "观测总体曲线/能谱",
-    caption: "Figure 3: Multiband radio light curve showing temporal decay.",
+    caption: "Figure 6: Probability distribution of polarization degree across sample.",
   };
-  assert.equal(deriveFigurePhysicalCore(obsFig), "展示暂现源多波段辐射光度与流量随时间演化行为。");
+  assert.equal(
+    deriveFigurePhysicalCore(probDistFig),
+    "展示观测样本的关键物理参量统计分布与总体特征对比。"
+  );
 
-  // 6. Grounded observational: spectra
+  // 6. Timing power spectrum / QPO is distinguished from radiative SED
+  const timingFig = {
+    category: "observational",
+    caption: "Figure 4: Power spectrum showing quasi-periodic oscillation (QPO) at 0.08 Hz.",
+  };
+  assert.equal(
+    deriveFigurePhysicalCore(timingFig),
+    "展示时域功率谱密度 (PDS) 与暂现源周期/准周期振荡 (QPO) 演化特征。"
+  );
+
+  // 7. Grounded observational: radiative energy spectrum (SED)
   const specFig = {
     category: "observational",
     caption: "Figure 5: Optical spectra and broadband spectral energy distribution.",
@@ -193,7 +214,16 @@ test("academic-domain: deriveFigurePhysicalCore extracts explicit core or derive
     "展示天体物理辐射宽波段能谱 (SED) 与特征光谱结构。"
   );
 
-  // 7. Empty or ungrounded figure returns empty string (fail-closed)
+  // 8. Grounded observational: light curve
+  const obsFig = {
+    label: "Fig. 3",
+    category: "observational",
+    category_badge: "观测总体曲线/能谱",
+    caption: "Figure 3: Multiband radio light curve showing temporal decay.",
+  };
+  assert.equal(deriveFigurePhysicalCore(obsFig), "展示暂现源多波段辐射光度与流量随时间演化行为。");
+
+  // 9. Empty or ungrounded figure returns empty string (fail-closed)
   assert.equal(deriveFigurePhysicalCore(null), "");
   assert.equal(deriveFigurePhysicalCore({}), "");
   assert.equal(deriveFigurePhysicalCore({ category: "unknown", caption: "random plot" }), "");

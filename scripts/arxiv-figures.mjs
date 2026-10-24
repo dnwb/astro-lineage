@@ -269,10 +269,25 @@ export async function extractPaperFigures(arxivId, revision = 1, options = {}) {
       const rawBase = basename(item.rawSrc);
       const fileName = rawBase.replace(/[^a-zA-Z0-9_.-]/g, "_");
       const destPath = join(outDir, fileName);
+      const metaPath = join(outDir, `.${fileName}.provenance.json`);
       const publicUrl = `/arxiv-figures/${cleanId}/${fileName}`;
 
       let fileBytes = null;
-      if (!existsSync(destPath)) {
+      let cachedProvenance = null;
+      if (existsSync(destPath) && existsSync(metaPath)) {
+        try {
+          cachedProvenance = JSON.parse(await readFile(metaPath, "utf8"));
+        } catch {
+          cachedProvenance = null;
+        }
+      }
+
+      const isCacheValidForRevision =
+        cachedProvenance &&
+        cachedProvenance.revision === Number(revision) &&
+        cachedProvenance.source_version === `arXiv:${cleanId}v${revision}`;
+
+      if (!isCacheValidForRevision) {
         const imgRes = await fetchImpl(imgUrl, {
           headers: { "User-Agent": "AstroLineage-FigureExtractor/1.0 (academic research robot)" },
           signal: AbortSignal.timeout(45_000),
@@ -280,6 +295,15 @@ export async function extractPaperFigures(arxivId, revision = 1, options = {}) {
         if (imgRes.ok) {
           fileBytes = Buffer.from(await imgRes.arrayBuffer());
           await writeFile(destPath, fileBytes);
+          const sha = hashBytes(fileBytes);
+          await writeFile(
+            metaPath,
+            JSON.stringify({
+              revision: Number(revision),
+              source_version: `arXiv:${cleanId}v${revision}`,
+              asset_sha256: sha,
+            })
+          );
         }
       } else {
         try {
@@ -298,6 +322,11 @@ export async function extractPaperFigures(arxivId, revision = 1, options = {}) {
           }
         }
         const assetSha256 = fileBytes ? hashBytes(fileBytes) : null;
+        // Only assign revision and source_version when cache provenance matches current revision
+        const hasVerifiedProvenance =
+          fileBytes &&
+          (isCacheValidForRevision ||
+            (cachedProvenance && cachedProvenance.revision === Number(revision)));
         results.push({
           url: publicUrl,
           caption: item.caption,
@@ -306,9 +335,13 @@ export async function extractPaperFigures(arxivId, revision = 1, options = {}) {
           category_badge: item.categoryBadge,
           physical_core: item.physical_core || "",
           is_schematic: item.isSchematic,
-          revision: Number(revision),
-          source_version: `arXiv:${cleanId}v${revision}`,
-          ...(assetSha256 ? { asset_sha256: assetSha256 } : {}),
+          ...(hasVerifiedProvenance || !existsSync(metaPath)
+            ? {
+                revision: Number(revision),
+                source_version: `arXiv:${cleanId}v${revision}`,
+                ...(assetSha256 ? { asset_sha256: assetSha256 } : {}),
+              }
+            : {}),
         });
       }
     }

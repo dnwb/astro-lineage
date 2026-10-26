@@ -713,6 +713,7 @@ function fakeCli() {
   let addExtraImageOnNextCreate = false;
   let replaceNextImageReadback = false;
   let omitImageFromNextCreateResponse = false;
+  const topFeedCalls = [];
   const cli = async (args) => {
     const action = args[1];
     const arg = (flag) => args[args.indexOf(flag) + 1];
@@ -797,11 +798,21 @@ function fakeCli() {
       }
       return { retCode: 0, data: feed };
     }
+    if (action === "top-feed") {
+      topFeedCalls.push({
+        feedId: arg("--feed-id"),
+        action: Number(arg("--action")),
+        topType: Number(arg("--top-type")),
+        userId: arg("--user-id"),
+      });
+      return { retCode: 0, data: { success: true } };
+    }
     throw new Error(`unexpected ${action}`);
   };
   return {
     cli,
     feeds,
+    topFeedCalls,
     get moves() {
       return moves;
     },
@@ -1061,6 +1072,74 @@ test("weekly unchanged reentry is a no-op and changed text edits same feed", asy
   assert.equal(rejectedOverride.success, false);
   assert.ok(rejectedOverride.errors.includes("CHANNEL_TITLE_OVERRIDE_IDENTITY_MISMATCH"));
   assert.equal(remote.feeds.length, 1);
+});
+
+test("weekly publication with pin=true pins active feed and replaces previous weekly pin in ledger", async (t) => {
+  const { path } = await createTemporaryWorkspace("astro-lineage-channel-", t);
+  const weeklyW40 = JSON.parse(
+    await readFile(
+      new URL("../src/data/arxiv-archives/weekly/2026-W40.json", import.meta.url),
+      "utf8"
+    )
+  );
+  const weeklyW41 = JSON.parse(
+    await readFile(
+      new URL("../src/data/arxiv-archives/weekly/2026-W41.json", import.meta.url),
+      "utf8"
+    )
+  );
+  const weeklyPath = join(path, "weekly.json");
+  await writeFile(weeklyPath, JSON.stringify(weeklyW40));
+  const pageW40 = join(path, "dist", "arxiv-weekly", weeklyW40.week_id);
+  await mkdir(pageW40, { recursive: true });
+  await writeFile(join(pageW40, "index.html"), "built");
+  const pageW41 = join(path, "dist", "arxiv-weekly", weeklyW41.week_id);
+  await mkdir(pageW41, { recursive: true });
+  await writeFile(join(pageW41, "index.html"), "built");
+
+  const remote = fakeCli();
+  const options = {
+    weeklyPath,
+    distRoot: join(path, "dist"),
+    cacheRoot: join(path, "cache"),
+    cli: remote.cli,
+    guildId: "test",
+    channelId: "weekly",
+    sourceBinding: fixtureBinding({ weekly: JSON.stringify(weeklyW40) }),
+    allowExistingBodyEdits: true,
+    pin: true,
+  };
+
+  // 1. First publish W40 with pin=true: pins W40
+  const first = await publishWeeklyFeed(options);
+  assert.equal(first.published, 1);
+  assert.equal(remote.topFeedCalls.length, 1);
+  assert.equal(remote.topFeedCalls[0].action, 1); // pin
+  assert.equal(remote.topFeedCalls[0].feedId, "1");
+
+  // Verify ledger recorded pinned_weekly
+  const ledgerPath = join(path, "cache", "guild-test.json");
+  let ledger = JSON.parse(await readFile(ledgerPath, "utf8"));
+  assert.equal(ledger.pinned_weekly?.feed_id, "1");
+  assert.equal(ledger.pinned_weekly?.week_id, "2026-W40");
+
+  // 2. Publish W41 with pin=true: unpins W40 (action 2) and pins W41 (action 1)
+  await writeFile(weeklyPath, JSON.stringify(weeklyW41));
+  const optionsW41 = {
+    ...options,
+    sourceBinding: fixtureBinding({ weekly: JSON.stringify(weeklyW41) }),
+  };
+  const second = await publishWeeklyFeed(optionsW41);
+  assert.equal(second.published, 1);
+  assert.equal(remote.topFeedCalls.length, 3);
+  assert.equal(remote.topFeedCalls[1].action, 2); // unpin W40
+  assert.equal(remote.topFeedCalls[1].feedId, "1");
+  assert.equal(remote.topFeedCalls[2].action, 1); // pin W41
+  assert.equal(remote.topFeedCalls[2].feedId, "2");
+
+  ledger = JSON.parse(await readFile(ledgerPath, "utf8"));
+  assert.equal(ledger.pinned_weekly?.feed_id, "2");
+  assert.equal(ledger.pinned_weekly?.week_id, "2026-W41");
 });
 
 test("backfill is capped and dry run uses validated built archives", async (t) => {

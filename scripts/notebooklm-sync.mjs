@@ -489,7 +489,7 @@ export async function deliverPublication({
       if (kind === "events")
         return publisher.publishEventRanking({ sourceBinding, eventSnapshot: website.events });
       return kind === "weekly"
-        ? publisher.publishWeeklyFeed({ sourceBinding })
+        ? publisher.publishWeeklyFeed({ sourceBinding, pin: true })
         : publisher.publishDailyFeed({
             sourceBinding,
             includeBrief: !mustReadOnly && includeBrief,

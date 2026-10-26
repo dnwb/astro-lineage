@@ -1875,6 +1875,7 @@ export async function publishWeeklyFeed({
   sourceBinding,
   legacyBindings,
   allowExistingBodyEdits = false,
+  pin = false,
 } = {}) {
   try {
     requireSourceBinding(sourceBinding);
@@ -1906,7 +1907,7 @@ export async function publishWeeklyFeed({
       throw new Error("CHANNEL_WEEKLY_INVALID");
     await stat(join(distRoot, "arxiv-weekly", weekly.week_id, "index.html"));
     const { weekId, postTitle, md } = await generateWeeklyMarkdown({ weekly, titleOverride });
-    return await publishItems(
+    const res = await publishItems(
       [{ identity: `weekly:${weekId}`, week_id: weekId, body: md, title: postTitle }],
       {
         guildId,
@@ -1919,6 +1920,78 @@ export async function publishWeeklyFeed({
         allowExistingBodyEdits,
       }
     );
+    if (pin && (res.published > 0 || res.unchanged > 0 || res.updated > 0)) {
+      await withPublicationLedger(cacheRoot, guildId, async (records, save, ledger) => {
+        const item = records[`weekly:${weekId}`];
+        if (item?.feed_id && item?.create_time) {
+          let authorId = item.author_id || process.env.TENCENT_BOT_USER_ID || "";
+          if (!authorId && !dryRun) {
+            try {
+              const detailRes = await (cli || runCli)([
+                "feed",
+                "get-feed-detail",
+                "--guild-id",
+                String(guildId),
+                "--channel-id",
+                String(channelId),
+                "--feed-id",
+                String(item.feed_id),
+                "--json",
+              ]);
+              const rawData =
+                typeof detailRes?.stdout === "string" ? JSON.parse(detailRes.stdout) : detailRes;
+              const feedData = rawData?.data?.feed || rawData?.feed || rawData?.data || rawData;
+              authorId = feedData?.author_id ?? feedData?.author?.user_id ?? authorId;
+            } catch {}
+          }
+          if (!authorId) authorId = "144115221380239833";
+
+          if (ledger.pinned_weekly && ledger.pinned_weekly.feed_id !== item.feed_id) {
+            try {
+              await pinFeed({
+                guildId,
+                feedId: ledger.pinned_weekly.feed_id,
+                userId: ledger.pinned_weekly.author_id || authorId,
+                createTime: ledger.pinned_weekly.create_time,
+                action: 2,
+                topType: 1,
+                cli: cli || runCli,
+                dryRun,
+              });
+            } catch (err) {
+              console.warn(`[publisher] Failed to unpin previous weekly feed: ${err.message}`);
+            }
+          }
+
+          try {
+            await pinFeed({
+              guildId,
+              feedId: item.feed_id,
+              userId: authorId,
+              createTime: item.create_time,
+              action: 1,
+              topType: 1,
+              cli: cli || runCli,
+              dryRun,
+            });
+            ledger.pinned_weekly = {
+              feed_id: item.feed_id,
+              author_id: authorId,
+              create_time: item.create_time,
+              channel_id: String(channelId),
+              week_id: weekId,
+            };
+            item.author_id = authorId;
+            await save();
+          } catch (pinErr) {
+            console.warn(
+              `[publisher] Failed to pin weekly feed ${item.feed_id}: ${pinErr.message}`
+            );
+          }
+        }
+      });
+    }
+    return res;
   } catch (error) {
     return { ...summary(), success: false, pending: 1, errors: [error.message] };
   }
@@ -2236,6 +2309,11 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1
     const weekIndex = process.argv.indexOf("--week");
     const targetWeekId = weekIndex >= 0 ? process.argv[weekIndex + 1] : undefined;
     const allowExistingBodyEdits = process.argv.includes("--allow-existing-body-edits");
+    const pin = process.argv.includes("--pin")
+      ? true
+      : process.argv.includes("--no-pin")
+        ? false
+        : !targetWeekId;
     console.log(
       JSON.stringify(
         await publishWeeklyFeed({
@@ -2244,6 +2322,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1
           legacyBindings,
           weekId: targetWeekId,
           allowExistingBodyEdits,
+          pin,
         })
       )
     );

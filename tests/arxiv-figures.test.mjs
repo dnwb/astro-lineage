@@ -86,6 +86,30 @@ test("arxiv-figures: classifyScientificFigure detects broadened physical and obs
   }
 });
 
+test("arxiv-figures: cleanCaption extracts math from MathML annotations and alttext", () => {
+  const htmlWithAnnotation = `
+    <figcaption class="ltx_caption">
+      <span class="ltx_tag">Figure 1: </span>
+      Evolution of spin (<math class="ltx_Math" alttext="a^{*}=-0.9375" display="inline"><semantics><mrow><msup><mi>a</mi><mo>∗</mo></msup><mo>=</mo><mrow><mo>−</mo><mn>0.9375</mn></mrow></mrow><annotation encoding="application/x-tex">a^{*}=-0.9375</annotation></semantics></math>)
+      and tilt (<math class="ltx_Math" alttext="0^{\circ}" display="inline"><semantics><msup><mn>0</mn><mo>∘</mo></msup><annotation encoding="application/x-tex">0^{\circ}</annotation></semantics></math>).
+    </figcaption>
+  `;
+  const cleaned = cleanCaption(htmlWithAnnotation);
+  assert.equal(cleaned, "Figure 1: Evolution of spin ($a^{*}=-0.9375$) and tilt ($0^{\circ}$).");
+
+  const htmlWithAlttext = `
+    <figcaption>Energy <math alttext="E &lt; 10^{48}\\,\\mathrm{erg}"></math> for model.</figcaption>
+  `;
+  const cleanedAlt = cleanCaption(htmlWithAlttext);
+  assert.equal(cleanedAlt, "Energy $E < 10^{48}\\,\\mathrm{erg}$ for model.");
+
+  const htmlWithDisplayMath = `
+    <figcaption>Continuity equation: <math display="block" alttext="\\nabla \\cdot v = 0"></math></figcaption>
+  `;
+  const cleanedDisplay = cleanCaption(htmlWithDisplayMath);
+  assert.equal(cleanedDisplay, "Continuity equation: $$\\nabla \\cdot v = 0$$");
+});
+
 test("arxiv-figures: extractPaperFigures prioritizes model selection when modelSelector is provided", async (t) => {
   const { createTemporaryWorkspace } = await import("./helpers/temporary-workspace.mjs");
   const ws = await createTemporaryWorkspace("astro-lineage-figures-", t);

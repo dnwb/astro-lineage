@@ -51,14 +51,43 @@ const NEGATIVE_KEYWORDS =
   /\b(flowchart|pipeline\s+diagram|software|architecture\s+of\s+the\s+code|training\s+loss|loss\s+curve|confusion\s+matrix|detector\s+efficiency|camera\s+response|calibration\s+curve|instrumental\s+setup|table\s+as\s+image)\b/i;
 
 /**
- * Clean HTML tags from caption
+ * Clean HTML tags from caption and preserve mathematical formulas enclosed in MathML / LaTeX.
  */
 export function cleanCaption(text) {
   if (!text) return "";
-  return text
+  let processed = text.replace(/<math[\s\S]*?<\/math>/gi, (match) => {
+    const isDisplay = /display=[\"\']block[\"\']/i.test(match);
+    let tex = "";
+    const annotMatch = match.match(
+      /<annotation\s+encoding=[\"\']application\/x-tex[\"\']>([\s\S]*?)<\/annotation>/i
+    );
+    if (annotMatch) {
+      tex = annotMatch[1];
+    } else {
+      const altMatch = match.match(/alttext=[\"\']([\s\S]*?)[\"\']/i);
+      if (altMatch) tex = altMatch[1];
+    }
+    tex = tex
+      .replace(/&amp;/g, "&")
+      .replace(/&lt;/g, "<")
+      .replace(/&gt;/g, ">")
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'")
+      .replace(/&#x27;/g, "'")
+      .replace(/\s+/g, " ")
+      .trim();
+    if (!tex) return "";
+    tex = tex.replace(/^\$+|\$+$/g, "").trim();
+    return isDisplay ? ` $$${tex}$$ ` : ` $${tex}$ `;
+  });
+
+  return processed
     .replace(/<figcaption[^>]*>/gi, "")
     .replace(/<\/figcaption>/gi, "")
     .replace(/<[^>]+>/g, " ")
+    .replace(/([(\[{])\s+\$/g, "$1$")
+    .replace(/\$\s+([)\]}])/g, "$$$1")
+    .replace(/\s+([,.:;?!])/g, "$1")
     .replace(/\s+/g, " ")
     .trim();
 }

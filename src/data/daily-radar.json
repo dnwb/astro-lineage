@@ -1102,18 +1102,189 @@
     {
       "arxiv_id": "2610.32316",
       "revision": 1,
+      "status": "ready",
       "source_fingerprint": "dede811808c51b23ffef2fb178078c60da851c672d67ea34f8da5c0266335123",
-      "status": "failed",
-      "failure_reason": "fetch failed",
-      "priority": "worth_knowing"
+      "priority": "worth_knowing",
+      "coverage": {
+        "level": "body_partial",
+        "label": "已检查正文中支撑判断的指定章节",
+        "source_version": "arXiv:2610.32316v1",
+        "inspected_sections": [
+          "Introduction",
+          "Radio Galaxies as UHECR Sources in Light of Recent Microquasar Results",
+          "1 Introduction",
+          "2 Synchrotron Emission Probe of UHECR Source Candidates",
+          "2.1 Particle Acceleration Efficiency in the jets of SS 433 and the Inner Jets of Cen A",
+          "2.1.1 SS 433",
+          "2.1.2 Cen A Inner Jets",
+          "2.2 The Synchrotron Cutoff from the Outer Jets of Cen A",
+          "3 Episodic AGN Simulations & Proxy Electrons",
+          "4 Multiple Acceleration Sites",
+          "5 UHECR as Messengers About Their Sources",
+          "6 Conclusion",
+          "References",
+          "Instructions for reporting errors"
+        ],
+        "source_references": [
+          {
+            "kind": "arxiv_source_package",
+            "url": "https://export.arxiv.org/src/2610.32316v1",
+            "locator": "Introduction; Radio Galaxies as UHECR Sources in Light of Recent Microquasar Results; 1 Introduction; 2 Synchrotron Emission Probe of UHECR Source Candidates; 2.1 Particle Acceleration Efficiency in the jets of SS 433 and the Inner Jets of Cen A; 2.1.1 SS 433; 2.1.2 Cen A Inner Jets; 2.2 The Synchrotron Cutoff from the Outer Jets of Cen A; 3 Episodic AGN Simulations & Proxy Electrons; 4 Multiple Acceleration Sites; 5 UHECR as Messengers About Their Sources; 6 Conclusion; References; Instructions for reporting errors",
+            "description": "Complete, revision-matched arXiv TeX source package",
+            "sha256": "854c3ec36b41f5549b09c1e72b2eac70c9ad026ad7e4c046c330128f15c23f7d"
+          }
+        ]
+      },
+      "analysis": {
+        "origin": "ai",
+        "model": "gpt-6-luna",
+        "analyzed_at": "2026-10-26T18:02:03.167Z",
+        "title_zh": "基于微类星体最新结果视角下的射电星系作为超高能宇宙线（UHECR）起源研究",
+        "reason": "该工作结合微类星体 SS 433 的甚高能/超高能观测与射电星系 Cen A 的喷流性质，评估了相对论喷流中粒子加速效率与剪切加速机制，对于理解喷流极端粒子加速及 UHECR 起源具有参考价值。",
+        "result": "基于加速时标与逃逸时标平衡，推导出希拉斯极限 $E_{\\max}=\\beta\\eta^{-1}ZeBR$，在能量均分下要求源动能光度满足 $L_{\\rm KE}>3\\times 10^{43}\\frac{\\eta^2}{\\beta}\\left(\\frac{E_{p,{\\rm max}}}{10\\ {\\rm EeV}}\\right)^2\\ {\\rm erg\\ s}^{-1}$。利用同步辐射截断能量 $E_{\\gamma,{\\rm max}}^{\\rm sync}=\\frac{9}{4}\\frac{\\beta^2}{\\eta}\\frac{m_e c^2}{\\alpha}$ 诊断表明微类星体 SS 433 达近玻姆极限加速（$\\eta\\beta^{-2}<10^2$，$\\eta<10$），Cen A 内喷流满足 $\\eta<10^4$；喷流剪切加速机制能够高效将粒子加速至超高能，且 Cen A 在约 $30\\ {\\rm Myr}$ 前的间歇性爆发可自洽解释 UHECR 的能谱与天图分布。",
+        "reading_entry": "2 Synchrotron Emission Probe of UHECR Source Candidates",
+        "problem": "射电星系能否满足 UHECR 加速所要求的能量光度与极限加速效率，以及如何协调 Cen A 巨瓣较短的冷却年龄（$\\sim 30\\ {\\rm Myr}$）与其长动力学年龄、到达方向各向异性之间的矛盾。",
+        "method": "利用平流逃逸与玻姆/非玻姆加速时标对比构建希拉斯动能光度约束方程，通过高能同步辐射截止反推电子加速效率参数 $\\eta\\beta^{-2}$，并结合间歇性喷流数值模拟与流场跨向速度梯度的剪切加速模型进行综合理论推演。",
+        "assumptions": [
+          "间歇性 AGN 模拟中假定茧状区（cocoon）内的粒子扩散运行在玻姆散射极限能级。"
+        ],
+        "limits": [],
+        "citation_leads": [
+          "3 Episodic AGN Simulations & Proxy Electrons: “diffusion throughout the cocoon is assumed to operate at the Bohm level.”",
+          "4 Multiple Acceleration Sites: “The shear acceleration process, therefore, offers a promising mechanism for efficient particles acceleration in jets up to the ultra high energy scale.”"
+        ],
+        "research_progress": "将微类星体中证实的近玻姆高效粒子加速（$\\eta \\sim 1$）类比至射电星系尺度，指出剪切加速（shear acceleration）是克服逃逸损耗并将强子加速至 UHECR 能标的关键机制。",
+        "figures": [
+          {
+            "url": "/arxiv-figures/2610.32316/Matthews_hadrons.png",
+            "caption": "Figure 3: Left-panel: the steady state hadronic particle spectrum found within the cocoon region. Middle-panel: the steady-state hadronic particle spectrum found for the escaping particles from the cocoon. Right-panel: an ensemble of random snapshots of the hadronic particle spectrum both within the cocoon and outside the cocoon region. This figure is from [ 18 ].",
+            "label": "Fig. 3",
+            "category": "theoretical",
+            "category_badge": "核心物理演化图",
+            "physical_core": "展示 cocoon 区域内的稳态强子粒子谱、从 cocoon 逃逸的强子粒子谱，以及 cocoon 内外强子谱的随机时刻快照，可用于考察粒子加速、滞留与逃逸如何塑造超高能宇宙线粒子分布。",
+            "is_schematic": true
+          },
+          {
+            "url": "/arxiv-figures/2610.32316/Matthews_electrons.png",
+            "caption": "Figure 4: Top panel: the variation of jet luminosity with time adopted in the simulation, with 10 Myr snapshot regions indicated. Bottom panel inset: quasi-steady state electron spectrum. Bottom panel: quasi-steady state emission from electrons. The bashed vertical lines indicate the emission from “proxy electrons” whose cooling times match the escape time of UHECR hadrons. This figure is from [ 18 ].",
+            "label": "Fig. 4",
+            "category": "theoretical",
+            "category_badge": "核心物理演化图",
+            "physical_core": "上面板给出模拟采用的喷流光度随时间变化，下面板展示准稳态电子谱及其辐射；图中还标出冷却时间与 UHECR 强子逃逸时间相匹配的“proxy electrons”所对应的辐射。",
+            "is_schematic": true
+          }
+        ],
+        "unresolved_checks": [
+          "未进行独立同行评审或逐项复算。",
+          "源文件中的图像未进行视觉核对。"
+        ],
+        "potential_lineage": {
+          "status": "no_match",
+          "reason": "自动筛选未建立论文与组内 Work 的科学关系。",
+          "candidates": []
+        },
+        "prerequisite_works": []
+      }
     },
     {
       "arxiv_id": "2610.32323",
       "revision": 1,
+      "status": "ready",
       "source_fingerprint": "0f6b08b3c76183fbb98526ef664da06280dc255ed31ac27f0dde275cc0b8345c",
-      "status": "failed",
-      "failure_reason": "fetch failed",
-      "priority": "worth_knowing"
+      "priority": "worth_knowing",
+      "coverage": {
+        "level": "body_partial",
+        "label": "已检查正文中支撑判断的指定章节",
+        "source_version": "arXiv:2610.32323v1",
+        "inspected_sections": [
+          "Introduction",
+          "A Framework for Analysing Nebular-Phase JWST Supernova Spectra with Application to Type Ic SN 2024aecx",
+          "1 Introduction",
+          "2 Theoretical Background: Obtaining Constraints from Emission Lines in LTE",
+          "3 Methodology",
+          "3.1 Analytical Formalism for Determining LTE of an atomic level",
+          "3.1.1 $ne,textcrit$ with respect to populating mechanisms",
+          "3.1.2 $ne,textcrit$ with respect to depopulating mechanisms",
+          "3.1.3 Is the level in LTE?",
+          "3.1.4 Comparing analytical and SUMO departure coefficients",
+          "3.2 Nebular spectral modeling with SUMO",
+          "3.3 Estimating Line Luminosities",
+          "3.4 Effective Collision Strengths",
+          "4 Observational Data",
+          "4.1 Extinction",
+          "5 Line-by-line analysis",
+          "5.1 Independent Constraints",
+          "5.1.1 [Ne II] 12.81: The O/Ne/Mg-zone filling factor",
+          "5.1.2 [Cl I] 11.33 and the nucleosynthesis of Chlorine",
+          "5.1.3 [Ar II] 6.985 and the Argon mass",
+          "5.1.4 [Ar III] 8.99 and [Ni III] 11.00: Situation-dependent Constraints",
+          "5.1.5 An Unidentified Line at 12.06 $mu$m",
+          "5.2 Related Constraints",
+          "5.2.1 [Ni ii] 1.939 and [Ni ii] 6.636: $TtextFeHe$ temperature constraints",
+          "5.2.2 [Ni ii] 6.636, [Ni iii] 7.349 and [Ni i] 7.507: The Ni ionisation fractions",
+          "5.2.3 [Co ii] 11.16, [Co iii] 11.89 and [Co i] 12.26: The Co ionisation fractions",
+          "5.2.4 [Ni ii] 6.636 and [Co ii] 11.16: The Ni/Fe production ratio",
+          "5.2.5 [Co II] 10.52 and [Ni II] 6.636: Optical depth",
+          "5.2.6 [Co ii] 11.16: The 56Ni mass",
+          "5.2.7 [Co ii] 10.52: $fmathrmFeHe$ and the Ni-bubble effect",
+          "5.2.8 [Ni II] 6.636: The stable Ni mass",
+          "5.2.9 Estimating $ne$ in the Fe/He zone",
+          "6 Summary",
+          "Acknowledgements",
+          "Data Availability",
+          "References",
+          "Appendix A Reliability of [Ni ii] 10.68 luminosity measurement",
+          "Appendix B SUMO Code Updates",
+          "Appendix C Extrapolations of $taus$",
+          "Appendix D Line Regime Plots",
+          "Instructions for reporting errors"
+        ],
+        "source_references": [
+          {
+            "kind": "arxiv_source_package",
+            "url": "https://export.arxiv.org/src/2610.32323v1",
+            "locator": "Introduction; A Framework for Analysing Nebular-Phase JWST Supernova Spectra with Application to Type Ic SN 2024aecx; 1 Introduction; 2 Theoretical Background: Obtaining Constraints from Emission Lines in LTE; 3 Methodology; 3.1 Analytical Formalism for Determining LTE of an atomic level; 3.1.1 $ne,textcrit$ with respect to populating mechanisms; 3.1.2 $ne,textcrit$ with respect to depopulating mechanisms; 3.1.3 Is the level in LTE?; 3.1.4 Comparing analytical and SUMO departure coefficients; 3.2 Nebular spectral modeling with SUMO; 3.3 Estimating Line Luminosities; 3.4 Effective Collision Strengths; 4 Observational Data; 4.1 Extinction; 5 Line-by-line analysis; 5.1 Independent Constraints; 5.1.1 [Ne II] 12.81: The O/Ne/Mg-zone filling factor; 5.1.2 [Cl I] 11.33 and the nucleosynthesis of Chlorine; 5.1.3 [Ar II] 6.985 and the Argon mass; 5.1.4 [Ar III] 8.99 and [Ni III] 11.00: Situation-dependent Constraints; 5.1.5 An Unidentified Line at 12.06 $mu$m; 5.2 Related Constraints; 5.2.1 [Ni ii] 1.939 and [Ni ii] 6.636: $TtextFeHe$ temperature constraints; 5.2.2 [Ni ii] 6.636, [Ni iii] 7.349 and [Ni i] 7.507: The Ni ionisation fractions; 5.2.3 [Co ii] 11.16, [Co iii] 11.89 and [Co i] 12.26: The Co ionisation fractions; 5.2.4 [Ni ii] 6.636 and [Co ii] 11.16: The Ni/Fe production ratio; 5.2.5 [Co II] 10.52 and [Ni II] 6.636: Optical depth; 5.2.6 [Co ii] 11.16: The 56Ni mass; 5.2.7 [Co ii] 10.52: $fmathrmFeHe$ and the Ni-bubble effect; 5.2.8 [Ni II] 6.636: The stable Ni mass; 5.2.9 Estimating $ne$ in the Fe/He zone; 6 Summary; Acknowledgements; Data Availability; References; Appendix A Reliability of [Ni ii] 10.68 luminosity measurement; Appendix B SUMO Code Updates; Appendix C Extrapolations of $taus$; Appendix D Line Regime Plots; Instructions for reporting errors",
+            "description": "Complete, revision-matched arXiv TeX source package",
+            "sha256": "b3d91a5c1b350a9f1018b600fa890de67a5275364412f69f8f010807d42362d1"
+          }
+        ]
+      },
+      "analysis": {
+        "origin": "ai",
+        "model": "gpt-6-luna",
+        "analyzed_at": "2026-10-26T18:05:49.713Z",
+        "title_zh": "分析星云期 JWST 超新星光谱的理论框架及其在 Ic 型SN 2024aecx 中的应用",
+        "reason": "本文构建了一套结合 SUMO NLTE 模型的解析框架，用于利用单历元 JWST 中红外星云期光谱直接求解剥层超新星（SESN）的光学深度、激发温度及充满因子，为揭示中心引擎核合成产额与放射性加热的 Ni 气泡动力学提供了关键分析手段。",
+        "result": "通过对 SN 2024aecx（$167\\,\\mathrm{d}$）的解谱迭代，测得 Fe/He 区温度 $T_{\\mathrm{FeHe}} = 3680^{+88}_{-95}\\,\\mathrm{K}$，关键禁线光深 $\\tau_{[\\mathrm{Ni\\,II}]\\,6.636} = 0.97^{+0.20}_{-0.18}$、$\\tau_{[\\mathrm{Co\\,II}]\\,10.52} = 5.89^{+3.88}_{-2.80}$；得出 $^{56}\\mathrm{Ni}$ 质量 $M(^{56}\\mathrm{Ni}) = 0.051^{+0.034}_{-0.022}\\,M_\\odot$、稳定镍质量 $M(^{58}\\mathrm{Ni}) = 1.8^{+0.4}_{-0.3} \\times 10^{-3}\\,M_\\odot$；Ni/Fe 质量比为 $0.036$，对应中子过剩 $\\eta = 1.2 \\times 10^{-3}$；Fe/He 区充满因子仅为 $f_{\\mathrm{FeHe}} = 0.059^{+0.013}_{-0.012}$，证实放射性加热引起的 Ni 气泡膨胀效应极弱（密度对比因子 $\\chi \\approx 1 - 3$）；测定 $M_{\\mathrm{Cl}} = 5.1^{+2.0}_{-1.6} \\times 10^{-4}\\,M_\\odot$，支持 O-C 壳层合并核合成路径。",
+        "reading_entry": "2 Theoretical Background: Obtaining Constraints from Emission Lines in LTE",
+        "problem": "光学波段星云期禁线光度呈 $\\exp(-E_u/kT)$ 指数依赖，对温度高度敏感且多处于非局域热动平衡（NLTE）；而中红外波段缺乏一套系统评估发射线局域热动平衡（LTE）适用性、谱线光学厚度修正及利用单历元光谱定量提取超新星抛射物物理参数的自洽解析框架。",
+        "method": "推导了能级退布居临界电子密度公式：$$n_{e,\\text{crit, d}}=\\frac{\\sum^{x-1}_{i=1}A_{xi}\\beta_{s,xi}}{\\frac{D(T)}{g_{x}}\\left(\\sum^{imax}_{i=x+1}\\mathit{\\Upsilon}_{xi}e^{-\\Delta E_{ix}/(kT)}+\\sum^{x-1}_{i=1}\\mathit{\\Upsilon}_{xi}\\right)}$$结合 Sobolev 光深 $\\tau_s = \\frac{1}{8\\pi}\\frac{g_u}{g_l}A\\lambda^3 n_l \\left(1 - \\frac{g_l}{g_u}\\frac{n_u}{n_l}\\right)t$ 判定发射线 regime（光学薄 LTE、光学厚 LTE 或 NLTE）；更新了铁族 M1 禁线的碰撞激发参数 $\\mathit{\\Upsilon}$，并在同源膨胀下利用 [Ni II]、[Co II] 等特征发射线对温度、电离度和光深进行自洽联立迭代求解。",
+        "assumptions": [
+          "抛射物处于同源膨胀状态，具有单一的特征膨胀速度与时间标度"
+        ],
+        "limits": [
+          "中性原子（如 Ni I 和 Co I）的电子碰撞强度 $\\mathit{\\Upsilon}$ 与复合率系数严重匮乏，影响中性成分电离度的精确测定"
+        ],
+        "citation_leads": [
+          "2 Theoretical Background: Obtaining Constraints from Emission Lines in LTE: “Assuming a single temperature for all ions of a certain species is a ’one-zone’ simplification, but for most elements with emission lines in the MIR (e.g. Ne, Ar, Fe, Co, Ni), the majority of the mass of the ion is in fact concentrated in”",
+          "3.1.3 Is the level in LTE?: “Except for levels in the ground-state multiplet, LTE population is in the majority of cases an overestimation of the actual population.”",
+          "5.2.4 [Ni ii] 6.636 and [Co ii] 11.16: The Ni/Fe production ratio: “The Ni/Fe mass ratio in SNe (originating from stable Ni isotopes (primarily 58Ni) and 56Ni, respectively) is of particular interest, as it is a tracer of the neutron excess $\\eta=1-2\\,Y_{e}$ at the time of explosion”",
+          "5.2.5 [Co II] 10.52 and [Ni II] 6.636: Optical depth: “from our iterative scheme, we obtain $\\tau_{[\\text{Ni\\,{ii}}]\\,6.636}$ = 0.97${}^{+0.20}_{-0.18}$.”",
+          "6 Summary: “In general, the MIR spectral region in SNe is dominated by iron group lines, in particular of Co and Ni.”"
+        ],
+        "research_progress": "建立了利用中红外低激发禁线分析超新星抛射物的判据系统（推荐安全阈值 $\\xi \\equiv n_e/n_{e,\\mathrm{crit}} \\ge 5$）；给出了基于光深比值 $R(T,t) \\equiv \\tau_{\\mathrm{[Co\\,II]\\,10.52}} / \\tau_{\\mathrm{[Ni\\,II]\\,6.636}}$ 测定抛射物绝对几何填充因子与真实质量的定标方法。",
+        "figures": [],
+        "unresolved_checks": [
+          "未进行独立同行评审或逐项复算。",
+          "源文件中的图像未进行视觉核对。"
+        ],
+        "potential_lineage": {
+          "status": "no_match",
+          "reason": "自动筛选未建立论文与组内 Work 的科学关系。",
+          "candidates": []
+        },
+        "prerequisite_works": []
+      }
     },
     {
       "arxiv_id": "2610.32344",
@@ -1216,10 +1387,73 @@
     {
       "arxiv_id": "2610.32371",
       "revision": 1,
+      "status": "ready",
       "source_fingerprint": "9c8c7ee0d226525cc1a3632d8bfb924f320740d9759b1e97ef469cf615641748",
-      "status": "failed",
-      "failure_reason": "fetch failed",
-      "priority": "worth_knowing"
+      "priority": "skip",
+      "coverage": {
+        "level": "body_partial",
+        "label": "已检查正文中支撑判断的指定章节",
+        "source_version": "arXiv:2610.32371v1",
+        "inspected_sections": [
+          "Estimation Of The Mass And The Spin Of The Neutron Star 4U 1728-34 Using Triples Of X-Ray Quasi-Periodic Oscillations",
+          "INTRODUCTION",
+          "THE ATOLL SOURCE 4U 1728 -34",
+          "FREQUENCY MODELING",
+          "FREQUENCY EQUATIONS AND THE ERROR PROPAGATION METHOD",
+          "MASS AND SPECIFIC ANGULAR MOMENTUM OF THE ATOLL SOURCE 4U 1728 -34",
+          "CONCLUSION",
+          "ACKNOWLEDGMENT",
+          "REFERENCES"
+        ],
+        "source_references": [
+          {
+            "kind": "arxiv_source_package",
+            "url": "https://export.arxiv.org/src/2610.32371v1",
+            "locator": "Estimation Of The Mass And The Spin Of The Neutron Star 4U 1728-34 Using Triples Of X-Ray Quasi-Periodic Oscillations; INTRODUCTION; THE ATOLL SOURCE 4U 1728 -34; FREQUENCY MODELING; FREQUENCY EQUATIONS AND THE ERROR PROPAGATION METHOD; MASS AND SPECIFIC ANGULAR MOMENTUM OF THE ATOLL SOURCE 4U 1728 -34; CONCLUSION; ACKNOWLEDGMENT; REFERENCES",
+            "description": "Complete, revision-matched arXiv TeX source package",
+            "sha256": "8cfcfa1cfd42fba155446744c253805bc74628d915ce863e72bac34a5f7c19cb"
+          }
+        ]
+      },
+      "analysis": {
+        "origin": "ai",
+        "model": "gpt-6-luna",
+        "analyzed_at": "2026-10-26T18:00:35.616Z",
+        "title_zh": "利用X射线准周期振荡三元组估计中子星 4U 1728-34 的质量和自旋",
+        "reason": "该工作利用 RXTE 对低质量 X 射线双星环礁源 4U 1728-34 观测到的 QPO 三元组，通过测地线进动等唯象模型求解中子星质量和无量纲自旋参数，属于经典吸积致密星时变谱分析，与 FRB/PRS、超新星中心引擎、相对论喷流、激波破越及高能瞬变源核心方向无实质关联。",
+        "result": "通过隐函数微分与误差传递方法求解非线性代数方程组，得到不同 QPO 模型下 4U 1728-34 的加权平均质量 $M_{\\mathrm{av}}$ 与无量纲角动量 $a_{\\mathrm{av}}$：TP 模型为 $M_{\\mathrm{av}} = 2.62 \\pm 0.02\\,M_\\odot$、$a_{\\mathrm{av}} = 0.35 \\pm 0.01$；TP1 模型为 $M_{\\mathrm{av}} = 2.89 \\pm 0.02\\,M_\\odot$、$a_{\\mathrm{av}} = 0.35 \\pm 0.01$；TD 模型为 $M_{\\mathrm{av}} = 3.89 \\pm 0.06\\,M_\\odot$、$a_{\\mathrm{av}} = 0.61 \\pm 0.04$；WD 模型为 $M_{\\mathrm{av}} = 3.76 \\pm 0.09\\,M_\\odot$、$a_{\\mathrm{av}} = 0.61 \\pm 0.01$。TP 和 TP1 模型给出的质量与自旋符合常规中子星上限与 Kerr 度规限制（$a \\le 0.4$），而 TD 与 WD 模型的质量和自旋显著偏高。",
+        "reading_entry": "MASS AND SPECIFIC ANGULAR MOMENTUM OF THE ATOLL SOURCE 4U 1728 -34",
+        "problem": "如何利用 X 射线双星功率密度谱中同时探测到的低频 QPO、较低千赫兹 QPO 和较高千赫兹 QPO 三元组观测频率，结合测地轨道频率模型精确反演中子星的核心物理参数（质量 $M$、比角动量 $a$ 及辐射轨道半径 $r$）及其统计误差。",
+        "method": "将低频 QPO 对应为 Lense-Thirring 节点进动频率 $\\nu_{LF} = \\nu_{\\mathrm{nod}} = \\nu_\\phi - \\nu_\\theta$，并分别结合四种高频 QPO 模型：总进动模型 TP（$\\nu_L = \\nu_\\theta - \\nu_r$, $\\nu_U = \\nu_\\theta$）、TP1（$\\nu_L = \\nu_\\theta - \\nu_r$, $\\nu_U = \\nu_\\phi$）、扭曲盘模型 WD（$\\nu_L = 2(\\nu_\\phi - \\nu_r)$, $\\nu_U = 2\\nu_\\phi - \\nu_r$）及潮汐瓦解模型 TD（$\\nu_L = \\nu_\\phi$, $\\nu_U = \\nu_\\phi + \\nu_r$），构建三元非线性方程组 $f_i(M, a, r) - \\nu_i = 0$；通过隐函数微分求雅可比行列式，利用误差传递公式 $\\sigma_a^2 = \\sum (\\partial a / \\partial \\nu_i)^2 \\sigma_{\\nu_i}^2$ 计算参数误差，最后取加权平均值 $M_{\\mathrm{av}} = (\\sum M_i / \\sigma_i^2) / (\\sum 1 / \\sigma_i^2)$。",
+        "assumptions": [
+          "在时段 10、11 和 12 探测到的低频 QPO、lower kHz QPO 和 upper kHz QPO 三个峰在物理上是同时产生的。",
+          "低频 QPO 源于中子星自转拖曳导致的 Lense-Thirring 节点进动（$\\nu_{LF} = \\nu_\\phi - \\nu_\\theta$），高频 QPO 可由测试粒子的测地线轨道频率组合描述。"
+        ],
+        "limits": [
+          "分析仅依赖于 19 个观测时段中仅有的 3 个具备完整三元组的平均功率谱数据，样本量极小。",
+          "不同理论模型给出的质量和自旋参数差异巨大（如 TD/WD 模型得到的质量接近或超过 $3.8\\,M_\\odot$，远超中子星理论最大质量）。"
+        ],
+        "citation_leads": [
+          "INTRODUCTION: “The aim of our investigation is using data from the X-ray power-density spectrum of the atoll source 4U 1728-34 to assess the mass and the specific angular momentum of the central neutron star.”",
+          "THE ATOLL SOURCE 4U 1728 -34: “Only for 3 of them – time intervals 10,11 and 12 all three frequencies – the low $\\nu _ { _ { L F _ { 0 } } }$ and the lower $\\nu _ { _ { L _ { 0 } } }$ and upper $\\nu _ { { \\scriptscriptstyle U _ { 0 } } }$ high frequencies exist. We will assume that they appear simultaneously.”",
+          "FREQUENCY MODELING: “The low frequency has a value that links it to the Lense-Thirring precession: $\\nu _ { L F } = \\nu _ { n o d } = \\nu _ { \\phi } - \\nu _ { \\theta } .$ It is assumed to be a result of interaction between the orbits of the netron star itself and the accretion disk that surrounds it.”",
+          "FREQUENCY EQUATIONS AND THE ERROR PROPAGATION METHOD: “In order to assess the errors of the parameters we apply the following error propagation formulas”",
+          "MASS AND SPECIFIC ANGULAR MOMENTUM OF THE ATOLL SOURCE 4U 1728 -34: “The TD and WD model shows results exceeding this limit – between 3.90 and 3.76 solar masses respectively.”",
+          "CONCLUSION: “The results can be divided into two groups. In the first group are the total precession models TP and TP1. They show specific angular momentum values consistent with Kerr metrics (a≤0.4) and masses near the upper boundary for a neutron star but they do not exceed it.”"
+        ],
+        "research_progress": "对 4U 1728-34 建立了联立三元 QPO 隐函数微分反演参数与误差传播的方法体系，比较了 TP、TP1、WD 与 TD 四类模型在中子星参数空间中的适用性，明确排除了给出过高质量的 TD 和 WD 模型。",
+        "figures": [],
+        "unresolved_checks": [
+          "未进行独立同行评审或逐项复算。",
+          "源文件中的图像未进行视觉核对。"
+        ],
+        "potential_lineage": {
+          "status": "no_match",
+          "reason": "自动筛选未建立论文与组内 Work 的科学关系。",
+          "candidates": []
+        },
+        "prerequisite_works": []
+      }
     },
     {
       "arxiv_id": "2610.32406",
@@ -1322,10 +1556,83 @@
     {
       "arxiv_id": "2610.32430",
       "revision": 1,
+      "status": "ready",
       "source_fingerprint": "f7ec039f7a67f4d849d124c6ebaf9e93a473c1bad386825aed71a38a0f12be2c",
-      "status": "failed",
-      "failure_reason": "fetch failed",
-      "priority": "worth_knowing"
+      "priority": "worth_knowing",
+      "coverage": {
+        "level": "body_partial",
+        "label": "已检查正文中支撑判断的指定章节",
+        "source_version": "arXiv:2610.32430v1",
+        "inspected_sections": [
+          "Introduction",
+          "Local Analogs of Little Red Dots: Clues to the X-ray WeaknessFacilities: EP-FXT, GALEX, SDSS, SPHEREx, WISE",
+          "I The LRD X-ray bottleneck",
+          "II X-ray reveals two types of LLRDs",
+          "II.1 Direct view from EP-FXT X-ray images",
+          "II.2 Benchmarking LLRD X-ray emission against local AGNs and LRDs",
+          "III Implications for high-redshift LRDs",
+          "IV Summary and future prospects",
+          "Appendix A LLRD EP-FXT observation summary",
+          "Appendix B eFXTDAS: enhanced data analysis tools for EP-FXT",
+          "Appendix C Extraction-based detection significance",
+          "Appendix D Balmer decrement/break measurements",
+          "Appendix E Spectral-fitting details and the X-normal LLRDs",
+          "Appendix F Kaplan-Meier estimate of the X-ray luminosity distribution",
+          "References",
+          "Instructions for reporting errors"
+        ],
+        "source_references": [
+          {
+            "kind": "arxiv_source_package",
+            "url": "https://export.arxiv.org/src/2610.32430v1",
+            "locator": "Introduction; Local Analogs of Little Red Dots: Clues to the X-ray WeaknessFacilities: EP-FXT, GALEX, SDSS, SPHEREx, WISE; I The LRD X-ray bottleneck; II X-ray reveals two types of LLRDs; II.1 Direct view from EP-FXT X-ray images; II.2 Benchmarking LLRD X-ray emission against local AGNs and LRDs; III Implications for high-redshift LRDs; IV Summary and future prospects; Appendix A LLRD EP-FXT observation summary; Appendix B eFXTDAS: enhanced data analysis tools for EP-FXT; Appendix C Extraction-based detection significance; Appendix D Balmer decrement/break measurements; Appendix E Spectral-fitting details and the X-normal LLRDs; Appendix F Kaplan-Meier estimate of the X-ray luminosity distribution; References; Instructions for reporting errors",
+            "description": "Complete, revision-matched arXiv TeX source package",
+            "sha256": "89ef249e6ab1e2b8e0014e7dda2ec24b32afb910c5d515d91c5cbf219e8bc05f"
+          }
+        ]
+      },
+      "analysis": {
+        "origin": "ai",
+        "model": "gpt-6-luna",
+        "analyzed_at": "2026-10-26T18:02:47.943Z",
+        "title_zh": "小红点的局域类似物：探寻其 X 射线暗弱的线索",
+        "reason": "利用爱因斯坦探针（EP-FXT）对红移 $z\\sim 0.3$ 的局域小红点类似物（LLRD）开展 X 射线观测与叠加分析，在静止系硬 X 射线波段获得高信噪比探测，有效排除了典型的无遮挡超爱丁顿吸积和极端康普顿巨厚遮蔽模型，为高红移 JWST 小红点（LRD）的致密核心吸积物理与 X 射线暗弱机制提供了明确的近邻基准约束。",
+        "result": "EP-FXT 在静止系 $2\\text{--}8\\,\\mathrm{keV}$ 波段（主要由 $2\\text{--}3\\,\\mathrm{keV}$ 光子贡献）以 $3.3\\sigma$ 显著性探测到了 X 射线暗弱（X-weak）LLRD 的叠加信号，得到静止系光度 $\\log L_{2-10} = 42.55_{-0.12}^{+0.08}\\,\\mathrm{erg\\,s^{-1}}$。该叠加光度比 1 型 AGN 的标准 $L_{\\mathrm{2keV}}^{\\mathrm{int}}-L_{2500}$ 标度低约 $0.55\\text{--}0.65\\,\\mathrm{dex}$。观测得到的相对硬能谱排除了典型的无遮挡超爱丁顿吸积模型（该模型软谱 $\\Gamma \\sim 3.4$ 会低估硬 X 射线约 $1.5\\,\\mathrm{dex}$）以及局域 AGN 状的康普顿巨厚遮蔽（即使零金属丰度下汤姆孙散射透射极限 $e^{-\\tau_{\\rm T}} = e^{-N_{\\rm H}\\sigma_{\\rm T}} \\simeq 12\\%$ 加上散射也低于测得的 $27\\%$ 透射比）。最简物理图像为：轻度本征弱冕（$\\Delta\\alpha_{\\rm ox}\\sim -0.1$ 至 $-0.2$）被康普顿薄介质（$N_{\\rm H} \\sim 10^{22\\text{--}23}\\,\\mathrm{cm}^{-2}$）遮蔽。",
+        "reading_entry": "II X-ray reveals two types of LLRDs",
+        "problem": "高红移（$z\\sim 4\\text{--}8$）JWST 发现的“小红点”（LRDs）普遍表现出极弱的 X 射线辐射，由于现有高红移 Chandra 深度叠加与单源极限灵敏度不足，无法区分其究竟源自未遮蔽的超爱丁顿吸积（产生极端软谱）、内禀 X 射线弱冕，还是重度康普顿巨厚（CT, $N_{\\rm H}\\gtrsim 10^{24.5}\\,\\mathrm{cm}^{-2}$）遮蔽。",
+        "method": "利用爱因斯坦探针（EP-FXT）对 6 颗红移 $z\\sim 0.3$ 的 LLRD 进行 $0.5\\text{--}4\\,\\mathrm{keV}$ 软 X 射线定点观测（曝光 3.4–15.7 ks）；使用开源分析工具包 eFXTDAS（`fxtcombine`）进行事件校准、耀斑过滤与 PSF 曝光加权图像叠加；在 Xspec 中建立吸收幂律模型拟合能谱，并使用 Xstack 进行多源静止系能谱叠加分析；结合 SDSS/pPXF 对光学巴耳末线（$\\mathrm{H}\\alpha, \\mathrm{H}\\beta, \\mathrm{H}\\gamma$）和巴耳末跳变强度 $\\mathrm{Balmer\\text{-}break} \\equiv \\langle f_\\nu \\rangle_{4000-4500\\,\\mathring{\\rm A}} / \\langle f_\\nu \\rangle_{3000-3500\\,\\mathring{\\rm A}}$ 进行解谱与参数交叉诊断。",
+        "assumptions": [],
+        "limits": [],
+        "citation_leads": [
+          "I The LRD X-ray bottleneck: “For sources of comparable intrinsic luminosity, reaching similar X-ray constraints at $z\\sim 0.3$ requires $\\sim 10^{3-4}$ less exposure than at $z\\sim 6$, depending on the source-to-background ratio.”",
+          "II.1 Direct view from EP-FXT X-ray images: “X-ray reveals a contrast aligned with the pre-existing optical differences: J0928 and J1154 are significantly detected in X-rays, whereas J1200, J0035, J0923, and J0850 are undetected or only marginally detected despite comparable or”",
+          "IV Summary and future prospects: “The simplest explanation consistent with both the X-ray and Balmer diagnostics is a mildly X-ray-weak corona, with $\\Delta\\alpha_{\\mathrm{ox}}\\sim-0.1$ to $-0.2$, viewed through Compton-thin material with $N_{\\mathrm{H}}\\sim”",
+          "Appendix A LLRD EP-FXT observation summary: “The exposure times were planned to yield at least a $3\\sigma$ detection for an intrinsic $210\\text{\\,}\\mathrm{k}\\mathrm{e}\\mathrm{V}$ luminosity $0.5\\text{\\,}\\mathrm{d}\\mathrm{e}\\mathrm{x}$ below that expected from the standard”",
+          "Appendix E Spectral-fitting details and the X-normal LLRDs: “Replacing the fully covering absorber with zpcfabs improves the fit by a further $\\Delta C=4.73$ and gives $N_{\\mathrm{H}}=9.01_{-3.27}^{+3.20}\\times 10^{22}\\,\\mathrm{cm}^{-2}$, $C_{f}=0.94_{-0.13}^{+0.04}$, and”"
+        ],
+        "research_progress": "首次通过近邻类似物（LLRD）的 EP-FXT 空间 X 射线探测证实，其 X 射线暗弱程度仅比标准 AGN 低 $\\sim 0.6\\,\\mathrm{dex}$，排除了极端超爱丁顿软谱与纯康普顿巨厚几何，明确提出了轻度弱冕（$\\Delta\\alpha_{\\rm ox}\\sim -0.1$ 至 $-0.2$）与康普顿薄致密气体柱密度（$N_{\\rm H}\\sim 10^{22\\text{--}23}\\,\\mathrm{cm}^{-2}$）相结合的自洽定标模型。",
+        "figures": [
+          {
+            "url": "/arxiv-figures/2610.32430/quickview_J1154.png",
+            "caption": "Figure 5: Example eFXTDAS quality-assessment summary for J115438.96+065025.0, generated with fxtcombine-quickview. From upper left to lower right, the panels show the stacked count-rate map and detected-source catalog, modeled background map, target-centered extraction geometry (overlaid with contaminating sources in the source/background extraction regions), stacked exposure map, 90%-encircled-energy PSF-radius map, and limiting-flux sensitivity map.",
+            "label": "Fig. 5",
+            "category": "theoretical",
+            "category_badge": "物理模型示意图",
+            "physical_core": "",
+            "is_schematic": true
+          }
+        ],
+        "unresolved_checks": [
+          "未进行独立同行评审或逐项复算。",
+          "源文件中的图像未进行视觉核对。"
+        ],
+        "potential_lineage": {
+          "status": "no_match",
+          "reason": "自动筛选未建立论文与组内 Work 的科学关系。",
+          "candidates": []
+        },
+        "prerequisite_works": []
+      }
     },
     {
       "arxiv_id": "2610.32497",
@@ -1379,10 +1686,92 @@
     {
       "arxiv_id": "2610.32509",
       "revision": 1,
+      "status": "ready",
       "source_fingerprint": "63f17c396844982b5d5a504b85ae9546106a9e90475493832ba5e5c4d814d7d6",
-      "status": "failed",
-      "failure_reason": "fetch failed",
-      "priority": "worth_knowing"
+      "priority": "skip",
+      "coverage": {
+        "level": "body_partial",
+        "label": "已检查正文中支撑判断的指定章节",
+        "source_version": "arXiv:2610.32509v1",
+        "inspected_sections": [
+          "1 Introduction",
+          "2 Analysis, methodology and event selection",
+          "2.1 Model for intensity at the shock wave boundary.",
+          "2.2 Sample",
+          "3 Data used",
+          "4 Discussion of results",
+          "5 Conclusions"
+        ],
+        "source_references": [
+          {
+            "kind": "arxiv_source_package",
+            "url": "https://export.arxiv.org/src/2610.32509v1",
+            "locator": "1 Introduction; 2 Analysis, methodology and event selection; 2.1 Model for intensity at the shock wave boundary.; 2.2 Sample; 3 Data used; 4 Discussion of results; 5 Conclusions",
+            "description": "Complete, revision-matched arXiv TeX source package",
+            "sha256": "1a4858b5764c57dbabc6e8111df2d938f54a50bbd226556c8f619557ef595af4"
+          }
+        ]
+      },
+      "analysis": {
+        "origin": "ai",
+        "model": "gpt-6-luna",
+        "analyzed_at": "2026-10-26T18:02:42.470Z",
+        "title_zh": "激波到达相关事件中福布斯效应观测振幅与理论计算振幅的比较",
+        "reason": "该论文研究日球层内行星际日冕物质抛射（ICME）及其激波前沿压缩区（sheath）对近地银河宇宙线强度的调制效应（福布斯下降），属于空间天气与日球层物理领域，与高能瞬变天体物理研究组关注的 FRB/PRS、超新星中心引擎、致密天体喷流或高能爆发等核心方向无实质联系。",
+        "result": "基于 Webb (1983) 解析模型计算激波面处宇宙线密度跃变 $N_1 - N_2 = \\frac{2\\mu_0^3}{1-\\mu_0^2}\\frac{j}{v\\cos\\psi}$，对第 23–25 太阳活动周的 20 个振幅大于 $5\\%$ 的福布斯事件进行检验：其中 8 个事件理论与观测高度吻合（相关系数 $\\rho > 0.8$），6 个事件基本一致但离散度较大，其余 6 个事件不吻合（主要归因于激波法向夹角 $\\psi$ 较小或非孤立激波干扰）。",
+        "reading_entry": "5 Conclusions",
+        "problem": "量化日冕物质抛射前沿激波压缩鞘层（sheath）的磁场与等离子体参数对福布斯效应初始阶段（前数小时）宇宙线通量调制的具体影响，检验激波面反射解析模型对观测下降振幅的适用性。",
+        "method": "利用全球中子监测网数据经全球光谱仪方法（GSM）反演有效刚度 $R_{\\mathrm{eff}} = 10\\ \\mathrm{GV}$ 的宇宙线各向同性强度，结合 OMNI、CfA、IPShocks 和 FEID 数据库提取激波速度 $V_{\\mathrm{sh}}$、磁场压缩比 $B_2/B_1$ 及法向角 $\\psi$；利用临界俯仰角余弦 $\\mu_0 = \\sqrt{1 - B_1/B_2}$ 与微分径向流 $j = -\\frac{V_{\\mathrm{sh}}p}{3}\\frac{\\partial N}{\\partial p}$ 计算动量分布函数在激波前后的跃跃跃变 $N_1 - N_2$。",
+        "assumptions": [
+          "宇宙线各向异性矢量在激波面法线方向的投影为零",
+          "银河宇宙线动量谱服从单幂律形式 $N(p) = a p^{-(\\gamma+2)}$，其中谱指数固定为 $\\gamma = 2.5$"
+        ],
+        "limits": [
+          "解析模型仅适用于激波通过后最初数小时的鞘层初始阶段，无法描述整个压缩区或磁云内部演化",
+          "当激波法线与上游磁场夹角 $\\psi$ 较小时理论失效",
+          "计算直接采用局部单点磁场测量，未沿粒子回旋半径所围体积进行积分平滑，导致在非单调强涨落磁场下离散度极大"
+        ],
+        "citation_leads": [
+          "1 Introduction: “The ability of coronal mass ejections (CMEs) including the shock waves and compression regions that precede bodies of CMEs to dictate the behavior of cosmic rays has been repeatedly demonstrated”",
+          "2.1 Model for intensity at the shock wave boundary.: “N_{1}-N_{2}=\\frac{2\\mu_{0}^{3}}{1-\\mu_{0}^{2}}\\frac{j}{v\\cos\\psi},j=-\\frac{V_{sh}p}{3}\\frac{\\partial N}{\\partial p}”",
+          "2.1 Model for intensity at the shock wave boundary.: “This assumption is well justified because the observed radial anisotropy of galactic cosmic rays is small. We assume that the galactic CR spectrum is a power law function on momentum N(p)=ap^{-(\\gamma+2)}, where \\gamma=2.5”",
+          "4 Discussion of results: “the agreement between theory and observation was found to be good in 8 cases and satisfactory in 6 cases the latter likely due to the need to integrate the magnetic field over a volume defined by the gyroradius.”",
+          "5 Conclusions: “Among the events examined, only one-third show good agreement between theory and measurements (\\rho>0.8). A second group also comprising one-third of the events exhibits only qualitative agreement”",
+          "5 Conclusions: “The approach proposed by Webb (1983) is applicable only during the initial period (the first few hours) of the plasma sheath region. To provide a complete description of cosmic-ray behavior throughout the entire plasma compression region, it is necessary to develop a theory applicable to this entire domain.”",
+          "4 Discussion of results: “as the angle \\psi that is the angle between the shock front normal and the magnetic field ahead of the front is small, the theory is not valid for events of this type.”"
+        ],
+        "research_progress": "对 20 次强福布斯事件定量检验了激波界面磁镜反射解析模型，给出了约三分之一优、三分之一满意、三分之一差的符合度统计，并指明了需发展在回旋半径尺度积分磁场的新方法以改进模型。",
+        "figures": [
+          {
+            "url": "/arxiv-figures/2610.32509/Figure_1.png",
+            "caption": "Figure 1: Example of good theory-measurement agreement. CR intensity according to GSM data (left scale) and interplanetary magnetic field induction (right scale) for the Forbush effect 2005-05-16. The right scale also shows induction of $z$ - component of magnetic field (vertical lines) and solar wind speed (dots). The green vertical dashed lines mark the passage of a shock wave associated with an interplanetary coronal mass ejection (ICME), while the yellow and blue shaded areas correspond to the sheath and magnetic cloud (MC), respectively. The area between the two red vertical dashed lines corresponds to the ICME.",
+            "label": "Fig. 1",
+            "category": "fitting",
+            "category_badge": "数据拟合与模型对比",
+            "physical_core": "展示 2005-05-16 Forbush 效应中宇宙射线强度与星际磁场变化，并标出激波、鞘区、磁云及 ICME 的位置；该事件用于说明理论与观测符合较好的情形。",
+            "is_schematic": false
+          },
+          {
+            "url": "/arxiv-figures/2610.32509/Figure_3.png",
+            "caption": "Figure 3: Example of poor agreement between theory and measurements for the Forbush effect on March 8, 2012 (notation is the same as in Fig. 1).",
+            "label": "Fig. 3",
+            "category": "fitting",
+            "category_badge": "数据拟合与模型对比",
+            "physical_core": "展示 2012 年 3 月 8 日 Forbush 效应中宇宙射线强度与星际磁场变化，以及激波、鞘区、磁云和 ICME 的位置；该事件被用作理论与观测符合较差的例子。",
+            "is_schematic": false
+          }
+        ],
+        "unresolved_checks": [
+          "未进行独立同行评审或逐项复算。",
+          "源文件中的图像未进行视觉核对。"
+        ],
+        "potential_lineage": {
+          "status": "no_match",
+          "reason": "自动筛选未建立论文与组内 Work 的科学关系。",
+          "candidates": []
+        },
+        "prerequisite_works": []
+      }
     },
     {
       "arxiv_id": "2610.32537",
@@ -1779,10 +2168,98 @@
     {
       "arxiv_id": "2610.32786",
       "revision": 1,
+      "status": "ready",
       "source_fingerprint": "2a83f23c12d9d467ac963eb6b6f649c6192daa07f746d566c8ed76f4f6301d3c",
-      "status": "failed",
-      "failure_reason": "fetch failed",
-      "priority": "must_read"
+      "priority": "worth_knowing",
+      "coverage": {
+        "level": "body_partial",
+        "label": "已检查正文中支撑判断的指定章节",
+        "source_version": "arXiv:2610.32786v1",
+        "inspected_sections": [
+          "Introduction",
+          "Probing the star-forming environment of GRB across cosmic ages with high resolution X-ray spectroscopy",
+          "1 Introduction",
+          "2 Ionized absorbers in the close environment of GRBs",
+          "2.1 Time Evolving Photoionization in GRBs",
+          "2.2 Predicting narrow absorption lines",
+          "3 Narrow X-ray lines in nearby GRB afterglows with current high-resolution spectroscopy missions",
+          "3.1 XMM/RGS",
+          "3.1.1 RGS data reduction",
+          "3.1.2 Narrow lines with TEPID",
+          "3.2 XRISM and the closeby GRBs",
+          "3.2.1 Fluence distribution of GRB afterglows",
+          "4 From popII to popIII environments with NewAthena",
+          "4.1 Population study of the close environment across the Cosmic Ages",
+          "4.2 Rate of GRB observable by NewAthena",
+          "4.3 Telling popII from popIII environment?",
+          "5 Conclusions",
+          "References",
+          "Appendix A Additional tables and plots",
+          "Instructions for reporting errors"
+        ],
+        "source_references": [
+          {
+            "kind": "arxiv_source_package",
+            "url": "https://export.arxiv.org/src/2610.32786v1",
+            "locator": "Introduction; Probing the star-forming environment of GRB across cosmic ages with high resolution X-ray spectroscopy; 1 Introduction; 2 Ionized absorbers in the close environment of GRBs; 2.1 Time Evolving Photoionization in GRBs; 2.2 Predicting narrow absorption lines; 3 Narrow X-ray lines in nearby GRB afterglows with current high-resolution spectroscopy missions; 3.1 XMM/RGS; 3.1.1 RGS data reduction; 3.1.2 Narrow lines with TEPID; 3.2 XRISM and the closeby GRBs; 3.2.1 Fluence distribution of GRB afterglows; 4 From popII to popIII environments with NewAthena; 4.1 Population study of the close environment across the Cosmic Ages; 4.2 Rate of GRB observable by NewAthena; 4.3 Telling popII from popIII environment?; 5 Conclusions; References; Appendix A Additional tables and plots; Instructions for reporting errors",
+            "description": "Complete, revision-matched arXiv TeX source package",
+            "sha256": "e756af7f50933cf9f80010ec4738724fda9545635a99e9cdda33a49d8ad419a1"
+          }
+        ]
+      },
+      "analysis": {
+        "origin": "ai",
+        "model": "gpt-6-luna",
+        "analyzed_at": "2026-10-26T18:05:29.244Z",
+        "title_zh": "利用高分辨率 X 射线光谱跨越宇宙时标探测 GRB 恒星形成环境：从 XMM-Newton/RGS、XRISM/Resolve 到 NewAthena/X-IFU",
+        "reason": "该工作结合非平衡时变光电离模型 TEPID，针对高能瞬变源（GRB）在星周致密介质（$1\\sim 100\\ \\mathrm{pc}$）中的吸收特征展开系统分析，给出窄吸收线等效宽度预测、现役及未来 X 射线探测器（XRISM, NewAthena）对介质密度、金属度和 Pop II/III 判别的约束能力，与光电离、周星介质及致密天体高能观测密切相关。",
+        "result": "TEPID 模型预言近邻环境产生多相窄吸收线（静系 $\\mathrm{EW} \\sim 1\\text{--}10\\ \\mathrm{eV}$，其中 Fe K 壳层线 $\\mathrm{EW} \\sim 4\\text{--}10\\ \\mathrm{eV}$）；在 GRB 090618 的 RGS 光谱中以 $\\approx 3\\sigma$ 探测到 Fe-L 吸收线系并定出 $z=0.540\\pm 0.003$；XRISM 每年可观测约 3 例余辉中的 Fe-K 线；NewAthena 每年可跟进高达 50 例 $\\mathcal{F}\\gtrsim 0.1\\times 10^{-6}\\ \\mathrm{erg\\ cm^{-2}}$ 样本，可将密度 $\\log n_0$ 精度测至 $0.05\\ \\mathrm{dex}$、红移相对误差控制在 $\\lesssim 10^{-3}$，并通过 $\\mathrm{Fe/(Si,S)} \\lesssim 0.15$ 上限有效区分 Pop III 与 Pop II 环境。",
+        "reading_entry": "2.2 Predicting narrow absorption lines",
+        "problem": "GRB 瞬时强辐射会完全光电离 $\\lesssim 100\\ \\mathrm{pc}$ 尺度内的冷气体，使传统光学吸收线失效且传统的稳态光电离平衡模型因忽略极端非平衡与空间分层电离而不适用；软 X 射线过剩吸收揭示致密富金属介质，但现有低分辨率探测器无法解析其多相窄吸收线并精确测定周星介质物态与化学演化。",
+        "method": "升级非平衡时变光致电离程序 TEPID，扩充重元素截面、俄歇概率及解析 Voigt 线形计算；对 XMM/RGS 光谱采用 Cash 统计与 AIC 进行模型检验；基于 Swift 余辉积分流量分布与触发率标度关系 $N_{\\rm GRB(>\\mathcal{F}_{0})} \\approx 10^{3}\\times\\eta(>\\mathcal{F}_{0})\\times\\eta_{\\rm FOR}\\times\\eta_{\\rm GRBM}\\ \\mathrm{yr^{-1}}$ 评估探测率；对 XRISM/Resolve 与 NewAthena/X-IFU 进行吸收谱蒙特卡洛模拟与 MCMC 参数置信轮廓拟合。",
+        "assumptions": [
+          "Pop III 恒星形成环境具有富顶端（top-heavy）初始质量函数，导致重元素丰度（尤其是 Fe）相对于 $\\alpha$ 元素显著亏损"
+        ],
+        "limits": [],
+        "citation_leads": [
+          "2.1 Time Evolving Photoionization in GRBs: “The circumburst environment of a GRB is far from ionisation equilibrium. The extremely large rate of ionizing photons produced by a GRB quickly ionizes the surrounding medium at a rate much higher than it can recombine”",
+          "2.2 Predicting narrow absorption lines: “For Fe K lines, the rest-frame EW ranges from 4 to 10 eV, for S from 0.7 to 3 eV, for Si from 0.6 to 5 eV, while for Fe-L shell only 3 bursts present a line with EW above 0.1 eV.”",
+          "3.2.1 Fluence distribution of GRB afterglows: “In order to assess the feasibility of a follow-up observation of a GRB afterglow yielding a given fluence, we have analysed the full set of afterglow light curves produced by Swift and computed the integral distribution function of the”",
+          "4.2 Rate of GRB observable by NewAthena: “NewAthena can observe upto 50 GRB afterglow per year with $\\mathcal{F}\\gtrsim 0.1\\times 10^{-6}$ erg $\\mathrm{cm^{-2}}$ and upto 10 bright afterglows per year with $\\mathcal{F}\\gtrsim 0.5\\times 10^{-6}$ erg $\\mathrm{cm^{-2}}$.”",
+          "4.3 Telling popII from popIII environment?: “In the latter case, the ratio of Fe over Si and S leads to an upper limit $\\lesssim 0.15$, significantly below the unity ratio expected for a popII environment”"
+        ],
+        "research_progress": "将 TEPID 从连续谱吸收扩展至细致的窄 X 射线吸收线系预测，首次在 GRB 090618 的 RGS 数据中实现 Fe-L 线的联合探测，并系统定标了 XRISM 与 NewAthena 跨宇宙学时标（$z\\lesssim 7$）通过高分辨率 X 射线吸收线区分 Pop II 与 Pop III 星周介质的能力。",
+        "figures": [
+          {
+            "url": "/arxiv-figures/2610.32786/ufspec_compare.png",
+            "caption": "Figure 12: X-IFU unfolded spectrum for three distinct progenitor environments: pristine (violet: no metals), popII medium (green: Si and Fe) and a medium from popIII with top-heavy IMF (red: Si, but no Fe). The bottom panel plots the ratio of the counts normalised to the pristine case. For clarity of presentation, we have zoomed in on the 0.2-1 keV region. The absence of Fe-K absorption lines around 0.8 keV in the red spectrum as well as the absence of any lines in the pristine spectrum can be clearly seen. Note the narrow feature at 0.53 keV and the residual curvature at low energy of the pristine medium is produced by absorption by our Galaxy.",
+            "label": "Fig. 12",
+            "category": "observational",
+            "category_badge": "观测总体曲线/能谱",
+            "physical_core": "比较 pristine、Pop II 与具有 top-heavy IMF 的 Pop III 环境所产生的 X-IFU 光谱；谱线差异，尤其是 Fe-K 吸收线的有无，可用于区分这些高红移 GRB 周围介质的金属富集状态。",
+            "is_schematic": false
+          },
+          {
+            "url": "/arxiv-figures/2610.32786/compare_contours.png",
+            "caption": "Figure 9: Contours of size vs density estimated by fitting the XMM-PN spectra of the Paper I sample of GRBs. Plotted for comparison are the densities and sizes of gravitationally bound structures in the Universe in increasing order of size: Clusters inside star-forming regions (brown); Galactic (filled (uniform dense gas filling factor) and open grey points (dense gas filling factor of 0.3) and extragalactic (filled blue points) star-forming regions; globular cluster medium (light blue circles); the interstellar medium of spiral (green stars); irregular (blue-gray diamonds) and elliptical galaxies (purple triangles); galaxy cluster medium (red hexagons) and a WHIM filament (red cross). In the inset panel, the filled contours demonstrate the vast improvement obtained by fitting the X-IFU spectrum compared to the unfilled XMM-PN contours. All contours are plotted at 90%.",
+            "label": "Fig. 9",
+            "category": "fitting",
+            "category_badge": "数据拟合与模型对比",
+            "physical_core": "展示 GRB 样本由 XMM-PN 光谱拟合得到的吸收介质尺寸与密度约束，并与不同天体环境的密度—尺寸范围比较；嵌图对比 X-IFU 与 XMM-PN 的约束轮廓，体现未来观测对介质物理参数的诊断能力。",
+            "is_schematic": false
+          }
+        ],
+        "unresolved_checks": [
+          "未进行独立同行评审或逐项复算。",
+          "源文件中的图像未进行视觉核对。"
+        ],
+        "potential_lineage": {
+          "status": "no_match",
+          "reason": "自动筛选未建立论文与组内 Work 的科学关系。",
+          "candidates": []
+        },
+        "prerequisite_works": []
+      }
     },
     {
       "arxiv_id": "2610.32826",
@@ -1983,18 +2460,287 @@
     {
       "arxiv_id": "2610.32845",
       "revision": 1,
+      "status": "ready",
       "source_fingerprint": "25744a2f359d8e2b08a815bfd665dd71cdd78ec4fc848be34f108360a22f44f0",
-      "status": "failed",
-      "failure_reason": "fetch failed",
-      "priority": "worth_knowing"
+      "priority": "skip",
+      "coverage": {
+        "level": "body_partial",
+        "label": "已检查正文中支撑判断的指定章节",
+        "source_version": "arXiv:2610.32845v1",
+        "inspected_sections": [
+          "Introduction",
+          "The Galactic Center $gamma$-ray Excess and the Look-Elsewhere Effect",
+          "I Introduction",
+          "II Methods",
+          "III Results",
+          "III.1 Overview",
+          "III.2 Example 1: Large starburst",
+          "III.3 Example 2: Excess present in higher energy channels and absent from low energy channel",
+          "III.4 Example 3: Centered excess with similarities to GCE",
+          "IV Discussion and Implications for the observed galactic center $gamma$-ray excess",
+          "Acknowledgments",
+          "References",
+          "Instructions for reporting errors"
+        ],
+        "source_references": [
+          {
+            "kind": "arxiv_source_package",
+            "url": "https://export.arxiv.org/src/2610.32845v1",
+            "locator": "Introduction; The Galactic Center $gamma$-ray Excess and the Look-Elsewhere Effect; I Introduction; II Methods; III Results; III.1 Overview; III.2 Example 1: Large starburst; III.3 Example 2: Excess present in higher energy channels and absent from low energy channel; III.4 Example 3: Centered excess with similarities to GCE; IV Discussion and Implications for the observed galactic center $gamma$-ray excess; Acknowledgments; References; Instructions for reporting errors",
+            "description": "Complete, revision-matched arXiv TeX source package",
+            "sha256": "c6c3ed7f7bb652efdf0941fafe9605517068a7e458b45593cb9ed0f91d5be879"
+          }
+        ]
+      },
+      "analysis": {
+        "origin": "ai",
+        "model": "gpt-6-luna",
+        "analyzed_at": "2026-10-26T18:04:00.874Z",
+        "title_zh": "银心伽马射线超与“别处寻找”效应",
+        "reason": "本文利用 FIRE-2 宇宙线磁流体力学模拟研究银心 GeV 伽马射线超（GCE）在非平衡、时变宇宙线输运下的涨落与天体物理成因，主要涉及银河系弥散伽马射线背景、宇宙线传播及暗物质间接探测争议，与高能瞬变天体物理组（FRB/PRS、超新星中心引擎、激波破越、相对论喷流等）核心方向无实质直接联系。",
+        "result": "银心区域内宇宙线扩散时标 $\\tau_{\\rm{diff}} \\sim (1\\,\\mathrm{kpc})^{2} / (3\\times 10^{29}\\,\\mathrm{cm}^{2}\\,\\mathrm{s}^{-1}) \\sim 1\\,\\mathrm{Myr}$ 与星际介质（ISM）扰动及时变演化时标相当，导致宇宙线输运处于非稳态；瞬态辐射相对于时间平均基准模板的残差幅度可比 Fermi GCE 高出数倍，且多处超新星爆发驱动的强强子相互作用可以在 $10^{\\circ}$ 范围内产生形态近似球对称、能谱在 $0.1\\text{--}100\\,\\mathrm{GeV}$ 剧烈演化的瞬态残差，与观测到的 GCE 高度吻合。",
+        "reading_entry": "Introduction",
+        "problem": "传统银河系弥散伽马射线背景模型（如 GALPROP）通常假设稳态或轴对称宇宙线输运，忽略了恒星形成爆发与局域星际介质扰动引起的时变非平衡输运，这可能导致低估天体物理背景的系统不确定度，甚至使单一时间快照下的银心伽马射线超（GCE）被误判为非标准物理（如暗物质湮灭）。",
+        "method": "基于 FIRE-2 模拟套件中的宇宙学多组分、能谱分辨宇宙线磁流体力学（CRMHD）模拟（银河系类似物 m12f 与 m12m），设定超新星注入能量的 $10\\%$ 转化为宇宙线（其中 $2\\%$ 为轻子），模拟 $\\pi^0$ 衰变、相对论非热韧致辐射与逆康普顿散射辐射，并将瞬时辐射与时间平均基准模板相减以提取残差特征。",
+        "assumptions": [],
+        "limits": [],
+        "citation_leads": [
+          "The Galactic Center $gamma$-ray Excess and the Look-Elsewhere Effect: “Comparing instantaneous emission to a time-averaged baseline, we find residuals up to several times larger than the Fermi GCE, with a wide range of spectral shapes and spatial morphologies.”",
+          "IV Discussion and Implications for the observed galactic center $gamma$-ray excess: “Within the central kpc, the CR diffusion time is approximately $\\tau_{\\rm{diff}}\\sim(1\\rm{\\,kpc})^{2}/3\\times 10^{29}\\rm{cm^{2}\\,s^{-1}}\\sim$ 1 Myr, which is comparable to the time scale on which the ISM and the GC $\\gamma$-ray spectrum”"
+        ],
+        "research_progress": "揭示了银心非平衡宇宙线输运产生的瞬态涨落（look-elsewhere effect）足以产生与 Fermi GCE 相似的球对称形态和能谱凸起，表明传统静态传播模型可能严重低估了宇宙线输运的时变天体物理背景不确定度。",
+        "figures": [
+          {
+            "url": "/arxiv-figures/2610.32845/GCE_spread_m12f_roi_10.png",
+            "caption": "Figure 3: The range of spectra of residuals for galaxies m12f (top) and m12m (bottom), in $10^{\\circ}$ (left) and $20^{\\circ}$ (right) ROIs; the shaded region shows the 25th and 75th percentiles from snapshots across a 460 to 20 Myr span. Different radial cuts ($r_{\\rm{cut}}=$ 0, 2, and 7 kpc) are shown by the different colored regions (blue, pink, and green, respectively). The measured Fermi-LAT excess in the $10^{\\circ}$ ROI is shown by the black dotted line. For all combinations of ROIs and radial cuts considered, the measured Fermi-LAT excess falls comfortably within the 25th and 75th percentiles, with many residuals considerably larger in magnitude.",
+            "label": "Fig. 3",
+            "category": "fitting",
+            "category_badge": "数据拟合与模型对比",
+            "physical_core": "比较模拟星系不同时间快照相对于基线弥散伽马射线模板的残差谱与 Fermi-LAT 银心超额。图中覆盖不同 ROI 和径向切除条件；观测超额落在模拟残差的第 25 至第 75 百分位范围内，说明时变宇宙线输运导致的弥散辐射起伏可产生与银心超额相当甚至更大的残差。",
+            "is_schematic": false
+          },
+          {
+            "url": "/arxiv-figures/2610.32845/GCE_plot_m12f_snap_1158_rfilt_7.0_lat_lim_0.0872665.png",
+            "caption": "Figure 6: An example of residual flux for m12f, for a snapshot in which the residual spectrum resembles the measured Fermi-LAT galactic center $\\gamma$ -ray excess; the 10 ∘ ROI is shown on top, and the 20 ∘ ROI on the bottom. The morphology is approximately spherical within the central 10 ∘, with some substructure occurring where there were several recent clustered supernovae.",
+            "label": "Fig. 6",
+            "category": "fitting",
+            "category_badge": "数据拟合与模型对比",
+            "physical_core": "展示一个模拟快照中与 Fermi-LAT 银心伽马射线超额谱形相似的残差，并给出 10° 与 20° ROI 的空间分布。残差在中央 10° 内近似球对称，但存在与近期成簇超新星相关的子结构，说明恒星源驱动的瞬变弥散辐射可同时呈现类似观测超额的谱形与形态。",
+            "is_schematic": false
+          }
+        ],
+        "unresolved_checks": [
+          "未进行独立同行评审或逐项复算。",
+          "源文件中的图像未进行视觉核对。"
+        ],
+        "potential_lineage": {
+          "status": "no_match",
+          "reason": "自动筛选未建立论文与组内 Work 的科学关系。",
+          "candidates": []
+        },
+        "prerequisite_works": []
+      }
     },
     {
       "arxiv_id": "2610.32861",
       "revision": 1,
+      "status": "ready",
       "source_fingerprint": "094bf8878b268e76059fa6ebe96a30a555a200ac7629d4b3681247275085af12",
-      "status": "failed",
-      "failure_reason": "fetch failed",
-      "priority": "must_read"
+      "priority": "must_read",
+      "coverage": {
+        "level": "full_body",
+        "label": "已检查版本匹配的完整 TeX 正文",
+        "source_version": "arXiv:2610.32861v1",
+        "inspected_sections": [
+          "Introduction",
+          "GRB 260924A: Extreme Energetics, Bright GeV Emission, and Exceptional X-ray and Optical Luminosity",
+          "1 Introduction",
+          "2 Observations and Data Analysis",
+          "2.1 Fermi/GBM",
+          "2.1.1 Light curves",
+          "2.1.2 Spectral analysis",
+          "2.2 Fermi/LAT",
+          "2.3 Swift/BAT",
+          "2.4 Swift/XRT",
+          "2.5 UV, optical, and near-infrared observations",
+          "3 Multiwavelength temporal evolution",
+          "3.1 Fermi/GBM and Swift/BAT light curves",
+          "3.2 Fermi/LAT light curve and inter-episode emission",
+          "3.3 Temporal structure and hardness evolution of the second bright episode",
+          "3.4 UV, optical, NIR, and X-ray evolution",
+          "4 Time-resolved gamma-ray spectra and LAT high-energy events",
+          "4.1 BAT spectra across the early episodes",
+          "4.2 LAT high-energy events and spectral evolution",
+          "4.3 GBM spectra of the bright episodes",
+          "5 Description of the multiwavelength afterglow observations",
+          "5.1 Late afterglow",
+          "5.2 Early afterglow",
+          "5.3 The X-ray rebrightening: connecting the early and late afterglow",
+          "5.4 A reverse-shock SSC interpretation of the early LAT excess",
+          "5.5 Constraints on the physical parameters",
+          "6 Physical implications of the proposed interpretation",
+          "6.1 Maximum synchrotron energy and SSC emission",
+          "6.1.1 Klein–Nishina effects",
+          "6.2 Ejecta magnetization",
+          "6.3 Electron energy partition and accelerated-electron fractions",
+          "6.4 Density profile of the circumburst medium",
+          "6.5 Prompt energetics and radiative efficiency",
+          "6.6 Constraints on a possible jet break",
+          "6.7 Origin of the second bright episode",
+          "6.8 Multiwavelength comparison with the GRB population",
+          "7 Conclusions",
+          "Acknowledgements",
+          "DATA AVAILABILITY",
+          "References",
+          "Appendix A Additional details of the GBM spectral analysis",
+          "A.1 Effective response construction",
+          "A.2 Background estimation and uncertainty propagation",
+          "A.3 Exposure calculation and time-resolved extraction",
+          "A.4 Poisson–Gaussian likelihood",
+          "A.5 Blackbody implementation",
+          "A.6 Sensitivity tests",
+          "Appendix B Additional details of the LAT likelihood analysis",
+          "B.1 Likelihood implementation and source model",
+          "B.2 Test statistic and diffuse-normalization bounds",
+          "B.3 Energy-flux calculation and uncertainty propagation",
+          "B.4 Sensitivity to the background model",
+          "B.5 Updated temporal fit with fixed normalized exposure weights",
+          "Appendix C Additional details of the BAT spectral analysis",
+          "Appendix D Additional details of the optical/NIR and XRT analysis",
+          "D.1 Test for a late-time X-ray break",
+          "Instructions for reporting errors"
+        ],
+        "source_references": [
+          {
+            "kind": "arxiv_source_package",
+            "url": "https://export.arxiv.org/src/2610.32861v1",
+            "locator": "Full body",
+            "description": "Complete, revision-matched arXiv TeX source package",
+            "sha256": "1d583875b9ea7c64b6222568b5b9157b08dc0cc595e3f2cfdd2e4a92abdd3503"
+          }
+        ],
+        "source_sections": [
+          "Introduction",
+          "GRB 260924A: Extreme Energetics, Bright GeV Emission, and Exceptional X-ray and Optical Luminosity",
+          "1 Introduction",
+          "2 Observations and Data Analysis",
+          "2.1 Fermi/GBM",
+          "2.1.1 Light curves",
+          "2.1.2 Spectral analysis",
+          "2.2 Fermi/LAT",
+          "2.3 Swift/BAT",
+          "2.4 Swift/XRT",
+          "2.5 UV, optical, and near-infrared observations",
+          "3 Multiwavelength temporal evolution",
+          "3.1 Fermi/GBM and Swift/BAT light curves",
+          "3.2 Fermi/LAT light curve and inter-episode emission",
+          "3.3 Temporal structure and hardness evolution of the second bright episode",
+          "3.4 UV, optical, NIR, and X-ray evolution",
+          "4 Time-resolved gamma-ray spectra and LAT high-energy events",
+          "4.1 BAT spectra across the early episodes",
+          "4.2 LAT high-energy events and spectral evolution",
+          "4.3 GBM spectra of the bright episodes",
+          "5 Description of the multiwavelength afterglow observations",
+          "5.1 Late afterglow",
+          "5.2 Early afterglow",
+          "5.3 The X-ray rebrightening: connecting the early and late afterglow",
+          "5.4 A reverse-shock SSC interpretation of the early LAT excess",
+          "5.5 Constraints on the physical parameters",
+          "6 Physical implications of the proposed interpretation",
+          "6.1 Maximum synchrotron energy and SSC emission",
+          "6.1.1 Klein–Nishina effects",
+          "6.2 Ejecta magnetization",
+          "6.3 Electron energy partition and accelerated-electron fractions",
+          "6.4 Density profile of the circumburst medium",
+          "6.5 Prompt energetics and radiative efficiency",
+          "6.6 Constraints on a possible jet break",
+          "6.7 Origin of the second bright episode",
+          "6.8 Multiwavelength comparison with the GRB population",
+          "7 Conclusions",
+          "Acknowledgements",
+          "DATA AVAILABILITY",
+          "References",
+          "Appendix A Additional details of the GBM spectral analysis",
+          "A.1 Effective response construction",
+          "A.2 Background estimation and uncertainty propagation",
+          "A.3 Exposure calculation and time-resolved extraction",
+          "A.4 Poisson–Gaussian likelihood",
+          "A.5 Blackbody implementation",
+          "A.6 Sensitivity tests",
+          "Appendix B Additional details of the LAT likelihood analysis",
+          "B.1 Likelihood implementation and source model",
+          "B.2 Test statistic and diffuse-normalization bounds",
+          "B.3 Energy-flux calculation and uncertainty propagation",
+          "B.4 Sensitivity to the background model",
+          "B.5 Updated temporal fit with fixed normalized exposure weights",
+          "Appendix C Additional details of the BAT spectral analysis",
+          "Appendix D Additional details of the optical/NIR and XRT analysis",
+          "D.1 Test for a late-time X-ray break",
+          "Instructions for reporting errors"
+        ],
+        "section_coverage": {
+          "problem": true,
+          "assumptions": true,
+          "method": true,
+          "results": true,
+          "limitations": true,
+          "appendices": "checked"
+        }
+      },
+      "analysis": {
+        "origin": "ai",
+        "model": "gpt-6-luna",
+        "analyzed_at": "2026-10-26T18:07:46.318Z",
+        "title_zh": "GRB 260924A：极端能量学、明亮 GeV 辐射以及卓越的 X 射线与光学光度",
+        "reason": "该文详细报道并建模了极端明亮伽马暴 GRB 260924A，其红移高达 $z=3.51$，各向同性等效伽马射线释放能量 $E_{\\gamma,\\mathrm{iso}} \\simeq 9.79\\times 10^{54}\\,\\mathrm{erg}$，与 GRB 221009A 相当；Fermi/LAT 探测到最高达 $43.31\\,\\mathrm{GeV}$ 的光子。论文建立了包含前向激波同步辐射与正/反向激波同步自康普顿（SSC）过程的分层介质余辉模型，对相对论激波微观物理参数与极端能量引擎提供了重要约束。",
+        "result": "测定暴源红移为 $z=3.51\\pm 0.10$，$1\\text{--}10{,}000\\,\\mathrm{keV}$ 能段各向同性释放能量高达 $E_{\\gamma,\\mathrm{iso}} \\simeq 9.79\\times 10^{54}\\,\\mathrm{erg}$，初始各向同性动能 $E_{\\mathrm{K,iso}} \\simeq 7.0\\times 10^{55}\\,\\mathrm{erg}$，瞬时辐射效率 $\\eta_\\gamma \\simeq 0.12$。Fermi/LAT 探测到最高达 $43.31\\,\\mathrm{GeV}$ 的高能光子（在 $82.24\\,\\mathrm{s}$ 到达）。晚期余辉衰减指数为 $\\alpha_{\\rm opt}=1.46\\pm 0.01$ 与 $\\alpha_X=1.57\\pm 0.04$，在慢冷却闭合关系 $\\alpha^{\\rm syn}=\\frac{3(p-1)}{4}+\\frac{k}{2(4-k)}$ 下排除了常规均匀介质（$k=0$）或纯自由星风（$k=2$），测定星周介质为密度梯度介质 $n(R)\\propto R^{-k}$（$k\\simeq 1.0\\text{--}1.3$，基准 $k=1.2$），电子谱指数 $p\\simeq 2.75$。早期 $70.04\\text{--}164.9\\,\\mathrm{s}$ 处的 LAT 通量超出后续外推达 $2.25\\pm 0.59$ 倍，由厚壳层反向激波 SSC 过程主导解释；激波微观磁能分配比为 $R_B\\equiv (\\varepsilon_{B_r}/\\varepsilon_{B_f})^{1/2}\\simeq 2.6$。",
+        "reading_entry": "5 Description of the multiwavelength afterglow observations",
+        "problem": "解释极端高能暴 GRB 260924A 的能量学分配机制、在 $t\\sim 82\\,\\mathrm{s}$ 到达的 $43.31\\,\\mathrm{GeV}$ 等光子为何超出标准前向激波同步辐射理论极限 $E^{\\rm syn}_{\\rm max}$，以及早期 LAT 辐射过剩、X 射线再增亮与成层星周介质相互作用的微观物理图景。",
+        "method": "利用 Fermi/GBM、Fermi/LAT、Swift/BAT、Swift/XRT 以及多台地面光学/近红外望远镜进行多波段时变与时变能谱分析。通过非成箱极大似然法提取 LAT 能谱（$0.1\\text{--}1000\\,\\mathrm{GeV}$）与高能光子关联概率；在成层星周介质密度轮廓 $n(R)=n_{\\rm dec}(R/R_{\\rm dec})^{-k}$（固定 $k=1.2$）框架下，采用 `emcee` 进行前向激波同步辐射 + SSC 以及反向激波 SSC 联合马尔可夫链蒙特卡洛（MCMC）后验参数约束，同时包含曲率效应（$\\alpha=2+\\beta$）与 Klein-Nishina 截断检验。",
+        "assumptions": [],
+        "limits": [
+          "晚期 X 射线与光学数据中未观测到清晰稳健的喷流转折（jet break），因而无法直接确定喷流开角或几何束流修正后的真实能量释放。"
+        ],
+        "citation_leads": [
+          "GRB 260924A: Extreme Energetics, Bright GeV Emission, and Exceptional X-ray and Optical Luminosity: “Its isotropic-equivalent gamma-ray energy,\n$E_{\\gamma,\\mathrm{iso}}\\simeq 9.79\\times 10^{54}$ erg,\nplaces it among the most energetic GRBs observed.”",
+          "2.2 Fermi/LAT: “We analysed Fermi/LAT events within a $15^{\\circ}$ region of interest (ROI) centred on the Swift/XRT position, $(\\mathrm{RA},\\mathrm{Dec})=(133.76^{\\circ},12.04^{\\circ})$, over the 0.1–1000 GeV energy range.”",
+          "4.2 LAT high-energy events and spectral evolution: “The highest-energy event, 43.31 GeV, arrived at 82.24 s.”",
+          "5.4 A reverse-shock SSC interpretation of the early LAT excess: “The interval-averaged 0.1–1000 GeV photon flux during 70.04–164.9 s exceeds the backward extrapolation of the power-law fit to the four subsequent LAT intervals by a factor of $2.25\\pm 0.59$”",
+          "6.6 Constraints on a possible jet break: “A jet break remains possible, but the available observations provide neither a measured break time nor a robust lower bound on it. Consequently, we do not infer a jet opening angle or a beaming-corrected energy from these data.”",
+          "D.1 Test for a late-time X-ray break: “These data neither require a jet break nor provide a robust break epoch for the physical model.”"
+        ],
+        "research_progress": "确认了 GRB 260924A 为宇宙学红移 $z>3$ 处能量最极端的 GRB 之一（$E_{\\gamma,\\mathrm{iso}}\\sim 10^{55}\\,\\mathrm{erg}$）；证实其早期 GeV 辐射超额及其数十 GeV 光子无法由纯前向激波同步辐射解释，必须引入逆激波 SSC 组分；定量给出了介于风模型与恒星际介质之间的密度剖面指数 $k\\approx 1.2$ 及弱磁化抛射物特征（$R_B\\simeq 2.6$）。",
+        "figures": [
+          {
+            "url": "/arxiv-figures/2610.32861/LAT_Figure4_clean.png",
+            "caption": "Figure 8: Fermi /LAT temporal and spectral evolution of GRB 260924A. Top left: photon flux in 0.1–300 GeV; the orange curve shows the power-law fit to the four later intervals and its backward extrapolation, converted from the fitted 0.1–1000 GeV band. Top right: energy flux in 0.1–300 GeV. Middle left: fitted power-law spectra with uncertainty envelopes. Middle right: photon indices; the horizontal band shows the shared-index fit and its uncertainty. Bottom: energies and arrival times of all 404 selected events, with greyscale indicating their model-dependent source-association probabilities. Shading marks the bright BAT episodes. Horizontal bars span the spectral intervals; vertical bars indicate nominal $1\\sigma$ uncertainties. Times are relative to the GBM trigger.",
+            "label": "Fig. 8",
+            "category": "observational",
+            "category_badge": "观测总体曲线/能谱",
+            "physical_core": "展示 GRB 260924A 的 $0.1$–$300\\,\\mathrm{GeV}$ 光变、能流和谱演化，以及高能光子的到达时间与能量。图中早期 LAT 超额相对于后续幂律衰减的表现，可用于检验论文提出的反向激波 SSC 解释；高能光子也关联到同步辐射极限之外的 SSC 贡献。",
+            "is_schematic": false
+          },
+          {
+            "url": "/arxiv-figures/2610.32861/Swift_XRT_cosmology_spectral_v1.png",
+            "caption": "Figure 28: Rest-frame 0.3–10 keV isotropic-equivalent X-ray luminosity light curves of GRB 260924A (red) and the comparison bursts identified in the legend. Grey curves show 410 additional Swift /XRT GRBs with published redshifts and usable repository products. Luminosities are absorption-corrected and transformed to the rest-frame band using power-law spectra and the cosmology specified in Section 5.5. For GRB 260924A, interval-specific spectral conversions are used where available; mode-averaged conversions are retained elsewhere, including the flare. Times are divided by $(1+z)$, using the GBM trigger for GRB 260924A and repository time origins for the other events, including GRB 221009A. Only detections are shown; flares are retained. XRT products are from the UK Swift Science Data Centre ( Evans et al., 2009 ).",
+            "label": "Fig. 28",
+            "category": "observational",
+            "category_badge": "核心观测结果",
+            "physical_core": "比较 GRB 260924A 与 GRB 221009A 及其他 Swift/XRT 暴的静止系 $0.3$–$10\\,\\mathrm{keV}$ 各向同性等效光度随静止系时间的演化；图中保留耀发，并纳入 410 个有红移且数据可用的其他暴，为评估该暴在 X 射线余辉样本中的相对亮度提供直接依据。",
+            "is_schematic": false
+          }
+        ],
+        "unresolved_checks": [
+          "未进行独立同行评审或逐项复算。",
+          "源文件中的图像未进行视觉核对。"
+        ],
+        "potential_lineage": {
+          "status": "no_match",
+          "reason": "自动筛选未建立论文与组内 Work 的科学关系。",
+          "candidates": []
+        },
+        "prerequisite_works": []
+      }
     },
     {
       "arxiv_id": "2610.32913",
@@ -2146,10 +2892,101 @@
     {
       "arxiv_id": "2610.32935",
       "revision": 1,
+      "status": "ready",
       "source_fingerprint": "607b2d420bd1e1650b23a61a8ad91477f74b28dbe48c8d848626bd5d65a03d00",
-      "status": "failed",
-      "failure_reason": "fetch failed",
-      "priority": "worth_knowing"
+      "priority": "worth_knowing",
+      "coverage": {
+        "level": "body_partial",
+        "label": "已检查正文中支撑判断的指定章节",
+        "source_version": "arXiv:2610.32935v1",
+        "inspected_sections": [
+          "Introduction",
+          "Three subpopulations of binary black holes in mass, spin magnitudes and tilts following GWTC-5",
+          "I Introduction",
+          "II Methods",
+          "II.1 Model",
+          "II.2 Data and sampling",
+          "II.3 Population predictive distributions",
+          "III Results",
+          "III.1 Low-spin population",
+          "III.2 Medium-spin population",
+          "III.3 High-spin population",
+          "III.3.1 High-mass, high-spin population",
+          "III.3.2 Low-mass, high-spin population",
+          "III.4 Model Variations",
+          "IV Conclusions",
+          "Appendix A Details on methods and population models",
+          "A.1 Population model and hyperpriors",
+          "Appendix B Toy model injection and recovery",
+          "Appendix C Further results",
+          "C.1 Fiducial model: three populations and three flat regions",
+          "C.2 Three transitions and four flat regions",
+          "C.3 Four subpopulations",
+          "C.4 Broader hyperpriors for mass-ratio distribution",
+          "Appendix D Population assignments of individual binary systems",
+          "References",
+          "Instructions for reporting errors"
+        ],
+        "source_references": [
+          {
+            "kind": "arxiv_source_package",
+            "url": "https://export.arxiv.org/src/2610.32935v1",
+            "locator": "Introduction; Three subpopulations of binary black holes in mass, spin magnitudes and tilts following GWTC-5; I Introduction; II Methods; II.1 Model; II.2 Data and sampling; II.3 Population predictive distributions; III Results; III.1 Low-spin population; III.2 Medium-spin population; III.3 High-spin population; III.3.1 High-mass, high-spin population; III.3.2 Low-mass, high-spin population; III.4 Model Variations; IV Conclusions; Appendix A Details on methods and population models; A.1 Population model and hyperpriors; Appendix B Toy model injection and recovery; Appendix C Further results; C.1 Fiducial model: three populations and three flat regions; C.2 Three transitions and four flat regions; C.3 Four subpopulations; C.4 Broader hyperpriors for mass-ratio distribution; Appendix D Population assignments of individual binary systems; References; Instructions for reporting errors",
+            "description": "Complete, revision-matched arXiv TeX source package",
+            "sha256": "3c5394c2666a24af6c731ea8aaed48f171b0de972c61704574c37571308526d4"
+          }
+        ]
+      },
+      "analysis": {
+        "origin": "ai",
+        "model": "gpt-6-luna",
+        "analyzed_at": "2026-10-26T18:08:45.084Z",
+        "title_zh": "GWTC-5 之后基于质量、自旋大小与自旋倾角划分的双黑洞三个亚群",
+        "reason": "该研究基于 GWTC-5 的 259 个双黑洞并合事件，通过联合质量、自旋大小与倾角的多维统计推断，稳健解析出三个物理性质截然不同的 BBH 亚群，对检验孤立恒星演化、脉动对不稳定超新星（PPISN/PISN）质量隙边界以及星团/AGN 盘中的分级动力学并合通道具有重要天体物理参考价值。",
+        "result": "GWTC-5 样本支持存在三个 BBH 亚群：(1) **低自旋亚群（A）**：在 $m_{1} \\approx 35\\,M_{\\odot}$ 占主导（$\\eta_{A}(35\\,M_{\\odot}) = 0.8\\pm 0.1$），且支持零自旋假设（$\\log_{10}\\mathcal{B} = 6.1^{+0.2}_{-0.3}$）；(2) **中等自旋亚群（B）**：局限于低质量端 $m_{1} \\lesssim 20\\,M_{\\odot}$（在 $10\\,M_{\\odot}$ 处 $\\eta_{B} \\approx 0.4$），双黑洞具有适度自旋 $\\chi_{i} \\approx 0.2$ 且自旋倾向于轨道平行对齐；(3) **高自旋亚群（C）**：在对不稳定隙附近及以上占主导，主黑洞自旋 $\\chi_{1} = 0.7^{+0.3}_{-0.4}$，次黑洞自旋 $\\chi_{2} = 0.6^{+0.4}_{-0.4}$，倾角分布兼容完全各向同性（$\\zeta_{\\cos\\theta}^{C} = 0$），转变质量始于 $m^{\\eta}_{3} = 40^{+10}_{-10}\\,M_{\\odot}$ 并在 $m^{\\eta}_{4} = 60^{+40}_{-20}\\,M_{\\odot}$ 达到高自旋占优，与对不稳定超新星及分级动力学并合物理预期一致。",
+        "reading_entry": "III.3 High-spin population",
+        "problem": "双黑洞并合观测中主次星质量、自旋大小和自旋倾角间存在复杂的物理关联，如何从引力波数据中解耦这些维度以判断观测到的 BBH 是来自单一混合演化通道还是由机制相异的多物理亚群构成。",
+        "method": "构建了包含质量比 $q=m_{2}/m_{1}$、自旋大小 $(\\chi_{1}, \\chi_{2})$ 及倾角余弦 $(\\cos\\theta_{1}, \\cos\\theta_{2})$ 的分层贝叶斯群体模型，混合比例 $\\eta_{k}(m_{1})$ 采用分段常数与两段线性过渡的形式：$$p(\\boldsymbol{\\theta}\\mid\\boldsymbol{\\Lambda}) = p(z\\mid\\boldsymbol{\\Lambda}_{z})p(m_{1}\\mid\\boldsymbol{\\Lambda}_{m})\\sum_{k}\\eta_{k}(m_{1})p(q,\\boldsymbol{\\chi}_{1},\\boldsymbol{\\chi}_{2}\\mid\\boldsymbol{\\Lambda}_{\\chi}^{k})$$采用截断高斯混合模型（TGMM）似然估计器消除窄自旋分布下的蒙特卡洛方差发散，并利用 NUTS 采样与自旋求和排序确定亚群边界。",
+        "assumptions": [],
+        "limits": [],
+        "citation_leads": [
+          "II.1 Model: “In practice this is not the case, and we instead find three distinct populations occupying different regions of hyperparameter space.”",
+          "III.3 High-spin population: “The high spin population favors rapid spins on the primary, with $\\chi_{1}=0.7^{+0.3}_{-0.4}$ and a secondary spin magnitude more widely distributed but with support at high secondary spins as well, $\\chi_{2}=0.6^{+0.4}_{-0.4}$”",
+          "A.1 Population model and hyperpriors: “Each subpopulation $k\\in{A,B,C}$ is assigned a weight $\\eta_{k}(m_{1})$ that is piecewise-constant across three flat regimes of primary mass, connected by two linear transitions.”",
+          "C.1 Fiducial model: three populations and three flat regions: “The transition starts at $m^{\\eta}_{3}=40^{+10}_{-10}\\,M_{\\odot}$, consistent with the mass scale attributed by previous analyses to the onset of pair instability processes”"
+        ],
+        "research_progress": "相较于此前主要基于单一参数边际分布或粗粒度双组分模型的研究，本工作首次基于 GWTC-5 建立了质量依赖的自旋大小与倾角三亚群模型，定量给出了对不稳定转变特征质量标度 $m^{\\eta}_{3}=40^{+10}_{-10}\\,M_{\\odot}$，明确分离出了低自旋孤立星族与高自旋分级动力学并合星族。",
+        "figures": [
+          {
+            "url": "/arxiv-figures/2610.32935/eta_vs_m1.png",
+            "caption": "Figure 3: Inferred distributions for the mixing fractions $\\eta_{k}(m_{1})$ among the three populations, constrained to sum to unity. The three populations are labeled according to their distinct spin distributions (Figure 2 ). The low-spin population dominates for $m_{1}\\lesssim 60\\,M_{\\odot}$, especially near $m_{1}\\sim 35\\,M_{\\odot}$, while the medium-spin population has a comparable size for $m_{1}\\lesssim 15M_{\\odot}$. The high-spin component dominates at high masses $m_{1}\\gtrsim 60\\,M_{\\odot}$, with small but nonzero contribution at $m_{1}\\sim 20\\,M_{\\odot}$ extending towards higher masses.",
+            "label": "Fig. 3",
+            "category": "fitting",
+            "category_badge": "数据拟合与模型对比",
+            "physical_core": "展示三类自旋子群的混合比例如何随主黑洞质量 $m_1$ 变化：低自旋组在 $m_1\\lesssim60\\,M_{\\odot}$ 范围占主导，尤其在 $m_1\\sim35\\,M_{\\odot}$ 附近；中自旋组在 $m_1\\lesssim15\\,M_{\\odot}$ 时占比相近；高自旋组在 $m_1\\gtrsim60\\,M_{\\odot}$ 占主导，并在 $m_1\\sim20\\,M_{\\odot}$ 附近仍有较小但非零的贡献。",
+            "is_schematic": false
+          },
+          {
+            "url": "/arxiv-figures/2610.32935/component-chi-eff-chi-p-PPD-composite.png",
+            "caption": "Figure 12: Inferred marginal PPD for the effective spin parameters $\\chi_{\\mathrm{eff}}$ and $\\chi_{p}$. The concentration of the $\\chi_{\\mathrm{eff}}$ distribution for the low-spin population is enhanced by a singular Jacobian in the transformation from spin magnitudes and tilts to the effective spin parameters. Due to the very narrow extent of the posteriors of the low-spin population, which is not well resolved by 2D kernel density estimation, we display it only for the 1D marginals.",
+            "label": "Fig. 12",
+            "category": "fitting",
+            "category_badge": "数据拟合与模型对比",
+            "physical_core": "给出三类子群的有效自旋参数 $\\chi_{\\mathrm{eff}}$ 与进动自旋参数 $\\chi_p$ 的边缘后验预测分布（PPD），用于比较不同子群在可观测自旋组合上的差异。图注明确指出，低自旋组 $\\chi_{\\mathrm{eff}}$ 分布的集中性受到从自旋大小和倾角变换到有效自旋参数时奇异雅可比的增强；其二维后验过窄，故仅展示一维边缘分布。",
+            "is_schematic": false
+          }
+        ],
+        "unresolved_checks": [
+          "未进行独立同行评审或逐项复算。",
+          "源文件中的图像未进行视觉核对。"
+        ],
+        "potential_lineage": {
+          "status": "no_match",
+          "reason": "自动筛选未建立论文与组内 Work 的科学关系。",
+          "candidates": []
+        },
+        "prerequisite_works": []
+      }
     },
     {
       "arxiv_id": "2610.32949",
@@ -12344,6 +13181,197 @@
       "historical_edition_fingerprint": "c2593cfcf48a03dc393a232629d214db528a26ced1ff20f215c0d5cbdb59eb47"
     },
     {
+      "arxiv_id": "2610.32316",
+      "revision": 1,
+      "status": "ready",
+      "source_fingerprint": "dede811808c51b23ffef2fb178078c60da851c672d67ea34f8da5c0266335123",
+      "priority": "worth_knowing",
+      "coverage": {
+        "level": "body_partial",
+        "label": "已检查正文中支撑判断的指定章节",
+        "source_version": "arXiv:2610.32316v1",
+        "inspected_sections": [
+          "Introduction",
+          "Radio Galaxies as UHECR Sources in Light of Recent Microquasar Results",
+          "1 Introduction",
+          "2 Synchrotron Emission Probe of UHECR Source Candidates",
+          "2.1 Particle Acceleration Efficiency in the jets of SS 433 and the Inner Jets of Cen A",
+          "2.1.1 SS 433",
+          "2.1.2 Cen A Inner Jets",
+          "2.2 The Synchrotron Cutoff from the Outer Jets of Cen A",
+          "3 Episodic AGN Simulations & Proxy Electrons",
+          "4 Multiple Acceleration Sites",
+          "5 UHECR as Messengers About Their Sources",
+          "6 Conclusion",
+          "References",
+          "Instructions for reporting errors"
+        ],
+        "source_references": [
+          {
+            "kind": "arxiv_source_package",
+            "url": "https://export.arxiv.org/src/2610.32316v1",
+            "locator": "Introduction; Radio Galaxies as UHECR Sources in Light of Recent Microquasar Results; 1 Introduction; 2 Synchrotron Emission Probe of UHECR Source Candidates; 2.1 Particle Acceleration Efficiency in the jets of SS 433 and the Inner Jets of Cen A; 2.1.1 SS 433; 2.1.2 Cen A Inner Jets; 2.2 The Synchrotron Cutoff from the Outer Jets of Cen A; 3 Episodic AGN Simulations & Proxy Electrons; 4 Multiple Acceleration Sites; 5 UHECR as Messengers About Their Sources; 6 Conclusion; References; Instructions for reporting errors",
+            "description": "Complete, revision-matched arXiv TeX source package",
+            "sha256": "854c3ec36b41f5549b09c1e72b2eac70c9ad026ad7e4c046c330128f15c23f7d"
+          }
+        ]
+      },
+      "analysis": {
+        "origin": "ai",
+        "model": "gpt-6-luna",
+        "analyzed_at": "2026-10-26T18:02:03.167Z",
+        "title_zh": "基于微类星体最新结果视角下的射电星系作为超高能宇宙线（UHECR）起源研究",
+        "reason": "该工作结合微类星体 SS 433 的甚高能/超高能观测与射电星系 Cen A 的喷流性质，评估了相对论喷流中粒子加速效率与剪切加速机制，对于理解喷流极端粒子加速及 UHECR 起源具有参考价值。",
+        "result": "基于加速时标与逃逸时标平衡，推导出希拉斯极限 $E_{\\max}=\\beta\\eta^{-1}ZeBR$，在能量均分下要求源动能光度满足 $L_{\\rm KE}>3\\times 10^{43}\\frac{\\eta^2}{\\beta}\\left(\\frac{E_{p,{\\rm max}}}{10\\ {\\rm EeV}}\\right)^2\\ {\\rm erg\\ s}^{-1}$。利用同步辐射截断能量 $E_{\\gamma,{\\rm max}}^{\\rm sync}=\\frac{9}{4}\\frac{\\beta^2}{\\eta}\\frac{m_e c^2}{\\alpha}$ 诊断表明微类星体 SS 433 达近玻姆极限加速（$\\eta\\beta^{-2}<10^2$，$\\eta<10$），Cen A 内喷流满足 $\\eta<10^4$；喷流剪切加速机制能够高效将粒子加速至超高能，且 Cen A 在约 $30\\ {\\rm Myr}$ 前的间歇性爆发可自洽解释 UHECR 的能谱与天图分布。",
+        "reading_entry": "2 Synchrotron Emission Probe of UHECR Source Candidates",
+        "problem": "射电星系能否满足 UHECR 加速所要求的能量光度与极限加速效率，以及如何协调 Cen A 巨瓣较短的冷却年龄（$\\sim 30\\ {\\rm Myr}$）与其长动力学年龄、到达方向各向异性之间的矛盾。",
+        "method": "利用平流逃逸与玻姆/非玻姆加速时标对比构建希拉斯动能光度约束方程，通过高能同步辐射截止反推电子加速效率参数 $\\eta\\beta^{-2}$，并结合间歇性喷流数值模拟与流场跨向速度梯度的剪切加速模型进行综合理论推演。",
+        "assumptions": [
+          "间歇性 AGN 模拟中假定茧状区（cocoon）内的粒子扩散运行在玻姆散射极限能级。"
+        ],
+        "limits": [],
+        "citation_leads": [
+          "3 Episodic AGN Simulations & Proxy Electrons: “diffusion throughout the cocoon is assumed to operate at the Bohm level.”",
+          "4 Multiple Acceleration Sites: “The shear acceleration process, therefore, offers a promising mechanism for efficient particles acceleration in jets up to the ultra high energy scale.”"
+        ],
+        "research_progress": "将微类星体中证实的近玻姆高效粒子加速（$\\eta \\sim 1$）类比至射电星系尺度，指出剪切加速（shear acceleration）是克服逃逸损耗并将强子加速至 UHECR 能标的关键机制。",
+        "figures": [
+          {
+            "url": "/arxiv-figures/2610.32316/Matthews_hadrons.png",
+            "caption": "Figure 3: Left-panel: the steady state hadronic particle spectrum found within the cocoon region. Middle-panel: the steady-state hadronic particle spectrum found for the escaping particles from the cocoon. Right-panel: an ensemble of random snapshots of the hadronic particle spectrum both within the cocoon and outside the cocoon region. This figure is from [ 18 ].",
+            "label": "Fig. 3",
+            "category": "theoretical",
+            "category_badge": "核心物理演化图",
+            "physical_core": "展示 cocoon 区域内的稳态强子粒子谱、从 cocoon 逃逸的强子粒子谱，以及 cocoon 内外强子谱的随机时刻快照，可用于考察粒子加速、滞留与逃逸如何塑造超高能宇宙线粒子分布。",
+            "is_schematic": true
+          },
+          {
+            "url": "/arxiv-figures/2610.32316/Matthews_electrons.png",
+            "caption": "Figure 4: Top panel: the variation of jet luminosity with time adopted in the simulation, with 10 Myr snapshot regions indicated. Bottom panel inset: quasi-steady state electron spectrum. Bottom panel: quasi-steady state emission from electrons. The bashed vertical lines indicate the emission from “proxy electrons” whose cooling times match the escape time of UHECR hadrons. This figure is from [ 18 ].",
+            "label": "Fig. 4",
+            "category": "theoretical",
+            "category_badge": "核心物理演化图",
+            "physical_core": "上面板给出模拟采用的喷流光度随时间变化，下面板展示准稳态电子谱及其辐射；图中还标出冷却时间与 UHECR 强子逃逸时间相匹配的“proxy electrons”所对应的辐射。",
+            "is_schematic": true
+          }
+        ],
+        "unresolved_checks": [
+          "未进行独立同行评审或逐项复算。",
+          "源文件中的图像未进行视觉核对。"
+        ],
+        "potential_lineage": {
+          "status": "no_match",
+          "reason": "自动筛选未建立论文与组内 Work 的科学关系。",
+          "candidates": []
+        },
+        "prerequisite_works": []
+      },
+      "historical_edition": "announcement-2026-10-25",
+      "historical_edition_fingerprint": "c2593cfcf48a03dc393a232629d214db528a26ced1ff20f215c0d5cbdb59eb47"
+    },
+    {
+      "arxiv_id": "2610.32323",
+      "revision": 1,
+      "status": "ready",
+      "source_fingerprint": "0f6b08b3c76183fbb98526ef664da06280dc255ed31ac27f0dde275cc0b8345c",
+      "priority": "worth_knowing",
+      "coverage": {
+        "level": "body_partial",
+        "label": "已检查正文中支撑判断的指定章节",
+        "source_version": "arXiv:2610.32323v1",
+        "inspected_sections": [
+          "Introduction",
+          "A Framework for Analysing Nebular-Phase JWST Supernova Spectra with Application to Type Ic SN 2024aecx",
+          "1 Introduction",
+          "2 Theoretical Background: Obtaining Constraints from Emission Lines in LTE",
+          "3 Methodology",
+          "3.1 Analytical Formalism for Determining LTE of an atomic level",
+          "3.1.1 $ne,textcrit$ with respect to populating mechanisms",
+          "3.1.2 $ne,textcrit$ with respect to depopulating mechanisms",
+          "3.1.3 Is the level in LTE?",
+          "3.1.4 Comparing analytical and SUMO departure coefficients",
+          "3.2 Nebular spectral modeling with SUMO",
+          "3.3 Estimating Line Luminosities",
+          "3.4 Effective Collision Strengths",
+          "4 Observational Data",
+          "4.1 Extinction",
+          "5 Line-by-line analysis",
+          "5.1 Independent Constraints",
+          "5.1.1 [Ne II] 12.81: The O/Ne/Mg-zone filling factor",
+          "5.1.2 [Cl I] 11.33 and the nucleosynthesis of Chlorine",
+          "5.1.3 [Ar II] 6.985 and the Argon mass",
+          "5.1.4 [Ar III] 8.99 and [Ni III] 11.00: Situation-dependent Constraints",
+          "5.1.5 An Unidentified Line at 12.06 $mu$m",
+          "5.2 Related Constraints",
+          "5.2.1 [Ni ii] 1.939 and [Ni ii] 6.636: $TtextFeHe$ temperature constraints",
+          "5.2.2 [Ni ii] 6.636, [Ni iii] 7.349 and [Ni i] 7.507: The Ni ionisation fractions",
+          "5.2.3 [Co ii] 11.16, [Co iii] 11.89 and [Co i] 12.26: The Co ionisation fractions",
+          "5.2.4 [Ni ii] 6.636 and [Co ii] 11.16: The Ni/Fe production ratio",
+          "5.2.5 [Co II] 10.52 and [Ni II] 6.636: Optical depth",
+          "5.2.6 [Co ii] 11.16: The 56Ni mass",
+          "5.2.7 [Co ii] 10.52: $fmathrmFeHe$ and the Ni-bubble effect",
+          "5.2.8 [Ni II] 6.636: The stable Ni mass",
+          "5.2.9 Estimating $ne$ in the Fe/He zone",
+          "6 Summary",
+          "Acknowledgements",
+          "Data Availability",
+          "References",
+          "Appendix A Reliability of [Ni ii] 10.68 luminosity measurement",
+          "Appendix B SUMO Code Updates",
+          "Appendix C Extrapolations of $taus$",
+          "Appendix D Line Regime Plots",
+          "Instructions for reporting errors"
+        ],
+        "source_references": [
+          {
+            "kind": "arxiv_source_package",
+            "url": "https://export.arxiv.org/src/2610.32323v1",
+            "locator": "Introduction; A Framework for Analysing Nebular-Phase JWST Supernova Spectra with Application to Type Ic SN 2024aecx; 1 Introduction; 2 Theoretical Background: Obtaining Constraints from Emission Lines in LTE; 3 Methodology; 3.1 Analytical Formalism for Determining LTE of an atomic level; 3.1.1 $ne,textcrit$ with respect to populating mechanisms; 3.1.2 $ne,textcrit$ with respect to depopulating mechanisms; 3.1.3 Is the level in LTE?; 3.1.4 Comparing analytical and SUMO departure coefficients; 3.2 Nebular spectral modeling with SUMO; 3.3 Estimating Line Luminosities; 3.4 Effective Collision Strengths; 4 Observational Data; 4.1 Extinction; 5 Line-by-line analysis; 5.1 Independent Constraints; 5.1.1 [Ne II] 12.81: The O/Ne/Mg-zone filling factor; 5.1.2 [Cl I] 11.33 and the nucleosynthesis of Chlorine; 5.1.3 [Ar II] 6.985 and the Argon mass; 5.1.4 [Ar III] 8.99 and [Ni III] 11.00: Situation-dependent Constraints; 5.1.5 An Unidentified Line at 12.06 $mu$m; 5.2 Related Constraints; 5.2.1 [Ni ii] 1.939 and [Ni ii] 6.636: $TtextFeHe$ temperature constraints; 5.2.2 [Ni ii] 6.636, [Ni iii] 7.349 and [Ni i] 7.507: The Ni ionisation fractions; 5.2.3 [Co ii] 11.16, [Co iii] 11.89 and [Co i] 12.26: The Co ionisation fractions; 5.2.4 [Ni ii] 6.636 and [Co ii] 11.16: The Ni/Fe production ratio; 5.2.5 [Co II] 10.52 and [Ni II] 6.636: Optical depth; 5.2.6 [Co ii] 11.16: The 56Ni mass; 5.2.7 [Co ii] 10.52: $fmathrmFeHe$ and the Ni-bubble effect; 5.2.8 [Ni II] 6.636: The stable Ni mass; 5.2.9 Estimating $ne$ in the Fe/He zone; 6 Summary; Acknowledgements; Data Availability; References; Appendix A Reliability of [Ni ii] 10.68 luminosity measurement; Appendix B SUMO Code Updates; Appendix C Extrapolations of $taus$; Appendix D Line Regime Plots; Instructions for reporting errors",
+            "description": "Complete, revision-matched arXiv TeX source package",
+            "sha256": "b3d91a5c1b350a9f1018b600fa890de67a5275364412f69f8f010807d42362d1"
+          }
+        ]
+      },
+      "analysis": {
+        "origin": "ai",
+        "model": "gpt-6-luna",
+        "analyzed_at": "2026-10-26T18:05:49.713Z",
+        "title_zh": "分析星云期 JWST 超新星光谱的理论框架及其在 Ic 型SN 2024aecx 中的应用",
+        "reason": "本文构建了一套结合 SUMO NLTE 模型的解析框架，用于利用单历元 JWST 中红外星云期光谱直接求解剥层超新星（SESN）的光学深度、激发温度及充满因子，为揭示中心引擎核合成产额与放射性加热的 Ni 气泡动力学提供了关键分析手段。",
+        "result": "通过对 SN 2024aecx（$167\\,\\mathrm{d}$）的解谱迭代，测得 Fe/He 区温度 $T_{\\mathrm{FeHe}} = 3680^{+88}_{-95}\\,\\mathrm{K}$，关键禁线光深 $\\tau_{[\\mathrm{Ni\\,II}]\\,6.636} = 0.97^{+0.20}_{-0.18}$、$\\tau_{[\\mathrm{Co\\,II}]\\,10.52} = 5.89^{+3.88}_{-2.80}$；得出 $^{56}\\mathrm{Ni}$ 质量 $M(^{56}\\mathrm{Ni}) = 0.051^{+0.034}_{-0.022}\\,M_\\odot$、稳定镍质量 $M(^{58}\\mathrm{Ni}) = 1.8^{+0.4}_{-0.3} \\times 10^{-3}\\,M_\\odot$；Ni/Fe 质量比为 $0.036$，对应中子过剩 $\\eta = 1.2 \\times 10^{-3}$；Fe/He 区充满因子仅为 $f_{\\mathrm{FeHe}} = 0.059^{+0.013}_{-0.012}$，证实放射性加热引起的 Ni 气泡膨胀效应极弱（密度对比因子 $\\chi \\approx 1 - 3$）；测定 $M_{\\mathrm{Cl}} = 5.1^{+2.0}_{-1.6} \\times 10^{-4}\\,M_\\odot$，支持 O-C 壳层合并核合成路径。",
+        "reading_entry": "2 Theoretical Background: Obtaining Constraints from Emission Lines in LTE",
+        "problem": "光学波段星云期禁线光度呈 $\\exp(-E_u/kT)$ 指数依赖，对温度高度敏感且多处于非局域热动平衡（NLTE）；而中红外波段缺乏一套系统评估发射线局域热动平衡（LTE）适用性、谱线光学厚度修正及利用单历元光谱定量提取超新星抛射物物理参数的自洽解析框架。",
+        "method": "推导了能级退布居临界电子密度公式：$$n_{e,\\text{crit, d}}=\\frac{\\sum^{x-1}_{i=1}A_{xi}\\beta_{s,xi}}{\\frac{D(T)}{g_{x}}\\left(\\sum^{imax}_{i=x+1}\\mathit{\\Upsilon}_{xi}e^{-\\Delta E_{ix}/(kT)}+\\sum^{x-1}_{i=1}\\mathit{\\Upsilon}_{xi}\\right)}$$结合 Sobolev 光深 $\\tau_s = \\frac{1}{8\\pi}\\frac{g_u}{g_l}A\\lambda^3 n_l \\left(1 - \\frac{g_l}{g_u}\\frac{n_u}{n_l}\\right)t$ 判定发射线 regime（光学薄 LTE、光学厚 LTE 或 NLTE）；更新了铁族 M1 禁线的碰撞激发参数 $\\mathit{\\Upsilon}$，并在同源膨胀下利用 [Ni II]、[Co II] 等特征发射线对温度、电离度和光深进行自洽联立迭代求解。",
+        "assumptions": [
+          "抛射物处于同源膨胀状态，具有单一的特征膨胀速度与时间标度"
+        ],
+        "limits": [
+          "中性原子（如 Ni I 和 Co I）的电子碰撞强度 $\\mathit{\\Upsilon}$ 与复合率系数严重匮乏，影响中性成分电离度的精确测定"
+        ],
+        "citation_leads": [
+          "2 Theoretical Background: Obtaining Constraints from Emission Lines in LTE: “Assuming a single temperature for all ions of a certain species is a ’one-zone’ simplification, but for most elements with emission lines in the MIR (e.g. Ne, Ar, Fe, Co, Ni), the majority of the mass of the ion is in fact concentrated in”",
+          "3.1.3 Is the level in LTE?: “Except for levels in the ground-state multiplet, LTE population is in the majority of cases an overestimation of the actual population.”",
+          "5.2.4 [Ni ii] 6.636 and [Co ii] 11.16: The Ni/Fe production ratio: “The Ni/Fe mass ratio in SNe (originating from stable Ni isotopes (primarily 58Ni) and 56Ni, respectively) is of particular interest, as it is a tracer of the neutron excess $\\eta=1-2\\,Y_{e}$ at the time of explosion”",
+          "5.2.5 [Co II] 10.52 and [Ni II] 6.636: Optical depth: “from our iterative scheme, we obtain $\\tau_{[\\text{Ni\\,{ii}}]\\,6.636}$ = 0.97${}^{+0.20}_{-0.18}$.”",
+          "6 Summary: “In general, the MIR spectral region in SNe is dominated by iron group lines, in particular of Co and Ni.”"
+        ],
+        "research_progress": "建立了利用中红外低激发禁线分析超新星抛射物的判据系统（推荐安全阈值 $\\xi \\equiv n_e/n_{e,\\mathrm{crit}} \\ge 5$）；给出了基于光深比值 $R(T,t) \\equiv \\tau_{\\mathrm{[Co\\,II]\\,10.52}} / \\tau_{\\mathrm{[Ni\\,II]\\,6.636}}$ 测定抛射物绝对几何填充因子与真实质量的定标方法。",
+        "figures": [],
+        "unresolved_checks": [
+          "未进行独立同行评审或逐项复算。",
+          "源文件中的图像未进行视觉核对。"
+        ],
+        "potential_lineage": {
+          "status": "no_match",
+          "reason": "自动筛选未建立论文与组内 Work 的科学关系。",
+          "candidates": []
+        },
+        "prerequisite_works": []
+      },
+      "historical_edition": "announcement-2026-10-25",
+      "historical_edition_fingerprint": "c2593cfcf48a03dc393a232629d214db528a26ced1ff20f215c0d5cbdb59eb47"
+    },
+    {
       "arxiv_id": "2610.32344",
       "revision": 1,
       "status": "ready",
@@ -12434,6 +13462,79 @@
         "figures": [],
         "unresolved_checks": [
           "未进行独立同行评审或逐项复算。"
+        ],
+        "potential_lineage": {
+          "status": "no_match",
+          "reason": "自动筛选未建立论文与组内 Work 的科学关系。",
+          "candidates": []
+        },
+        "prerequisite_works": []
+      },
+      "historical_edition": "announcement-2026-10-25",
+      "historical_edition_fingerprint": "c2593cfcf48a03dc393a232629d214db528a26ced1ff20f215c0d5cbdb59eb47"
+    },
+    {
+      "arxiv_id": "2610.32371",
+      "revision": 1,
+      "status": "ready",
+      "source_fingerprint": "9c8c7ee0d226525cc1a3632d8bfb924f320740d9759b1e97ef469cf615641748",
+      "priority": "skip",
+      "coverage": {
+        "level": "body_partial",
+        "label": "已检查正文中支撑判断的指定章节",
+        "source_version": "arXiv:2610.32371v1",
+        "inspected_sections": [
+          "Estimation Of The Mass And The Spin Of The Neutron Star 4U 1728-34 Using Triples Of X-Ray Quasi-Periodic Oscillations",
+          "INTRODUCTION",
+          "THE ATOLL SOURCE 4U 1728 -34",
+          "FREQUENCY MODELING",
+          "FREQUENCY EQUATIONS AND THE ERROR PROPAGATION METHOD",
+          "MASS AND SPECIFIC ANGULAR MOMENTUM OF THE ATOLL SOURCE 4U 1728 -34",
+          "CONCLUSION",
+          "ACKNOWLEDGMENT",
+          "REFERENCES"
+        ],
+        "source_references": [
+          {
+            "kind": "arxiv_source_package",
+            "url": "https://export.arxiv.org/src/2610.32371v1",
+            "locator": "Estimation Of The Mass And The Spin Of The Neutron Star 4U 1728-34 Using Triples Of X-Ray Quasi-Periodic Oscillations; INTRODUCTION; THE ATOLL SOURCE 4U 1728 -34; FREQUENCY MODELING; FREQUENCY EQUATIONS AND THE ERROR PROPAGATION METHOD; MASS AND SPECIFIC ANGULAR MOMENTUM OF THE ATOLL SOURCE 4U 1728 -34; CONCLUSION; ACKNOWLEDGMENT; REFERENCES",
+            "description": "Complete, revision-matched arXiv TeX source package",
+            "sha256": "8cfcfa1cfd42fba155446744c253805bc74628d915ce863e72bac34a5f7c19cb"
+          }
+        ]
+      },
+      "analysis": {
+        "origin": "ai",
+        "model": "gpt-6-luna",
+        "analyzed_at": "2026-10-26T18:00:35.616Z",
+        "title_zh": "利用X射线准周期振荡三元组估计中子星 4U 1728-34 的质量和自旋",
+        "reason": "该工作利用 RXTE 对低质量 X 射线双星环礁源 4U 1728-34 观测到的 QPO 三元组，通过测地线进动等唯象模型求解中子星质量和无量纲自旋参数，属于经典吸积致密星时变谱分析，与 FRB/PRS、超新星中心引擎、相对论喷流、激波破越及高能瞬变源核心方向无实质关联。",
+        "result": "通过隐函数微分与误差传递方法求解非线性代数方程组，得到不同 QPO 模型下 4U 1728-34 的加权平均质量 $M_{\\mathrm{av}}$ 与无量纲角动量 $a_{\\mathrm{av}}$：TP 模型为 $M_{\\mathrm{av}} = 2.62 \\pm 0.02\\,M_\\odot$、$a_{\\mathrm{av}} = 0.35 \\pm 0.01$；TP1 模型为 $M_{\\mathrm{av}} = 2.89 \\pm 0.02\\,M_\\odot$、$a_{\\mathrm{av}} = 0.35 \\pm 0.01$；TD 模型为 $M_{\\mathrm{av}} = 3.89 \\pm 0.06\\,M_\\odot$、$a_{\\mathrm{av}} = 0.61 \\pm 0.04$；WD 模型为 $M_{\\mathrm{av}} = 3.76 \\pm 0.09\\,M_\\odot$、$a_{\\mathrm{av}} = 0.61 \\pm 0.01$。TP 和 TP1 模型给出的质量与自旋符合常规中子星上限与 Kerr 度规限制（$a \\le 0.4$），而 TD 与 WD 模型的质量和自旋显著偏高。",
+        "reading_entry": "MASS AND SPECIFIC ANGULAR MOMENTUM OF THE ATOLL SOURCE 4U 1728 -34",
+        "problem": "如何利用 X 射线双星功率密度谱中同时探测到的低频 QPO、较低千赫兹 QPO 和较高千赫兹 QPO 三元组观测频率，结合测地轨道频率模型精确反演中子星的核心物理参数（质量 $M$、比角动量 $a$ 及辐射轨道半径 $r$）及其统计误差。",
+        "method": "将低频 QPO 对应为 Lense-Thirring 节点进动频率 $\\nu_{LF} = \\nu_{\\mathrm{nod}} = \\nu_\\phi - \\nu_\\theta$，并分别结合四种高频 QPO 模型：总进动模型 TP（$\\nu_L = \\nu_\\theta - \\nu_r$, $\\nu_U = \\nu_\\theta$）、TP1（$\\nu_L = \\nu_\\theta - \\nu_r$, $\\nu_U = \\nu_\\phi$）、扭曲盘模型 WD（$\\nu_L = 2(\\nu_\\phi - \\nu_r)$, $\\nu_U = 2\\nu_\\phi - \\nu_r$）及潮汐瓦解模型 TD（$\\nu_L = \\nu_\\phi$, $\\nu_U = \\nu_\\phi + \\nu_r$），构建三元非线性方程组 $f_i(M, a, r) - \\nu_i = 0$；通过隐函数微分求雅可比行列式，利用误差传递公式 $\\sigma_a^2 = \\sum (\\partial a / \\partial \\nu_i)^2 \\sigma_{\\nu_i}^2$ 计算参数误差，最后取加权平均值 $M_{\\mathrm{av}} = (\\sum M_i / \\sigma_i^2) / (\\sum 1 / \\sigma_i^2)$。",
+        "assumptions": [
+          "在时段 10、11 和 12 探测到的低频 QPO、lower kHz QPO 和 upper kHz QPO 三个峰在物理上是同时产生的。",
+          "低频 QPO 源于中子星自转拖曳导致的 Lense-Thirring 节点进动（$\\nu_{LF} = \\nu_\\phi - \\nu_\\theta$），高频 QPO 可由测试粒子的测地线轨道频率组合描述。"
+        ],
+        "limits": [
+          "分析仅依赖于 19 个观测时段中仅有的 3 个具备完整三元组的平均功率谱数据，样本量极小。",
+          "不同理论模型给出的质量和自旋参数差异巨大（如 TD/WD 模型得到的质量接近或超过 $3.8\\,M_\\odot$，远超中子星理论最大质量）。"
+        ],
+        "citation_leads": [
+          "INTRODUCTION: “The aim of our investigation is using data from the X-ray power-density spectrum of the atoll source 4U 1728-34 to assess the mass and the specific angular momentum of the central neutron star.”",
+          "THE ATOLL SOURCE 4U 1728 -34: “Only for 3 of them – time intervals 10,11 and 12 all three frequencies – the low $\\nu _ { _ { L F _ { 0 } } }$ and the lower $\\nu _ { _ { L _ { 0 } } }$ and upper $\\nu _ { { \\scriptscriptstyle U _ { 0 } } }$ high frequencies exist. We will assume that they appear simultaneously.”",
+          "FREQUENCY MODELING: “The low frequency has a value that links it to the Lense-Thirring precession: $\\nu _ { L F } = \\nu _ { n o d } = \\nu _ { \\phi } - \\nu _ { \\theta } .$ It is assumed to be a result of interaction between the orbits of the netron star itself and the accretion disk that surrounds it.”",
+          "FREQUENCY EQUATIONS AND THE ERROR PROPAGATION METHOD: “In order to assess the errors of the parameters we apply the following error propagation formulas”",
+          "MASS AND SPECIFIC ANGULAR MOMENTUM OF THE ATOLL SOURCE 4U 1728 -34: “The TD and WD model shows results exceeding this limit – between 3.90 and 3.76 solar masses respectively.”",
+          "CONCLUSION: “The results can be divided into two groups. In the first group are the total precession models TP and TP1. They show specific angular momentum values consistent with Kerr metrics (a≤0.4) and masses near the upper boundary for a neutron star but they do not exceed it.”"
+        ],
+        "research_progress": "对 4U 1728-34 建立了联立三元 QPO 隐函数微分反演参数与误差传播的方法体系，比较了 TP、TP1、WD 与 TD 四类模型在中子星参数空间中的适用性，明确排除了给出过高质量的 TD 和 WD 模型。",
+        "figures": [],
+        "unresolved_checks": [
+          "未进行独立同行评审或逐项复算。",
+          "源文件中的图像未进行视觉核对。"
         ],
         "potential_lineage": {
           "status": "no_match",
@@ -12548,6 +13649,89 @@
       "historical_edition_fingerprint": "c2593cfcf48a03dc393a232629d214db528a26ced1ff20f215c0d5cbdb59eb47"
     },
     {
+      "arxiv_id": "2610.32430",
+      "revision": 1,
+      "status": "ready",
+      "source_fingerprint": "f7ec039f7a67f4d849d124c6ebaf9e93a473c1bad386825aed71a38a0f12be2c",
+      "priority": "worth_knowing",
+      "coverage": {
+        "level": "body_partial",
+        "label": "已检查正文中支撑判断的指定章节",
+        "source_version": "arXiv:2610.32430v1",
+        "inspected_sections": [
+          "Introduction",
+          "Local Analogs of Little Red Dots: Clues to the X-ray WeaknessFacilities: EP-FXT, GALEX, SDSS, SPHEREx, WISE",
+          "I The LRD X-ray bottleneck",
+          "II X-ray reveals two types of LLRDs",
+          "II.1 Direct view from EP-FXT X-ray images",
+          "II.2 Benchmarking LLRD X-ray emission against local AGNs and LRDs",
+          "III Implications for high-redshift LRDs",
+          "IV Summary and future prospects",
+          "Appendix A LLRD EP-FXT observation summary",
+          "Appendix B eFXTDAS: enhanced data analysis tools for EP-FXT",
+          "Appendix C Extraction-based detection significance",
+          "Appendix D Balmer decrement/break measurements",
+          "Appendix E Spectral-fitting details and the X-normal LLRDs",
+          "Appendix F Kaplan-Meier estimate of the X-ray luminosity distribution",
+          "References",
+          "Instructions for reporting errors"
+        ],
+        "source_references": [
+          {
+            "kind": "arxiv_source_package",
+            "url": "https://export.arxiv.org/src/2610.32430v1",
+            "locator": "Introduction; Local Analogs of Little Red Dots: Clues to the X-ray WeaknessFacilities: EP-FXT, GALEX, SDSS, SPHEREx, WISE; I The LRD X-ray bottleneck; II X-ray reveals two types of LLRDs; II.1 Direct view from EP-FXT X-ray images; II.2 Benchmarking LLRD X-ray emission against local AGNs and LRDs; III Implications for high-redshift LRDs; IV Summary and future prospects; Appendix A LLRD EP-FXT observation summary; Appendix B eFXTDAS: enhanced data analysis tools for EP-FXT; Appendix C Extraction-based detection significance; Appendix D Balmer decrement/break measurements; Appendix E Spectral-fitting details and the X-normal LLRDs; Appendix F Kaplan-Meier estimate of the X-ray luminosity distribution; References; Instructions for reporting errors",
+            "description": "Complete, revision-matched arXiv TeX source package",
+            "sha256": "89ef249e6ab1e2b8e0014e7dda2ec24b32afb910c5d515d91c5cbf219e8bc05f"
+          }
+        ]
+      },
+      "analysis": {
+        "origin": "ai",
+        "model": "gpt-6-luna",
+        "analyzed_at": "2026-10-26T18:02:47.943Z",
+        "title_zh": "小红点的局域类似物：探寻其 X 射线暗弱的线索",
+        "reason": "利用爱因斯坦探针（EP-FXT）对红移 $z\\sim 0.3$ 的局域小红点类似物（LLRD）开展 X 射线观测与叠加分析，在静止系硬 X 射线波段获得高信噪比探测，有效排除了典型的无遮挡超爱丁顿吸积和极端康普顿巨厚遮蔽模型，为高红移 JWST 小红点（LRD）的致密核心吸积物理与 X 射线暗弱机制提供了明确的近邻基准约束。",
+        "result": "EP-FXT 在静止系 $2\\text{--}8\\,\\mathrm{keV}$ 波段（主要由 $2\\text{--}3\\,\\mathrm{keV}$ 光子贡献）以 $3.3\\sigma$ 显著性探测到了 X 射线暗弱（X-weak）LLRD 的叠加信号，得到静止系光度 $\\log L_{2-10} = 42.55_{-0.12}^{+0.08}\\,\\mathrm{erg\\,s^{-1}}$。该叠加光度比 1 型 AGN 的标准 $L_{\\mathrm{2keV}}^{\\mathrm{int}}-L_{2500}$ 标度低约 $0.55\\text{--}0.65\\,\\mathrm{dex}$。观测得到的相对硬能谱排除了典型的无遮挡超爱丁顿吸积模型（该模型软谱 $\\Gamma \\sim 3.4$ 会低估硬 X 射线约 $1.5\\,\\mathrm{dex}$）以及局域 AGN 状的康普顿巨厚遮蔽（即使零金属丰度下汤姆孙散射透射极限 $e^{-\\tau_{\\rm T}} = e^{-N_{\\rm H}\\sigma_{\\rm T}} \\simeq 12\\%$ 加上散射也低于测得的 $27\\%$ 透射比）。最简物理图像为：轻度本征弱冕（$\\Delta\\alpha_{\\rm ox}\\sim -0.1$ 至 $-0.2$）被康普顿薄介质（$N_{\\rm H} \\sim 10^{22\\text{--}23}\\,\\mathrm{cm}^{-2}$）遮蔽。",
+        "reading_entry": "II X-ray reveals two types of LLRDs",
+        "problem": "高红移（$z\\sim 4\\text{--}8$）JWST 发现的“小红点”（LRDs）普遍表现出极弱的 X 射线辐射，由于现有高红移 Chandra 深度叠加与单源极限灵敏度不足，无法区分其究竟源自未遮蔽的超爱丁顿吸积（产生极端软谱）、内禀 X 射线弱冕，还是重度康普顿巨厚（CT, $N_{\\rm H}\\gtrsim 10^{24.5}\\,\\mathrm{cm}^{-2}$）遮蔽。",
+        "method": "利用爱因斯坦探针（EP-FXT）对 6 颗红移 $z\\sim 0.3$ 的 LLRD 进行 $0.5\\text{--}4\\,\\mathrm{keV}$ 软 X 射线定点观测（曝光 3.4–15.7 ks）；使用开源分析工具包 eFXTDAS（`fxtcombine`）进行事件校准、耀斑过滤与 PSF 曝光加权图像叠加；在 Xspec 中建立吸收幂律模型拟合能谱，并使用 Xstack 进行多源静止系能谱叠加分析；结合 SDSS/pPXF 对光学巴耳末线（$\\mathrm{H}\\alpha, \\mathrm{H}\\beta, \\mathrm{H}\\gamma$）和巴耳末跳变强度 $\\mathrm{Balmer\\text{-}break} \\equiv \\langle f_\\nu \\rangle_{4000-4500\\,\\mathring{\\rm A}} / \\langle f_\\nu \\rangle_{3000-3500\\,\\mathring{\\rm A}}$ 进行解谱与参数交叉诊断。",
+        "assumptions": [],
+        "limits": [],
+        "citation_leads": [
+          "I The LRD X-ray bottleneck: “For sources of comparable intrinsic luminosity, reaching similar X-ray constraints at $z\\sim 0.3$ requires $\\sim 10^{3-4}$ less exposure than at $z\\sim 6$, depending on the source-to-background ratio.”",
+          "II.1 Direct view from EP-FXT X-ray images: “X-ray reveals a contrast aligned with the pre-existing optical differences: J0928 and J1154 are significantly detected in X-rays, whereas J1200, J0035, J0923, and J0850 are undetected or only marginally detected despite comparable or”",
+          "IV Summary and future prospects: “The simplest explanation consistent with both the X-ray and Balmer diagnostics is a mildly X-ray-weak corona, with $\\Delta\\alpha_{\\mathrm{ox}}\\sim-0.1$ to $-0.2$, viewed through Compton-thin material with $N_{\\mathrm{H}}\\sim”",
+          "Appendix A LLRD EP-FXT observation summary: “The exposure times were planned to yield at least a $3\\sigma$ detection for an intrinsic $210\\text{\\,}\\mathrm{k}\\mathrm{e}\\mathrm{V}$ luminosity $0.5\\text{\\,}\\mathrm{d}\\mathrm{e}\\mathrm{x}$ below that expected from the standard”",
+          "Appendix E Spectral-fitting details and the X-normal LLRDs: “Replacing the fully covering absorber with zpcfabs improves the fit by a further $\\Delta C=4.73$ and gives $N_{\\mathrm{H}}=9.01_{-3.27}^{+3.20}\\times 10^{22}\\,\\mathrm{cm}^{-2}$, $C_{f}=0.94_{-0.13}^{+0.04}$, and”"
+        ],
+        "research_progress": "首次通过近邻类似物（LLRD）的 EP-FXT 空间 X 射线探测证实，其 X 射线暗弱程度仅比标准 AGN 低 $\\sim 0.6\\,\\mathrm{dex}$，排除了极端超爱丁顿软谱与纯康普顿巨厚几何，明确提出了轻度弱冕（$\\Delta\\alpha_{\\rm ox}\\sim -0.1$ 至 $-0.2$）与康普顿薄致密气体柱密度（$N_{\\rm H}\\sim 10^{22\\text{--}23}\\,\\mathrm{cm}^{-2}$）相结合的自洽定标模型。",
+        "figures": [
+          {
+            "url": "/arxiv-figures/2610.32430/quickview_J1154.png",
+            "caption": "Figure 5: Example eFXTDAS quality-assessment summary for J115438.96+065025.0, generated with fxtcombine-quickview. From upper left to lower right, the panels show the stacked count-rate map and detected-source catalog, modeled background map, target-centered extraction geometry (overlaid with contaminating sources in the source/background extraction regions), stacked exposure map, 90%-encircled-energy PSF-radius map, and limiting-flux sensitivity map.",
+            "label": "Fig. 5",
+            "category": "theoretical",
+            "category_badge": "物理模型示意图",
+            "physical_core": "",
+            "is_schematic": true
+          }
+        ],
+        "unresolved_checks": [
+          "未进行独立同行评审或逐项复算。",
+          "源文件中的图像未进行视觉核对。"
+        ],
+        "potential_lineage": {
+          "status": "no_match",
+          "reason": "自动筛选未建立论文与组内 Work 的科学关系。",
+          "candidates": []
+        },
+        "prerequisite_works": []
+      },
+      "historical_edition": "announcement-2026-10-25",
+      "historical_edition_fingerprint": "c2593cfcf48a03dc393a232629d214db528a26ced1ff20f215c0d5cbdb59eb47"
+    },
+    {
       "arxiv_id": "2610.32497",
       "revision": 1,
       "status": "ready",
@@ -12587,6 +13771,98 @@
         "figures": [],
         "unresolved_checks": [
           "未进行独立同行评审或逐项复算。"
+        ],
+        "potential_lineage": {
+          "status": "no_match",
+          "reason": "自动筛选未建立论文与组内 Work 的科学关系。",
+          "candidates": []
+        },
+        "prerequisite_works": []
+      },
+      "historical_edition": "announcement-2026-10-25",
+      "historical_edition_fingerprint": "c2593cfcf48a03dc393a232629d214db528a26ced1ff20f215c0d5cbdb59eb47"
+    },
+    {
+      "arxiv_id": "2610.32509",
+      "revision": 1,
+      "status": "ready",
+      "source_fingerprint": "63f17c396844982b5d5a504b85ae9546106a9e90475493832ba5e5c4d814d7d6",
+      "priority": "skip",
+      "coverage": {
+        "level": "body_partial",
+        "label": "已检查正文中支撑判断的指定章节",
+        "source_version": "arXiv:2610.32509v1",
+        "inspected_sections": [
+          "1 Introduction",
+          "2 Analysis, methodology and event selection",
+          "2.1 Model for intensity at the shock wave boundary.",
+          "2.2 Sample",
+          "3 Data used",
+          "4 Discussion of results",
+          "5 Conclusions"
+        ],
+        "source_references": [
+          {
+            "kind": "arxiv_source_package",
+            "url": "https://export.arxiv.org/src/2610.32509v1",
+            "locator": "1 Introduction; 2 Analysis, methodology and event selection; 2.1 Model for intensity at the shock wave boundary.; 2.2 Sample; 3 Data used; 4 Discussion of results; 5 Conclusions",
+            "description": "Complete, revision-matched arXiv TeX source package",
+            "sha256": "1a4858b5764c57dbabc6e8111df2d938f54a50bbd226556c8f619557ef595af4"
+          }
+        ]
+      },
+      "analysis": {
+        "origin": "ai",
+        "model": "gpt-6-luna",
+        "analyzed_at": "2026-10-26T18:02:42.470Z",
+        "title_zh": "激波到达相关事件中福布斯效应观测振幅与理论计算振幅的比较",
+        "reason": "该论文研究日球层内行星际日冕物质抛射（ICME）及其激波前沿压缩区（sheath）对近地银河宇宙线强度的调制效应（福布斯下降），属于空间天气与日球层物理领域，与高能瞬变天体物理研究组关注的 FRB/PRS、超新星中心引擎、致密天体喷流或高能爆发等核心方向无实质联系。",
+        "result": "基于 Webb (1983) 解析模型计算激波面处宇宙线密度跃变 $N_1 - N_2 = \\frac{2\\mu_0^3}{1-\\mu_0^2}\\frac{j}{v\\cos\\psi}$，对第 23–25 太阳活动周的 20 个振幅大于 $5\\%$ 的福布斯事件进行检验：其中 8 个事件理论与观测高度吻合（相关系数 $\\rho > 0.8$），6 个事件基本一致但离散度较大，其余 6 个事件不吻合（主要归因于激波法向夹角 $\\psi$ 较小或非孤立激波干扰）。",
+        "reading_entry": "5 Conclusions",
+        "problem": "量化日冕物质抛射前沿激波压缩鞘层（sheath）的磁场与等离子体参数对福布斯效应初始阶段（前数小时）宇宙线通量调制的具体影响，检验激波面反射解析模型对观测下降振幅的适用性。",
+        "method": "利用全球中子监测网数据经全球光谱仪方法（GSM）反演有效刚度 $R_{\\mathrm{eff}} = 10\\ \\mathrm{GV}$ 的宇宙线各向同性强度，结合 OMNI、CfA、IPShocks 和 FEID 数据库提取激波速度 $V_{\\mathrm{sh}}$、磁场压缩比 $B_2/B_1$ 及法向角 $\\psi$；利用临界俯仰角余弦 $\\mu_0 = \\sqrt{1 - B_1/B_2}$ 与微分径向流 $j = -\\frac{V_{\\mathrm{sh}}p}{3}\\frac{\\partial N}{\\partial p}$ 计算动量分布函数在激波前后的跃跃跃变 $N_1 - N_2$。",
+        "assumptions": [
+          "宇宙线各向异性矢量在激波面法线方向的投影为零",
+          "银河宇宙线动量谱服从单幂律形式 $N(p) = a p^{-(\\gamma+2)}$，其中谱指数固定为 $\\gamma = 2.5$"
+        ],
+        "limits": [
+          "解析模型仅适用于激波通过后最初数小时的鞘层初始阶段，无法描述整个压缩区或磁云内部演化",
+          "当激波法线与上游磁场夹角 $\\psi$ 较小时理论失效",
+          "计算直接采用局部单点磁场测量，未沿粒子回旋半径所围体积进行积分平滑，导致在非单调强涨落磁场下离散度极大"
+        ],
+        "citation_leads": [
+          "1 Introduction: “The ability of coronal mass ejections (CMEs) including the shock waves and compression regions that precede bodies of CMEs to dictate the behavior of cosmic rays has been repeatedly demonstrated”",
+          "2.1 Model for intensity at the shock wave boundary.: “N_{1}-N_{2}=\\frac{2\\mu_{0}^{3}}{1-\\mu_{0}^{2}}\\frac{j}{v\\cos\\psi},j=-\\frac{V_{sh}p}{3}\\frac{\\partial N}{\\partial p}”",
+          "2.1 Model for intensity at the shock wave boundary.: “This assumption is well justified because the observed radial anisotropy of galactic cosmic rays is small. We assume that the galactic CR spectrum is a power law function on momentum N(p)=ap^{-(\\gamma+2)}, where \\gamma=2.5”",
+          "4 Discussion of results: “the agreement between theory and observation was found to be good in 8 cases and satisfactory in 6 cases the latter likely due to the need to integrate the magnetic field over a volume defined by the gyroradius.”",
+          "5 Conclusions: “Among the events examined, only one-third show good agreement between theory and measurements (\\rho>0.8). A second group also comprising one-third of the events exhibits only qualitative agreement”",
+          "5 Conclusions: “The approach proposed by Webb (1983) is applicable only during the initial period (the first few hours) of the plasma sheath region. To provide a complete description of cosmic-ray behavior throughout the entire plasma compression region, it is necessary to develop a theory applicable to this entire domain.”",
+          "4 Discussion of results: “as the angle \\psi that is the angle between the shock front normal and the magnetic field ahead of the front is small, the theory is not valid for events of this type.”"
+        ],
+        "research_progress": "对 20 次强福布斯事件定量检验了激波界面磁镜反射解析模型，给出了约三分之一优、三分之一满意、三分之一差的符合度统计，并指明了需发展在回旋半径尺度积分磁场的新方法以改进模型。",
+        "figures": [
+          {
+            "url": "/arxiv-figures/2610.32509/Figure_1.png",
+            "caption": "Figure 1: Example of good theory-measurement agreement. CR intensity according to GSM data (left scale) and interplanetary magnetic field induction (right scale) for the Forbush effect 2005-05-16. The right scale also shows induction of $z$ - component of magnetic field (vertical lines) and solar wind speed (dots). The green vertical dashed lines mark the passage of a shock wave associated with an interplanetary coronal mass ejection (ICME), while the yellow and blue shaded areas correspond to the sheath and magnetic cloud (MC), respectively. The area between the two red vertical dashed lines corresponds to the ICME.",
+            "label": "Fig. 1",
+            "category": "fitting",
+            "category_badge": "数据拟合与模型对比",
+            "physical_core": "展示 2005-05-16 Forbush 效应中宇宙射线强度与星际磁场变化，并标出激波、鞘区、磁云及 ICME 的位置；该事件用于说明理论与观测符合较好的情形。",
+            "is_schematic": false
+          },
+          {
+            "url": "/arxiv-figures/2610.32509/Figure_3.png",
+            "caption": "Figure 3: Example of poor agreement between theory and measurements for the Forbush effect on March 8, 2012 (notation is the same as in Fig. 1).",
+            "label": "Fig. 3",
+            "category": "fitting",
+            "category_badge": "数据拟合与模型对比",
+            "physical_core": "展示 2012 年 3 月 8 日 Forbush 效应中宇宙射线强度与星际磁场变化，以及激波、鞘区、磁云和 ICME 的位置；该事件被用作理论与观测符合较差的例子。",
+            "is_schematic": false
+          }
+        ],
+        "unresolved_checks": [
+          "未进行独立同行评审或逐项复算。",
+          "源文件中的图像未进行视觉核对。"
         ],
         "potential_lineage": {
           "status": "no_match",
@@ -13007,6 +14283,104 @@
       "historical_edition_fingerprint": "c2593cfcf48a03dc393a232629d214db528a26ced1ff20f215c0d5cbdb59eb47"
     },
     {
+      "arxiv_id": "2610.32786",
+      "revision": 1,
+      "status": "ready",
+      "source_fingerprint": "2a83f23c12d9d467ac963eb6b6f649c6192daa07f746d566c8ed76f4f6301d3c",
+      "priority": "worth_knowing",
+      "coverage": {
+        "level": "body_partial",
+        "label": "已检查正文中支撑判断的指定章节",
+        "source_version": "arXiv:2610.32786v1",
+        "inspected_sections": [
+          "Introduction",
+          "Probing the star-forming environment of GRB across cosmic ages with high resolution X-ray spectroscopy",
+          "1 Introduction",
+          "2 Ionized absorbers in the close environment of GRBs",
+          "2.1 Time Evolving Photoionization in GRBs",
+          "2.2 Predicting narrow absorption lines",
+          "3 Narrow X-ray lines in nearby GRB afterglows with current high-resolution spectroscopy missions",
+          "3.1 XMM/RGS",
+          "3.1.1 RGS data reduction",
+          "3.1.2 Narrow lines with TEPID",
+          "3.2 XRISM and the closeby GRBs",
+          "3.2.1 Fluence distribution of GRB afterglows",
+          "4 From popII to popIII environments with NewAthena",
+          "4.1 Population study of the close environment across the Cosmic Ages",
+          "4.2 Rate of GRB observable by NewAthena",
+          "4.3 Telling popII from popIII environment?",
+          "5 Conclusions",
+          "References",
+          "Appendix A Additional tables and plots",
+          "Instructions for reporting errors"
+        ],
+        "source_references": [
+          {
+            "kind": "arxiv_source_package",
+            "url": "https://export.arxiv.org/src/2610.32786v1",
+            "locator": "Introduction; Probing the star-forming environment of GRB across cosmic ages with high resolution X-ray spectroscopy; 1 Introduction; 2 Ionized absorbers in the close environment of GRBs; 2.1 Time Evolving Photoionization in GRBs; 2.2 Predicting narrow absorption lines; 3 Narrow X-ray lines in nearby GRB afterglows with current high-resolution spectroscopy missions; 3.1 XMM/RGS; 3.1.1 RGS data reduction; 3.1.2 Narrow lines with TEPID; 3.2 XRISM and the closeby GRBs; 3.2.1 Fluence distribution of GRB afterglows; 4 From popII to popIII environments with NewAthena; 4.1 Population study of the close environment across the Cosmic Ages; 4.2 Rate of GRB observable by NewAthena; 4.3 Telling popII from popIII environment?; 5 Conclusions; References; Appendix A Additional tables and plots; Instructions for reporting errors",
+            "description": "Complete, revision-matched arXiv TeX source package",
+            "sha256": "e756af7f50933cf9f80010ec4738724fda9545635a99e9cdda33a49d8ad419a1"
+          }
+        ]
+      },
+      "analysis": {
+        "origin": "ai",
+        "model": "gpt-6-luna",
+        "analyzed_at": "2026-10-26T18:05:29.244Z",
+        "title_zh": "利用高分辨率 X 射线光谱跨越宇宙时标探测 GRB 恒星形成环境：从 XMM-Newton/RGS、XRISM/Resolve 到 NewAthena/X-IFU",
+        "reason": "该工作结合非平衡时变光电离模型 TEPID，针对高能瞬变源（GRB）在星周致密介质（$1\\sim 100\\ \\mathrm{pc}$）中的吸收特征展开系统分析，给出窄吸收线等效宽度预测、现役及未来 X 射线探测器（XRISM, NewAthena）对介质密度、金属度和 Pop II/III 判别的约束能力，与光电离、周星介质及致密天体高能观测密切相关。",
+        "result": "TEPID 模型预言近邻环境产生多相窄吸收线（静系 $\\mathrm{EW} \\sim 1\\text{--}10\\ \\mathrm{eV}$，其中 Fe K 壳层线 $\\mathrm{EW} \\sim 4\\text{--}10\\ \\mathrm{eV}$）；在 GRB 090618 的 RGS 光谱中以 $\\approx 3\\sigma$ 探测到 Fe-L 吸收线系并定出 $z=0.540\\pm 0.003$；XRISM 每年可观测约 3 例余辉中的 Fe-K 线；NewAthena 每年可跟进高达 50 例 $\\mathcal{F}\\gtrsim 0.1\\times 10^{-6}\\ \\mathrm{erg\\ cm^{-2}}$ 样本，可将密度 $\\log n_0$ 精度测至 $0.05\\ \\mathrm{dex}$、红移相对误差控制在 $\\lesssim 10^{-3}$，并通过 $\\mathrm{Fe/(Si,S)} \\lesssim 0.15$ 上限有效区分 Pop III 与 Pop II 环境。",
+        "reading_entry": "2.2 Predicting narrow absorption lines",
+        "problem": "GRB 瞬时强辐射会完全光电离 $\\lesssim 100\\ \\mathrm{pc}$ 尺度内的冷气体，使传统光学吸收线失效且传统的稳态光电离平衡模型因忽略极端非平衡与空间分层电离而不适用；软 X 射线过剩吸收揭示致密富金属介质，但现有低分辨率探测器无法解析其多相窄吸收线并精确测定周星介质物态与化学演化。",
+        "method": "升级非平衡时变光致电离程序 TEPID，扩充重元素截面、俄歇概率及解析 Voigt 线形计算；对 XMM/RGS 光谱采用 Cash 统计与 AIC 进行模型检验；基于 Swift 余辉积分流量分布与触发率标度关系 $N_{\\rm GRB(>\\mathcal{F}_{0})} \\approx 10^{3}\\times\\eta(>\\mathcal{F}_{0})\\times\\eta_{\\rm FOR}\\times\\eta_{\\rm GRBM}\\ \\mathrm{yr^{-1}}$ 评估探测率；对 XRISM/Resolve 与 NewAthena/X-IFU 进行吸收谱蒙特卡洛模拟与 MCMC 参数置信轮廓拟合。",
+        "assumptions": [
+          "Pop III 恒星形成环境具有富顶端（top-heavy）初始质量函数，导致重元素丰度（尤其是 Fe）相对于 $\\alpha$ 元素显著亏损"
+        ],
+        "limits": [],
+        "citation_leads": [
+          "2.1 Time Evolving Photoionization in GRBs: “The circumburst environment of a GRB is far from ionisation equilibrium. The extremely large rate of ionizing photons produced by a GRB quickly ionizes the surrounding medium at a rate much higher than it can recombine”",
+          "2.2 Predicting narrow absorption lines: “For Fe K lines, the rest-frame EW ranges from 4 to 10 eV, for S from 0.7 to 3 eV, for Si from 0.6 to 5 eV, while for Fe-L shell only 3 bursts present a line with EW above 0.1 eV.”",
+          "3.2.1 Fluence distribution of GRB afterglows: “In order to assess the feasibility of a follow-up observation of a GRB afterglow yielding a given fluence, we have analysed the full set of afterglow light curves produced by Swift and computed the integral distribution function of the”",
+          "4.2 Rate of GRB observable by NewAthena: “NewAthena can observe upto 50 GRB afterglow per year with $\\mathcal{F}\\gtrsim 0.1\\times 10^{-6}$ erg $\\mathrm{cm^{-2}}$ and upto 10 bright afterglows per year with $\\mathcal{F}\\gtrsim 0.5\\times 10^{-6}$ erg $\\mathrm{cm^{-2}}$.”",
+          "4.3 Telling popII from popIII environment?: “In the latter case, the ratio of Fe over Si and S leads to an upper limit $\\lesssim 0.15$, significantly below the unity ratio expected for a popII environment”"
+        ],
+        "research_progress": "将 TEPID 从连续谱吸收扩展至细致的窄 X 射线吸收线系预测，首次在 GRB 090618 的 RGS 数据中实现 Fe-L 线的联合探测，并系统定标了 XRISM 与 NewAthena 跨宇宙学时标（$z\\lesssim 7$）通过高分辨率 X 射线吸收线区分 Pop II 与 Pop III 星周介质的能力。",
+        "figures": [
+          {
+            "url": "/arxiv-figures/2610.32786/ufspec_compare.png",
+            "caption": "Figure 12: X-IFU unfolded spectrum for three distinct progenitor environments: pristine (violet: no metals), popII medium (green: Si and Fe) and a medium from popIII with top-heavy IMF (red: Si, but no Fe). The bottom panel plots the ratio of the counts normalised to the pristine case. For clarity of presentation, we have zoomed in on the 0.2-1 keV region. The absence of Fe-K absorption lines around 0.8 keV in the red spectrum as well as the absence of any lines in the pristine spectrum can be clearly seen. Note the narrow feature at 0.53 keV and the residual curvature at low energy of the pristine medium is produced by absorption by our Galaxy.",
+            "label": "Fig. 12",
+            "category": "observational",
+            "category_badge": "观测总体曲线/能谱",
+            "physical_core": "比较 pristine、Pop II 与具有 top-heavy IMF 的 Pop III 环境所产生的 X-IFU 光谱；谱线差异，尤其是 Fe-K 吸收线的有无，可用于区分这些高红移 GRB 周围介质的金属富集状态。",
+            "is_schematic": false
+          },
+          {
+            "url": "/arxiv-figures/2610.32786/compare_contours.png",
+            "caption": "Figure 9: Contours of size vs density estimated by fitting the XMM-PN spectra of the Paper I sample of GRBs. Plotted for comparison are the densities and sizes of gravitationally bound structures in the Universe in increasing order of size: Clusters inside star-forming regions (brown); Galactic (filled (uniform dense gas filling factor) and open grey points (dense gas filling factor of 0.3) and extragalactic (filled blue points) star-forming regions; globular cluster medium (light blue circles); the interstellar medium of spiral (green stars); irregular (blue-gray diamonds) and elliptical galaxies (purple triangles); galaxy cluster medium (red hexagons) and a WHIM filament (red cross). In the inset panel, the filled contours demonstrate the vast improvement obtained by fitting the X-IFU spectrum compared to the unfilled XMM-PN contours. All contours are plotted at 90%.",
+            "label": "Fig. 9",
+            "category": "fitting",
+            "category_badge": "数据拟合与模型对比",
+            "physical_core": "展示 GRB 样本由 XMM-PN 光谱拟合得到的吸收介质尺寸与密度约束，并与不同天体环境的密度—尺寸范围比较；嵌图对比 X-IFU 与 XMM-PN 的约束轮廓，体现未来观测对介质物理参数的诊断能力。",
+            "is_schematic": false
+          }
+        ],
+        "unresolved_checks": [
+          "未进行独立同行评审或逐项复算。",
+          "源文件中的图像未进行视觉核对。"
+        ],
+        "potential_lineage": {
+          "status": "no_match",
+          "reason": "自动筛选未建立论文与组内 Work 的科学关系。",
+          "candidates": []
+        },
+        "prerequisite_works": []
+      },
+      "historical_edition": "announcement-2026-10-25",
+      "historical_edition_fingerprint": "c2593cfcf48a03dc393a232629d214db528a26ced1ff20f215c0d5cbdb59eb47"
+    },
+    {
       "arxiv_id": "2610.32826",
       "revision": 1,
       "status": "ready",
@@ -13211,6 +14585,295 @@
       "historical_edition_fingerprint": "c2593cfcf48a03dc393a232629d214db528a26ced1ff20f215c0d5cbdb59eb47"
     },
     {
+      "arxiv_id": "2610.32845",
+      "revision": 1,
+      "status": "ready",
+      "source_fingerprint": "25744a2f359d8e2b08a815bfd665dd71cdd78ec4fc848be34f108360a22f44f0",
+      "priority": "skip",
+      "coverage": {
+        "level": "body_partial",
+        "label": "已检查正文中支撑判断的指定章节",
+        "source_version": "arXiv:2610.32845v1",
+        "inspected_sections": [
+          "Introduction",
+          "The Galactic Center $gamma$-ray Excess and the Look-Elsewhere Effect",
+          "I Introduction",
+          "II Methods",
+          "III Results",
+          "III.1 Overview",
+          "III.2 Example 1: Large starburst",
+          "III.3 Example 2: Excess present in higher energy channels and absent from low energy channel",
+          "III.4 Example 3: Centered excess with similarities to GCE",
+          "IV Discussion and Implications for the observed galactic center $gamma$-ray excess",
+          "Acknowledgments",
+          "References",
+          "Instructions for reporting errors"
+        ],
+        "source_references": [
+          {
+            "kind": "arxiv_source_package",
+            "url": "https://export.arxiv.org/src/2610.32845v1",
+            "locator": "Introduction; The Galactic Center $gamma$-ray Excess and the Look-Elsewhere Effect; I Introduction; II Methods; III Results; III.1 Overview; III.2 Example 1: Large starburst; III.3 Example 2: Excess present in higher energy channels and absent from low energy channel; III.4 Example 3: Centered excess with similarities to GCE; IV Discussion and Implications for the observed galactic center $gamma$-ray excess; Acknowledgments; References; Instructions for reporting errors",
+            "description": "Complete, revision-matched arXiv TeX source package",
+            "sha256": "c6c3ed7f7bb652efdf0941fafe9605517068a7e458b45593cb9ed0f91d5be879"
+          }
+        ]
+      },
+      "analysis": {
+        "origin": "ai",
+        "model": "gpt-6-luna",
+        "analyzed_at": "2026-10-26T18:04:00.874Z",
+        "title_zh": "银心伽马射线超与“别处寻找”效应",
+        "reason": "本文利用 FIRE-2 宇宙线磁流体力学模拟研究银心 GeV 伽马射线超（GCE）在非平衡、时变宇宙线输运下的涨落与天体物理成因，主要涉及银河系弥散伽马射线背景、宇宙线传播及暗物质间接探测争议，与高能瞬变天体物理组（FRB/PRS、超新星中心引擎、激波破越、相对论喷流等）核心方向无实质直接联系。",
+        "result": "银心区域内宇宙线扩散时标 $\\tau_{\\rm{diff}} \\sim (1\\,\\mathrm{kpc})^{2} / (3\\times 10^{29}\\,\\mathrm{cm}^{2}\\,\\mathrm{s}^{-1}) \\sim 1\\,\\mathrm{Myr}$ 与星际介质（ISM）扰动及时变演化时标相当，导致宇宙线输运处于非稳态；瞬态辐射相对于时间平均基准模板的残差幅度可比 Fermi GCE 高出数倍，且多处超新星爆发驱动的强强子相互作用可以在 $10^{\\circ}$ 范围内产生形态近似球对称、能谱在 $0.1\\text{--}100\\,\\mathrm{GeV}$ 剧烈演化的瞬态残差，与观测到的 GCE 高度吻合。",
+        "reading_entry": "Introduction",
+        "problem": "传统银河系弥散伽马射线背景模型（如 GALPROP）通常假设稳态或轴对称宇宙线输运，忽略了恒星形成爆发与局域星际介质扰动引起的时变非平衡输运，这可能导致低估天体物理背景的系统不确定度，甚至使单一时间快照下的银心伽马射线超（GCE）被误判为非标准物理（如暗物质湮灭）。",
+        "method": "基于 FIRE-2 模拟套件中的宇宙学多组分、能谱分辨宇宙线磁流体力学（CRMHD）模拟（银河系类似物 m12f 与 m12m），设定超新星注入能量的 $10\\%$ 转化为宇宙线（其中 $2\\%$ 为轻子），模拟 $\\pi^0$ 衰变、相对论非热韧致辐射与逆康普顿散射辐射，并将瞬时辐射与时间平均基准模板相减以提取残差特征。",
+        "assumptions": [],
+        "limits": [],
+        "citation_leads": [
+          "The Galactic Center $gamma$-ray Excess and the Look-Elsewhere Effect: “Comparing instantaneous emission to a time-averaged baseline, we find residuals up to several times larger than the Fermi GCE, with a wide range of spectral shapes and spatial morphologies.”",
+          "IV Discussion and Implications for the observed galactic center $gamma$-ray excess: “Within the central kpc, the CR diffusion time is approximately $\\tau_{\\rm{diff}}\\sim(1\\rm{\\,kpc})^{2}/3\\times 10^{29}\\rm{cm^{2}\\,s^{-1}}\\sim$ 1 Myr, which is comparable to the time scale on which the ISM and the GC $\\gamma$-ray spectrum”"
+        ],
+        "research_progress": "揭示了银心非平衡宇宙线输运产生的瞬态涨落（look-elsewhere effect）足以产生与 Fermi GCE 相似的球对称形态和能谱凸起，表明传统静态传播模型可能严重低估了宇宙线输运的时变天体物理背景不确定度。",
+        "figures": [
+          {
+            "url": "/arxiv-figures/2610.32845/GCE_spread_m12f_roi_10.png",
+            "caption": "Figure 3: The range of spectra of residuals for galaxies m12f (top) and m12m (bottom), in $10^{\\circ}$ (left) and $20^{\\circ}$ (right) ROIs; the shaded region shows the 25th and 75th percentiles from snapshots across a 460 to 20 Myr span. Different radial cuts ($r_{\\rm{cut}}=$ 0, 2, and 7 kpc) are shown by the different colored regions (blue, pink, and green, respectively). The measured Fermi-LAT excess in the $10^{\\circ}$ ROI is shown by the black dotted line. For all combinations of ROIs and radial cuts considered, the measured Fermi-LAT excess falls comfortably within the 25th and 75th percentiles, with many residuals considerably larger in magnitude.",
+            "label": "Fig. 3",
+            "category": "fitting",
+            "category_badge": "数据拟合与模型对比",
+            "physical_core": "比较模拟星系不同时间快照相对于基线弥散伽马射线模板的残差谱与 Fermi-LAT 银心超额。图中覆盖不同 ROI 和径向切除条件；观测超额落在模拟残差的第 25 至第 75 百分位范围内，说明时变宇宙线输运导致的弥散辐射起伏可产生与银心超额相当甚至更大的残差。",
+            "is_schematic": false
+          },
+          {
+            "url": "/arxiv-figures/2610.32845/GCE_plot_m12f_snap_1158_rfilt_7.0_lat_lim_0.0872665.png",
+            "caption": "Figure 6: An example of residual flux for m12f, for a snapshot in which the residual spectrum resembles the measured Fermi-LAT galactic center $\\gamma$ -ray excess; the 10 ∘ ROI is shown on top, and the 20 ∘ ROI on the bottom. The morphology is approximately spherical within the central 10 ∘, with some substructure occurring where there were several recent clustered supernovae.",
+            "label": "Fig. 6",
+            "category": "fitting",
+            "category_badge": "数据拟合与模型对比",
+            "physical_core": "展示一个模拟快照中与 Fermi-LAT 银心伽马射线超额谱形相似的残差，并给出 10° 与 20° ROI 的空间分布。残差在中央 10° 内近似球对称，但存在与近期成簇超新星相关的子结构，说明恒星源驱动的瞬变弥散辐射可同时呈现类似观测超额的谱形与形态。",
+            "is_schematic": false
+          }
+        ],
+        "unresolved_checks": [
+          "未进行独立同行评审或逐项复算。",
+          "源文件中的图像未进行视觉核对。"
+        ],
+        "potential_lineage": {
+          "status": "no_match",
+          "reason": "自动筛选未建立论文与组内 Work 的科学关系。",
+          "candidates": []
+        },
+        "prerequisite_works": []
+      },
+      "historical_edition": "announcement-2026-10-25",
+      "historical_edition_fingerprint": "c2593cfcf48a03dc393a232629d214db528a26ced1ff20f215c0d5cbdb59eb47"
+    },
+    {
+      "arxiv_id": "2610.32861",
+      "revision": 1,
+      "status": "ready",
+      "source_fingerprint": "094bf8878b268e76059fa6ebe96a30a555a200ac7629d4b3681247275085af12",
+      "priority": "must_read",
+      "coverage": {
+        "level": "full_body",
+        "label": "已检查版本匹配的完整 TeX 正文",
+        "source_version": "arXiv:2610.32861v1",
+        "inspected_sections": [
+          "Introduction",
+          "GRB 260924A: Extreme Energetics, Bright GeV Emission, and Exceptional X-ray and Optical Luminosity",
+          "1 Introduction",
+          "2 Observations and Data Analysis",
+          "2.1 Fermi/GBM",
+          "2.1.1 Light curves",
+          "2.1.2 Spectral analysis",
+          "2.2 Fermi/LAT",
+          "2.3 Swift/BAT",
+          "2.4 Swift/XRT",
+          "2.5 UV, optical, and near-infrared observations",
+          "3 Multiwavelength temporal evolution",
+          "3.1 Fermi/GBM and Swift/BAT light curves",
+          "3.2 Fermi/LAT light curve and inter-episode emission",
+          "3.3 Temporal structure and hardness evolution of the second bright episode",
+          "3.4 UV, optical, NIR, and X-ray evolution",
+          "4 Time-resolved gamma-ray spectra and LAT high-energy events",
+          "4.1 BAT spectra across the early episodes",
+          "4.2 LAT high-energy events and spectral evolution",
+          "4.3 GBM spectra of the bright episodes",
+          "5 Description of the multiwavelength afterglow observations",
+          "5.1 Late afterglow",
+          "5.2 Early afterglow",
+          "5.3 The X-ray rebrightening: connecting the early and late afterglow",
+          "5.4 A reverse-shock SSC interpretation of the early LAT excess",
+          "5.5 Constraints on the physical parameters",
+          "6 Physical implications of the proposed interpretation",
+          "6.1 Maximum synchrotron energy and SSC emission",
+          "6.1.1 Klein–Nishina effects",
+          "6.2 Ejecta magnetization",
+          "6.3 Electron energy partition and accelerated-electron fractions",
+          "6.4 Density profile of the circumburst medium",
+          "6.5 Prompt energetics and radiative efficiency",
+          "6.6 Constraints on a possible jet break",
+          "6.7 Origin of the second bright episode",
+          "6.8 Multiwavelength comparison with the GRB population",
+          "7 Conclusions",
+          "Acknowledgements",
+          "DATA AVAILABILITY",
+          "References",
+          "Appendix A Additional details of the GBM spectral analysis",
+          "A.1 Effective response construction",
+          "A.2 Background estimation and uncertainty propagation",
+          "A.3 Exposure calculation and time-resolved extraction",
+          "A.4 Poisson–Gaussian likelihood",
+          "A.5 Blackbody implementation",
+          "A.6 Sensitivity tests",
+          "Appendix B Additional details of the LAT likelihood analysis",
+          "B.1 Likelihood implementation and source model",
+          "B.2 Test statistic and diffuse-normalization bounds",
+          "B.3 Energy-flux calculation and uncertainty propagation",
+          "B.4 Sensitivity to the background model",
+          "B.5 Updated temporal fit with fixed normalized exposure weights",
+          "Appendix C Additional details of the BAT spectral analysis",
+          "Appendix D Additional details of the optical/NIR and XRT analysis",
+          "D.1 Test for a late-time X-ray break",
+          "Instructions for reporting errors"
+        ],
+        "source_references": [
+          {
+            "kind": "arxiv_source_package",
+            "url": "https://export.arxiv.org/src/2610.32861v1",
+            "locator": "Full body",
+            "description": "Complete, revision-matched arXiv TeX source package",
+            "sha256": "1d583875b9ea7c64b6222568b5b9157b08dc0cc595e3f2cfdd2e4a92abdd3503"
+          }
+        ],
+        "source_sections": [
+          "Introduction",
+          "GRB 260924A: Extreme Energetics, Bright GeV Emission, and Exceptional X-ray and Optical Luminosity",
+          "1 Introduction",
+          "2 Observations and Data Analysis",
+          "2.1 Fermi/GBM",
+          "2.1.1 Light curves",
+          "2.1.2 Spectral analysis",
+          "2.2 Fermi/LAT",
+          "2.3 Swift/BAT",
+          "2.4 Swift/XRT",
+          "2.5 UV, optical, and near-infrared observations",
+          "3 Multiwavelength temporal evolution",
+          "3.1 Fermi/GBM and Swift/BAT light curves",
+          "3.2 Fermi/LAT light curve and inter-episode emission",
+          "3.3 Temporal structure and hardness evolution of the second bright episode",
+          "3.4 UV, optical, NIR, and X-ray evolution",
+          "4 Time-resolved gamma-ray spectra and LAT high-energy events",
+          "4.1 BAT spectra across the early episodes",
+          "4.2 LAT high-energy events and spectral evolution",
+          "4.3 GBM spectra of the bright episodes",
+          "5 Description of the multiwavelength afterglow observations",
+          "5.1 Late afterglow",
+          "5.2 Early afterglow",
+          "5.3 The X-ray rebrightening: connecting the early and late afterglow",
+          "5.4 A reverse-shock SSC interpretation of the early LAT excess",
+          "5.5 Constraints on the physical parameters",
+          "6 Physical implications of the proposed interpretation",
+          "6.1 Maximum synchrotron energy and SSC emission",
+          "6.1.1 Klein–Nishina effects",
+          "6.2 Ejecta magnetization",
+          "6.3 Electron energy partition and accelerated-electron fractions",
+          "6.4 Density profile of the circumburst medium",
+          "6.5 Prompt energetics and radiative efficiency",
+          "6.6 Constraints on a possible jet break",
+          "6.7 Origin of the second bright episode",
+          "6.8 Multiwavelength comparison with the GRB population",
+          "7 Conclusions",
+          "Acknowledgements",
+          "DATA AVAILABILITY",
+          "References",
+          "Appendix A Additional details of the GBM spectral analysis",
+          "A.1 Effective response construction",
+          "A.2 Background estimation and uncertainty propagation",
+          "A.3 Exposure calculation and time-resolved extraction",
+          "A.4 Poisson–Gaussian likelihood",
+          "A.5 Blackbody implementation",
+          "A.6 Sensitivity tests",
+          "Appendix B Additional details of the LAT likelihood analysis",
+          "B.1 Likelihood implementation and source model",
+          "B.2 Test statistic and diffuse-normalization bounds",
+          "B.3 Energy-flux calculation and uncertainty propagation",
+          "B.4 Sensitivity to the background model",
+          "B.5 Updated temporal fit with fixed normalized exposure weights",
+          "Appendix C Additional details of the BAT spectral analysis",
+          "Appendix D Additional details of the optical/NIR and XRT analysis",
+          "D.1 Test for a late-time X-ray break",
+          "Instructions for reporting errors"
+        ],
+        "section_coverage": {
+          "problem": true,
+          "assumptions": true,
+          "method": true,
+          "results": true,
+          "limitations": true,
+          "appendices": "checked"
+        }
+      },
+      "analysis": {
+        "origin": "ai",
+        "model": "gpt-6-luna",
+        "analyzed_at": "2026-10-26T18:07:46.318Z",
+        "title_zh": "GRB 260924A：极端能量学、明亮 GeV 辐射以及卓越的 X 射线与光学光度",
+        "reason": "该文详细报道并建模了极端明亮伽马暴 GRB 260924A，其红移高达 $z=3.51$，各向同性等效伽马射线释放能量 $E_{\\gamma,\\mathrm{iso}} \\simeq 9.79\\times 10^{54}\\,\\mathrm{erg}$，与 GRB 221009A 相当；Fermi/LAT 探测到最高达 $43.31\\,\\mathrm{GeV}$ 的光子。论文建立了包含前向激波同步辐射与正/反向激波同步自康普顿（SSC）过程的分层介质余辉模型，对相对论激波微观物理参数与极端能量引擎提供了重要约束。",
+        "result": "测定暴源红移为 $z=3.51\\pm 0.10$，$1\\text{--}10{,}000\\,\\mathrm{keV}$ 能段各向同性释放能量高达 $E_{\\gamma,\\mathrm{iso}} \\simeq 9.79\\times 10^{54}\\,\\mathrm{erg}$，初始各向同性动能 $E_{\\mathrm{K,iso}} \\simeq 7.0\\times 10^{55}\\,\\mathrm{erg}$，瞬时辐射效率 $\\eta_\\gamma \\simeq 0.12$。Fermi/LAT 探测到最高达 $43.31\\,\\mathrm{GeV}$ 的高能光子（在 $82.24\\,\\mathrm{s}$ 到达）。晚期余辉衰减指数为 $\\alpha_{\\rm opt}=1.46\\pm 0.01$ 与 $\\alpha_X=1.57\\pm 0.04$，在慢冷却闭合关系 $\\alpha^{\\rm syn}=\\frac{3(p-1)}{4}+\\frac{k}{2(4-k)}$ 下排除了常规均匀介质（$k=0$）或纯自由星风（$k=2$），测定星周介质为密度梯度介质 $n(R)\\propto R^{-k}$（$k\\simeq 1.0\\text{--}1.3$，基准 $k=1.2$），电子谱指数 $p\\simeq 2.75$。早期 $70.04\\text{--}164.9\\,\\mathrm{s}$ 处的 LAT 通量超出后续外推达 $2.25\\pm 0.59$ 倍，由厚壳层反向激波 SSC 过程主导解释；激波微观磁能分配比为 $R_B\\equiv (\\varepsilon_{B_r}/\\varepsilon_{B_f})^{1/2}\\simeq 2.6$。",
+        "reading_entry": "5 Description of the multiwavelength afterglow observations",
+        "problem": "解释极端高能暴 GRB 260924A 的能量学分配机制、在 $t\\sim 82\\,\\mathrm{s}$ 到达的 $43.31\\,\\mathrm{GeV}$ 等光子为何超出标准前向激波同步辐射理论极限 $E^{\\rm syn}_{\\rm max}$，以及早期 LAT 辐射过剩、X 射线再增亮与成层星周介质相互作用的微观物理图景。",
+        "method": "利用 Fermi/GBM、Fermi/LAT、Swift/BAT、Swift/XRT 以及多台地面光学/近红外望远镜进行多波段时变与时变能谱分析。通过非成箱极大似然法提取 LAT 能谱（$0.1\\text{--}1000\\,\\mathrm{GeV}$）与高能光子关联概率；在成层星周介质密度轮廓 $n(R)=n_{\\rm dec}(R/R_{\\rm dec})^{-k}$（固定 $k=1.2$）框架下，采用 `emcee` 进行前向激波同步辐射 + SSC 以及反向激波 SSC 联合马尔可夫链蒙特卡洛（MCMC）后验参数约束，同时包含曲率效应（$\\alpha=2+\\beta$）与 Klein-Nishina 截断检验。",
+        "assumptions": [],
+        "limits": [
+          "晚期 X 射线与光学数据中未观测到清晰稳健的喷流转折（jet break），因而无法直接确定喷流开角或几何束流修正后的真实能量释放。"
+        ],
+        "citation_leads": [
+          "GRB 260924A: Extreme Energetics, Bright GeV Emission, and Exceptional X-ray and Optical Luminosity: “Its isotropic-equivalent gamma-ray energy,\n$E_{\\gamma,\\mathrm{iso}}\\simeq 9.79\\times 10^{54}$ erg,\nplaces it among the most energetic GRBs observed.”",
+          "2.2 Fermi/LAT: “We analysed Fermi/LAT events within a $15^{\\circ}$ region of interest (ROI) centred on the Swift/XRT position, $(\\mathrm{RA},\\mathrm{Dec})=(133.76^{\\circ},12.04^{\\circ})$, over the 0.1–1000 GeV energy range.”",
+          "4.2 LAT high-energy events and spectral evolution: “The highest-energy event, 43.31 GeV, arrived at 82.24 s.”",
+          "5.4 A reverse-shock SSC interpretation of the early LAT excess: “The interval-averaged 0.1–1000 GeV photon flux during 70.04–164.9 s exceeds the backward extrapolation of the power-law fit to the four subsequent LAT intervals by a factor of $2.25\\pm 0.59$”",
+          "6.6 Constraints on a possible jet break: “A jet break remains possible, but the available observations provide neither a measured break time nor a robust lower bound on it. Consequently, we do not infer a jet opening angle or a beaming-corrected energy from these data.”",
+          "D.1 Test for a late-time X-ray break: “These data neither require a jet break nor provide a robust break epoch for the physical model.”"
+        ],
+        "research_progress": "确认了 GRB 260924A 为宇宙学红移 $z>3$ 处能量最极端的 GRB 之一（$E_{\\gamma,\\mathrm{iso}}\\sim 10^{55}\\,\\mathrm{erg}$）；证实其早期 GeV 辐射超额及其数十 GeV 光子无法由纯前向激波同步辐射解释，必须引入逆激波 SSC 组分；定量给出了介于风模型与恒星际介质之间的密度剖面指数 $k\\approx 1.2$ 及弱磁化抛射物特征（$R_B\\simeq 2.6$）。",
+        "figures": [
+          {
+            "url": "/arxiv-figures/2610.32861/LAT_Figure4_clean.png",
+            "caption": "Figure 8: Fermi /LAT temporal and spectral evolution of GRB 260924A. Top left: photon flux in 0.1–300 GeV; the orange curve shows the power-law fit to the four later intervals and its backward extrapolation, converted from the fitted 0.1–1000 GeV band. Top right: energy flux in 0.1–300 GeV. Middle left: fitted power-law spectra with uncertainty envelopes. Middle right: photon indices; the horizontal band shows the shared-index fit and its uncertainty. Bottom: energies and arrival times of all 404 selected events, with greyscale indicating their model-dependent source-association probabilities. Shading marks the bright BAT episodes. Horizontal bars span the spectral intervals; vertical bars indicate nominal $1\\sigma$ uncertainties. Times are relative to the GBM trigger.",
+            "label": "Fig. 8",
+            "category": "observational",
+            "category_badge": "观测总体曲线/能谱",
+            "physical_core": "展示 GRB 260924A 的 $0.1$–$300\\,\\mathrm{GeV}$ 光变、能流和谱演化，以及高能光子的到达时间与能量。图中早期 LAT 超额相对于后续幂律衰减的表现，可用于检验论文提出的反向激波 SSC 解释；高能光子也关联到同步辐射极限之外的 SSC 贡献。",
+            "is_schematic": false
+          },
+          {
+            "url": "/arxiv-figures/2610.32861/Swift_XRT_cosmology_spectral_v1.png",
+            "caption": "Figure 28: Rest-frame 0.3–10 keV isotropic-equivalent X-ray luminosity light curves of GRB 260924A (red) and the comparison bursts identified in the legend. Grey curves show 410 additional Swift /XRT GRBs with published redshifts and usable repository products. Luminosities are absorption-corrected and transformed to the rest-frame band using power-law spectra and the cosmology specified in Section 5.5. For GRB 260924A, interval-specific spectral conversions are used where available; mode-averaged conversions are retained elsewhere, including the flare. Times are divided by $(1+z)$, using the GBM trigger for GRB 260924A and repository time origins for the other events, including GRB 221009A. Only detections are shown; flares are retained. XRT products are from the UK Swift Science Data Centre ( Evans et al., 2009 ).",
+            "label": "Fig. 28",
+            "category": "observational",
+            "category_badge": "核心观测结果",
+            "physical_core": "比较 GRB 260924A 与 GRB 221009A 及其他 Swift/XRT 暴的静止系 $0.3$–$10\\,\\mathrm{keV}$ 各向同性等效光度随静止系时间的演化；图中保留耀发，并纳入 410 个有红移且数据可用的其他暴，为评估该暴在 X 射线余辉样本中的相对亮度提供直接依据。",
+            "is_schematic": false
+          }
+        ],
+        "unresolved_checks": [
+          "未进行独立同行评审或逐项复算。",
+          "源文件中的图像未进行视觉核对。"
+        ],
+        "potential_lineage": {
+          "status": "no_match",
+          "reason": "自动筛选未建立论文与组内 Work 的科学关系。",
+          "candidates": []
+        },
+        "prerequisite_works": []
+      },
+      "historical_edition": "announcement-2026-10-25",
+      "historical_edition_fingerprint": "c2593cfcf48a03dc393a232629d214db528a26ced1ff20f215c0d5cbdb59eb47"
+    },
+    {
       "arxiv_id": "2610.32913",
       "revision": 1,
       "status": "ready",
@@ -13352,6 +15015,107 @@
         "figures": [],
         "unresolved_checks": [
           "未进行独立同行评审或逐项复算。"
+        ],
+        "potential_lineage": {
+          "status": "no_match",
+          "reason": "自动筛选未建立论文与组内 Work 的科学关系。",
+          "candidates": []
+        },
+        "prerequisite_works": []
+      },
+      "historical_edition": "announcement-2026-10-25",
+      "historical_edition_fingerprint": "c2593cfcf48a03dc393a232629d214db528a26ced1ff20f215c0d5cbdb59eb47"
+    },
+    {
+      "arxiv_id": "2610.32935",
+      "revision": 1,
+      "status": "ready",
+      "source_fingerprint": "607b2d420bd1e1650b23a61a8ad91477f74b28dbe48c8d848626bd5d65a03d00",
+      "priority": "worth_knowing",
+      "coverage": {
+        "level": "body_partial",
+        "label": "已检查正文中支撑判断的指定章节",
+        "source_version": "arXiv:2610.32935v1",
+        "inspected_sections": [
+          "Introduction",
+          "Three subpopulations of binary black holes in mass, spin magnitudes and tilts following GWTC-5",
+          "I Introduction",
+          "II Methods",
+          "II.1 Model",
+          "II.2 Data and sampling",
+          "II.3 Population predictive distributions",
+          "III Results",
+          "III.1 Low-spin population",
+          "III.2 Medium-spin population",
+          "III.3 High-spin population",
+          "III.3.1 High-mass, high-spin population",
+          "III.3.2 Low-mass, high-spin population",
+          "III.4 Model Variations",
+          "IV Conclusions",
+          "Appendix A Details on methods and population models",
+          "A.1 Population model and hyperpriors",
+          "Appendix B Toy model injection and recovery",
+          "Appendix C Further results",
+          "C.1 Fiducial model: three populations and three flat regions",
+          "C.2 Three transitions and four flat regions",
+          "C.3 Four subpopulations",
+          "C.4 Broader hyperpriors for mass-ratio distribution",
+          "Appendix D Population assignments of individual binary systems",
+          "References",
+          "Instructions for reporting errors"
+        ],
+        "source_references": [
+          {
+            "kind": "arxiv_source_package",
+            "url": "https://export.arxiv.org/src/2610.32935v1",
+            "locator": "Introduction; Three subpopulations of binary black holes in mass, spin magnitudes and tilts following GWTC-5; I Introduction; II Methods; II.1 Model; II.2 Data and sampling; II.3 Population predictive distributions; III Results; III.1 Low-spin population; III.2 Medium-spin population; III.3 High-spin population; III.3.1 High-mass, high-spin population; III.3.2 Low-mass, high-spin population; III.4 Model Variations; IV Conclusions; Appendix A Details on methods and population models; A.1 Population model and hyperpriors; Appendix B Toy model injection and recovery; Appendix C Further results; C.1 Fiducial model: three populations and three flat regions; C.2 Three transitions and four flat regions; C.3 Four subpopulations; C.4 Broader hyperpriors for mass-ratio distribution; Appendix D Population assignments of individual binary systems; References; Instructions for reporting errors",
+            "description": "Complete, revision-matched arXiv TeX source package",
+            "sha256": "3c5394c2666a24af6c731ea8aaed48f171b0de972c61704574c37571308526d4"
+          }
+        ]
+      },
+      "analysis": {
+        "origin": "ai",
+        "model": "gpt-6-luna",
+        "analyzed_at": "2026-10-26T18:08:45.084Z",
+        "title_zh": "GWTC-5 之后基于质量、自旋大小与自旋倾角划分的双黑洞三个亚群",
+        "reason": "该研究基于 GWTC-5 的 259 个双黑洞并合事件，通过联合质量、自旋大小与倾角的多维统计推断，稳健解析出三个物理性质截然不同的 BBH 亚群，对检验孤立恒星演化、脉动对不稳定超新星（PPISN/PISN）质量隙边界以及星团/AGN 盘中的分级动力学并合通道具有重要天体物理参考价值。",
+        "result": "GWTC-5 样本支持存在三个 BBH 亚群：(1) **低自旋亚群（A）**：在 $m_{1} \\approx 35\\,M_{\\odot}$ 占主导（$\\eta_{A}(35\\,M_{\\odot}) = 0.8\\pm 0.1$），且支持零自旋假设（$\\log_{10}\\mathcal{B} = 6.1^{+0.2}_{-0.3}$）；(2) **中等自旋亚群（B）**：局限于低质量端 $m_{1} \\lesssim 20\\,M_{\\odot}$（在 $10\\,M_{\\odot}$ 处 $\\eta_{B} \\approx 0.4$），双黑洞具有适度自旋 $\\chi_{i} \\approx 0.2$ 且自旋倾向于轨道平行对齐；(3) **高自旋亚群（C）**：在对不稳定隙附近及以上占主导，主黑洞自旋 $\\chi_{1} = 0.7^{+0.3}_{-0.4}$，次黑洞自旋 $\\chi_{2} = 0.6^{+0.4}_{-0.4}$，倾角分布兼容完全各向同性（$\\zeta_{\\cos\\theta}^{C} = 0$），转变质量始于 $m^{\\eta}_{3} = 40^{+10}_{-10}\\,M_{\\odot}$ 并在 $m^{\\eta}_{4} = 60^{+40}_{-20}\\,M_{\\odot}$ 达到高自旋占优，与对不稳定超新星及分级动力学并合物理预期一致。",
+        "reading_entry": "III.3 High-spin population",
+        "problem": "双黑洞并合观测中主次星质量、自旋大小和自旋倾角间存在复杂的物理关联，如何从引力波数据中解耦这些维度以判断观测到的 BBH 是来自单一混合演化通道还是由机制相异的多物理亚群构成。",
+        "method": "构建了包含质量比 $q=m_{2}/m_{1}$、自旋大小 $(\\chi_{1}, \\chi_{2})$ 及倾角余弦 $(\\cos\\theta_{1}, \\cos\\theta_{2})$ 的分层贝叶斯群体模型，混合比例 $\\eta_{k}(m_{1})$ 采用分段常数与两段线性过渡的形式：$$p(\\boldsymbol{\\theta}\\mid\\boldsymbol{\\Lambda}) = p(z\\mid\\boldsymbol{\\Lambda}_{z})p(m_{1}\\mid\\boldsymbol{\\Lambda}_{m})\\sum_{k}\\eta_{k}(m_{1})p(q,\\boldsymbol{\\chi}_{1},\\boldsymbol{\\chi}_{2}\\mid\\boldsymbol{\\Lambda}_{\\chi}^{k})$$采用截断高斯混合模型（TGMM）似然估计器消除窄自旋分布下的蒙特卡洛方差发散，并利用 NUTS 采样与自旋求和排序确定亚群边界。",
+        "assumptions": [],
+        "limits": [],
+        "citation_leads": [
+          "II.1 Model: “In practice this is not the case, and we instead find three distinct populations occupying different regions of hyperparameter space.”",
+          "III.3 High-spin population: “The high spin population favors rapid spins on the primary, with $\\chi_{1}=0.7^{+0.3}_{-0.4}$ and a secondary spin magnitude more widely distributed but with support at high secondary spins as well, $\\chi_{2}=0.6^{+0.4}_{-0.4}$”",
+          "A.1 Population model and hyperpriors: “Each subpopulation $k\\in{A,B,C}$ is assigned a weight $\\eta_{k}(m_{1})$ that is piecewise-constant across three flat regimes of primary mass, connected by two linear transitions.”",
+          "C.1 Fiducial model: three populations and three flat regions: “The transition starts at $m^{\\eta}_{3}=40^{+10}_{-10}\\,M_{\\odot}$, consistent with the mass scale attributed by previous analyses to the onset of pair instability processes”"
+        ],
+        "research_progress": "相较于此前主要基于单一参数边际分布或粗粒度双组分模型的研究，本工作首次基于 GWTC-5 建立了质量依赖的自旋大小与倾角三亚群模型，定量给出了对不稳定转变特征质量标度 $m^{\\eta}_{3}=40^{+10}_{-10}\\,M_{\\odot}$，明确分离出了低自旋孤立星族与高自旋分级动力学并合星族。",
+        "figures": [
+          {
+            "url": "/arxiv-figures/2610.32935/eta_vs_m1.png",
+            "caption": "Figure 3: Inferred distributions for the mixing fractions $\\eta_{k}(m_{1})$ among the three populations, constrained to sum to unity. The three populations are labeled according to their distinct spin distributions (Figure 2 ). The low-spin population dominates for $m_{1}\\lesssim 60\\,M_{\\odot}$, especially near $m_{1}\\sim 35\\,M_{\\odot}$, while the medium-spin population has a comparable size for $m_{1}\\lesssim 15M_{\\odot}$. The high-spin component dominates at high masses $m_{1}\\gtrsim 60\\,M_{\\odot}$, with small but nonzero contribution at $m_{1}\\sim 20\\,M_{\\odot}$ extending towards higher masses.",
+            "label": "Fig. 3",
+            "category": "fitting",
+            "category_badge": "数据拟合与模型对比",
+            "physical_core": "展示三类自旋子群的混合比例如何随主黑洞质量 $m_1$ 变化：低自旋组在 $m_1\\lesssim60\\,M_{\\odot}$ 范围占主导，尤其在 $m_1\\sim35\\,M_{\\odot}$ 附近；中自旋组在 $m_1\\lesssim15\\,M_{\\odot}$ 时占比相近；高自旋组在 $m_1\\gtrsim60\\,M_{\\odot}$ 占主导，并在 $m_1\\sim20\\,M_{\\odot}$ 附近仍有较小但非零的贡献。",
+            "is_schematic": false
+          },
+          {
+            "url": "/arxiv-figures/2610.32935/component-chi-eff-chi-p-PPD-composite.png",
+            "caption": "Figure 12: Inferred marginal PPD for the effective spin parameters $\\chi_{\\mathrm{eff}}$ and $\\chi_{p}$. The concentration of the $\\chi_{\\mathrm{eff}}$ distribution for the low-spin population is enhanced by a singular Jacobian in the transformation from spin magnitudes and tilts to the effective spin parameters. Due to the very narrow extent of the posteriors of the low-spin population, which is not well resolved by 2D kernel density estimation, we display it only for the 1D marginals.",
+            "label": "Fig. 12",
+            "category": "fitting",
+            "category_badge": "数据拟合与模型对比",
+            "physical_core": "给出三类子群的有效自旋参数 $\\chi_{\\mathrm{eff}}$ 与进动自旋参数 $\\chi_p$ 的边缘后验预测分布（PPD），用于比较不同子群在可观测自旋组合上的差异。图注明确指出，低自旋组 $\\chi_{\\mathrm{eff}}$ 分布的集中性受到从自旋大小和倾角变换到有效自旋参数时奇异雅可比的增强；其二维后验过窄，故仅展示一维边缘分布。",
+            "is_schematic": false
+          }
+        ],
+        "unresolved_checks": [
+          "未进行独立同行评审或逐项复算。",
+          "源文件中的图像未进行视觉核对。"
         ],
         "potential_lineage": {
           "status": "no_match",
@@ -13520,7 +15284,7 @@
   "opening_brief": {
     "status": "ready",
     "edition_fingerprint": "c2593cfcf48a03dc393a232629d214db528a26ced1ff20f215c0d5cbdb59eb47",
-    "intro": "本期首看《Collapsars Are Not Heavy $r$-Process Factories》等 7 篇核心进展。",
+    "intro": "本期首看《Collapsars Are Not Heavy $r$-Process Factories》等 13 篇核心进展。",
     "must_read": [
       {
         "arxiv_id": "2610.31758",
@@ -13530,6 +15294,15 @@
         "label": "Collapsars Are Not Heavy $r$-Process Factories",
         "text": "坍缩星吸积盘在任何磁通序列下均无法向外抛射电子丰度 $Y_{\\rm e} \\le 0.25$ 的重 $r$-过程气体。",
         "anchor": "radar-paper-2610-31758-v1"
+      },
+      {
+        "arxiv_id": "2610.32861",
+        "revision": 1,
+        "source_fingerprint": "094bf8878b268e76059fa6ebe96a30a555a200ac7629d4b3681247275085af12",
+        "guide_fingerprint": "5e4ec683137e5a21337c0c52b6bde3ffc364cbdf708ec3d7d0cf6e1cdb2265b0",
+        "label": "GRB 260924A: Extreme Energetics, Bright GeV Emission, and Exceptional X-ray and Optical Luminosity",
+        "text": "测定暴源红移为 $z=3.51\\pm 0.10$，$1\\text{--}10{,}000\\,\\mathrm{keV}$ 能段各向同性释放能量高达 $E_{\\gamma,\\mathrm{iso}} \\simeq 9.79\\times 10^{54}\\,\\mathrm{erg}$，初始各向同性动能 $E_{\\mathrm{K,iso}} \\simeq 7.0\\times 10^{55}\\,\\mathrm{erg}$，瞬时辐射效率 $\\eta_\\gamma \\simeq 0.12$。",
+        "anchor": "radar-paper-2610-32861-v1"
       }
     ],
     "worth_knowing": [
@@ -13568,6 +15341,36 @@
         "revision": 1,
         "source_fingerprint": "ba52843c4ecc5f0516c0bb9dd2dd1e307c8634b578063d9d0b8a23a3b7887d6a",
         "guide_fingerprint": "5f691d45691a8e190f92ddaf0dd97fe8543f53f36f30b5431a8ad11d6f97fa70"
+      },
+      {
+        "arxiv_id": "2610.32316",
+        "revision": 1,
+        "source_fingerprint": "dede811808c51b23ffef2fb178078c60da851c672d67ea34f8da5c0266335123",
+        "guide_fingerprint": "e0211bccb3b2f57515d6ff62b40aab9e04421be75110bfad8ccf9ab2510b4129"
+      },
+      {
+        "arxiv_id": "2610.32323",
+        "revision": 1,
+        "source_fingerprint": "0f6b08b3c76183fbb98526ef664da06280dc255ed31ac27f0dde275cc0b8345c",
+        "guide_fingerprint": "65629e503bb00ff9e2d40a21c3ca8eb4a21474e685534ad02a3c4d358814dac4"
+      },
+      {
+        "arxiv_id": "2610.32430",
+        "revision": 1,
+        "source_fingerprint": "f7ec039f7a67f4d849d124c6ebaf9e93a473c1bad386825aed71a38a0f12be2c",
+        "guide_fingerprint": "6768e9f71df48f5579e1bcd4197e966da2c79503d9f135f83e5e6e552b793fc3"
+      },
+      {
+        "arxiv_id": "2610.32786",
+        "revision": 1,
+        "source_fingerprint": "2a83f23c12d9d467ac963eb6b6f649c6192daa07f746d566c8ed76f4f6301d3c",
+        "guide_fingerprint": "fcbcbdb81296904a525297364dc516437341671a6cde570a33ea53e3881a0cca"
+      },
+      {
+        "arxiv_id": "2610.32935",
+        "revision": 1,
+        "source_fingerprint": "607b2d420bd1e1650b23a61a8ad91477f74b28dbe48c8d848626bd5d65a03d00",
+        "guide_fingerprint": "79c06db3639b1211fb324097d509b2949fd296a56429799bb6fbab19eedeb2a3"
       }
     ],
     "skip": [
@@ -13638,6 +15441,12 @@
         "guide_fingerprint": "9c9b5295cb6a0cc7c6356562b24a9ef3d35050c98b99d5f0aaadb01fa09e1492"
       },
       {
+        "arxiv_id": "2610.32371",
+        "revision": 1,
+        "source_fingerprint": "9c8c7ee0d226525cc1a3632d8bfb924f320740d9759b1e97ef469cf615641748",
+        "guide_fingerprint": "38a5ad9946c46c48a1fba38e66fda08426fa2aae455dd9aae4f2b35339384b78"
+      },
+      {
         "arxiv_id": "2610.32406",
         "revision": 1,
         "source_fingerprint": "58b5fda15a223495d4f91c482efc171c6ba641142722be21c709aaa0ffaa83ab",
@@ -13654,6 +15463,12 @@
         "revision": 1,
         "source_fingerprint": "4d563f405fb62c254b1050b76db4a094a7a34d18cf5022067b739a63b339468e",
         "guide_fingerprint": "a1c796ea12998db4a1fbfdc690ff8c162653df69aef9ae4baf17b040648be8cc"
+      },
+      {
+        "arxiv_id": "2610.32509",
+        "revision": 1,
+        "source_fingerprint": "63f17c396844982b5d5a504b85ae9546106a9e90475493832ba5e5c4d814d7d6",
+        "guide_fingerprint": "70bb310d721028b53b51b40fc37a517e81a19dfbb33046baf0040c84165b91b6"
       },
       {
         "arxiv_id": "2610.32537",
@@ -13726,6 +15541,12 @@
         "revision": 1,
         "source_fingerprint": "1653ba067d1417a6051f34c12d80d9d534828e568514273e5a08a0fc294f166f",
         "guide_fingerprint": "e70ad9193ae37e38756b7bc2f5b5b8e9aa2001ccfde9a6a4c29dbc0151588c5a"
+      },
+      {
+        "arxiv_id": "2610.32845",
+        "revision": 1,
+        "source_fingerprint": "25744a2f359d8e2b08a815bfd665dd71cdd78ec4fc848be34f108360a22f44f0",
+        "guide_fingerprint": "bc07a109dfd45f1098d29cc6ae2f24fd599f8e0cd1a7749df1b6bd4cd0e2ab31"
       },
       {
         "arxiv_id": "2610.32913",

@@ -871,6 +871,10 @@ test("weekly titles use the week number followed by one concrete progress", () =
     () => formatWeeklyTitle("2026-W40", "磁星环境、超新星因果链"),
     /CHANNEL_TITLE_WEEKLY_SINGLE_PROGRESS_REQUIRED/u
   );
+  assert.throws(
+    () => formatWeeklyTitle("2026-W40", "超新星".repeat(30)),
+    /CHANNEL_TITLE_TOO_LONG/u
+  );
 });
 
 test("title overrides must still satisfy the matching date or week contract", () => {

@@ -1,6 +1,7 @@
 import { resolvePaperTitleZhSync, formatTranslatedPaperTitle } from "./paper-translation.mjs";
 
 const TITLE_LIMIT = 200;
+const WEEKLY_TITLE_LIMIT = 100;
 const PAPER_TITLE_COMPACT_LIMIT = 60;
 const TITLE_REVIEW_HAN_LIMIT = 35;
 const ARXIV_IDENTIFIER = /\b(?:arxiv\s*:\s*)?\d{4}\.\d{4,5}(?:v\d+)?\b/iu;
@@ -1026,7 +1027,7 @@ export function formatWeeklyTitle(weekId, progress) {
     throw new Error("CHANNEL_TITLE_WEEKLY_SINGLE_PROGRESS_REQUIRED");
   }
   const title = `[${match[1]}-W${match[2]}] 前沿周报 ｜ ${candidate}`;
-  if (Array.from(title).length > TITLE_LIMIT) throw new Error("CHANNEL_TITLE_TOO_LONG");
+  if (Array.from(title).length > WEEKLY_TITLE_LIMIT) throw new Error("CHANNEL_TITLE_TOO_LONG");
   return title;
 }
 

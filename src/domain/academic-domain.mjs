@@ -722,11 +722,30 @@ export function resolveWebsiteUrls(options = {}) {
 }
 
 /**
- * Default bibliographic provider.
+ * Canonical bibliographic provider default ('scix').
+ */
+export const CANONICAL_BIBLIOGRAPHIC_PROVIDER = "scix";
+
+/**
+ * Get active bibliographic provider default.
+ * Respects process.env.BIBLIOGRAPHIC_PROVIDER if set to a valid provider ('scix' | 'ads').
+ *
+ * @returns {'scix' | 'ads'}
+ */
+export function getDefaultBibliographicProvider() {
+  const envProvider =
+    typeof process !== "undefined" && process?.env?.BIBLIOGRAPHIC_PROVIDER?.trim()?.toLowerCase();
+  if (envProvider === "ads" || envProvider === "scix") {
+    return envProvider;
+  }
+  return CANONICAL_BIBLIOGRAPHIC_PROVIDER;
+}
+
+/**
+ * Default bibliographic provider constant for backwards compatibility.
  * Supports 'scix' (NASA Science Explorer) and 'ads' (NASA ADS legacy).
  */
-export const DEFAULT_BIBLIOGRAPHIC_PROVIDER =
-  (typeof process !== "undefined" && process?.env?.BIBLIOGRAPHIC_PROVIDER) || "scix";
+export const DEFAULT_BIBLIOGRAPHIC_PROVIDER = CANONICAL_BIBLIOGRAPHIC_PROVIDER;
 
 /**
  * Default labels for bibliographic providers.
@@ -748,7 +767,7 @@ export function getBibliographicUrl(arxivId, options = {}) {
   const cleanedId = arxivId.replace(/^arXiv:/i, "").trim();
   if (!cleanedId) return "";
 
-  const provider = options.provider || DEFAULT_BIBLIOGRAPHIC_PROVIDER;
+  const provider = options.provider || getDefaultBibliographicProvider();
   const forceMode =
     options.forceMode !== undefined
       ? options.forceMode
@@ -774,7 +793,7 @@ export function getBibliographicUrl(arxivId, options = {}) {
  * @returns {string}
  */
 export function getBibliographicSourceName(options = {}) {
-  const provider = options.provider || DEFAULT_BIBLIOGRAPHIC_PROVIDER;
+  const provider = options.provider || getDefaultBibliographicProvider();
   if (options.short) {
     return provider === "scix" ? "SciX" : "ADS";
   }

@@ -120,8 +120,10 @@ test("arXiv weekly HTML includes SciX / ADS links, citation/BibTeX block, and Ma
     const escaped = pick.arxiv_id.replace(".", "\\.");
     assert.match(
       html,
-      new RegExp(`https://scixplorer\\.org/abs/arXiv:${escaped}`),
-      `must link to SciX for top pick ${pick.arxiv_id}`
+      new RegExp(
+        `(?:https://scixplorer\\.org/abs/arXiv:${escaped}|https://ui\\.adsabs\\.harvard\\.edu/abs/arXiv:${escaped})`
+      ),
+      `must link to bibliographic provider for top pick ${pick.arxiv_id}`
     );
   }
 

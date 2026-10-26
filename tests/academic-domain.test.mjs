@@ -230,29 +230,35 @@ test("academic-domain: deriveFigurePhysicalCore extracts explicit core or derive
 });
 
 test("academic-domain: getBibliographicUrl and getBibliographicSourceName format external bibliographic links", async () => {
-  const { getBibliographicUrl, getBibliographicSourceName, DEFAULT_BIBLIOGRAPHIC_PROVIDER } =
-    await import("../src/domain/academic-domain.mjs");
+  const {
+    getBibliographicUrl,
+    getBibliographicSourceName,
+    getDefaultBibliographicProvider,
+    CANONICAL_BIBLIOGRAPHIC_PROVIDER,
+    DEFAULT_BIBLIOGRAPHIC_PROVIDER,
+  } = await import("../src/domain/academic-domain.mjs");
 
+  assert.equal(CANONICAL_BIBLIOGRAPHIC_PROVIDER, "scix");
   assert.equal(DEFAULT_BIBLIOGRAPHIC_PROVIDER, "scix");
 
-  // Default scix with forceMode=astrophysics
+  // Explicit scix with forceMode=astrophysics
   assert.equal(
-    getBibliographicUrl("2610.12345"),
+    getBibliographicUrl("2610.12345", { provider: "scix" }),
     "https://scixplorer.org/abs/arXiv:2610.12345?forceMode=astrophysics"
   );
   // Handles arXiv: prefix and versions
   assert.equal(
-    getBibliographicUrl("arXiv:2610.12345v2"),
+    getBibliographicUrl("arXiv:2610.12345v2", { provider: "scix" }),
     "https://scixplorer.org/abs/arXiv:2610.12345v2?forceMode=astrophysics"
   );
   // Custom forceMode
   assert.equal(
-    getBibliographicUrl("2610.12345", { forceMode: "planetary" }),
+    getBibliographicUrl("2610.12345", { provider: "scix", forceMode: "planetary" }),
     "https://scixplorer.org/abs/arXiv:2610.12345?forceMode=planetary"
   );
   // Disabled forceMode
   assert.equal(
-    getBibliographicUrl("2610.12345", { forceMode: null }),
+    getBibliographicUrl("2610.12345", { provider: "scix", forceMode: null }),
     "https://scixplorer.org/abs/arXiv:2610.12345"
   );
   // Fallback / legacy ads provider
@@ -264,9 +270,38 @@ test("academic-domain: getBibliographicUrl and getBibliographicSourceName format
   assert.equal(getBibliographicUrl(""), "");
   assert.equal(getBibliographicUrl(null), "");
 
-  // Labels
-  assert.equal(getBibliographicSourceName(), "SciX (ADS)");
-  assert.equal(getBibliographicSourceName({ short: true }), "SciX");
+  // Labels with explicit provider
+  assert.equal(getBibliographicSourceName({ provider: "scix" }), "SciX (ADS)");
+  assert.equal(getBibliographicSourceName({ provider: "scix", short: true }), "SciX");
   assert.equal(getBibliographicSourceName({ provider: "ads" }), "NASA ADS");
   assert.equal(getBibliographicSourceName({ provider: "ads", short: true }), "ADS");
+
+  // Dynamic environment fallback verification with isolated cleanup
+  const originalEnv = process.env.BIBLIOGRAPHIC_PROVIDER;
+  try {
+    delete process.env.BIBLIOGRAPHIC_PROVIDER;
+    assert.equal(getDefaultBibliographicProvider(), "scix");
+    assert.equal(
+      getBibliographicUrl("2610.12345"),
+      "https://scixplorer.org/abs/arXiv:2610.12345?forceMode=astrophysics"
+    );
+    assert.equal(getBibliographicSourceName(), "SciX (ADS)");
+
+    process.env.BIBLIOGRAPHIC_PROVIDER = "ads";
+    assert.equal(getDefaultBibliographicProvider(), "ads");
+    assert.equal(
+      getBibliographicUrl("2610.12345"),
+      "https://ui.adsabs.harvard.edu/abs/arXiv:2610.12345"
+    );
+    assert.equal(getBibliographicSourceName(), "NASA ADS");
+
+    process.env.BIBLIOGRAPHIC_PROVIDER = "scix";
+    assert.equal(getDefaultBibliographicProvider(), "scix");
+  } finally {
+    if (originalEnv !== undefined) {
+      process.env.BIBLIOGRAPHIC_PROVIDER = originalEnv;
+    } else {
+      delete process.env.BIBLIOGRAPHIC_PROVIDER;
+    }
+  }
 });

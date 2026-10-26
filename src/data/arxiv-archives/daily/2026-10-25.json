@@ -22,7 +22,7 @@
         "arxiv_id": "2610.31758",
         "revision": 1,
         "source_fingerprint": "0d4ccb2bffa6806db72937a7be58189ecd0b40a08b9b153180d7817bae96f353",
-        "guide_fingerprint": "7fafc536b5efdbd6c0e3d7184da34a37b52312286b0d5b6e95b169d09c38088d",
+        "guide_fingerprint": "0859f0147e76e4367ee29cdb07f9834b2bd83924a6cf1f6682bf9a34364c6759",
         "label": "Collapsars Are Not Heavy $r$-Process Factories",
         "text": "坍缩星吸积盘在任何磁通序列下均无法向外抛射电子丰度 $Y_{\\rm e} \\le 0.25$ 的重 $r$-过程气体。",
         "anchor": "radar-paper-2610-31758-v1"
@@ -42,19 +42,19 @@
         "arxiv_id": "2610.31754",
         "revision": 1,
         "source_fingerprint": "fce5b55eed487b8005abc2921a27ee7a0de2dd665d68e520177ea23706d69da2",
-        "guide_fingerprint": "913fa7c7922b6b187017ca436f6359c130e59794bf975f6c61c9f8c21cbb883b"
+        "guide_fingerprint": "74dd3929e304f825628771ae85493c157ada0a9d70706e7f3651c8aaa7e43d26"
       },
       {
         "arxiv_id": "2610.31755",
         "revision": 1,
         "source_fingerprint": "216f7a533d57c50c0b815678eeb5bf3d2e311dbdd3b9282ee37d5e04c9896a22",
-        "guide_fingerprint": "0a37b553b6d82e77ca2d871344c4b2fc54c2c16c719bec8e23b200969b6afd8d"
+        "guide_fingerprint": "4231f3ce167005d2bcf78a6711fe5edfa5c1c5f20a0f3ed82cbd3197f2b88d7d"
       },
       {
         "arxiv_id": "2610.31990",
         "revision": 1,
         "source_fingerprint": "5095804f15e9827e19d6f2b31ca019ce65e2953b4bbb355c4eb987fac11c9b6f",
-        "guide_fingerprint": "495627313dc8afee33d212f4e6e5ec4c155011cd3433145068706b567d252b0e"
+        "guide_fingerprint": "bc0203445df314217bd3586fb402ee4f1ac9c24de445863e89c1bbed04b0fc30"
       },
       {
         "arxiv_id": "2610.32028",
@@ -72,7 +72,7 @@
         "arxiv_id": "2610.32168",
         "revision": 1,
         "source_fingerprint": "ba52843c4ecc5f0516c0bb9dd2dd1e307c8634b578063d9d0b8a23a3b7887d6a",
-        "guide_fingerprint": "5f691d45691a8e190f92ddaf0dd97fe8543f53f36f30b5431a8ad11d6f97fa70"
+        "guide_fingerprint": "da07cb777e901ee71bcb3a7bbae06e3bda65a64d79a49fb5e8c8daec0ac6eb3b"
       },
       {
         "arxiv_id": "2610.32316",
@@ -1829,7 +1829,7 @@
           "figures": [
             {
               "url": "/arxiv-figures/2610.31754/grmhd_grid_230ghz_rhigh20_rlow1.png",
-              "caption": "Figure 2: Time averaged 230 GHz images of twenty MAD GRMHD simulations with varying spin ( a ∗ = − 0.9375 a^{*}=-0.9375 to a ∗ = + 0.9375 a^{*}=+0.9375 from left to right) and tilt angle ( 0 ∘ 0^{\\circ} to 30 ∘ 30^{\\circ} ) from top to bottom. Each image is at R high = 20 R_{\\rm high}=20 and R low = 1 R_{\\rm low}=1 and the black hole spin vector projected on the plane of the sky is aligned to the east-west direction. The field of view for each image is 80 μ \\mu as. In the upper left of each panel, Δ ​ θ \\Delta\\theta is defined as the difference between the disk normal averaged over our imaging period and our viewing angle | 17 ∘ − ⟨ θ disk ⟩ | |17^{\\circ}-\\langle\\theta_{\\rm disk}\\rangle| . In the upper right, φ \\varphi is the azimuthal angle used in the ray tracing procedure described in Subsection II.2 .",
+              "caption": "Figure 2: Time averaged 230 GHz images of twenty MAD GRMHD simulations with varying spin ($a^{*}=-0.9375$ to $a^{*}=+0.9375$ from left to right) and tilt angle ($0^{\\circ}$ to $30^{\\circ}$) from top to bottom. Each image is at $R_{\\rm high}=20$ and $R_{\\rm low}=1$ and the black hole spin vector projected on the plane of the sky is aligned to the east-west direction. The field of view for each image is 80 $\\mu$as. In the upper left of each panel, $\\Delta\\theta$ is defined as the difference between the disk normal averaged over our imaging period and our viewing angle $|17^{\\circ}-\\langle\\theta_{\\rm disk}\\rangle|$. In the upper right, $\\varphi$ is the azimuthal angle used in the ray tracing procedure described in Subsection II.2.",
               "label": "Fig. 2",
               "category": "theoretical",
               "category_badge": "核心物理演化图",
@@ -1838,7 +1838,7 @@
             },
             {
               "url": "/arxiv-figures/2610.31754/bestfit_grid_230ghz_rhigh20_rlow1.png",
-              "caption": "Figure 5: Best fit dual cone models to the Figure 2 images, at 230 GHz with R high = 20 R_{\\rm high}=20 and R low = 1 R_{\\rm low}=1 . Printed in the corners of each image are selected best fit parameters, where θ g \\theta_{\\rm g} is the mass to distance ratio in μ \\mu as, θ o \\theta_{\\rm o} is the observer inclination in degrees, and a ∗ a^{*} is the black hole spin. As discussed in subsection II.3 , Krang fits only the absolute value of spin, as retrograde configurations are instead represented by changes in the fluid velocity direction.",
+              "caption": "Figure 5: Best fit dual cone models to the Figure 2 images, at 230 GHz with $R_{\\rm high}=20$ and $R_{\\rm low}=1$. Printed in the corners of each image are selected best fit parameters, where $\\theta_{\\rm g}$ is the mass to distance ratio in $\\mu$as, $\\theta_{\\rm o}$ is the observer inclination in degrees, and $a^{*}$ is the black hole spin. As discussed in subsection II.3, Krang fits only the absolute value of spin, as retrograde configurations are instead represented by changes in the fluid velocity direction.",
               "label": "Fig. 5",
               "category": "fitting",
               "category_badge": "数据拟合与模型对比",
@@ -1913,7 +1913,7 @@
           "figures": [
             {
               "url": "/arxiv-figures/2610.31755/kipp_logR_adtl_lines_time.png",
-              "caption": "Figure 1: Kippenhahn-like diagram illustrating the late-stage evolution of Betelgeuse and a 0.7 ​ M ⊙ 0.7M_{\\odot} companion in mesa . The diagonal hatching denotes convective mixing regions. The color scale traces regions of nuclear burning, shown as the logarithmic difference between local nuclear energy generation and neutrino cooling. The x-axis gives the logarithmic time relative to the calibrated present-day model, marked by the vertical black line at 0 0 . Positive values correspond to future evolution toward engulfment, while negative values trace the preceding evolution. As Betelgeuse expands during core helium burning, tidal interactions drive orbital decay and reduce its Roche-lobe radius, R RL R_{\\rm RL} , toward its stellar surface, R ∗ R_{*} . The tidal disruption radius, R dis R_{\\rm dis} , remains concentrated near the stellar core, indicating that the companion survives until deep inspiral before being disrupted.",
+              "caption": "Figure 1: Kippenhahn-like diagram illustrating the late-stage evolution of Betelgeuse and a $0.7M_{\\odot}$ companion in mesa. The diagonal hatching denotes convective mixing regions. The color scale traces regions of nuclear burning, shown as the logarithmic difference between local nuclear energy generation and neutrino cooling. The x-axis gives the logarithmic time relative to the calibrated present-day model, marked by the vertical black line at $0$. Positive values correspond to future evolution toward engulfment, while negative values trace the preceding evolution. As Betelgeuse expands during core helium burning, tidal interactions drive orbital decay and reduce its Roche-lobe radius, $R_{\\rm RL}$, toward its stellar surface, $R_{*}$. The tidal disruption radius, $R_{\\rm dis}$, remains concentrated near the stellar core, indicating that the companion survives until deep inspiral before being disrupted.",
               "label": "Fig. 1",
               "category": "theoretical",
               "category_badge": "物理模型示意图",
@@ -1922,7 +1922,7 @@
             },
             {
               "url": "/arxiv-figures/2610.31755/time_evolve_radius_updated_1.0M_cflrad_0.05.png",
-              "caption": "Figure 3: Evolution of the fiducial 1.0 ​ M ⊙ 1.0M_{\\odot} companion model following the deposition of E total = 8.05 × 10 48 E_{\\rm total}=8.05\\times 10^{48} erg. The dashed curves show the initial conditions immediately after energy deposition, while the colored curves represent logarithmically spaced snapshots in time. From top to bottom, the panels show the density, velocity, radiative luminosity ( L rad L_{\\rm rad} ), and gas temperature profiles. The vertical black line marks the stellar surface of the mapped mesa progenitor model. The deposited energy launches a shock that propagates through the extended red-supergiant envelope, accelerates through the steep outer density gradient, and ultimately breaks out at the stellar surface.",
+              "caption": "Figure 3: Evolution of the fiducial $1.0M_{\\odot}$ companion model following the deposition of $E_{\\rm total}=8.05\\times 10^{48}$ erg. The dashed curves show the initial conditions immediately after energy deposition, while the colored curves represent logarithmically spaced snapshots in time. From top to bottom, the panels show the density, velocity, radiative luminosity ($L_{\\rm rad}$), and gas temperature profiles. The vertical black line marks the stellar surface of the mapped mesa progenitor model. The deposited energy launches a shock that propagates through the extended red-supergiant envelope, accelerates through the steep outer density gradient, and ultimately breaks out at the stellar surface.",
               "label": "Fig. 3",
               "category": "theoretical",
               "category_badge": "核心物理演化图",
@@ -2024,7 +2024,7 @@
           "figures": [
             {
               "url": "/arxiv-figures/2610.31758/Mdot-phi.png",
-              "caption": "Figure 3: Minimum Y e ​ ( R unb ) Y_{\\rm e}(R_{\\rm unb}) in ( M ˙ d , ϕ BH ) (\\dot{M}_{\\rm d},\\phi_{\\rm BH}) . The thin solid (dashed) line shows the Y e = 0.25 Y_{\\rm e}=0.25 contour using the numerical (analytic) estimate. The thick line delineates the ceiling of the GRB population: M ˙ BH , max = 0.4 ​ M ⊙ ​ s − 1 ​ ( 20 / ϕ BH ) 2 \\dot{M}_{\\rm BH,max}=0.4\\,M_{\\odot}\\,{\\rm s^{-1}}\\,(20/\\phi_{\\rm BH})^{2} , for P j = 5 × 10 51 ​ erg ​ s − 1 P_{j}=5\\times 10^{51}\\,{\\rm erg\\,s^{-1}} , a = 0.3 a=0.3 , and M BH = 3 ​ M ⊙ M_{\\rm BH}=3\\,M_{\\odot} . Along the GRB ceiling, Y e min ≳ 0.33 Y_{\\rm e}^{\\min}\\gtrsim 0.33 for any value of ϕ BH \\phi_{\\rm BH} .",
+              "caption": "Figure 3: Minimum $Y_{\\rm e}(R_{\\rm unb})$ in $(\\dot{M}_{\\rm d},\\phi_{\\rm BH})$. The thin solid (dashed) line shows the $Y_{\\rm e}=0.25$ contour using the numerical (analytic) estimate. The thick line delineates the ceiling of the GRB population: $\\dot{M}_{\\rm BH,max}=0.4\\,M_{\\odot}\\,{\\rm s^{-1}}\\,(20/\\phi_{\\rm BH})^{2}$, for $P_{j}=5\\times 10^{51}\\,{\\rm erg\\,s^{-1}}$, $a=0.3$, and $M_{\\rm BH}=3\\,M_{\\odot}$. Along the GRB ceiling, $Y_{\\rm e}^{\\min}\\gtrsim 0.33$ for any value of $\\phi_{\\rm BH}$.",
               "label": "Fig. 3",
               "category": "theoretical",
               "category_badge": "核心物理演化图",
@@ -2033,7 +2033,7 @@
             },
             {
               "url": "/arxiv-figures/2610.31758/Liso-a.png",
-              "caption": "Figure 4: Most favorable composition bound as a function of black hole spin a a and isotropic-equivalent γ \\gamma -ray luminosity L iso L_{\\rm iso} . Colors show Y e min ​ ( R unb ) Y_{\\rm e}^{\\min}(R_{\\rm unb}) derived from Eq. ( 22 ) with η a ​ ( a ) \\eta_{a}(a) of Eq. ( 2 ), assuming M BH = 3 ​ M ⊙ M_{\\rm BH}=3\\,M_{\\odot} , θ j = 0.1 \\theta_{j}=0.1 , and η γ = 0.2 \\eta_{\\gamma}=0.2 , and minimizing over 20 ≤ ϕ BH ≤ 50 20\\leq\\phi_{\\rm BH}\\leq 50 (minimum is reached at ϕ BH = 20 \\phi_{\\rm BH}=20 ). The circle marks the ceiling reference model ( a = 0.3 a=0.3 , P j = 5 × 10 51 ​ erg ​ s − 1 P_{j}=5\\times 10^{51}\\,{\\rm erg\\,s^{-1}} ), for which Y e min ≈ 0.33 Y_{\\rm e}^{\\min}\\approx 0.33 . The solid curve marks Y e min = 0.25 Y_{\\rm e}^{\\min}=0.25 from the full numerical calculation and the dashed curve ℬ env = 3 / 4 \\mathcal{B}_{\\rm env}=3/4 , where the analytic bound of Eq. ( 29 ) reaches Y e = 0.25 Y_{\\rm e}=0.25 . Thin gray curves show M ˙ BH ​ ( ϕ BH = 20 ) = 0.01 \\dot{M}_{\\rm BH}(\\phi_{\\rm BH}{=}20)=0.01 , 0.1, and 10 ​ M ⊙ ​ s − 1 10\\,M_{\\odot}\\,{\\rm s^{-1}} . Horizontal lines mark observed isotropic-equivalent peak luminosities: the break of the long-GRB luminosity function, L ⋆ = 10 52.5 ± 0.2 ​ erg ​ s − 1 L_{\\star}=10^{52.5\\pm 0.2}\\,{\\rm erg\\,s^{-1}} (line and shaded uncertainty; Wanderman and Piran 103 ) and GRB 221009A ( 9.9 × 10 53 ​ erg ​ s − 1 9.9\\times 10^{53}\\,{\\rm erg\\,s^{-1}} ; Lesage et al. 55 ). Peak luminosities overestimate the sustained jet power and hence M ˙ BH \\dot{M}_{\\rm BH} : GRB 221009A radiated E γ , iso = 1.0 × 10 55 E_{\\gamma,\\rm iso}=1.0\\times 10^{55} erg over more than 600 s at z = 0.151 z=0.151 [ 55 ] , corresponding to a mean luminosity of ≲ 2 × 10 52 ​ erg ​ s − 1 \\lesssim 2\\times 10^{52}\\,{\\rm erg\\,s^{-1}} . The color scale is linear in Y e min Y_{\\rm e}^{\\min} below 0.25 (blue) and logarithmic in 0.5 − Y e min 0.5-Y_{\\rm e}^{\\min} above it (red).",
+              "caption": "Figure 4: Most favorable composition bound as a function of black hole spin $a$ and isotropic-equivalent $\\gamma$-ray luminosity $L_{\\rm iso}$. Colors show $Y_{\\rm e}^{\\min}(R_{\\rm unb})$ derived from Eq. (22) with $\\eta_{a}(a)$ of Eq. (2), assuming $M_{\\rm BH}=3\\,M_{\\odot}$, $\\theta_{j}=0.1$, and $\\eta_{\\gamma}=0.2$, and minimizing over $20\\leq\\phi_{\\rm BH}\\leq 50$ (minimum is reached at $\\phi_{\\rm BH}=20$). The circle marks the ceiling reference model ($a=0.3$, $P_{j}=5\\times 10^{51}\\,{\\rm erg\\,s^{-1}}$), for which $Y_{\\rm e}^{\\min}\\approx 0.33$. The solid curve marks $Y_{\\rm e}^{\\min}=0.25$ from the full numerical calculation and the dashed curve $\\mathcal{B}_{\\rm env}=3/4$, where the analytic bound of Eq. (29) reaches $Y_{\\rm e}=0.25$. Thin gray curves show $\\dot{M}_{\\rm BH}(\\phi_{\\rm BH}{=}20)=0.01$, 0.1, and $10\\,M_{\\odot}\\,{\\rm s^{-1}}$. Horizontal lines mark observed isotropic-equivalent peak luminosities: the break of the long-GRB luminosity function, $L_{\\star}=10^{52.5\\pm 0.2}\\,{\\rm erg\\,s^{-1}}$ (line and shaded uncertainty; Wanderman and Piran 103) and GRB 221009A ($9.9\\times 10^{53}\\,{\\rm erg\\,s^{-1}}$; Lesage et al. 55). Peak luminosities overestimate the sustained jet power and hence $\\dot{M}_{\\rm BH}$: GRB 221009A radiated $E_{\\gamma,\\rm iso}=1.0\\times 10^{55}$ erg over more than 600 s at $z=0.151$ [55], corresponding to a mean luminosity of $\\lesssim 2\\times 10^{52}\\,{\\rm erg\\,s^{-1}}$. The color scale is linear in $Y_{\\rm e}^{\\min}$ below 0.25 (blue) and logarithmic in $0.5-Y_{\\rm e}^{\\min}$ above it (red).",
               "label": "Fig. 4",
               "category": "theoretical",
               "category_badge": "核心物理演化图",
@@ -2373,7 +2373,7 @@
           "figures": [
             {
               "url": "/arxiv-figures/2610.31990/disk_parallelogram.png",
-              "caption": "Figure 1 : Schematic of the problem. A massive object with the mass M M is located at the coordinate origin. A non self-gravitating, geometrically thin mass distribution on the x ​ y xy plane with the surface mass density Σ ⁡ ( r ) \\Sigma(r) is initially rotating in circular orbits with the Keplerian velocity v K ​ ( r ) = G ​ M / r v_{K}(r)=\\sqrt{GM/r} . At t = 0 t=0 , the central object is kicked with the speed V kick V_{\\rm kick} and the angle α \\alpha from the midplane, i.e. 𝐕 kick = V kick ​ ( cos ⁡ α , 0 , sin ⁡ α ) \\mathbf{V}_{\\rm kick}=V_{\\rm kick}(\\cos\\alpha,0,\\sin\\alpha) .",
+              "caption": "Figure 1: Schematic of the problem. A massive object with the mass $M$ is located at the coordinate origin. A non self-gravitating, geometrically thin mass distribution on the $xy$ plane with the surface mass density $\\Sigma(r)$ is initially rotating in circular orbits with the Keplerian velocity $v_{K}(r)=\\sqrt{GM/r}$. At $t=0$, the central object is kicked with the speed $V_{\\rm kick}$ and the angle $\\alpha$ from the midplane, i.e. $\\mathbf{V}_{\\rm kick}=V_{\\rm kick}(\\cos\\alpha,0,\\sin\\alpha)$.",
               "label": "Fig. 1",
               "category": "theoretical",
               "category_badge": "物理模型示意图",
@@ -2673,7 +2673,7 @@
           "figures": [
             {
               "url": "/arxiv-figures/2610.32168/fig_wwz_C_v2.png",
-              "caption": "Figure 3: WWZ power map and integrated power spectra of 4C+72.28 in the C- (a) and K-band (b). For each figure, the left main panel shows the distribution of WWZ power in the time–frequency domain, with the power intensity indicated by the color bar on the left. The shaded region outside the white curve denotes the area affected by edge effects, which is the COI, while the region inside the curve corresponds to reliable signals. The right panel presents the normalized power spectra obtained by integrating the WWZ power over time exclude the COI, with the 1 ​ σ 1\\sigma , 2 ​ σ 2\\sigma , and 3 ​ σ 3\\sigma local significance levels marked.",
+              "caption": "Figure 3: WWZ power map and integrated power spectra of 4C+72.28 in the C- (a) and K-band (b). For each figure, the left main panel shows the distribution of WWZ power in the time–frequency domain, with the power intensity indicated by the color bar on the left. The shaded region outside the white curve denotes the area affected by edge effects, which is the COI, while the region inside the curve corresponds to reliable signals. The right panel presents the normalized power spectra obtained by integrating the WWZ power over time exclude the COI, with the $1\\sigma$, $2\\sigma$, and $3\\sigma$ local significance levels marked.",
               "label": "Fig. 3",
               "category": "observational",
               "category_badge": "核心观测结果",
@@ -4799,7 +4799,7 @@
           "arxiv_id": "2610.31758",
           "revision": 1,
           "source_fingerprint": "0d4ccb2bffa6806db72937a7be58189ecd0b40a08b9b153180d7817bae96f353",
-          "guide_fingerprint": "7fafc536b5efdbd6c0e3d7184da34a37b52312286b0d5b6e95b169d09c38088d",
+          "guide_fingerprint": "0859f0147e76e4367ee29cdb07f9834b2bd83924a6cf1f6682bf9a34364c6759",
           "label": "Collapsars Are Not Heavy $r$-Process Factories",
           "text": "坍缩星吸积盘在任何磁通序列下均无法向外抛射电子丰度 $Y_{\\rm e} \\le 0.25$ 的重 $r$-过程气体。",
           "anchor": "radar-paper-2610-31758-v1"
@@ -4819,19 +4819,19 @@
           "arxiv_id": "2610.31754",
           "revision": 1,
           "source_fingerprint": "fce5b55eed487b8005abc2921a27ee7a0de2dd665d68e520177ea23706d69da2",
-          "guide_fingerprint": "913fa7c7922b6b187017ca436f6359c130e59794bf975f6c61c9f8c21cbb883b"
+          "guide_fingerprint": "74dd3929e304f825628771ae85493c157ada0a9d70706e7f3651c8aaa7e43d26"
         },
         {
           "arxiv_id": "2610.31755",
           "revision": 1,
           "source_fingerprint": "216f7a533d57c50c0b815678eeb5bf3d2e311dbdd3b9282ee37d5e04c9896a22",
-          "guide_fingerprint": "0a37b553b6d82e77ca2d871344c4b2fc54c2c16c719bec8e23b200969b6afd8d"
+          "guide_fingerprint": "4231f3ce167005d2bcf78a6711fe5edfa5c1c5f20a0f3ed82cbd3197f2b88d7d"
         },
         {
           "arxiv_id": "2610.31990",
           "revision": 1,
           "source_fingerprint": "5095804f15e9827e19d6f2b31ca019ce65e2953b4bbb355c4eb987fac11c9b6f",
-          "guide_fingerprint": "495627313dc8afee33d212f4e6e5ec4c155011cd3433145068706b567d252b0e"
+          "guide_fingerprint": "bc0203445df314217bd3586fb402ee4f1ac9c24de445863e89c1bbed04b0fc30"
         },
         {
           "arxiv_id": "2610.32028",
@@ -4849,7 +4849,7 @@
           "arxiv_id": "2610.32168",
           "revision": 1,
           "source_fingerprint": "ba52843c4ecc5f0516c0bb9dd2dd1e307c8634b578063d9d0b8a23a3b7887d6a",
-          "guide_fingerprint": "5f691d45691a8e190f92ddaf0dd97fe8543f53f36f30b5431a8ad11d6f97fa70"
+          "guide_fingerprint": "da07cb777e901ee71bcb3a7bbae06e3bda65a64d79a49fb5e8c8daec0ac6eb3b"
         },
         {
           "arxiv_id": "2610.32316",

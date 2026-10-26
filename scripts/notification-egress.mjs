@@ -113,12 +113,19 @@ export async function generateGroupBrief(type = "daily", options = {}) {
         if (website.status !== "success") throw new Error("QQ_SOURCE_BUILD_REQUIRED");
         sourceBinding = website.source_binding;
       }
-      const { daily, weekly: weeklyBinding, archives, id } = sourceBinding || {};
+      const { daily, weekly: weeklyBinding, archives, weeklyArchives, id } = sourceBinding || {};
       if (
         !daily?.generation_id ||
         !weeklyBinding?.hash ||
         !archives ||
-        hashBody(JSON.stringify({ daily, weekly: weeklyBinding, archives })) !== id
+        hashBody(
+          JSON.stringify({
+            daily,
+            weekly: weeklyBinding,
+            archives,
+            ...(weeklyArchives ? { weeklyArchives } : {}),
+          })
+        ) !== id
       )
         throw new Error("QQ_SOURCE_BUILD_REQUIRED");
       if (type === "weekly") {

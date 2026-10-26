@@ -28,6 +28,8 @@ import {
   formatWeekIdZh,
   sanitizeWebsiteBase,
   getDefaultWebsiteBase,
+  getBibliographicUrl,
+  getBibliographicSourceName,
 } from "../src/domain/academic-domain.mjs";
 import {
   tokenizeScientificText,
@@ -276,7 +278,7 @@ export async function generateWeeklyMarkdownDocument({
     lines.push(`- **英文原题**：${titleEn}`);
     lines.push(`- **作者**：${authorStr}`);
     lines.push(
-      `- **文献链接**：[arXiv 原文](https://arxiv.org/abs/${aid}) ｜ [NASA ADS](https://ui.adsabs.harvard.edu/abs/arXiv:${aid}) ｜ [在线精读](${base}/arxiv-weekly/${weekId}/#paper-${aid})`
+      `- **文献链接**：[arXiv 原文](https://arxiv.org/abs/${aid}) ｜ [${getBibliographicSourceName()}](${getBibliographicUrl(aid)}) ｜ [在线精读](${base}/arxiv-weekly/${weekId}/#paper-${aid})`
     );
     lines.push(`- **推荐理由**：${p.recommendation_reason || "无"}`);
     lines.push(`- **核心突破**：${p.core_insight || "无"}`);
@@ -998,7 +1000,7 @@ export async function generatePublicationWeeklyHtml({
           <span><strong>作者：</strong>${escapeHtml(authorStr)}</span>
           <span class="paper-links-bar">
             <a href="https://arxiv.org/abs/${aid}">arXiv 原文</a> ｜
-            <a href="https://ui.adsabs.harvard.edu/abs/arXiv:${aid}">NASA ADS</a> ｜
+            <a href="${getBibliographicUrl(aid)}">${escapeHtml(getBibliographicSourceName())}</a> ｜
             <a href="${base}/arxiv-weekly/${weekId}/#paper-${aid}">站内交互雷达</a>
           </span>
         </div>

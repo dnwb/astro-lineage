@@ -12,6 +12,8 @@ import {
   parseStructuredExecutiveSummary,
   formatWeekIdZh,
   formatWeekIdEn,
+  getBibliographicUrl,
+  getBibliographicSourceName,
 } from "../../domain/academic-domain.mjs";
 import { radarCardAnchor } from "../../../scripts/daily-radar.mjs";
 import "../../styles/global.css";
@@ -133,7 +135,7 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
 - **推荐理由**: ${p.recommendation_reason}
 - **核心突破**: ${p.core_insight}
 - **阅读切入**: ${p.reading_guide}
-- **链接**: https://arxiv.org/abs/${p.arxiv_id} | https://ui.adsabs.harvard.edu/abs/arXiv:${p.arxiv_id}`).join("\n\n")}`.trim();
+- **链接**: https://arxiv.org/abs/${p.arxiv_id} | ${getBibliographicUrl(p.arxiv_id)}`).join("\n\n")}`.trim();
 ---
 
 <!doctype html>
@@ -317,8 +319,8 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
                           <a class="catalog-arxiv-link" href={p.url || `https://arxiv.org/abs/${p.arxiv_id}v${p.revision || 1}`} target="_blank" rel="noopener noreferrer">
                             arXiv:{p.arxiv_id}v{p.revision || 1}
                           </a>
-                          <a class="catalog-ads-link" href={`https://ui.adsabs.harvard.edu/abs/arXiv:${p.arxiv_id}`} target="_blank" rel="noopener noreferrer" title="NASA ADS">
-                            ADS ↗
+                          <a class="catalog-ads-link" href={getBibliographicUrl(p.arxiv_id)} target="_blank" rel="noopener noreferrer" title={`在 ${getBibliographicSourceName()} 中查看`}>
+                            {getBibliographicSourceName({ short: true })} ↗
                           </a>
                           <h4 class="catalog-item-title">
                             <a href={paperTargetUrl} class="catalog-paper-title-link" title="点击直接进入该篇当日深度精读">

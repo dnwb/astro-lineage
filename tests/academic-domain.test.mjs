@@ -228,3 +228,45 @@ test("academic-domain: deriveFigurePhysicalCore extracts explicit core or derive
   assert.equal(deriveFigurePhysicalCore({}), "");
   assert.equal(deriveFigurePhysicalCore({ category: "unknown", caption: "random plot" }), "");
 });
+
+test("academic-domain: getBibliographicUrl and getBibliographicSourceName format external bibliographic links", async () => {
+  const { getBibliographicUrl, getBibliographicSourceName, DEFAULT_BIBLIOGRAPHIC_PROVIDER } =
+    await import("../src/domain/academic-domain.mjs");
+
+  assert.equal(DEFAULT_BIBLIOGRAPHIC_PROVIDER, "scix");
+
+  // Default scix with forceMode=astrophysics
+  assert.equal(
+    getBibliographicUrl("2610.12345"),
+    "https://scixplorer.org/abs/arXiv:2610.12345?forceMode=astrophysics"
+  );
+  // Handles arXiv: prefix and versions
+  assert.equal(
+    getBibliographicUrl("arXiv:2610.12345v2"),
+    "https://scixplorer.org/abs/arXiv:2610.12345v2?forceMode=astrophysics"
+  );
+  // Custom forceMode
+  assert.equal(
+    getBibliographicUrl("2610.12345", { forceMode: "planetary" }),
+    "https://scixplorer.org/abs/arXiv:2610.12345?forceMode=planetary"
+  );
+  // Disabled forceMode
+  assert.equal(
+    getBibliographicUrl("2610.12345", { forceMode: null }),
+    "https://scixplorer.org/abs/arXiv:2610.12345"
+  );
+  // Fallback / legacy ads provider
+  assert.equal(
+    getBibliographicUrl("2610.12345", { provider: "ads" }),
+    "https://ui.adsabs.harvard.edu/abs/arXiv:2610.12345"
+  );
+  // Invalid inputs return empty string
+  assert.equal(getBibliographicUrl(""), "");
+  assert.equal(getBibliographicUrl(null), "");
+
+  // Labels
+  assert.equal(getBibliographicSourceName(), "SciX (ADS)");
+  assert.equal(getBibliographicSourceName({ short: true }), "SciX");
+  assert.equal(getBibliographicSourceName({ provider: "ads" }), "NASA ADS");
+  assert.equal(getBibliographicSourceName({ provider: "ads", short: true }), "ADS");
+});

@@ -107,21 +107,21 @@ test("arXiv weekly HTML renders math formulas via KaTeX and MathML without raw L
   );
 });
 
-test("arXiv weekly HTML includes NASA ADS links, citation/BibTeX block, and Markdown export", async () => {
+test("arXiv weekly HTML includes SciX / ADS links, citation/BibTeX block, and Markdown export", async () => {
   assert.ok(
     existsSync(fileURLToPath(distWeeklyHtmlUrl)),
     "dist/arxiv-weekly/index.html must exist"
   );
   const html = await readFile(distWeeklyHtmlUrl, "utf8");
 
-  // NASA ADS links
+  // SciX / ADS external bibliographic links
   const weeklyContent = JSON.parse(await readFile(weeklyJsonUrl, "utf8"));
   for (const pick of weeklyContent.top_picks || []) {
     const escaped = pick.arxiv_id.replace(".", "\\.");
     assert.match(
       html,
-      new RegExp(`https://ui\\.adsabs\\.harvard\\.edu/abs/arXiv:${escaped}`),
-      `must link to NASA ADS for top pick ${pick.arxiv_id}`
+      new RegExp(`https://scixplorer\\.org/abs/arXiv:${escaped}`),
+      `must link to SciX for top pick ${pick.arxiv_id}`
     );
   }
 

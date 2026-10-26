@@ -720,3 +720,63 @@ export function resolveWebsiteUrls(options = {}) {
     : getDefaultLocalWebsiteBase();
   return { publicBase, localBase };
 }
+
+/**
+ * Default bibliographic provider.
+ * Supports 'scix' (NASA Science Explorer) and 'ads' (NASA ADS legacy).
+ */
+export const DEFAULT_BIBLIOGRAPHIC_PROVIDER =
+  (typeof process !== "undefined" && process?.env?.BIBLIOGRAPHIC_PROVIDER) || "scix";
+
+/**
+ * Default labels for bibliographic providers.
+ */
+export const BIBLIOGRAPHIC_PROVIDER_LABELS = {
+  scix: "SciX (ADS)",
+  ads: "NASA ADS",
+};
+
+/**
+ * Generate canonical external bibliographic URL for a paper.
+ *
+ * @param {string} arxivId - Normalized or raw arXiv ID (e.g. "2610.12345" or "arXiv:2610.12345v1")
+ * @param {{ provider?: 'scix' | 'ads', forceMode?: string | null }} [options]
+ * @returns {string}
+ */
+export function getBibliographicUrl(arxivId, options = {}) {
+  if (!arxivId || typeof arxivId !== "string") return "";
+  const cleanedId = arxivId.replace(/^arXiv:/i, "").trim();
+  if (!cleanedId) return "";
+
+  const provider = options.provider || DEFAULT_BIBLIOGRAPHIC_PROVIDER;
+  const forceMode =
+    options.forceMode !== undefined
+      ? options.forceMode
+      : provider === "scix"
+        ? "astrophysics"
+        : null;
+
+  if (provider === "ads") {
+    return `https://ui.adsabs.harvard.edu/abs/arXiv:${cleanedId}`;
+  }
+
+  const baseUrl = `https://scixplorer.org/abs/arXiv:${cleanedId}`;
+  if (forceMode) {
+    return `${baseUrl}?forceMode=${encodeURIComponent(forceMode)}`;
+  }
+  return baseUrl;
+}
+
+/**
+ * Get display label for external bibliographic provider link.
+ *
+ * @param {{ provider?: 'scix' | 'ads', short?: boolean }} [options]
+ * @returns {string}
+ */
+export function getBibliographicSourceName(options = {}) {
+  const provider = options.provider || DEFAULT_BIBLIOGRAPHIC_PROVIDER;
+  if (options.short) {
+    return provider === "scix" ? "SciX" : "ADS";
+  }
+  return BIBLIOGRAPHIC_PROVIDER_LABELS[provider] || "SciX (ADS)";
+}

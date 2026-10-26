@@ -88,7 +88,8 @@ test("generatePublicationWeeklyHtml creates dedicated academic layout with Base6
 
   // 6. Hyperlinks
   assert.match(html, /href="https:\/\/arxiv\.org\/abs\//u);
-  assert.match(html, /href="https:\/\/ui\.adsabs\.harvard\.edu\/abs\/arXiv:/u);
+  assert.match(html, /href="https:\/\/scixplorer\.org\/abs\/arXiv:[^"]*forceMode=astrophysics"/u);
+  assert.match(html, />SciX \(ADS\)<\/a>/u);
 
   // 7. Formula & Markdown rendering
   assert.match(html, /class="katex"/u);

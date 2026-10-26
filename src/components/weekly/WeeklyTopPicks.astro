@@ -3,7 +3,7 @@ import ReaderText from "../ReaderText.astro";
 import DailyRadarGuide from "../DailyRadarGuide.astro";
 import DailyRadarSource from "../DailyRadarSource.astro";
 import { radarCardAnchor } from "../../../scripts/daily-radar.mjs";
-import { matchScientificTags, extractTransientIdentifiers, formatAnnouncementInBeijing, TOPIC_FILTER_SPECS } from "../../domain/academic-domain.mjs";
+import { matchScientificTags, extractTransientIdentifiers, formatAnnouncementInBeijing, TOPIC_FILTER_SPECS, getBibliographicUrl, getBibliographicSourceName } from "../../domain/academic-domain.mjs";
 import { resolvePaperTitleZhSync } from "../../domain/paper-translation.mjs";
 
 interface Props {
@@ -213,8 +213,8 @@ const activeTopicFilters = TOPIC_FILTER_SPECS
                 <a class="pick-pdf-link" href={`https://arxiv.org/pdf/${pick.arxiv_id}`} target="_blank" rel="noopener noreferrer" title="直接阅读官方 PDF">
                   📄 PDF ↗
                 </a>
-                <a class="pick-ads-link" href={`https://ui.adsabs.harvard.edu/abs/arXiv:${pick.arxiv_id}`} target="_blank" rel="noopener noreferrer" title="在 NASA ADS 中查看">
-                  NASA ADS ↗
+                <a class="pick-ads-link" href={getBibliographicUrl(pick.arxiv_id)} target="_blank" rel="noopener noreferrer" title={`在 ${getBibliographicSourceName()} 中查看`}>
+                  {getBibliographicSourceName({ short: true })} ↗
                 </a>
                 {dailyItem ? (
                   <button
@@ -349,7 +349,7 @@ const activeTopicFilters = TOPIC_FILTER_SPECS
                     <div class="radar-modal-ext-links">
                       <a class="modal-ext-link" href={`https://arxiv.org/abs/${pick.arxiv_id}`} target="_blank" rel="noopener">arXiv 原文页 ↗</a>
                       <a class="modal-ext-link" href={`https://arxiv.org/pdf/${pick.arxiv_id}`} target="_blank" rel="noopener">官方 PDF ↗</a>
-                      <a class="modal-ext-link" href={`https://ui.adsabs.harvard.edu/abs/arXiv:${pick.arxiv_id}`} target="_blank" rel="noopener">NASA ADS ↗</a>
+                      <a class="modal-ext-link" href={getBibliographicUrl(pick.arxiv_id)} target="_blank" rel="noopener">{getBibliographicSourceName({ short: true })} ↗</a>
                       {dailyDate && (
                         <a class="modal-ext-link modal-daily-link" href={`/arxiv-daily/${dailyDate}/#${radarCardAnchor(pick.arxiv_id, pick.revision || 1)}`}>
                           前往 {dailyDate} 日报完整档案页 →

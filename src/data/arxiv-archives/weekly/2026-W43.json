@@ -1,79 +1,71 @@
 {
   "schema_version": "astrolineage-weekly-summary-v1",
-  "generated_at": "2026-10-23T02:19:02.688Z",
+  "generated_at": "2026-10-26T02:07:46.428Z",
   "week_id": "2026-W43",
   "title": "每周学术脉络 · 2026-W43",
   "date_range": "2026-10-19 ~ 2026-10-25",
-  "executive_summary": "本周高能天体物理与瞬变源研究集中体现了从致密星核心引擎内秉动力学、极端相对论磁重联到外流与复杂介质激波相互作用的全链条物理演进。各主线核心突破如下：\n- **磁星动力学与电磁耗散**：arXiv:2610.22653 模拟论证了磁星扭缠磁通管中非均匀电阻率激发的相对论磁重联速率可达 $\\beta_{\\rm rec} \\sim 0.1$，揭示仅占横截面 $0.1\\% \\sim 3\\%$ 的电荷匮乏区主导了 $20\\% \\sim 55\\%$ 的欧姆耗散，为巨耀斑驱动重子抛射提供了动力学机制。\n- **致密环境与活动星系核瞬变**：arXiv:2610.24849 通过辐射-MHD 模拟阐明了在预先存在的 AGN 吸积盘中，大倾角 TDE 碎屑流碰撞导致吸积率跃升至 $\\sim 10\\text{--}13\\,\\dot{M}_{\\rm Edd}$，通过环向磁场向内平流使单极磁通量增加 33 倍，产生显著的南北极不对称 Blandford–Znajek 喷流（$L_{\\rm BZ} \\simeq 3\\times 10^{42}\\,{\\rm erg\\,s^{-1}}$）。\n- **快速射电暴环境与中心引擎**：arXiv:2610.27311 推导出重复 FRB 的色散量变化率 $d{\\rm DM}/dt \\gtrsim 1\\,{\\rm pc\\,cm^{-3}\\,yr^{-1}}$ 可由高速中子星穿过湍流介质的空间运动解释，反演出源空间速度下限为 $|v_s| \\gtrsim 20\\text{--}2800\\,{\\rm km\\,s^{-1}}$；arXiv:2610.27489 则利用 FRB 20240114A 伴随持续射电源的月量级多波段光变，将相对论电子截断洛伦兹因子限制在 $\\gamma_{\\rm b} < 10^3$，推导射电辐射效率仅为 $\\eta_{\\rm r} \\sim 10^{-5}\\text{--}10^{-4}$。\n- **超新星激波与周星相互作用**：arXiv:2610.27312 报道了极端富氢超新星 SN 2023iop（峰值绝对星等 $M_r \\approx -20.14\\,{\\rm mag}$，总辐射能 $4.3\\times 10^{50}\\,{\\rm erg}$），指出其中微子机制无法驱动，必须要求高达 $2.2\\,M_\\odot$ 的 $^{56}{\\rm Ni}$ 或超大质量恒星（$\\sim 190\\,M_\\odot$）对不稳定爆发并伴随非球对称 CSM 相互作用；arXiv:2610.29226 针对快速 X 射线暂现源 EP260321a 建立了考虑正/反激波非局部热平衡的双激波风破越模型，揭示软 X 射线辐射主要来自处于 LTE 态的低速反激波。\n- **伽马射线暴与软 X 射线暂现源对应**：arXiv:2610.28734 统计给出 68% 的爱因斯坦探针（EP）快速 X 射线源缺乏高能伽马射线对应体，严格约束其初始体洛伦兹因子 $\\Gamma_0 \\lesssim 100$，指示其为低光度中度相对论出流或激波破越事件。\n- **致密双星动力学与极端引力**：arXiv:2610.29838 报道了 FAST 发现的具有极端偏心率（$e = 0.99238692$）与 $79.08\\,{\\rm d}$ 轨道的掩食双中子星系统 PSR J0653+0443，精确测定两星质量分别为 $1.38\\,M_\\odot$ 和 $1.44\\,M_\\odot$，并测得近星点脉冲状引力波辐射峰值频率在 $0.357\\,{\\rm mHz}$。\n> 🎯 **筛选边界**：本周严格聚焦于致密天体高能爆发现象及其因果物理链条（磁星、TDE、FRB、超亮超新星/CSM、双中子星、GRB/FXT），已滤除 222 篇普通低能段巡天、恒星形成与泛星系统计研究。",
+  "executive_summary": "本周高能爆发现象研究聚焦于中心引擎剧烈演化、致密星多信使动力学及辐射传输因果链条的定量闭环。- **磁星动力学与FRB环境**：arXiv:2610.22653 模拟论证了磁通管非均匀电阻磁重联速率可达 $\\beta_{\\rm rec} \\sim 0.1$，揭示极小占比的电荷匮乏区承担了 $20\\%\\sim 55\\%$ 的欧姆耗散；arXiv:2610.27489 针对 FRB 20240114A 持续射电源的光变，约束相对论电子注入截止洛伦兹因子需 $\\gamma_{\\rm b} < 10^3$，推导射电辐射效率仅为 $\\eta_{\\rm r} \\sim 10^{-5}\\text{--}10^{-4}$；arXiv:2610.27311 通过重复暴的色散量时变率 $d{\\rm DM}/dt \\sim 1\\,{\\rm pc\\,cm^{-3}\\,yr^{-1}}$，反演推得源空间速度下限为 $|v_s| \\gtrsim 20\\text{--}2800\\,{\\rm km\\,s^{-1}}$；arXiv:2610.31365 发现 FRB 20210601A 在 $106.5\\,{\\rm s}$ 内密集爆发 9 次，揭示出具有极端群聚特征的阵发性重复暴隐藏子类。- **超新星物理与激波破越**：arXiv:2610.27312 报道了富氢超亮超新星 SN 2023iop，测得辐射总能达 $E_{\\rm rad} \\approx 4.3\\times 10^{50}\\,{\\rm erg}$ 并伴有 $P=0.81\\%$ 显著线偏振，指出其前身星对应 $190\\,M_\\odot$ 的对不稳定超新星（PISN）；arXiv:2610.29226 建立非局部热平衡正激波与主导黑体热辐射的反激波双激波模型，成功拟合 EP260321a 的软X射线演化与星风破越。- **相对论喷流、吸积与极端双星**：arXiv:2610.24849 借助 3D 辐射 MHD 模拟论证了 AGN 盘内 TDE 碎屑撞击可将吸积率推至超爱丁顿态，同时诱导 Blandford-Znajek 喷流并形成高达 $10\\text{--}100$ 倍的南北极 Poynting 通量不对称；arXiv:2610.28734 统计证实 $68\\%$ 的 EP 软X射线暂现源缺乏伽马射线对应体，限制其初始体洛伦兹因子 $\\Gamma_0 \\lesssim 100$；arXiv:2610.29838 基于 FAST 观测证认出离心率高达 $e = 0.99238692$ 的极端偏心双中子星 PSR J0653+0443，精确测定其近星点相对速度达 $1.14\\times 10^3\\,{\\rm km\\,s^{-1}}$。> 🎯 **筛选边界**：本周重点聚焦磁星磁重联数值解、超亮超新星/激波破越因果链条、AGN 盘内 TDE 喷流激发与极端偏心双致密星时变，严格排除普通非暂现源星系巡天与无动力学演化的低能段唯象统计。排版遵循单个 `$` 标准行内 LaTeX 公式语法。",
   "overview_matrix": [
     {
-      "domain": "磁星爆发与快速射电暴环境 (R1/R5)",
-      "key_question": "磁星光滑磁层如何突破脚点固结触发极端耗散？FRB 的色散量时变与持续射电源光变如何限定中心引擎物理参数与辐射效率？",
+      "domain": "磁星动力学与快速射电暴辐射环境",
+      "key_question": "磁星磁层高磁化扭缠磁通管的快速耗散机制，以及 FRB 的空间运动动力学与持续射电源物理本质",
       "representative_papers": [
         "2610.22653",
+        "2610.27489",
         "2610.27311",
-        "2610.27489"
+        "2610.31365"
       ],
-      "core_findings": "- 【arXiv:2610.22653】(arXiv:2610.22653 等)：相对论电阻 MHD 模拟证实细长磁通管的面内磁场呈指数衰减 $\\langle B_{\\perp}^{2}\\rangle \\propto e^{-2\\Gamma_{\\rm rec}t}$，微观电荷匮乏区仅占横截面 $0.1\\% \\sim 3\\%$ 却承载了 $20\\% \\sim 55\\%$ 的欧姆耗散，电流耗散深入中子星壳层基底（$\\Sigma_{\\rm eq} \\sim 2.5\\times 10^{14}\\,{\\rm g\\,cm^{-2}}$），经反复循环可驱动巨耀斑重子抛射。\n- 【arXiv:2610.27311】(arXiv:2610.27311 等)：推导表明重复 FRB 的色散量时变 $d{\\rm DM}/dt \\sim 1\\,{\\rm pc\\,cm^{-3}\\,yr^{-1}}$ 可完全由高速中子星穿过介质的横向/径向反冲速度解释，结合自由-自由吸收光深 $\\tau_{\\rm ff} < 1$ 约束得出重复暴源空间速度为 $|v_s| \\gtrsim 20\\text{--}2800\\,{\\rm km\\,s^{-1}}$。\n- 【arXiv:2610.27489】(arXiv:2610.27489 等)：对 FRB 20240114A 伴随持续射电源的月尺度光变进行磁星风云（MWN）拟合，锁定相对论注入电子截断洛伦兹因子 $\\gamma_{\\rm b} \\sim 2 \\times 10^2$（$\\gamma_{\\rm b} < 10^3$），导出磁星初始磁能 $\\sim 5 \\times 10^{49}\\,{\\rm erg}$，射电辐射效率限制在 $\\eta_{\\rm r} \\sim 10^{-5}\\text{--}10^{-4}$。",
-      "significance": "确立了磁星微观电荷匮乏区在宏观巨耀斑耗散中的决定性作用，并通过 FRB 时域多波段观测量建立了直接反演中心引擎能动量输出与空间运动学参数的方法。"
+      "core_findings": "- 【arXiv:2610.22653】(第一作者等)：阻抗相对论 MHD 模拟表明非均匀电阻下重联入流速度标度达 $\\beta_{\\rm rec} \\sim 0.1$，面积占比仅 $0.1\\%\\sim 3\\%$ 的电荷匮乏区承担了 $20\\%\\sim 55\\%$ 的欧姆耗散，电流阻尼深入中子星壳层基底，十余次热膨胀循环足以驱动巨耀斑重子抛射。\\n- 【arXiv:2610.27489】(第一作者等)：拟合 FRB 20240114A 持续射电源多波段光变与自吸收截断，限制电子注入洛伦兹因子 $\\gamma_{\\rm b} < 10^3$（基准解 $\\sim 2\\times 10^2$），推算射电辐射效率仅 $\\eta_{\\rm r} \\sim 10^{-5}\\text{--}10^{-4}$，系统年龄处于 $7\\text{--}16\\,{\\rm yr}$。\\n- 【arXiv:2610.27311】(第一作者等)：将色散量时变率 $d{\\rm DM}/dt \\sim 1\\,{\\rm pc\\,cm^{-3}\\,yr^{-1}}$ 分解为常密度径向运动与柯尔莫哥洛夫湍流横向运动，推断重复暴源空间速度为 $|v_s| \\gtrsim 20\\text{--}2800\\,{\\rm km\\,s^{-1}}$，与年轻高速磁星反冲速度吻合。\\n- 【arXiv:2610.31365】(第一作者等)：测得 FRB 20210601A 在单次中天过境 $106.5\\,{\\rm s}$ 内集中爆发 9 次（主瓣归一化爆发数 $\\gtrsim 21$ 次），峰值爆发率达 $0.075\\,{\\rm bursts\\,s^{-1}}$，证认出一种隐藏的阵发性极度群聚重复暴。",
+      "significance": "确立了磁层非均匀电阻重联驱动巨耀斑与重子抛射的物理路径，并将 FRB 的 DM 时变演化及持续射电源光变直接映射至磁星高速反冲动力学与弱射电辐射效率（$\\eta_{\\rm r} \\ll 1$）磁星风云模型中。"
     },
     {
-      "domain": "致密环境、吸积喷流与软 X 射线暂现源 (R2/R6/R7)",
-      "key_question": "AGN 吸积盘内的碎屑流撞击如何调控相对论喷流形成？爱因斯坦探针（EP）新发现的大批软 X 射线暂现源是否属于传统大张角 GRB 还是激波破越？",
-      "representative_papers": [
-        "2610.24849",
-        "2610.28734"
-      ],
-      "core_findings": "- 【arXiv:2610.24849】(arXiv:2610.24849 等)：3D 辐射-MHD 模拟表明 TDE 碎屑流撞击使内盘吸积率暴增至 $\\sim 10\\text{--}13\\,\\dot{M}_{\\rm Edd}$，辐射光度受光子俘获限制在 $\\sim L_{\\rm Edd}$，同时向内平流环向磁场使南极磁通量提升 33 倍，产生强双极不对称的 Blandford–Znajek 喷流（南北 Poynting 通量相差 $10\\text{--}100$ 倍）。\n- 【arXiv:2610.28734】(arXiv:2610.28734 等)：对 72 例 EP 暂现源的 Fermi/GBM 及 LAT 协同分析显示 68% 的源完全无伽马射线对应体，各向同性光度上限受限在 $L_{\\rm iso} \\lesssim 10^{48}\\text{--}10^{51}\\,{\\rm erg\\,s^{-1}}$，初始体洛伦兹因子上限为 $\\Gamma_0 \\lesssim 100$，有力排除了典型离轴强相对论喷流，支持激波破越或中度相对论外流解释。",
-      "significance": "揭示了高密吸积盘环境中非轴对称物质撞击可直接诱导极强极性不对称的相对论喷流；阐明了 EP 快速软 X 射线源与经典经典高能 GRB 在相对论集束程度上的本质分化。"
-    },
-    {
-      "domain": "爆发瞬变与周星介质相互作用 (R1/R3)",
-      "key_question": "超亮富氢超新星与极软快速 X 射线爆发的超额光度是源于极量镍衰变、致密中心引擎还是恒星风破越双激波？",
+      "domain": "大质量恒星爆发、CSM 相互作用与激波破越",
+      "key_question": "超亮富氢超新星的大能量来源争议，以及星风激波破越中非局部热平衡辐射机制",
       "representative_papers": [
         "2610.27312",
-        "2610.29226"
+        "2610.29226",
+        "2610.28734"
       ],
-      "core_findings": "- 【arXiv:2610.27312】(arXiv:2610.27312 等)：多波段光变及分光偏振（$P = 0.81\\%$）揭示富氢超新星 SN 2023iop 辐射能量达 $4.3\\times 10^{50}\\,{\\rm erg}$，抛射物质量 $M_{\\rm ej} > 12\\,M_\\odot$；单靠镍衰变需 $M_{\\rm ^{56}Ni} \\approx 2.2\\,M_\\odot$，排除了标准核塌缩模型，动力学拟合支持 $190\\,M_\\odot$ 富氢对不稳定超新星（PISN）或深埋非球对称 CSM 相互作用。\n- 【arXiv:2610.29226】(arXiv:2610.29226 等)：推导了超新星星风破越双激波动力学，正激波（$v_{f,bo} \\sim 0.5c$）因处于非 LTE 难以完全热化，而速度较低（$\\bar{v}_{r,bo} \\sim 0.07c$）的反激波满足 LTE 并主导黑体热软 X 射线辐射，自洽重现了 EP260321a 的超高光度与 X 射线-光学时延特征。",
-      "significance": "打破了以往星风破越中忽略反激波非热化状态的简化假设，为 EP 极端软 X 射线瞬变与富氢超亮超新星的供能机制建立了完备的双激波/CSM 相互作用动力学范式。"
+      "core_findings": "- 【arXiv:2610.27312】(第一作者等)：SN 2023iop 表现出长达 $\\gtrsim 88\\,{\\rm d}$ 的缓慢上升与 $M_r \\approx -20.14\\,{\\rm mag}$，全波段辐射能量达 $E_{\\rm rad} = (4.3\\pm 0.3)\\times 10^{50}\\,{\\rm erg}$，测得连续谱线偏振度 $P=0.81\\pm 0.08\\%$，排除了标准中微子驱动核塌缩，指向前身星初始质量 $\\sim 190\\,M_\\odot$ 的富氢 PISN 伴随非球对称 CSM 相互作用。\\n- 【arXiv:2610.29226】(第一作者等)：建立考虑接触间断面压强平衡的双激波解析动力学，证明 EP260321a 的软X射线演化由处于局部热平衡的低速反激波（$\\bar{v}_{r,bo}\\sim 0.07c$）热辐射主导，而高速正激波（$v_{f,bo}\\sim 0.5c$）处于非局部热平衡。\\n- 【arXiv:2610.28734】(第一作者等)：系统分析 72 例爱因斯坦探针（EP）快速 X 射线暂现源，证实 $68\\%$ 严格缺失伽马射线对应体，给出峰值能量上限 $E_{\\rm peak} \\lesssim 30\\text{--}100\\,{\\rm keV}$ 与体洛伦兹因子 $\\Gamma_0 \\lesssim 100$，表明其主要源自低光度喷流或致密星风激波破越。",
+      "significance": "证实极端超亮核塌缩瞬变需借由对不稳定爆炸机制或致密非球对称星风碰撞维持辐射，同时厘清了激波破越中正反激波的热力学解耦本质。"
     },
     {
-      "domain": "脉冲星动力学与极端引力辐射 (R4/R7)",
-      "key_question": "长周期、极端偏心率（$e > 0.99$）双中子星系统如何在超新星反冲下幸存并维持稳定？其近星点引力波爆发特征如何？",
+      "domain": "致密天体极端双星系统与吸积/喷流动力学",
+      "key_question": "极端离心率双中子星的演化成因与近星点多信使爆发，以及吸积盘碰撞对相对论喷流的调制机制",
       "representative_papers": [
-        "2610.29838"
+        "2610.29838",
+        "2610.24849"
       ],
-      "core_findings": "- 【arXiv:2610.29838】(arXiv:2610.29838 等)：利用 FAST 发现轨道周期 $79.08\\,{\\rm d}$、偏心率高达 $e = 0.99238692$ 的极端双中子星 PSR J0653+0443，通过消除协方差的测时重构测得脉冲星与伴星质量分别为 $1.38\\,M_\\odot$ 和 $1.44\\,M_\\odot$，确认伴星经历了强铁核塌缩反冲（$V_{\\rm k} \\sim 200\\text{--}800\\,{\\rm km\\,s^{-1}}$），在近星点处发出峰值频率为 $0.357\\,{\\rm mHz}$、平均光度为 $1.9\\times 10^{-4}\\,L_\\odot$ 的周期性脉冲引力波暴。",
-      "significance": "为双致密星形成演化中的超新星不对称反冲理论提供了最严苛的观测实证，填补了毫赫兹引力波波段周期性爆发源的天然物理实验室空白。"
+      "core_findings": "- 【arXiv:2610.29838】(第一作者等)：利用 FAST 发现双中子星系统 PSR J0653+0443 具备极端偏心率 $e = 0.99238692(5)$ 和近星点间距仅 $0.83\\,R_\\odot$，测定系统总质量 $2.814\\,M_\\odot$，证实其由经历 Case BB 物质转移的脉冲星与次级星铁核塌缩超新星（Fe CCSNe）强反冲（$V_{\\rm k} \\sim 200\\text{--}800\\,{\\rm km\\,s^{-1}}$）所致，且系统在近星点发出周期性脉冲引力波暴。\\n- 【arXiv:2610.24849】(第一作者等)：3D 辐射 MHD 模拟显示，TDE 恒星碎屑流撞击活动星系核预存吸积盘后，吸积率跃升至 $10\\text{--}13\\,\\dot{M}_{\\rm Edd}$，撞击将环向磁场向内平流使南极磁通量增加 33 倍，诱发功率达 $L_{\\rm BZ} \\simeq 3\\times 10^{42}\\,{\\rm erg\\,s^{-1}}$ 的喷流，形成南喷流与北热辐射的强双极不对称性。",
+      "significance": "将双中子星轨道极端几何与超新星不对称反冲形成机制相连接，并揭示了外来恒星碎片流撞击盘面激发黑洞极区磁通平流与瞬变相对论喷流的动力学机制。"
     }
   ],
   "thematic_highlights": [
     {
-      "theme_name": "磁星与相对论喷流中心引擎动力学",
-      "summary": "本周磁能与引力吸积能量耗散模拟取得多项突破。arXiv:2610.22653 在细长磁通管模拟中发现了导向场抑制纽缠模下的非均匀电阻磁重联规律，指出小尺度电荷匮乏区贡献了过半欧姆耗散，为磁星巨耀斑提供了微观动力学支撑。在吸积驱动端，arXiv:2610.24849 展示了 TDE 碎屑流冲击 AGN 吸积盘可将环向磁通高效输运至黑洞视界附近，激发高达 $L_{\\rm BZ} \\simeq 3\\times 10^{42}\\,{\\rm erg\\,s^{-1}}$ 的极度单极不对称相对论喷流。此外，arXiv:2610.23155 利用符号回归在大样本 GRB 瞬时-平台期演化中确立了普适的 $L_a \\propto L_{\\rm peak}^{\\alpha} T_a^{-\\alpha}$ 标度关系，为相对论喷流能量注入形式提供了高精度经验约束。",
+      "theme_name": "磁星微观动理学重联与快速射电暴环境反演",
+      "summary": "本周磁星与 FRB 研究在数值动力学与观测反演两端取得显著突破。阻抗相对论 MHD 模拟证实扭缠磁通管在非均匀电阻驱动下可激发出 $\\beta_{\\rm rec} \\sim 0.1$ 的高速磁重联，电荷匮乏微区承担了绝大部分耗散功率，成功构建了磁层到壳层基底的热膨胀循环动力学模型。在多波段观测方面，针对 FRB 20240114A 持续射电源的光变分析严格限制了磁星风云的微观注入参数，推算射电辐射效率处于 $\\eta_{\\rm r} \\sim 10^{-5}\\text{--}10^{-4}$ 极低水平；同时，基于柯尔莫哥洛夫湍流与均匀介质模型的色散量时变理论，将重复暴 $d{\\rm DM}/dt$ 观测直接定标为磁星的高速空间运动（$|v_s| \\gtrsim 20\\text{--}2800\\,{\\rm km\\,s^{-1}}$），完善了磁星引擎驱动的 FRB 演化因果链条。",
       "paper_ids": [
         "2610.22653",
-        "2610.24849",
-        "2610.23155"
-      ]
-    },
-    {
-      "theme_name": "快速高能瞬变与周星/多波段激波相互作用",
-      "summary": "以 EP 软 X 射线暂现源为代表的快速瞬变正重构激波破越与外流模型。arXiv:2610.29226 提出的双激波风破越理论成功解释了 EP260321a 的高能光变，论证了低速反激波的 LTE 热辐射机制。arXiv:2610.28734 的大样本 Fermi/GBM-LAT 协同反演则表明，绝大部分 EP 源初始洛伦兹因子 $\\Gamma_0 \\lesssim 100$，显著区别于典型 GRB。在光学与多波段端，arXiv:2610.27312 报道的 SN 2023iop 呈现出高达 $4.3\\times 10^{50}\\,{\\rm erg}$ 的辐射能量，要求超大质量前身星（$\\sim 190\\,M_\\odot$）或强非球对称 CSM 相互作用。",
-      "paper_ids": [
-        "2610.29226",
-        "2610.28734",
-        "2610.27312"
-      ]
-    },
-    {
-      "theme_name": "致密星环境反演与高能天体辐射物理",
-      "summary": "本周多项工作致力于从射电与 X 射线细致观测中反演极端环境参数。arXiv:2610.27311 与 arXiv:2610.27489 分别利用色散量变化率和伴随持续射电源的月度演化，对 FRB 宿主致密天体的反冲空间速度（$\\gtrsim 20\\text{--}2800\\,{\\rm km\\,s^{-1}}$）和射电辐射效率（$\\eta_{\\rm r} \\sim 10^{-5}\\text{--}10^{-4}$）给出了严格定标。在吸积致密星端，arXiv:2610.23089 修正了超爱丁顿几何集束模型，指出漏斗壁多次散射将实际集束因子限制在 $\\mathcal{B} \\lesssim 10$；而 arXiv:2610.23339 则利用 M81F4 的数百秒软 X 射线耀斑，证实了中子星磁层截断半径处的 RII 吸积不稳定性。",
-      "paper_ids": [
-        "2610.27311",
         "2610.27489",
-        "2610.23089",
-        "2610.23339"
+        "2610.27311",
+        "2610.31365"
+      ]
+    },
+    {
+      "theme_name": "非局部热平衡激波破越与富氢对不稳定超新星",
+      "summary": "大质量恒星演化终局与激波辐射研究本周呈现出宏观观测约束与微观辐射转移深化的双重进展。针对异常超亮超新星 SN 2023iop 的长时序多波段与偏振监测表明，其高达 $4.3\\times 10^{50}\\,{\\rm erg}$ 的辐射能量及 $P=0.81\\%$ 的偏振信号无法被传统铁核塌缩模型容纳，有力支持了 $190\\,M_\\odot$ 富氢对不稳定超新星结合非球对称 CSM 相互作用图景。而在辐射传输理论方面，双激波模型清晰界定了高速非局部热平衡正激波与低速局部热平衡反激波的能量分流，为解释 EP260321a 等软 X 射线暂现源的快速演化与星风截断提供了自洽的流体力学解释，同时 Fermi-GBM 对绝大多数 EP 源缺乏硬高能辐射的严格上限进一步强化了软X射线暴的激波破越起源属性。",
+      "paper_ids": [
+        "2610.27312",
+        "2610.29226",
+        "2610.28734"
+      ]
+    },
+    {
+      "theme_name": "致密星极端轨道力学与盘-喷流双极不对称激发",
+      "summary": "致密天体动力学环境演化与高能外流本周获得关键数据支撑。FAST 发现的 PSR J0653+0443 以 $e \\approx 0.992$ 创下已知双中子星偏心率纪录，近星点速度突破 $1100\\,{\\rm km\\,s^{-1}}$，不仅为铁核塌缩不对称反冲提供了决定性标本，其近星点周期的强引力波爆发更开辟了极端偏心 DNS 辐射的新视窗。在吸积与喷流动力学领域，3D 辐射 MHD 模拟首次自洽重现了 AGN 盘内 TDE 碎屑撞击引起的磁通量汇聚与不对称喷流发射，揭示了南极喷流功率跃升至 $3\\times 10^{42}\\,{\\rm erg\\,s^{-1}}$ 而北极维持紫外/软X射线热辐射的强各向异性构型，为观测中落入星系核的多信使瞬变给出了清晰的动力学指纹。",
+      "paper_ids": [
+        "2610.29838",
+        "2610.24849"
       ]
     }
   ],
@@ -85,9 +77,9 @@
       "source_fingerprint": "34a92c35b5a0e15adf46cd5c1294ad1d52177c9153193d2f5c654ea7fa7e79fd",
       "title": "Sparking Dynamic, Relativistic Magnetic Reconnection in a Twisted Flux Tube",
       "priority": "must_read",
-      "recommendation_reason": "高分辨率相对论 MHD 模拟直接阐明了电荷匮乏微观区如何主导磁星宏观磁重联欧姆耗散。",
-      "core_insight": "非均匀电阻模型下磁重联入流速度标度达 $\\beta_{\\rm rec} \\sim 0.1$，且面积仅占 $0.1\\% \\sim 3\\%$ 的电荷匮乏区承担了多达 $20\\% \\sim 55\\%$ 的欧姆能耗散。",
-      "reading_guide": "重点研读第 3 节中非均匀电阻率 $\\eta = |\\bm{E}^*|/(nec)$ 的流体动理学引入方式及其在壳层基底能量耗散的计算。",
+      "recommendation_reason": "通过超高精度阻抗相对论 MHD 模拟突破性论证了磁星磁通管内电荷匮乏微区主导耗散的高速磁重联机制，建立了巨耀斑驱动物质抛射的自洽模型。",
+      "core_insight": "非均匀电阻引发的重联入流速度可达 $\\beta_{\\rm rec} \\sim 0.1$，占比仅 $0.1\\%\\sim 3\\%$ 的电荷匮乏区贡献了超 $20\\%\\sim 55\\%$ 的欧姆耗散并深入壳层基底驱动巨耀斑抛射。",
+      "reading_guide": "重点关注非均匀电阻率模型 $\\eta = |\\bm{E}^*|/(nec)$ 的引入方式，以及面内磁能谱 $k_\\perp^{-2}$ 湍流级联的数值诊断。",
       "authors": [
         "Michael P. Grehan",
         "Christopher Thompson",
@@ -102,9 +94,9 @@
       "source_fingerprint": "18ecc935a7a9fa211fd05c1376d10edd084ead07f2e0cfbd4de4b4865fe52f74",
       "title": "Tidal Disruption Events in Active Galactic Nuclei: Thermal Radiation and Jets",
       "priority": "must_read",
-      "recommendation_reason": "首次自洽完成 TDE 碎屑流撞击磁化 AGN 吸积盘驱动非对称相对论喷流的 3D 辐射-MHD 模拟。",
-      "core_insight": "碰撞将吸积率提升至超爱丁顿量级（$\\sim 10\\text{--}13\\,\\dot{M}_{\\rm Edd}$），并平流重组环向磁通使单极磁通增加 33 倍，激发出南北极不对称度达 $10\\text{--}100$ 倍的 BZ 喷流。",
-      "reading_guide": "重点关注第 4 节关于磁通量向视界平流聚积的动力学过程以及图 6 中南北极 Poynting 通量的演化机制。",
+      "recommendation_reason": "采用三维全辐射磁流体数值模拟完整呈现了恒星潮汐碎屑流与预存吸积盘碰撞的流体过程，揭示了极度不对称的喷流激发机制。",
+      "core_insight": "碰撞将吸积率推升至超爱丁顿态并引起盘环向磁通向内平流，使单侧极区磁通暴增 33 倍以驱动 $3\\times 10^{42}\\,{\\rm erg\\,s^{-1}}$ 的 BZ 喷流，形成南喷流与北热辐射的强双极不对称性。",
+      "reading_guide": "建议聚焦碎屑流注入参数与吸积盘接触界面的磁场平流重组机制，核对 Blandford-Znajek 功率与各向同性热辐射的不对称度。",
       "authors": [
         "Nimrod Tripto",
         "Tsvi Piran",
@@ -118,9 +110,9 @@
       "source_fingerprint": "11a73211df5285bdb10bf8ddcc3c68c1b499e64ab1609f5ab409f6ea1158e7cc",
       "title": "Source velocities of fast radio bursts constrained by their dispersion measure variations",
       "priority": "must_read",
-      "recommendation_reason": "创新性地将 FRB 色散量长期时变映射为中心致密星的空间运动速度，为磁星反冲速度提供了直接测量方法。",
-      "core_insight": "重复暴色散量变化率 $d{\\rm DM}/dt \\sim 1\\,{\\rm pc\\,cm^{-3}\\,yr^{-1}}$ 可由源运动穿越湍流介质诱发，推导出重复暴中心致密天体空间反冲速度下限为 $|v_s| \\gtrsim 20\\text{--}2800\\,{\\rm km\\,s^{-1}}$。",
-      "reading_guide": "关注第 2 节中纯径向运动（Scenario A）与柯尔莫哥洛夫湍流横向运动（Scenario B）色散量时间涨落公式的解析推导。",
+      "recommendation_reason": "首次建立了利用重复 FRB 色散量时变率解析反演致密天体空间运动三维速度分量的动力学分析架构。",
+      "core_insight": "结合自由-自由吸收光深度约束，重复暴 $d{\\rm DM}/dt \\sim 1\\,{\\rm pc\\,cm^{-3}\\,yr^{-1}}$ 的变化反演出源空间速度下限为 $|v_s| \\gtrsim 20\\text{--}2800\\,{\\rm km\\,s^{-1}}$，与年轻磁星出生反冲速度完美吻合。",
+      "reading_guide": "直接阅读常密度径向运动模型与柯尔莫哥洛夫湍流横向涨落模型两套方程的推导，关注 $\\tau_{\\rm ff} < 1$ 边界条件对电子密度的约束。",
       "authors": [
         "S. K. Ocker",
         "A. L. Piro"
@@ -133,9 +125,9 @@
       "source_fingerprint": "8dbc7f84e82f8da0a1eba5a2342ea2ca5e01b08193e5e3c4b127bee0f6f96af8",
       "title": "SN 2023iop: An Extreme 1987A-like Supernova and the Death of Very Massive Stars",
       "priority": "must_read",
-      "recommendation_reason": "详尽观测展现了目前能量最高的类 1987A 瞬变源，向经典核塌缩超新星模型的物理极限发起了严苛挑战。",
-      "core_insight": "总辐射能高达 $4.3\\times 10^{50}\\,{\\rm erg}$ 且具有显著线偏振（$P=0.81\\%$），单靠放射性衰变需合成 $2.2\\,M_\\odot$ 的 $^{56}{\\rm Ni}$，指示其前身为 $\\sim 190\\,M_\\odot$ 的富氢对不稳定超新星或存在非球对称 CSM 相互作用。",
-      "reading_guide": "重点阅读第 5 节星云相禁线 $[{\\rm O\\;I}]$ 光学薄/厚演化分析及第 6 节中 PISN 与致密吸积引擎模型的拟合对比。",
+      "recommendation_reason": "提供了极其详尽的长时变多波段光变、星云相禁线跃迁及分光偏振观测数据，为大质量对不稳定超新星（PISN）候选体提供了扎实的观测证据。",
+      "core_insight": "该爆发全波段辐射能量高达 $4.3\\times 10^{50}\\,{\\rm erg}$ 并测得 $0.81\\%$ 显著偏振，传统铁核塌缩完全失效，系统参数与 $190\\,M_\\odot$ 的富氢 PISN 伴随非球对称 CSM 相互作用高度匹配。",
+      "reading_guide": "重点研读上升时标推导抛射物质量下限的解析扩散关系，以及星云相 $[\\mathrm{O\\;I}]$ 双线通量比的光学薄/厚跃迁模型。",
       "authors": [
         "Steve Schulze",
         "Avinash Singh",
@@ -218,9 +210,9 @@
       "source_fingerprint": "ee1225c19e76e7ce37b4471070ffc1036b22308045783e5cd6d0e73599f75bdf",
       "title": "Constraining the FRB Central Engine from Flux Variations of Persistent Radio Sources: FRB 20240114A as the First Attempt",
       "priority": "must_read",
-      "recommendation_reason": "首次利用持续射电源的时变特性反演 FRB 磁星风云参数，对相对论外流能谱与辐射效率给出了极其严厉的界限。",
-      "core_insight": "MWN 同步自吸收截断要求相对论电子注入截断洛伦兹因子 $\\gamma_{\\rm b} < 10^3$（基准 $\\sim 200$），限定磁层瞬态爆发的射电辐射效率仅为 $\\eta_{\\rm r} \\sim 10^{-5}\\text{--}10^{-4}$。",
-      "reading_guide": "仔细查阅第 3 节中关于薄壳近似下磁星风云注入与电子能量输运连续性方程的求解过程。",
+      "recommendation_reason": "首次利用持续射电源（PRS）的月量级多波段光变演化严格反演了 FRB 磁星引擎的注入洛伦兹因子与射电辐射效率。",
+      "core_insight": "磁星风云模型拟合要求注入电子截断洛伦兹因子 $\\gamma_{\\rm b} < 10^3$，主导冷却为数十年尺度的绝热冷却，测得 FRB 射电辐射效率仅为 $\\eta_{\\rm r} \\sim 10^{-5}\\text{--}10^{-4}$。",
+      "reading_guide": "重点核查磁星风云半径与磁场演化方程，对比绝热冷却与同步辐射自吸收截断对射电光变谱指数的压制效应。",
       "authors": [
         "Hirotaka Matsumiya",
         "Kazumi Kashiyama",
@@ -234,9 +226,9 @@
       "source_fingerprint": "c699654de8f3508ca4636f1e059715d78e414ba0930949c43246eb172fbbe977",
       "title": "The (missing) gamma-ray counterparts to EP events",
       "priority": "must_read",
-      "recommendation_reason": "系统性检验爱因斯坦探针（EP）快速 X 射线源的高能伽马射线对应体缺失问题，确立了其低洛伦兹因子本质。",
-      "core_insight": "68% 的 EP 暂现源缺乏伽马射线辐射，GBM 上限约束其峰值能量 $E_{\\rm peak} \\lesssim 30\\text{--}100\\,{\\rm keV}$，初始体洛伦兹因子上限 $\\Gamma_0 \\lesssim 100$，指示其为低光度中度相对论出流或激波破越。",
-      "reading_guide": "建议重点研读第 3 节中利用针对性搜索管线导出上限的方法，以及第 4 节瞬时 SSC 辐射半径标度模拟。",
+      "recommendation_reason": "系统开展了爱因斯坦探针（EP）快速软X射线暂现源与高能伽马射线波段的联合搜寻与上限分析，从根本上区分了其与经典 GRB 的动力学差异。",
+      "core_insight": "$68\\%$ 的 EP 源不存在伴随伽马射线，GBM 导出严格上限 $E_{\\rm peak} \\lesssim 30\\text{--}100\\,{\\rm keV}$，约束初始体洛伦兹因子 $\\Gamma_0 \\lesssim 100$，指示低光度喷流或激波破越起源。",
+      "reading_guide": "建议重点关注修改后的 Fermi/GBM 针对性搜索管线，以及由 $\\Gamma_0-L_{\\rm iso}$ 经验关系反演洛伦兹因子的物理边界。",
       "authors": [
         "Maria Edvige Ravasio",
         "Ansh Chopra",
@@ -273,9 +265,9 @@
       "source_fingerprint": "23e3a9c9acd7629d1f03bf22de35c03462c06878b8dee07f9e21542630c58158",
       "title": "Double-Shock Radiation in Supernova Wind Breakout and EP260321a",
       "priority": "must_read",
-      "recommendation_reason": "提出了超新星星风破越中正/反双激波非热平衡辐射动力学框架，完美自洽解释了 EP 极端软 X 射线暂现源。",
-      "core_insight": "正激波处于非 LTE，而低速反激波（$\\bar{v}_{r,bo} \\sim 0.07c$）满足 LTE 并主导黑体热软 X 射线辐射，测定破越半径 $r_{bo} \\simeq 5\\times 10^{12}\\,{\\rm cm}$ 且星风在 $10^{13}\\,{\\rm cm}$ 处截断。",
-      "reading_guide": "关注第 2 节双激波 Rankine-Hugoniot 跳跃条件与接触间断面动压平衡的解析求解推导。",
+      "recommendation_reason": "构建了包含非局部热平衡正激波与局部热平衡反激波的自洽双激波辐射动力学模型，原理解释了软X射线破越与光学时延现象。",
+      "core_insight": "推导得出反激波能量占比 $\\mu \\simeq 1/7$ 且满足局部热平衡并主导黑体热辐射，测定 EP260321a 破越半径达 $5\\times 10^{12}\\,{\\rm cm}$ 并伴有截断星风环境。",
+      "reading_guide": "深入阅读正反激波跳跃条件推导内能与特征速度比的解析过程，以及光子在有限厚度球壳内扩散的蒙特卡罗模拟方法。",
       "authors": [
         "Zhuo Li",
         "Rui-Ze Shi",
@@ -289,9 +281,9 @@
       "source_fingerprint": "47a106caaf03024b5513ea3d57c71e0fa34ca5431ad2b4df6143c7a255c2f931",
       "title": "PSR J0653+0443: An Eclipsing Millisecond Pulsar in an Extremely Eccentric Double Neutron Star System",
       "priority": "must_read",
-      "recommendation_reason": "FAST 测时证认了目前已知偏心率最高（$e > 0.99$）的掩食双中子星系统，建立了近星点引力波脉冲辐射的新基准。",
-      "core_insight": "测得轨道周期 $79.08\\,{\\rm d}$、$e = 0.99238692$，精确测定中子星质量分别为 $1.38\\,M_\\odot$ 和 $1.44\\,M_\\odot$，在近星点发出峰值频率 $0.357\\,{\\rm mHz}$ 的周期性脉冲状引力波暴。",
-      "reading_guide": "建议阅读第 3 节中消除 $x$ 与 $\\omega$ 极高协方差的参数重构测时模型构建，以及第 5 节的引力波辐射计算。",
+      "recommendation_reason": "利用 FAST 发现并精确测定了具有目前已知最高轨道离心率（$e \\approx 0.992$）的双中子星系统，提供了检验恒星塌缩反冲与强引力波爆发的绝佳实验室。",
+      "core_insight": "在近星点 $0.83\\,R_\\odot$ 处测得相对速度高达 $1.14\\times 10^3\\,{\\rm km\\,s^{-1}}$，测定系统总质量 $2.814\\,M_\\odot$，证实次级星经历了赋加强反冲速度的铁核塌缩超新星爆发。",
+      "reading_guide": "重点关注消除极端离心率强协方差的 DDeGR+ 测时参数重构技术，以及近星点周期性毫赫兹引力波暴功率的推导。",
       "authors": [
         "Z. L. Yang",
         "J. L. Han",
@@ -320,15 +312,60 @@
       ]
     },
     {
+      "arxiv_id": "2610.31365",
+      "revision": 1,
+      "historical_edition": "announcement-2026-10-22",
+      "source_fingerprint": "cfd86c97cac6794ed12382d938bdcc19b20aef34150bba0251ea438631725366",
+      "title": "FRB 20210601A: Extreme Temporal Clustering in a Repeating Fast Radio Burst Source as Evidence for a Hidden Class of Episodic Repeaters",
+      "priority": "must_read",
+      "recommendation_reason": "通过在极窄时间窗口内探测到极高密度的爆发簇，揭示了常规单次暴中可能隐蔽存在的极端阵发性重复发作天体子类。",
+      "core_insight": "源在 $106.5\\,{\\rm s}$ 内密集释放 9 次暴发（等效主瓣爆发数 $\\gtrsim 21$ 次），峰值爆发率达 $0.075\\,{\\rm bursts\\,s^{-1}}$，而宿主弥散与旋转量与常规重复暴无异，证认出非泊松的阵发性发作机制。",
+      "reading_guide": "查阅利用天顶仪曝光时间建立的非平稳泊松似然检验模型，以及利用贝叶斯推断恢复被旁瓣衰减的爆发真实计数的方法。",
+      "authors": [
+        "Ryan Mckinven",
+        "Amanda M. Cook",
+        "Alice P. Curtin",
+        "B. M. Gaensler",
+        "Jason W. T. Hessels",
+        "Naman Jain",
+        "Lordrick Kahinga",
+        "Victoria M. Kaspi",
+        "Charanjot Brar",
+        "Tomas Cassanelli",
+        "Shami Chatterjee",
+        "Fengqiu Adam Dong",
+        "Maxwell Fine",
+        "Emmanuel Fonseca",
+        "Afrokk Khan",
+        "Bikash Kharel",
+        "Calvin Leung",
+        "Robert Main",
+        "Kiyoshi W. Masui",
+        "Kyle McGregor",
+        "Nicole Mulyk",
+        "Mason Ng",
+        "Kenzie Nimmo",
+        "Ayush Pandhi",
+        "Aaron B. Pearlman",
+        "Ziggy Pleunis",
+        "Mawson W. Sammons",
+        "Paul Scholz",
+        "Kaitlyn Shin",
+        "Seth R. Siegel",
+        "Kendrick Smith",
+        "Ingrid Stairs"
+      ]
+    },
+    {
       "arxiv_id": "2610.22662",
       "revision": 1,
       "historical_edition": "announcement-2026-10-18",
       "source_fingerprint": "f7ac05444c86217875f96ac9b1aed163fe4fac034cfde4868f1a9e0b3a11b46c",
       "title": "The transformative power of ALMA2040 for mm-VLBI",
       "priority": "worth_knowing",
-      "recommendation_reason": "评估了 ALMA2040 升级对未来毫米波超长基线干涉追踪瞬变相对论喷流与黑洞视界成像的核心推动作用。",
-      "core_insight": "在 230 GHz 获得 sub-mJy 级基线灵敏度（较 WSU 灵敏度提升 4 倍），可实现弱 5–10 倍黑洞的视界成像并解析等离子体轻重成分。",
-      "reading_guide": "重点浏览第 3 节全阵列定相与频率相位转移（FPT）对弱瞬变源探测能力的定量提升评估。",
+      "recommendation_reason": "全面评估了 ALMA2040 升级对毫米波甚长基线干涉测量的变革性潜能，为未来黑洞视界尺度结构与瞬变喷流成像确立了灵敏度基准。",
+      "core_insight": "全阵列定相的 ALMA2040 使基线灵敏度获得 4 倍跃升，可对弱 5–10 倍的暗弱黑洞进行视界尺度成像，并将 Sgr A* 去散射图像恢复精度提升 $27\\%$。",
+      "reading_guide": "关注全频段同时定相与频率相位转移（FPT）方案在微弱瞬变出流探测中的灵敏度标度关系。",
       "authors": [
         "The Event Horizon Telescope Collaboration"
       ]
@@ -340,9 +377,9 @@
       "source_fingerprint": "326b5da48d65028f21fafffd62a34fb18f3529ec898ab9f46526da4027d1c5d2",
       "title": "A New AI/ML Based Image Reconstruction Technique for Hard X-ray Coded Aperture Imagers",
       "priority": "worth_knowing",
-      "recommendation_reason": "突破了传统硬 X 射线编码孔径反卷积对平移不变性的依赖，大幅提升非平面探测器在低信噪比下的瞬变源重建成像能力。",
-      "core_insight": "结合 CNN 与 Transformer 自注意力机制，在 7,500 背景计数的极低信噪比下对 900 源光子样本仍保持 $\\ge 95\\%$ 的单像素定位精度。",
-      "reading_guide": "参考第 2 节的网络架构设计及泊松负对数似然损失函数在非平面探测器数据中的训练策略。",
+      "recommendation_reason": "构建了融合 CNN 与 Transformer 的混合神经网络，成功解决了非平面硬X射线编码孔径成像平移不变性破缺的快速高精度重建难题。",
+      "core_insight": "在极低光子计数与极强背景噪声下实现单像素精准定位精度 $>90\\%$，CPU 单次推理仅耗时 $0.25\\,{\\rm s}$，完全消除传统 FFT 伪影。",
+      "reading_guide": "关注泊松负对数似然损失函数的数学表述及 Transformer 捕获探测器长程空间依赖的模块设计。",
       "authors": [
         "Shayla Sharmin",
         "Branden Allen"
@@ -353,11 +390,11 @@
       "revision": 1,
       "historical_edition": "announcement-2026-10-18",
       "source_fingerprint": "2b92daaecd0a9bb6fa76abf1854b9fad599333d8e7c8cbdc2d22821b70e5c856",
-      "title": "A Unified Solution to the Low-Mass X-ray Diversity Puzzle: Saturated Magnetic Braking Coupled with Irradiation-Driven Winds",
+      "title": "A Unified Solution to the Low-Mass X-ray Binary Diversity Puzzle: Saturated Magnetic Braking Coupled with Irradiation-Driven Winds",
       "priority": "worth_knowing",
-      "recommendation_reason": "引入吸积辐照风模型自洽解决了低质量 X 射线双星吸积率过高与轨道周期空缺的历史难题。",
-      "core_insight": "通过饱和磁制动耦合辐照风模型（$f \\sim 10^{-5}\\text{--}10^{-3}$），成功拓宽了通往超致密 X 射线双星（UCXB）的演化路径并复现了观测到的轨道膨胀。",
-      "reading_guide": "重点阅读第 2 节中引入伴星辐照风导致角动量损失增强因子 $\\eta$ 的理论表达式推演。",
+      "recommendation_reason": "将饱和磁制动与 X 射线辐照风紧密耦合，自洽统一了解释中子星低质量X射线双星吸积率、超紧凑系统形成与轨道周期空缺的长期疑难。",
+      "core_insight": "引入辐照效率参数 $f \\sim 10^{-5}\\text{--}10^{-3}$ 驱动的质量与角动量损失，成功消除了超紧凑双星初始参数的精细调节，并完美匹配 2A 1822–371 的反常轨道膨胀。",
+      "reading_guide": "重点阅读 MESA 演化框架中辐照风角动量损失增强因子 $\\eta$ 的推导及其对分叉周期的拓宽作用。",
       "authors": [
         "Zhu-Ling Deng",
         "Xiang-Dong Li",
@@ -375,9 +412,9 @@
       "source_fingerprint": "2fdb7bb9a4258abdb74da56d53db845528e3264ed5b6c6b182327be09c7a5a73",
       "title": "Gamma-ray calorimetry of Seyfert winds",
       "priority": "worth_knowing",
-      "recommendation_reason": "严格量热测定了塞弗特星系超快外流（UFO）的质子激波加速效率，约束了射电宁静 AGN 的高能中微子与伽马射线贡献。",
-      "core_insight": "AGN 超快外流的强子碰撞辐射效率仅为 $\\eta = 5.2 \\times 10^{-4}$，仅辐射出质子碰撞量热上限的约 $2\\%$，反映核球区气体处于低密度吹散态（$n \\sim 10\\;{\\rm cm^{-3}}$）。",
-      "reading_guide": "关注第 3 节中外流质子碰撞时标 $t_{pp}$ 与动力学逃逸时标的量热比例计算方法。",
+      "recommendation_reason": "通过多波段删失量热统计首次定量厘清了塞弗特星系超快外流的强子碰撞效率，澄清了星系核风与星暴超风的高能辐射差异。",
+      "core_insight": "塞弗特星系外流的强子量热比仅为 $\\rho_{\\rm wind} \\approx 0.02$，较星暴超风低 13.5 倍，揭示其激波处于弱量热线性膨胀区而非完全 $pp$ 强子量能器。",
+      "reading_guide": "查阅利用质子碰撞时标 $t_{pp}$ 与粒子逃逸时标定义量热分数 $f_{\\rm cal}$ 的解析物理图景。",
       "authors": [
         "Alberto Domínguez"
       ]
@@ -389,9 +426,9 @@
       "source_fingerprint": "9fe5b86fb1190b35e3af8b45d270c3ffd90ba46059f4fe6b17e1cedcdbde6ff0",
       "title": "What can a uniform reflection pipeline establish about supermassive black hole spin? An audit and a corrected analysis of 57 AGN with XMM and NuSTAR",
       "priority": "worth_knowing",
-      "recommendation_reason": "对利用联合 X 射线反射能谱测量超大质量黑洞自旋的流行管线进行了极其严格的系统误差审计与质疑。",
-      "core_insight": "经修正背景扣除与多极小值搜索后，57 个候选源中仅 NGC 4051 一个源获得稳健的双边自旋约束（$a_* \\in [0.46, 0.93]$），揭示目前反射自旋测量极易受倾角先验影响。",
-      "reading_guide": "重点阅读第 4 节关于自旋与盘倾角 $(a_*, i)$ 参数简并及注入-恢复测试中覆盖率偏离的讨论。",
+      "recommendation_reason": "对利用 X 射线反射谱自动测定黑洞自旋的流行管线进行了严谨审计与系统修正，为高能X射线能谱拟合提供了重要的质量控制标准。",
+      "core_insight": "重新分析 57 个活动星系核后发现仅 1 个源（NGC 4051）具有稳健的双边自旋约束，其余多数源的自旋测定严重依赖于不合理的倾角取值与局部极小值。",
+      "reading_guide": "重点关注二维卡方轮廓 $(a_*, i)$ 的扫描方法及背景扣除与能段选取对铁线展宽拟合的致偏效应。",
       "authors": [
         "K. Balasubramaniam",
         "H. -K. Chang",
@@ -405,9 +442,9 @@
       "source_fingerprint": "db22a42aade315246d47c4b6e0421f83d874ff2ed0c94af4ffe83f9c3bd8ad00",
       "title": "Maximal efficiency of geometric beaming and polarization of highly super-Eddington X-ray sources",
       "priority": "worth_knowing",
-      "recommendation_reason": "全面考虑漏斗壁多次电子散射边界条件，定量修正了超亮 X 射线源（ULX）的几何集束理论极限与偏振特征。",
-      "core_insight": "多次散射显著削弱集束效率，典型吸积盘漏斗的实际几何集束因子上限定在 $\\mathcal{B} \\lesssim 10$，且漏斗内壁反射诱发的线偏振度最高仅约 $10\\%$。",
-      "reading_guide": "查阅第 2 节基于 Chandrasekhar $H$ 函数精确解的光子蒙特卡罗转移算法及偏振 Stokes 矢量演化。",
+      "recommendation_reason": "精确求解了超临界吸积盘漏斗壁多次散射的非能相辐射转移与偏振特性，厘清了超亮X射线源几何集束因子的实际上限。",
+      "core_insight": "光子多次散射导致几何集束实际上限仅为 $\\mathcal{B} \\lesssim 10$，漏斗壁反射线偏振度最高仅约 $10\\%$ 且与集束因子在中间倾角呈线性反相关。",
+      "reading_guide": "研读截顶圆锥体漏斗几何中基于 Chandrasekhar $H$ 函数的散射边界条件及其 Stokes 矢量的光行差旋转计算。",
       "authors": [
         "Varpu Ahlberg",
         "Alexandra Veledina",
@@ -422,9 +459,9 @@
       "source_fingerprint": "8ab88a4c63e6abef5101d9d9789a848a247cb1928ffe860e7cc9a7f142994510",
       "title": "Seeing Through the RFI Mask: DT-FISTA Inpainting of Pulsar Dynamic Spectra via Fourier Sparsity",
       "priority": "worth_knowing",
-      "recommendation_reason": "提出了针对脉冲星动态谱 RFI 掩模修复的高效算法，计算速度较传统维纳滤波提升近万倍并消除次级谱泄漏。",
-      "core_insight": "基于傅里叶稀疏先验与凸集投影优化，在百万像素级全动态谱上实现了 $\\mathcal{O}(KN\\log N)$ 运算，内存占用降低 4000 倍，成功恢复了淹没的闪烁弧微结构。",
-      "reading_guide": "研读第 2 节 DT-FISTA 算法架构，重点理解复软阈值算子与 Nesterov 动量外推加速的结合机制。",
+      "recommendation_reason": "开发了基于傅里叶稀疏先验的高效动态谱修复算法，攻克了脉冲星与致密天体次级谱闪烁弧被 RFI 掩模谱泄漏掩盖的难题。",
+      "core_insight": "DT-FISTA 算法将运算耗时从数小时压缩至秒级（加速近万倍），显存开销缩减 4000 倍，动态谱重建误差较传统稠密维纳滤波降低多达 $53\\%$。",
+      "reading_guide": "重点阅读凸集投影结合几何衰减复软阈值算子的数学构建，以及 Nesterov 动量外推在 2D FFT 下的实现细节。",
       "authors": [
         "Yuanshang Huang",
         "Xun Shi"
@@ -437,9 +474,9 @@
       "source_fingerprint": "96c15c67f91a9f718d7817031c4951f84a99660dafd39e36fc4a71f84cc35b29",
       "title": "Ranking Prompt--Plateau Correlations in Gamma-Ray Bursts with Symbolic Regression",
       "priority": "worth_knowing",
-      "recommendation_reason": "利用符号回归无偏搜索 GRB 瞬时-余辉参数空间，提炼出弥散度显著低于 Dainotti 关系的三维标度平面。",
-      "core_insight": "算法自发收敛至 $\\log L_a = 4.718 + 0.776\\log L_{\\rm peak} - 0.805\\log T_a^{\\rm rest}$，将内禀弥散降低至 $0.52\\,\\mathrm{dex}$，并排除了光度距离诱发的虚假相关。",
-      "reading_guide": "参考第 3 节符号回归（PySR）搜索约束机制及偏相关系数测试中控制光度距离 $D_L(z)$ 的统计检验方法。",
+      "recommendation_reason": "运用符号回归技术无偏搜索伽马暴瞬时辐射与余辉平台参数空间，确立了内禀弥散显著降低的全新物理经验标度面。",
+      "core_insight": "符号回归一致收敛至标度律 $L_a \\propto L_{\\rm peak}^{0.78} (T_a^{\\rm rest})^{-0.80}$，在严格剔除光度距离虚假相关后内禀弥散仅为 $0.52\\,{\\rm dex}$，显著优于传统 Dainotti 关系。",
+      "reading_guide": "关注 PySR 符号回归多变量特征筛选方案，以及利用蒙特卡罗置换检验消除红移共享距离伪相关的方法。",
       "authors": [
         "Fatemeh Rastegarnia",
         "Rahim Moradi",
@@ -455,9 +492,9 @@
       "source_fingerprint": "33f5510102ced43f59c115109c69c83f9a75ef16b4c70a5c82ed33f6884ff265",
       "title": "The Dancing Bonfire: An Unusual Persistent X-ray Source in M81 Exhibiting Recurrent Luminous Flares",
       "priority": "worth_knowing",
-      "recommendation_reason": "报道了邻近星系中罕见的超爱丁顿复发性耀斑中子星，为研究磁层吸积不稳定性提供了不可多得的样本。",
-      "core_insight": "M81F4 持久光度达 $10^{38}\\text{--}10^{39}\\,{\\rm erg\\,s^{-1}}$ 并在 $\\sim 0.5\\,{\\rm day}$ 时标内反复爆发数百秒超爱丁顿耀斑，证实了磁层截断半径处的 RII 吸积势垒不稳定性。",
-      "reading_guide": "关注第 4 节关于共转半径与磁层截断半径比较的模型构建，以及如何由此约束中子星磁场（$B \\sim 10^{12}\\text{--}10^{13}\\,{\\rm G}$）。",
+      "recommendation_reason": "报道了邻近星系中一颗超爱丁顿持久辐射并频繁触发剧烈快升慢衰耀斑的致密天体，为极端吸积不稳定动力学提供了新范例。",
+      "core_insight": "该源平均每 0.5 天释放单次能量达 $10^{41}\\,{\\rm erg}$ 的无能谱硬化耀斑，磁层截断半径与共转半径匹配揭示其为磁场 $10^{12}\\text{--}10^{13}\\,{\\rm G}$ 的中子星吸积势垒不稳定爆发。",
+      "reading_guide": "重点查看贝叶斯块算法对耀斑轮廓的统计提取，以及利用粘滞时标 $t_{\\mathrm{visc}}$ 与中子星磁层半径对耀斑时标的解析匹配。",
       "authors": [
         "Jiachang Zhang",
         "Zhiyuan Li",
@@ -474,9 +511,9 @@
       "source_fingerprint": "bd611f023106a996f6b107d980ba65344b052bddca60820323f42257252c2da7",
       "title": "A blazar is a blazar is a blazar ... Comparing long-term varaibility properties of PKS 1510-089 and PKS 2155-304",
       "priority": "worth_knowing",
-      "recommendation_reason": "利用长达 20 年的跨波段监测否定了简单单区耀变体模型，为相对论喷流结构分层提供了长期时域证据。",
-      "core_insight": "在跨越 20 年的时标上，FSRQ 与 HBL 的多波段离散互相关均不显著，且高能端光变幅度远高于低能端，指示喷流内部存在多区非同步耗散。",
-      "reading_guide": "重点查看第 3 节离散互相关函数（DCCF）在考虑功率谱密度红噪声污染时的蒙特卡罗显著性检验结果。",
+      "recommendation_reason": "通过近 20 年跨度的 Swift 与 Fermi 宽波段光变演化系统对比了两类典型耀变体，否定了长时标下的单区辐射模型简并假设。",
+      "core_insight": "跨波段互相关在长时标上显著缺失，且通量分布呈现多峰对数正态结构，严格表明相对论喷流长期演化由多区或分层流体结构主导。",
+      "reading_guide": "关注离散互相关函数（DCCF）在非均匀长时序测光中的蒙特卡罗显著性标定与通量对数正态拟合。",
       "authors": [
         "M. Zacharias",
         "A. Wierzcholska"
@@ -484,10 +521,10 @@
     }
   ],
   "statistics": {
-    "total_analyzed": 318,
-    "must_read_count": 8,
-    "worth_knowing_count": 88,
-    "skip_count": 222
+    "total_analyzed": 329,
+    "must_read_count": 9,
+    "worth_knowing_count": 94,
+    "skip_count": 226
   },
   "papers": [
     {
@@ -8612,6 +8649,54 @@
       "source_fingerprint": "c3a084fdcee50ddadcf60ff68158fa06d0bc765fb5a1cfeae3bd4776e78bf19e"
     },
     {
+      "arxiv_id": "2610.31365",
+      "revision": 1,
+      "title": "FRB 20210601A: Extreme Temporal Clustering in a Repeating Fast Radio Burst Source as Evidence for a Hidden Class of Episodic Repeaters",
+      "authors": [
+        "Ryan Mckinven",
+        "Amanda M. Cook",
+        "Alice P. Curtin",
+        "B. M. Gaensler",
+        "Jason W. T. Hessels",
+        "Naman Jain",
+        "Lordrick Kahinga",
+        "Victoria M. Kaspi",
+        "Charanjot Brar",
+        "Tomas Cassanelli",
+        "Shami Chatterjee",
+        "Fengqiu Adam Dong",
+        "Maxwell Fine",
+        "Emmanuel Fonseca",
+        "Afrokk Khan",
+        "Bikash Kharel",
+        "Calvin Leung",
+        "Robert Main",
+        "Kiyoshi W. Masui",
+        "Kyle McGregor",
+        "Nicole Mulyk",
+        "Mason Ng",
+        "Kenzie Nimmo",
+        "Ayush Pandhi",
+        "Aaron B. Pearlman",
+        "Ziggy Pleunis",
+        "Mawson W. Sammons",
+        "Paul Scholz",
+        "Kaitlyn Shin",
+        "Seth R. Siegel",
+        "Kendrick Smith",
+        "Ingrid Stairs"
+      ],
+      "priority": "must_read",
+      "result": "FRB 20210601A 在单次中天过境的 $\\Delta T = 106.5\\;\\mathrm{s}$ 内集中产生 9 次暴发，峰值暴发率 $\\langle\\lambda\\rangle = (N-1)/\\Delta T = 0.075\\;\\mathrm{bursts\\;s^{-1}}$，等效至主瓣增益下爆发数 $\\gtrsim 21$ 次；最亮暴各向同性峰值光度达 $L_{\\rm iso} \\sim 2.3 \\times 10^{43}\\;\\mathrm{erg\\;s^{-1}}$，9 次暴发总能量 $E_{\\rm tot} \\sim 2.2 \\times 10^{41}\\;\\mathrm{erg}$（相对于 $B=10^{15}\\;\\mathrm{G}$ 磁星储备满足 $E_{\\rm tot}/E_{\\rm mag} \\sim 10^{-6}$）；宿主环境参数测得 $\\mathrm{DM_{excess}} \\sim 360\\;\\mathrm{pc\\;cm^{-3}}$、$\\tau(600\\;\\mathrm{MHz}) \\lesssim 0.37\\;\\mathrm{ms}$，去红移旋转量 $|\\mathrm{RM_{excess}}| \\sim 150-340\\;\\mathrm{rad\\;m^{-2}}$，表明其介质与常规重复暴相当。",
+      "problem": "快速射电暴中单次暴发源（one-offs）与重复暴发源的本质物理联系尚未厘清，传统平稳泊松过程无法解释部分仅被探测到一次却表现出极端局域聚集发作的物理起源。",
+      "method": "利用 CHIME/FRB 搜索与基带重定相数据提取位置、散射与线偏振/RM 特征；使用天顶仪赤纬相关曝光 $d(\\delta)=E_0/\\cos(\\delta)$（$E_0 \\sim 2.2\\;\\mathrm{min}$）建立天区泊松似然模型，并结合通量分布 $N(>F) \\propto F^{\\rm index}$ 与波束响应进行主瓣通量和总体数目贝叶斯推断。",
+      "reason": "文章报告了 CHIME/FRB 发现的具有迄今最高瞬时暴发率的极端聚集重复源 FRB 20210601A，在仅 106.5 s 内暴发 9 次（主瓣归一化 $\\gtrsim 21$ 次）且长期跨年静默（$>320\\text{ hr}$ 曝光），为联系非重复暴与重复暴的阵发机制及磁星风暴模型提供了关键观测约束。",
+      "url": "https://arxiv.org/abs/2610.31365v1",
+      "announcement_date": "2026-10-22",
+      "historical_edition": "announcement-2026-10-22",
+      "source_fingerprint": "cfd86c97cac6794ed12382d938bdcc19b20aef34150bba0251ea438631725366"
+    },
+    {
       "arxiv_id": "2610.30233",
       "revision": 1,
       "title": "General-purpose equations of state for hadron-quark matter: first application to accretion-induced phase transitions in neutron stars",
@@ -8785,6 +8870,29 @@
       "announcement_date": "2026-10-22",
       "historical_edition": "announcement-2026-10-22",
       "source_fingerprint": "06856b6ed07a0b564fec170a058b9e94c90a4c02d71a74a77776d569e6a33565"
+    },
+    {
+      "arxiv_id": "2610.30604",
+      "revision": 1,
+      "title": "Multiwavelength Classification of Chandra Sources in Omega Centauri",
+      "authors": [
+        "Steven Chen",
+        "Oleg Kargaltsev",
+        "Jeremy Hare",
+        "Hui Yang",
+        "Oleg Smirnov",
+        "Ian Heywood",
+        "Talon Myburgh"
+      ],
+      "priority": "worth_knowing",
+      "result": "研究在 omega Cen 中确立了 25 个可靠的星团成员 X 射线源，若计入候选激变变星（CV）、毫秒脉冲星（MSP）和巨星色球活动双星（AB）则达 44 个（与理论预期的 $\\sim 48$ 个成员一致）。确认了 18 个背景 AGN、12 颗前景恒星、6 个巨星 AB、9 个 CV，以及双星 MSP Q 与黑寡妇蜘蛛脉冲星 MSP K；同时发现了 7 个候选 MSP（含 2 个 WD-MSP 双星候选体）。此外，在 7 颗孤立 MSP 周围 $3\\arcsec$ 范围内检测到 $\\sim 5$ 颗白矮星（WD）超额（亮 WD 超额显著性 $> 3\\sigma$），揭示出致密星团环境下可能存在被动力学瓦解或处于极宽轨道的 WD 伴星遗迹。",
+      "problem": "在球状星团这类极端拥挤的星族环境中，约 80%–90% 的低光度 X 射线源缺乏明确的物理分类，存在严重的源混叠、光学对应体误配率高以及背景 AGN 污染严重等观测矛盾。",
+      "method": "利用 MUWCLASS 机器学习管线结合 NWAY 概率交叉匹配方法，整合 Chandra CSC 2.1、HST oMEGACat、JWST 及 MeerKAT 射电巡天（探测极限 $\\lesssim 10\\,\\mu\\mathrm{Jy}$，对应光度 $\\lesssim 5\\times 10^{26}\\,\\mathrm{erg\\,s^{-1}}$）；采用分段高斯抽样和合成少数类过采样（SMOTE）平衡数据类别；利用高斯过程（GP）核函数 $k(x_{i},x_{j})=\\exp\\left(-\\frac{d(x_{i},x_{j})^{2}}{2l^{2}}\\right)+(\\sigma_{0}^{2}+x_{i}\\cdot x_{j})^{2}$（其中参数限制在 $100 \\le l \\le 200\\,\\mathrm{nm}$，偏置 $3 \\le \\sigma_{0} \\le 1000$）对多波段缺失测光进行内插补全。",
+      "reason": "该工作首次将多波段机器学习分类管线 MUWCLASS 应用于致密星团环境（球状星团 omega Cen），结合 Chandra、HST、JWST 与 MeerKAT 深度射电数据对 200 余个暗弱致密天体与双星系统（MSP、CV、qLMXB 等）进行了系统性交叉匹配与分类证认，对理解球状星团中致密天体族群演化、蜘蛛脉冲星及低质量 X 射线双星的物理机制具有实用参考价值。",
+      "url": "https://arxiv.org/abs/2610.30604v1",
+      "announcement_date": "2026-10-22",
+      "historical_edition": "announcement-2026-10-22",
+      "source_fingerprint": "63e9d742c2eecd9cd0b08f57d9e729a06df3adc093f338950d06069732788e45"
     },
     {
       "arxiv_id": "2610.30656",
@@ -8968,6 +9076,83 @@
       "source_fingerprint": "57c3479f313d5fe029afbf4024d9baeb6b8b0ccd914b0705fc23e05a36bb9333"
     },
     {
+      "arxiv_id": "2610.31227",
+      "revision": 1,
+      "title": "In Search of the Gravitational Wave of Fast X-Ray Transient in the Second Part of the LIGO-Virgo-KAGRA Fourth Observing Run",
+      "authors": [
+        "Po-Ya Wang",
+        "Albert K. H. Kong",
+        "Surojit Saha"
+      ],
+      "priority": "worth_knowing",
+      "result": "在 EP 探测到的 64 例 FXT 中筛选出 19 个满足 LVK 运行条件的源，所有源的显著性 $p$ 值均与背景噪声涨落一致（如 EP240414a 的 $p=0.068$、EP250108a 的 $p=0.763$），未探测到显著的引力波信号。针对伴随宽线超新星 SN 2025kg 的个源 EP250108a（红移 $z = 0.17641$，光度距离 $D_L = 880.6\\,\\mathrm{Mpc}$），在 $70\\text{--}300\\,\\mathrm{Hz}$ 频段内通过 $E_{\\mathrm{GW},90\\%}=\\frac{2}{5}\\frac{\\pi^{2}c^{3}}{G}r^{2}f_{0}^{2}h_{\\mathrm{rss},90\\%}^{2}$ 导出的引力波辐射能量 90% 置信度上限为 $E_{\\mathrm{GW},90\\%} \\in [6.715\\times 10^{-2},\\, 5.506\\times 10^{-1}]\\,M_{\\odot}c^{2}$，受限于现有引力波探测视距，尚无法直接触及多数 FXT 所处的深空宿主距离。",
+      "problem": "快速 X 射线暂现源（FXT）的物理本质、前身星系统以及辐射中心引擎（如双中子星并合、恒星坍缩、超新星激波破越或离轴伽马射线暴余辉）存在较大争议，急需通过探测其成协的引力波爆发信号来确证其动力学起源。",
+      "method": "采用非模化相干突发搜寻算法 X-Pipeline，在 H1、L1 和 V1 网络上设定 $[20, 500]\\,\\mathrm{Hz}$ 目标频带。以 X 射线触发时间为基准设定源内窗口 $[T_0 - 600\\,\\mathrm{s}, T_0 + 60\\,\\mathrm{s}]$ 及长 $10800\\,\\mathrm{s}$ 的背景窗，利用非相干能量关系 $\\log_{10}I = a(\\log_{10}E)^2 + c$ 剔除毛刺；向背景注入圆形正弦-高斯（CSG，$Q=9$，$f_0 \\in [70, 300]\\,\\mathrm{Hz}$）、致密双星（BNS/NSBH）以及吸积盘不稳定性（ADI）模拟波形，测定各模型的 90% 置信度排除距离与引力波应变/能量上限：$$E_{\\mathrm{GW},90\\%}=\\frac{2}{5}\\frac{\\pi^{2}c^{3}}{G}r^{2}f_{0}^{2}h_{\\mathrm{rss},90\\%}^{2}$$",
+      "reason": "利用 LVK O4b 运行数据对爱因斯坦探针（EP）新发现的快速 X 射线暂现源（FXT）样本进行了首次成体系的非模化相干引力波定向搜寻，给出了致密双星并合与恒星塌缩等前身星模型的排除距离与引力波辐射能量上限，对理解 FXT 的中心引擎具有直接的多信使约束价值。",
+      "url": "https://arxiv.org/abs/2610.31227v1",
+      "announcement_date": "2026-10-22",
+      "historical_edition": "announcement-2026-10-22",
+      "source_fingerprint": "9b549415550b83b3767396084f11f9dd6815be0ee9ef04f22d48c210e090ca39"
+    },
+    {
+      "arxiv_id": "2610.31300",
+      "revision": 1,
+      "title": "Breaking the symmetry: X-ray polarization from a spreading layer on a tilted weakly magnetized neutron star",
+      "authors": [
+        "Anna Bobrikova",
+        "Alexandra Veledina",
+        "Juri Poutanen",
+        "Vladislav Loktev"
+      ],
+      "priority": "worth_knowing",
+      "result": "打破轴对称后，吸积盘的物理遮挡使扩散层（SL）偏振面可偏离吸积盘法线方向并呈任意取向（偏振角主要由几何取向角校正量 $\\tan\\chi_{\\rm m} = \\frac{\\sin\\eta\\sin\\Phi}{\\sin\\eta\\cos i\\cos\\Phi - \\cos\\eta\\sin i}$ 决定），同时有效提升了净偏振度（在部分参数下 $\\mathrm{PD} > 2\\%$）；对于固定能段 $E = 5\\text{ keV}$ 及几何依赖边界 $\\theta_{\\rm min} = 90^\\circ - \\eta$，各向同性视角下探测到 $\\mathrm{PD} \\ge 1.0\\%$ 的概率随倾角 $\\eta$ 从 $5^\\circ$ 时的 $28\\%$ 下降到 $30^\\circ$ 时的 $7.8\\%$，成功解释了 Cir X-1（$\\mathrm{PA} = -12^\\circ, \\mathrm{PD} = 1.4\\%$）与 GX 5$-$1 等源的偏振角错位与偏振度分布。",
+      "problem": "传统弱磁中子星（WMNS）理论假定中子星自转轴与吸积盘轨道轴平行，预言扩散层偏振度极低（$\\mathrm{PD} \\le 1.5\\%$）且偏振角平行于吸积盘法线，无法解释IXPE在Cir X-1、GX 5$-$1等源中观测到的偏振角非平行偏转（如夹角达 $50^\\circ\\sim 60^\\circ$）以及局部能段偏振度偏高的问题。",
+      "method": "建立中子星自转轴相对双星轨道轴存在倾斜角 $\\eta$ 与方位角 $\\Phi$ 的几何框架，视线方向在自转系下有效倾角满足 $\\cos i_{*} = \\cos i\\cos\\eta + \\sin i\\sin\\eta\\cos\\Phi$；结合 Beloborodov 广义相对论光线弯曲近似 $\\cos\\alpha \\approx 1 - (1-u)(1-\\cos\\psi)$、吸积盘平面遮挡条件 $\\hat{\\boldsymbol{n}}\\cdot\\hat{\\boldsymbol{z}} > 0$（即 $\\cos\\eta\\cos\\theta + \\sin\\eta\\sin\\theta\\cos(\\Phi_{*} - \\phi) > 0$）与半无限电子散射大气斯托克斯偏振积分 $P_{\\rm es}(\\alpha') = -0.1171(1-\\cos\\alpha')/(1+3.582\\cos\\alpha')$，计算观测能谱及偏振参量空间。",
+      "reason": "针对IXPE在弱磁中子星X射线双星中发现的偏振角偏转及高偏振度现象，论文打破传统的自转轴-轨道轴对齐假设，构建了倾斜中子星表面扩散层（SL）偏振辐射解析模型与遮挡几何，对致密天体吸积几何和高能偏振观测解释有参考价值。",
+      "url": "https://arxiv.org/abs/2610.31300v1",
+      "announcement_date": "2026-10-22",
+      "historical_edition": "announcement-2026-10-22",
+      "source_fingerprint": "51c878adc54dee9db5ed67fac19e5d959790af9b797456155431c1b490b056d6"
+    },
+    {
+      "arxiv_id": "2610.31324",
+      "revision": 1,
+      "title": "Multigroup Radiation Diffusion with Compton Scattering on a Moving Mesh: Implementation in RICH and Application to Tidal Disruption Events",
+      "authors": [
+        "Itamar Giron",
+        "Menahem Krief",
+        "Elad Steinberg"
+      ],
+      "priority": "worth_knowing",
+      "result": "在 $10^6\\,M_\\odot$ 黑洞瓦解 $0.5\\,M_\\odot$ 恒星（回落时标 $t_{\\rm fb} \\approx 26.6\\,\\mathrm{days}$）的三维模拟中，在 $0.66\\,t_{\\rm fb}$ 处近星点喷嘴激波（nozzle shock）诱发各向同性等效光度达 $\\overline{L}_X^{\\rm ph} \\approx 10^{42}\\,\\mathrm{erg\\,s^{-1}}$ 的 X 射线闪。在激波区，气体温度远高于康普顿温度（$T_{\\rm gas} > T_C$），逆康普顿冷却参数 $A_{\\rm IC} \\equiv (U_C - D_C)/(U_C + D_C) \\approx 1$；康普顿向高能能谱重分配产生 X 射线的功率 $\\dot{E}_{X,C}$ 比局部热辐射快数十至数百倍，康普顿耦合份额 $f_C = |Q_C|/(|Q_C| + |Q_{\\rm abs}|) \\approx 1$。在 X 射线热化半径与散射层之间，康普顿注入率与逃逸 X 射线光度相当，主导了 TDE 早期的高能辐射特征。",
+      "problem": "在相对论与高能瞬变天体（如 TDE 喷嘴激波及超爱丁顿外流）中，康普顿散射将全波段辐射能群强非线性耦合，且局域康普顿平衡时标 $t_{\\rm spec} = 2E_{\\rm rad}/\\sum_{g'} |C_{g'}|$ 远短于流体动力学推进步长 $\\Delta t$（即 $t_{\\rm dyn}/t_{\\rm spec} \\gg 1$），传统隐式蒙特卡洛或显式多群辐射算法在大温差下极易发散或计算代价极其高昂。",
+      "method": "在动网格辐射流体代码 rich 中构建了基于精确热康普顿核的半隐式多群扩散算法：\n1. 控制方程采用共动系通量限制扩散（FLD），扩散系数满足 $D_g = c\\lambda_g / \\kappa_{R,g}$，结合角平均诱导散射项（光子占据数 $n_g = \\frac{h^3 c^3}{8\\pi \\nu_g^3} E_g$）；\n2. 引入康普顿核对辐射能密度 $U_r$ 的线性展开 $\\mathcal{C}[\\sigma_s; I, I]^{n+1} \\simeq \\mathcal{C}[\\sigma_s^n; I^{n+1}, I^n] + (U_r^{n+1} - U_r^n)\\mathcal{C}'[\\partial \\sigma_s^n/\\partial U_r; I^n, I^n]$，构建广义 Fleck 因子 $f = [1 + \\frac{c\\Delta t}{\\bar{c}_v}(\\kappa_P + \\kappa_C)]^{-1}$，其中热容比 $\\bar{c}_v \\equiv \\frac{\\partial u_m}{\\partial U_r} = \\frac{c_v}{4a_R T^3}$，并成对修正微观截面比率 $F_{g'g}(T)$ 强制满足群间细致平衡与光子数守恒 $N_\\gamma = \\sum_g E_g / \\nu_g$；\n3. 采用 MPI 并行与预条件 BiCGSTAB 求解非对称稀疏线性系统 $\\vec{M}\\vec{E}^{n+1} = \\vec{b}$，在 $f<0$ 时截断受激散射保证绝对数值稳定性。",
+      "reason": "在高能瞬变源与潮汐瓦解事件（TDE）中，激波与吸积流动产生的硬 X 射线辐射高度依赖康普顿散射与能量再分配。该工作首次在移动 Voronoi 网格辐射流体代码 rich 中实现了基于精确热康普顿核的半隐式多群通量限制扩散（FLD）模块，解决了极端温差和超长流体步长下的非线性耦合稳定性难题，并直接量化了 TDE 喷嘴激波区康普顿硬化对早期 X 射线闪（X-ray flash）的主导贡献。",
+      "url": "https://arxiv.org/abs/2610.31324v1",
+      "announcement_date": "2026-10-22",
+      "historical_edition": "announcement-2026-10-22",
+      "source_fingerprint": "c9e1a4c562cbb2cd6e51e8c7219e7bc22d14b2c3661aed41d3af332f9b9a751c"
+    },
+    {
+      "arxiv_id": "2610.31360",
+      "revision": 1,
+      "title": "Spectral Properties of X-Ray Flares in Gamma-Ray Bursts",
+      "authors": [
+        "Xiongwei Bi",
+        "Zejun Jiang",
+        "Jirong Mao"
+      ],
+      "priority": "worth_knowing",
+      "result": "通过对 521 个 X 射线耀斑进行吸收幂律谱拟合与统计分析：(1) WT 模式与 PC 模式的光子指数 $\\Gamma$ 分布高度一致，峰值中心分别为 $x_c = 1.85 \\pm 0.02$ 与 $x_c = 1.86 \\pm 0.02$（全样本高斯峰 $x_c = 1.85 \\pm 0.01$，均值 1.94）；(2) 耀斑各阶段光谱演化显著，耀斑期峰值 $x_c = 1.82 \\pm 0.02$ 相比耀斑后期 $x_c = 1.94 \\pm 0.03$ 发生显著硬化（配对 $t$ 检验 $t = -3.700, p = 2.655 \\times 10^{-4}$），且在多耀斑事件中，光子指数随峰值时间 $t_{\\rm peak}$ 呈递增软化趋势；(3) 吸收柱密度在耀斑前期与耀斑期基本保持恒定（$\\log(N_{\\rm H}/{\\rm cm^{-2}}) = 21.71 \\pm 0.08$ 与 $21.71 \\pm 0.04$），但耀斑后显著降低至 $21.58 \\pm 0.04$；(4) 耀斑整体能谱显著软于瞬时辐射（瞬时辐射幂律模型峰值 $x_c = 1.62 \\pm 0.03$，截止幂律峰值 $x_c = 1.46 \\pm 0.02$）；X 射线闪耀斑最软，经典伽玛暴最硬（$\\Gamma_{\\rm XRF} \\approx 2.15 > \\Gamma_{\\rm XRR} \\approx 1.87 > \\Gamma_{\\rm C-GRB} \\approx 1.79$）。",
+      "problem": "探究伽马射线暴（GRB）X 射线耀斑的辐射机制与能谱时变规律，厘清耀斑能谱是源自中心引擎晚期重启驱动的内部激波还是外部激波余辉演化，以及耀斑与瞬时辐射在辐射物理上的内在联系与差异。",
+      "method": "选取 2005 年 4 月至 2015 年 3 月 Swift/XRT 观测的 206 个 GRB（521 个耀斑），依据时间切片提取耀斑前、耀斑期及耀斑后阶段数据；在 XSPEC 中采用吸收幂律模型 $\\texttt{phabs} \\times \\texttt{zphabs} \\times \\texttt{powerlaw}$，固定银河吸收柱密度，将本征柱密度 $N_{\\rm H,int}$ 与光子指数 $\\Gamma$ 设为自由参数，采用 Cash 统计量处理泊松计数并应用 K-S 检验与配对 $t$ 检验评估演化特征。",
+      "reason": "该工作利用 Swift/XRT 历时 10 年的大样本（206 个 GRB 共 521 个耀斑），系统开展了耀斑前、耀斑期与耀斑后的时间分辨能谱拟合与统计，证实了耀斑能谱在耀斑期显著硬化、连续耀斑随时间软化，且系统性软于瞬时辐射，为 GRB 中心引擎晚期重新激活产生内部激波的物理模型提供了重要观测限制。",
+      "url": "https://arxiv.org/abs/2610.31360v1",
+      "announcement_date": "2026-10-22",
+      "historical_edition": "announcement-2026-10-22",
+      "source_fingerprint": "44c9c1ae63bfc8cdbf51bce72d1f9698c4635d026787e7b90b9d46358a29961a"
+    },
+    {
       "arxiv_id": "2610.31450",
       "revision": 1,
       "title": "Simulation-based inference of profile evolution for high-precision pulsar timing",
@@ -8987,6 +9172,24 @@
       "announcement_date": "2026-10-22",
       "historical_edition": "announcement-2026-10-22",
       "source_fingerprint": "22b0c85c526e7503951a77800e1e3087e0829a2b60f73d90f8642d8e83775ee8"
+    },
+    {
+      "arxiv_id": "2610.31484",
+      "revision": 1,
+      "title": "Prompt Jet Launching and Delayed Thermal Disk in Tidal Disruption Event for Prolonged Activity GRB 220706A",
+      "authors": [
+        "Yuri Sato",
+        "Rin Oikawa"
+      ],
+      "priority": "worth_knowing",
+      "result": "1. 塌缩星模型无法成立：中心引擎在喷流头部到达表面前关闭（$t_{\\rm engine} \\sim 5\\times 10^2\\,\\mathrm{s} < t_{\\rm bo} \\sim 10^4\\,\\mathrm{s}$），喷流被束缚于包层内部。\n2. TDE 模型早期喷流：恒星回落时标 $t_{\\rm fb} \\sim 10^6\\,\\beta^{-3}(M_{\\rm BH}/10^5 M_\\odot)^{1/2}(M_*/50 M_\\odot)^{-1}(R_*/20 R_\\odot)^{3/2}\\,{\\rm s}$，少量碎片在时标 $\\tilde{t}_{\\rm acc,pro} \\sim 10^5\\,\\beta^{-3/2}(\\alpha_{\\rm vis}/0.1)^{-1}(M_*/50 M_\\odot)^{-1/2}(R_*/20 R_\\odot)^{3/2}\\,{\\rm s}$ 内快速吸积输运磁通，通过 BZ 机制驱动喷流，各向同性伽马射线光度为 $L_{\\gamma,{\\rm iso,obs}} \\sim 10^{50}\\,x_H^2(\\eta_{\\rm BZ}/0.1)(\\eta_{{\\rm rad},\\gamma}/0.1)(\\theta_j/0.1\\,{\\rm rad})^{-2}(M_{\\rm BH}/10^5 M_\\odot)^2(B_H/10^8\\,{\\rm G})^2\\,{\\rm erg\\,s^{-1}}$。\n3. 延迟主盘与喷流关闭：碎屑在 $\\tilde{t}_{\\rm circ} \\sim 10^6\\,\\mathrm{s}$ 于圆化半径 $R_c \\approx 2R_p$ 形成主盘，产生光度 $L_{\\rm opt,obs} \\sim 10^{44}\\,{\\rm erg\\,s^{-1}}$ 的光学热辐射；喷流活跃期随超爱丁顿吸积维持，关闭时标预测为 $\\tilde{t}_{\\rm off} \\sim 10^9\\,(M_{\\rm BH}/10^5 M_\\odot)^{-2/5}(M_*/50 M_\\odot)^{1/5}(R_*/20 R_\\odot)^{3/5}\\beta^{-6/5}\\,{\\rm s}$。",
+      "problem": "GRB 220706A 瞬时辐射持续约 $87\\,\\mathrm{s}$，但其 X 射线耀发活动长达约 $51\\,\\mathrm{d}$，并在 $\\sim 10^6\\,\\mathrm{s}$ 出现明亮的光学热黑体辐射成分。传统核塌缩巨星模型中吸积引擎寿命短于喷流包层破越时标（$t_{\\rm engine} \\sim 5\\times 10^2\\,\\mathrm{s} < t_{\\rm bo} \\sim 10^4\\,\\mathrm{s}$），喷流无法破越且茧层耗散会破坏包层吸积，无法自洽解释该暴。",
+      "method": "利用解析流体动力学与时标对比，检验扩展恒星包层内喷流传播与破越可行性；建立大质量恒星（$M_* \\sim 50 M_\\odot, R_* \\sim 20 R_\\odot$）被中等质量黑洞（$M_{\\rm BH} \\sim 10^5 M_\\odot$）潮汐瓦解的动力学模型，通过近星点激波碰撞驱动部分（$\\lesssim 1\\%$）物质快速内流并压缩预存盘磁场至黑洞视界（BZ 机制），随后通过碎屑在大时标（$\\tilde{t}_{\\rm circ} \\sim 10^6\\,\\mathrm{s}$）圆化形成主吸积盘释放热能。",
+      "reason": "论文定量排除了大包层恒星塌缩星模型（由于 $t_{\\rm engine} < t_{\\rm bo}$ 喷流在破越前熄灭），提出了中等质量黑洞潮汐瓦解（TDE）模型，成功统一解释了极长持续活动源 GRB 220706A 的早期相对论喷流与约 $10^6\\,\\mathrm{s}$ 延迟光学黑体辐射成分。",
+      "url": "https://arxiv.org/abs/2610.31484v1",
+      "announcement_date": "2026-10-22",
+      "historical_edition": "announcement-2026-10-22",
+      "source_fingerprint": "0454b79c1a061405cf4aa2cf6d48b00da629613bd574c47e47b0cea6090ef51d"
     },
     {
       "arxiv_id": "2610.31559",
@@ -10168,6 +10371,101 @@
       "announcement_date": "2026-10-22",
       "historical_edition": "announcement-2026-10-22",
       "source_fingerprint": "2bfcbb4bdfd3619bbfff679676716753faa9abff129fb92925848c5ececa8f1a"
+    },
+    {
+      "arxiv_id": "2610.31200",
+      "revision": 1,
+      "title": "Eight new, triply eclipsing triple star systems",
+      "authors": [
+        "T. Borkovits",
+        "S. A. Rappaport",
+        "G. Torres",
+        "A. Tokovinin",
+        "T. Mitnyan",
+        "R. Gagliano",
+        "T. Jacobs",
+        "B. Powell",
+        "V. Kostov",
+        "M. Omohundro",
+        "M. H. Kristiansen",
+        "I. Terentev",
+        "H. M. Schwengeler",
+        "D. LaCourse",
+        "Z. Garai",
+        "T. Pribulla",
+        "I. B. Bíró",
+        "I. Csányi",
+        "Z. Dencs",
+        "D. W. Latham",
+        "R. Uhlař",
+        "A. Pál"
+      ],
+      "priority": "skip",
+      "result": "未能从已检查材料中核实论文结果。",
+      "problem": "未能从已检查材料中核实论文问题陈述。",
+      "method": "未能从已检查摘要中核实方法说明。",
+      "reason": "论文研究的是三重食层级恒星系统的光变、轨道与恒星参数，和指定的高能瞬变天体物理方向无实质联系。",
+      "url": "https://arxiv.org/abs/2610.31200v1",
+      "announcement_date": "2026-10-22",
+      "historical_edition": "announcement-2026-10-22",
+      "source_fingerprint": "29743fb2fa00d3c61cc5a1324ea6a769a0f1b9ff08305dbde5132bfc57d4ed21"
+    },
+    {
+      "arxiv_id": "2610.31285",
+      "revision": 1,
+      "title": "Analysis of a coronal hole jet in the chromosphere and the transition region with IRIS data and SDO observations",
+      "authors": [
+        "M. Koletti",
+        "C. Gontikakis",
+        "S. Patsourakos",
+        "K. Tsinganos"
+      ],
+      "priority": "skip",
+      "result": "未能从已检查材料中核实论文结果。",
+      "problem": "未能从已检查材料中核实论文问题陈述。",
+      "method": "未能从已检查摘要中核实方法说明。",
+      "reason": "论文属于太阳与日球物理观测方向，与高能瞬变天体物理及致密天体高能观测无实质联系。",
+      "url": "https://arxiv.org/abs/2610.31285v1",
+      "announcement_date": "2026-10-22",
+      "historical_edition": "announcement-2026-10-22",
+      "source_fingerprint": "3d109ceba31276fc310935178f3234252b0aa7b67f433417543229fbe0bdb65b"
+    },
+    {
+      "arxiv_id": "2610.31367",
+      "revision": 1,
+      "title": "Synthetic 2D magnetic turbulence with controlled island structuring",
+      "authors": [
+        "Yari De Paep",
+        "Daniela Maci",
+        "Rony Keppens"
+      ],
+      "priority": "skip",
+      "result": "未能从已检查材料中核实论文结果。",
+      "problem": "未能从已检查材料中核实论文问题陈述。",
+      "method": "未能从已检查摘要中核实方法说明。",
+      "reason": "论文主要开发二维合成磁湍流及磁岛结构生成工具，摘要没有将方法用于 FRB、超新星、激波、相对论喷流或致密天体高能观测。虽涉及等离子体磁场与磁岛，但与指定研究方向没有实质联系。",
+      "url": "https://arxiv.org/abs/2610.31367v1",
+      "announcement_date": "2026-10-22",
+      "historical_edition": "announcement-2026-10-22",
+      "source_fingerprint": "7a41147ce58ea9a8da86653dc70497a239aa5c26cc5c0c21f605066c813017da"
+    },
+    {
+      "arxiv_id": "2610.31416",
+      "revision": 1,
+      "title": "A Catalog of Spectral Properties for DESI DR1 Quasars",
+      "authors": [
+        "Qiaoya Wu",
+        "Yue Shen"
+      ],
+      "priority": "skip",
+      "result": "未能从已检查材料中核实论文结果。",
+      "problem": "未能从已检查材料中核实论文问题陈述。",
+      "method": "未能从已检查摘要中核实方法说明。",
+      "reason": "论文提供 DESI DR1 类星体光谱性质目录，重点是类星体人口统计、吸积及发射线性质。摘要未显示其研究高能瞬变、相对论喷流、中微子或致密天体观测，与指定方向无实质联系。",
+      "url": "https://arxiv.org/abs/2610.31416v1",
+      "announcement_date": "2026-10-22",
+      "historical_edition": "announcement-2026-10-22",
+      "source_fingerprint": "2327455517928fd2a5bdf9752e5f30553d05ada5de2dcf21751df97cb8221f3c"
     },
     {
       "arxiv_id": "2610.31441",

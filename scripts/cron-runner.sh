@@ -65,7 +65,7 @@ sync_git_data() {
 
     # 2. 工作区纯净度门禁：除数据和图片外，若存在任何未提交的代码改动，安全跳过提交与推送
     local dirty_non_data
-    dirty_non_data="$(git status --porcelain | grep -v -E '^..\s+(src/data/|public/figures/)' || true)"
+    dirty_non_data="$(git status --porcelain | grep -v -E '^..\s+(src/data/|public/arxiv-figures/|public/arxiv-weekly/)' || true)"
     if [ -n "${dirty_non_data}" ]; then
       echo "[cron-runner] 检测到工作区存在未提交的代码改动，为防止代码被误推或污染，安全跳过自动 Git 提交与远程推送："
       echo "${dirty_non_data}"
@@ -77,6 +77,10 @@ sync_git_data() {
 
     if [ -n "$(git status --porcelain src/data/)" ]; then
       git add src/data/
+    fi
+
+    if [ -d "public/arxiv-weekly" ] && [ -n "$(git status --porcelain public/arxiv-weekly/)" ]; then
+      git add public/arxiv-weekly/
     fi
 
     # 检查暂存区是否有更新需要提交
@@ -171,6 +175,7 @@ case "${TASK}" in
     echo "[cron-runner] 同步更新本周学术脉络总结与脏周级联..."
     node scripts/arxiv-weekly-summary.mjs || true
     node scripts/arxiv-weekly-summary.mjs --cascade || true
+    node scripts/weekly-pdf.mjs || true
     capture_current_build
     npm run build
     record_current_build
@@ -183,6 +188,7 @@ case "${TASK}" in
     echo "[cron-runner] 执行每周综述流程..."
     node scripts/arxiv-weekly-summary.mjs
     node scripts/arxiv-weekly-summary.mjs --cascade || true
+    node scripts/weekly-pdf.mjs || true
     capture_current_build
     npm run build
     record_current_build

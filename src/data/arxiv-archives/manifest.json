@@ -1,39 +1,86 @@
 {
   "schema_version": "astrolineage-arxiv-archive-manifest-v1",
-  "updated_at": "2026-10-23T02:20:33.746Z",
-  "total_weeks": 7,
-  "total_daily_editions": 34,
-  "latest_week_id": "2026-W43",
-  "latest_daily_date": "2026-10-22",
+  "updated_at": "2026-10-26T02:11:01.597Z",
+  "total_weeks": 8,
+  "total_daily_editions": 35,
+  "latest_week_id": "2026-W44",
+  "latest_daily_date": "2026-10-25",
   "weeks": [
+    {
+      "week_id": "2026-W44",
+      "title": "每周学术脉络 · 2026-W44",
+      "date_range": "2026-10-26 ~ 2026-11-01",
+      "has_weekly_summary": true,
+      "executive_summary": "本周高能天体物理聚焦于致密中心天体在极端引力与强磁场边界下的因果动力学链条，从黑洞与磁星引擎的极端微观物理约束、吸积盘非对称与倾斜几何破缺，延伸至包层激波破越、千新星核合成可辨识度及相对论喷流的长期进动调制。\n\n- **中央引擎与核合成约束**：arXiv:2610.31758v1 严格论证了长 GRB 驱动下的坍缩星中微子冷却吸积盘在任何磁阻滞（MAD）或弱磁通（SANE）序列下均无法成为重 $r$-过程工厂，指出磁力矩解绑喷流外流的高径向速度与强中子化所需的低电子丰度（$Y_{\\rm e} \\le 0.25$）存在不可调和的动力学冲突；arXiv:2610.32047v1 提出千新星放射性衰变能量沉积与灰体扩散的因果量热理论框架，证明粒子热化延迟与光子扩散自由度极大抹平了 $^{254}\\mathrm{Cf}$ 等重裂变核素的光度特征，导致单纯晚期测光难以独立鉴别裂变源。\n- **磁星内部超强磁场机制**：arXiv:2610.32028v1 基于非微扰 Nambu-Jona-Lasinio 框架论证了中性 2SC 致密夸克相中由带电胶子费米面失配引发的色磁不稳定性，证明带电胶子真空顺磁反屏蔽效应能自发将微弱种子磁场放大并自洽维持在 $10^{17}\\sim 10^{20}\\,\\text{G}$ 的磁星内场量级。\n- **吸积流几何破缺与动力学耀斑**：arXiv:2610.31754v1 借助三维 GRMHD 与 GRRT 模拟揭示了倾斜磁阻滞盘（MAD）的近视界图像畸变，证实对于中低自旋及逆行黑洞，未对齐吸积流会导致传统轴对称模型反演黑洞自旋时产生超过 $50\\%$ 的系统偏差；arXiv:2610.31990v1 通过 AthenaK 三维流体模拟发现超新星或引力辐射反冲（natal kick）将驱使束缚盘在动力学时标内发生激波自碰撞与强烈能量耗散，诱发峰值光度达 $L_{\\rm flare} \\propto M_b V_{\\rm kick}^5 / (GM)$ 的特征电磁耀斑，并激发大倾角乃至逆行翻转吸积盘。\n- **激波破越与相对论喷流进动**：arXiv:2610.31755v1 实现了伴星吸积旋进与红超巨星包层内激波破越的一维辐射流体自洽演化，确立了发光红新星破越峰值光度与伴星质量的非线性标度律 $L_{\\rm peak} \\propto M_{\\rm comp}^{0.93}$；arXiv:2610.32168v1 利用南山 26 米望远镜在耀变体 4C+72.28 中确立了长达 $1026.7\\,\\text{d}$ 的射电双频同相准周期振荡，将其稳健归因于弯曲相对论喷流进动引发的多普勒因子微幅扰动（$\\delta_{\\max}/\\delta_{\\min} \\sim 1.05$）。\n\n> 🎯 **筛选边界**：本周共分析 39 篇高能天体物理论文，严格筛除 32 篇缺乏致密天体动力学链条与能量耗散机制的泛星系巡天及普通低能段统计研究，最终遴选 7 篇直击引擎物理、吸积喷流与爆发现象前沿的重点成果。",
+      "statistics": {
+        "total_analyzed": 39,
+        "must_read_count": 1,
+        "worth_knowing_count": 6,
+        "skip_count": 32
+      },
+      "top_picks_count": 7,
+      "days": [
+        {
+          "date": "2026-10-25",
+          "weekday": "Sun",
+          "week_id": "2026-W44",
+          "batch_id": "announcement-2026-10-25",
+          "total_papers": 48,
+          "analyzed_count": 39,
+          "must_read_count": 1,
+          "worth_knowing_count": 6,
+          "skip_count": 32,
+          "pending_count": 9,
+          "brief_status": "ready",
+          "brief_intro": "本期首看《Collapsars Are Not Heavy $r$-Process Factories》等 7 篇核心进展。",
+          "highlights": [
+            {
+              "arxiv_id": "2610.31758",
+              "priority": "must_read",
+              "title": "Collapsars Are Not Heavy $r$-Process Factories",
+              "reason": "文章直面高能瞬变与超新星中心引擎核心争议，利用解析极值与观测能量标度，证明长 GRB 驱动喷流所需的磁应力与合成重 $r$-过程所需的盘内中子化条件存在根本动力学冲突，从物理上排除了坍缩星盘风作为重 $r$-过程主要来源的假设。"
+            }
+          ],
+          "data_file": "daily/2026-10-25.json"
+        }
+      ],
+      "weekly_data_file": "weekly/2026-W44.json"
+    },
     {
       "week_id": "2026-W43",
       "title": "每周学术脉络 · 2026-W43",
       "date_range": "2026-10-19 ~ 2026-10-25",
       "has_weekly_summary": true,
-      "executive_summary": "本周高能天体物理与瞬变源研究集中体现了从致密星核心引擎内秉动力学、极端相对论磁重联到外流与复杂介质激波相互作用的全链条物理演进。各主线核心突破如下：\n- **磁星动力学与电磁耗散**：arXiv:2610.22653 模拟论证了磁星扭缠磁通管中非均匀电阻率激发的相对论磁重联速率可达 $\\beta_{\\rm rec} \\sim 0.1$，揭示仅占横截面 $0.1\\% \\sim 3\\%$ 的电荷匮乏区主导了 $20\\% \\sim 55\\%$ 的欧姆耗散，为巨耀斑驱动重子抛射提供了动力学机制。\n- **致密环境与活动星系核瞬变**：arXiv:2610.24849 通过辐射-MHD 模拟阐明了在预先存在的 AGN 吸积盘中，大倾角 TDE 碎屑流碰撞导致吸积率跃升至 $\\sim 10\\text{--}13\\,\\dot{M}_{\\rm Edd}$，通过环向磁场向内平流使单极磁通量增加 33 倍，产生显著的南北极不对称 Blandford–Znajek 喷流（$L_{\\rm BZ} \\simeq 3\\times 10^{42}\\,{\\rm erg\\,s^{-1}}$）。\n- **快速射电暴环境与中心引擎**：arXiv:2610.27311 推导出重复 FRB 的色散量变化率 $d{\\rm DM}/dt \\gtrsim 1\\,{\\rm pc\\,cm^{-3}\\,yr^{-1}}$ 可由高速中子星穿过湍流介质的空间运动解释，反演出源空间速度下限为 $|v_s| \\gtrsim 20\\text{--}2800\\,{\\rm km\\,s^{-1}}$；arXiv:2610.27489 则利用 FRB 20240114A 伴随持续射电源的月量级多波段光变，将相对论电子截断洛伦兹因子限制在 $\\gamma_{\\rm b} < 10^3$，推导射电辐射效率仅为 $\\eta_{\\rm r} \\sim 10^{-5}\\text{--}10^{-4}$。\n- **超新星激波与周星相互作用**：arXiv:2610.27312 报道了极端富氢超新星 SN 2023iop（峰值绝对星等 $M_r \\approx -20.14\\,{\\rm mag}$，总辐射能 $4.3\\times 10^{50}\\,{\\rm erg}$），指出其中微子机制无法驱动，必须要求高达 $2.2\\,M_\\odot$ 的 $^{56}{\\rm Ni}$ 或超大质量恒星（$\\sim 190\\,M_\\odot$）对不稳定爆发并伴随非球对称 CSM 相互作用；arXiv:2610.29226 针对快速 X 射线暂现源 EP260321a 建立了考虑正/反激波非局部热平衡的双激波风破越模型，揭示软 X 射线辐射主要来自处于 LTE 态的低速反激波。\n- **伽马射线暴与软 X 射线暂现源对应**：arXiv:2610.28734 统计给出 68% 的爱因斯坦探针（EP）快速 X 射线源缺乏高能伽马射线对应体，严格约束其初始体洛伦兹因子 $\\Gamma_0 \\lesssim 100$，指示其为低光度中度相对论出流或激波破越事件。\n- **致密双星动力学与极端引力**：arXiv:2610.29838 报道了 FAST 发现的具有极端偏心率（$e = 0.99238692$）与 $79.08\\,{\\rm d}$ 轨道的掩食双中子星系统 PSR J0653+0443，精确测定两星质量分别为 $1.38\\,M_\\odot$ 和 $1.44\\,M_\\odot$，并测得近星点脉冲状引力波辐射峰值频率在 $0.357\\,{\\rm mHz}$。\n> 🎯 **筛选边界**：本周严格聚焦于致密天体高能爆发现象及其因果物理链条（磁星、TDE、FRB、超亮超新星/CSM、双中子星、GRB/FXT），已滤除 222 篇普通低能段巡天、恒星形成与泛星系统计研究。",
+      "executive_summary": "本周高能爆发现象研究聚焦于中心引擎剧烈演化、致密星多信使动力学及辐射传输因果链条的定量闭环。- **磁星动力学与FRB环境**：arXiv:2610.22653 模拟论证了磁通管非均匀电阻磁重联速率可达 $\\beta_{\\rm rec} \\sim 0.1$，揭示极小占比的电荷匮乏区承担了 $20\\%\\sim 55\\%$ 的欧姆耗散；arXiv:2610.27489 针对 FRB 20240114A 持续射电源的光变，约束相对论电子注入截止洛伦兹因子需 $\\gamma_{\\rm b} < 10^3$，推导射电辐射效率仅为 $\\eta_{\\rm r} \\sim 10^{-5}\\text{--}10^{-4}$；arXiv:2610.27311 通过重复暴的色散量时变率 $d{\\rm DM}/dt \\sim 1\\,{\\rm pc\\,cm^{-3}\\,yr^{-1}}$，反演推得源空间速度下限为 $|v_s| \\gtrsim 20\\text{--}2800\\,{\\rm km\\,s^{-1}}$；arXiv:2610.31365 发现 FRB 20210601A 在 $106.5\\,{\\rm s}$ 内密集爆发 9 次，揭示出具有极端群聚特征的阵发性重复暴隐藏子类。- **超新星物理与激波破越**：arXiv:2610.27312 报道了富氢超亮超新星 SN 2023iop，测得辐射总能达 $E_{\\rm rad} \\approx 4.3\\times 10^{50}\\,{\\rm erg}$ 并伴有 $P=0.81\\%$ 显著线偏振，指出其前身星对应 $190\\,M_\\odot$ 的对不稳定超新星（PISN）；arXiv:2610.29226 建立非局部热平衡正激波与主导黑体热辐射的反激波双激波模型，成功拟合 EP260321a 的软X射线演化与星风破越。- **相对论喷流、吸积与极端双星**：arXiv:2610.24849 借助 3D 辐射 MHD 模拟论证了 AGN 盘内 TDE 碎屑撞击可将吸积率推至超爱丁顿态，同时诱导 Blandford-Znajek 喷流并形成高达 $10\\text{--}100$ 倍的南北极 Poynting 通量不对称；arXiv:2610.28734 统计证实 $68\\%$ 的 EP 软X射线暂现源缺乏伽马射线对应体，限制其初始体洛伦兹因子 $\\Gamma_0 \\lesssim 100$；arXiv:2610.29838 基于 FAST 观测证认出离心率高达 $e = 0.99238692$ 的极端偏心双中子星 PSR J0653+0443，精确测定其近星点相对速度达 $1.14\\times 10^3\\,{\\rm km\\,s^{-1}}$。> 🎯 **筛选边界**：本周重点聚焦磁星磁重联数值解、超亮超新星/激波破越因果链条、AGN 盘内 TDE 喷流激发与极端偏心双致密星时变，严格排除普通非暂现源星系巡天与无动力学演化的低能段唯象统计。排版遵循单个 `$` 标准行内 LaTeX 公式语法。",
       "statistics": {
-        "total_analyzed": 318,
-        "must_read_count": 8,
-        "worth_knowing_count": 88,
-        "skip_count": 222
+        "total_analyzed": 329,
+        "must_read_count": 9,
+        "worth_knowing_count": 94,
+        "skip_count": 226
       },
-      "top_picks_count": 18,
+      "top_picks_count": 19,
       "days": [
         {
           "date": "2026-10-22",
           "weekday": "Thu",
           "week_id": "2026-W43",
           "batch_id": "announcement-2026-10-22",
-          "total_papers": 64,
-          "analyzed_count": 62,
-          "must_read_count": 0,
-          "worth_knowing_count": 18,
-          "skip_count": 44,
-          "pending_count": 2,
+          "total_papers": 73,
+          "analyzed_count": 73,
+          "must_read_count": 1,
+          "worth_knowing_count": 24,
+          "skip_count": 48,
+          "pending_count": 0,
           "brief_status": "ready",
-          "brief_intro": "本期首看《General-purpose equations of state for hadron-quark matter: first application to accretion-induced phase transitions in neutron stars》等 18 篇核心进展。",
-          "highlights": [],
+          "brief_intro": "本期首看《FRB 20210601A: Extreme Temporal Clustering in a Repeating Fast Radio Burst Source as Evidence for a Hidden Class of Episodic Repeaters》等 25 篇核心进展。",
+          "highlights": [
+            {
+              "arxiv_id": "2610.31365",
+              "priority": "must_read",
+              "title": "FRB 20210601A: Extreme Temporal Clustering in a Repeating Fast Radio Burst Source as Evidence for a Hidden Class of Episodic Repeaters",
+              "reason": "文章报告了 CHIME/FRB 发现的具有迄今最高瞬时暴发率的极端聚集重复源 FRB 20210601A，在仅 106.5 s 内暴发 9 次（主瓣归一化 $\\gtrsim 21$ 次）且长期跨年静默（$>320\\text{ hr}$ 曝光），为联系非重复暴与重复暴的阵发机制及磁星风暴模型提供了关键观测约束。"
+            }
+          ],
           "data_file": "daily/2026-10-22.json"
         },
         {

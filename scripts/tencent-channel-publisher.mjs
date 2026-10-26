@@ -748,10 +748,17 @@ async function publishItems(
     const scans = new Map();
     const fallback = {};
     let stoppedAt = null;
+    let firstFailedIndex = null;
+    let currentItem = null;
+    const reportPending = (identity, reason) => {
+      if (firstFailedIndex === null && currentItem) firstFailedIndex = list.indexOf(currentItem);
+      pending(result, identity, reason);
+    };
     for (const item of list) {
+      currentItem = item;
       const { identity, title, topic } = item;
       if (item.title_error) {
-        pending(result, identity, item.title_error);
+        reportPending(identity, item.title_error);
         continue;
       }
       let target;
@@ -766,7 +773,7 @@ async function publishItems(
           target = resolved.target;
         } catch (error) {
           if (error.message?.includes("CHANNEL_ROUTING_VIOLATION")) {
-            pending(result, identity, "CHANNEL_ROUTING_VIOLATION");
+            reportPending(identity, "CHANNEL_ROUTING_VIOLATION");
             continue;
           }
           throw error;
@@ -776,10 +783,10 @@ async function publishItems(
       }
       if (kind === "daily" && !target && !dryRun) {
         if (!topic?.primary && !fallbackChannelId && !channelIds[GENERAL_CHANNEL_ID]) {
-          pending(result, identity, "CHANNEL_TOPIC_UNRESOLVED");
+          reportPending(identity, "CHANNEL_TOPIC_UNRESOLVED");
           continue;
         }
-        pending(result, identity, "CHANNEL_SECTION_MISSING");
+        reportPending(identity, "CHANNEL_SECTION_MISSING");
         continue;
       }
       let existing = records[identity];
@@ -791,7 +798,7 @@ async function publishItems(
           if (allowExistingBodyEdits && item.figure) {
             figure = item.figure;
           } else {
-            pending(result, identity, "CHANNEL_FIGURE_REVIEW_MISMATCH");
+            reportPending(identity, "CHANNEL_FIGURE_REVIEW_MISMATCH");
             continue;
           }
         } else figure = item.figure;
@@ -804,7 +811,7 @@ async function publishItems(
       const hash = hashBody(body);
       const marked = `${body}\n\n${markerFor(identity, hash)}`;
       if (Array.from(title).length > 200 || Array.from(marked).length > 10_000) {
-        pending(result, identity, "CHANNEL_CONTENT_LIMIT");
+        reportPending(identity, "CHANNEL_CONTENT_LIMIT");
         continue;
       }
       const unchangedPublished =
@@ -1417,7 +1424,7 @@ async function publishItems(
           delete records[identity];
           await save();
         }
-        pending(result, identity, error.message || "CHANNEL_FAILED");
+        reportPending(identity, error.message || "CHANNEL_FAILED");
         result.errors.push(error.message || "CHANNEL_FAILED");
         if (error.message === "CHANNEL_RATE_LIMIT") {
           stoppedAt = list.indexOf(item);
@@ -1425,10 +1432,13 @@ async function publishItems(
         }
       }
     }
-    if (stoppedAt !== null) result.remaining += list.length - stoppedAt;
+    const effectiveStopped = stoppedAt !== null ? stoppedAt : firstFailedIndex;
+    if (effectiveStopped !== null) result.remaining += list.length - effectiveStopped;
     if (backfill && !dryRun) {
       ledger[cursorKey] =
-        start + (stoppedAt ?? list.length) >= items.length ? 0 : start + (stoppedAt ?? list.length);
+        start + (effectiveStopped ?? list.length) >= items.length
+          ? 0
+          : start + (effectiveStopped ?? list.length);
       await save();
     }
     return result;

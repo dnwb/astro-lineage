@@ -3808,3 +3808,67 @@ test("publishDailyFeed with mustReadOnly publishes only must_read papers and omi
   const mustReadCount = model.groups.must_read.length;
   assert.equal(remote.feeds.length, mustReadCount);
 });
+
+test("backfill cursor halts at first unhandled item failure and does not advance past it", async (t) => {
+  const { path } = await createTemporaryWorkspace("astro-lineage-channel-cursor-fail-", t);
+  const archiveRoot = join(path, "archive");
+  const cacheRoot = join(path, "cache");
+  await mkdir(archiveRoot);
+  await mkdir(cacheRoot);
+
+  const bytes1 = await readFile(
+    new URL("../src/data/arxiv-archives/daily/2026-09-28.json", import.meta.url)
+  );
+  const bytes2 = await readFile(
+    new URL("../src/data/arxiv-archives/daily/2026-09-29.json", import.meta.url)
+  );
+  await writeFile(join(archiveRoot, "2026-09-28.json"), bytes1);
+  await writeFile(join(archiveRoot, "2026-09-29.json"), bytes2);
+
+  await writeFile(
+    join(cacheRoot, "guild-test.json"),
+    JSON.stringify({ version: 1, guild_id: "test", items: {}, brief_cursor: 0 })
+  );
+
+  const page1 = join(path, "dist/arxiv-daily/2026-09-28");
+  const page2 = join(path, "dist/arxiv-daily/2026-09-29");
+  await mkdir(page1, { recursive: true });
+  await mkdir(page2, { recursive: true });
+  await writeFile(join(page1, "index.html"), "built");
+  await writeFile(join(page2, "index.html"), "built");
+
+  const remote = fakeCli();
+  let calls = 0;
+  const failingCli = async (args) => {
+    if (args[1] === "publish-feed") {
+      calls += 1;
+      if (calls === 1) {
+        throw new Error("CHANNEL_REMOTE_REJECTED");
+      }
+    }
+    return remote.cli(args);
+  };
+
+  const options = {
+    briefs: true,
+    archiveRoot,
+    distRoot: join(path, "dist"),
+    cacheRoot,
+    guildId: "test",
+    channelId: "brief",
+    cli: failingCli,
+    from: "2026-09-28",
+    through: "2026-09-29",
+    sourceBinding: fixtureBinding({
+      archives: {
+        "2026-09-28": hashBody(bytes1),
+        "2026-09-29": hashBody(bytes2),
+      },
+    }),
+  };
+
+  const result = await publishHistoricalFeeds(options);
+  assert.equal(result.success, false);
+  const ledger = JSON.parse(await readFile(join(cacheRoot, "guild-test.json"), "utf8"));
+  assert.equal(ledger.brief_cursor, 0);
+});

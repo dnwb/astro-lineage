@@ -179,6 +179,9 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
             </>
           ) : null}
           <div class="meta-tools-wrap">
+            <a class="meta-jump-btn" href="#audit-and-index" title="快速跳转至页面底部备查索引库">
+              <span>📑 <span class="language-primary">备查索引</span><span class="language-english" lang="en">Index</span> ↓</span>
+            </a>
             <details class="weekly-tools-details">
               <summary class="tools-summary-btn">
                 <span>⚙️ <span class="language-primary">工具</span><span class="language-english" lang="en">Tools</span></span>
@@ -240,13 +243,6 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
             </ul>
           ) : (
             <p class="executive-lead"><ReaderText text={weeklyData.executive_summary} /></p>
-          )}
-
-          {structuredExecutive.boundary && (
-            <div class="executive-boundary-box">
-              <span class="boundary-tag">🎯 筛选与研判边界</span>
-              <p class="boundary-text"><ReaderText text={structuredExecutive.boundary} /></p>
-            </div>
           )}
         </div>
       </section>

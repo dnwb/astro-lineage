@@ -103,6 +103,8 @@ export const ASTRO_LATEX_MACROS = [
   [/\\Rsph(?![A-Za-z])/gu, "R_{\\mathrm{sph}}"],
   [/\\Ruv(?![A-Za-z])/gu, "R_{\\mathrm{uv}}"],
   [/\\rg(?![A-Za-z])/gu, "r_{\\mathrm{g}}"],
+  [/\\comp(?![A-Za-z])/gu, "{\\mathrm{comp}}"],
+  [/\\outer\{([^}]+)\}/gu, "{$1_{\\mathrm{out}}}"],
   [/\\betaUV(?![A-Za-z])/gu, "\\beta_{\\mathrm{UV}}"],
 ];
 

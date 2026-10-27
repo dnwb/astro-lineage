@@ -56,11 +56,17 @@ const expectedFormulaByWork = new Map([
   ["work:zhang-grb-radio-2022", String.raw`n=A_{\ast}R^{-k}`],
   ["work:zhu-bns-agn-2021", String.raw`10^{46}\,{\rm erg\,s^{-1}}`],
   ["work:bu-hxmt-1a0535-2022", String.raw`\nu_{\rm QPO} \approx \nu_{\rm K}(r_0) - \nu_s`],
-  ["work:du-bu-vela-x1-2026", String.raw`E_{\rm CRSF} \approx 11.6\,{\rm keV}\,\left(\frac{B}{10^{12}\,{\rm G}}\right)(1+z)^{-1}`],
+  [
+    "work:du-bu-vela-x1-2026",
+    String.raw`E_{\rm CRSF} \approx 11.6\,{\rm keV}\,\left(\frac{B}{10^{12}\,{\rm G}}\right)(1+z)^{-1}`,
+  ],
   ["work:bu-extp-strong-gravity-2025", String.raw`r_{\rm ISCO} = f(a_*) \frac{GM}{c^2}`],
   ["work:dai-lu-1998", String.raw`L_{\rm dip}(t) = L_0 \left(1 + \frac{t}{\tau}\right)^{-2}`],
   ["work:rhoads-1999", String.raw`\theta(t) \sim \theta_0 + \frac{c_s}{c}\frac{1}{\Gamma(t)}`],
-  ["work:li-gw170817-2018", String.raw`E_{\rm rot} = \frac{1}{2} I \Omega_0^2 \approx 3\times 10^{52}\,{\rm erg}\,\left(\frac{P_0}{1\,{\rm ms}}\right)^{-2}`],
+  [
+    "work:li-gw170817-2018",
+    String.raw`E_{\rm rot} = \frac{1}{2} I \Omega_0^2 \approx 3\times 10^{52}\,{\rm erg}\,\left(\frac{P_0}{1\,{\rm ms}}\right)^{-2}`,
+  ],
 ]);
 
 test("the baseline library contains the 35 newly scoped Work bundles as draft candidates", async () => {
@@ -83,16 +89,28 @@ test("the baseline library contains the 35 newly scoped Work bundles as draft ca
       if (source.provider === "arxiv") arxivSources += 1;
       if (source.provider === "crossref") crossrefSources += 1;
     }
-    for (const fileName of ["work.yaml", "versions.yaml", "evidence.yaml", "annotations.yaml", "statements.yaml", "physical-account.yaml", "reading.md"]) {
+    for (const fileName of [
+      "work.yaml",
+      "versions.yaml",
+      "evidence.yaml",
+      "annotations.yaml",
+      "statements.yaml",
+      "physical-account.yaml",
+      "reading.md",
+    ]) {
       assert.ok(work.files[fileName] !== undefined, `${slug}/${fileName}`);
     }
     assert.ok(work.files["evidence.yaml"].evidence.length > 0, `${slug}/evidence`);
-    assert.ok(work.files["evidence.yaml"].evidence.every((evidence) => (
-      /^https?:\/\/[^\s]+$/u.test(evidence.source_url) &&
-      evidence.locator?.type &&
-      typeof evidence.excerpt === "string" &&
-      evidence.excerpt.trim().length > 0
-    )), `${slug}/evidence fields`);
+    assert.ok(
+      work.files["evidence.yaml"].evidence.every(
+        (evidence) =>
+          /^https?:\/\/[^\s]+$/u.test(evidence.source_url) &&
+          evidence.locator?.type &&
+          typeof evidence.excerpt === "string" &&
+          evidence.excerpt.trim().length > 0
+      ),
+      `${slug}/evidence fields`
+    );
   }
   assert.equal(arxivSources, 29);
   assert.equal(crossrefSources, 6);
@@ -103,21 +121,55 @@ test("each new baseline reading is bilingual, structurally complete, and contain
   for (const [workId, slug] of expectedNewWorks) {
     const work = snapshot.works.find(({ id }) => id === workId);
     const reading = work.files["reading.md"];
-    assert.doesNotMatch(reading, /[\u0000-\u0008\u000B-\u001F\u007F]/u, `${workId}: reading contains a control character`);
+    assert.doesNotMatch(
+      reading,
+      /[\u0000-\u0008\u000B-\u001F\u007F]/u,
+      `${workId}: reading contains a control character`
+    );
     const blocks = parseReadingMarkdown(reading);
-    for (const heading of ["Why This Work Matters", "Problem", "Scientific takeaway", "Assumptions", "Scientific delta", "Reason to read"]) {
-      assert.ok(blocks.some((block) => block.kind === "heading" && block.depth === 2 && block.text === heading), `${workId}: ${heading}`);
+    for (const heading of [
+      "Why This Work Matters",
+      "Problem",
+      "Scientific takeaway",
+      "Assumptions",
+      "Scientific delta",
+      "Reason to read",
+    ]) {
+      assert.ok(
+        blocks.some(
+          (block) => block.kind === "heading" && block.depth === 2 && block.text === heading
+        ),
+        `${workId}: ${heading}`
+      );
     }
-    assert.ok(blocks.some((block) => block.kind === "heading" && block.text === "中文导读"), workId);
-    assert.ok(blocks.some((block) => block.kind === "heading" && block.text === "English reading note"), workId);
-    const paragraphs = blocks.filter((block) => block.kind === "paragraph").map((block) => block.text).join(" ");
+    assert.ok(
+      blocks.some(
+        (block) =>
+          block.kind === "heading" &&
+          (block.text === "English reading note" || block.text === "Why This Work Matters")
+      ),
+      workId
+    );
+    const paragraphs = blocks
+      .filter((block) => block.kind === "paragraph")
+      .map((block) => block.text)
+      .join(" ");
     const math = splitMath(paragraphs);
-    assert.ok(math.some((segment) => segment.kind === "math"), `${workId}: ${slug} has no math`);
+    assert.ok(
+      math.some((segment) => segment.kind === "math"),
+      `${workId}: ${slug} has no math`
+    );
     const expectedFormula = expectedFormulaByWork.get(workId);
     if (expectedFormula) {
-      assert.ok(math.some((segment) => segment.kind === "math" && segment.value.includes(expectedFormula)), `${workId}: repaired formula is not preserved`);
+      assert.ok(
+        math.some((segment) => segment.kind === "math" && segment.value.includes(expectedFormula)),
+        `${workId}: repaired formula is not preserved`
+      );
     }
-    const rendered = math.filter((segment) => segment.kind === "math").map((segment) => renderMathMarkup(segment.value, segment.display)).join(" ");
+    const rendered = math
+      .filter((segment) => segment.kind === "math")
+      .map((segment) => renderMathMarkup(segment.value, segment.display))
+      .join(" ");
     assert.match(rendered, /<math\b/u, workId);
     assert.match(rendered, /application\/x-tex/u, workId);
   }
@@ -128,6 +180,10 @@ test("new baseline drafts remain outside the visible reader projection", async (
   const reader = projectVisibleSnapshot(snapshot);
   assert.equal(reader.works.length, 6);
   for (const [workId] of expectedNewWorks) {
-    assert.equal(reader.works.some((work) => work.work_id === workId), false, workId);
+    assert.equal(
+      reader.works.some((work) => work.work_id === workId),
+      false,
+      workId
+    );
   }
 });

@@ -75,7 +75,7 @@ const weeklyStats = (weeklyData as any).statistics ?? {
 const weeklyStructured = parseStructuredExecutiveSummary((weeklyData as any).executive_summary || "");
 const weeklyLeadSummary = weeklyStructured.lead
   ? weeklyStructured.lead.replace(/[：:]$/, "。")
-  : "聚合高能天体物理最新因果动力学与观测前沿。";
+  : "Synthesizing causal dynamics and observational frontiers in high-energy astrophysics.";
 const weeklyTopPicks = (weeklyData as any).top_picks ?? [];
 const thematicHighlights = (weeklyData as any).thematic_highlights ?? [];
 
@@ -150,7 +150,7 @@ const bjtDailyInfo = formatAnnouncementInBeijing(latestDate, radarWeekday);
               </a>
             </h3>
 
-            <!-- 快速切换往期日报 -->
+            <!-- Quick batch switch -->
             <div class="intel-daily-date-pills">
               <span class="pills-label">Batches:</span>
               <div class="pills-scroll">
@@ -169,14 +169,14 @@ const bjtDailyInfo = formatAnnouncementInBeijing(latestDate, radarWeekday);
               </div>
             </div>
 
-            <!-- 一句话极简导读 -->
+            <!-- Executive brief -->
             <div class="intel-daily-summary-lead">
               <p class="intel-daily-one-liner">
                 Monitored <strong>{dailyStats.total_papers}</strong> high-energy transient papers, curating <strong>{dailyStats.must_read_count}</strong> must-read works with physical mechanisms and evidence citations.
               </p>
             </div>
 
-            <!-- 今日必读精简链接直达列表 -->
+            <!-- Direct must-read links -->
             <div class="intel-daily-quick-box">
               <p class="intel-quick-label">Today's Key Highlights:</p>
               {dailyMustReads.length > 0 ? (
@@ -199,7 +199,7 @@ const bjtDailyInfo = formatAnnouncementInBeijing(latestDate, radarWeekday);
                             <ReaderText text={paper.entry?.title || paper.arxiv_id} />
                           </a>
                         </h4>
-                        {result && result !== "unknown" && !result.startsWith("未能从已检查材料") && (
+                        {result && result !== "unknown" && !result.startsWith("\u672a\u80fd\u4ece\u5df2\u68c0\u67e5\u6750\u6599") && !result.startsWith("Could not be derived") && (
                           <p class="quick-paper-result">
                             <strong class="quick-res-lead">Result: </strong>
                             <span class="quick-res-text"><ReaderText text={result} /></span>
@@ -265,25 +265,25 @@ const bjtDailyInfo = formatAnnouncementInBeijing(latestDate, radarWeekday);
             <div class="intel-metrics-strip">
               <div class="intel-metric-item">
                 <span class="intel-metric-val">{weeklyStats.total_analyzed}</span>
-                <span class="intel-metric-lbl">已读论文</span>
+                <span class="intel-metric-lbl">Papers</span>
               </div>
               <div class="intel-metric-item highlight-must-read">
                 <span class="intel-metric-val">{weeklyStats.must_read_count}</span>
-                <span class="intel-metric-lbl">必读</span>
+                <span class="intel-metric-lbl">Must Read</span>
               </div>
               <div class="intel-metric-item highlight-worth-knowing">
                 <span class="intel-metric-val">{weeklyStats.worth_knowing_count}</span>
-                <span class="intel-metric-lbl">关注</span>
+                <span class="intel-metric-lbl">Follow</span>
               </div>
               <div class="intel-metric-item highlight-topics">
                 <span class="intel-metric-val">{thematicHighlights.length}</span>
-                <span class="intel-metric-lbl">专题</span>
+                <span class="intel-metric-lbl">Themes</span>
               </div>
             </div>
 
             {weeklyTopPicks.length > 0 && (
               <div class="intel-picks-box">
-                <p class="intel-picks-label">本周必读精选（{Math.min(weeklyTopPicks.length, 4)}/{weeklyTopPicks.length} 篇）：</p>
+                <p class="intel-picks-label">Weekly Top Picks ({Math.min(weeklyTopPicks.length, 4)}/{weeklyTopPicks.length}):</p>
                 <ul class="intel-picks-list">
                   {weeklyTopPicks.slice(0, 4).map((pick: any) => {
                     const dailyDate = paperDailyDateMap.get(pick.arxiv_id) || latestDate;
@@ -293,46 +293,36 @@ const bjtDailyInfo = formatAnnouncementInBeijing(latestDate, radarWeekday);
                       <li class="intel-pick-item">
                         <div class="intel-pick-header">
                           <span class={`intel-pick-badge ${pick.priority === "must_read" ? "badge-must-read" : "badge-worth-knowing"}`}>
-                            {pick.priority === "must_read" ? "⭐ 必读" : "📌 关注"}
+                            {pick.priority === "must_read" ? "⭐ Must Read" : "📌 Follow"}
                           </span>
                           <div class="intel-pick-links">
-                            <a class="intel-pick-daily-link" href={pickTargetUrl} title="查看当日精读研判与科学证据">
-                              📖 深度精读 ({dailyDate}) →
+                            <a class="intel-pick-daily-link" href={pickTargetUrl} title="View daily brief and scientific evidence">
+                              📖 Deep Read ({dailyDate}) →
                             </a>
                             <a class="intel-pick-id" href={`https://arxiv.org/abs/${pick.arxiv_id}`} target="_blank" rel="noopener noreferrer">
                               arXiv:{pick.arxiv_id} ↗
                             </a>
-                            <a class="intel-pick-pdf" href={`https://arxiv.org/pdf/${pick.arxiv_id}`} target="_blank" rel="noopener noreferrer" title="直接阅读官方 PDF">
+                            <a class="intel-pick-pdf" href={`https://arxiv.org/pdf/${pick.arxiv_id}`} target="_blank" rel="noopener noreferrer" title="Read official PDF directly">
                               📄 PDF
                             </a>
                           </div>
                         </div>
                         <h4 class="intel-pick-title">
-                          <a href={pickTargetUrl} class="intel-paper-title-link" title="点击直接进入本文深度精读">
-                            {(() => {
-                              const titleZh = resolvePaperTitleZhSync(pick);
-                              return titleZh ? (
-                                <span class="home-paper-title-bilingual">
-                                  <span class="home-paper-title-en"><ReaderText text={pick.title} /></span>
-                                  <span class="home-paper-title-zh"><ReaderText text={titleZh} /></span>
-                                </span>
-                              ) : (
-                                <ReaderText text={pick.title} />
-                              );
-                            })()}
+                          <a href={pickTargetUrl} class="intel-paper-title-link" title="Open deep reading brief">
+                            <ReaderText text={pick.title} />
                           </a>
                         </h4>
                         {authorStr && (
-                          <p class="intel-pick-authors">作者：{authorStr}</p>
+                          <p class="intel-pick-authors">Authors: {authorStr}</p>
                         )}
                         <div class="intel-pick-bluf">
                           <p class="intel-bluf-row">
-                            <strong class="bluf-lead result-lead">突破：</strong>
+                            <strong class="bluf-lead result-lead">Result: </strong>
                             <span class="bluf-text"><ReaderText text={pick.core_insight} /></span>
                           </p>
                           {pick.recommendation_reason ? (
                             <p class="intel-bluf-row">
-                              <strong class="bluf-lead reason-lead">理由：</strong>
+                              <strong class="bluf-lead reason-lead">Reason: </strong>
                               <span class="bluf-text"><ReaderText text={pick.recommendation_reason} /></span>
                             </p>
                           ) : null}
@@ -346,7 +336,7 @@ const bjtDailyInfo = formatAnnouncementInBeijing(latestDate, radarWeekday);
 
             <div class="intel-card-footer">
               <a class="btn-primary" href="/arxiv-weekly/">
-                <span>查看完整周报（共 {weeklyTopPicks.length} 篇精选论文）</span>
+                <span>View Full Weekly Synthesis ({weeklyTopPicks.length} selected works)</span>
                 <span aria-hidden="true">→</span>
               </a>
             </div>

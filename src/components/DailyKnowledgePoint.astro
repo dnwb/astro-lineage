@@ -12,17 +12,17 @@ const source = point.source as AnyRecord;
 ---
 
 <article class="panel knowledge-point" id={point.id}>
-  <p class="section-kicker">今日知识点 / Knowledge point</p>
+  <p class="section-kicker">Knowledge Point</p>
   <h3>{point.title}</h3>
-  <h4>物理问题</h4>
+  <h4>Physical Problem</h4>
   <p><ReaderText text={point.why_it_matters} /></p>
-  <h4>一句启发</h4>
+  <h4>Core Insight</h4>
   <p><ReaderText text={point.physical_picture} /></p>
   <details class="knowledge-detail">
-    <summary>展开推导与来源 / Open derivation and sources</summary>
+    <summary>Derivation & Sources</summary>
     <div class="knowledge-detail-body">
-      <p class="radar-coverage"><strong>实际阅读范围：</strong>{source.label}；版本 {source.source_version}；检查材料：{source.inspected_sections.join("、")}。</p>
-      <h4>假设与符号</h4>
+      <p class="radar-coverage"><strong>Reading Scope: </strong>{source.label}; Version {source.source_version}; Inspected sections: {source.inspected_sections?.join(", ")}.</p>
+      <h4>Assumptions & Notation</h4>
       <ul class="reading-list">
         {point.assumptions.map((value: string) => <li><ReaderText text={value} /></li>)}
       </ul>
@@ -34,22 +34,22 @@ const source = point.source as AnyRecord;
           </>
         ))}
       </dl>
-      <h4>关键推导</h4>
+      <h4>Key Derivation</h4>
       <ol class="knowledge-derivation">
         {point.derivation.map((step: AnyRecord) => (
           <li>
-            <p class="record-label"><span class="tag">{step.kind === "paper" ? "论文原式/原文" : "教学补充"}</span></p>
+            <p class="record-label"><span class="tag">{step.kind === "paper" ? "Original / Paper" : "Pedagogical Supplement"}</span></p>
             <ReaderText text={step.text} />
           </li>
         ))}
       </ol>
-      <h4>量纲与极限检查</h4>
+      <h4>Dimensional & Limit Checks</h4>
       <ul class="reading-list">
         {point.units_checks.map((value: string) => <li><ReaderText text={value} /></li>)}
       </ul>
-      <h4>论文如何使用它</h4>
+      <h4>Application in Paper</h4>
       <p><ReaderText text={point.paper_use} /></p>
-      <h4>来源</h4>
+      <h4>Sources</h4>
       <ul class="source-reference-list">
         {point.source_references.map((reference: AnyRecord) => (
           <li>
@@ -58,7 +58,7 @@ const source = point.source as AnyRecord;
           </li>
         ))}
       </ul>
-      <h4>仍未核实</h4>
+      <h4>Unverified</h4>
       <ul class="reading-list">
         {point.unresolved_checks.map((value: string) => <li><ReaderText text={value} /></li>)}
       </ul>

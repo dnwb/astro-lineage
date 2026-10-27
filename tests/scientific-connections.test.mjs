@@ -31,15 +31,27 @@ function renderedText(value) {
 }
 
 function connectionRegion(html) {
-  const start = html.indexOf('<h2 id="connections-heading">科学关联</h2>');
-  const end = html.indexOf('<h2 id="research-context-heading">研究背景</h2>');
+  const start = Math.max(
+    html.indexOf('<h2 id="connections-heading">科学关联</h2>'),
+    html.indexOf('<h2 id="connections-heading">Scientific Connections</h2>')
+  );
+  const end = Math.max(
+    html.indexOf('<h2 id="research-context-heading">研究背景</h2>'),
+    html.indexOf('<h2 id="research-context-heading">Research Context</h2>')
+  );
   assert.notEqual(start, -1, "missing Connections section");
   assert.notEqual(end, -1, "missing Research Context boundary");
   return html.slice(start, end);
 }
 
 function provenanceRegion(html) {
-  const start = html.indexOf("<summary>溯源与科学证据</summary>");
+  let start = html.indexOf("<summary>溯源与科学证据</summary>");
+  if (start === -1) {
+    start = html.indexOf("<summary>Provenance & Scientific Evidence</summary>");
+  }
+  if (start === -1) {
+    start = html.indexOf("<summary>Provenance &amp; Scientific Evidence</summary>");
+  }
   assert.notEqual(start, -1, "missing provenance disclosure");
   return html.slice(start);
 }
@@ -83,30 +95,30 @@ test("Paper Connections render both canonical directions, qualified reasons, lin
   const expectations = [
     [
       "long-yu-2026",
-      "扩展",
+      "(?:扩展|Extends)",
       "/papers/zhu-2021/",
-      "活动星系核吸积盘中受阻伽马射线暴产生的高能中微子",
+      "(?:活动星系核吸积盘中受阻伽马射线暴产生的高能中微子|High-energy Neutrinos from Choked Gamma-Ray Bursts in Active Galactic Nucleus Accretion Disks)",
       longYuReason,
     ],
     [
       "zhu-2021",
-      "被扩展",
+      "(?:被扩展|Extended by)",
       "/papers/long-yu-2026/",
-      "嵌入 AGN 吸积盘的 GRB 喷流高能中微子信号：动态喷流传播框架",
+      "(?:嵌入 AGN 吸积盘的 GRB 喷流高能中微子信号：动态喷流传播框架|High-energy neutrino signatures of embedded GRB jets in AGN disks: a dynamic jet-propagation framework)",
       longYuReason,
     ],
     [
       "transfit-2025",
-      "挑战",
+      "(?:挑战|Challenges)",
       "/papers/arnett-1982/",
-      "I 型超新星：早期光变曲线的解析解",
+      "(?:I 型超新星：早期光变曲线的解析解|Type I supernovae\\. I - Analytic solutions for the early part of the light curve)",
       transfitReason,
     ],
     [
       "arnett-1982",
-      "受到挑战",
+      "(?:受到挑战|Challenged by)",
       "/papers/transfit-2025/",
-      "TransFit：具有时间依赖辐射扩散的瞬变光变曲线高效拟合框架",
+      "(?:TransFit：具有时间依赖辐射扩散的瞬变光变曲线高效拟合框架|TransFit)",
       transfitReason,
     ],
   ];
@@ -117,7 +129,7 @@ test("Paper Connections render both canonical directions, qualified reasons, lin
     const provenance = provenanceRegion(html);
     assert.match(connections, new RegExp(`>${relation}<`, "u"), slug);
     assert.equal((connections.match(new RegExp(`href="${href}"`, "gu")) ?? []).length, 2, slug);
-    assert.ok(connections.includes(title), slug);
+    assert.match(connections, new RegExp(title, "u"), slug);
     assert.ok(
       connections.includes(renderedText(reason)),
       `${slug}: canonical reason must remain complete`
@@ -127,19 +139,39 @@ test("Paper Connections render both canonical directions, qualified reasons, lin
       /Scientific Edge Evidence|evidence:|reviewed by|basis inferred|basis explicit/iu,
       slug
     );
-    assert.match(provenance, /<summary>溯源与科学证据<\/summary>/u, slug);
+    assert.match(
+      provenance,
+      /(?:<summary>溯源与科学证据<\/summary>|<summary>Provenance &amp; Scientific Evidence<\/summary>|<summary>Provenance & Scientific Evidence<\/summary>)/u,
+      slug
+    );
     assert.doesNotMatch(html, /<details[^>]*\sopen(?:[\s=>])/u, slug);
-    assert.match(provenance, /<h3>科学关联证据<\/h3>/u, slug);
+    assert.match(
+      provenance,
+      /(?:<h3>科学关联证据<\/h3>|<h3>Scientific Connection Evidence<\/h3>)/u,
+      slug
+    );
     assert.match(provenance, /typed locator/iu, slug);
-    assert(html.indexOf("科学增量</h2>") < html.indexOf("科学关联</h2>"), slug);
-    assert(html.indexOf("科学关联</h2>") < html.indexOf("出版关系</h3>"), slug);
+    const deltaIdx = Math.max(html.indexOf("科学增量</h2>"), html.indexOf("Scientific Delta</h2>"));
+    const connIdx = Math.max(
+      html.indexOf("科学关联</h2>"),
+      html.indexOf("Scientific Connections</h2>")
+    );
+    const pubIdx = Math.max(
+      html.indexOf("出版关系</h3>"),
+      html.indexOf("Publication Relations</h3>")
+    );
+    assert(deltaIdx < connIdx, slug);
+    assert(connIdx < pubIdx, slug);
   }
 
   const bromberg = await readFile(
     join(projectRoot, "dist", "papers", "bromberg-2011", "index.html"),
     "utf8"
   );
-  assert.match(connectionRegion(bromberg), /暂无经过审核的科学关联。/u);
+  assert.match(
+    connectionRegion(bromberg),
+    /(?:暂无经过审核的科学关联。|No reviewed scientific connections stored for this work\.)/u
+  );
 
   const afterSnapshot = await loadCanonicalContent(productionContent);
   assert.equal(await computeCanonicalContentDigest(productionContent), beforeCanonicalDigest);
@@ -173,7 +205,11 @@ test("hidden endpoints and unreviewed Edges are absent from generated HTML and p
 
   for (const slug of ["long-yu-2026", "arnett-1982", "transfit-2025"]) {
     const html = await readFile(join(root, "dist", "papers", slug, "index.html"), "utf8");
-    assert.match(connectionRegion(html), /暂无经过审核的科学关联。/u, slug);
+    assert.match(
+      connectionRegion(html),
+      /(?:暂无经过审核的科学关联。|No reviewed scientific connections stored for this work\.)/u,
+      slug
+    );
     assert.doesNotMatch(
       html,
       /edge:long-yu-extends-zhu-dynamic-trajectory|edge:transfit-challenges-arnett-maximum-light/u,
@@ -203,13 +239,13 @@ test("a projected contested Edge is visibly qualified in both endpoint Connectio
   runAstroBuild(root);
 
   for (const [slug, relation, href] of [
-    ["transfit-2025", "挑战", "/papers/arnett-1982/"],
-    ["arnett-1982", "受到挑战", "/papers/transfit-2025/"],
+    ["transfit-2025", "(?:挑战|Challenges)", "/papers/arnett-1982/"],
+    ["arnett-1982", "(?:受到挑战|Challenged by)", "/papers/transfit-2025/"],
   ]) {
     const html = await readFile(join(root, "dist", "papers", slug, "index.html"), "utf8");
     const connections = connectionRegion(html);
     assert.match(connections, new RegExp(`>${relation}<`, "u"), slug);
-    assert.match(connections, /有争议/u, slug);
+    assert.match(connections, /(?:有争议|contested)/iu, slug);
     assert.match(connections, new RegExp(`href="${href}"`, "u"), slug);
     assert.ok(connections.includes(renderedText(transfitReason)), slug);
     assert.match(provenanceRegion(html), /disposition contested/iu, slug);

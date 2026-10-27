@@ -20,42 +20,38 @@ const lineage = projectPotentialLineage(guide.potential_lineage, Object.keys(vis
 const method = typeof guide.method === "string" && guide.method.trim() !== "" ? guide.method : null;
 const figures = Array.isArray(guide.figures || record.figures) ? (guide.figures || record.figures) : [];
 
-const coverageSummary: Record<string, string> = {
-  abstract_only: "仅摘要",
-  body_partial: "正文指定部分",
-  full_body: "正文全文",
-};
 const coverageSummaryEnglish: Record<string, string> = {
   abstract_only: "abstract only",
   body_partial: "identified body sections",
   full_body: "full body",
 };
-const resultSectionLabel = coverage.level === "abstract_only" ? "摘要报告的结果与边界" : "作者报告的结果与边界";
-const resultSectionLabelEnglish = coverage.level === "abstract_only" ? "Abstract-reported results and limits" : "Author-reported results and limits";
+const coverageSummary = coverageSummaryEnglish;
+const resultSectionLabel = coverage.level === "abstract_only" ? "Abstract-reported results and limits" : "Author-reported results and limits";
+const resultSectionLabelEnglish = resultSectionLabel;
 ---
 
 <div class="radar-guide" id={`deep-dive-${item.arxiv_id.replace(/\./g, "-")}`}>
-  <!-- 导读范围提示条（紧凑单行，保留测试契约：summary 与 coverageSummary、方法与机制） -->
+  <!-- Reading scope bar (compact single line, method and mechanism) -->
   <div class="radar-guide-summary-bar">
     <div class="summary-left">
-      <span class="guide-summary-badge">📖 深度精读</span>
-      <span class="guide-summary-focus">核心课题 · 方法与机制 · 物理模型 · 学术脉络</span>
+      <span class="guide-summary-badge">📖 Deep Reading</span>
+      <span class="guide-summary-focus">Core Problem · Method & Mechanism · Physical Model · Academic Lineage</span>
     </div>
     <span class="guide-summary-coverage">
-      范围：<strong>{coverageSummary[coverage.level] ?? "已记录"}</strong> · {coverage.label}
+      Coverage: <strong>{coverageSummary[coverage.level] ?? "recorded"}</strong> · {coverage.label}
     </span>
   </div>
 
-  <!-- 3大核心学术精读模块：全宽纯流式垂直排版，彻底消除双列高度不一致产生的中间大片空白 -->
+  <!-- 3 Core Academic Modules: full-width stream layout -->
   <div class="radar-guide-modules-grid">
-    <!-- 模块 1: 核心课题、方法与机制与切入建议 -->
+    <!-- Module 1: Core Problem, Method & Mechanism, Entry Suggestions -->
     <GuideProblemMethod
       problem={guide.problem}
       method={guide.method}
       readingEntry={guide.reading_entry}
     />
 
-    <!-- 模块 2: 物理假设、科学图表与作者报告结果 -->
+    <!-- Module 2: Physical Assumptions, Core Figures, and Reported Results -->
     <GuidePhysicsModel
       assumptions={guide.assumptions}
       figures={figures}
@@ -66,7 +62,7 @@ const resultSectionLabelEnglish = coverage.level === "abstract_only" ? "Abstract
       resultSectionLabelEnglish={resultSectionLabelEnglish}
     />
 
-    <!-- 模块 3: 组内学术脉络、进展比较与前置建议 -->
+    <!-- Module 3: Lineage, Progress Comparison, and Prerequisites -->
     <GuideAcademicLineage
       arxivId={item.arxiv_id}
       revision={item.revision}
@@ -78,7 +74,7 @@ const resultSectionLabelEnglish = coverage.level === "abstract_only" ? "Abstract
     />
   </div>
 
-  <!-- 底部弱化的底层证据审计与信源材料（默认折叠，不干扰阅读） -->
+  <!-- Evidence Audit & Source Materials -->
   <div class="radar-guide-audit-tray">
     <GuideEvidenceAudit
       coverage={coverage}
@@ -144,7 +140,7 @@ const resultSectionLabelEnglish = coverage.level === "abstract_only" ? "Abstract
   :global([data-theme="dark"]) .guide-summary-coverage strong {
     color: #f1f5f9;
   }
-  /* 流式单列排版，各模块高度按需伸缩，无高度差留白 */
+  /* Single-column streaming layout */
   .radar-guide-modules-grid {
     display: flex;
     flex-direction: column;

@@ -114,7 +114,7 @@ function describeLocator(locator: AnyRecord | undefined) {
 function reviewContext(value: AnyRecord) {
   const context = value.review_context;
   if (!context?.status) return "Review context unavailable";
-  return `${localizedReviewStatus(context.status)}${context.reviewer_actor_id ? `, reviewer ${context.reviewer_actor_id}` : ""}${context.reviewed_at ? `, at ${context.reviewed_at}` : ""}`;
+  return `${localizedReviewStatus(context.status)}${context.reviewer_actor_id ? ` (reviewed by ${context.reviewer_actor_id}${context.reviewed_at ? ` at ${context.reviewed_at}` : ""})` : ""}`;
 }
 
 function relationLabel(edge: AnyRecord) {
@@ -207,7 +207,7 @@ function connectedPaper(edge: AnyRecord) {
       <section class="panel" aria-labelledby="connections-heading">
         <h2 id="connections-heading">Scientific Connections</h2>
         {scientificEdges.length === 0 ? (
-          <p class="empty-state">No verified scientific connections recorded.</p>
+          <p class="empty-state">No reviewed scientific connections stored for this work.</p>
         ) : (
           <ul class="compact-list edge-list">
             {scientificEdges.map((edge) => {

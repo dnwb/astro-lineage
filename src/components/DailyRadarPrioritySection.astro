@@ -14,25 +14,24 @@ interface Props {
 const { id, items, primaryLabel, englishLabel, visibleWorkLinks } = Astro.props;
 
 const sectionSubtitles: Record<string, string> = {
-  "must-read": "全文证据核验",
-  "worth-knowing": "重点结论与物理边界",
-  "skim": "摘要速览",
+  "must-read": "Full-text evidence verified",
+  "worth-knowing": "Key findings and physical boundaries",
+  "skim": "Abstract screening",
 };
 ---
 
 <section class="radar-section" id={id}>
   <div class="radar-section-header">
     <h2>
-      <span class="language-primary">{primaryLabel}</span>
-      <span class="language-english" lang="en">{englishLabel}</span>
-      <span class="section-count-badge">{items.length} 篇</span>
+      <span>{englishLabel || primaryLabel}</span>
+      <span class="section-count-badge">{items.length} papers</span>
     </h2>
     {sectionSubtitles[id] ? (
-      <p class="section-meta-desc language-primary">{sectionSubtitles[id]}</p>
+      <p class="section-meta-desc">{sectionSubtitles[id]}</p>
     ) : null}
   </div>
   {items.length === 0 ? (
-    <p class="empty-state"><span class="language-primary">本期没有符合这一阅读门槛的条目。</span><span class="language-english" lang="en">No entries meet this reading threshold in this edition.</span></p>
+    <p class="empty-state">No entries meet this reading threshold in this edition.</p>
   ) : (
     <ol class="paper-index radar-list">
       {items.map((item) => (

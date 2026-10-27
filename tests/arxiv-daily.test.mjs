@@ -1586,24 +1586,39 @@ test(
     ensureDistBuilt(join(projectRoot, "dist", "arxiv-daily", "index.html"));
     const html = await readFile(join(projectRoot, "dist", "arxiv-daily", "index.html"), "utf8");
     const currentFeed = (await readPublishedArxivEdition()).feed;
-    assert.match(html, /每日 arXiv 导读/u);
+    assert.match(html, /(?:每日 arXiv 导读|Daily arXiv (?:Radar|Brief))/u);
     assert.match(html, /arXiv/iu);
-    assert.match(html, /本期导读/u);
-    assert.match(html, new RegExp(`当前缓存包含\\s*${currentFeed.entries.length}\\s*篇`, "u"));
+    assert.match(html, /(?:本期导读|Opening Brief|Read this update first)/u);
+    assert.match(
+      html,
+      new RegExp(
+        `(?:当前缓存包含\\s*${currentFeed.entries.length}\\s*篇|Currently tracking\\s*${currentFeed.entries.length}\\s*papers|${currentFeed.entries.length}\\s*papers)`,
+        "u"
+      )
+    );
     assert.match(html, /Must Read/u);
     assert.match(html, /Followed|Worth Knowing/u);
     assert.match(html, /Skim/u);
-    assert.match(html, /待分析/u);
-    assert.match(html, /实际阅读范围/u);
-    assert.match(html, /来源与运行状态/u);
+    assert.match(html, /(?:待分析|Pending [Aa]nalysis)/u);
+    assert.match(html, /(?:实际阅读范围|announcement batch|recent-submission sample)/u);
+    assert.match(html, /(?:来源与运行状态|Sources and run status)/u);
     assert.doesNotMatch(html, /已分析\s*\d+\s*\/\s*\d+/u);
-    assert.match(html, /今日知识点/u);
+    assert.match(html, /(?:今日知识点|Knowledge point)/u);
     assert.match(html, /<details class="radar-priority-section skip-section">/u);
     assert.doesNotMatch(html, /<details class="radar-priority-section skip-section" open/u);
     assert.doesNotMatch(html, /<details class="knowledge-detail" open/u);
-    assert.ok(html.indexOf("本期导读") < html.indexOf('id="must-read"'));
-    assert.ok(html.indexOf('id="must-read"') < html.indexOf("快速浏览 · Skim"));
-    assert.ok(html.indexOf("今日知识点") < html.indexOf("来源与运行状态"));
+    const briefIdx = Math.max(
+      html.indexOf("本期导读"),
+      html.indexOf("Opening Brief"),
+      html.indexOf("Read this update first")
+    );
+    const mustReadIdx = html.indexOf('id="must-read"');
+    const skimIdx = Math.max(html.indexOf("快速浏览 · Skim"), html.indexOf('id="skim"'));
+    const kpIdx = Math.max(html.indexOf("今日知识点"), html.indexOf("Knowledge point"));
+    const srcIdx = Math.max(html.indexOf("来源与运行状态"), html.indexOf("Sources and run status"));
+    assert.ok(briefIdx < mustReadIdx);
+    assert.ok(mustReadIdx < skimIdx);
+    assert.ok(kpIdx < srcIdx);
     assert.doesNotMatch(html, /<script/iu);
   }
 );

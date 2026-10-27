@@ -9,20 +9,19 @@ interface Props {
 }
 
 const { problem, method, readingEntry } = Astro.props;
-const hasProblem = Boolean(problem && problem !== "unknown" && !problem.startsWith("未能从已检查材料"));
+const hasProblem = Boolean(problem && problem !== "unknown" && !problem.startsWith("\u672a\u80fd\u4ece\u5df2\u68c0\u67e5\u6750\u6599") && !problem.startsWith("Could not be derived"));
 const hasMethod = Boolean(method && method.trim() !== "" && method !== "unknown");
 const hasEntry = Boolean(readingEntry && readingEntry.trim() !== "");
 
-const problemClaim = normalizeStructuredClaim(problem, "研究课题");
-const methodClaim = normalizeStructuredClaim(method, "方法机制");
+const problemClaim = normalizeStructuredClaim(problem, "Research Problem");
+const methodClaim = normalizeStructuredClaim(method, "Method & Mechanism");
 ---
 
 <div class="guide-module-panel guide-problem-method">
   <div class="module-header">
     <span class="module-icon">🎯</span>
     <h4 class="module-title">
-      <span class="language-primary">核心课题、机制与切入建议</span>
-      <span class="language-english" lang="en">Problem, Method & Entry</span>
+      Problem, Method & Entry
     </h4>
   </div>
 
@@ -30,7 +29,7 @@ const methodClaim = normalizeStructuredClaim(method, "方法机制");
     {hasProblem && (
       <div class="guide-field-block">
         <div class="guide-lead-row">
-          <span class="guide-tag tag-problem">🎯 课题目标</span>
+          <span class="guide-tag tag-problem">🎯 Problem</span>
           <strong class="claim-headline">{problemClaim.headline}</strong>
         </div>
         {problemClaim.detailed_text && problemClaim.detailed_text !== problemClaim.headline && (
@@ -44,7 +43,7 @@ const methodClaim = normalizeStructuredClaim(method, "方法机制");
     {hasMethod && (
       <div class="guide-field-block">
         <div class="guide-lead-row">
-          <span class="guide-tag tag-method">⚙️ 方法与机制</span>
+          <span class="guide-tag tag-method">⚙️ Method</span>
           <strong class="claim-headline">{methodClaim.headline}</strong>
         </div>
         {methodClaim.detailed_text && methodClaim.detailed_text !== methodClaim.headline && (
@@ -58,7 +57,7 @@ const methodClaim = normalizeStructuredClaim(method, "方法机制");
     {hasEntry && (
       <div class="guide-field-block">
         <div class="guide-lead-row">
-          <span class="guide-tag tag-entry">💡 建议入口</span>
+          <span class="guide-tag tag-entry">💡 Entry</span>
           <span class="entry-lead-text"><ReaderText text={readingEntry!} /></span>
         </div>
       </div>

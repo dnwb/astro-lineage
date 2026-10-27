@@ -18,8 +18,8 @@ const {
   result,
   problem,
   limits = [],
-  resultSectionLabel = "作者报告的结果与边界",
-  resultSectionLabelEnglish = "Author-reported results and limits",
+  resultSectionLabel = "Reported results and limits",
+  resultSectionLabelEnglish = "Reported results and limits",
 } = Astro.props;
 
 const hasAssumptions = Array.isArray(assumptions) && assumptions.length > 0;
@@ -27,15 +27,14 @@ const hasFigures = Array.isArray(figures) && figures.length > 0;
 const hasResult = Boolean(result && result.trim() !== "");
 const hasLimits = Array.isArray(limits) && limits.length > 0;
 
-const resultClaim = normalizeStructuredClaim(result, "核心结果");
+const resultClaim = normalizeStructuredClaim(result, "Core Result");
 ---
 
 <div class="guide-module-panel guide-physics-model">
   <div class="module-header">
     <span class="module-icon">📐</span>
     <h4 class="module-title">
-      <span class="language-primary">物理假设、图表与结果边界</span>
-      <span class="language-english" lang="en">Physical Models, Figures & Results</span>
+      Physical Models, Figures & Results
     </h4>
   </div>
 
@@ -43,7 +42,7 @@ const resultClaim = normalizeStructuredClaim(result, "核心结果");
     {hasAssumptions && (
       <div class="guide-field-block">
         <div class="guide-lead-row">
-          <span class="guide-tag tag-assumption">📐 物理假设</span>
+          <span class="guide-tag tag-assumption">📐 Assumptions</span>
         </div>
         <ul class="guide-bullet-list">
           {assumptions.map((item: string) => (
@@ -56,7 +55,7 @@ const resultClaim = normalizeStructuredClaim(result, "核心结果");
     {hasFigures && (
       <div class="guide-field-block figures-block">
         <div class="guide-lead-row">
-          <span class="guide-tag tag-figure">📊 核心图表</span>
+          <span class="guide-tag tag-figure">📊 Key Figures</span>
         </div>
         <div class="schematic-figures-grid">
           {figures.map((fig: any) => {
@@ -65,10 +64,10 @@ const resultClaim = normalizeStructuredClaim(result, "核心结果");
             const physicalCore = deriveFigurePhysicalCore(fig, { result, problem, assumptions, limits });
             return (
               <figure class="paper-schematic-figure">
-                <a href={fig.url} target="_blank" rel="noopener noreferrer" title="点击查看原始高清大图">
+                <a href={fig.url} target="_blank" rel="noopener noreferrer" title="Open full figure">
                   <img
                     src={fig.url}
-                    alt={fig.caption || "核心科学图表"}
+                    alt={fig.caption || "Key scientific figure"}
                     loading="lazy"
                     onerror={`this.onerror=null;this.src='${arxivFallback}';if(this.parentElement&&this.parentElement.tagName==='A')this.parentElement.href='${arxivFallback}';`}
                   />
@@ -77,18 +76,18 @@ const resultClaim = normalizeStructuredClaim(result, "核心结果");
                   <figcaption>
                     <div class="fig-header-row">
                       <span class={`fig-badge fig-badge-${fig.category || "theoretical"}`}>
-                        {fig.category_badge || fig.label || "科学图表"}
+                        {fig.category_badge || fig.label || "Scientific Figure"}
                       </span>
                       {physicalCore && (
                         <div class="fig-physical-core">
-                          <strong class="fig-core-label">物理核心：</strong>
+                          <strong class="fig-core-label">Physical Core: </strong>
                           <ReaderText text={physicalCore} />
                         </div>
                       )}
                     </div>
                     {fig.caption && (
                       <details class="fig-caption-details">
-                        <summary>原图说明 ({fig.label || "Caption"})</summary>
+                        <summary>Caption ({fig.label || "Caption"})</summary>
                         <div class="fig-caption-text">
                           <ReaderText text={fig.caption} />
                         </div>
@@ -106,7 +105,7 @@ const resultClaim = normalizeStructuredClaim(result, "核心结果");
     {hasResult && (
       <div class="guide-field-block">
         <div class="guide-lead-row">
-          <span class="guide-tag tag-result">🏁 {resultSectionLabel}</span>
+          <span class="guide-tag tag-result">🏁 {resultSectionLabelEnglish || resultSectionLabel}</span>
           <strong class="claim-headline">{resultClaim.headline}</strong>
         </div>
         {resultClaim.detailed_text && resultClaim.detailed_text !== resultClaim.headline && (
@@ -120,7 +119,7 @@ const resultClaim = normalizeStructuredClaim(result, "核心结果");
     {hasLimits && (
       <div class="guide-field-block">
         <div class="guide-lead-row">
-          <span class="guide-tag tag-limit">⚠️ 物理边界与局限</span>
+          <span class="guide-tag tag-limit">⚠️ Physical Limits</span>
         </div>
         <ul class="guide-bullet-list guide-limits-list">
           {limits.map((item: string) => (

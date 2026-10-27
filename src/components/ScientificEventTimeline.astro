@@ -2,7 +2,6 @@
 import ReaderText from "./ReaderText.astro";
 import eventsData from "../data/scientific-events.json";
 import { formatAnnouncementInBeijing, parseTransientEpoch } from "../domain/academic-domain.mjs";
-import { resolvePaperTitleZhSync } from "../domain/paper-translation.mjs";
 
 interface Props {
   maxEvents?: number;
@@ -13,9 +12,9 @@ interface Props {
 
 const {
   maxEvents = 5,
-  title = "爆发事件追踪",
-  titleEnglish = "Transient Events",
-  subtitle = "按事件聚簇高能瞬变论文。",
+  title = "Transient Events",
+  titleEnglish = "",
+  subtitle = "High-energy transient research clustered by astrophysical events.",
 } = Astro.props;
 
 type ScientificEvent = (typeof eventsData.events)[number];
@@ -40,9 +39,9 @@ function typeBadgeColor(type: string): string {
 }
 
 function priorityPill(priority: string) {
-  if (priority === "must_read") return { label: "⭐ 必读", cls: "pill-must-read" };
-  if (priority === "worth_knowing") return { label: "📌 关注", cls: "pill-worth-knowing" };
-  return { label: "⚡ 略读", cls: "pill-skim" };
+  if (priority === "must_read") return { label: "⭐ Must Read", cls: "pill-must-read" };
+  if (priority === "worth_knowing") return { label: "📌 Follow", cls: "pill-worth-knowing" };
+  return { label: "⚡ Skim", cls: "pill-skim" };
 }
 ---
 
@@ -50,14 +49,14 @@ function priorityPill(priority: string) {
   <div class="events-section-header">
     <div class="events-badge-row">
       <div class="events-badge-left">
-        <span class="events-kicker-tag">🔭 瞬变源追踪</span>
-        <span class="events-kicker-sub">事件聚簇</span>
+        <span class="events-kicker-tag">🔭 Transient Tracking</span>
+        <span class="events-kicker-sub">Event Clusters</span>
       </div>
-      <a href="/events/" class="events-explore-link">📅 浏览全部 68 个爆发事件日历 →</a>
+      <a href="/events/" class="events-explore-link">📅 View All 68 Transient Events →</a>
     </div>
     <h2 id="scientific-events-heading" class="events-main-title">
       <span class="title-primary">{title}</span>
-      <span class="title-english" lang="en">{titleEnglish}</span>
+      {titleEnglish && <span class="title-english" lang="en">{titleEnglish}</span>}
     </h2>
     <p class="events-subtitle">{subtitle}</p>
   </div>
@@ -74,17 +73,17 @@ function priorityPill(priority: string) {
               <span class={`event-type-badge ${typeBadgeColor(event.event_type)}`}>{event.event_type}</span>
               <h3 class="event-target-id">{event.event_id}</h3>
               {epoch && (
-                <span class="event-epoch-tag" title="天体物理爆发/探测时间戳">
-                  ⚡ 爆发：{epoch}
+                <span class="event-epoch-tag" title="Astrophysical outburst / detection epoch">
+                  ⚡ Outburst: {epoch}
                 </span>
               )}
             </div>
             <div class="event-metrics-group">
-              <span class="metric-heat-badge" title="基于7天半衰期模型计算的时间衰减热度指数">
-                🔥 热度 <strong>{event.heat_score}</strong>
+              <span class="metric-heat-badge" title="Heat score decays with a 7-day half-life">
+                🔥 Heat <strong>{event.heat_score}</strong>
               </span>
               <span class="metric-count-badge">
-                📚 <strong>{event.paper_count}</strong> 篇研读
+                📚 <strong>{event.paper_count}</strong> Papers
               </span>
             </div>
           </div>
@@ -100,8 +99,8 @@ function priorityPill(priority: string) {
           <!-- Chronological Papers Timeline -->
           <div class="event-timeline-container">
             <div class="timeline-header-row">
-              <span class="timeline-title">📄 聚簇研读论文与学术演进：</span>
-              <span class="timeline-span-badge">活跃：{event.first_seen} 至 {event.last_updated}</span>
+              <span class="timeline-title">📄 Associated Research Papers:</span>
+              <span class="timeline-span-badge">Active: {event.first_seen} to {event.last_updated}</span>
             </div>
 
             <ul class="event-papers-list">
@@ -114,13 +113,13 @@ function priorityPill(priority: string) {
                       <span class={`paper-priority-pill ${priorityInfo.cls}`}>{priorityInfo.label}</span>
                       <span class="paper-date-tag">📅 {formatAnnouncementInBeijing(paper.date).beijingDate}</span>
                       <div class="paper-links-cluster">
-                        <a class="anchor-link-guide" href={dailyCardAnchor} title="直接跳转至当日精读学术卡片">
-                          📖 精读导读 →
+                        <a class="anchor-link-guide" href={dailyCardAnchor} title="Navigate to daily reading guide card">
+                          📖 Guide →
                         </a>
                         <a class="anchor-link-arxiv" href={`https://arxiv.org/abs/${paper.arxiv_id}`} target="_blank" rel="noopener noreferrer">
                           arXiv:{paper.arxiv_id} ↗
                         </a>
-                        <a class="anchor-link-pdf" href={`https://arxiv.org/pdf/${paper.arxiv_id}`} target="_blank" rel="noopener noreferrer" title="下载官方 PDF">
+                        <a class="anchor-link-pdf" href={`https://arxiv.org/pdf/${paper.arxiv_id}`} target="_blank" rel="noopener noreferrer" title="Official PDF">
                           📄 PDF
                         </a>
                       </div>
@@ -128,21 +127,13 @@ function priorityPill(priority: string) {
 
                     <h5 class="event-paper-title">
                       <a href={dailyCardAnchor}>
-                        {(() => {
-                          const titleZh = resolvePaperTitleZhSync(paper);
-                          return (
-                            <span class="event-paper-title-bilingual">
-                              <span class="event-title-en"><ReaderText text={paper.title || paper.arxiv_id} /></span>
-                              {titleZh ? <span class="event-title-zh"><ReaderText text={titleZh} /></span> : null}
-                            </span>
-                          );
-                        })()}
+                        <span class="event-title-en"><ReaderText text={paper.title || paper.arxiv_id} /></span>
                       </a>
                     </h5>
 
-                    {paper.bluf_result && !paper.bluf_result.startsWith("未能从已检查材料") && paper.bluf_result !== "未记录" && (
+                    {paper.bluf_result && !paper.bluf_result.startsWith("\u672a\u80fd\u4ece\u5df2\u68c0\u67e5\u6750\u6599") && !paper.bluf_result.startsWith("Could not be derived") && paper.bluf_result !== "\u672a\u8bb0\u5f55" && paper.bluf_result !== "Not recorded" && (
                       <div class="paper-bluf-brief">
-                        <span class="bluf-accent-mark">突破</span>
+                        <span class="bluf-accent-mark">BLUF</span>
                         <p class="bluf-accent-body">
                           <ReaderText text={paper.bluf_result} />
                         </p>
@@ -160,7 +151,7 @@ function priorityPill(priority: string) {
 
   <div class="events-section-footer">
     <a href="/events/" class="events-calendar-btn">
-      <span>进入完整爆发日历与演化时间轴 (共 68 个事件)</span>
+      <span>Full Transient Calendar & Timeline (68 Events)</span>
       <span aria-hidden="true">→</span>
     </a>
   </div>

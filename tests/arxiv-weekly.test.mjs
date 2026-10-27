@@ -66,10 +66,10 @@ test("arXiv weekly HTML is properly generated with expected content and links", 
   );
   const html = await readFile(distWeeklyHtmlUrl, "utf8");
 
-  assert.match(html, /每周总结/u);
-  assert.match(html, /本周综述|宏观学术脉络综述/u);
-  assert.match(html, /前沿专题动态与物理突破/u);
-  assert.match(html, /本周必读解读|本周精选重点论文解读/u);
+  assert.match(html, /(?:每周总结|Weekly Synthesis)/u);
+  assert.match(html, /(?:本周综述|宏观学术脉络综述|Executive Summary)/u);
+  assert.match(html, /(?:前沿专题动态与物理突破|Thematic Highlights)/u);
+  assert.match(html, /(?:本周必读解读|本周精选重点论文解读|Weekly Top Picks)/u);
   const weeklyData = JSON.parse(await readFile(weeklyJsonUrl, "utf8"));
   if (weeklyData.papers?.[0]) {
     assert.match(html, new RegExp(weeklyData.papers[0].arxiv_id.replace(".", "\\.")));
@@ -144,12 +144,12 @@ test("arXiv weekly HTML includes SciX / ADS links, citation/BibTeX block, and Ma
   // Export Weekly Markdown
   assert.match(
     html,
-    /导出\s*\/?\s*复制周报\s*Markdown/u,
+    /(?:导出\s*\/?\s*复制周报\s*Markdown|Export(?:\s*\/?\s*Copy)?\s*Weekly\s*Markdown)/u,
     "must contain Weekly Markdown export action"
   );
   assert.match(
     html,
-    /#\s*高能天体物理\s*arXiv\s*每周学术脉络/u,
+    /(?:#\s*高能天体物理\s*arXiv\s*每周学术脉络|#\s*High-Energy Astrophysics arXiv Weekly Synthesis)/u,
     "export content must contain Markdown heading"
   );
 });

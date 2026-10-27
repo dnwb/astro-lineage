@@ -3,20 +3,20 @@
 // Pure CSS Theme Toggle: Zero-Client-Script compliant with :has() & prefers-color-scheme
 ---
 
-<div class="theme-switch" role="group" aria-label="主题模式 / Theme mode">
+<div class="theme-switch" role="group" aria-label="Theme mode">
   <input
     id="site-theme-toggle"
     type="checkbox"
     onchange="try{var isDark=this.checked;var theme=isDark?'dark':'light';localStorage.setItem('astrolineage-theme',theme);document.documentElement.setAttribute('data-theme',theme);if(document.body)document.body.setAttribute('data-theme',theme);}catch(e){}"
   />
-  <label for="site-theme-toggle" title="切换深色/浅色模式 (Dark / Light)">
+  <label for="site-theme-toggle" title="Toggle Dark / Light mode">
     <span class="theme-btn-content mode-to-dark" aria-hidden="true">
       <span class="theme-icon">🌙</span>
-      <span class="theme-text">夜间</span>
+      <span class="theme-text">Dark</span>
     </span>
     <span class="theme-btn-content mode-to-light" aria-hidden="true">
       <span class="theme-icon">☀️</span>
-      <span class="theme-text">浅色</span>
+      <span class="theme-text">Light</span>
     </span>
   </label>
   <img

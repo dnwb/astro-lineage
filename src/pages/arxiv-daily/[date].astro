@@ -92,15 +92,15 @@ const priorityGroups = model.groups as AnyRecord;
 
 function pendingLabel(reason: string) {
   return {
-    analysis_missing: "尚未分析",
-    analysis_failed: "分析失败",
-    analysis_invalid: "分析记录无效",
-    analysis_pending: "分析尚未完成",
-    source_changed: "来源已变化，旧导读失效",
-    analysis_revision_mismatch: "版本不匹配，旧导读失效",
-    coverage_insufficient_must_read: "全文分析不足，暂不推荐",
-    coverage_insufficient_worth_knowing: "正文证据不足，暂不归入本组",
-  }[reason] ?? "待核查";
+    analysis_missing: "Pending analysis",
+    analysis_failed: "Analysis failed",
+    analysis_invalid: "Invalid analysis record",
+    analysis_pending: "Analysis pending",
+    source_changed: "Source changed, previous brief invalid",
+    analysis_revision_mismatch: "Revision mismatch, previous brief invalid",
+    coverage_insufficient_must_read: "Insufficient full-text coverage, not recommended",
+    coverage_insufficient_worth_knowing: "Insufficient body evidence, not grouped here",
+  }[reason] ?? "Pending verification";
 }
 
 const bjtInfo = formatAnnouncementInBeijing(archive.date, archive.weekday);
@@ -113,7 +113,7 @@ const bjtInfo = formatAnnouncementInBeijing(archive.date, archive.weekday);
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content={`arXiv 每日学术导读历史归档 · ${bjtInfo.beijingDate}（${bjtInfo.chineseWeekday} / 美东 ${archive.date}）：高能瞬变天体物理前沿监测与分级研判。`}
+      content={`arXiv Daily Academic Brief Archive · ${bjtInfo.beijingDate} (US Date ${archive.date}): High-energy astrophysical transient monitoring and tiered analysis.`}
     />
     <title>Daily Radar · {bjtInfo.beijingDate} · {site.title}</title>
   </head>
@@ -130,7 +130,6 @@ const bjtInfo = formatAnnouncementInBeijing(archive.date, archive.weekday);
         <div class="archive-banner-left">
           <span class="banner-badge-archive">📅 Archive Batch</span>
           <strong class="banner-date">{bjtInfo.beijingDate}</strong>
-          <span class="banner-weekday">{bjtInfo.chineseWeekday}</span>
           <span class="banner-meta-pill">US Date: {archive.date} ({archive.weekday})</span>
           <span class="banner-meta-pill">Week: {archive.week_id}</span>
           <span class="banner-meta-pill">{archive.batch_id}</span>
@@ -166,29 +165,29 @@ const bjtInfo = formatAnnouncementInBeijing(archive.date, archive.weekday);
       <DailyDateSwitcher currentDate={archive.date} groups={priorityGroups} />
 
       <!-- Standalone Date Pager -->
-      <nav class="standalone-date-pager" aria-label="往期历史日报快速切换">
+      <nav class="standalone-date-pager" aria-label="Daily Brief Archive Switcher">
         <div class="pager-col left">
           {prevDate ? (
-            <a class="date-pager-btn" href={`/arxiv-daily/${prevDate}/`} title={`切换到前一天：${prevDate}`}>
-              ← 前一期 ({prevDate})
+            <a class="date-pager-btn" href={`/arxiv-daily/${prevDate}/`} title={`Switch to previous day: ${prevDate}`}>
+              ← Previous ({prevDate})
             </a>
           ) : (
-            <span class="date-pager-btn disabled">已是首期归档</span>
+            <span class="date-pager-btn disabled">Earliest Archive</span>
           )}
         </div>
         <div class="pager-col center">
           <a class="date-pager-btn overview" href="/arxiv-archives/">
-            🗓️ 查看往期归档全库
+            🗓️ View All Archives
           </a>
         </div>
         <div class="pager-col right">
           {nextDate ? (
-            <a class="date-pager-btn" href={`/arxiv-daily/${nextDate}/`} title={`切换到后一天：${nextDate}`}>
-              后一期 ({nextDate}) →
+            <a class="date-pager-btn" href={`/arxiv-daily/${nextDate}/`} title={`Switch to next day: ${nextDate}`}>
+              Next ({nextDate}) →
             </a>
           ) : (
-            <a class="date-pager-btn" href="/arxiv-daily/" title="前往最新日报">
-              今日最新导读 →
+            <a class="date-pager-btn" href="/arxiv-daily/" title="Go to latest daily brief">
+              Today's Latest Brief →
             </a>
           )}
         </div>
@@ -198,8 +197,8 @@ const bjtInfo = formatAnnouncementInBeijing(archive.date, archive.weekday);
         <aside class="no-must-read-notice" role="status">
           <div class="notice-icon">ℹ️</div>
           <div class="notice-body">
-            <strong class="notice-title">批次说明</strong>
-            <p class="notice-text">当期无必读突破，重点聚焦以下“关注”进展。</p>
+            <strong class="notice-title">Batch Note</strong>
+            <p class="notice-text">No must-read breakthrough in this edition; focused on the following works.</p>
           </div>
         </aside>
       )}
@@ -210,7 +209,7 @@ const bjtInfo = formatAnnouncementInBeijing(archive.date, archive.weekday);
         <DailyRadarPrioritySection
           id="must-read"
           items={priorityGroups.must_read}
-          primaryLabel="必读"
+          primaryLabel="Must Read"
           englishLabel="Must Read"
           visibleWorkLinks={visibleWorkLinks}
         />
@@ -218,7 +217,7 @@ const bjtInfo = formatAnnouncementInBeijing(archive.date, archive.weekday);
         <DailyRadarPrioritySection
           id="worth-knowing"
           items={priorityGroups.worth_knowing}
-          primaryLabel="关注"
+          primaryLabel="Follow"
           englishLabel="Followed"
           visibleWorkLinks={visibleWorkLinks}
         />
@@ -226,13 +225,12 @@ const bjtInfo = formatAnnouncementInBeijing(archive.date, archive.weekday);
         {priorityGroups.skip && priorityGroups.skip.length > 0 && (
           <details class="radar-priority-section skip-section">
             <summary>
-              <span class="language-primary">快速浏览 · Skim（默认收起）</span>
-              <span class="language-english" lang="en">Skim (collapsed by default)</span>
+              <span>Skim (collapsed by default)</span>
             </summary>
             <DailyRadarPrioritySection
               id="skim"
               items={priorityGroups.skip}
-              primaryLabel="快速浏览"
+              primaryLabel="Skim"
               englishLabel="Skim"
               visibleWorkLinks={visibleWorkLinks}
             />
@@ -242,12 +240,11 @@ const bjtInfo = formatAnnouncementInBeijing(archive.date, archive.weekday);
 
       {model.knowledge_points && model.knowledge_points.length > 0 && (
         <section class="radar-section" id="knowledge-points">
-          <p class="section-kicker"><span class="language-primary">学习补充</span><span class="language-english" lang="en">Learning supplement</span></p>
-          <h2><span class="language-primary">今日知识点</span><span class="language-english" lang="en">Knowledge point</span></h2>
+          <p class="section-kicker">Learning supplement</p>
+          <h2>Knowledge point</h2>
           {model.knowledge_points.map((point: any) => (
             <>
-              <div class="language-primary"><DailyKnowledgePoint point={point} /></div>
-              <p class="language-english" lang="en">This knowledge point is written in Chinese and is bound to {point.source.source_version}. Open the original source: <a href={point.source_references[0].url}>arXiv source</a>.</p>
+              <div><DailyKnowledgePoint point={point} /></div>
             </>
           ))}
         </section>
@@ -255,17 +252,16 @@ const bjtInfo = formatAnnouncementInBeijing(archive.date, archive.weekday);
 
       <details class="radar-status-disclosure">
         <summary>
-          <span class="language-primary">该归档批次来源与待分析条目（按需查看）</span>
-          <span class="language-english" lang="en">Historical Sources & Pending Items</span>
+          <span>Historical Sources & Pending Items</span>
         </summary>
         <div class="radar-status-body">
-          <p class="language-primary">
-            此归档为公告批次 {archive.batch_id}（日期 {archive.date}），总收录候选 {model.counts.total} 篇，已形成有效导读 {model.counts.analyzed} 篇，待核查 {model.pending?.length ?? 0} 篇。
+          <p>
+            Batch {archive.batch_id} (Date {archive.date}): {model.counts.total} candidates, {model.counts.analyzed} verified briefs, {model.pending?.length ?? 0} pending verification.
           </p>
-          <p class="record-label">Query: {model.edition.query ?? archive.feed?.query ?? "未记录"}</p>
+          <p class="record-label">Query: {model.edition.query ?? archive.feed?.query ?? "Unrecorded"}</p>
           <section class="radar-section" id="pending-analysis">
-            <p class="section-kicker"><span class="language-primary">分析状态</span><span class="language-english" lang="en">Analysis status</span></p>
-            <h2><span class="language-primary">待分析</span><span class="language-english" lang="en">Pending analysis</span></h2>
+            <p class="section-kicker">Analysis status</p>
+            <h2>Pending analysis</h2>
             <ol class="paper-index radar-list">
               {model.pending.map((item: any) => (
                 <DailyRadarPendingCard item={item} pendingLabel={pendingLabel(item.pending_reason)} />

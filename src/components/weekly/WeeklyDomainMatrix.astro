@@ -29,14 +29,14 @@ function parseAssertionLine(line: string) {
 {matrixRows && matrixRows.length > 0 && (
   <div class="executive-matrix-wrap">
     <div class="matrix-header-group">
-      <h3 class="matrix-title">📊 领域研判矩阵</h3>
+      <h3 class="matrix-title">📊 Domain Matrix</h3>
     </div>
     <div class="table-responsive">
       <table class="weekly-overview-table">
         <thead>
           <tr>
-            <th scope="col" style="width: 24%;">物理方向 / 领域</th>
-            <th scope="col" style="width: 76%;">核心科学争论、观测突破与理论断言</th>
+            <th scope="col" style="width: 24%;">Research Domain / Area</th>
+            <th scope="col" style="width: 76%;">Scientific Debates, Breakthroughs & Theoretical Assertions</th>
           </tr>
         </thead>
         <tbody>
@@ -50,7 +50,7 @@ function parseAssertionLine(line: string) {
                   <div class="domain-badge-wrap">
                     <strong class="domain-title">{row.domain}</strong>
                     {row.representative_papers && row.representative_papers.length > 0 && (
-                      <span class="domain-count-pill">{row.representative_papers.length} 篇精读</span>
+                      <span class="domain-count-pill">{row.representative_papers.length} papers</span>
                     )}
                   </div>
                 </td>
@@ -59,7 +59,7 @@ function parseAssertionLine(line: string) {
                     <div class="matrix-debate-banner">
                       <div class="debate-header">
                         <span class="debate-icon">🎯</span>
-                        <span class="debate-kicker">核心科学争论 / 关键未决问题</span>
+                        <span class="debate-kicker">Core Scientific Debate / Open Question</span>
                       </div>
                       <p class="debate-body"><ReaderText text={row.key_question} /></p>
                     </div>
@@ -81,8 +81,8 @@ function parseAssertionLine(line: string) {
                                 </span>
                                 {parsed.author && <span class="assertion-author-pill">{parsed.author}</span>}
                                 {dailyDate && (
-                                  <a class="assertion-daily-pill" href={`/arxiv-daily/${dailyDate}/#${radarCardAnchor(parsed.arxivId, 1)}`} title={`跳转至 ${dailyDate} 该篇精读导读与证据`}>
-                                    📅 {dailyDate} 精读 →
+                                  <a class="assertion-daily-pill" href={`/arxiv-daily/${dailyDate}/#${radarCardAnchor(parsed.arxivId, 1)}`} title={`Go to ${dailyDate} guide and evidence`}>
+                                    📅 {dailyDate} Guide →
                                   </a>
                                 )}
                               </div>
@@ -101,7 +101,7 @@ function parseAssertionLine(line: string) {
                   )}
                   {row.significance ? (
                     <div class="row-significance">
-                      <span class="significance-tag">物理机制启示与前沿研判</span>
+                      <span class="significance-tag">Physical Mechanism & Outlook</span>
                       <ReaderText text={row.significance} />
                     </div>
                   ) : null}

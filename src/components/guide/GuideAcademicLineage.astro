@@ -24,18 +24,18 @@ const {
 } = Astro.props;
 
 const relationLabels: Record<string, string> = {
-  builds_on: "建立在其上",
-  extends: "扩展",
-  tests: "检验",
-  constrains: "约束",
-  challenges: "挑战",
-  replaces_assumption: "替代假设",
-  corrects: "修正",
+  builds_on: "builds on",
+  extends: "extends",
+  tests: "tests",
+  constrains: "constrains",
+  challenges: "challenges",
+  replaces_assumption: "replaces assumption",
+  corrects: "corrects",
 };
 
 const lineageStatusLabels: Record<string, string> = {
-  candidate: "候选关系",
-  no_match: "无匹配",
+  candidate: "candidate",
+  no_match: "no match",
 };
 
 const validPrerequisites = Array.isArray(prerequisites)
@@ -55,8 +55,7 @@ const hasCitations = Array.isArray(citationLeads) && citationLeads.length > 0;
   <div class="module-header">
     <span class="module-icon">🔗</span>
     <h4 class="module-title">
-      <span class="language-primary">学术脉络、进展比较与前置建议</span>
-      <span class="language-english" lang="en">Lineage, Context & Progress</span>
+      Lineage, Context & Progress
     </h4>
   </div>
 
@@ -64,7 +63,7 @@ const hasCitations = Array.isArray(citationLeads) && citationLeads.length > 0;
     {validPrerequisites.length > 0 && (
       <div class="guide-field-block">
         <div class="guide-lead-row">
-          <span class="guide-tag tag-prereq">📚 阅读前置建议</span>
+          <span class="guide-tag tag-prereq">📚 Prerequisites</span>
         </div>
         <ul class="guide-link-list">
           {validPrerequisites.map((p: AnyRecord) => (
@@ -72,7 +71,7 @@ const hasCitations = Array.isArray(citationLeads) && citationLeads.length > 0;
               <a class="prereq-link" href={visibleWorkLinks[p.work_id].href}>
                 📖 {visibleWorkLinks[p.work_id].title}
               </a>
-              <span class="prereq-reason">：{p.reason}</span>
+              <span class="prereq-reason">: {p.reason}</span>
             </li>
           ))}
         </ul>
@@ -81,9 +80,9 @@ const hasCitations = Array.isArray(citationLeads) && citationLeads.length > 0;
 
     <div class="guide-field-block">
       <div class="guide-lead-row">
-        <span class="guide-tag tag-lineage">🔗 组内学术脉络</span>
+        <span class="guide-tag tag-lineage">🔗 Lineage</span>
         <span class="lineage-status-badge status-{lineage.status || 'pending'}">
-          {lineage.status === "no_match" ? "无组内匹配" : lineageStatusLabels[lineage.status] ?? "待审核"}
+          {lineage.status === "no_match" ? "no direct match" : lineageStatusLabels[lineage.status] ?? "pending review"}
         </span>
       </div>
       {lineage.reason && (
@@ -104,12 +103,12 @@ const hasCitations = Array.isArray(citationLeads) && citationLeads.length > 0;
                 </a>
               </div>
               <div class="candidate-delta">
-                <strong>演进差异：</strong>{c.delta}
-                {c.support && <span class="candidate-support">（依据位置：{c.support}）</span>}
+                <strong>Evolutionary Delta: </strong>{c.delta}
+                {c.support && <span class="candidate-support"> (Evidence location: {c.support})</span>}
               </div>
               {c.unresolved_checks?.length > 0 && (
                 <div class="candidate-unresolved">
-                  <span>待核查：{c.unresolved_checks.join("、")}</span>
+                  <span>Unresolved checks: {c.unresolved_checks.join(", ")}</span>
                 </div>
               )}
             </li>
@@ -119,7 +118,7 @@ const hasCitations = Array.isArray(citationLeads) && citationLeads.length > 0;
 
       {lineageChecks.length > 0 && (
         <div class="lineage-checks-box">
-          <span class="sub-label">关系核查待办：</span>
+          <span class="sub-label">Lineage Check Items:</span>
           <ul class="guide-sub-list">
             {lineageChecks.map((check: string) => (
               <li><ReaderText text={check} /></li>
@@ -132,7 +131,7 @@ const hasCitations = Array.isArray(citationLeads) && citationLeads.length > 0;
     {hasProgress && (
       <div class="guide-field-block">
         <div class="guide-lead-row">
-          <span class="guide-tag tag-progress">📈 进展比较</span>
+          <span class="guide-tag tag-progress">📈 Research Progress</span>
         </div>
         <div class="claim-body-text">
           <ReaderText text={researchProgress!} />
@@ -143,7 +142,7 @@ const hasCitations = Array.isArray(citationLeads) && citationLeads.length > 0;
     {hasCitations && (
       <div class="guide-field-block">
         <div class="guide-lead-row">
-          <span class="guide-tag tag-citation">🔍 引用线索</span>
+          <span class="guide-tag tag-citation">🔍 Citation Leads</span>
         </div>
         <ul class="guide-bullet-list">
           {citationLeads.map((item: string) => (

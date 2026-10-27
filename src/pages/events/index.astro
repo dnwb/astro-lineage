@@ -3,13 +3,11 @@ import SiteNav from "../../components/SiteNav.astro";
 import ReaderText from "../../components/ReaderText.astro";
 import eventsData from "../../data/scientific-events.json";
 import { formatAnnouncementInBeijing, parseTransientEpoch } from "../../domain/academic-domain.mjs";
-import { resolvePaperTitleZhSync } from "../../domain/paper-translation.mjs";
 import { loadSiteConfig } from "../../lib/site-config";
 import "../../styles/global.css";
 
-function paperBilingualTitle(paper: any): string {
-  const zh = resolvePaperTitleZhSync(paper);
-  return zh ? `${zh} (${paper.title})` : (paper.title || paper.arxiv_id || "");
+function paperTitle(paper: any): string {
+  return paper.title || paper.arxiv_id || "";
 }
 
 const site = loadSiteConfig();
@@ -113,7 +111,7 @@ function buildMonthCalendar(year: number, month: number, eventsByBjtDate: Record
     cells.push({ empty: true });
   }
 
-  const weekdays = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];
+  const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   for (let d = 1; d <= daysInMonth; d++) {
     const dStr = `${year}-${String(month).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
     const evts = eventsByBjtDate[dStr] || [];
@@ -147,8 +145,8 @@ const allMonthCalendars: MonthCalendar[] = sortedYearMonths.map((ym, index) => {
     yearMonth: ym,
     year: y,
     month: m,
-    title: `${y} 年 ${m} 月`,
-    badge: isLatest ? "当前监测月 · 活跃" : `往期 ${activeBatchesCount} 批次`,
+    title: new Date(Date.UTC(y, m - 1, 1)).toLocaleDateString("en-US", { month: "short", year: "numeric", timeZone: "UTC" }),
+    badge: isLatest ? "Active" : `${activeBatchesCount} batches`,
     totalEvents,
     activeBatchesCount,
     isLatest,
@@ -167,14 +165,14 @@ function getEventOutburstYear(eventId: string): number | null {
 }
 
 const epochGroups = [
-  { id: "epoch-2026", title: "2026 年最新爆发", badge: "当年爆发", desc: "最新发现的高能瞬变现象与快照预警", filter: (yr: number | null) => yr === 2026 },
-  { id: "epoch-2025", title: "2025 年爆发密集反演", badge: "近 1 年", desc: "爆发后近1年内密集跟进，多波段联合反演与喷流减速物理", filter: (yr: number | null) => yr === 2025 },
-  { id: "epoch-2024", title: "2024 年爆发", badge: "近 2 年", desc: "极早期闪光光谱、外流激波与前身星包层作用", filter: (yr: number | null) => yr === 2024 },
-  { id: "epoch-2023", title: "2023 年爆发", badge: "近 3 年", desc: "非热辐射持续观测、晚期余辉与深层介质约束", filter: (yr: number | null) => yr === 2023 },
-  { id: "epoch-2022", title: "2022 年世纪伽马暴", badge: "历史最亮", desc: "史上最亮暴 GRB 221009A 等极端物理对象的长期跨波段监测", filter: (yr: number | null) => yr === 2022 },
-  { id: "epoch-multi", title: "2017–2021 年多信使与引力波突破", badge: "多信使里程碑", desc: "双中子星并合千新星晚期光谱、潮汐瓦解喷流晚期复苏", filter: (yr: number | null) => yr !== null && yr >= 2017 && yr <= 2021 },
-  { id: "epoch-historic", title: "经典历史瞬变与深场监测 (< 2017)", badge: "长周期监测", desc: "SN 1987A 爆发近40年深场演化、历史伽马暴全样本统计", filter: (yr: number | null) => yr !== null && yr < 2017 },
-  { id: "epoch-other", title: "坐标与周期性源", badge: "长期源", desc: "按天球坐标编号的软伽马中继器、磁星与重复快速射电暴", filter: (yr: number | null) => yr === null },
+  { id: "epoch-2026", title: "2026 Latest Outbursts", badge: "Current Year", desc: "Newly discovered high-energy transients and snapshot alerts", filter: (yr: number | null) => yr === 2026 },
+  { id: "epoch-2025", title: "2025 Multi-Wavelength Modeling", badge: "~1 Year", desc: "Intensive 1-year follow-up, multi-wavelength joint inversion, and jet deceleration physics", filter: (yr: number | null) => yr === 2025 },
+  { id: "epoch-2024", title: "2024 Outbursts", badge: "~2 Years", desc: "Early flash spectroscopy, outflow shocks, and progenitor envelope interactions", filter: (yr: number | null) => yr === 2024 },
+  { id: "epoch-2023", title: "2023 Outbursts", badge: "~3 Years", desc: "Persistent non-thermal emission, late-time afterglow, and circum-burst medium constraints", filter: (yr: number | null) => yr === 2023 },
+  { id: "epoch-2022", title: "2022 Exceptional Outbursts", badge: "Record Bright", desc: "Long-term broadband monitoring of extreme objects like GRB 221009A (BOAT)", filter: (yr: number | null) => yr === 2022 },
+  { id: "epoch-multi", title: "2017–2021 Multi-Messenger Milestones", badge: "Multi-Messenger", desc: "BNS merger kilonova late spectra, TDE jet late-time reactivation", filter: (yr: number | null) => yr !== null && yr >= 2017 && yr <= 2021 },
+  { id: "epoch-historic", title: "Historic Transients (< 2017)", badge: "Decadal Evolution", desc: "Decades-long evolution of SN 1987A, legacy GRB statistical samples", filter: (yr: number | null) => yr !== null && yr < 2017 },
+  { id: "epoch-other", title: "Coordinate & Periodic Sources", badge: "Persistent", desc: "Coordinate-designated SGRs, magnetars, and repeating FRBs", filter: (yr: number | null) => yr === null },
 ];
 
 function typeBadgeColor(type: string): string {
@@ -195,9 +193,9 @@ function typeBadgeColor(type: string): string {
 }
 
 function priorityPill(priority: string) {
-  if (priority === "must_read") return { label: "⭐ 必读", cls: "pill-must-read" };
-  if (priority === "worth_knowing") return { label: "📌 关注", cls: "pill-worth-knowing" };
-  return { label: "⚡ 略读", cls: "pill-skim" };
+  if (priority === "must_read") return { label: "⭐ Must Read", cls: "pill-must-read" };
+  if (priority === "worth_knowing") return { label: "📌 Follow", cls: "pill-worth-knowing" };
+  return { label: "⚡ Skim", cls: "pill-skim" };
 }
 
 const dynamicMonthCss = allMonthCalendars.map((m) => `
@@ -245,8 +243,8 @@ const dynamicCalendarCss = dynamicMonthCss + "\n" + dynamicDateCss;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="AstroLineage 瞬变源爆发日历与演化时间轴：提供科学月历网格与真实时间线轨道，按天体物理爆发时刻与 arXiv 跟踪批次双视点追踪 68 个高能事件。" />
-    <title>瞬变源爆发日历与脉络时间轴 · {site.title}</title>
+    <meta name="description" content="AstroLineage transient event calendar and chronological timeline: multi-view tracking of high-energy transient events across astrophysical outburst epochs and arXiv research batches." />
+    <title>Transient Events & Timeline · {site.title}</title>
   </head>
   <body>
     <main class="site-shell reader-page events-calendar-page">
@@ -255,10 +253,7 @@ const dynamicCalendarCss = dynamicMonthCss + "\n" + dynamicDateCss;
 
       <!-- Header -->
       <header class="reader-header">
-        <h1>
-          <span class="language-primary">爆发事件</span>
-          <span class="language-english" lang="en">Events & Timeline</span>
-        </h1>
+        <h1>Events & Timeline</h1>
       </header>
 
       <!-- Master Interactive View Switcher (Zero Client Script) -->
@@ -305,27 +300,27 @@ const dynamicCalendarCss = dynamicMonthCss + "\n" + dynamicDateCss;
         <!-- Dual Dimension Controls Bar -->
         <div class="controls-card">
           <div class="control-row">
-            <span class="control-label">视点模式：</span>
+            <span class="control-label">View:</span>
             <div class="view-pills-group">
               <label for="view-calendar-timeline" class="view-pill view-pill-calendar">
-                📅 研读日历
+                📅 Calendar
               </label>
               <label for="view-epoch-timeline" class="view-pill view-pill-epoch">
-                🪐 爆发年代
+                🪐 Outburst Epoch
               </label>
             </div>
           </div>
 
           <div class="control-row">
-            <span class="control-label">事件类型：</span>
-            <div class="cat-pills-bar" aria-label="事件分类筛选">
-              <label for="cat-all" class="cat-pill">全部 ({counts.ALL})</label>
-              <label for="cat-grb" class="cat-pill">💥 伽马暴 GRB ({counts.GRB})</label>
-              <label for="cat-sn" class="cat-pill">🌟 超新星 SN ({counts.SN})</label>
-              <label for="cat-at" class="cat-pill">🕳️ 潮汐瓦解 AT ({counts.AT})</label>
-              <label for="cat-frb" class="cat-pill">⚡ 快速射电暴 FRB ({counts.FRB})</label>
-              <label for="cat-gw" class="cat-pill">🌌 引力波 GW ({counts.GW})</label>
-              <label for="cat-sgr" class="cat-pill">🧲 磁星与致密星 ({counts.SGR})</label>
+            <span class="control-label">Event Type:</span>
+            <div class="cat-pills-bar" aria-label="Filter events by type">
+              <label for="cat-all" class="cat-pill">All ({counts.ALL})</label>
+              <label for="cat-grb" class="cat-pill">💥 GRB ({counts.GRB})</label>
+              <label for="cat-sn" class="cat-pill">🌟 SN ({counts.SN})</label>
+              <label for="cat-at" class="cat-pill">🕳️ AT ({counts.AT})</label>
+              <label for="cat-frb" class="cat-pill">⚡ FRB ({counts.FRB})</label>
+              <label for="cat-gw" class="cat-pill">🌌 GW ({counts.GW})</label>
+              <label for="cat-sgr" class="cat-pill">🧲 SGR ({counts.SGR})</label>
             </div>
           </div>
         </div>
@@ -335,19 +330,19 @@ const dynamicCalendarCss = dynamicMonthCss + "\n" + dynamicDateCss;
           <div class="calendar-matrix-header">
             <div class="matrix-title-row">
               <h2 id="calendar-grid-heading" class="calendar-matrix-title">
-                📅 研读日历
+                📅 Research Calendar
               </h2>
-              <span class="matrix-total-badge font-mono">收录 {sortedFollowUpDates.length} 个研读批次 · {allMonthCalendars.length} 个月份</span>
+              <span class="matrix-total-badge font-mono">{sortedFollowUpDates.length} batches · {allMonthCalendars.length} months</span>
             </div>
 
             <!-- Month Quick Filter Ribbon (Dynamic Single Month Switcher) -->
             <div class="month-selector-bar">
-              <span class="month-selector-label">🗓️ 月份切换：</span>
+              <span class="month-selector-label">🗓️ Month:</span>
               <div class="month-selector-pills">
                 {allMonthCalendars.map((m) => (
                   <label for={`month-${m.yearMonth}`} class="month-tab-pill">
                     <span>{m.title}</span>
-                    <span class="pill-badge">{m.isLatest ? "最新 · " : ""}{m.activeBatchesCount} 批次</span>
+                    <span class="pill-badge">{m.isLatest ? "Latest · " : ""}{m.activeBatchesCount} batches</span>
                   </label>
                 ))}
               </div>
@@ -368,18 +363,18 @@ const dynamicCalendarCss = dynamicMonthCss + "\n" + dynamicDateCss;
                       </span>
                     </div>
                     <div class="month-stats-text font-mono">
-                      <span>{m.activeBatchesCount} 个活跃批次</span> · <span>{m.totalEvents} 个事件</span>
+                      <span>{m.activeBatchesCount} active batches</span> · <span>{m.totalEvents} events</span>
                     </div>
                   </div>
                   <div class="calendar-weekdays-row">
-                    <span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span>
+                    <span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span>
                   </div>
                   <div class="calendar-days-grid">
                     {m.cells.map((cell) => {
                       if (cell.empty) return <div class="cal-cell cal-cell-empty" />;
                       if (!cell.hasEvents) {
                         return (
-                          <div class="cal-cell cal-cell-idle" title={`${cell.dateStr}（${cell.weekday}）无爆发事件研读`}>
+                          <div class="cal-cell cal-cell-idle" title={`${cell.dateStr} (${cell.weekday}) No transient events`}>
                             <span class="day-num">{cell.day}</span>
                           </div>
                         );
@@ -391,14 +386,14 @@ const dynamicCalendarCss = dynamicMonthCss + "\n" + dynamicDateCss;
                           title={cell.events?.map((e: any) => `${e.event_id} (${e.event_type})`).join("\n")}
                         >
                           <span class="day-num-active">{cell.day}</span>
-                          <span class="cal-active-badge">{cell.events?.length || 0}件</span>
+                          <span class="cal-active-badge">{cell.events?.length || 0} evts</span>
                           <div class="cal-dots-row">
                             {(cell.events || []).slice(0, 3).map((e: any) => (
                               <span class={`cal-mini-dot ${typeBadgeColor(e.event_type)}`} />
                             ))}
                           </div>
                           <div class="cal-cell-popover" role="tooltip">
-                            <div class="popover-title font-mono">{cell.dateStr}（{cell.events?.length} 个事件）</div>
+                            <div class="popover-title font-mono">{cell.dateStr} ({cell.events?.length} events)</div>
                             <ul class="popover-event-list">
                               {cell.events?.map((e: any) => (
                                 <li class="popover-event-item">
@@ -419,25 +414,24 @@ const dynamicCalendarCss = dynamicMonthCss + "\n" + dynamicDateCss;
                   {m.activeDates.map((dStr) => {
                     const eventsOnDate = dateMap[dStr] || [];
                     const firstEvt = eventsOnDate[0];
-                    const bjtWeekday = firstEvt?.bjtWeekday || "";
                     const usDate = firstEvt?.usDate || "";
 
                     return (
-                      <section class="daily-detail-panel" data-date={dStr} aria-label={`${dStr} 爆发研读事件`}>
+                      <section class="daily-detail-panel" data-date={dStr} aria-label={`${dStr} transient research events`}>
                         <div class="detail-header-card">
                           <div class="detail-header-main">
                             <div class="detail-date-title">
-                              <span class="detail-date-badge font-mono">📅 {dStr}（{bjtWeekday}）</span>
-                              <span class="detail-count-pill font-mono">当日研读 {eventsOnDate.length} 个高能事件</span>
+                              <span class="detail-date-badge font-mono">📅 {dStr}</span>
+                              <span class="detail-count-pill font-mono">{eventsOnDate.length} High-Energy Events</span>
                             </div>
-                            <span class="detail-us-batch font-mono">对应 arXiv 美东批次：{usDate}</span>
+                            <span class="detail-us-batch font-mono">arXiv US Batch: {usDate}</span>
                           </div>
                           <div class="detail-header-actions">
                             <a href={`/arxiv-daily/${usDate}/`} class="detail-daily-link">
-                              查看当日论文雷达 →
+                              Daily Radar →
                             </a>
-                            <a href={`#station-${dStr}`} class="detail-spine-link" title="在下方完整时间轴轨道中定位">
-                              完整轨道 ↓
+                            <a href={`#station-${dStr}`} class="detail-spine-link" title="Navigate to station in timeline below">
+                              Timeline Track ↓
                             </a>
                           </div>
                         </div>
@@ -452,17 +446,17 @@ const dynamicCalendarCss = dynamicMonthCss + "\n" + dynamicDateCss;
                                     <span class={`event-type-badge ${typeBadgeColor(event.event_type)}`}>{event.event_type}</span>
                                     <h3 class="card-event-name">{event.event_id}</h3>
                                     {epoch && (
-                                      <span class="card-epoch-pill" title="天体物理爆发/探测时刻">
-                                        ⚡ 物理爆发：{epoch}
+                                      <span class="card-epoch-pill" title="Astrophysical outburst / detection epoch">
+                                        ⚡ Outburst: {epoch}
                                       </span>
                                     )}
                                   </div>
                                   <div class="card-metrics-cluster">
-                                    <span class="metric-heat-chip" title="基于7天半衰期模型计算的热度指数">
-                                      🔥 热度 <strong>{event.heat_score}</strong>
+                                    <span class="metric-heat-chip" title="Heat score decays with a 7-day half-life">
+                                      🔥 Heat <strong>{event.heat_score}</strong>
                                     </span>
                                     <span class="metric-papers-chip">
-                                      📚 <strong>{event.paper_count}</strong> 篇研读
+                                      📚 <strong>{event.paper_count}</strong> Papers
                                     </span>
                                   </div>
                                 </div>
@@ -475,7 +469,7 @@ const dynamicCalendarCss = dynamicMonthCss + "\n" + dynamicDateCss;
                                 </div>
 
                                 <div class="card-papers-stream">
-                                  <div class="stream-label">📄 当期研读论文与物理结论：</div>
+                                  <div class="stream-label">📄 Associated Papers & Findings:</div>
                                   <ul class="station-paper-list">
                                     {event.papers.map((paper) => {
                                       const priority = priorityPill(paper.priority);
@@ -485,18 +479,18 @@ const dynamicCalendarCss = dynamicMonthCss + "\n" + dynamicDateCss;
                                           <div class="paper-item-top">
                                             <span class={`priority-badge ${priority.cls}`}>{priority.label}</span>
                                             <a href={dailyAnchor} class="paper-title-anchor">
-                                              <span class="paper-arxiv-id font-mono">[{paper.arxiv_id}]</span> {paperBilingualTitle(paper)}
+                                              <span class="paper-arxiv-id font-mono">[{paper.arxiv_id}]</span> {paperTitle(paper)}
                                             </a>
                                           </div>
                                           {paper.bluf_result && (
                                             <p class="paper-bluf-row">
-                                              <strong class="bluf-key">突破：</strong>
+                                              <strong class="bluf-key">BLUF:</strong>
                                               <span class="bluf-val">{paper.bluf_result}</span>
                                             </p>
                                           )}
                                           <div class="paper-links-bar">
-                                            <a href={dailyAnchor} class="link-radar-deep">进入每日雷达深度解析 →</a>
-                                            <a href={`https://arxiv.org/abs/${paper.arxiv_id}`} target="_blank" rel="noopener noreferrer" class="link-arxiv-origin">arXiv 原文 ↗</a>
+                                            <a href={dailyAnchor} class="link-radar-deep">Daily Radar Analysis →</a>
+                                            <a href={`https://arxiv.org/abs/${paper.arxiv_id}`} target="_blank" rel="noopener noreferrer" class="link-arxiv-origin">arXiv ↗</a>
                                           </div>
                                         </li>
                                       );
@@ -517,17 +511,17 @@ const dynamicCalendarCss = dynamicMonthCss + "\n" + dynamicDateCss;
         </section>
 
         <!-- Hot Events Top 5 (Foldable under calendar) -->
-        <section class="calendar-hot-events-section" aria-label="瞬变源热度榜单">
+        <section class="calendar-hot-events-section" aria-label="Transient Event Heat Rankings">
           <details class="calendar-hot-events-fold">
             <summary class="calendar-hot-events-summary">
               <span class="summary-left">
                 <span class="summary-icon">🔥</span>
-                <span class="summary-title">瞬变源热度 Top 5 聚簇榜单</span>
+                <span class="summary-title">Top 5 Transient Event Clusters</span>
               </span>
-              <span class="summary-hint font-mono">点击展开 / 折叠</span>
+              <span class="summary-hint font-mono">Click to toggle</span>
             </summary>
             <div class="calendar-hot-events-body">
-              <p class="hot-events-note">更新时间：{eventsData.generated_at}。热度按 7 天半衰期衰减，反映近期 arXiv 论文讨论活跃度。</p>
+              <p class="hot-events-note">Updated: {eventsData.generated_at}. Heat score decays with a 7-day half-life, reflecting recent arXiv paper activity.</p>
               <div class="agent-events-list">
                 {topEvents.map((event, idx) => (
                   <div class="agent-event-row">
@@ -536,11 +530,11 @@ const dynamicCalendarCss = dynamicMonthCss + "\n" + dynamicDateCss;
                       <div class="event-header">
                         <span class="event-id font-mono">{event.event_id}</span>
                         <span class={`event-type-badge ${typeBadgeColor(event.event_type)}`}>{event.event_type}</span>
-                        <span class="event-heat">🔥 热度 {event.heat_score}</span>
-                        <span class="event-papers-count font-mono">共 {event.paper_count} 篇论文关联</span>
+                        <span class="event-heat">🔥 Heat {event.heat_score}</span>
+                        <span class="event-papers-count font-mono">{event.paper_count} papers</span>
                       </div>
                       <div class="event-meta">
-                        <span>首次记录: {event.first_seen}</span> · <span>最近更新: {event.last_updated}</span>
+                        <span>First seen: {event.first_seen}</span> · <span>Last updated: {event.last_updated}</span>
                       </div>
                       <ul class="event-papers">
                         {event.papers.map((p) => {
@@ -564,18 +558,17 @@ const dynamicCalendarCss = dynamicMonthCss + "\n" + dynamicDateCss;
         </section>
 
         <!-- VIEW 1: Follow-up Timeline Spine (Real Chronological Axis) -->
-        <section class="timeline-followup-container" aria-label="批次跟踪时间轴">
+        <section class="timeline-followup-container" aria-label="Batch Follow-up Timeline">
           <div class="timeline-axis-header">
             <span class="axis-kicker">CHRONOLOGICAL SPINE</span>
-            <h2>按 arXiv 批次日期排列的研读时间轴</h2>
-            <p>发光轨道清晰展示从最新批次到历史批次的演进时间站（Timeline Stations），与上方月历网格精准联动。</p>
+            <h2>Research Timeline by arXiv Batch Date</h2>
+            <p>Chronological stations tracing batches from latest to earliest, directly linked to the calendar grid above.</p>
           </div>
 
           <div class="timeline-track">
             {sortedFollowUpDates.map((dateStr) => {
               const eventsOnDate = dateMap[dateStr] || [];
               const firstEvent = eventsOnDate[0];
-              const bjtWeekday = firstEvent?.bjtWeekday || "";
               const usDate = firstEvent?.usDate || "";
 
               return (
@@ -584,9 +577,9 @@ const dynamicCalendarCss = dynamicMonthCss + "\n" + dynamicDateCss;
                   <div class="station-marker-row">
                     <div class="station-pulse-node" />
                     <div class="station-badge">
-                      <span class="station-bjt-date font-mono">📅 {dateStr}（{bjtWeekday}）</span>
-                      <span class="station-us-date font-mono">arXiv 美东批次：{usDate}</span>
-                      <span class="station-count-pill">共研读 {eventsOnDate.length} 个高能事件</span>
+                      <span class="station-bjt-date font-mono">📅 {dateStr}</span>
+                      <span class="station-us-date font-mono">arXiv US Batch: {usDate}</span>
+                      <span class="station-count-pill">{eventsOnDate.length} High-Energy Events</span>
                     </div>
                   </div>
 
@@ -601,17 +594,17 @@ const dynamicCalendarCss = dynamicMonthCss + "\n" + dynamicDateCss;
                               <span class={`event-type-badge ${typeBadgeColor(event.event_type)}`}>{event.event_type}</span>
                               <h3 class="card-event-name">{event.event_id}</h3>
                               {epoch && (
-                                <span class="card-epoch-pill" title="天体物理爆发/探测时刻">
-                                  ⚡ 物理爆发：{epoch}
+                                <span class="card-epoch-pill" title="Astrophysical outburst / detection epoch">
+                                  ⚡ Outburst: {epoch}
                                 </span>
                               )}
                             </div>
                             <div class="card-metrics-cluster">
-                              <span class="metric-heat-chip" title="基于7天半衰期模型计算的热度指数">
-                                🔥 热度 <strong>{event.heat_score}</strong>
+                              <span class="metric-heat-chip" title="Heat score decays with a 7-day half-life">
+                                🔥 Heat <strong>{event.heat_score}</strong>
                               </span>
                               <span class="metric-papers-chip">
-                                📚 <strong>{event.paper_count}</strong> 篇研读
+                                📚 <strong>{event.paper_count}</strong> Papers
                               </span>
                             </div>
                           </div>
@@ -624,7 +617,7 @@ const dynamicCalendarCss = dynamicMonthCss + "\n" + dynamicDateCss;
                           </div>
 
                           <div class="card-papers-stream">
-                            <div class="stream-label">📄 当期研读论文与物理结论：</div>
+                            <div class="stream-label">📄 Associated Papers & Findings:</div>
                             <ul class="station-paper-list">
                               {event.papers.map((paper) => {
                                 const priority = priorityPill(paper.priority);
@@ -634,18 +627,18 @@ const dynamicCalendarCss = dynamicMonthCss + "\n" + dynamicDateCss;
                                     <div class="paper-item-top">
                                       <span class={`priority-badge ${priority.cls}`}>{priority.label}</span>
                                       <a href={dailyAnchor} class="paper-title-anchor">
-                                        <span class="paper-arxiv-id font-mono">[{paper.arxiv_id}]</span> {paperBilingualTitle(paper)}
+                                        <span class="paper-arxiv-id font-mono">[{paper.arxiv_id}]</span> {paperTitle(paper)}
                                       </a>
                                     </div>
                                     {paper.bluf_result && (
                                       <p class="paper-bluf-row">
-                                        <strong class="bluf-key">突破：</strong>
+                                        <strong class="bluf-key">BLUF:</strong>
                                         <span class="bluf-val">{paper.bluf_result}</span>
                                       </p>
                                     )}
                                     <div class="paper-links-bar">
-                                      <a href={dailyAnchor} class="link-radar-deep">进入每日雷达深度解析 →</a>
-                                      <a href={`https://arxiv.org/abs/${paper.arxiv_id}`} target="_blank" rel="noopener noreferrer" class="link-arxiv-origin">arXiv 原文 ↗</a>
+                                      <a href={dailyAnchor} class="link-radar-deep">Daily Radar Analysis →</a>
+                                      <a href={`https://arxiv.org/abs/${paper.arxiv_id}`} target="_blank" rel="noopener noreferrer" class="link-arxiv-origin">arXiv ↗</a>
                                     </div>
                                   </li>
                                 );
@@ -663,11 +656,11 @@ const dynamicCalendarCss = dynamicMonthCss + "\n" + dynamicDateCss;
         </section>
 
         <!-- VIEW 2: Cosmic Outburst Epoch Timeline (Universe Epoch: 2026 ➔ 1987) -->
-        <section class="timeline-epoch-container" aria-label="宇宙物理爆发年代史">
+        <section class="timeline-epoch-container" aria-label="Cosmic Outburst Epoch History">
           <div class="timeline-axis-header">
             <span class="axis-kicker">COSMIC OUTBURST EPOCH</span>
-            <h2>沿宇宙时间回溯的高能瞬变物理年代史</h2>
-            <p>按爆发/发现年代自 2026 回溯至 1987，呈现不同生命周期瞬变源（从早期激波到数十年晚期演化）的学术图景。</p>
+            <h2>High-Energy Transient Chronology Retracing Cosmic Time</h2>
+            <p>Retracing outburst and discovery epochs from 2026 back to 1987, presenting the evolving academic landscape across transient lifecycles.</p>
           </div>
 
           <div class="timeline-track">
@@ -682,7 +675,7 @@ const dynamicCalendarCss = dynamicMonthCss + "\n" + dynamicDateCss;
                     <div class="station-badge badge-epoch">
                       <span class="station-epoch-title">{group.title}</span>
                       <span class="epoch-badge-pill">{group.badge}</span>
-                      <span class="station-count-pill">共 {matchedEvents.length} 个天体事件</span>
+                      <span class="station-count-pill">{matchedEvents.length} Events</span>
                     </div>
                   </div>
                   <p class="epoch-desc-lead">{group.desc}</p>
@@ -697,14 +690,14 @@ const dynamicCalendarCss = dynamicMonthCss + "\n" + dynamicDateCss;
                               <span class={`event-type-badge ${typeBadgeColor(event.event_type)}`}>{event.event_type}</span>
                               <h3 class="card-event-name">{event.event_id}</h3>
                               {epoch && (
-                                <span class="card-epoch-pill" title="天体物理爆发/探测时刻">
-                                  ⚡ 物理爆发：{epoch}
+                                <span class="card-epoch-pill" title="Astrophysical outburst / detection epoch">
+                                  ⚡ Outburst: {epoch}
                                 </span>
                               )}
                             </div>
                             <div class="card-metrics-cluster">
-                              <span class="metric-heat-chip">🔥 热度 <strong>{event.heat_score}</strong></span>
-                              <span class="metric-papers-chip">📚 <strong>{event.paper_count}</strong> 篇研读</span>
+                              <span class="metric-heat-chip">🔥 Heat <strong>{event.heat_score}</strong></span>
+                              <span class="metric-papers-chip">📚 <strong>{event.paper_count}</strong> Papers</span>
                             </div>
                           </div>
 
@@ -716,7 +709,7 @@ const dynamicCalendarCss = dynamicMonthCss + "\n" + dynamicDateCss;
                           </div>
 
                           <div class="card-papers-stream">
-                            <div class="stream-label">📄 近期研读跟踪：</div>
+                            <div class="stream-label">📄 Recent Tracking:</div>
                             <ul class="station-paper-list">
                               {event.papers.map((paper) => {
                                 const priority = priorityPill(paper.priority);
@@ -727,12 +720,12 @@ const dynamicCalendarCss = dynamicMonthCss + "\n" + dynamicDateCss;
                                       <span class={`priority-badge ${priority.cls}`}>{priority.label}</span>
                                       <span class="paper-date-pill font-mono">{paper.date}</span>
                                       <a href={dailyAnchor} class="paper-title-anchor">
-                                        <span class="paper-arxiv-id font-mono">[{paper.arxiv_id}]</span> {paperBilingualTitle(paper)}
+                                        <span class="paper-arxiv-id font-mono">[{paper.arxiv_id}]</span> {paperTitle(paper)}
                                       </a>
                                     </div>
                                     <div class="paper-links-bar">
-                                      <a href={dailyAnchor} class="link-radar-deep">进入雷达深度卡片 →</a>
-                                      <a href={`https://arxiv.org/abs/${paper.arxiv_id}`} target="_blank" rel="noopener noreferrer" class="link-arxiv-origin">arXiv 原文 ↗</a>
+                                      <a href={dailyAnchor} class="link-radar-deep">Daily Radar Analysis →</a>
+                                      <a href={`https://arxiv.org/abs/${paper.arxiv_id}`} target="_blank" rel="noopener noreferrer" class="link-arxiv-origin">arXiv ↗</a>
                                     </div>
                                   </li>
                                 );
@@ -755,19 +748,19 @@ const dynamicCalendarCss = dynamicMonthCss + "\n" + dynamicDateCss;
         <div class="footer-inner">
           <div class="footer-left">
             <span class="footer-brand">AstroLineage</span>
-            <span class="footer-desc">面向高能天体物理前沿的自动化文献情报与学术脉络跟踪平台</span>
+            <span class="footer-desc">Automated literature intelligence and lineage tracking for high-energy astrophysics</span>
           </div>
           <div class="footer-links">
             <a href="https://github.com/dnwb/astro-lineage/issues" target="_blank" rel="noopener noreferrer" class="footer-feedback-link">
-              <span>💬 意见反馈与 Bug 提交 (GitHub Issues)</span>
+              <span>💬 Feedback & Issues (GitHub)</span>
               <span aria-hidden="true">↗</span>
             </a>
             <span class="footer-sep">·</span>
-            <a href="https://pd.qq.com/s/d4lw4zl0g" target="_blank" rel="noopener noreferrer">腾讯频道交流</a>
+            <a href="https://pd.qq.com/s/d4lw4zl0g" target="_blank" rel="noopener noreferrer">Tencent Channel</a>
             <span class="footer-sep">·</span>
-            <a href="/agent/">Agent 接入</a>
+            <a href="/agent/">Agent Integration</a>
             <span class="footer-sep">·</span>
-            <a href="/">返回首页</a>
+            <a href="/">Home</a>
           </div>
         </div>
       </footer>

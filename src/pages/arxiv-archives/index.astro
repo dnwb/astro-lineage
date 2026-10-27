@@ -26,7 +26,7 @@ const totalDailyEditions = archiveManifest.total_daily_editions || 0;
 const totalWeeksCount = archiveManifest.total_weeks || weeks.length;
 const dateCoverage = weeks.length > 0
   ? `${weeks[weeks.length - 1].date_range?.split(" ~ ")[0]} ~ ${weeks[0].date_range?.split(" ~ ")[1] || weeks[0].date_range}`
-  : "2026-09-07 至今";
+  : "2026-09-07 to Present";
 ---
 
 <!doctype html>

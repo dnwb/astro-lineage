@@ -306,22 +306,22 @@ test("Bromberg's static Work page renders publication provenance and the branchi
     "utf8"
   );
   for (const marker of [
-    "<h3>版本</h3>",
-    "version:bromberg-2011-arxiv-v1",
-    "version:bromberg-2011-journal",
-    "<h3>出版关系</h3>",
-    "published_as",
-    "Bibliographic Provenance",
-    "source:arxiv-bromberg-2011-20260904-091405z",
-    "科学陈述",
-    "方法",
-    "物理本体",
-    "物理描述",
-    "stage:bromberg-collimated-regime",
-    "stage:bromberg-uncollimated-regime",
-    "stage:bromberg-head-propagation",
+    /(?:<h3>版本<\/h3>|<h3>Versions<\/h3>)/u,
+    /version:bromberg-2011-arxiv-v1/u,
+    /version:bromberg-2011-journal/u,
+    /(?:<h3>出版关系<\/h3>|<h3>Publication Relations<\/h3>)/u,
+    /published_as/u,
+    /Bibliographic Provenance/u,
+    /source:arxiv-bromberg-2011-20260904-091405z/u,
+    /(?:科学陈述|Scientific Statements)/u,
+    /(?:方法|Methods)/u,
+    /(?:物理本体|Physical Ontology)/u,
+    /(?:物理描述|Physical Description)/u,
+    /stage:bromberg-collimated-regime/u,
+    /stage:bromberg-uncollimated-regime/u,
+    /stage:bromberg-head-propagation/u,
   ]) {
-    assert.match(html, new RegExp(marker.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&")), marker);
+    assert.match(html, marker);
   }
   assert.doesNotMatch(html, /review_state/u);
 });

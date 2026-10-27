@@ -24,12 +24,12 @@ const latestDate = (archiveManifest as any).latest_daily_date || (allDays[0]?.da
 const recentDays = allDays.slice(0, 8);
 ---
 
-<nav class="aihot-date-ribbon" aria-label="日报日期选择">
+<nav class="aihot-date-ribbon" aria-label="Daily radar date navigation">
   <div class="ribbon-inner">
     <div class="ribbon-left-group">
       <div class="ribbon-brand-tag">
         <span class="ribbon-icon">📅</span>
-        <span class="ribbon-title">日期</span>
+        <span class="ribbon-title">Date</span>
       </div>
 
       <!-- Scrollable Recent Dates Track -->
@@ -44,13 +44,13 @@ const recentDays = allDays.slice(0, 8);
               <a
                 class={`date-pill ${isCurrent ? "active" : ""} ${isLatest ? "pill-latest" : ""}`}
                 href={targetUrl}
-                title={`切换至 ${dInfo.beijingDate} (${dInfo.chineseWeekday}) 导读雷达`}
+                title={`Switch to ${dInfo.beijingDate} (${(dInfo as any).englishWeekday ?? dInfo.chineseWeekday}) Daily Radar`}
                 aria-current={isCurrent ? "page" : undefined}
               >
-                {isLatest && <span class="pill-fire-badge">最新</span>}
+                {isLatest && <span class="pill-fire-badge">Latest</span>}
                 <strong class="pill-date">{dInfo.shortDate}</strong>
-                <span class="pill-weekday">{dInfo.chineseWeekday}</span>
-                <span class="pill-count">{d.total_papers}篇</span>
+                <span class="pill-weekday">{(dInfo as any).englishWeekday ?? dInfo.chineseWeekday}</span>
+                <span class="pill-count">{d.total_papers} papers</span>
               </a>
             );
           })}
@@ -59,14 +59,14 @@ const recentDays = allDays.slice(0, 8);
 
       <!-- Pure HTML Dropdown for All Historical Dates -->
       <details class="ribbon-archive-details">
-        <summary class="ribbon-archive-summary" title="展开更多历史日期">
-          <span>往期 ({allDays.length})</span>
+        <summary class="ribbon-archive-summary" title="Expand historical dates">
+          <span>Past Editions ({allDays.length})</span>
           <span class="summary-caret">▾</span>
         </summary>
         <div class="ribbon-archive-dropdown-menu">
           <div class="dropdown-header">
-            <span>往期日期列表</span>
-            <a class="dropdown-all-link" href="/arxiv-archives/">查看完整归档 →</a>
+            <span>Past Editions</span>
+            <a class="dropdown-all-link" href="/arxiv-archives/">Full Archives →</a>
           </div>
           <div class="dropdown-grid">
             {allDays.map((d: any) => {
@@ -81,12 +81,12 @@ const recentDays = allDays.slice(0, 8);
                 >
                   <div class="day-item-left">
                     <span class="day-item-date">{dInfo.beijingDate}</span>
-                    <span class="day-item-weekday">{dInfo.chineseWeekday}</span>
-                    <span class="day-item-us-hint">（美东 {d.date}）</span>
+                    <span class="day-item-weekday">{(dInfo as any).englishWeekday ?? dInfo.chineseWeekday}</span>
+                    <span class="day-item-us-hint">(US {d.date})</span>
                   </div>
                   <div class="day-item-right">
-                    {d.must_read_count > 0 && <span class="badge-must">{d.must_read_count}必读</span>}
-                    <span class="badge-total">{d.total_papers}篇</span>
+                    {d.must_read_count > 0 && <span class="badge-must">{d.must_read_count} must read</span>}
+                    <span class="badge-total">{d.total_papers} papers</span>
                   </div>
                 </a>
               );
@@ -98,17 +98,17 @@ const recentDays = allDays.slice(0, 8);
 
     <!-- Integrated Section Filter Pills on the Right -->
     {groups && (
-      <div class="ribbon-section-pills" aria-label="本期分类直达">
+      <div class="ribbon-section-pills" aria-label="Direct section navigation">
         <span class="ribbon-divider" aria-hidden="true">|</span>
         <a href="#must-read" class="section-nav-pill pill-must">
-          ⭐ 必读 ({groups.must_read?.length ?? 0})
+          ⭐ Must Read ({groups.must_read?.length ?? 0})
         </a>
         <a href="#worth-knowing" class="section-nav-pill pill-worth">
-          📌 关注 ({groups.worth_knowing?.length ?? 0})
+          📌 Follow ({groups.worth_knowing?.length ?? 0})
         </a>
         {groups.skip && groups.skip.length > 0 && (
           <a href="#skim" class="section-nav-pill pill-skim">
-            ⚡ 略读 ({groups.skip.length})
+            ⚡ Skim ({groups.skip.length})
           </a>
         )}
       </div>

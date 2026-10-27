@@ -26,9 +26,12 @@
 1. **Pure Data, Metrics, and Direct Links**: Present physics hypotheses, observational evidence, formulas, tables, and direct links (`arXiv:XXXX.XXXXX ↗`, `📄 PDF ↗`, `ADS ↗`).
 2. **Strict Ban on Meta-Engineering & Navigational Jargon**:
    - **Forbidden Phrases**: `免跳转`, `平滑跳转`, `对齐原则`, `一一对齐`, `工程实现`, `底层逻辑`.
-   - **Action-Oriented Copy**: Use concise, functional labels (e.g. `🔬 深度精读 ↗`, `进入当日日报 →`, `📅 2026-10-01 精读 →`).
+   - **Action-Oriented English Copy**: Use concise, functional labels (e.g. `🔬 Read Guide ↗`, `Daily Radar →`, `📅 2026-10-01 Guide →`).
    - Do not describe UI implementation mechanics to the reader. Deliver the science directly.
-3. **Automated Hygiene Guardrail**:
+3. **English-Only Interface & Legacy Archive Preservation**:
+   - The reader UI is strictly English-only (`<html lang="en">`).
+   - Historical editions prior to `LANGUAGE_CUTOVER_DATE` (`2026-10-27`) preserve their historical Chinese notes and display an explicit `Legacy Archive` banner.
+4. **Automated Hygiene Guardrail**:
    - Every commit must pass `npm run test:hygiene` (`tests/copy-hygiene.test.mjs`), which scans all `.astro` components and reader pages for forbidden jargon.
 
 ---

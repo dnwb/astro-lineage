@@ -33,30 +33,30 @@ const activeTopicFilters = TOPIC_FILTER_SPECS
 ---
 
 {totalCount > 0 && (
-  <div class="daily-filter-bar" role="tablist" aria-label="按主题与标签筛选日报论文">
-    <span class="daily-filter-title">🏷️ 筛选：</span>
+  <div class="daily-filter-bar" role="tablist" aria-label="Filter daily radar papers by topic and tags">
+    <span class="daily-filter-title">🏷️ Filter:</span>
 
     <input type="radio" name="daily-topic-filter" id="filter-daily-all" class="daily-topic-radio" checked />
-    <label for="filter-daily-all" class="daily-filter-pill">全部 ({totalCount})</label>
+    <label for="filter-daily-all" class="daily-filter-pill">All ({totalCount})</label>
 
     {mustCount > 0 && (
       <>
         <input type="radio" name="daily-topic-filter" id="filter-daily-must" class="daily-topic-radio" />
-        <label for="filter-daily-must" class="daily-filter-pill pill-must">⭐ 必读 ({mustCount})</label>
+        <label for="filter-daily-must" class="daily-filter-pill pill-must">⭐ Must Read ({mustCount})</label>
       </>
     )}
 
     {worthCount > 0 && (
       <>
         <input type="radio" name="daily-topic-filter" id="filter-daily-worth" class="daily-topic-radio" />
-        <label for="filter-daily-worth" class="daily-filter-pill pill-worth">📌 关注 ({worthCount})</label>
+        <label for="filter-daily-worth" class="daily-filter-pill pill-worth">📌 Follow ({worthCount})</label>
       </>
     )}
 
     {skipCount > 0 && (
       <>
         <input type="radio" name="daily-topic-filter" id="filter-daily-skim" class="daily-topic-radio" />
-        <label for="filter-daily-skim" class="daily-filter-pill pill-skim">⚡ 略读 ({skipCount})</label>
+        <label for="filter-daily-skim" class="daily-filter-pill pill-skim">⚡ Skim ({skipCount})</label>
       </>
     )}
 

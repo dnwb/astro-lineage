@@ -98,7 +98,7 @@ test("every archived daily edition file contains valid feed and radar data", asy
 test("arXiv archives hub HTML exposes weekly archive navigator and historical editions", async () => {
   if (existsSync(fileURLToPath(distArchivesHtmlUrl))) {
     const html = await readFile(distArchivesHtmlUrl, "utf8");
-    assert.match(html, /往期学术归档/u);
+    assert.match(html, /(?:往期学术归档|Historical Archives)/u);
     assert.match(html, /2026-W38/u);
     assert.match(html, /2026-09-15/u);
     assert.match(html, /2026-09-16/u);
@@ -115,7 +115,10 @@ test("arXiv daily HTML exposes direct navigation link to archives library", asyn
 test("arXiv weekly HTML exposes daily breakdown section with links to daily editions", async () => {
   if (existsSync(fileURLToPath(distWeeklyHtmlUrl))) {
     const html = await readFile(distWeeklyHtmlUrl, "utf8");
-    assert.match(html, /(?:必读文献目录|(?:当周|本周)每日批次与日报归档)/u);
+    assert.match(
+      html,
+      /(?:必读文献目录|(?:当周|本周)每日批次与日报归档|Daily Batches & Editions in this Week|Must-Read Directory)/u
+    );
     assert.match(html, /href="\/arxiv-daily\/"/u);
     const manifest = JSON.parse(await readFile(fileURLToPath(manifestUrl), "utf8"));
     const weeklyData = JSON.parse(

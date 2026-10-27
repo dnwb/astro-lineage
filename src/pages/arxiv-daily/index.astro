@@ -81,23 +81,13 @@ const runState = await readArxivRunState();
 
 const generatedAt = new Date(model.edition.generated_at ?? "");
 const generatedLabel = Number.isNaN(generatedAt.valueOf())
-  ? "尚未刷新"
-  : generatedAt.toLocaleString("zh-CN", { timeZone: "Asia/Shanghai" });
+  ? "Not refreshed"
+  : generatedAt.toISOString().slice(0, 16).replace("T", " ") + " UTC";
 
 function stateTime(value: string | undefined) {
   const date = new Date(value ?? "");
-  return Number.isNaN(date.valueOf()) ? "时间未记录" : date.toLocaleString("zh-CN", { timeZone: "Asia/Shanghai" });
+  return Number.isNaN(date.valueOf()) ? "Unrecorded" : date.toISOString().slice(0, 16).replace("T", " ") + " UTC";
 }
-
-const runStateLabel = runState.read_error
-  ? `运行状态不可读：${runState.read_error.message}`
-  : runState.status === "running"
-    ? "正在刷新，当前页面继续展示上一次缓存。"
-    : runState.status === "success"
-      ? `最近一次刷新成功于 ${stateTime(runState.last_success?.finished_at)}`
-      : runState.status === "failed"
-        ? `最近一次刷新失败于 ${stateTime(runState.last_failure?.finished_at)}：${runState.last_failure?.error?.message ?? "原因未记录"}${runState.last_failure?.output_published ? "；当前缓存已发布，本次状态收尾仍待修复。" : "；当前缓存保留上一次成功版本。"}`
-        : "此环境尚未运行刷新，当前页面使用随站点发布的缓存。";
 
 const englishRunStateLabel = runState.read_error
   ? `Run state unavailable: ${runState.read_error.message}`
@@ -111,15 +101,15 @@ const englishRunStateLabel = runState.read_error
 
 function pendingLabel(reason: string) {
   return {
-    analysis_missing: "尚未分析",
-    analysis_failed: "分析失败",
-    analysis_invalid: "分析记录无效",
-    analysis_pending: "分析尚未完成",
-    source_changed: "来源已变化，旧导读失效",
-    analysis_revision_mismatch: "版本不匹配，旧导读失效",
-    coverage_insufficient_must_read: "全文分析不足，暂不推荐",
-    coverage_insufficient_worth_knowing: "正文证据不足，暂不归入本组",
-  }[reason] ?? "待核查";
+    analysis_missing: "Pending analysis",
+    analysis_failed: "Analysis failed",
+    analysis_invalid: "Invalid analysis record",
+    analysis_pending: "Analysis pending",
+    source_changed: "Source changed, previous brief invalid",
+    analysis_revision_mismatch: "Revision mismatch, previous brief invalid",
+    coverage_insufficient_must_read: "Insufficient full-text coverage, not recommended",
+    coverage_insufficient_worth_knowing: "Insufficient body evidence, not grouped here",
+  }[reason] ?? "Pending verification";
 }
 
 const priorityGroups = model.groups as AnyRecord;
@@ -135,7 +125,7 @@ const bjtInfo = formatAnnouncementInBeijing(currentDate, announcementWindow?.ann
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Daily Radar 首期缓存版：按阅读优先级整理的 arXiv 论文和有证据边界的科学导读。" />
+    <meta name="description" content="Daily Radar: Prioritized arXiv astrophysics papers and evidence-bounded scientific reading guides." />
     <title>Daily Radar · {site.title}</title>
   </head>
   <body>
@@ -151,7 +141,7 @@ const bjtInfo = formatAnnouncementInBeijing(currentDate, announcementWindow?.ann
           </div>
         )}
         <p class="record-label">
-          <span>{isAnnouncementDay ? `Batch ${bjtInfo.beijingDate} (${bjtInfo.englishWeekday || bjtInfo.chineseWeekday} Beijing Time)` : "Sample"}</span>
+          <span>{isAnnouncementDay ? `Batch ${bjtInfo.beijingDate}` : "Sample"}</span>
           <span class="record-meta-sep">·</span>
           <span>Refreshed: {generatedLabel}</span>
           <span class="record-meta-sep">·</span>
@@ -169,7 +159,7 @@ const bjtInfo = formatAnnouncementInBeijing(currentDate, announcementWindow?.ann
         <summary class="radar-brief-drawer-summary">
           <span class="drawer-title-group">
             <span class="drawer-icon">📢</span>
-            <span class="drawer-label"><span class="language-primary">本期导读（展开/收起）</span><span class="language-english" lang="en">Opening Brief (Click to expand)</span></span>
+            <span class="drawer-label">Opening Brief (Click to expand)</span>
           </span>
           <span class="drawer-arrow">▾</span>
         </summary>
@@ -182,8 +172,8 @@ const bjtInfo = formatAnnouncementInBeijing(currentDate, announcementWindow?.ann
         <aside class="no-must-read-notice" role="status">
           <div class="notice-icon">ℹ️</div>
           <div class="notice-body">
-            <strong class="notice-title">批次说明</strong>
-            <p class="notice-text">当期无必读突破，重点聚焦以下“关注”进展。</p>
+            <strong class="notice-title">Batch Note</strong>
+            <p class="notice-text">No must-read breakthrough in this edition; focused on the following works.</p>
           </div>
         </aside>
       )}
@@ -194,24 +184,24 @@ const bjtInfo = formatAnnouncementInBeijing(currentDate, announcementWindow?.ann
         <DailyRadarPrioritySection
           id="must-read"
           items={priorityGroups.must_read}
-          primaryLabel="必读"
+          primaryLabel="Must Read"
           englishLabel="Must Read"
           visibleWorkLinks={visibleWorkLinks}
         />
         <DailyRadarPrioritySection
           id="worth-knowing"
           items={priorityGroups.worth_knowing}
-          primaryLabel="关注"
+          primaryLabel="Follow"
           englishLabel="Followed"
           visibleWorkLinks={visibleWorkLinks}
         />
 
         <details class="radar-priority-section skip-section">
-          <summary><span class="language-primary">快速浏览 · Skim（默认收起）</span><span class="language-english" lang="en">Skim (collapsed by default)</span></summary>
+          <summary><span>Skim (collapsed by default)</span></summary>
           <DailyRadarPrioritySection
             id="skim"
             items={priorityGroups.skip}
-            primaryLabel="快速浏览"
+            primaryLabel="Skim"
             englishLabel="Skim"
             visibleWorkLinks={visibleWorkLinks}
           />
@@ -219,43 +209,34 @@ const bjtInfo = formatAnnouncementInBeijing(currentDate, announcementWindow?.ann
       </div>
 
       <section class="radar-section" id="knowledge-points">
-        <p class="section-kicker"><span class="language-primary">学习补充</span><span class="language-english" lang="en">Learning supplement</span></p>
-        <h2><span class="language-primary">今日知识点</span><span class="language-english" lang="en">Knowledge point</span></h2>
+        <p class="section-kicker">Learning supplement</p>
+        <h2>Knowledge point</h2>
         {model.knowledge_points.length > 0 ? (
           model.knowledge_points.map((point) => (
             <>
-              <div class="language-primary"><DailyKnowledgePoint point={point} /></div>
-              <p class="language-english" lang="en">This knowledge point is written in Chinese and is bound to {point.source.source_version}. Open the original source: <a href={point.source_references[0].url}>arXiv source</a>.</p>
+              <div><DailyKnowledgePoint point={point} /></div>
             </>
           ))
         ) : (
-          <>
-            <p class="empty-state language-primary">本期没有具备充分来源的知识点；不会用未核查材料填充。</p>
-            <p class="empty-state language-english" lang="en">This edition has no knowledge point with sufficient source evidence; unverified material is not added.</p>
-          </>
+          <p class="empty-state">This edition has no knowledge point with sufficient source evidence; unverified material is not added.</p>
         )}
       </section>
 
       <details class="radar-status-disclosure">
-        <summary><span class="language-primary">来源与运行状态（按需查看）</span><span class="language-english" lang="en">Sources and run status</span></summary>
+        <summary><span>Sources and run status</span></summary>
         <div class="radar-status-body">
-          <p class="language-primary">这是{isAnnouncementDay ? `公告批次 ${announcementWindow?.announcement_date ?? "日期未记录"}` : "现有 arXiv API 缓存中的最近提交样本"}，不是完整的当日新增集合。当前缓存包含 {model.counts.total} 篇，已形成有效导读 {model.counts.analyzed} 篇；其余条目保留在待核查状态。</p>
-          <p class="language-english" lang="en">This is {isAnnouncementDay ? `the announcement batch ending ${announcementWindow?.announcement_date ?? "an unrecorded date"}` : "a recent-submission sample from the existing arXiv API cache"}, not a complete daily intake. The cache contains {model.counts.total} candidates; {model.counts.analyzed} have valid guides and the rest remain pending review.</p>
-          <p class="record-label language-primary">运行状态：{runStateLabel}</p>
-          <p class="record-label language-english" lang="en">Run state: {englishRunStateLabel}</p>
-          <p class="record-label">Query: {model.edition.query ?? "未记录"}</p>
+          <p>This is {isAnnouncementDay ? `the announcement batch ending ${announcementWindow?.announcement_date ?? "an unrecorded date"}` : "a recent-submission sample from the existing arXiv API cache"}, not a complete daily intake. The cache contains {model.counts.total} candidates; {model.counts.analyzed} have valid guides and the rest remain pending review.</p>
+          <p class="record-label">Run state: {englishRunStateLabel}</p>
+          <p class="record-label">Query: {model.edition.query ?? "Unrecorded"}</p>
           <section class="radar-section" id="pending-analysis">
-            <p class="section-kicker"><span class="language-primary">分析状态</span><span class="language-english" lang="en">Analysis status</span></p>
-            <h2><span class="language-primary">待分析</span><span class="language-english" lang="en">Pending analysis</span></h2>
+            <p class="section-kicker">Analysis status</p>
+            <h2>Pending analysis</h2>
             <ol class="paper-index radar-list">
               {model.pending.map((item) => <DailyRadarPendingCard item={item} pendingLabel={pendingLabel(item.pending_reason)} />)}
             </ol>
           </section>
           {model.knowledge_points_pending.length > 0 ? (
-            <>
-              <p class="layer-intro language-primary">有 {model.knowledge_points_pending.length} 个知识点记录待核查。</p>
-              <p class="layer-intro language-english" lang="en">{model.knowledge_points_pending.length} knowledge point record(s) remain pending review.</p>
-            </>
+            <p class="layer-intro">{model.knowledge_points_pending.length} knowledge point record(s) remain pending review.</p>
           ) : null}
         </div>
       </details>

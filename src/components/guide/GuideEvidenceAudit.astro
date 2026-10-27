@@ -18,9 +18,9 @@ const {
 } = Astro.props;
 
 const coverageSummary: Record<string, string> = {
-  abstract_only: "仅摘要",
-  body_partial: "正文指定部分",
-  full_body: "正文全文",
+  abstract_only: "abstract only",
+  body_partial: "identified body sections",
+  full_body: "full body",
 };
 
 const inspectedSections = Array.isArray(coverage?.inspected_sections) ? coverage.inspected_sections : [];
@@ -32,35 +32,35 @@ const hasUnresolved = Array.isArray(unresolvedChecks) && unresolvedChecks.length
   <summary class="audit-drawer-summary">
     <div class="drawer-summary-left">
       <span class="audit-icon">📑</span>
-      <strong class="audit-title">证据审计与信源材料</strong>
-      <span class="audit-badge-pill">覆盖：{coverageSummary[coverage?.level] ?? "已记录"}</span>
+      <strong class="audit-title">Evidence Audit & Source Material</strong>
+      <span class="audit-badge-pill">Coverage: {coverageSummary[coverage?.level] ?? "recorded"}</span>
       {inspectedSections.length > 0 && (
-        <span class="audit-meta-pill">已核验 {inspectedSections.length} 个章节</span>
+        <span class="audit-meta-pill">{inspectedSections.length} sections inspected</span>
       )}
       {sourceReferences.length > 0 && (
-        <span class="audit-meta-pill">{sourceReferences.length} 个信源</span>
+        <span class="audit-meta-pill">{sourceReferences.length} sources</span>
       )}
     </div>
-    <span class="drawer-toggle-arrow">展开核验 ▾</span>
+    <span class="drawer-toggle-arrow">Audit Details ▾</span>
   </summary>
 
   <div class="audit-drawer-content">
     <div class="audit-grid-columns">
-      <!-- 实际阅读范围与章节 -->
+      <!-- Reading scope and inspected sections -->
       <div class="audit-col-block">
         <div class="audit-col-header">
-          <span class="audit-tag">📑 实际阅读范围</span>
+          <span class="audit-tag">📑 Scope</span>
           <span class="coverage-badge coverage-badge-{coverage?.level || 'partial'}">
-            {coverageSummary[coverage?.level] ?? "已记录"}
+            {coverageSummary[coverage?.level] ?? "recorded"}
           </span>
         </div>
         <div class="audit-col-body">
           <p class="evidence-scope-text">
-            <strong>覆盖范围：</strong>{coverage?.label}；版本 <code>{coverage?.source_version}</code>
+            <strong>Coverage: </strong>{coverage?.label}; version <code>{coverage?.source_version}</code>
           </p>
           {inspectedSections.length > 0 && (
             <div class="inspected-sections-row">
-              <span class="meta-label">已核验章节：</span>
+              <span class="meta-label">Inspected Sections: </span>
               <div class="sections-pills">
                 {inspectedSections.map((sec: string) => (
                   <span class="section-pill">{sec}</span>
@@ -70,17 +70,17 @@ const hasUnresolved = Array.isArray(unresolvedChecks) && unresolvedChecks.length
           )}
           {coverage?.source_material && (
             <p class="source-material-note">
-              <span class="meta-label">来源格式材料：</span>{coverage.source_material}
+              <span class="meta-label">Source Format Material: </span>{coverage.source_material}
             </p>
           )}
         </div>
       </div>
 
-      <!-- 信源依据与定位 -->
+      <!-- Source references and locators -->
       {sourceReferences.length > 0 && (
         <div class="audit-col-block">
           <div class="audit-col-header">
-            <span class="audit-tag">📦 信源依据与定位</span>
+            <span class="audit-tag">📦 Source Evidence</span>
           </div>
           <div class="audit-col-body">
             <ul class="source-ref-list">
@@ -88,9 +88,9 @@ const hasUnresolved = Array.isArray(unresolvedChecks) && unresolvedChecks.length
                 <li class="source-ref-item">
                   <div class="ref-main-row">
                     <a class="ref-link" href={ref.url} target="_blank" rel="noopener">
-                      {ref.kind === "arxiv_source_package" ? "📦 arXiv TeX 源码包" : "📄 arXiv 原始材料"}
+                      {ref.kind === "arxiv_source_package" ? "📦 arXiv TeX Source Package" : "📄 arXiv Source Material"}
                     </a>
-                    <span class="ref-locator">位置：{ref.locator}</span>
+                    <span class="ref-locator">Locator: {ref.locator}</span>
                   </div>
                   {ref.description && <div class="ref-desc">{ref.description}</div>}
                   {ref.sha256 && (
@@ -106,11 +106,11 @@ const hasUnresolved = Array.isArray(unresolvedChecks) && unresolvedChecks.length
       )}
     </div>
 
-    <!-- 未决核查与系统时间底栏 -->
+    <!-- Unresolved checks and footer -->
     {hasUnresolved && (
       <div class="audit-unresolved-block">
         <div class="audit-col-header">
-          <span class="audit-tag tag-unresolved">⏳ 未决核查待办</span>
+          <span class="audit-tag tag-unresolved">⏳ Unresolved Checks</span>
         </div>
         <div class="audit-col-body">
           <ul class="guide-bullet-list guide-unresolved-list">
@@ -125,11 +125,11 @@ const hasUnresolved = Array.isArray(unresolvedChecks) && unresolvedChecks.length
     {(origin || analyzedAt) && (
       <div class="audit-metadata-footer">
         <span class="audit-meta-item">
-          <strong>分析来源：</strong>{origin ?? "系统管道"}
+          <strong>Analysis Origin: </strong>{origin ?? "system pipeline"}
         </span>
         {analyzedAt && (
           <span class="audit-meta-item">
-            <strong>研判时间：</strong>{analyzedAt}
+            <strong>Timestamp: </strong>{analyzedAt}
           </span>
         )}
       </div>

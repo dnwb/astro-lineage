@@ -23,27 +23,29 @@ function visibleRelatedWorks(sentence: AnyRecord) {
 function cleanBriefSummary(text: string) {
   if (!text) return "";
   return text
-    .replace(/^其他值得知道的工作[：:]\s*/u, "")
-    .replace(/；其余见下方卡片[。.]?$/u, "。")
-    .replace(/^快速浏览条目涉及\s*/u, "")
-    .replace(/；目前仅依据摘要分类[。.]?$/u, "。");
+    .replace(/^Other notable works[：:]\s*/iu, "")
+    .replace(/^\u5176\u4ed6\u503c\u5f97\u77e5\u9053\u7684\u5de5\u4f5c[：:]\s*/u, "")
+    .replace(/\uff1b\u5176\u4f59\u89c1\u4e0b\u65b9\u5361\u7247[。.]?$/u, ".")
+    .replace(/^\u5feb\u901f\u6d4f\u89c8\u6761\u76ee\u6d89\u53ca\s*/u, "")
+    .replace(/^Skim entries cover\s*/iu, "")
+    .replace(/\uff1b\u76ee\u524d\u4ec5\u4f9d\u636e\u6458\u8981\u5206\u7c7b[。.]?$/u, ".");
 }
 ---
 
 <section class="panel radar-brief" id="opening-brief" aria-labelledby="opening-brief-title">
-  <p class="section-kicker"><span class="language-primary">本期导读</span><span class="language-english" lang="en">Opening brief</span></p>
-  <h2 id="opening-brief-title"><span class="language-primary">宏观速报</span><span class="language-english" lang="en">Read this update first</span></h2>
+  <p class="section-kicker">Opening Brief</p>
+  <h2 id="opening-brief-title">Read this update first</h2>
   {ready ? (
-    <div class="language-primary">
+    <div>
       <p class="radar-brief-intro"><ReaderText text={brief.intro} /></p>
       {mustRead.length > 0 ? (
         <ul class="radar-brief-must-read">
           {mustRead.map((sentence: AnyRecord) => (
             <li class="radar-brief-item">
-              <span class="radar-brief-pill pill-must-read">⭐ 必读</span>
-              <a href={`#${sentence.anchor}`} class="brief-paper-title">{sentence.label}</a>：<ReaderText text={sentence.text} />
+              <span class="radar-brief-pill pill-must-read">⭐ Must Read</span>
+              <a href={`#${sentence.anchor}`} class="brief-paper-title">{sentence.label}</a>: <ReaderText text={sentence.text} />
               {visibleRelatedWorks(sentence).length > 0 ? (
-                <span class="radar-brief-work-links">（相关 Work：{visibleRelatedWorks(sentence).map((work) => <a href={work.href}>{work.title}</a>) }）</span>
+                <span class="radar-brief-work-links">(Related Work: {visibleRelatedWorks(sentence).map((work) => <a href={work.href}>{work.title}</a>) })</span>
               ) : null}
             </li>
           ))}
@@ -51,26 +53,20 @@ function cleanBriefSummary(text: string) {
       ) : null}
       {hasWorthKnowing && brief.worth_knowing_summary ? (
         <p class="radar-brief-row">
-          <span class="radar-brief-pill pill-worth-knowing">📌 关注</span>
+          <span class="radar-brief-pill pill-worth-knowing">📌 Follow</span>
           <span class="brief-summary-text"><ReaderText text={cleanBriefSummary(brief.worth_knowing_summary)} /></span>
         </p>
       ) : null}
       {hasSkim && brief.skim_summary ? (
         <p class="radar-brief-row">
-          <span class="radar-brief-pill pill-skim">⚡ 略读</span>
+          <span class="radar-brief-pill pill-skim">⚡ Skim</span>
           <span class="brief-summary-text"><ReaderText text={cleanBriefSummary(brief.skim_summary)} /></span>
         </p>
       ) : null}
     </div>
   ) : (
-    <>
-      <p class="empty-state language-primary">本期导读暂不可用；下面仍保留有证据边界的论文卡片。</p>
-      <p class="empty-state language-english" lang="en">This opening brief is unavailable; the paper cards below retain their evidence boundaries.</p>
-    </>
+    <p class="empty-state">This opening brief is unavailable; the paper cards below retain their evidence boundaries.</p>
   )}
-  {ready ? (
-    <p class="record-label language-english" lang="en">This opening brief is available in Chinese only; each paper card retains its own source and coverage disclosure.</p>
-  ) : null}
 </section>
 
 <style>

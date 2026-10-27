@@ -13,7 +13,7 @@ const topEvents = (scientificEvents.events || []).slice(0, 5);
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="AstroLineage Agent Egress: 面向大模型与自主智能体（Cursor, Claude, NotebookLM, GPT）的标准机器接入协议与 OpenAPI 端点。" />
+    <meta name="description" content="AstroLineage Agent Egress: Standard machine-readable endpoints and OpenAPI specifications for AI agents (Cursor, Claude, NotebookLM, GPT)." />
     <title>Agent Egress & API · {site.title}</title>
   </head>
   <body>
@@ -22,14 +22,8 @@ const topEvents = (scientificEvents.events || []).slice(0, 5);
       <p class="eyebrow"><a href="/">{site.title}</a> · Machine Egress</p>
       
       <header class="reader-header">
-        <h1>
-          <span class="language-primary">Agent 接口与数据</span>
-          <span class="language-english" lang="en">Agent Egress & Machine Protocols</span>
-        </h1>
-        <p class="reader-deck language-primary">
-          面向 Agent 与大模型的高能天体物理数据接口。
-        </p>
-        <p class="reader-deck language-english" lang="en">
+        <h1>Agent Egress & Machine Protocols</h1>
+        <p class="reader-deck">
           Machine-readable feeds, OpenAPI endpoints, and evidence chains for agents.
         </p>
       </header>
@@ -37,42 +31,42 @@ const topEvents = (scientificEvents.events || []).slice(0, 5);
       <!-- Tencent Channel & QQ Bot Connection Card -->
       <section class="channel-connect-card" aria-labelledby="channel-connect-heading">
         <div class="channel-connect-main">
-          <div class="channel-header-badge">交流频道</div>
-          <h2 id="channel-connect-heading">腾讯频道与机器人</h2>
+          <div class="channel-header-badge">Channel</div>
+          <h2 id="channel-connect-heading">QQ Channel & Bot</h2>
           <p class="channel-desc">
-            接收每日导读推送、学术脉络整理与文献讨论。
+            Receive daily briefs, weekly academic lineages, and research discussions.
           </p>
           <div class="channel-meta-grid">
             <div class="channel-meta-item">
-              <span class="meta-label">频道名称</span>
-              <span class="meta-value">AstroLineage前沿</span>
+              <span class="meta-label">Channel</span>
+              <span class="meta-value">AstroLineage</span>
             </div>
             <div class="channel-meta-item">
-              <span class="meta-label">频道号</span>
+              <span class="meta-label">ID</span>
               <span class="meta-value font-mono">pd28000535</span>
             </div>
             <div class="channel-meta-item">
-              <span class="meta-label">官方机器人</span>
+              <span class="meta-label">Official Bot</span>
               <span class="meta-value">@AstroLineage Bot</span>
             </div>
           </div>
           <div class="channel-actions">
             <a href="https://pd.qq.com/s/d4lw4zl0g" target="_blank" rel="noopener noreferrer" class="channel-join-btn">
-              <span>加入频道</span>
+              <span>Join Channel</span>
               <span aria-hidden="true">→</span>
             </a>
             <a href="https://github.com/dnwb/astro-lineage/issues" target="_blank" rel="noopener noreferrer" class="channel-feedback-btn">
-              <span>💬 GitHub 反馈</span>
+              <span>💬 GitHub Feedback</span>
               <span aria-hidden="true">↗</span>
             </a>
-            <span class="channel-url-copy">直达链接：<a href="https://pd.qq.com/s/d4lw4zl0g" target="_blank" rel="noopener noreferrer">https://pd.qq.com/s/d4lw4zl0g</a></span>
+            <span class="channel-url-copy">Direct URL: <a href="https://pd.qq.com/s/d4lw4zl0g" target="_blank" rel="noopener noreferrer">https://pd.qq.com/s/d4lw4zl0g</a></span>
           </div>
         </div>
         <div class="channel-qr-pane">
           <div class="channel-qr-frame">
-            <img src="/qq-channel-qrcode.svg" alt="AstroLineage 腾讯频道二维码" width="150" height="150" class="channel-qr-img" />
+            <img src="/qq-channel-qrcode.svg" alt="AstroLineage QQ Channel QR Code" width="150" height="150" class="channel-qr-img" />
           </div>
-          <p class="channel-qr-hint">手机 QQ 扫一扫加入频道</p>
+          <p class="channel-qr-hint">Scan with mobile QQ to join channel</p>
         </div>
       </section>
 
@@ -81,63 +75,63 @@ const topEvents = (scientificEvents.events || []).slice(0, 5);
         <div class="agent-card">
           <div class="agent-card-icon">📄</div>
           <h3>/llms.txt</h3>
-          <p>遵循 LLMs.txt 开放标准，精简列出项目核心研究领域、最新必读论文与数据端点索引。</p>
+          <p>Follows the LLMs.txt open standard, listing core research areas, latest must-read papers, and endpoint indices.</p>
           <div class="agent-card-actions">
-            <a href="/llms.txt" class="agent-btn" target="_blank">查看 llms.txt →</a>
-            <a href="/llms-full.txt" class="agent-btn agent-btn-subtle" target="_blank">完整上下文 (Full) →</a>
+            <a href="/llms.txt" class="agent-btn" target="_blank">View llms.txt →</a>
+            <a href="/llms-full.txt" class="agent-btn agent-btn-subtle" target="_blank">Full Context →</a>
           </div>
         </div>
 
         <div class="agent-card">
           <div class="agent-card-icon">📡</div>
           <h3>/api/v1/daily.json</h3>
-          <p>当日最新 arXiv 论文研判，包含优先级分类（必读 / 关注）、BLUF 结论及正文原样引文核验证据。</p>
+          <p>Daily arXiv paper analysis, priority classifications (Must Read / Follow), BLUF takeaways, and citation evidence.</p>
           <div class="agent-card-actions">
-            <a href="/api/v1/daily.json" class="agent-btn" target="_blank">打开 Daily JSON →</a>
+            <a href="/api/v1/daily.json" class="agent-btn" target="_blank">Open Daily JSON →</a>
           </div>
         </div>
 
         <div class="agent-card">
           <div class="agent-card-icon">🪐</div>
           <h3>/api/v1/events.json</h3>
-          <p>瞬变源科学事件自动聚簇接口。跨论文聚合 GRB、超新星、FRB、引力波后续跟踪，附带 7 天半衰期热度分。</p>
+          <p>Automated clustering endpoint for transient astrophysical events (GRBs, SNe, FRBs, GW follow-ups) with 7-day half-life scores.</p>
           <div class="agent-card-actions">
-            <a href="/api/v1/events.json" class="agent-btn" target="_blank">打开 Events JSON →</a>
+            <a href="/api/v1/events.json" class="agent-btn" target="_blank">Open Events JSON →</a>
           </div>
         </div>
 
         <div class="agent-card">
           <div class="agent-card-icon">📑</div>
-          <h3>OpenAPI 规范</h3>
-          <p>标准 OpenAPI 3.1 描述文件，支持一键导入 Postman、Swagger 或直接作为 Agent Tool Schema 注册。</p>
+          <h3>OpenAPI Specification</h3>
+          <p>Standard OpenAPI 3.1 schema for Postman, Swagger, or direct Agent Tool schema registration.</p>
           <div class="agent-card-actions">
-            <a href="/openapi.yaml" class="agent-btn" target="_blank">下载 openapi.yaml →</a>
+            <a href="/openapi.yaml" class="agent-btn" target="_blank">Download openapi.yaml →</a>
           </div>
         </div>
       </section>
 
       <!-- Usage Instructions for Agents -->
       <section class="radar-section">
-        <p class="section-kicker">使用指南</p>
-        <h2>如何在外部智能体中使用</h2>
+        <p class="section-kicker">Integration Guide</p>
+        <h2>Using in External AI Agents</h2>
 
         <div class="agent-guide-block">
-          <h3>1. 在 Cursor / Claude Code 中一键载入</h3>
-          <p>直接在对话框中引用 <code>/llms.txt</code>，即可让 AI 助手掌握天体物理组最新文献脉络（默认服务地址 <code>localhost:4321</code>）：</p>
-          <pre class="agent-code-box"><code>@http://localhost:4321/llms.txt 结合最新的 Must Read 论文，总结当前 FRB 磁星模型的新限制</code></pre>
+          <h3>1. Cursor / Claude Code Integration</h3>
+          <p>Reference <code>/llms.txt</code> directly in prompts to provide the assistant with frontier literature context:</p>
+          <pre class="agent-code-box"><code>@http://localhost:4321/llms.txt Summarize recent magnetar model constraints from the latest Must Read papers</code></pre>
 
-          <h3>2. 在 Python / 自治智能体中调用 API</h3>
+          <h3>2. Python / Autonomous Agent API Call</h3>
           <pre class="agent-code-box"><code>{`import urllib.request, json
 
-# 获取今日必读文献与证据链
+# Fetch today's must-read papers and evidence chain
 with urllib.request.urlopen("http://localhost:4321/api/v1/daily.json") as resp:
     data = json.loads(resp.read().decode())
     must_reads = data["groups"]["must_read"]
     for paper in must_reads:
         print(f"[{paper['arxiv_id']}] {paper['title']}")
-        print(f"  核心突破: {paper['analysis']['analysis']['result']}")`}</code></pre>
+        print(f"  Result: {paper['analysis']['analysis']['result']}")`}</code></pre>
 
-          <h3>3. cURL 命令行快速测试</h3>
+          <h3>3. cURL CLI Quick Test</h3>
           <pre class="agent-code-box"><code>curl -s http://localhost:4321/api/v1/daily.json | jq .
 curl -s http://localhost:4321/api/v1/events.json | jq .</code></pre>
         </div>
@@ -145,9 +139,9 @@ curl -s http://localhost:4321/api/v1/events.json | jq .</code></pre>
 
       <!-- Live Top Events Preview -->
       <section class="radar-section">
-        <p class="section-kicker">实时聚簇预览</p>
-        <h2>当前活跃瞬变源事件榜单（Top 5 Heat Scores）</h2>
-        <p>更新时间：{scientificEvents.generated_at}。热度反映近期文献讨论，不代表物理重要性或新爆发告警。</p>
+        <p class="section-kicker">Live Cluster Preview</p>
+        <h2>Active Transient Events (Top 5 Heat Scores)</h2>
+        <p>Updated: {scientificEvents.generated_at}. Heat score reflects recent literature activity, not physical importance.</p>
         <div class="agent-events-list">
           {topEvents.map((event: any, idx: number) => (
             <div class="agent-event-row">
@@ -156,11 +150,11 @@ curl -s http://localhost:4321/api/v1/events.json | jq .</code></pre>
                 <div class="event-header">
                   <span class="event-id">{event.event_id}</span>
                   <span class="event-type-badge">{event.event_type}</span>
-                  <span class="event-heat">🔥 热度 {event.heat_score}</span>
-                  <span class="event-papers-count">共 {event.paper_count} 篇论文关联</span>
+                  <span class="event-heat">🔥 Heat {event.heat_score}</span>
+                  <span class="event-papers-count">{event.paper_count} linked papers</span>
                 </div>
                 <div class="event-meta">
-                  <span>首次文献记录: {event.first_seen}</span> · <span>最近文献更新: {event.last_updated}</span>
+                  <span>First record: {event.first_seen}</span> · <span>Last update: {event.last_updated}</span>
                 </div>
                 <ul class="event-papers">
                   {event.papers.map((p: any) => (

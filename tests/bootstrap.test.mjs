@@ -53,10 +53,10 @@ test("the production build renders the product boundary as static HTML", async (
   assert.match(html, /AstroLineage/);
   assert.match(html, /scientific reading (?:and knowledge-navigation system|map)/i);
   assert.match(html, /not an arXiv mirror/i);
-  assert.match(papersHtml, /<h1>论文<\/h1>/);
+  assert.match(papersHtml, /(?:<h1>论文<\/h1>|<h1>Papers<\/h1>)/);
   assert.match(papersHtml, /Type I supernovae/i);
-  assert.match(papersHtml, /41 篇基准文献/);
-  assert.match(papersHtml, /阅读论文/);
+  assert.match(papersHtml, /(?:41 篇基准文献|41 benchmark works)/);
+  assert.match(papersHtml, /(?:阅读论文|Read paper)/);
   assert.doesNotMatch(papersHtml, /provenance/i);
   assert.equal(existsSync(new URL("../dist/papers/arnett-1982/index.html", import.meta.url)), true);
   const distRoot = fileURLToPath(new URL("../dist", import.meta.url));

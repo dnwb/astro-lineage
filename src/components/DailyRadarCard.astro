@@ -25,7 +25,7 @@ const prerequisiteWorks = Array.isArray(guide.prerequisite_works)
   ? guide.prerequisite_works.filter((prerequisite: AnyRecord) => visibleWorkLinks[prerequisite.work_id])
   : [];
 const coverageDescription = radarCoverageDescription(coverage);
-const resultLabel = coverageLevel === "abstract_only" ? "摘要线索" : priorityLabel(item.analysis.priority);
+const resultLabel = coverageLevel === "abstract_only" ? "Abstract Lead" : priorityLabel(item.analysis.priority);
 const isSkim = item.analysis.priority === "skip";
 const cardVariant = isSkim
   ? "skim"
@@ -33,9 +33,9 @@ const cardVariant = isSkim
     ? "must-read"
     : "worth-knowing";
 
-const resultClaim = normalizeStructuredClaim(record.analysis.result || guide.result, "主要突破");
-const problemClaim = normalizeStructuredClaim(guide.problem, "课题目标");
-const reasonClaim = normalizeStructuredClaim(guide.reason, "阅读价值");
+const resultClaim = normalizeStructuredClaim(record.analysis.result || guide.result, "Main Finding");
+const problemClaim = normalizeStructuredClaim(guide.problem, "Objective");
+const reasonClaim = normalizeStructuredClaim(guide.reason, "Why Read");
 
 const titleZh = resolvePaperTitleZhSync(item);
 const scientificTags = matchScientificTags(item);
@@ -45,17 +45,17 @@ const transientIds = extractTransientIdentifiers(
 const searchIndex = `${item.title} ${titleZh || ""} ${item.arxiv_id} ${(item.authors || []).join(" ")} ${guide.problem || ""} ${record.analysis.result || ""} ${guide.reason || ""} ${scientificTags.join(" ")} ${transientIds.join(" ")}`.toLowerCase();
 
 const relationLabels: Record<string, string> = {
-  builds_on: "建立在其上",
-  extends: "扩展",
-  tests: "检验",
-  constrains: "约束",
-  challenges: "挑战",
-  replaces_assumption: "替代假设",
-  corrects: "修正",
+  builds_on: "builds on",
+  extends: "extends",
+  tests: "tests",
+  constrains: "constrains",
+  challenges: "challenges",
+  replaces_assumption: "replaces assumption",
+  corrects: "corrects",
 };
 
 function priorityLabel(priority: string) {
-  return priority === "must_read" ? "作者报告的主要结果与限定" : "进展与限定";
+  return priority === "must_read" ? "Reported Results & Boundaries" : "Key Progress & Limits";
 }
 ---
 
@@ -78,12 +78,12 @@ function priorityLabel(priority: string) {
     <div class="radar-card-header-row">
       <div class="header-left-badges">
         <span class={`tier-pill priority-pill-${cardVariant}`}>
-          {item.analysis.priority === "must_read" ? "⭐ 必读" : isSkim ? "⚡ 略读" : "📌 关注"}
+          {item.analysis.priority === "must_read" ? "⭐ Must Read" : isSkim ? "⚡ Skim" : "📌 Follow"}
         </span>
         <a class="radar-arxiv-badge" href={item.url} target="_blank" rel="noopener">arXiv:{item.arxiv_id}</a>
-        <a class="radar-pdf-badge" href={`https://arxiv.org/pdf/${item.arxiv_id}`} target="_blank" rel="noopener" title="直接阅读/下载官方 PDF">📄 PDF</a>
+        <a class="radar-pdf-badge" href={`https://arxiv.org/pdf/${item.arxiv_id}`} target="_blank" rel="noopener" title="Read or download official PDF">📄 PDF</a>
         {transientIds.map((tid: string) => (
-          <span class="radar-transient-tag" title="观测事件目标">🔭 {tid}</span>
+          <span class="radar-transient-tag" title="Observational Target">🔭 {tid}</span>
         ))}
         {scientificTags.map((tag: string) => (
           <span class="radar-category-tag">{tag}</span>
@@ -91,8 +91,7 @@ function priorityLabel(priority: string) {
       </div>
       {Array.isArray(item.authors) && item.authors.length > 0 ? (
         <span class="radar-author-preview">
-          <span class="language-primary">{item.authors.slice(0, 2).join(", ")}{item.authors.length > 2 ? " 等" : ""}</span>
-          <span class="language-english" lang="en">{item.authors.slice(0, 2).join(", ")}{item.authors.length > 2 ? " et al." : ""}</span>
+          <span>{item.authors.slice(0, 2).join(", ")}{item.authors.length > 2 ? " et al." : ""}</span>
         </span>
       ) : null}
     </div>
@@ -100,7 +99,6 @@ function priorityLabel(priority: string) {
     <h3 class="radar-card-title">
       <a class="paper-title" href={item.url}>
         <span class="paper-title-en">{item.title}</span>
-        {titleZh ? <span class="paper-title-zh">{titleZh}</span> : null}
       </a>
     </h3>
 
@@ -108,9 +106,9 @@ function priorityLabel(priority: string) {
     <div class="radar-bluf-brief">
       {!isSkim ? (
         <>
-          {guide.problem && guide.problem !== "unknown" && !guide.problem.startsWith("未能从已检查材料") ? (
+          {guide.problem && guide.problem !== "unknown" && !guide.problem.startsWith("\u672a\u80fd\u4ece\u5df2\u68c0\u67e5\u6750\u6599") && !guide.problem.startsWith("Could not be derived") ? (
             <div class="bluf-item bluf-item-problem">
-              <span class="bluf-mark bluf-tag problem-mark problem-tag">课题</span>
+              <span class="bluf-mark bluf-tag problem-mark problem-tag">Problem</span>
               <div class="bluf-content-wrapper">
                 {problemClaim.headline && !problemClaim.detailed_text.startsWith(problemClaim.headline.replace(/\.\.\.$/, "")) && (
                   <span class="bluf-headline">{problemClaim.headline}</span>
@@ -120,7 +118,7 @@ function priorityLabel(priority: string) {
             </div>
           ) : null}
           <div class="bluf-item bluf-item-result">
-            <span class="bluf-mark bluf-tag result-mark result-tag" title={resultLabel}>突破</span>
+            <span class="bluf-mark bluf-tag result-mark result-tag" title={resultLabel}>Result</span>
             <div class="bluf-content-wrapper">
               {resultClaim.headline && !resultClaim.detailed_text.startsWith(resultClaim.headline.replace(/\.\.\.$/, "")) && (
                 <span class="bluf-headline">{resultClaim.headline}</span>
@@ -130,7 +128,7 @@ function priorityLabel(priority: string) {
           </div>
           {guide.reason ? (
             <div class="bluf-item bluf-item-reason">
-              <span class="bluf-mark bluf-tag reason-mark reason-tag">理由</span>
+              <span class="bluf-mark bluf-tag reason-mark reason-tag">Reason</span>
               <div class="bluf-content-wrapper">
                 {reasonClaim.headline && !reasonClaim.detailed_text.startsWith(reasonClaim.headline.replace(/\.\.\.$/, "")) && (
                   <span class="bluf-headline">{reasonClaim.headline}</span>
@@ -142,7 +140,7 @@ function priorityLabel(priority: string) {
         </>
       ) : (
         <div class="bluf-item bluf-item-skim">
-          <span class="bluf-mark bluf-tag skim-mark skim-tag">略读</span>
+          <span class="bluf-mark bluf-tag skim-mark skim-tag">Skim</span>
           <div class="bluf-content-wrapper">
             <span class="bluf-text"><ReaderText text={guide.reason || record.analysis.result || guide.result} /></span>
           </div>
@@ -160,7 +158,7 @@ function priorityLabel(priority: string) {
       >
         <span class="btn-left">
           <span class="btn-icon">🔬</span>
-          <span class="btn-title">{isSkim ? "查看详情" : "展开精读"}</span>
+          <span class="btn-title">{isSkim ? "Details" : "Read Guide"}</span>
         </span>
         <span class="btn-right">
           <span class="btn-arrow" aria-hidden="true">↗</span>
@@ -181,7 +179,7 @@ function priorityLabel(priority: string) {
           <div class="modal-meta-row">
             <div class="modal-badges">
               <span class={`tier-pill priority-pill-${cardVariant}`}>
-                {item.analysis.priority === "must_read" ? "⭐ 必读" : isSkim ? "⚡ 略读" : "📌 关注"}
+                {item.analysis.priority === "must_read" ? "⭐ Must Read" : isSkim ? "⚡ Skim" : "📌 Follow"}
               </span>
               <span class="radar-arxiv-badge">arXiv:{item.arxiv_id}v{item.revision || 1}</span>
               {scientificTags.map((tag: string) => (
@@ -193,32 +191,31 @@ function priorityLabel(priority: string) {
               class="radar-modal-close-btn"
               popovertarget={`modal-${item.arxiv_id.replace(/\./g, "-")}-v${item.revision || 1}`}
               popovertargetaction="hide"
-              aria-label="关闭研读窗口 (ESC)"
+              aria-label="Close reading modal (ESC)"
             >✕</button>
           </div>
           <h2 class="radar-modal-title" id={`modal-title-${item.arxiv_id.replace(/\./g, "-")}-v${item.revision || 1}`}>
             <ReaderText text={item.title} />
-            {titleZh ? <span class="modal-title-zh">{titleZh}</span> : null}
           </h2>
           {Array.isArray(item.authors) && item.authors.length > 0 && (
-            <p class="radar-modal-authors">作者：{item.authors.slice(0, 3).join(", ")}{item.authors.length > 3 ? " 等" : ""}</p>
+            <p class="radar-modal-authors">Authors: {item.authors.slice(0, 3).join(", ")}{item.authors.length > 3 ? " et al." : ""}</p>
           )}
         </header>
 
-        <div class="radar-modal-body language-primary">
+        <div class="radar-modal-body">
           {isSkim ? (
             <div class="radar-skim-box">
-              <p class="radar-field-row"><strong>作者报告的主要结果与限定：</strong><ReaderText text={record.analysis.result || guide.result} /></p>
+              <p class="radar-field-row"><strong>Reported Results & Boundaries: </strong><ReaderText text={record.analysis.result || guide.result} /></p>
               {guide.problem && guide.problem !== "unknown" ? (
-                <p class="radar-field-row"><strong>研究了什么：</strong><ReaderText text={guide.problem} /></p>
+                <p class="radar-field-row"><strong>Problem & Objective: </strong><ReaderText text={guide.problem} /></p>
               ) : null}
               {prerequisiteWorks.length > 0 && (
-                <p class="radar-field-row"><strong>阅读前置：</strong>{prerequisiteWorks.map((p: AnyRecord) => visibleWorkLinks[p.work_id]?.title).filter(Boolean).join("、")}</p>
+                <p class="radar-field-row"><strong>Prerequisites: </strong>{prerequisiteWorks.map((p: AnyRecord) => visibleWorkLinks[p.work_id]?.title).filter(Boolean).join(", ")}</p>
               )}
               {lineageCandidates.length > 0 && (
-                <p class="radar-field-row"><strong>潜在关系：</strong>{lineageCandidates.map((c: AnyRecord) => `${relationLabels[c.relation] || c.relation} ${visibleWorkLinks[c.target_work_id]?.title || ""}`).filter(Boolean).join("；")}</p>
+                <p class="radar-field-row"><strong>Potential Lineage: </strong>{lineageCandidates.map((c: AnyRecord) => `${relationLabels[c.relation] || c.relation} ${visibleWorkLinks[c.target_work_id]?.title || ""}`).filter(Boolean).join("; ")}</p>
               )}
-              <p class="radar-skim-coverage">{coverageDescription.primary}</p>
+              <p class="radar-skim-coverage">{coverageDescription.english}</p>
             </div>
           ) : (
             <DailyRadarGuide item={item} visibleWorkLinks={visibleWorkLinks} />
@@ -238,7 +235,7 @@ function priorityLabel(priority: string) {
             popovertarget={`modal-${item.arxiv_id.replace(/\./g, "-")}-v${item.revision || 1}`}
             popovertargetaction="hide"
           >
-            返回列表
+            Back to list
           </button>
         </footer>
       </div>

@@ -205,13 +205,6 @@ test("arXiv weekly layout prioritizes reading: executive summary and top picks p
   assert.ok(topPicksIdx !== -1, "must have top picks section");
   assert.ok(auditIdx !== -1, "must have audit-and-index section");
   assert.ok(executiveIdx < topPicksIdx, "executive summary must appear before top picks");
-  const matrixIdx = html.indexOf('id="domain-matrix"');
-  if (matrixIdx !== -1) {
-    assert.ok(
-      matrixIdx < topPicksIdx,
-      "domain matrix replaces narrative and appears before top picks"
-    );
-  }
 
   if (thematicIdx !== -1) {
     assert.ok(topPicksIdx < thematicIdx, "top picks must appear before thematic highlights");
@@ -223,12 +216,16 @@ test("arXiv weekly layout prioritizes reading: executive summary and top picks p
     assert.ok(topPicksIdx < auditIdx, "top picks must appear before audit and index section");
   }
 
-  // 2. Audit and Index section is a collapsed details containing daily breakdown and catalog
+  // 2. Audit and Index section is a collapsed details containing matrix, daily breakdown, and catalog
   const auditBlock = html.slice(auditIdx, auditIdx + 20000);
   assert.match(
     auditBlock,
     /<details\b[^>]*class=["'][^"']*audit-details/u,
     "audit section must be a collapsible details"
+  );
+  assert.ok(
+    auditBlock.includes('id="domain-matrix"') || html.indexOf('id="domain-matrix"') > auditIdx,
+    "domain matrix must be inside or after audit section"
   );
   assert.ok(
     auditBlock.includes('id="daily-breakdown"') || html.indexOf('id="daily-breakdown"') > auditIdx,

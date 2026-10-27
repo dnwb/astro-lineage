@@ -5,10 +5,9 @@ import { radarCardAnchor } from "../../../scripts/daily-radar.mjs";
 interface Props {
   matrixRows: any[];
   paperDailyDateMap: Map<string, string>;
-  hideTitle?: boolean;
 }
 
-const { matrixRows, paperDailyDateMap, hideTitle = false } = Astro.props;
+const { matrixRows, paperDailyDateMap } = Astro.props;
 
 function parseAssertionLine(line: string) {
   const match = line.match(/^[-*]?\s*【arXiv:(\d{4}\.\d{4,5}[a-z]?(?:v\d+)?)】(?:\(([^)]+)\))?[：:]?\s*(.+)$/i);
@@ -28,12 +27,10 @@ function parseAssertionLine(line: string) {
 ---
 
 {matrixRows && matrixRows.length > 0 && (
-  <div class={`executive-matrix-wrap ${hideTitle ? "matrix-seamless" : ""}`}>
-    {!hideTitle && (
-      <div class="matrix-header-group">
-        <h3 class="matrix-title">📊 领域研判矩阵</h3>
-      </div>
-    )}
+  <div class="executive-matrix-wrap">
+    <div class="matrix-header-group">
+      <h3 class="matrix-title">📊 领域研判矩阵</h3>
+    </div>
     <div class="table-responsive">
       <table class="weekly-overview-table">
         <thead>
@@ -126,9 +123,6 @@ function parseAssertionLine(line: string) {
     border-radius: 8px;
     padding: 1.25rem 1.5rem;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-  }
-  .executive-matrix-wrap.matrix-seamless {
-    margin-top: 0.5rem;
   }
   :global([data-theme="dark"]) .executive-matrix-wrap {
     background: #1e293b;

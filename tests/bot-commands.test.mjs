@@ -34,6 +34,7 @@ test("matchBotCommand correctly classifies all regular commands with \\ and / an
   assert.deepEqual(matchBotCommand("\\start")?.type, "start");
   assert.deepEqual(matchBotCommand("/start")?.type, "start");
   assert.deepEqual(matchBotCommand("\\help")?.type, "start");
+  assert.deepEqual(matchBotCommand("/帮助")?.type, "start");
   assert.deepEqual(matchBotCommand("帮助")?.type, "start");
   assert.deepEqual(matchBotCommand("指南")?.type, "start");
 
@@ -45,10 +46,18 @@ test("matchBotCommand correctly classifies all regular commands with \\ and / an
   assert.deepEqual(matchBotCommand("网站地址")?.type, "site");
   assert.deepEqual(matchBotCommand("网址")?.type, "site");
 
+  // 1.2 \subscribe & Chinese aliases
+  assert.deepEqual(matchBotCommand("\\subscribe")?.type, "subscribe");
+  assert.deepEqual(matchBotCommand("/subscribe")?.type, "subscribe");
+  assert.deepEqual(matchBotCommand("/订阅")?.type, "subscribe");
+  assert.deepEqual(matchBotCommand("订阅")?.type, "subscribe");
+
   // 2. \today
   assert.deepEqual(matchBotCommand("\\today")?.type, "today");
   assert.deepEqual(matchBotCommand("/today")?.type, "today");
   assert.deepEqual(matchBotCommand("\\daily")?.type, "today");
+  assert.deepEqual(matchBotCommand("/最新")?.type, "today");
+  assert.deepEqual(matchBotCommand("最新")?.type, "today");
   assert.deepEqual(matchBotCommand("今日导读")?.type, "today");
   assert.deepEqual(matchBotCommand("今日")?.type, "today");
 
@@ -196,6 +205,14 @@ test("handleBotCommand handles \\site and returns public and local website URLs"
   assert.match(res.replyText, /10\.131\.43\.83:4321/u);
   assert.match(res.replyText, /arxiv-daily/u);
   assert.match(res.replyText, /arxiv-weekly/u);
+});
+
+test("handleBotCommand handles \\subscribe and returns subscription guidance", async () => {
+  const res = await handleBotCommand("\\subscribe");
+  assert.equal(res.matched, true);
+  assert.match(res.replyText, /Subscriptions/u);
+  assert.match(res.replyText, /QQ Channel/u);
+  assert.match(res.replyText, /Web Reader/u);
 });
 
 test("handleBotCommand handles \\today and returns today brief card", async () => {

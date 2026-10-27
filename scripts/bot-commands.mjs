@@ -30,6 +30,7 @@ import {
   resolveWebsiteUrls,
 } from "../src/domain/academic-domain.mjs";
 import { generateWeeklyPdf } from "./weekly-pdf.mjs";
+import { isLegacyChineseDate } from "../src/domain/language-cutover.mjs";
 
 const DEFAULT_DAILY_ARCHIVES_DIR = fileURLToPath(
   new URL("../src/data/arxiv-archives/daily", import.meta.url)
@@ -276,7 +277,7 @@ export function matchBotCommand(rawQuery) {
   const isSlash = query.startsWith("\\") || query.startsWith("/");
 
   if (
-    (isSlash && /^[\\/](start|help|menu|guide|id|whoami|groupid|bind)$/iu.test(query)) ||
+    (isSlash && /^[\\/](start|help|menu|guide|id|whoami|groupid|bind|帮助|指南)$/iu.test(query)) ||
     /^(帮助|指南|菜单|功能列表|指令列表)$/iu.test(query)
   ) {
     return { type: "start", query };
@@ -291,13 +292,21 @@ export function matchBotCommand(rawQuery) {
     return { type: "site", query };
   }
 
+  // 1.2 \subscribe, /subscribe, /订阅
+  if (
+    (isSlash && /^[\\/](subscribe|sub|订阅)$/iu.test(query)) ||
+    /^(订阅|如何订阅|频道订阅)$/iu.test(query)
+  ) {
+    return { type: "subscribe", query };
+  }
+
   if (isSlash && /^[\\/](test|ping|test-c2c)$/iu.test(query)) {
     return { type: "test", query };
   }
 
   if (
-    (isSlash && /^[\\/](today|daily|radar)$/iu.test(query)) ||
-    /^(今日导读|今日雷达|今日|今日论文)$/iu.test(query)
+    (isSlash && /^[\\/](today|daily|radar|最新|今日)$/iu.test(query)) ||
+    /^(今日导读|今日雷达|今日|今日论文|最新|最新导读|最新论文)$/iu.test(query)
   ) {
     return { type: "today", query };
   }
@@ -393,21 +402,22 @@ export async function executeBotCommand(cmd, options = {}) {
   // 1. 同步指令直接返回
   if (cmd.type === "start") {
     return [
-      "👋 你好！我是 AstroLineage 高能天体物理前沿文献助手。",
+      "👋 Hello! I am AstroLineage Literature Assistant (高能天体物理前沿文献助手).",
       "",
-      "📚 常规学术指令：",
-      "• `\\today` (或 `/today`)：查看最新一期 arXiv 前沿导读卡片",
-      "• `\\yesterday` (或 `/yesterday`)：查看上一期/昨日 arXiv 导读",
-      "• `\\day <日期>` (或 `/day <日期>`)：查看指定日期导读 (例如 `\\day 10-05` 或 `\\day 2026-10-05`)",
-      "• `\\week` (或 `/week`)：查看最新一期高能天体物理前沿周报",
-      "• `\\week pdf` (或 `/week pdf`)：获取周报完整精读 PDF（含完整高清图表与超链接）",
-      "• `\\last_week` (或 `/last_week`)：查看上周前沿周报 (亦支持 `\\last_week pdf`)",
-      "• `\\list_day` (或 `/list_day`)：查看已归档的每日导读日期列表",
-      "• `\\list_week` (或 `/list_week`)：查看所有已归档的周报列表",
-      "• `\\start` (或 `/start`)：调出本帮助指南",
-      "• `\\site` (或 `/site`、`网址`)：查看前沿知识库公网地址与校内直连入口",
+      "📚 Commands (supports English & Chinese aliases):",
+      "• `\\today` (or `/today`, `/最新`, `今日`) - View latest arXiv daily brief card",
+      "• `\\yesterday` (or `/yesterday`, `昨日`) - View previous daily arXiv brief",
+      "• `\\day <date>` - View brief for specific date (e.g. `\\day 10-05` or `\\day 2026-10-05`)",
+      "• `\\week` (or `/week`, `周报`) - View latest weekly synthesis",
+      "• `\\week pdf` - Download weekly synthesis PDF report with high-res figures",
+      "• `\\last_week` (or `上周`) - View previous weekly synthesis",
+      "• `\\list_day` (or `历史导读`) - View archived daily edition dates",
+      "• `\\list_week` (or `周报列表`) - View archived weekly editions",
+      "• `\\site` (or `/site`, `网址`) - View web knowledge base URLs",
+      "• `\\subscribe` (or `/订阅`) - Channel & notification subscription guide",
+      "• `\\start` (or `/help`, `帮助`) - Show this manual",
       "",
-      "💬 直接发送论文题目、arXiv 编号（如 2610.05773）或物理问题（如“总结今天的必读论文”），即可开始研讨！",
+      "💬 Send paper titles, arXiv IDs (e.g. 2610.05773) or physical questions to discuss directly!",
     ].join("\n");
   }
 
@@ -451,6 +461,18 @@ export async function executeBotCommand(cmd, options = {}) {
       ]
         .filter((line) => line !== null && line !== undefined)
         .join("\n");
+    }
+
+    case "subscribe": {
+      const urls = resolveWebsiteUrls(options);
+      const channelUrl = await resolveChannel();
+      return [
+        `🔔 **AstroLineage Subscriptions & Daily Updates**`,
+        "",
+        `• **QQ Channel**: [Join AstroLineage Channel](${channelUrl}) to receive daily briefs and weekly syntheses.`,
+        `• **Web Reader**: [Read Online](${urls.publicBase}/) or via local network at [${urls.localBase}/](${urls.localBase}/).`,
+        `• **Direct Bot Notifications**: QQ Groups with bot installed receive daily morning updates automatically.`,
+      ].join("\n");
     }
 
     case "today": {
@@ -588,28 +610,50 @@ export async function executeBotCommand(cmd, options = {}) {
           ? (pdfResult.fileSize / (1024 * 1024)).toFixed(1) + " MB"
           : "已生成";
 
+        const isLegacy = isLegacyChineseDate(targetWeekId);
         const weekZh = formatWeekIdZh(targetWeekId);
-        const weekDisplay = weekZh ? `${weekZh} (${targetWeekId})` : targetWeekId;
+        const weekDisplay = isLegacy
+          ? weekZh
+            ? `${weekZh} (${targetWeekId})`
+            : targetWeekId
+          : targetWeekId;
 
-        return [
-          `📄 **AstroLineage 前沿学术周报 · ${weekDisplay} PDF 精读版**`,
-          "",
-          synthesisClaim ? `💡 **核心脉络研判**：\n${synthesisClaim}\n` : "",
-          `🌐 **周报网页在线精读入口**：`,
-          `- 公网在线 (Cloudflare)：${websiteBase}/arxiv-weekly/${targetWeekId}/`,
-          `- 校内直连 (局域网)：${getDefaultLocalWebsiteBase()}/arxiv-weekly/${targetWeekId}/`,
-          "",
-          `📥 **PDF 完整报告下载**（含论文高清切图与原文超链接）：`,
-          `- 校内/局域网直连下载：${pdfResult.pdfUrl}`,
-          `（注：PDF 由校内工作站实时渲染托管；外网访问请连接校园网/VPN或在网页端直接在线精读）`,
-          "",
-          channelUrl ? `💬 **QQ 频道学术讨论帖**：\n${channelUrl}\n` : "",
-          `📊 **报告概览**：共研读 ${paperCount} 篇文献 ｜ 文件大小：${formattedSize} ｜ 包含完整学术图表与原文引用链接`,
-          "",
-          `💡 **使用提示**：网页端支持在线精读与一键下载 PDF；输入 \`\\week\` 可在聊天中查看纯文字版。`,
-        ]
-          .filter((line) => line !== null && line !== undefined)
-          .join("\n");
+        if (isLegacy) {
+          return [
+            `📄 **AstroLineage 前沿学术周报 · ${weekDisplay} PDF 精读版**`,
+            "",
+            synthesisClaim ? `💡 **核心脉络研判**：\n${synthesisClaim}\n` : "",
+            `🌐 **周报网页在线精读入口**：`,
+            `- 公网在线 (Cloudflare)：${websiteBase}/arxiv-weekly/${targetWeekId}/`,
+            `- 校内直连 (局域网)：${getDefaultLocalWebsiteBase()}/arxiv-weekly/${targetWeekId}/`,
+            "",
+            `📥 **PDF 完整报告下载**（含论文高清切图与原文超链接）：`,
+            `- 校内/局域网直连下载：${pdfResult.pdfUrl}`,
+            `（注：PDF 由校内工作站实时渲染托管；外网访问请连接校园网/VPN或在网页端直接在线精读）`,
+            "",
+            channelUrl ? `💬 **QQ 频道学术讨论帖**：\n${channelUrl}\n` : "",
+            `📊 **报告概览**：共研读 ${paperCount} 篇文献 ｜ 文件大小：${formattedSize} ｜ 包含完整学术图表与原文引用链接`,
+            "",
+            `💡 **使用提示**：网页端支持在线精读与一键下载 PDF；输入 \`\\week\` 可在聊天中查看纯文字版。`,
+          ]
+            .filter((line) => line !== null && line !== undefined)
+            .join("\n");
+        } else {
+          return [
+            `📄 **AstroLineage Weekly Report · ${weekDisplay} PDF Edition**`,
+            "",
+            synthesisClaim ? `💡 **Key Synthesis**:\n${synthesisClaim}\n` : "",
+            `🌐 **Online Reading**:\n- Cloudflare: ${websiteBase}/arxiv-weekly/${targetWeekId}/\n- Local Network: ${getDefaultLocalWebsiteBase()}/arxiv-weekly/${targetWeekId}/`,
+            "",
+            `📥 **PDF Report Download** (Full figures & citations):\n- Direct Link: ${pdfResult.pdfUrl}`,
+            channelUrl ? `\n💬 **Discussion**: ${channelUrl}\n` : "",
+            `📊 **Overview**: ${paperCount} papers analyzed | Size: ${formattedSize}`,
+            "",
+            `💡 **Tip**: Web reader supports online deep reading & PDF download. Type \`\\week\` for text summary.`,
+          ]
+            .filter((line) => line !== null && line !== undefined)
+            .join("\n");
+        }
       } catch (err) {
         return `[AstroLineage] 获取周报 PDF 失败: ${err.message}。可发送 \`\\week\` 在线阅读本期周报。`;
       }

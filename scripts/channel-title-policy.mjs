@@ -1,4 +1,5 @@
 import { resolvePaperTitleZhSync, formatTranslatedPaperTitle } from "./paper-translation.mjs";
+import { isLegacyChineseDate } from "../src/domain/language-cutover.mjs";
 
 const TITLE_LIMIT = 200;
 const WEEKLY_TITLE_LIMIT = 100;
@@ -6,24 +7,24 @@ const PAPER_TITLE_COMPACT_LIMIT = 60;
 const TITLE_REVIEW_HAN_LIMIT = 35;
 const ARXIV_IDENTIFIER = /\b(?:arxiv\s*:\s*)?\d{4}\.\d{4,5}(?:v\d+)?\b/iu;
 const UNINFORMATIVE =
-  /^(?:论文更新|多领域研究|每日导读|每日更新|每周更新|arxiv(?:\s*:\s*\d{4}\.\d{4,5})?|GRB喷流等进展)$/iu;
+  /^(?:论文更新|多领域研究|每日导读|每日更新|每周更新|arxiv(?:\s*:\s*\d{4}\.\d{4,5})?|GRB喷流等进展|daily update|weekly update|paper update)$/iu;
 const LIST_LIKE = /[、；;|｜]/u;
 const DANGLING_END =
-  /(?:如何|为何|为什么|是否|能否|与|和|及|并|或|但|而|的|在|同时|以及|包括|例如|如|中|内|下|条件下|情形下|模型下|样本中|设定下|前提下|背景下)$/u;
+  /(?:如何|为何|为什么|是否|能否|与|和|及|并|或|但|而|的|在|同时|以及|包括|例如|如|中|内|下|条件下|情形下|模型下|样本中|设定下|前提下|背景下)$|(?:\b(?:and|or|but|with|for|to|from|by|on|at|as|an|a|the|in|of|that|which|into|through|under|while|if|whether))\s*$/iu;
 const PAPER_RESULT_VERB =
-  /(?:发现|提出|显示|表明|揭示|测得|确立|证实|达到|超过|实现|支持|限制|约束|解释|影响|改变|主导|削弱|提高|降低|增加|减少|产生|形成|存在|测量|估计|推断|重建|区分|关联|更接近|依赖|来自|未发现|未见|报告|出现|造成|导致|保持|证明|验证|检验|描述|给出|进入|混合|具有|旋转|约为|得到|获得|满足|归一化)/u;
+  /(?:发现|提出|显示|表明|揭示|测得|确立|证实|达到|超过|实现|支持|限制|约束|解释|影响|改变|主导|削弱|提高|降低|增加|减少|产生|形成|存在|测量|估计|推断|重建|区分|关联|更接近|依赖|来自|未发现|未见|报告|出现|造成|导致|保持|证明|验证|检验|描述|给出|进入|混合|具有|旋转|约为|得到|获得|满足|归一化)|(?:\b(?:finds?|found|proposes?|proposed|shows?|showed|shown|indicates?|indicated|reveals?|revealed|measures?|measured|establishes?|established|confirms?|confirmed|reaches?|reached|achieves?|achieved|supports?|supported|constrains?|constrained|explains?|explained|alters?|altered|dominates?|dominated|weakens?|weakened|enhances?|enhanced|reduces?|reduced|increases?|increased|decreases?|decreased|produces?|produced|forms?|formed|exists?|existed|infers?|inferred|reconstructs?|reconstructed|distinguishes?|distinguished|correlates?|correlated|depends?|depended|originates?|originated|reports?|reported|causes?|caused|proves?|proved|validates?|validated|tests?|tested|describes?|described|provides?|provided|yields?|yielded|satisfies?|satisfied|detects?|detected|discovers?|discovered|limits?|limited|models?|modeled|breaks?|broke|rules?\s+out|ruled\s+out)\b)/iu;
 const DAILY_PROGRESS_SIGNAL =
-  /(?:发现|提出|显示|表明|揭示|测得|建立|确立|证实|达到|限制|约束|解释|改变|主导|削弱|提高|降低|增加|减少|产生|形成|来自|未发现|出现|造成|导致|获得|可使|可探测|抑制|增强|变暗|静默|再现|反相|转为|持续|候选|确认|放大|得到|关联|属于|未聚簇)/u;
+  /(?:发现|提出|显示|表明|揭示|测得|建立|确立|证实|达到|限制|约束|解释|改变|主导|削弱|提高|降低|增加|减少|产生|形成|来自|未发现|出现|造成|导致|获得|可使|可探测|抑制|增强|变暗|静默|再现|反相|转为|持续|候选|确认|放大|得到|关联|属于|未聚簇)|(?:\b(?:finds?|proposes?|shows?|indicates?|reveals?|measures?|establishes?|confirms?|constrains?|explains?|limits?|models?|detects?|discovers?|yields?|enhances?|reduces?|increases?|decreases?|breaks?|rules?\s+out)\b)/iu;
 const REPORTING_ONLY =
-  /^(?:(?:三维|二维|数值|流体)?模拟|模型|正文|摘要|研究|作者|结果|分析|计算|典型相关分析|味组成计算)(?:结果)?(?:显示|表明|报告|发现|指出|揭示|认为|提出|给出)$|^(?:给定正文摘要报告|作者提出)$/u;
+  /^(?:(?:三维|二维|数值|流体)?模拟|模型|正文|摘要|研究|作者|结果|分析|计算|典型相关分析|味组成计算)(?:结果)?(?:显示|表明|报告|发现|指出|揭示|认为|提出|给出)$|^(?:给定正文摘要报告|作者提出)$|^(?:the\s+)?(?:authors?|study|results?|simulations?|models?|analysis|data)\s+(?:show|shows|suggest|suggests|reveal|reveals|find|finds|indicate|indicates|demonstrate|demonstrates|propose|proposes|report|reports)$/iu;
 const REPORTING_LEAD_IN =
-  /^(?:(?:三维|二维|数值|流体)?模拟|模型|正文|摘要|研究|作者|结果|分析|计算)(?:结果)?(?:显示|表明|报告|发现|指出|揭示|认为)\s*[:：，,]?\s*/u;
+  /^(?:(?:三维|二维|数值|流体)?模拟|模型|正文|摘要|研究|作者|结果|分析|计算)(?:结果)?(?:显示|表明|报告|发现|指出|揭示|认为)\s*[:：，,]?\s*|^(?:the\s+)?(?:authors?|study|results?|simulations?|models?|analysis|data)\s+(?:show|shows|suggest|suggests|reveal|reveals|find|finds|indicate|indicates|demonstrate|demonstrates|propose|proposes|report|reports)\s*[:：，,]?\s*/iu;
 const FRAGMENT_START =
-  /^(?:而非|而不是|并非|并不是|但是|但|不过|然而|同时|并且|而且|以及|并|且|因此|因而|所以|而(?![^，。]{0,10}言之))/u;
+  /^(?:而非|而不是|并非|并不是|但是|但|不过|然而|同时|并且|而且|以及|并|且|因此|因而|所以|而(?![^，。]{0,10}言之))|(?:\b(?:instead\s+of|rather\s+than|however|but|and|furthermore|moreover|therefore|thus)\b)/iu;
 const SCOPED_CONDITION =
-  /(?:仅|只有|除非|若|如果|假设|当[^，。]{1,40}时|在[^，。]{1,40}(?:下|中|内|时|条件|情形|模型|样本|参数范围|范围)|[^，。]{1,40}(?:加入|进入|启动)[^，。]{0,40}(?:后|之后)|[^，。]{1,40}(?:后|之后)(?:形成|产生|演化为|形成的|产生的)[^，。]{1,40}|(?:视角|观测角|倾角)[^，。]{1,40}时|对于[^，。]{1,40}(?:而言|来说|条件)|针对[^，。]{1,40}(?:而言|条件))/u;
+  /(?:仅|只有|除非|若|如果|假设|当[^，。]{1,40}时|在[^，。]{1,40}(?:下|中|内|时|条件|情形|模型|样本|参数范围|范围)|[^，。]{1,40}(?:加入|进入|启动)[^，。]{0,40}(?:后|之后)|[^，。]{1,40}(?:后|之后)(?:形成|产生|演化为|形成的|产生的)[^，。]{1,40}|(?:视角|观测角|倾角)[^，。]{1,40}时|对于[^，。]{1,40}(?:而言|来说|条件)|针对[^，。]{1,40}(?:而言|条件))|(?:\b(?:only\s+if|unless|assuming|given|under\s+the\s+condition|for\s+the\s+case\s+of|when)\b)/iu;
 const STANDALONE_SUBORDINATE =
-  /^(?:(?:若|如果|假设|当)[^，。]{0,40}(?:成立|时)?|在[^，。]{1,40}(?:下|设定下|中|时|条件下|情形下|模型下|样本中)|从[^，。]{1,40}中|给定[^，。]{1,40}|随着[^，。]{1,40}|在线性[^，。]{1,40}内)$/u;
+  /^(?:(?:若|如果|假设|当)[^，。]{0,40}(?:成立|时)?|在[^，。]{1,40}(?:下|设定下|中|时|条件下|情形下|模型下|样本中)|从[^，。]{1,40}中|给定[^，。]{1,40}|随着[^，。]{1,40}|在线性[^，。]{1,40}内)$|^(?:if|when|under|given|in|for|assuming|while)\b[^,.]{0,40}$/iu;
 
 export function cleanMathInTitle(text) {
   if (!text) return "";
@@ -1026,8 +1027,12 @@ export function formatWeeklyTitle(weekId, progress) {
   if (LIST_LIKE.test(candidate) || /(?:论文更新|AstroLineage)/iu.test(candidate)) {
     throw new Error("CHANNEL_TITLE_WEEKLY_SINGLE_PROGRESS_REQUIRED");
   }
-  const title = `[${match[1]}-W${match[2]}] 前沿周报 ｜ ${candidate}`;
-  if (Array.from(title).length > WEEKLY_TITLE_LIMIT) throw new Error("CHANNEL_TITLE_TOO_LONG");
+  const isLegacy = isLegacyChineseDate(weekId);
+  const title = isLegacy
+    ? `[${match[1]}-W${match[2]}] 前沿周报 ｜ ${candidate}`
+    : `[${match[1]}-W${match[2]}] Weekly Synthesis | ${candidate}`;
+  const limit = isLegacy ? WEEKLY_TITLE_LIMIT : TITLE_LIMIT;
+  if (Array.from(title).length > limit) throw new Error("CHANNEL_TITLE_TOO_LONG");
   return title;
 }
 
@@ -1043,7 +1048,10 @@ export function validateTitleOverride(kind, candidate, identity) {
   if (kind === "weekly") {
     const match = /^(\d{4})-W(\d{2})$/u.exec(identity || "");
     if (!match) throw new Error("CHANNEL_TITLE_WEEK_INVALID");
-    const prefix = `[${match[1]}-W${match[2]}] 前沿周报 ｜ `;
+    const isLegacy = isLegacyChineseDate(identity);
+    const prefix = isLegacy
+      ? `[${match[1]}-W${match[2]}] 前沿周报 ｜ `
+      : `[${match[1]}-W${match[2]}] Weekly Synthesis | `;
     if (!value.startsWith(prefix)) throw new Error("CHANNEL_TITLE_OVERRIDE_IDENTITY_MISMATCH");
     formatWeeklyTitle(identity, value.slice(prefix.length));
     return value;

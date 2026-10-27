@@ -416,3 +416,34 @@ test("generateGroupBrief with specific week option loads targeted historical wee
   assert.ok(text.includes("[2026-W40]"), "Brief must reflect targeted week 2026-W40");
   assert.ok(text.includes("/arxiv-weekly/2026-W40/"), "Link must point to 2026-W40");
 });
+
+test("generateGroupBrief emits English notifications for post-cutover editions", async () => {
+  const weekly = {
+    week_id: "2026-W45",
+    date_range: "2026-11-02 ~ 2026-11-08",
+    executive_summary:
+      "Relativistic blast wave simulations constrain circumstellar density profile.",
+    thematic_highlights: [
+      { theme_name: "Jet Propagation", summary: "Numerical analysis of jets." },
+    ],
+    top_picks: [
+      {
+        arxiv_id: "2611.12345",
+        title: "Relativistic blast waves",
+        priority: "must_read",
+        reason: "Crucial for shock breakout modeling.",
+      },
+    ],
+  };
+  const text = await generateGroupBrief("weekly", {
+    weekly,
+    channelUrl,
+    websiteBase,
+    format: "markdown",
+  });
+  assert.ok(text.includes("[2026-W45] Weekly Synthesis |"));
+  assert.ok(text.includes("### ⭐ Must Read |"));
+  assert.ok(text.includes("### 📚 Reading Access"));
+  assert.ok(text.includes("- **Online Reading (Cloudflare)**:"));
+  assert.doesNotMatch(text, /前沿周报|必读|阅读入口|公网在线阅读/u);
+});

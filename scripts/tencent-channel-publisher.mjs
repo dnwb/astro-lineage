@@ -28,6 +28,7 @@ import {
   validateTitleOverride,
 } from "./channel-title-policy.mjs";
 import { resolvePaperTitleZhAsync, resolvePaperTitleZhSync } from "./paper-translation.mjs";
+import { isLegacyChineseDate } from "../src/domain/language-cutover.mjs";
 import { TencentGuildAdapter } from "./intelligence-egress.mjs";
 import {
   getDefaultWebsiteBase,
@@ -144,42 +145,59 @@ function dailyBriefItem(model, date) {
     const candidate = topic ? `${topic}最新突破进展` : "高能天体物理前沿文献精读";
     title = formatDailyTitle(date, candidate);
   }
-  const lines = [`发布日期：${date}`, "", "## 本期导读", "", brief.intro, ""];
+  const isLegacy = isLegacyChineseDate(date);
+  const lines = isLegacy
+    ? [`发布日期：${date}`, "", "## 本期导读", "", brief.intro, ""]
+    : [`Date: ${date}`, "", "## Daily Overview", "", brief.intro, ""];
   if (brief.must_read?.length) {
-    lines.push("## 必读核心突破", "");
+    lines.push(isLegacy ? "## 必读核心突破" : "## Must-Read Papers", "");
     for (const sentence of brief.must_read) {
       const paper = papers.find(
         (p) => p.arxiv_id === sentence.arxiv_id && p.revision === sentence.revision
       );
       if (!paper) continue;
       const anchor = `radar-paper-${paper.arxiv_id.replace(".", "-")}-v${paper.revision}`;
+      const originalLabel = isLegacy ? "原文" : "Original";
       lines.push(
         `### [${paperReaderTitle(paper)}](${SITE_BASE_URL}/arxiv-daily/${date}/#${anchor})`,
         "",
-        `${sentence.text} [原文](https://arxiv.org/abs/${paper.arxiv_id}v${paper.revision})`,
+        `${sentence.text} [${originalLabel}](https://arxiv.org/abs/${paper.arxiv_id}v${paper.revision})`,
         ""
       );
     }
   }
   if (model.groups.worth_knowing?.length && brief.worth_knowing_summary)
     lines.push(
-      "## 其他值得关注",
+      isLegacy ? "## 其他值得关注" : "## Other Followed Works",
       "",
-      brief.worth_knowing_summary.replace(/；其余见下方卡片[。.]?$/u, "。"),
+      brief.worth_knowing_summary.replace(/；其余见下方卡片[。.]?$/u, isLegacy ? "。" : "."),
       ""
     );
   if (model.groups.skip?.length && brief.skim_summary)
-    lines.push("## 略读线索", "", brief.skim_summary, "");
-  lines.push(
-    "---",
-    "",
-    "## 阅读入口",
-    `- **公网在线阅读 (Cloudflare)**: [打开网页深度导读](${PUBLIC_SITE_URL}/arxiv-daily/${date}/)`,
-    `- **校内/局域网直连**: [打开校内直连导读](${LOCAL_SITE_URL}/arxiv-daily/${date}/)`,
-    `- **QQ 频道社区交流帖**: [进入频道讨论](https://pd.qq.com/s/7xr9egnly)`,
-    "",
-    "每篇论文的版本、实际阅读范围与未核查项见网页原记录；本摘要不代表独立验证。"
-  );
+    lines.push(isLegacy ? "## 略读线索" : "## Skim Notes", "", brief.skim_summary, "");
+  if (isLegacy) {
+    lines.push(
+      "---",
+      "",
+      "## 阅读入口",
+      `- **公网在线阅读 (Cloudflare)**: [打开网页深度导读](${PUBLIC_SITE_URL}/arxiv-daily/${date}/)`,
+      `- **校内/局域网直连**: [打开校内直连导读](${LOCAL_SITE_URL}/arxiv-daily/${date}/)`,
+      `- **QQ 频道社区交流帖**: [进入频道讨论](https://pd.qq.com/s/7xr9egnly)`,
+      "",
+      "每篇论文的版本、实际阅读范围与未核查项见网页原记录；本摘要不代表独立验证。"
+    );
+  } else {
+    lines.push(
+      "---",
+      "",
+      "## Reading Access",
+      `- **Online Reading (Cloudflare)**: [Read Full Daily Brief](${PUBLIC_SITE_URL}/arxiv-daily/${date}/)`,
+      `- **Direct / Local Network**: [Read Direct Brief](${LOCAL_SITE_URL}/arxiv-daily/${date}/)`,
+      `- **QQ Channel Discussion**: [Join Channel Discussion](https://pd.qq.com/s/7xr9egnly)`,
+      "",
+      "Refer to original web records for paper versions, reading coverage, and unverified points. Summaries do not constitute independent verification."
+    );
+  }
   return {
     identity: `daily-summary:${date}`,
     topic: { primary: "daily" },
@@ -248,23 +266,32 @@ export async function generateWeeklyMarkdown({
       ? sourceTitle
       : useSourceBoundTitleOverride("weekly", titleOverride, weekId, sourceTitle);
 
+  const isLegacy = isLegacyChineseDate(weekId);
   let md = `${dateRange}\n\n`;
 
   if (weekly.executive_summary) {
-    md += `## 本周导读\n\n`;
+    md += isLegacy ? `## 本周导读\n\n` : `## Weekly Overview\n\n`;
     md += `${weekly.executive_summary}\n\n`;
   }
 
   if (Array.isArray(weekly.top_picks) && weekly.top_picks.length > 0) {
-    md += `## 建议优先阅读\n\n`;
+    md += isLegacy ? `## 建议优先阅读\n\n` : `## Top Picks\n\n`;
     for (const pick of weekly.top_picks) {
-      const tag = pick.priority === "must_read" ? "必读" : "关注";
+      const tag = isLegacy
+        ? pick.priority === "must_read"
+          ? "必读"
+          : "关注"
+        : pick.priority === "must_read"
+          ? "Must Read"
+          : "Follow";
       const paperObj = (weekly.papers || []).find((p) => p.arxiv_id === pick.arxiv_id);
       const authors = paperObj?.authors || pick.authors;
       const authorStr =
         Array.isArray(authors) && authors.length > 0
           ? authors.length > 2
-            ? `${authors[0]} 等`
+            ? isLegacy
+              ? `${authors[0]} 等`
+              : `${authors[0]} et al.`
             : authors.join(", ")
           : "";
       const authorSuffix = authorStr ? ` (${authorStr})` : "";
@@ -277,39 +304,52 @@ export async function generateWeeklyMarkdown({
   }
 
   if (Array.isArray(weekly.thematic_highlights) && weekly.thematic_highlights.length > 0) {
-    md += `## 各主题进展\n\n`;
+    md += isLegacy ? `## 各主题进展\n\n` : `## Thematic Developments\n\n`;
     for (const theme of weekly.thematic_highlights) {
       const papers = (theme.paper_ids || [])
         .map((id) => {
           const found = (weekly.papers || []).find((p) => p.arxiv_id === id);
           const authorStr =
             found && Array.isArray(found.authors) && found.authors.length > 0
-              ? ` (${found.authors[0]} 等)`
+              ? isLegacy
+                ? ` (${found.authors[0]} 等)`
+                : ` (${found.authors[0]} et al.)`
               : "";
           return `[arXiv:${id}${authorStr}](https://arxiv.org/abs/${id})`;
         })
         .join(", ");
       md += `### ${theme.theme_name}\n\n`;
       md += `${theme.summary}\n\n`;
-      if (papers) md += `相关论文：${papers}\n`;
+      if (papers) md += isLegacy ? `相关论文：${papers}\n` : `Related Papers: ${papers}\n`;
       md += `\n`;
     }
   }
 
   if (Array.isArray(weekly.lineage_connections) && weekly.lineage_connections.length > 0) {
-    md += `---\n\n## 📚 经典学术脉络传承与对照\n\n`;
+    md += isLegacy
+      ? `---\n\n## 📚 经典学术脉络传承与对照\n\n`
+      : `---\n\n## 📚 Academic Lineage & Comparisons\n\n`;
     for (const conn of weekly.lineage_connections) {
-      md += `* **[${conn.classic_work || "经典文献"}]** ⟵ **[arXiv:${conn.new_arxiv_id}]**\n`;
+      const classicLabel = isLegacy ? "经典文献" : "Classic Work";
+      md += `* **[${conn.classic_work || classicLabel}]** ⟵ **[arXiv:${conn.new_arxiv_id}]**\n`;
       md += `  ${cleanMath(conn.relationship)}\n`;
     }
     md += `\n`;
   }
 
-  md += `---\n\n## 阅读入口\n`;
-  md += `- **公网在线阅读 (Cloudflare)**: [打开网页深度周报](${PUBLIC_SITE_URL}/arxiv-weekly/${weekId}/)\n`;
-  md += `- **校内/局域网直连**: [打开校内直连周报](${LOCAL_SITE_URL}/arxiv-weekly/${weekId}/)\n`;
-  md += `- **QQ 频道社区交流帖**: [进入频道讨论](https://pd.qq.com/s/7xr9egnly)\n`;
-  md += `- **课题组前沿脉络知识库主页**: [公网主页](${PUBLIC_SITE_URL}/) | [校内直连](${LOCAL_SITE_URL}/)\n`;
+  if (isLegacy) {
+    md += `---\n\n## 阅读入口\n`;
+    md += `- **公网在线阅读 (Cloudflare)**: [打开网页深度周报](${PUBLIC_SITE_URL}/arxiv-weekly/${weekId}/)\n`;
+    md += `- **校内/局域网直连**: [打开校内直连周报](${LOCAL_SITE_URL}/arxiv-weekly/${weekId}/)\n`;
+    md += `- **QQ 频道社区交流帖**: [进入频道讨论](https://pd.qq.com/s/7xr9egnly)\n`;
+    md += `- **课题组前沿脉络知识库主页**: [公网主页](${PUBLIC_SITE_URL}/) | [校内直连](${LOCAL_SITE_URL}/)\n`;
+  } else {
+    md += `---\n\n## Reading Access\n`;
+    md += `- **Online Reading (Cloudflare)**: [Read Full Weekly Report](${PUBLIC_SITE_URL}/arxiv-weekly/${weekId}/)\n`;
+    md += `- **Direct / Local Network**: [Read Direct Weekly Report](${LOCAL_SITE_URL}/arxiv-weekly/${weekId}/)\n`;
+    md += `- **QQ Channel Discussion**: [Join Channel Discussion](https://pd.qq.com/s/7xr9egnly)\n`;
+    md += `- **Research Lineage Knowledge Base**: [Online Home](${PUBLIC_SITE_URL}/) | [Direct Home](${LOCAL_SITE_URL}/)\n`;
+  }
 
   return { weekId, dateRange, postTitle, md };
 }
@@ -615,46 +655,73 @@ export function paperMarkdown(item, date, topic, options = {}) {
   const result = claimText(a.result?.detailed_text || a.result?.bluf || a.result || "");
   const channelUrl = options.channelUrl || "https://pd.qq.com/s/7xr9egnly";
 
+  const isLegacy = isLegacyChineseDate(date);
+  const problemFallback = isLegacy
+    ? "未能从已检查材料中核实课题问题陈述。"
+    : "Problem statement not verified from checked materials.";
+  const resultFallback = isLegacy
+    ? "详见原文推导与正文分析。"
+    : "See original paper for derivations and analysis.";
+
+  const tag = isLegacy ? (mustRead ? "必读" : "关注") : mustRead ? "Must Read" : "Follow";
+
   const lines = [
-    `**${mustRead ? "必读" : "关注"}**${author}`,
+    `**${tag}**${author}`,
     "",
-    "## 课题背景",
+    isLegacy ? "## 课题背景" : "## Problem & Background",
     "",
-    `> ${problem || "未能从已检查材料中核实课题问题陈述。"}`,
+    `> ${problem || problemFallback}`,
     "",
-    "## 核心突破",
+    isLegacy ? "## 核心突破" : "## Key Result & Physical Mechanism",
     "",
-    `> ${result || "详见原文推导与正文分析。"}`,
+    `> ${result || resultFallback}`,
     "",
   ];
 
   if (readerReason) {
-    lines.push("## 研读价值", "", `> ${readerReason}`, "");
+    lines.push(isLegacy ? "## 研读价值" : "## Why It Matters", "", `> ${readerReason}`, "");
   }
 
   const limits = [...(a.limits || []), ...(a.unresolved_checks || [])];
   if (limits.length) {
-    lines.push("## 限制与边界", "");
+    lines.push(isLegacy ? "## 限制与边界" : "## Limitations & Boundaries", "");
     for (const l of limits) {
       lines.push(`- ${claimText(typeof l === "string" ? l : l.text || JSON.stringify(l))}`);
     }
     lines.push("");
   }
 
-  lines.push(
-    "---",
-    "",
-    "## 阅读入口",
-    "",
-    `- **公网在线阅读 (Cloudflare)**: [打开网页深度导读](${PUBLIC_SITE_URL}/arxiv-daily/${date}/#${anchor})`,
-    `- **校内/局域网直连**: [打开校内直连导读](${LOCAL_SITE_URL}/arxiv-daily/${date}/#${anchor})`,
-    `- **QQ 频道社区交流帖**: [进入频道讨论](${channelUrl})`,
-    `- **官方论文原文**: [${version}](https://arxiv.org/abs/${item.arxiv_id}v${item.revision}) · [📄 PDF](https://arxiv.org/pdf/${item.arxiv_id})`,
-    "",
-    `原标题：${item.title}`,
-    "",
-    `实际阅读范围：${coverage.label || coverage.level || "完整正文"}。本帖摘录作者报告的结果；完整条件与图表见网页原记录。`
-  );
+  if (isLegacy) {
+    lines.push(
+      "---",
+      "",
+      "## 阅读入口",
+      "",
+      `- **公网在线阅读 (Cloudflare)**: [打开网页深度导读](${PUBLIC_SITE_URL}/arxiv-daily/${date}/#${anchor})`,
+      `- **校内/局域网直连**: [打开校内直连导读](${LOCAL_SITE_URL}/arxiv-daily/${date}/#${anchor})`,
+      `- **QQ 频道社区交流帖**: [进入频道讨论](${channelUrl})`,
+      `- **官方论文原文**: [${version}](https://arxiv.org/abs/${item.arxiv_id}v${item.revision}) · [📄 PDF](https://arxiv.org/pdf/${item.arxiv_id})`,
+      "",
+      `原标题：${item.title}`,
+      "",
+      `实际阅读范围：${coverage.label || coverage.level || "完整正文"}。本帖摘录作者报告的结果；完整条件与图表见网页原记录。`
+    );
+  } else {
+    lines.push(
+      "---",
+      "",
+      "## Reading Access",
+      "",
+      `- **Online Reading (Cloudflare)**: [Read Full Brief](${PUBLIC_SITE_URL}/arxiv-daily/${date}/#${anchor})`,
+      `- **Direct / Local Network**: [Read Direct Brief](${LOCAL_SITE_URL}/arxiv-daily/${date}/#${anchor})`,
+      `- **QQ Channel Discussion**: [Join Channel Discussion](${channelUrl})`,
+      `- **Official Paper**: [${version}](https://arxiv.org/abs/${item.arxiv_id}v${item.revision}) · [📄 PDF](https://arxiv.org/pdf/${item.arxiv_id})`,
+      "",
+      `Title: ${item.title}`,
+      "",
+      `Reading coverage: ${coverage.label || coverage.level || "Full text"}. Excerpted from author reports; see website for full conditions and figures.`
+    );
+  }
 
   return lines.join("\n");
 }

@@ -1043,3 +1043,17 @@ test("Tier 3 safe entity title fallback ladder generates valid entity title with
   assert.ok(Array.from(directTitle).length <= 35);
   assert.match(directTitle, /^GRB 221009A/u);
 });
+
+test("bifurcates weekly titles between legacy Chinese archives and modern English editions", () => {
+  const legacyTitle = formatWeeklyTitle("2026-W40", "SN 2024ggi的前兆非探测限制了显著爆发式失质量");
+  assert.equal(legacyTitle, "[2026-W40] 前沿周报 ｜ SN 2024ggi的前兆非探测限制了显著爆发式失质量");
+
+  const englishTitle = formatWeeklyTitle(
+    "2026-W45",
+    "Shock breakout reveals dense circumstellar structure"
+  );
+  assert.equal(
+    englishTitle,
+    "[2026-W45] Weekly Synthesis | Shock breakout reveals dense circumstellar structure"
+  );
+});

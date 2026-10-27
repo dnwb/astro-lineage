@@ -72,7 +72,7 @@
 ## 3. 核心目录规范 (Directory Layout)
 
 ```text
-/home/long/axvdaily/
+/home/long/astro-lineage/
 ├── content/                     # 核心学术图谱（Works / Ontology / Edges）
 ├── src/
 │   ├── components/              # 前端 UI 组件（严禁落地页风格 Hero Decks）

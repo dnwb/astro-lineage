@@ -1,0 +1,16 @@
+[Unit]
+Description=AstroLineage Interactive Tencent Channel AI Agent Bot
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/long/astro-lineage
+Environment="PATH=/home/long/.npm-global/bin:/usr/local/bin:/usr/bin:/bin:/home/long/.local/bin"
+ExecStart=/usr/bin/node /home/long/astro-lineage/scripts/tencent-channel-bot.mjs --interval=30
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=default.target

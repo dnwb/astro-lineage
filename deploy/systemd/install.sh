@@ -13,6 +13,9 @@ cp -v "${SCRIPT_DIR}"/astrolineage-arxiv-daily.service "${SYSTEMD_USER_DIR}/"
 cp -v "${SCRIPT_DIR}"/astrolineage-arxiv-daily.timer "${SYSTEMD_USER_DIR}/"
 cp -v "${SCRIPT_DIR}"/astrolineage-arxiv-weekly.service "${SYSTEMD_USER_DIR}/"
 cp -v "${SCRIPT_DIR}"/astrolineage-arxiv-weekly.timer "${SYSTEMD_USER_DIR}/"
+cp -v "${SCRIPT_DIR}"/astrolineage-web.service "${SYSTEMD_USER_DIR}/"
+cp -v "${SCRIPT_DIR}"/astrolineage-bot.service "${SYSTEMD_USER_DIR}/"
+cp -v "${SCRIPT_DIR}"/astrolineage-qq-bot.service "${SYSTEMD_USER_DIR}/"
 
 # 重载并启动
 echo "-> 重新加载 systemd 用户守护进程..."

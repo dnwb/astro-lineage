@@ -12,7 +12,7 @@
 # 基础环境变量（cron 默认环境较精简，必须显式定义）
 SHELL=/bin/bash
 PATH=/home/long/.npm-global/bin:/usr/local/bin:/usr/bin:/bin:/home/long/.local/bin
-PROJECT_DIR=/home/long/axvdaily
+PROJECT_DIR=/home/long/astro-lineage
 
 # 指定 cron 时区为北京时间（系统 cronie 支持 CRON_TZ 变量）
 CRON_TZ=Asia/Shanghai
@@ -20,4 +20,4 @@ CRON_TZ=Asia/Shanghai
 # ------------------------------------------------------------------------------
 # 统一前沿学术调度任务：周一至周五上午 10:00 (北京时间)
 # ------------------------------------------------------------------------------
-0 10 * * 1-5 /bin/bash /home/long/axvdaily/scripts/cron-runner.sh auto >> /tmp/arxiv-task.log 2>&1
+0 10 * * 1-5 /bin/bash /home/long/astro-lineage/scripts/cron-runner.sh auto >> /tmp/arxiv-task.log 2>&1

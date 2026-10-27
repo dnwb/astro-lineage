@@ -1,0 +1,16 @@
+[Unit]
+Description=AstroLineage Official QQ Bot (Group, Guild & C2C Agent)
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/long/astro-lineage
+Environment="PATH=/home/long/.npm-global/bin:/usr/local/bin:/usr/bin:/bin:/home/long/.local/bin"
+ExecStart=/usr/bin/node /home/long/astro-lineage/scripts/qq-official-bot.mjs
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=default.target

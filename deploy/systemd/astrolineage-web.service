@@ -1,0 +1,16 @@
+[Unit]
+Description=AstroLineage Web Server (Campus Preview)
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/long/astro-lineage
+Environment="PATH=/home/long/.npm-global/bin:/usr/local/bin:/usr/bin:/bin:/home/long/.local/bin"
+ExecStart=/home/long/astro-lineage/node_modules/.bin/astro preview --host 0.0.0.0 --port 4321
+Restart=always
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=default.target

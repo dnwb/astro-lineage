@@ -14,7 +14,7 @@ python scripts/run.py notebooklm auth check --test --passive
 仅在认证缺失或失效时，在有图形显示的服务器终端手动登录：
 
 ```bash
-cd /home/long/axvdaily
+cd /home/long/astro-lineage
 npm run notebooklm:login
 ```
 

@@ -8,20 +8,20 @@
 
 arXiv 的高能天体物理与星系天体物理（`astro-ph.HE` / `astro-ph.GA`）遵循固定的发文与截稿结算窗口：
 
-* **官方结算时区**：美东时间（`America/New_York`，夏令时 EDT 为 UTC-4，冬令时 EST 为 UTC-5）。
-* **每日截稿时间**：美东时间 **14:00**（此时段前提交的论文归入当日公告批次）。
-* **每日发布时间**：美东时间 **20:00**（周日至周四晚发布，周五与周六官方不发文）。
+- **官方结算时区**：美东时间（`America/New_York`，夏令时 EDT 为 UTC-4，冬令时 EST 为 UTC-5）。
+- **每日截稿时间**：美东时间 **14:00**（此时段前提交的论文归入当日公告批次）。
+- **每日发布时间**：美东时间 **20:00**（周日至周四晚发布，周五与周六官方不发文）。
 
 ### 🕒 时区换算与调度时刻对照表
 
-| 批次类型 | arXiv 发文周期 (美东) | 建议调度时刻 (美东) | 对应北京时间 (CST, UTC+8) | 对应协调世界时 (UTC) |
-| :--- | :--- | :--- | :--- | :--- |
-| **周一批次** | 周日 20:00 (含周末积压) | **周日 20:30** | **周一 08:30**（夏令时） | 周一 00:30 |
-| **周二批次** | 周一 20:00 | **周一 20:30** | **周二 08:30** | 周二 00:30 |
-| **周三批次** | 周二 20:00 | **周二 20:30** | **周三 08:30** | 周三 00:30 |
-| **周四批次** | 周三 20:00 | **周三 20:30** | **周四 08:30** | 周四 00:30 |
-| **周五批次** | 周四 20:00 (当周最后批次)| **周四 20:30** | **周五 08:30** | 周五 00:30 |
-| **学术周报** | 聚合当周全部已研判论文 | **周五 09:00** | **周五 21:00**（或周五上午）| 周五 13:00 |
+| 批次类型     | arXiv 发文周期 (美东)     | 建议调度时刻 (美东) | 对应北京时间 (CST, UTC+8)    | 对应协调世界时 (UTC) |
+| :----------- | :------------------------ | :------------------ | :--------------------------- | :------------------- |
+| **周一批次** | 周日 20:00 (含周末积压)   | **周日 20:30**      | **周一 08:30**（夏令时）     | 周一 00:30           |
+| **周二批次** | 周一 20:00                | **周一 20:30**      | **周二 08:30**               | 周二 00:30           |
+| **周三批次** | 周二 20:00                | **周二 20:30**      | **周三 08:30**               | 周三 00:30           |
+| **周四批次** | 周三 20:00                | **周三 20:30**      | **周四 08:30**               | 周四 00:30           |
+| **周五批次** | 周四 20:00 (当周最后批次) | **周四 20:30**      | **周五 08:30**               | 周五 00:30           |
+| **学术周报** | 聚合当周全部已研判论文    | **周五 09:00**      | **周五 21:00**（或周五上午） | 周五 13:00           |
 
 ---
 
@@ -45,15 +45,19 @@ arXiv 的高能天体物理与星系天体物理（`astro-ph.HE` / `astro-ph.GA`
 适合在长开机的 Linux 工作站、树莓派或 VPS 云服务器上运行，具备持久化计时器与故障重启功能。
 
 #### 1. 一键安装并启用
+
 ```bash
 ./deploy/systemd/install.sh
 ```
 
 #### 2. 手动查看定时器状态
+
 ```bash
 systemctl --user list-timers --all | grep astrolineage
 ```
+
 输出示例：
+
 ```text
 NEXT                         LEFT          LAST                         PASSED  UNIT                             ACTIVATES
 Wed 2026-09-23 08:30:00 CST  19h left      Tue 2026-09-22 08:30:00 CST  4h ago  astrolineage-arxiv-daily.timer   astrolineage-arxiv-daily.service
@@ -61,6 +65,7 @@ Fri 2026-09-25 21:00:00 CST  2 days left   -                            -       
 ```
 
 #### 3. 运维与日志查看
+
 ```bash
 # 查看每日抓取服务实时日志
 journalctl --user -u astrolineage-arxiv-daily.service -f
@@ -76,30 +81,33 @@ systemctl --user start astrolineage-arxiv-daily.service
 
 ### 方案二：Linux Crontab 调度（已启用）
 
-适合习惯使用传统 crontab 的服务器环境。系统已安装并配置统一定时任务执行器 [`scripts/cron-runner.sh`](file:///home/long/axvdaily/scripts/cron-runner.sh)。
+适合习惯使用传统 crontab 的服务器环境。系统已安装并配置统一定时任务执行器 [`scripts/cron-runner.sh`](file:///home/long/astro-lineage/scripts/cron-runner.sh)。
 
 #### 1. 已启用的 Crontab 配置条目
+
 ```cron
 # 基础环境变量
 SHELL=/bin/bash
 PATH=/home/long/.npm-global/bin:/usr/local/bin:/usr/bin:/bin:/home/long/.local/bin
-PROJECT_DIR=/home/long/axvdaily
+PROJECT_DIR=/home/long/astro-lineage
 
 # 指定 cron 时区为北京时间（系统 cronie 支持 CRON_TZ 变量）
 CRON_TZ=Asia/Shanghai
 
 # 每日导读；周五自动追加周报。构建后独立同步频道及年度 NotebookLM。
-0 10 * * 1-5 /bin/bash /home/long/axvdaily/scripts/cron-runner.sh auto >> /tmp/arxiv-task.log 2>&1
+0 10 * * 1-5 /bin/bash /home/long/astro-lineage/scripts/cron-runner.sh auto >> /tmp/arxiv-task.log 2>&1
 ```
 
 #### 2. 腾讯频道发布联动
 
 年度 NotebookLM 的一次性服务器认证、单独补同步和目标状态说明见 [年度精读同步](runbooks/notebooklm-annual-sync.md)。NotebookLM 未登录不阻塞频道，QQ 主动通知单独等待权限。
-定时任务执行完毕后，会自动调用 [`scripts/tencent-channel-publisher.mjs`](file:///home/long/axvdaily/scripts/tencent-channel-publisher.mjs)：
+定时任务执行完毕后，会自动调用 [`scripts/tencent-channel-publisher.mjs`](file:///home/long/astro-lineage/scripts/tencent-channel-publisher.mjs)：
+
 - 每日导读自动推送到 **`AstroLineage前沿`** 频道的 **`每日arXiv导读`** 版块（ID: `742956201`）；
 - 每周总结自动推送到 **`AstroLineage前沿`** 频道的 **`前沿学术周报`** 版块（ID: `742956302`）。
 
 #### 3. 日常检查与运维命令
+
 - **查看当前生效的定时任务**：`crontab -l`
 - **编辑修改定时任务**：`crontab -e`
 - **查看每日任务执行日志**：`tail -f /tmp/arxiv-daily.log`
@@ -111,7 +119,7 @@ CRON_TZ=Asia/Shanghai
 
 ### 方案三：GitHub Actions 云端定时工作流（全托管免运维）
 
-若项目托管在 GitHub 上，可通过已创建的 [`.github/workflows/arxiv-scheduled-sync.yml`](file:///home/long/axvdaily/.github/workflows/arxiv-scheduled-sync.yml) 实现无服务器全自动运行：
+若项目托管在 GitHub 上，可通过已创建的 [`.github/workflows/arxiv-scheduled-sync.yml`](file:///home/long/astro-lineage/.github/workflows/arxiv-scheduled-sync.yml) 实现无服务器全自动运行：
 
 1. **配置 GitHub Secrets**：
    在 GitHub 仓库设置中（`Settings -> Secrets and variables -> Actions`）添加：

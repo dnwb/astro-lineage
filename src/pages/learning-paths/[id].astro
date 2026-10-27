@@ -52,13 +52,7 @@ const steps = entries.map((entry, index) => {
 });
 
 function workTitle(entry: AnyRecord) {
-  const fallback = entry.work?.title ?? entry.work_id;
-  const localized = localizedWorkTitle(entry.work_id, fallback);
-  if (localized !== fallback) return localized;
-  const sourceWork = baselineReader.works?.find((work) => work.work_id === entry.work_id);
-  if (!sourceWork?.reading) return fallback;
-  return parseReadingMarkdown(String(sourceWork.reading), { skipTitle: false })
-    .find((block) => block.kind === "heading" && block.depth === 1)?.text ?? fallback;
+  return entry.work?.title ?? entry.work_id;
 }
 
 function workAuthors(entry: AnyRecord) {
@@ -69,12 +63,12 @@ function workAuthors(entry: AnyRecord) {
 }
 
 function workDate(entry: AnyRecord) {
-  return entry.work?.release_date?.value ?? "年份未知";
+  return entry.work?.release_date?.value ?? "Unknown year";
 }
 ---
 
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -82,43 +76,38 @@ function workDate(entry: AnyRecord) {
       name="description"
       content={`Learning Path: ${learningPath.title ?? pathId}`}
     />
-    <title>{localizedPathTitle(pathId, learningPath.title ?? pathId)} · {site.title}</title>
+    <title>{learningPath.title ?? pathId} · {site.title}</title>
   </head>
   <body>
     <main class="site-shell reader-page">
       <SiteNav />
-      <p class="eyebrow"><a href="/">{site.title}</a> · 学习路径</p>
+      <p class="eyebrow"><a href="/learning-paths/">Learning Paths</a> · Learning Path Detail</p>
       <header class="reader-header">
-        {isCandidate ? <p class="reader-note"><span class="tag">候选基准路径</span> 这条路径用于组织完整基准文献，尚未获得人工审核发布。</p> : null}
-        <p class="record-label">学习路径 ID：{pathId}</p>
-        <h1>{localizedPathTitle(pathId, learningPath.title ?? pathId)}</h1>
-        <p class="original-title" lang="en">英文标题：{learningPath.title ?? pathId}</p>
-        <p class="reader-deck">{isCandidate ? "这是一条用于整理基准文献的候选阅读序列，过渡理由是待审核的教学背景。" : "这是一条有序且经过审核的论文阅读序列。过渡理由属于学习路径自身的教学背景，不是科学关联。"}</p>
+        {isCandidate ? <p class="reader-note"><span class="tag">Candidate Path</span> This path organizes baseline literature and is pending formal review.</p> : null}
+        <p class="record-label">Learning Path ID: {pathId}</p>
+        <h1>{learningPath.title ?? pathId}</h1>
+        <p class="reader-deck">{isCandidate ? "This is a candidate reading sequence organizing baseline literature. Transition reasons provide pedagogical context pending review." : "This is an ordered and verified reading sequence. Transition reasons provide pedagogical context for the path."}</p>
       </header>
 
       <section class="panel reader-view" aria-labelledby="path-reader-view-heading">
-        <p class="section-kicker">阅读层 1</p>
-        <h2 id="path-reader-view-heading">阅读内容</h2>
+        <p class="section-kicker">Pedagogical Overview</p>
+        <h2 id="path-reader-view-heading">Overview</h2>
         <ReadingProse source={String(learningPath.reading ?? "")} localizationKey={pathId} />
       </section>
 
       <section class="panel" aria-labelledby="reading-sequence-heading">
-        <p class="section-kicker">有序教学</p>
-        <h2 id="reading-sequence-heading">阅读顺序</h2>
+        <p class="section-kicker">Ordered Pedagogy</p>
+        <h2 id="reading-sequence-heading">Reading Order</h2>
         <ol class="path-sequence">
           {steps.map(({ entry, transition }, index) => (
             <li class="path-step">
               <span class="step-number">{index + 1}</span>
               <div>
                 <h3>{workTitle(entry)}</h3>
-                <p class="original-title" lang="en">英文原题：{entry.work?.title ?? entry.work_id}</p>
-                <p class="step-meta">{workAuthors(entry) || "作者未知"} · {workDate(entry)} · 首选版本 {entry.work?.preferred_version_id ?? "不可用"}</p>
-                <p><a class="browse-link" href={workReaderPath(snapshot, entry.work_id)}>阅读论文</a></p>
+                <p class="step-meta">{workAuthors(entry) || "Unknown author"} · {workDate(entry)} · Preferred version: {entry.work?.preferred_version_id ?? "unavailable"}</p>
+                <p><a class="browse-link" href={workReaderPath(snapshot, entry.work_id)}>Read paper →</a></p>
                 {transition ? (
-                  <>
-                    <p class="transition-reason"><strong>下一步为什么：</strong> {localizedPathTransition(transition.source_work_id, transition.target_work_id, transition.reason)}</p>
-                    <p class="transition-reason language-english" lang="en"><strong>English reason:</strong> {transition.reason}</p>
-                  </>
+                  <p class="transition-reason"><strong>Why Next:</strong> {transition.reason}</p>
                 ) : null}
               </div>
             </li>
@@ -127,15 +116,15 @@ function workDate(entry: AnyRecord) {
       </section>
 
       <details class="panel provenance-detail">
-        <summary>溯源详情</summary>
-        <h2>路径审核</h2>
+        <summary>Provenance &amp; Review Details</summary>
+        <h2>Path Review</h2>
         <p>
-          <span class="tag">{learningPath.review_context?.status === "reviewed" ? "已审核" : "未审核"}</span>
+          <span class="tag">{learningPath.review_context?.status === "reviewed" ? "Reviewed" : "Unreviewed"}</span>
           {learningPath.review_context?.reviewer_actor_id
-            ? `，审核者 ${learningPath.review_context.reviewer_actor_id}`
+            ? `, reviewer ${learningPath.review_context.reviewer_actor_id}`
             : ""}
           {learningPath.review_context?.reviewed_at
-            ? `，时间 ${learningPath.review_context.reviewed_at}`
+            ? `, at ${learningPath.review_context.reviewed_at}`
             : ""}
         </p>
         <h3>教学过渡</h3>

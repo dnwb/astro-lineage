@@ -19,23 +19,23 @@ const { weekDays, latestDailyDate } = Astro.props;
 ---
 
 {weekDays && weekDays.length > 0 && (
-  <section class="weekly-section daily-breakdown-section" id="daily-breakdown" aria-label="必读文献目录">
+  <section class="weekly-section daily-breakdown-section" id="daily-breakdown" aria-label="Must-Read Directory">
     <div class="section-heading">
-      <p class="section-kicker"><span class="language-primary">每日批次</span><span class="language-english" lang="en">Daily Index</span></p>
-      <h2><span class="language-primary">必读文献目录</span><span class="language-english" lang="en">Must-Read Directory</span></h2>
+      <p class="section-kicker">Daily Index</p>
+      <h2>Must-Read Directory</h2>
     </div>
     <div class="daily-table-toolbar">
-      <span class="daily-table-meta">收录本周 <strong>{weekDays.length}</strong> 个批次必读文献</span>
-      <a class="daily-all-archive-link" href="/arxiv-daily/">查看全部历史日报归档 →</a>
+      <span class="daily-table-meta">Covering <strong>{weekDays.length}</strong> batches this week</span>
+      <a class="daily-all-archive-link" href="/arxiv-daily/">View all daily archives →</a>
     </div>
     <div class="daily-breakdown-table-wrap">
       <table class="daily-breakdown-table">
         <thead>
           <tr>
-            <th class="th-date" style="width: 18%;">日期 / 批次</th>
-            <th class="th-stats" style="width: 22%;">监测规模</th>
-            <th class="th-topics" style="width: 45%;">核心看点与代表论文</th>
-            <th class="th-action" style="width: 15%; text-align: right;">直达入口</th>
+            <th class="th-date" style="width: 18%;">Date / Batch</th>
+            <th class="th-stats" style="width: 22%;">Scale</th>
+            <th class="th-topics" style="width: 45%;">Key Highlights & Papers</th>
+            <th class="th-action" style="width: 15%; text-align: right;">Action</th>
           </tr>
         </thead>
         <tbody>
@@ -48,21 +48,21 @@ const { weekDays, latestDailyDate } = Astro.props;
                   <div class="daily-table-date-cell">
                     <strong class="table-date">{dInfo.beijingDate}</strong>
                     <span class="table-weekday">{dInfo.chineseWeekday}</span>
-                    <span class="table-us-date" title="arXiv 美东公告日期">美东 {day.date}</span>
+                    <span class="table-us-date" title="arXiv US announcement date">US {day.date}</span>
                     {day.date === latestDailyDate && (
-                      <span class="table-latest-badge">最新</span>
+                      <span class="table-latest-badge">Latest</span>
                     )}
                   </div>
                 </td>
               <td class="col-stats">
                 <div class="daily-table-stats-cell">
-                  <span class="stat-pill-total">总计 <strong>{day.total_papers}</strong> 篇</span>
+                  <span class="stat-pill-total">Total: <strong>{day.total_papers}</strong></span>
                   <div class="stat-pill-sub-row">
                     {day.must_read_count > 0 && (
-                      <span class="stat-pill-must">必读 {day.must_read_count}</span>
+                      <span class="stat-pill-must">Must: {day.must_read_count}</span>
                     )}
                     {day.worth_knowing_count > 0 && (
-                      <span class="stat-pill-worth">关注 {day.worth_knowing_count}</span>
+                      <span class="stat-pill-worth">Followed: {day.worth_knowing_count}</span>
                     )}
                   </div>
                 </div>
@@ -78,25 +78,21 @@ const { weekDays, latestDailyDate } = Astro.props;
                             href={`https://arxiv.org/abs/${h.arxiv_id}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            title="在 arXiv 查看论文"
+                            title="View paper on arXiv"
                           >
                             arXiv:{h.arxiv_id} ↗
                           </a>
-                          {h.title && (() => {
-                            const titleZh = resolvePaperTitleZhSync(h);
-                            return (
-                              <span class="table-paper-title" title={titleZh ? `${titleZh} (${h.title})` : h.title}>
-                                <span class="table-paper-en">{h.title}</span>
-                                {titleZh && <span class="table-paper-zh">「{titleZh}」</span>}
-                              </span>
-                            );
-                          })()}
+                          {h.title && (
+                            <span class="table-paper-title" title={h.title}>
+                              <span class="table-paper-en">{h.title}</span>
+                            </span>
+                          )}
                         </div>
                       ))}
                       {mustList.length > 3 && (
                         <details class="table-highlights-more">
                           <summary class="more-toggle-btn">
-                            展开其余 {mustList.length - 3} 篇必读文献 ▾
+                            Expand remaining {mustList.length - 3} papers ▾
                           </summary>
                           <div class="more-highlights-list">
                             {mustList.slice(3).map((h) => (
@@ -106,19 +102,15 @@ const { weekDays, latestDailyDate } = Astro.props;
                                   href={`https://arxiv.org/abs/${h.arxiv_id}`}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  title="在 arXiv 查看论文"
+                                  title="View paper on arXiv"
                                 >
                                   arXiv:{h.arxiv_id} ↗
                                 </a>
-                                {h.title && (() => {
-                                  const titleZh = resolvePaperTitleZhSync(h);
-                                  return (
-                                    <span class="table-paper-title" title={titleZh ? `${titleZh} (${h.title})` : h.title}>
-                                      <span class="table-paper-en">{h.title}</span>
-                                      {titleZh && <span class="table-paper-zh">「{titleZh}」</span>}
-                                    </span>
-                                  );
-                                })()}
+                                {h.title && (
+                                  <span class="table-paper-title" title={h.title}>
+                                    <span class="table-paper-en">{h.title}</span>
+                                  </span>
+                                )}
                               </div>
                             ))}
                           </div>
@@ -126,13 +118,13 @@ const { weekDays, latestDailyDate } = Astro.props;
                       )}
                     </div>
                   ) : (
-                    <span class="table-empty-hint">本批次无必读文献</span>
+                    <span class="table-empty-hint">No Must-Read papers in this batch</span>
                   )}
                 </div>
               </td>
               <td class="col-action" style="text-align: right;">
-                <a class="daily-table-enter-btn" href={day.date === latestDailyDate ? "/arxiv-daily/" : `/arxiv-daily/${day.date}/`} title={`进入 ${day.date} 当日深度精读雷达`}>
-                  进入当日日报 →
+                <a class="daily-table-enter-btn" href={day.date === latestDailyDate ? "/arxiv-daily/" : `/arxiv-daily/${day.date}/`} title={`View Daily Radar for ${day.date}`}>
+                  Daily Radar →
                 </a>
               </td>
             </tr>

@@ -15,6 +15,7 @@ import DailyDateSwitcher from "../../components/DailyDateSwitcher.astro";
 import DailyTopicFilter from "../../components/DailyTopicFilter.astro";
 import archiveManifest from "../../data/arxiv-archives/manifest.json";
 import { formatAnnouncementInBeijing } from "../../domain/academic-domain.mjs";
+import { isLegacyChineseDate } from "../../domain/language-cutover.mjs";
 import { loadSiteConfig } from "../../lib/site-config";
 import "../../styles/global.css";
 
@@ -130,7 +131,7 @@ const bjtInfo = formatAnnouncementInBeijing(currentDate, announcementWindow?.ann
 ---
 
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -142,24 +143,21 @@ const bjtInfo = formatAnnouncementInBeijing(currentDate, announcementWindow?.ann
       <SiteNav />
       <p class="eyebrow"><a href="/">{site.title}</a> · Daily Radar</p>
       <header class="reader-header">
-        <h1><span class="language-primary">每日 arXiv 导读</span><span class="language-english" lang="en">Daily arXiv reading guide</span></h1>
-        <p class="record-label language-primary">
-          <span class="record-meta-tag">{isAnnouncementDay ? `批次窗口 ${bjtInfo.beijingDate}（${bjtInfo.chineseWeekday}）` : "最近提交样本"}</span>
+        <h1>Daily arXiv Radar</h1>
+        {isLegacyChineseDate(currentDate) && (
+          <div class="legacy-archive-banner" role="note">
+            <span class="legacy-badge">Legacy Archive</span>
+            <span>This edition was generated prior to the English transition ({currentDate}) and contains historical Chinese text.</span>
+          </div>
+        )}
+        <p class="record-label">
+          <span>{isAnnouncementDay ? `Batch ${bjtInfo.beijingDate} (${bjtInfo.englishWeekday || bjtInfo.chineseWeekday} Beijing Time)` : "Sample"}</span>
           <span class="record-meta-sep">·</span>
-          <span>更新时间：{generatedLabel}</span>
-          <span class="record-meta-sep">·</span>
-          <a href="/arxiv-weekly/">查看每周总结 →</a>
-          <span class="record-meta-sep">·</span>
-          <a href="/arxiv-archives/">往期归档全库 →</a>
-        </p>
-        <p class="record-label language-english" lang="en">
-          <span>{isAnnouncementDay ? `Batch ${bjtInfo.beijingDate} (${bjtInfo.chineseWeekday} Beijing Time)` : "Sample"}</span>
-          <span class="record-meta-sep">·</span>
-          <span>Refreshed {generatedLabel}</span>
+          <span>Refreshed: {generatedLabel}</span>
           <span class="record-meta-sep">·</span>
           <a href="/arxiv-weekly/">Weekly Synthesis →</a>
           <span class="record-meta-sep">·</span>
-          <a href="#historical-archives">Historical Archives ↓</a>
+          <a href="/arxiv-archives/">Historical Archives →</a>
         </p>
       </header>
 

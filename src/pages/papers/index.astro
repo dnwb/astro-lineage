@@ -54,33 +54,21 @@ function whyRead(work: Record<string, any>) {
   const document = parseReadingDocument(String(work.reading ?? ""));
   return firstCompleteReadingItem(
     selectBilingualBlocks(
-      localizedBlocks(work.work_id, "why", whyThisWorkMatters(document, work.work_id)),
-      "primary",
+      whyThisWorkMatters(document, work.work_id),
+      "english",
     ),
     work.work_id,
   );
 }
 
-function originalWhyRead(work: Record<string, any>) {
-  const document = parseReadingDocument(String(work.reading ?? ""));
-  return firstCompleteReadingItem(
-    selectBilingualBlocks(whyThisWorkMatters(document, work.work_id), "english"),
-    work.work_id,
-  );
-}
-
 function title(work: Record<string, any>) {
-  const version = preferred(work);
-  const localized = localizedWorkTitle(work.work_id, version.title);
-  if (localized !== version.title) return localized;
-  return parseReadingMarkdown(String(work.reading ?? ""), { skipTitle: false })
-    .find((block) => block.kind === "heading" && block.depth === 1)?.text ?? version.title;
+  return preferred(work).title;
 }
 
 ---
 
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -93,13 +81,12 @@ function title(work: Record<string, any>) {
   <body>
     <main class="site-shell index-page">
       <SiteNav />
-      <p class="eyebrow"><a href="/">{site.title}</a> · 论文索引</p>
-      <h1>论文</h1>
-      <p class="layer-intro">{baselineWorks.length} 篇基准文献：{publishedCount} 篇已审核，{candidateCount} 篇候选基准</p>
-      <p class="reader-note">候选基准已经完成来源、双语导读和公式整理，正在等待人工审核；它们可以阅读，但不等同于正式发布的精选论文。</p>
+      <p class="eyebrow"><a href="/">{site.title}</a> · Papers</p>
+      <h1>Papers</h1>
+      <p class="layer-intro">{baselineWorks.length} benchmark works: {publishedCount} verified, {candidateCount} candidates</p>
       {
         baselineWorks.length === 0 ? (
-          <p class="empty-state">基准文献库中暂时没有可显示论文。</p>
+          <p class="empty-state">No benchmark works available.</p>
         ) : (
           <ol class="paper-index">
             {baselineWorks.map((work) => {
@@ -108,19 +95,17 @@ function title(work: Record<string, any>) {
                 <li class="paper-index-item">
                   <article>
                     <h2><a class="paper-title" href={workReaderPath(snapshot, work.work_id)}>{title(work)}</a></h2>
-                    <p class="original-title" lang="en">英文原题：{version.title}</p>
                     <p class="paper-meta">{authors(work)} · {releaseYear(work)}</p>
-                    <p><span class="tag">{work.reader_status === "candidate" ? "候选基准" : "已审核精选"}</span></p>
+                    <p><span class="tag">{work.reader_status === "candidate" ? "Candidate" : "Verified"}</span></p>
                     <p>{whyRead(work)}</p>
-                    <p class="language-english" lang="en">{originalWhyRead(work)}</p>
                     {(work.research_lines ?? []).length > 0 ? (
-                      <ul class="inline-list research-context-links" aria-label="研究方向">
+                      <ul class="inline-list research-context-links" aria-label="Research lines">
                         {(work.research_lines ?? []).map((membership: AnyRecord) => (
                           <li><a href={researchLineReaderPath(snapshot, membership.line_id)}>{localizedLineTitle(membership.line_id, membership.line?.title ?? membership.line_id)}</a></li>
                         ))}
                       </ul>
                     ) : null}
-                    <p><a class="browse-link" href={workReaderPath(snapshot, work.work_id)}>阅读论文</a></p>
+                    <p><a class="browse-link" href={workReaderPath(snapshot, work.work_id)}>Read paper →</a></p>
                   </article>
                 </li>
               );

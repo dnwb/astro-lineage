@@ -71,10 +71,7 @@ const readingSections = {
 };
 
 function title() {
-  const localized = localizedWorkTitle(workId, preferredVersion.title);
-  if (localized !== preferredVersion.title) return localized;
-  return parseReadingMarkdown(String(work.reading ?? ""), { skipTitle: false })
-    .find((block) => block.kind === "heading" && block.depth === 1)?.text ?? preferredVersion.title;
+  return preferredVersion.title;
 }
 
 const publicationRelations = (work.publication_relations ?? []) as AnyRecord[];
@@ -92,13 +89,13 @@ const evidenceById = new Map(
 const lineMemberships = (work.research_lines ?? []) as AnyRecord[];
 
 const relationLabels: Record<string, { outbound: string; inbound: string }> = {
-  builds_on: { outbound: "建立在其上", inbound: "由此建立" },
-  extends: { outbound: "扩展", inbound: "被扩展" },
-  tests: { outbound: "检验", inbound: "被检验" },
-  constrains: { outbound: "约束", inbound: "受约束" },
-  challenges: { outbound: "挑战", inbound: "受到挑战" },
-  replaces_assumption: { outbound: "替代假设", inbound: "假设被替代" },
-  corrects: { outbound: "修正", inbound: "被修正" },
+  builds_on: { outbound: "Builds on", inbound: "Built upon by" },
+  extends: { outbound: "Extends", inbound: "Extended by" },
+  tests: { outbound: "Tests", inbound: "Tested by" },
+  constrains: { outbound: "Constrains", inbound: "Constrained by" },
+  challenges: { outbound: "Challenges", inbound: "Challenged by" },
+  replaces_assumption: { outbound: "Replaces assumption", inbound: "Assumption replaced by" },
+  corrects: { outbound: "Corrects", inbound: "Corrected by" },
 };
 
 function authors(version: AnyRecord) {
@@ -106,34 +103,18 @@ function authors(version: AnyRecord) {
 }
 
 function describeLocator(locator: AnyRecord | undefined) {
-  if (!locator?.type) return "类型化定位不可用（typed locator unavailable）";
-  const parts = [localizedLocatorType(String(locator.type))];
-  const fieldLabels: Record<string, string> = {
-    section: "章节",
-    equation: "方程",
-    table: "表格",
-    figure: "图",
-    paragraph: "段落",
-    page: "页",
-  };
-  for (const key of ["section", "equation", "table", "figure", "paragraph"]) {
-    if (locator[key] !== undefined) parts.push(`${fieldLabels[key]} ${locator[key]}`);
-  }
-  if (locator.page !== undefined) parts.push(`${fieldLabels.page} ${locator.page}`);
+  if (!locator?.type) return "typed locator unavailable";
   const englishParts = [String(locator.type)];
   for (const key of ["section", "equation", "table", "figure", "paragraph", "page"]) {
     if (locator[key] !== undefined) englishParts.push(`${key} ${locator[key]}`);
   }
-  return `${parts.join("；")}（typed locator: ${englishParts.join("; ")}）`;
+  return `typed locator: ${englishParts.join("; ")}`;
 }
 
 function reviewContext(value: AnyRecord) {
   const context = value.review_context;
-  if (!context?.status) return "审核背景不可用";
-  const english = context.reviewer_actor_id
-    ? ` (reviewed by ${context.reviewer_actor_id}${context.reviewed_at ? ` at ${context.reviewed_at}` : ""})`
-    : "";
-  return `${localizedReviewStatus(context.status)}${context.reviewer_actor_id ? `，审核者 ${context.reviewer_actor_id}` : ""}${context.reviewed_at ? `，时间 ${context.reviewed_at}` : ""}${english}`;
+  if (!context?.status) return "Review context unavailable";
+  return `${localizedReviewStatus(context.status)}${context.reviewer_actor_id ? `, reviewer ${context.reviewer_actor_id}` : ""}${context.reviewed_at ? `, at ${context.reviewed_at}` : ""}`;
 }
 
 function relationLabel(edge: AnyRecord) {
@@ -173,7 +154,7 @@ function connectedPaper(edge: AnyRecord) {
 ---
 
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -183,51 +164,50 @@ function connectedPaper(edge: AnyRecord) {
   <body>
     <main class="site-shell reader-page">
       <SiteNav />
-      <p class="eyebrow"><a href="/papers/">论文</a> · 论文详情</p>
+      <p class="eyebrow"><a href="/papers/">Papers</a> · Paper Detail</p>
 
       <header class="reader-header">
-        <p class="section-kicker">书目信息</p>
+        <p class="section-kicker">Bibliographic Record</p>
         <h1>{title()}</h1>
-        <p class="original-title" lang="en">英文原题：{preferredVersion.title}</p>
         <p class="paper-meta">{authors(preferredVersion)} · {preferredVersion.release_date.value.slice(0, 4)}</p>
         {isCandidate ? (
-          <p class="reader-note"><span class="tag">候选基准</span> 本条目已完成来源核验、双语导读和公式整理，尚未获得人工审核发布。</p>
+          <p class="reader-note"><span class="tag">Candidate Baseline</span> This entry has completed source verification and formula review.</p>
         ) : null}
         {preferredVersion.journal?.name ? (
           <p>{preferredVersion.journal.name}{preferredVersion.journal.volume ? ` ${preferredVersion.journal.volume}` : ""}{preferredVersion.journal.first_page ? `, ${preferredVersion.journal.first_page}` : ""}{preferredVersion.doi ? ` · DOI ${preferredVersion.doi}` : ""}</p>
         ) : null}
-        <ul class="inline-list paper-source-links" aria-label="原论文来源">
+        <ul class="inline-list paper-source-links" aria-label="Original paper sources">
           {(preferredVersion.access_urls ?? []).map((access: AnyRecord) => (
-            <li><a href={access.url}>打开 {localizedAccessKind(access.kind)}</a></li>
+            <li><a href={access.url}>Open {localizedAccessKind(access.kind)}</a></li>
           ))}
         </ul>
       </header>
 
       <section class="panel reading-section" aria-labelledby="why-heading">
-        <h2 id="why-heading">为什么这项工作重要</h2>
+        <h2 id="why-heading">Why This Work Matters</h2>
         <ReadingProse blocks={readingSections.why} localizationKey={workId} localizationSection="why" />
       </section>
       <section class="panel reading-section" aria-labelledby="problem-heading">
-        <h2 id="problem-heading">问题</h2>
+        <h2 id="problem-heading">Problem</h2>
         <ReadingProse blocks={readingSections.problem} localizationKey={workId} localizationSection="problem" />
       </section>
       <section class="panel reading-section" aria-labelledby="takeaway-heading">
-        <h2 id="takeaway-heading">科学要点</h2>
+        <h2 id="takeaway-heading">Scientific Takeaway</h2>
         <ReadingProse blocks={readingSections.takeaway} localizationKey={workId} localizationSection="takeaway" />
       </section>
       <section class="panel reading-section" aria-labelledby="assumptions-heading">
-        <h2 id="assumptions-heading">假设</h2>
+        <h2 id="assumptions-heading">Assumptions</h2>
         <ReadingProse blocks={readingSections.assumptions} localizationKey={workId} localizationSection="assumptions" />
       </section>
       <section class="panel reading-section" aria-labelledby="delta-heading">
-        <h2 id="delta-heading">科学增量</h2>
+        <h2 id="delta-heading">Scientific Delta</h2>
         <ReadingProse blocks={readingSections.delta} localizationKey={workId} localizationSection="delta" />
       </section>
 
       <section class="panel" aria-labelledby="connections-heading">
-        <h2 id="connections-heading">科学关联</h2>
+        <h2 id="connections-heading">Scientific Connections</h2>
         {scientificEdges.length === 0 ? (
-          <p class="empty-state">暂无经过审核的科学关联。</p>
+          <p class="empty-state">No verified scientific connections recorded.</p>
         ) : (
           <ul class="compact-list edge-list">
             {scientificEdges.map((edge) => {
@@ -236,14 +216,13 @@ function connectedPaper(edge: AnyRecord) {
                 <li>
                   <p>
                     <span class="tag">{relationLabel(edge)}</span>
-                    <span class="edge-direction">{edge.source_work_id === workId ? "出向（outbound）" : "入向（inbound）"}</span>
-                    {edge.disposition === "contested" ? <strong class="dispute-indicator"> 有争议</strong> : null}
+                    <span class="edge-direction">{edge.source_work_id === workId ? "outbound" : "inbound"}</span>
+                    {edge.disposition === "contested" ? <strong class="dispute-indicator"> Contested</strong> : null}
                   </p>
                   <h3><a href={connected.href}>{connected.title}</a></h3>
                   <p class="paper-meta">{connected.authors} · {connected.year}</p>
                   <p>{localizedEdgeReason(edge.id, edge.reason)}</p>
-                  <p class="language-english" lang="en">{edge.reason}</p>
-                  <p><a href={connected.href}>阅读关联论文</a></p>
+                  <p><a href={connected.href}>Read connected paper</a></p>
                 </li>
               );
             })}
@@ -252,18 +231,15 @@ function connectedPaper(edge: AnyRecord) {
       </section>
 
       <section class="panel" aria-labelledby="research-context-heading">
-        <h2 id="research-context-heading">研究背景</h2>
+        <h2 id="research-context-heading">Research Context</h2>
         {lineMemberships.length === 0 ? (
-          <p class="empty-state">这项工作暂时没有已存储的经过审核的研究方向归属。</p>
+          <p class="empty-state">No recorded research line memberships.</p>
         ) : (
           <ul class="compact-list">
             {lineMemberships.map((membership) => (
               <li>
                 <a href={researchLineReaderPath(snapshot, membership.line_id)}>{localizedLineTitle(membership.line_id, membership.line?.title ?? membership.line_id)}</a>
-                {membership.line?.reader_status === "candidate" ? <span class="tag">候选基准方向</span> : null}
-                <span class="original-title" lang="en">（English: {membership.line?.title ?? membership.line_id}）</span>
-                {membership.editorial_anchor ? " — 编辑锚点" : ""}
-                {membership.reading_roles?.length ? `（${membership.reading_roles.map(localizedRole).join("、")}）` : ""}
+                {membership.line?.reader_status === "candidate" ? <span class="tag">Candidate</span> : null}
               </li>
             ))}
           </ul>
@@ -271,34 +247,34 @@ function connectedPaper(edge: AnyRecord) {
       </section>
 
       <details class="panel provenance-detail">
-        <summary>溯源与科学证据</summary>
-        <p class="layer-intro">查看支撑此阅读页面的投影视图、证据、科学结构、关联支撑和审核背景。</p>
+        <summary>Provenance & Scientific Evidence</summary>
+        <p class="layer-intro">Inspect projection, evidence, scientific ontology, and review records.</p>
 
-        <h3>版本</h3>
+        <h3>Versions</h3>
         <ul class="compact-list">
           {versions.map((version) => (
-            <li><strong>{version.kind}</strong>：{version.title}（{version.id}）；发布日期 {version.release_date?.value}{version.arxiv_id ? `；arXiv ${version.arxiv_id}v${version.arxiv_revision}` : ""}{version.doi ? `；DOI ${version.doi}` : ""}</li>
+            <li><strong>{version.kind}</strong>: {version.title} ({version.id}); Released {version.release_date?.value}{version.arxiv_id ? `; arXiv ${version.arxiv_id}v${version.arxiv_revision}` : ""}{version.doi ? `; DOI ${version.doi}` : ""}</li>
           ))}
         </ul>
 
-        <h3>科学陈述</h3>
+        <h3>Scientific Statements</h3>
         <ul class="compact-list">
-          {statements.map((statement) => <li><strong>{statement.kind}</strong>：{statement.canonical_text}{statement.reason ? ` — ${statement.reason}` : ""}</li>)}
+          {statements.map((statement) => <li><strong>{statement.kind}</strong>: {statement.canonical_text}{statement.reason ? ` — ${statement.reason}` : ""}</li>)}
         </ul>
 
-        <h3>物理本体</h3>
+        <h3>Physical Ontology</h3>
         <dl class="dense-definitions">
           {(work.annotations ?? []).map((annotation: AnyRecord) => (
-            <><dt>{annotation.axis}</dt><dd><span class="state">{localizedReviewStatus(annotation.assessment?.state ?? "unavailable")}</span>{(annotation.assessment?.values ?? []).length ? `：${annotation.assessment.values.map((value: AnyRecord) => value.term_id).join("、")}` : ""}{annotation.interpretive_risk ? `；风险：${annotation.interpretive_risk}` : ""}{annotation.reason ? `；${annotation.reason}` : ""}</dd></>
+            <><dt>{annotation.axis}</dt><dd><span class="state">{localizedReviewStatus(annotation.assessment?.state ?? "unavailable")}</span>{(annotation.assessment?.values ?? []).length ? `: ${annotation.assessment.values.map((value: AnyRecord) => value.term_id).join(", ")}` : ""}{annotation.interpretive_risk ? `; risk: ${annotation.interpretive_risk}` : ""}{annotation.reason ? `; ${annotation.reason}` : ""}</dd></>
           ))}
         </dl>
 
-        <h3>方法</h3>
+        <h3>Methods</h3>
         <ul class="compact-list">
           {(work.method_annotations ?? []).map((annotation: AnyRecord) => <li><strong>{annotation.technique_id}</strong> <span class="tag">{annotation.basis}</span>{annotation.reason ? ` — ${annotation.reason}` : ""}</li>)}
         </ul>
 
-        <h3>物理描述</h3>
+        <h3>Physical Description</h3>
         <ol class="account-stages">
           {(physicalAccount.stages ?? []).map((stage: AnyRecord) => <li><strong>{stage.label}</strong> <span class="record-label">{stage.id}</span></li>)}
         </ol>
@@ -306,8 +282,8 @@ function connectedPaper(edge: AnyRecord) {
           {(physicalAccount.links ?? []).map((link: AnyRecord) => <li>{link.source_stage_id} <strong>{link.relation}</strong> {link.target_stage_id}: {link.reason}</li>)}
         </ul>
 
-        <h3>出版关系</h3>
-        {publicationRelations.length === 0 ? <p>这项工作暂时没有已存储的经过审核的出版关系。</p> : (
+        <h3>Publication Relations</h3>
+        {publicationRelations.length === 0 ? <p>No reviewed publication relations stored for this work.</p> : (
           <ul class="compact-list">
             {publicationRelations.map((relation) => {
               const sources = (relation.bibliographic_source_ids ?? []).map((sourceId: string) => bibliographicSourcesById.get(sourceId)).filter(Boolean) as AnyRecord[];
@@ -316,20 +292,20 @@ function connectedPaper(edge: AnyRecord) {
           </ul>
         )}
 
-        <h3>科学关联证据</h3>
-        {scientificEdges.length === 0 ? <p>这项工作暂时没有已存储的、对读者可见且经过审核的科学关联。</p> : (
+        <h3>Scientific Connection Evidence</h3>
+        {scientificEdges.length === 0 ? <p>No reviewed scientific connections stored for this work.</p> : (
           <ul class="compact-list">
             {scientificEdges.map((edge) => (
-              <li><strong>{edge.id}</strong>：{edge.source_work_id} <strong>{localizedRelation(edge.relation)}</strong> {edge.target_work_id}{edge.relation ? `（English relation: ${edge.relation}` : ""}{edge.basis ? `；basis ${edge.basis}` : ""}{edge.relation ? "）" : ""}{edge.basis ? `；依据 ${edge.basis}` : ""}{edge.disposition ? `；状态 ${localizedReviewStatus(edge.disposition)}（English disposition ${edge.disposition}）` : ""}{edge.reason ? `；${localizedEdgeReason(edge.id, edge.reason)}` : ""}{edge.review_context?.status ? `；审核背景：${reviewContext(edge)}` : ""}
-                <ul>{(edge.evidence_ids ?? []).map((evidenceId: string) => { const evidence = evidenceById.get(evidenceId); return evidence ? <li><strong>{evidence.id}</strong>{evidence.work_id ? `（工作 ${evidence.work_id}）` : ""}{` — 版本 ${evidence.version_id}；类型化定位：${describeLocator(evidence.locator)}；“${evidence.excerpt}”`}{evidence.source_url ? <> — <a href={evidence.source_url}>来源</a></> : null}</li> : <li>{evidenceId} — 证据不可用</li>; })}</ul>
+              <li><strong>{edge.id}</strong>: {edge.source_work_id} <strong>{localizedRelation(edge.relation)}</strong> {edge.target_work_id}{edge.basis ? `; basis ${edge.basis}` : ""}{edge.disposition ? `; disposition ${localizedReviewStatus(edge.disposition)}` : ""}{edge.reason ? `; ${localizedEdgeReason(edge.id, edge.reason)}` : ""}{edge.review_context?.status ? `; review: ${reviewContext(edge)}` : ""}
+                <ul>{(edge.evidence_ids ?? []).map((evidenceId: string) => { const evidence = evidenceById.get(evidenceId); return evidence ? <li><strong>{evidence.id}</strong>{evidence.work_id ? ` (work ${evidence.work_id})` : ""}{` — version ${evidence.version_id}; ${describeLocator(evidence.locator)}; "${evidence.excerpt}"`}{evidence.source_url ? <> — <a href={evidence.source_url}>source</a></> : null}</li> : <li>{evidenceId} — evidence unavailable</li>; })}</ul>
               </li>
             ))}
           </ul>
         )}
 
-        <h3>版本证据</h3>
+        <h3>Version Evidence</h3>
         <ul class="compact-list evidence-list">
-          {evidenceRecords.map((evidence) => <li><strong>{evidence.id}</strong>{evidence.work_id ? `（工作 ${evidence.work_id}）` : ""}{` — 版本 ${evidence.version_id}；类型化定位：${describeLocator(evidence.locator)}；“${evidence.excerpt}”`}{evidence.source_url ? <> — <a href={evidence.source_url}>来源</a></> : null}{evidence.review_context?.status ? `；审核背景：${reviewContext(evidence)}` : ""}</li>)}
+          {evidenceRecords.map((evidence) => <li><strong>{evidence.id}</strong>{evidence.work_id ? ` (work ${evidence.work_id})` : ""}{` — version ${evidence.version_id}; ${describeLocator(evidence.locator)}; "${evidence.excerpt}"`}{evidence.source_url ? <> — <a href={evidence.source_url}>source</a></> : null}{evidence.review_context?.status ? `; review: ${reviewContext(evidence)}` : ""}</li>)}
         </ul>
       </details>
     </main>

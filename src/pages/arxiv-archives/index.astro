@@ -3,6 +3,7 @@ import archiveManifest from "../../data/arxiv-archives/manifest.json";
 import SiteNav from "../../components/SiteNav.astro";
 import ReaderText from "../../components/ReaderText.astro";
 import { formatAnnouncementInBeijing } from "../../domain/academic-domain.mjs";
+import { isLegacyChineseDate } from "../../domain/language-cutover.mjs";
 import { loadSiteConfig } from "../../lib/site-config";
 import "../../styles/global.css";
 
@@ -29,12 +30,12 @@ const dateCoverage = weeks.length > 0
 ---
 
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="AstroLineage 往期学术归档与历史雷达库：历期每周宏观学术脉络周报与每日高能瞬变研读雷达独立静态归档。" />
-    <title>往期学术归档 · 历期周报与每日雷达库 · {site.title}</title>
+    <meta name="description" content="AstroLineage Historical Archives: Permanent index of weekly syntheses and daily transient radars." />
+    <title>Historical Archives · {site.title}</title>
   </head>
   <body>
     <main class="site-shell index-page reader-page archive-hub-page">
@@ -42,65 +43,59 @@ const dateCoverage = weeks.length > 0
 
       <p class="eyebrow">
         <a href="/">{site.title}</a> · 
-        <a href="/arxiv-daily/">每日 arXiv</a> · 
-        <a href="/arxiv-weekly/">最新周报</a> · 
-        往期归档全库
+        <a href="/arxiv-daily/">Daily arXiv</a> · 
+        <a href="/arxiv-weekly/">Weekly Synthesis</a> · 
+        Historical Archives
       </p>
 
       <header class="reader-header">
         <div class="archive-header-badge">
-          <span class="hub-pill">归档</span>
-          <span class="hub-coverage">覆盖周期：{dateCoverage}</span>
+          <span class="hub-pill">Archives</span>
+          <span class="hub-coverage">Coverage: {dateCoverage}</span>
         </div>
-        <h1>
-          <span class="language-primary">往期学术归档</span>
-          <span class="language-english" lang="en">Historical Archives</span>
-        </h1>
-        <p class="reader-deck language-primary">
-          周报与日报往期索引
-        </p>
-        <p class="reader-deck language-english" lang="en">
+        <h1>Historical Archives</h1>
+        <p class="reader-deck">
           Permanent index of weekly syntheses and daily transient radars.
         </p>
 
         <div class="archive-quick-nav">
-          <a class="quick-nav-pill" href="#weekly-syntheses">📚 周报归档 ({weeks.length} 周) ↓</a>
-          <a class="quick-nav-pill" href="#daily-radars">⚡ 日报归档 ({totalDailyEditions} 期) ↓</a>
-          <a class="quick-nav-pill accent" href="/arxiv-weekly/">⚡ 最新周报 ({archiveManifest.latest_week_id}) →</a>
-          <a class="quick-nav-pill accent" href="/arxiv-daily/">📡 今日日报 ({archiveManifest.latest_daily_date}) →</a>
+          <a class="quick-nav-pill" href="#weekly-syntheses">📚 Weekly Syntheses ({weeks.length}) ↓</a>
+          <a class="quick-nav-pill" href="#daily-radars">⚡ Daily Radars ({totalDailyEditions}) ↓</a>
+          <a class="quick-nav-pill accent" href="/arxiv-weekly/">⚡ Latest Week ({archiveManifest.latest_week_id}) →</a>
+          <a class="quick-nav-pill accent" href="/arxiv-daily/">📡 Latest Daily ({archiveManifest.latest_daily_date}) →</a>
         </div>
       </header>
 
       <!-- Aggregate metrics strip -->
-      <section class="archive-metrics-strip" aria-label="归档数据总览">
+      <section class="archive-metrics-strip" aria-label="Archive Metrics Overview">
         <div class="metric-card">
           <span class="metric-val">{totalWeeksCount}</span>
-          <span class="metric-lbl">周报</span>
-          <span class="metric-sub">自然周</span>
+          <span class="metric-lbl">Weeks</span>
+          <span class="metric-sub">Syntheses</span>
         </div>
         <div class="metric-card">
           <span class="metric-val">{totalDailyEditions}</span>
-          <span class="metric-lbl">日报</span>
-          <span class="metric-sub">每日批次</span>
+          <span class="metric-lbl">Dailies</span>
+          <span class="metric-sub">Batches</span>
         </div>
         <div class="metric-card highlight-must">
           <span class="metric-val">{totalMustRead}</span>
-          <span class="metric-lbl">必读</span>
-          <span class="metric-sub">重点文献</span>
+          <span class="metric-lbl">Must Read</span>
+          <span class="metric-sub">Core Papers</span>
         </div>
         <div class="metric-card highlight-worth">
           <span class="metric-val">{totalWorthKnowing}</span>
-          <span class="metric-lbl">关注</span>
-          <span class="metric-sub">重要进展</span>
+          <span class="metric-lbl">Followed</span>
+          <span class="metric-sub">Key Progress</span>
         </div>
       </section>
 
       <!-- Section 1: Weekly Synthesis Archives -->
       <section class="archive-section" id="weekly-syntheses">
         <div class="section-title-wrap">
-          <span class="section-kicker">周报</span>
-          <h2 class="section-heading">历期周报归档</h2>
-          <p class="section-intro">每周汇总高能天体物理论文与核心进展。</p>
+          <span class="section-kicker">Weekly</span>
+          <h2 class="section-heading">Weekly Synthesis Archives</h2>
+          <p class="section-intro">Weekly syntheses of high-energy astrophysics arXiv papers.</p>
         </div>
 
         <div class="weekly-cards-stack">
@@ -111,26 +106,29 @@ const dateCoverage = weeks.length > 0
                   <span class="week-id-tag">{w.week_id}</span>
                   <span class="week-range-text">{w.date_range}</span>
                   {w.week_id === archiveManifest.latest_week_id && (
-                    <span class="latest-pill">最新发布</span>
+                    <span class="latest-pill">Latest</span>
+                  )}
+                  {isLegacyChineseDate(w.week_id) && (
+                    <span class="legacy-badge">Legacy</span>
                   )}
                 </div>
                 <div class="week-card-actions">
                   {w.has_weekly_summary ? (
                     <a class="btn-read-weekly" href={`/arxiv-weekly/${w.week_id}/`}>
-                      <span>阅读完整周报</span>
+                      <span>Read Synthesis</span>
                       <span aria-hidden="true">→</span>
                     </a>
                   ) : (
-                    <span class="pill-stat">本周进行中</span>
+                    <span class="pill-stat">In Progress</span>
                   )}
                 </div>
               </div>
 
               <h3 class="weekly-card-headline">
                 {w.has_weekly_summary ? (
-                  <a href={`/arxiv-weekly/${w.week_id}/`}>{w.title || "高能天体物理 arXiv 每周学术脉络与前沿精选"}</a>
+                  <a href={`/arxiv-weekly/${w.week_id}/`}>{w.title || `Weekly Synthesis · ${w.week_id}`}</a>
                 ) : (
-                  <span>{w.title || "高能天体物理 arXiv 每周学术脉络"}</span>
+                  <span>{w.title || `Weekly Synthesis · ${w.week_id}`}</span>
                 )}
               </h3>
 
@@ -149,23 +147,23 @@ const dateCoverage = weeks.length > 0
 
               <div class="weekly-card-footer">
                 <div class="footer-stats-strip">
-                  <span class="pill-stat">已研判 <strong>{w.statistics?.total_analyzed ?? 0}</strong> 篇</span>
-                  <span class="pill-stat must">必读 <strong>{w.statistics?.must_read_count ?? w.top_picks_count ?? 0}</strong></span>
-                  <span class="pill-stat worth">关注 <strong>{w.statistics?.worth_knowing_count ?? 0}</strong></span>
-                  <span class="pill-stat">批次数 <strong>{w.days?.length ?? 0}</strong></span>
+                  <span class="pill-stat">Analyzed: <strong>{w.statistics?.total_analyzed ?? 0}</strong></span>
+                  <span class="pill-stat must">Must: <strong>{w.statistics?.must_read_count ?? w.top_picks_count ?? 0}</strong></span>
+                  <span class="pill-stat worth">Followed: <strong>{w.statistics?.worth_knowing_count ?? 0}</strong></span>
+                  <span class="pill-stat">Batches: <strong>{w.days?.length ?? 0}</strong></span>
                 </div>
 
                 {w.days && w.days.length > 0 && (
                   <div class="included-days-wrap">
-                    <span class="included-days-label">包含批次：</span>
+                    <span class="included-days-label">Batches:</span>
                     <div class="included-days-chips">
                       {w.days.map((d: any) => {
                         const dInfo = formatAnnouncementInBeijing(d.date, d.weekday);
                         return (
-                          <a class="day-chip" href={`/arxiv-daily/${d.date}/`} title={`查看 ${dInfo.displayLabel} 每日研读雷达`}>
+                          <a class="day-chip" href={`/arxiv-daily/${d.date}/`} title={`View Daily Radar for ${dInfo.displayLabel}`}>
                             <span class="chip-date">{dInfo.shortDate}</span>
                             <span class="chip-weekday">{dInfo.chineseWeekday}</span>
-                            <span class="chip-count">({d.total_papers}篇)</span>
+                            <span class="chip-count">({d.total_papers})</span>
                           </a>
                         );
                       })}
@@ -181,9 +179,9 @@ const dateCoverage = weeks.length > 0
       <!-- Section 2: Daily Radar Archives -->
       <section class="archive-section" id="daily-radars">
         <div class="section-title-wrap">
-          <span class="section-kicker">日报</span>
-          <h2 class="section-heading">历期日报归档</h2>
-          <p class="section-intro">每日论文与分类索引：</p>
+          <span class="section-kicker">Daily</span>
+          <h2 class="section-heading">Daily Radar Archives</h2>
+          <p class="section-intro">Daily papers and categorized radar archives:</p>
         </div>
 
         <div class="daily-weeks-directory">
@@ -196,11 +194,11 @@ const dateCoverage = weeks.length > 0
                 </div>
                 {w.has_weekly_summary ? (
                   <a class="block-weekly-link" href={`/arxiv-weekly/${w.week_id}/`}>
-                    查看本周周报 →
+                    View Weekly Synthesis →
                   </a>
                 ) : (
                   <span class="block-weekly-link" style="opacity: 0.6; cursor: default;">
-                    本周进行中（周日自动汇总）
+                    In Progress
                   </span>
                 )}
               </div>
@@ -214,9 +212,12 @@ const dateCoverage = weeks.length > 0
                         <span class="entry-calendar">📅</span>
                         <strong class="entry-date-text">{dInfo.beijingDate}</strong>
                         <span class="entry-weekday-tag">({dInfo.chineseWeekday})</span>
-                        <span class="entry-us-meta" title="arXiv 美东公告日期">美东 {d.date}</span>
+                        <span class="entry-us-meta" title="arXiv US announcement date">US {d.date}</span>
                         {d.date === archiveManifest.latest_daily_date && (
-                          <span class="entry-latest-tag">今日最新</span>
+                          <span class="entry-latest-tag">Latest</span>
+                        )}
+                        {isLegacyChineseDate(d.date) && (
+                          <span class="legacy-badge">Legacy</span>
                         )}
                       </div>
 
@@ -225,17 +226,17 @@ const dateCoverage = weeks.length > 0
                     </div>
 
                     <div class="entry-counts-cell">
-                      <span class="entry-badge total">{d.total_papers} 篇</span>
+                      <span class="entry-badge total">{d.total_papers} papers</span>
                       {d.must_read_count > 0 && (
-                        <span class="entry-badge must">必读 {d.must_read_count}</span>
+                        <span class="entry-badge must">Must: {d.must_read_count}</span>
                       )}
                       {d.worth_knowing_count > 0 && (
-                        <span class="entry-badge worth">关注 {d.worth_knowing_count}</span>
+                        <span class="entry-badge worth">Followed: {d.worth_knowing_count}</span>
                       )}
                     </div>
 
                     <div class="entry-action-cell">
-                      <span class="entry-arrow-text">查看 ↗</span>
+                      <span class="entry-arrow-text">Open ↗</span>
                     </div>
                   </a>
                 ); })}

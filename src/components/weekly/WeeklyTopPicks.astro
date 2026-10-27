@@ -150,28 +150,28 @@ const activeTopicFilters = TOPIC_FILTER_SPECS
 
 <section class="weekly-section picks-section" id="top-picks">
   <div class="section-heading">
-    <p class="section-kicker"><span class="language-primary">精选必读</span><span class="language-english" lang="en">Curated Selection</span></p>
-    <h2><span class="language-primary">本周必读解读</span><span class="language-english" lang="en">Weekly Top Picks</span></h2>
+    <p class="section-kicker">Curated Selection</p>
+    <h2>Weekly Top Picks</h2>
   </div>
 
   <!-- Pure CSS Topic & Priority Filter Bar -->
   {totalCount > 0 && (
-    <div class="weekly-filter-bar" role="tablist" aria-label="按主题与标签筛选本周精选">
-      <span class="filter-bar-title">🏷️ 筛选：</span>
+    <div class="weekly-filter-bar" role="tablist" aria-label="Filter weekly picks by topic and priority">
+      <span class="filter-bar-title">🏷️ Filter:</span>
       <input type="radio" name="top-pick-filter" id="filter-all" class="topic-radio" checked />
-      <label for="filter-all" class="topic-filter-pill">全部 ({totalCount})</label>
+      <label for="filter-all" class="topic-filter-pill">All ({totalCount})</label>
 
       {mustCount > 0 && (
         <>
           <input type="radio" name="top-pick-filter" id="filter-must" class="topic-radio" />
-          <label for="filter-must" class="topic-filter-pill pill-must">⭐ 必读 ({mustCount})</label>
+          <label for="filter-must" class="topic-filter-pill pill-must">⭐ Must Read ({mustCount})</label>
         </>
       )}
 
       {worthCount > 0 && (
         <>
           <input type="radio" name="top-pick-filter" id="filter-worth" class="topic-radio" />
-          <label for="filter-worth" class="topic-filter-pill pill-worth">📌 关注 ({worthCount})</label>
+          <label for="filter-worth" class="topic-filter-pill pill-worth">📌 Followed ({worthCount})</label>
         </>
       )}
 
@@ -189,7 +189,6 @@ const activeTopicFilters = TOPIC_FILTER_SPECS
   <div class="picks-list">
     {enrichedPicks && enrichedPicks.length > 0 ? (
       enrichedPicks.map(({ pick, paperObj, dailyDate, dailyItem, modalId, badge, tags, transientIds }) => {
-        const titleZh = resolvePaperTitleZhSync(pick) || resolvePaperTitleZhSync(paperObj) || (dailyItem ? resolvePaperTitleZhSync(dailyItem) : null);
         return (
           <article
             class={`pick-card ${pick.priority === "must_read" ? "pick-card-must" : "pick-card-worth"}`}
@@ -198,9 +197,9 @@ const activeTopicFilters = TOPIC_FILTER_SPECS
           >
             <div class="pick-header">
               <div class="pick-header-badges">
-                <span class={`pick-badge ${badge.class}`}>{badge.zh}</span>
+                <span class={`pick-badge ${badge.class}`}>{badge.en}</span>
                 {transientIds.map((tid: string) => (
-                  <span class="pick-transient-tag" title="观测事件目标">🔭 {tid}</span>
+                  <span class="pick-transient-tag" title="Transient Target">🔭 {tid}</span>
                 ))}
                 {tags.map((tag: string) => (
                   <span class="pick-category-tag">{tag}</span>
@@ -210,10 +209,10 @@ const activeTopicFilters = TOPIC_FILTER_SPECS
                 <a class="pick-arxiv-id" href={`https://arxiv.org/abs/${pick.arxiv_id}`} target="_blank" rel="noopener noreferrer">
                   arXiv:{pick.arxiv_id} ↗
                 </a>
-                <a class="pick-pdf-link" href={`https://arxiv.org/pdf/${pick.arxiv_id}`} target="_blank" rel="noopener noreferrer" title="直接阅读官方 PDF">
+                <a class="pick-pdf-link" href={`https://arxiv.org/pdf/${pick.arxiv_id}`} target="_blank" rel="noopener noreferrer" title="Direct official PDF">
                   📄 PDF ↗
                 </a>
-                <a class="pick-ads-link" href={getBibliographicUrl(pick.arxiv_id)} target="_blank" rel="noopener noreferrer" title={`在 ${getBibliographicSourceName()} 中查看`}>
+                <a class="pick-ads-link" href={getBibliographicUrl(pick.arxiv_id)} target="_blank" rel="noopener noreferrer" title={`View on ${getBibliographicSourceName()}`}>
                   {getBibliographicSourceName({ short: true })} ↗
                 </a>
                 {dailyItem ? (
@@ -221,14 +220,14 @@ const activeTopicFilters = TOPIC_FILTER_SPECS
                     type="button"
                     class="pick-action-modal-btn"
                     popovertarget={modalId}
-                    title="在当前页快速查看深度研读与物理模型"
+                    title="Quickly view deep reading and physical model"
                   >
-                    🔬 深度精读 ↗
+                    🔬 Deep Reading ↗
                   </button>
                 ) : null}
                 {dailyDate ? (
-                  <a class="pick-daily-link" href={`/arxiv-daily/${dailyDate}/#${radarCardAnchor(pick.arxiv_id, pick.revision || 1)}`} title="跳转至当日完整日报归档">
-                    📅 {dailyDate} 日报 →
+                  <a class="pick-daily-link" href={`/arxiv-daily/${dailyDate}/#${radarCardAnchor(pick.arxiv_id, pick.revision || 1)}`} title="Jump to full daily archive">
+                    📅 {dailyDate} Daily →
                   </a>
                 ) : null}
               </div>
@@ -239,38 +238,35 @@ const activeTopicFilters = TOPIC_FILTER_SPECS
                   type="button"
                   class="pick-title-btn"
                   popovertarget={modalId}
-                  title="点击直接精读本文"
+                  title="Click to read this paper"
                 >
                   <span class="pick-title-en">{pick.title}</span>
-                  {titleZh ? <span class="pick-title-zh">{titleZh}</span> : null}
                 </button>
               ) : dailyDate ? (
-                <a href={`/arxiv-daily/${dailyDate}/#${radarCardAnchor(pick.arxiv_id, pick.revision || 1)}`} class="pick-title-link" title="点击直接进入本文当日深度精读">
+                <a href={`/arxiv-daily/${dailyDate}/#${radarCardAnchor(pick.arxiv_id, pick.revision || 1)}`} class="pick-title-link" title="Click to read daily guide">
                   <span class="pick-title-en">{pick.title}</span>
-                  {titleZh ? <span class="pick-title-zh">{titleZh}</span> : null}
                 </a>
               ) : (
                 <span class="pick-title-plain">
                   <span class="pick-title-en">{pick.title}</span>
-                  {titleZh ? <span class="pick-title-zh">{titleZh}</span> : null}
                 </span>
               )}
             </h3>
             {resolveAuthors(pick.arxiv_id, pick).length > 0 ? (
-              <p class="pick-authors">作者：{resolveAuthors(pick.arxiv_id, pick).join(", ")}</p>
+              <p class="pick-authors">Authors: {resolveAuthors(pick.arxiv_id, pick).join(", ")}</p>
             ) : null}
 
             <div class="pick-details">
               <div class="detail-row">
-                <span class="detail-label">推荐理由：</span>
+                <span class="detail-label">Reason:</span>
                 <span class="detail-text"><ReaderText text={pick.recommendation_reason} /></span>
               </div>
               <div class="detail-row highlight-row">
-                <span class="detail-label">核心突破：</span>
+                <span class="detail-label">Key Insight:</span>
                 <span class="detail-text"><ReaderText text={pick.core_insight} /></span>
               </div>
               <div class="detail-row guide-row">
-                <span class="detail-label">阅读切入：</span>
+                <span class="detail-label">Reading Guide:</span>
                 <span class="detail-text"><ReaderText text={pick.reading_guide} /></span>
               </div>
             </div>
@@ -285,7 +281,7 @@ const activeTopicFilters = TOPIC_FILTER_SPECS
                 >
                   <span class="btn-left">
                     <span class="btn-icon">🔬</span>
-                    <span class="btn-title">展开深度精读与科学证据（物理假设/公式/图表/证据链）</span>
+                    <span class="btn-title">Deep Reading & Evidence (assumptions / formulas / figures / citations)</span>
                   </span>
                   <span class="btn-right">
                     <span class="btn-arrow" aria-hidden="true">↗</span>
@@ -295,13 +291,13 @@ const activeTopicFilters = TOPIC_FILTER_SPECS
             )}
 
             <details class="paper-citation-details">
-              <summary class="citation-summary"><span class="language-primary">复制 BibTeX / 规范引用</span><span class="language-english" lang="en">BibTeX & Citation</span></summary>
+              <summary class="citation-summary">BibTeX & Citation</summary>
               <div class="citation-box">
                 <div class="citation-short-row">
-                  <span class="citation-label">规范引用：</span>
+                  <span class="citation-label">Citation:</span>
                   <code class="citation-short">{formatCitation(paperObj || pick)}</code>
                 </div>
-                <pre class="citation-pre" tabindex="0" title="点击全选复制">{formatBibtex(paperObj || pick)}</pre>
+                <pre class="citation-pre" tabindex="0" title="Click to copy">{formatBibtex(paperObj || pick)}</pre>
               </div>
             </details>
 
@@ -318,36 +314,35 @@ const activeTopicFilters = TOPIC_FILTER_SPECS
                     <div class="modal-meta-row">
                       <div class="modal-badges">
                         <span class={`tier-pill priority-pill-${pick.priority === "must_read" ? "must-read" : "worth-knowing"}`}>
-                          {badge.zh}
+                          {badge.en}
                         </span>
                         <span class="radar-arxiv-badge">arXiv:{pick.arxiv_id}</span>
-                        {dailyDate && <span class="radar-date-badge">📅 {formatAnnouncementInBeijing(dailyDate).beijingDate} 日报收录</span>}
+                        {dailyDate && <span class="radar-date-badge">📅 {formatAnnouncementInBeijing(dailyDate).beijingDate} Batch</span>}
                       </div>
                       <button
                         type="button"
                         class="radar-modal-close-btn"
                         popovertarget={modalId}
                         popovertargetaction="hide"
-                        aria-label="关闭研读窗口 (ESC)"
+                        aria-label="Close dialog (ESC)"
                       >✕</button>
                     </div>
                     <h2 class="radar-modal-title" id={`modal-title-${modalId}`}>
                       <ReaderText text={pick.title} />
-                      {titleZh ? <span class="modal-title-zh">{titleZh}</span> : null}
                     </h2>
                     {resolveAuthors(pick.arxiv_id, pick).length > 0 && (
-                      <p class="radar-modal-authors">作者：{resolveAuthors(pick.arxiv_id, pick).join(", ")}</p>
+                      <p class="radar-modal-authors">Authors: {resolveAuthors(pick.arxiv_id, pick).join(", ")}</p>
                     )}
                   </header>
 
-                  <div class="radar-modal-body language-primary">
+                  <div class="radar-modal-body">
                     <DailyRadarGuide item={dailyItem} visibleWorkLinks={{}} />
                     <DailyRadarSource item={dailyItem} />
                   </div>
 
                   <footer class="radar-modal-footer">
                     <div class="radar-modal-ext-links">
-                      <a class="modal-ext-link" href={`https://arxiv.org/abs/${pick.arxiv_id}`} target="_blank" rel="noopener">arXiv 原文页 ↗</a>
+                      <a class="modal-ext-link" href={`https://arxiv.org/abs/${pick.arxiv_id}`} target="_blank" rel="noopener">arXiv Page ↗</a>
                       <a class="modal-ext-link" href={`https://arxiv.org/pdf/${pick.arxiv_id}`} target="_blank" rel="noopener">官方 PDF ↗</a>
                       <a class="modal-ext-link" href={getBibliographicUrl(pick.arxiv_id)} target="_blank" rel="noopener">{getBibliographicSourceName({ short: true })} ↗</a>
                       {dailyDate && (

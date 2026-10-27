@@ -9,7 +9,7 @@ import { test } from "node:test";
 const projectRoot = fileURLToPath(new URL("..", import.meta.url));
 const distRoot = join(projectRoot, "dist");
 
-test("the reader exposes one page-level language switch and keeps English in the static page", async () => {
+test("the reader adopts English-first interface and drops the language switch toggle", async () => {
   ensureDistBuilt();
 
   const htmlPaths = [
@@ -22,9 +22,8 @@ test("the reader exposes one page-level language switch and keeps English in the
   ];
   for (const path of htmlPaths) {
     const html = await readFile(join(distRoot, path), "utf8");
-    assert.equal((html.match(/id="site-language-toggle"/gu) ?? []).length, 1, path);
-    assert.match(html, /中文[\s\S]*English/u, path);
-    assert.match(html, /class="[^"]*language-english[^"]*"/u, path);
+    assert.equal((html.match(/id="site-language-toggle"/gu) ?? []).length, 0, path);
+    assert.match(html, /<html[^>]*\blang="en"/u, path);
     assert.doesNotMatch(html, /<summary>英文原文 \/ English version<\/summary>/u, path);
   }
 });

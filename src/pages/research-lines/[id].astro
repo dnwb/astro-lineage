@@ -55,14 +55,7 @@ function workAuthors(membership: AnyRecord) {
 }
 
 function workTitle(membership: AnyRecord) {
-  const fallback = membership.work?.title ?? membership.work_id;
-  const localized = localizedWorkTitle(membership.work_id, fallback);
-  if (localized !== fallback) return localized;
-  const work = baselineReader.works?.find((candidate) => candidate.work_id === membership.work_id);
-  return work?.reading
-    ? parseReadingMarkdown(String(work.reading), { skipTitle: false })
-      .find((block) => block.kind === "heading" && block.depth === 1)?.text ?? fallback
-    : fallback;
+  return membership.work?.title ?? membership.work_id;
 }
 
 function workYear(membership: AnyRecord) {
@@ -72,35 +65,33 @@ function workYear(membership: AnyRecord) {
 ---
 
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={researchLine.scientific_question} />
-    <title>{localizedLineTitle(lineId, researchLine.title)} · {site.title}</title>
+    <title>{researchLine.title} · {site.title}</title>
   </head>
   <body>
     <main class="site-shell reader-page">
       <SiteNav />
-      <p class="eyebrow"><a href="/research-lines/">研究方向</a> · 研究方向详情</p>
+      <p class="eyebrow"><a href="/research-lines/">Research Lines</a> · Line Detail</p>
       <header class="reader-header">
-        {isCandidate ? <p class="reader-note"><span class="tag">候选基准方向</span> 本方向由完整基准文献整理而来，尚未获得人工审核发布。</p> : null}
-        <h1>{localizedLineTitle(lineId, researchLine.title)}</h1>
-        <p class="original-title" lang="en">英文标题：{researchLine.title}</p>
-        <p class="section-kicker">科学问题</p>
-        <p class="reader-deck">{localizedLineQuestion(lineId, researchLine.scientific_question)}</p>
-        <p class="language-english" lang="en">English question: {researchLine.scientific_question}</p>
+        {isCandidate ? <p class="reader-note"><span class="tag">Candidate Line</span> This line is curated from baseline literature and pending review.</p> : null}
+        <h1>{researchLine.title}</h1>
+        <p class="section-kicker">Scientific Question</p>
+        <p class="reader-deck">{researchLine.scientific_question}</p>
       </header>
 
       <section class="panel reader-view" aria-labelledby="line-reader-view-heading">
-        <h2 id="line-reader-view-heading">为什么这个方向重要</h2>
+        <h2 id="line-reader-view-heading">Why This Line Matters</h2>
         <ReadingProse source={String(researchLine.reading ?? "")} localizationKey={lineId} />
       </section>
 
       <section class="panel" aria-labelledby="line-works-heading">
-        <h2 id="line-works-heading">该研究方向中的论文</h2>
+        <h2 id="line-works-heading">Papers in this Research Line</h2>
         {memberships.length === 0 ? (
-          <p class="empty-state">该研究方向暂时没有关联的、经过审核且可见的论文。</p>
+          <p class="empty-state">No verified papers associated with this research line yet.</p>
         ) : (
           <ol class="paper-index">
             {memberships.map((membership: AnyRecord) => (
@@ -111,23 +102,19 @@ function workYear(membership: AnyRecord) {
                       {workTitle(membership)}
                     </a>
                   </h3>
-                  <p class="original-title" lang="en">英文原题：{membership.work?.title ?? membership.work_id}</p>
                   {workAuthors(membership) || workYear(membership) ? (
                     <p class="paper-meta">
                       {workAuthors(membership)}{workAuthors(membership) && workYear(membership) ? " · " : ""}{workYear(membership)}
                     </p>
                   ) : null}
                   <p class="record-label">
-                    阅读角色：{membership.reading_roles?.map(localizedRole).join("、") ?? "无"}
-                    {membership.editorial_anchor ? " · 该方向的编辑锚点" : ""}
+                    Role: {membership.reading_roles?.map(localizedRole).join(", ") ?? "None"}
+                    {membership.editorial_anchor ? " · Editorial anchor for this line" : ""}
                   </p>
                   {membership.reason ? (
-                    <>
-                      <p>{localizedMembershipReason(membership.id, membership.reason)}</p>
-                      <p class="language-english" lang="en">English note: {membership.reason}</p>
-                    </>
+                    <p>{membership.reason}</p>
                   ) : null}
-                  <p><a class="browse-link" href={workReaderPath(snapshot, membership.work_id)}>阅读论文</a></p>
+                  <p><a class="browse-link" href={workReaderPath(snapshot, membership.work_id)}>Read paper →</a></p>
                 </article>
               </li>
             ))}

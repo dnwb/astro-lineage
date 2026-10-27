@@ -499,13 +499,31 @@ export function formatAnnouncementInBeijing(usDateStr, usWeekday) {
     Fri: "周五",
     Sat: "周六",
   };
+  const englishWeekdayMap = {
+    周日: "Sun",
+    周一: "Mon",
+    周二: "Tue",
+    周三: "Wed",
+    周四: "Thu",
+    周五: "Fri",
+    周六: "Sat",
+    Sun: "Sun",
+    Mon: "Mon",
+    Tue: "Tue",
+    Wed: "Wed",
+    Thu: "Thu",
+    Fri: "Fri",
+    Sat: "Sat",
+  };
   const rawWk = p.weekday || "";
   const chineseWeekday = rawWk.startsWith("周") ? rawWk : weekdayMap[rawWk] || `周${rawWk}`;
+  const englishWeekday = englishWeekdayMap[rawWk] || rawWk;
 
   return {
     beijingDate,
     shortDate,
     chineseWeekday,
+    englishWeekday,
     displayLabel: `${beijingDate} (${chineseWeekday})`,
     batchKicker: `${chineseWeekday}监测批次 · 截稿于 02:00`,
     usDate: usDateStr,

@@ -10,6 +10,7 @@ import DailyKnowledgePoint from "../../components/DailyKnowledgePoint.astro";
 import DailyDateSwitcher from "../../components/DailyDateSwitcher.astro";
 import DailyTopicFilter from "../../components/DailyTopicFilter.astro";
 import { formatAnnouncementInBeijing } from "../../domain/academic-domain.mjs";
+import { isLegacyChineseDate } from "../../domain/language-cutover.mjs";
 import { loadSiteConfig } from "../../lib/site-config";
 import "../../styles/global.css";
 
@@ -106,7 +107,7 @@ const bjtInfo = formatAnnouncementInBeijing(archive.date, archive.weekday);
 ---
 
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -121,42 +122,43 @@ const bjtInfo = formatAnnouncementInBeijing(archive.date, archive.weekday);
       <SiteNav />
 
       <p class="eyebrow">
-        <a href="/">{site.title}</a> · <a href="/arxiv-daily/">Daily Radar</a> · 历史归档批次
+        <a href="/">{site.title}</a> · <a href="/arxiv-daily/">Daily Radar</a> · Archive
       </p>
 
       <!-- Historical Archive Banner -->
-      <section class="standalone-archive-banner" aria-label="归档批次元信息与快速跳转">
+      <section class="standalone-archive-banner" aria-label="Archive Batch Navigation">
         <div class="archive-banner-left">
-          <span class="banner-badge-archive">📅 历史归档批次</span>
+          <span class="banner-badge-archive">📅 Archive Batch</span>
           <strong class="banner-date">{bjtInfo.beijingDate}</strong>
           <span class="banner-weekday">{bjtInfo.chineseWeekday}</span>
-          <span class="banner-meta-pill">美东批次：{archive.date} ({archive.weekday})</span>
-          <span class="banner-meta-pill">所属周：{archive.week_id}</span>
+          <span class="banner-meta-pill">US Date: {archive.date} ({archive.weekday})</span>
+          <span class="banner-meta-pill">Week: {archive.week_id}</span>
           <span class="banner-meta-pill">{archive.batch_id}</span>
         </div>
         <div class="archive-banner-right">
           <a class="banner-nav-link" href="/arxiv-daily/">
-            <span class="language-primary">← 返回今日最新导读</span>
-            <span class="language-english" lang="en">← Latest Daily</span>
+            ← Latest Daily
           </a>
           <a class="banner-nav-link" href="/arxiv-weekly/">
-            <span class="language-primary">📖 查看周报综述 →</span>
-            <span class="language-english" lang="en">Weekly Synthesis →</span>
+            Weekly Synthesis →
           </a>
         </div>
       </section>
 
       <header class="reader-header">
-        <h1>
-          <span class="language-primary">arXiv 每日学术导读 · 历史归档</span>
-          <span class="language-english" lang="en">Daily arXiv Reading Guide · Archive</span>
-        </h1>
+        <h1>Daily arXiv Reading Guide · Archive</h1>
+        {isLegacyChineseDate(archive.date) && (
+          <div class="legacy-archive-banner" role="note">
+            <span class="legacy-badge">Legacy Archive</span>
+            <span>This edition was generated prior to the English transition ({archive.date}) and contains historical Chinese text.</span>
+          </div>
+        )}
         <div class="historical-quick-stats">
-          <span class="stat-pill total">总收录 <strong>{model.counts.total}</strong> 篇</span>
-          <span class="stat-pill analyzed">有效研判 <strong>{model.counts.analyzed}</strong> 篇</span>
-          <span class="stat-pill must">必读 <strong>{priorityGroups.must_read?.length ?? 0}</strong> 篇</span>
-          <span class="stat-pill worth">关注 <strong>{priorityGroups.worth_knowing?.length ?? 0}</strong> 篇</span>
-          <span class="stat-pill skim">快速浏览 <strong>{priorityGroups.skip?.length ?? 0}</strong> 篇</span>
+          <span class="stat-pill total">Total: <strong>{model.counts.total}</strong></span>
+          <span class="stat-pill analyzed">Analyzed: <strong>{model.counts.analyzed}</strong></span>
+          <span class="stat-pill must">Must Read: <strong>{priorityGroups.must_read?.length ?? 0}</strong></span>
+          <span class="stat-pill worth">Followed: <strong>{priorityGroups.worth_knowing?.length ?? 0}</strong></span>
+          <span class="stat-pill skim">Skim: <strong>{priorityGroups.skip?.length ?? 0}</strong></span>
         </div>
       </header>
 

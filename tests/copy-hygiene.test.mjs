@@ -64,7 +64,7 @@ test("static reader dist HTML files do not contain unapproved client scripts", a
   }
 });
 
-test("weekly reader pages enforce bilingual tags on metadata and navigation bars", async () => {
+test("weekly reader pages enforce English metadata and navigation bars", async () => {
   const weeklyPages = [
     join(projectRoot, "src", "pages", "arxiv-weekly", "index.astro"),
     join(projectRoot, "src", "pages", "arxiv-weekly", "[week].astro"),
@@ -72,31 +72,36 @@ test("weekly reader pages enforce bilingual tags on metadata and navigation bars
 
   for (const pagePath of weeklyPages) {
     const content = await readFile(pagePath, "utf8");
-    // 1. 确保元信息栏 (.weekly-meta-bar) 包含中英双语标签
+    // 1. Ensure meta-bar contains English labels and no language-primary
     assert.match(
       content,
-      /<div\s+class="weekly-meta-bar">[\s\S]*?class="language-primary"[\s\S]*?class="language-english"/u,
-      `${pagePath} meta-bar 缺少 language-primary / language-english 双语结构`
+      /<div\s+class="weekly-meta-bar">[\s\S]*?Period:[\s\S]*?Span:[\s\S]*?Analyzed:/u,
+      `${pagePath} meta-bar missing English structure`
     );
-    // 2. 确保周报工具折叠栏 (.weekly-tools-details) 具备双语标签
+    assert.doesNotMatch(
+      content,
+      /class="language-primary"/u,
+      `${pagePath} meta-bar still contains language-primary`
+    );
+    // 2. Ensure tools details contains English labels
     assert.match(
       content,
-      /<details\s+class="weekly-tools-details">[\s\S]*?class="language-primary"[\s\S]*?class="language-english"/u,
-      `${pagePath} tools-details 缺少 language-primary / language-english 双语结构`
+      /<details\s+class="weekly-tools-details">[\s\S]*?Tools/u,
+      `${pagePath} tools-details missing English label`
     );
   }
 
-  // 3. 确保周次切换组件 (.weekly-nav-bar) 包含中英双语标签与 aria-current
+  // 3. Ensure week switcher contains aria-current="page"
   const switcherPath = join(projectRoot, "src", "components", "weekly", "WeeklyWeekSwitcher.astro");
   const switcherContent = await readFile(switcherPath, "utf8");
   assert.match(
     switcherContent,
-    /<nav\s+class="weekly-nav-bar"[\s\S]*?class="language-primary"[\s\S]*?class="language-english"/u,
-    "WeeklyWeekSwitcher.astro 缺少双语导航文字"
+    /<nav\s+class="weekly-nav-bar"[\s\S]*?Current:[\s\S]*?Archives/u,
+    "WeeklyWeekSwitcher.astro missing English navigation labels"
   );
   assert.match(
     switcherContent,
     /class="summary-current"[^>]*aria-current="page"/u,
-    "WeeklyWeekSwitcher.astro 缺少当前周 aria-current='page' 无障碍属性"
+    "WeeklyWeekSwitcher.astro missing aria-current='page'"
   );
 });

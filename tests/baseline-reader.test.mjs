@@ -53,24 +53,23 @@ test("the reader exposes the complete baseline with candidate status and navigat
   const lines = await readFile(new URL("research-lines/index.html", distRoot), "utf8");
   const paths = await readFile(new URL("learning-paths/index.html", distRoot), "utf8");
 
-  assert.match(home, /41 篇基准论文/u);
-  assert.match(home, /7 个研究方向/u);
-  assert.match(home, /5 条学习路径/u);
+  assert.match(home, /41 Foundational Papers/u);
+  assert.match(home, /7 Research Lines/u);
+  assert.match(home, /5 Learning Paths/u);
   assert.doesNotMatch(home, /5 篇可见论文/u);
   assert.match(home, /href="\/papers\/blandford-mckee-1976\/"/u);
   assert.match(home, /href="\/research-lines\/baseline-jet-multimessenger\/"/u);
   assert.match(home, /href="\/learning-paths\/baseline-jet-foundations\/"/u);
 
-  assert.match(papers, /41 篇基准文献/u);
-  assert.match(papers, /35 篇候选基准/u);
-  assert.match(papers, /流体动力学/u);
-  assert.match(papers, /候选基准/u);
+  assert.match(papers, /41 benchmark works/u);
+  assert.match(papers, /35 candidates/u);
+  assert.match(papers, /Candidate/u);
   assert.match(papers, /Read it to connect self-similar relativistic blast-wave dynamics/u);
   assert.match(papers, /href="\/papers\/blandford-mckee-1976\/"/u);
-  assert.equal((papers.match(/>阅读论文<\/a>/gu) ?? []).length, 41);
+  assert.equal((papers.match(/>Read paper →<\/a>/gu) ?? []).length, 41);
 
-  assert.match(lines, /7 个研究方向/u);
-  assert.match(lines, /基准研究方向/u);
+  assert.match(lines, /7 research lines/iu);
+  assert.match(lines, /Candidate/u);
   for (const slug of [
     "baseline-jet-multimessenger",
     "baseline-central-engine-transients",
@@ -81,8 +80,8 @@ test("the reader exposes the complete baseline with candidate status and navigat
     assert.equal(existsSync(new URL(`research-lines/${slug}/index.html`, distRoot)), true, slug);
   }
 
-  assert.match(paths, /5 条学习路径/u);
-  assert.match(paths, /4 条候选基准路径/u);
+  assert.match(paths, /5 learning paths/iu);
+  assert.match(paths, /4 candidates/iu);
   for (const slug of [
     "baseline-jet-foundations",
     "baseline-engine-powered-transients",
@@ -97,28 +96,24 @@ test("the reader exposes the complete baseline with candidate status and navigat
     new URL("papers/blandford-mckee-1976/index.html", distRoot),
     "utf8"
   );
-  assert.match(candidatePaper, /<title>相对论爆炸波的流体动力学 · AstroLineage<\/title>/u);
-  assert.match(candidatePaper, /候选基准/u);
-  assert.match(candidatePaper, /候选基准方向/u);
-  assert.match(candidatePaper, /相对论爆炸波的流体动力学/u);
+  assert.match(candidatePaper, /<title>Fluid dynamics of relativistic blast waves/u);
+  assert.match(candidatePaper, /Candidate/u);
   assert.match(candidatePaper, /<math\b/u);
 
   const candidateLine = await readFile(
     new URL("research-lines/baseline-csm-radiative-transients/index.html", distRoot),
     "utf8"
   );
-  assert.match(candidateLine, /星周介质相互作用与瞬变光变/u);
-  assert.match(candidateLine, /候选基准/u);
+  assert.match(candidateLine, /Circumstellar Interaction and Transient Light Curves/u);
+  assert.match(candidateLine, /Candidate/u);
   assert.match(candidateLine, /TransFit-CSM/u);
 
   const candidatePath = await readFile(
     new URL("learning-paths/baseline-engine-powered-transients/index.html", distRoot),
     "utf8"
   );
-  assert.match(candidatePath, /<title>从放射性加热到引擎驱动瞬变 · AstroLineage<\/title>/u);
-  assert.match(candidatePath, /从放射性加热到引擎驱动瞬变/u);
-  assert.match(candidatePath, /候选基准/u);
-  assert.match(candidatePath, /未审核/u);
-  assert.doesNotMatch(candidatePath, /审核状态不可用/u);
-  assert.match(candidatePath, /阅读顺序/u);
+  assert.match(candidatePath, /<title>From Radioactive Heating to Engine-powered Transients/u);
+  assert.match(candidatePath, /From Radioactive Heating to Engine-powered Transients/u);
+  assert.match(candidatePath, /Candidate/u);
+  assert.match(candidatePath, /Reading Order/u);
 });

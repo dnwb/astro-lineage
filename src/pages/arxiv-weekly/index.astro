@@ -15,6 +15,7 @@ import {
   getBibliographicUrl,
   getBibliographicSourceName,
 } from "../../domain/academic-domain.mjs";
+import { isLegacyChineseDate } from "../../domain/language-cutover.mjs";
 import { radarCardAnchor } from "../../../scripts/daily-radar.mjs";
 import "../../styles/global.css";
 import "../../styles/weekly.css";
@@ -139,12 +140,12 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
 ---
 
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="AstroLineage 每周 arXiv 学术脉络与深度综述：聚合周度论文，梳理因果动力学脉络与精选必读。" />
-    <title>高能天体物理 arXiv 每周学术脉络 · {weekLabelZh} | {site.title}</title>
+    <meta name="description" content={`Weekly synthesis of high-energy astrophysics arXiv papers: ${weekLabelEn} (${weeklyData.date_range}).`} />
+    <title>Weekly Synthesis · {weekLabelEn} | {site.title}</title>
   </head>
   <body>
     <main class="site-shell index-page reader-page weekly-page">
@@ -153,38 +154,41 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
       <p class="eyebrow"><a href="/">{site.title}</a> · <a href="/arxiv-daily/">arXiv Radar</a> · Weekly Synthesis</p>
 
       <header class="reader-header">
-        <h1>
-          <span class="language-primary">每周学术脉络 · {weekLabelZh}</span>
-          <span class="language-english" lang="en">Weekly Synthesis · {weekLabelEn}</span>
-        </h1>
+        <h1>Weekly Synthesis · {weekLabelEn}</h1>
+        {isLegacyChineseDate(weeklyData.week_id) && (
+          <div class="legacy-archive-banner" role="note">
+            <span class="legacy-badge">Legacy Archive</span>
+            <span>This edition was generated prior to the English transition ({weeklyData.week_id}) and contains historical Chinese text.</span>
+          </div>
+        )}
         <div class="weekly-meta-bar">
-          <span class="meta-item">📅 <span class="language-primary">周期：</span><span class="language-english" lang="en">Period: </span>{weekLabelZh}</span>
+          <span class="meta-item">📅 Period: {weeklyData.week_id}</span>
           <span class="meta-sep">·</span>
-          <span class="meta-item">⏱ <span class="language-primary">时间跨度：</span><span class="language-english" lang="en">Span: </span>{weeklyData.date_range}</span>
+          <span class="meta-item">⏱ Span: {weeklyData.date_range}</span>
           <span class="meta-sep">·</span>
-          <span class="meta-item">📊 <span class="language-primary">深度研判 <strong>{stats.total_analyzed}</strong> 篇</span><span class="language-english" lang="en">Analyzed: <strong>{stats.total_analyzed}</strong></span></span>
+          <span class="meta-item">📊 Analyzed: <strong>{stats.total_analyzed}</strong></span>
           <span class="meta-sep">·</span>
-          <span class="meta-item highlight-must"><span class="language-primary">必读 <strong>{stats.must_read_count}</strong></span><span class="language-english" lang="en">Must Read: <strong>{stats.must_read_count}</strong></span></span>
+          <span class="meta-item highlight-must">Must Read: <strong>{stats.must_read_count}</strong></span>
           <span class="meta-sep">·</span>
-          <span class="meta-item highlight-worth"><span class="language-primary">关注 <strong>{stats.worth_knowing_count}</strong></span><span class="language-english" lang="en">Followed: <strong>{stats.worth_knowing_count}</strong></span></span>
+          <span class="meta-item highlight-worth">Followed: <strong>{stats.worth_knowing_count}</strong></span>
           {isInProgress ? (
             <>
               <span class="meta-sep">·</span>
-              <span class="meta-item in-progress-badge">⏱️ <span class="language-primary">进行中</span><span class="language-english" lang="en">In Progress</span> ({weekDays.length}/5)</span>
+              <span class="meta-item in-progress-badge">⏱️ In Progress ({weekDays.length}/5)</span>
               {lastCompleteWeekId && (
                 <span class="meta-item in-progress-link">
-                  <a href={lastCompleteWeekUrl}><span class="language-primary">最近完整周报 ({lastCompleteWeekLabel}) →</span><span class="language-english" lang="en">Latest Complete ({lastCompleteWeekLabel}) →</span></a>
+                  <a href={lastCompleteWeekUrl}>Latest Complete ({lastCompleteWeekId}) →</a>
                 </span>
               )}
             </>
           ) : null}
           <div class="meta-tools-wrap">
-            <a class="meta-jump-btn" href="#audit-and-index" title="快速跳转至页面底部备查索引库">
-              <span>📑 <span class="language-primary">备查索引</span><span class="language-english" lang="en">Index</span> ↓</span>
+            <a class="meta-jump-btn" href="#audit-and-index" title="Jump to Index">
+              <span>📑 Index ↓</span>
             </a>
             <details class="weekly-tools-details">
               <summary class="tools-summary-btn">
-                <span>⚙️ <span class="language-primary">工具</span><span class="language-english" lang="en">Tools</span></span>
+                <span>⚙️ Tools</span>
                 <span class="tools-caret">▾</span>
               </summary>
               <div class="tools-dropdown-body">
@@ -192,17 +196,16 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
                   class="meta-link pdf-download-link"
                   href={`/arxiv-weekly/${weeklyData.week_id}/weekly-${weeklyData.week_id}.pdf`}
                   download={`weekly-${weeklyData.week_id}.pdf`}
-                  title="下载包含完整切图与超链接的 PDF 周报"
+                  title="Download PDF"
                 >
-                  📥 <span class="language-primary">下载周报 PDF</span><span class="language-english" lang="en">Download PDF</span>
+                  📥 Download PDF
                 </a>
                 <details class="weekly-markdown-export">
                   <summary class="export-summary-btn">
-                    <span class="language-primary">📋 导出 / 复制周报 Markdown</span>
-                    <span class="language-english" lang="en">Export Weekly Markdown</span>
+                    Export Weekly Markdown
                   </summary>
                   <div class="export-body">
-                    <pre class="export-markdown-pre" tabindex="0" title="点击全选复制">{exportMarkdown}</pre>
+                    <pre class="export-markdown-pre" tabindex="0" title="Click to copy">{exportMarkdown}</pre>
                   </div>
                 </details>
               </div>
@@ -217,13 +220,13 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
       <!-- 1. Executive Summary (本周综述) -->
       <section class="weekly-section executive-section" id="executive-summary">
         <div class="section-heading">
-          <p class="section-kicker"><span class="language-primary">全景</span><span class="language-english" lang="en">Overview</span></p>
-          <h2><span class="language-primary">本周综述</span><span class="language-english" lang="en">Weekly Summary</span></h2>
+          <p class="section-kicker">Overview</p>
+          <h2>Weekly Summary</h2>
         </div>
         <div class="executive-content-card">
           {structuredExecutive.lead && (
             <div class="executive-lead-box">
-              <span class="executive-lead-pill">🌐 核心因果链条</span>
+              <span class="executive-lead-pill">🌐 Core Causal Chain</span>
               <p class="executive-lead"><ReaderText text={structuredExecutive.lead} /></p>
             </div>
           )}
@@ -262,14 +265,14 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
       {weeklyData.thematic_highlights && weeklyData.thematic_highlights.length > 0 && (
         <section class="weekly-section thematic-section" id="thematic-highlights">
           <div class="section-heading">
-            <p class="section-kicker"><span class="language-primary">专题聚焦</span><span class="language-english" lang="en">Focus Themes</span></p>
-            <h2><span class="language-primary">前沿专题动态与物理突破</span><span class="language-english" lang="en">Thematic Highlights</span></h2>
+            <p class="section-kicker">Focus Themes</p>
+            <h2>Thematic Highlights</h2>
           </div>
           <div class="thematic-grid">
             {weeklyData.thematic_highlights?.map((theme: any, idx: number) => (
               <article class="thematic-card">
                 <div class="thematic-header">
-                  <span class="theme-index">专题 0{idx + 1}</span>
+                  <span class="theme-index">Theme 0{idx + 1}</span>
                   <h3>{theme.theme_name}</h3>
                 </div>
                 <div class="thematic-body">
@@ -277,7 +280,7 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
                 </div>
                 {theme.paper_ids && theme.paper_ids.length > 0 ? (
                   <div class="thematic-papers">
-                    <span class="thematic-papers-label">涉及核心论文：</span>
+                    <span class="thematic-papers-label">Key Papers:</span>
                     <div class="paper-tag-list">
                       {theme.paper_ids.map((id: string) => {
                         const dailyDate = paperDailyDateMap.get(id);
@@ -287,7 +290,7 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
                               arXiv:{id}
                             </a>
                             {dailyDate && (
-                              <a class="paper-daily-link" href={`/arxiv-daily/${dailyDate}/#${radarCardAnchor(id, 1)}`} title={`前往 ${dailyDate} 日报查看研读导读与模型假设`}>
+                              <a class="paper-daily-link" href={`/arxiv-daily/${dailyDate}/#${radarCardAnchor(id, 1)}`} title={`View daily guide for ${dailyDate}`}>
                                 📅 {dailyDate} →
                               </a>
                             )}
@@ -307,8 +310,7 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
       <section class="weekly-section audit-section" id="audit-and-index">
         <details class="audit-details">
           <summary class="audit-summary-btn">
-            <span class="language-primary">📊 索引与核查备查库（领域研判矩阵 · 每日批次目录 · 全目录，点击展开）</span>
-            <span class="language-english" lang="en">Index & Audit Archive (Domain Matrix · Daily Index · Full Catalog, click to expand)</span>
+            Index & Audit Archive (Domain Matrix · Daily Index · Full Catalog, click to expand)
           </summary>
           <div class="audit-body">
             <!-- Domain Matrix (领域研判矩阵) -->
@@ -323,8 +325,7 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
             <section class="weekly-section catalog-section" id="catalog">
               <details class="catalog-details">
                 <summary>
-                  <span class="language-primary">本周已研判论文目录（共 {weeklyData.papers?.length ?? 0} 篇，点击展开）</span>
-                  <span class="language-english" lang="en">Complete Weekly Paper Catalog ({weeklyData.papers?.length ?? 0} papers, click to expand)</span>
+                  Complete Weekly Paper Catalog ({weeklyData.papers?.length ?? 0} papers, click to expand)
                 </summary>
                 <div class="catalog-list">
                   {weeklyData.papers?.map((p: any) => {
@@ -339,35 +340,35 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
                     return (
                       <div class="catalog-item">
                         <div class="catalog-item-header">
-                          <span class={`catalog-badge ${badge.class}`}>{badge.zh}</span>
+                          <span class={`catalog-badge ${badge.class}`}>{badge.en}</span>
                           <a class="catalog-arxiv-link" href={p.url || `https://arxiv.org/abs/${p.arxiv_id}v${p.revision || 1}`} target="_blank" rel="noopener noreferrer">
                             arXiv:{p.arxiv_id}v{p.revision || 1}
                           </a>
-                          <a class="catalog-ads-link" href={getBibliographicUrl(p.arxiv_id)} target="_blank" rel="noopener noreferrer" title={`在 ${getBibliographicSourceName()} 中查看`}>
+                          <a class="catalog-ads-link" href={getBibliographicUrl(p.arxiv_id)} target="_blank" rel="noopener noreferrer" title={`View on ${getBibliographicSourceName()}`}>
                             {getBibliographicSourceName({ short: true })} ↗
                           </a>
                           <h4 class="catalog-item-title">
-                            <a href={paperTargetUrl} class="catalog-paper-title-link" title="点击直接进入该篇当日深度精读">
+                            <a href={paperTargetUrl} class="catalog-paper-title-link" title="Click to view daily guide">
                               {p.title}
                             </a>
                           </h4>
                         </div>
                         {resolveAuthors(p.arxiv_id, p).length > 0 && (
-                          <p class="catalog-item-authors">作者：{resolveAuthors(p.arxiv_id, p).join(", ")}</p>
+                          <p class="catalog-item-authors">Authors: {resolveAuthors(p.arxiv_id, p).join(", ")}</p>
                         )}
                         {problem && (
-                          <p class="catalog-item-problem"><strong>研究问题：</strong><ReaderText text={problem} /></p>
+                          <p class="catalog-item-problem"><strong>Problem: </strong><ReaderText text={problem} /></p>
                         )}
                         {result && (
-                          <p class="catalog-item-result"><strong>结论要点：</strong><ReaderText text={result} /></p>
+                          <p class="catalog-item-result"><strong>Result: </strong><ReaderText text={result} /></p>
                         )}
                         {method && (
-                          <p class="catalog-item-method"><strong>方法机制：</strong><ReaderText text={method} /></p>
+                          <p class="catalog-item-method"><strong>Method: </strong><ReaderText text={method} /></p>
                         )}
                         {announcementDate && (
                           <p class="catalog-item-jump">
                             <a href={`/arxiv-daily/${announcementDate}/#card-${p.arxiv_id}-v${p.revision || 1}`}>
-                              📖 查看当日完整学术导读卡片与阅读证据 →
+                              📖 View daily reading card & evidence →
                             </a>
                           </p>
                         )}

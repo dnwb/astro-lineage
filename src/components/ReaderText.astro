@@ -18,7 +18,7 @@ const segments = splitMath(text) as ReaderTextSegment[];
     <span
       class={segment.display ? "reader-math reader-math-display" : "reader-math"}
       tabindex={segment.display ? 0 : undefined}
-      aria-label={segment.display ? "公式，可横向滚动查看" : undefined}
+      aria-label={segment.display ? "Formula, scroll horizontally to view" : undefined}
       set:html={renderMathMarkup(segment.value, segment.display)}
     />
   ) : segment.value

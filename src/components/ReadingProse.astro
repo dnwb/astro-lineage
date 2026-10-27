@@ -1,40 +1,29 @@
 ---
 import { parseReadingMarkdown } from "../../scripts/reader-markdown.mjs";
-import { localizedBlocks, selectBilingualBlocks, type ReaderBlock } from "../lib/reader-localization";
+import { selectBilingualBlocks, type ReaderBlock } from "../lib/reader-localization";
 import ReadingBlocks from "./ReadingBlocks.astro";
 
 interface Props {
   source?: string;
-  blocks?: ReadingBlock[];
+  blocks?: ReaderBlock[];
   class?: string;
   localizationKey?: string;
   localizationSection?: string;
 }
 
-type ReadingBlock = ReaderBlock;
-
 const {
   source = "",
   blocks: suppliedBlocks,
   class: className = "reading-prose",
-  localizationKey,
-  localizationSection = "reading",
 } = Astro.props;
-const blocks = (suppliedBlocks ?? parseReadingMarkdown(source)) as ReadingBlock[];
-const displayBlocks = localizationKey
-  ? localizedBlocks(localizationKey, localizationSection, blocks)
-  : blocks;
-const englishBlocks = localizationKey
-  ? selectBilingualBlocks(blocks, "english")
-  : blocks;
-const primaryBlocks = localizationKey
-  ? selectBilingualBlocks(displayBlocks, "primary")
-  : blocks;
+const blocks = selectBilingualBlocks(
+  (suppliedBlocks ?? parseReadingMarkdown(source)) as ReaderBlock[],
+  "english",
+);
 ---
 
 <div class={className}>
-  <div class="reading-language reading-language-primary language-primary" lang="zh-CN">
-    <ReadingBlocks blocks={primaryBlocks} />
+  <div class="reading-language" lang="en">
+    <ReadingBlocks blocks={blocks} />
   </div>
-  {localizationKey ? <div class="reading-language language-english" lang="en"><ReadingBlocks blocks={englishBlocks} /></div> : null}
 </div>

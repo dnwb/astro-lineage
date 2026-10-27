@@ -307,11 +307,11 @@ test("arXiv weekly layout prioritizes reading: executive summary and top picks p
     );
   }
 
-  // 7. Bilingual elements in meta bar and navigation
+  // 7. English elements in meta bar and navigation
   assert.match(
     html,
-    /<div class="weekly-meta-bar">[\s\S]*?class="language-primary"[\s\S]*?class="language-english"/u,
-    "metadata bar must support bilingual primary/english markup"
+    /<div class="weekly-meta-bar">[\s\S]*?Period:[\s\S]*?Span:[\s\S]*?Analyzed:/u,
+    "metadata bar must support English markup"
   );
   assert.match(
     html,

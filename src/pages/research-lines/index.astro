@@ -19,7 +19,7 @@ const candidateCount = researchLines.filter((line) => line.reader_status === "ca
 ---
 
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
@@ -27,18 +27,18 @@ const candidateCount = researchLines.filter((line) => line.reader_status === "ca
       name="description"
       content={`The visible Research Lines in ${site.title}.`}
     />
-    <title>研究方向 · {site.title}</title>
+    <title>Research Lines · {site.title}</title>
   </head>
   <body>
     <main class="site-shell index-page">
       <SiteNav />
-      <p class="eyebrow"><a href="/">{site.title}</a> · 研究方向索引</p>
-      <h1>研究方向</h1>
-      <p class="layer-intro">{researchLines.length} 个研究方向：{publishedCount} 个已审核，{candidateCount} 个基准研究方向</p>
-      <p class="reader-note">基准研究方向由本轮 {baselineWorks.length} 篇文献的主题整理而来，当前作为候选规划展示，等待组内审核后再进入正式 reader。</p>
+      <p class="eyebrow"><a href="/">{site.title}</a> · Research Lines</p>
+      <h1>Research Lines</h1>
+      <p class="layer-intro">{researchLines.length} research lines: {publishedCount} verified, {candidateCount} candidates</p>
+      <p class="reader-note">Research lines organize {baselineWorks.length} foundational papers into cohesive inquiry directions.</p>
       {
         researchLines.length === 0 ? (
-          <p class="empty-state">文献库中暂时没有可显示研究方向。</p>
+          <p class="empty-state">No research lines available.</p>
         ) : (
           <ol class="paper-index">
             {researchLines.map((line) => (
@@ -46,16 +46,14 @@ const candidateCount = researchLines.filter((line) => line.reader_status === "ca
                 <article>
                   <h2>
                     <a class="paper-title" href={researchLineReaderPath(snapshot, line.line_id)}>
-                      {localizedLineTitle(line.line_id, line.title ?? line.line_id)}
+                      {line.title ?? line.line_id}
                     </a>
                   </h2>
-                  <p class="original-title" lang="en">英文标题：{line.title ?? line.line_id}</p>
-                  <p><span class="tag">{line.reader_status === "candidate" ? "候选基准方向" : "已审核方向"}</span></p>
-                  <p>{localizedLineQuestion(line.line_id, line.scientific_question)}</p>
-                  <p class="language-english" lang="en">English question: {line.scientific_question}</p>
+                  <p><span class="tag">{line.reader_status === "candidate" ? "Candidate" : "Verified"}</span></p>
+                  <p>{line.scientific_question}</p>
                   <p>
                     <a class="browse-link" href={researchLineReaderPath(snapshot, line.line_id)}>
-                      打开研究方向
+                      Explore Research Line →
                     </a>
                   </p>
                 </article>

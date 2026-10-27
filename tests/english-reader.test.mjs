@@ -17,7 +17,7 @@ function routeFile(route) {
 }
 
 test(
-  "reader pages present Chinese interface copy across every route",
+  "reader pages present English interface copy across every route",
   { timeout: 180_000 },
   async () => {
     ensureDistBuilt();
@@ -49,29 +49,27 @@ test(
     );
 
     for (const [route, html] of pages) {
-      assert.match(html, /<html lang="zh-CN">/u, route);
-      assert.match(html, /[一-鿿]/u, `${route} should contain Chinese reader copy`);
+      assert.match(html, /<html lang="en">/u, route);
     }
 
-    assert.match(pages.get("/"), /理解高能瞬变天体物理中的思想如何演化/u);
-    assert.match(pages.get("/"), /从这里开始/u);
-    assert.match(pages.get("/"), /基准论文/u);
-    assert.match(pages.get("/"), /科学关联/u);
-    assert.match(pages.get("/papers/"), /篇基准文献/u);
-    assert.match(pages.get("/papers/arnett-1982/"), /为什么这项工作重要/u);
-    assert.match(pages.get("/papers/arnett-1982/"), /科学要点/u);
-    assert.match(pages.get("/papers/arnett-1982/"), /溯源与科学证据/u);
-    assert.match(pages.get("/learning-paths/embedded-jet-dynamics/"), /阅读顺序/u);
-    assert.match(pages.get("/learning-paths/embedded-jet-dynamics/"), /下一步为什么/u);
-    assert.match(pages.get("/research-lines/"), /研究方向/u);
-    assert.match(pages.get("/research-lines/central-engines/"), /为什么这个方向重要/u);
-    assert.doesNotMatch(pages.get("/"), />Start Here</u);
-    assert.doesNotMatch(pages.get("/papers/"), />Papers</u);
+    assert.match(pages.get("/"), /Understand how ideas in high-energy astrophysics evolve/u);
+    assert.match(pages.get("/"), /Start Here/u);
+    assert.match(pages.get("/"), /Foundational Papers/u);
+    assert.match(pages.get("/"), /Scientific Connections/u);
+    assert.match(pages.get("/papers/"), /benchmark works/u);
+    assert.match(pages.get("/papers/arnett-1982/"), /Why This Work Matters/u);
+    assert.match(pages.get("/papers/arnett-1982/"), /Scientific Takeaway/u);
+    assert.match(
+      pages.get("/papers/arnett-1982/"),
+      /Provenance &amp; Scientific Evidence|Provenance & Scientific Evidence/u
+    );
+    assert.match(pages.get("/learning-paths/embedded-jet-dynamics/"), /Reading Order/u);
+    assert.match(pages.get("/learning-paths/embedded-jet-dynamics/"), /Why Next/u);
+    assert.match(pages.get("/research-lines/"), /Research Lines/u);
+    assert.match(pages.get("/research-lines/central-engines/"), /Why This Line Matters/u);
 
     const arnett = pages.get("/papers/arnett-1982/");
-    assert.match(arnett, /<div[^>]*lang="zh-CN"[^>]*>/u);
-    assert.match(arnett, /id="site-language-toggle"/u);
-    assert.match(arnett, /class="reading-language language-english"/u);
+    assert.doesNotMatch(arnett, /id="site-language-toggle"/u);
     assert.doesNotMatch(arnett, /<summary>英文原文 \/ English version<\/summary>/u);
     assert.match(
       arnett,
@@ -86,7 +84,7 @@ test(
     const formulaPage = pages.get("/papers/transfit-csm-2025/");
     assert.match(
       formulaPage,
-      /class="reader-math reader-math-display" tabindex="0" aria-label="公式，可横向滚动查看"/u
+      /class="reader-math reader-math-display" tabindex="0" aria-label="Formula, scroll horizontally to view"/u
     );
     assert.match(
       formulaPage,

@@ -1,5 +1,4 @@
 ---
-import LanguageSwitch from "./LanguageSwitch.astro";
 import ThemeToggle from "./ThemeToggle.astro";
 
 const currentPath = Astro.url.pathname;
@@ -10,19 +9,18 @@ const isCurrent = (path: string) => {
 };
 ---
 
-<nav class="site-nav" aria-label="主导航">
+<nav class="site-nav" aria-label="Main Navigation">
   <a class="site-brand" href="/" aria-current={isCurrent("/") && currentPath === "/" ? "page" : undefined}>AstroLineage</a>
   <ul>
-    <li><a href="/arxiv-daily/" aria-current={isCurrent("/arxiv-daily/") ? "page" : undefined} class={isCurrent("/arxiv-daily/") ? "active" : undefined}>每日 arXiv</a></li>
-    <li><a href="/arxiv-weekly/" aria-current={isCurrent("/arxiv-weekly/") ? "page" : undefined} class={isCurrent("/arxiv-weekly/") ? "active" : undefined}>每周总结</a></li>
-    <li><a href="/arxiv-archives/" aria-current={isCurrent("/arxiv-archives/") ? "page" : undefined} class={isCurrent("/arxiv-archives/") ? "active" : undefined}>往期归档</a></li>
-    <li><a href="/events/" aria-current={isCurrent("/events/") ? "page" : undefined} class={isCurrent("/events/") ? "active" : undefined}>📅 爆发事件</a></li>
-    <li><a href="/agent/" aria-current={isCurrent("/agent/") ? "page" : undefined} class={`agent-nav-tab ${isCurrent("/agent/") ? "active" : ""}`} title="Agent 接入与 OpenAPI">🤖 Agent</a></li>
-    <li><a href="https://github.com/dnwb/astro-lineage/issues" target="_blank" rel="noopener noreferrer" class="feedback-nav-link" title="GitHub 反馈">💬 反馈 ↗</a></li>
+    <li><a href="/arxiv-daily/" aria-current={isCurrent("/arxiv-daily/") ? "page" : undefined} class={isCurrent("/arxiv-daily/") ? "active" : undefined}>Daily arXiv</a></li>
+    <li><a href="/arxiv-weekly/" aria-current={isCurrent("/arxiv-weekly/") ? "page" : undefined} class={isCurrent("/arxiv-weekly/") ? "active" : undefined}>Weekly Synthesis</a></li>
+    <li><a href="/arxiv-archives/" aria-current={isCurrent("/arxiv-archives/") ? "page" : undefined} class={isCurrent("/arxiv-archives/") ? "active" : undefined}>Archives</a></li>
+    <li><a href="/events/" aria-current={isCurrent("/events/") ? "page" : undefined} class={isCurrent("/events/") ? "active" : undefined}>📅 Transients</a></li>
+    <li><a href="/agent/" aria-current={isCurrent("/agent/") ? "page" : undefined} class={`agent-nav-tab ${isCurrent("/agent/") ? "active" : ""}`} title="Agent & OpenAPI">🤖 Agent</a></li>
+    <li><a href="https://github.com/dnwb/astro-lineage/issues" target="_blank" rel="noopener noreferrer" class="feedback-nav-link" title="GitHub Feedback">💬 Feedback ↗</a></li>
   </ul>
   <div class="nav-actions">
     <ThemeToggle />
-    <LanguageSwitch />
   </div>
 </nav>
 

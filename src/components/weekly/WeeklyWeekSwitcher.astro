@@ -16,33 +16,33 @@ const newerWeek = currentIndex > 0 ? allWeeks[currentIndex - 1] : null;
 const olderWeek = currentIndex >= 0 && currentIndex < allWeeks.length - 1 ? allWeeks[currentIndex + 1] : null;
 ---
 
-<nav class="weekly-nav-bar" aria-label="周报周次导航 / Weekly Navigation">
+<nav class="weekly-nav-bar" aria-label="Weekly Navigation">
   <div class="weekly-nav-inner">
     <div class="nav-prev">
       {olderWeek ? (
         <a
           class="nav-step-btn"
           href={`/arxiv-weekly/${olderWeek.week_id}/`}
-          title={`切换至上一周 (${olderWeek.week_id})`}
+          title={`Switch to previous week (${olderWeek.week_id})`}
         >
-          ← <span class="language-primary">上一周</span><span class="language-english" lang="en">Prev</span> ({olderWeek.week_id})
+          ← Prev ({olderWeek.week_id})
         </a>
       ) : (
-        <span class="nav-step-btn disabled" aria-disabled="true">← <span class="language-primary">上一周 (已是最早)</span><span class="language-english" lang="en">Prev (Earliest)</span></span>
+        <span class="nav-step-btn disabled" aria-disabled="true">← Prev (Earliest)</span>
       )}
     </div>
 
     <div class="nav-center">
       <details class="weekly-archive-details">
-        <summary class="weekly-archive-summary" title="展开全部历史周报">
-          <span class="summary-current" aria-current="page"><span class="language-primary">当前周：</span><span class="language-english" lang="en">Current: </span><strong>{currentWeek}</strong></span>
-          <span class="summary-badge"><span class="language-primary">往期</span><span class="language-english" lang="en">Archives</span> ({allWeeks.length})</span>
+        <summary class="weekly-archive-summary" title="Expand all weekly archives">
+          <span class="summary-current" aria-current="page">Current: <strong>{currentWeek}</strong></span>
+          <span class="summary-badge">Archives ({allWeeks.length})</span>
           <span class="summary-caret">▾</span>
         </summary>
         <div class="weekly-archive-dropdown-menu">
           <div class="dropdown-header">
-            <span><span class="language-primary">往期周报列表</span><span class="language-english" lang="en">Weekly Synthesis Archives</span></span>
-            <a class="dropdown-all-link" href="/arxiv-archives/"><span class="language-primary">查看完整归档 →</span><span class="language-english" lang="en">Global Archives →</span></a>
+            <span>Weekly Synthesis Archives</span>
+            <a class="dropdown-all-link" href="/arxiv-archives/">Global Archives →</a>
           </div>
           <div class="dropdown-grid">
             {allWeeks.map((w: any) => {
@@ -62,8 +62,8 @@ const olderWeek = currentIndex >= 0 && currentIndex < allWeeks.length - 1 ? allW
                     <span class="week-item-range">{w.date_range}</span>
                   </div>
                   <div class="week-item-right">
-                    {mustCount > 0 && <span class="badge-must">{mustCount} <span class="language-primary">必读</span><span class="language-english" lang="en">Must</span></span>}
-                    <span class="badge-total">{totalCount} <span class="language-primary">篇</span><span class="language-english" lang="en">papers</span></span>
+                    {mustCount > 0 && <span class="badge-must">{mustCount} Must</span>}
+                    <span class="badge-total">{totalCount} papers</span>
                   </div>
                 </a>
               );
@@ -78,12 +78,12 @@ const olderWeek = currentIndex >= 0 && currentIndex < allWeeks.length - 1 ? allW
         <a
           class="nav-step-btn"
           href={newerWeek.week_id === latestWeekId ? "/arxiv-weekly/" : `/arxiv-weekly/${newerWeek.week_id}/`}
-          title={`切换至下一周 (${newerWeek.week_id})`}
+          title={`Switch to next week (${newerWeek.week_id})`}
         >
-          <span class="language-primary">下一周</span><span class="language-english" lang="en">Next</span> ({newerWeek.week_id}) →
+          Next ({newerWeek.week_id}) →
         </a>
       ) : (
-        <span class="nav-step-btn disabled" aria-disabled="true"><span class="language-primary">下一周 (已是最新) →</span><span class="language-english" lang="en">Next (Latest) →</span></span>
+        <span class="nav-step-btn disabled" aria-disabled="true">Next (Latest) →</span>
       )}
     </div>
   </div>

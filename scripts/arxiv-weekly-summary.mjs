@@ -280,36 +280,36 @@ ${papersText}
    - significance：给出该物理方向的核心物理启示与机制辨析（1~2句）。
 {
   "week_id": "${weekId}",
-  "title": "每周学术脉络 · ${weekId}",
+  "title": "Weekly Scientific Lineage · ${weekId}",
   "date_range": "${dateRange}",
-  "executive_summary": "精炼宏观脉络结构化综述（必须包含：首句总体因果链条总揽，随后以 - **领域方向**：[第一作者等 (arXiv:xxxx.xxxxx) 提出/论证...] 列表形式列出各方向关键突破，每句话必须以具体论文或作者为主语，聚焦物理机制与定量结果，严禁泛泛套话与无主语被动文字堆叠，公式请用 $...$）",
+  "executive_summary": "Structured macro synthesis in English (Must include: first sentence provides the overarching causal/physical chain, followed by a bullet list '- **Field/Topic**: [Lead Author et al. (arXiv:xxxx.xxxxx) proposed/demonstrated...]', where each sentence has a specific paper or author as subject, focusing on quantitative physical results and mechanisms. Use standard LaTeX math $...$)",
   "overview_matrix": [
     {
-      "domain": "物理领域/专题方向（如：快速射电暴与磁星环境、超新星前身星与周星介质、相对论喷流与伽马射线暴）",
-      "key_question": "核心物理争论或关键聚焦问题",
-      "representative_papers": ["该领域下具体支撑上述断言的 arxiv_id 列表，如 2609.31842，与 core_findings 逐一对应"],
-      "core_findings": "- 【arXiv:2609.31842】(第一作者等)：针对争论的具体定量断言（物理量用 $...$）\n- 【arXiv:2609.36114】(第一作者等)：针对争论的具体定量断言",
-      "significance": "该物理方向的核心物理启示与机制辨析（1~2句）"
+      "domain": "Physical domain or topic in English (e.g., Fast Radio Bursts & Magnetar Environments, Supernova Progenitors & CSM Interaction, Relativistic Jets & Gamma-Ray Bursts)",
+      "key_question": "Core physical debate or key focused question in English",
+      "representative_papers": ["arxiv_id list supporting assertions, e.g. 2609.31842"],
+      "core_findings": "- [arXiv:2609.31842] (Lead Author et al.): Quantitative assertion regarding debate (LaTeX in $...$)\n- [arXiv:2609.36114] (Lead Author et al.): Quantitative assertion",
+      "significance": "Core physical implication and mechanism insight for this direction (1-2 sentences in English)"
     }
   ],
   "thematic_highlights": [
     {
-      "theme_name": "专题名称（如：磁星动力学与高能辐射机制）",
-      "summary": "1段中文，总结该专题下的科学进展（公式请用 $...$）",
-      "paper_ids": ["相关的 arxiv_id，如 2609.17661"]
+      "theme_name": "Theme name in English (e.g. Magnetar Electrodynamics and High-Energy Emission)",
+      "summary": "1 paragraph in English synthesizing scientific progress in this theme (LaTeX math in $...$)",
+      "paper_ids": ["Relevant arxiv_id, e.g. 2609.17661"]
     }
   ],
   "top_picks": [
     {
-      "arxiv_id": "论文的 arxiv_id",
+      "arxiv_id": "Paper arxiv_id",
       "revision": 1,
-      "historical_edition": "必须逐字复制论文列表中的 historical_edition",
-      "source_fingerprint": "必须逐字复制论文列表中的 source_fingerprint",
-      "title": "论文标题",
-      "priority": "must_read 或 worth_knowing",
-      "recommendation_reason": "推荐精读理由（中文1句）",
-      "core_insight": "核心突破或结论（中文1句，关键物理量用 $...$）",
-      "reading_guide": "切入阅读建议（中文1句）"
+      "historical_edition": "Must copy historical_edition exactly from input",
+      "source_fingerprint": "Must copy source_fingerprint exactly from input",
+      "title": "Paper title in English",
+      "priority": "must_read or worth_knowing",
+      "recommendation_reason": "Recommendation rationale in English (1 sentence)",
+      "core_insight": "Core breakthrough or physical takeaway in English (1 sentence, key variables in $...$)",
+      "reading_guide": "Suggested reading entry point in English (1 sentence)"
     }
   ]
 }`;

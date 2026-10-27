@@ -31,11 +31,11 @@ ${entry.abstract}
 严格返回如下精简格式：
 {
   "priority": "skip",
-  "reason": "说明为何与所列高能瞬变物理方向无实质联系（中文 1-2 句）",
+  "reason": "1-2 concise sentences in English explaining why it is off-domain",
   "result": "unknown",
   "problem": "unknown",
   "method": "unknown",
-  "reading_entry": "摘要",
+  "reading_entry": "Abstract",
   "research_progress": "unknown",
   "assumptions": [],
   "limits": [],
@@ -43,7 +43,7 @@ ${entry.abstract}
   "evidence": [
     {
       "section": "Abstract",
-      "quote": "从上方摘要原文中逐字复制的短摘录（12–200 字符）",
+      "quote": "Short exact verbatim quote from abstract (12–200 characters)",
       "supports": ["reason", "result"]
     }
   ]
@@ -52,21 +52,20 @@ ${entry.abstract}
 2. 若论文具有实质学术价值（must_read 或 worth_knowing）：
 严格返回如下结构化格式：
 {
-  "title_zh": "论文题目的中文学术翻译（准确、精炼，保留 GRB, FRB, SN, GW 等通用英文字母缩写与事件编号）",
   "priority": "must_read" 或 "worth_knowing",
-  "reason": "说明为何该论文有价值以及与核心方向的关系（中文 1-2 句）",
-  "result": "主要结果（无法确认时写 unknown）",
-  "problem": "论文研究的问题（无法确认时写 unknown）",
-  "method": "方法或设备（无法确认时写 unknown）",
-  "reading_entry": "建议首先查看的摘要关键点或预期章节",
-  "research_progress": "论文明确表达的增量（无法确认时写 unknown）",
-  "assumptions": ["明确模型假设；无可核验内容时为空数组"],
-  "limits": ["明确适用限制；无可核验内容时为空数组"],
+  "reason": "1-2 concise sentences in English explaining scientific value and relevance",
+  "result": "Main physical findings in English (unknown if unconfirmed)",
+  "problem": "Core scientific problem investigated (unknown if unconfirmed)",
+  "method": "Methods or instruments used in English (unknown if unconfirmed)",
+  "reading_entry": "Suggested reading entry point or section in abstract",
+  "research_progress": "Physical delta or scaling relation (unknown if unconfirmed)",
+  "assumptions": ["Explicit model assumptions in English; empty array if none"],
+  "limits": ["Explicit scope or limitations in English; empty array if none"],
   "inspected_sections": ["Abstract"],
   "evidence": [
     {
       "section": "Abstract",
-      "quote": "从上方摘要原文中逐字复制的短摘录（12–200 字符）",
+      "quote": "Short exact verbatim quote from abstract (12–200 characters)",
       "supports": ["reason", "result", "problem", "method", "research_progress"]
     }
   ]
@@ -210,12 +209,12 @@ ${paperBlocks}
   {
     "arxiv_id": "论文的精确 arXiv 编号，如 2609.12345",
     "priority": "must_read" | "worth_knowing" | "skip",
-    "reason": "中文 1-2 句说明判断依据（若为 skip 则说明为何无实质联系）",
-    "quote": "从该论文摘要中逐字复制的短原文摘录（12–200 字符）",
-    "result": "主要科学结果（若为 skip 写 unknown）",
-    "problem": "论文研究问题（若为 skip 写 unknown）",
-    "method": "方法或设备（若为 skip 写 unknown）",
-    "reading_entry": "建议查看的切入点（默认为「摘要」）"
+    "reason": "1-2 concise sentences in English explaining assessment rationale (or why off-domain if skip)",
+    "quote": "Short exact verbatim quote from abstract (12–200 characters)",
+    "result": "Main scientific finding in English (unknown if skip)",
+    "problem": "Investigated problem in English (unknown if skip)",
+    "method": "Methods/instruments in English (unknown if skip)",
+    "reading_entry": "Suggested reading entry point (default 'Abstract')"
   }
 ]
 摘录必须从对应论文的摘要中逐字复制。不得在 JSON 前后输出任何非 JSON 文本。`;

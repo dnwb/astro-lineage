@@ -375,24 +375,23 @@ import { cleanTitleZh } from "../src/domain/paper-translation.mjs";
 const SYSTEM_PROMPT = ASTROPHYSICS_SYSTEM_PROMPT;
 
 function scientificFieldsPrompt({ abstract = false } = {}) {
-  return `严格返回 JSON，字段为：
+  return `Strictly return JSON with the following fields:
 {
-  "title_zh":"论文题目的精准中文学术翻译（准确、精炼、学术规范，保留国际通用天文英文缩写如 GRB, FRB, SN, GW, AGN, TDE 等，不要全译为冗长中文）",
   "priority":"must_read|worth_knowing|skip",
-  "reason":"分类理由",
-  "result":"主要物理结果与定量结论；对于关键机制或标度律，应包含核心物理量与 LaTeX 标度公式（如 $L_{\\rm iso}$、$t_{\\rm delay} \\propto \\nu^{-2}$ 等），无法确认时写 unknown",
-  "problem":"论文研究的核心物理问题或观测矛盾，无法确认时写 unknown",
-  "method":"理论模型、数值模拟或观测数据处理方法；包含关键控制方程、参数空间或依赖关系公式，无法确认时写 unknown",
-  "reading_entry":"建议首先查看的实际章节标题或摘要",
-  "assumptions":["明确假设；无可核验内容时为空数组"],
-  "limits":["明确限制；无可核验内容时为空数组"],
-  "research_progress":"论文明确表达的物理增量与定标关系；无法确认时写 unknown",
-  "inspected_sections":["输入中实际存在且确实检查的标题"],
-  "evidence":[{"section":"${abstract ? "Abstract" : "实际正文章节标题（不得使用 Abstract）"}","quote":"从该英文章节原样逐字复制的短英文原文（12–120 字符连续英文原文，严禁使用中文翻译或中文概括作为 quote，必须与英文源文逐字匹配）","supports":["reason","result","problem","method","research_progress","assumptions[0]","limits[0]"]}]
+  "reason":"Classification rationale in English (1-2 sentences)",
+  "result":"Core physical results and quantitative findings in English; include key physical quantities and standard LaTeX scaling formulas (e.g. $L_{\\rm iso}$, $t_{\\rm delay} \\propto \\nu^{-2}$), write unknown if unconfirmed",
+  "problem":"Core physical problem or observational conflict investigated in English, write unknown if unconfirmed",
+  "method":"Theoretical model, numerical simulation, or observational data reduction methodology in English; include key governing equations or scaling relations, write unknown if unconfirmed",
+  "reading_entry":"Suggested specific section title or abstract part to inspect first",
+  "assumptions":["Explicit physical assumptions in English; empty array if none verified"],
+  "limits":["Explicit physical limits or scope in English; empty array if none verified"],
+  "research_progress":"Physical incremental advance and scaling laws in English; write unknown if unconfirmed",
+  "inspected_sections":["Actual section titles inspected from the input text"],
+  "evidence":[{"section":"${abstract ? "Abstract" : "Actual section title in source body (do not use Abstract)"}","quote":"Continuous exact English quote (12–120 characters verbatim from the input English section, never translated or paraphrased, must match source text verbatim)","supports":["reason","result","problem","method","research_progress","assumptions[0]","limits[0]"]}]
 }
-公式与数学物理呈现：若原文有关键公式能讲清物理图像（如能谱幂律指数、时延关系、光度标度律、磁场临界值），优先以 LaTeX 公式（如 $...$ 或 $$...$$）明确写出，不要仅用模糊白话。公式中的物理符号与单位必须使用通用标准 LaTeX/KaTeX 规范（如 \\\\mathrm{...}, \\\\dot{M}, M_\\\\odot），严禁使用仅在论文导言区定义的局部作者私有宏（如 \\\\moperyear, \\\\lstar），若原文使用私有缩写必须展开为标准物理符号；严禁混入 TeX 底层排版代码（如 \\\\penalty）。JSON 中公式的反斜杠必须转义（如 \\\\alpha, \\\\dot{M}, \\\\mathrm{...}）。
-证据摘录规范：证据摘录必须是输入中的连续英文原文（同一句或同一段内的连续字词，严禁跨越表格列拼凑，严禁自己撰写中文翻译放入 quote，quote 必须能在输入正文中逐字搜索到）；supports 只列该摘录确实支持的字段。
-重要校验规则：对于填写的非 unknown 核心字段（reason, result, problem, method, research_progress），在 evidence 数组中必须至少有一处摘录在 supports 里声明包含该字段名称（同一条摘录可 supports 多个字段）。若正文中无法确认某个字段的证据，请将该字段值直接写为 unknown。`;
+Mathematical notation and physics formulas: Prioritize explicit standard LaTeX math ($...$ or $$...$$) for key physical values, spectral indices, scaling relations, or thresholds. Symbols and units must adhere to standard LaTeX/KaTeX conventions (\\\\mathrm{...}, \\\\dot{M}, M_\\\\odot). Never use author-private macros. In JSON strings, all backslashes must be properly escaped (\\\\alpha, \\\\dot{M}).
+Source evidence citation rules: Quotes must be verbatim continuous English substrings from the input text (12-120 chars, matching input exactly); supports lists the specific fields supported.
+Verification contract: For non-unknown core fields (reason, result, problem, method, research_progress), at least one evidence quote must declare the field name in its supports array. If evidence cannot be confirmed from the text, set that field to unknown.`;
 }
 
 function buildBodyPrompt(entry, source) {

@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-10-27T14:22:18.653Z",
-  "total_events": 92,
+  "generated_at": "2026-10-27T23:05:55.230Z",
+  "total_events": 97,
   "events": [
     {
       "event_id": "GW170817",
@@ -9,13 +9,43 @@
         "MULTI",
         "GW"
       ],
-      "heat_score": 109.1,
-      "paper_count": 12,
+      "heat_score": 181.1,
+      "paper_count": 14,
       "headline": "利用GW170817对应千新星AT2017gfo的晚期近红外光谱",
-      "narrative": "GW170817 是近期重点瞬变天体事件，活跃跨度 2026-09-16 至 2026-10-22，共聚合 12 篇研读文献（含 3 篇必读突破）。核心突破研判：模型将1.4、1.6和2.1微米特征分别主要归于La III、Ce III和Te III；推得Te、La、Ce质量分数约为0.04–0.08、0.025–0.05和0.05–0.1，Kr和Sb质量分数上限约为0.03和0.003。La和Ce约束仍属暂定。",
+      "narrative": "GW170817 是近期重点瞬变天体事件，活跃跨度 2026-09-16 至 2026-10-26，共聚合 14 篇研读文献（含 3 篇必读突破）。核心突破研判：模型将1.4、1.6和2.1微米特征分别主要归于La III、Ce III和Te III；推得Te、La、Ce质量分数约为0.04–0.08、0.025–0.05和0.05–0.1，Kr和Sb质量分数上限约为0.03和0.003。La和Ce约束仍属暂定。",
       "first_seen": "2026-09-16",
-      "last_updated": "2026-10-22",
+      "last_updated": "2026-10-26",
       "papers": [
+        {
+          "arxiv_id": "2610.34234",
+          "revision": 1,
+          "title": "Probing In-Medium Neutron-to-Dark-Fermion Conversion with Multimessenger Neutron Star Observations",
+          "authors": [
+            "Davood Rafiei Karkevandi",
+            "Mahboubeh Shahrbaf",
+            "Hamid Reza Moshfegh",
+            "Reza Karimi",
+            "Gordon Baym"
+          ],
+          "date": "2026-10-26",
+          "priority": "worth_knowing",
+          "bluf_result": "In-medium neutron-to-dark-fermion conversion softens the nuclear EOS by reducing neutron fraction $Y_n$ and increasing dark fermion abundance $Y_\\chi = n_\\chi / n_B$. Weakly repulsive regimes ($G_\\chi = 1$--$11~\\mathrm{fm}^2$, $m_\\chi = 939$--$1300~\\mathrm{MeV}$) fail to support $M_{\\max} \\ge 2M_\\odot$ and are ruled out across the nuclear EOS ensemble. In the Illinois-Maryland analysis, the active conservative boundary is driven by $M_{\\max} \\ge 2M_\\odot$, while strict X-PSI/Amsterdam tests yield no common parameter point satisfying all 13 baseline EOSs, with the maximum compatibility ($N_{\\rm cons} = 11$) confined to $m_\\chi = 939$--$950~\\mathrm{MeV}$ and $G_\\chi = 19$--$21~\\mathrm{fm}^2$.",
+          "bluf_problem": "Whether in-medium neutron-to-dark-fermion conversion ($n \\to \\chi$), occurring when the neutron chemical potential exceeds the dark fermion mass ($\\mu_n \\ge m_\\chi$), can survive multi-messenger astrophysical constraints from maximum neutron star masses ($M_{\\max} \\ge 2M_\\odot$), GW170817 tidal deformabilities ($70 \\le \\Lambda_{1.4} \\le 580$), and NICER mass-radius determinations across diverse nuclear EOSs."
+        },
+        {
+          "arxiv_id": "2610.34423",
+          "revision": 1,
+          "title": "Constraining Nuclear Matter from Finite Nuclei: the Ab Initio Perspective",
+          "authors": [
+            "Francesca Bonaiti",
+            "Sonia Bacca",
+            "Ingo Tews"
+          ],
+          "date": "2026-10-26",
+          "priority": "worth_knowing",
+          "bluf_result": "Ab initio chiral effective field theory predictions determine neutron-skin thicknesses $R_{\\mathrm{skin}}(^{48}\\mathrm{Ca}) = 0.120(14)(12)\\ \\mathrm{fm}$ and $R_{\\mathrm{skin}}(^{208}\\mathrm{Pb}) = 0.187(25)(18)\\ \\mathrm{fm}$, favoring a soft-to-moderate symmetry energy slope $38.3 \\le L \\le 68.5\\ \\mathrm{MeV}$ and $J \\sim 30\\text{--}32\\ \\mathrm{MeV}$ consistent with GW170817 and NICER astrophysical constraints, while isoscalar giant monopole resonance (ISGMR) data constrain symmetric nuclear matter incompressibility to $K_0 \\sim 190\\text{--}240\\ \\mathrm{MeV}$.",
+          "bluf_problem": "Tensions in constraining the nuclear symmetry energy slope $L$ and neutron-skin thickness $R_{\\mathrm{skin}}$, particularly reconciling the stiff EOS inferred from PREX-II parity-violating electron scattering with softer constraints from CREX, electric dipole polarizability $\\alpha_D$, and astrophysical neutron star measurements."
+        },
         {
           "arxiv_id": "2610.30770",
           "revision": 1,
@@ -196,6 +226,75 @@
       ]
     },
     {
+      "event_id": "GRB 221009A",
+      "event_type": "GRB",
+      "tags": [
+        "GRB"
+      ],
+      "heat_score": 48.5,
+      "paper_count": 3,
+      "headline": "解释极端高能暴 GRB 260924A 的能量学分配机制、在 $...",
+      "narrative": "GRB 221009A 是近期重点瞬变天体事件，活跃跨度 2026-10-04 至 2026-10-25，共聚合 3 篇研读文献（含 2 篇必读突破）。核心突破研判：测定暴源红移为 $z=3.51\\pm 0.10$，$1\\text{--}10{,}000\\,\\mathrm{keV}$ 能段各向同性释放能量高达 $E_{\\gamma,\\mathrm{iso}} \\simeq 9.79\\times 10^{54}\\,\\mathrm{erg}$，初始各向同性动能 $E_{\\mathrm{K,iso}} \\simeq 7.0\\times 10^{55}\\,\\mathrm{erg}$，瞬时辐射效率 $\\eta_\\gamma \\simeq 0.12$。Fermi/LAT 探测到最高达 $43.31\\,\\mathrm{GeV}$ 的高能光子（在 $82.24\\,\\mathrm{s}$ 到达）。晚期余辉衰减指数为 $\\alpha_{\\rm opt}=1.46\\pm 0.01$ 与 $\\alpha_X=1.57\\pm 0.04$，在慢冷却闭合关系 $\\alpha^{\\rm syn}=\\frac{3(p-1)}{4}+\\frac{k}{2(4-k)}$ 下排除了常规均匀介质（$k=0$）或纯自由星风（$k=2$），测定星周介质为密度梯度介质 $n(R)\\propto R^{-k}$（$k\\simeq 1.0\\text{--}1.3$，基准 $k=1.2$），电子谱指数 $p\\simeq 2.75$。早期 $70.04\\text{--}164.9\\,\\mathrm{s}$ 处的 LAT 通量超出后续外推达 $2.25\\pm 0.59$ 倍，由厚壳层反向激波 SSC 过程主导解释；激波微观磁能分配比为 $R_B\\equiv (\\varepsilon_{B_r}/\\varepsilon_{B_f})^{1/2}\\simeq 2.6$。",
+      "first_seen": "2026-10-04",
+      "last_updated": "2026-10-25",
+      "papers": [
+        {
+          "arxiv_id": "2610.32861",
+          "revision": 1,
+          "title": "GRB 260924A: Extreme Energetics, Bright GeV Emission, and Exceptional X-ray and Optical Luminosity",
+          "authors": [
+            "Nissim Fraija",
+            "Peter Veres",
+            "Rosa L. Becerra",
+            "Antonio Galván-Gámez",
+            "Thomas Freeman",
+            "Simone Dichiara",
+            "Maria G Dainotti"
+          ],
+          "date": "2026-10-25",
+          "priority": "must_read",
+          "bluf_result": "测定暴源红移为 $z=3.51\\pm 0.10$，$1\\text{--}10{,}000\\,\\mathrm{keV}$ 能段各向同性释放能量高达 $E_{\\gamma,\\mathrm{iso}} \\simeq 9.79\\times 10^{54}\\,\\mathrm{erg}$，初始各向同性动能 $E_{\\mathrm{K,iso}} \\simeq 7.0\\times 10^{55}\\,\\mathrm{erg}$，瞬时辐射效率 $\\eta_\\gamma \\simeq 0.12$。Fermi/LAT 探测到最高达 $43.31\\,\\mathrm{GeV}$ 的高能光子（在 $82.24\\,\\mathrm{s}$ 到达）。晚期余辉衰减指数为 $\\alpha_{\\rm opt}=1.46\\pm 0.01$ 与 $\\alpha_X=1.57\\pm 0.04$，在慢冷却闭合关系 $\\alpha^{\\rm syn}=\\frac{3(p-1)}{4}+\\frac{k}{2(4-k)}$ 下排除了常规均匀介质（$k=0$）或纯自由星风（$k=2$），测定星周介质为密度梯度介质 $n(R)\\propto R^{-k}$（$k\\simeq 1.0\\text{--}1.3$，基准 $k=1.2$），电子谱指数 $p\\simeq 2.75$。早期 $70.04\\text{--}164.9\\,\\mathrm{s}$ 处的 LAT 通量超出后续外推达 $2.25\\pm 0.59$ 倍，由厚壳层反向激波 SSC 过程主导解释；激波微观磁能分配比为 $R_B\\equiv (\\varepsilon_{B_r}/\\varepsilon_{B_f})^{1/2}\\simeq 2.6$。",
+          "bluf_problem": "解释极端高能暴 GRB 260924A 的能量学分配机制、在 $t\\sim 82\\,\\mathrm{s}$ 到达的 $43.31\\,\\mathrm{GeV}$ 等光子为何超出标准前向激波同步辐射理论极限 $E^{\\rm syn}_{\\rm max}$，以及早期 LAT 辐射过剩、X 射线再增亮与成层星周介质相互作用的微观物理图景。"
+        },
+        {
+          "arxiv_id": "2610.03886",
+          "revision": 1,
+          "title": "Blasts from the Past: UHECR Excesses from a Population of GRB 21009A-like Transients",
+          "authors": [
+            "Nestor Mirabal"
+          ],
+          "date": "2026-10-05",
+          "priority": "worth_knowing",
+          "bluf_result": "将 Cen A 的约 $15^{\\circ}$ 角尺度解释为传播偏转，在 $D=3.8\\,\\mathrm{Mpc}$、$E=10^{20}\\,\\mathrm{eV}$、$Z=26$、$\\lambda_c\\sim1\\,\\mathrm{Mpc}$ 下得到 $B\\approx0.55\\,\\mathrm{nG}$；几何时延 $\\Delta t\\simeq D\\theta^2/(4c)\\simeq2.1\\times10^5\\,\\mathrm{yr}$。采用现象学可见窗口 $\\Delta t_{\\rm vis}=(2-4)\\times10^5\\,\\mathrm{yr}$、本地事件率密度 $\\dot n_0\\approx4\\times10^{-8}\\,\\mathrm{Mpc^{-3}\\,yr^{-1}}$、$D_{\\rm GZK}=100\\,\\mathrm{Mpc}$ 和喷流半开角 $\\theta_j=0.8^{\\circ}$，预期全天同时存在 $N_{\\rm excess}\\sim3-7$ 个超额。若改用距离依赖的可见时间并要求角尺度小于 $40^{\\circ}$，正文给出铁核可分辨距离 $\\lesssim27\\,\\mathrm{Mpc}$、$N_{\\rm excess}\\sim2$。族群平均单次 UHECR 能量为 $E_{\\rm CR}\\sim10^{51}\\,\\mathrm{erg}$，与束流修正后的 $E_\\gamma\\sim(3-10)\\times10^{50}\\,\\mathrm{erg}$ 比较，所需重子负载约 $\\eta_{\\rm CR}\\sim1-3$；这不是对 Cen A 超额绝对通量的独立拟合。",
+          "bluf_problem": "Cen A 方向的 UHECR 超额是否可以来自 Cen A/M83 星系群内过去的 GRB 221009A 类瞬变，而非当前 Cen A 喷流？若该解释成立，同类窄喷流瞬变在本地宇宙中应留下多少个仍可见的中等角尺度 UHECR 超额，其能量预算是否合理？"
+        },
+        {
+          "arxiv_id": "2610.02988",
+          "revision": 1,
+          "title": "Comparing the size evolution of GRB 221009A with afterglow models",
+          "authors": [
+            "S. Giarratana",
+            "O. S. Salafia",
+            "B. Marcote",
+            "Z. Paragi",
+            "M. Giroletti",
+            "G. Ghirlanda",
+            "L. Nava",
+            "A. van der Horst",
+            "J. K. Leung",
+            "L. Rhodes",
+            "P. G. Edwards",
+            "M. Pérez-Torres",
+            "J. Yang"
+          ],
+          "date": "2026-10-04",
+          "priority": "must_read",
+          "bluf_result": "联合5与8 GHz尺寸数据得到 $s(t)=s_0(t/t_0)^a$，其中 $t_0=90\\,\\mathrm{d}$、$a=0.52^{+0.14}_{-0.12}$，误差为68%可信区间；膨胀显著性约为 $4.5\\sigma$。231、391、750天的5 GHz FWHM分别为 $0.31\\pm0.04\\,\\mathrm{mas}$、$0.68^{+0.12}_{-0.17}\\,\\mathrm{mas}$、$<0.94\\,\\mathrm{mas}$，最后一项为95%上限。单前向激波尺寸拟合给出ISM环境的 $\\log[(E_{\\mathrm{jet}}/n)/(\\mathrm{erg\\,cm^3})]=54.2^{+0.4}_{-0.5}$，以及风环境的 $\\log[(E_{\\mathrm{jet}}/A_\\star)/\\mathrm{erg}]=51.7^{+0.4}_{-0.2}$，均为中位数及 $1\\sigma$ 可信区间。能够用VegasAfterglow复现的文献模型均未能成功解释VLBI尺寸演化；这一结论不覆盖未能复现或未能测试的模型。",
+          "bluf_problem": "GRB 221009A的射电余辉能否由标准前向激波喷流模型同时解释其光变、光谱和角尺寸演化？论文利用尺寸这一独立动力学观测量，检验仅凭光变与能谱存在简并的喷流结构、环境密度及辐射机制解释。"
+        }
+      ]
+    },
+    {
       "event_id": "AT2017GFO",
       "event_type": "AT",
       "tags": [
@@ -203,7 +302,7 @@
         "GRB",
         "GW"
       ],
-      "heat_score": 40.2,
+      "heat_score": 38.8,
       "paper_count": 4,
       "headline": "利用GW170817对应千新星AT2017gfo的晚期近红外光谱",
       "narrative": "AT2017GFO 是近期重点瞬变天体事件，活跃跨度 2026-09-21 至 2026-10-22，共聚合 4 篇研读文献（含 1 篇必读突破）。核心突破研判：模型将1.4、1.6和2.1微米特征分别主要归于La III、Ce III和Te III；推得Te、La、Ce质量分数约为0.04–0.08、0.025–0.05和0.05–0.1，Kr和Sb质量分数上限约为0.03和0.003。La和Ce约束仍属暂定。",
@@ -294,7 +393,7 @@
         "GRB",
         "GW"
       ],
-      "heat_score": 33.8,
+      "heat_score": 32.6,
       "paper_count": 3,
       "headline": "GRB瞬时辐射、尾段、平台与平台后光变能否由同一结构化相对论流的...",
       "narrative": "GRB 060614 是近期重点瞬变天体事件，活跃跨度 2026-09-15 至 2026-10-21，共聚合 3 篇研读文献（含 2 篇必读突破）。核心突破研判：在所采用的LAE模型中，光变只能约束核心组合参数Γcθc，不能分别确定Γc与θc。结论部分报告，除GRB 060614外六个核心的Γcθc平均约为3；包层Γ∝θ⁻g的最佳拟合g平均为2.1，通常在1.5–2.5之间，g=2对应平坦平台。平行磁场比垂直磁场产生更强光变曲率；核心未识别出平行场，七个余辉中仅三个包层取向可辨别，均偏向平行，其余无法确定。但磁场诊断受发射时刻、谱演化及参数简并影响，作者认为包层取向可能无法由余辉可靠约束。所有最佳拟合的约化χ²均大到可统计排除，平滑模型无法捕捉显著X射线波动，因此这些结果应视为特定模型下的参数趋势，而非充分验证。",
@@ -372,7 +471,7 @@
         "GRB",
         "GW"
       ],
-      "heat_score": 33.8,
+      "heat_score": 32.6,
       "paper_count": 3,
       "headline": "在所有壳层于两秒内发射、随后中心引擎关闭的设定下",
       "narrative": "GRB 211211A 是近期重点瞬变天体事件，活跃跨度 2026-09-15 至 2026-10-21，共聚合 3 篇研读文献（含 2 篇必读突破）。核心突破研判：仅活动2秒的中心引擎，在所构造的壳层模型中可通过高纬度辐射和喷流扩展延长接收辐射时标。给定正文摘要报告，模型与GRB 211211A、211227A及060614的Swift光变比较，可再现初始峰及随后较宽、较平滑的延展辐射，但不拟合复杂尖锐的初始脉冲结构。低洛伦兹因子发射区须经过不透明度筛选；模型产生的谱演化慢于观测。",
@@ -453,7 +552,7 @@
         "SN",
         "TDE"
       ],
-      "heat_score": 23,
+      "heat_score": 22.2,
       "paper_count": 2,
       "headline": "论文试图解释超长 GRB 为何能够在爆发后数十天仍维持中心引擎活动",
       "narrative": "GRB 220706A 是近期重点瞬变天体事件，活跃跨度 2026-09-21 至 2026-10-22，共聚合 2 篇研读文献（含 1 篇必读突破）。核心突破研判：GRB 220706A 的 X 射线耀发持续至触发后约 51 天，对应源静止系约 27 天，是目前观测到的 GRB 中最晚的中心引擎活动。该事件还伴随一个经消光修正后峰值绝对星等 $M_r \\leq -20.25$ 的高光度超新星，性质接近超长 GRB 111209A 所伴随的 SN 2011kl，并可能属于超亮超新星。",
@@ -525,10 +624,10 @@
       "tags": [
         "GRB"
       ],
-      "heat_score": 19.3,
+      "heat_score": 18.6,
       "paper_count": 1,
-      "headline": "GRB 260924A 伽马暴辐射机制与相对论喷流演化",
-      "narrative": "GRB 260924A 是近期重点瞬变天体事件，监测日期 2026-10-25，共聚合 1 篇研读文献（含 1 篇必读突破）。核心突破研判：未记录",
+      "headline": "解释极端高能暴 GRB 260924A 的能量学分配机制、在 $...",
+      "narrative": "GRB 260924A 是近期重点瞬变天体事件，监测日期 2026-10-25，共聚合 1 篇研读文献（含 1 篇必读突破）。核心突破研判：测定暴源红移为 $z=3.51\\pm 0.10$，$1\\text{--}10{,}000\\,\\mathrm{keV}$ 能段各向同性释放能量高达 $E_{\\gamma,\\mathrm{iso}} \\simeq 9.79\\times 10^{54}\\,\\mathrm{erg}$，初始各向同性动能 $E_{\\mathrm{K,iso}} \\simeq 7.0\\times 10^{55}\\,\\mathrm{erg}$，瞬时辐射效率 $\\eta_\\gamma \\simeq 0.12$。Fermi/LAT 探测到最高达 $43.31\\,\\mathrm{GeV}$ 的高能光子（在 $82.24\\,\\mathrm{s}$ 到达）。晚期余辉衰减指数为 $\\alpha_{\\rm opt}=1.46\\pm 0.01$ 与 $\\alpha_X=1.57\\pm 0.04$，在慢冷却闭合关系 $\\alpha^{\\rm syn}=\\frac{3(p-1)}{4}+\\frac{k}{2(4-k)}$ 下排除了常规均匀介质（$k=0$）或纯自由星风（$k=2$），测定星周介质为密度梯度介质 $n(R)\\propto R^{-k}$（$k\\simeq 1.0\\text{--}1.3$，基准 $k=1.2$），电子谱指数 $p\\simeq 2.75$。早期 $70.04\\text{--}164.9\\,\\mathrm{s}$ 处的 LAT 通量超出后续外推达 $2.25\\pm 0.59$ 倍，由厚壳层反向激波 SSC 过程主导解释；激波微观磁能分配比为 $R_B\\equiv (\\varepsilon_{B_r}/\\varepsilon_{B_f})^{1/2}\\simeq 2.6$。",
       "first_seen": "2026-10-25",
       "last_updated": "2026-10-25",
       "papers": [
@@ -547,8 +646,8 @@
           ],
           "date": "2026-10-25",
           "priority": "must_read",
-          "bluf_result": "未记录",
-          "bluf_problem": "未记录"
+          "bluf_result": "测定暴源红移为 $z=3.51\\pm 0.10$，$1\\text{--}10{,}000\\,\\mathrm{keV}$ 能段各向同性释放能量高达 $E_{\\gamma,\\mathrm{iso}} \\simeq 9.79\\times 10^{54}\\,\\mathrm{erg}$，初始各向同性动能 $E_{\\mathrm{K,iso}} \\simeq 7.0\\times 10^{55}\\,\\mathrm{erg}$，瞬时辐射效率 $\\eta_\\gamma \\simeq 0.12$。Fermi/LAT 探测到最高达 $43.31\\,\\mathrm{GeV}$ 的高能光子（在 $82.24\\,\\mathrm{s}$ 到达）。晚期余辉衰减指数为 $\\alpha_{\\rm opt}=1.46\\pm 0.01$ 与 $\\alpha_X=1.57\\pm 0.04$，在慢冷却闭合关系 $\\alpha^{\\rm syn}=\\frac{3(p-1)}{4}+\\frac{k}{2(4-k)}$ 下排除了常规均匀介质（$k=0$）或纯自由星风（$k=2$），测定星周介质为密度梯度介质 $n(R)\\propto R^{-k}$（$k\\simeq 1.0\\text{--}1.3$，基准 $k=1.2$），电子谱指数 $p\\simeq 2.75$。早期 $70.04\\text{--}164.9\\,\\mathrm{s}$ 处的 LAT 通量超出后续外推达 $2.25\\pm 0.59$ 倍，由厚壳层反向激波 SSC 过程主导解释；激波微观磁能分配比为 $R_B\\equiv (\\varepsilon_{B_r}/\\varepsilon_{B_f})^{1/2}\\simeq 2.6$。",
+          "bluf_problem": "解释极端高能暴 GRB 260924A 的能量学分配机制、在 $t\\sim 82\\,\\mathrm{s}$ 到达的 $43.31\\,\\mathrm{GeV}$ 等光子为何超出标准前向激波同步辐射理论极限 $E^{\\rm syn}_{\\rm max}$，以及早期 LAT 辐射过剩、X 射线再增亮与成层星周介质相互作用的微观物理图景。"
         }
       ]
     },
@@ -559,7 +658,7 @@
         "TDE",
         "MULTI"
       ],
-      "heat_score": 18.8,
+      "heat_score": 18.2,
       "paper_count": 2,
       "headline": "研究TDE中由恒星轨道与黑洞自旋失配产生的翘曲吸积盘",
       "narrative": "AT2019DSG 是近期重点瞬变天体事件，活跃跨度 2026-09-24 至 2026-10-20，共聚合 2 篇研读文献（含 1 篇必读突破）。核心突破研判：论文建立了一个包含倾斜与扭转剖面、自照射、二维温度、内盘遮挡和耀发再处理的翘曲TDE吸积盘模型。主要预测包括：外盘再处理可使温度径向标度由r^{-3/4}趋向r^{-1/2}并导致光学/UV变红或出现谱凸起；翘曲外盘可遮挡内盘并造成延迟X射线增强；约10倍的X射线耀发可产生约2倍的光学/UV响应，延迟通常为小时量级；翘曲半径增长可加速平台演化。AT2019dsg、AT2022dsb和AT2018fyk只被作为候选观测迹象讨论，未进行单事件拟合。",
@@ -602,7 +701,7 @@
       "tags": [
         "FRB"
       ],
-      "heat_score": 14.4,
+      "heat_score": 13.9,
       "paper_count": 1,
       "headline": "快速射电暴中单次暴发源（one-offs）与重复暴发源的本质物理...",
       "narrative": "FRB 20210601A 是近期重点瞬变天体事件，监测日期 2026-10-22，共聚合 1 篇研读文献（含 1 篇必读突破）。核心突破研判：FRB 20210601A 在单次中天过境的 $\\Delta T = 106.5\\;\\mathrm{s}$ 内集中产生 9 次暴发，峰值暴发率 $\\langle\\lambda\\rangle = (N-1)/\\Delta T = 0.075\\;\\mathrm{bursts\\;s^{-1}}$，等效至主瓣增益下爆发数 $\\gtrsim 21$ 次；最亮暴各向同性峰值光度达 $L_{\\rm iso} \\sim 2.3 \\times 10^{43}\\;\\mathrm{erg\\;s^{-1}}$，9 次暴发总能量 $E_{\\rm tot} \\sim 2.2 \\times 10^{41}\\;\\mathrm{erg}$（相对于 $B=10^{15}\\;\\mathrm{G}$ 磁星储备满足 $E_{\\rm tot}/E_{\\rm mag} \\sim 10^{-6}$）；宿主环境参数测得 $\\mathrm{DM_{excess}} \\sim 360\\;\\mathrm{pc\\;cm^{-3}}$、$\\tau(600\\;\\mathrm{MHz}) \\lesssim 0.37\\;\\mathrm{ms}$，去红移旋转量 $|\\mathrm{RM_{excess}}| \\sim 150-340\\;\\mathrm{rad\\;m^{-2}}$，表明其介质与常规重复暴相当。",
@@ -655,12 +754,199 @@
       ]
     },
     {
+      "event_id": "SN 1993J",
+      "event_type": "SN",
+      "tags": [
+        "SN",
+        "MULTI"
+      ],
+      "heat_score": 12.4,
+      "paper_count": 1,
+      "headline": "Spectroscopically classifying hi...",
+      "narrative": "SN 1993J 是近期重点瞬变天体事件，监测日期 2026-10-26，共聚合 1 篇研读文献。核心突破研判：SN Ares is spectroscopically classified as a Type IIb core-collapse supernova at $z_{\\rm spec} = 1.276 \\pm 0.002$ magnified by $\\mu \\approx 4.6 - 5.6$. Correcting for magnification (gain $\\approx 1.9\\;\\mathrm{mag}$), its inferred intrinsic peak absolute magnitude is $M_{B,\\max} \\approx -17.1$ to $-17.9\\;\\mathrm{mag}$, consistent with binary progenitor systems like SN 1993J. Strong lensing modeling predicts two trailing images appearing $\\sim 70-76\\;\\mathrm{yr}$ and $\\sim 73-79\\;\\mathrm{yr}$ later.",
+      "first_seen": "2026-10-26",
+      "last_updated": "2026-10-26",
+      "papers": [
+        {
+          "arxiv_id": "2610.33161",
+          "revision": 1,
+          "title": "SN Ares: A Strongly Lensed Type IIb Supernova at $\\mathbf{z=1.276}$ with a Predicted 70-Year Time Delay",
+          "authors": [
+            "Conor Larison",
+            "Justin D. R. Pierel",
+            "Matthew Siebert",
+            "Tom Resseguier",
+            "Lukas J. Furtak",
+            "Masamune Oguri",
+            "Gavin S. Farley",
+            "Hollis B. Akins",
+            "Yoshihisa Asada",
+            "Rachel Bezanson",
+            "Maruša Bradač",
+            "Gabriel Brammer",
+            "John Chisholm",
+            "Dan Coe",
+            "Pratika Dayal",
+            "Henry C. Ferguson",
+            "Steven L. Finkelstein",
+            "Seiji Fujimoto",
+            "Tomokazu Kiyota",
+            "Anton M. Koekemoer",
+            "Vasily Kokorev",
+            "Minami Nakane",
+            "Masami Ouchi",
+            "Richard Pan",
+            "Casey Papovich",
+            "Johan Richard",
+            "Luke Robbins",
+            "Fengwu Sun",
+            "Kana Takechi",
+            "Tommaso Treu",
+            "Chris Willott",
+            "Hiroto Yanagisawa",
+            "Abdurro'uf",
+            "Joseph F. V. Allingham",
+            "Ricardo O. Amorín",
+            "Franz E. Bauer",
+            "Larry Bradley",
+            "Mateusz Bronikowski",
+            "Christopher J. Conselice",
+            "David A. Coulter",
+            "James M. DerKacy",
+            "José M. Diego",
+            "Eiichi Egami",
+            "Andreas L. Faisst",
+            "Ori D. Fox",
+            "Brenda L. Frye",
+            "Yoshinobu Fudamoto",
+            "Mauro González-Otero",
+            "Massimo Griggio",
+            "Nimish P. Hathi",
+            "Tiger Yu-Yang Hsiao",
+            "Saurabh W. Jha",
+            "Y. Jiménez-Teja",
+            "Jeyhan S. Kartaltepe",
+            "Gourav Khullar",
+            "Zachary G. Lane",
+            "Paulo A. A. Lopes",
+            "Ray A. Lucas",
+            "Georgios E. Magdis",
+            "Matteo Messa",
+            "Rohan P. Naidu",
+            "Rafael Ortiz",
+            "Massimo Pascale",
+            "Armin Rest",
+            "Massimo Ricotti",
+            "Melissa Shahbandeh",
+            "William Sheu",
+            "Koji Shukawa",
+            "Rogier A. Windhorst",
+            "Anita Zanella",
+            "Yossef Zenati",
+            "Adi Zitrin"
+          ],
+          "date": "2026-10-26",
+          "priority": "worth_knowing",
+          "bluf_result": "SN Ares is spectroscopically classified as a Type IIb core-collapse supernova at $z_{\\rm spec} = 1.276 \\pm 0.002$ magnified by $\\mu \\approx 4.6 - 5.6$. Correcting for magnification (gain $\\approx 1.9\\;\\mathrm{mag}$), its inferred intrinsic peak absolute magnitude is $M_{B,\\max} \\approx -17.1$ to $-17.9\\;\\mathrm{mag}$, consistent with binary progenitor systems like SN 1993J. Strong lensing modeling predicts two trailing images appearing $\\sim 70-76\\;\\mathrm{yr}$ and $\\sim 73-79\\;\\mathrm{yr}$ later.",
+          "bluf_problem": "Spectroscopically classifying high-redshift stripped-envelope core-collapse supernovae and determining their intrinsic luminosities, phases, and time delays for cluster mass profile and cosmological constraints."
+        }
+      ]
+    },
+    {
+      "event_id": "FRB 20210415C",
+      "event_type": "FRB",
+      "tags": [
+        "FRB"
+      ],
+      "heat_score": 12.4,
+      "paper_count": 1,
+      "headline": "Investigating whether the promin...",
+      "narrative": "FRB 20210415C 是近期重点瞬变天体事件，监测日期 2026-10-26，共聚合 1 篇研读文献。核心突破研判：Across 8 sub-bands spanning $400.2\\text{--}765.6~\\mathrm{MHz}$, the scattering index is measured to be $\\alpha = -3.95 \\pm 0.07$ (free Gaussian width) and $\\alpha = -4.14 \\pm 0.08$ (fixed Gaussian width), with a 34-parameter joint MCMC yielding $\\alpha = -3.95 \\pm 0.06$ and $\\tau_{\\rm ref} = 7.97 \\pm 0.09~\\mathrm{ms}$ at $\\nu_{\\rm ref} = 583~\\mathrm{MHz}$ (corresponding to $\\tau_{\\rm s} \\simeq 7.0\\text{--}7.1~\\mathrm{ms}$ at $600~\\mathrm{MHz}$). The intrinsic pulse width exhibits frequency narrowing with $\\sigma_{\\rm int} \\propto \\nu^{\\beta}$ ($\\beta = -0.92 \\pm 0.19$ for $\\nu > 440~\\mathrm{MHz}$), with low-frequency excess width ($\\,4.8\\sigma\\,$ at $\\sim 422~\\mathrm{MHz}$) favoring a thick-screen scattering medium.",
+      "first_seen": "2026-10-26",
+      "last_updated": "2026-10-26",
+      "papers": [
+        {
+          "arxiv_id": "2610.34848",
+          "revision": 1,
+          "title": "A frequency-resolved measurement of the scattering law in FRB 20210415C",
+          "authors": [
+            "Victor Pop",
+            "Mohammed A. Chamma",
+            "Aishwarya Kumar",
+            "Fereshteh Rajabi"
+          ],
+          "date": "2026-10-26",
+          "priority": "worth_knowing",
+          "bluf_result": "Across 8 sub-bands spanning $400.2\\text{--}765.6~\\mathrm{MHz}$, the scattering index is measured to be $\\alpha = -3.95 \\pm 0.07$ (free Gaussian width) and $\\alpha = -4.14 \\pm 0.08$ (fixed Gaussian width), with a 34-parameter joint MCMC yielding $\\alpha = -3.95 \\pm 0.06$ and $\\tau_{\\rm ref} = 7.97 \\pm 0.09~\\mathrm{ms}$ at $\\nu_{\\rm ref} = 583~\\mathrm{MHz}$ (corresponding to $\\tau_{\\rm s} \\simeq 7.0\\text{--}7.1~\\mathrm{ms}$ at $600~\\mathrm{MHz}$). The intrinsic pulse width exhibits frequency narrowing with $\\sigma_{\\rm int} \\propto \\nu^{\\beta}$ ($\\beta = -0.92 \\pm 0.19$ for $\\nu > 440~\\mathrm{MHz}$), with low-frequency excess width ($\\,4.8\\sigma\\,$ at $\\sim 422~\\mathrm{MHz}$) favoring a thick-screen scattering medium.",
+          "bluf_problem": "Investigating whether the prominent asymmetric temporal tail in FRB 20210415C originates from multi-path plasma scattering following the theoretical power-law $\\tau_{\\rm s}(\\nu) \\propto \\nu^{\\alpha}$ with $\\alpha \\simeq -4$ or from intrinsic emission mechanisms."
+        }
+      ]
+    },
+    {
+      "event_id": "FRB 20210219C",
+      "event_type": "FRB",
+      "tags": [
+        "FRB"
+      ],
+      "heat_score": 12.4,
+      "paper_count": 1,
+      "headline": "Investigating whether the promin...",
+      "narrative": "FRB 20210219C 是近期重点瞬变天体事件，监测日期 2026-10-26，共聚合 1 篇研读文献。核心突破研判：Across 8 sub-bands spanning $400.2\\text{--}765.6~\\mathrm{MHz}$, the scattering index is measured to be $\\alpha = -3.95 \\pm 0.07$ (free Gaussian width) and $\\alpha = -4.14 \\pm 0.08$ (fixed Gaussian width), with a 34-parameter joint MCMC yielding $\\alpha = -3.95 \\pm 0.06$ and $\\tau_{\\rm ref} = 7.97 \\pm 0.09~\\mathrm{ms}$ at $\\nu_{\\rm ref} = 583~\\mathrm{MHz}$ (corresponding to $\\tau_{\\rm s} \\simeq 7.0\\text{--}7.1~\\mathrm{ms}$ at $600~\\mathrm{MHz}$). The intrinsic pulse width exhibits frequency narrowing with $\\sigma_{\\rm int} \\propto \\nu^{\\beta}$ ($\\beta = -0.92 \\pm 0.19$ for $\\nu > 440~\\mathrm{MHz}$), with low-frequency excess width ($\\,4.8\\sigma\\,$ at $\\sim 422~\\mathrm{MHz}$) favoring a thick-screen scattering medium.",
+      "first_seen": "2026-10-26",
+      "last_updated": "2026-10-26",
+      "papers": [
+        {
+          "arxiv_id": "2610.34848",
+          "revision": 1,
+          "title": "A frequency-resolved measurement of the scattering law in FRB 20210415C",
+          "authors": [
+            "Victor Pop",
+            "Mohammed A. Chamma",
+            "Aishwarya Kumar",
+            "Fereshteh Rajabi"
+          ],
+          "date": "2026-10-26",
+          "priority": "worth_knowing",
+          "bluf_result": "Across 8 sub-bands spanning $400.2\\text{--}765.6~\\mathrm{MHz}$, the scattering index is measured to be $\\alpha = -3.95 \\pm 0.07$ (free Gaussian width) and $\\alpha = -4.14 \\pm 0.08$ (fixed Gaussian width), with a 34-parameter joint MCMC yielding $\\alpha = -3.95 \\pm 0.06$ and $\\tau_{\\rm ref} = 7.97 \\pm 0.09~\\mathrm{ms}$ at $\\nu_{\\rm ref} = 583~\\mathrm{MHz}$ (corresponding to $\\tau_{\\rm s} \\simeq 7.0\\text{--}7.1~\\mathrm{ms}$ at $600~\\mathrm{MHz}$). The intrinsic pulse width exhibits frequency narrowing with $\\sigma_{\\rm int} \\propto \\nu^{\\beta}$ ($\\beta = -0.92 \\pm 0.19$ for $\\nu > 440~\\mathrm{MHz}$), with low-frequency excess width ($\\,4.8\\sigma\\,$ at $\\sim 422~\\mathrm{MHz}$) favoring a thick-screen scattering medium.",
+          "bluf_problem": "Investigating whether the prominent asymmetric temporal tail in FRB 20210415C originates from multi-path plasma scattering following the theoretical power-law $\\tau_{\\rm s}(\\nu) \\propto \\nu^{\\alpha}$ with $\\alpha \\simeq -4$ or from intrinsic emission mechanisms."
+        }
+      ]
+    },
+    {
+      "event_id": "SN1987A",
+      "event_type": "SN",
+      "tags": [
+        "SN"
+      ],
+      "heat_score": 12.4,
+      "paper_count": 1,
+      "headline": "Previous supernova constraints o...",
+      "narrative": "SN1987A 是近期重点瞬变天体事件，监测日期 2026-10-26，共聚合 1 篇研读文献。核心突破研判：Using the SFHo-18.8 ($18.8\\,M_\\odot$) core profile, the SN1987A cooling bounds exclude gauge boson masses up to $m_{A'} \\lesssim 230\\text{ MeV}$, $m_{Z'} \\lesssim 280\\text{ MeV}$ ($B-L$), and $m_{Z'} \\lesssim 300\\text{ MeV}$ ($L_\\mu-L_\\tau$). LESN mantle deposition limits constrain couplings down to $\\epsilon \\gtrsim 5.8 \\times 10^{-12}$ for dark photons ($m_{A'} \\le 450\\text{ MeV}$), $g_{BL} \\gtrsim 1.9 \\times 10^{-12}$ for $U(1)_{B-L}$ ($m_{Z'} \\le 440\\text{ MeV}$), and $g_{\\mu\\tau} \\gtrsim 6.4 \\times 10^{-12}$ for $U(1)_{L_\\mu-L_\\tau}$ ($m_{Z'} \\le 600\\text{ MeV}$), scaling in the optically thin limit as $E_{\\rm dep}^{(A')} \\propto \\epsilon^2$ and $E_{\\rm dep}^{(Z')} \\propto g_{BL}^4$.",
+      "first_seen": "2026-10-26",
+      "last_updated": "2026-10-26",
+      "papers": [
+        {
+          "arxiv_id": "2610.35379",
+          "revision": 1,
+          "title": "Revisiting supernova constraints on dark gauge bosons",
+          "authors": [
+            "Zun Wang",
+            "Yongchao Zhang"
+          ],
+          "date": "2026-10-26",
+          "priority": "worth_knowing",
+          "bluf_result": "Using the SFHo-18.8 ($18.8\\,M_\\odot$) core profile, the SN1987A cooling bounds exclude gauge boson masses up to $m_{A'} \\lesssim 230\\text{ MeV}$, $m_{Z'} \\lesssim 280\\text{ MeV}$ ($B-L$), and $m_{Z'} \\lesssim 300\\text{ MeV}$ ($L_\\mu-L_\\tau$). LESN mantle deposition limits constrain couplings down to $\\epsilon \\gtrsim 5.8 \\times 10^{-12}$ for dark photons ($m_{A'} \\le 450\\text{ MeV}$), $g_{BL} \\gtrsim 1.9 \\times 10^{-12}$ for $U(1)_{B-L}$ ($m_{Z'} \\le 440\\text{ MeV}$), and $g_{\\mu\\tau} \\gtrsim 6.4 \\times 10^{-12}$ for $U(1)_{L_\\mu-L_\\tau}$ ($m_{Z'} \\le 600\\text{ MeV}$), scaling in the optically thin limit as $E_{\\rm dep}^{(A')} \\propto \\epsilon^2$ and $E_{\\rm dep}^{(Z')} \\propto g_{BL}^4$.",
+          "bluf_problem": "Previous supernova constraints on dark gauge bosons often relied on soft-radiation approximations or simplified profiles, failing to capture detailed nucleon recoil $\\mathcal{O}(\\mathbf{k}^2/m_N^2)$, in-medium plasma modifications, and precise radial profiles of absorption and decay in the stellar mantle."
+        }
+      ]
+    },
+    {
       "event_id": "SN 2023IOP",
       "event_type": "SN",
       "tags": [
         "SN"
       ],
-      "heat_score": 11.8,
+      "heat_score": 11.4,
       "paper_count": 1,
       "headline": "SN 2023iop 具有长达 $\\gtrsim 88$ 天的缓...",
       "narrative": "SN 2023IOP 是近期重点瞬变天体事件，监测日期 2026-10-20，共聚合 1 篇研读文献（含 1 篇必读突破）。核心突破研判：测得该源峰值测辐射热光度为 $L_{\\rm bol} = (4.0 \\pm 1.0) \\times 10^{43}~\\mathrm{erg\\,s^{-1}}$，全波段积分总辐射能量达 $E_{\\rm rad} = (4.3 \\pm 0.3) \\times 10^{50}~\\mathrm{erg}$。由有效光球上升时标 $t_{\\rm rise} \\gtrsim 88$ 天导出抛射物质量下限 $M_{\\rm ej} > 12~M_\\odot$；峰值光度需要产生放射性镍质量 $M_{\\rm ^{56}Ni} \\approx 2.2~M_\\odot$。在静止系波长 $5800\\text{--}6200~\\text{Å}$ 与 $7400\\text{--}7800~\\text{Å}$ 测得反方差加权平均连续谱线偏振度为 $P = 0.81 \\pm 0.08\\%$，揭示显著的非球对称几何。晚期 $+326$ 天测得 $[\\mathrm{O\\;I}]\\,\\lambda\\lambda6300,6364$ 双线通量比 $F_{6300}/F_{6364} \\approx 2.3$，处于光学薄与光学厚过渡态。多波段限制给出自由-自由吸收光深遵从标度律 $\\tau_{\\rm ff} \\propto \\nu^{-2.1}\\,t^{-5}$，深埋中心引擎与 CSM 早期信号受阻碍。联合辐射模型指示其前身星符合 $190~M_\\odot$ 的富氢 PISN 模型，晚期平台期辐射由隐蔽或非球对称 CSM 相互作用主导。",
@@ -758,7 +1044,7 @@
       "tags": [
         "SN"
       ],
-      "heat_score": 11.8,
+      "heat_score": 11.4,
       "paper_count": 1,
       "headline": "SN 2023iop 具有长达 $\\gtrsim 88$ 天的缓...",
       "narrative": "SN 1987A 是近期重点瞬变天体事件，监测日期 2026-10-20，共聚合 1 篇研读文献（含 1 篇必读突破）。核心突破研判：测得该源峰值测辐射热光度为 $L_{\\rm bol} = (4.0 \\pm 1.0) \\times 10^{43}~\\mathrm{erg\\,s^{-1}}$，全波段积分总辐射能量达 $E_{\\rm rad} = (4.3 \\pm 0.3) \\times 10^{50}~\\mathrm{erg}$。由有效光球上升时标 $t_{\\rm rise} \\gtrsim 88$ 天导出抛射物质量下限 $M_{\\rm ej} > 12~M_\\odot$；峰值光度需要产生放射性镍质量 $M_{\\rm ^{56}Ni} \\approx 2.2~M_\\odot$。在静止系波长 $5800\\text{--}6200~\\text{Å}$ 与 $7400\\text{--}7800~\\text{Å}$ 测得反方差加权平均连续谱线偏振度为 $P = 0.81 \\pm 0.08\\%$，揭示显著的非球对称几何。晚期 $+326$ 天测得 $[\\mathrm{O\\;I}]\\,\\lambda\\lambda6300,6364$ 双线通量比 $F_{6300}/F_{6364} \\approx 2.3$，处于光学薄与光学厚过渡态。多波段限制给出自由-自由吸收光深遵从标度律 $\\tau_{\\rm ff} \\propto \\nu^{-2.1}\\,t^{-5}$，深埋中心引擎与 CSM 早期信号受阻碍。联合辐射模型指示其前身星符合 $190~M_\\odot$ 的富氢 PISN 模型，晚期平台期辐射由隐蔽或非球对称 CSM 相互作用主导。",
@@ -856,7 +1142,7 @@
       "tags": [
         "FRB"
       ],
-      "heat_score": 11.8,
+      "heat_score": 11.4,
       "paper_count": 1,
       "headline": "FRB 20240114A 伴随的持续射电源（PRS）在数月时标...",
       "narrative": "FRB 20240114A 是近期重点瞬变天体事件，监测日期 2026-10-20，共聚合 1 篇研读文献（含 1 篇必读突破）。核心突破研判：通过将磁星风云（MWN）多波段光变及同步辐射自吸收（SSA）截断与观测拟合，发现相对论电子注入截断洛伦兹因子需满足 $\\gamma_{\\rm b} < 10^3$，基准最佳拟合为 $\\gamma_{\\rm b} \\sim 2 \\times 10^2$。在塌缩超新星（CCSN）与超剥离超新星（USSN）模型下，系统年龄分别约束为 $t_{\\rm age} \\approx 15.9\\,{\\rm yr}$ 与 $7.0\\,{\\rm yr}$，磁星初始内部磁场 $B_{\\rm int} \\approx 1.3 \\times 10^{16}\\,{\\rm G}$（对应磁能预算 $\\sim 5 \\times 10^{49}\\,{\\rm erg}$）。在 PRS 发射区 $\\bar{\\nu} \\sim 1\\,{\\rm GHz}$ 且平均磁场 $B_{\\rm nb} \\sim 10^{-2}\\,{\\rm G}$ 时，电子特征洛伦兹因子为 $\\bar{\\gamma} \\approx (4\\pi m_e c \\bar{\\nu} / 3 e B_{\\rm nb})^{1/2} \\sim 10^2$，其同步冷却时标长达 $t_{\\rm syn} \\approx 6\\pi m_e c / (\\sigma_T \\bar{\\gamma} B_{\\rm nb}^2) \\sim 10^3\\,{\\rm yr}$，主导冷却为数十年的绝热冷却；由归一化注入参数 $f_{\\rm FRBt} \\sim (3\\text{--}5) \\times 10^4$ 推得射电辐射效率为 $\\eta_{\\rm r} \\sim 10^{-5}\\text{--}10^{-4}$，超活跃相占空比 $\\lesssim 1\\%$。",
@@ -883,7 +1169,7 @@
       "event_id": "AT 2023VFI",
       "event_type": "AT",
       "tags": [],
-      "heat_score": 11.6,
+      "heat_score": 11.2,
       "paper_count": 1,
       "headline": "千新星晚期光变曲线中高光度份额并不等同于放射源的独特可辨识特征。",
       "narrative": "AT 2023VFI 是近期重点瞬变天体事件，监测日期 2026-10-25，共聚合 1 篇研读文献。核心突破研判：粒子的非瞬时能量沉积与多层光子扩散显著平滑了辐射波形，使长寿命 $\\alpha$ 衰变链（如 $^{223,225}\\mathrm{Ra}\\text{--}^{225}\\mathrm{Ac}$）与 $^{254}\\mathrm{Cf}$ 的光度响应高度简并。多源混合辐射衰减指数满足标度律 $\\nu_{12}[L] = -\\frac{1}{\\ell} \\ln \\left[ \\sum_j w_j e^{-\\ell \\nu_{12}[L_j]} \\right]$（其中 $\\ell = \\ln(t_2/t_1)$，$w_j$ 为 $t_1$ 处的辐射权重）；在固定 90 天裂变光度占比（约 $38\\%$）下，无 $^{254}\\mathrm{Cf}$ 的替代模型通过调整抛射物与 $\\beta$ 加热连续谱自由度，在 $5\\%$ 假阳性率下的统计探测能力上限仅为 $6.20\\%\\text{--}8.93\\%$。对于千新星 AT 2023vfi，含与不含 $^{254}\\mathrm{Cf}$ 模型的衰减指数差异仅约 $0.01$（$\\nu_{12} \\approx 2.10\\text{--}2.12$），两者均比观测重建值（$2.7\\pm0.4$）平缓约 $1.5\\sigma$。",
@@ -910,10 +1196,10 @@
       "tags": [
         "SN"
       ],
-      "heat_score": 11.6,
+      "heat_score": 11.2,
       "paper_count": 1,
-      "headline": "SN 2024AECX 超新星爆发物理与早期周星相互作用",
-      "narrative": "SN 2024AECX 是近期重点瞬变天体事件，监测日期 2026-10-25，共聚合 1 篇研读文献。核心突破研判：未记录",
+      "headline": "光学波段星云期禁线光度呈 $\\exp(-E_u/kT)$ 指数依赖",
+      "narrative": "SN 2024AECX 是近期重点瞬变天体事件，监测日期 2026-10-25，共聚合 1 篇研读文献。核心突破研判：通过对 SN 2024aecx（$167\\,\\mathrm{d}$）的解谱迭代，测得 Fe/He 区温度 $T_{\\mathrm{FeHe}} = 3680^{+88}_{-95}\\,\\mathrm{K}$，关键禁线光深 $\\tau_{[\\mathrm{Ni\\,II}]\\,6.636} = 0.97^{+0.20}_{-0.18}$、$\\tau_{[\\mathrm{Co\\,II}]\\,10.52} = 5.89^{+3.88}_{-2.80}$；得出 $^{56}\\mathrm{Ni}$ 质量 $M(^{56}\\mathrm{Ni}) = 0.051^{+0.034}_{-0.022}\\,M_\\odot$、稳定镍质量 $M(^{58}\\mathrm{Ni}) = 1.8^{+0.4}_{-0.3} \\times 10^{-3}\\,M_\\odot$；Ni/Fe 质量比为 $0.036$，对应中子过剩 $\\eta = 1.2 \\times 10^{-3}$；Fe/He 区充满因子仅为 $f_{\\mathrm{FeHe}} = 0.059^{+0.013}_{-0.012}$，证实放射性加热引起的 Ni 气泡膨胀效应极弱（密度对比因子 $\\chi \\approx 1 - 3$）；测定 $M_{\\mathrm{Cl}} = 5.1^{+2.0}_{-1.6} \\times 10^{-4}\\,M_\\odot$，支持 O-C 壳层合并核合成路径。",
       "first_seen": "2026-10-25",
       "last_updated": "2026-10-25",
       "papers": [
@@ -927,8 +1213,39 @@
           ],
           "date": "2026-10-25",
           "priority": "worth_knowing",
-          "bluf_result": "未记录",
-          "bluf_problem": "未记录"
+          "bluf_result": "通过对 SN 2024aecx（$167\\,\\mathrm{d}$）的解谱迭代，测得 Fe/He 区温度 $T_{\\mathrm{FeHe}} = 3680^{+88}_{-95}\\,\\mathrm{K}$，关键禁线光深 $\\tau_{[\\mathrm{Ni\\,II}]\\,6.636} = 0.97^{+0.20}_{-0.18}$、$\\tau_{[\\mathrm{Co\\,II}]\\,10.52} = 5.89^{+3.88}_{-2.80}$；得出 $^{56}\\mathrm{Ni}$ 质量 $M(^{56}\\mathrm{Ni}) = 0.051^{+0.034}_{-0.022}\\,M_\\odot$、稳定镍质量 $M(^{58}\\mathrm{Ni}) = 1.8^{+0.4}_{-0.3} \\times 10^{-3}\\,M_\\odot$；Ni/Fe 质量比为 $0.036$，对应中子过剩 $\\eta = 1.2 \\times 10^{-3}$；Fe/He 区充满因子仅为 $f_{\\mathrm{FeHe}} = 0.059^{+0.013}_{-0.012}$，证实放射性加热引起的 Ni 气泡膨胀效应极弱（密度对比因子 $\\chi \\approx 1 - 3$）；测定 $M_{\\mathrm{Cl}} = 5.1^{+2.0}_{-1.6} \\times 10^{-4}\\,M_\\odot$，支持 O-C 壳层合并核合成路径。",
+          "bluf_problem": "光学波段星云期禁线光度呈 $\\exp(-E_u/kT)$ 指数依赖，对温度高度敏感且多处于非局域热动平衡（NLTE）；而中红外波段缺乏一套系统评估发射线局域热动平衡（LTE）适用性、谱线光学厚度修正及利用单历元光谱定量提取超新星抛射物物理参数的自洽解析框架。"
+        }
+      ]
+    },
+    {
+      "event_id": "GRB 090618",
+      "event_type": "GRB",
+      "tags": [
+        "GRB"
+      ],
+      "heat_score": 11.2,
+      "paper_count": 1,
+      "headline": "GRB 瞬时强辐射会完全光电离 $\\lesssim 100\\ \\...",
+      "narrative": "GRB 090618 是近期重点瞬变天体事件，监测日期 2026-10-25，共聚合 1 篇研读文献。核心突破研判：TEPID 模型预言近邻环境产生多相窄吸收线（静系 $\\mathrm{EW} \\sim 1\\text{--}10\\ \\mathrm{eV}$，其中 Fe K 壳层线 $\\mathrm{EW} \\sim 4\\text{--}10\\ \\mathrm{eV}$）；在 GRB 090618 的 RGS 光谱中以 $\\approx 3\\sigma$ 探测到 Fe-L 吸收线系并定出 $z=0.540\\pm 0.003$；XRISM 每年可观测约 3 例余辉中的 Fe-K 线；NewAthena 每年可跟进高达 50 例 $\\mathcal{F}\\gtrsim 0.1\\times 10^{-6}\\ \\mathrm{erg\\ cm^{-2}}$ 样本，可将密度 $\\log n_0$ 精度测至 $0.05\\ \\mathrm{dex}$、红移相对误差控制在 $\\lesssim 10^{-3}$，并通过 $\\mathrm{Fe/(Si,S)} \\lesssim 0.15$ 上限有效区分 Pop III 与 Pop II 环境。",
+      "first_seen": "2026-10-25",
+      "last_updated": "2026-10-25",
+      "papers": [
+        {
+          "arxiv_id": "2610.32786",
+          "revision": 1,
+          "title": "Probing the star-forming environment of GRB across cosmic ages with high-resolution X-ray spectroscopy: From \\textit{XMM-Newton}/RGS and \\textit{XRISM}/Resolve to \\textit{NewAthena}/X-IFU",
+          "authors": [
+            "Luigi Piro",
+            "Aishwarya Linesh Thakur",
+            "Alfredo Luminari",
+            "Fabrizio Nicastro",
+            "Yair Krongold"
+          ],
+          "date": "2026-10-25",
+          "priority": "worth_knowing",
+          "bluf_result": "TEPID 模型预言近邻环境产生多相窄吸收线（静系 $\\mathrm{EW} \\sim 1\\text{--}10\\ \\mathrm{eV}$，其中 Fe K 壳层线 $\\mathrm{EW} \\sim 4\\text{--}10\\ \\mathrm{eV}$）；在 GRB 090618 的 RGS 光谱中以 $\\approx 3\\sigma$ 探测到 Fe-L 吸收线系并定出 $z=0.540\\pm 0.003$；XRISM 每年可观测约 3 例余辉中的 Fe-K 线；NewAthena 每年可跟进高达 50 例 $\\mathcal{F}\\gtrsim 0.1\\times 10^{-6}\\ \\mathrm{erg\\ cm^{-2}}$ 样本，可将密度 $\\log n_0$ 精度测至 $0.05\\ \\mathrm{dex}$、红移相对误差控制在 $\\lesssim 10^{-3}$，并通过 $\\mathrm{Fe/(Si,S)} \\lesssim 0.15$ 上限有效区分 Pop III 与 Pop II 环境。",
+          "bluf_problem": "GRB 瞬时强辐射会完全光电离 $\\lesssim 100\\ \\mathrm{pc}$ 尺度内的冷气体，使传统光学吸收线失效且传统的稳态光电离平衡模型因忽略极端非平衡与空间分层电离而不适用；软 X 射线过剩吸收揭示致密富金属介质，但现有低分辨率探测器无法解析其多相窄吸收线并精确测定周星介质物态与化学演化。"
         }
       ]
     },
@@ -938,7 +1255,7 @@
       "tags": [
         "FRB"
       ],
-      "heat_score": 11.5,
+      "heat_score": 11.1,
       "paper_count": 2,
       "headline": "论文旨在检验带电夸克星能否在非标准引力和统一相互作用夸克物质状态...",
       "narrative": "GW190814 是近期重点瞬变天体事件，活跃跨度 2026-09-21 至 2026-10-22，共聚合 2 篇研读文献。核心突破研判：结果表明，电荷与能量-动量平方引力耦合的共同作用可显著提高夸克星的最大质量和半径，在强负耦合及较强相互作用参数下，模型质量可接近 $3M_{\\odot}$。带电构型的最大质量中心密度降低约 $10$--$15\\%$，并可满足因果性及多项现有脉冲星、NICER观测约束。",
@@ -985,7 +1302,7 @@
         "GRB",
         "TDE"
       ],
-      "heat_score": 8.6,
+      "heat_score": 8.3,
       "paper_count": 1,
       "headline": "海量时域巡天警报流",
       "narrative": "AT 2018COW 是近期重点瞬变天体事件，监测日期 2026-10-22，共聚合 1 篇研读文献。核心突破研判：通过结合 160 个光变曲线特征与宿主星系测光、点源背景及基于平坦 $\\Lambda\\mathrm{CDM}$ 宇宙学模型（$H_0 = 70\\,\\mathrm{km\\,s^{-1}\\,Mpc^{-1}}$, $\\Omega_m = 0.3$）下由光度红移导出的伪绝对星等 $M_{\\mathrm{pseudo}} = m_{\\mathrm{peak}} - 5\\log_{10}[d_L(z_{\\mathrm{phot}})/10\\,\\mathrm{pc}]$，模型宏 $F_1$ 达到 $0.83\\pm0.02$。在 $1\\%$ 虚警率（FPR）下，利用基于 log-sum-exp logits 的 energy 打分器及主动复核循环，仅检查 $6\\%$ 的警报流即可召回 $60\\%$ 的分类系统外异常天体，相比静态排序减少了 $45\\%$ 的人工审核工作量，并在实机回放中成功捕获 FBOT AT 2018cow 及 GRB 对应体。",
@@ -1031,7 +1348,7 @@
       "tags": [
         "SN"
       ],
-      "heat_score": 8.6,
+      "heat_score": 8.3,
       "paper_count": 1,
       "headline": "EP260321a 是伴随 SN Ic-BL 2026gzf 的...",
       "narrative": "SN 2008D 是近期重点瞬变天体事件，监测日期 2026-10-22，共聚合 1 篇研读文献。核心突破研判：通过多波段联合限制发现 EP260321a 的最快激波速度显著较慢（$\\beta_{\\rm bo} \\lesssim 0.02\\text{--}0.08$），远低于 XRO 080109 的 $\\beta_{\\rm bo} \\simeq 0.25$；较慢的激波抑制了射电辐射并自然产生了热化软 X 射线谱。两者底层的超新星爆炸能量和整体抛射物速度基本一致（$v_{\\rm bulk} \\simeq 1.0\\times 10^9(M_{\\rm c}/5M_\\odot)^{-0.114}\\ {\\rm cm\\ s^{-1}}$ 与 $1.3\\times 10^9(M_{\\rm c}/5M_\\odot)^{-0.114}\\ {\\rm cm\\ s^{-1}}$），观测差异主要由星周介质质量决定：EP260321a 爆发前发生了剧烈物质抛射，形成了致密的 CSM 壳层（$M_{\\rm CSM} \\simeq 0.06\\ M_\\odot$，而 XRO 080109 仅为 $\\sim 10^{-7}\\ M_\\odot$），激波加热的大质量 CSM 壳层在亚天时标（$t_{\\nu,p} \\simeq 0.5\\text{--}0.7\\ {\\rm d}$）内释放储存的内能，产生峰值单色光度达 $\\nu L_{\\nu,p} \\sim 10^{42}\\ {\\rm erg\\ s^{-1}}$ 的明亮冷却辐射。",
@@ -1060,7 +1377,7 @@
       "tags": [
         "GW"
       ],
-      "heat_score": 8.6,
+      "heat_score": 8.3,
       "paper_count": 1,
       "headline": "快速 X 射线暂现源（FXT）的物理本质、前身星系统以及辐射中心...",
       "narrative": "SN 2025KG 是近期重点瞬变天体事件，监测日期 2026-10-22，共聚合 1 篇研读文献。核心突破研判：在 EP 探测到的 64 例 FXT 中筛选出 19 个满足 LVK 运行条件的源，所有源的显著性 $p$ 值均与背景噪声涨落一致（如 EP240414a 的 $p=0.068$、EP250108a 的 $p=0.763$），未探测到显著的引力波信号。针对伴随宽线超新星 SN 2025kg 的个源 EP250108a（红移 $z = 0.17641$，光度距离 $D_L = 880.6\\,\\mathrm{Mpc}$），在 $70\\text{--}300\\,\\mathrm{Hz}$ 频段内通过 $E_{\\mathrm{GW},90\\%}=\\frac{2}{5}\\frac{\\pi^{2}c^{3}}{G}r^{2}f_{0}^{2}h_{\\mathrm{rss},90\\%}^{2}$ 导出的引力波辐射能量 90% 置信度上限为 $E_{\\mathrm{GW},90\\%} \\in [6.715\\times 10^{-2},\\, 5.506\\times 10^{-1}]\\,M_{\\odot}c^{2}$，受限于现有引力波探测视距，尚无法直接触及多数 FXT 所处的深空宿主距离。",
@@ -1089,7 +1406,7 @@
       "tags": [
         "SN"
       ],
-      "heat_score": 8.5,
+      "heat_score": 8.2,
       "paper_count": 2,
       "headline": "SN 2024ggi的爆前光变中是否存在显著前兆发射",
       "narrative": "SN 2024GGI 是近期重点瞬变天体事件，活跃跨度 2026-09-28 至 2026-10-12，共聚合 2 篇研读文献（含 1 篇必读突破）。核心突破研判：ATClean在所有测试高斯核宽下均未发现显著爆前前兆。对模拟持续时间为2天和300天的事件，80%探测效率对应绝对星等阈值分别为−11.28和−8.98。基于CHIPS模型的亮度—抛质质量转换，不支持具有所比较已知前兆时标、且产生文献所估CSM质量的显著爆发，但不能排除较暗或极短事件。标准同步辐射模型推得外层CSM近似满足ρ∝r⁻²；假定风速50 km/s，失质量率约为8×10⁻⁵太阳质量/年。结合文献估计，作者提出半径≲6×10¹⁴ cm的较致密内层与更外侧延展风状结构，并倾向由延展色球层、脉动驱动超风或多种机制共同解释，而非认为某一种机制已被唯一确定。",
@@ -1157,7 +1474,7 @@
         "TDE",
         "MULTI"
       ],
-      "heat_score": 7.1,
+      "heat_score": 6.8,
       "paper_count": 1,
       "headline": "部分光学选 TDE 与高能中微子可能关联",
       "narrative": "AT2019EHZ 是近期重点瞬变天体事件，监测日期 2026-10-20，共聚合 1 篇研读文献。核心突破研判：通过对 AT2019dsg、AT2019ehz 和 ASASSN–14li 的多信使建模发现：在致密靶光子场环境下，光介子产生反应 $p\\gamma \\to \\pi^0 / \\pi^{\\pm}$ 有效产生多 TeV 至 PeV 能段中微子（AT2019dsg 基准模型预期 IceCube 与 KM3NeT 事例数分别达 0.31 和 0.36），但伴生的高能光子因双光子吸收对产生（阈值满足 $E_{\\gamma}\\epsilon(1-\\cos\\theta) \\ge 2m_e^2 c^4$，对头碰撞阈值 $E_{\\gamma,\\rm thr} \\simeq 260(\\epsilon / 1\\,\\mathrm{keV})^{-1}\\,\\mathrm{MeV}$）而在 GeV–TeV 波段被高度不透明环境强烈遮蔽并级联重分配至 MeV 波段；源的能谱形态主要由非热质子谱指数 $p_p$、注入下限 $\\gamma_{p,\\rm min}$ 以及靶光子场环境的不透明度所调控。",
@@ -1185,7 +1502,7 @@
       "event_id": "SN 2023BEE",
       "event_type": "SN",
       "tags": [],
-      "heat_score": 6.4,
+      "heat_score": 6.2,
       "paper_count": 1,
       "headline": "部分 Ia 型超新星（如 SN 2023bee）在爆发初期存在微...",
       "narrative": "SN 2023BEE 是近期重点瞬变天体事件，监测日期 2026-10-19，共聚合 1 篇研读文献。核心突破研判：在爆发后 $+359$ 天的星云相光谱中未探测到伴星剥离物质的窄 H/He 特征，给出 $3\\sigma$ 积分光度上限 $L_{\\mathrm{H}\\alpha} < 1.8\\times10^{37}\\ \\mathrm{erg\\,s^{-1}}$，推导出的伴星剥离质量上限为 $M_{\\rm H}^{\\rm stripped} \\lesssim 5.0\\times10^{-3}\\,M_\\odot$ 以及 $M_{\\rm He}^{\\rm stripped} \\lesssim 1.2\\times10^{-4}\\,M_\\odot$。基于禁线发射光度比模型 $\\frac{L_{7378}}{L_{7155}} = 4.9 \\frac{n_{\\rm Ni\\,II}}{n_{\\rm Fe\\,II}} \\exp\\left(\\frac{0.28\\,\\mathrm{eV}}{kT}\\right)\\frac{dc_{\\rm Ni\\,II}}{dc_{\\rm Fe\\,II}}$ 拟合铁族混合特征，测得离子数密度比为 $n_{\\rm Ni\\,II}/n_{\\rm Fe\\,II} = 0.026\\pm0.020$，折合渐近稳定质量比 $M_{\\rm Ni}/M_{\\rm Fe} \\lesssim 0.06$，与亚钱氏质量（sub-$M_{\\rm Ch}$）双重爆轰模型高度相符。",
@@ -1237,7 +1554,7 @@
       "tags": [
         "SN"
       ],
-      "heat_score": 5.8,
+      "heat_score": 5.6,
       "paper_count": 1,
       "headline": "SN 2025wiu 在首个主峰后 $+38$ 天展现出显著的光...",
       "narrative": "SN 2025WIU 是近期重点瞬变天体事件，监测日期 2026-10-18，共聚合 1 篇研读文献。核心突破研判：SN 2025wiu 首个光学峰绝对星等达 $M_r \\approx -18.2\\ \\mathrm{mag}$，在爆发后约 $+38\\ \\mathrm{d}$ 出现第二光学峰（$M_r \\approx -17.8\\ \\mathrm{mag}$），但其重建的全波段热光度 $L_{\\rm bol}$ 仅表现为单调下降中的斜率变缓（第一峰值 $L_{\\rm bol} \\approx 5.86\\times 10^{42}\\ \\mathrm{erg\\ s^{-1}}$），晚期热光度衰减率为 $0.054\\pm 0.008\\ \\mathrm{mag\\ day^{-1}}$。整个演化过程中光谱始终表现为纯净的 SN Ib 特征且无窄发射线。纯放射性衰变模型需合成镍质量 $M_{\\rm Ni} = 0.47^{+0.06}_{-0.05}\\ M_\\odot$；而结合抛射物与星周介质相互作用的 TransFit-CSM 模型给出的最佳拟合参数为 $M_{\\rm Ni} = 0.378^{+0.070}_{-0.089}\\ M_\\odot$、$M_{\\rm ej} = 4.72^{+2.07}_{-1.59}\\ M_\\odot$、动能 $E_{\\rm k} \\approx 1.9\\times 10^{51}\\ \\mathrm{erg}$ 以及有效 CSM 质量 $M_{\\rm CSM} \\approx 0.10\\ M_\\odot$（外径延展至 $\\approx 5.9\\times 10^5\\ R_\\odot$），物理图像倾向于被抛射物光球层吞没并完全热化的非球对称盘状 CSM 相互作用。",
@@ -1281,7 +1598,7 @@
       "tags": [
         "GRB"
       ],
-      "heat_score": 5.3,
+      "heat_score": 5.1,
       "paper_count": 1,
       "headline": "GRB 240825A 早期出现特征鲜明的软能谱平台期与随后的硬...",
       "narrative": "GRB 240825A 是近期重点瞬变天体事件，监测日期 2026-10-12，共聚合 1 篇研读文献（含 1 篇必读突破）。核心突破研判：研究表明瞬时辐射由早期软能谱平台期（$L_{\\gamma, \\mathrm{iso}} \\sim 1.50 \\times 10^{50}\\ \\mathrm{erg\\ s^{-1}}$）与后续硬能谱主暴构成。PNS 阶段磁偶极辐射 $L_k(t) = L_{k,0}(1+t/\\tau)^{-2}$ 提供前兆光度；塌缩为黑洞后，回落吸积盘通过 Blandford-Znajek（BZ）机制产生喷流：$$L_{\\mathrm{BZ}} = 9.3\\times10^{53}\\,{\\mathrm{erg\\,s^{-1}}}\\frac{a^2 F(a)}{(1+\\sqrt{1-a^2})^2}\\frac{\\dot{M}(r_{\\mathrm{in}})}{M_\\odot\\,\\mathrm{s^{-1}}}$$ 拟合得到回落质量 $M_{\\mathrm{fb}} \\simeq 0.45{-}0.96\\ M_\\odot$、初始黑洞自旋 $a_0 \\sim 0.13{-}0.53$。余辉在星风介质（$n \\propto r^{-2}$）中演化，且伴随非单调宿主消光时变（$E_{B-V}^{\\mathrm{host}} = 0.41 \\to 0.63 \\to 0.37$），符合强辐射场下的辐射力矩瓦解（RATD）大颗粒尘埃破坏机制。",
@@ -1311,7 +1628,7 @@
       "tags": [
         "SN"
       ],
-      "heat_score": 5.3,
+      "heat_score": 5.1,
       "paper_count": 1,
       "headline": "缺乏明显窄发射线、展现宽吸收/发射线特征的 SLSNe II 早...",
       "narrative": "SN 2008ES 是近期重点瞬变天体事件，监测日期 2026-10-12，共聚合 1 篇研读文献（含 1 篇必读突破）。核心突破研判：SLSNe II 的近紫外超额光度与总拟热光度维持恒定比值（$L_{\\rm ex}/L_{\\rm bol} \\approx 0.01\\text{--}0.1$）。假设紫外超额由星周相互作用（CSI）主导驱动，利用标度关系 $\\frac{dM}{dt} = \\frac{2L_{\\rm ex}}{\\epsilon} v_{\\rm CSM} v_{\\rm sh}^{-3}$（取辐射效率 $\\epsilon = 0.5$，$v_{\\rm CSM} = 100\\,\\mathrm{km\\,s^{-1}}$），推断前身星爆发前数年至数十年的质量损失率下限为 $\\dot{M} \\sim 10^{-4}\\text{--}0.03\\,\\mathrm{M_\\odot\\,yr^{-1}}$；若相互作用主导总光度，则实际 $\\dot{M} \\sim 0.2\\text{--}0.3\\,\\mathrm{M_\\odot\\,yr^{-1}}$。SN 2008es 类子样本总辐射能量达 $(1\\text{--}3)\\times 10^{51}\\,\\mathrm{erg}$，且低几何填充因子（$f \\sim 0.1$）排除了纯中微子驱动激波转换机制，必须由中心引擎驱动。",
@@ -1337,63 +1654,12 @@
       ]
     },
     {
-      "event_id": "GRB 221009A",
-      "event_type": "GRB",
-      "tags": [
-        "GRB"
-      ],
-      "heat_score": 4.3,
-      "paper_count": 2,
-      "headline": "GRB 221009A的射电余辉能否由标准前向激波喷流模型同时解...",
-      "narrative": "GRB 221009A 是近期重点瞬变天体事件，活跃跨度 2026-10-04 至 2026-10-05，共聚合 2 篇研读文献（含 1 篇必读突破）。核心突破研判：联合5与8 GHz尺寸数据得到 $s(t)=s_0(t/t_0)^a$，其中 $t_0=90\\,\\mathrm{d}$、$a=0.52^{+0.14}_{-0.12}$，误差为68%可信区间；膨胀显著性约为 $4.5\\sigma$。231、391、750天的5 GHz FWHM分别为 $0.31\\pm0.04\\,\\mathrm{mas}$、$0.68^{+0.12}_{-0.17}\\,\\mathrm{mas}$、$<0.94\\,\\mathrm{mas}$，最后一项为95%上限。单前向激波尺寸拟合给出ISM环境的 $\\log[(E_{\\mathrm{jet}}/n)/(\\mathrm{erg\\,cm^3})]=54.2^{+0.4}_{-0.5}$，以及风环境的 $\\log[(E_{\\mathrm{jet}}/A_\\star)/\\mathrm{erg}]=51.7^{+0.4}_{-0.2}$，均为中位数及 $1\\sigma$ 可信区间。能够用VegasAfterglow复现的文献模型均未能成功解释VLBI尺寸演化；这一结论不覆盖未能复现或未能测试的模型。",
-      "first_seen": "2026-10-04",
-      "last_updated": "2026-10-05",
-      "papers": [
-        {
-          "arxiv_id": "2610.03886",
-          "revision": 1,
-          "title": "Blasts from the Past: UHECR Excesses from a Population of GRB 21009A-like Transients",
-          "authors": [
-            "Nestor Mirabal"
-          ],
-          "date": "2026-10-05",
-          "priority": "worth_knowing",
-          "bluf_result": "将 Cen A 的约 $15^{\\circ}$ 角尺度解释为传播偏转，在 $D=3.8\\,\\mathrm{Mpc}$、$E=10^{20}\\,\\mathrm{eV}$、$Z=26$、$\\lambda_c\\sim1\\,\\mathrm{Mpc}$ 下得到 $B\\approx0.55\\,\\mathrm{nG}$；几何时延 $\\Delta t\\simeq D\\theta^2/(4c)\\simeq2.1\\times10^5\\,\\mathrm{yr}$。采用现象学可见窗口 $\\Delta t_{\\rm vis}=(2-4)\\times10^5\\,\\mathrm{yr}$、本地事件率密度 $\\dot n_0\\approx4\\times10^{-8}\\,\\mathrm{Mpc^{-3}\\,yr^{-1}}$、$D_{\\rm GZK}=100\\,\\mathrm{Mpc}$ 和喷流半开角 $\\theta_j=0.8^{\\circ}$，预期全天同时存在 $N_{\\rm excess}\\sim3-7$ 个超额。若改用距离依赖的可见时间并要求角尺度小于 $40^{\\circ}$，正文给出铁核可分辨距离 $\\lesssim27\\,\\mathrm{Mpc}$、$N_{\\rm excess}\\sim2$。族群平均单次 UHECR 能量为 $E_{\\rm CR}\\sim10^{51}\\,\\mathrm{erg}$，与束流修正后的 $E_\\gamma\\sim(3-10)\\times10^{50}\\,\\mathrm{erg}$ 比较，所需重子负载约 $\\eta_{\\rm CR}\\sim1-3$；这不是对 Cen A 超额绝对通量的独立拟合。",
-          "bluf_problem": "Cen A 方向的 UHECR 超额是否可以来自 Cen A/M83 星系群内过去的 GRB 221009A 类瞬变，而非当前 Cen A 喷流？若该解释成立，同类窄喷流瞬变在本地宇宙中应留下多少个仍可见的中等角尺度 UHECR 超额，其能量预算是否合理？"
-        },
-        {
-          "arxiv_id": "2610.02988",
-          "revision": 1,
-          "title": "Comparing the size evolution of GRB 221009A with afterglow models",
-          "authors": [
-            "S. Giarratana",
-            "O. S. Salafia",
-            "B. Marcote",
-            "Z. Paragi",
-            "M. Giroletti",
-            "G. Ghirlanda",
-            "L. Nava",
-            "A. van der Horst",
-            "J. K. Leung",
-            "L. Rhodes",
-            "P. G. Edwards",
-            "M. Pérez-Torres",
-            "J. Yang"
-          ],
-          "date": "2026-10-04",
-          "priority": "must_read",
-          "bluf_result": "联合5与8 GHz尺寸数据得到 $s(t)=s_0(t/t_0)^a$，其中 $t_0=90\\,\\mathrm{d}$、$a=0.52^{+0.14}_{-0.12}$，误差为68%可信区间；膨胀显著性约为 $4.5\\sigma$。231、391、750天的5 GHz FWHM分别为 $0.31\\pm0.04\\,\\mathrm{mas}$、$0.68^{+0.12}_{-0.17}\\,\\mathrm{mas}$、$<0.94\\,\\mathrm{mas}$，最后一项为95%上限。单前向激波尺寸拟合给出ISM环境的 $\\log[(E_{\\mathrm{jet}}/n)/(\\mathrm{erg\\,cm^3})]=54.2^{+0.4}_{-0.5}$，以及风环境的 $\\log[(E_{\\mathrm{jet}}/A_\\star)/\\mathrm{erg}]=51.7^{+0.4}_{-0.2}$，均为中位数及 $1\\sigma$ 可信区间。能够用VegasAfterglow复现的文献模型均未能成功解释VLBI尺寸演化；这一结论不覆盖未能复现或未能测试的模型。",
-          "bluf_problem": "GRB 221009A的射电余辉能否由标准前向激波喷流模型同时解释其光变、光谱和角尺寸演化？论文利用尺寸这一独立动力学观测量，检验仅凭光变与能谱存在简并的喷流结构、环境密度及辐射机制解释。"
-        }
-      ]
-    },
-    {
       "event_id": "GRB 251222A",
       "event_type": "GRB",
       "tags": [
         "GRB"
       ],
-      "heat_score": 4.3,
+      "heat_score": 4.2,
       "paper_count": 1,
       "headline": "GRB 251222A 展现了具有多脉冲的提示辐射、随后的早期软...",
       "narrative": "GRB 251222A 是近期重点瞬变天体事件，监测日期 2026-10-15，共聚合 1 篇研读文献。核心突破研判：通过多波段（EP/WXT, FXT, Fermi/GBM, Swift/XRT 及 Mephisto 光学/近红外）数据联合贝叶斯拟合，确定慢且宽壳层翼部与合并后核心的洛伦兹因子分别为 $\\Gamma_{1,w} = 228^{+48}_{-48}$ 和 $\\Gamma_{c} = 293^{+36}_{-45}$，第二壳层 $\\Gamma_{2} = 336^{+42}_{-52}$；介质密度 $\\log(n/\\mathrm{cm^{-3}}) = 0.19_{-0.41}^{+0.43}$。非弹性碰撞前核心区总动能为 $E_{k,1,c}+E_{k,2} = (5.5^{+5.4}_{-3.1})\\times 10^{54}\\ \\mathrm{erg}$，合并后核心动能 $E_{k,c} = (5.4^{+5.4}_{-3.1})\\times 10^{54}\\ \\mathrm{erg}$，耗散能量 $E_{\\rm diss} = (1.6^{+2.1}_{-0.9})\\times 10^{52}\\ \\mathrm{erg}$，动力学耗散效率为 $\\eta_{\\rm diss} \\equiv \\frac{E_{\\rm diss}}{E_{k,1,c}+E_{k,2}} = 0.37^{+0.07}_{-0.14}\\%$。有限能段（0.5–4 keV）X 射线效率中值约为 $\\eta_{X} = \\frac{E_{\\rm flare,iso}}{E_{\\rm flare,iso}+E_{k,c}} \\approx 0.06\\%\\text{--}0.09\\%$，X 射线耀斑辐射能量占动力学耗散能量的 $18\\%\\text{--}30\\%$。",
@@ -1445,7 +1711,7 @@
       "tags": [
         "SN"
       ],
-      "heat_score": 2.9,
+      "heat_score": 2.8,
       "paper_count": 1,
       "headline": "针对 Rubin 天文台每晚产生海量暂现源警报而无法逐一进行射电...",
       "narrative": "SN2024ABFO 是近期重点瞬变天体事件，监测日期 2026-10-11，共聚合 1 篇研读文献。核心突破研判：项目通过单次 $3\\,\\mathrm{h}$ 积分在 $943\\,\\mathrm{MHz}$ 实现了约 $\\sim 60\\,\\mu\\mathrm{Jy}$ 的灵敏度和约 $10\\,\\mathrm{d}$（实际约 $12\\,\\mathrm{d}$）的采样间隔。对超新星 SN2024abfo 的射电建模显示：有效自由-自由吸收（$\\propto \\nu^{-2.1}$）光深在约 $350\\,\\mathrm{d}$ 处达到峰值 $\\tau_{\\rm ff}(1\\,\\mathrm{GHz})\\simeq 0.9$；仅由射电数据限制的抛射物质量 90% 置信区间为 $1.4$–$9.1\\,M_{\\odot}$；最大后验解下激波跨越半径 $0.86\\times 10^{16}$ 至 $3.62\\times 10^{16}\\,\\mathrm{cm}$；在恒定风速 $v_{\\rm wind}=20\\,\\mathrm{km\\,s^{-1}}$ 假设下，对应爆炸前约 140–570 yr 的抛射物质，在 350 yr 附近质量损失率达 $\\dot{M}=4\\pi r^2\\rho v_{\\rm w}\\approx 2.5\\times 10^{-5}\\,M_{\\odot}\\,\\mathrm{yr^{-1}}$，积分 CSM 质量为 $0.0084\\,M_{\\odot}$（90% 区间 $0.0071$–$0.0113\\,M_{\\odot}$），表明前身星存在变化的暴前外流。",
@@ -1477,7 +1743,7 @@
       "event_id": "GW190425",
       "event_type": "GW",
       "tags": [],
-      "heat_score": 2.9,
+      "heat_score": 2.8,
       "paper_count": 1,
       "headline": "如何建立一个包含有限温度、超子自由度、中微子囚禁以及刚性/较差自...",
       "narrative": "GW190425 是近期重点瞬变天体事件，监测日期 2026-10-11，共聚合 1 篇研读文献。核心突破研判：1. 在零温非旋转（$T=0$）条件下，纯核子（N）和常数耦合超子（Y）模型最大引力质量分别为 $M_G = 2.484\\ M_\\odot$（重子质量 $M_B = 2.996\\ M_\\odot, R = 11.997\\ \\mathrm{km}$）和 $M_G = 2.086\\ M_\\odot$（$M_B = 2.417\\ M_\\odot, R = 12.421\\ \\mathrm{km}$），而密度依赖超子耦合（Y DD）最大质量仅 $1.958\\ M_\\odot$；$1.4\\ M_\\odot$ 中子星半径分别为 $13.13\\ \\mathrm{km}$ 和 $13.12\\ \\mathrm{km}$，潮汐形变 $\\Lambda_{1.4}$ 为 $653$ 和 $651$。2. 中微子囚禁效应会降低给定重子数密度下的奇异数（超子）丰度。3. 应用于引力波事件表明，GW190425（$M_G \\sim 3.50\\ M_\\odot$）在所有模型下均发生直接坍缩（prompt collapse），而 GW170817（$M_G \\sim 2.74\\ M_\\odot$）可形成长寿命残骸。",
@@ -1509,7 +1775,7 @@
       "tags": [
         "SN"
       ],
-      "heat_score": 2.7,
+      "heat_score": 2.6,
       "paper_count": 1,
       "headline": "EP260321a 与 Ic-BL SN 2026gzf 关联",
       "narrative": "SN 2026GZF 是近期重点瞬变天体事件，监测日期 2026-10-05，共聚合 1 篇研读文献（含 1 篇必读突破）。核心突破研判：作者报告扩展 CSM 模型能够同时再现 X 射线光变的上升、下降及总体温度演化。后验中位数及 68% 区间为 $E_{\\rm ej}=6.3^{+1.2}_{-0.8}\\times10^{51}\\,{\\rm erg}$、$R_{\\rm in}=159.7^{+45.0}_{-22.5}R_\\odot$、$R_{\\rm out}=612.2^{+46.9}_{-35.2}R_\\odot$、$\\log_{10}(M_{\\rm csm}/M_\\odot)=-3.3^{+0.3}_{-0.2}$，总光深为 $\\tau=34^{+17}_{-10}$。这些后验统计量不同于作者从 200 组抽样参数中选出的最佳拟合：$E_{\\rm ej}=7.0\\times10^{51}\\,{\\rm erg}$、$R_{\\rm in}=141R_\\odot$、$R_{\\rm out}=580R_\\odot$、$\\log_{10}(M_{\\rm csm}/M_\\odot)=-3.4$，对应 $\\tau\\approx30$。破越发生于未激波层光深 $\\tau\\sim c/v_{\\rm s}$ 时；较早注入的光子扩散较慢，较晚注入的光子较快逃逸，使逃逸峰之间的间隔相对注入间隔压缩。拟合表现与可信区间仅依据正文报告，未独立检查图像或原始数据。",
@@ -1539,7 +1805,7 @@
       "tags": [
         "GRB"
       ],
-      "heat_score": 2.4,
+      "heat_score": 2.3,
       "paper_count": 1,
       "headline": "双阶段超长GRB能否由蓝超巨星包层持续或间歇回落吸积供能？",
       "narrative": "GRB 220627A 是近期重点瞬变天体事件，监测日期 2026-10-04，共聚合 1 篇研读文献（含 1 篇必读突破）。核心突破研判：GRB 220627A具有$T_{90}\\geq10^3\\,\\mathrm{s}$，在$z=3.084$下总各向同性能量为$E_{\\rm iso}=(1.56\\pm0.14)\\times10^{54}\\,\\mathrm{erg}$，两亮阶段之间静默约600 s。两阶段积分CPL低能指数分别为$\\alpha_{\\rm I}=-0.70\\pm0.03$和$\\alpha_{\\rm II}=-1.29\\pm0.04$，作者解释为同步辐射由慢冷却向快冷却演化，但这一解释不能唯一确定前身星。显著GeV辐射仅见于第一阶段，最高能光子为15.7 GeV，在$T_0+175\\,\\mathrm{s}$到达；作者倾向内部耗散解释。部分耀发时间窗存在候选热成分，$kT\\simeq22.4{-}31.2\\,\\mathrm{keV}$，但显著性不足以作为确定证据。综合高能量、静默间隔和热/茧线索，作者倾向BSG坍缩星，而非宣称排他性识别。",
@@ -1569,7 +1835,7 @@
       "tags": [
         "GRB"
       ],
-      "heat_score": 1.8,
+      "heat_score": 1.7,
       "paper_count": 1,
       "headline": "软X射线闪GRB 250419A的软瞬时辐射与非标准余辉究竟源于...",
       "narrative": "GRB 250419A 是近期重点瞬变天体事件，监测日期 2026-10-01，共聚合 1 篇研读文献（含 1 篇必读突破）。核心突破研判：GRB 250419A的多波段余辉可由动能约10^49–10^50 erg、初始洛伦兹因子Γ₀≳100的相对论喷流合理拟合，不支持低Γ₀脏火球解释。光学约2天前的浅衰减及约10.6天的射电谱演化偏离简单前向激波预期。射电分析给出Γ₀≳14的限制，在额外时间演化假设下可加强至Γ₀≳143。允许能量注入或偏轴结构化喷流的模型能够解释大部分数据，但不能区分略偏轴喷流与具有其他能量注入来源的轴上喷流。",
@@ -1620,7 +1886,7 @@
       "event_id": "AT2018HYZ",
       "event_type": "AT",
       "tags": [],
-      "heat_score": 1.8,
+      "heat_score": 1.7,
       "paper_count": 1,
       "headline": "检验不同观测角度下的延迟喷流模型能否解释 AT2018hyz 的...",
       "narrative": "AT2018HYZ 是近期重点瞬变天体事件，监测日期 2026-10-01，共聚合 1 篇研读文献（含 1 篇必读突破）。核心突破研判：延迟喷流启动与离轴观测相结合可以解释 AT2018hyz 的射电观测；观测角小于 30° 的模型无法得到物理且收敛的解，而约 30°–90° 的观测角与潮汐瓦解后约 900–1000 天的喷流启动时间能够成功解释观测。",
@@ -1639,36 +1905,6 @@
           "priority": "must_read",
           "bluf_result": "延迟喷流启动与离轴观测相结合可以解释 AT2018hyz 的射电观测；观测角小于 30° 的模型无法得到物理且收敛的解，而约 30°–90° 的观测角与潮汐瓦解后约 900–1000 天的喷流启动时间能够成功解释观测。",
           "bluf_problem": "检验不同观测角度下的延迟喷流模型能否解释 AT2018hyz 的射电观测，尤其是观测者位于喷流轴 30° 以内时是否可行。"
-        }
-      ]
-    },
-    {
-      "event_id": "FRB 20200428",
-      "event_type": "FRB",
-      "tags": [
-        "FRB",
-        "MAG"
-      ],
-      "heat_score": 1.5,
-      "paper_count": 1,
-      "headline": "磁星高能爆发如何通过极区电子–正电子火球及相对论外流",
-      "narrative": "FRB 20200428 是近期重点瞬变天体事件，监测日期 2026-09-29，共聚合 1 篇研读文献（含 1 篇必读突破）。核心突破研判：模型中，X射线加速极区对外流，侧向或逆向进入的约10 kHz种子波可通过相对论体运动及受激康普顿散射升至GHz。采用PIC启发的非线性饱和处方，部分散射支得到L_FRB^iso≈Θ^(1/2)L_kin^iso。保守火球对密度不足以解释FRB 20200428，需要额外对加载；在接近局部冻结密度上限、取Θ=10^-2等条件下，估计光度可达约1.1×10^45 erg/s。小角度加载区在理想几何条件下给出光度正比于相对带宽平方，三个重复源的分布仅被认为与之定性相符。上述光度能力依赖对供应、温度和加速阶段处理，不能视为自洽实现或观测确认。",
-      "first_seen": "2026-09-29",
-      "last_updated": "2026-09-29",
-      "papers": [
-        {
-          "arxiv_id": "2609.36114",
-          "revision": 1,
-          "title": "Fast Radio Bursts from Induced Upscattering. I. Magnetar Polar Fireballs",
-          "authors": [
-            "Rei Nishiura",
-            "Kunihito Ioka",
-            "Bing Zhang"
-          ],
-          "date": "2026-09-29",
-          "priority": "must_read",
-          "bluf_result": "模型中，X射线加速极区对外流，侧向或逆向进入的约10 kHz种子波可通过相对论体运动及受激康普顿散射升至GHz。采用PIC启发的非线性饱和处方，部分散射支得到L_FRB^iso≈Θ^(1/2)L_kin^iso。保守火球对密度不足以解释FRB 20200428，需要额外对加载；在接近局部冻结密度上限、取Θ=10^-2等条件下，估计光度可达约1.1×10^45 erg/s。小角度加载区在理想几何条件下给出光度正比于相对带宽平方，三个重复源的分布仅被认为与之定性相符。上述光度能力依赖对供应、温度和加速阶段处理，不能视为自洽实现或观测确认。",
-          "bluf_problem": "磁星高能爆发如何通过极区电子–正电子火球及相对论外流，产生FRB所需的相干射电辐射；受激康普顿上散射在何种密度、温度、种子波和几何条件下能够增长、饱和并达到观测光度，以及其可观测带宽和偏振性质是什么。"
         }
       ]
     },
@@ -1712,6 +1948,36 @@
           "priority": "skip",
           "bluf_result": "推断得到的 220×220 模振幅耦合系数与数值相对论拟合及二阶微扰理论的预测一致，所有比较的偏差均不超过 1.3 σ；当前数据无法区分这些随自旋变化的预测。",
           "bluf_problem": "能否从 GW250114 的黑洞振铃数据中测量 220×220 二阶准正常模的振幅耦合系数，并检验相应的广义相对论预测。"
+        }
+      ]
+    },
+    {
+      "event_id": "FRB 20200428",
+      "event_type": "FRB",
+      "tags": [
+        "FRB",
+        "MAG"
+      ],
+      "heat_score": 1.4,
+      "paper_count": 1,
+      "headline": "磁星高能爆发如何通过极区电子–正电子火球及相对论外流",
+      "narrative": "FRB 20200428 是近期重点瞬变天体事件，监测日期 2026-09-29，共聚合 1 篇研读文献（含 1 篇必读突破）。核心突破研判：模型中，X射线加速极区对外流，侧向或逆向进入的约10 kHz种子波可通过相对论体运动及受激康普顿散射升至GHz。采用PIC启发的非线性饱和处方，部分散射支得到L_FRB^iso≈Θ^(1/2)L_kin^iso。保守火球对密度不足以解释FRB 20200428，需要额外对加载；在接近局部冻结密度上限、取Θ=10^-2等条件下，估计光度可达约1.1×10^45 erg/s。小角度加载区在理想几何条件下给出光度正比于相对带宽平方，三个重复源的分布仅被认为与之定性相符。上述光度能力依赖对供应、温度和加速阶段处理，不能视为自洽实现或观测确认。",
+      "first_seen": "2026-09-29",
+      "last_updated": "2026-09-29",
+      "papers": [
+        {
+          "arxiv_id": "2609.36114",
+          "revision": 1,
+          "title": "Fast Radio Bursts from Induced Upscattering. I. Magnetar Polar Fireballs",
+          "authors": [
+            "Rei Nishiura",
+            "Kunihito Ioka",
+            "Bing Zhang"
+          ],
+          "date": "2026-09-29",
+          "priority": "must_read",
+          "bluf_result": "模型中，X射线加速极区对外流，侧向或逆向进入的约10 kHz种子波可通过相对论体运动及受激康普顿散射升至GHz。采用PIC启发的非线性饱和处方，部分散射支得到L_FRB^iso≈Θ^(1/2)L_kin^iso。保守火球对密度不足以解释FRB 20200428，需要额外对加载；在接近局部冻结密度上限、取Θ=10^-2等条件下，估计光度可达约1.1×10^45 erg/s。小角度加载区在理想几何条件下给出光度正比于相对带宽平方，三个重复源的分布仅被认为与之定性相符。上述光度能力依赖对供应、温度和加速阶段处理，不能视为自洽实现或观测确认。",
+          "bluf_problem": "磁星高能爆发如何通过极区电子–正电子火球及相对论外流，产生FRB所需的相干射电辐射；受激康普顿上散射在何种密度、温度、种子波和几何条件下能够增长、饱和并达到观测光度，以及其可观测带宽和偏振性质是什么。"
         }
       ]
     },
@@ -1795,7 +2061,7 @@
       "event_id": "SN 2024CJB",
       "event_type": "SN",
       "tags": [],
-      "heat_score": 1.1,
+      "heat_score": 1,
       "paper_count": 1,
       "headline": "ILMT 天顶巡天发现的候选时域光学暂现源需要及时的后随光谱观测...",
       "narrative": "SN 2024CJB 是近期重点瞬变天体事件，监测日期 2026-10-12，共聚合 1 篇研读文献。核心突破研判：通过 SNooPy 对多波段光变曲线拟合得到：SN 2024cjb 拉伸参数 $st = 0.768 \\pm 0.041$，$B$ 波段极大元历为 $\\mathrm{MJD} = 60364.28 \\pm 0.38$，$g'$ 与 $r'$ 峰值星等分别为 $18.30 \\pm 0.09$ mag 和 $18.47 \\pm 0.04$ mag，15 天衰减率分别为 $\\Delta m_{15}(g') = 1.28 \\pm 0.08$ mag 与 $\\Delta m_{15}(r') = 0.68 \\pm 0.02$ mag；SN 2025dov 拟合得到 $st = 0.992 \\pm 0.103$，$r'$ 波段峰值为 $18.20 \\pm 0.08$ mag，$\\Delta m_{15}(r) = 0.659 \\pm 0.043$ mag，光谱中均展示典型的 Si II 6150 Å 吸收特征。",
@@ -1832,7 +2098,7 @@
       "event_id": "SN 2025DOV",
       "event_type": "SN",
       "tags": [],
-      "heat_score": 1.1,
+      "heat_score": 1,
       "paper_count": 1,
       "headline": "ILMT 天顶巡天发现的候选时域光学暂现源需要及时的后随光谱观测...",
       "narrative": "SN 2025DOV 是近期重点瞬变天体事件，监测日期 2026-10-12，共聚合 1 篇研读文献。核心突破研判：通过 SNooPy 对多波段光变曲线拟合得到：SN 2024cjb 拉伸参数 $st = 0.768 \\pm 0.041$，$B$ 波段极大元历为 $\\mathrm{MJD} = 60364.28 \\pm 0.38$，$g'$ 与 $r'$ 峰值星等分别为 $18.30 \\pm 0.09$ mag 和 $18.47 \\pm 0.04$ mag，15 天衰减率分别为 $\\Delta m_{15}(g') = 1.28 \\pm 0.08$ mag 与 $\\Delta m_{15}(r') = 0.68 \\pm 0.02$ mag；SN 2025dov 拟合得到 $st = 0.992 \\pm 0.103$，$r'$ 波段峰值为 $18.20 \\pm 0.08$ mag，$\\Delta m_{15}(r) = 0.659 \\pm 0.043$ mag，光谱中均展示典型的 Si II 6150 Å 吸收特征。",
@@ -1869,7 +2135,7 @@
       "event_id": "SN 2023AF",
       "event_type": "SN",
       "tags": [],
-      "heat_score": 1.1,
+      "heat_score": 1,
       "paper_count": 1,
       "headline": "ILMT 天顶巡天发现的候选时域光学暂现源需要及时的后随光谱观测...",
       "narrative": "SN 2023AF 是近期重点瞬变天体事件，监测日期 2026-10-12，共聚合 1 篇研读文献。核心突破研判：通过 SNooPy 对多波段光变曲线拟合得到：SN 2024cjb 拉伸参数 $st = 0.768 \\pm 0.041$，$B$ 波段极大元历为 $\\mathrm{MJD} = 60364.28 \\pm 0.38$，$g'$ 与 $r'$ 峰值星等分别为 $18.30 \\pm 0.09$ mag 和 $18.47 \\pm 0.04$ mag，15 天衰减率分别为 $\\Delta m_{15}(g') = 1.28 \\pm 0.08$ mag 与 $\\Delta m_{15}(r') = 0.68 \\pm 0.02$ mag；SN 2025dov 拟合得到 $st = 0.992 \\pm 0.103$，$r'$ 波段峰值为 $18.20 \\pm 0.08$ mag，$\\Delta m_{15}(r) = 0.659 \\pm 0.043$ mag，光谱中均展示典型的 Si II 6150 Å 吸收特征。",
@@ -1899,41 +2165,6 @@
           "priority": "skip",
           "bluf_result": "通过 SNooPy 对多波段光变曲线拟合得到：SN 2024cjb 拉伸参数 $st = 0.768 \\pm 0.041$，$B$ 波段极大元历为 $\\mathrm{MJD} = 60364.28 \\pm 0.38$，$g'$ 与 $r'$ 峰值星等分别为 $18.30 \\pm 0.09$ mag 和 $18.47 \\pm 0.04$ mag，15 天衰减率分别为 $\\Delta m_{15}(g') = 1.28 \\pm 0.08$ mag 与 $\\Delta m_{15}(r') = 0.68 \\pm 0.02$ mag；SN 2025dov 拟合得到 $st = 0.992 \\pm 0.103$，$r'$ 波段峰值为 $18.20 \\pm 0.08$ mag，$\\Delta m_{15}(r) = 0.659 \\pm 0.043$ mag，光谱中均展示典型的 Si II 6150 Å 吸收特征。",
           "bluf_problem": "ILMT 天顶巡天发现的候选时域光学暂现源需要及时的后随光谱观测来确定天体类型与物理性质。"
-        }
-      ]
-    },
-    {
-      "event_id": "AT 2026ABCK",
-      "event_type": "AT",
-      "tags": [],
-      "heat_score": 1,
-      "paper_count": 1,
-      "headline": "论文针对高红移超新星样本稀少、尤其少有事件在爆发后数日内被观测的问题",
-      "narrative": "AT 2026ABCK 是近期重点瞬变天体事件，监测日期 2026-09-30，共聚合 1 篇研读文献。核心突破研判：报告了非透镜场中 z=5.017 的瞬变 AT 2026abck。其黑体拟合温度约为 1.7×10^4 K、半径约 7×10^14 cm、光度约 3×10^43 erg s−1；位置和光谱能量分布支持核心塌缩超新星起源。作者估计观测时距爆发约 4–10 个静止系日，并认为冲击冷却或周星物质相互作用可能提供额外早期能量。超新星类型尚未被光度数据确定。",
-      "first_seen": "2026-09-30",
-      "last_updated": "2026-09-30",
-      "papers": [
-        {
-          "arxiv_id": "2609.38373",
-          "revision": 1,
-          "title": "NEXUS: Discovery of a Luminous Young Transient at $z=5$",
-          "authors": [
-            "Ming-Yang Zhuang",
-            "Yue Shen",
-            "Lei Hu",
-            "Justin D. R. Pierel",
-            "Zhiwei Pan",
-            "Zachary Stone",
-            "Adam J. Burgasser",
-            "Xiaohui Fan",
-            "Jenny E. Greene",
-            "Junyao Li",
-            "Feige Wang"
-          ],
-          "date": "2026-09-30",
-          "priority": "worth_knowing",
-          "bluf_result": "报告了非透镜场中 z=5.017 的瞬变 AT 2026abck。其黑体拟合温度约为 1.7×10^4 K、半径约 7×10^14 cm、光度约 3×10^43 erg s−1；位置和光谱能量分布支持核心塌缩超新星起源。作者估计观测时距爆发约 4–10 个静止系日，并认为冲击冷却或周星物质相互作用可能提供额外早期能量。超新星类型尚未被光度数据确定。",
-          "bluf_problem": "论文针对高红移超新星样本稀少、尤其少有事件在爆发后数日内被观测的问题，报告并分析一个 z≈5 的年轻瞬变，以约束其早期性质、可能起源及宿主环境。"
         }
       ]
     },
@@ -2028,6 +2259,41 @@
       ]
     },
     {
+      "event_id": "AT 2026ABCK",
+      "event_type": "AT",
+      "tags": [],
+      "heat_score": 0.9,
+      "paper_count": 1,
+      "headline": "论文针对高红移超新星样本稀少、尤其少有事件在爆发后数日内被观测的问题",
+      "narrative": "AT 2026ABCK 是近期重点瞬变天体事件，监测日期 2026-09-30，共聚合 1 篇研读文献。核心突破研判：报告了非透镜场中 z=5.017 的瞬变 AT 2026abck。其黑体拟合温度约为 1.7×10^4 K、半径约 7×10^14 cm、光度约 3×10^43 erg s−1；位置和光谱能量分布支持核心塌缩超新星起源。作者估计观测时距爆发约 4–10 个静止系日，并认为冲击冷却或周星物质相互作用可能提供额外早期能量。超新星类型尚未被光度数据确定。",
+      "first_seen": "2026-09-30",
+      "last_updated": "2026-09-30",
+      "papers": [
+        {
+          "arxiv_id": "2609.38373",
+          "revision": 1,
+          "title": "NEXUS: Discovery of a Luminous Young Transient at $z=5$",
+          "authors": [
+            "Ming-Yang Zhuang",
+            "Yue Shen",
+            "Lei Hu",
+            "Justin D. R. Pierel",
+            "Zhiwei Pan",
+            "Zachary Stone",
+            "Adam J. Burgasser",
+            "Xiaohui Fan",
+            "Jenny E. Greene",
+            "Junyao Li",
+            "Feige Wang"
+          ],
+          "date": "2026-09-30",
+          "priority": "worth_knowing",
+          "bluf_result": "报告了非透镜场中 z=5.017 的瞬变 AT 2026abck。其黑体拟合温度约为 1.7×10^4 K、半径约 7×10^14 cm、光度约 3×10^43 erg s−1；位置和光谱能量分布支持核心塌缩超新星起源。作者估计观测时距爆发约 4–10 个静止系日，并认为冲击冷却或周星物质相互作用可能提供额外早期能量。超新星类型尚未被光度数据确定。",
+          "bluf_problem": "论文针对高红移超新星样本稀少、尤其少有事件在爆发后数日内被观测的问题，报告并分析一个 z≈5 的年轻瞬变，以约束其早期性质、可能起源及宿主环境。"
+        }
+      ]
+    },
+    {
       "event_id": "GRB 060218",
       "event_type": "GRB",
       "tags": [
@@ -2082,126 +2348,6 @@
           "priority": "must_read",
           "bluf_result": "模型将早期软X射线黑体主要归于喷流驱动的极向抛射物激波破越，将首个光学峰主要归于风驱动的激波破越，较晚宽峰主要归于持续磁星加热。喷流可拟合早期X射线黑体通量及约0.17 keV的温度；固定喷流参数后，风分量主要解释约10⁴秒以后的UV/光学演化。基线模型仍低估早期UV/光学发射，晚期衰减也过快。后处理测试表明，非普朗克低能谱可部分缓解早期光学不足，但尚不能给出自洽定量预测；所测试的速度依赖颜色修正也不能解释宽能段非热X射线。",
           "bluf_problem": "同一新生磁星向极向喷流和准各向同性风注入能量，能否分别解释GRB 060218的软X射线热成分及SN 2006aj的双峰UV/光学演化，并约束两路外流所作用的有效抛射物与引擎参数？"
-        }
-      ]
-    },
-    {
-      "event_id": "GRB 111209A",
-      "event_type": "GRB",
-      "tags": [
-        "GRB",
-        "SN"
-      ],
-      "heat_score": 0.7,
-      "paper_count": 1,
-      "headline": "论文试图解释超长 GRB 为何能够在爆发后数十天仍维持中心引擎活动",
-      "narrative": "GRB 111209A 是近期重点瞬变天体事件，监测日期 2026-09-21，共聚合 1 篇研读文献（含 1 篇必读突破）。核心突破研判：GRB 220706A 的 X 射线耀发持续至触发后约 51 天，对应源静止系约 27 天，是目前观测到的 GRB 中最晚的中心引擎活动。该事件还伴随一个经消光修正后峰值绝对星等 $M_r \\leq -20.25$ 的高光度超新星，性质接近超长 GRB 111209A 所伴随的 SN 2011kl，并可能属于超亮超新星。",
-      "first_seen": "2026-09-21",
-      "last_updated": "2026-09-21",
-      "papers": [
-        {
-          "arxiv_id": "2609.22426",
-          "revision": 1,
-          "title": "GRB 220706A: a gamma-ray burst with a month-long engine and a luminous supernova",
-          "authors": [
-            "Benjamin P. Gompertz",
-            "Nusrin Habeeb",
-            "Dheeraj R. Pasham",
-            "Antonio de Ugarte Postigo",
-            "Daniele B. Malesani",
-            "Phil A. Evans",
-            "Kim L. Page",
-            "Ben Rayson",
-            "J. Feliciano Agui Fernandez",
-            "Michael Bremer",
-            "Andrew J. Levan",
-            "Genevieve Schroeder",
-            "Nial R. Tanvir",
-            "Christina C. Thone",
-            "Eric Burns",
-            "Valerio D'Elia",
-            "Massimiliano De Pasquale",
-            "Dimple",
-            "Dieter Hartmann",
-            "Pall Jakobsson",
-            "Sylvio Klose",
-            "Antonio Martin-Carrillo",
-            "Matt Nicholl",
-            "Ana M. Nicuesa Guelbenzu",
-            "David O'Neill",
-            "Giovanna Pugliese",
-            "Arne Rau",
-            "Andrea Rossi",
-            "Jesper Sollerman",
-            "Rhaana Starling",
-            "Darach Watson",
-            "Isabelle Worssam",
-            "Makenzie E. Wortley"
-          ],
-          "date": "2026-09-21",
-          "priority": "must_read",
-          "bluf_result": "GRB 220706A 的 X 射线耀发持续至触发后约 51 天，对应源静止系约 27 天，是目前观测到的 GRB 中最晚的中心引擎活动。该事件还伴随一个经消光修正后峰值绝对星等 $M_r \\leq -20.25$ 的高光度超新星，性质接近超长 GRB 111209A 所伴随的 SN 2011kl，并可能属于超亮超新星。",
-          "bluf_problem": "论文试图解释超长 GRB 为何能够在爆发后数十天仍维持中心引擎活动，以及这种极晚期供能是否要求不同于标准长 GRB 的前身星或引擎机制。与此同时，作者检验该事件的光学余辉中是否存在一个能量极高的超新星，并评估其与超长 GRB 起源的联系。"
-        }
-      ]
-    },
-    {
-      "event_id": "SN 2011KL",
-      "event_type": "SN",
-      "tags": [
-        "GRB",
-        "SN"
-      ],
-      "heat_score": 0.7,
-      "paper_count": 1,
-      "headline": "论文试图解释超长 GRB 为何能够在爆发后数十天仍维持中心引擎活动",
-      "narrative": "SN 2011KL 是近期重点瞬变天体事件，监测日期 2026-09-21，共聚合 1 篇研读文献（含 1 篇必读突破）。核心突破研判：GRB 220706A 的 X 射线耀发持续至触发后约 51 天，对应源静止系约 27 天，是目前观测到的 GRB 中最晚的中心引擎活动。该事件还伴随一个经消光修正后峰值绝对星等 $M_r \\leq -20.25$ 的高光度超新星，性质接近超长 GRB 111209A 所伴随的 SN 2011kl，并可能属于超亮超新星。",
-      "first_seen": "2026-09-21",
-      "last_updated": "2026-09-21",
-      "papers": [
-        {
-          "arxiv_id": "2609.22426",
-          "revision": 1,
-          "title": "GRB 220706A: a gamma-ray burst with a month-long engine and a luminous supernova",
-          "authors": [
-            "Benjamin P. Gompertz",
-            "Nusrin Habeeb",
-            "Dheeraj R. Pasham",
-            "Antonio de Ugarte Postigo",
-            "Daniele B. Malesani",
-            "Phil A. Evans",
-            "Kim L. Page",
-            "Ben Rayson",
-            "J. Feliciano Agui Fernandez",
-            "Michael Bremer",
-            "Andrew J. Levan",
-            "Genevieve Schroeder",
-            "Nial R. Tanvir",
-            "Christina C. Thone",
-            "Eric Burns",
-            "Valerio D'Elia",
-            "Massimiliano De Pasquale",
-            "Dimple",
-            "Dieter Hartmann",
-            "Pall Jakobsson",
-            "Sylvio Klose",
-            "Antonio Martin-Carrillo",
-            "Matt Nicholl",
-            "Ana M. Nicuesa Guelbenzu",
-            "David O'Neill",
-            "Giovanna Pugliese",
-            "Arne Rau",
-            "Andrea Rossi",
-            "Jesper Sollerman",
-            "Rhaana Starling",
-            "Darach Watson",
-            "Isabelle Worssam",
-            "Makenzie E. Wortley"
-          ],
-          "date": "2026-09-21",
-          "priority": "must_read",
-          "bluf_result": "GRB 220706A 的 X 射线耀发持续至触发后约 51 天，对应源静止系约 27 天，是目前观测到的 GRB 中最晚的中心引擎活动。该事件还伴随一个经消光修正后峰值绝对星等 $M_r \\leq -20.25$ 的高光度超新星，性质接近超长 GRB 111209A 所伴随的 SN 2011kl，并可能属于超亮超新星。",
-          "bluf_problem": "论文试图解释超长 GRB 为何能够在爆发后数十天仍维持中心引擎活动，以及这种极晚期供能是否要求不同于标准长 GRB 的前身星或引擎机制。与此同时，作者检验该事件的光学余辉中是否存在一个能量极高的超新星，并评估其与超长 GRB 起源的联系。"
         }
       ]
     },
@@ -2598,6 +2744,126 @@
           "priority": "must_read",
           "bluf_result": "SN 2026dix表现为从早期含氢IIb特征向后期氢线消失、氦线增强的Ib特征演化。观测、半解析光变曲线、CMFGEN模型、前身星SED和BPASS轨迹共同指向一个相互作用双星系统：温暖明亮的超巨星主星伴随较暗、较低质量的热矮星。前身主星有效温度约为6750–7750 K，光度log(Lbol/L⊙)约为4.9–5.3。",
           "bluf_problem": "研究SN 2026dix在IIb/Ib连续分类中的位置，并约束其爆炸参数、前身星性质及双星演化起源。"
+        }
+      ]
+    },
+    {
+      "event_id": "GRB 111209A",
+      "event_type": "GRB",
+      "tags": [
+        "GRB",
+        "SN"
+      ],
+      "heat_score": 0.6,
+      "paper_count": 1,
+      "headline": "论文试图解释超长 GRB 为何能够在爆发后数十天仍维持中心引擎活动",
+      "narrative": "GRB 111209A 是近期重点瞬变天体事件，监测日期 2026-09-21，共聚合 1 篇研读文献（含 1 篇必读突破）。核心突破研判：GRB 220706A 的 X 射线耀发持续至触发后约 51 天，对应源静止系约 27 天，是目前观测到的 GRB 中最晚的中心引擎活动。该事件还伴随一个经消光修正后峰值绝对星等 $M_r \\leq -20.25$ 的高光度超新星，性质接近超长 GRB 111209A 所伴随的 SN 2011kl，并可能属于超亮超新星。",
+      "first_seen": "2026-09-21",
+      "last_updated": "2026-09-21",
+      "papers": [
+        {
+          "arxiv_id": "2609.22426",
+          "revision": 1,
+          "title": "GRB 220706A: a gamma-ray burst with a month-long engine and a luminous supernova",
+          "authors": [
+            "Benjamin P. Gompertz",
+            "Nusrin Habeeb",
+            "Dheeraj R. Pasham",
+            "Antonio de Ugarte Postigo",
+            "Daniele B. Malesani",
+            "Phil A. Evans",
+            "Kim L. Page",
+            "Ben Rayson",
+            "J. Feliciano Agui Fernandez",
+            "Michael Bremer",
+            "Andrew J. Levan",
+            "Genevieve Schroeder",
+            "Nial R. Tanvir",
+            "Christina C. Thone",
+            "Eric Burns",
+            "Valerio D'Elia",
+            "Massimiliano De Pasquale",
+            "Dimple",
+            "Dieter Hartmann",
+            "Pall Jakobsson",
+            "Sylvio Klose",
+            "Antonio Martin-Carrillo",
+            "Matt Nicholl",
+            "Ana M. Nicuesa Guelbenzu",
+            "David O'Neill",
+            "Giovanna Pugliese",
+            "Arne Rau",
+            "Andrea Rossi",
+            "Jesper Sollerman",
+            "Rhaana Starling",
+            "Darach Watson",
+            "Isabelle Worssam",
+            "Makenzie E. Wortley"
+          ],
+          "date": "2026-09-21",
+          "priority": "must_read",
+          "bluf_result": "GRB 220706A 的 X 射线耀发持续至触发后约 51 天，对应源静止系约 27 天，是目前观测到的 GRB 中最晚的中心引擎活动。该事件还伴随一个经消光修正后峰值绝对星等 $M_r \\leq -20.25$ 的高光度超新星，性质接近超长 GRB 111209A 所伴随的 SN 2011kl，并可能属于超亮超新星。",
+          "bluf_problem": "论文试图解释超长 GRB 为何能够在爆发后数十天仍维持中心引擎活动，以及这种极晚期供能是否要求不同于标准长 GRB 的前身星或引擎机制。与此同时，作者检验该事件的光学余辉中是否存在一个能量极高的超新星，并评估其与超长 GRB 起源的联系。"
+        }
+      ]
+    },
+    {
+      "event_id": "SN 2011KL",
+      "event_type": "SN",
+      "tags": [
+        "GRB",
+        "SN"
+      ],
+      "heat_score": 0.6,
+      "paper_count": 1,
+      "headline": "论文试图解释超长 GRB 为何能够在爆发后数十天仍维持中心引擎活动",
+      "narrative": "SN 2011KL 是近期重点瞬变天体事件，监测日期 2026-09-21，共聚合 1 篇研读文献（含 1 篇必读突破）。核心突破研判：GRB 220706A 的 X 射线耀发持续至触发后约 51 天，对应源静止系约 27 天，是目前观测到的 GRB 中最晚的中心引擎活动。该事件还伴随一个经消光修正后峰值绝对星等 $M_r \\leq -20.25$ 的高光度超新星，性质接近超长 GRB 111209A 所伴随的 SN 2011kl，并可能属于超亮超新星。",
+      "first_seen": "2026-09-21",
+      "last_updated": "2026-09-21",
+      "papers": [
+        {
+          "arxiv_id": "2609.22426",
+          "revision": 1,
+          "title": "GRB 220706A: a gamma-ray burst with a month-long engine and a luminous supernova",
+          "authors": [
+            "Benjamin P. Gompertz",
+            "Nusrin Habeeb",
+            "Dheeraj R. Pasham",
+            "Antonio de Ugarte Postigo",
+            "Daniele B. Malesani",
+            "Phil A. Evans",
+            "Kim L. Page",
+            "Ben Rayson",
+            "J. Feliciano Agui Fernandez",
+            "Michael Bremer",
+            "Andrew J. Levan",
+            "Genevieve Schroeder",
+            "Nial R. Tanvir",
+            "Christina C. Thone",
+            "Eric Burns",
+            "Valerio D'Elia",
+            "Massimiliano De Pasquale",
+            "Dimple",
+            "Dieter Hartmann",
+            "Pall Jakobsson",
+            "Sylvio Klose",
+            "Antonio Martin-Carrillo",
+            "Matt Nicholl",
+            "Ana M. Nicuesa Guelbenzu",
+            "David O'Neill",
+            "Giovanna Pugliese",
+            "Arne Rau",
+            "Andrea Rossi",
+            "Jesper Sollerman",
+            "Rhaana Starling",
+            "Darach Watson",
+            "Isabelle Worssam",
+            "Makenzie E. Wortley"
+          ],
+          "date": "2026-09-21",
+          "priority": "must_read",
+          "bluf_result": "GRB 220706A 的 X 射线耀发持续至触发后约 51 天，对应源静止系约 27 天，是目前观测到的 GRB 中最晚的中心引擎活动。该事件还伴随一个经消光修正后峰值绝对星等 $M_r \\leq -20.25$ 的高光度超新星，性质接近超长 GRB 111209A 所伴随的 SN 2011kl，并可能属于超亮超新星。",
+          "bluf_problem": "论文试图解释超长 GRB 为何能够在爆发后数十天仍维持中心引擎活动，以及这种极晚期供能是否要求不同于标准长 GRB 的前身星或引擎机制。与此同时，作者检验该事件的光学余辉中是否存在一个能量极高的超新星，并评估其与超长 GRB 起源的联系。"
         }
       ]
     },

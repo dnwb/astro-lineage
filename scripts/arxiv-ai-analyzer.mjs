@@ -1142,12 +1142,12 @@ function buildAnalysisRecord(entry, parsed, checked, { modelName, source } = {})
       research_progress: checked.research_progress,
       figures: Array.isArray(checked.figures) ? checked.figures : [],
       unresolved_checks: [
-        "未进行独立同行评审或逐项复算。",
-        ...(source ? ["源文件中的图像未进行视觉核对。"] : []),
+        "No independent peer review or line-by-line recalculation performed.",
+        ...(source ? ["Figures from source package have not undergone visual verification."] : []),
       ],
       potential_lineage: {
         status: "no_match",
-        reason: "自动筛选未建立论文与组内 Work 的科学关系。",
+        reason: "",
         candidates: [],
       },
       prerequisite_works: [],

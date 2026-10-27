@@ -254,7 +254,7 @@ const bjtDailyInfo = formatAnnouncementInBeijing(latestDate, radarWeekday);
                 <ul class="intel-summary-hl-list">
                   {weeklyStructured.items.slice(0, 3).map((item: any) => (
                     <li class="intel-summary-hl-item">
-                      <strong class="hl-topic-lead">{item.topic}：</strong>
+                      <strong class="hl-topic-lead">{item.topic}:</strong>
                       <span class="hl-body-text"><ReaderText text={item.body} /></span>
                     </li>
                   ))}
@@ -468,7 +468,7 @@ const bjtDailyInfo = formatAnnouncementInBeijing(latestDate, radarWeekday);
         font-size: 0.88rem;
         font-weight: 700;
         color: #1e3a8a;
-        white-space: nowrap;
+        word-break: break-word;
       }
       :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .hl-topic-lead {
         color: #93c5fd;

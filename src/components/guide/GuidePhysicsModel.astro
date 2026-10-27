@@ -28,6 +28,20 @@ const hasResult = Boolean(result && result.trim() !== "");
 const hasLimits = Array.isArray(limits) && limits.length > 0;
 
 const resultClaim = normalizeStructuredClaim(result, "Core Result");
+
+const BADGE_MAP: Record<string, string> = {
+  "数据拟合与模型对比": "Model vs Data Fitting",
+  "物理模型示意图": "Physical Model Schematic",
+  "核心物理演化图": "Physical Evolution",
+  "核心物理结果": "Physical Result",
+  "核心观测结果": "Observational Evidence",
+  "观测总体曲线/能谱": "Observational Light Curve / SED",
+};
+
+function resolveBadge(fig: any): string {
+  const raw = fig.category_badge || fig.categoryBadge || "";
+  return BADGE_MAP[raw] || raw || fig.label || "Scientific Figure";
+}
 ---
 
 <div class="guide-module-panel guide-physics-model">
@@ -61,7 +75,8 @@ const resultClaim = normalizeStructuredClaim(result, "Core Result");
           {figures.map((fig: any) => {
             const cleanPath = typeof fig.url === "string" ? fig.url.replace(/^\/arxiv-figures\//u, "") : "";
             const arxivFallback = cleanPath ? `https://arxiv.org/html/${cleanPath}` : fig.url;
-            const physicalCore = deriveFigurePhysicalCore(fig, { result, problem, assumptions, limits });
+            const physicalCore = deriveFigurePhysicalCore(fig, { result, problem, assumptions, limits }, { lang: "en" });
+            const badgeLabel = resolveBadge(fig);
             return (
               <figure class="paper-schematic-figure">
                 <a href={fig.url} target="_blank" rel="noopener noreferrer" title="Open full figure">
@@ -76,7 +91,7 @@ const resultClaim = normalizeStructuredClaim(result, "Core Result");
                   <figcaption>
                     <div class="fig-header-row">
                       <span class={`fig-badge fig-badge-${fig.category || "theoretical"}`}>
-                        {fig.category_badge || fig.label || "Scientific Figure"}
+                        {badgeLabel}
                       </span>
                       {physicalCore && (
                         <div class="fig-physical-core">

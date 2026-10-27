@@ -1,25 +1,72 @@
 {
   "schema_version": "astrolineage-arxiv-archive-manifest-v1",
-  "updated_at": "2026-10-27T02:03:01.143Z",
+  "updated_at": "2026-10-27T18:38:22.598Z",
   "total_weeks": 8,
-  "total_daily_editions": 35,
+  "total_daily_editions": 36,
   "latest_week_id": "2026-W44",
-  "latest_daily_date": "2026-10-25",
+  "latest_daily_date": "2026-10-26",
   "weeks": [
     {
       "week_id": "2026-W44",
-      "title": "每周学术脉络 · 2026-W44",
+      "title": "Weekly Scientific Lineage · 2026-W44",
       "date_range": "2026-10-26 ~ 2026-11-01",
       "has_weekly_summary": true,
-      "executive_summary": "本周高能爆发现象研究聚焦于从黑洞吸积盘核合成、极端相对论喷流激波辐射到致密星环境多信使特征的物理链条解析。\n\n- **致密天体中心引擎与核合成**：arXiv:2610.31758 论证了坍缩星吸积盘在任何磁通序列下均因强磁内流时标缩短而无法将电子丰度降低至 $Y_{\\rm e} \\le 0.25$，从而排除了坍缩星作为重 $r$-过程核素主工厂的可能性；arXiv:2610.32028 提出中性色超导 2SC 相中的快子色磁不稳定性可自发将原中子星弱种子磁场放大至磁星内部预期的 $10^{17}\\,{\\rm G}$；arXiv:2610.31754 发现倾斜磁阻滞盘（MAD）在低自旋或逆行时产生的非轴对称翘曲会导致常规自旋反演产生超过 $50\\%$ 的系统偏差。\n- **极端相对论喷流与伽马射线暴**：arXiv:2610.32861 基于极端高能暴 GRB 260924A 测定其总动能达 $7.0\\times 10^{55}\\,{\\rm erg}$，并结合成层介质（$n\\propto R^{-1.2}$）与厚壳层反向激波 SSC 过程自洽解释了突破标准前向激波同步辐射极限的 $43.31\\,{\\rm GeV}$ 光子及早期 LAT 辐射过剩；arXiv:2610.32786 构建了非平衡时变光致电离程序 TEPID，证实未来 NewAthena/X-IFU 能通过高分辨率 X 射线吸收谱将 GRB 周星介质密度测至 $0.05\\,{\\rm dex}$ 精度并有效甄别第一代星（Pop III）环境；arXiv:2610.32316 结合 SS 433 等微类星体的近玻姆加速特征，论证了低功率射电星系喷流剪切加速可自洽解释超高能宇宙线（UHECR）起源与能谱截断。\n- **爆发瞬变动力学与周星介质相互作用**：arXiv:2610.31755 将参宿四演化模型与辐射流体模拟结合，给出发光红新星早期激波破越峰值光度与伴星质量的非线性标度律 $L_{\\rm peak}\\propto M_{\\rm comp}^{0.93}$；arXiv:2610.31990 揭示致密天体 natal kick 诱导吸积盘在动力学时标内发生自碰撞激波耗散，并预测了峰值光度正比于 $V_{\\rm kick}^5$ 的瞬态电磁耀斑及大倾角盘的形成机制；arXiv:2610.32323 建立了中红外星云期光谱非局部热动平衡/局部热动平衡判定与谱线光学厚度自洽解析框架，精确提取出 Ic 型超新星 SN 2024aecx 的 $^{56}{\\rm Ni}$ 产额（$0.051\\,M_\\odot$）与低充满因子（$f_{\\rm FeHe}\\approx 0.06$）。\n- **千新星与致密吸积核环境**：arXiv:2610.32047 运用量热恒等式与凸优化对偶证明，因果非瞬时能量沉积与光子扩散的平滑效应使当前千新星晚期光变曲线对 $^{254}{\\rm Cf}$ 的独立统计探测能力上限仅为 $6\\%\\sim 9\\%$；arXiv:2610.32430 首次利用爱因斯坦探针（EP-FXT）探测到低红移小红点（LLRD）的软 X 射线叠加信号，测定其本征辐射仅轻度偏弱并被康普顿薄介质（$N_{\\rm H}\\sim 10^{22}\\sim 10^{23}\\,{\\rm cm^{-2}}$）遮蔽，排除了典型的未遮挡超爱丁顿吸积假说；arXiv:2610.32168 则在射电平山头源 4C+72.28 中检出周期为 $1026.7\\,{\\rm d}$ 的射电双频同相位微幅调制（$5.45\\%$），将其起源约束为几何进动导致的微弱多普勒集束变化。\n\n> 🎯 **筛选边界**：本周共分析 48 篇论文，坚决剔除了 35 篇泛星系大样本巡天、普通低能恒星演化及无动力学因果链条的纯唯象论文，重点保留并深度研读上述 12 篇紧密关联高能致密爆发动力学的核心工作。",
+      "executive_summary": "The research across high-energy astrophysics this week delineates an interconnected physical lineage linking compact remnant central engines, dynamic outflows, non-thermal dissipation shocks, and multi-messenger neutrino/cosmic-ray channels.\n- **Collapsar Nucleosynthesis & Engine Wind Physics**: arXiv:2610.31758 establishes a fundamental conflict between magnetic unbinding and electron capture timescales in collapsar NDAFs, proving that black hole accretion winds under long-GRB constraints cannot produce heavy $r$-process material ($Y_{\\rm e}^{\\min} > 0.28$).\n- **Relativistic Jets & Extreme Gamma-Ray Bursts**: arXiv:2610.32861 demonstrates that the record-breaking GRB 260924A ($E_{\\gamma,\\mathrm{iso}} \\simeq 9.79\\times 10^{54}\\,\\mathrm{erg}$) demands an early thick-shell reverse-shock SSC origin for its LAT flux excess at $t \\sim 70-165\\,\\mathrm{s}$ and propagates into a stratified medium with profile $n(R) \\propto R^{-1.2}$.\n- **Fast X-ray Transients & Compact Object Multi-Phase Ingestion**: arXiv:2610.34217 shows that the off-nuclear transient EP241021a in a dwarf starburst galaxy originates from an intermediate-mass black hole ($M_{\\rm BH} \\lesssim 10^4\\,M_\\odot$) or a stellar-mass micro-TDE with repeating partial disruptions, while arXiv:2610.34810 demonstrates that EP251129a exhibits a dual-plateau structure governed sequentially by a supramassive millisecond magnetar collapsing into a black hole with subsequent fallback accretion injection ($E_{\\rm inj} \\simeq 6\\times 10^{51}\\,\\mathrm{erg}$).\n- **Binary Evolution Progenitors & Supernova Physics**: arXiv:2610.35539 confirms the missing evolutionary link of double neutron star progenitors via a $4.2\\text{-hour}$ stripped helium star orbited by a $M_2 = 1.58\\,M_\\odot$ compact object destined for a Type Ibn supernova explosion, and arXiv:2610.32323 formalizes a nebular-phase mid-infrared spectroscopic framework for JWST, yielding an iron-zone filling factor $f_{\\rm FeHe} = 0.059$ in SN 2024aecx.\n- **Multi-Messenger Signatures & Non-Thermal Acceleration**: arXiv:2610.35619 reports a $2.6\\sigma$ indication of the diffuse supernova neutrino background ($F_{\\bar{\\nu}_e} = 3.6^{+1.6}_{-1.5}\\,\\mathrm{cm}^{-2}\\,\\mathrm{s}^{-1}$ at $E_\\nu > 13.3\\,\\mathrm{MeV}$) using 5003 days of Super-Kamiokande data, while arXiv:2610.35675 details the engineering and sub-thermal Askaryan triggering capabilities of the PUEO mission across Antarctic ice sheets.",
       "statistics": {
-        "total_analyzed": 48,
-        "must_read_count": 2,
-        "worth_knowing_count": 11,
-        "skip_count": 35
+        "total_analyzed": 150,
+        "must_read_count": 7,
+        "worth_knowing_count": 44,
+        "skip_count": 99
       },
-      "top_picks_count": 12,
+      "top_picks_count": 17,
       "days": [
+        {
+          "date": "2026-10-26",
+          "weekday": "Mon",
+          "week_id": "2026-W44",
+          "batch_id": "announcement-2026-10-26",
+          "total_papers": 103,
+          "analyzed_count": 102,
+          "must_read_count": 5,
+          "worth_knowing_count": 33,
+          "skip_count": 64,
+          "pending_count": 1,
+          "brief_status": "ready",
+          "brief_intro": "本期首看《EP241021a as An Off-nuclear Month-duration Transient in a Dwarf Starburst Galaxy》等 38 篇核心进展。",
+          "highlights": [
+            {
+              "arxiv_id": "2610.34217",
+              "priority": "must_read",
+              "title": "EP241021a as An Off-nuclear Month-duration Transient in a Dwarf Starburst Galaxy",
+              "reason": "This paper presents critical deep HST and Gemini-N follow-up of the peculiar fast X-ray transient EP241021a, uncovering a sharp synchronous optical/X-ray drop at $\\sim 47\\ \\mathrm{d}$ and an off-nuclear location ($0.95 \\pm 0.13\\ \\mathrm{kpc}$) in a dwarf starburst galaxy, which directly constrains relativistic jet shut-off and long-duration non-SMBH tidal disruption engines."
+            },
+            {
+              "arxiv_id": "2610.34810",
+              "priority": "must_read",
+              "title": "EP251129a: A Fast X-ray Transient with Two X-Ray Plateaus and Its Off-axis Afterglow",
+              "reason": "The paper presents multi-wavelength observations and detailed theoretical modeling of EP251129a, an extragalactic fast X-ray transient (EFXT) exhibiting a unique double X-ray plateau, an off-axis afterglow, and evidence for a millisecond magnetar collapsing into a black hole with fallback energy injection."
+            },
+            {
+              "arxiv_id": "2610.35539",
+              "priority": "must_read",
+              "title": "An Intermediate Mass Stripped Star in a 4.2-hour Orbit around a Compact Object",
+              "reason": "This paper presents the discovery and characterization of DGL-3, an ultra-short-period ($P \\approx 4.2\\text{ h}$) binary in the SMC hosting an intermediate-mass stripped star and an unseen compact companion ($M_2 \\approx 1.58\\,M_\\odot$), providing direct observational evidence of an immediate progenitor to a merging double neutron star system."
+            },
+            {
+              "arxiv_id": "2610.35619",
+              "priority": "must_read",
+              "title": "Indication of Electron Antineutrinos from the Diffuse Supernova Neutrino Background",
+              "reason": "This work presents an observational indication of electron antineutrinos from the Diffuse Supernova Neutrino Background (DSNB) with Super-Kamiokande, yielding a 2.6 sigma tension with the null hypothesis and critical constraints on core-collapse supernova physics."
+            },
+            {
+              "arxiv_id": "2610.35675",
+              "priority": "must_read",
+              "title": "The design and flight of the Payload for Ultrahigh Energy Observations (PUEO)",
+              "reason": "This paper presents the complete instrument architecture, flight performance, and calibration of PUEO, a premier balloon-borne experiment targeting ultrahigh-energy neutrinos ($E \\gtrsim 1\\text{ EeV}$) and cosmic rays via Askaryan radio impulses and EAS radio emission."
+            }
+          ],
+          "data_file": "daily/2026-10-26.json"
+        },
         {
           "date": "2026-10-25",
           "weekday": "Sun",

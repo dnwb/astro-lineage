@@ -49,8 +49,11 @@ const lineageCandidates = Array.isArray(lineage.candidates)
 const lineageChecks = Array.isArray(lineage.unresolved_checks) ? lineage.unresolved_checks : [];
 const hasProgress = Boolean(researchProgress && researchProgress.trim() !== "");
 const hasCitations = Array.isArray(citationLeads) && citationLeads.length > 0;
+const hasLineage = lineageCandidates.length > 0;
+const hasContent = validPrerequisites.length > 0 || hasLineage || hasProgress || hasCitations;
 ---
 
+{hasContent && (
 <div class="guide-module-panel guide-academic-lineage">
   <div class="module-header">
     <span class="module-icon">🔗</span>
@@ -78,20 +81,20 @@ const hasCitations = Array.isArray(citationLeads) && citationLeads.length > 0;
       </div>
     )}
 
-    <div class="guide-field-block">
-      <div class="guide-lead-row">
-        <span class="guide-tag tag-lineage">🔗 Lineage</span>
-        <span class="lineage-status-badge status-{lineage.status || 'pending'}">
-          {lineage.status === "no_match" ? "no direct match" : lineageStatusLabels[lineage.status] ?? "pending review"}
-        </span>
-      </div>
-      {lineage.reason && (
-        <p class="lineage-reason-text">
-          <ReaderText text={lineage.reason} />
-        </p>
-      )}
+    {hasLineage && (
+      <div class="guide-field-block">
+        <div class="guide-lead-row">
+          <span class="guide-tag tag-lineage">🔗 Lineage</span>
+          <span class="lineage-status-badge status-{lineage.status || 'candidate'}">
+            {lineageStatusLabels[lineage.status] ?? "candidate"}
+          </span>
+        </div>
+        {lineage.reason && !lineage.reason.includes("自动筛选未建立") && (
+          <p class="lineage-reason-text">
+            <ReaderText text={lineage.reason} />
+          </p>
+        )}
 
-      {lineageCandidates.length > 0 && (
         <ul class="guide-candidate-list">
           {lineageCandidates.map((c: AnyRecord) => (
             <li class="candidate-item">
@@ -114,19 +117,19 @@ const hasCitations = Array.isArray(citationLeads) && citationLeads.length > 0;
             </li>
           ))}
         </ul>
-      )}
 
-      {lineageChecks.length > 0 && (
-        <div class="lineage-checks-box">
-          <span class="sub-label">Lineage Check Items:</span>
-          <ul class="guide-sub-list">
-            {lineageChecks.map((check: string) => (
-              <li><ReaderText text={check} /></li>
-            ))}
-          </ul>
-        </div>
-      )}
-    </div>
+        {lineageChecks.length > 0 && (
+          <div class="lineage-checks-box">
+            <span class="sub-label">Lineage Check Items:</span>
+            <ul class="guide-sub-list">
+              {lineageChecks.map((check: string) => (
+                <li><ReaderText text={check} /></li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+    )}
 
     {hasProgress && (
       <div class="guide-field-block">
@@ -153,6 +156,7 @@ const hasCitations = Array.isArray(citationLeads) && citationLeads.length > 0;
     )}
   </div>
 </div>
+)}
 
 <style>
   .guide-module-panel {

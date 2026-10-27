@@ -23,6 +23,15 @@ const coverageSummary: Record<string, string> = {
   full_body: "full body",
 };
 
+const UNRESOLVED_CHECK_TRANSLATIONS: Record<string, string> = {
+  "未进行独立同行评审或逐项复算。": "No independent peer review or line-by-line recalculation performed.",
+  "源文件中的图像未进行视觉核对。": "Figures from source package have not undergone visual verification.",
+};
+
+function formatUnresolvedCheck(check: string): string {
+  return UNRESOLVED_CHECK_TRANSLATIONS[check] || check;
+}
+
 const inspectedSections = Array.isArray(coverage?.inspected_sections) ? coverage.inspected_sections : [];
 const sourceReferences = Array.isArray(coverage?.source_references) ? coverage.source_references : [];
 const hasUnresolved = Array.isArray(unresolvedChecks) && unresolvedChecks.length > 0;
@@ -115,7 +124,7 @@ const hasUnresolved = Array.isArray(unresolvedChecks) && unresolvedChecks.length
         <div class="audit-col-body">
           <ul class="guide-bullet-list guide-unresolved-list">
             {unresolvedChecks.map((item: string) => (
-              <li><ReaderText text={item} /></li>
+              <li><ReaderText text={formatUnresolvedCheck(item)} /></li>
             ))}
           </ul>
         </div>

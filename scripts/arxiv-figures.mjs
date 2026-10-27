@@ -21,21 +21,21 @@ const FIGURES_DIR = resolve(ROOT, "public/arxiv-figures");
 export const SCIENTIFIC_FIGURE_CRITERIA = [
   {
     type: "theoretical",
-    badge: "物理模型示意图",
+    badge: "Physical Model Schematic",
     pattern:
       /\b(schematic|cartoon|illustrat\w*|geometry|scenario|sketch|setup|model\s+overview|system\s+geometry|configuration|concept|framework|analytic\s+model|physical\s+picture|jet\s+structure|binary\s+orbit|adiabatic\s+loss|funnel\s+leakage|temperature|luminosity|density\s+profile|radiation\s+field)\b/i,
     baseScore: 30,
   },
   {
     type: "observational",
-    badge: "观测总体曲线/能谱",
+    badge: "Observational Light Curve / SED",
     pattern:
       /\b(light\s*curve|multi-wavelength|broadband|photometric\s+evolution|full\s+spectrum|spectral\s+energy\s+distribution|sed|sky\s*map|waterfall|flux\s+density|dynamic\s+spectrum|polarization\s+evolution|dispersion\s+measure|\bdmhost\b|\bdm_host\b|color-magnitude|spectra)\b/i,
     baseScore: 25,
   },
   {
     type: "fitting",
-    badge: "数据拟合与模型对比",
+    badge: "Model vs Data Fitting",
     pattern:
       /\b(best-fit|model\s+fit|fitting\s+comparison|model\s+vs\s+data|comparison\s+between\s+data\s+and\s+model|residuals|posterior\s+distribution|mcmc\s+corner|parameter\s+constraints|linear\s+fit|correlation|scaling\s+relation)\b/i,
     baseScore: 20,
@@ -44,7 +44,7 @@ export const SCIENTIFIC_FIGURE_CRITERIA = [
 
 function defaultCategoryBadge(type) {
   const matched = SCIENTIFIC_FIGURE_CRITERIA.find((c) => c.type === type);
-  return matched ? matched.badge : "物理模型示意图";
+  return matched ? matched.badge : "Physical Model Schematic";
 }
 
 const NEGATIVE_KEYWORDS =
@@ -120,34 +120,34 @@ export function classifyScientificFigure(caption) {
 export function buildModelFigureSelector({ modelCall, model, baseUrl, apiKey } = {}) {
   return async ({ candidates, arxivId, title, abstract }) => {
     if (!modelCall || !Array.isArray(candidates) || candidates.length === 0) return [];
-    const prompt = `你是一名严谨的高能天体物理审稿人。请从以下这篇论文的候选插图中，挑选出最具物理洞察力和科学价值的插图（最多 2 张）。
+    const prompt = `You are a rigorous peer reviewer in high-energy astrophysics. From the candidate figures of this paper, select the figures with the highest physical insight and scientific value (up to 2 figures).
 
-【论文信息】
+[Paper Information]
 - arXiv ID: ${arxivId}
-- 标题: ${title || "未提供"}
-- 摘要: ${abstract || "未提供"}
+- Title: ${title || "Not provided"}
+- Abstract: ${abstract || "Not provided"}
 
-【优先选择标准】
-1. theoretical (物理模型示意图 / 几何结构 / 核心理论演化光度/温度曲线) -> categoryBadge 填 "物理模型示意图" 或 "核心物理演化图"
-2. observational (全波段光变 / 宽波段能谱 SED / 核心观测样本对比) -> categoryBadge 填 "观测总体曲线/能谱" 或 "核心观测结果"
-3. fitting (核心数据拟合与理论模型对比 / 残差与参数后验约束) -> categoryBadge 填 "数据拟合与模型对比"
+[Priority Selection Criteria]
+1. theoretical (Physical model schematic / geometry / theoretical evolution curves) -> categoryBadge: "Physical Model Schematic" or "Physical Evolution"
+2. observational (Multi-wavelength light curves / broadband SED / key observational comparison) -> categoryBadge: "Observational Light Curve / SED" or "Key Observational Evidence"
+3. fitting (Model vs observational data comparison / residuals / posterior parameter constraints) -> categoryBadge: "Model vs Data Fitting"
 
-【严禁选择】
-- 纯软件流程图 (flowchart/pipeline)、代码架构、网络拓扑
-- 标定曲线、仪器探测效率响应
-- 纯数据表格转成的图片、巡天网格图
+[Strictly Exclude]
+- Pure software flowcharts / pipeline diagrams / code architectures
+- Instrument calibration / detector efficiency curves
+- Plain data tables converted to images / survey sky tiling grids
 
-【候选插图列表】
-${candidates.map((c) => `[插图 ${c.index}] 标签: ${c.label}\n图题: ${c.caption}`).join("\n\n")}
+[Candidate Figures]
+${candidates.map((c) => `[Figure ${c.index}] Label: ${c.label}\nCaption: ${c.caption}`).join("\n\n")}
 
-请返回严格的 JSON 数组（若无符合物理价值的插图则返回 []），格式如下：
+Return a strict JSON array (empty [] if no figure meets criteria), in this format:
 [
   {
     "index": 0,
     "category": "theoretical",
-    "categoryBadge": "物理模型示意图",
-    "physical_core": "说明该图在文章语境下的具体物理核心、演化机制或核心观测特征（中文，紧扣文章课题与结论）",
-    "reason": "简述选择理由"
+    "categoryBadge": "Physical Model Schematic",
+    "physical_core": "Explain in concise English the physical core, mechanism, or key observational feature shown in this figure (strictly grounded in paper)",
+    "reason": "Brief selection reason in English"
   }
 ]`;
 

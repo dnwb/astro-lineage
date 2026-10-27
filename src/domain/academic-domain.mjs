@@ -8,65 +8,65 @@
 
 // 1. Scientific Taxonomy & Phenomenon Tags
 export const SCIENTIFIC_TAGS = [
-  { id: "ALL", label: "全部", englishLabel: "All" },
-  { id: "MUST_READ", label: "必读 ⭐", englishLabel: "Must Read" },
-  { id: "WORTH_KNOWING", label: "关注 📌", englishLabel: "Followed" },
+  { id: "ALL", label: "All", englishLabel: "All" },
+  { id: "MUST_READ", label: "Must Read ⭐", englishLabel: "Must Read" },
+  { id: "WORTH_KNOWING", label: "Followed 📌", englishLabel: "Followed" },
   {
     id: "FRB",
-    label: "FRB 快速射电暴",
+    label: "Fast Radio Burst",
     englishLabel: "Fast Radio Burst",
     pattern: /\b(?:FRB|fast radio burst|plasma lens|法拉第|快速射电暴|等离子体透镜)\b/i,
   },
   {
     id: "GRB",
-    label: "GRB 伽马暴与喷流",
+    label: "Gamma-Ray Burst & Jets",
     englishLabel: "Gamma-Ray Burst & Jets",
     pattern:
       /\b(?:GRB|gamma[- ]ray burst|relativistic jet|afterglow|cocoon|collapsar|伽马暴|相对论喷流|余辉)\b/i,
   },
   {
     id: "SN",
-    label: "SN/CSM 超新星与星周介质",
+    label: "Supernova & CSM",
     englishLabel: "Supernova & CSM",
     pattern:
       /\b(?:supernov[ae]|circumstellar|\bCSM\b|shock breakout|shock cooling|前身星|超新星|星周介质|激波突破)\b/i,
   },
   {
     id: "GW",
-    label: "GW 引力波与致密双星",
+    label: "Gravitational Waves & Compact Objects",
     englishLabel: "Gravitational Waves & Compact Objects",
     pattern:
       /\b(?:gravitational[- ]wave|kilonova|binary neutron star|neutron star merger|千新星|双中子星并合|引力波)\b/i,
   },
   {
     id: "MAG",
-    label: "磁星与脉冲星风",
+    label: "Magnetars & Pulsars",
     englishLabel: "Magnetars & Pulsars",
     pattern:
       /\b(?:magnetar|pulsar wind|intrabinary shock|spider pulsar|SGR|AXP|磁星|脉冲星风|蜘蛛脉冲星)\b/i,
   },
   {
     id: "TDE",
-    label: "TDE 潮汐瓦解",
+    label: "Tidal Disruption Events",
     englishLabel: "Tidal Disruption Events",
     pattern: /\b(?:tidal disruption|\bTDE\b|潮汐瓦解|黑洞潮汐)\b/i,
   },
   {
     id: "MULTI",
-    label: "多信使与高能中微子",
+    label: "Multi-Messenger & Neutrinos",
     englishLabel: "Multi-Messenger & Neutrinos",
     pattern: /\b(?:neutrino|multi[- ]messenger|IceCube|高能中微子|多信使)\b/i,
   },
 ];
 
 export const TOPIC_FILTER_SPECS = [
-  { id: "FRB", label: "FRB 快速射电暴", short: "FRB 射电暴", emoji: "⚡" },
-  { id: "SN", label: "SN 超新星与介质", short: "SN 超新星", emoji: "💥" },
-  { id: "GRB", label: "GRB 伽马暴喷流", short: "GRB 喷流", emoji: "🌌" },
-  { id: "GW", label: "GW 引力波致密星", short: "GW 引力波", emoji: "🌊" },
-  { id: "MAG", label: "磁星与脉冲星", short: "磁星脉冲星", emoji: "🧲" },
-  { id: "TDE", label: "TDE 潮汐瓦解", short: "TDE 潮汐瓦解", emoji: "🕳️" },
-  { id: "MULTI", label: "多信使中微子", short: "多信使中微子", emoji: "🛰️" },
+  { id: "FRB", label: "Fast Radio Bursts (FRB)", short: "FRB", emoji: "⚡" },
+  { id: "SN", label: "Supernovae & CSM (SN)", short: "SN / CSM", emoji: "💥" },
+  { id: "GRB", label: "Gamma-Ray Bursts & Jets (GRB)", short: "GRB Jets", emoji: "🌌" },
+  { id: "GW", label: "Gravitational Waves (GW)", short: "GW / Binaries", emoji: "🌊" },
+  { id: "MAG", label: "Magnetars & Pulsars (MAG)", short: "Magnetars", emoji: "🧲" },
+  { id: "TDE", label: "Tidal Disruption Events (TDE)", short: "TDE", emoji: "🕳️" },
+  { id: "MULTI", label: "Multi-Messenger & Neutrinos", short: "Multi-Messenger", emoji: "🛰️" },
 ];
 
 // 2. Transient Observational Identifier Regexes (for Scientific Event Clustering)
@@ -219,16 +219,35 @@ export {
  * @param {string[]} [context.limits]
  * @returns {string}
  */
-export function deriveFigurePhysicalCore(figure, context = {}) {
+export function deriveFigurePhysicalCore(figure, context = {}, options = {}) {
   if (!figure || typeof figure !== "object") return "";
 
-  // 1. Explicit physical core annotation (from AI selector or review)
   const explicit = (figure.physical_core || figure.physicalCore || "").trim();
-  if (explicit) return explicit;
-
   const badge = figure.category_badge || figure.categoryBadge || "";
   const rawCategory = figure.category || "";
   const caption = figure.caption || "";
+
+  // Determine language:
+  // If explicitly specified in options, use it.
+  // Otherwise, if badge or explicit physical_core contains CJK, default to "zh".
+  // Otherwise default to "en".
+  let lang = typeof options === "string" ? options : options?.lang;
+  if (!lang) {
+    if (/[\u4e00-\u9fa5]/u.test(badge) || /[\u4e00-\u9fa5]/u.test(explicit)) {
+      lang = "zh";
+    } else {
+      lang = "en";
+    }
+  }
+  const isZh = lang === "zh";
+
+  // 1. Explicit physical core annotation (from AI selector or review)
+  if (explicit) {
+    if (isZh) return explicit;
+    // For English: if explicit has no CJK, use it directly!
+    if (!/[\u4e00-\u9fa5]/u.test(explicit)) return explicit;
+    // If explicit contains CJK and English was requested, derive English description below.
+  }
 
   // 2. Resolve primary category: explicit category strictly takes precedence over badge and caption
   let primaryType = null;
@@ -238,11 +257,15 @@ export function deriveFigurePhysicalCore(figure, context = {}) {
     rawCategory === "observational"
   ) {
     primaryType = rawCategory;
-  } else if (/拟合|后验|残差|约束/u.test(badge)) {
+  } else if (/拟合|后验|残差|约束|fitting|posterior|residual|constraint/i.test(badge)) {
     primaryType = "fitting";
-  } else if (/物理演化|模型示意|理论模型|几何结构/u.test(badge)) {
+  } else if (
+    /物理演化|模型示意|理论模型|几何结构|schematic|evolution|theoretical|geometry/i.test(badge)
+  ) {
     primaryType = "theoretical";
-  } else if (/观测|光变|能谱|图像|巡天/u.test(badge)) {
+  } else if (
+    /观测|光变|能谱|图像|巡天|observational|light\s*curve|spectrum|sed|image/i.test(badge)
+  ) {
     primaryType = "observational";
   } else {
     // Only infer from caption keywords when explicit category and badge are absent
@@ -265,11 +288,15 @@ export function deriveFigurePhysicalCore(figure, context = {}) {
 
   // 3. Ground explanations strictly in the figure's concrete evidence (no unsupported paper-level claims)
   if (primaryType === "fitting") {
-    return "展示理论模型与实际观测数据的拟合对比及关键参数后验约束。";
+    return isZh
+      ? "展示理论模型与实际观测数据的拟合对比及关键参数后验约束。"
+      : "Comparison between theoretical models and observational data with posterior parameter constraints.";
   }
 
   if (primaryType === "theoretical") {
-    return "展示核心天体物理驱动机制、几何拓扑与理论演化模型架构。";
+    return isZh
+      ? "展示核心天体物理驱动机制、几何拓扑与理论演化模型架构。"
+      : "Core astrophysical driving mechanism, geometry, and theoretical evolution model.";
   }
 
   if (primaryType === "observational") {
@@ -281,7 +308,9 @@ export function deriveFigurePhysicalCore(figure, context = {}) {
       ) ||
       /\b(?:right\s+ascension|declination|\bRA\b.*\bDec\b)\b/i.test(caption)
     ) {
-      return "展示暂现源空间天区概率分布与天体物理定位。";
+      return isZh
+        ? "展示暂现源空间天区概率分布与天体物理定位。"
+        : "Spatial celestial probability distribution and astrophysical localization.";
     }
 
     // Temporal timing / Fourier power spectrum (PDS / QPO / oscillation frequency)
@@ -290,7 +319,9 @@ export function deriveFigurePhysicalCore(figure, context = {}) {
         caption
       )
     ) {
-      return "展示时域功率谱密度 (PDS) 与暂现源周期/准周期振荡 (QPO) 演化特征。";
+      return isZh
+        ? "展示时域功率谱密度 (PDS) 与暂现源周期/准周期振荡 (QPO) 演化特征。"
+        : "Power spectral density (PDS) and quasi-periodic oscillation (QPO) signatures.";
     }
 
     // Radiative energy spectrum / photon energy distribution / SED
@@ -299,14 +330,18 @@ export function deriveFigurePhysicalCore(figure, context = {}) {
         caption
       )
     ) {
-      return "展示天体物理辐射宽波段能谱 (SED) 与特征光谱结构。";
+      return isZh
+        ? "展示天体物理辐射宽波段能谱 (SED) 与特征光谱结构。"
+        : "Broadband spectral energy distribution (SED) and characteristic spectral structure.";
     }
 
     // Statistical distribution / sample population / histogram
     if (
       /\b(?:sample|population|distribution|histogram|scatter|correlation|fraction)\b/i.test(caption)
     ) {
-      return "展示观测样本的关键物理参量统计分布与总体特征对比。";
+      return isZh
+        ? "展示观测样本的关键物理参量统计分布与总体特征对比。"
+        : "Statistical distribution and comparative population properties of the sample.";
     }
 
     // Light curves / photometric evolution
@@ -315,15 +350,21 @@ export function deriveFigurePhysicalCore(figure, context = {}) {
         caption
       )
     ) {
-      return "展示暂现源多波段辐射光度与流量随时间演化行为。";
+      return isZh
+        ? "展示暂现源多波段辐射光度与流量随时间演化行为。"
+        : "Multi-wavelength photometric evolution and temporal light curves.";
     }
 
     // Spatial imaging / high-resolution morphology
     if (/\b(?:image|spatial|morphology|radio\s+map|slice|interferom\w*)\b/i.test(caption)) {
-      return "展示辐射源区的高分辨率成像形态与空间几何结构。";
+      return isZh
+        ? "展示辐射源区的高分辨率成像形态与空间几何结构。"
+        : "High-resolution morphology and spatial structure of the emission region.";
     }
 
-    return "展示天体物理观测数据与多波段暂现源探测特征。";
+    return isZh
+      ? "展示天体物理观测数据与多波段暂现源探测特征。"
+      : "Astrophysical observations and multi-wavelength transient signatures.";
   }
 
   return "";

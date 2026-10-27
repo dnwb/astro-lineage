@@ -12,7 +12,7 @@ const LIST_LIKE = /[、；;|｜]/u;
 const DANGLING_END =
   /(?:如何|为何|为什么|是否|能否|与|和|及|并|或|但|而|的|在|同时|以及|包括|例如|如|中|内|下|条件下|情形下|模型下|样本中|设定下|前提下|背景下)$|(?:\b(?:and|or|but|with|for|to|from|by|on|at|as|an|a|the|in|of|that|which|into|through|under|while|if|whether))\s*$/iu;
 const PAPER_RESULT_VERB =
-  /(?:发现|提出|显示|表明|揭示|测得|确立|证实|达到|超过|实现|支持|限制|约束|解释|影响|改变|主导|削弱|提高|降低|增加|减少|产生|形成|存在|测量|估计|推断|重建|区分|关联|更接近|依赖|来自|未发现|未见|报告|出现|造成|导致|保持|证明|验证|检验|描述|给出|进入|混合|具有|旋转|约为|得到|获得|满足|归一化)|(?:\b(?:finds?|found|proposes?|proposed|shows?|showed|shown|indicates?|indicated|reveals?|revealed|measures?|measured|establishes?|established|confirms?|confirmed|reaches?|reached|achieves?|achieved|supports?|supported|constrains?|constrained|explains?|explained|alters?|altered|dominates?|dominated|weakens?|weakened|enhances?|enhanced|reduces?|reduced|increases?|increased|decreases?|decreased|produces?|produced|forms?|formed|exists?|existed|infers?|inferred|reconstructs?|reconstructed|distinguishes?|distinguished|correlates?|correlated|depends?|depended|originates?|originated|reports?|reported|causes?|caused|proves?|proved|validates?|validated|tests?|tested|describes?|described|provides?|provided|yields?|yielded|satisfies?|satisfied|detects?|detected|discovers?|discovered|limits?|limited|models?|modeled|breaks?|broke|rules?\s+out|ruled\s+out)\b)/iu;
+  /(?:发现|提出|显示|表明|揭示|测得|确立|证实|达到|超过|实现|支持|限制|约束|解释|影响|改变|主导|削弱|提高|降低|增加|减少|产生|形成|存在|测量|估计|推断|重建|区分|关联|更接近|依赖|来自|未发现|未见|报告|出现|造成|导致|保持|证明|验证|检验|描述|给出|进入|混合|具有|旋转|约为|得到|获得|满足|归一化)|(?:\b(?:is|are|cannot|can|fails?\s+to|finds?|found|proposes?|proposed|shows?|showed|shown|indicates?|indicated|reveals?|revealed|measures?|measured|establishes?|established|confirms?|confirmed|reaches?|reached|achieves?|achieved|supports?|supported|constrains?|constrained|explains?|explained|alters?|altered|dominates?|dominated|weakens?|weakened|enhances?|enhanced|reduces?|reduced|increases?|increased|decreases?|decreased|produces?|produced|forms?|formed|exists?|existed|infers?|inferred|reconstructs?|reconstructed|distinguishes?|distinguished|correlates?|correlated|depends?|depended|originates?|originated|reports?|reported|causes?|caused|proves?|proved|validates?|validated|tests?|tested|describes?|described|provides?|provided|yields?|yielded|satisfies?|satisfied|detects?|detected|discovers?|discovered|limits?|limited|models?|modeled|breaks?|broke|rules?\s+out|ruled\s+out)\b)/iu;
 const DAILY_PROGRESS_SIGNAL =
   /(?:发现|提出|显示|表明|揭示|测得|建立|确立|证实|达到|限制|约束|解释|改变|主导|削弱|提高|降低|增加|减少|产生|形成|来自|未发现|出现|造成|导致|获得|可使|可探测|抑制|增强|变暗|静默|再现|反相|转为|持续|候选|确认|放大|得到|关联|属于|未聚簇)|(?:\b(?:finds?|proposes?|shows?|indicates?|reveals?|measures?|establishes?|confirms?|constrains?|explains?|limits?|models?|detects?|discovers?|yields?|enhances?|reduces?|increases?|decreases?|breaks?|rules?\s+out)\b)/iu;
 const REPORTING_ONLY =
@@ -257,7 +257,7 @@ function namedObject(title) {
 function sourceSentences(value) {
   return (
     sourceText(value)
-      .match(/[^。！？\n]+[。！？]?/gu)
+      .match(/(?:[^。！？\n.!?]|\.(?=\d))+[。！？.!?]?/gu)
       ?.map((sentence) => sentence.trim())
       .filter(Boolean) || []
   );
@@ -635,6 +635,8 @@ function deriveWeeklyTitle(weekId, weekly) {
       typeof item === "string" ? item : item?.summary
     ),
     weekly?.executive_summary,
+    ...(weekly?.top_picks || []).map((item) => item?.core_insight || item?.title),
+    weekly?.title,
   ].filter((value) => typeof value === "string");
   const candidates = summaries
     .flatMap(sourceSentences)
@@ -686,7 +688,7 @@ function deriveWeeklyTitle(weekId, weekly) {
         .replace(/[。！？?]+$/u, "")
         .trim()
     );
-  const progress = candidates.find((candidate) => {
+  let progress = candidates.find((candidate) => {
     if (!candidate || !PAPER_RESULT_VERB.test(candidate)) return false;
     try {
       formatWeeklyTitle(weekId, candidate);
@@ -695,6 +697,28 @@ function deriveWeeklyTitle(weekId, weekly) {
       return false;
     }
   });
+  if (!progress && weekly?.title) {
+    try {
+      formatWeeklyTitle(weekId, weekly.title);
+      progress = weekly.title;
+    } catch {
+      // ignore
+    }
+  }
+  if (!progress && Array.isArray(weekly?.top_picks)) {
+    for (const pick of weekly.top_picks) {
+      const pickCandidate = pick?.title || pick?.core_insight;
+      if (pickCandidate && PAPER_RESULT_VERB.test(pickCandidate)) {
+        try {
+          formatWeeklyTitle(weekId, pickCandidate);
+          progress = pickCandidate;
+          break;
+        } catch {
+          // ignore
+        }
+      }
+    }
+  }
   if (!progress) throw new Error("CHANNEL_TITLE_WEEKLY_PROGRESS_UNSUPPORTED");
   return formatWeeklyTitle(weekId, progress);
 }

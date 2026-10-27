@@ -137,25 +137,53 @@ test("academic-domain: formatWeekIdZh and formatWeekIdEn format week identifiers
 
 test("academic-domain: deriveFigurePhysicalCore extracts explicit core or derives in paper context", () => {
   // 1. Explicit physical core takes precedence
-  const explicitFig = {
+  const explicitEn = {
+    label: "Fig. 1",
+    caption: "Figure 1: Evolution of magnetic field lines.",
+    physical_core:
+      "Microphysical evolution mechanism of magnetic reconnection driving nonthermal electron injection.",
+  };
+  assert.equal(
+    deriveFigurePhysicalCore(explicitEn),
+    "Microphysical evolution mechanism of magnetic reconnection driving nonthermal electron injection."
+  );
+
+  const explicitZh = {
     label: "Fig. 1",
     caption: "Figure 1: Evolution of magnetic field lines.",
     physical_core: "展示黑洞吸积盘中磁重联驱动非热电子注入的微观物理演化机制。",
   };
   assert.equal(
-    deriveFigurePhysicalCore(explicitFig),
+    deriveFigurePhysicalCore(explicitZh, {}, { lang: "zh" }),
     "展示黑洞吸积盘中磁重联驱动非热电子注入的微观物理演化机制。"
   );
 
   // 2. Theoretical schematic
-  const theoFig = {
+  const theoFigEn = {
+    label: "Fig. 2",
+    category: "theoretical",
+    category_badge: "Physical Evolution",
+    caption: "Figure 2: Schematic showing jet breakout through the stellar envelope.",
+  };
+  assert.equal(
+    deriveFigurePhysicalCore(theoFigEn),
+    "Core astrophysical driving mechanism, geometry, and theoretical evolution model."
+  );
+
+  const theoFigZh = {
     label: "Fig. 2",
     category: "theoretical",
     category_badge: "核心物理演化图",
     caption: "Figure 2: Schematic showing jet breakout through the stellar envelope.",
   };
-  const core1 = deriveFigurePhysicalCore(theoFig);
-  assert.equal(core1, "展示核心天体物理驱动机制、几何拓扑与理论演化模型架构。");
+  assert.equal(
+    deriveFigurePhysicalCore(theoFigZh),
+    "展示核心天体物理驱动机制、几何拓扑与理论演化模型架构。"
+  );
+  assert.equal(
+    deriveFigurePhysicalCore(theoFigZh, {}, { lang: "en" }),
+    "Core astrophysical driving mechanism, geometry, and theoretical evolution model."
+  );
 
   // 3. Category priority: explicit category strictly overrides conflicting badge or caption keywords
   const conflictFig = {
@@ -163,6 +191,10 @@ test("academic-domain: deriveFigurePhysicalCore extracts explicit core or derive
     category_badge: "核心观测结果",
     caption: "Figure 2: Theoretical magnetic field parameter scan over model space.",
   };
+  assert.equal(
+    deriveFigurePhysicalCore(conflictFig, {}, { lang: "en" }),
+    "Core astrophysical driving mechanism, geometry, and theoretical evolution model."
+  );
   assert.equal(
     deriveFigurePhysicalCore(conflictFig),
     "展示核心天体物理驱动机制、几何拓扑与理论演化模型架构。"
@@ -174,15 +206,20 @@ test("academic-domain: deriveFigurePhysicalCore extracts explicit core or derive
     category_badge: "数据拟合与模型对比",
     caption: "Figure 4: Observed light curve and best-fit analytic model with residuals.",
   };
-  const coreFit = deriveFigurePhysicalCore(fitFig);
-  assert.equal(coreFit, "展示理论模型与实际观测数据的拟合对比及关键参数后验约束。");
+  assert.equal(
+    deriveFigurePhysicalCore(fitFig, {}, { lang: "en" }),
+    "Comparison between theoretical models and observational data with posterior parameter constraints."
+  );
 
   // 4. Grounded observational: sky localization map requires celestial/sky cues
   const skyMapFig = {
     category: "observational",
     caption: "Figure 1: Sky localization probability map with 90% credible region.",
   };
-  assert.equal(deriveFigurePhysicalCore(skyMapFig), "展示暂现源空间天区概率分布与天体物理定位。");
+  assert.equal(
+    deriveFigurePhysicalCore(skyMapFig),
+    "Spatial celestial probability distribution and astrophysical localization."
+  );
 
   // 5. Statistical probability distribution is NOT misclassified as a sky map
   const probDistFig = {
@@ -191,7 +228,7 @@ test("academic-domain: deriveFigurePhysicalCore extracts explicit core or derive
   };
   assert.equal(
     deriveFigurePhysicalCore(probDistFig),
-    "展示观测样本的关键物理参量统计分布与总体特征对比。"
+    "Statistical distribution and comparative population properties of the sample."
   );
 
   // 6. Timing power spectrum / QPO is distinguished from radiative SED
@@ -201,7 +238,7 @@ test("academic-domain: deriveFigurePhysicalCore extracts explicit core or derive
   };
   assert.equal(
     deriveFigurePhysicalCore(timingFig),
-    "展示时域功率谱密度 (PDS) 与暂现源周期/准周期振荡 (QPO) 演化特征。"
+    "Power spectral density (PDS) and quasi-periodic oscillation (QPO) signatures."
   );
 
   // 7. Grounded observational: radiative energy spectrum (SED)
@@ -211,7 +248,7 @@ test("academic-domain: deriveFigurePhysicalCore extracts explicit core or derive
   };
   assert.equal(
     deriveFigurePhysicalCore(specFig),
-    "展示天体物理辐射宽波段能谱 (SED) 与特征光谱结构。"
+    "Broadband spectral energy distribution (SED) and characteristic spectral structure."
   );
 
   // 8. Grounded observational: light curve
@@ -221,7 +258,10 @@ test("academic-domain: deriveFigurePhysicalCore extracts explicit core or derive
     category_badge: "观测总体曲线/能谱",
     caption: "Figure 3: Multiband radio light curve showing temporal decay.",
   };
-  assert.equal(deriveFigurePhysicalCore(obsFig), "展示暂现源多波段辐射光度与流量随时间演化行为。");
+  assert.equal(
+    deriveFigurePhysicalCore(obsFig, {}, { lang: "en" }),
+    "Multi-wavelength photometric evolution and temporal light curves."
+  );
 
   // 9. Empty or ungrounded figure returns empty string (fail-closed)
   assert.equal(deriveFigurePhysicalCore(null), "");

@@ -454,16 +454,30 @@ function figureReadbackProblem(current, expectedRemote, identity, title, existin
 
 function bodyWithoutManagedFigure(value) {
   const body = String(value);
-  const figurePrefix = "\n\n## 关键图像\n\n[(0,0)](@img)\n\n";
-  const start = body.indexOf(figurePrefix);
+  let figurePrefix = "\n\n## 关键图像\n\n[(0,0)](@img)\n\n";
+  let start = body.indexOf(figurePrefix);
+  if (start < 0) {
+    figurePrefix = "\n\n## Key Figure\n\n[(0,0)](@img)\n\n";
+    start = body.indexOf(figurePrefix);
+  }
   if (start < 0 || start !== body.lastIndexOf(figurePrefix)) return null;
   let end = body.indexOf("\n---\n\n## 📚 阅读入口", start);
   if (end < 0) {
     end = body.indexOf("\n---\n\n## 阅读入口", start);
   }
+  if (end < 0) {
+    end = body.indexOf("\n---\n\n## 📖 Reading Entry", start);
+  }
+  if (end < 0) {
+    end = body.indexOf("\n---\n\n## Reading Entry", start);
+  }
   if (end < 0) return null;
   const figureContent = body.slice(start + figurePrefix.length, end).trim();
-  if (!figureContent.includes("图注（作者报告）：")) return null;
+  if (
+    !figureContent.includes("图注（作者报告）：") &&
+    !figureContent.includes("Caption (author-reported):")
+  )
+    return null;
   return body.slice(0, start) + body.slice(end);
 }
 
@@ -759,21 +773,47 @@ function pending(result, identity, reason) {
 }
 
 function bodyWithReviewedFigure(body, figure, context = {}) {
-  const marker = String(body).includes("\n---\n\n## 📚 阅读入口")
-    ? "\n---\n\n## 📚 阅读入口"
-    : "\n---\n\n## 阅读入口";
-  if (!String(body).includes(marker)) throw new Error("CHANNEL_FIGURE_BODY_ANCHOR_MISSING");
+  let marker = "";
+  if (String(body).includes("\n---\n\n## 📚 阅读入口")) {
+    marker = "\n---\n\n## 📚 阅读入口";
+  } else if (String(body).includes("\n---\n\n## 阅读入口")) {
+    marker = "\n---\n\n## 阅读入口";
+  } else if (String(body).includes("\n---\n\n## 📖 Reading Entry")) {
+    marker = "\n---\n\n## 📖 Reading Entry";
+  } else if (String(body).includes("\n---\n\n## Reading Entry")) {
+    marker = "\n---\n\n## Reading Entry";
+  }
+  if (!marker) throw new Error("CHANNEL_FIGURE_BODY_ANCHOR_MISSING");
   const caption = String(figure.caption).replace(/\r?\n/gu, " ").trim();
+  const isEn = marker.includes("Reading Entry");
   const physicalCore = (
     figure.physical_core ||
-    deriveFigurePhysicalCore(figure, context) ||
+    deriveFigurePhysicalCore(figure, context, { lang: isEn ? "en" : "zh" }) ||
     ""
   ).trim();
-  const badge = figure.category_badge || figure.label || "科学图表";
-  const coreSection = physicalCore ? `> **物理核心（${badge}）**：${physicalCore}\n>\n` : "";
+  const BADGE_MAP = {
+    数据拟合与模型对比: "Model vs Data Fitting",
+    物理模型示意图: "Physical Model Schematic",
+    核心物理演化图: "Physical Evolution",
+    核心物理结果: "Physical Result",
+    核心观测结果: "Observational Evidence",
+    "观测总体曲线/能谱": "Observational Light Curve / SED",
+  };
+  const rawBadge =
+    figure.category_badge || figure.label || (isEn ? "Scientific Figure" : "科学图表");
+  const badge = isEn ? BADGE_MAP[rawBadge] || rawBadge : rawBadge;
+  const coreSection = physicalCore
+    ? isEn
+      ? `> **Physical Core (${badge})**: ${physicalCore}\n>\n`
+      : `> **物理核心（${badge}）**：${physicalCore}\n>\n`
+    : "";
+  const heading = isEn ? "## Key Figure" : "## 关键图像";
+  const captionLine = isEn
+    ? `> Original ${figure.label} Caption (author-reported): ${caption}`
+    : `> 原文 ${figure.label} 图注（作者报告）：${caption}`;
   return String(body).replace(
     marker,
-    `\n\n## 关键图像\n\n[(0,0)](@img)\n\n${coreSection}> 原文 ${figure.label} 图注（作者报告）：${caption}${marker}`
+    `\n\n${heading}\n\n[(0,0)](@img)\n\n${coreSection}${captionLine}${marker}`
   );
 }
 

@@ -7,8 +7,12 @@ import { reconcileDailyRadarEdition, validateDailyRadarPayload } from "./daily-r
 export const DEFAULT_QUERY = "cat:astro-ph.HE OR cat:astro-ph.GA OR cat:astro-ph.SR";
 export const DEFAULT_FEED_URL = "https://export.arxiv.org/api/query";
 export const DEFAULT_RSS_URL = "https://export.arxiv.org/rss/astro-ph.HE";
-export const DEFAULT_OUTPUT = fileURLToPath(new URL("../src/data/arxiv-daily.json", import.meta.url));
-export const DEFAULT_RADAR_OUTPUT = fileURLToPath(new URL("../src/data/daily-radar.json", import.meta.url));
+export const DEFAULT_OUTPUT = fileURLToPath(
+  new URL("../src/data/arxiv-daily.json", import.meta.url)
+);
+export const DEFAULT_RADAR_OUTPUT = fileURLToPath(
+  new URL("../src/data/daily-radar.json", import.meta.url)
+);
 export const DEFAULT_TIMEOUT_MS = 15_000;
 export const DEFAULT_MAX_ATTEMPTS = 3;
 export const ARXIV_PARSER_VERSION = "2026-09-08.atom-v2";
@@ -30,7 +34,9 @@ export const ANNOUNCEMENT_BATCH_OFFSETS = Object.freeze({
 });
 export const DEFAULT_PAGE_SIZE = 2_000;
 export const DEFAULT_MIN_REQUEST_INTERVAL_MS = 3_000;
-export const DEFAULT_ARTIFACT_ROOT = fileURLToPath(new URL("../.cache/arxiv-daily", import.meta.url));
+export const DEFAULT_ARTIFACT_ROOT = fileURLToPath(
+  new URL("../.cache/arxiv-daily", import.meta.url)
+);
 export const DEFAULT_SNAPSHOT_RETENTION = 7;
 export const SNAPSHOT_SCHEMA_VERSION = "arxiv-daily-snapshot-v1";
 export const RUN_STATE_SCHEMA_VERSION = "arxiv-daily-run-state-v1";
@@ -53,20 +59,29 @@ function decodeXml(value) {
   if (/&(?!#x[0-9a-f]+;|#[0-9]+;|amp;|lt;|gt;|quot;|apos;)/iu.test(String(value))) {
     xmlFailure("XML 包含未知或未转义的 &。");
   }
-  const decoded = String(value).replaceAll(/&(#x[0-9a-f]+|#[0-9]+|amp|lt|gt|quot|apos);/giu, (entity, code) => {
-    if (code.toLowerCase() === "amp") return "&";
-    if (code.toLowerCase() === "lt") return "<";
-    if (code.toLowerCase() === "gt") return ">";
-    if (code.toLowerCase() === "quot") return '"';
-    if (code.toLowerCase() === "apos") return "'";
-    const numeric = code.startsWith("#x") || code.startsWith("#X")
-      ? Number.parseInt(code.slice(2), 16)
-      : Number.parseInt(code.slice(1), 10);
-    if (!Number.isInteger(numeric) || numeric < 0 || numeric > 0x10ffff || (numeric >= 0xd800 && numeric <= 0xdfff)) {
-      xmlFailure(`XML 实体无效：${entity}`);
+  const decoded = String(value).replaceAll(
+    /&(#x[0-9a-f]+|#[0-9]+|amp|lt|gt|quot|apos);/giu,
+    (entity, code) => {
+      if (code.toLowerCase() === "amp") return "&";
+      if (code.toLowerCase() === "lt") return "<";
+      if (code.toLowerCase() === "gt") return ">";
+      if (code.toLowerCase() === "quot") return '"';
+      if (code.toLowerCase() === "apos") return "'";
+      const numeric =
+        code.startsWith("#x") || code.startsWith("#X")
+          ? Number.parseInt(code.slice(2), 16)
+          : Number.parseInt(code.slice(1), 10);
+      if (
+        !Number.isInteger(numeric) ||
+        numeric < 0 ||
+        numeric > 0x10ffff ||
+        (numeric >= 0xd800 && numeric <= 0xdfff)
+      ) {
+        xmlFailure(`XML 实体无效：${entity}`);
+      }
+      return String.fromCodePoint(numeric);
     }
-    return String.fromCodePoint(numeric);
-  });
+  );
   return decoded;
 }
 
@@ -83,7 +98,9 @@ function xmlFailure(message) {
 }
 
 function readName(source, start) {
-  const match = String(source).slice(start).match(/^[A-Za-z_][A-Za-z0-9_.:-]*/u);
+  const match = String(source)
+    .slice(start)
+    .match(/^[A-Za-z_][A-Za-z0-9_.:-]*/u);
   return match ? { name: match[0], end: start + match[0].length } : null;
 }
 
@@ -218,7 +235,9 @@ function childNode(node, wantedName) {
 
 function nodeText(node) {
   if (!node) return "";
-  return (node.content ?? []).map((part) => typeof part === "string" ? part : nodeText(part)).join("");
+  return (node.content ?? [])
+    .map((part) => (typeof part === "string" ? part : nodeText(part)))
+    .join("");
 }
 
 function normalizeWhitespace(value) {
@@ -236,7 +255,9 @@ function partsInTimeZone(date, timeZone) {
     second: "2-digit",
     hourCycle: "h23",
   }).formatToParts(date);
-  return Object.fromEntries(parts.filter(({ type }) => type !== "literal").map(({ type, value }) => [type, Number(value)]));
+  return Object.fromEntries(
+    parts.filter(({ type }) => type !== "literal").map(({ type, value }) => [type, Number(value)])
+  );
 }
 
 function localDateFor(date, timeZone) {
@@ -258,7 +279,11 @@ function assertDateOnly(value) {
   }
   const [year, month, day] = value.split("-").map(Number);
   const check = new Date(Date.UTC(year, month - 1, day));
-  if (check.getUTCFullYear() !== year || check.getUTCMonth() !== month - 1 || check.getUTCDate() !== day) {
+  if (
+    check.getUTCFullYear() !== year ||
+    check.getUTCMonth() !== month - 1 ||
+    check.getUTCDate() !== day
+  ) {
     throw new ArxivFeedError("ARXIV_WINDOW_INVALID", `公告日不是有效日期：${value}`);
   }
   return { year, month, day };
@@ -281,7 +306,14 @@ function localDateTimeToUtc(dateOnly, localTime, timeZone) {
   let guess = Date.UTC(year, month - 1, day);
   for (let attempt = 0; attempt < 4; attempt += 1) {
     const parts = partsInTimeZone(new Date(guess), timeZone);
-    const renderedAsUtc = Date.UTC(parts.year, parts.month - 1, parts.day, parts.hour, parts.minute, parts.second);
+    const renderedAsUtc = Date.UTC(
+      parts.year,
+      parts.month - 1,
+      parts.day,
+      parts.hour,
+      parts.minute,
+      parts.second
+    );
     guess = Date.UTC(year, month - 1, day, hour, minute) - (renderedAsUtc - guess);
   }
   return new Date(guess);
@@ -289,7 +321,11 @@ function localDateTimeToUtc(dateOnly, localTime, timeZone) {
 
 function localBoundaryIso(dateOnly, localTime, utcDate, timeZone) {
   const parts = partsInTimeZone(utcDate, timeZone);
-  const offsetMinutes = Math.round((Date.UTC(parts.year, parts.month - 1, parts.day, parts.hour, parts.minute, parts.second) - utcDate.valueOf()) / 60_000);
+  const offsetMinutes = Math.round(
+    (Date.UTC(parts.year, parts.month - 1, parts.day, parts.hour, parts.minute, parts.second) -
+      utcDate.valueOf()) /
+      60_000
+  );
   const sign = offsetMinutes < 0 ? "-" : "+";
   const absoluteOffset = Math.abs(offsetMinutes);
   const hours = String(Math.floor(absoluteOffset / 60)).padStart(2, "0");
@@ -302,7 +338,11 @@ function apiDateTime(date) {
   return iso.slice(0, 16).replaceAll(/[-:T]/gu, "");
 }
 
-export function buildAnnouncementWindow({ announcementDate, now = new Date(), timeZone = DEFAULT_TIME_ZONE } = {}) {
+export function buildAnnouncementWindow({
+  announcementDate,
+  now = new Date(),
+  timeZone = DEFAULT_TIME_ZONE,
+} = {}) {
   if (!(now instanceof Date) || Number.isNaN(now.valueOf())) {
     throw new ArxivFeedError("ARXIV_WINDOW_INVALID", "窗口参考时间必须是有效 Date。");
   }
@@ -315,8 +355,16 @@ export function buildAnnouncementWindow({ announcementDate, now = new Date(), ti
   const offsets = ANNOUNCEMENT_BATCH_OFFSETS[weekday];
   const submissionStartDate = addCalendarDays(date, offsets.start);
   const submissionEndDate = addCalendarDays(date, offsets.end);
-  const utcStartDate = localDateTimeToUtc(submissionStartDate, ANNOUNCEMENT_CUTOFF_LOCAL_TIME, timeZone);
-  const utcEndDate = localDateTimeToUtc(submissionEndDate, ANNOUNCEMENT_CUTOFF_LOCAL_TIME, timeZone);
+  const utcStartDate = localDateTimeToUtc(
+    submissionStartDate,
+    ANNOUNCEMENT_CUTOFF_LOCAL_TIME,
+    timeZone
+  );
+  const utcEndDate = localDateTimeToUtc(
+    submissionEndDate,
+    ANNOUNCEMENT_CUTOFF_LOCAL_TIME,
+    timeZone
+  );
   return {
     kind: "announcement_batch",
     batch_id: `announcement-${date}`,
@@ -327,8 +375,18 @@ export function buildAnnouncementWindow({ announcementDate, now = new Date(), ti
     announcement_local_time: ANNOUNCEMENT_LOCAL_TIME,
     submission_start_date: submissionStartDate,
     submission_end_date: submissionEndDate,
-    local_start: localBoundaryIso(submissionStartDate, ANNOUNCEMENT_CUTOFF_LOCAL_TIME, utcStartDate, timeZone),
-    local_end: localBoundaryIso(submissionEndDate, ANNOUNCEMENT_CUTOFF_LOCAL_TIME, utcEndDate, timeZone),
+    local_start: localBoundaryIso(
+      submissionStartDate,
+      ANNOUNCEMENT_CUTOFF_LOCAL_TIME,
+      utcStartDate,
+      timeZone
+    ),
+    local_end: localBoundaryIso(
+      submissionEndDate,
+      ANNOUNCEMENT_CUTOFF_LOCAL_TIME,
+      utcEndDate,
+      timeZone
+    ),
     utc_start: utcStartDate.toISOString(),
     utc_end: utcEndDate.toISOString(),
     api_start: apiDateTime(utcStartDate),
@@ -342,7 +400,10 @@ export function normalizeArxivId(value) {
   candidate = candidate.replace(/^oai:arxiv\.org:/iu, "");
   try {
     const url = new URL(candidate);
-    if (["http:", "https:"].includes(url.protocol) && ["arxiv.org", "export.arxiv.org"].includes(url.hostname.toLowerCase())) {
+    if (
+      ["http:", "https:"].includes(url.protocol) &&
+      ["arxiv.org", "export.arxiv.org"].includes(url.hostname.toLowerCase())
+    ) {
       candidate = decodeURIComponent(url.pathname).replace(/^\/(?:abs|pdf|src)\//iu, "");
     }
   } catch {
@@ -368,9 +429,18 @@ function isValidArxivId(value) {
 export function discoveryIdentity(entry) {
   const normalized = normalizeArxivId(entry?.arxiv_id ?? entry?.id ?? entry?.url);
   const revision = normalized.revision ?? entry?.revision;
-  if (!isValidArxivId(normalized.arxiv_id) || !Number.isInteger(revision) || revision < 1 ||
-    (normalized.revision !== null && entry?.revision !== undefined && Number(entry.revision) !== normalized.revision)) {
-    throw new ArxivFeedError("ARXIV_ENTRY_ID_INVALID", "discovery entry 必须包含合法的 arXiv ID 和 revision。");
+  if (
+    !isValidArxivId(normalized.arxiv_id) ||
+    !Number.isInteger(revision) ||
+    revision < 1 ||
+    (normalized.revision !== null &&
+      entry?.revision !== undefined &&
+      Number(entry.revision) !== normalized.revision)
+  ) {
+    throw new ArxivFeedError(
+      "ARXIV_ENTRY_ID_INVALID",
+      "discovery entry 必须包含合法的 arXiv ID 和 revision。"
+    );
   }
   return { arxiv_id: normalized.arxiv_id, revision };
 }
@@ -390,17 +460,26 @@ export function normalizeDiscoveryDecision(value = "unreviewed") {
 
 function normalizeDiscoveryCategories(entry) {
   const categories = Array.isArray(entry?.categories)
-    ? entry.categories.map((category) => {
-      if (typeof category !== "string") throw new ArxivFeedError("ARXIV_ENTRY_CATEGORY_INVALID", "discovery category 必须是字符串。");
-      return normalizeWhitespace(category);
-    }).filter(Boolean)
+    ? entry.categories
+        .map((category) => {
+          if (typeof category !== "string")
+            throw new ArxivFeedError(
+              "ARXIV_ENTRY_CATEGORY_INVALID",
+              "discovery category 必须是字符串。"
+            );
+          return normalizeWhitespace(category);
+        })
+        .filter(Boolean)
     : [];
   if (entry?.categories !== undefined && !Array.isArray(entry.categories)) {
     throw new ArxivFeedError("ARXIV_ENTRY_CATEGORY_INVALID", "discovery categories 必须是数组。");
   }
   const primary = normalizeWhitespace(entry?.primary_category ?? "");
   if (entry?.primary_category !== undefined && typeof entry.primary_category !== "string") {
-    throw new ArxivFeedError("ARXIV_ENTRY_CATEGORY_INVALID", "discovery primary_category 必须是字符串。");
+    throw new ArxivFeedError(
+      "ARXIV_ENTRY_CATEGORY_INVALID",
+      "discovery primary_category 必须是字符串。"
+    );
   }
   if (primary && !categories.includes(primary)) categories.push(primary);
   return [...new Set(categories)];
@@ -418,23 +497,43 @@ export function normalizeDiscoveryEntry(entry) {
   const title = typeof entry.title === "string" ? normalizeWhitespace(entry.title) : "";
   const abstract = typeof entry.abstract === "string" ? normalizeWhitespace(entry.abstract) : "";
   const published = typeof entry.published === "string" ? normalizeWhitespace(entry.published) : "";
-  const updated = typeof (entry.updated ?? entry.published) === "string" ? normalizeWhitespace(entry.updated ?? entry.published) : "";
-  const authors = Array.isArray(entry.authors) && entry.authors.every((author) => typeof author === "string")
-    ? entry.authors.map((author) => normalizeWhitespace(author)).filter(Boolean)
-    : [];
+  const updated =
+    typeof (entry.updated ?? entry.published) === "string"
+      ? normalizeWhitespace(entry.updated ?? entry.published)
+      : "";
+  const authors =
+    Array.isArray(entry.authors) && entry.authors.every((author) => typeof author === "string")
+      ? entry.authors.map((author) => normalizeWhitespace(author)).filter(Boolean)
+      : [];
   if (!title || !abstract || !published || !updated || authors.length === 0) {
-    throw new ArxivFeedError("ARXIV_ENTRY_INVALID", `discovery entry ${discoveryIdentityKey(entry)} 缺少必需字段。`);
+    throw new ArxivFeedError(
+      "ARXIV_ENTRY_INVALID",
+      `discovery entry ${discoveryIdentityKey(entry)} 缺少必需字段。`
+    );
   }
   if (Number.isNaN(Date.parse(published)) || Number.isNaN(Date.parse(updated))) {
-    throw new ArxivFeedError("ARXIV_ENTRY_DATE_INVALID", `discovery entry ${discoveryIdentityKey(entry)} 的日期无效。`);
+    throw new ArxivFeedError(
+      "ARXIV_ENTRY_DATE_INVALID",
+      `discovery entry ${discoveryIdentityKey(entry)} 的日期无效。`
+    );
   }
   if (entry.url !== undefined && typeof entry.url !== "string") {
-    throw new ArxivFeedError("ARXIV_ENTRY_URL_INVALID", `discovery entry ${discoveryIdentityKey(entry)} 的 abstract URL 必须是字符串。`);
+    throw new ArxivFeedError(
+      "ARXIV_ENTRY_URL_INVALID",
+      `discovery entry ${discoveryIdentityKey(entry)} 的 abstract URL 必须是字符串。`
+    );
   }
   const url = normalizeWhitespace(entry.url) || canonicalUrl(identity);
   const linkedIdentity = linkIdentity(url);
-  if (!linkedIdentity || linkedIdentity.arxiv_id !== identity.arxiv_id || linkedIdentity.revision !== identity.revision) {
-    throw new ArxivFeedError("ARXIV_ENTRY_URL_INVALID", `discovery entry ${discoveryIdentityKey(entry)} 的 abstract URL 与身份不一致。`);
+  if (
+    !linkedIdentity ||
+    linkedIdentity.arxiv_id !== identity.arxiv_id ||
+    linkedIdentity.revision !== identity.revision
+  ) {
+    throw new ArxivFeedError(
+      "ARXIV_ENTRY_URL_INVALID",
+      `discovery entry ${discoveryIdentityKey(entry)} 的 abstract URL 与身份不一致。`
+    );
   }
   const normalized = {
     ...identity,
@@ -449,19 +548,24 @@ export function normalizeDiscoveryEntry(entry) {
   const primary = normalizeWhitespace(entry.primary_category ?? "");
   if (categories.length > 0) normalized.categories = categories;
   if (primary) normalized.primary_category = primary;
-  if (entry.decision !== undefined) normalized.decision = normalizeDiscoveryDecision(entry.decision);
+  if (entry.decision !== undefined)
+    normalized.decision = normalizeDiscoveryDecision(entry.decision);
   return normalized;
 }
 
 export function deduplicateDiscoveryEntries(entries) {
-  if (!Array.isArray(entries)) throw new ArxivFeedError("ARXIV_ENTRY_INVALID", "discovery entries 必须是数组。");
+  if (!Array.isArray(entries))
+    throw new ArxivFeedError("ARXIV_ENTRY_INVALID", "discovery entries 必须是数组。");
   const seen = new Map();
   for (const rawEntry of entries) {
     const entry = normalizeDiscoveryEntry(rawEntry);
     const key = discoveryIdentityKey(entry);
     const previous = seen.get(key);
     if (previous && JSON.stringify(previous) !== JSON.stringify(entry)) {
-      throw new ArxivFeedError("ARXIV_DUPLICATE_CONFLICT", `discovery entry ${key} 重复但内容不一致。`);
+      throw new ArxivFeedError(
+        "ARXIV_DUPLICATE_CONFLICT",
+        `discovery entry ${key} 重复但内容不一致。`
+      );
     }
     seen.set(key, entry);
   }
@@ -469,9 +573,11 @@ export function deduplicateDiscoveryEntries(entries) {
 }
 
 function decisionStateForEntries(entries) {
-  const overrides = Object.fromEntries(entries
-    .filter((entry) => entry.decision !== undefined)
-    .map((entry) => [discoveryIdentityKey(entry), normalizeDiscoveryDecision(entry.decision)]));
+  const overrides = Object.fromEntries(
+    entries
+      .filter((entry) => entry.decision !== undefined)
+      .map((entry) => [discoveryIdentityKey(entry), normalizeDiscoveryDecision(entry.decision)])
+  );
   return {
     default: normalizeDiscoveryDecision(),
     allowed: [...DISCOVERY_DECISIONS],
@@ -489,7 +595,9 @@ function linkIdentity(href) {
     const url = new URL(href);
     if (!["arxiv.org", "export.arxiv.org"].includes(url.hostname.toLowerCase())) return null;
     const identity = normalizeArxivId(href);
-    return isValidArxivId(identity.arxiv_id) && Number.isInteger(identity.revision) && identity.revision >= 1
+    return isValidArxivId(identity.arxiv_id) &&
+      Number.isInteger(identity.revision) &&
+      identity.revision >= 1
       ? identity
       : null;
   } catch {
@@ -507,7 +615,10 @@ function resolveEntryIdentity(entry) {
   const linkedRevisions = new Set(linkedIdentities.map(({ revision }) => revision));
   if (identity.revision !== null) {
     if ([...linkedRevisions].some((revision) => revision !== identity.revision)) {
-      throw new ArxivFeedError("ARXIV_ENTRY_REVISION_CONFLICT", `entry ${identity.arxiv_id} 的链接 revision 不一致。`);
+      throw new ArxivFeedError(
+        "ARXIV_ENTRY_REVISION_CONFLICT",
+        `entry ${identity.arxiv_id} 的链接 revision 不一致。`
+      );
     }
     return identity;
   }
@@ -515,9 +626,15 @@ function resolveEntryIdentity(entry) {
     return { ...identity, revision: [...linkedRevisions][0] };
   }
   if (linkedRevisions.size > 1) {
-    throw new ArxivFeedError("ARXIV_ENTRY_REVISION_CONFLICT", `entry ${identity.arxiv_id} 的链接包含多个 revision。`);
+    throw new ArxivFeedError(
+      "ARXIV_ENTRY_REVISION_CONFLICT",
+      `entry ${identity.arxiv_id} 的链接包含多个 revision。`
+    );
   }
-  throw new ArxivFeedError("ARXIV_ENTRY_REVISION_MISSING", `entry ${identity.arxiv_id} 缺少明确 revision。`);
+  throw new ArxivFeedError(
+    "ARXIV_ENTRY_REVISION_MISSING",
+    `entry ${identity.arxiv_id} 缺少明确 revision。`
+  );
 }
 
 function integerMetadata(node, field) {
@@ -543,12 +660,16 @@ function selectAbstractLink(entry, identity) {
         const url = new URL(link.href);
         if (!["arxiv.org", "export.arxiv.org"].includes(url.hostname.toLowerCase())) return false;
         const linkIdentity = normalizeArxivId(link.href);
-        return linkIdentity.arxiv_id === identity.arxiv_id && linkIdentity.revision === identity.revision;
+        return (
+          linkIdentity.arxiv_id === identity.arxiv_id && linkIdentity.revision === identity.revision
+        );
       } catch {
         return false;
       }
     })
-    .filter((link) => link.rel === "alternate" || link.type === "text/html" || /\/abs\//iu.test(link.href))
+    .filter(
+      (link) => link.rel === "alternate" || link.type === "text/html" || /\/abs\//iu.test(link.href)
+    )
     .sort((left, right) => {
       const score = (link) =>
         (link.rel === "alternate" ? 4 : 0) +
@@ -561,7 +682,8 @@ function selectAbstractLink(entry, identity) {
 
 function parseArxivDocument(xml) {
   const root = parseXmlDocument(xml);
-  if (localName(root.name) !== "feed") throw new ArxivFeedError("ARXIV_FEED_INVALID", "响应不是 Atom feed。");
+  if (localName(root.name) !== "feed")
+    throw new ArxivFeedError("ARXIV_FEED_INVALID", "响应不是 Atom feed。");
   if (root.attributes.xmlns !== "http://www.w3.org/2005/Atom") {
     throw new ArxivFeedError("ARXIV_FEED_NAMESPACE_INVALID", "响应不是官方 Atom namespace。");
   }
@@ -577,10 +699,16 @@ function parseArxivDocument(xml) {
   for (const entry of entryNodes) {
     const identity = resolveEntryIdentity(entry);
     if (!isValidArxivId(identity.arxiv_id)) {
-      throw new ArxivFeedError("ARXIV_ENTRY_ID_INVALID", `entry ${identity.arxiv_id} 不是合法 arXiv ID。`);
+      throw new ArxivFeedError(
+        "ARXIV_ENTRY_ID_INVALID",
+        `entry ${identity.arxiv_id} 不是合法 arXiv ID。`
+      );
     }
     if (!Number.isInteger(identity.revision) || identity.revision < 1) {
-      throw new ArxivFeedError("ARXIV_ENTRY_REVISION_MISSING", `entry ${identity.arxiv_id} 缺少明确 revision。`);
+      throw new ArxivFeedError(
+        "ARXIV_ENTRY_REVISION_MISSING",
+        `entry ${identity.arxiv_id} 缺少明确 revision。`
+      );
     }
     const titleNode = childNode(entry, "title");
     const summaryNode = childNode(entry, "summary");
@@ -596,7 +724,8 @@ function parseArxivDocument(xml) {
     const authors = childNodes(entry, "author")
       .map((author) => normalizeWhitespace(nodeText(childNode(author, "name"))))
       .filter(Boolean);
-    if (authors.length === 0) throw new ArxivFeedError("ARXIV_ENTRY_INVALID", `entry ${identity.arxiv_id} 缺少作者。`);
+    if (authors.length === 0)
+      throw new ArxivFeedError("ARXIV_ENTRY_INVALID", `entry ${identity.arxiv_id} 缺少作者。`);
     const categories = childNodes(entry, "category")
       .map((category) => normalizeWhitespace(category.attributes.term ?? ""))
       .filter(Boolean);
@@ -638,10 +767,17 @@ function parseArxivDocument(xml) {
   if (metadata.items_per_page !== undefined && metadata.items_per_page < entryNodes.length) {
     throw new ArxivFeedError("ARXIV_PAGINATION_INVALID", "Atom 分页元数据小于实际条目数。");
   }
-  if (metadata.total_results !== undefined && metadata.total_results > startIndex && entries.length === 0) {
+  if (
+    metadata.total_results !== undefined &&
+    metadata.total_results > startIndex &&
+    entries.length === 0
+  ) {
     throw new ArxivFeedError("ARXIV_PAGINATION_INVALID", "Atom 声明存在结果但当前页为空。");
   }
-  if (metadata.total_results !== undefined && metadata.total_results < startIndex + entries.length) {
+  if (
+    metadata.total_results !== undefined &&
+    metadata.total_results < startIndex + entries.length
+  ) {
     throw new ArxivFeedError("ARXIV_PAGINATION_INVALID", "Atom 当前页超出 totalResults。");
   }
   return {
@@ -650,7 +786,9 @@ function parseArxivDocument(xml) {
     // keeps it at max_results even when the final page contains fewer entries;
     // retain the raw count separately for pagination offsets and provenance.
     raw_entry_count: entryNodes.length,
-    metadata: Object.fromEntries(Object.entries(metadata).filter(([, value]) => Number.isInteger(value))),
+    metadata: Object.fromEntries(
+      Object.entries(metadata).filter(([, value]) => Number.isInteger(value))
+    ),
   };
 }
 
@@ -676,13 +814,24 @@ function parseArxivRssDocument(xml) {
     const title = normalizeWhitespace(nodeText(childNode(item, "title")));
     const abstract = normalizeWhitespace(nodeText(childNode(item, "description")));
     const published = normalizeWhitespace(nodeText(childNode(item, "pubDate")));
-    const authors = normalizeWhitespace(nodeText(childNode(item, "author"))) || normalizeWhitespace(nodeText(childNode(item, "dc:creator")));
-    if (!title || !abstract || !published || !authors) throw new ArxivFeedError("ARXIV_ENTRY_INVALID", `RSS 条目 ${identity.arxiv_id} 缺少必需字段。`);
+    const authors =
+      normalizeWhitespace(nodeText(childNode(item, "author"))) ||
+      normalizeWhitespace(nodeText(childNode(item, "dc:creator")));
+    if (!title || !abstract || !published || !authors)
+      throw new ArxivFeedError(
+        "ARXIV_ENTRY_INVALID",
+        `RSS 条目 ${identity.arxiv_id} 缺少必需字段。`
+      );
     const key = `${identity.arxiv_id}@v${identity.revision}`;
     const date = new Date(published);
-    if (Number.isNaN(date.valueOf())) throw new ArxivFeedError("ARXIV_ENTRY_DATE_INVALID", `RSS 条目 ${key} 的 pubDate 无效。`);
+    if (Number.isNaN(date.valueOf()))
+      throw new ArxivFeedError("ARXIV_ENTRY_DATE_INVALID", `RSS 条目 ${key} 的 pubDate 无效。`);
     const categories = childNodes(item, "category")
-      .map((category) => normalizeWhitespace(category.attributes.term ?? category.attributes.label ?? nodeText(category)))
+      .map((category) =>
+        normalizeWhitespace(
+          category.attributes.term ?? category.attributes.label ?? nodeText(category)
+        )
+      )
       .filter(Boolean);
     const primaryNode = childNode(item, "primary_category");
     const entry = normalizeDiscoveryEntry({
@@ -706,7 +855,11 @@ function parseArxivRssDocument(xml) {
       entries.push(entry);
     }
   }
-  return { entries, raw_entry_count: entries.length, metadata: { total_results: entries.length, start_index: 0, items_per_page: entries.length } };
+  return {
+    entries,
+    raw_entry_count: entries.length,
+    metadata: { total_results: entries.length, start_index: 0, items_per_page: entries.length },
+  };
 }
 
 export function parseArxivFeedPage(xml) {
@@ -755,7 +908,10 @@ function entriesInWindow(entries, window) {
   return entries.filter((entry) => {
     const published = Date.parse(entry.published);
     if (Number.isNaN(published)) {
-      throw new ArxivFeedError("ARXIV_ENTRY_DATE_INVALID", `entry ${entry.arxiv_id} 的 published 不是有效日期。`);
+      throw new ArxivFeedError(
+        "ARXIV_ENTRY_DATE_INVALID",
+        `entry ${entry.arxiv_id} 的 published 不是有效日期。`
+      );
     }
     return published >= start && published < end;
   });
@@ -763,11 +919,22 @@ function entriesInWindow(entries, window) {
 
 function pageMetadataFor(parsed, requestedStart, pageSize, { requireComplete = false } = {}) {
   const metadata = parsed.metadata;
-  if (requireComplete && ["total_results", "start_index", "items_per_page"].some((field) => metadata[field] === undefined)) {
-    throw new ArxivFeedError("ARXIV_PAGINATION_INVALID", "Atom 缺少完整分页元数据。需要 totalResults、startIndex 和 itemsPerPage。");
+  if (
+    requireComplete &&
+    ["total_results", "start_index", "items_per_page"].some(
+      (field) => metadata[field] === undefined
+    )
+  ) {
+    throw new ArxivFeedError(
+      "ARXIV_PAGINATION_INVALID",
+      "Atom 缺少完整分页元数据。需要 totalResults、startIndex 和 itemsPerPage。"
+    );
   }
   if (metadata.start_index !== undefined && metadata.start_index !== requestedStart) {
-    throw new ArxivFeedError("ARXIV_PAGINATION_INVALID", `Atom startIndex ${metadata.start_index} 与请求 ${requestedStart} 不一致。`);
+    throw new ArxivFeedError(
+      "ARXIV_PAGINATION_INVALID",
+      `Atom startIndex ${metadata.start_index} 与请求 ${requestedStart} 不一致。`
+    );
   }
   if ((parsed.raw_entry_count ?? parsed.entries.length) > pageSize) {
     throw new ArxivFeedError("ARXIV_PAGINATION_INVALID", "当前页条目数超过请求的 max_results。");
@@ -818,7 +985,10 @@ async function fetchPaginatedFeed({
   parser = parseArxivDocument,
 }) {
   if (!Number.isInteger(pageSize) || pageSize < 1 || pageSize > DEFAULT_PAGE_SIZE) {
-    throw new ArxivFeedError("ARXIV_PAGINATION_INVALID", `pageSize 必须在 1 到 ${DEFAULT_PAGE_SIZE} 之间。`);
+    throw new ArxivFeedError(
+      "ARXIV_PAGINATION_INVALID",
+      `pageSize 必须在 1 到 ${DEFAULT_PAGE_SIZE} 之间。`
+    );
   }
   if (!Number.isInteger(start) || start < 0) {
     throw new ArxivFeedError("ARXIV_PAGINATION_INVALID", "分页起点必须是非负整数。");
@@ -839,7 +1009,11 @@ async function fetchPaginatedFeed({
   const requestGate = createRequestGate({ minRequestIntervalMs, sleepImpl, deadline });
 
   for (let pageIndex = 0; pageIndex < maxPages; pageIndex += 1) {
-    const sourceUrl = feedUrl({ query: effectiveQuery, maxResults: pageSize, start: requestedStart });
+    const sourceUrl = feedUrl({
+      query: effectiveQuery,
+      maxResults: pageSize,
+      start: requestedStart,
+    });
     const { response, rawXml } = await fetchFeed({
       sourceUrl,
       fetchImpl,
@@ -862,13 +1036,19 @@ async function fetchPaginatedFeed({
       });
     }
     if (contentType && !/(?:application|text)\/(?:atom\+xml|xml)(?:;|$)/iu.test(contentType)) {
-      throw new ArxivFeedError("ARXIV_RESPONSE_NOT_XML", `arXiv API 返回了非 XML 内容：${contentType}`);
+      throw new ArxivFeedError(
+        "ARXIV_RESPONSE_NOT_XML",
+        `arXiv API 返回了非 XML 内容：${contentType}`
+      );
     }
     const parsed = parser(rawXml);
     const metadata = pageMetadataFor(parsed, requestedStart, pageSize, { requireComplete: true });
     if (totalResults === undefined) totalResults = metadata.total_results;
     if (metadata.total_results !== undefined && totalResults !== metadata.total_results) {
-      throw new ArxivFeedError("ARXIV_PAGINATION_DRIFT", "分页中的 totalResults 发生变化，拒绝发布不一致 edition。");
+      throw new ArxivFeedError(
+        "ARXIV_PAGINATION_DRIFT",
+        "分页中的 totalResults 发生变化，拒绝发布不一致 edition。"
+      );
     }
     if (totalResults !== undefined && totalResults > 30_000) {
       throw new ArxivFeedError("ARXIV_PAGINATION_INVALID", "arXiv API 结果超过官方单次查询上限。");
@@ -892,47 +1072,105 @@ async function fetchPaginatedFeed({
     if (totalResults !== undefined) {
       if (totalResults === 0) break;
       if ((parsed.raw_entry_count ?? parsed.entries.length) === 0 || pageEnd <= requestedStart) {
-        throw new ArxivFeedError("ARXIV_PAGINATION_INVALID", "分页未向前推进或在声明的结果结束前返回空页。");
+        throw new ArxivFeedError(
+          "ARXIV_PAGINATION_INVALID",
+          "分页未向前推进或在声明的结果结束前返回空页。"
+        );
       }
       if (pageEnd >= totalResults) break;
       requestedStart = pageEnd;
       continue;
     }
     if ((parsed.raw_entry_count ?? parsed.entries.length) < pageSize) break;
-    throw new ArxivFeedError("ARXIV_PAGINATION_INVALID", "缺少 totalResults，无法证明完整分页已获取。");
+    throw new ArxivFeedError(
+      "ARXIV_PAGINATION_INVALID",
+      "缺少 totalResults，无法证明完整分页已获取。"
+    );
   }
 
   if (pages.length >= maxPages && totalResults !== undefined) {
     const lastPage = pages.at(-1);
     const pageEnd = lastPage.start + lastPage.entry_count;
     if (pageEnd < totalResults) {
-      throw new ArxivFeedError("ARXIV_PAGINATION_INVALID", "分页超过 maxPages 仍未覆盖 totalResults。");
+      throw new ArxivFeedError(
+        "ARXIV_PAGINATION_INVALID",
+        "分页超过 maxPages 仍未覆盖 totalResults。"
+      );
     }
   }
   const entries = entriesInWindow([...entryMap.values()], window);
-  entries.sort((left, right) => left.published.localeCompare(right.published) || `${left.arxiv_id}@v${left.revision}`.localeCompare(`${right.arxiv_id}@v${right.revision}`));
+  entries.sort(
+    (left, right) =>
+      left.published.localeCompare(right.published) ||
+      `${left.arxiv_id}@v${left.revision}`.localeCompare(`${right.arxiv_id}@v${right.revision}`)
+  );
   return { query: effectiveQuery, pages, totalResults: totalResults ?? entries.length, entries };
 }
 
-async function fetchFallbackFeed({ sourceUrl, parser, fetchImpl, timeoutMs, maxAttempts, sleepImpl, now, totalTimeoutMs, snapshotRun }) {
-  const requestGate = createRequestGate({ minRequestIntervalMs: 0, sleepImpl, deadline: Date.now() + totalTimeoutMs });
-  const { response, rawXml } = await fetchFeed({ sourceUrl, fetchImpl, timeoutMs, maxAttempts, sleepImpl, now, totalTimeoutMs, requestGate });
+async function fetchFallbackFeed({
+  sourceUrl,
+  parser,
+  fetchImpl,
+  timeoutMs,
+  maxAttempts,
+  sleepImpl,
+  now,
+  totalTimeoutMs,
+  snapshotRun,
+}) {
+  const requestGate = createRequestGate({
+    minRequestIntervalMs: 0,
+    sleepImpl,
+    deadline: Date.now() + totalTimeoutMs,
+  });
+  const { response, rawXml } = await fetchFeed({
+    sourceUrl,
+    fetchImpl,
+    timeoutMs,
+    maxAttempts,
+    sleepImpl,
+    now,
+    totalTimeoutMs,
+    requestGate,
+  });
   const contentType = response.headers?.get?.("content-type") ?? "";
-  if (contentType && !/(?:application|text)\/(?:rss\+xml|atom\+xml|xml)(?:;|$)/iu.test(contentType)) {
-    throw new ArxivFeedError("ARXIV_RESPONSE_NOT_XML", `arXiv fallback 返回了非 XML 内容：${contentType}`);
+  if (
+    contentType &&
+    !/(?:application|text)\/(?:rss\+xml|atom\+xml|xml)(?:;|$)/iu.test(contentType)
+  ) {
+    throw new ArxivFeedError(
+      "ARXIV_RESPONSE_NOT_XML",
+      `arXiv fallback 返回了非 XML 内容：${contentType}`
+    );
   }
-  if (snapshotRun) await snapshotRun.capturePage({ pageIndex: 0, requestedStart: 0, sourceUrl, rawXml, contentType });
+  if (snapshotRun)
+    await snapshotRun.capturePage({
+      pageIndex: 0,
+      requestedStart: 0,
+      sourceUrl,
+      rawXml,
+      contentType,
+    });
   const parsed = parser(rawXml);
   const metadata = pageMetadataFor(parsed, 0, DEFAULT_PAGE_SIZE);
   const page = {
-    index: 0, start: 0, requested_max_results: DEFAULT_PAGE_SIZE, source_url: sourceUrl,
-    response_sha256: createHash("sha256").update(rawXml).digest("hex"), total_results: metadata.total_results ?? parsed.entries.length,
-    items_per_page: metadata.items_per_page ?? parsed.entries.length, entry_count: parsed.raw_entry_count ?? parsed.entries.length,
+    index: 0,
+    start: 0,
+    requested_max_results: DEFAULT_PAGE_SIZE,
+    source_url: sourceUrl,
+    response_sha256: createHash("sha256").update(rawXml).digest("hex"),
+    total_results: metadata.total_results ?? parsed.entries.length,
+    items_per_page: metadata.items_per_page ?? parsed.entries.length,
+    entry_count: parsed.raw_entry_count ?? parsed.entries.length,
     window_entry_count: parsed.entries.length,
   };
   if (snapshotRun) await snapshotRun.completePage(0, page);
   const entries = parsed.entries;
-  entries.sort((left, right) => left.published.localeCompare(right.published) || `${left.arxiv_id}@v${left.revision}`.localeCompare(`${right.arxiv_id}@v${right.revision}`));
+  entries.sort(
+    (left, right) =>
+      left.published.localeCompare(right.published) ||
+      `${left.arxiv_id}@v${left.revision}`.localeCompare(`${right.arxiv_id}@v${right.revision}`)
+  );
   return { query: null, pages: [page], totalResults: page.total_results, entries };
 }
 
@@ -942,14 +1180,25 @@ function retryAfterMs(response, now = Date.now()) {
   const seconds = Number(value);
   if (Number.isFinite(seconds)) return Math.max(0, seconds * 1000);
   const date = Date.parse(value);
-  return Number.isNaN(date) ? null : Math.max(0, date - (now instanceof Date ? now.valueOf() : now));
+  return Number.isNaN(date)
+    ? null
+    : Math.max(0, date - (now instanceof Date ? now.valueOf() : now));
 }
 
 function defaultSleep(delayMs) {
   return new Promise((resolvePromise) => setTimeout(resolvePromise, delayMs));
 }
 
-async function fetchFeed({ sourceUrl, fetchImpl, timeoutMs, maxAttempts, sleepImpl, totalTimeoutMs, deadline = Date.now() + totalTimeoutMs, requestGate }) {
+async function fetchFeed({
+  sourceUrl,
+  fetchImpl,
+  timeoutMs,
+  maxAttempts,
+  sleepImpl,
+  totalTimeoutMs,
+  deadline = Date.now() + totalTimeoutMs,
+  requestGate,
+}) {
   let lastError;
   for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
     const remainingMs = deadline - Date.now();
@@ -966,10 +1215,13 @@ async function fetchFeed({ sourceUrl, fetchImpl, timeoutMs, maxAttempts, sleepIm
         throw new ArxivFeedError("ARXIV_REQUEST_TIMEOUT", "arXiv 刷新超过整轮时间预算。");
       }
       const controller = new AbortController();
-      timeout = setTimeout(() => {
-        timedOut = true;
-        controller.abort();
-      }, Math.min(timeoutMs, requestRemainingMs));
+      timeout = setTimeout(
+        () => {
+          timedOut = true;
+          controller.abort();
+        },
+        Math.min(timeoutMs, requestRemainingMs)
+      );
       const response = await fetchImpl(sourceUrl, {
         headers: { accept: "application/atom+xml, application/xml, text/xml" },
         signal: controller.signal,
@@ -977,24 +1229,37 @@ async function fetchFeed({ sourceUrl, fetchImpl, timeoutMs, maxAttempts, sleepIm
       if (RETRYABLE_STATUSES.has(response.status) && attempt < maxAttempts) {
         const retryDelay = retryAfterMs(response) ?? 500 * 2 ** (attempt - 1);
         if (retryDelay >= deadline - Date.now()) {
-          lastError = new ArxivFeedError("ARXIV_REQUEST_TIMEOUT", "arXiv 重试等待超过整轮时间预算。");
+          lastError = new ArxivFeedError(
+            "ARXIV_REQUEST_TIMEOUT",
+            "arXiv 重试等待超过整轮时间预算。"
+          );
           break;
         }
         await sleepImpl(retryDelay);
         continue;
       }
-      if (!response.ok) throw new ArxivFeedError("ARXIV_REQUEST_FAILED", `arXiv API request failed: HTTP ${response.status}`);
+      if (!response.ok)
+        throw new ArxivFeedError(
+          "ARXIV_REQUEST_FAILED",
+          `arXiv API request failed: HTTP ${response.status}`
+        );
       const rawXml = await response.text();
       return { response, rawXml };
     } catch (error) {
       lastError = timedOut
-        ? new ArxivFeedError("ARXIV_REQUEST_TIMEOUT", `arXiv 请求超时：${sourceUrl}`, { cause: error })
+        ? new ArxivFeedError("ARXIV_REQUEST_TIMEOUT", `arXiv 请求超时：${sourceUrl}`, {
+            cause: error,
+          })
         : error;
       const isRetryableError = error?.name === "AbortError" || !(error instanceof ArxivFeedError);
       if (!isRetryableError || attempt >= maxAttempts) break;
       const retryDelay = 500 * 2 ** (attempt - 1);
       if (retryDelay >= deadline - Date.now()) {
-        lastError = new ArxivFeedError("ARXIV_REQUEST_TIMEOUT", "arXiv 重试等待超过整轮时间预算。", { cause: error });
+        lastError = new ArxivFeedError(
+          "ARXIV_REQUEST_TIMEOUT",
+          "arXiv 重试等待超过整轮时间预算。",
+          { cause: error }
+        );
         break;
       }
       await sleepImpl(retryDelay);
@@ -1003,7 +1268,11 @@ async function fetchFeed({ sourceUrl, fetchImpl, timeoutMs, maxAttempts, sleepIm
     }
   }
   if (lastError instanceof ArxivFeedError) throw lastError;
-  throw new ArxivFeedError("ARXIV_REQUEST_FAILED", `arXiv API request failed: ${lastError?.message ?? "unknown error"}`, { cause: lastError });
+  throw new ArxivFeedError(
+    "ARXIV_REQUEST_FAILED",
+    `arXiv API request failed: ${lastError?.message ?? "unknown error"}`,
+    { cause: lastError }
+  );
 }
 
 const LOCK_STALE_AFTER_MS = 6 * 60 * 60 * 1000;
@@ -1040,7 +1309,10 @@ export async function acquireRefreshLock(lockPath) {
     let handle;
     try {
       handle = await open(lockPath, "wx");
-      await handle.writeFile(JSON.stringify({ pid: process.pid, started_at: new Date().toISOString() }), "utf8");
+      await handle.writeFile(
+        JSON.stringify({ pid: process.pid, started_at: new Date().toISOString() }),
+        "utf8"
+      );
       await handle.close();
       return;
     } catch (error) {
@@ -1065,7 +1337,10 @@ export async function releaseRefreshLock(lockPath) {
 
 async function writeTemporary(target, contents) {
   await mkdir(dirname(target), { recursive: true });
-  const temporary = resolve(dirname(target), `.${basename(target)}.tmp-${process.pid}-${randomUUID()}`);
+  const temporary = resolve(
+    dirname(target),
+    `.${basename(target)}.tmp-${process.pid}-${randomUUID()}`
+  );
   let handle;
   try {
     handle = await open(temporary, "wx");
@@ -1114,7 +1389,8 @@ function publicationPaths({ target, artifactRoot }) {
 
 function relativeTargetPath(root, target) {
   const path = relative(root, resolve(target)).split(sep).join("/");
-  if (!path || path === ".") throw new ArxivFeedError("ARXIV_PUBLISH_INVALID", `发布目标不能是 pointer 根目录：${target}`);
+  if (!path || path === ".")
+    throw new ArxivFeedError("ARXIV_PUBLISH_INVALID", `发布目标不能是 pointer 根目录：${target}`);
   return path;
 }
 
@@ -1162,18 +1438,40 @@ async function syncDirectory(directory) {
 }
 
 function validateGenerationMarker(marker, generationId) {
-  if (!marker || marker.schema_version !== PUBLISHED_GENERATION_SCHEMA_VERSION || marker.status !== "complete" || marker.generation_id !== generationId) {
-    throw new ArxivFeedError("ARXIV_PUBLISH_GENERATION_INVALID", `generation marker 无效：${generationId}`);
+  if (
+    !marker ||
+    marker.schema_version !== PUBLISHED_GENERATION_SCHEMA_VERSION ||
+    marker.status !== "complete" ||
+    marker.generation_id !== generationId
+  ) {
+    throw new ArxivFeedError(
+      "ARXIV_PUBLISH_GENERATION_INVALID",
+      `generation marker 无效：${generationId}`
+    );
   }
   if (!Array.isArray(marker.files) || marker.files.length === 0) {
-    throw new ArxivFeedError("ARXIV_PUBLISH_GENERATION_INVALID", `generation 没有完整文件清单：${generationId}`);
+    throw new ArxivFeedError(
+      "ARXIV_PUBLISH_GENERATION_INVALID",
+      `generation 没有完整文件清单：${generationId}`
+    );
   }
   const targets = new Set();
   for (const record of marker.files) {
-    if (!record || typeof record.target !== "string" || !record.target || targets.has(record.target) ||
-      typeof record.path !== "string" || !/^[^/].*$/u.test(record.path) ||
-      !/^[a-f0-9]{64}$/u.test(record.sha256) || !Number.isInteger(record.byte_length) || record.byte_length < 0) {
-      throw new ArxivFeedError("ARXIV_PUBLISH_GENERATION_INVALID", `generation 文件清单无效：${generationId}`);
+    if (
+      !record ||
+      typeof record.target !== "string" ||
+      !record.target ||
+      targets.has(record.target) ||
+      typeof record.path !== "string" ||
+      !/^[^/].*$/u.test(record.path) ||
+      !/^[a-f0-9]{64}$/u.test(record.sha256) ||
+      !Number.isInteger(record.byte_length) ||
+      record.byte_length < 0
+    ) {
+      throw new ArxivFeedError(
+        "ARXIV_PUBLISH_GENERATION_INVALID",
+        `generation 文件清单无效：${generationId}`
+      );
     }
     targets.add(record.target);
   }
@@ -1190,61 +1488,109 @@ function pointerForGeneration({ pointerRoot, generationPath, marker }) {
 }
 
 function validatePointer(pointer) {
-  if (!pointer || pointer.schema_version !== PUBLISHED_POINTER_SCHEMA_VERSION ||
-    typeof pointer.generation_id !== "string" || typeof pointer.generation_path !== "string" ||
-    !Array.isArray(pointer.files) || pointer.files.length === 0) {
+  if (
+    !pointer ||
+    pointer.schema_version !== PUBLISHED_POINTER_SCHEMA_VERSION ||
+    typeof pointer.generation_id !== "string" ||
+    typeof pointer.generation_path !== "string" ||
+    !Array.isArray(pointer.files) ||
+    pointer.files.length === 0
+  ) {
     throw new ArxivFeedError("ARXIV_PUBLISH_POINTER_INVALID", "current-generation pointer 无效。");
   }
   validateGenerationId(pointer.generation_id);
   const targets = new Set();
   for (const record of pointer.files) {
-    if (!record || typeof record.target !== "string" || targets.has(record.target) ||
-      typeof record.path !== "string" || !/^[^/].*$/u.test(record.path) ||
-      !/^[a-f0-9]{64}$/u.test(record.sha256) || !Number.isInteger(record.byte_length) || record.byte_length < 0) {
-      throw new ArxivFeedError("ARXIV_PUBLISH_POINTER_INVALID", "current-generation 文件清单无效。");
+    if (
+      !record ||
+      typeof record.target !== "string" ||
+      targets.has(record.target) ||
+      typeof record.path !== "string" ||
+      !/^[^/].*$/u.test(record.path) ||
+      !/^[a-f0-9]{64}$/u.test(record.sha256) ||
+      !Number.isInteger(record.byte_length) ||
+      record.byte_length < 0
+    ) {
+      throw new ArxivFeedError(
+        "ARXIV_PUBLISH_POINTER_INVALID",
+        "current-generation 文件清单无效。"
+      );
     }
     targets.add(record.target);
   }
 }
 
 function recordsMatch(left, right) {
-  return left?.target === right?.target && left?.path === right?.path &&
-    left?.sha256 === right?.sha256 && left?.byte_length === right?.byte_length;
+  return (
+    left?.target === right?.target &&
+    left?.path === right?.path &&
+    left?.sha256 === right?.sha256 &&
+    left?.byte_length === right?.byte_length
+  );
 }
 
 async function readCompleteGeneration({ generationRoot, generationId, pointerFiles }) {
   const safeGenerationId = validateGenerationId(generationId);
-  const generationPath = resolvePathInside(generationRoot, safeGenerationId, "ARXIV_PUBLISH_GENERATION_INVALID");
+  const generationPath = resolvePathInside(
+    generationRoot,
+    safeGenerationId,
+    "ARXIV_PUBLISH_GENERATION_INVALID"
+  );
   let marker;
   try {
     marker = JSON.parse(await readFile(join(generationPath, "generation.json"), "utf8"));
   } catch (error) {
     if (error?.code === "ENOENT") {
-      throw new ArxivFeedError("ARXIV_PUBLISH_GENERATION_NOT_FOUND", `generation 不存在：${safeGenerationId}`, { cause: error });
+      throw new ArxivFeedError(
+        "ARXIV_PUBLISH_GENERATION_NOT_FOUND",
+        `generation 不存在：${safeGenerationId}`,
+        { cause: error }
+      );
     }
     if (error instanceof SyntaxError) {
-      throw new ArxivFeedError("ARXIV_PUBLISH_GENERATION_INVALID", `generation marker 不是有效 JSON：${safeGenerationId}`, { cause: error });
+      throw new ArxivFeedError(
+        "ARXIV_PUBLISH_GENERATION_INVALID",
+        `generation marker 不是有效 JSON：${safeGenerationId}`,
+        { cause: error }
+      );
     }
     throw error;
   }
   validateGenerationMarker(marker, safeGenerationId);
   if (pointerFiles) {
-    if (pointerFiles.length !== marker.files.length || pointerFiles.some((record, index) => !recordsMatch(record, marker.files[index]))) {
-      throw new ArxivFeedError("ARXIV_PUBLISH_INCONSISTENT", `pointer 与 generation 不一致：${safeGenerationId}`);
+    if (
+      pointerFiles.length !== marker.files.length ||
+      pointerFiles.some((record, index) => !recordsMatch(record, marker.files[index]))
+    ) {
+      throw new ArxivFeedError(
+        "ARXIV_PUBLISH_INCONSISTENT",
+        `pointer 与 generation 不一致：${safeGenerationId}`
+      );
     }
   }
   const contents = new Map();
   for (const record of marker.files) {
-    const filePath = resolvePathInside(generationPath, record.path, "ARXIV_PUBLISH_GENERATION_INVALID");
+    const filePath = resolvePathInside(
+      generationPath,
+      record.path,
+      "ARXIV_PUBLISH_GENERATION_INVALID"
+    );
     let value;
     try {
       value = await readFile(filePath, "utf8");
     } catch (error) {
-      throw new ArxivFeedError("ARXIV_PUBLISH_GENERATION_INVALID", `generation 文件不存在：${record.path}`, { cause: error });
+      throw new ArxivFeedError(
+        "ARXIV_PUBLISH_GENERATION_INVALID",
+        `generation 文件不存在：${record.path}`,
+        { cause: error }
+      );
     }
     const actual = contentRecord({ target: record.target, path: record.path, contents: value });
     if (!recordsMatch(record, actual)) {
-      throw new ArxivFeedError("ARXIV_PUBLISH_GENERATION_INTEGRITY", `generation 文件校验失败：${record.target}`);
+      throw new ArxivFeedError(
+        "ARXIV_PUBLISH_GENERATION_INTEGRITY",
+        `generation 文件校验失败：${record.target}`
+      );
     }
     contents.set(record.target, value);
   }
@@ -1259,7 +1605,11 @@ async function readPublishedPointer(pointerPath) {
   } catch (error) {
     if (error?.code === "ENOENT") return null;
     if (error instanceof SyntaxError) {
-      throw new ArxivFeedError("ARXIV_PUBLISH_POINTER_INVALID", `pointer 不是有效 JSON：${pointerPath}`, { cause: error });
+      throw new ArxivFeedError(
+        "ARXIV_PUBLISH_POINTER_INVALID",
+        `pointer 不是有效 JSON：${pointerPath}`,
+        { cause: error }
+      );
     }
     throw error;
   }
@@ -1277,21 +1627,30 @@ async function findLatestCompleteGeneration(generationRoot) {
   for (const directory of directories) {
     if (!directory.isDirectory()) continue;
     try {
-      const generation = await readCompleteGeneration({ generationRoot, generationId: directory.name });
+      const generation = await readCompleteGeneration({
+        generationRoot,
+        generationId: directory.name,
+      });
       candidates.push(generation);
     } catch {
       // Incomplete generations are retained for diagnosis and ignored by the
       // reader until their durable marker exists.
     }
   }
-  candidates.sort((left, right) =>
-    String(right.marker.completed_at ?? right.marker.created_at ?? "").localeCompare(String(left.marker.completed_at ?? left.marker.created_at ?? "")) ||
-    right.generationId.localeCompare(left.generationId),
+  candidates.sort(
+    (left, right) =>
+      String(right.marker.completed_at ?? right.marker.created_at ?? "").localeCompare(
+        String(left.marker.completed_at ?? left.marker.created_at ?? "")
+      ) || right.generationId.localeCompare(left.generationId)
   );
   return candidates[0] ?? null;
 }
 
-async function recoverLatestCompleteGeneration({ pointerPath, generationRoot, renameImpl = rename }) {
+async function recoverLatestCompleteGeneration({
+  pointerPath,
+  generationRoot,
+  renameImpl = rename,
+}) {
   const recovered = await findLatestCompleteGeneration(generationRoot);
   if (!recovered) return null;
   const recoveredPointer = pointerForGeneration({
@@ -1309,28 +1668,59 @@ async function recoverLatestCompleteGeneration({ pointerPath, generationRoot, re
   return { pointer: recoveredPointer, ...recovered };
 }
 
-async function resolvePublishedGeneration({ pointerPath, generationRoot, renameImpl = rename, allowRecovery = true }) {
+async function resolvePublishedGeneration({
+  pointerPath,
+  generationRoot,
+  renameImpl = rename,
+  allowRecovery = true,
+}) {
   let pointer;
   try {
     pointer = await readPublishedPointer(pointerPath);
   } catch (error) {
     if (!allowRecovery) throw error;
-    const recovered = await recoverLatestCompleteGeneration({ pointerPath, generationRoot, renameImpl });
+    const recovered = await recoverLatestCompleteGeneration({
+      pointerPath,
+      generationRoot,
+      renameImpl,
+    });
     if (recovered) return recovered;
     throw error;
   }
   if (pointer) {
     try {
       const pointerRoot = dirname(resolve(pointerPath));
-      const generationPath = resolvePathInside(pointerRoot, pointer.generation_path, "ARXIV_PUBLISH_POINTER_INVALID");
-      const expectedGenerationPath = resolvePathInside(generationRoot, pointer.generation_id, "ARXIV_PUBLISH_POINTER_INVALID");
+      const generationPath = resolvePathInside(
+        pointerRoot,
+        pointer.generation_path,
+        "ARXIV_PUBLISH_POINTER_INVALID"
+      );
+      const expectedGenerationPath = resolvePathInside(
+        generationRoot,
+        pointer.generation_id,
+        "ARXIV_PUBLISH_POINTER_INVALID"
+      );
       if (generationPath !== expectedGenerationPath) {
-        throw new ArxivFeedError("ARXIV_PUBLISH_INCONSISTENT", "pointer generation_path 与 generationRoot 不一致。");
+        throw new ArxivFeedError(
+          "ARXIV_PUBLISH_INCONSISTENT",
+          "pointer generation_path 与 generationRoot 不一致。"
+        );
       }
-      return { pointer, ...(await readCompleteGeneration({ generationRoot, generationId: pointer.generation_id, pointerFiles: pointer.files })) };
+      return {
+        pointer,
+        ...(await readCompleteGeneration({
+          generationRoot,
+          generationId: pointer.generation_id,
+          pointerFiles: pointer.files,
+        })),
+      };
     } catch (error) {
       if (!allowRecovery) throw error;
-      const recovered = await recoverLatestCompleteGeneration({ pointerPath, generationRoot, renameImpl });
+      const recovered = await recoverLatestCompleteGeneration({
+        pointerPath,
+        generationRoot,
+        renameImpl,
+      });
       if (recovered) return recovered;
       throw error;
     }
@@ -1340,9 +1730,22 @@ async function resolvePublishedGeneration({ pointerPath, generationRoot, renameI
   return recoverLatestCompleteGeneration({ pointerPath, generationRoot, renameImpl });
 }
 
-export async function readPublishedFileSet({ pointerPath, generationRoot, targets, allowRecovery = true } = {}) {
-  if (typeof pointerPath !== "string" || typeof generationRoot !== "string" || !Array.isArray(targets) || targets.length === 0) {
-    throw new ArxivFeedError("ARXIV_PUBLISH_INVALID", "读取 published generation 需要 pointer、generationRoot 和 targets。");
+export async function readPublishedFileSet({
+  pointerPath,
+  generationRoot,
+  targets,
+  allowRecovery = true,
+} = {}) {
+  if (
+    typeof pointerPath !== "string" ||
+    typeof generationRoot !== "string" ||
+    !Array.isArray(targets) ||
+    targets.length === 0
+  ) {
+    throw new ArxivFeedError(
+      "ARXIV_PUBLISH_INVALID",
+      "读取 published generation 需要 pointer、generationRoot 和 targets。"
+    );
   }
   const resolvedTargets = targets.map((target) => resolve(target));
   let recoveryAllowed = allowRecovery;
@@ -1354,14 +1757,21 @@ export async function readPublishedFileSet({ pointerPath, generationRoot, target
       }
     }
   }
-  const generation = await resolvePublishedGeneration({ pointerPath, generationRoot, allowRecovery: recoveryAllowed });
+  const generation = await resolvePublishedGeneration({
+    pointerPath,
+    generationRoot,
+    allowRecovery: recoveryAllowed,
+  });
   if (!generation) return null;
   const pointerRoot = dirname(resolve(pointerPath));
   const files = new Map();
   for (const target of resolvedTargets) {
     const targetKey = relativeTargetPath(pointerRoot, target);
     if (!generation.contents.has(targetKey)) {
-      throw new ArxivFeedError("ARXIV_PUBLISH_INCOMPLETE", `published generation 缺少目标：${targetKey}`);
+      throw new ArxivFeedError(
+        "ARXIV_PUBLISH_INCOMPLETE",
+        `published generation 缺少目标：${targetKey}`
+      );
     }
     files.set(target, generation.contents.get(targetKey));
   }
@@ -1389,7 +1799,8 @@ async function publishFileSet(files, renameImpl = rename, { pointerPath, generat
   if (uniqueTargets.size !== files.length) {
     throw new ArxivFeedError("ARXIV_PUBLISH_INVALID", "一次发布不能包含重复目标文件。");
   }
-  if (files.length === 0) throw new ArxivFeedError("ARXIV_PUBLISH_INVALID", "一次发布至少需要一个目标文件。");
+  if (files.length === 0)
+    throw new ArxivFeedError("ARXIV_PUBLISH_INVALID", "一次发布至少需要一个目标文件。");
   const firstTarget = resolve(files[0].target);
   const defaultPaths = publicationPaths({ target: firstTarget, artifactRoot: null });
   const resolvedPointerPath = resolve(pointerPath ?? defaultPaths.pointerPath);
@@ -1403,13 +1814,26 @@ async function publishFileSet(files, renameImpl = rename, { pointerPath, generat
   try {
     for (const [index, file] of files.entries()) {
       const target = resolve(file.target);
-      if (target === resolvedPointerPath || target === generationPath || target.startsWith(`${generationPath}${sep}`)) {
-        throw new ArxivFeedError("ARXIV_PUBLISH_INVALID", `发布目标与 generation/pointer 冲突：${target}`);
+      if (
+        target === resolvedPointerPath ||
+        target === generationPath ||
+        target.startsWith(`${generationPath}${sep}`)
+      ) {
+        throw new ArxivFeedError(
+          "ARXIV_PUBLISH_INVALID",
+          `发布目标与 generation/pointer 冲突：${target}`
+        );
       }
       const path = `files/${String(index).padStart(4, "0")}.json`;
       const storedPath = join(generationPath, path);
       await writeAtomically(storedPath, file.contents, renameImpl);
-      records.push(contentRecord({ target: relativeTargetPath(dirname(resolvedPointerPath), target), path, contents: file.contents }));
+      records.push(
+        contentRecord({
+          target: relativeTargetPath(dirname(resolvedPointerPath), target),
+          path,
+          contents: file.contents,
+        })
+      );
     }
     const completedAt = new Date().toISOString();
     const marker = {
@@ -1511,7 +1935,11 @@ function parsePublishedJson(contents, target) {
   try {
     return JSON.parse(contents);
   } catch (error) {
-    throw new ArxivFeedError("ARXIV_PUBLISH_INVALID", `published generation 中的 JSON 无效：${target}`, { cause: error });
+    throw new ArxivFeedError(
+      "ARXIV_PUBLISH_INVALID",
+      `published generation 中的 JSON 无效：${target}`,
+      { cause: error }
+    );
   }
 }
 
@@ -1535,9 +1963,27 @@ export async function readPublishedArxivEdition({
     targets: [target, radarTarget],
   });
   if (published) {
+    const publishedFeed = parsePublishedJson(published.files.get(target), target);
+    const publishedRadar = parsePublishedJson(published.files.get(radarTarget), radarTarget);
+    let diskFeed = null;
+    let diskRadar = null;
+    try {
+      diskFeed = JSON.parse(await readFile(target, "utf8"));
+      diskRadar = JSON.parse(await readFile(radarTarget, "utf8"));
+    } catch {}
+    const diskDate = diskFeed?.window?.announcement_date;
+    const publishedDate = publishedFeed?.window?.announcement_date;
+    if (diskDate && (!publishedDate || diskDate > publishedDate)) {
+      return {
+        feed: diskFeed,
+        radar: diskRadar ?? publishedRadar,
+        generation_id: null,
+        pointer: null,
+      };
+    }
     return {
-      feed: parsePublishedJson(published.files.get(target), target),
-      radar: parsePublishedJson(published.files.get(radarTarget), radarTarget),
+      feed: publishedFeed,
+      radar: publishedRadar,
       generation_id: published.generation_id,
       pointer: published.pointer,
     };
@@ -1551,8 +1997,9 @@ export async function readPublishedArxivEdition({
     }
   };
   return {
-    feed: fallbackFeed ?? await readFallback(target, { entries: [] }),
-    radar: fallbackRadar ?? await readFallback(radarTarget, { analyses: [], knowledge_points: [] }),
+    feed: fallbackFeed ?? (await readFallback(target, { entries: [] })),
+    radar:
+      fallbackRadar ?? (await readFallback(radarTarget, { analyses: [], knowledge_points: [] })),
     generation_id: null,
     pointer: null,
   };
@@ -1576,26 +2023,51 @@ export async function publishAnalyzedArxivEdition({
   if (target !== resolve(DEFAULT_OUTPUT) && radarTarget === resolve(DEFAULT_RADAR_OUTPUT)) {
     throw new ArxivFeedError("ARXIV_ANALYSIS_INVALID", "自定义 feed 必须指定独立 radar 输出。");
   }
-  const paths = publicationPaths({ target, artifactRoot: configuredArtifactRoot({ target, artifactRoot }) });
+  const paths = publicationPaths({
+    target,
+    artifactRoot: configuredArtifactRoot({ target, artifactRoot }),
+  });
   const lockPath = `${target}.lock`;
   await acquireRefreshLock(lockPath);
   try {
-    const current = await readPublishedArxivEdition({ output: target, radarOutput: radarTarget, artifactRoot, allowMissing: true });
-    if (JSON.stringify(current.feed) !== JSON.stringify(expectedFeed) ||
-        JSON.stringify(current.radar) !== JSON.stringify(expectedRadar)) {
-      throw new ArxivFeedError("ARXIV_ANALYSIS_STALE", "分析期间 edition 已改变；保留当前发布结果并等待重试。");
+    const current = await readPublishedArxivEdition({
+      output: target,
+      radarOutput: radarTarget,
+      artifactRoot,
+      allowMissing: true,
+    });
+    if (
+      JSON.stringify(current.feed) !== JSON.stringify(expectedFeed) ||
+      JSON.stringify(current.radar) !== JSON.stringify(expectedRadar)
+    ) {
+      throw new ArxivFeedError(
+        "ARXIV_ANALYSIS_STALE",
+        "分析期间 edition 已改变；保留当前发布结果并等待重试。"
+      );
     }
     const validation = validateDailyRadarPayload(current.feed, radar);
     if (!validation.valid) {
-      throw new ArxivFeedError("ARXIV_RADAR_INVALID", `分析发布验证失败：${validation.diagnostics.join(", ")}`);
+      throw new ArxivFeedError(
+        "ARXIV_RADAR_INVALID",
+        `分析发布验证失败：${validation.diagnostics.join(", ")}`
+      );
     }
-    const files = [{ target, contents: jsonContents(current.feed) }, { target: radarTarget, contents: jsonContents(radar) }];
+    const files = [
+      { target, contents: jsonContents(current.feed) },
+      { target: radarTarget, contents: jsonContents(radar) },
+    ];
     if (current.pointer) {
-      const otherTargets = current.pointer.files.map((record) => resolve(dirname(paths.pointerPath), record.target))
+      const otherTargets = current.pointer.files
+        .map((record) => resolve(dirname(paths.pointerPath), record.target))
         .filter((path) => path !== target && path !== radarTarget);
       if (otherTargets.length > 0) {
-        const preserved = await readPublishedFileSet({ ...paths, targets: otherTargets, allowRecovery: false });
-        for (const path of otherTargets) files.push({ target: path, contents: preserved.files.get(path) });
+        const preserved = await readPublishedFileSet({
+          ...paths,
+          targets: otherTargets,
+          allowRecovery: false,
+        });
+        for (const path of otherTargets)
+          files.push({ target: path, contents: preserved.files.get(path) });
       }
     }
     return await publishFileSet(files, renameImpl, paths);
@@ -1620,10 +2092,19 @@ function parseRunState(contents) {
   try {
     parsed = JSON.parse(contents);
   } catch (error) {
-    throw new ArxivFeedError("ARXIV_RUN_STATE_INVALID", "run-state.json 不是有效 JSON。", { cause: error });
+    throw new ArxivFeedError("ARXIV_RUN_STATE_INVALID", "run-state.json 不是有效 JSON。", {
+      cause: error,
+    });
   }
-  if (!parsed || parsed.schema_version !== RUN_STATE_SCHEMA_VERSION || !["idle", "running", "success", "failed"].includes(parsed.status)) {
-    throw new ArxivFeedError("ARXIV_RUN_STATE_INVALID", "run-state.json 的 schema_version 或 status 无效。");
+  if (
+    !parsed ||
+    parsed.schema_version !== RUN_STATE_SCHEMA_VERSION ||
+    !["idle", "running", "success", "failed"].includes(parsed.status)
+  ) {
+    throw new ArxivFeedError(
+      "ARXIV_RUN_STATE_INVALID",
+      "run-state.json 的 schema_version 或 status 无效。"
+    );
   }
   return parsed;
 }
@@ -1635,7 +2116,11 @@ async function readRunState(artifactRoot) {
   } catch (error) {
     if (error?.code === "ENOENT") return emptyRunState();
     if (error instanceof ArxivFeedError) throw error;
-    throw new ArxivFeedError("ARXIV_RUN_STATE_INVALID", `无法读取 run-state.json：${error.message}`, { cause: error });
+    throw new ArxivFeedError(
+      "ARXIV_RUN_STATE_INVALID",
+      `无法读取 run-state.json：${error.message}`,
+      { cause: error }
+    );
   }
 }
 
@@ -1741,7 +2226,8 @@ async function createSnapshotRun({
     },
     async completePage(pageIndex, page) {
       const record = manifest.pages.find(({ index }) => index === pageIndex);
-      if (!record) throw new ArxivFeedError("ARXIV_SNAPSHOT_INVALID", `snapshot page 不存在：${pageIndex}`);
+      if (!record)
+        throw new ArxivFeedError("ARXIV_SNAPSHOT_INVALID", `snapshot page 不存在：${pageIndex}`);
       Object.assign(record, page, { status: "parsed" });
       await persist();
     },
@@ -1836,7 +2322,13 @@ function buildRunSuccessState(state, run, payload, outputSha256, finishedAt) {
 }
 
 async function prepareRunSuccess(artifactRoot, run, payload, outputSha256, finishedAt) {
-  return buildRunSuccessState(await readAuthoritativeRunState(artifactRoot), run, payload, outputSha256, finishedAt);
+  return buildRunSuccessState(
+    await readAuthoritativeRunState(artifactRoot),
+    run,
+    payload,
+    outputSha256,
+    finishedAt
+  );
 }
 
 async function recordRunFailure(artifactRoot, run, error, renameImpl, extra = {}) {
@@ -1844,7 +2336,9 @@ async function recordRunFailure(artifactRoot, run, error, renameImpl, extra = {}
   state.status = "failed";
   state.current_run_id = null;
   state.last_attempt = {
-    ...(state.last_attempt?.run_id === run.runId ? state.last_attempt : runStateAttempt(run, "running")),
+    ...(state.last_attempt?.run_id === run.runId
+      ? state.last_attempt
+      : runStateAttempt(run, "running")),
     status: "failed",
     finished_at: new Date().toISOString(),
     error: serializedError(error),
@@ -1859,15 +2353,29 @@ async function recordRunFailure(artifactRoot, run, error, renameImpl, extra = {}
   await writeDiagnosticJsonAtomically(join(artifactRoot, "run-state.json"), state, renameImpl);
 }
 
-async function recordRunPublicationWarnings(artifactRoot, run, warnings, renameImpl, { payload, outputSha256, finishedAt } = {}) {
+async function recordRunPublicationWarnings(
+  artifactRoot,
+  run,
+  warnings,
+  renameImpl,
+  { payload, outputSha256, finishedAt } = {}
+) {
   try {
     const state = await readAuthoritativeRunState(artifactRoot);
-    const completedState = payload && outputSha256
-      ? buildRunSuccessState(state, run, payload, outputSha256, finishedAt ?? new Date().toISOString())
-      : state;
-    const attempt = completedState.last_attempt?.run_id === run.runId
-      ? completedState.last_attempt
-      : runStateAttempt(run, "published");
+    const completedState =
+      payload && outputSha256
+        ? buildRunSuccessState(
+            state,
+            run,
+            payload,
+            outputSha256,
+            finishedAt ?? new Date().toISOString()
+          )
+        : state;
+    const attempt =
+      completedState.last_attempt?.run_id === run.runId
+        ? completedState.last_attempt
+        : runStateAttempt(run, "published");
     completedState.status = "success";
     completedState.current_run_id = null;
     completedState.last_attempt = {
@@ -1881,7 +2389,11 @@ async function recordRunPublicationWarnings(artifactRoot, run, warnings, renameI
         publication_warnings: warnings,
       };
     }
-    await writeDiagnosticJsonAtomically(join(artifactRoot, "run-state.json"), completedState, renameImpl);
+    await writeDiagnosticJsonAtomically(
+      join(artifactRoot, "run-state.json"),
+      completedState,
+      renameImpl
+    );
   } catch {
     // Publication is already committed through the immutable generation. A
     // warning-state write must never turn that durable success into a false
@@ -1898,7 +2410,10 @@ async function referencedSnapshotRunIds(artifactRoot, outputPath) {
   const protectedRunIds = new Set();
   try {
     const state = await readAuthoritativeRunState(artifactRoot);
-    for (const value of [state.last_success?.run_id, runIdFromManifestPath(state.last_success?.snapshot_manifest)]) {
+    for (const value of [
+      state.last_success?.run_id,
+      runIdFromManifestPath(state.last_success?.snapshot_manifest),
+    ]) {
       if (value) protectedRunIds.add(value);
     }
   } catch {
@@ -1943,7 +2458,9 @@ async function pruneSnapshotRuns(artifactRoot, snapshotRetention, currentRunId, 
       // deleting evidence that the retention pass cannot understand.
     }
   }
-  terminalRuns.sort((left, right) => right.order.localeCompare(left.order) || right.runId.localeCompare(left.runId));
+  terminalRuns.sort(
+    (left, right) => right.order.localeCompare(left.order) || right.runId.localeCompare(left.runId)
+  );
   const keep = new Set(terminalRuns.slice(0, snapshotRetention).map(({ runId }) => runId));
   if (currentRunId) keep.add(currentRunId);
   for (const runId of await referencedSnapshotRunIds(artifactRoot, outputPath)) keep.add(runId);
@@ -1979,15 +2496,30 @@ async function readSnapshotManifest(artifactRoot, runId) {
     manifest = JSON.parse(contents);
   } catch (error) {
     if (error?.code === "ENOENT") {
-      throw new ArxivFeedError("ARXIV_SNAPSHOT_NOT_FOUND", `snapshot manifest 不存在：${safeRunId}`, { cause: error });
+      throw new ArxivFeedError(
+        "ARXIV_SNAPSHOT_NOT_FOUND",
+        `snapshot manifest 不存在：${safeRunId}`,
+        { cause: error }
+      );
     }
     if (error instanceof SyntaxError) {
-      throw new ArxivFeedError("ARXIV_SNAPSHOT_INVALID", `snapshot manifest 不是有效 JSON：${safeRunId}`, { cause: error });
+      throw new ArxivFeedError(
+        "ARXIV_SNAPSHOT_INVALID",
+        `snapshot manifest 不是有效 JSON：${safeRunId}`,
+        { cause: error }
+      );
     }
     throw error;
   }
-  if (!manifest || manifest.schema_version !== SNAPSHOT_SCHEMA_VERSION || manifest.run_id !== safeRunId) {
-    throw new ArxivFeedError("ARXIV_SNAPSHOT_INVALID", `snapshot manifest schema 或 run_id 无效：${safeRunId}`);
+  if (
+    !manifest ||
+    manifest.schema_version !== SNAPSHOT_SCHEMA_VERSION ||
+    manifest.run_id !== safeRunId
+  ) {
+    throw new ArxivFeedError(
+      "ARXIV_SNAPSHOT_INVALID",
+      `snapshot manifest schema 或 run_id 无效：${safeRunId}`
+    );
   }
   return { root, manifest };
 }
@@ -1995,16 +2527,32 @@ async function readSnapshotManifest(artifactRoot, runId) {
 export async function replayArxivSnapshot({ artifactRoot = DEFAULT_ARTIFACT_ROOT, runId } = {}) {
   const { root, manifest } = await readSnapshotManifest(artifactRoot, runId);
   if (!["ready", "published"].includes(manifest.status)) {
-    throw new ArxivFeedError("ARXIV_SNAPSHOT_NOT_READY", `snapshot run 尚未完成发布：${manifest.run_id}`);
+    throw new ArxivFeedError(
+      "ARXIV_SNAPSHOT_NOT_READY",
+      `snapshot run 尚未完成发布：${manifest.run_id}`
+    );
   }
   if (manifest.parser_version !== ARXIV_PARSER_VERSION) {
-    throw new ArxivFeedError("ARXIV_SNAPSHOT_PARSER_UNSUPPORTED", `snapshot 使用了不兼容的 parser：${manifest.parser_version}`);
+    throw new ArxivFeedError(
+      "ARXIV_SNAPSHOT_PARSER_UNSUPPORTED",
+      `snapshot 使用了不兼容的 parser：${manifest.parser_version}`
+    );
   }
-  if (!Array.isArray(manifest.pages) || manifest.pages.length === 0 || manifest.page_count !== manifest.pages.length) {
-    throw new ArxivFeedError("ARXIV_SNAPSHOT_INVALID", `snapshot manifest 的 pages 不完整：${manifest.run_id}`);
+  if (
+    !Array.isArray(manifest.pages) ||
+    manifest.pages.length === 0 ||
+    manifest.page_count !== manifest.pages.length
+  ) {
+    throw new ArxivFeedError(
+      "ARXIV_SNAPSHOT_INVALID",
+      `snapshot manifest 的 pages 不完整：${manifest.run_id}`
+    );
   }
   if (!manifest.window?.announcement_date || !manifest.window?.time_zone) {
-    throw new ArxivFeedError("ARXIV_SNAPSHOT_INVALID", `snapshot manifest 缺少窗口：${manifest.run_id}`);
+    throw new ArxivFeedError(
+      "ARXIV_SNAPSHOT_INVALID",
+      `snapshot manifest 缺少窗口：${manifest.run_id}`
+    );
   }
   const expectedWindow = buildAnnouncementWindow({
     announcementDate: manifest.window.announcement_date,
@@ -2020,9 +2568,16 @@ export async function replayArxivSnapshot({ artifactRoot = DEFAULT_ARTIFACT_ROOT
   }
   const expectedQuery = effectiveAnnouncementQuery(manifest.base_query, expectedWindow);
   if (manifest.query !== expectedQuery) {
-    throw new ArxivFeedError("ARXIV_SNAPSHOT_INTEGRITY", "snapshot query 与窗口或 base_query 不一致。");
+    throw new ArxivFeedError(
+      "ARXIV_SNAPSHOT_INTEGRITY",
+      "snapshot query 与窗口或 base_query 不一致。"
+    );
   }
-  if (!Number.isInteger(manifest.page_size) || manifest.page_size < 1 || manifest.page_size > DEFAULT_PAGE_SIZE) {
+  if (
+    !Number.isInteger(manifest.page_size) ||
+    manifest.page_size < 1 ||
+    manifest.page_size > DEFAULT_PAGE_SIZE
+  ) {
     throw new ArxivFeedError("ARXIV_SNAPSHOT_INVALID", "snapshot page_size 无效。");
   }
 
@@ -2034,38 +2589,80 @@ export async function replayArxivSnapshot({ artifactRoot = DEFAULT_ARTIFACT_ROOT
   for (let pagePosition = 0; pagePosition < orderedManifestPages.length; pagePosition += 1) {
     const storedPage = orderedManifestPages[pagePosition];
     if (storedPage.index !== pagePosition || storedPage.status !== "parsed") {
-      throw new ArxivFeedError("ARXIV_SNAPSHOT_INVALID", `snapshot page 顺序或状态无效：${storedPage.index}`);
+      throw new ArxivFeedError(
+        "ARXIV_SNAPSHOT_INVALID",
+        `snapshot page 顺序或状态无效：${storedPage.index}`
+      );
     }
-    if (!Number.isInteger(storedPage.start) || storedPage.start < 0 || storedPage.requested_max_results !== manifest.page_size) {
-      throw new ArxivFeedError("ARXIV_SNAPSHOT_INVALID", `snapshot page 请求参数无效：${storedPage.index}`);
+    if (
+      !Number.isInteger(storedPage.start) ||
+      storedPage.start < 0 ||
+      storedPage.requested_max_results !== manifest.page_size
+    ) {
+      throw new ArxivFeedError(
+        "ARXIV_SNAPSHOT_INVALID",
+        `snapshot page 请求参数无效：${storedPage.index}`
+      );
     }
     if (expectedStart !== undefined && storedPage.start !== expectedStart) {
-      throw new ArxivFeedError("ARXIV_SNAPSHOT_INTEGRITY", `snapshot page 起点没有连续推进：${storedPage.index}`);
+      throw new ArxivFeedError(
+        "ARXIV_SNAPSHOT_INTEGRITY",
+        `snapshot page 起点没有连续推进：${storedPage.index}`
+      );
     }
-    const expectedSourceUrl = feedUrl({ query: expectedQuery, maxResults: manifest.page_size, start: storedPage.start });
+    const expectedSourceUrl = feedUrl({
+      query: expectedQuery,
+      maxResults: manifest.page_size,
+      start: storedPage.start,
+    });
     if (storedPage.source_url !== expectedSourceUrl) {
-      throw new ArxivFeedError("ARXIV_SNAPSHOT_INTEGRITY", `snapshot page source URL 与请求参数不一致：${storedPage.index}`);
+      throw new ArxivFeedError(
+        "ARXIV_SNAPSHOT_INTEGRITY",
+        `snapshot page source URL 与请求参数不一致：${storedPage.index}`
+      );
     }
     const snapshotPath = resolveArtifactPath(root, storedPage.snapshot_path);
     let rawXml;
     try {
       rawXml = await readFile(snapshotPath, "utf8");
     } catch (error) {
-      throw new ArxivFeedError("ARXIV_SNAPSHOT_NOT_FOUND", `snapshot page 不存在：${storedPage.snapshot_path}`, { cause: error });
+      throw new ArxivFeedError(
+        "ARXIV_SNAPSHOT_NOT_FOUND",
+        `snapshot page 不存在：${storedPage.snapshot_path}`,
+        { cause: error }
+      );
     }
     const responseSha256 = createHash("sha256").update(rawXml).digest("hex");
-    if (responseSha256 !== storedPage.response_sha256 || Buffer.byteLength(rawXml, "utf8") !== storedPage.byte_length) {
-      throw new ArxivFeedError("ARXIV_SNAPSHOT_INTEGRITY", `snapshot page hash 或长度不匹配：${storedPage.snapshot_path}`);
+    if (
+      responseSha256 !== storedPage.response_sha256 ||
+      Buffer.byteLength(rawXml, "utf8") !== storedPage.byte_length
+    ) {
+      throw new ArxivFeedError(
+        "ARXIV_SNAPSHOT_INTEGRITY",
+        `snapshot page hash 或长度不匹配：${storedPage.snapshot_path}`
+      );
     }
     const parsed = parseArxivDocument(rawXml);
-    const metadata = pageMetadataFor(parsed, storedPage.start, manifest.page_size, { requireComplete: true });
+    const metadata = pageMetadataFor(parsed, storedPage.start, manifest.page_size, {
+      requireComplete: true,
+    });
     const rawEntryCount = parsed.raw_entry_count ?? parsed.entries.length;
-    if (storedPage.total_results !== metadata.total_results || storedPage.items_per_page !== metadata.items_per_page || storedPage.entry_count !== rawEntryCount) {
-      throw new ArxivFeedError("ARXIV_SNAPSHOT_INTEGRITY", `snapshot page manifest 与解析结果不一致：${storedPage.snapshot_path}`);
+    if (
+      storedPage.total_results !== metadata.total_results ||
+      storedPage.items_per_page !== metadata.items_per_page ||
+      storedPage.entry_count !== rawEntryCount
+    ) {
+      throw new ArxivFeedError(
+        "ARXIV_SNAPSHOT_INTEGRITY",
+        `snapshot page manifest 与解析结果不一致：${storedPage.snapshot_path}`
+      );
     }
     if (totalResults === undefined) totalResults = metadata.total_results;
     if (metadata.total_results !== undefined && totalResults !== metadata.total_results) {
-      throw new ArxivFeedError("ARXIV_SNAPSHOT_INTEGRITY", "snapshot pages 的 totalResults 不一致。");
+      throw new ArxivFeedError(
+        "ARXIV_SNAPSHOT_INTEGRITY",
+        "snapshot pages 的 totalResults 不一致。"
+      );
     }
     mergePageEntries(entryMap, parsed.entries);
     const page = {
@@ -2079,18 +2676,24 @@ export async function replayArxivSnapshot({ artifactRoot = DEFAULT_ARTIFACT_ROOT
       entry_count: rawEntryCount,
       window_entry_count: entriesInWindow(parsed.entries, manifest.window).length,
     };
-    if (JSON.stringify(page) !== JSON.stringify({
-      index: storedPage.index,
-      start: storedPage.start,
-      requested_max_results: storedPage.requested_max_results,
-      source_url: storedPage.source_url,
-      response_sha256: storedPage.response_sha256,
-      total_results: storedPage.total_results,
-      items_per_page: storedPage.items_per_page,
-      entry_count: storedPage.entry_count,
-      window_entry_count: storedPage.window_entry_count,
-    })) {
-      throw new ArxivFeedError("ARXIV_SNAPSHOT_INTEGRITY", `snapshot page provenance 不一致：${storedPage.snapshot_path}`);
+    if (
+      JSON.stringify(page) !==
+      JSON.stringify({
+        index: storedPage.index,
+        start: storedPage.start,
+        requested_max_results: storedPage.requested_max_results,
+        source_url: storedPage.source_url,
+        response_sha256: storedPage.response_sha256,
+        total_results: storedPage.total_results,
+        items_per_page: storedPage.items_per_page,
+        entry_count: storedPage.entry_count,
+        window_entry_count: storedPage.window_entry_count,
+      })
+    ) {
+      throw new ArxivFeedError(
+        "ARXIV_SNAPSHOT_INTEGRITY",
+        `snapshot page provenance 不一致：${storedPage.snapshot_path}`
+      );
     }
     pages.push(page);
     expectedStart = storedPage.start + storedPage.entry_count;
@@ -2100,11 +2703,24 @@ export async function replayArxivSnapshot({ artifactRoot = DEFAULT_ARTIFACT_ROOT
     throw new ArxivFeedError("ARXIV_SNAPSHOT_INTEGRITY", "snapshot pages 没有覆盖 totalResults。");
   }
   const entries = entriesInWindow([...entryMap.values()], manifest.window);
-  entries.sort((left, right) => left.published.localeCompare(right.published) || `${left.arxiv_id}@v${left.revision}`.localeCompare(`${right.arxiv_id}@v${right.revision}`));
+  entries.sort(
+    (left, right) =>
+      left.published.localeCompare(right.published) ||
+      `${left.arxiv_id}@v${left.revision}`.localeCompare(`${right.arxiv_id}@v${right.revision}`)
+  );
   const normalizedTotalResults = totalResults ?? entries.length;
-  const responseSha256 = createHash("sha256").update(pages.map(({ response_sha256: hash }) => hash).join("\n")).digest("hex");
-  if (manifest.total_results !== normalizedTotalResults || manifest.entry_count !== entries.length || manifest.response_sha256 !== responseSha256) {
-    throw new ArxivFeedError("ARXIV_SNAPSHOT_INTEGRITY", `snapshot manifest 汇总不一致：${manifest.run_id}`);
+  const responseSha256 = createHash("sha256")
+    .update(pages.map(({ response_sha256: hash }) => hash).join("\n"))
+    .digest("hex");
+  if (
+    manifest.total_results !== normalizedTotalResults ||
+    manifest.entry_count !== entries.length ||
+    manifest.response_sha256 !== responseSha256
+  ) {
+    throw new ArxivFeedError(
+      "ARXIV_SNAPSHOT_INTEGRITY",
+      `snapshot manifest 汇总不一致：${manifest.run_id}`
+    );
   }
   return {
     run_id: manifest.run_id,
@@ -2147,8 +2763,10 @@ export async function refreshArxivFeed({
   manualSnapshot,
   rejectEmpty = false,
 } = {}) {
-  if (typeof fetchImpl !== "function" && manualSnapshot === undefined) throw new ArxivFeedError("ARXIV_REQUEST_FAILED", "当前运行环境没有 fetch 实现。");
-  if (!Number.isFinite(totalTimeoutMs) || totalTimeoutMs <= 0) throw new ArxivFeedError("ARXIV_REQUEST_TIMEOUT", "整轮时间预算必须为正数。");
+  if (typeof fetchImpl !== "function" && manualSnapshot === undefined)
+    throw new ArxivFeedError("ARXIV_REQUEST_FAILED", "当前运行环境没有 fetch 实现。");
+  if (!Number.isFinite(totalTimeoutMs) || totalTimeoutMs <= 0)
+    throw new ArxivFeedError("ARXIV_REQUEST_TIMEOUT", "整轮时间预算必须为正数。");
   if (!Number.isInteger(snapshotRetention) || snapshotRetention < 1) {
     throw new ArxivFeedError("ARXIV_SNAPSHOT_INVALID", "snapshotRetention 必须是正整数。");
   }
@@ -2157,9 +2775,12 @@ export async function refreshArxivFeed({
   const target = resolve(output);
   const configuredRoot = configuredArtifactRoot({ target, artifactRoot });
   const artifactDirectory = configuredRoot === null ? null : resolve(configuredRoot);
-  const configuredRadarOutput = radarOutput === undefined
-    ? (target === resolve(DEFAULT_OUTPUT) ? DEFAULT_RADAR_OUTPUT : null)
-    : radarOutput;
+  const configuredRadarOutput =
+    radarOutput === undefined
+      ? target === resolve(DEFAULT_OUTPUT)
+        ? DEFAULT_RADAR_OUTPUT
+        : null
+      : radarOutput;
   const radarTarget = configuredRadarOutput === null ? null : resolve(configuredRadarOutput);
   const publication = publicationPaths({ target, artifactRoot: artifactDirectory });
   const refreshLockPath = resolve(lockPath ?? `${target}.lock`);
@@ -2192,13 +2813,36 @@ export async function refreshArxivFeed({
         now,
         renameImpl,
       });
-      await recordRunStarted(artifactDirectory, snapshotRun, window, effectiveAnnouncementQuery(query, window), renameImpl);
+      await recordRunStarted(
+        artifactDirectory,
+        snapshotRun,
+        window,
+        effectiveAnnouncementQuery(query, window),
+        renameImpl
+      );
     }
     let provider = "api";
     let providerAttempts = [];
     let result;
     try {
-      result = manualSnapshot === undefined ? await fetchPaginatedFeed({ query, window, pageSize, start, maxPages, minRequestIntervalMs, fetchImpl, timeoutMs, maxAttempts, sleepImpl, now, totalTimeoutMs, snapshotRun }) : null;
+      result =
+        manualSnapshot === undefined
+          ? await fetchPaginatedFeed({
+              query,
+              window,
+              pageSize,
+              start,
+              maxPages,
+              minRequestIntervalMs,
+              fetchImpl,
+              timeoutMs,
+              maxAttempts,
+              sleepImpl,
+              now,
+              totalTimeoutMs,
+              snapshotRun,
+            })
+          : null;
       providerAttempts.push({ provider: "api", status: "success" });
     } catch (error) {
       providerAttempts.push({ provider: "api", status: "failed", error: serializedError(error) });
@@ -2207,66 +2851,126 @@ export async function refreshArxivFeed({
       // test or operator endpoint cannot silently spend a second full budget
       // on the default provider. HTTP request failures still use the default
       // official RSS path.
-      const fallbackEligible = rssUrl !== undefined && (error?.code === "ARXIV_REQUEST_FAILED" ||
-        error?.code === "ARXIV_REQUEST_TIMEOUT" || error?.name === "AbortError");
+      const fallbackEligible =
+        rssUrl !== undefined &&
+        (error?.code === "ARXIV_REQUEST_FAILED" ||
+          error?.code === "ARXIV_REQUEST_TIMEOUT" ||
+          error?.name === "AbortError");
       if (!fallbackEligible) throw error;
       try {
-        result = await fetchFallbackFeed({ sourceUrl: effectiveRssUrl, parser: parseArxivDiscoveryFeed, fetchImpl, timeoutMs, maxAttempts: 1, sleepImpl, now, totalTimeoutMs, snapshotRun });
+        result = await fetchFallbackFeed({
+          sourceUrl: effectiveRssUrl,
+          parser: parseArxivDiscoveryFeed,
+          fetchImpl,
+          timeoutMs,
+          maxAttempts: 1,
+          sleepImpl,
+          now,
+          totalTimeoutMs,
+          snapshotRun,
+        });
         result.entries = entriesInWindow(result.entries, window);
         result.totalResults = result.entries.length;
         provider = "rss";
         providerAttempts.push({ provider: "rss", status: "success" });
       } catch (fallbackError) {
-        providerAttempts.push({ provider: "rss", status: "failed", error: serializedError(fallbackError) });
-        throw new ArxivFeedError("ARXIV_DISCOVERY_FAILED", "API 与官方 RSS/Atom fallback 均失败。", { cause: fallbackError });
+        providerAttempts.push({
+          provider: "rss",
+          status: "failed",
+          error: serializedError(fallbackError),
+        });
+        throw new ArxivFeedError(
+          "ARXIV_DISCOVERY_FAILED",
+          "API 与官方 RSS/Atom fallback 均失败。",
+          { cause: fallbackError }
+        );
       }
     }
     if (manualSnapshot !== undefined) {
       let value = manualSnapshot;
       if (typeof value === "string") value = JSON.parse(await readFile(resolve(value), "utf8"));
-      if (!value || !Array.isArray(value.entries)) throw new ArxivFeedError("ARXIV_SNAPSHOT_INVALID", "manual snapshot 必须包含 entries 数组。");
+      if (!value || !Array.isArray(value.entries))
+        throw new ArxivFeedError(
+          "ARXIV_SNAPSHOT_INVALID",
+          "manual snapshot 必须包含 entries 数组。"
+        );
       let normalizedEntries;
       try {
         normalizedEntries = deduplicateDiscoveryEntries(value.entries);
       } catch (error) {
         if (error instanceof ArxivFeedError) throw error;
-        throw new ArxivFeedError("ARXIV_SNAPSHOT_INVALID", "manual snapshot entries 无法规范化。", { cause: error });
+        throw new ArxivFeedError("ARXIV_SNAPSHOT_INVALID", "manual snapshot entries 无法规范化。", {
+          cause: error,
+        });
       }
       const entries = entriesInWindow(normalizedEntries, window);
-      if (entries.length === 0 && value.entries.length > 0) throw new ArxivFeedError("ARXIV_SNAPSHOT_INVALID", "manual snapshot 没有公告窗口内的有效条目。");
-      result = { query: effectiveAnnouncementQuery(query, window), pages: [], totalResults: entries.length, entries };
+      if (entries.length === 0 && value.entries.length > 0)
+        throw new ArxivFeedError(
+          "ARXIV_SNAPSHOT_INVALID",
+          "manual snapshot 没有公告窗口内的有效条目。"
+        );
+      result = {
+        query: effectiveAnnouncementQuery(query, window),
+        pages: [],
+        totalResults: entries.length,
+        entries,
+      };
       provider = "manual";
       providerAttempts.push({ provider: "manual", status: "success" });
     }
-    const provenance = { source_type: provider, source_url: provider === "api" ? result.pages[0]?.source_url ?? feedUrl({ query: result.query, maxResults: pageSize, start }) : provider === "rss" ? effectiveRssUrl : null, retrieved_at: now.toISOString(), query: result.query ?? effectiveAnnouncementQuery(query, window), evidence_scope: "discovery_metadata_only", attempts: providerAttempts };
+    const provenance = {
+      source_type: provider,
+      source_url:
+        provider === "api"
+          ? (result.pages[0]?.source_url ??
+            feedUrl({ query: result.query, maxResults: pageSize, start }))
+          : provider === "rss"
+            ? effectiveRssUrl
+            : null,
+      retrieved_at: now.toISOString(),
+      query: result.query ?? effectiveAnnouncementQuery(query, window),
+      evidence_scope: "discovery_metadata_only",
+      attempts: providerAttempts,
+    };
     if (rejectEmpty && result.entries.length === 0) {
-      throw new ArxivFeedError("ARXIV_EMPTY_BATCH", "公告批次暂无条目，保留 last-good edition 并等待重试。");
+      throw new ArxivFeedError(
+        "ARXIV_EMPTY_BATCH",
+        "公告批次暂无条目，保留 last-good edition 并等待重试。"
+      );
     }
     const responseSha = createHash("sha256")
       .update(result.pages.map(({ response_sha256 }) => response_sha256).join("\n"))
       .digest("hex");
-    const outputContents = `${JSON.stringify({
-      schema_version: DISCOVERY_SCHEMA_VERSION,
-      generated_at: now.toISOString(),
-      query: result.query,
-      base_query: query,
-      source_url: result.pages[0]?.source_url ?? feedUrl({ query: result.query, maxResults: pageSize, start }),
-      source_urls: result.pages.map(({ source_url }) => source_url),
-      parser_version: ARXIV_PARSER_VERSION,
-      response_sha256: responseSha,
-      window,
-      provenance,
-      page_size: pageSize,
-      page_count: result.pages.length,
-      total_results: result.totalResults,
-      pages: result.pages,
-      entries: result.entries,
-      decision_state: decisionStateForEntries(result.entries),
-      ...(snapshotRun ? {
-        snapshot_run_id: snapshotRun.runId,
-        snapshot_manifest: snapshotRun.manifestRelativePath,
-      } : {}),
-    }, null, 2)}\n`;
+    const outputContents = `${JSON.stringify(
+      {
+        schema_version: DISCOVERY_SCHEMA_VERSION,
+        generated_at: now.toISOString(),
+        query: result.query,
+        base_query: query,
+        source_url:
+          result.pages[0]?.source_url ??
+          feedUrl({ query: result.query, maxResults: pageSize, start }),
+        source_urls: result.pages.map(({ source_url }) => source_url),
+        parser_version: ARXIV_PARSER_VERSION,
+        response_sha256: responseSha,
+        window,
+        provenance,
+        page_size: pageSize,
+        page_count: result.pages.length,
+        total_results: result.totalResults,
+        pages: result.pages,
+        entries: result.entries,
+        decision_state: decisionStateForEntries(result.entries),
+        ...(snapshotRun
+          ? {
+              snapshot_run_id: snapshotRun.runId,
+              snapshot_manifest: snapshotRun.manifestRelativePath,
+            }
+          : {}),
+      },
+      null,
+      2
+    )}\n`;
     const payload = JSON.parse(outputContents);
     const filesToPublish = [{ target, contents: outputContents }];
     if (radarTarget) {
@@ -2275,10 +2979,13 @@ export async function refreshArxivFeed({
       if (!radarValidation.valid) {
         throw new ArxivFeedError(
           "ARXIV_RADAR_INVALID",
-          `Daily Radar 与新 arXiv edition 不一致：${radarValidation.diagnostics.join(", ")}`,
+          `Daily Radar 与新 arXiv edition 不一致：${radarValidation.diagnostics.join(", ")}`
         );
       }
-      filesToPublish.push({ target: radarTarget, contents: `${JSON.stringify(radarPayload, null, 2)}\n` });
+      filesToPublish.push({
+        target: radarTarget,
+        contents: `${JSON.stringify(radarPayload, null, 2)}\n`,
+      });
     }
     const outputSha256 = createHash("sha256").update(outputContents).digest("hex");
     const finishedAt = new Date().toISOString();
@@ -2289,10 +2996,19 @@ export async function refreshArxivFeed({
         responseSha256: responseSha,
         pageCount: result.pages.length,
       });
-      const successState = await prepareRunSuccess(artifactDirectory, snapshotRun, payload, outputSha256, finishedAt);
+      const successState = await prepareRunSuccess(
+        artifactDirectory,
+        snapshotRun,
+        payload,
+        outputSha256,
+        finishedAt
+      );
       filesToPublish.push(
-        { target: snapshotRun.manifestPath, contents: snapshotRun.publishedContents({ outputSha256, finishedAt }) },
-        { target: join(artifactDirectory, "run-state.json"), contents: jsonContents(successState) },
+        {
+          target: snapshotRun.manifestPath,
+          contents: snapshotRun.publishedContents({ outputSha256, finishedAt }),
+        },
+        { target: join(artifactDirectory, "run-state.json"), contents: jsonContents(successState) }
       );
     }
     publishPhase = "publish_commit";
@@ -2305,7 +3021,11 @@ export async function refreshArxivFeed({
     publishPhase = "generation_published";
     const postPublishWarnings = [...publicationResult.warnings];
     try {
-      await publishStageHook("cache_published", { payload, radar_output: radarTarget, generation_id: publicationResult.generation_id });
+      await publishStageHook("cache_published", {
+        payload,
+        radar_output: radarTarget,
+        generation_id: publicationResult.generation_id,
+      });
     } catch (hookError) {
       postPublishWarnings.push({ stage: "cache_published", error: serializedError(hookError) });
     }
@@ -2316,15 +3036,24 @@ export async function refreshArxivFeed({
       } catch (retentionError) {
         publishPhase = "retention_failed";
         postPublishWarnings.push({ stage: publishPhase, error: serializedError(retentionError) });
-        await publishStageHook(publishPhase, { payload, error: serializedError(retentionError) }).catch(() => {});
+        await publishStageHook(publishPhase, {
+          payload,
+          error: serializedError(retentionError),
+        }).catch(() => {});
       }
     }
     if (snapshotRun && postPublishWarnings.length > 0) {
-      await recordRunPublicationWarnings(artifactDirectory, snapshotRun, postPublishWarnings, renameImpl, {
-        payload,
-        outputSha256,
-        finishedAt,
-      });
+      await recordRunPublicationWarnings(
+        artifactDirectory,
+        snapshotRun,
+        postPublishWarnings,
+        renameImpl,
+        {
+          payload,
+          outputSha256,
+          finishedAt,
+        }
+      );
     }
     return payload;
   } catch (error) {
@@ -2335,9 +3064,19 @@ export async function refreshArxivFeed({
           publish_phase: publishPhase,
           output_published: false,
         }).catch(() => {});
-        await pruneSnapshotRuns(artifactDirectory, snapshotRetention, snapshotRun.runId, target).catch(() => {});
+        await pruneSnapshotRuns(
+          artifactDirectory,
+          snapshotRetention,
+          snapshotRun.runId,
+          target
+        ).catch(() => {});
       } else {
-        await recordRunPublicationWarnings(artifactDirectory, snapshotRun, [{ stage: publishPhase, error: serializedError(error) }], renameImpl);
+        await recordRunPublicationWarnings(
+          artifactDirectory,
+          snapshotRun,
+          [{ stage: publishPhase, error: serializedError(error) }],
+          renameImpl
+        );
       }
     }
     throw error;

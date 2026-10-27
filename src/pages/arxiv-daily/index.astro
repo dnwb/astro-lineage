@@ -13,6 +13,7 @@ import DailyRadarPrioritySection from "../../components/DailyRadarPrioritySectio
 import DailyKnowledgePoint from "../../components/DailyKnowledgePoint.astro";
 import DailyDateSwitcher from "../../components/DailyDateSwitcher.astro";
 import DailyTopicFilter from "../../components/DailyTopicFilter.astro";
+import archiveManifest from "../../data/arxiv-archives/manifest.json";
 import { formatAnnouncementInBeijing } from "../../domain/academic-domain.mjs";
 import { loadSiteConfig } from "../../lib/site-config";
 import "../../styles/global.css";
@@ -29,8 +30,29 @@ const publishedEdition = await readPublishedArxivEdition({
   fallbackFeed: dailyFeedFallback,
   fallbackRadar: radarDataFallback,
 } as any);
-const dailyFeed = publishedEdition.feed;
-const radarData = publishedEdition.radar;
+let dailyFeed = publishedEdition.feed;
+let radarData = publishedEdition.radar;
+
+const manifestLatestDate = (archiveManifest as any)?.latest_daily_date;
+if (
+  manifestLatestDate &&
+  (!dailyFeed?.window?.announcement_date || dailyFeed.window.announcement_date < manifestLatestDate)
+) {
+  try {
+    const dailyArchiveModules = import.meta.glob<{ default: AnyRecord }>(
+      "../../data/arxiv-archives/daily/*.json",
+      { eager: true }
+    );
+    const targetModule = Object.entries(dailyArchiveModules).find(([path]) =>
+      path.endsWith(`/${manifestLatestDate}.json`)
+    )?.[1];
+    const archiveData = (targetModule as any)?.default || targetModule;
+    if (archiveData?.feed && archiveData?.radar) {
+      dailyFeed = archiveData.feed;
+      radarData = archiveData.radar;
+    }
+  } catch {}
+}
 const snapshot = await loadCanonicalContent(new URL("../../../content/", import.meta.url));
 const visibleReader = projectVisibleSnapshot(snapshot) as AnyRecord;
 function preferredVersion(work: AnyRecord) {

@@ -1,16 +1,9 @@
 import { createHash } from "node:crypto";
+import { isLegacyChineseDate } from "../src/domain/language-cutover.mjs";
 
-export const RADAR_PRIORITIES = Object.freeze([
-  "must_read",
-  "worth_knowing",
-  "skip",
-]);
+export const RADAR_PRIORITIES = Object.freeze(["must_read", "worth_knowing", "skip"]);
 
-export const RADAR_COVERAGE_LEVELS = Object.freeze([
-  "abstract_only",
-  "body_partial",
-  "full_body",
-]);
+export const RADAR_COVERAGE_LEVELS = Object.freeze(["abstract_only", "body_partial", "full_body"]);
 
 export const RADAR_RELATIONS = Object.freeze([
   "builds_on",
@@ -39,7 +32,9 @@ export function guideFingerprint(analysis) {
 }
 
 export function radarCardAnchor(arxivId, revision) {
-  const slug = normalizeArxivId(arxivId).replace(/[^a-z0-9]+/gu, "-").replace(/^-|-$/gu, "");
+  const slug = normalizeArxivId(arxivId)
+    .replace(/[^a-z0-9]+/gu, "-")
+    .replace(/^-|-$/gu, "");
   return `radar-paper-${slug || "unknown"}-v${Number(revision)}`;
 }
 
@@ -129,7 +124,8 @@ function arxivReferenceIdentity(reference) {
   const expectedPath = kindByPath[reference.kind];
   const actualPath = url.pathname.match(/^\/(abs|src|pdf)\//iu)?.[1]?.toLowerCase();
   if (!expectedPath || actualPath !== expectedPath) return null;
-  if (reference.kind === "arxiv_source_package" && !/^[a-f\d]{64}$/iu.test(reference.sha256 ?? "")) return null;
+  if (reference.kind === "arxiv_source_package" && !/^[a-f\d]{64}$/iu.test(reference.sha256 ?? ""))
+    return null;
   return {
     arxiv_id: normalizeArxivId(path.slice(0, -revision[0].length)),
     revision: Number(revision[1]),
@@ -152,32 +148,50 @@ function coverageEvidenceDiagnostics(coverage) {
   if (!bodyLevel) return [];
   const inspected = Array.isArray(coverage?.inspected_sections) ? coverage.inspected_sections : [];
   if (inspected.some((section) => !hasText(section))) return ["analysis_invalid"];
-  const hasBodySection = inspected.some((section) => hasText(section) && !/^abstract$/iu.test(section.trim()));
+  const hasBodySection = inspected.some(
+    (section) => hasText(section) && !/^abstract$/iu.test(section.trim())
+  );
   const bodyReferences = Array.isArray(coverage?.source_references)
     ? coverage.source_references.filter((reference) => reference?.kind === "arxiv_source_package")
     : [];
   const hasBodySource = bodyReferences.length > 0;
   if (!hasBodySource || !hasBodySection) return ["analysis_invalid"];
-  if (coverage.level === "body_partial" && !bodyReferences.some((reference) =>
-    hasText(reference.locator) && !/^(?:abstract|full body sections?)$/iu.test(reference.locator.trim()))) {
+  if (
+    coverage.level === "body_partial" &&
+    !bodyReferences.some(
+      (reference) =>
+        hasText(reference.locator) &&
+        !/^(?:abstract|full body sections?)$/iu.test(reference.locator.trim())
+    )
+  ) {
     return ["analysis_invalid"];
   }
   if (coverage.level === "full_body") {
     const sectionCoverage = coverage.section_coverage;
-    if (!isObject(sectionCoverage) ||
-      ["problem", "assumptions", "method", "results", "limitations"].some((field) => typeof sectionCoverage[field] !== "boolean") ||
-      !["checked", "not_needed", "not_applicable", "not_checked"].includes(sectionCoverage.appendices)) {
+    if (
+      !isObject(sectionCoverage) ||
+      ["problem", "assumptions", "method", "results", "limitations"].some(
+        (field) => typeof sectionCoverage[field] !== "boolean"
+      ) ||
+      !["checked", "not_needed", "not_applicable", "not_checked"].includes(
+        sectionCoverage.appendices
+      )
+    ) {
       return ["analysis_invalid"];
     }
     if (Object.hasOwn(coverage, "source_sections")) {
       const sourceSections = coverage.source_sections;
       if (!Array.isArray(sourceSections)) return ["analysis_invalid"];
-      const normalized = (sections) => sections.map((section) => section.trim().toLocaleLowerCase());
-      if (sourceSections.length === 0 || sourceSections.some((section) => !hasText(section)) ||
-          new Set(normalized(sourceSections)).size !== sourceSections.length ||
-          new Set(normalized(inspected)).size !== inspected.length ||
-          sourceSections.length !== inspected.length ||
-          normalized(sourceSections).some((section) => !normalized(inspected).includes(section))) {
+      const normalized = (sections) =>
+        sections.map((section) => section.trim().toLocaleLowerCase());
+      if (
+        sourceSections.length === 0 ||
+        sourceSections.some((section) => !hasText(section)) ||
+        new Set(normalized(sourceSections)).size !== sourceSections.length ||
+        new Set(normalized(inspected)).size !== inspected.length ||
+        sourceSections.length !== inspected.length ||
+        normalized(sourceSections).some((section) => !normalized(inspected).includes(section))
+      ) {
         return ["analysis_invalid"];
       }
     } else {
@@ -188,8 +202,13 @@ function coverageEvidenceDiagnostics(coverage) {
         results: /result|finding|analysis|experiment/iu,
         limitations: /discussion|limit|conclusion/iu,
       };
-      if (Object.entries(sectionPatterns).some(([field, pattern]) =>
-        sectionCoverage[field] !== true || !inspected.some((section) => hasText(section) && pattern.test(section)))) {
+      if (
+        Object.entries(sectionPatterns).some(
+          ([field, pattern]) =>
+            sectionCoverage[field] !== true ||
+            !inspected.some((section) => hasText(section) && pattern.test(section))
+        )
+      ) {
         return ["analysis_invalid"];
       }
     }
@@ -205,7 +224,10 @@ function analysisDiagnostics(analysis, entry) {
   if (!isObject(analysis)) return ["analysis_invalid"];
   if (analysis.status === "failed") return ["analysis_failed"];
   if (analysis.status !== "ready") return ["analysis_pending"];
-  if (normalizeArxivId(analysis.arxiv_id) !== normalizeArxivId(entry.arxiv_id) || Number(analysis.revision) !== Number(entry.revision)) {
+  if (
+    normalizeArxivId(analysis.arxiv_id) !== normalizeArxivId(entry.arxiv_id) ||
+    Number(analysis.revision) !== Number(entry.revision)
+  ) {
     return ["analysis_revision_mismatch"];
   }
   if (analysis.source_fingerprint !== sourceFingerprint(entry)) return ["source_changed"];
@@ -215,7 +237,11 @@ function analysisDiagnostics(analysis, entry) {
   if (!isObject(coverage) || !RADAR_COVERAGE_LEVELS.includes(coverage.level)) {
     return ["analysis_invalid"];
   }
-  if (!hasText(coverage.label) || coverage.source_version !== `arXiv:${normalizeArxivId(entry.arxiv_id)}v${entry.revision}`) return ["analysis_invalid"];
+  if (
+    !hasText(coverage.label) ||
+    coverage.source_version !== `arXiv:${normalizeArxivId(entry.arxiv_id)}v${entry.revision}`
+  )
+    return ["analysis_invalid"];
   if (!Array.isArray(coverage.inspected_sections) || coverage.inspected_sections.length === 0) {
     return ["analysis_invalid"];
   }
@@ -230,49 +256,72 @@ function analysisDiagnostics(analysis, entry) {
   if (analysis.priority === "worth_knowing" && coverage.level === "abstract_only") {
     return ["coverage_insufficient_worth_knowing"];
   }
-  if (!isObject(analysis.analysis) || !hasText(analysis.analysis.origin) || !validDate(analysis.analysis.analyzed_at)) {
+  if (
+    !isObject(analysis.analysis) ||
+    !hasText(analysis.analysis.origin) ||
+    !validDate(analysis.analysis.analyzed_at)
+  ) {
     return ["analysis_invalid"];
   }
-  const requiredText = [
-    "reason",
-    "result",
-    "reading_entry",
-    "problem",
-    "research_progress",
-  ];
+  const requiredText = ["reason", "result", "reading_entry", "problem", "research_progress"];
   if (requiredText.some((key) => !hasText(analysis.analysis[key]))) return ["analysis_invalid"];
-  if (analysis.priority === "must_read" && !hasText(analysis.analysis.method)) return ["analysis_invalid"];
+  if (analysis.priority === "must_read" && !hasText(analysis.analysis.method))
+    return ["analysis_invalid"];
   if (!textArray(analysis.analysis.assumptions) || !textArray(analysis.analysis.limits)) {
     return ["analysis_invalid"];
   }
-  if (!textArray(analysis.analysis.citation_leads) || !textArray(analysis.analysis.unresolved_checks)) {
+  if (
+    !textArray(analysis.analysis.citation_leads) ||
+    !textArray(analysis.analysis.unresolved_checks)
+  ) {
     return ["analysis_invalid"];
   }
   const lineage = analysis.analysis.potential_lineage;
-  if (!isObject(lineage) || !hasText(lineage.status) || !hasText(lineage.reason)) return ["analysis_invalid"];
+  if (!isObject(lineage) || !hasText(lineage.status) || !hasText(lineage.reason))
+    return ["analysis_invalid"];
   if (!Array.isArray(lineage.candidates)) return ["analysis_invalid"];
-  if (lineage.candidates.some((candidate) =>
-    !isObject(candidate) || !RADAR_RELATIONS.includes(candidate.relation) || !hasText(candidate.target_work_id) ||
-    !hasText(candidate.delta) || !hasText(candidate.support) || !textArray(candidate.unresolved_checks))) {
+  if (
+    lineage.candidates.some(
+      (candidate) =>
+        !isObject(candidate) ||
+        !RADAR_RELATIONS.includes(candidate.relation) ||
+        !hasText(candidate.target_work_id) ||
+        !hasText(candidate.delta) ||
+        !hasText(candidate.support) ||
+        !textArray(candidate.unresolved_checks)
+    )
+  ) {
     return ["analysis_invalid"];
   }
-  if (!Array.isArray(analysis.analysis.prerequisite_works) || analysis.analysis.prerequisite_works.some((prerequisite) =>
-    !isObject(prerequisite) || !hasText(prerequisite.work_id) || !hasText(prerequisite.reason))) {
+  if (
+    !Array.isArray(analysis.analysis.prerequisite_works) ||
+    analysis.analysis.prerequisite_works.some(
+      (prerequisite) =>
+        !isObject(prerequisite) || !hasText(prerequisite.work_id) || !hasText(prerequisite.reason)
+    )
+  ) {
     return ["analysis_invalid"];
   }
   return [];
 }
 
 function pendingReasonFor(entry, analysesById) {
-  const sameId = [...analysesById.values()].filter((analysis) => normalizeArxivId(analysis?.arxiv_id) === normalizeArxivId(entry.arxiv_id));
-  if (sameId.length > 0 && !sameId.some((analysis) => Number(analysis.revision) === Number(entry.revision))) {
+  const sameId = [...analysesById.values()].filter(
+    (analysis) => normalizeArxivId(analysis?.arxiv_id) === normalizeArxivId(entry.arxiv_id)
+  );
+  if (
+    sameId.length > 0 &&
+    !sameId.some((analysis) => Number(analysis.revision) === Number(entry.revision))
+  ) {
     return "analysis_revision_mismatch";
   }
   return "analysis_missing";
 }
 
 function pendingDetailFor(analysis, reason) {
-  const coverageLabel = (hasText(analysis?.coverage?.label) ? analysis.coverage.label : "当前阅读范围记录无效").replace(/[。；]$/u, "");
+  const coverageLabel = (
+    hasText(analysis?.coverage?.label) ? analysis.coverage.label : "当前阅读范围记录无效"
+  ).replace(/[。；]$/u, "");
   if (reason === "coverage_insufficient_must_read") {
     return `当前记录为${coverageLabel}，未达到 Must Read 所需的全文分析门槛；补读全文后才能作为正式推荐。`;
   }
@@ -291,31 +340,67 @@ function pendingDetailFor(analysis, reason) {
 function knowledgePointDiagnostics(point, entry) {
   if (!isObject(point) || !isObject(entry)) return ["knowledge_point_invalid"];
   const source = point.source;
-  if (!isObject(source) || normalizeArxivId(source.arxiv_id) !== normalizeArxivId(entry.arxiv_id) || Number(source.revision) !== Number(entry.revision)) {
+  if (
+    !isObject(source) ||
+    normalizeArxivId(source.arxiv_id) !== normalizeArxivId(entry.arxiv_id) ||
+    Number(source.revision) !== Number(entry.revision)
+  ) {
     return ["knowledge_point_revision_mismatch"];
   }
-  if (source.source_fingerprint !== sourceFingerprint(entry)) return ["knowledge_point_source_changed"];
-  if (!hasText(point.id) || !hasText(point.title) || !hasText(point.why_it_matters) || !hasText(point.physical_picture) || !hasText(point.paper_use)) {
+  if (source.source_fingerprint !== sourceFingerprint(entry))
+    return ["knowledge_point_source_changed"];
+  if (
+    !hasText(point.id) ||
+    !hasText(point.title) ||
+    !hasText(point.why_it_matters) ||
+    !hasText(point.physical_picture) ||
+    !hasText(point.paper_use)
+  ) {
     return ["knowledge_point_invalid"];
   }
-  if (!RADAR_COVERAGE_LEVELS.includes(source.level) || !Array.isArray(source.inspected_sections) || source.inspected_sections.length === 0 || source.source_version !== `arXiv:${normalizeArxivId(entry.arxiv_id)}v${entry.revision}`) {
+  if (
+    !RADAR_COVERAGE_LEVELS.includes(source.level) ||
+    !Array.isArray(source.inspected_sections) ||
+    source.inspected_sections.length === 0 ||
+    source.source_version !== `arXiv:${normalizeArxivId(entry.arxiv_id)}v${entry.revision}`
+  ) {
     return ["knowledge_point_invalid"];
   }
-  if (coverageEvidenceDiagnostics({ ...source, source_references: point.source_references }).length > 0) return ["knowledge_point_invalid"];
-  if (!textArray(point.assumptions) || !Array.isArray(point.symbols) || point.symbols.some((symbol) =>
-    !isObject(symbol) || !hasText(symbol.symbol) || !hasText(symbol.meaning)) || !Array.isArray(point.derivation) || !textArray(point.units_checks) || !sourceReferences(point.source_references, entry) || !textArray(point.unresolved_checks)) {
+  if (
+    coverageEvidenceDiagnostics({ ...source, source_references: point.source_references }).length >
+    0
+  )
+    return ["knowledge_point_invalid"];
+  if (
+    !textArray(point.assumptions) ||
+    !Array.isArray(point.symbols) ||
+    point.symbols.some(
+      (symbol) => !isObject(symbol) || !hasText(symbol.symbol) || !hasText(symbol.meaning)
+    ) ||
+    !Array.isArray(point.derivation) ||
+    !textArray(point.units_checks) ||
+    !sourceReferences(point.source_references, entry) ||
+    !textArray(point.unresolved_checks)
+  ) {
     return ["knowledge_point_invalid"];
   }
-  if (point.derivation.some((step) => !isObject(step) || !["paper", "teaching"].includes(step.kind) || !hasText(step.text))) {
+  if (
+    point.derivation.some(
+      (step) => !isObject(step) || !["paper", "teaching"].includes(step.kind) || !hasText(step.text)
+    )
+  ) {
     return ["knowledge_point_invalid"];
   }
   return [];
 }
 
 function openingBriefDiagnostics(brief, feed, model, options = {}) {
-  const visibleWorkIds = options.visibleWorkIds === undefined ? null : new Set(options.visibleWorkIds);
-  const eligibleCount = model.groups.must_read.length + model.groups.worth_knowing.length + model.groups.skip.length;
-  if (brief === undefined || brief === null) return eligibleCount === 0 ? [] : ["RADAR_OPENING_BRIEF_MISSING"];
+  const visibleWorkIds =
+    options.visibleWorkIds === undefined ? null : new Set(options.visibleWorkIds);
+  const eligibleCount =
+    model.groups.must_read.length + model.groups.worth_knowing.length + model.groups.skip.length;
+  if (brief === undefined || brief === null)
+    return eligibleCount === 0 ? [] : ["RADAR_OPENING_BRIEF_MISSING"];
   if (!isObject(brief) || !["ready", "unavailable"].includes(brief.status)) {
     return ["RADAR_OPENING_BRIEF_INVALID"];
   }
@@ -323,35 +408,52 @@ function openingBriefDiagnostics(brief, feed, model, options = {}) {
   if (brief.status === "unavailable") {
     return hasText(brief.reason) ? [] : ["RADAR_OPENING_BRIEF_INVALID"];
   }
-  if (!hasText(brief.edition_fingerprint) || brief.edition_fingerprint !== editionFingerprint(feed) || !hasText(brief.intro)) {
+  if (
+    !hasText(brief.edition_fingerprint) ||
+    brief.edition_fingerprint !== editionFingerprint(feed) ||
+    !hasText(brief.intro)
+  ) {
     return ["RADAR_OPENING_BRIEF_STALE"];
   }
   if (!Array.isArray(brief.must_read)) return ["RADAR_OPENING_BRIEF_INVALID"];
-  if (model.groups.must_read.length !== brief.must_read.length) return ["RADAR_OPENING_BRIEF_STALE"];
+  if (model.groups.must_read.length !== brief.must_read.length)
+    return ["RADAR_OPENING_BRIEF_STALE"];
 
-  const expectedMustRead = new Map(model.groups.must_read.map((item) => [
-    identityKey(item.arxiv_id, item.revision),
-    item,
-  ]));
+  const expectedMustRead = new Map(
+    model.groups.must_read.map((item) => [identityKey(item.arxiv_id, item.revision), item])
+  );
   const seen = new Set();
   for (const sentence of brief.must_read) {
-    if (!isObject(sentence) || !hasText(sentence.arxiv_id) || !Number.isInteger(Number(sentence.revision)) || Number(sentence.revision) < 1 ||
-      !hasText(sentence.label) || !hasText(sentence.text) || !hasText(sentence.source_fingerprint) || !hasText(sentence.guide_fingerprint) ||
-      !hasText(sentence.anchor)) {
+    if (
+      !isObject(sentence) ||
+      !hasText(sentence.arxiv_id) ||
+      !Number.isInteger(Number(sentence.revision)) ||
+      Number(sentence.revision) < 1 ||
+      !hasText(sentence.label) ||
+      !hasText(sentence.text) ||
+      !hasText(sentence.source_fingerprint) ||
+      !hasText(sentence.guide_fingerprint) ||
+      !hasText(sentence.anchor)
+    ) {
       return ["RADAR_OPENING_BRIEF_INVALID"];
     }
     const key = identityKey(sentence.arxiv_id, sentence.revision);
     const item = expectedMustRead.get(key);
     if (!item || seen.has(key)) return ["RADAR_OPENING_BRIEF_STALE"];
     seen.add(key);
-    if (sentence.source_fingerprint !== sourceFingerprint(item) || sentence.guide_fingerprint !== guideFingerprint(item.analysis) ||
-      sentence.anchor !== radarCardAnchor(item.arxiv_id, item.revision)) {
+    if (
+      sentence.source_fingerprint !== sourceFingerprint(item) ||
+      sentence.guide_fingerprint !== guideFingerprint(item.analysis) ||
+      sentence.anchor !== radarCardAnchor(item.arxiv_id, item.revision)
+    ) {
       return ["RADAR_OPENING_BRIEF_STALE"];
     }
     if (sentence.related_work_ids !== undefined) {
-      if (!Array.isArray(sentence.related_work_ids) ||
+      if (
+        !Array.isArray(sentence.related_work_ids) ||
         sentence.related_work_ids.some((workId) => !hasText(workId)) ||
-        new Set(sentence.related_work_ids).size !== sentence.related_work_ids.length) {
+        new Set(sentence.related_work_ids).size !== sentence.related_work_ids.length
+      ) {
         return ["RADAR_OPENING_BRIEF_INVALID"];
       }
       const guide = item.analysis?.analysis;
@@ -363,16 +465,26 @@ function openingBriefDiagnostics(brief, feed, model, options = {}) {
           ? guide.prerequisite_works.map((prerequisite) => prerequisite?.work_id)
           : []),
       ]);
-      if (sentence.related_work_ids.some((workId) => !supportedWorkIds.has(workId) || (visibleWorkIds && !visibleWorkIds.has(workId)))) {
+      if (
+        sentence.related_work_ids.some(
+          (workId) =>
+            !supportedWorkIds.has(workId) || (visibleWorkIds && !visibleWorkIds.has(workId))
+        )
+      ) {
         return ["RADAR_OPENING_BRIEF_STALE"];
       }
     }
   }
   if (seen.size !== expectedMustRead.size) return ["RADAR_OPENING_BRIEF_STALE"];
-  if (model.groups.worth_knowing.length > 0 && !hasText(brief.worth_knowing_summary)) return ["RADAR_OPENING_BRIEF_INVALID"];
-  if (model.groups.skip.length > 0 && !hasText(brief.skim_summary)) return ["RADAR_OPENING_BRIEF_INVALID"];
+  if (model.groups.worth_knowing.length > 0 && !hasText(brief.worth_knowing_summary))
+    return ["RADAR_OPENING_BRIEF_INVALID"];
+  if (model.groups.skip.length > 0 && !hasText(brief.skim_summary))
+    return ["RADAR_OPENING_BRIEF_INVALID"];
 
-  for (const [field, group] of [["worth_knowing", model.groups.worth_knowing], ["skip", model.groups.skip]]) {
+  for (const [field, group] of [
+    ["worth_knowing", model.groups.worth_knowing],
+    ["skip", model.groups.skip],
+  ]) {
     const references = brief[field];
     if (group.length === 0) {
       if (Array.isArray(references) && references.length > 0) return ["RADAR_OPENING_BRIEF_STALE"];
@@ -380,18 +492,29 @@ function openingBriefDiagnostics(brief, feed, model, options = {}) {
     }
     if (!Array.isArray(references)) return ["RADAR_OPENING_BRIEF_INVALID"];
     if (references.length !== group.length) return ["RADAR_OPENING_BRIEF_STALE"];
-    const expected = new Map(group.map((item) => [identityKey(item.arxiv_id, item.revision), item]));
+    const expected = new Map(
+      group.map((item) => [identityKey(item.arxiv_id, item.revision), item])
+    );
     const seenReferences = new Set();
     for (const reference of references) {
-      if (!isObject(reference) || !hasText(reference.arxiv_id) || !Number.isInteger(Number(reference.revision)) || Number(reference.revision) < 1 ||
-        !hasText(reference.source_fingerprint) || !hasText(reference.guide_fingerprint)) {
+      if (
+        !isObject(reference) ||
+        !hasText(reference.arxiv_id) ||
+        !Number.isInteger(Number(reference.revision)) ||
+        Number(reference.revision) < 1 ||
+        !hasText(reference.source_fingerprint) ||
+        !hasText(reference.guide_fingerprint)
+      ) {
         return ["RADAR_OPENING_BRIEF_INVALID"];
       }
       const key = identityKey(reference.arxiv_id, reference.revision);
       const item = expected.get(key);
       if (!item || seenReferences.has(key)) return ["RADAR_OPENING_BRIEF_STALE"];
       seenReferences.add(key);
-      if (reference.source_fingerprint !== sourceFingerprint(item) || reference.guide_fingerprint !== guideFingerprint(item.analysis)) {
+      if (
+        reference.source_fingerprint !== sourceFingerprint(item) ||
+        reference.guide_fingerprint !== guideFingerprint(item.analysis)
+      ) {
         return ["RADAR_OPENING_BRIEF_STALE"];
       }
     }
@@ -410,15 +533,19 @@ export { knowledgePointDiagnostics, openingBriefDiagnostics };
 export function buildDailyRadarModel(feed, radar = {}, options = {}) {
   const entries = Array.isArray(feed?.entries) ? feed.entries : [];
   const analyses = Array.isArray(radar?.analyses) ? radar.analyses : [];
-  const knowledgePointRecords = Array.isArray(radar?.knowledge_points) ? radar.knowledge_points : [];
+  const knowledgePointRecords = Array.isArray(radar?.knowledge_points)
+    ? radar.knowledge_points
+    : [];
   const feedWindow = isObject(feed?.window) ? feed.window : null;
   const radarEdition = isObject(radar?.edition) ? radar.edition : {};
-  const entriesById = new Map(entries.map((entry) => [identityKey(entry.arxiv_id, entry.revision), entry]));
+  const entriesById = new Map(
+    entries.map((entry) => [identityKey(entry.arxiv_id, entry.revision), entry])
+  );
   const feedArxivIds = new Set(entries.map((entry) => normalizeArxivId(entry.arxiv_id)));
   const analysesById = new Map(
     analyses
       .filter((analysis) => isObject(analysis) && hasText(analysis.arxiv_id))
-      .map((analysis) => [identityKey(analysis.arxiv_id, analysis.revision), analysis]),
+      .map((analysis) => [identityKey(analysis.arxiv_id, analysis.revision), analysis])
   );
   const groups = { must_read: [], worth_knowing: [], skip: [] };
   const pending = [];
@@ -448,7 +575,10 @@ export function buildDailyRadarModel(feed, radar = {}, options = {}) {
 
   for (const point of knowledgePointRecords) {
     const source = point?.source;
-    const hasSourceIdentity = hasText(source?.arxiv_id) && Number.isInteger(Number(source?.revision)) && Number(source.revision) >= 1;
+    const hasSourceIdentity =
+      hasText(source?.arxiv_id) &&
+      Number.isInteger(Number(source?.revision)) &&
+      Number(source.revision) >= 1;
     const entry = entriesById.get(identityKey(source?.arxiv_id, source?.revision));
     if (hasSourceIdentity && !entry) {
       knowledge_points_pending.push({
@@ -488,7 +618,7 @@ export function buildDailyRadarModel(feed, radar = {}, options = {}) {
       source_url: feed?.source_url ?? null,
       coverage_kind: ["announcement_day", "announcement_batch"].includes(feedWindow?.kind)
         ? feedWindow.kind
-        : radarEdition.coverage_kind ?? "recent_submission_sample",
+        : (radarEdition.coverage_kind ?? "recent_submission_sample"),
       ...(feedWindow ? { window: feedWindow } : {}),
       ...(Number.isInteger(feed?.page_count) ? { page_count: feed.page_count } : {}),
     },
@@ -542,18 +672,27 @@ export function radarCoverageDescription(coverage) {
 }
 
 export function projectPotentialLineage(lineage, visibleWorkIds) {
-  if (!isObject(lineage)) return { status: "no_match", reason: "未提供候选科学关系。", candidates: [] };
+  if (!isObject(lineage))
+    return { status: "no_match", reason: "未提供候选科学关系。", candidates: [] };
   const visible = new Set(visibleWorkIds);
   const allCandidates = Array.isArray(lineage.candidates)
-    ? lineage.candidates.filter((candidate) => isObject(candidate) && hasText(candidate.target_work_id))
+    ? lineage.candidates.filter(
+        (candidate) => isObject(candidate) && hasText(candidate.target_work_id)
+      )
     : [];
-  const hiddenTargetIds = new Set(allCandidates
-    .filter((candidate) => !visible.has(candidate.target_work_id))
-    .map((candidate) => candidate.target_work_id));
+  const hiddenTargetIds = new Set(
+    allCandidates
+      .filter((candidate) => !visible.has(candidate.target_work_id))
+      .map((candidate) => candidate.target_work_id)
+  );
   const candidates = allCandidates
     .filter((candidate) => visible.has(candidate.target_work_id))
     .map((candidate) => {
-      const candidateText = [candidate.delta, candidate.support, ...(Array.isArray(candidate.unresolved_checks) ? candidate.unresolved_checks : [])]
+      const candidateText = [
+        candidate.delta,
+        candidate.support,
+        ...(Array.isArray(candidate.unresolved_checks) ? candidate.unresolved_checks : []),
+      ]
         .filter(hasText)
         .join(" ");
       if ([...hiddenTargetIds].some((workId) => candidateText.includes(workId))) {
@@ -573,25 +712,38 @@ export function projectPotentialLineage(lineage, visibleWorkIds) {
       ? candidates.length > 0
         ? "当前页面仅保留可见 Work 的候选关系；关系仍待审核。"
         : "当前没有可公开展示的候选科学关系。"
-      : (hasText(lineage.reason) ? lineage.reason : "未提供候选科学关系。"),
+      : hasText(lineage.reason)
+        ? lineage.reason
+        : "未提供候选科学关系。",
     candidates,
     unresolved_checks: hiddenWorkExists
       ? []
-      : (Array.isArray(lineage.unresolved_checks) ? lineage.unresolved_checks.filter(hasText) : []),
+      : Array.isArray(lineage.unresolved_checks)
+        ? lineage.unresolved_checks.filter(hasText)
+        : [],
   };
 }
 
 function historicalEditionFor(feed) {
-  return feed?.window?.batch_id
-    ?? feed?.window?.announcement_date
-    ?? feed?.generated_at
-    ?? "previous-edition";
+  return (
+    feed?.window?.batch_id ??
+    feed?.window?.announcement_date ??
+    feed?.generated_at ??
+    "previous-edition"
+  );
 }
 
 function currentFeedIdentitySet(feed) {
-  return new Set((Array.isArray(feed?.entries) ? feed.entries : [])
-    .filter((entry) => hasText(entry?.arxiv_id) && Number.isInteger(Number(entry?.revision)) && Number(entry.revision) >= 1)
-    .map((entry) => identityKey(entry.arxiv_id, entry.revision)));
+  return new Set(
+    (Array.isArray(feed?.entries) ? feed.entries : [])
+      .filter(
+        (entry) =>
+          hasText(entry?.arxiv_id) &&
+          Number.isInteger(Number(entry?.revision)) &&
+          Number(entry.revision) >= 1
+      )
+      .map((entry) => identityKey(entry.arxiv_id, entry.revision))
+  );
 }
 
 function historicalKey(record, kind) {
@@ -619,11 +771,14 @@ export function reconcileDailyRadarEdition(previousFeed, radar, nextFeed) {
   const source = isObject(radar) ? radar : {};
   const { opening_brief: _staleOpeningBrief, ...sourceWithoutBrief } = source;
   const analyses = [];
-  const historicalAnalyses = Array.isArray(source.historical_analyses) ? source.historical_analyses.map((record) => ({ ...record })) : [];
+  const historicalAnalyses = Array.isArray(source.historical_analyses)
+    ? source.historical_analyses.map((record) => ({ ...record }))
+    : [];
   for (const analysis of Array.isArray(source.analyses) ? source.analyses : []) {
-    const key = hasText(analysis?.arxiv_id) && Number.isInteger(Number(analysis?.revision))
-      ? identityKey(analysis.arxiv_id, analysis.revision)
-      : null;
+    const key =
+      hasText(analysis?.arxiv_id) && Number.isInteger(Number(analysis?.revision))
+        ? identityKey(analysis.arxiv_id, analysis.revision)
+        : null;
     if (key && currentIds.has(key)) analyses.push(analysis);
     else appendHistorical(historicalAnalyses, analysis, "analysis", historicalEdition);
   }
@@ -633,9 +788,10 @@ export function reconcileDailyRadarEdition(previousFeed, radar, nextFeed) {
     ? source.historical_knowledge_points.map((record) => ({ ...record }))
     : [];
   for (const point of Array.isArray(source.knowledge_points) ? source.knowledge_points : []) {
-    const key = hasText(point?.source?.arxiv_id) && Number.isInteger(Number(point?.source?.revision))
-      ? identityKey(point.source.arxiv_id, point.source.revision)
-      : null;
+    const key =
+      hasText(point?.source?.arxiv_id) && Number.isInteger(Number(point?.source?.revision))
+        ? identityKey(point.source.arxiv_id, point.source.revision)
+        : null;
     if (key && currentIds.has(key)) knowledgePoints.push(point);
     else appendHistorical(historicalKnowledgePoints, point, "knowledge_point", historicalEdition);
   }
@@ -645,7 +801,8 @@ export function reconcileDailyRadarEdition(previousFeed, radar, nextFeed) {
     generated_at: nextFeed?.generated_at ?? null,
     query: nextFeed?.query ?? null,
     source_url: nextFeed?.source_url ?? null,
-    coverage_kind: nextFeed?.window?.kind ?? source.edition?.coverage_kind ?? "recent_submission_sample",
+    coverage_kind:
+      nextFeed?.window?.kind ?? source.edition?.coverage_kind ?? "recent_submission_sample",
     ...(isObject(nextFeed?.window) ? { window: nextFeed.window } : {}),
     ...(Number.isInteger(nextFeed?.page_count) ? { page_count: nextFeed.page_count } : {}),
   };
@@ -659,7 +816,9 @@ export function reconcileDailyRadarEdition(previousFeed, radar, nextFeed) {
       reason: "本期缓存版本已变化，导读需要重新绑定当前论文后才能显示。",
     },
     ...(historicalAnalyses.length > 0 ? { historical_analyses: historicalAnalyses } : {}),
-    ...(historicalKnowledgePoints.length > 0 ? { historical_knowledge_points: historicalKnowledgePoints } : {}),
+    ...(historicalKnowledgePoints.length > 0
+      ? { historical_knowledge_points: historicalKnowledgePoints }
+      : {}),
   };
 }
 
@@ -674,10 +833,16 @@ export function validateDailyRadarPayload(feed, radar, options = {}) {
   }
   const feedEntries = isObject(feed) && Array.isArray(feed.entries) ? feed.entries : [];
   const currentAnalyses = isObject(radar) && Array.isArray(radar.analyses) ? radar.analyses : [];
-  const currentKnowledgePoints = isObject(radar) && Array.isArray(radar.knowledge_points) ? radar.knowledge_points : [];
-  const entriesById = new Map(feedEntries.map((entry) => [identityKey(entry.arxiv_id, entry.revision), entry]));
+  const currentKnowledgePoints =
+    isObject(radar) && Array.isArray(radar.knowledge_points) ? radar.knowledge_points : [];
+  const entriesById = new Map(
+    feedEntries.map((entry) => [identityKey(entry.arxiv_id, entry.revision), entry])
+  );
   const feedArxivIds = new Set(feedEntries.map((entry) => normalizeArxivId(entry.arxiv_id)));
-  for (const [key, code] of [["historical_analyses", "RADAR_HISTORICAL_ANALYSES_INVALID"], ["historical_knowledge_points", "RADAR_HISTORICAL_KNOWLEDGE_POINTS_INVALID"]]) {
+  for (const [key, code] of [
+    ["historical_analyses", "RADAR_HISTORICAL_ANALYSES_INVALID"],
+    ["historical_knowledge_points", "RADAR_HISTORICAL_KNOWLEDGE_POINTS_INVALID"],
+  ]) {
     if (radar?.[key] !== undefined && !Array.isArray(radar[key])) diagnostics.push(code);
     for (const record of Array.isArray(radar?.[key]) ? radar[key] : []) {
       if (!isObject(record) || !hasText(record.historical_edition)) diagnostics.push(code);
@@ -685,7 +850,12 @@ export function validateDailyRadarPayload(feed, radar, options = {}) {
   }
   const seenAnalysisIds = new Set();
   for (const analysis of currentAnalyses) {
-    if (!isObject(analysis) || !hasText(analysis.arxiv_id) || !Number.isInteger(Number(analysis.revision)) || Number(analysis.revision) < 1) {
+    if (
+      !isObject(analysis) ||
+      !hasText(analysis.arxiv_id) ||
+      !Number.isInteger(Number(analysis.revision)) ||
+      Number(analysis.revision) < 1
+    ) {
       diagnostics.push("RADAR_ANALYSIS_IDENTITY_INVALID");
       continue;
     }
@@ -696,9 +866,16 @@ export function validateDailyRadarPayload(feed, radar, options = {}) {
     // The current-edition array must remain source-complete. Historical
     // analyses belong in historical_analyses, where they cannot participate
     // in this edition or make a valid rolling cache fail its build.
-    if (!entry && !feedArxivIds.has(normalizeArxivId(analysis.arxiv_id))) diagnostics.push("RADAR_ANALYSIS_SOURCE_UNKNOWN");
+    if (!entry && !feedArxivIds.has(normalizeArxivId(analysis.arxiv_id)))
+      diagnostics.push("RADAR_ANALYSIS_SOURCE_UNKNOWN");
     if (!entry) continue;
-    if (entry && analysis.source_fingerprint === sourceFingerprint(entry) && isObject(analysis.coverage) && Array.isArray(analysis.coverage.source_references) && !sourceReferences(analysis.coverage.source_references, entry)) {
+    if (
+      entry &&
+      analysis.source_fingerprint === sourceFingerprint(entry) &&
+      isObject(analysis.coverage) &&
+      Array.isArray(analysis.coverage.source_references) &&
+      !sourceReferences(analysis.coverage.source_references, entry)
+    ) {
       diagnostics.push("RADAR_SOURCE_REFERENCE_MISMATCH");
     }
   }
@@ -711,23 +888,36 @@ export function validateDailyRadarPayload(feed, radar, options = {}) {
     if (seenKnowledgePointIds.has(point.id)) diagnostics.push("RADAR_KNOWLEDGE_POINT_DUPLICATE");
     seenKnowledgePointIds.add(point.id);
     const source = point.source;
-    if (!isObject(source) || !hasText(source.arxiv_id) || !Number.isInteger(Number(source.revision)) || Number(source.revision) < 1) {
+    if (
+      !isObject(source) ||
+      !hasText(source.arxiv_id) ||
+      !Number.isInteger(Number(source.revision)) ||
+      Number(source.revision) < 1
+    ) {
       diagnostics.push("RADAR_KNOWLEDGE_POINT_INVALID");
       continue;
     }
     const entry = entriesById.get(identityKey(source?.arxiv_id, source?.revision));
     // Historical knowledge points belong in historical_knowledge_points and
     // are excluded from the current page before the two-point cap is applied.
-    if (!entry && !feedArxivIds.has(normalizeArxivId(source.arxiv_id))) diagnostics.push("RADAR_KNOWLEDGE_POINT_SOURCE_UNKNOWN");
+    if (!entry && !feedArxivIds.has(normalizeArxivId(source.arxiv_id)))
+      diagnostics.push("RADAR_KNOWLEDGE_POINT_SOURCE_UNKNOWN");
     if (!entry) continue;
-    if (entry && source?.source_fingerprint === sourceFingerprint(entry) && Array.isArray(point.source_references) && !sourceReferences(point.source_references, entry)) {
+    if (
+      entry &&
+      source?.source_fingerprint === sourceFingerprint(entry) &&
+      Array.isArray(point.source_references) &&
+      !sourceReferences(point.source_references, entry)
+    ) {
       diagnostics.push("RADAR_SOURCE_REFERENCE_MISMATCH");
     }
   }
   const openingBriefErrors = openingBriefDiagnostics(radar?.opening_brief, feed, model, options);
   diagnostics.push(...openingBriefErrors);
   const uniqueDiagnostics = [...new Set(diagnostics)];
-  const fatalDiagnostics = uniqueDiagnostics.filter((code) => !["RADAR_OPENING_BRIEF_STALE", "RADAR_OPENING_BRIEF_MISSING"].includes(code));
+  const fatalDiagnostics = uniqueDiagnostics.filter(
+    (code) => !["RADAR_OPENING_BRIEF_STALE", "RADAR_OPENING_BRIEF_MISSING"].includes(code)
+  );
   return {
     valid: uniqueDiagnostics.length === 0,
     diagnostics: uniqueDiagnostics,
@@ -739,7 +929,17 @@ export function validateDailyRadarPayload(feed, radar, options = {}) {
 export function buildOpeningBrief(feed, radar) {
   const { groups } = buildDailyRadarModel(feed, radar);
   const eligible = [...groups.must_read, ...groups.worth_knowing, ...groups.skip];
-  if (eligible.length === 0) return { status: "unavailable", reason: "本期尚无可核验的科学导读。" };
+  const date = feed?.window?.announcement_date || feed?.date || "";
+  const isLegacy = date ? isLegacyChineseDate(date) : false;
+
+  if (eligible.length === 0) {
+    return {
+      status: "unavailable",
+      reason: isLegacy
+        ? "本期尚无可核验的科学导读。"
+        : "No verified scientific reading guides available for this edition.",
+    };
+  }
   const reference = (item) => ({
     arxiv_id: item.arxiv_id,
     revision: Number(item.revision),
@@ -752,12 +952,57 @@ export function buildOpeningBrief(feed, radar) {
     return chineseStop < 0 ? value.split(/(?<=[.!?])\s+/u)[0] : value.slice(0, chineseStop + 1);
   };
   const focus = groups.must_read[0] || groups.worth_knowing[0];
+  const totalCore = groups.must_read.length + groups.worth_knowing.length;
+
+  let intro;
+  if (isLegacy) {
+    intro = focus
+      ? `本期首看《${focus.title}》${totalCore > 1 ? `等 ${totalCore} 篇核心进展` : ""}。`
+      : "本期为常规监测批次，以摘要略读为主。";
+  } else {
+    intro = focus
+      ? `Featured reading: "${focus.title}"${totalCore > 1 ? ` and ${totalCore - 1} other key developments` : ""}.`
+      : "Standard screening batch, focused primarily on abstract skimming.";
+  }
+
+  let worthKnowingSummary;
+  if (groups.worth_knowing.length > 0) {
+    if (isLegacy) {
+      worthKnowingSummary = `${groups.worth_knowing
+        .slice(0, 2)
+        .map((item) =>
+          sentence(item.analysis?.analysis?.result || item.analysis?.analysis?.reason || "")
+        )
+        .join("；")}${groups.worth_knowing.length > 2 ? " 等。" : "。"}`;
+    } else {
+      worthKnowingSummary = `${groups.worth_knowing
+        .slice(0, 2)
+        .map((item) =>
+          sentence(item.analysis?.analysis?.result || item.analysis?.analysis?.reason || "")
+        )
+        .join("; ")}${groups.worth_knowing.length > 2 ? ", among others." : "."}`;
+    }
+  }
+
+  let skimSummary;
+  if (groups.skip.length > 0) {
+    if (isLegacy) {
+      skimSummary = `${groups.skip
+        .slice(0, 2)
+        .map((item) => item.title)
+        .join("、")}${groups.skip.length > 2 ? " 等主题。" : "。"}`;
+    } else {
+      skimSummary = `Topics include ${groups.skip
+        .slice(0, 2)
+        .map((item) => item.title)
+        .join(", ")}${groups.skip.length > 2 ? ", among others." : "."}`;
+    }
+  }
+
   return {
     status: "ready",
     edition_fingerprint: editionFingerprint(feed),
-    intro: focus
-      ? `本期首看《${focus.title}》${groups.must_read.length + groups.worth_knowing.length > 1 ? `等 ${groups.must_read.length + groups.worth_knowing.length} 篇核心进展` : ""}。`
-      : "本期为常规监测批次，以摘要略读为主。",
+    intro,
     must_read: groups.must_read.map((item) => ({
       ...reference(item),
       label: item.title,
@@ -766,8 +1011,7 @@ export function buildOpeningBrief(feed, radar) {
     })),
     worth_knowing: groups.worth_knowing.map(reference),
     skip: groups.skip.map(reference),
-    ...(groups.worth_knowing.length > 0 ? { worth_knowing_summary: `${groups.worth_knowing.slice(0, 2).map((item) => sentence(item.analysis?.analysis?.result || item.analysis?.analysis?.reason || "")).join("；")}${groups.worth_knowing.length > 2 ? " 等。" : "。"}` } : {}),
-    ...(groups.skip.length > 0 ? { skim_summary: `${groups.skip.slice(0, 2).map((item) => item.title).join("、")}${groups.skip.length > 2 ? " 等主题。" : "。"}` } : {}),
+    ...(worthKnowingSummary ? { worth_knowing_summary: worthKnowingSummary } : {}),
+    ...(skimSummary ? { skim_summary: skimSummary } : {}),
   };
 }
-

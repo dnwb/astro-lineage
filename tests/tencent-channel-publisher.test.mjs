@@ -19,6 +19,9 @@ import {
   DAILY_BRIEF_CHANNEL_ID,
   GENERAL_CHANNEL_ID,
   resolvePublicationTarget,
+  findReadingAnchor,
+  bodyWithReviewedFigure,
+  bodyWithoutManagedFigure,
 } from "../scripts/tencent-channel-publisher.mjs";
 import {
   TOPICS,
@@ -3950,4 +3953,69 @@ test("backfill cursor halts at first unhandled item failure and does not advance
   assert.equal(result.success, false);
   const ledger = JSON.parse(await readFile(join(cacheRoot, "guild-test.json"), "utf8"));
   assert.equal(ledger.brief_cursor, 0);
+});
+
+test("findReadingAnchor and bodyWithReviewedFigure handle English Reading Access anchor cleanly", () => {
+  const item = {
+    arxiv_id: "2610.99999",
+    revision: 1,
+    title: "Relativistic Outflow Physics in GRBs",
+    paper_title: "Relativistic Outflow Physics in GRBs",
+    summary: "Detailed measurement of jet parameters.",
+    analysis: {
+      result: {
+        bluf: "Jet Lorentz factor constrained to Gamma > 100.",
+      },
+    },
+  };
+  const postCutoverDate = "2026-10-28";
+  const body = paperMarkdown(item, postCutoverDate, "GRB Jets");
+  assert.ok(body.includes("## Reading Access"));
+
+  const anchor = findReadingAnchor(body);
+  assert.ok(anchor !== null);
+  assert.equal(anchor.anchor, "\n---\n\n## Reading Access");
+  assert.equal(anchor.isEn, true);
+
+  const figure = {
+    label: "Fig. 2",
+    caption: "Observed and modeled light curves.",
+    category_badge: "数据拟合与模型对比",
+    physical_core: "Jet break measurement and spectral index constraint.",
+  };
+
+  const withFig = bodyWithReviewedFigure(body, figure);
+  assert.ok(withFig.includes("## Key Figure"));
+  assert.ok(withFig.includes("> **Physical Core (Model vs Data Fitting)**:"));
+  assert.ok(withFig.includes("Original Fig. 2 Caption (author-reported):"));
+  assert.ok(withFig.includes("## Reading Access"));
+
+  const stripped = bodyWithoutManagedFigure(withFig);
+  assert.equal(stripped, body);
+});
+
+test("buildOpeningBrief respects language cutover for English and legacy editions", async () => {
+  const archive = JSON.parse(
+    await readFile(
+      new URL("../src/data/arxiv-archives/daily/2026-10-26.json", import.meta.url),
+      "utf8"
+    )
+  );
+
+  // Legacy date (< 2026-10-27)
+  const legacyBrief = buildOpeningBrief(archive.feed, archive.radar);
+  assert.equal(legacyBrief.status, "ready");
+  assert.ok(legacyBrief.intro.startsWith("本期首看《"));
+  assert.ok(legacyBrief.intro.includes("篇核心进展。"));
+  assert.ok(legacyBrief.worth_knowing_summary.includes("等。"));
+
+  // Post-cutover date (>= 2026-10-27)
+  const postCutoverFeed = JSON.parse(JSON.stringify(archive.feed));
+  postCutoverFeed.window.announcement_date = "2026-10-28";
+  const enBrief = buildOpeningBrief(postCutoverFeed, archive.radar);
+  assert.equal(enBrief.status, "ready");
+  assert.ok(enBrief.intro.startsWith('Featured reading: "'));
+  assert.ok(enBrief.intro.includes("other key developments."));
+  assert.ok(enBrief.worth_knowing_summary.includes(", among others."));
+  assert.ok(enBrief.skim_summary.startsWith("Topics include "));
 });

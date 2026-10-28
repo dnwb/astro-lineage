@@ -117,9 +117,13 @@ function dailyBriefItem(model, date) {
     } catch {}
   }
   if (brief?.status !== "ready" && model.groups?.must_read?.length) {
+    const isLegacy = isLegacyChineseDate(date);
+    const count = (model.groups.must_read.length || 0) + (model.groups.worth_knowing?.length || 0);
     brief = {
       status: "ready",
-      intro: `本期首看《${model.groups.must_read[0].title}》等 ${(model.groups.must_read.length || 0) + (model.groups.worth_knowing?.length || 0)} 篇核心进展。`,
+      intro: isLegacy
+        ? `本期首看《${model.groups.must_read[0].title}》等 ${count} 篇核心进展。`
+        : `Featured reading: "${model.groups.must_read[0].title}"${count > 1 ? ` and ${count - 1} other key developments` : ""}.`,
       must_read: model.groups.must_read.map((p) => {
         const a = p.analysis?.analysis || p.analysis || {};
         const text = a.result?.detailed_text || a.result?.bluf || a.result || p.title;
@@ -130,7 +134,9 @@ function dailyBriefItem(model, date) {
         };
       }),
       worth_knowing_summary: model.groups.worth_knowing?.length
-        ? `包含 ${model.groups.worth_knowing.length} 篇重要进展。`
+        ? isLegacy
+          ? `包含 ${model.groups.worth_knowing.length} 篇重要进展。`
+          : `Includes ${model.groups.worth_knowing.length} noteworthy developments.`
         : "",
       skim_summary: "",
     };
@@ -452,7 +458,31 @@ function figureReadbackProblem(current, expectedRemote, identity, title, existin
   return null;
 }
 
-function bodyWithoutManagedFigure(value) {
+export const READING_ANCHORS = Object.freeze([
+  "\n---\n\n## 📚 阅读入口",
+  "\n---\n\n## 阅读入口",
+  "\n---\n\n## 📖 Reading Access",
+  "\n---\n\n## Reading Access",
+  "\n---\n\n## 📖 Reading Entry",
+  "\n---\n\n## Reading Entry",
+]);
+
+export function findReadingAnchor(body, start = 0) {
+  const text = String(body);
+  for (const anchor of READING_ANCHORS) {
+    const idx = text.indexOf(anchor, start);
+    if (idx >= 0) {
+      return {
+        index: idx,
+        anchor,
+        isEn: /reading/i.test(anchor),
+      };
+    }
+  }
+  return null;
+}
+
+export function bodyWithoutManagedFigure(value) {
   const body = String(value);
   let figurePrefix = "\n\n## 关键图像\n\n[(0,0)](@img)\n\n";
   let start = body.indexOf(figurePrefix);
@@ -461,17 +491,9 @@ function bodyWithoutManagedFigure(value) {
     start = body.indexOf(figurePrefix);
   }
   if (start < 0 || start !== body.lastIndexOf(figurePrefix)) return null;
-  let end = body.indexOf("\n---\n\n## 📚 阅读入口", start);
-  if (end < 0) {
-    end = body.indexOf("\n---\n\n## 阅读入口", start);
-  }
-  if (end < 0) {
-    end = body.indexOf("\n---\n\n## 📖 Reading Entry", start);
-  }
-  if (end < 0) {
-    end = body.indexOf("\n---\n\n## Reading Entry", start);
-  }
-  if (end < 0) return null;
+  const reading = findReadingAnchor(body, start);
+  if (!reading) return null;
+  const end = reading.index;
   const figureContent = body.slice(start + figurePrefix.length, end).trim();
   if (
     !figureContent.includes("图注（作者报告）：") &&
@@ -772,20 +794,12 @@ function pending(result, identity, reason) {
   result.success = false;
 }
 
-function bodyWithReviewedFigure(body, figure, context = {}) {
-  let marker = "";
-  if (String(body).includes("\n---\n\n## 📚 阅读入口")) {
-    marker = "\n---\n\n## 📚 阅读入口";
-  } else if (String(body).includes("\n---\n\n## 阅读入口")) {
-    marker = "\n---\n\n## 阅读入口";
-  } else if (String(body).includes("\n---\n\n## 📖 Reading Entry")) {
-    marker = "\n---\n\n## 📖 Reading Entry";
-  } else if (String(body).includes("\n---\n\n## Reading Entry")) {
-    marker = "\n---\n\n## Reading Entry";
-  }
-  if (!marker) throw new Error("CHANNEL_FIGURE_BODY_ANCHOR_MISSING");
+export function bodyWithReviewedFigure(body, figure, context = {}) {
+  const reading = findReadingAnchor(body);
+  if (!reading) throw new Error("CHANNEL_FIGURE_BODY_ANCHOR_MISSING");
+  const marker = reading.anchor;
   const caption = String(figure.caption).replace(/\r?\n/gu, " ").trim();
-  const isEn = marker.includes("Reading Entry");
+  const isEn = reading.isEn;
   const physicalCore = (
     figure.physical_core ||
     deriveFigurePhysicalCore(figure, context, { lang: isEn ? "en" : "zh" }) ||

@@ -392,9 +392,12 @@ export async function generateGroupBrief(type = "daily", options = {}) {
       const firstPaper = model.groups?.must_read?.[0] || model.groups?.worth_knowing?.[0];
       const count =
         (model.groups?.must_read?.length || 0) + (model.groups?.worth_knowing?.length || 0);
+      const isLegacy = isLegacyChineseDate(date);
       brief = {
         status: "ready",
-        intro: `本期首看《${firstPaper.title}》等 ${count} 篇核心进展。`,
+        intro: isLegacy
+          ? `本期首看《${firstPaper.title}》等 ${count} 篇核心进展。`
+          : `Featured reading: "${firstPaper.title}"${count > 1 ? ` and ${count - 1} other key developments` : ""}.`,
         must_read: (model.groups?.must_read || []).map((p) => {
           const a = p.analysis?.analysis || p.analysis || {};
           const text = a.result?.detailed_text || a.result?.bluf || a.result || p.title;
@@ -405,7 +408,9 @@ export async function generateGroupBrief(type = "daily", options = {}) {
           };
         }),
         worth_knowing_summary: model.groups?.worth_knowing?.length
-          ? `包含 ${model.groups.worth_knowing.length} 篇重要进展。`
+          ? isLegacy
+            ? `包含 ${model.groups.worth_knowing.length} 篇重要进展。`
+            : `Includes ${model.groups.worth_knowing.length} noteworthy developments.`
           : "",
       };
     }

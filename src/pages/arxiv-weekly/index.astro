@@ -15,6 +15,7 @@ import {
   formatWeekIdEn,
   getBibliographicUrl,
   getBibliographicSourceName,
+  formatAuthorList,
 } from "../../domain/academic-domain.mjs";
 import { isLegacyChineseDate } from "../../domain/language-cutover.mjs";
 import { radarCardAnchor } from "../../../scripts/daily-radar.mjs";
@@ -329,7 +330,7 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
                           </h4>
                         </div>
                         {resolveAuthors(p.arxiv_id, p).length > 0 && (
-                          <p class="catalog-item-authors">Authors: {resolveAuthors(p.arxiv_id, p).join(", ")}</p>
+                          <p class="catalog-item-authors">Authors: {formatAuthorList(resolveAuthors(p.arxiv_id, p))}</p>
                         )}
                         {problem && (
                           <p class="catalog-item-problem"><strong>Problem: </strong><ReaderText text={problem} /></p>

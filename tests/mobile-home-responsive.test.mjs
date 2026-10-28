@@ -46,6 +46,23 @@ test("mobile responsive contract: homepage paper grid and card constraints", asy
     /\.intel-pick-links\s*\{[^}]*flex-wrap:\s*wrap/s,
     "intel-pick-links must have flex-wrap: wrap"
   );
+
+  // 6. Mobile navigation touch ergonomics: date pills and stepper buttons meet 44px touch targets
+  assert.match(
+    globalCss,
+    /\.date-pill\s*\{[^}]*min-height:\s*44px/s,
+    "date-pill must enforce min-height: 44px for touch ergonomics on mobile"
+  );
+  assert.match(
+    globalCss,
+    /\.ribbon-step-btn\s*\{[^}]*min-width:\s*44px[^}]*min-height:\s*44px/s,
+    "ribbon-step-btn must meet 44x44px minimum touch targets on mobile"
+  );
+  assert.match(
+    globalCss,
+    /\.ribbon-track-wrap\s*\{[^}]*-webkit-overflow-scrolling:\s*touch[^}]*scroll-snap-type:\s*x mandatory/s,
+    "ribbon-track-wrap must provide momentum scrolling and mandatory snap on touch"
+  );
 });
 
 function hasPlaywright() {

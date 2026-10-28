@@ -4021,3 +4021,50 @@ test("buildOpeningBrief respects language cutover for English and legacy edition
   assert.ok(enBrief.worth_knowing_summary.includes(", among others."));
   assert.ok(enBrief.skim_summary.startsWith("Topics include "));
 });
+
+test("buildOpeningBrief generates structured entities (focus_paper, key_highlights, skim_topics)", async () => {
+  const archive = JSON.parse(
+    await readFile(
+      new URL("../src/data/arxiv-archives/daily/2026-10-26.json", import.meta.url),
+      "utf8"
+    )
+  );
+
+  const brief = buildOpeningBrief(archive.feed, archive.radar);
+  assert.equal(brief.status, "ready");
+
+  // focus_paper
+  assert.ok(brief.focus_paper, "focus_paper should be present when must_read/worth_knowing exist");
+  assert.equal(typeof brief.focus_paper.arxiv_id, "string");
+  assert.equal(typeof brief.focus_paper.revision, "number");
+  assert.equal(typeof brief.focus_paper.title, "string");
+  assert.ok(brief.focus_paper.anchor.startsWith("radar-paper-"));
+
+  // key_highlights
+  assert.ok(Array.isArray(brief.key_highlights), "key_highlights should be an array");
+  assert.ok(brief.key_highlights.length > 0 && brief.key_highlights.length <= 3);
+  for (const item of brief.key_highlights) {
+    assert.equal(typeof item.arxiv_id, "string");
+    assert.equal(typeof item.revision, "number");
+    assert.equal(typeof item.title, "string");
+    assert.ok(item.anchor.startsWith("radar-paper-"));
+    assert.equal(typeof item.result, "string");
+  }
+
+  // skim_topics
+  assert.ok(Array.isArray(brief.skim_topics), "skim_topics should be an array");
+  assert.ok(brief.skim_topics.length > 0 && brief.skim_topics.length <= 5);
+  for (const item of brief.skim_topics) {
+    assert.equal(typeof item.arxiv_id, "string");
+    assert.equal(typeof item.revision, "number");
+    assert.equal(typeof item.title, "string");
+  }
+
+  // Empty/unavailable cases
+  const emptyBrief = buildOpeningBrief(
+    { window: { announcement_date: "2026-10-28" }, entries: [] },
+    { analyses: [] }
+  );
+  assert.equal(emptyBrief.status, "unavailable");
+  assert.equal(emptyBrief.focus_paper, undefined);
+});

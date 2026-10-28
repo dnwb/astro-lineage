@@ -9,6 +9,7 @@ import {
   RadarAnalysisSchema,
   FigureSchema,
   CoverageSchema,
+  OpeningBriefSchema,
 } from "../src/domain/schemas/index.mjs";
 
 test("domain-schemas: active daily-radar.json passes Zod schema validation", async () => {
@@ -67,4 +68,48 @@ test("domain-schemas: FigureSchema enforces url and defaults category", () => {
   assert.equal(parsed.url, "/arxiv-figures/test.png");
   assert.equal(parsed.category, "general");
   assert.equal(parsed.is_schematic, false);
+});
+
+test("domain-schemas: OpeningBriefSchema validates structured entities (focus_paper, key_highlights, skim_topics)", () => {
+  const briefWithEntities = {
+    status: "ready",
+    intro: "Sample intro",
+    focus_paper: {
+      arxiv_id: "2610.12345",
+      revision: 1,
+      title: "Test Paper",
+      anchor: "radar-paper-2610-12345-v1",
+    },
+    key_highlights: [
+      {
+        arxiv_id: "2610.23456",
+        revision: 2,
+        title: "Key Paper",
+        anchor: "radar-paper-2610-23456-v2",
+        result: "Significant constraint on jet break.",
+      },
+    ],
+    skim_topics: [
+      {
+        arxiv_id: "2610.34567",
+        revision: 1,
+        title: "Skim Paper",
+      },
+    ],
+  };
+
+  const parsed = OpeningBriefSchema.parse(briefWithEntities);
+  assert.equal(parsed.status, "ready");
+  assert.equal(parsed.focus_paper?.arxiv_id, "2610.12345");
+  assert.equal(parsed.key_highlights?.length, 1);
+  assert.equal(parsed.key_highlights?.[0]?.result, "Significant constraint on jet break.");
+  assert.equal(parsed.skim_topics?.length, 1);
+
+  // focus_paper can be null
+  const parsedNullFocus = OpeningBriefSchema.parse({
+    status: "ready",
+    intro: "Another intro",
+    focus_paper: null,
+  });
+  assert.equal(parsedNullFocus.focus_paper, null);
 });

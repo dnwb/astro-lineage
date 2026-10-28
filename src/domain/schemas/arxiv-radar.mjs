@@ -107,6 +107,33 @@ export const OpeningBriefSectionSchema = z
   })
   .passthrough();
 
+export const OpeningBriefFocusPaperSchema = z
+  .object({
+    arxiv_id: z.string(),
+    revision: z.number(),
+    title: z.string(),
+    anchor: z.string(),
+  })
+  .passthrough();
+
+export const OpeningBriefKeyHighlightSchema = z
+  .object({
+    arxiv_id: z.string(),
+    revision: z.number(),
+    title: z.string(),
+    anchor: z.string(),
+    result: z.string(),
+  })
+  .passthrough();
+
+export const OpeningBriefSkimTopicSchema = z
+  .object({
+    arxiv_id: z.string(),
+    revision: z.number(),
+    title: z.string(),
+  })
+  .passthrough();
+
 export const OpeningBriefSchema = z
   .object({
     status: z.enum(OPENING_BRIEF_STATUS_VALUES).default("unavailable"),
@@ -117,6 +144,9 @@ export const OpeningBriefSchema = z
     sections: z.array(OpeningBriefSectionSchema).optional(),
     must_read_count: z.number().optional(),
     worth_knowing_count: z.number().optional(),
+    focus_paper: OpeningBriefFocusPaperSchema.nullable().optional(),
+    key_highlights: z.array(OpeningBriefKeyHighlightSchema).optional(),
+    skim_topics: z.array(OpeningBriefSkimTopicSchema).optional(),
   })
   .passthrough();
 

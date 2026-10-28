@@ -953,6 +953,28 @@ export function buildOpeningBrief(feed, radar) {
   };
   const focus = groups.must_read[0] || groups.worth_knowing[0];
   const totalCore = groups.must_read.length + groups.worth_knowing.length;
+  const focusPaper = focus
+    ? {
+        arxiv_id: focus.arxiv_id,
+        revision: Number(focus.revision),
+        title: focus.title,
+        anchor: radarCardAnchor(focus.arxiv_id, focus.revision),
+      }
+    : null;
+
+  const keyHighlights = groups.worth_knowing.slice(0, 3).map((item) => ({
+    arxiv_id: item.arxiv_id,
+    revision: Number(item.revision),
+    title: item.title,
+    anchor: radarCardAnchor(item.arxiv_id, item.revision),
+    result: sentence(item.analysis?.analysis?.result || item.analysis?.analysis?.reason || ""),
+  }));
+
+  const skimTopics = groups.skip.slice(0, 5).map((item) => ({
+    arxiv_id: item.arxiv_id,
+    revision: Number(item.revision),
+    title: item.title,
+  }));
 
   let intro;
   if (isLegacy) {
@@ -1003,13 +1025,16 @@ export function buildOpeningBrief(feed, radar) {
     status: "ready",
     edition_fingerprint: editionFingerprint(feed),
     intro,
+    focus_paper: focusPaper,
     must_read: groups.must_read.map((item) => ({
       ...reference(item),
       label: item.title,
       text: sentence(item.analysis?.analysis?.result || item.analysis?.analysis?.reason || ""),
       anchor: radarCardAnchor(item.arxiv_id, item.revision),
     })),
+    key_highlights: keyHighlights,
     worth_knowing: groups.worth_knowing.map(reference),
+    skim_topics: skimTopics,
     skip: groups.skip.map(reference),
     ...(worthKnowingSummary ? { worth_knowing_summary: worthKnowingSummary } : {}),
     ...(skimSummary ? { skim_summary: skimSummary } : {}),

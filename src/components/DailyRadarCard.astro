@@ -26,10 +26,12 @@ const prerequisiteWorks = Array.isArray(guide.prerequisite_works)
   : [];
 const coverageDescription = radarCoverageDescription(coverage);
 const resultLabel = coverageLevel === "abstract_only" ? "Abstract Lead" : priorityLabel(item.analysis.priority);
+const isMustRead = item.analysis.priority === "must_read";
 const isSkim = item.analysis.priority === "skip";
+const isWorthKnowing = !isMustRead && !isSkim;
 const cardVariant = isSkim
   ? "skim"
-  : item.analysis.priority === "must_read"
+  : isMustRead
     ? "must-read"
     : "worth-knowing";
 
@@ -75,38 +77,39 @@ function priorityLabel(priority: string) {
   <span id={`guide-${item.arxiv_id}`} class="paper-anchor-target"></span>
   <span id={`guide-${item.arxiv_id.replace(/\./g, "-")}`} class="paper-anchor-target"></span>
   <article class={`radar-card radar-card-${cardVariant}`} id={radarCardAnchor(item.arxiv_id, item.revision)}>
-    <div class="radar-card-header-row">
-      <div class="header-left-badges">
-        <span class={`tier-pill priority-pill-${cardVariant}`}>
-          {item.analysis.priority === "must_read" ? "⭐ Must Read" : isSkim ? "⚡ Skim" : "📌 Follow"}
-        </span>
-        <a class="radar-arxiv-badge" href={item.url} target="_blank" rel="noopener">arXiv:{item.arxiv_id}</a>
-        <a class="radar-pdf-badge" href={`https://arxiv.org/pdf/${item.arxiv_id}`} target="_blank" rel="noopener" title="Read or download official PDF">📄 PDF</a>
-        {transientIds.map((tid: string) => (
-          <span class="radar-transient-tag" title="Observational Target">🔭 {tid}</span>
-        ))}
-        {scientificTags.map((tag: string) => (
-          <span class="radar-category-tag">{tag}</span>
-        ))}
-      </div>
-      {Array.isArray(item.authors) && item.authors.length > 0 ? (
-        <span class="radar-author-preview">
-          <span>{item.authors.slice(0, 2).join(", ")}{item.authors.length > 2 ? " et al." : ""}</span>
-        </span>
-      ) : null}
-    </div>
+    {isMustRead && (
+      <>
+        <div class="radar-card-header-row">
+          <div class="header-left-badges">
+            <span class="tier-pill priority-pill-must-read">⭐ Must Read</span>
+            <a class="radar-arxiv-badge" href={item.url} target="_blank" rel="noopener">arXiv:{item.arxiv_id}</a>
+            <a class="radar-pdf-badge" href={`https://arxiv.org/pdf/${item.arxiv_id}`} target="_blank" rel="noopener" title="Read or download official PDF">📄 PDF</a>
+            {coverageLevel === "full_body" && (
+              <span class="radar-coverage-badge">Full Body</span>
+            )}
+            {transientIds.map((tid: string) => (
+              <span class="radar-transient-tag" title="Observational Target">🔭 {tid}</span>
+            ))}
+            {scientificTags.map((tag: string) => (
+              <span class="radar-category-tag">{tag}</span>
+            ))}
+          </div>
+          {Array.isArray(item.authors) && item.authors.length > 0 ? (
+            <span class="radar-author-preview">
+              <span>{item.authors.slice(0, 2).join(", ")}{item.authors.length > 2 ? " et al." : ""}</span>
+            </span>
+          ) : null}
+        </div>
 
-    <h3 class="radar-card-title">
-      <a class="paper-title" href={item.url}>
-        <span class="paper-title-en">{item.title}</span>
-      </a>
-    </h3>
+        <h3 class="radar-card-title">
+          <a class="paper-title" href={item.url}>
+            <span class="paper-title-en">{item.title}</span>
+          </a>
+        </h3>
 
-    <!-- AIHOT-style Direct & Scannable BLUF Area -->
-    <div class="radar-bluf-brief">
-      {!isSkim ? (
-        <>
-          {guide.problem && guide.problem !== "unknown" && !guide.problem.startsWith("\u672a\u80fd\u4ece\u5df2\u68c0\u67e5\u6750\u6599") && !guide.problem.startsWith("Could not be derived") ? (
+        <!-- Full Rich BLUF Grid for Must Read -->
+        <div class="radar-bluf-brief must-read-bluf">
+          {guide.problem && guide.problem !== "unknown" && !guide.problem.startsWith("未能从已检查材料") && !guide.problem.startsWith("Could not be derived") ? (
             <div class="bluf-item bluf-item-problem">
               <span class="bluf-mark bluf-tag bluf-label problem-mark problem-tag">Problem</span>
               <div class="bluf-content-wrapper">
@@ -137,34 +140,167 @@ function priorityLabel(priority: string) {
               </div>
             </div>
           ) : null}
-        </>
-      ) : (
-        <div class="bluf-item bluf-item-skim">
-          <span class="bluf-mark bluf-tag bluf-label skim-mark skim-tag">Skim</span>
-          <div class="bluf-content-wrapper">
-            <span class="bluf-text"><ReaderText text={guide.reason || record.analysis.result || guide.result} /></span>
+        </div>
+
+        {(prerequisiteWorks.length > 0 || lineageCandidates.length > 0) && (
+          <div class="must-read-connections-bar">
+            {prerequisiteWorks.length > 0 && (
+              <div class="must-read-connections">
+                <span class="connection-label">📚 Prerequisites:</span>
+                <span class="connection-items">
+                  {prerequisiteWorks.map((p: AnyRecord) => (
+                    <a href={visibleWorkLinks[p.work_id]?.href} class="connection-link">{visibleWorkLinks[p.work_id]?.title}</a>
+                  ))}
+                </span>
+              </div>
+            )}
+            {lineageCandidates.length > 0 && (
+              <div class="must-read-connections">
+                <span class="connection-label">🔗 Lineage:</span>
+                <span class="connection-items">
+                  {lineageCandidates.map((c: AnyRecord) => (
+                    <span class="connection-pill">{relationLabels[c.relation] || c.relation} {visibleWorkLinks[c.target_work_id]?.title || ""}</span>
+                  ))}
+                </span>
+              </div>
+            )}
+          </div>
+        )}
+
+        <!-- Deep Reading Modal Trigger Bar -->
+        <div class="radar-deep-dive-bar">
+          <button
+            type="button"
+            class="radar-open-modal-btn"
+            popovertarget={`modal-${item.arxiv_id.replace(/\./g, "-")}-v${item.revision || 1}`}
+            aria-haspopup="dialog"
+          >
+            <span class="btn-left">
+              <span class="btn-icon">🔬</span>
+              <span class="btn-title">Read Guide</span>
+            </span>
+            <span class="btn-right">
+              <span class="btn-arrow" aria-hidden="true">↗</span>
+            </span>
+          </button>
+        </div>
+      </>
+    )}
+
+    {isWorthKnowing && (
+      <>
+        <div class="radar-card-header-row worth-knowing-header-row">
+          <div class="header-left-badges">
+            <span class="tier-pill priority-pill-worth-knowing">📌 Follow</span>
+            <a class="radar-arxiv-badge" href={item.url} target="_blank" rel="noopener">arXiv:{item.arxiv_id}</a>
+            <a class="radar-pdf-badge" href={`https://arxiv.org/pdf/${item.arxiv_id}`} target="_blank" rel="noopener" title="Read or download official PDF">📄 PDF</a>
+            {transientIds.map((tid: string) => (
+              <span class="radar-transient-tag" title="Observational Target">🔭 {tid}</span>
+            ))}
+            {scientificTags.map((tag: string) => (
+              <span class="radar-category-tag">{tag}</span>
+            ))}
+          </div>
+          <div class="header-right-actions">
+            {Array.isArray(item.authors) && item.authors.length > 0 ? (
+              <span class="radar-author-preview">
+                <span>{item.authors.slice(0, 1).join("")}{item.authors.length > 1 ? " et al." : ""}</span>
+              </span>
+            ) : null}
+            <button
+              type="button"
+              class="radar-open-modal-btn compact-guide-btn"
+              popovertarget={`modal-${item.arxiv_id.replace(/\./g, "-")}-v${item.revision || 1}`}
+              aria-haspopup="dialog"
+              title="Quick reading guide"
+            >
+              <span class="btn-left">
+                <span class="btn-icon">🔬</span>
+                <span class="btn-title">Quick Guide</span>
+              </span>
+              <span class="btn-right">
+                <span class="btn-arrow" aria-hidden="true">↗</span>
+              </span>
+            </button>
           </div>
         </div>
-      )}
-    </div>
 
-    <!-- Deep Reading Modal Trigger Bar -->
-    <div class="radar-deep-dive-bar">
-      <button
-        type="button"
-        class="radar-open-modal-btn"
-        popovertarget={`modal-${item.arxiv_id.replace(/\./g, "-")}-v${item.revision || 1}`}
-        aria-haspopup="dialog"
-      >
-        <span class="btn-left">
-          <span class="btn-icon">🔬</span>
-          <span class="btn-title">{isSkim ? "Details" : "Read Guide"}</span>
-        </span>
-        <span class="btn-right">
-          <span class="btn-arrow" aria-hidden="true">↗</span>
-        </span>
-      </button>
-    </div>
+        <h3 class="radar-card-title worth-knowing-title">
+          <a class="paper-title" href={item.url}>
+            <span class="paper-title-en">{item.title}</span>
+          </a>
+        </h3>
+
+        <!-- Compact 2-row Summary (Result & Reason) -->
+        <div class="radar-bluf-brief worth-knowing-bluf">
+          <div class="bluf-item bluf-item-result">
+            <span class="bluf-mark bluf-tag bluf-label result-mark result-tag" title={resultLabel}>Result</span>
+            <div class="bluf-content-wrapper">
+              <span class="bluf-text"><ReaderText text={resultClaim.detailed_text} /></span>
+            </div>
+          </div>
+          {guide.reason ? (
+            <div class="bluf-item bluf-item-reason">
+              <span class="bluf-mark bluf-tag bluf-label reason-mark reason-tag">Reason</span>
+              <div class="bluf-content-wrapper">
+                <span class="bluf-text"><ReaderText text={reasonClaim.detailed_text} /></span>
+              </div>
+            </div>
+          ) : null}
+        </div>
+      </>
+    )}
+
+    {isSkim && (
+      <>
+        <div class="radar-skim-row single-row-layout">
+          <div class="skim-meta-leading">
+            <span class="tier-pill priority-pill-skim">⚡ Skim</span>
+            <a class="radar-arxiv-badge" href={item.url} target="_blank" rel="noopener">arXiv:{item.arxiv_id}</a>
+            <a class="radar-pdf-badge" href={`https://arxiv.org/pdf/${item.arxiv_id}`} target="_blank" rel="noopener" title="Read or download official PDF">📄 PDF</a>
+          </div>
+          <h4 class="radar-card-title skim-card-title">
+            <a class="paper-title" href={item.url} title={item.title}>
+              <span class="paper-title-en">{item.title}</span>
+            </a>
+          </h4>
+          <div class="skim-meta-trailing">
+            {scientificTags.map((tag: string) => (
+              <span class="radar-category-tag">{tag}</span>
+            ))}
+            {transientIds.map((tid: string) => (
+              <span class="radar-transient-tag" title="Observational Target">🔭 {tid}</span>
+            ))}
+            <button
+              type="button"
+              class="radar-open-modal-btn skim-modal-btn"
+              popovertarget={`modal-${item.arxiv_id.replace(/\./g, "-")}-v${item.revision || 1}`}
+              aria-haspopup="dialog"
+              title="Quick reading summary and guide"
+            >
+              <span class="btn-icon">🔬</span>
+              <span class="btn-title">Guide</span>
+              <span class="btn-arrow" aria-hidden="true">↗</span>
+            </button>
+          </div>
+        </div>
+
+        <details class="skim-expandable-drawer">
+          <summary class="skim-drawer-toggle" title="Toggle quick summary">
+            <span class="toggle-text">Summary</span>
+            <span class="toggle-icon" aria-hidden="true">▾</span>
+          </summary>
+          <div class="skim-drawer-content">
+            <div class="bluf-item bluf-item-skim">
+              <span class="bluf-mark bluf-tag bluf-label skim-mark skim-tag">Skim</span>
+              <div class="bluf-content-wrapper">
+                <span class="bluf-text"><ReaderText text={guide.reason || record.analysis.result || guide.result} /></span>
+              </div>
+            </div>
+          </div>
+        </details>
+      </>
+    )}
 
     <!-- Deep Dive Modal Popover (Native HTML5 Popover, No Script, Top Layer, In-Page Overlay) -->
     <div
@@ -400,14 +536,27 @@ function priorityLabel(priority: string) {
     background: var(--card-bg, #ffffff);
     border: 1px solid var(--border-color, rgba(0, 0, 0, 0.06));
     border-radius: 8px;
-    padding: 1.25rem 1.45rem;
-    margin-bottom: 1rem;
+    padding: 1.15rem 1.35rem;
+    margin-bottom: 0.85rem;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
     transition: border-color 0.15s ease, box-shadow 0.15s ease;
   }
   .radar-card:hover {
     border-color: #cbd5e1;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+  .radar-card-must-read {
+    border-left: 4px solid #f97316;
+  }
+  .radar-card-worth-knowing {
+    padding: 0.65rem 0.95rem;
+    margin-bottom: 0.5rem;
+    border-left: 3px solid #818cf8;
+  }
+  .radar-card-skim {
+    padding: 0.35rem 0.65rem;
+    margin-bottom: 0.3rem;
+    border-left: 2px solid #cbd5e1;
   }
   :global([data-theme="dark"]) .radar-card {
     background: #1e293b;
@@ -417,7 +566,17 @@ function priorityLabel(priority: string) {
   :global([data-theme="dark"]) .radar-card-must-read,
   :global([data-theme="dark"]) .radar-card.priority-must-read {
     background: var(--must-read-bg, #1e2433);
-    border-left: 3px solid var(--accent-must-read, #ef4444);
+    border-left: 4px solid var(--accent-must-read, #ef4444);
+  }
+  :global([data-theme="dark"]) .radar-card-worth-knowing {
+    background: #1a1e2d;
+    border-color: #2e384d;
+    border-left: 3px solid #6366f1;
+  }
+  :global([data-theme="dark"]) .radar-card-skim {
+    background: #131722;
+    border-color: #272f40;
+    border-left: 2px solid #475569;
   }
 
   .radar-card-title {
@@ -593,6 +752,229 @@ function priorityLabel(priority: string) {
     margin-top: 0.65rem;
     padding-top: 0.55rem;
     border-top: 1px dashed var(--border-color, #e2e8f0);
+  }
+
+  /* Must Read Rich Styling */
+  .radar-coverage-badge {
+    display: inline-block;
+    padding: 0.12rem 0.4rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    background: #ecfdf5;
+    color: #065f46;
+    border: 1px solid #a7f3d0;
+    border-radius: 0.25rem;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .radar-coverage-badge {
+    background: rgba(16, 185, 129, 0.16);
+    color: #6ee7b7;
+    border-color: rgba(16, 185, 129, 0.35);
+  }
+
+  .must-read-connections-bar {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    margin: 0.45rem 0 0.35rem;
+    padding: 0.45rem 0.65rem;
+    background: #f8fafc;
+    border: 1px solid var(--border-color, #e2e8f0);
+    border-radius: 6px;
+  }
+  :global([data-theme="dark"]) .must-read-connections-bar {
+    background: #151a26;
+    border-color: #2a3449;
+  }
+  .must-read-connections {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.35rem 0.5rem;
+    font-size: 0.82rem;
+    line-height: 1.45;
+  }
+  .connection-label {
+    font-weight: 600;
+    color: var(--text-secondary, #64748b);
+    flex-shrink: 0;
+  }
+  :global([data-theme="dark"]) .connection-label {
+    color: #94a3b8;
+  }
+  .connection-items {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+  .connection-link {
+    color: var(--link-color, #2563eb);
+    text-decoration: underline;
+    font-weight: 500;
+  }
+  .connection-pill {
+    display: inline-block;
+    padding: 0.08rem 0.35rem;
+    font-size: 0.74rem;
+    background: #e2e8f0;
+    color: #334155;
+    border-radius: 3px;
+  }
+  :global([data-theme="dark"]) .connection-pill {
+    background: #272f40;
+    color: #cbd5e1;
+  }
+
+  /* Worth Knowing Compact 2-Row Styling */
+  .header-right-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
+  }
+  .worth-knowing-title {
+    margin: 0.2rem 0 0.3rem !important;
+    font-size: 1.02rem !important;
+    line-height: 1.35 !important;
+  }
+  .worth-knowing-bluf {
+    margin: 0.3rem 0 0.2rem !important;
+    gap: 0.25rem !important;
+  }
+  .worth-knowing-bluf .bluf-item {
+    font-size: 0.83rem !important;
+    line-height: 1.45 !important;
+    grid-template-columns: 4.5rem minmax(0, 1fr) !important;
+  }
+  .worth-knowing-bluf .bluf-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 0.83rem;
+    line-height: 1.45;
+  }
+  .compact-guide-btn {
+    width: auto !important;
+    display: inline-flex !important;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.16rem 0.5rem !important;
+    font-size: 0.73rem !important;
+    font-weight: 600;
+    border-radius: 4px !important;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    color: #1d4ed8;
+  }
+  .compact-guide-btn:hover {
+    background: #dbeafe;
+    border-color: #3b82f6;
+    color: #1e40af;
+  }
+  :global([data-theme="dark"]) .compact-guide-btn {
+    background: rgba(30, 58, 138, 0.25);
+    border-color: rgba(59, 130, 246, 0.35);
+    color: #93c5fd;
+  }
+
+  /* Skim High-Density Single-Row Styling */
+  .radar-skim-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.4rem 0.65rem;
+    flex-wrap: nowrap;
+  }
+  .skim-meta-leading {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    flex-shrink: 0;
+  }
+  .skim-card-title {
+    margin: 0 !important;
+    font-size: 0.88rem !important;
+    font-weight: 600 !important;
+    line-height: 1.35 !important;
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+  }
+  .skim-card-title a {
+    color: var(--text-primary, #0f172a);
+    text-decoration: none;
+    display: block;
+    overflow: hidden;
+  }
+  .skim-card-title .paper-title-en {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .skim-card-title a:hover {
+    color: var(--link-color, #2563eb);
+    text-decoration: underline;
+  }
+  :global([data-theme="dark"]) .skim-card-title a {
+    color: #f1f5f9;
+  }
+  :global([data-theme="dark"]) .skim-card-title a:hover {
+    color: #60a5fa;
+  }
+  .skim-meta-trailing {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    flex-shrink: 0;
+  }
+  .skim-modal-btn {
+    width: auto !important;
+    display: inline-flex !important;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.18rem 0.45rem !important;
+    font-size: 0.72rem !important;
+    border-radius: 4px !important;
+  }
+  .skim-expandable-drawer {
+    margin-top: 0.2rem;
+    font-size: 0.8rem;
+  }
+  .skim-drawer-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.2rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--text-secondary, #64748b);
+    cursor: pointer;
+    user-select: none;
+    padding: 0.08rem 0.3rem;
+    border-radius: 3px;
+  }
+  .skim-drawer-toggle:hover {
+    color: var(--text-primary, #0f172a);
+    background: var(--code-bg, #f1f5f9);
+  }
+  :global([data-theme="dark"]) .skim-drawer-toggle {
+    color: #94a3b8;
+  }
+  :global([data-theme="dark"]) .skim-drawer-toggle:hover {
+    color: #f1f5f9;
+    background: #272f40;
+  }
+  .skim-drawer-content {
+    margin-top: 0.25rem;
+    padding: 0.35rem 0.6rem;
+    background: var(--code-bg, #f8fafc);
+    border: 1px solid var(--border-color, #e2e8f0);
+    border-radius: 4px;
+  }
+  :global([data-theme="dark"]) .skim-drawer-content {
+    background: #181c27;
+    border-color: #272f40;
   }
 
   .radar-open-modal-btn {
@@ -891,5 +1273,17 @@ function priorityLabel(priority: string) {
   .radar-field-row {
     margin: 0.4rem 0;
     line-height: 1.5;
+  }
+
+  @media (max-width: 640px) {
+    .radar-skim-row {
+      flex-wrap: wrap;
+    }
+    .skim-card-title .paper-title-en {
+      white-space: normal;
+    }
+    .header-right-actions {
+      flex-wrap: wrap;
+    }
   }
 </style>

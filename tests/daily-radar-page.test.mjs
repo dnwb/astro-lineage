@@ -262,6 +262,26 @@ test(
       assert.ok(html.indexOf("Mixed Must Read") < html.indexOf("Mixed Worth Knowing"));
       assert.ok(html.indexOf("Mixed Worth Knowing") < html.indexOf("Mixed Skim"));
 
+      // Ticket #36 Acceptance Criteria:
+      // 1. Must Read card renders full BLUF items (problem, result, reason) and connections
+      assert.match(html, /radar-card-must-read[\s\S]*?bluf-item-problem/u);
+      assert.match(html, /radar-card-must-read[\s\S]*?bluf-item-result/u);
+      assert.match(html, /radar-card-must-read[\s\S]*?bluf-item-reason/u);
+      assert.match(html, /radar-card-must-read[\s\S]*?must-read-connections-bar/u);
+
+      // 2. Worth Knowing card renders compact summary without duplicate boilerplate
+      assert.match(html, /radar-card-worth-knowing[\s\S]*?worth-knowing-bluf/u);
+      assert.match(html, /radar-card-worth-knowing[\s\S]*?bluf-item-result/u);
+      assert.match(html, /radar-card-worth-knowing[\s\S]*?bluf-item-reason/u);
+      assert.doesNotMatch(html, /radar-card-worth-knowing[\s\S]*?bluf-item-problem/u);
+      assert.match(html, /radar-card-worth-knowing[\s\S]*?compact-guide-btn/u);
+
+      // 3. Skim papers render with compact .radar-card-skim / single-row class structure
+      assert.match(html, /radar-card-skim/u);
+      assert.match(html, /radar-skim-row single-row-layout/u);
+      assert.match(html, /skim-card-title/u);
+      assert.match(html, /skim-expandable-drawer/u);
+
       const emptyBrief = await readFile(join(root, "dist/empty-radar-brief/index.html"), "utf8");
       assert.match(emptyBrief, /EMPTY_SKIM_SUMMARY/u);
       assert.doesNotMatch(emptyBrief, /EMPTY_WORTH_SUMMARY/u);
@@ -383,6 +403,15 @@ try:
         page.evaluate('window.scrollTo(0, 500)')
         tbox = page.query_selector('.aihot-date-ribbon').bounding_box()
         assert tbox['y'] == 0, f'Expected toolbar y=0 on scroll, got {tbox[\"y\"]}'
+
+        # 4. Ticket #36: Verify total document scroll height is reduced < 12,000px on desktop 1440x900 viewport
+        page.goto(f'http://127.0.0.1:{port}/arxiv-daily/')
+        height_daily = page.evaluate('() => Math.max(document.body.scrollHeight, document.documentElement.scrollHeight)')
+        assert height_daily < 12000, f'Expected /arxiv-daily/ scrollHeight < 12000, got {height_daily}'
+
+        page.goto(f'http://127.0.0.1:{port}/arxiv-daily/2026-10-26/')
+        height_archive = page.evaluate('() => Math.max(document.body.scrollHeight, document.documentElement.scrollHeight)')
+        assert height_archive < 12000, f'Expected /arxiv-daily/2026-10-26/ scrollHeight < 12000, got {height_archive}'
         
         browser.close()
         print('PLAYWRIGHT_RADAR_OK')

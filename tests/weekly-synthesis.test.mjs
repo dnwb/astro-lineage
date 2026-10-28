@@ -20,6 +20,12 @@ test("weekly synthesis typography contract: readable lead and muted secondary bu
     `.executive-lead font-weight (${weightStr}) must be readable weight <= 450`
   );
 
+  assert.match(
+    weeklyCss,
+    /\.executive-lead\s*\{[^}]*line-height:\s*1\.65;[^}]*max-inline-size:\s*var\(--measure-prose,\s*72ch\);/s,
+    ".executive-lead must enforce line-height: 1.65 and max-inline-size: var(--measure-prose, 72ch)"
+  );
+
   // 2. Secondary buttons/links demoted to muted styles (background: transparent / var(--bg-surface-alt), border, var(--text-muted))
   assert.match(
     weeklyCss,

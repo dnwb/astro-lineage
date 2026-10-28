@@ -3,7 +3,7 @@ import ReaderText from "./ReaderText.astro";
 import DailyRadarGuide from "./DailyRadarGuide.astro";
 import DailyRadarSource from "./DailyRadarSource.astro";
 import { projectPotentialLineage, radarCardAnchor, radarCoverageDescription } from "../../scripts/daily-radar.mjs";
-import { matchScientificTags, extractTransientIdentifiers, normalizeStructuredClaim } from "../domain/academic-domain.mjs";
+import { matchScientificTags, extractTransientIdentifiers, normalizeStructuredClaim, formatAuthorList } from "../domain/academic-domain.mjs";
 import { resolvePaperTitleZhSync } from "../domain/paper-translation.mjs";
 
 type AnyRecord = Record<string, any>;
@@ -96,7 +96,7 @@ function priorityLabel(priority: string) {
           </div>
           {Array.isArray(item.authors) && item.authors.length > 0 ? (
             <span class="radar-author-preview">
-              <span>{item.authors.slice(0, 2).join(", ")}{item.authors.length > 2 ? " et al." : ""}</span>
+              <span>{formatAuthorList(item.authors)}</span>
             </span>
           ) : null}
         </div>
@@ -204,7 +204,7 @@ function priorityLabel(priority: string) {
           <div class="header-right-actions">
             {Array.isArray(item.authors) && item.authors.length > 0 ? (
               <span class="radar-author-preview">
-                <span>{item.authors.slice(0, 1).join("")}{item.authors.length > 1 ? " et al." : ""}</span>
+                <span>{formatAuthorList(item.authors)}</span>
               </span>
             ) : null}
             <button
@@ -276,11 +276,9 @@ function priorityLabel(priority: string) {
               class="radar-open-modal-btn skim-modal-btn"
               popovertarget={`modal-${item.arxiv_id.replace(/\./g, "-")}-v${item.revision || 1}`}
               aria-haspopup="dialog"
-              title="Quick reading summary and guide"
+              title="Quick reading summary and details"
             >
-              <span class="btn-icon">🔬</span>
-              <span class="btn-title">Guide</span>
-              <span class="btn-arrow" aria-hidden="true">↗</span>
+              Details ↗
             </button>
           </div>
         </div>
@@ -334,7 +332,7 @@ function priorityLabel(priority: string) {
             <ReaderText text={item.title} />
           </h2>
           {Array.isArray(item.authors) && item.authors.length > 0 && (
-            <p class="radar-modal-authors">Authors: {item.authors.slice(0, 3).join(", ")}{item.authors.length > 3 ? " et al." : ""}</p>
+            <p class="radar-modal-authors">Authors: {formatAuthorList(item.authors)}</p>
           )}
         </header>
 
@@ -546,7 +544,7 @@ function priorityLabel(priority: string) {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   }
   .radar-card-must-read {
-    border-left: 4px solid #f97316;
+    border-left: 3px solid var(--accent-must-read, #f59e0b);
   }
   .radar-card-worth-knowing {
     padding: 0.65rem 0.95rem;
@@ -566,7 +564,7 @@ function priorityLabel(priority: string) {
   :global([data-theme="dark"]) .radar-card-must-read,
   :global([data-theme="dark"]) .radar-card.priority-must-read {
     background: var(--must-read-bg, #1e2433);
-    border-left: 4px solid var(--accent-must-read, #ef4444);
+    border-left: 3px solid var(--accent-must-read, #f59e0b);
   }
   :global([data-theme="dark"]) .radar-card-worth-knowing {
     background: #1a1e2d;

@@ -281,6 +281,7 @@ test(
       assert.match(html, /radar-skim-row single-row-layout/u);
       assert.match(html, /skim-card-title/u);
       assert.match(html, /skim-expandable-drawer/u);
+      assert.match(html, /skim-modal-btn[\s\S]*?Details ↗/u);
 
       const emptyBrief = await readFile(join(root, "dist/empty-radar-brief/index.html"), "utf8");
       assert.match(emptyBrief, /EMPTY_SKIM_SUMMARY/u);
@@ -336,6 +337,17 @@ test("Daily Radar contract: unified counter toolbar, Beijing Time UTC+8 represen
   assert.doesNotMatch(archiveHtml, /class="[^"]*standalone-archive-banner[^"]*"/);
   assert.doesNotMatch(archiveHtml, /class="[^"]*historical-quick-stats[^"]*"/);
   assert.doesNotMatch(archiveHtml, /class="[^"]*standalone-date-pager[^"]*"/);
+});
+
+test("DailyRadarCard author truncation and details button contract", async () => {
+  const cardAstro = await readFile(
+    join(projectRoot, "src/components/DailyRadarCard.astro"),
+    "utf8"
+  );
+  assert.match(cardAstro, /import\s*\{[^}]*\bformatAuthorList\b[^}]*\}\s*from\s*"\.\.\/domain\/academic-domain\.mjs"/);
+  assert.match(cardAstro, /formatAuthorList\(item\.authors\)/);
+  assert.doesNotMatch(cardAstro, /item\.authors\.slice/);
+  assert.match(cardAstro, /class="radar-open-modal-btn skim-modal-btn"[\s\S]*?Details ↗/);
 });
 
 function hasPlaywright() {

@@ -84,6 +84,26 @@ test("theme consistency contract: ThemeToggle and global.css guards", async () =
     /:is\(\[data-theme="dark"\][^{]*\.radar-card-must-read[^{]*\{[^}]*background:\s*var\(--must-read-bg/s,
     "global.css must soften dark must-read cards with neutral background and accent border"
   );
+  assert.match(
+    globalCss,
+    /:root\s*\{[^}]*--text-secondary:\s*#475569;/s,
+    "global.css must set WCAG AA compliant --text-secondary: #475569 in light mode :root"
+  );
+  assert.match(
+    globalCss,
+    /:root\[data-theme="dark"\][^{]*\{[^}]*--text-secondary:\s*#cbd5e1\s*!important;/s,
+    "global.css must set high-contrast --text-secondary: #cbd5e1 in dark mode"
+  );
+  assert.match(
+    globalCss,
+    /:root\s*\{[^}]*--accent-must-read:\s*#f59e0b;/s,
+    "global.css must set harmonized --accent-must-read: #f59e0b in :root"
+  );
+  assert.match(
+    globalCss,
+    /\.reader-math\s*>\s*\.katex\s*\{[^}]*font-size:\s*1\.03em;/s,
+    "global.css must set .reader-math > .katex font-size to 1.03em"
+  );
 
   // 6. Ticket #34: Boilerplate elimination in DailyRadarCard.astro
   const radarCard = await readFile(

@@ -63,6 +63,18 @@ test("mobile responsive contract: homepage paper grid and card constraints", asy
     /\.ribbon-track-wrap\s*\{[^}]*-webkit-overflow-scrolling:\s*touch[^}]*scroll-snap-type:\s*x mandatory/s,
     "ribbon-track-wrap must provide momentum scrolling and mandatory snap on touch"
   );
+
+  // 7. Mobile SiteNav link spacing: compact padding, gap, and font-size for <= 640px
+  assert.match(
+    globalCss,
+    /\.site-nav\s*ul\s*\{[^}]*gap:\s*0\.4rem/s,
+    "site-nav ul must enforce compact gap on mobile"
+  );
+  assert.match(
+    globalCss,
+    /\.site-nav\s*a\s*\{[^}]*padding:\s*0\.25rem\s+0\.5rem;[^}]*font-size:\s*0\.85rem/s,
+    "site-nav links must have compact padding and font-size on mobile"
+  );
 });
 
 function hasPlaywright() {

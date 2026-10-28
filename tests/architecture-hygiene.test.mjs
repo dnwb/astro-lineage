@@ -72,7 +72,7 @@ test("architecture-hygiene: operational scripts must not re-export domain SSOT f
   for (const file of scriptFiles) {
     const content = await readFile(file, "utf8");
     const reExportsDomain =
-      /export\s*\{[^}]*\b(sanitizeWebsiteBase|getDefaultWebsiteBase|formatWeekIdZh)\b[^}]*\}/u.test(
+      /export\s*\{[^}]*\b(sanitizeWebsiteBase|getDefaultWebsiteBase|formatWeekIdZh|ASTRO_LATEX_MACROS)\b[^}]*\}/u.test(
         content
       );
     assert.ok(

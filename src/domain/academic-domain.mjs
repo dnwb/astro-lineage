@@ -878,3 +878,17 @@ export function getBibliographicSourceName(options = {}) {
   }
   return BIBLIOGRAPHIC_PROVIDER_LABELS[provider] || "SciX (ADS)";
 }
+
+/**
+ * Format paper author list for display, truncating after 3 authors with "et al.".
+ *
+ * @param {string[]} authors
+ * @returns {string}
+ */
+export function formatAuthorList(authors) {
+  if (!authors || authors.length === 0) return "Not recorded";
+  return authors.length > 3
+    ? `${authors.slice(0, 3).join(", ")} et al.`
+    : authors.join(", ");
+}
+

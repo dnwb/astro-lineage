@@ -3,7 +3,7 @@ import ReaderText from "../ReaderText.astro";
 import DailyRadarGuide from "../DailyRadarGuide.astro";
 import DailyRadarSource from "../DailyRadarSource.astro";
 import { radarCardAnchor } from "../../../scripts/daily-radar.mjs";
-import { matchScientificTags, extractTransientIdentifiers, formatAnnouncementInBeijing, TOPIC_FILTER_SPECS, getBibliographicUrl, getBibliographicSourceName } from "../../domain/academic-domain.mjs";
+import { matchScientificTags, extractTransientIdentifiers, formatAnnouncementInBeijing, TOPIC_FILTER_SPECS, getBibliographicUrl, getBibliographicSourceName, formatAuthorList } from "../../domain/academic-domain.mjs";
 import { resolvePaperTitleZhSync } from "../../domain/paper-translation.mjs";
 
 interface Props {
@@ -253,7 +253,7 @@ const activeTopicFilters = TOPIC_FILTER_SPECS
               )}
             </h3>
             {resolveAuthors(pick.arxiv_id, pick).length > 0 ? (
-              <p class="pick-authors">Authors: {resolveAuthors(pick.arxiv_id, pick).join(", ")}</p>
+              <p class="pick-authors">Authors: {formatAuthorList(resolveAuthors(pick.arxiv_id, pick))}</p>
             ) : null}
 
             <div class="pick-details">
@@ -331,7 +331,7 @@ const activeTopicFilters = TOPIC_FILTER_SPECS
                       <ReaderText text={pick.title} />
                     </h2>
                     {resolveAuthors(pick.arxiv_id, pick).length > 0 && (
-                      <p class="radar-modal-authors">Authors: {resolveAuthors(pick.arxiv_id, pick).join(", ")}</p>
+                      <p class="radar-modal-authors">Authors: {formatAuthorList(resolveAuthors(pick.arxiv_id, pick))}</p>
                     )}
                   </header>
 

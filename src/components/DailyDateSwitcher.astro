@@ -563,6 +563,37 @@ const recentDays = allDays.slice(0, 8);
     color: #60a5fa;
   }
 
+  /* Mobile Date Switcher & Navigation Touch Ergonomics */
+  @media (max-width: 640px) {
+    .ribbon-track-wrap {
+      -webkit-overflow-scrolling: touch;
+      scroll-snap-type: x mandatory;
+      overscroll-behavior-x: contain;
+      padding-bottom: 4px;
+      padding-right: 1.25rem;
+    }
+    .ribbon-pills-track {
+      scroll-snap-type: x mandatory;
+      gap: 0.5rem;
+      padding-right: 1.25rem;
+    }
+    .date-pill {
+      min-height: 44px;
+      min-width: 44px;
+      box-sizing: border-box;
+      scroll-snap-align: start;
+      padding: 0.4rem 0.65rem;
+    }
+    .ribbon-step-btn {
+      min-width: 44px;
+      min-height: 44px;
+      width: 44px;
+      height: 44px;
+      box-sizing: border-box;
+      font-size: 1.25rem;
+    }
+  }
+
   @media (prefers-color-scheme: dark) {
     :global(body:not(:has(#site-theme-toggle:checked))) .aihot-date-ribbon { background: var(--bg-surface, #0f172a); border-bottom-color: #334155; }
     :global(body:not(:has(#site-theme-toggle:checked))) .ribbon-brand-tag { color: #94a3b8; border-right-color: #334155; }

@@ -141,7 +141,7 @@ const bjtInfo = formatAnnouncementInBeijing(currentDate, announcementWindow?.ann
           </div>
         )}
         <p class="record-label">
-          <span>{isAnnouncementDay ? `Batch ${bjtInfo.beijingDate}` : "Sample"}</span>
+          <span>{isAnnouncementDay ? `Batch ${bjtInfo.beijingDate} (Beijing Time UTC+8) · US ${currentDate}` : `Batch ${bjtInfo.beijingDate} (Beijing Time UTC+8) · Sample`}</span>
           <span class="record-meta-sep">·</span>
           <span>Refreshed: {generatedLabel}</span>
           <span class="record-meta-sep">·</span>

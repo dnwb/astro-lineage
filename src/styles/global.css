@@ -1752,13 +1752,20 @@ article p {
     margin-block-end: 0;
   }
 
+  .radar-page .eyebrow {
+    margin-top: 0.25rem;
+    margin-bottom: 0.2rem;
+  }
   .radar-page .reader-header {
-    margin-bottom: 0.75rem;
-    padding-bottom: 0.35rem;
+    margin-top: 0.25rem;
+    margin-bottom: 0.35rem;
+    padding-bottom: 0.15rem;
   }
   .radar-page .reader-header h1 {
-    font-size: 1.55rem;
-    margin-bottom: 0.2rem;
+    font-size: 1.45rem;
+    margin-top: 0.1rem;
+    margin-bottom: 0.15rem;
+    line-height: 1.2;
   }
   .radar-page .reader-deck {
     font-size: 0.85rem;
@@ -1768,8 +1775,8 @@ article p {
   }
   .radar-page .record-label {
     font-size: 0.78rem;
-    margin-top: 0.3rem;
-    line-height: 1.4;
+    margin-top: 0.15rem;
+    line-height: 1.35;
   }
 }
 
@@ -4483,20 +4490,20 @@ article p {
 
 /* Collapsible Brief Drawer */
 .radar-brief-drawer {
-  margin: 0 0 1.25rem;
+  margin: 0 0 0.75rem;
   background: var(--card-bg, #ffffff);
   border: 1px solid var(--border-color, #c9c3b7);
-  border-radius: 0.5rem;
+  border-radius: 0.375rem;
   overflow: hidden;
 }
 .radar-brief-drawer-summary {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.65rem 1rem;
+  padding: 0.45rem 0.85rem;
   cursor: pointer;
   font-weight: 600;
-  font-size: 0.88rem;
+  font-size: 0.85rem;
   color: var(--text-primary, #0f172a);
   background: var(--bg-primary, #f8fafc);
   user-select: none;

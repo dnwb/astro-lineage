@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { cp, mkdtemp, readFile, rm, symlink, writeFile } from "node:fs/promises";
+import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { spawnSync } from "node:child_process";
@@ -269,3 +270,129 @@ test(
     }
   }
 );
+
+test("Daily Radar contract: unified counter toolbar, Beijing Time UTC+8 representation, and no redundant banners", async () => {
+  const indexHtmlPath = join(projectRoot, "dist/arxiv-daily/index.html");
+  const archiveHtmlPath = join(projectRoot, "dist/arxiv-daily/2026-10-26/index.html");
+
+  if (!existsSync(indexHtmlPath) || !existsSync(archiveHtmlPath)) {
+    // If not pre-built, verify directly from the Astro page components
+    const indexAstro = await readFile(join(projectRoot, "src/pages/arxiv-daily/index.astro"), "utf8");
+    const archiveAstro = await readFile(join(projectRoot, "src/pages/arxiv-daily/[date].astro"), "utf8");
+    const switcherAstro = await readFile(join(projectRoot, "src/components/DailyDateSwitcher.astro"), "utf8");
+
+    assert.match(indexAstro, /Beijing Time UTC\+8/);
+    assert.match(archiveAstro, /Beijing Time UTC\+8/);
+    assert.match(switcherAstro, /unified-counter-toolbar/);
+    assert.match(switcherAstro, /Must Read \(\{groups\.must_read\?\.length \?\? 0\}\)/);
+    assert.match(switcherAstro, /Follow \(\{groups\.worth_knowing\?\.length \?\? 0\}\)/);
+    assert.match(switcherAstro, /Skim \(\{groups\.skip\.length\}\)/);
+
+    assert.doesNotMatch(archiveAstro, /standalone-archive-banner/);
+    assert.doesNotMatch(archiveAstro, /historical-quick-stats/);
+    assert.doesNotMatch(archiveAstro, /standalone-date-pager/);
+    return;
+  }
+
+  const indexHtml = await readFile(indexHtmlPath, "utf8");
+  const archiveHtml = await readFile(archiveHtmlPath, "utf8");
+
+  // 1. Beijing Time UTC+8 primary representation
+  assert.match(indexHtml, /Batch \d{4}-\d{2}-\d{2} \(Beijing Time UTC\+8\) · US \d{4}-\d{2}-\d{2}/);
+  assert.match(archiveHtml, /Batch \d{4}-\d{2}-\d{2} \(Beijing Time UTC\+8\) · US \d{4}-\d{2}-\d{2}/);
+
+  // 2. Unified counter toolbar present on both pages
+  assert.match(indexHtml, /class="[^"]*unified-counter-toolbar[^"]*"/);
+  assert.match(indexHtml, /Must Read \(\d+\)/);
+  assert.match(indexHtml, /Follow \(\d+\)/);
+  assert.match(indexHtml, /Skim \(\d+\)/);
+
+  assert.match(archiveHtml, /class="[^"]*unified-counter-toolbar[^"]*"/);
+  assert.match(archiveHtml, /Must Read \(\d+\)/);
+  assert.match(archiveHtml, /Follow \(\d+\)/);
+  assert.match(archiveHtml, /Skim \(\d+\)/);
+
+  // 3. Redundant banners and counters removed on archive page
+  assert.doesNotMatch(archiveHtml, /class="[^"]*standalone-archive-banner[^"]*"/);
+  assert.doesNotMatch(archiveHtml, /class="[^"]*historical-quick-stats[^"]*"/);
+  assert.doesNotMatch(archiveHtml, /class="[^"]*standalone-date-pager[^"]*"/);
+});
+
+function hasPlaywright() {
+  const check = spawnSync("python3", ["-c", "import playwright.sync_api"], {
+    stdio: "ignore",
+  });
+  return check.status === 0;
+}
+
+test("Daily Radar above-the-fold visibility: first Must Read card y < 850px on 1440x900 viewport", async (t) => {
+  const distDir = join(projectRoot, "dist");
+  const indexHtmlPath = join(distDir, "arxiv-daily/index.html");
+  const archiveHtmlPath = join(distDir, "arxiv-daily/2026-10-26/index.html");
+
+  if (!existsSync(indexHtmlPath) || !existsSync(archiveHtmlPath) || !existsSync("/usr/bin/chromium") || !hasPlaywright()) {
+    t.skip("Skipping browser inspection: dist/ pages, chromium or python playwright not available");
+    return;
+  }
+
+  const result = spawnSync(
+    "python3",
+    [
+      "-c",
+      `
+import http.server, socketserver, threading, functools, os, sys
+from playwright.sync_api import sync_playwright
+
+DIRECTORY = '${distDir}'
+class QuietHandler(http.server.SimpleHTTPRequestHandler):
+    def log_message(self, *args): pass
+
+httpd = socketserver.TCPServer(('127.0.0.1', 0), functools.partial(QuietHandler, directory=DIRECTORY))
+port = httpd.server_address[1]
+t = threading.Thread(target=httpd.serve_forever, daemon=True)
+t.start()
+
+try:
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True, executable_path='/usr/bin/chromium')
+        page = browser.new_page(viewport={'width': 1440, 'height': 900})
+        
+        # 1. Test /arxiv-daily/
+        page.goto(f'http://127.0.0.1:{port}/arxiv-daily/')
+        card = page.query_selector('.radar-card')
+        assert card is not None, 'No .radar-card found on /arxiv-daily/'
+        card_box = card.bounding_box()
+        toolbar = page.query_selector('.aihot-date-ribbon')
+        assert toolbar is not None, 'No .aihot-date-ribbon found'
+        
+        toolbar_style = page.evaluate('''(el) => {
+            const s = window.getComputedStyle(el);
+            return { position: s.position, top: s.top };
+        }''', toolbar)
+        assert toolbar_style['position'] == 'sticky', f'Expected sticky toolbar, got {toolbar_style}'
+        assert card_box['y'] < 850, f'Expected first card y < 850, got {card_box[\"y\"]}'
+        
+        # 2. Test /arxiv-daily/2026-10-26/
+        page.goto(f'http://127.0.0.1:{port}/arxiv-daily/2026-10-26/')
+        card2 = page.query_selector('.radar-card')
+        assert card2 is not None, 'No .radar-card found on archive page'
+        card2_box = card2.bounding_box()
+        assert card2_box['y'] < 850, f'Expected archive first card y < 850, got {card2_box[\"y\"]}'
+        
+        # 3. Test sticky behavior on scroll
+        page.evaluate('window.scrollTo(0, 500)')
+        tbox = page.query_selector('.aihot-date-ribbon').bounding_box()
+        assert tbox['y'] == 0, f'Expected toolbar y=0 on scroll, got {tbox[\"y\"]}'
+        
+        browser.close()
+        print('PLAYWRIGHT_RADAR_OK')
+finally:
+    httpd.shutdown()
+`,
+    ],
+    { encoding: "utf8" }
+  );
+
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  assert.match(result.stdout, /PLAYWRIGHT_RADAR_OK/);
+});

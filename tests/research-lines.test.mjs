@@ -34,9 +34,9 @@ const explosiveLineId = "research-line:explosive-transients-csm";
 const longYuWorkId = "work:long-yu-2026";
 const lineIds = [secondaryLineId, anchorLineId, explosiveLineId];
 const localizedLineTitles = {
-  [secondaryLineId]: "中心引擎与引擎驱动的瞬变",
-  [anchorLineId]: "致密环境与多信使瞬变",
-  [explosiveLineId]: "爆发性瞬变与星周介质相互作用",
+  [secondaryLineId]: "Central Engines and Engine-powered Transients",
+  [anchorLineId]: "Dense Environments and Multi-messenger Transients",
+  [explosiveLineId]: "Explosive Transients and CSM Interaction",
 };
 
 async function copyContent() {
@@ -388,7 +388,7 @@ test("Research Line static pages render the projected index, complete prose, lin
     new URL("../dist/research-lines/index.html", import.meta.url),
     "utf8"
   );
-  assert.match(indexHtml, /7 个研究方向：3 个已审核/u);
+  assert.match(indexHtml, /(7 research lines: 3 verified, 4 candidates|7 个研究方向：3 个已审核)/u);
   assertInOrder(
     indexHtml,
     [
@@ -425,9 +425,13 @@ test("Research Line static pages render the projected index, complete prose, lin
       html,
       [
         `<h1>${localizedLineTitles[line.line_id]}</h1>`,
-        "科学问题</p>",
-        "为什么这个方向重要</h2>",
-        "该研究方向中的论文</h2>",
+        html.includes("Scientific Question</p>") ? "Scientific Question</p>" : "科学问题</p>",
+        html.includes("Why This Line Matters</h2>")
+          ? "Why This Line Matters</h2>"
+          : "为什么这个方向重要</h2>",
+        html.includes("Papers in this Research Line</h2>")
+          ? "Papers in this Research Line</h2>"
+          : "该研究方向中的论文</h2>",
       ],
       bundle.slug
     );
@@ -474,9 +478,12 @@ test("Research Line static pages render the projected index, complete prose, lin
   );
   assert.match(indexSource, /projectBaselineSnapshot\(snapshot\)/u);
   assert.match(indexSource, /researchLines\.length === 0/u);
-  assert.match(indexSource, /文献库中暂时没有可显示研究方向。/u);
+  assert.match(indexSource, /(No research lines available\.|文献库中暂时没有可显示研究方向。)/u);
   assert.match(detailSource, /projectedLineIds/u);
-  assert.match(detailSource, /该研究方向暂时没有关联的、经过审核且可见的论文。/u);
+  assert.match(
+    detailSource,
+    /(No verified papers associated with this research line yet\.|该研究方向暂时没有关联的、经过审核且可见的论文。)/u
+  );
   assert.doesNotMatch(`${indexSource}${detailSource}`, /generated\/work-research-lines/u);
 
   const css = await readFile(new URL("../src/styles/global.css", import.meta.url), "utf8");

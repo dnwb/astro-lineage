@@ -18,7 +18,7 @@ import {
   releaseRefreshLock,
   writeJsonAtomically,
 } from "./arxiv-daily.mjs";
-import { validateDailyRadarPayload, normalizeArxivId } from "./daily-radar.mjs";
+import { validateDailyRadarPayload, normalizeArxivId, formatDailyIntro } from "./daily-radar.mjs";
 import { hashBody, readDailyArchive, readChannelShareUrl } from "./channel-publication.mjs";
 import { readingExcerpt } from "./tencent-channel-publisher.mjs";
 import {
@@ -395,9 +395,7 @@ export async function generateGroupBrief(type = "daily", options = {}) {
       const isLegacy = isLegacyChineseDate(date);
       brief = {
         status: "ready",
-        intro: isLegacy
-          ? `本期首看《${firstPaper.title}》等 ${count} 篇核心进展。`
-          : `Featured reading: "${firstPaper.title}"${count > 1 ? ` and ${count - 1} other key developments` : ""}.`,
+        intro: formatDailyIntro(date, firstPaper?.title, count),
         must_read: (model.groups?.must_read || []).map((p) => {
           const a = p.analysis?.analysis || p.analysis || {};
           const text = a.result?.detailed_text || a.result?.bluf || a.result || p.title;

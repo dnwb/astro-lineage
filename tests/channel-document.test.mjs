@@ -5,6 +5,8 @@ import {
   attachReviewedFigure,
   stripReviewedFigure,
   renderChannelMarkdown,
+  bodyWithReviewedFigure,
+  bodyWithoutManagedFigure,
   findReadingAnchor,
   READING_ANCHORS,
 } from "../src/domain/channel-document.mjs";
@@ -43,10 +45,12 @@ test("buildChannelPostDraft builds explicit section AST for post-cutover English
   assert.deepEqual(sectionTypes, ["header", "problem", "result", "reason", "limits", "reading"]);
 
   const md = renderChannelMarkdown(draft);
-  assert.ok(md.includes("**Must Read** · A. Einstein, N. Bohr, P. Dirac 等"));
+  assert.ok(md.includes("**Must Read** · A. Einstein, N. Bohr, P. Dirac et al."));
   assert.ok(md.includes("## Problem & Background"));
   assert.ok(md.includes("## Key Result & Physical Mechanism"));
   assert.ok(md.includes("## Why It Matters"));
+  assert.ok(md.includes("Relativistic Jets & GRBs"));
+  assert.ok(!md.includes("伽马射线暴与相对论喷流"));
   assert.ok(md.includes("## Limitations & Boundaries"));
   assert.ok(md.includes("## Reading Access"));
   assert.ok(md.includes("Online Reading (Cloudflare)"));
@@ -126,4 +130,22 @@ test("findReadingAnchor resolves both Chinese and English anchors in text", () =
   assert.ok(zhMatch);
   assert.equal(zhMatch.isEn, false);
   assert.equal(zhMatch.anchor, "\n---\n\n## 阅读入口");
+});
+
+test("bodyWithReviewedFigure and bodyWithoutManagedFigure support AST drafts symmetrically", () => {
+  const draft = buildChannelPostDraft(sampleItem, "2026-10-28", "GRB Jets");
+  const figure = {
+    label: "Fig. 1",
+    caption: "Spectrum of electrons in shock layer.",
+    category_badge: "数据拟合与模型对比",
+    physical_core: "Electron cooling break constraint.",
+  };
+
+  const draftWithFig = attachReviewedFigure(draft, figure, sampleItem);
+  const mdWithFig = bodyWithReviewedFigure(draft, figure, sampleItem);
+  assert.equal(mdWithFig, renderChannelMarkdown(draftWithFig));
+
+  const mdStripped = bodyWithoutManagedFigure(draftWithFig);
+  const originalMd = renderChannelMarkdown(draft);
+  assert.equal(mdStripped, originalMd);
 });

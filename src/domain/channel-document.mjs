@@ -41,6 +41,16 @@ const TOPIC_CHINESE_LABELS = Object.freeze({
   R7: "X射线时变、能谱与致密双星",
 });
 
+const TOPIC_ENGLISH_LABELS = Object.freeze({
+  R1: "Central Engines & Engine-powered Transients",
+  R2: "Relativistic Jets & GRBs",
+  R3: "Explosive Transients & CSM Interaction",
+  R4: "Pulsar Winds & High-energy Binaries",
+  R5: "Magnetar Bursts & FRB Environments",
+  R6: "Dense-environment & Multi-messenger Transients",
+  R7: "High-Energy X-ray Timing, Spectroscopy & Compact Binary Observations",
+});
+
 function claimText(value) {
   return String(value ?? "").trim();
 }
@@ -82,13 +92,19 @@ export function buildChannelPostDraft(item, date, topic, options = {}) {
   const anchor = `radar-paper-${String(item.arxiv_id).replace(".", "-")}-v${item.revision}`;
   const isLegacy = isLegacyChineseDate(date);
 
-  const readerReason = claimText(a.reason)
-    .replace(/\bR1[–—-]R7\b/gu, "课题组各研究方向")
-    .replace(/\bR[1-7]\b/gu, (id) => TOPIC_CHINESE_LABELS[id] || id);
+  const readerReason = isLegacy
+    ? claimText(a.reason)
+        .replace(/\bR1[–—-]R7\b/gu, "课题组各研究方向")
+        .replace(/\bR[1-7]\b/gu, (id) => TOPIC_CHINESE_LABELS[id] || id)
+    : claimText(a.reason)
+        .replace(/\bR1[–—-]R7\b/gu, "all group research directions")
+        .replace(/\bR[1-7]\b/gu, (id) => TOPIC_ENGLISH_LABELS[id] || id);
 
   const authorStr =
     Array.isArray(item.authors) && item.authors.length
-      ? ` · ${item.authors.slice(0, 3).join(", ")}${item.authors.length > 3 ? " 等" : ""}`
+      ? ` · ${item.authors.slice(0, 3).join(", ")}${
+          item.authors.length > 3 ? (isLegacy ? " 等" : " et al.") : ""
+        }`
       : "";
 
   const problem = claimText(a.problem?.detailed_text || a.problem?.problem || a.problem || "");
@@ -324,11 +340,12 @@ export function renderChannelMarkdown(draft) {
  * @returns {string}
  */
 export function bodyWithReviewedFigure(bodyOrDraft, figure, context = {}) {
-  const body =
-    bodyOrDraft && typeof bodyOrDraft === "object" && Array.isArray(bodyOrDraft.sections)
-      ? renderChannelMarkdown(bodyOrDraft)
-      : String(bodyOrDraft ?? "");
+  if (bodyOrDraft && typeof bodyOrDraft === "object" && Array.isArray(bodyOrDraft.sections)) {
+    const updatedDraft = attachReviewedFigure(bodyOrDraft, figure, context);
+    return renderChannelMarkdown(updatedDraft);
+  }
 
+  const body = String(bodyOrDraft ?? "");
   const reading = findReadingAnchor(body);
   if (!reading) throw new Error("CHANNEL_FIGURE_BODY_ANCHOR_MISSING");
   const marker = reading.anchor;
@@ -356,7 +373,7 @@ export function bodyWithReviewedFigure(bodyOrDraft, figure, context = {}) {
     : `> 原文 ${figure.label} 图注（作者报告）：${caption}`;
   return body.replace(
     marker,
-    `\n\n${heading}\n\n[(0,0)](@img)\n\n${coreSection}${captionLine}${marker}`
+    `\n${heading}\n\n[(0,0)](@img)\n\n${coreSection}${captionLine}\n${marker}`
   );
 }
 
@@ -389,5 +406,5 @@ export function bodyWithoutManagedFigure(value) {
   ) {
     return null;
   }
-  return body.slice(0, start) + body.slice(end);
+  return `${body.slice(0, start)}\n${body.slice(end)}`;
 }

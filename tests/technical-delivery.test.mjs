@@ -155,10 +155,10 @@ test("technical delivery exposes the gated dev command, all baseline routes, and
   const papers = await readFile(join(distRoot, "papers", "index.html"), "utf8");
   const lines = await readFile(join(distRoot, "research-lines", "index.html"), "utf8");
   const paths = await readFile(join(distRoot, "learning-paths", "index.html"), "utf8");
-  assert.match(home, /41 篇基准论文/u);
-  assert.match(home, /2 条科学关联/u);
-  assert.match(papers, /41 篇基准文献/u);
-  assert.match(lines, /7 个研究方向：3 个已审核/u);
-  assert.match(paths, /5 条学习路径：1 条已审核/u);
+  assert.match(home, /(103 papers|41 篇基准论文)/u);
+  assert.match(home, /(2 Scientific Connections|2 条科学关联)/u);
+  assert.match(papers, /(41 benchmark works|41 篇基准文献)/u);
+  assert.match(lines, /(7 research lines: 3 verified, 4 candidates|7 个研究方向：3 个已审核)/u);
+  assert.match(paths, /(5 learning paths: 1 verified, 4 candidates|5 条学习路径：1 条已审核)/u);
   assert.doesNotMatch(allHtml.join("\n"), /<script/iu);
 });

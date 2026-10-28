@@ -32,7 +32,11 @@ import {
   hashBody,
   markerFor,
 } from "../scripts/channel-publication.mjs";
-import { buildOpeningBrief, validateDailyRadarPayload } from "../scripts/daily-radar.mjs";
+import {
+  buildOpeningBrief,
+  formatDailyIntro,
+  validateDailyRadarPayload,
+} from "../scripts/daily-radar.mjs";
 import { createTemporaryWorkspace } from "./helpers/temporary-workspace.mjs";
 import { approvedDailyTitleFixture } from "./helpers/approved-daily-title-fixture.mjs";
 
@@ -4067,4 +4071,27 @@ test("buildOpeningBrief generates structured entities (focus_paper, key_highligh
   );
   assert.equal(emptyBrief.status, "unavailable");
   assert.equal(emptyBrief.focus_paper, undefined);
+});
+
+test("formatDailyIntro handles English singular and plural forms correctly", () => {
+  const enDate = "2026-10-28";
+  assert.equal(
+    formatDailyIntro(enDate, "Gamma-ray Burst Physics", 1),
+    'Featured reading: "Gamma-ray Burst Physics".'
+  );
+  assert.equal(
+    formatDailyIntro(enDate, "Gamma-ray Burst Physics", 2),
+    'Featured reading: "Gamma-ray Burst Physics" and 1 other key development.'
+  );
+  assert.equal(
+    formatDailyIntro(enDate, "Gamma-ray Burst Physics", 4),
+    'Featured reading: "Gamma-ray Burst Physics" and 3 other key developments.'
+  );
+
+  const zhDate = "2026-10-20";
+  assert.equal(formatDailyIntro(zhDate, "伽马暴物理", 1), "本期首看《伽马暴物理》。");
+  assert.equal(
+    formatDailyIntro(zhDate, "伽马暴物理", 3),
+    "本期首看《伽马暴物理》等 3 篇核心进展。"
+  );
 });

@@ -3,7 +3,7 @@ import { join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { existsSync } from "node:fs";
 import { spawn } from "node:child_process";
-import { validateDailyRadarPayload } from "./daily-radar.mjs";
+import { formatDailyIntro, validateDailyRadarPayload } from "./daily-radar.mjs";
 import { readPublishedArxivEdition } from "./arxiv-daily.mjs";
 import {
   TOPICS,
@@ -132,9 +132,7 @@ function dailyBriefItem(model, date) {
     const count = (model.groups.must_read.length || 0) + (model.groups.worth_knowing?.length || 0);
     brief = {
       status: "ready",
-      intro: isLegacy
-        ? `本期首看《${model.groups.must_read[0].title}》等 ${count} 篇核心进展。`
-        : `Featured reading: "${model.groups.must_read[0].title}"${count > 1 ? ` and ${count - 1} other key developments` : ""}.`,
+      intro: formatDailyIntro(date, model.groups.must_read[0].title, count),
       must_read: model.groups.must_read.map((p) => {
         const a = p.analysis?.analysis || p.analysis || {};
         const text = a.result?.detailed_text || a.result?.bluf || a.result || p.title;

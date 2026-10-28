@@ -926,6 +926,26 @@ export function validateDailyRadarPayload(feed, radar, options = {}) {
   };
 }
 
+export function formatDailyIntro(date, focusTitle, totalCore = 1) {
+  const isLegacy = date ? isLegacyChineseDate(date) : false;
+  if (!focusTitle) {
+    return isLegacy
+      ? "本期为常规监测批次，以摘要略读为主。"
+      : "Standard screening batch, focused primarily on abstract skimming.";
+  }
+  if (isLegacy) {
+    return `本期首看《${focusTitle}》${totalCore > 1 ? `等 ${totalCore} 篇核心进展` : ""}。`;
+  }
+  const otherCount = totalCore - 1;
+  const othersText =
+    otherCount === 1
+      ? " and 1 other key development"
+      : otherCount > 1
+        ? ` and ${otherCount} other key developments`
+        : "";
+  return `Featured reading: "${focusTitle}"${othersText}.`;
+}
+
 export function buildOpeningBrief(feed, radar) {
   const { groups } = buildDailyRadarModel(feed, radar);
   const eligible = [...groups.must_read, ...groups.worth_knowing, ...groups.skip];
@@ -976,16 +996,7 @@ export function buildOpeningBrief(feed, radar) {
     title: item.title,
   }));
 
-  let intro;
-  if (isLegacy) {
-    intro = focus
-      ? `本期首看《${focus.title}》${totalCore > 1 ? `等 ${totalCore} 篇核心进展` : ""}。`
-      : "本期为常规监测批次，以摘要略读为主。";
-  } else {
-    intro = focus
-      ? `Featured reading: "${focus.title}"${totalCore > 1 ? ` and ${totalCore - 1} other key developments` : ""}.`
-      : "Standard screening batch, focused primarily on abstract skimming.";
-  }
+  const intro = formatDailyIntro(date, focus?.title, totalCore);
 
   let worthKnowingSummary;
   if (groups.worth_knowing.length > 0) {

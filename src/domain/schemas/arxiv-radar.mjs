@@ -107,32 +107,24 @@ export const OpeningBriefSectionSchema = z
   })
   .passthrough();
 
-export const OpeningBriefFocusPaperSchema = z
+export const BasePaperReferenceSchema = z
   .object({
     arxiv_id: z.string(),
     revision: z.number(),
     title: z.string(),
-    anchor: z.string(),
   })
   .passthrough();
 
-export const OpeningBriefKeyHighlightSchema = z
-  .object({
-    arxiv_id: z.string(),
-    revision: z.number(),
-    title: z.string(),
-    anchor: z.string(),
-    result: z.string(),
-  })
-  .passthrough();
+export const OpeningBriefFocusPaperSchema = BasePaperReferenceSchema.extend({
+  anchor: z.string(),
+}).passthrough();
 
-export const OpeningBriefSkimTopicSchema = z
-  .object({
-    arxiv_id: z.string(),
-    revision: z.number(),
-    title: z.string(),
-  })
-  .passthrough();
+export const OpeningBriefKeyHighlightSchema = BasePaperReferenceSchema.extend({
+  anchor: z.string(),
+  result: z.string(),
+}).passthrough();
+
+export const OpeningBriefSkimTopicSchema = BasePaperReferenceSchema;
 
 export const OpeningBriefSchema = z
   .object({

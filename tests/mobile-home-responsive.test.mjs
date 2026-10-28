@@ -26,11 +26,11 @@ test("mobile responsive contract: homepage paper grid and card constraints", asy
     "intel-card must enforce min-width: 0"
   );
 
-  // 3. reader-math inline formulas must allow horizontal scroll instead of expanding container
+  // 3. reader-math display formulas must allow horizontal scroll instead of expanding container
   assert.match(
     globalCss,
-    /\.reader-math\s*\{[^}]*overflow-x:\s*auto/s,
-    "reader-math must allow overflow-x: auto for long formulas"
+    /\.reader-math-display\s*\{[^}]*overflow-x:\s*auto/s,
+    "reader-math-display must allow overflow-x: auto for long formulas"
   );
 
   // 4. pills-scroll in index.astro must have min-width: 0 and flex: 1

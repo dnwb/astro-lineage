@@ -161,6 +161,14 @@ test("formula CSS uses local KaTeX assets and a bounded wide-equation viewport",
   const workflow = await readFile(join(projectRoot, ".github/workflows/verify.yml"), "utf8");
   assert.match(css, /@import\s+["']katex\/dist\/katex\.min\.css["']/u);
   assert.match(css, /\.reader-math\s*>\s*\.katex\s*\{/u);
+  assert.match(
+    css,
+    /\.reader-math:not\(\.reader-math-display\)\s*\{[\s\S]*display:\s*inline/u
+  );
+  assert.match(
+    css,
+    /\.reader-math:not\(\.reader-math-display\)\s*>\s*\.katex\s*\{[\s\S]*line-height:\s*1/u
+  );
   assert.match(css, /\.reader-math\s+\.katex-mathml\s*\{/u);
   assert.match(css, /\.reader-math-display\s*\{[\s\S]*overflow-x:\s*auto/u);
   assert.match(

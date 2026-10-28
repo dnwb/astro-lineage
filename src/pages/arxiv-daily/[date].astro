@@ -125,73 +125,29 @@ const bjtInfo = formatAnnouncementInBeijing(archive.date, archive.weekday);
         <a href="/">{site.title}</a> · <a href="/arxiv-daily/">Daily Radar</a> · Archive
       </p>
 
-      <!-- Historical Archive Banner -->
-      <section class="standalone-archive-banner" aria-label="Archive Batch Navigation">
-        <div class="archive-banner-left">
-          <span class="banner-badge-archive">📅 Archive Batch</span>
-          <strong class="banner-date">{bjtInfo.beijingDate}</strong>
-          <span class="banner-meta-pill">US Date: {archive.date} ({archive.weekday})</span>
-          <span class="banner-meta-pill">Week: {archive.week_id}</span>
-          <span class="banner-meta-pill">{archive.batch_id}</span>
-        </div>
-        <div class="archive-banner-right">
-          <a class="banner-nav-link" href="/arxiv-daily/">
-            ← Latest Daily
-          </a>
-          <a class="banner-nav-link" href="/arxiv-weekly/">
-            Weekly Synthesis →
-          </a>
-        </div>
-      </section>
-
       <header class="reader-header">
-        <h1>Daily arXiv Reading Guide · Archive</h1>
+        <h1>Daily arXiv Radar · Archive</h1>
         {isLegacyChineseDate(archive.date) && (
           <div class="legacy-archive-banner" role="note">
             <span class="legacy-badge">Legacy Archive</span>
             <span>This edition was generated prior to the English transition ({archive.date}) and contains historical Chinese text.</span>
           </div>
         )}
-        <div class="historical-quick-stats">
-          <span class="stat-pill total">Total: <strong>{model.counts.total}</strong></span>
-          <span class="stat-pill analyzed">Analyzed: <strong>{model.counts.analyzed}</strong></span>
-          <span class="stat-pill must">Must Read: <strong>{priorityGroups.must_read?.length ?? 0}</strong></span>
-          <span class="stat-pill worth">Followed: <strong>{priorityGroups.worth_knowing?.length ?? 0}</strong></span>
-          <span class="stat-pill skim">Skim: <strong>{priorityGroups.skip?.length ?? 0}</strong></span>
-        </div>
+        <p class="record-label">
+          <span>Batch {bjtInfo.beijingDate} (Beijing Time UTC+8) · US {archive.date} ({archive.weekday})</span>
+          <span class="record-meta-sep">·</span>
+          <span>Week: {archive.week_id}</span>
+          <span class="record-meta-sep">·</span>
+          <a href="/arxiv-daily/">Latest Daily →</a>
+          <span class="record-meta-sep">·</span>
+          <a href="/arxiv-weekly/">Weekly Synthesis →</a>
+          <span class="record-meta-sep">·</span>
+          <a href="/arxiv-archives/">Historical Archives →</a>
+        </p>
       </header>
 
-      <!-- Consolidated AI HOT Date Switcher & Filter Ribbon -->
-      <DailyDateSwitcher currentDate={archive.date} groups={priorityGroups} />
-
-      <!-- Standalone Date Pager -->
-      <nav class="standalone-date-pager" aria-label="Daily Brief Archive Switcher">
-        <div class="pager-col left">
-          {prevDate ? (
-            <a class="date-pager-btn" href={`/arxiv-daily/${prevDate}/`} title={`Switch to previous day: ${prevDate}`}>
-              ← Previous ({prevDate})
-            </a>
-          ) : (
-            <span class="date-pager-btn disabled">Earliest Archive</span>
-          )}
-        </div>
-        <div class="pager-col center">
-          <a class="date-pager-btn overview" href="/arxiv-archives/">
-            🗓️ View All Archives
-          </a>
-        </div>
-        <div class="pager-col right">
-          {nextDate ? (
-            <a class="date-pager-btn" href={`/arxiv-daily/${nextDate}/`} title={`Switch to next day: ${nextDate}`}>
-              Next ({nextDate}) →
-            </a>
-          ) : (
-            <a class="date-pager-btn" href="/arxiv-daily/" title="Go to latest daily brief">
-              Today's Latest Brief →
-            </a>
-          )}
-        </div>
-      </nav>
+      <!-- Consolidated Sticky AI HOT Date Switcher & Pager Ribbon -->
+      <DailyDateSwitcher currentDate={archive.date} groups={priorityGroups} prevDate={prevDate} nextDate={nextDate} />
 
       {priorityGroups.must_read.length === 0 && (
         <aside class="no-must-read-notice" role="status">

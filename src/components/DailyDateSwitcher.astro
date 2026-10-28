@@ -9,9 +9,11 @@ interface Props {
     worth_knowing?: any[];
     skip?: any[];
   };
+  prevDate?: string | null;
+  nextDate?: string | null;
 }
 
-const { currentDate, groups } = Astro.props;
+const { currentDate, groups, prevDate, nextDate } = Astro.props;
 
 const allWeeks = (archiveManifest as any).weeks || [];
 const allDays = allWeeks
@@ -19,6 +21,13 @@ const allDays = allWeeks
   .sort((a: any, b: any) => b.date.localeCompare(a.date));
 
 const latestDate = (archiveManifest as any).latest_daily_date || (allDays[0]?.date ?? "");
+
+const currentIndex = allDays.findIndex((d: any) => d.date === currentDate);
+const nextDateCalculated = currentIndex > 0 ? allDays[currentIndex - 1]?.date : null;
+const prevDateCalculated = currentIndex >= 0 && currentIndex < allDays.length - 1 ? allDays[currentIndex + 1]?.date : null;
+
+const effectivePrevDate = prevDate !== undefined ? prevDate : prevDateCalculated;
+const effectiveNextDate = nextDate !== undefined ? nextDate : nextDateCalculated;
 
 // Take latest 8 dates for the immediate scrollable pills
 const recentDays = allDays.slice(0, 8);
@@ -30,6 +39,34 @@ const recentDays = allDays.slice(0, 8);
       <div class="ribbon-brand-tag">
         <span class="ribbon-icon">📅</span>
         <span class="ribbon-title">Date</span>
+      </div>
+
+      <!-- Stepper buttons to quickly step between editions -->
+      <div class="ribbon-stepper" aria-label="Step editions">
+        {effectivePrevDate ? (
+          <a
+            class="ribbon-step-btn"
+            href={effectivePrevDate === latestDate ? "/arxiv-daily/" : `/arxiv-daily/${effectivePrevDate}/`}
+            title={`Previous edition: ${effectivePrevDate}`}
+            aria-label="Previous edition"
+          >
+            ‹
+          </a>
+        ) : (
+          <span class="ribbon-step-btn disabled" aria-hidden="true" title="No older edition">‹</span>
+        )}
+        {effectiveNextDate ? (
+          <a
+            class="ribbon-step-btn"
+            href={effectiveNextDate === latestDate ? "/arxiv-daily/" : `/arxiv-daily/${effectiveNextDate}/`}
+            title={`Next edition: ${effectiveNextDate}`}
+            aria-label="Next edition"
+          >
+            ›
+          </a>
+        ) : (
+          <span class="ribbon-step-btn disabled" aria-hidden="true" title="No newer edition">›</span>
+        )}
       </div>
 
       <!-- Scrollable Recent Dates Track -->
@@ -50,7 +87,7 @@ const recentDays = allDays.slice(0, 8);
                 {isLatest && <span class="pill-fire-badge">Latest</span>}
                 <strong class="pill-date">{dInfo.shortDate}</strong>
                 <span class="pill-weekday">{(dInfo as any).englishWeekday ?? dInfo.chineseWeekday}</span>
-                <span class="pill-count">{d.total_papers} papers</span>
+                <span class="pill-count">{d.total_papers}</span>
               </a>
             );
           })}
@@ -60,7 +97,7 @@ const recentDays = allDays.slice(0, 8);
       <!-- Pure HTML Dropdown for All Historical Dates -->
       <details class="ribbon-archive-details">
         <summary class="ribbon-archive-summary" title="Expand historical dates">
-          <span>Past Editions ({allDays.length})</span>
+          <span>Past ({allDays.length})</span>
           <span class="summary-caret">▾</span>
         </summary>
         <div class="ribbon-archive-dropdown-menu">
@@ -96,19 +133,19 @@ const recentDays = allDays.slice(0, 8);
       </details>
     </div>
 
-    <!-- Integrated Section Filter Pills on the Right -->
+    <!-- Unified Priority Stats & Section Navigation Toolbar -->
     {groups && (
-      <div class="ribbon-section-pills" aria-label="Direct section navigation">
+      <div class="ribbon-section-pills unified-counter-toolbar" role="toolbar" aria-label="Unified priority counter toolbar">
         <span class="ribbon-divider" aria-hidden="true">|</span>
-        <a href="#must-read" class="section-nav-pill pill-must">
-          ⭐ Must Read ({groups.must_read?.length ?? 0})
+        <a href="#must-read" class="section-nav-pill pill-must" title="Jump to Must Read section">
+          Must Read ({groups.must_read?.length ?? 0})
         </a>
-        <a href="#worth-knowing" class="section-nav-pill pill-worth">
-          📌 Follow ({groups.worth_knowing?.length ?? 0})
+        <a href="#worth-knowing" class="section-nav-pill pill-worth" title="Jump to Follow section">
+          Follow ({groups.worth_knowing?.length ?? 0})
         </a>
         {groups.skip && groups.skip.length > 0 && (
-          <a href="#skim" class="section-nav-pill pill-skim">
-            ⚡ Skim ({groups.skip.length})
+          <a href="#skim" class="section-nav-pill pill-skim" title="Jump to Skim section">
+            Skim ({groups.skip.length})
           </a>
         )}
       </div>
@@ -118,35 +155,48 @@ const recentDays = allDays.slice(0, 8);
 
 <style>
   .aihot-date-ribbon {
-    margin: 1.25rem 0 1.75rem 0;
-    padding: 0.35rem 0 0.85rem 0;
-    background: transparent;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: var(--bg-surface, #ffffff);
+    backdrop-filter: blur(8px);
+    margin: 0.35rem 0 0.65rem 0;
+    padding: 0.35rem 0.5rem;
     border: none;
     border-bottom: 1px solid var(--border-color, #e2e8f0);
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .aihot-date-ribbon {
+    background: var(--bg-surface, #0f172a);
+    border-bottom-color: #334155;
   }
   .ribbon-inner {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 1rem;
-    flex-wrap: wrap;
+    gap: 0.65rem;
+    flex-wrap: nowrap;
+  }
+  @media (max-width: 767px) {
+    .ribbon-inner {
+      flex-wrap: wrap;
+    }
   }
   .ribbon-left-group {
     display: flex;
     align-items: center;
-    gap: 0.65rem;
+    gap: 0.45rem;
     flex: 1 1 auto;
     min-width: 0;
   }
   .ribbon-brand-tag {
     display: flex;
     align-items: center;
-    gap: 0.3rem;
-    font-size: 0.82rem;
+    gap: 0.25rem;
+    font-size: 0.8rem;
     font-weight: 600;
     color: var(--text-secondary, #64748b);
     white-space: nowrap;
-    padding-right: 0.5rem;
+    padding-right: 0.45rem;
     border-right: 1px solid var(--border-color, #e2e8f0);
   }
   :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .ribbon-brand-tag {
@@ -154,10 +204,50 @@ const recentDays = allDays.slice(0, 8);
     border-right-color: #334155;
   }
   .ribbon-icon {
-    font-size: 0.95rem;
+    font-size: 0.88rem;
   }
   .ribbon-title {
     letter-spacing: -0.01em;
+  }
+  .ribbon-stepper {
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+  }
+  .ribbon-step-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.45rem;
+    height: 1.45rem;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    line-height: 1;
+    font-weight: 700;
+    text-decoration: none;
+    color: var(--text-secondary, #475569);
+    border: 1px solid var(--border-color, #cbd5e1);
+    background: var(--card-bg, #ffffff);
+    transition: all 0.15s ease;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .ribbon-step-btn {
+    background: #1e293b;
+    border-color: #334155;
+    color: #cbd5e1;
+  }
+  .ribbon-step-btn:hover:not(.disabled) {
+    background: #f1f5f9;
+    color: var(--text-primary, #0f172a);
+    border-color: #94a3b8;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .ribbon-step-btn:hover:not(.disabled) {
+    background: #334155;
+    color: #f8fafc;
+  }
+  .ribbon-step-btn.disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    pointer-events: none;
   }
   .ribbon-track-wrap {
     flex: 1 1 auto;
@@ -432,7 +522,9 @@ const recentDays = allDays.slice(0, 8);
     display: flex;
     align-items: center;
     gap: 0.45rem;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    flex-shrink: 0;
+    white-space: nowrap;
   }
   .ribbon-divider {
     color: var(--border-color, #cbd5e1);
@@ -472,7 +564,10 @@ const recentDays = allDays.slice(0, 8);
   }
 
   @media (prefers-color-scheme: dark) {
+    :global(body:not(:has(#site-theme-toggle:checked))) .aihot-date-ribbon { background: var(--bg-surface, #0f172a); border-bottom-color: #334155; }
     :global(body:not(:has(#site-theme-toggle:checked))) .ribbon-brand-tag { color: #94a3b8; border-right-color: #334155; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .ribbon-step-btn { background: #1e293b; border-color: #334155; color: #cbd5e1; }
+    :global(body:not(:has(#site-theme-toggle:checked))) .ribbon-step-btn:hover:not(.disabled) { background: #334155; color: #f8fafc; }
     :global(body:not(:has(#site-theme-toggle:checked))) .ribbon-track-wrap::-webkit-scrollbar-thumb { background: #475569; }
     :global(body:not(:has(#site-theme-toggle:checked))) .date-pill { background: #1e293b; border-color: #334155; color: #e2e8f0; }
     :global(body:not(:has(#site-theme-toggle:checked))) .date-pill:hover { background: #334155; border-color: #64748b; color: #f8fafc; }

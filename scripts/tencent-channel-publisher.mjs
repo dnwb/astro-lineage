@@ -35,6 +35,17 @@ import {
   getDefaultLocalWebsiteBase,
   deriveFigurePhysicalCore,
 } from "../src/domain/academic-domain.mjs";
+import {
+  buildChannelPostDraft,
+  attachReviewedFigure,
+  stripReviewedFigure,
+  renderChannelMarkdown,
+  bodyWithReviewedFigure,
+  bodyWithoutManagedFigure,
+  findReadingAnchor,
+  READING_ANCHORS,
+  BADGE_MAP,
+} from "../src/domain/channel-document.mjs";
 export { extractPaperTopic, DAILY_BRIEF_CHANNEL_ID, GENERAL_CHANNEL_ID, resolvePublicationTarget };
 
 try {
@@ -458,51 +469,6 @@ function figureReadbackProblem(current, expectedRemote, identity, title, existin
   return null;
 }
 
-export const READING_ANCHORS = Object.freeze([
-  "\n---\n\n## 📚 阅读入口",
-  "\n---\n\n## 阅读入口",
-  "\n---\n\n## 📖 Reading Access",
-  "\n---\n\n## Reading Access",
-  "\n---\n\n## 📖 Reading Entry",
-  "\n---\n\n## Reading Entry",
-]);
-
-export function findReadingAnchor(body, start = 0) {
-  const text = String(body);
-  for (const anchor of READING_ANCHORS) {
-    const idx = text.indexOf(anchor, start);
-    if (idx >= 0) {
-      return {
-        index: idx,
-        anchor,
-        isEn: /reading/i.test(anchor),
-      };
-    }
-  }
-  return null;
-}
-
-export function bodyWithoutManagedFigure(value) {
-  const body = String(value);
-  let figurePrefix = "\n\n## 关键图像\n\n[(0,0)](@img)\n\n";
-  let start = body.indexOf(figurePrefix);
-  if (start < 0) {
-    figurePrefix = "\n\n## Key Figure\n\n[(0,0)](@img)\n\n";
-    start = body.indexOf(figurePrefix);
-  }
-  if (start < 0 || start !== body.lastIndexOf(figurePrefix)) return null;
-  const reading = findReadingAnchor(body, start);
-  if (!reading) return null;
-  const end = reading.index;
-  const figureContent = body.slice(start + figurePrefix.length, end).trim();
-  if (
-    !figureContent.includes("图注（作者报告）：") &&
-    !figureContent.includes("Caption (author-reported):")
-  )
-    return null;
-  return body.slice(0, start) + body.slice(end);
-}
-
 async function scanFeeds(cli, guildId, channelId) {
   const all = [];
   let cursor = "";
@@ -675,91 +641,12 @@ export function readingExcerpt(value) {
 }
 
 export function paperMarkdown(item, date, topic, options = {}) {
-  const a = item.analysis?.analysis || item.analysis || {};
-  const coverage = item.analysis?.coverage || {};
-  const mustRead = item.analysis?.priority === "must_read";
-  const version = `arXiv:${item.arxiv_id}v${item.revision}`;
-  const anchor = `radar-paper-${item.arxiv_id.replace(".", "-")}-v${item.revision}`;
-  const readerReason = claimText(a.reason)
-    .replace(/\bR1[–—-]R7\b/gu, "课题组各研究方向")
-    .replace(/\bR[1-7]\b/gu, (id) => TOPIC_LABELS[id]);
-  const author =
-    Array.isArray(item.authors) && item.authors.length
-      ? ` · ${item.authors.slice(0, 3).join(", ")}${item.authors.length > 3 ? " 等" : ""}`
-      : "";
-  const problem = claimText(a.problem?.detailed_text || a.problem?.problem || a.problem || "");
-  const result = claimText(a.result?.detailed_text || a.result?.bluf || a.result || "");
-  const channelUrl = options.channelUrl || "https://pd.qq.com/s/7xr9egnly";
-
-  const isLegacy = isLegacyChineseDate(date);
-  const problemFallback = isLegacy
-    ? "未能从已检查材料中核实课题问题陈述。"
-    : "Problem statement not verified from checked materials.";
-  const resultFallback = isLegacy
-    ? "详见原文推导与正文分析。"
-    : "See original paper for derivations and analysis.";
-
-  const tag = isLegacy ? (mustRead ? "必读" : "关注") : mustRead ? "Must Read" : "Follow";
-
-  const lines = [
-    `**${tag}**${author}`,
-    "",
-    isLegacy ? "## 课题背景" : "## Problem & Background",
-    "",
-    `> ${problem || problemFallback}`,
-    "",
-    isLegacy ? "## 核心突破" : "## Key Result & Physical Mechanism",
-    "",
-    `> ${result || resultFallback}`,
-    "",
-  ];
-
-  if (readerReason) {
-    lines.push(isLegacy ? "## 研读价值" : "## Why It Matters", "", `> ${readerReason}`, "");
-  }
-
-  const limits = [...(a.limits || []), ...(a.unresolved_checks || [])];
-  if (limits.length) {
-    lines.push(isLegacy ? "## 限制与边界" : "## Limitations & Boundaries", "");
-    for (const l of limits) {
-      lines.push(`- ${claimText(typeof l === "string" ? l : l.text || JSON.stringify(l))}`);
-    }
-    lines.push("");
-  }
-
-  if (isLegacy) {
-    lines.push(
-      "---",
-      "",
-      "## 阅读入口",
-      "",
-      `- **公网在线阅读 (Cloudflare)**: [打开网页深度导读](${PUBLIC_SITE_URL}/arxiv-daily/${date}/#${anchor})`,
-      `- **校内/局域网直连**: [打开校内直连导读](${LOCAL_SITE_URL}/arxiv-daily/${date}/#${anchor})`,
-      `- **QQ 频道社区交流帖**: [进入频道讨论](${channelUrl})`,
-      `- **官方论文原文**: [${version}](https://arxiv.org/abs/${item.arxiv_id}v${item.revision}) · [📄 PDF](https://arxiv.org/pdf/${item.arxiv_id})`,
-      "",
-      `原标题：${item.title}`,
-      "",
-      `实际阅读范围：${coverage.label || coverage.level || "完整正文"}。本帖摘录作者报告的结果；完整条件与图表见网页原记录。`
-    );
-  } else {
-    lines.push(
-      "---",
-      "",
-      "## Reading Access",
-      "",
-      `- **Online Reading (Cloudflare)**: [Read Full Brief](${PUBLIC_SITE_URL}/arxiv-daily/${date}/#${anchor})`,
-      `- **Direct / Local Network**: [Read Direct Brief](${LOCAL_SITE_URL}/arxiv-daily/${date}/#${anchor})`,
-      `- **QQ Channel Discussion**: [Join Channel Discussion](${channelUrl})`,
-      `- **Official Paper**: [${version}](https://arxiv.org/abs/${item.arxiv_id}v${item.revision}) · [📄 PDF](https://arxiv.org/pdf/${item.arxiv_id})`,
-      "",
-      `Title: ${item.title}`,
-      "",
-      `Reading coverage: ${coverage.label || coverage.level || "Full text"}. Excerpted from author reports; see website for full conditions and figures.`
-    );
-  }
-
-  return lines.join("\n");
+  const draft = buildChannelPostDraft(item, date, topic, {
+    ...options,
+    publicSiteUrl: PUBLIC_SITE_URL,
+    localSiteUrl: LOCAL_SITE_URL,
+  });
+  return renderChannelMarkdown(draft);
 }
 
 function matchesLegacyPaper(body, item) {
@@ -792,43 +679,6 @@ function pending(result, identity, reason) {
   result.pending += 1;
   result.pending_items.push({ identity, reason });
   result.success = false;
-}
-
-export function bodyWithReviewedFigure(body, figure, context = {}) {
-  const reading = findReadingAnchor(body);
-  if (!reading) throw new Error("CHANNEL_FIGURE_BODY_ANCHOR_MISSING");
-  const marker = reading.anchor;
-  const caption = String(figure.caption).replace(/\r?\n/gu, " ").trim();
-  const isEn = reading.isEn;
-  const physicalCore = (
-    figure.physical_core ||
-    deriveFigurePhysicalCore(figure, context, { lang: isEn ? "en" : "zh" }) ||
-    ""
-  ).trim();
-  const BADGE_MAP = {
-    数据拟合与模型对比: "Model vs Data Fitting",
-    物理模型示意图: "Physical Model Schematic",
-    核心物理演化图: "Physical Evolution",
-    核心物理结果: "Physical Result",
-    核心观测结果: "Observational Evidence",
-    "观测总体曲线/能谱": "Observational Light Curve / SED",
-  };
-  const rawBadge =
-    figure.category_badge || figure.label || (isEn ? "Scientific Figure" : "科学图表");
-  const badge = isEn ? BADGE_MAP[rawBadge] || rawBadge : rawBadge;
-  const coreSection = physicalCore
-    ? isEn
-      ? `> **Physical Core (${badge})**: ${physicalCore}\n>\n`
-      : `> **物理核心（${badge}）**：${physicalCore}\n>\n`
-    : "";
-  const heading = isEn ? "## Key Figure" : "## 关键图像";
-  const captionLine = isEn
-    ? `> Original ${figure.label} Caption (author-reported): ${caption}`
-    : `> 原文 ${figure.label} 图注（作者报告）：${caption}`;
-  return String(body).replace(
-    marker,
-    `\n\n${heading}\n\n[(0,0)](@img)\n\n${coreSection}${captionLine}${marker}`
-  );
 }
 
 async function publishItems(
@@ -928,7 +778,9 @@ async function publishItems(
       } else if (allowExistingBodyEdits && item.figure) {
         figure = item.figure;
       }
-      const body = figure ? bodyWithReviewedFigure(item.body, figure, item) : item.body;
+      const body = figure
+        ? bodyWithReviewedFigure(item.draft || item.body, figure, item)
+        : item.body;
       const hash = hashBody(body);
       const marked = `${body}\n\n${markerFor(identity, hash)}`;
       if (Array.from(title).length > 200 || Array.from(marked).length > 10_000) {
@@ -1962,6 +1814,10 @@ async function dailyItems(model, date, resolveFigure = resolveReviewedFigure, fi
         };
       }
       const { image } = await resolveFigure(item, figureOptions);
+      const draft = buildChannelPostDraft(item, date, topic, {
+        publicSiteUrl: PUBLIC_SITE_URL,
+        localSiteUrl: LOCAL_SITE_URL,
+      });
       return {
         identity,
         arxiv_id: item.arxiv_id,
@@ -1969,7 +1825,8 @@ async function dailyItems(model, date, resolveFigure = resolveReviewedFigure, fi
         paper_title: item.title,
         topic,
         title,
-        body: paperMarkdown(item, date, topic),
+        draft,
+        body: renderChannelMarkdown(draft),
         figure: image,
       };
     })

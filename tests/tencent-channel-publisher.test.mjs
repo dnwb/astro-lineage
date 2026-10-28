@@ -19,10 +19,12 @@ import {
   DAILY_BRIEF_CHANNEL_ID,
   GENERAL_CHANNEL_ID,
   resolvePublicationTarget,
+} from "../scripts/tencent-channel-publisher.mjs";
+import {
   findReadingAnchor,
   bodyWithReviewedFigure,
   bodyWithoutManagedFigure,
-} from "../scripts/tencent-channel-publisher.mjs";
+} from "../src/domain/channel-document.mjs";
 import {
   TOPICS,
   TOPIC_LABELS,

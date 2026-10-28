@@ -815,10 +815,30 @@ export const BIBLIOGRAPHIC_PROVIDER_LABELS = {
 };
 
 /**
+ * Resolve SciX forceMode from discipline context or category.
+ *
+ * @param {string | { category?: string, primary_category?: string, tags?: string[] }} [discipline]
+ * @returns {string}
+ */
+export function resolveBibliographicDisciplineMode(discipline) {
+  if (!discipline) return "astrophysics";
+  if (typeof discipline === "string") {
+    const d = discipline.toLowerCase().trim();
+    if (d.startsWith("astro-ph.ep") || d === "planetary" || d === "earth") return "planetary";
+    if (d.startsWith("physics.geo-ph") || d === "heliophysics") return "heliophysics";
+    if (d.startsWith("physics.bio-ph") || d.startsWith("q-bio") || d === "biological")
+      return "biological";
+    return "astrophysics";
+  }
+  const cat = discipline.primary_category || discipline.category || "";
+  return resolveBibliographicDisciplineMode(cat);
+}
+
+/**
  * Generate canonical external bibliographic URL for a paper.
  *
  * @param {string} arxivId - Normalized or raw arXiv ID (e.g. "2610.12345" or "arXiv:2610.12345v1")
- * @param {{ provider?: 'scix' | 'ads', forceMode?: string | null }} [options]
+ * @param {{ provider?: 'scix' | 'ads', forceMode?: string | null, discipline?: string | { category?: string, primary_category?: string, tags?: string[] } }} [options]
  * @returns {string}
  */
 export function getBibliographicUrl(arxivId, options = {}) {
@@ -831,7 +851,7 @@ export function getBibliographicUrl(arxivId, options = {}) {
     options.forceMode !== undefined
       ? options.forceMode
       : provider === "scix"
-        ? "astrophysics"
+        ? resolveBibliographicDisciplineMode(options.discipline)
         : null;
 
   if (provider === "ads") {

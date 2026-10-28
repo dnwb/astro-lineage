@@ -805,6 +805,19 @@ export async function reconcilePreviousEdition({
       assertContinuousBatchIntervals(finalFeed, prevFeed);
     }
 
+    const activeFeedDate = await currentFeedDate(target);
+    const isTargetActive =
+      localFeed?.window?.announcement_date === targetDate ||
+      activeFeedDate === null ||
+      targetDate >= (activeFeedDate ?? "0000-00-00");
+    const writeTarget = isTargetActive
+      ? target
+      : join(root, "catch-up", targetDate, "arxiv-daily.json");
+    const writeRadar = isTargetActive
+      ? radar
+      : join(root, "catch-up", targetDate, "daily-radar.json");
+    const targetArtifactRoot = isTargetActive ? root : join(root, "catch-up", targetDate);
+
     if ((!localFeed && hasValidFeed) || (newEntries.length > 0 && localFeed)) {
       if (newEntries.length > 0 && localFeed) {
         console.log(
@@ -815,17 +828,6 @@ export async function reconcilePreviousEdition({
           `[scheduler:reconcile] 发现全量缺失批次数据，开始补录归档: ${targetDate} (${upstreamEntries.length} 篇)`
         );
       }
-      const activeFeedDate = await currentFeedDate(target);
-      const isTargetActive =
-        localFeed?.window?.announcement_date === targetDate ||
-        activeFeedDate === null ||
-        targetDate >= (activeFeedDate ?? "0000-00-00");
-      const writeTarget = isTargetActive
-        ? target
-        : join(root, "catch-up", targetDate, "arxiv-daily.json");
-      const writeRadar = isTargetActive
-        ? radar
-        : join(root, "catch-up", targetDate, "daily-radar.json");
 
       if (localFeed?.window?.announcement_date === targetDate && isTargetActive) {
         finalFeed = await refreshImpl({
@@ -855,24 +857,13 @@ export async function reconcilePreviousEdition({
         archiveRoot,
         feed: writeTarget,
         radar: writeRadar,
-        artifactRoot: isTargetActive ? root : join(root, "catch-up", targetDate),
+        artifactRoot: targetArtifactRoot,
         defaultOutput: target,
       });
       newlyAddedCount = localFeed ? newEntries.length : finalFeed.entries?.length || 0;
     }
 
     const priorityIds = newEntries.map((e) => e.arxiv_id).filter(Boolean);
-    const activeFeedDate = await currentFeedDate(target);
-    const isTargetActive =
-      localFeed?.window?.announcement_date === targetDate ||
-      activeFeedDate === null ||
-      targetDate >= (activeFeedDate ?? "0000-00-00");
-    const writeTarget = isTargetActive
-      ? target
-      : join(root, "catch-up", targetDate, "arxiv-daily.json");
-    const writeRadar = isTargetActive
-      ? radar
-      : join(root, "catch-up", targetDate, "daily-radar.json");
     if (
       analyzeImpl &&
       (priorityIds.length > 0 || (isTargetActive && (await hasPrimaryFeed(target))))
@@ -881,7 +872,7 @@ export async function reconcilePreviousEdition({
         analyzeImpl,
         output: writeTarget,
         radar: writeRadar,
-        artifactRoot: isTargetActive ? root : join(root, "catch-up", targetDate),
+        artifactRoot: targetArtifactRoot,
         archiveRoot,
         analysisLimit: analysisLimit ?? 0,
       });

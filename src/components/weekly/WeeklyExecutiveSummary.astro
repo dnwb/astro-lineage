@@ -1,0 +1,46 @@
+---
+import ReaderText from "../ReaderText.astro";
+
+interface Props {
+  structuredExecutive: {
+    lead?: string;
+    items: Array<{ topic: string; body: string }>;
+    boundary?: string;
+  };
+  rawSummary: string;
+}
+
+const { structuredExecutive, rawSummary } = Astro.props;
+---
+
+<section class="weekly-section executive-section" id="executive-summary">
+  <div class="section-heading">
+    <p class="section-kicker">Overview</p>
+    <h2>Weekly Summary</h2>
+  </div>
+  <div class="executive-content-card">
+    {structuredExecutive.lead && (
+      <div class="executive-lead-box">
+        <span class="executive-lead-pill">🌐 Core Causal Chain</span>
+        <p class="executive-lead"><ReaderText text={structuredExecutive.lead} /></p>
+      </div>
+    )}
+
+    {structuredExecutive.items && structuredExecutive.items.length > 0 ? (
+      <ul class="executive-lineage-list">
+        {structuredExecutive.items.map((item: any) => (
+          <li class="executive-lineage-item">
+            <div class="lineage-item-badge-wrap">
+              <span class="lineage-topic-badge">{item.topic}</span>
+            </div>
+            <div class="lineage-item-body">
+              <ReaderText text={item.body} />
+            </div>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <p class="executive-lead"><ReaderText text={rawSummary} /></p>
+    )}
+  </div>
+</section>

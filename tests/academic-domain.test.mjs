@@ -296,6 +296,18 @@ test("academic-domain: getBibliographicUrl and getBibliographicSourceName format
     getBibliographicUrl("2610.12345", { provider: "scix", forceMode: "planetary" }),
     "https://scixplorer.org/abs/arXiv:2610.12345?forceMode=planetary"
   );
+  // Discipline context resolution (Issue #31)
+  assert.equal(
+    getBibliographicUrl("2610.12345", { provider: "scix", discipline: "astro-ph.EP" }),
+    "https://scixplorer.org/abs/arXiv:2610.12345?forceMode=planetary"
+  );
+  assert.equal(
+    getBibliographicUrl("2610.12345", {
+      provider: "scix",
+      discipline: { primary_category: "astro-ph.HE" },
+    }),
+    "https://scixplorer.org/abs/arXiv:2610.12345?forceMode=astrophysics"
+  );
   // Disabled forceMode
   assert.equal(
     getBibliographicUrl("2610.12345", { provider: "scix", forceMode: null }),

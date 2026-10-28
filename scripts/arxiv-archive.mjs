@@ -61,7 +61,6 @@ export async function clearAllDirtyWeeks(path = DEFAULT_DIRTY_WEEKS_PATH) {
   return await ledgerClearAllDirtyWeeks({ dirtyWeeksPath: path });
 }
 
-export { getNaturalWeekBounds, getBeijingWeekId } from "../src/domain/academic-domain.mjs";
 import { getNaturalWeekBounds, getBeijingWeekId } from "../src/domain/academic-domain.mjs";
 
 export function getIsoWeek(dateStr) {

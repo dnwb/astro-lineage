@@ -80,7 +80,6 @@ function parseCliArgs(args) {
   return options;
 }
 
-export { getNaturalWeekBounds } from "../src/domain/academic-domain.mjs";
 import { getNaturalWeekBounds, getBeijingWeekId } from "../src/domain/academic-domain.mjs";
 
 function currentWeekId(date = new Date()) {

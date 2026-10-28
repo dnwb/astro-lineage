@@ -1057,3 +1057,26 @@ test("bifurcates weekly titles between legacy Chinese archives and modern Englis
     "[2026-W45] Weekly Synthesis | Shock breakout reveals dense circumstellar structure"
   );
 });
+
+test("modern English papers format single post title as [arxiv_id] + English title cleanly", () => {
+  const englishPaper = {
+    arxiv_id: "2610.34217",
+    revision: 1,
+    title: "EP241021a as An Off-nuclear Month-duration Transient in a Dwarf Starburst Galaxy",
+    analysis: {
+      analysis: {
+        problem: "Accounting for the multi-epoch optical rebrightenings...",
+        result: "EP241021a occurred at a projected offset...",
+        reason: "This paper presents critical deep HST follow-up...",
+      },
+    },
+  };
+  assert.equal(
+    derivePaperTitleCandidate(englishPaper),
+    "[2610.34217] EP241021a as An Off-nuclear Month-duration Transient in a Dwarf Starburst Galaxy"
+  );
+  assert.equal(
+    derivePaperTitleCandidate(englishPaper, { useTranslation: false }),
+    "[2610.34217] EP241021a as An Off-nuclear Month-duration Transient in a Dwarf Starburst Galaxy"
+  );
+});

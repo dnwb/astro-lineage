@@ -1,4 +1,4 @@
-import { existsSync } from "node:fs";
+import { existsSync, rmSync } from "node:fs";
 import { spawnSync } from "node:child_process";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -16,6 +16,9 @@ export function ensureDistBuilt(requiredFilePath = defaultDistIndex) {
   const target =
     typeof requiredFilePath === "string" ? requiredFilePath : fileURLToPath(requiredFilePath);
   if (!existsSync(target)) {
+    try {
+      rmSync(join(projectRoot, ".astro", ".prerender"), { recursive: true, force: true });
+    } catch {}
     const build = spawnSync("npm", ["run", "build"], {
       cwd: projectRoot,
       encoding: "utf8",

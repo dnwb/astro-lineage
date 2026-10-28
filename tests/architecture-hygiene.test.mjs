@@ -71,14 +71,36 @@ test("architecture-hygiene: operational scripts must not re-export domain SSOT f
 
   for (const file of scriptFiles) {
     const content = await readFile(file, "utf8");
-    const reExportsDomain =
-      /export\s*\{[^}]*\b(sanitizeWebsiteBase|getDefaultWebsiteBase|formatWeekIdZh|ASTRO_LATEX_MACROS)\b[^}]*\}/u.test(
-        content
-      );
+    const stripped = content.replace(/\/\*[\s\S]*?\*\//g, "").replace(/\/\/.*$/gm, "");
+
+    // 1. Direct re-exports: export { ... } from "...domain..."
+    const directReExport = /export\s*\{[^}]*\}\s*from\s*["'][^"']*domain[^"']*["']/u.test(stripped);
     assert.ok(
-      !reExportsDomain,
-      `Script ${file.replace(projectRoot, "")} re-exports domain functions. Consumers must import domain concepts directly from src/domain/academic-domain.mjs.`
+      !directReExport,
+      `Script ${file.replace(projectRoot, "")} directly re-exports from domain SSOT. Consumers must import domain concepts directly from src/domain/.`
     );
+
+    // 2. Re-export of symbols imported from domain
+    const domainImports = [
+      ...stripped.matchAll(/import\s*\{([^}]+)\}\s*from\s*["'][^"']*domain[^"']*["']/gu),
+    ]
+      .flatMap((match) =>
+        match[1].split(",").map((s) =>
+          s
+            .trim()
+            .split(/\s+as\s+/)[0]
+            .trim()
+        )
+      )
+      .filter(Boolean);
+
+    for (const sym of domainImports) {
+      const reExportPattern = new RegExp(`export\\s*\\{[^}]*\\b${sym}\\b[^}]*\\}`, "u");
+      assert.ok(
+        !reExportPattern.test(stripped),
+        `Script ${file.replace(projectRoot, "")} re-exports domain symbol '${sym}'. Consumers must import domain concepts directly from src/domain/.`
+      );
+    }
   }
 });
 
@@ -111,8 +133,7 @@ test("architecture-hygiene: UI components must not import math rendering from sc
 
   for (const file of astroFiles) {
     const content = await readFile(file, "utf8");
-    const importsScriptMath =
-      /from\s+["'][^"']*scripts\/reader-math(?:\.mjs)?["']/u.test(content);
+    const importsScriptMath = /from\s+["'][^"']*scripts\/reader-math(?:\.mjs)?["']/u.test(content);
     assert.ok(
       !importsScriptMath,
       `Astro file ${file.replace(projectRoot, "")} imports from scripts/reader-math.mjs. UI components must import exclusively from src/domain/scientific-text/index.mjs.`

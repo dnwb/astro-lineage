@@ -3,7 +3,7 @@ import { test } from "node:test";
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { getNaturalWeekBounds as getWeeklyNaturalWeekBounds } from "../scripts/arxiv-weekly-summary.mjs";
+import { getNaturalWeekBounds as getWeeklyNaturalWeekBounds } from "../src/domain/academic-domain.mjs";
 import { getAnnouncementWeekId } from "../scripts/arxiv-archive.mjs";
 
 const projectRoot = fileURLToPath(new URL("..", import.meta.url));
@@ -107,13 +107,10 @@ test("Unified academic-domain week functions provide single source of truth acro
     getPreviousAcademicWeekId,
     getNaturalWeekBounds: getDomainBounds,
   } = await import("../src/domain/academic-domain.mjs");
-  const { getNaturalWeekBounds: getArchiveBounds } = await import("../scripts/arxiv-archive.mjs");
 
   for (const wid of ["2026-W38", "2026-W39", "2026-W40", "2026-W41"]) {
     const domainB = getDomainBounds(wid);
-    const archiveB = getArchiveBounds(wid);
     const weeklyB = getWeeklyNaturalWeekBounds(wid);
-    assert.deepEqual(domainB, archiveB, `Domain and Archive bounds mismatch for ${wid}`);
     assert.deepEqual(domainB, weeklyB, `Domain and Weekly summary bounds mismatch for ${wid}`);
   }
 

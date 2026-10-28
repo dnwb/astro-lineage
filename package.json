@@ -37,6 +37,7 @@
     "posttest": "node scripts/cleanup-test-tmp.mjs",
     "check": "astro check",
     "typecheck": "astro check",
+    "prebuild": "node -e 'import(\"node:fs\").then(fs => { try { fs.rmSync(\".astro/.prerender\", { recursive: true, force: true }); } catch {} })'",
     "build": "npm run validate && node scripts/editorial-index.mjs && astro build",
     "verify": "npm run validate && npm run test && npm run check && npm run build",
     "verify:offline": "npm run validate && npm run test && npm run check && npm run build",

@@ -14,19 +14,6 @@ if (typeof process.loadEnvFile === "function" && fs.existsSync(".env")) {
   process.loadEnvFile();
 }
 
-export {
-  DEFAULT_TRANSLATION_CACHE_PATH,
-  BUNDLED_TRANSLATION_PATH,
-  normalizeArxivId,
-  cleanMathInTitle,
-  cleanTitleZh,
-  formatTranslatedPaperTitle,
-  loadTranslationsCacheSync,
-  saveTranslationsCacheSync,
-  resolvePaperTitleZhSync,
-  resetTranslationMemoryCache,
-} from "../src/domain/paper-translation.mjs";
-
 import {
   DEFAULT_TRANSLATION_CACHE_PATH,
   BUNDLED_TRANSLATION_PATH,

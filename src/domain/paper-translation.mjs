@@ -120,20 +120,22 @@ export function cleanTitleZh(text) {
   return clean.replace(/\s+/g, " ").trim();
 }
 
-export function formatTranslatedPaperTitle(arxivId, titleZh, maxLength = 200) {
+export function formatPaperPostTitle(arxivId, title, maxLength = 200) {
   const cleanId = normalizeArxivId(arxivId);
   if (!cleanId) throw new Error("CHANNEL_TITLE_ARXIV_ID_REQUIRED");
-  const cleanedZh = cleanTitleZh(titleZh);
-  if (!cleanedZh) throw new Error("CHANNEL_TITLE_PAPER_PROGRESS_REQUIRED");
+  const cleanedTitle = cleanTitleZh(title);
+  if (!cleanedTitle) throw new Error("CHANNEL_TITLE_PAPER_PROGRESS_REQUIRED");
 
-  const title = `[${cleanId}] ${cleanedZh}`;
-  if (Array.from(title).length > maxLength) {
-    const allowedZhLen = maxLength - cleanId.length - 3;
-    const truncatedZh = Array.from(cleanedZh).slice(0, allowedZhLen).join("").trim();
-    return `[${cleanId}] ${truncatedZh}`;
+  const formatted = `[${cleanId}] ${cleanedTitle}`;
+  if (Array.from(formatted).length > maxLength) {
+    const allowedLen = maxLength - cleanId.length - 3;
+    const truncated = Array.from(cleanedTitle).slice(0, allowedLen).join("").trim();
+    return `[${cleanId}] ${truncated}`;
   }
-  return title;
+  return formatted;
 }
+
+export const formatTranslatedPaperTitle = formatPaperPostTitle;
 
 export function loadTranslationsCacheSync(cachePath = null, { useBundled = true } = {}) {
   if (memoryCache && lastCachePath === cachePath) return memoryCache;

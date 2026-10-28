@@ -27,7 +27,8 @@ import {
   formatDailyTitle,
   validateTitleOverride,
 } from "./channel-title-policy.mjs";
-import { resolvePaperTitleZhAsync, resolvePaperTitleZhSync } from "./paper-translation.mjs";
+import { resolvePaperTitleZhAsync } from "./paper-translation.mjs";
+import { resolvePaperTitleZhSync } from "../src/domain/paper-translation.mjs";
 import { isLegacyChineseDate } from "../src/domain/language-cutover.mjs";
 import { TencentGuildAdapter } from "./intelligence-egress.mjs";
 import {
@@ -174,7 +175,7 @@ function dailyBriefItem(model, date) {
       const anchor = `radar-paper-${paper.arxiv_id.replace(".", "-")}-v${paper.revision}`;
       const originalLabel = isLegacy ? "原文" : "Original";
       lines.push(
-        `### [${paperReaderTitle(paper)}](${SITE_BASE_URL}/arxiv-daily/${date}/#${anchor})`,
+        `### [${paperReaderTitle(paper, { date })}](${SITE_BASE_URL}/arxiv-daily/${date}/#${anchor})`,
         "",
         `${sentence.text} [${originalLabel}](https://arxiv.org/abs/${paper.arxiv_id}v${paper.revision})`,
         ""
@@ -255,7 +256,10 @@ export async function generateDailyMarkdown({
 
   const mustRead = model.groups.must_read || [];
   const worthKnowing = model.groups.worth_knowing || [];
-  const highlights = [...mustRead, ...worthKnowing];
+  const highlights = [...mustRead, ...worthKnowing].map((p) => ({
+    ...p,
+    date: p.date || batchDate,
+  }));
 
   const item = dailyBriefItem(model, batchDate);
   const postTitle =
@@ -1530,7 +1534,9 @@ export async function publishDailyFeed({
     const items = await dailyItems(checked.model, date, resolveFigure, {
       distRoot,
       cacheRoot,
-      cachePath: cacheRoot ? join(cacheRoot, "paper-translations.json") : undefined,
+      cachePath: existsSync(join(cacheRoot, "paper-translations.json"))
+        ? join(cacheRoot, "paper-translations.json")
+        : undefined,
       mustReadOnly,
     });
     let briefError;
@@ -1803,7 +1809,7 @@ async function dailyItems(model, date, resolveFigure = resolveReviewedFigure, fi
             await resolvePaperTitleZhAsync(item, figureOptions);
           }
         }
-        title = paperReaderTitle(item, figureOptions);
+        title = paperReaderTitle(item, { ...figureOptions, date });
       } catch (error) {
         return {
           identity,
@@ -2147,7 +2153,9 @@ export async function publishHistoricalFeeds({
                 {
                   distRoot,
                   cacheRoot,
-                  cachePath: cacheRoot ? join(cacheRoot, "paper-translations.json") : undefined,
+                  cachePath: existsSync(join(cacheRoot, "paper-translations.json"))
+                    ? join(cacheRoot, "paper-translations.json")
+                    : undefined,
                 }
               )
             )[0];

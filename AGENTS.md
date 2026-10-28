@@ -21,6 +21,8 @@ see `ARCHITECTURE.md`
 - 路由功能对齐：聚合首页/列表页展示最新一期时，核心交互（如 PDF 下载）与文案格式必须与单期详情页保持对齐。
 - 模块独立与脚本规范：`scripts/` 核心模块严禁嵌入未声明的离线批处理 `main()` 入口，公共能力仅通过 export 暴露；独立 CLI 脚本必须以 `-cli.mjs`、`cli.mjs` 结尾或在 `package.json` 注册执行命令。
 - 审查契约动态提取：执行代码审查时，Spec Reviewer 必须动态从当前会话提取真实需求，严禁继承过往历史会话的过期 spec 上下文。
+- 元数据格式化单源（SSOT）：学术作者列表、日期显示等元数据展示格式必须统一引用 `src/domain/academic-domain.mjs` 中的纯函数（如 `formatAuthorList`），严禁在 `.astro` 等组件内部编写内联字符串截断与拼接。
+- 实施测试轻量化：单票/单功能实施与 TDD 循环中，严禁运行全量测试套件（如 `npm test` 或 `verify`）；仅允许针对当前改动相关的单一测试文件（如 `node --test tests/xxx.test.mjs`）或轻量套件（`npm run test:fast`）建立紧密反馈循环；全量测试仅在集成分支合流或集成审查前由主编排 Agent 统一执行一次。
 
 ### Agent context policy.md
 

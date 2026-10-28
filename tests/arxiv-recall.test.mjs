@@ -8,15 +8,12 @@ import {
   publishAnalyzedArxivEdition,
   releaseRefreshLock,
 } from "../scripts/arxiv-daily.mjs";
+import { syncArxivArchives } from "../scripts/arxiv-archive.mjs";
+import { executeChatCompletion, runWeeklySummary } from "../scripts/arxiv-weekly-summary.mjs";
 import {
   getNaturalWeekBounds as getArchiveWeekBounds,
-  syncArxivArchives,
-} from "../scripts/arxiv-archive.mjs";
-import {
-  executeChatCompletion,
   getNaturalWeekBounds as getWeeklyWeekBounds,
-  runWeeklySummary,
-} from "../scripts/arxiv-weekly-summary.mjs";
+} from "../src/domain/academic-domain.mjs";
 import {
   editionFingerprint,
   sourceFingerprint,
@@ -657,7 +654,7 @@ test("archive sync reads the active edition from its published pointer, not stal
       ...published.radar,
       opening_brief: { status: "unavailable", reason: "Synthetic pointer fixture." },
     };
-    const stale = makeEdition("2026-09-21", [{ id: "2609.90202" }]);
+    const stale = makeEdition("2026-09-19", [{ id: "2609.90202" }]);
     await writeJson(feedPath, published.feed);
     await writeJson(radarPath, publishedRadar);
     await publishAnalyzedArxivEdition({

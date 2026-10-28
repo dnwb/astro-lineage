@@ -1,4 +1,8 @@
-import { resolvePaperTitleZhSync, formatTranslatedPaperTitle } from "./paper-translation.mjs";
+import {
+  resolvePaperTitleZhSync,
+  formatTranslatedPaperTitle,
+  formatPaperPostTitle,
+} from "../src/domain/paper-translation.mjs";
 import { isLegacyChineseDate } from "../src/domain/language-cutover.mjs";
 
 const TITLE_LIMIT = 200;
@@ -430,14 +434,43 @@ function fallbackPaperTitleCandidate(item, maxLength = TITLE_LIMIT) {
   return null;
 }
 
+function isChineseText(text) {
+  return typeof text === "string" && /\p{Script=Han}/u.test(text);
+}
+
+export function isPaperLegacy(item, options = {}) {
+  const date = options?.date || item?.date || item?.announcement_date;
+  const isDateLegacy = date && /^\d{4}-\d{2}-\d{2}$/.test(date) ? isLegacyChineseDate(date) : null;
+
+  if (item?.title_zh || item?.analysis?.title_zh) return true;
+  const analysis = item?.analysis?.analysis || item?.analysis || {};
+  const hasChinese =
+    isChineseText(analysis.problem) ||
+    isChineseText(analysis.result) ||
+    isChineseText(analysis.reason);
+
+  if (hasChinese) return true;
+  if (isDateLegacy !== null) return isDateLegacy;
+  return false;
+}
+
 function derivePaperTitle(item, options = {}) {
+  const paperId = item?.arxiv_id || item?.id;
+  const paperTitle = item?.title_en || item?.title;
+  const isLegacy = isPaperLegacy(item, options);
+
   if (options.useTranslation !== false) {
     const titleZh = resolvePaperTitleZhSync(item, options);
-    const paperId = item?.arxiv_id || item?.id;
     if (paperId && titleZh) {
       return formatTranslatedPaperTitle(paperId, titleZh);
     }
+    if (!isLegacy && paperId && paperTitle) {
+      return formatPaperPostTitle(paperId, paperTitle);
+    }
+  } else if (!isLegacy && paperId && paperTitle) {
+    return formatPaperPostTitle(paperId, paperTitle);
   }
+
   const completeCandidate = fallbackPaperTitleCandidate(item);
   const compactCandidate = fallbackPaperTitleCandidate(item, PAPER_TITLE_COMPACT_LIMIT);
   const fallbackCandidate =

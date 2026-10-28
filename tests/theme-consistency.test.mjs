@@ -45,6 +45,61 @@ test("theme consistency contract: ThemeToggle and global.css guards", async () =
     /:root\[data-theme="light"\]\s*\.intel-pick-item/,
     "global.css must enforce explicit :root[data-theme='light'] rules for pick item"
   );
+
+  // 4. Ticket #34: Reader typography measure (72ch) and BLUF grid alignment
+  assert.match(
+    globalCss,
+    /--measure-prose:\s*72ch;/,
+    "global.css must declare --measure-prose: 72ch in :root"
+  );
+  assert.match(
+    globalCss,
+    /\.bluf-text[^}]*max-inline-size:\s*var\(--measure-prose,\s*72ch\)/s,
+    "global.css must apply max-inline-size: var(--measure-prose, 72ch) to .bluf-text"
+  );
+  assert.match(
+    globalCss,
+    /\.bluf-item\s*\{[^}]*display:\s*grid;[^}]*grid-template-columns:\s*5\.25rem\s+minmax\(0,\s*1fr\);[^}]*column-gap:\s*0\.75rem;[^}]*align-items:\s*baseline;/s,
+    "global.css must configure .bluf-item with strict 2-column grid layout"
+  );
+
+  // 5. Ticket #34: WCAG AA contrast tokens & softened dark must-read card
+  assert.match(
+    globalCss,
+    /:root\s*\{[^}]*--text-muted:\s*#526071;/s,
+    "global.css must set WCAG AA compliant --text-muted: #526071 in light mode :root"
+  );
+  assert.match(
+    globalCss,
+    /:root\[data-theme="dark"\][^{]*\{[^}]*--text-muted:\s*#94a3b8\s*!important;/s,
+    "global.css must set high-contrast --text-muted: #94a3b8 in dark mode"
+  );
+  assert.match(
+    globalCss,
+    /:root\[data-theme="dark"\][^{]*\{[^}]*--must-read-bg:\s*#1e2433\s*!important;/s,
+    "global.css must soften dark mode --must-read-bg to #1e2433"
+  );
+  assert.match(
+    globalCss,
+    /:is\(\[data-theme="dark"\][^{]*\.radar-card-must-read[^{]*\{[^}]*background:\s*var\(--must-read-bg/s,
+    "global.css must soften dark must-read cards with neutral background and accent border"
+  );
+
+  // 6. Ticket #34: Boilerplate elimination in DailyRadarCard.astro
+  const radarCard = await readFile(
+    join(projectRoot, "src/components/DailyRadarCard.astro"),
+    "utf-8"
+  );
+  assert.doesNotMatch(
+    radarCard,
+    /radar-en-deck/,
+    "DailyRadarCard.astro must not contain radar-en-deck boilerplate"
+  );
+  assert.doesNotMatch(
+    radarCard,
+    /Click the button above to view full quantitative analysis/,
+    "DailyRadarCard.astro must not contain repetitive modal guide text"
+  );
 });
 
 function hasPlaywright() {

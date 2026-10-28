@@ -7,7 +7,7 @@
   --text-secondary: #5d6470;
   --text-heading: #0f172a;
   --text-body: #334155;
-  --text-muted: #94a3b8;
+  --text-muted: #526071;
   --border-color: #cbd5e1;
   --card-bg: #ffffff;
   --card-border: #e2e8f0;
@@ -15,9 +15,11 @@
   --link-color: #2563eb;
   --must-read-bg: #fff8f5;
   --must-read-border: #f97316;
+  --accent-must-read: #ef4444;
   --worth-knowing-bg: #f8fafc;
   --worth-knowing-border: #3b82f6;
   --code-bg: #f1f5f9;
+  --measure-prose: 72ch;
 
   color: var(--text-primary);
   background: var(--bg-primary);
@@ -37,14 +39,15 @@
   --text-secondary: #94a3b8 !important;
   --text-heading: #f8fafc !important;
   --text-body: #cbd5e1 !important;
-  --text-muted: #64748b !important;
+  --text-muted: #94a3b8 !important;
   --border-color: #334155 !important;
   --card-bg: #1e293b !important;
   --card-border: #334155 !important;
   --brand-color: #60a5fa !important;
   --link-color: #38bdf8 !important;
-  --must-read-bg: #271216 !important;
-  --must-read-border: #f97316 !important;
+  --must-read-bg: #1e2433 !important;
+  --must-read-border: #ef4444 !important;
+  --accent-must-read: #ef4444 !important;
   --worth-knowing-bg: #0f1f38 !important;
   --worth-knowing-border: #38bdf8 !important;
   --code-bg: #1e293b !important;
@@ -58,7 +61,7 @@
   --text-secondary: #5d6470 !important;
   --text-heading: #0f172a !important;
   --text-body: #334155 !important;
-  --text-muted: #94a3b8 !important;
+  --text-muted: #526071 !important;
   --border-color: #cbd5e1 !important;
   --card-bg: #ffffff !important;
   --card-border: #e2e8f0 !important;
@@ -66,6 +69,7 @@
   --link-color: #2563eb !important;
   --must-read-bg: #fff8f5 !important;
   --must-read-border: #f97316 !important;
+  --accent-must-read: #ef4444 !important;
   --worth-knowing-bg: #f8fafc !important;
   --worth-knowing-border: #3b82f6 !important;
   --code-bg: #f1f5f9 !important;
@@ -80,14 +84,15 @@ body:not([data-theme]):has(#site-theme-toggle:checked) {
   --text-secondary: #94a3b8;
   --text-heading: #f8fafc;
   --text-body: #cbd5e1;
-  --text-muted: #64748b;
+  --text-muted: #94a3b8;
   --border-color: #334155;
   --card-bg: #1e293b;
   --card-border: #334155;
   --brand-color: #60a5fa;
   --link-color: #38bdf8;
-  --must-read-bg: #271216;
-  --must-read-border: #f97316;
+  --must-read-bg: #1e2433;
+  --must-read-border: #ef4444;
+  --accent-must-read: #ef4444;
   --worth-knowing-bg: #0f1f38;
   --worth-knowing-border: #38bdf8;
   --code-bg: #1e293b;
@@ -103,14 +108,15 @@ body:not([data-theme]):has(#site-theme-toggle:checked) {
     --text-secondary: #94a3b8;
     --text-heading: #f8fafc;
     --text-body: #cbd5e1;
-    --text-muted: #64748b;
+    --text-muted: #94a3b8;
     --border-color: #334155;
     --card-bg: #1e293b;
     --card-border: #334155;
     --brand-color: #60a5fa;
     --link-color: #38bdf8;
-    --must-read-bg: #271216;
-    --must-read-border: #f97316;
+    --must-read-bg: #1e2433;
+    --must-read-border: #ef4444;
+    --accent-must-read: #ef4444;
     --worth-knowing-bg: #0f1f38;
     --worth-knowing-border: #38bdf8;
     --code-bg: #1e293b;
@@ -124,7 +130,7 @@ body:not([data-theme]):has(#site-theme-toggle:checked) {
     --text-secondary: #5d6470;
     --text-heading: #0f172a;
     --text-body: #334155;
-    --text-muted: #94a3b8;
+    --text-muted: #526071;
     --border-color: #cbd5e1;
     --card-bg: #ffffff;
     --card-border: #e2e8f0;
@@ -132,6 +138,7 @@ body:not([data-theme]):has(#site-theme-toggle:checked) {
     --link-color: #2563eb;
     --must-read-bg: #fff8f5;
     --must-read-border: #f97316;
+    --accent-must-read: #ef4444;
     --worth-knowing-bg: #f8fafc;
     --worth-knowing-border: #3b82f6;
     --code-bg: #f1f5f9;
@@ -187,9 +194,11 @@ body:not([data-theme]):has(#site-theme-toggle:checked) {
   box-shadow: inset 0 -2px 0 0 #38bdf8;
 }
 
-:is([data-theme="dark"], body:has(#site-theme-toggle:checked)) .radar-card-must-read {
-  background: var(--must-read-bg) !important;
-  border-left-color: var(--must-read-border) !important;
+:is([data-theme="dark"], body:has(#site-theme-toggle:checked)) .radar-card-must-read,
+:is([data-theme="dark"], body:has(#site-theme-toggle:checked)) .radar-card.priority-must-read {
+  background: var(--must-read-bg, #1e2433) !important;
+  border-left: 3px solid var(--accent-must-read, #ef4444) !important;
+  border-left-color: var(--accent-must-read, #ef4444) !important;
 }
 
 :is([data-theme="dark"], body:has(#site-theme-toggle:checked)) .radar-card-worth-knowing {
@@ -254,9 +263,11 @@ body:not([data-theme]):has(#site-theme-toggle:checked) {
     box-shadow: inset 0 -2px 0 0 #38bdf8;
   }
 
-  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .radar-card-must-read {
-    background: var(--must-read-bg) !important;
-    border-left-color: var(--must-read-border) !important;
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .radar-card-must-read,
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .radar-card.priority-must-read {
+    background: var(--must-read-bg, #1e2433) !important;
+    border-left: 3px solid var(--accent-must-read, #ef4444) !important;
+    border-left-color: var(--accent-must-read, #ef4444) !important;
   }
 
   :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .radar-card-worth-knowing {
@@ -847,9 +858,35 @@ small {
   margin-top: 1.4rem;
 }
 
+/* Reading Line Measure (72ch) */
+.bluf-text,
+.guide-section p,
+.reading-guide p,
+.reading-guide-lead,
+.card-description,
+.portal-card-desc,
+.radar-card-desc,
+.radar-card-description,
+.article-prose,
+.article-prose p,
+.article-prose li,
 .reading-prose p,
-.reading-prose li {
-  max-width: 72ch;
+.reading-prose li,
+article p {
+  max-inline-size: var(--measure-prose, 72ch);
+}
+
+/* BLUF Grid Alignment */
+.bluf-item {
+  display: grid;
+  grid-template-columns: 5.25rem minmax(0, 1fr);
+  column-gap: 0.75rem;
+  align-items: baseline;
+}
+
+.bluf-label,
+.bluf-mark {
+  justify-self: start;
 }
 
 .reading-language-primary {
@@ -1235,7 +1272,8 @@ small {
   overflow-wrap: anywhere;
 }
 
-.radar-card-must-read {
+.radar-card-must-read,
+.radar-card.priority-must-read {
   border-top: 4px solid #9f694c;
 }
 

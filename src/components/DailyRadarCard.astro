@@ -108,7 +108,7 @@ function priorityLabel(priority: string) {
         <>
           {guide.problem && guide.problem !== "unknown" && !guide.problem.startsWith("\u672a\u80fd\u4ece\u5df2\u68c0\u67e5\u6750\u6599") && !guide.problem.startsWith("Could not be derived") ? (
             <div class="bluf-item bluf-item-problem">
-              <span class="bluf-mark bluf-tag problem-mark problem-tag">Problem</span>
+              <span class="bluf-mark bluf-tag bluf-label problem-mark problem-tag">Problem</span>
               <div class="bluf-content-wrapper">
                 {problemClaim.headline && !problemClaim.detailed_text.startsWith(problemClaim.headline.replace(/\.\.\.$/, "")) && (
                   <span class="bluf-headline">{problemClaim.headline}</span>
@@ -118,7 +118,7 @@ function priorityLabel(priority: string) {
             </div>
           ) : null}
           <div class="bluf-item bluf-item-result">
-            <span class="bluf-mark bluf-tag result-mark result-tag" title={resultLabel}>Result</span>
+            <span class="bluf-mark bluf-tag bluf-label result-mark result-tag" title={resultLabel}>Result</span>
             <div class="bluf-content-wrapper">
               {resultClaim.headline && !resultClaim.detailed_text.startsWith(resultClaim.headline.replace(/\.\.\.$/, "")) && (
                 <span class="bluf-headline">{resultClaim.headline}</span>
@@ -128,7 +128,7 @@ function priorityLabel(priority: string) {
           </div>
           {guide.reason ? (
             <div class="bluf-item bluf-item-reason">
-              <span class="bluf-mark bluf-tag reason-mark reason-tag">Reason</span>
+              <span class="bluf-mark bluf-tag bluf-label reason-mark reason-tag">Reason</span>
               <div class="bluf-content-wrapper">
                 {reasonClaim.headline && !reasonClaim.detailed_text.startsWith(reasonClaim.headline.replace(/\.\.\.$/, "")) && (
                   <span class="bluf-headline">{reasonClaim.headline}</span>
@@ -140,7 +140,7 @@ function priorityLabel(priority: string) {
         </>
       ) : (
         <div class="bluf-item bluf-item-skim">
-          <span class="bluf-mark bluf-tag skim-mark skim-tag">Skim</span>
+          <span class="bluf-mark bluf-tag bluf-label skim-mark skim-tag">Skim</span>
           <div class="bluf-content-wrapper">
             <span class="bluf-text"><ReaderText text={guide.reason || record.analysis.result || guide.result} /></span>
           </div>
@@ -240,8 +240,6 @@ function priorityLabel(priority: string) {
         </footer>
       </div>
     </div>
-
-    <p class="language-english radar-en-deck" lang="en">{isSkim ? coverageDescription.english : "Click the button above to view full quantitative analysis and verbatim evidence in dialog."}</p>
   </article>
 </li>
 
@@ -416,6 +414,11 @@ function priorityLabel(priority: string) {
     border-color: #334155;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
   }
+  :global([data-theme="dark"]) .radar-card-must-read,
+  :global([data-theme="dark"]) .radar-card.priority-must-read {
+    background: var(--must-read-bg, #1e2433);
+    border-left: 3px solid var(--accent-must-read, #ef4444);
+  }
 
   .radar-card-title {
     margin: 0.45rem 0 0.65rem;
@@ -487,27 +490,29 @@ function priorityLabel(priority: string) {
     border: none;
   }
   .bluf-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.55rem;
+    display: grid;
+    grid-template-columns: 5.25rem minmax(0, 1fr);
+    column-gap: 0.75rem;
+    align-items: baseline;
     margin: 0;
     font-size: 0.88rem;
     line-height: 1.6;
   }
+  .bluf-label,
   .bluf-mark,
   .bluf-tag {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     padding: 0.1rem 0.4rem;
     font-size: 0.68rem;
     font-weight: 700;
     line-height: 1.25;
     border-radius: 4px;
-    flex-shrink: 0;
     letter-spacing: 0.03em;
     user-select: none;
-    margin-top: 0.18rem;
     border: none;
+    justify-self: start;
   }
   .problem-mark,
   .problem-tag {
@@ -577,6 +582,7 @@ function priorityLabel(priority: string) {
     font-size: 0.86rem;
     font-weight: 400;
     line-height: 1.58;
+    max-inline-size: var(--measure-prose, 72ch);
   }
   :global([data-theme="dark"]) .bluf-text {
     color: #94a3b8;
@@ -819,8 +825,7 @@ function priorityLabel(priority: string) {
 
   .radar-bluf-brief,
   .bluf-item,
-  .bluf-content-wrapper,
-  .bluf-text {
+  .bluf-content-wrapper {
     max-width: 100% !important;
     width: 100% !important;
     box-sizing: border-box;
@@ -886,10 +891,5 @@ function priorityLabel(priority: string) {
   .radar-field-row {
     margin: 0.4rem 0;
     line-height: 1.5;
-  }
-  .radar-en-deck {
-    font-size: 0.76rem;
-    color: #94a3b8;
-    margin: 0.35rem 0 0;
   }
 </style>

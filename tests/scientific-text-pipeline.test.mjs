@@ -8,6 +8,9 @@ import {
   sanitizeLatexForKaTeX,
   renderScientificHtml,
   renderScientificPlainText,
+  splitMath,
+  renderMathMarkup,
+  normalizeLegacyTex,
 } from "../src/domain/scientific-text/index.mjs";
 
 test("scientific-text: tokenizeScientificText accurately isolates inline and display math", () => {
@@ -155,3 +158,30 @@ test("scientific-text: sanitizeLatexForKaTeX protects valid TeX commands while s
     String.raw`\texttt{source\_id\_test}`
   );
 });
+
+test("scientific-text: splitMath splits text and formula segments for reader UI", () => {
+  const segments = splitMath("Energy $E=mc^2$ and $$\\frac{a}{b}$$.");
+  assert.deepEqual(segments, [
+    { kind: "text", value: "Energy " },
+    { kind: "math", value: "E=mc^2", display: false },
+    { kind: "text", value: " and " },
+    { kind: "math", value: "\\frac{a}{b}", display: true },
+    { kind: "text", value: "." },
+  ]);
+});
+
+test("scientific-text: renderMathMarkup renders KaTeX HTML and MathML with caching and safety", () => {
+  const markup = renderMathMarkup("\\frac{a}{b}", false);
+  assert.match(markup, /class="katex"/);
+  assert.match(markup, /<math\b/);
+
+  // Unsafe or failing TeX falls back to error markup and escapes raw source
+  const errorMarkup = renderMathMarkup("\\unknownMacro{<script>alert(1)</script>}", false);
+  assert.match(errorMarkup, /class="reader-math-error"/);
+  assert.doesNotMatch(errorMarkup, /<script/i);
+
+  // Raw HTML script tags are not rendered as executable elements
+  const scriptMarkup = renderMathMarkup("<script>alert(1)</script>", false);
+  assert.doesNotMatch(scriptMarkup, /<script/i);
+});
+

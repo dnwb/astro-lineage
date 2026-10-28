@@ -867,14 +867,15 @@ small {
 }
 
 .reader-math {
-  display: inline-block;
   max-inline-size: 100%;
   max-width: 100%;
+}
+
+.reader-math:not(.reader-math-display) {
+  display: inline;
   vertical-align: baseline;
-  white-space: nowrap;
-  overflow-x: auto;
-  overflow-y: hidden;
-  scrollbar-width: thin;
+  white-space: normal;
+  overflow-wrap: break-word;
 }
 
 .reader-math-display {
@@ -910,6 +911,12 @@ small {
   max-inline-size: 100%;
   color: inherit;
   font-size: 1.04em;
+}
+
+.reader-math:not(.reader-math-display) > .katex {
+  display: inline;
+  line-height: 1;
+  vertical-align: baseline;
 }
 
 .reader-math .katex-html {

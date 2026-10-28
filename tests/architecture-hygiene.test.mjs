@@ -101,6 +101,25 @@ test("architecture-hygiene: UI components must not import translation from scrip
   }
 });
 
+test("architecture-hygiene: UI components must not import math rendering from scripts/", async () => {
+  const pagesDir = join(projectRoot, "src", "pages");
+  const componentsDir = join(projectRoot, "src", "components");
+  const astroFiles = [
+    ...(await getCodeFiles(pagesDir, [".astro"])),
+    ...(await getCodeFiles(componentsDir, [".astro"])),
+  ];
+
+  for (const file of astroFiles) {
+    const content = await readFile(file, "utf8");
+    const importsScriptMath =
+      /from\s+["'][^"']*scripts\/reader-math(?:\.mjs)?["']/u.test(content);
+    assert.ok(
+      !importsScriptMath,
+      `Astro file ${file.replace(projectRoot, "")} imports from scripts/reader-math.mjs. UI components must import exclusively from src/domain/scientific-text/index.mjs.`
+    );
+  }
+});
+
 test("architecture-hygiene: scripts with direct CLI runners must be registered in package.json or cli orchestrator", async () => {
   const pkg = JSON.parse(await readFile(join(projectRoot, "package.json"), "utf8"));
   const registeredScripts = Object.values(pkg.scripts || {}).join(" ");

@@ -1063,7 +1063,7 @@ function sectionCoverage(sections) {
   };
 }
 
-function buildAnalysisRecord(entry, parsed, checked, { modelName, source } = {}) {
+export function buildAnalysisRecord(entry, parsed, checked, { modelName, source } = {}) {
   const priority = parsed.priority;
   const revision = Number(entry.revision);
   const sourceVersion = `arXiv:${normalizeArxivId(entry.arxiv_id)}v${revision}`;
@@ -1177,7 +1177,18 @@ function invalidQueue(reason, cause) {
   );
 }
 
-function parseQueue(raw) {
+function downgradeQueueItem(item, reason) {
+  console.warn(
+    `[arxiv-ai-analyzer] Downgrading corrupted/incompatible queue item ${item.key} for re-analysis: ${reason}`
+  );
+  delete item.analysis;
+  delete item.reading_progress;
+  item.state =
+    item.triage?.priority && item.triage.priority !== "skip" ? "awaiting_body" : "queued";
+  item.reading_status = item.triage ? "pending" : "not_started";
+}
+
+export function parseQueue(raw) {
   let queue;
   try {
     queue = JSON.parse(raw);
@@ -1227,20 +1238,21 @@ function parseQueue(raw) {
     }
     if (seenKeys.has(item.key)) throw invalidQueue(`queue item ${item.key} is duplicated`);
     seenKeys.add(item.key);
+
     if (item.reading_progress !== undefined) {
       const progress = item.reading_progress;
-      if (
-        !progress ||
-        typeof progress !== "object" ||
-        Array.isArray(progress) ||
-        progress.contract_version !== READING_CONTRACT_VERSION ||
-        !/^[0-9a-f]{64}$/u.test(progress.source_sha256) ||
-        !Number.isInteger(progress.total_chunks) ||
-        progress.total_chunks < 1 ||
-        progress.total_chunks > MAX_BODY_CHUNKS ||
-        !Array.isArray(progress.completed) ||
-        progress.completed.length > progress.total_chunks ||
-        progress.completed.some(
+      const isReadingProgressValid =
+        Boolean(progress) &&
+        typeof progress === "object" &&
+        !Array.isArray(progress) &&
+        progress.contract_version === READING_CONTRACT_VERSION &&
+        /^[0-9a-f]{64}$/u.test(progress.source_sha256) &&
+        Number.isInteger(progress.total_chunks) &&
+        progress.total_chunks >= 1 &&
+        progress.total_chunks <= MAX_BODY_CHUNKS &&
+        Array.isArray(progress.completed) &&
+        progress.completed.length <= progress.total_chunks &&
+        !progress.completed.some(
           (part) =>
             typeof part?.summary !== "string" ||
             !part.summary.trim() ||
@@ -1248,49 +1260,79 @@ function parseQueue(raw) {
             typeof part?.quote !== "string" ||
             normalizeWhitespace(part.quote).length < 12 ||
             part.quote.length > 240
-        ) ||
-        (item.state === "complete" && progress.completed.length !== progress.total_chunks)
-      ) {
-        throw invalidQueue(`queue item ${item.key} has invalid reading progress`);
+        ) &&
+        !(item.state === "complete" && progress.completed.length !== progress.total_chunks);
+
+      if (!isReadingProgressValid) {
+        downgradeQueueItem(item, "invalid reading progress");
       }
     }
 
-    if (item.state === "complete" && item.analysis?.status === "failed") {
-      item.state =
-        item.triage?.priority && item.triage.priority !== "skip" ? "awaiting_body" : "queued";
-      item.reading_status = item.triage ? "pending" : "not_started";
-    }
-
-    if (
-      item.analysis?.analysis?.potential_lineage &&
-      (typeof item.analysis.analysis.potential_lineage.reason !== "string" ||
-        item.analysis.analysis.potential_lineage.reason.trim() === "")
-    ) {
-      item.analysis.analysis.potential_lineage.reason =
-        "No candidate scientific lineage identified from current evidence.";
+    if (item.analysis?.analysis && typeof item.analysis.analysis === "object") {
+      const a = item.analysis.analysis;
+      if (
+        !a.potential_lineage ||
+        typeof a.potential_lineage !== "object" ||
+        Array.isArray(a.potential_lineage)
+      ) {
+        a.potential_lineage = {
+          status: "no_match",
+          reason: "No candidate scientific lineage identified from current evidence.",
+          candidates: [],
+        };
+      } else {
+        if (
+          typeof a.potential_lineage.reason !== "string" ||
+          a.potential_lineage.reason.trim() === ""
+        ) {
+          a.potential_lineage.reason =
+            "No candidate scientific lineage identified from current evidence.";
+        }
+        if (!Array.isArray(a.potential_lineage.candidates)) {
+          a.potential_lineage.candidates = [];
+        }
+      }
+      if (!Array.isArray(a.figures)) {
+        a.figures = [];
+      }
+      if (!Array.isArray(a.unresolved_checks)) {
+        a.unresolved_checks = [
+          "No independent peer review or line-by-line recalculation performed.",
+        ];
+      }
+      if (!Array.isArray(a.prerequisite_works)) {
+        a.prerequisite_works = [];
+      }
     }
 
     if (item.state === "complete") {
-      const validationFeed = {
-        window: { kind: "announcement_batch", batch_id: "analyzer-queue-validation" },
-        entries: [item.entry],
-      };
-      const validReadingStatus =
-        item.analysis?.priority === "skip"
-          ? item.reading_status === "not_required" || item.reading_status === "read"
-          : item.reading_status === "read";
-      if (
-        item.analysis?.status !== "ready" ||
-        item.analysis.source_fingerprint !== fingerprint ||
-        normalizeArxivId(item.analysis.arxiv_id) !== identity.arxiv_id ||
-        Number(item.analysis.revision) !== identity.revision ||
-        !eligibleExistingAnalysis(validationFeed, item.entry, item.analysis) ||
-        !validReadingStatus
-      ) {
-        throw invalidQueue(`completed queue item ${item.key} lacks an eligible matching analysis`);
+      if (item.analysis?.status === "failed") {
+        downgradeQueueItem(item, "completed item has failed analysis status");
+      } else {
+        const validationFeed = {
+          window: { kind: "announcement_batch", batch_id: "analyzer-queue-validation" },
+          entries: [item.entry],
+        };
+        const validReadingStatus =
+          item.analysis?.priority === "skip"
+            ? item.reading_status === "not_required" || item.reading_status === "read"
+            : item.reading_status === "read";
+        if (
+          item.analysis?.status !== "ready" ||
+          item.analysis.source_fingerprint !== fingerprint ||
+          normalizeArxivId(item.analysis.arxiv_id) !== identity.arxiv_id ||
+          Number(item.analysis.revision) !== identity.revision ||
+          !eligibleExistingAnalysis(validationFeed, item.entry, item.analysis) ||
+          !validReadingStatus
+        ) {
+          downgradeQueueItem(
+            item,
+            "completed item lacks an eligible matching analysis or valid reading status"
+          );
+        }
       }
     } else if (item.analysis?.status === "ready") {
-      throw invalidQueue(`non-complete queue item ${item.key} contains a ready analysis`);
+      downgradeQueueItem(item, "non-complete queue item contains a ready analysis");
     }
   }
   return queue;

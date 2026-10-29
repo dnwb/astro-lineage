@@ -19,6 +19,7 @@ import {
   validateScientificOutput,
   sortQueueItems,
   checkedBodyChunk,
+  parseQueue,
 } from "../scripts/arxiv-ai-analyzer.mjs";
 import { syncArxivArchives } from "../scripts/arxiv-archive.mjs";
 import { runWeeklySummary } from "../scripts/arxiv-weekly-summary.mjs";
@@ -1342,13 +1343,6 @@ test("corrupt queue identities, states, and completed records fail closed withou
         item.source_fingerprint = "0".repeat(64);
       },
     ],
-    [
-      "missing completed analysis",
-      (item) => {
-        item.state = "complete";
-        item.reading_status = "read";
-      },
-    ],
   ];
 
   for (const [label, corrupt] of corruptions) {
@@ -1389,6 +1383,113 @@ test("corrupt queue identities, states, and completed records fail closed withou
       `${label} Radar bytes are preserved`
     );
   }
+});
+
+test("parseQueue self-heals by downgrading items with invalid completed analysis, stray ready analysis, or invalid reading progress", async (t) => {
+  const paths = await setup(t);
+  const candidate = entry(
+    "2609.90035",
+    "2026-09-08",
+    "This paper studies galaxy clustering and reports a measured bias in large scale structure."
+  );
+  await writeFeed(paths, feed([candidate]));
+  const fingerprint = sourceFingerprint(candidate);
+
+  // 1. Missing analysis on complete item self-heals and re-analyzes
+  const item1 = {
+    key: `${candidate.arxiv_id}@v${candidate.revision}#${fingerprint}`,
+    entry: candidate,
+    source_fingerprint: fingerprint,
+    state: "complete",
+    reading_status: "read",
+  };
+  const rawQueue1 = `${JSON.stringify({ schema_version: "arxiv-ai-screening-queue-v1", updated_at: "fixture", items: [item1] }, null, 2)}\n`;
+  await writeFile(paths.statePath, rawQueue1);
+
+  let modelCalled = false;
+  await runAiAnalyzer({
+    ...paths,
+    syncArchives: false,
+    modelRunner: async () => {
+      modelCalled = true;
+      return abstractSkip();
+    },
+  });
+  assert.equal(modelCalled, true, "downgraded item must be re-analyzed by model");
+  const processedQueue = JSON.parse(await readFile(paths.statePath, "utf8"));
+  assert.equal(processedQueue.items[0].state, "complete");
+  assert.equal(processedQueue.items[0].analysis.status, "ready");
+
+  // 2. Corrupted reading progress on queued item self-heals
+  const item2 = {
+    key: `${candidate.arxiv_id}@v${candidate.revision}#${fingerprint}`,
+    entry: candidate,
+    source_fingerprint: fingerprint,
+    state: "awaiting_body",
+    reading_status: "pending",
+    reading_progress: {
+      contract_version: "invalid-version",
+      source_sha256: "not-a-sha256",
+    },
+  };
+  const rawQueue2 = `${JSON.stringify({ schema_version: "arxiv-ai-screening-queue-v1", updated_at: "fixture", items: [item2] }, null, 2)}\n`;
+  await writeFile(paths.statePath, rawQueue2);
+
+  await runAiAnalyzer({
+    ...paths,
+    syncArchives: false,
+    modelRunner: async () => abstractSkip(),
+  });
+  const processedQueue2 = JSON.parse(await readFile(paths.statePath, "utf8"));
+  assert.equal(processedQueue2.items[0].state, "complete");
+  assert.equal(processedQueue2.items[0].reading_progress, undefined);
+
+  // 3. Stray ready analysis on non-complete item is downgraded
+  const queueWithStrayReady = {
+    schema_version: "arxiv-ai-screening-queue-v1",
+    updated_at: "fixture",
+    items: [
+      {
+        key: `${candidate.arxiv_id}@v${candidate.revision}#${fingerprint}`,
+        entry: candidate,
+        source_fingerprint: fingerprint,
+        state: "queued",
+        analysis: { status: "ready" },
+      },
+    ],
+  };
+  const parsedStray = parseQueue(JSON.stringify(queueWithStrayReady));
+  assert.equal(parsedStray.items[0].analysis, undefined);
+  assert.equal(parsedStray.items[0].state, "queued");
+
+  // 4. Missing defaults in item.analysis.analysis are populated
+  const queueWithMissingDefaults = {
+    schema_version: "arxiv-ai-screening-queue-v1",
+    updated_at: "fixture",
+    items: [
+      {
+        key: `${candidate.arxiv_id}@v${candidate.revision}#${fingerprint}`,
+        entry: candidate,
+        source_fingerprint: fingerprint,
+        state: "processing",
+        analysis: {
+          status: "pending",
+          analysis: {
+            potential_lineage: { status: "no_match", reason: "" },
+          },
+        },
+      },
+    ],
+  };
+  const parsedDefaults = parseQueue(JSON.stringify(queueWithMissingDefaults));
+  const filledAnalysis = parsedDefaults.items[0].analysis.analysis;
+  assert.equal(
+    filledAnalysis.potential_lineage.reason,
+    "No candidate scientific lineage identified from current evidence."
+  );
+  assert.deepEqual(filledAnalysis.figures, []);
+  assert.ok(Array.isArray(filledAnalysis.unresolved_checks));
+  assert.deepEqual(filledAnalysis.prerequisite_works, []);
 });
 
 test("malformed parsed archive entries fail closed before queue or Radar publication", async (t) => {

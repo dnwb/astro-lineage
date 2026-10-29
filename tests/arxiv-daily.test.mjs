@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { mkdtemp, readFile, readdir, rename, rm, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, readdir, rename, rm, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { spawnSync } from "node:child_process";
@@ -19,6 +19,7 @@ import {
   parseArxivDiscoveryFeed,
   parseArxivFeedPage,
   readArxivRunState,
+  readAuthoritativeRunState,
   readPublishedArxivEdition,
   readPublishedFileSet,
   replayArxivSnapshot,
@@ -1622,3 +1623,78 @@ test(
     assert.doesNotMatch(html, /<script/iu);
   }
 );
+
+test("readAuthoritativeRunState gracefully falls back to artifactRoot run-state.json when current-generation.json omits run-state.json", async () => {
+  const directory = await mkdtemp(join(tmpdir(), "arxiv-daily-runstate-"));
+  const artifactRoot = join(directory, "artifacts");
+  const genId = "generation-20261028-001";
+  const genRoot = join(artifactRoot, "generations", genId);
+  const filesDir = join(genRoot, "files");
+
+  try {
+    await mkdir(filesDir, { recursive: true });
+
+    // 1. Write authoritative run-state.json directly in artifactRoot
+    const diskRunState = {
+      schema_version: "arxiv-daily-run-state-v1",
+      status: "success",
+      runs: [],
+      last_attempt: { run_id: "disk-run-001", status: "published" },
+      last_success: { run_id: "disk-run-001", status: "published" },
+    };
+    await writeFile(join(artifactRoot, "run-state.json"), JSON.stringify(diskRunState, null, 2));
+
+    // 2. Write dummy feed and radar files in generation (omitting run-state.json)
+    const feedContent = JSON.stringify({ entries: [] });
+    const radarContent = JSON.stringify({ analyses: [] });
+    await writeFile(join(filesDir, "arxiv-daily.json"), feedContent);
+    await writeFile(join(filesDir, "daily-radar.json"), radarContent);
+
+    const { createHash } = await import("node:crypto");
+    const sha = (str) => createHash("sha256").update(str).digest("hex");
+
+    const filesRecord = [
+      {
+        target: "arxiv-daily.json",
+        path: "files/arxiv-daily.json",
+        sha256: sha(feedContent),
+        byte_length: Buffer.byteLength(feedContent),
+      },
+      {
+        target: "daily-radar.json",
+        path: "files/daily-radar.json",
+        sha256: sha(radarContent),
+        byte_length: Buffer.byteLength(radarContent),
+      },
+    ];
+
+    const marker = {
+      schema_version: "astrolineage-published-generation-v1",
+      status: "complete",
+      generation_id: genId,
+      created_at: new Date().toISOString(),
+      completed_at: new Date().toISOString(),
+      files: filesRecord,
+    };
+    await writeFile(join(genRoot, "generation.json"), JSON.stringify(marker, null, 2));
+
+    const pointer = {
+      schema_version: "astrolineage-published-pointer-v1",
+      generation_id: genId,
+      generation_path: `generations/${genId}`,
+      published_at: marker.completed_at,
+      files: filesRecord,
+    };
+    await writeFile(
+      join(artifactRoot, "current-generation.json"),
+      JSON.stringify(pointer, null, 2)
+    );
+
+    // 3. Directly call readAuthoritativeRunState
+    const authoritativeState = await readAuthoritativeRunState(artifactRoot);
+    assert.equal(authoritativeState.status, "success");
+    assert.equal(authoritativeState.last_success.run_id, "disk-run-001");
+  } finally {
+    await rm(directory, { recursive: true, force: true });
+  }
+});

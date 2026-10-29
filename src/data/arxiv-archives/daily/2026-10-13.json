@@ -17,6 +17,12 @@
     "status": "ready",
     "edition_fingerprint": "253c5a5b9f1e810bb5d0434035273154d29fe6501e80690e0613095542762010",
     "intro": "本期首看《A0538-66: A transient ultraluminous X-ray source with a relativistic outflow, 69ms pulsations, and anomalous optical activity》等 21 篇核心进展。",
+    "focus_paper": {
+      "arxiv_id": "2610.17982",
+      "revision": 1,
+      "title": "A0538-66: A transient ultraluminous X-ray source with a relativistic outflow, 69ms pulsations, and anomalous optical activity",
+      "anchor": "radar-paper-2610-17982-v1"
+    },
     "must_read": [
       {
         "arxiv_id": "2610.17982",
@@ -44,6 +50,29 @@
         "label": "Evidence for Distinct One-Off and Repeating Subpopulations in CHIME/FRB Catalog 2",
         "text": "通过贝叶斯证据与随机森林模型比较，包含对数正态爆发率分布 $\\frac{\\mathrm{d}N}{\\mathrm{d}r} \\propto \\frac{1}{r}\\exp\\left[-\\frac{(\\ln r-\\mu)^2}{2\\sigma^2}\\right]$、泊松等待时间分布与独立单发子群的 LPO 模型最受青睐（相对无单发子群模型对数贝叶斯因子差 $\\Delta\\ln\\mathrm{BF}=114.41$，分类选择概率达 $61.4\\%$）。",
         "anchor": "radar-paper-2610-18710-v1"
+      }
+    ],
+    "key_highlights": [
+      {
+        "arxiv_id": "2610.17218",
+        "revision": 1,
+        "title": "From Giant Envelopes to Rapidly Contracting Cores in Rotating Population III Stars from $500$ to $1000 \\, M_\\odot$",
+        "anchor": "radar-paper-2610-17218-v1",
+        "result": "恒星在 ZAMS 具有占比高达 $93\\%\\text{--}95\\%$ 的对流核（$466\\text{--}950\\,M_\\odot$）。"
+      },
+      {
+        "arxiv_id": "2610.17230",
+        "revision": 1,
+        "title": "Universal relations for hybrid stars and their quark cores: a systematic scan of the quark-matter parameter space",
+        "anchor": "radar-paper-2610-17230-v1",
+        "result": "混合星全局表面可观测量与纯强子中子星普适关系极其一致，其 $I$-Love 关系偏差在全参数空间中均 $<0.5\\%$，$\\bar{I}_S$--$\\mathcal{C}_S$ 偏差 $<3\\%$；在夸克核边界处，无量纲潮汐形变度标度为 $\\Lambda_C \\propto \\mathcal{C}_C^{-4}$（区别于真空中自束缚天体的 $\\mathcal{C}^{-5}$），其依赖关系高度因子化为 $\\Lambda_C \\mathcal{C}_C^4 = \\frac{2+\\alpha}{15} f(\\mathcal{C}_C)$，其中 $\\alpha$ 仅依赖界面参数 $\\xi \\equiv p_{\\rm tr}/\\varepsilon_+$ 与相变界面声速 $c_{s,+}^2$；同时发现 54,550 个稳定混合星构型的相界面分数质量与半径服从严格的双参数通用剖面：$\\frac{M_{g,C}}{M_{g,S}} = 2.498\\left(\\frac{R_C}{R_S}\\right)^3 - 1.498\\left(\\frac{R_C}{R_S}\\right)^5$。"
+      },
+      {
+        "arxiv_id": "2610.17247",
+        "revision": 1,
+        "title": "Radio and Gamma-Ray Timing of a Newly Discovered Millisecond Pulsar",
+        "anchor": "radar-paper-2610-17247-v1",
+        "result": "测定 PSR J2147$-$3604 自转周期 $P \\approx 3.20\\text{ ms}$，色散量 ${\\rm DM} = 17.02\\text{ pc cm}^{-3}$；处于双星系统，轨道周期 $P_b = 4.514755965(5)\\text{ d}$，偏心率极低 $e = 1.9(1) \\times 10^{-5}$，投影半长轴 $x_{\\rm p} \\approx 3.5\\text{ lt-s}$；伴星中值质量为 $M_{c,{\\rm med}} \\approx 0.22\\,M_{\\odot}$（假设脉冲星质量 $1.5\\,M_{\\odot}$），符合低质量 X 射线双星轨道周期–氦白矮星质量标度关系；测得观测旋转量为 ${\\rm RM} = 18.5 \\pm 5.1\\text{ rad m}^{-2}$（扣除电离层贡献后约为 $21.1\\text{ rad m}^{-2}$）；动力谱闪烁带宽 $\\Delta\\nu_{d} = 4.5(3)\\text{ MHz}$，调制指数 $m_{\\rm DISS} \\simeq N_{\\rm scint}^{-1/2} \\sim 0.2$–$0.4$。"
       }
     ],
     "worth_knowing": [
@@ -154,6 +183,33 @@
         "revision": 1,
         "source_fingerprint": "746f359648dae15d570938976ded3b1f52717c0cf977c1ba0da9935d73b61b25",
         "guide_fingerprint": "ae19f43fc4617450a379b0c8555737029d684d4e343f37d99e9ef504ac165ded"
+      }
+    ],
+    "skim_topics": [
+      {
+        "arxiv_id": "2610.17212",
+        "revision": 1,
+        "title": "MRI Turbulence versus $α$-Viscosity in Circumbinary Disks: Implications for Gravitational-Wave Dephasing and Accretion Variability"
+      },
+      {
+        "arxiv_id": "2610.17216",
+        "revision": 1,
+        "title": "Magnetic field evolution in feedback-dominated galaxies"
+      },
+      {
+        "arxiv_id": "2610.17217",
+        "revision": 1,
+        "title": "MeV dark matter decay forecasts for the COSI mission"
+      },
+      {
+        "arxiv_id": "2610.17253",
+        "revision": 1,
+        "title": "An upper limit on Galactic OB+black hole binaries from SDSS-V"
+      },
+      {
+        "arxiv_id": "2610.17255",
+        "revision": 1,
+        "title": "Physical characteristics of the Galaxy defining the oscillation period of librating orbits near the OLR of the bar"
       }
     ],
     "skip": [
@@ -6650,6 +6706,12 @@
       "status": "ready",
       "edition_fingerprint": "253c5a5b9f1e810bb5d0434035273154d29fe6501e80690e0613095542762010",
       "intro": "本期首看《A0538-66: A transient ultraluminous X-ray source with a relativistic outflow, 69ms pulsations, and anomalous optical activity》等 21 篇核心进展。",
+      "focus_paper": {
+        "arxiv_id": "2610.17982",
+        "revision": 1,
+        "title": "A0538-66: A transient ultraluminous X-ray source with a relativistic outflow, 69ms pulsations, and anomalous optical activity",
+        "anchor": "radar-paper-2610-17982-v1"
+      },
       "must_read": [
         {
           "arxiv_id": "2610.17982",
@@ -6677,6 +6739,29 @@
           "label": "Evidence for Distinct One-Off and Repeating Subpopulations in CHIME/FRB Catalog 2",
           "text": "通过贝叶斯证据与随机森林模型比较，包含对数正态爆发率分布 $\\frac{\\mathrm{d}N}{\\mathrm{d}r} \\propto \\frac{1}{r}\\exp\\left[-\\frac{(\\ln r-\\mu)^2}{2\\sigma^2}\\right]$、泊松等待时间分布与独立单发子群的 LPO 模型最受青睐（相对无单发子群模型对数贝叶斯因子差 $\\Delta\\ln\\mathrm{BF}=114.41$，分类选择概率达 $61.4\\%$）。",
           "anchor": "radar-paper-2610-18710-v1"
+        }
+      ],
+      "key_highlights": [
+        {
+          "arxiv_id": "2610.17218",
+          "revision": 1,
+          "title": "From Giant Envelopes to Rapidly Contracting Cores in Rotating Population III Stars from $500$ to $1000 \\, M_\\odot$",
+          "anchor": "radar-paper-2610-17218-v1",
+          "result": "恒星在 ZAMS 具有占比高达 $93\\%\\text{--}95\\%$ 的对流核（$466\\text{--}950\\,M_\\odot$）。"
+        },
+        {
+          "arxiv_id": "2610.17230",
+          "revision": 1,
+          "title": "Universal relations for hybrid stars and their quark cores: a systematic scan of the quark-matter parameter space",
+          "anchor": "radar-paper-2610-17230-v1",
+          "result": "混合星全局表面可观测量与纯强子中子星普适关系极其一致，其 $I$-Love 关系偏差在全参数空间中均 $<0.5\\%$，$\\bar{I}_S$--$\\mathcal{C}_S$ 偏差 $<3\\%$；在夸克核边界处，无量纲潮汐形变度标度为 $\\Lambda_C \\propto \\mathcal{C}_C^{-4}$（区别于真空中自束缚天体的 $\\mathcal{C}^{-5}$），其依赖关系高度因子化为 $\\Lambda_C \\mathcal{C}_C^4 = \\frac{2+\\alpha}{15} f(\\mathcal{C}_C)$，其中 $\\alpha$ 仅依赖界面参数 $\\xi \\equiv p_{\\rm tr}/\\varepsilon_+$ 与相变界面声速 $c_{s,+}^2$；同时发现 54,550 个稳定混合星构型的相界面分数质量与半径服从严格的双参数通用剖面：$\\frac{M_{g,C}}{M_{g,S}} = 2.498\\left(\\frac{R_C}{R_S}\\right)^3 - 1.498\\left(\\frac{R_C}{R_S}\\right)^5$。"
+        },
+        {
+          "arxiv_id": "2610.17247",
+          "revision": 1,
+          "title": "Radio and Gamma-Ray Timing of a Newly Discovered Millisecond Pulsar",
+          "anchor": "radar-paper-2610-17247-v1",
+          "result": "测定 PSR J2147$-$3604 自转周期 $P \\approx 3.20\\text{ ms}$，色散量 ${\\rm DM} = 17.02\\text{ pc cm}^{-3}$；处于双星系统，轨道周期 $P_b = 4.514755965(5)\\text{ d}$，偏心率极低 $e = 1.9(1) \\times 10^{-5}$，投影半长轴 $x_{\\rm p} \\approx 3.5\\text{ lt-s}$；伴星中值质量为 $M_{c,{\\rm med}} \\approx 0.22\\,M_{\\odot}$（假设脉冲星质量 $1.5\\,M_{\\odot}$），符合低质量 X 射线双星轨道周期–氦白矮星质量标度关系；测得观测旋转量为 ${\\rm RM} = 18.5 \\pm 5.1\\text{ rad m}^{-2}$（扣除电离层贡献后约为 $21.1\\text{ rad m}^{-2}$）；动力谱闪烁带宽 $\\Delta\\nu_{d} = 4.5(3)\\text{ MHz}$，调制指数 $m_{\\rm DISS} \\simeq N_{\\rm scint}^{-1/2} \\sim 0.2$–$0.4$。"
         }
       ],
       "worth_knowing": [
@@ -6787,6 +6872,33 @@
           "revision": 1,
           "source_fingerprint": "746f359648dae15d570938976ded3b1f52717c0cf977c1ba0da9935d73b61b25",
           "guide_fingerprint": "ae19f43fc4617450a379b0c8555737029d684d4e343f37d99e9ef504ac165ded"
+        }
+      ],
+      "skim_topics": [
+        {
+          "arxiv_id": "2610.17212",
+          "revision": 1,
+          "title": "MRI Turbulence versus $α$-Viscosity in Circumbinary Disks: Implications for Gravitational-Wave Dephasing and Accretion Variability"
+        },
+        {
+          "arxiv_id": "2610.17216",
+          "revision": 1,
+          "title": "Magnetic field evolution in feedback-dominated galaxies"
+        },
+        {
+          "arxiv_id": "2610.17217",
+          "revision": 1,
+          "title": "MeV dark matter decay forecasts for the COSI mission"
+        },
+        {
+          "arxiv_id": "2610.17253",
+          "revision": 1,
+          "title": "An upper limit on Galactic OB+black hole binaries from SDSS-V"
+        },
+        {
+          "arxiv_id": "2610.17255",
+          "revision": 1,
+          "title": "Physical characteristics of the Galaxy defining the oscillation period of librating orbits near the OLR of the bar"
         }
       ],
       "skip": [

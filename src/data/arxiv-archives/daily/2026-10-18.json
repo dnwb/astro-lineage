@@ -17,6 +17,12 @@
     "status": "ready",
     "edition_fingerprint": "d5395a93f0c9f7cd9e4aeb6fe3b416ad523204d2d955941d407fbc3509f5feff",
     "intro": "本期首看《Sparking Dynamic, Relativistic Magnetic Reconnection in a Twisted Flux Tube》等 20 篇核心进展。",
+    "focus_paper": {
+      "arxiv_id": "2610.22653",
+      "revision": 1,
+      "title": "Sparking Dynamic, Relativistic Magnetic Reconnection in a Twisted Flux Tube",
+      "anchor": "radar-paper-2610-22653-v1"
+    },
     "must_read": [
       {
         "arxiv_id": "2610.22653",
@@ -26,6 +32,29 @@
         "label": "Sparking Dynamic, Relativistic Magnetic Reconnection in a Twisted Flux Tube",
         "text": "细长磁通管的面内磁场呈指数衰减 $\\langle B_{\\perp}^{2}\\rangle \\propto e^{-2\\Gamma_{\\rm rec}t}$，衰减率 $\\Gamma_{\\rm rec}\\sim \\beta_{\\rm rec}(B_{0}/B_{g})(c/R)$。",
         "anchor": "radar-paper-2610-22653-v1"
+      }
+    ],
+    "key_highlights": [
+      {
+        "arxiv_id": "2610.22662",
+        "revision": 1,
+        "title": "The transformative power of ALMA2040 for mm-VLBI",
+        "anchor": "radar-paper-2610-22662-v1",
+        "result": "在 230 GHz，全阵列定相的 ALMA2040 达到 sub-mJy 级的基线灵敏度，相比 ALMA 宽带灵敏度升级（WSU）提升达 4 倍（$4\\times\\text{ gain}$），可将视界尺度成像扩展到弱 5–10 倍的黑洞天体；干涉条纹信噪比定标为 $\\xi = S_{\\nu}\\eta_{q}\\eta_{c}\\sqrt{\\frac{2\\Delta\\nu\\Delta t}{\\mathrm{SEFD}_{1}\\mathrm{SEFD}_{2}}}$（设流量密度 $S_{\\nu} \\propto \\nu^{-\\alpha}$）；在银心 Sgr A* 的 86 GHz 观测中，去散射结构恢复 RMS 较 WSU 提升 $27\\%$。"
+      },
+      {
+        "arxiv_id": "2610.22709",
+        "revision": 1,
+        "title": "A New AI/ML Based Image Reconstruction Technique for Hard X-ray Coded Aperture Imagers",
+        "anchor": "radar-paper-2610-22709-v1",
+        "result": "所构建的网络模型在 900 源光子计数水平下训练，在无背景噪声时对低至 400 个源光子的测试样本仍能达到 $>93\\%$ 的单像素精准定位精度（exact-pixel localization accuracy）；在加入高达 7,500 背景计数时，对 900 源光子的样本保持 $\\ge 95\\%$ 的单像素定位精度，在 8,500 背景计数时保持 $\\ge 90\\%$；面对超出训练范围的 13,000 背景计数（对应探测器平面 $\\mathrm{SNR} = 7.6\\sigma$），源定位成功率仍达 $67.3\\%$；模型参数量约 $6.2 \\times 10^6$，在 CPU 上单次前向推理耗时仅约 $0.25\\ \\mathrm{s}$。"
+      },
+      {
+        "arxiv_id": "2610.22816",
+        "revision": 1,
+        "title": "A Unified Solution to the Low-Mass X-ray Binary Diversity Puzzle: Saturated Magnetic Braking Coupled with Irradiation-Driven Winds",
+        "anchor": "radar-paper-2610-22816-v1",
+        "result": "通过引入物理上自洽的辐照效率参数 $f$，统一重现了瞬变源（$f \\sim 10^{-5}\\text{--}10^{-4}$）与持久源（$f \\sim 10^{-4}\\text{--}10^{-3}$）的吸积率分布；显著拓宽了通往中子星+氦白矮星 UCXB 的初始轨道周期与质量参数空间，消除了精细调节难题；成功匹配了 2A 1822–371（$P_{\\mathrm{orb}} = 5.57\\text{ h}$）的反常轨道膨胀；并复现了毫秒脉冲星双星在 $2.4\\text{--}4.3\\text{ d}$ 与 $16.3\\text{--}28.8\\text{ d}$ 的轨道周期空缺。"
       }
     ],
     "worth_knowing": [
@@ -142,6 +171,33 @@
         "revision": 1,
         "source_fingerprint": "baba45c5a0567511581c3db57440916755ce5c1f263a4efaa9c37de02b7a3d16",
         "guide_fingerprint": "7d0c6ce8de1f24313f5daf33069de8797e16d74b2773a22650c78e0e52d31244"
+      }
+    ],
+    "skim_topics": [
+      {
+        "arxiv_id": "2610.22480",
+        "revision": 1,
+        "title": "Modeling extreme mass-ratio inspirals in astrophysical and dark-matter environments"
+      },
+      {
+        "arxiv_id": "2610.22481",
+        "revision": 1,
+        "title": "Hidden Disruption in Milky Way-like Satellite Galaxy Populations"
+      },
+      {
+        "arxiv_id": "2610.22483",
+        "revision": 1,
+        "title": "The bar-driven central complex of NGC 6946: A panchromatic and spatially resolved view of its star formation history and interstellar medium"
+      },
+      {
+        "arxiv_id": "2610.22487",
+        "revision": 1,
+        "title": "Four Which I Knew Not: The Hexadecapole Nearly Cancels the Octupole in Librating Kozai-Lidov Cycles"
+      },
+      {
+        "arxiv_id": "2610.22488",
+        "revision": 1,
+        "title": "Contrasting geometries of kiloparsec-scale stellar flows associated with giant Galactic cavities"
       }
     ],
     "skip": [
@@ -5593,6 +5649,12 @@
       "status": "ready",
       "edition_fingerprint": "d5395a93f0c9f7cd9e4aeb6fe3b416ad523204d2d955941d407fbc3509f5feff",
       "intro": "本期首看《Sparking Dynamic, Relativistic Magnetic Reconnection in a Twisted Flux Tube》等 20 篇核心进展。",
+      "focus_paper": {
+        "arxiv_id": "2610.22653",
+        "revision": 1,
+        "title": "Sparking Dynamic, Relativistic Magnetic Reconnection in a Twisted Flux Tube",
+        "anchor": "radar-paper-2610-22653-v1"
+      },
       "must_read": [
         {
           "arxiv_id": "2610.22653",
@@ -5602,6 +5664,29 @@
           "label": "Sparking Dynamic, Relativistic Magnetic Reconnection in a Twisted Flux Tube",
           "text": "细长磁通管的面内磁场呈指数衰减 $\\langle B_{\\perp}^{2}\\rangle \\propto e^{-2\\Gamma_{\\rm rec}t}$，衰减率 $\\Gamma_{\\rm rec}\\sim \\beta_{\\rm rec}(B_{0}/B_{g})(c/R)$。",
           "anchor": "radar-paper-2610-22653-v1"
+        }
+      ],
+      "key_highlights": [
+        {
+          "arxiv_id": "2610.22662",
+          "revision": 1,
+          "title": "The transformative power of ALMA2040 for mm-VLBI",
+          "anchor": "radar-paper-2610-22662-v1",
+          "result": "在 230 GHz，全阵列定相的 ALMA2040 达到 sub-mJy 级的基线灵敏度，相比 ALMA 宽带灵敏度升级（WSU）提升达 4 倍（$4\\times\\text{ gain}$），可将视界尺度成像扩展到弱 5–10 倍的黑洞天体；干涉条纹信噪比定标为 $\\xi = S_{\\nu}\\eta_{q}\\eta_{c}\\sqrt{\\frac{2\\Delta\\nu\\Delta t}{\\mathrm{SEFD}_{1}\\mathrm{SEFD}_{2}}}$（设流量密度 $S_{\\nu} \\propto \\nu^{-\\alpha}$）；在银心 Sgr A* 的 86 GHz 观测中，去散射结构恢复 RMS 较 WSU 提升 $27\\%$。"
+        },
+        {
+          "arxiv_id": "2610.22709",
+          "revision": 1,
+          "title": "A New AI/ML Based Image Reconstruction Technique for Hard X-ray Coded Aperture Imagers",
+          "anchor": "radar-paper-2610-22709-v1",
+          "result": "所构建的网络模型在 900 源光子计数水平下训练，在无背景噪声时对低至 400 个源光子的测试样本仍能达到 $>93\\%$ 的单像素精准定位精度（exact-pixel localization accuracy）；在加入高达 7,500 背景计数时，对 900 源光子的样本保持 $\\ge 95\\%$ 的单像素定位精度，在 8,500 背景计数时保持 $\\ge 90\\%$；面对超出训练范围的 13,000 背景计数（对应探测器平面 $\\mathrm{SNR} = 7.6\\sigma$），源定位成功率仍达 $67.3\\%$；模型参数量约 $6.2 \\times 10^6$，在 CPU 上单次前向推理耗时仅约 $0.25\\ \\mathrm{s}$。"
+        },
+        {
+          "arxiv_id": "2610.22816",
+          "revision": 1,
+          "title": "A Unified Solution to the Low-Mass X-ray Binary Diversity Puzzle: Saturated Magnetic Braking Coupled with Irradiation-Driven Winds",
+          "anchor": "radar-paper-2610-22816-v1",
+          "result": "通过引入物理上自洽的辐照效率参数 $f$，统一重现了瞬变源（$f \\sim 10^{-5}\\text{--}10^{-4}$）与持久源（$f \\sim 10^{-4}\\text{--}10^{-3}$）的吸积率分布；显著拓宽了通往中子星+氦白矮星 UCXB 的初始轨道周期与质量参数空间，消除了精细调节难题；成功匹配了 2A 1822–371（$P_{\\mathrm{orb}} = 5.57\\text{ h}$）的反常轨道膨胀；并复现了毫秒脉冲星双星在 $2.4\\text{--}4.3\\text{ d}$ 与 $16.3\\text{--}28.8\\text{ d}$ 的轨道周期空缺。"
         }
       ],
       "worth_knowing": [
@@ -5718,6 +5803,33 @@
           "revision": 1,
           "source_fingerprint": "baba45c5a0567511581c3db57440916755ce5c1f263a4efaa9c37de02b7a3d16",
           "guide_fingerprint": "7d0c6ce8de1f24313f5daf33069de8797e16d74b2773a22650c78e0e52d31244"
+        }
+      ],
+      "skim_topics": [
+        {
+          "arxiv_id": "2610.22480",
+          "revision": 1,
+          "title": "Modeling extreme mass-ratio inspirals in astrophysical and dark-matter environments"
+        },
+        {
+          "arxiv_id": "2610.22481",
+          "revision": 1,
+          "title": "Hidden Disruption in Milky Way-like Satellite Galaxy Populations"
+        },
+        {
+          "arxiv_id": "2610.22483",
+          "revision": 1,
+          "title": "The bar-driven central complex of NGC 6946: A panchromatic and spatially resolved view of its star formation history and interstellar medium"
+        },
+        {
+          "arxiv_id": "2610.22487",
+          "revision": 1,
+          "title": "Four Which I Knew Not: The Hexadecapole Nearly Cancels the Octupole in Librating Kozai-Lidov Cycles"
+        },
+        {
+          "arxiv_id": "2610.22488",
+          "revision": 1,
+          "title": "Contrasting geometries of kiloparsec-scale stellar flows associated with giant Galactic cavities"
         }
       ],
       "skip": [

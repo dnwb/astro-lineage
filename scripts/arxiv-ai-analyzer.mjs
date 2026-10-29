@@ -1147,7 +1147,7 @@ function buildAnalysisRecord(entry, parsed, checked, { modelName, source } = {})
       ],
       potential_lineage: {
         status: "no_match",
-        reason: "",
+        reason: "No candidate scientific lineage identified from current evidence.",
         candidates: [],
       },
       prerequisite_works: [],
@@ -1259,6 +1259,15 @@ function parseQueue(raw) {
       item.state =
         item.triage?.priority && item.triage.priority !== "skip" ? "awaiting_body" : "queued";
       item.reading_status = item.triage ? "pending" : "not_started";
+    }
+
+    if (
+      item.analysis?.analysis?.potential_lineage &&
+      (typeof item.analysis.analysis.potential_lineage.reason !== "string" ||
+        item.analysis.analysis.potential_lineage.reason.trim() === "")
+    ) {
+      item.analysis.analysis.potential_lineage.reason =
+        "No candidate scientific lineage identified from current evidence.";
     }
 
     if (item.state === "complete") {

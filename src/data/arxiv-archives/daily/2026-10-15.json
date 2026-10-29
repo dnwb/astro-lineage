@@ -17,6 +17,12 @@
     "status": "ready",
     "edition_fingerprint": "76e236c863d86245d44ba948b8f815437c7e4daa6253790df5359d56de043542",
     "intro": "本期首看《mm-jets in the multi-messenger era》等 18 篇核心进展。",
+    "focus_paper": {
+      "arxiv_id": "2610.20741",
+      "revision": 1,
+      "title": "mm-jets in the multi-messenger era",
+      "anchor": "radar-paper-2610-20741-v1"
+    },
     "must_read": [
       {
         "arxiv_id": "2610.20741",
@@ -26,6 +32,29 @@
         "label": "mm-jets in the multi-messenger era",
         "text": "通过灵敏度提升一个数量级（相比 WSU 提升 $\\sim 5$–$10\\times$）与分钟级快速响应（$10$–$60\\text{ min}$），毫米/亚毫米波可在光学薄转换阶段直接追踪同步辐射谱拐折 $\\nu_{\\mathrm{a}}$ 与自吸收峰值，从而实现对相对论喷流的量热学测量与初始洛伦兹因子 $\\Gamma$、动能 $E_{\\mathrm{K}}$、环核介质密度及磁化度 $\\sigma$ 的高精度定量约束，并解译反向激波动力学过程。",
         "anchor": "radar-paper-2610-20741-v1"
+      }
+    ],
+    "key_highlights": [
+      {
+        "arxiv_id": "2610.20719",
+        "revision": 1,
+        "title": "Wandering intermediate-mass black holes and off-nuclear tidal disruption events from early star clusters",
+        "anchor": "radar-paper-2610-20719-v1",
+        "result": "早期高密度星团中的 IMBH（$M_{\\rm BH} \\sim 10^2-10^5\\,M_\\odot$）在黑洞影响半径内耗尽恒星前驱动短时爆发性离核 TDE，单次爆发持续约 $10-100\\,\\mathrm{Myr}$，累积事件数受限于 $N_{\\rm TDE} \\lesssim M_{\\rm BH}/M_* \\sim 10^3-10^4$。"
+      },
+      {
+        "arxiv_id": "2610.20740",
+        "revision": 1,
+        "title": "Understanding cosmic explosions",
+        "anchor": "radar-paper-2610-20740-v1",
+        "result": "阐明了毫米波/亚毫米波（$\\sim 35$--$950\\,\\mathrm{GHz}$）在瞬变源早期光度峰值阶段避开厘米波同步辐射自吸收（SSA）与自由-自由吸收（FFA）的物理优势；能够直接约束半径 $R \\sim 10^{14}$--$10^{17}\\,\\mathrm{cm}$ 范围内的周星介质密度轮廓及外流动能；明确了 ALMA2040 灵敏度提升 10--20 倍、瞬时带宽提升达 64 倍后，探测微类星体爆发（特征单色射电光度 $L_{\\nu} \\approx 1.2 \\times 10^{23}\\,(S_{\\nu}/\\mathrm{Jy})\\,(d/10\\,\\mathrm{kpc})^{2}\\ \\mathrm{erg\\,s^{-1}\\,Hz^{-1}}$）和解析河内超新星膨胀的技术指标要求。"
+      },
+      {
+        "arxiv_id": "2610.20869",
+        "revision": 1,
+        "title": "FUGUE: A New GPU-accelerated General Relativistic Magnetohydrodynamics Code with Weak-Field Multipole Self-Gravity and Quasi-Stationary Kerr Black Hole Evolution",
+        "anchor": "radar-paper-2610-20869-v1",
+        "result": "数值验证在多项标准激波与吸积测试中展现二阶收敛。"
       }
     ],
     "worth_knowing": [
@@ -130,6 +159,33 @@
         "revision": 1,
         "source_fingerprint": "5d69b786fa581758d03ee24ae8ef1bad13985dcdae01c2497a59886b6bca31b6",
         "guide_fingerprint": "c84c34ef0abf67ba2eb528c37a9939ee69217767ae798899eebf89f9eda4e82c"
+      }
+    ],
+    "skim_topics": [
+      {
+        "arxiv_id": "2610.20695",
+        "revision": 1,
+        "title": "The impact of nonlinear Landau damping on cosmic ray streaming and the role of external turbulence"
+      },
+      {
+        "arxiv_id": "2610.20697",
+        "revision": 1,
+        "title": "A Vision for Little Red Dots in the Low-Redshift Universe with ALMA2040"
+      },
+      {
+        "arxiv_id": "2610.20698",
+        "revision": 1,
+        "title": "The Impact of High-Mass Clusters on the Binary Black Hole Merger Rate over Cosmic Time"
+      },
+      {
+        "arxiv_id": "2610.20700",
+        "revision": 1,
+        "title": "A Misaligned Debris Disk relative to the Host Star CPD-72 2713 from JWST/NIRCam Imaging"
+      },
+      {
+        "arxiv_id": "2610.20702",
+        "revision": 1,
+        "title": "Efficient numerical evolution of self-gravitating systems with dark-matter-baryon scattering"
       }
     ],
     "skip": [
@@ -9072,6 +9128,12 @@
       "status": "ready",
       "edition_fingerprint": "76e236c863d86245d44ba948b8f815437c7e4daa6253790df5359d56de043542",
       "intro": "本期首看《mm-jets in the multi-messenger era》等 18 篇核心进展。",
+      "focus_paper": {
+        "arxiv_id": "2610.20741",
+        "revision": 1,
+        "title": "mm-jets in the multi-messenger era",
+        "anchor": "radar-paper-2610-20741-v1"
+      },
       "must_read": [
         {
           "arxiv_id": "2610.20741",
@@ -9081,6 +9143,29 @@
           "label": "mm-jets in the multi-messenger era",
           "text": "通过灵敏度提升一个数量级（相比 WSU 提升 $\\sim 5$–$10\\times$）与分钟级快速响应（$10$–$60\\text{ min}$），毫米/亚毫米波可在光学薄转换阶段直接追踪同步辐射谱拐折 $\\nu_{\\mathrm{a}}$ 与自吸收峰值，从而实现对相对论喷流的量热学测量与初始洛伦兹因子 $\\Gamma$、动能 $E_{\\mathrm{K}}$、环核介质密度及磁化度 $\\sigma$ 的高精度定量约束，并解译反向激波动力学过程。",
           "anchor": "radar-paper-2610-20741-v1"
+        }
+      ],
+      "key_highlights": [
+        {
+          "arxiv_id": "2610.20719",
+          "revision": 1,
+          "title": "Wandering intermediate-mass black holes and off-nuclear tidal disruption events from early star clusters",
+          "anchor": "radar-paper-2610-20719-v1",
+          "result": "早期高密度星团中的 IMBH（$M_{\\rm BH} \\sim 10^2-10^5\\,M_\\odot$）在黑洞影响半径内耗尽恒星前驱动短时爆发性离核 TDE，单次爆发持续约 $10-100\\,\\mathrm{Myr}$，累积事件数受限于 $N_{\\rm TDE} \\lesssim M_{\\rm BH}/M_* \\sim 10^3-10^4$。"
+        },
+        {
+          "arxiv_id": "2610.20740",
+          "revision": 1,
+          "title": "Understanding cosmic explosions",
+          "anchor": "radar-paper-2610-20740-v1",
+          "result": "阐明了毫米波/亚毫米波（$\\sim 35$--$950\\,\\mathrm{GHz}$）在瞬变源早期光度峰值阶段避开厘米波同步辐射自吸收（SSA）与自由-自由吸收（FFA）的物理优势；能够直接约束半径 $R \\sim 10^{14}$--$10^{17}\\,\\mathrm{cm}$ 范围内的周星介质密度轮廓及外流动能；明确了 ALMA2040 灵敏度提升 10--20 倍、瞬时带宽提升达 64 倍后，探测微类星体爆发（特征单色射电光度 $L_{\\nu} \\approx 1.2 \\times 10^{23}\\,(S_{\\nu}/\\mathrm{Jy})\\,(d/10\\,\\mathrm{kpc})^{2}\\ \\mathrm{erg\\,s^{-1}\\,Hz^{-1}}$）和解析河内超新星膨胀的技术指标要求。"
+        },
+        {
+          "arxiv_id": "2610.20869",
+          "revision": 1,
+          "title": "FUGUE: A New GPU-accelerated General Relativistic Magnetohydrodynamics Code with Weak-Field Multipole Self-Gravity and Quasi-Stationary Kerr Black Hole Evolution",
+          "anchor": "radar-paper-2610-20869-v1",
+          "result": "数值验证在多项标准激波与吸积测试中展现二阶收敛。"
         }
       ],
       "worth_knowing": [
@@ -9185,6 +9270,33 @@
           "revision": 1,
           "source_fingerprint": "5d69b786fa581758d03ee24ae8ef1bad13985dcdae01c2497a59886b6bca31b6",
           "guide_fingerprint": "c84c34ef0abf67ba2eb528c37a9939ee69217767ae798899eebf89f9eda4e82c"
+        }
+      ],
+      "skim_topics": [
+        {
+          "arxiv_id": "2610.20695",
+          "revision": 1,
+          "title": "The impact of nonlinear Landau damping on cosmic ray streaming and the role of external turbulence"
+        },
+        {
+          "arxiv_id": "2610.20697",
+          "revision": 1,
+          "title": "A Vision for Little Red Dots in the Low-Redshift Universe with ALMA2040"
+        },
+        {
+          "arxiv_id": "2610.20698",
+          "revision": 1,
+          "title": "The Impact of High-Mass Clusters on the Binary Black Hole Merger Rate over Cosmic Time"
+        },
+        {
+          "arxiv_id": "2610.20700",
+          "revision": 1,
+          "title": "A Misaligned Debris Disk relative to the Host Star CPD-72 2713 from JWST/NIRCam Imaging"
+        },
+        {
+          "arxiv_id": "2610.20702",
+          "revision": 1,
+          "title": "Efficient numerical evolution of self-gravitating systems with dark-matter-baryon scattering"
         }
       ],
       "skip": [

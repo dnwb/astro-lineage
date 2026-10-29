@@ -17,6 +17,12 @@
     "status": "ready",
     "edition_fingerprint": "c2593cfcf48a03dc393a232629d214db528a26ced1ff20f215c0d5cbdb59eb47",
     "intro": "本期首看《Collapsars Are Not Heavy $r$-Process Factories》等 13 篇核心进展。",
+    "focus_paper": {
+      "arxiv_id": "2610.31758",
+      "revision": 1,
+      "title": "Collapsars Are Not Heavy $r$-Process Factories",
+      "anchor": "radar-paper-2610-31758-v1"
+    },
     "must_read": [
       {
         "arxiv_id": "2610.31758",
@@ -35,6 +41,29 @@
         "label": "GRB 260924A: Extreme Energetics, Bright GeV Emission, and Exceptional X-ray and Optical Luminosity",
         "text": "测定暴源红移为 $z=3.51\\pm 0.10$，$1\\text{--}10{,}000\\,\\mathrm{keV}$ 能段各向同性释放能量高达 $E_{\\gamma,\\mathrm{iso}} \\simeq 9.79\\times 10^{54}\\,\\mathrm{erg}$，初始各向同性动能 $E_{\\mathrm{K,iso}} \\simeq 7.0\\times 10^{55}\\,\\mathrm{erg}$，瞬时辐射效率 $\\eta_\\gamma \\simeq 0.12$。",
         "anchor": "radar-paper-2610-32861-v1"
+      }
+    ],
+    "key_highlights": [
+      {
+        "arxiv_id": "2610.31754",
+        "revision": 1,
+        "title": "Image Morphology of Misaligned Magnetically Arrested Disks",
+        "anchor": "radar-paper-2610-31754-v1",
+        "result": "研究发现成像形态对内吸积流能否对齐高度敏感：对于高自旋顺行系统（如 $a^* = 0.9375$），喷流磁力矩促使近视界辐射区与自旋轴对齐，合成图像与轴对称对齐盘几无差异；对于中等自旋顺行（$a^* = 0.5$）或逆行系统（$a^* < 0$），内流保持翘曲或非轴对称，导致采用轴对称对齐几何模型推断自旋时出现显著偏差（可达 $50\\%$ 以上），中心暗区形态亦发生畸变。"
+      },
+      {
+        "arxiv_id": "2610.31755",
+        "revision": 1,
+        "title": "From Inspiral to Outburst: Modeling a Potential Luminous Red Nova from Betelgeuse",
+        "anchor": "radar-paper-2610-31755-v1",
+        "result": "伴星质量为 $0.7, 1.0, 2.0\\,M_\\odot$ 时，早期激波破越的热辐射峰值光度分别为 $2.44\\times10^{41}, 3.11\\times10^{41}, 6.17\\times10^{41}\\,\\mathrm{erg\\;s^{-1}}$，峰值 FWHM 持续时间为 $1.48, 1.68, 1.99\\,\\mathrm{d}$，剥离非束缚抛射物质量为 $6.15, 8.11, 11.19\\,M_\\odot$（对应质量加权速度 $194, 207, 217\\,\\mathrm{km\\;s^{-1}}$）。"
+      },
+      {
+        "arxiv_id": "2610.31990",
+        "revision": 1,
+        "title": "Tilt, warp, and dissipation flare in hydrodynamic disks around kicked compact objects",
+        "anchor": "radar-paper-2610-31990-v1",
+        "result": "反冲使吸积盘在特征尺度 $r_0 \\equiv GM/V_{\\rm kick}^2$ 内部形成引力束缚区，气体在动力学时标 $t_{\\rm flare} = \\xi_t 2\\pi GM/V_{\\rm kick}^3$（其中 $\\xi_t \\approx 2$）内通过激波和自碰撞耗散动能并松弛为新的倾斜吸积盘。"
       }
     ],
     "worth_knowing": [
@@ -103,6 +132,33 @@
         "revision": 1,
         "source_fingerprint": "607b2d420bd1e1650b23a61a8ad91477f74b28dbe48c8d848626bd5d65a03d00",
         "guide_fingerprint": "79c06db3639b1211fb324097d509b2949fd296a56429799bb6fbab19eedeb2a3"
+      }
+    ],
+    "skim_topics": [
+      {
+        "arxiv_id": "2610.31751",
+        "revision": 1,
+        "title": "Non-Axisymmetric Pillar Structures due to Embedded Stars in AGN Accretion Discs"
+      },
+      {
+        "arxiv_id": "2610.31753",
+        "revision": 1,
+        "title": "An Extra-nuclear Water Maser in NGC 1106 Likely Driven By An AGN Shock: Implications for Maser-based Black Hole Mass Measurements"
+      },
+      {
+        "arxiv_id": "2610.31763",
+        "revision": 1,
+        "title": "FastSpec: Fast and versatile stellar spectrum synthesis code"
+      },
+      {
+        "arxiv_id": "2610.31766",
+        "revision": 1,
+        "title": "The Galactic Center Reference Frame: A 30-Year Solution"
+      },
+      {
+        "arxiv_id": "2610.31767",
+        "revision": 1,
+        "title": "AMICO galaxy clusters in KiDS-1000: Cosmological constraints from the two-point correlation function"
       }
     ],
     "skip": [
@@ -4794,6 +4850,12 @@
       "status": "ready",
       "edition_fingerprint": "c2593cfcf48a03dc393a232629d214db528a26ced1ff20f215c0d5cbdb59eb47",
       "intro": "本期首看《Collapsars Are Not Heavy $r$-Process Factories》等 13 篇核心进展。",
+      "focus_paper": {
+        "arxiv_id": "2610.31758",
+        "revision": 1,
+        "title": "Collapsars Are Not Heavy $r$-Process Factories",
+        "anchor": "radar-paper-2610-31758-v1"
+      },
       "must_read": [
         {
           "arxiv_id": "2610.31758",
@@ -4812,6 +4874,29 @@
           "label": "GRB 260924A: Extreme Energetics, Bright GeV Emission, and Exceptional X-ray and Optical Luminosity",
           "text": "测定暴源红移为 $z=3.51\\pm 0.10$，$1\\text{--}10{,}000\\,\\mathrm{keV}$ 能段各向同性释放能量高达 $E_{\\gamma,\\mathrm{iso}} \\simeq 9.79\\times 10^{54}\\,\\mathrm{erg}$，初始各向同性动能 $E_{\\mathrm{K,iso}} \\simeq 7.0\\times 10^{55}\\,\\mathrm{erg}$，瞬时辐射效率 $\\eta_\\gamma \\simeq 0.12$。",
           "anchor": "radar-paper-2610-32861-v1"
+        }
+      ],
+      "key_highlights": [
+        {
+          "arxiv_id": "2610.31754",
+          "revision": 1,
+          "title": "Image Morphology of Misaligned Magnetically Arrested Disks",
+          "anchor": "radar-paper-2610-31754-v1",
+          "result": "研究发现成像形态对内吸积流能否对齐高度敏感：对于高自旋顺行系统（如 $a^* = 0.9375$），喷流磁力矩促使近视界辐射区与自旋轴对齐，合成图像与轴对称对齐盘几无差异；对于中等自旋顺行（$a^* = 0.5$）或逆行系统（$a^* < 0$），内流保持翘曲或非轴对称，导致采用轴对称对齐几何模型推断自旋时出现显著偏差（可达 $50\\%$ 以上），中心暗区形态亦发生畸变。"
+        },
+        {
+          "arxiv_id": "2610.31755",
+          "revision": 1,
+          "title": "From Inspiral to Outburst: Modeling a Potential Luminous Red Nova from Betelgeuse",
+          "anchor": "radar-paper-2610-31755-v1",
+          "result": "伴星质量为 $0.7, 1.0, 2.0\\,M_\\odot$ 时，早期激波破越的热辐射峰值光度分别为 $2.44\\times10^{41}, 3.11\\times10^{41}, 6.17\\times10^{41}\\,\\mathrm{erg\\;s^{-1}}$，峰值 FWHM 持续时间为 $1.48, 1.68, 1.99\\,\\mathrm{d}$，剥离非束缚抛射物质量为 $6.15, 8.11, 11.19\\,M_\\odot$（对应质量加权速度 $194, 207, 217\\,\\mathrm{km\\;s^{-1}}$）。"
+        },
+        {
+          "arxiv_id": "2610.31990",
+          "revision": 1,
+          "title": "Tilt, warp, and dissipation flare in hydrodynamic disks around kicked compact objects",
+          "anchor": "radar-paper-2610-31990-v1",
+          "result": "反冲使吸积盘在特征尺度 $r_0 \\equiv GM/V_{\\rm kick}^2$ 内部形成引力束缚区，气体在动力学时标 $t_{\\rm flare} = \\xi_t 2\\pi GM/V_{\\rm kick}^3$（其中 $\\xi_t \\approx 2$）内通过激波和自碰撞耗散动能并松弛为新的倾斜吸积盘。"
         }
       ],
       "worth_knowing": [
@@ -4880,6 +4965,33 @@
           "revision": 1,
           "source_fingerprint": "607b2d420bd1e1650b23a61a8ad91477f74b28dbe48c8d848626bd5d65a03d00",
           "guide_fingerprint": "79c06db3639b1211fb324097d509b2949fd296a56429799bb6fbab19eedeb2a3"
+        }
+      ],
+      "skim_topics": [
+        {
+          "arxiv_id": "2610.31751",
+          "revision": 1,
+          "title": "Non-Axisymmetric Pillar Structures due to Embedded Stars in AGN Accretion Discs"
+        },
+        {
+          "arxiv_id": "2610.31753",
+          "revision": 1,
+          "title": "An Extra-nuclear Water Maser in NGC 1106 Likely Driven By An AGN Shock: Implications for Maser-based Black Hole Mass Measurements"
+        },
+        {
+          "arxiv_id": "2610.31763",
+          "revision": 1,
+          "title": "FastSpec: Fast and versatile stellar spectrum synthesis code"
+        },
+        {
+          "arxiv_id": "2610.31766",
+          "revision": 1,
+          "title": "The Galactic Center Reference Frame: A 30-Year Solution"
+        },
+        {
+          "arxiv_id": "2610.31767",
+          "revision": 1,
+          "title": "AMICO galaxy clusters in KiDS-1000: Cosmological constraints from the two-point correlation function"
         }
       ],
       "skip": [

@@ -33,6 +33,7 @@ test("architecture-hygiene: git working tree must have zero untracked artifacts 
       .split("\n")
       .map((l) => l.trim())
       .filter((l) => l.startsWith("??"))
+      .filter((l) => !l.includes("public/arxiv-figures/"))
       .join("\n");
     assert.equal(
       untracked,

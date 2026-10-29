@@ -17,6 +17,12 @@
     "status": "ready",
     "edition_fingerprint": "2ebb728ac589884f752789daf6232e20a98aa0b33d0a6e937146d2666d45da60",
     "intro": "本期首看《Magnetar X-ray flares as elementary reconnection events in a self-organized critical magnetosphere》等 23 篇核心进展。",
+    "focus_paper": {
+      "arxiv_id": "2610.14581",
+      "revision": 1,
+      "title": "Magnetar X-ray flares as elementary reconnection events in a self-organized critical magnetosphere",
+      "anchor": "radar-paper-2610-14581-v1"
+    },
     "must_read": [
       {
         "arxiv_id": "2610.14581",
@@ -44,6 +50,29 @@
         "label": "Blackbody evolution and circumstellar medium properties of broad-lined H-rich superluminous supernovae",
         "text": "SLSNe II 的近紫外超额光度与总拟热光度维持恒定比值（$L_{\\rm ex}/L_{\\rm bol} \\approx 0.01\\text{--}0.1$）。",
         "anchor": "radar-paper-2610-16527-v1"
+      }
+    ],
+    "key_highlights": [
+      {
+        "arxiv_id": "2610.14172",
+        "revision": 1,
+        "title": "A first view of interstellar Fe-bearing dust grains with XRISM",
+        "anchor": "radar-paper-2610-14172-v1",
+        "result": "通过 Fe K 边 XAFS 分析，确定铁原子在各组分中的分配为：约 $38\\%$ 为金属铁，约 $47\\%$ 赋存于铁硫化物，其余赋存于硅酸盐。"
+      },
+      {
+        "arxiv_id": "2610.14179",
+        "revision": 1,
+        "title": "Stellar discs and intermediate-mass black holes in galactic nuclei II. Fragmenting the disc and forming the S-stars in a live nuclear star cluster",
+        "anchor": "radar-paper-2610-14179-v1",
+        "result": "一个处于逆行轨道（倾角 $\\theta_{\\bullet}=150^{\\circ}$、初始 $a_{\\bullet}=0.15\\text{ pc}$、质量 $m_{\\bullet}=2000\\,{\\rm M}_{\\odot}$）的 IMBH 能够在活星团中约 $5\\text{ Myr}$ 内将恒星盘瓦解为三个类似盘的子结构及角动量纤维结构；IMBH 轨道因 Chandrasekhar 动力学摩擦（库仑对数需折半 $\\ln\\Lambda = \\frac{1}{2}\\ln(M/m_{\\bullet})$）在 $10\\text{ Myr}$ 内半长轴衰减超过 $50\\%$；内区（$a\\le 0.04\\text{ pc}$）偏心率加热由星团双体弛豫主导，但观测中极高偏心率（$e \\sim 0.97$）可通过 Hills 机制双星潮汐瓦解形成，捕获星轨道满足 $1/a_{\\mathrm{cap}} = 1/a + 1/a_{\\mathrm{cap,0}}$（其中 $a_{\\mathrm{cap,0}} = (a_{\\mathrm{b}}/\\sqrt{2})(M/m_{\\mathrm{b}})^{2/3}$）。"
+      },
+      {
+        "arxiv_id": "2610.14185",
+        "revision": 1,
+        "title": "A Pipeline for the AI-Assisted Analysis of Imaging X-ray Polarimetry Explorer Observations of Black Hole X-ray Binaries and Limits on Their Polarization Variability",
+        "anchor": "radar-paper-2610-14185-v1",
+        "result": "对10个黑洞X射线双星共34次IXPE观测进行了偏振时变搜索。"
       }
     ],
     "worth_knowing": [
@@ -166,6 +195,33 @@
         "revision": 1,
         "source_fingerprint": "4f3f2181e1acfcb1677e53e7b074087ee4ff832922b5d785af46e9b9030a5ad9",
         "guide_fingerprint": "acf7e184b7ec14d7be88c5fd13b2b8ccb49ee9acdffeb6e1924da63230a09cfe"
+      }
+    ],
+    "skim_topics": [
+      {
+        "arxiv_id": "2610.14166",
+        "revision": 1,
+        "title": "A Spectroscopic Census of Cluster White Dwarfs from DESI, LAMOST, and SDSS"
+      },
+      {
+        "arxiv_id": "2610.14167",
+        "revision": 1,
+        "title": "Where Cluster Galaxies Reside and How Strongly They Lens"
+      },
+      {
+        "arxiv_id": "2610.14169",
+        "revision": 1,
+        "title": "Cluster Ages to Reconstruct the Milky Way Assembly (CARMA). VI. The age-metallicity relation of in-situ clusters and the age of the Universe"
+      },
+      {
+        "arxiv_id": "2610.14174",
+        "revision": 1,
+        "title": "Searching for Nearby Supermassive Black Hole Binaries with GRAVITY"
+      },
+      {
+        "arxiv_id": "2610.14181",
+        "revision": 1,
+        "title": "Globular cluster Observations for Luminosity-dispersion Distances (GOLD): Project description and velocity catalogue"
       }
     ],
     "skip": [
@@ -7574,6 +7630,12 @@
       "status": "ready",
       "edition_fingerprint": "2ebb728ac589884f752789daf6232e20a98aa0b33d0a6e937146d2666d45da60",
       "intro": "本期首看《Magnetar X-ray flares as elementary reconnection events in a self-organized critical magnetosphere》等 23 篇核心进展。",
+      "focus_paper": {
+        "arxiv_id": "2610.14581",
+        "revision": 1,
+        "title": "Magnetar X-ray flares as elementary reconnection events in a self-organized critical magnetosphere",
+        "anchor": "radar-paper-2610-14581-v1"
+      },
       "must_read": [
         {
           "arxiv_id": "2610.14581",
@@ -7601,6 +7663,29 @@
           "label": "Blackbody evolution and circumstellar medium properties of broad-lined H-rich superluminous supernovae",
           "text": "SLSNe II 的近紫外超额光度与总拟热光度维持恒定比值（$L_{\\rm ex}/L_{\\rm bol} \\approx 0.01\\text{--}0.1$）。",
           "anchor": "radar-paper-2610-16527-v1"
+        }
+      ],
+      "key_highlights": [
+        {
+          "arxiv_id": "2610.14172",
+          "revision": 1,
+          "title": "A first view of interstellar Fe-bearing dust grains with XRISM",
+          "anchor": "radar-paper-2610-14172-v1",
+          "result": "通过 Fe K 边 XAFS 分析，确定铁原子在各组分中的分配为：约 $38\\%$ 为金属铁，约 $47\\%$ 赋存于铁硫化物，其余赋存于硅酸盐。"
+        },
+        {
+          "arxiv_id": "2610.14179",
+          "revision": 1,
+          "title": "Stellar discs and intermediate-mass black holes in galactic nuclei II. Fragmenting the disc and forming the S-stars in a live nuclear star cluster",
+          "anchor": "radar-paper-2610-14179-v1",
+          "result": "一个处于逆行轨道（倾角 $\\theta_{\\bullet}=150^{\\circ}$、初始 $a_{\\bullet}=0.15\\text{ pc}$、质量 $m_{\\bullet}=2000\\,{\\rm M}_{\\odot}$）的 IMBH 能够在活星团中约 $5\\text{ Myr}$ 内将恒星盘瓦解为三个类似盘的子结构及角动量纤维结构；IMBH 轨道因 Chandrasekhar 动力学摩擦（库仑对数需折半 $\\ln\\Lambda = \\frac{1}{2}\\ln(M/m_{\\bullet})$）在 $10\\text{ Myr}$ 内半长轴衰减超过 $50\\%$；内区（$a\\le 0.04\\text{ pc}$）偏心率加热由星团双体弛豫主导，但观测中极高偏心率（$e \\sim 0.97$）可通过 Hills 机制双星潮汐瓦解形成，捕获星轨道满足 $1/a_{\\mathrm{cap}} = 1/a + 1/a_{\\mathrm{cap,0}}$（其中 $a_{\\mathrm{cap,0}} = (a_{\\mathrm{b}}/\\sqrt{2})(M/m_{\\mathrm{b}})^{2/3}$）。"
+        },
+        {
+          "arxiv_id": "2610.14185",
+          "revision": 1,
+          "title": "A Pipeline for the AI-Assisted Analysis of Imaging X-ray Polarimetry Explorer Observations of Black Hole X-ray Binaries and Limits on Their Polarization Variability",
+          "anchor": "radar-paper-2610-14185-v1",
+          "result": "对10个黑洞X射线双星共34次IXPE观测进行了偏振时变搜索。"
         }
       ],
       "worth_knowing": [
@@ -7723,6 +7808,33 @@
           "revision": 1,
           "source_fingerprint": "4f3f2181e1acfcb1677e53e7b074087ee4ff832922b5d785af46e9b9030a5ad9",
           "guide_fingerprint": "acf7e184b7ec14d7be88c5fd13b2b8ccb49ee9acdffeb6e1924da63230a09cfe"
+        }
+      ],
+      "skim_topics": [
+        {
+          "arxiv_id": "2610.14166",
+          "revision": 1,
+          "title": "A Spectroscopic Census of Cluster White Dwarfs from DESI, LAMOST, and SDSS"
+        },
+        {
+          "arxiv_id": "2610.14167",
+          "revision": 1,
+          "title": "Where Cluster Galaxies Reside and How Strongly They Lens"
+        },
+        {
+          "arxiv_id": "2610.14169",
+          "revision": 1,
+          "title": "Cluster Ages to Reconstruct the Milky Way Assembly (CARMA). VI. The age-metallicity relation of in-situ clusters and the age of the Universe"
+        },
+        {
+          "arxiv_id": "2610.14174",
+          "revision": 1,
+          "title": "Searching for Nearby Supermassive Black Hole Binaries with GRAVITY"
+        },
+        {
+          "arxiv_id": "2610.14181",
+          "revision": 1,
+          "title": "Globular cluster Observations for Luminosity-dispersion Distances (GOLD): Project description and velocity catalogue"
         }
       ],
       "skip": [

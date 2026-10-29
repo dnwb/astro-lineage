@@ -17,6 +17,12 @@
     "status": "ready",
     "edition_fingerprint": "c80f4550ff3ad7764f17bbd1de7a3fa80f499f159940f91d90a6945f91cf1c98",
     "intro": "本期首看《The (missing) gamma-ray counterparts to EP events》等 22 篇核心进展。",
+    "focus_paper": {
+      "arxiv_id": "2610.28734",
+      "revision": 1,
+      "title": "The (missing) gamma-ray counterparts to EP events",
+      "anchor": "radar-paper-2610-28734-v1"
+    },
     "must_read": [
       {
         "arxiv_id": "2610.28734",
@@ -44,6 +50,29 @@
         "label": "PSR J0653+0443: An Eclipsing Millisecond Pulsar in an Extremely Eccentric Double Neutron Star System",
         "text": "通过 FAST 测时与近星点跟踪，测得双星轨道周期 $P_{\\rm orb} = 79.0840618(1)\\,{\\rm d}$，偏心率高达 $e = 0.99238692(5)$，投影半长轴 $x = 125.54(3)\\,{\\rm lt\\text{-}s}$。",
         "anchor": "radar-paper-2610-29838-v1"
+      }
+    ],
+    "key_highlights": [
+      {
+        "arxiv_id": "2610.28728",
+        "revision": 1,
+        "title": "Exploring the origin of slow-rotating pulsars: Emission from STARS simulated white dwarfs",
+        "anchor": "radar-paper-2610-28728-v1",
+        "result": "基于一维恒星演化程序 \\texttt{STARS} 模拟的白矮星模型，其表面磁场由 $B_s = \\sqrt{\\frac{3c^3}{8\\pi^2}\\frac{I}{R^6\\sin^2\\alpha}P\\dot{P}}$ 约束。"
+      },
+      {
+        "arxiv_id": "2610.28740",
+        "revision": 1,
+        "title": "A Hybrid Neural Network Emulator for M1 Neutrino Reaction Rates in Binary Neutron Star Merger Simulations",
+        "anchor": "radar-paper-2610-28740-v1",
+        "result": "混合方案将总不透明度计算耗时降低约 $8.7$ 倍，NN 前向传播比被替代的 2D 积分核快约 $12$ 倍，使端到端 BNS 模拟全局吞吐量从 $1.085\\times 10^7$ 提升至 $2.347\\times 10^7\\,\\mathrm{ZCPS}$（实现 $2.16$ 倍整体加速）。"
+      },
+      {
+        "arxiv_id": "2610.28741",
+        "revision": 1,
+        "title": "Exploring PSR J0901-4046 as an ultra-slowly rotating neutron star versus a white dwarf",
+        "anchor": "radar-paper-2610-28741-v1",
+        "result": "若 PSR J0901-4046 为孤立强磁化白矮星（B-WD），其表面磁场仅需 $B_s \\sim 6.4\\times 10^8 - 3.1\\times 10^{10}\\text{ G}$（对应磁倾角 $\\alpha \\approx 2^\\circ - 8^\\circ$），能自然规避量子临界磁场 $B_{\\rm crit} \\approx 4.414\\times 10^{13}\\text{ G}$ 的抑制；白矮星转动能损率可充足支持射电辐射（如长周期源 GLEAM-X J162759.5-523504.3 达 $\\dot{E}_{\\rm rot} \\gtrsim 10^{33}\\text{ erg s}^{-1}$），且整星紫外光度 $L_{\\rm UV} \\lesssim 10^{30}\\text{ erg s}^{-1}$，符合未探测到 X/UV 高能辐射的观测现状。"
       }
     ],
     "worth_knowing": [
@@ -160,6 +189,33 @@
         "revision": 1,
         "source_fingerprint": "ade055a6035ada55cd1e005866cc4494cf7c753a4ad154a32505c739b6a2923a",
         "guide_fingerprint": "99baed9c1bd6c8fe2b69ef729551d9312e9909c78b9adeb462e4f0965b654d21"
+      }
+    ],
+    "skim_topics": [
+      {
+        "arxiv_id": "2610.28717",
+        "revision": 1,
+        "title": "Chemical abundance patterns at z=1-7: Carbon, Nitrogen, Neon, Sulphur, and Argon abundances from JWST spectroscopy"
+      },
+      {
+        "arxiv_id": "2610.28720",
+        "revision": 1,
+        "title": "The Balmer Absorber Strength Problem of Little Red Dots"
+      },
+      {
+        "arxiv_id": "2610.28727",
+        "revision": 1,
+        "title": "Arepo-CD: Coupling Collisional $N$-Body Dynamics with Moving-Mesh Magnetohydrodynamics"
+      },
+      {
+        "arxiv_id": "2610.28731",
+        "revision": 1,
+        "title": "Simulation-Informed High-Velocity Dark Matter in the Effective Theory of Direct Detection"
+      },
+      {
+        "arxiv_id": "2610.28735",
+        "revision": 1,
+        "title": "Discovery of a Broad-Line Active Galactic Nucleus at $z = 9.98$"
       }
     ],
     "skip": [
@@ -9226,6 +9282,12 @@
       "status": "ready",
       "edition_fingerprint": "c80f4550ff3ad7764f17bbd1de7a3fa80f499f159940f91d90a6945f91cf1c98",
       "intro": "本期首看《The (missing) gamma-ray counterparts to EP events》等 22 篇核心进展。",
+      "focus_paper": {
+        "arxiv_id": "2610.28734",
+        "revision": 1,
+        "title": "The (missing) gamma-ray counterparts to EP events",
+        "anchor": "radar-paper-2610-28734-v1"
+      },
       "must_read": [
         {
           "arxiv_id": "2610.28734",
@@ -9253,6 +9315,29 @@
           "label": "PSR J0653+0443: An Eclipsing Millisecond Pulsar in an Extremely Eccentric Double Neutron Star System",
           "text": "通过 FAST 测时与近星点跟踪，测得双星轨道周期 $P_{\\rm orb} = 79.0840618(1)\\,{\\rm d}$，偏心率高达 $e = 0.99238692(5)$，投影半长轴 $x = 125.54(3)\\,{\\rm lt\\text{-}s}$。",
           "anchor": "radar-paper-2610-29838-v1"
+        }
+      ],
+      "key_highlights": [
+        {
+          "arxiv_id": "2610.28728",
+          "revision": 1,
+          "title": "Exploring the origin of slow-rotating pulsars: Emission from STARS simulated white dwarfs",
+          "anchor": "radar-paper-2610-28728-v1",
+          "result": "基于一维恒星演化程序 \\texttt{STARS} 模拟的白矮星模型，其表面磁场由 $B_s = \\sqrt{\\frac{3c^3}{8\\pi^2}\\frac{I}{R^6\\sin^2\\alpha}P\\dot{P}}$ 约束。"
+        },
+        {
+          "arxiv_id": "2610.28740",
+          "revision": 1,
+          "title": "A Hybrid Neural Network Emulator for M1 Neutrino Reaction Rates in Binary Neutron Star Merger Simulations",
+          "anchor": "radar-paper-2610-28740-v1",
+          "result": "混合方案将总不透明度计算耗时降低约 $8.7$ 倍，NN 前向传播比被替代的 2D 积分核快约 $12$ 倍，使端到端 BNS 模拟全局吞吐量从 $1.085\\times 10^7$ 提升至 $2.347\\times 10^7\\,\\mathrm{ZCPS}$（实现 $2.16$ 倍整体加速）。"
+        },
+        {
+          "arxiv_id": "2610.28741",
+          "revision": 1,
+          "title": "Exploring PSR J0901-4046 as an ultra-slowly rotating neutron star versus a white dwarf",
+          "anchor": "radar-paper-2610-28741-v1",
+          "result": "若 PSR J0901-4046 为孤立强磁化白矮星（B-WD），其表面磁场仅需 $B_s \\sim 6.4\\times 10^8 - 3.1\\times 10^{10}\\text{ G}$（对应磁倾角 $\\alpha \\approx 2^\\circ - 8^\\circ$），能自然规避量子临界磁场 $B_{\\rm crit} \\approx 4.414\\times 10^{13}\\text{ G}$ 的抑制；白矮星转动能损率可充足支持射电辐射（如长周期源 GLEAM-X J162759.5-523504.3 达 $\\dot{E}_{\\rm rot} \\gtrsim 10^{33}\\text{ erg s}^{-1}$），且整星紫外光度 $L_{\\rm UV} \\lesssim 10^{30}\\text{ erg s}^{-1}$，符合未探测到 X/UV 高能辐射的观测现状。"
         }
       ],
       "worth_knowing": [
@@ -9369,6 +9454,33 @@
           "revision": 1,
           "source_fingerprint": "ade055a6035ada55cd1e005866cc4494cf7c753a4ad154a32505c739b6a2923a",
           "guide_fingerprint": "99baed9c1bd6c8fe2b69ef729551d9312e9909c78b9adeb462e4f0965b654d21"
+        }
+      ],
+      "skim_topics": [
+        {
+          "arxiv_id": "2610.28717",
+          "revision": 1,
+          "title": "Chemical abundance patterns at z=1-7: Carbon, Nitrogen, Neon, Sulphur, and Argon abundances from JWST spectroscopy"
+        },
+        {
+          "arxiv_id": "2610.28720",
+          "revision": 1,
+          "title": "The Balmer Absorber Strength Problem of Little Red Dots"
+        },
+        {
+          "arxiv_id": "2610.28727",
+          "revision": 1,
+          "title": "Arepo-CD: Coupling Collisional $N$-Body Dynamics with Moving-Mesh Magnetohydrodynamics"
+        },
+        {
+          "arxiv_id": "2610.28731",
+          "revision": 1,
+          "title": "Simulation-Informed High-Velocity Dark Matter in the Effective Theory of Direct Detection"
+        },
+        {
+          "arxiv_id": "2610.28735",
+          "revision": 1,
+          "title": "Discovery of a Broad-Line Active Galactic Nucleus at $z = 9.98$"
         }
       ],
       "skip": [

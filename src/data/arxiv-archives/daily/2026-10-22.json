@@ -17,6 +17,12 @@
     "status": "ready",
     "edition_fingerprint": "1e17bf7bbc50360c0007e00ca843f5851ee93b5b0ab3a7ce8f438c0efa2dd960",
     "intro": "本期首看《FRB 20210601A: Extreme Temporal Clustering in a Repeating Fast Radio Burst Source as Evidence for a Hidden Class of Episodic Repeaters》等 25 篇核心进展。",
+    "focus_paper": {
+      "arxiv_id": "2610.31365",
+      "revision": 1,
+      "title": "FRB 20210601A: Extreme Temporal Clustering in a Repeating Fast Radio Burst Source as Evidence for a Hidden Class of Episodic Repeaters",
+      "anchor": "radar-paper-2610-31365-v1"
+    },
     "must_read": [
       {
         "arxiv_id": "2610.31365",
@@ -26,6 +32,29 @@
         "label": "FRB 20210601A: Extreme Temporal Clustering in a Repeating Fast Radio Burst Source as Evidence for a Hidden Class of Episodic Repeaters",
         "text": "FRB 20210601A 在单次中天过境的 $\\Delta T = 106.5\\;\\mathrm{s}$ 内集中产生 9 次暴发，峰值暴发率 $\\langle\\lambda\\rangle = (N-1)/\\Delta T = 0.075\\;\\mathrm{bursts\\;s^{-1}}$，等效至主瓣增益下爆发数 $\\gtrsim 21$ 次；最亮暴各向同性峰值光度达 $L_{\\rm iso} \\sim 2.3 \\times 10^{43}\\;\\mathrm{erg\\;s^{-1}}$，9 次暴发总能量 $E_{\\rm tot} \\sim 2.2 \\times 10^{41}\\;\\mathrm{erg}$（相对于 $B=10^{15}\\;\\mathrm{G}$ 磁星储备满足 $E_{\\rm tot}/E_{\\rm mag} \\sim 10^{-6}$）；宿主环境参数测得 $\\mathrm{DM_{excess}} \\sim 360\\;\\mathrm{pc\\;cm^{-3}}$、$\\tau(600\\;\\mathrm{MHz}) \\lesssim 0.37\\;\\mathrm{ms}$，去红移旋转量 $|\\mathrm{RM_{excess}}| \\sim 150-340\\;\\mathrm{rad\\;m^{-2}}$，表明其介质与常规重复暴相当。",
         "anchor": "radar-paper-2610-31365-v1"
+      }
+    ],
+    "key_highlights": [
+      {
+        "arxiv_id": "2610.30233",
+        "revision": 1,
+        "title": "General-purpose equations of state for hadron-quark matter: first application to accretion-induced phase transitions in neutron stars",
+        "anchor": "radar-paper-2610-30233-v1",
+        "result": "吸积致强子-夸克相变过程在所有测试的混合物态方程中均未产生引力非束缚的抛射物（依据 Bernoulli 判据 $h u_t < -1$ 且 $v^r > 0$），排除了产生可观光学/紫外电磁暂现源的可能；强相变模型（如 BBKF 2.1）在 $\\sim 1.3~\\mathrm{ms}$ 内中心发生剧烈振荡坍缩形成纯夸克核，界面伴随激波加热（$T \\sim 20~\\mathrm{MeV}$），峰值中微子总光度 $L_\\nu = \\oint dS~n^i \\sqrt{\\gamma}(\\alpha F_i - \\beta_i E)$ 可达 $\\sim 10^{52}~\\mathrm{erg/s}$ 且 $L_{\\bar{\\nu}_e} \\sim L_{\\nu_e}$，而在弱相变模型中中微子辐射以 $\\nu_e$ 为主且光度低约一个数量级。"
+      },
+      {
+        "arxiv_id": "2610.30255",
+        "revision": 1,
+        "title": "$γ$hosts from the past: reheating neutron stars with supernova-sourced ALPs",
+        "anchor": "radar-paper-2610-30255-v1",
+        "result": "超新星内部通过核子-核子轫致辐射（及 $\\pi^-$ 转换）产生的非相对论性 ALP 会被束缚在原中子星引力势阱中形成扩展约 $100\\,{\\rm km}$ 的粒子云，随后以寿命 $\\tau_a^{-1} = g_{a\\gamma\\gamma}^2 m_a^3 / (64\\pi)$ 衰变释放光子加热中子星。"
+      },
+      {
+        "arxiv_id": "2610.30259",
+        "revision": 1,
+        "title": "The deepest X-ray view of a kiloparsec scale jet at z=6.1",
+        "anchor": "radar-paper-2610-30259-v1",
+        "result": "延展喷流在空间上分解为组分 A 和 B；核区光子指数为 $\\Gamma = 1.86^{+0.09}_{-0.09}$，静止系光度 $L_{2-10\\,\\mathrm{keV}} = 7.22^{+0.62}_{-0.58} \\times 10^{45}\\,\\mathrm{erg\\,s^{-1}}$；整体延展喷流呈现更软的谱型（$\\Gamma = 2.25^{+0.45}_{-0.44}$），其静止系光度 $L_{2-10\\,\\mathrm{keV}} = 1.31^{+0.51}_{-0.40} \\times 10^{45}\\,\\mathrm{erg\\,s^{-1}}$，占核区光度比例高达 $L_{\\rm ext}/L_{\\rm core} \\sim 18\\%$，符合高红移处 CMB 能量密度 $U_{\\rm CMB} \\propto (1+z)^4$ 急剧上升驱动 IC/CMB 散射增强的图像。"
       }
     ],
     "worth_knowing": [
@@ -172,6 +201,33 @@
         "revision": 1,
         "source_fingerprint": "52c43c92f8384fbf9e3a1f18c627ca973291837a8856536ac5b7232da1acec66",
         "guide_fingerprint": "b22c0740a4d87f74cd19862e007bdcd70da592c52d1b9f4196d6daa28c3c3dcb"
+      }
+    ],
+    "skim_topics": [
+      {
+        "arxiv_id": "2610.30237",
+        "revision": 1,
+        "title": "Impact of Gaia-Sausage-Enceladus merger revealed by a single cosmic clock: thick-to-thin disc transition, gas disc shrinking and bar formation"
+      },
+      {
+        "arxiv_id": "2610.30261",
+        "revision": 1,
+        "title": "Variable-phase methods and data for long-range scattering"
+      },
+      {
+        "arxiv_id": "2610.30264",
+        "revision": 1,
+        "title": "AGB-star Mass Transfer Products in Stellar Streams as Tracers of Density in Dissolved Star Clusters"
+      },
+      {
+        "arxiv_id": "2610.30265",
+        "revision": 1,
+        "title": "The THESAN-ZOOM project: the delayed rise of Lyman continuum escape fractions in bursty high-redshift galaxies"
+      },
+      {
+        "arxiv_id": "2610.30285",
+        "revision": 1,
+        "title": "The black hole-galaxy correlations of the 12 micron local AGN sample: a NuSTAR perspective"
       }
     ],
     "skip": [
@@ -7444,6 +7500,12 @@
       "status": "ready",
       "edition_fingerprint": "1e17bf7bbc50360c0007e00ca843f5851ee93b5b0ab3a7ce8f438c0efa2dd960",
       "intro": "本期首看《FRB 20210601A: Extreme Temporal Clustering in a Repeating Fast Radio Burst Source as Evidence for a Hidden Class of Episodic Repeaters》等 25 篇核心进展。",
+      "focus_paper": {
+        "arxiv_id": "2610.31365",
+        "revision": 1,
+        "title": "FRB 20210601A: Extreme Temporal Clustering in a Repeating Fast Radio Burst Source as Evidence for a Hidden Class of Episodic Repeaters",
+        "anchor": "radar-paper-2610-31365-v1"
+      },
       "must_read": [
         {
           "arxiv_id": "2610.31365",
@@ -7453,6 +7515,29 @@
           "label": "FRB 20210601A: Extreme Temporal Clustering in a Repeating Fast Radio Burst Source as Evidence for a Hidden Class of Episodic Repeaters",
           "text": "FRB 20210601A 在单次中天过境的 $\\Delta T = 106.5\\;\\mathrm{s}$ 内集中产生 9 次暴发，峰值暴发率 $\\langle\\lambda\\rangle = (N-1)/\\Delta T = 0.075\\;\\mathrm{bursts\\;s^{-1}}$，等效至主瓣增益下爆发数 $\\gtrsim 21$ 次；最亮暴各向同性峰值光度达 $L_{\\rm iso} \\sim 2.3 \\times 10^{43}\\;\\mathrm{erg\\;s^{-1}}$，9 次暴发总能量 $E_{\\rm tot} \\sim 2.2 \\times 10^{41}\\;\\mathrm{erg}$（相对于 $B=10^{15}\\;\\mathrm{G}$ 磁星储备满足 $E_{\\rm tot}/E_{\\rm mag} \\sim 10^{-6}$）；宿主环境参数测得 $\\mathrm{DM_{excess}} \\sim 360\\;\\mathrm{pc\\;cm^{-3}}$、$\\tau(600\\;\\mathrm{MHz}) \\lesssim 0.37\\;\\mathrm{ms}$，去红移旋转量 $|\\mathrm{RM_{excess}}| \\sim 150-340\\;\\mathrm{rad\\;m^{-2}}$，表明其介质与常规重复暴相当。",
           "anchor": "radar-paper-2610-31365-v1"
+        }
+      ],
+      "key_highlights": [
+        {
+          "arxiv_id": "2610.30233",
+          "revision": 1,
+          "title": "General-purpose equations of state for hadron-quark matter: first application to accretion-induced phase transitions in neutron stars",
+          "anchor": "radar-paper-2610-30233-v1",
+          "result": "吸积致强子-夸克相变过程在所有测试的混合物态方程中均未产生引力非束缚的抛射物（依据 Bernoulli 判据 $h u_t < -1$ 且 $v^r > 0$），排除了产生可观光学/紫外电磁暂现源的可能；强相变模型（如 BBKF 2.1）在 $\\sim 1.3~\\mathrm{ms}$ 内中心发生剧烈振荡坍缩形成纯夸克核，界面伴随激波加热（$T \\sim 20~\\mathrm{MeV}$），峰值中微子总光度 $L_\\nu = \\oint dS~n^i \\sqrt{\\gamma}(\\alpha F_i - \\beta_i E)$ 可达 $\\sim 10^{52}~\\mathrm{erg/s}$ 且 $L_{\\bar{\\nu}_e} \\sim L_{\\nu_e}$，而在弱相变模型中中微子辐射以 $\\nu_e$ 为主且光度低约一个数量级。"
+        },
+        {
+          "arxiv_id": "2610.30255",
+          "revision": 1,
+          "title": "$γ$hosts from the past: reheating neutron stars with supernova-sourced ALPs",
+          "anchor": "radar-paper-2610-30255-v1",
+          "result": "超新星内部通过核子-核子轫致辐射（及 $\\pi^-$ 转换）产生的非相对论性 ALP 会被束缚在原中子星引力势阱中形成扩展约 $100\\,{\\rm km}$ 的粒子云，随后以寿命 $\\tau_a^{-1} = g_{a\\gamma\\gamma}^2 m_a^3 / (64\\pi)$ 衰变释放光子加热中子星。"
+        },
+        {
+          "arxiv_id": "2610.30259",
+          "revision": 1,
+          "title": "The deepest X-ray view of a kiloparsec scale jet at z=6.1",
+          "anchor": "radar-paper-2610-30259-v1",
+          "result": "延展喷流在空间上分解为组分 A 和 B；核区光子指数为 $\\Gamma = 1.86^{+0.09}_{-0.09}$，静止系光度 $L_{2-10\\,\\mathrm{keV}} = 7.22^{+0.62}_{-0.58} \\times 10^{45}\\,\\mathrm{erg\\,s^{-1}}$；整体延展喷流呈现更软的谱型（$\\Gamma = 2.25^{+0.45}_{-0.44}$），其静止系光度 $L_{2-10\\,\\mathrm{keV}} = 1.31^{+0.51}_{-0.40} \\times 10^{45}\\,\\mathrm{erg\\,s^{-1}}$，占核区光度比例高达 $L_{\\rm ext}/L_{\\rm core} \\sim 18\\%$，符合高红移处 CMB 能量密度 $U_{\\rm CMB} \\propto (1+z)^4$ 急剧上升驱动 IC/CMB 散射增强的图像。"
         }
       ],
       "worth_knowing": [
@@ -7599,6 +7684,33 @@
           "revision": 1,
           "source_fingerprint": "52c43c92f8384fbf9e3a1f18c627ca973291837a8856536ac5b7232da1acec66",
           "guide_fingerprint": "b22c0740a4d87f74cd19862e007bdcd70da592c52d1b9f4196d6daa28c3c3dcb"
+        }
+      ],
+      "skim_topics": [
+        {
+          "arxiv_id": "2610.30237",
+          "revision": 1,
+          "title": "Impact of Gaia-Sausage-Enceladus merger revealed by a single cosmic clock: thick-to-thin disc transition, gas disc shrinking and bar formation"
+        },
+        {
+          "arxiv_id": "2610.30261",
+          "revision": 1,
+          "title": "Variable-phase methods and data for long-range scattering"
+        },
+        {
+          "arxiv_id": "2610.30264",
+          "revision": 1,
+          "title": "AGB-star Mass Transfer Products in Stellar Streams as Tracers of Density in Dissolved Star Clusters"
+        },
+        {
+          "arxiv_id": "2610.30265",
+          "revision": 1,
+          "title": "The THESAN-ZOOM project: the delayed rise of Lyman continuum escape fractions in bursty high-redshift galaxies"
+        },
+        {
+          "arxiv_id": "2610.30285",
+          "revision": 1,
+          "title": "The black hole-galaxy correlations of the 12 micron local AGN sample: a NuSTAR perspective"
         }
       ],
       "skip": [

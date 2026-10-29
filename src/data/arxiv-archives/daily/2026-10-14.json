@@ -17,7 +17,36 @@
     "status": "ready",
     "edition_fingerprint": "40210a14fd442b9a68db1fe9c3c5f17e99363b4d9f801e00e53da3d4f42f8727",
     "intro": "本期首看《Nonlinear Perturbations of Relativistic Stars》等 15 篇核心进展。",
+    "focus_paper": {
+      "arxiv_id": "2610.18952",
+      "revision": 1,
+      "title": "Nonlinear Perturbations of Relativistic Stars",
+      "anchor": "radar-paper-2610-18952-v1"
+    },
     "must_read": [],
+    "key_highlights": [
+      {
+        "arxiv_id": "2610.18952",
+        "revision": 1,
+        "title": "Nonlinear Perturbations of Relativistic Stars",
+        "anchor": "radar-paper-2610-18952-v1",
+        "result": "推导了 Regge-Wheeler 规范下二阶摄动的一阶常微分主方程 $\\mathbf{Y}'=\\mathbf{A}\\cdot\\mathbf{Y}+\\mathbf{B}[\\boldsymbol{S}]$，并在由对称算符 $\\boldsymbol{I}_0$ 定义的本征模投影下导出了二阶振幅方程。"
+      },
+      {
+        "arxiv_id": "2610.18962",
+        "revision": 1,
+        "title": "Identity Crisis: Untangling Mass-Ordering Artifacts from Compact-Object Pairing in Gravitational-Wave Populations",
+        "anchor": "radar-paper-2610-18962-v1",
+        "result": "推导证明质量排序坐标折叠无法凭空产生量纲特征尺度；若条件质量比峰值满足 $q_{\\rm peak}(m_1) = \\mu/m_1 \\propto m_1^{-1}$，则母体必存在真实的组分特征质量标度 $\\mu$。"
+      },
+      {
+        "arxiv_id": "2610.18972",
+        "revision": 1,
+        "title": "The Second Catalog of Low-Energy Fermi-LAT Sources",
+        "anchor": "radar-paper-2610-18972-v1",
+        "result": "在检验统计量 $TS > 25$ 下证认出 450 个 20–200 MeV 伽马射线源，中位能通量为 $\\tilde{F}_{20-200\\,\\mathrm{MeV}} = 1.90 \\times 10^{-11}\\,\\mathrm{erg\\,cm^{-2}\\,s^{-1}}$。"
+      }
+    ],
     "worth_knowing": [
       {
         "arxiv_id": "2610.18952",
@@ -108,6 +137,33 @@
         "revision": 1,
         "source_fingerprint": "f4375c4ca5b7dca7a4e3996cc45a8e63471bbfe9a1cbcb1412746c73ee6bf033",
         "guide_fingerprint": "66e0850696bc133a7641aaa25d31fcf15cee64942991a17278d54dfe530b794b"
+      }
+    ],
+    "skim_topics": [
+      {
+        "arxiv_id": "2610.18957",
+        "revision": 1,
+        "title": "TNGC-SIDM I: Evolution of massive cluster mergers under the self-interacting dark matter paradigm"
+      },
+      {
+        "arxiv_id": "2610.18960",
+        "revision": 1,
+        "title": "How JWST is Revolutionizing Our View of Early Galaxy Formation"
+      },
+      {
+        "arxiv_id": "2610.18964",
+        "revision": 1,
+        "title": "EMRIs in Kerr Spacetime: The Role of Inclination Diffusion"
+      },
+      {
+        "arxiv_id": "2610.18966",
+        "revision": 1,
+        "title": "Any colour you like: The diverse chromaticities of white dwarfs"
+      },
+      {
+        "arxiv_id": "2610.18968",
+        "revision": 1,
+        "title": "The Dance of the Little Red Dots: Spectroscopy of Two Blue Companions at z = 3.9 and 5.5 Reveals Young, Metal-Poor Starbursts Merging with Their LRDs within a Few Hundred Myr"
       }
     ],
     "skip": [
@@ -8541,7 +8597,36 @@
       "status": "ready",
       "edition_fingerprint": "40210a14fd442b9a68db1fe9c3c5f17e99363b4d9f801e00e53da3d4f42f8727",
       "intro": "本期首看《Nonlinear Perturbations of Relativistic Stars》等 15 篇核心进展。",
+      "focus_paper": {
+        "arxiv_id": "2610.18952",
+        "revision": 1,
+        "title": "Nonlinear Perturbations of Relativistic Stars",
+        "anchor": "radar-paper-2610-18952-v1"
+      },
       "must_read": [],
+      "key_highlights": [
+        {
+          "arxiv_id": "2610.18952",
+          "revision": 1,
+          "title": "Nonlinear Perturbations of Relativistic Stars",
+          "anchor": "radar-paper-2610-18952-v1",
+          "result": "推导了 Regge-Wheeler 规范下二阶摄动的一阶常微分主方程 $\\mathbf{Y}'=\\mathbf{A}\\cdot\\mathbf{Y}+\\mathbf{B}[\\boldsymbol{S}]$，并在由对称算符 $\\boldsymbol{I}_0$ 定义的本征模投影下导出了二阶振幅方程。"
+        },
+        {
+          "arxiv_id": "2610.18962",
+          "revision": 1,
+          "title": "Identity Crisis: Untangling Mass-Ordering Artifacts from Compact-Object Pairing in Gravitational-Wave Populations",
+          "anchor": "radar-paper-2610-18962-v1",
+          "result": "推导证明质量排序坐标折叠无法凭空产生量纲特征尺度；若条件质量比峰值满足 $q_{\\rm peak}(m_1) = \\mu/m_1 \\propto m_1^{-1}$，则母体必存在真实的组分特征质量标度 $\\mu$。"
+        },
+        {
+          "arxiv_id": "2610.18972",
+          "revision": 1,
+          "title": "The Second Catalog of Low-Energy Fermi-LAT Sources",
+          "anchor": "radar-paper-2610-18972-v1",
+          "result": "在检验统计量 $TS > 25$ 下证认出 450 个 20–200 MeV 伽马射线源，中位能通量为 $\\tilde{F}_{20-200\\,\\mathrm{MeV}} = 1.90 \\times 10^{-11}\\,\\mathrm{erg\\,cm^{-2}\\,s^{-1}}$。"
+        }
+      ],
       "worth_knowing": [
         {
           "arxiv_id": "2610.18952",
@@ -8632,6 +8717,33 @@
           "revision": 1,
           "source_fingerprint": "f4375c4ca5b7dca7a4e3996cc45a8e63471bbfe9a1cbcb1412746c73ee6bf033",
           "guide_fingerprint": "66e0850696bc133a7641aaa25d31fcf15cee64942991a17278d54dfe530b794b"
+        }
+      ],
+      "skim_topics": [
+        {
+          "arxiv_id": "2610.18957",
+          "revision": 1,
+          "title": "TNGC-SIDM I: Evolution of massive cluster mergers under the self-interacting dark matter paradigm"
+        },
+        {
+          "arxiv_id": "2610.18960",
+          "revision": 1,
+          "title": "How JWST is Revolutionizing Our View of Early Galaxy Formation"
+        },
+        {
+          "arxiv_id": "2610.18964",
+          "revision": 1,
+          "title": "EMRIs in Kerr Spacetime: The Role of Inclination Diffusion"
+        },
+        {
+          "arxiv_id": "2610.18966",
+          "revision": 1,
+          "title": "Any colour you like: The diverse chromaticities of white dwarfs"
+        },
+        {
+          "arxiv_id": "2610.18968",
+          "revision": 1,
+          "title": "The Dance of the Little Red Dots: Spectroscopy of Two Blue Companions at z = 3.9 and 5.5 Reveals Young, Metal-Poor Starbursts Merging with Their LRDs within a Few Hundred Myr"
         }
       ],
       "skip": [

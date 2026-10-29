@@ -1,38 +1,67 @@
 {
   "schema_version": "astrolineage-arxiv-archive-manifest-v1",
-  "updated_at": "2026-10-27T18:38:22.598Z",
+  "updated_at": "2026-10-29T04:01:44.327Z",
   "total_weeks": 8,
-  "total_daily_editions": 36,
+  "total_daily_editions": 37,
   "latest_week_id": "2026-W44",
-  "latest_daily_date": "2026-10-26",
+  "latest_daily_date": "2026-10-27",
   "weeks": [
     {
       "week_id": "2026-W44",
       "title": "Weekly Scientific Lineage · 2026-W44",
       "date_range": "2026-10-26 ~ 2026-11-01",
       "has_weekly_summary": true,
-      "executive_summary": "The research across high-energy astrophysics this week delineates an interconnected physical lineage linking compact remnant central engines, dynamic outflows, non-thermal dissipation shocks, and multi-messenger neutrino/cosmic-ray channels.\n- **Collapsar Nucleosynthesis & Engine Wind Physics**: arXiv:2610.31758 establishes a fundamental conflict between magnetic unbinding and electron capture timescales in collapsar NDAFs, proving that black hole accretion winds under long-GRB constraints cannot produce heavy $r$-process material ($Y_{\\rm e}^{\\min} > 0.28$).\n- **Relativistic Jets & Extreme Gamma-Ray Bursts**: arXiv:2610.32861 demonstrates that the record-breaking GRB 260924A ($E_{\\gamma,\\mathrm{iso}} \\simeq 9.79\\times 10^{54}\\,\\mathrm{erg}$) demands an early thick-shell reverse-shock SSC origin for its LAT flux excess at $t \\sim 70-165\\,\\mathrm{s}$ and propagates into a stratified medium with profile $n(R) \\propto R^{-1.2}$.\n- **Fast X-ray Transients & Compact Object Multi-Phase Ingestion**: arXiv:2610.34217 shows that the off-nuclear transient EP241021a in a dwarf starburst galaxy originates from an intermediate-mass black hole ($M_{\\rm BH} \\lesssim 10^4\\,M_\\odot$) or a stellar-mass micro-TDE with repeating partial disruptions, while arXiv:2610.34810 demonstrates that EP251129a exhibits a dual-plateau structure governed sequentially by a supramassive millisecond magnetar collapsing into a black hole with subsequent fallback accretion injection ($E_{\\rm inj} \\simeq 6\\times 10^{51}\\,\\mathrm{erg}$).\n- **Binary Evolution Progenitors & Supernova Physics**: arXiv:2610.35539 confirms the missing evolutionary link of double neutron star progenitors via a $4.2\\text{-hour}$ stripped helium star orbited by a $M_2 = 1.58\\,M_\\odot$ compact object destined for a Type Ibn supernova explosion, and arXiv:2610.32323 formalizes a nebular-phase mid-infrared spectroscopic framework for JWST, yielding an iron-zone filling factor $f_{\\rm FeHe} = 0.059$ in SN 2024aecx.\n- **Multi-Messenger Signatures & Non-Thermal Acceleration**: arXiv:2610.35619 reports a $2.6\\sigma$ indication of the diffuse supernova neutrino background ($F_{\\bar{\\nu}_e} = 3.6^{+1.6}_{-1.5}\\,\\mathrm{cm}^{-2}\\,\\mathrm{s}^{-1}$ at $E_\\nu > 13.3\\,\\mathrm{MeV}$) using 5003 days of Super-Kamiokande data, while arXiv:2610.35675 details the engineering and sub-thermal Askaryan triggering capabilities of the PUEO mission across Antarctic ice sheets.",
+      "executive_summary": "This week's advances trace the full causal astrophysical chain from compact binary and collapsar engine progenitors to jet dissipation, non-thermal radiative kinetics, and diffuse multi-messenger backgrounds. \n- **Central Engines & Heavy Element Nucleosynthesis**: arXiv:2610.31758 proved analytically that collapsar neutrino-dominated accretion flows (NDAFs) cannot synthesize heavy $r$-process elements ($Y_{\\rm e} \\le 0.25$) because magnetic unbinding at $R_{\\rm unb} = 10\\,r_g$ accelerates the inflow velocity $v_{\\rm in}$, enforcing an integrated neutronization ceiling $\\mathcal{B}_{\\rm env} \\lesssim 0.51$ and setting a strict lower limit $Y_{\\rm e}^{\\min} > 0.28$.\n- **Relativistic Jets & Extreme Transients**: arXiv:2610.32861 established that the record-energetic burst GRB 260924A ($E_{\\gamma,\\mathrm{iso}} \\simeq 9.79\\times 10^{54}\\,\\mathrm{erg}$) drove a forward shock into a stratified circumstellar medium ($n \\propto R^{-1.2}$) and powered early GeV excess via thick-shell reverse-shock synchrotron self-Compton (SSC); arXiv:2610.37044 solved the non-steady-state kinetic cooling equation below the injection threshold $\\gamma_m$, deriving an exact broken power law $f_{\\rm U}(\\gamma_e, t) \\propto \\gamma_e^{-2} [1 + \\gamma_0(t)/\\gamma_e]^{-\\beta}$ for fast-cooled electrons in relativistic outflows.\n- **Fast X-ray Transients & Compact Accretion**: arXiv:2610.34217 resolved the off-nuclear ($0.95\\,\\mathrm{kpc}$) location of the month-duration transient EP241021a in a dwarf starburst galaxy, excluding standard collapsars in favor of an intermediate-mass black hole or micro-TDE partial disruption; arXiv:2610.34810 uncovered a double X-ray plateau in EP251129a, demonstrating a magnetar spin-down phase terminated by collapse to a black hole and subsequent fallback accretion energy injection ($E_{\\rm inj} \\simeq 6\\times 10^{51}\\,\\mathrm{erg}$).\n- **Progenitors & Binary Evolution**: arXiv:2610.35539 discovered an intermediate-mass stripped helium star orbiting a neutron star candidate with $P \\approx 4.2\\,\\mathrm{h}$, providing an empirical bridge for Case BB mass transfer leading to bound double neutron stars merging within $\\tau_{\\rm delay} \\approx 220\\,\\mathrm{Myr}$.\n- **Multi-Messenger Physics & Kinetic Microphysics**: arXiv:2610.35619 measured a $2.6\\sigma$ indication of the diffuse supernova neutrino background (DSNB) $\\bar{\\nu}_e$ flux of $3.6^{+1.6}_{-1.5}\\,\\mathrm{cm^{-2}\\,s^{-1}}$ ($E_\\nu > 13.3\\,\\mathrm{MeV}$) across 5003 days of Super-Kamiokande data; arXiv:2610.37214 demonstrated via 3D PIC simulations that flux rope mergers in relativistic reconnection generate coherent, 100% X-mode fast magnetosonic waves with efficiencies $\\eta \\sim (1\\text{--}2)\\times 10^{-3}$, validating a robust kinetic engine for coherent fast radio bursts.",
       "statistics": {
-        "total_analyzed": 150,
-        "must_read_count": 7,
-        "worth_knowing_count": 44,
-        "skip_count": 99
+        "total_analyzed": 236,
+        "must_read_count": 9,
+        "worth_knowing_count": 70,
+        "skip_count": 157
       },
-      "top_picks_count": 17,
+      "top_picks_count": 19,
       "days": [
+        {
+          "date": "2026-10-27",
+          "weekday": "Tue",
+          "week_id": "2026-W44",
+          "batch_id": "announcement-2026-10-27",
+          "total_papers": 85,
+          "analyzed_count": 85,
+          "must_read_count": 2,
+          "worth_knowing_count": 25,
+          "skip_count": 58,
+          "pending_count": 0,
+          "brief_status": "ready",
+          "brief_intro": "Featured reading: \"Discovery of a New Electron Spectrum Produced by Fast Cooling of Relativistic Electrons\" and 26 other key developments.",
+          "highlights": [
+            {
+              "arxiv_id": "2610.37044",
+              "priority": "must_read",
+              "title": "Discovery of a New Electron Spectrum Produced by Fast Cooling of Relativistic Electrons",
+              "reason": "The paper provides an analytical, unified fast-cooling electron spectrum $f_{\\rm U}(\\gamma_e, t) = A(t) \\gamma_e^{-2} [1 + \\gamma_0(t)/\\gamma_e]^{-\\beta}$ for non-steady relativistic jet systems (GRBs, blazars), solving the long-standing discrepancy from the standard steady-state $\\gamma_e^{-2}$ distribution below $\\gamma_m$."
+            },
+            {
+              "arxiv_id": "2610.37214",
+              "priority": "must_read",
+              "title": "Coherent Radio Emission from Flux Rope Mergers in 3D Relativistic Reconnection",
+              "reason": "This work presents 3D PIC simulations of coherent radio emission from flux rope mergers in relativistic reconnection with outflow boundary conditions and guide fields, directly testing FRB and pulsar emission engine models."
+            }
+          ],
+          "data_file": "daily/2026-10-27.json"
+        },
         {
           "date": "2026-10-26",
           "weekday": "Mon",
           "week_id": "2026-W44",
           "batch_id": "announcement-2026-10-26",
           "total_papers": 103,
-          "analyzed_count": 102,
+          "analyzed_count": 103,
           "must_read_count": 5,
-          "worth_knowing_count": 33,
+          "worth_knowing_count": 34,
           "skip_count": 64,
-          "pending_count": 1,
+          "pending_count": 0,
           "brief_status": "ready",
-          "brief_intro": "本期首看《EP241021a as An Off-nuclear Month-duration Transient in a Dwarf Starburst Galaxy》等 38 篇核心进展。",
+          "brief_intro": "本期首看《EP241021a as An Off-nuclear Month-duration Transient in a Dwarf Starburst Galaxy》等 39 篇核心进展。",
           "highlights": [
             {
               "arxiv_id": "2610.34217",

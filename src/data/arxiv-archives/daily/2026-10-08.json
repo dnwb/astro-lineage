@@ -17,6 +17,12 @@
     "status": "ready",
     "edition_fingerprint": "54df67c5d4baa942ca81a7c232a28cc0b45f74fd985d07443027e0c1c22a4814",
     "intro": "本期首看《Funnel Leakage of the Wien Fireball in the Early Nebula after a Binary Neutron Star Merger》等 13 篇核心进展。",
+    "focus_paper": {
+      "arxiv_id": "2610.12359",
+      "revision": 1,
+      "title": "Funnel Leakage of the Wien Fireball in the Early Nebula after a Binary Neutron Star Merger",
+      "anchor": "radar-paper-2610-12359-v1"
+    },
     "must_read": [
       {
         "arxiv_id": "2610.12359",
@@ -26,6 +32,29 @@
         "label": "Funnel Leakage of the Wien Fireball in the Early Nebula after a Binary Neutron Star Merger",
         "text": "研究表明早期星云由饱和正负对级联主导，平衡态正负对数 $N_{\\pm}=\\left[16 Y L_{\\rm sd} V/(3\\sigma_T m_e c^3)\\right]^{1/2}$ 导致极高散射光学深度 $\\tau_{\\rm n} \\sim 10^3$，康普顿参数 $y \\gg 1$ 使辐射场演化为化学势 $\\mu_\\gamma < 0$ 的 Wien 火球（温度 $kT_{\\rm C} \\simeq \\Lambda kT_{\\bb} \\sim 10\\,\\mathrm{keV}$）。",
         "anchor": "radar-paper-2610-12359-v1"
+      }
+    ],
+    "key_highlights": [
+      {
+        "arxiv_id": "2610.10681",
+        "revision": 1,
+        "title": "Wind-Fed Magnetic Flux and the Emergence of X-ray Coronae in Active Galactic Nuclei",
+        "anchor": "radar-paper-2610-10681-v1",
+        "result": "推导了日冕磁饱和半径 $r_c/r_g \\simeq (r_0/r_g) q_c^{1/(p-g)} \\sim 10\\,r_g$、内部饱和磁通标度 $B_r \\propto r^{-2}$ 及归一化磁通 $\\phi \\sim 50$（与 MAD 饱和平台相符）。"
+      },
+      {
+        "arxiv_id": "2610.10685",
+        "revision": 1,
+        "title": "Neutrino flavor conversion alters the lepton-emission self-sustained asymmetry in core-collapse supernovae",
+        "anchor": "radar-paper-2610-10685-v1",
+        "result": "中微子味转化在 $\\bar{\\nu}_e$ 过剩的南极区域最为显著；味转化引起电子轻子数（ELN）单极矩 $n_{\\mathrm{ELN}}^{(0)}$ 出现净亏损，使外边界归一化 ELN 偶极矩 $d_{\\mathrm{ELN}} = n_{\\mathrm{ELN}}^{(1)} / n_{\\mathrm{ELN}}^{(0)}$ 在 $r \\gtrsim 30\\,\\mathrm{km}$ 处增强约 $5\\% \\text{--} 10\\%$，且该增强效应独立于中微子质量排序。"
+      },
+      {
+        "arxiv_id": "2610.10951",
+        "revision": 1,
+        "title": "Flux Dependence of the 1\\,keV Soft X-ray Feature in SAX J1808.4-3658 with \\textit{NICER}",
+        "anchor": "radar-paper-2610-10951-v1",
+        "result": "在 0.9--1.0 keV 探测到的软 X 射线特征与源亮度紧密耦合：2019 年高斯线归一化与计数率 ($r=0.8^{+0.1}_{-0.3}$)、主连续谱通量 ($r=0.9\\pm0.1$)、黑体通量 ($r=0.8\\pm0.1$) 及反射通量 ($r=0.7^{+0.1}_{-0.2}$) 呈显著正相关；2022 年同样与连续谱 ($r=0.9\\pm0.1$) 和黑体通量 ($r=0.9\\pm0.1$) 强相关，但与反射通量相关性不显著 ($r=0.1^{+0.5}_{-0.6}$)。"
       }
     ],
     "worth_knowing": [
@@ -100,6 +129,33 @@
         "revision": 1,
         "source_fingerprint": "881a5303d23b7f432be0998d555eb946f119382fe78da4874f6be5b9ba84ffc3",
         "guide_fingerprint": "e7fd5e4a0b55124d1b75b0a5869d4c936b3c2e1af74530aae5fa349c72403db8"
+      }
+    ],
+    "skim_topics": [
+      {
+        "arxiv_id": "2610.10669",
+        "revision": 1,
+        "title": "Impact of site-dependent noise configurations on Einstein Telescope science at low frequency"
+      },
+      {
+        "arxiv_id": "2610.10675",
+        "revision": 1,
+        "title": "Kinematic and Dynamical Properties of Solar Neighborhood White Dwarfs from SDSS DR19 and Gaia DR3"
+      },
+      {
+        "arxiv_id": "2610.10676",
+        "revision": 1,
+        "title": "Global and Local Infall in the ASHES Sample (GLASHES). III. Physical Parameters of Contracting Motion onto Dense Cores in 70 $μ$m Dark Massive Clumps"
+      },
+      {
+        "arxiv_id": "2610.10680",
+        "revision": 1,
+        "title": "Exemplary Merging Clusters II: XMM-Newton and Chandra X-ray Observations of MACS J1752.0+4440 and ZwCl 1856.8+6616"
+      },
+      {
+        "arxiv_id": "2610.10683",
+        "revision": 1,
+        "title": "A Multi-dimensional Analysis of the Open Clusters NGC 2423 and NGC 2482 with Gaia DR3"
       }
     ],
     "skip": [
@@ -6687,6 +6743,12 @@
       "status": "ready",
       "edition_fingerprint": "54df67c5d4baa942ca81a7c232a28cc0b45f74fd985d07443027e0c1c22a4814",
       "intro": "本期首看《Funnel Leakage of the Wien Fireball in the Early Nebula after a Binary Neutron Star Merger》等 13 篇核心进展。",
+      "focus_paper": {
+        "arxiv_id": "2610.12359",
+        "revision": 1,
+        "title": "Funnel Leakage of the Wien Fireball in the Early Nebula after a Binary Neutron Star Merger",
+        "anchor": "radar-paper-2610-12359-v1"
+      },
       "must_read": [
         {
           "arxiv_id": "2610.12359",
@@ -6696,6 +6758,29 @@
           "label": "Funnel Leakage of the Wien Fireball in the Early Nebula after a Binary Neutron Star Merger",
           "text": "研究表明早期星云由饱和正负对级联主导，平衡态正负对数 $N_{\\pm}=\\left[16 Y L_{\\rm sd} V/(3\\sigma_T m_e c^3)\\right]^{1/2}$ 导致极高散射光学深度 $\\tau_{\\rm n} \\sim 10^3$，康普顿参数 $y \\gg 1$ 使辐射场演化为化学势 $\\mu_\\gamma < 0$ 的 Wien 火球（温度 $kT_{\\rm C} \\simeq \\Lambda kT_{\\bb} \\sim 10\\,\\mathrm{keV}$）。",
           "anchor": "radar-paper-2610-12359-v1"
+        }
+      ],
+      "key_highlights": [
+        {
+          "arxiv_id": "2610.10681",
+          "revision": 1,
+          "title": "Wind-Fed Magnetic Flux and the Emergence of X-ray Coronae in Active Galactic Nuclei",
+          "anchor": "radar-paper-2610-10681-v1",
+          "result": "推导了日冕磁饱和半径 $r_c/r_g \\simeq (r_0/r_g) q_c^{1/(p-g)} \\sim 10\\,r_g$、内部饱和磁通标度 $B_r \\propto r^{-2}$ 及归一化磁通 $\\phi \\sim 50$（与 MAD 饱和平台相符）。"
+        },
+        {
+          "arxiv_id": "2610.10685",
+          "revision": 1,
+          "title": "Neutrino flavor conversion alters the lepton-emission self-sustained asymmetry in core-collapse supernovae",
+          "anchor": "radar-paper-2610-10685-v1",
+          "result": "中微子味转化在 $\\bar{\\nu}_e$ 过剩的南极区域最为显著；味转化引起电子轻子数（ELN）单极矩 $n_{\\mathrm{ELN}}^{(0)}$ 出现净亏损，使外边界归一化 ELN 偶极矩 $d_{\\mathrm{ELN}} = n_{\\mathrm{ELN}}^{(1)} / n_{\\mathrm{ELN}}^{(0)}$ 在 $r \\gtrsim 30\\,\\mathrm{km}$ 处增强约 $5\\% \\text{--} 10\\%$，且该增强效应独立于中微子质量排序。"
+        },
+        {
+          "arxiv_id": "2610.10951",
+          "revision": 1,
+          "title": "Flux Dependence of the 1\\,keV Soft X-ray Feature in SAX J1808.4-3658 with \\textit{NICER}",
+          "anchor": "radar-paper-2610-10951-v1",
+          "result": "在 0.9--1.0 keV 探测到的软 X 射线特征与源亮度紧密耦合：2019 年高斯线归一化与计数率 ($r=0.8^{+0.1}_{-0.3}$)、主连续谱通量 ($r=0.9\\pm0.1$)、黑体通量 ($r=0.8\\pm0.1$) 及反射通量 ($r=0.7^{+0.1}_{-0.2}$) 呈显著正相关；2022 年同样与连续谱 ($r=0.9\\pm0.1$) 和黑体通量 ($r=0.9\\pm0.1$) 强相关，但与反射通量相关性不显著 ($r=0.1^{+0.5}_{-0.6}$)。"
         }
       ],
       "worth_knowing": [
@@ -6770,6 +6855,33 @@
           "revision": 1,
           "source_fingerprint": "881a5303d23b7f432be0998d555eb946f119382fe78da4874f6be5b9ba84ffc3",
           "guide_fingerprint": "e7fd5e4a0b55124d1b75b0a5869d4c936b3c2e1af74530aae5fa349c72403db8"
+        }
+      ],
+      "skim_topics": [
+        {
+          "arxiv_id": "2610.10669",
+          "revision": 1,
+          "title": "Impact of site-dependent noise configurations on Einstein Telescope science at low frequency"
+        },
+        {
+          "arxiv_id": "2610.10675",
+          "revision": 1,
+          "title": "Kinematic and Dynamical Properties of Solar Neighborhood White Dwarfs from SDSS DR19 and Gaia DR3"
+        },
+        {
+          "arxiv_id": "2610.10676",
+          "revision": 1,
+          "title": "Global and Local Infall in the ASHES Sample (GLASHES). III. Physical Parameters of Contracting Motion onto Dense Cores in 70 $μ$m Dark Massive Clumps"
+        },
+        {
+          "arxiv_id": "2610.10680",
+          "revision": 1,
+          "title": "Exemplary Merging Clusters II: XMM-Newton and Chandra X-ray Observations of MACS J1752.0+4440 and ZwCl 1856.8+6616"
+        },
+        {
+          "arxiv_id": "2610.10683",
+          "revision": 1,
+          "title": "A Multi-dimensional Analysis of the Open Clusters NGC 2423 and NGC 2482 with Gaia DR3"
         }
       ],
       "skip": [

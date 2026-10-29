@@ -7,16 +7,22 @@
   "generated_at": "2026-10-27T18:00:00.997Z",
   "counts": {
     "total": 103,
-    "analyzed": 102,
+    "analyzed": 103,
     "must_read": 5,
-    "worth_knowing": 33,
+    "worth_knowing": 34,
     "skip": 64,
-    "pending": 1
+    "pending": 0
   },
   "opening_brief": {
     "status": "ready",
     "edition_fingerprint": "8c56feb57f9b23293f6e0169d09669899fe1187009e11eddd1c4d972dd29149a",
-    "intro": "本期首看《EP241021a as An Off-nuclear Month-duration Transient in a Dwarf Starburst Galaxy》等 38 篇核心进展。",
+    "intro": "本期首看《EP241021a as An Off-nuclear Month-duration Transient in a Dwarf Starburst Galaxy》等 39 篇核心进展。",
+    "focus_paper": {
+      "arxiv_id": "2610.34217",
+      "revision": 1,
+      "title": "EP241021a as An Off-nuclear Month-duration Transient in a Dwarf Starburst Galaxy",
+      "anchor": "radar-paper-2610-34217-v1"
+    },
     "must_read": [
       {
         "arxiv_id": "2610.34217",
@@ -62,6 +68,29 @@
         "label": "The design and flight of the Payload for Ultrahigh Energy Observations (PUEO)",
         "text": "PUEO successfully operated during a 23-day Antarctic flight with an average livetime fraction of $\\sim 55\\%$ (limited by thermal constraints to keep RFSoC temperatures below $80^\\circ\\mathrm{C}$), collecting $114,046,211$ RF trigger events.",
         "anchor": "radar-paper-2610-35675-v1"
+      }
+    ],
+    "key_highlights": [
+      {
+        "arxiv_id": "2610.33161",
+        "revision": 1,
+        "title": "SN Ares: A Strongly Lensed Type IIb Supernova at $\\mathbf{z=1.276}$ with a Predicted 70-Year Time Delay",
+        "anchor": "radar-paper-2610-33161-v1",
+        "result": "SN Ares is spectroscopically classified as a Type IIb core-collapse supernova at $z_{\\rm spec} = 1.276 \\pm 0.002$ magnified by $\\mu \\approx 4.6 - 5.6$."
+      },
+      {
+        "arxiv_id": "2610.33163",
+        "revision": 1,
+        "title": "Wolf-Rayet Stars in M33: The Impact of Stellar Crowding on Spectral Classification and Mass-Loss Diagnostics",
+        "anchor": "radar-paper-2610-33163-v1",
+        "result": "In M33, approximately 27% (33/123) of WR stars suffer moderate-to-severe continuum dilution ($F_{\\rm WR} < 0.85$, with very crowded sources having $F_{\\rm WR} \\lesssim 0.50$ and optical equivalent widths diluted by a factor of $\\gtrsim 2$)."
+      },
+      {
+        "arxiv_id": "2610.33297",
+        "revision": 1,
+        "title": "Initial Conditions of Magnetized AGN Accretion Disks from Cloud Capture and Disruption",
+        "anchor": "radar-paper-2610-33297-v1",
+        "result": "The initial disk formed at the circularization radius $r_t$ is toroidally magnetically dominated with $\\beta \\ll 1$ and $|B_\\phi| \\gg |B_z|, |B_R|$."
       }
     ],
     "worth_knowing": [
@@ -228,6 +257,12 @@
         "guide_fingerprint": "b767ddd9ecbf98afdb2f2cd2818df4d4a77f0192750d3584bcbdae6f643c71db"
       },
       {
+        "arxiv_id": "2610.35181",
+        "revision": 1,
+        "source_fingerprint": "e5a85a29f5a0d4f8982c7fbabdde86874a8b4afaa2a045a2170e3a99ea2289d7",
+        "guide_fingerprint": "04cd48c599b04368c4f27808ed8e42dd88c29845f6ceb66dcdf26e2d7d202733"
+      },
+      {
         "arxiv_id": "2610.35379",
         "revision": 1,
         "source_fingerprint": "495bf21522aad8b8db32e59d9405847bdedd52cf05a1cef0545123f4e8e1b626",
@@ -262,6 +297,33 @@
         "revision": 1,
         "source_fingerprint": "cb9107930b3f5f7b82cb4af0319ecfdca24d662a3eee4136e9b0c379d76904cf",
         "guide_fingerprint": "a51891b486e6c79d83e5f93694cb3f5bff1898aa18aede9b22bc1cf7801701c0"
+      }
+    ],
+    "skim_topics": [
+      {
+        "arxiv_id": "2610.33154",
+        "revision": 1,
+        "title": "A Composite Rest-Frame UV Spectrum of Galaxies at $5.7 < z < 6.9$: Ionization, Outflows, and Implications for Intergalactic Metal Enrichment"
+      },
+      {
+        "arxiv_id": "2610.33155",
+        "revision": 1,
+        "title": "$El\\ Ascua$: An ultra-luminous, radio-loud, Compton-thick AGN at $z\\sim 3.8$ hiding in plain sight revealed by MINERVA multi-band MIRI observations"
+      },
+      {
+        "arxiv_id": "2610.33157",
+        "revision": 1,
+        "title": "Dark Matter and MOND successes and degeneracies in reproducing SPARC rotation curves and weak lensing data"
+      },
+      {
+        "arxiv_id": "2610.33159",
+        "revision": 1,
+        "title": "Assessing the detectability of a realistic massive black hole binary population in LSST"
+      },
+      {
+        "arxiv_id": "2610.33162",
+        "revision": 1,
+        "title": "The Hosts and Mass Distribution Function of the Most Massive Black Holes: Implications for the nHz Gravitational Wave Background"
       }
     ],
     "skip": [
@@ -845,6 +907,12 @@
       "priority": "worth_knowing",
       "title": "The biases caused by interpolated table models and their impact on X-ray spectroscopy",
       "reason": "The paper demonstrates that linear interpolation in pre-computed X-ray table models (e.g., Relxill, kerrbb) introduces severe likelihood distortions, parameter biases, and artificial multimodality in Bayesian and gradient-based spectral fitting. This directly impacts parameter inference and reflection modeling for compact objects and relativistic transients."
+    },
+    {
+      "arxiv_id": "2610.35181",
+      "priority": "worth_knowing",
+      "title": "Investigating supernova-remnant X-ray maps with dendrogram-based techniques",
+      "reason": "The paper develops multivariate hierarchical clustering (ALCA, SVHC) and graph neural network (GNN) techniques to map supernova remnant (SNR) X-ray line emission and equivalent width (EW) images, successfully grouping CC SNRs (Cas A, G292.0+1.8) apart from Type Ia SNRs (Tycho, Kepler) and constraining the progenitor nature of W49B."
     },
     {
       "arxiv_id": "2610.35379",
@@ -8766,10 +8834,93 @@
       {
         "arxiv_id": "2610.35181",
         "revision": 1,
+        "status": "ready",
         "source_fingerprint": "e5a85a29f5a0d4f8982c7fbabdde86874a8b4afaa2a045a2170e3a99ea2289d7",
-        "status": "failed",
-        "failure_reason": "The operation was aborted due to timeout",
-        "priority": "worth_knowing"
+        "priority": "worth_knowing",
+        "coverage": {
+          "level": "body_partial",
+          "label": "已检查正文中支撑判断的指定章节",
+          "source_version": "arXiv:2610.35181v1",
+          "inspected_sections": [
+            "Introduction",
+            "Data",
+            "Observations and dataset creation",
+            "Synthetic observations from the 3D model",
+            "Data pre-processing",
+            "Methods",
+            "Multivariate-analysis similarity measures",
+            "Dendrogram-based techniques",
+            "Deep-learning graph-based approach",
+            "Results",
+            "Single SNR investigation",
+            "Multiple SNR investigation",
+            "Computational costs",
+            "Discussion and conclusions",
+            "Other Supernova Remnants"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_source_package",
+              "url": "https://export.arxiv.org/src/2610.35181v1",
+              "locator": "Introduction; Data; Observations and dataset creation; Synthetic observations from the 3D model; Data pre-processing; Methods; Multivariate-analysis similarity measures; Dendrogram-based techniques; Deep-learning graph-based approach; Results; Single SNR investigation; Multiple SNR investigation; Computational costs; Discussion and conclusions; Other Supernova Remnants",
+              "description": "Complete, revision-matched arXiv TeX source package",
+              "sha256": "622ef5664dcfaaeb5dd749efa36df1ff2ff1256f40c99ce976648c7a40d642fd"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "gpt-6-luna",
+          "analyzed_at": "2026-10-28T02:01:43.818Z",
+          "reason": "The paper develops multivariate hierarchical clustering (ALCA, SVHC) and graph neural network (GNN) techniques to map supernova remnant (SNR) X-ray line emission and equivalent width (EW) images, successfully grouping CC SNRs (Cas A, G292.0+1.8) apart from Type Ia SNRs (Tycho, Kepler) and constraining the progenitor nature of W49B.",
+          "result": "The dendrogram and GNN embedding analyses reveal distinct elemental spatial co-locations (e.g. $\\mathrm{Si}$ with $\\mathrm{S}$, $\\mathrm{Ar}$ with $\\mathrm{Ca}$, and $\\mathrm{Fe\\;XXV}$ with $\\mathrm{Ni\\;XXVI}$) and demonstrate that W49B clusters closer to core-collapse (CC) SNRs (Cas A, G292.0+1.8) than to Type Ia SNRs (Tycho, Kepler). Computing runtime scales from $15937.0\\;\\mathrm{ms}$ for GNN and $16962.7\\;\\mathrm{ms}$ for cosine-distance HC to $1365064.8\\;\\mathrm{ms}$ for bootstrap-validated SVHC over a 50-band dataset.",
+          "reading_entry": "Results",
+          "problem": "Unraveling the spatial and chemical distribution of ejecta, decoupling nucleosynthetic stratification from non-equilibrium ionization and temperature effects, and distinguishing progenitor types (CC vs. Type Ia, particularly for ambiguous remnants like W49B).",
+          "method": "Analysis of Chandra ACIS narrow-band and equivalent width ($EW = (F_{\\mathrm{line}} - F_{\\mathrm{cont}}) / F_{\\mathrm{cont}}$) maps alongside 3D hydrodynamic (HD) simulated thermal emission ($EM_j = n_{\\mathrm{e},j} n_{\\mathrm{Z},j} V_j$, ionization age $\\tau_j = n_{\\mathrm{e},j} \\Delta t_j$) using cosine distance $d_{ij}^{\\mathrm{cos}} = 1 - \\rho_{ij}^{\\mathrm{cos}}$, Frobenius matrix distance $d_{ij} = \\sqrt{2(1 - \\rho_{ij})}$, and GNN link-prediction loss $\\mathcal{L} = - \\sum_{(i,j) \\in \\mathcal{E}^+} \\log \\sigma(s_{ij}) - \\sum_{(i,j) \\in \\mathcal{E}^-} \\log (1 - \\sigma(s_{ij}))$ with $s_{ij} = z_i^\\top z_j$.",
+          "assumptions": [
+            "EW maps depend linearly on elemental abundances, with secondary modulations by electron temperature, column density, and ionization age."
+          ],
+          "limits": [
+            "Multi-SNR clustering is predominantly driven by remnant-specific morphological identity before higher-level hierarchy emerges."
+          ],
+          "citation_leads": [
+            "Data: “EW maps depend linearly on the abundances, but they are also affected by the temperature, column density, and ionization parameter.”",
+            "Data: “The ionization state of the plasma is characterized by the ionization age $\\tau_{\\rm j} = n_{\\rm e,j} \\Delta t_{\\rm j}$, where $\\Delta t_{\\rm j}$ represents the time elapsed since the plasma in the cell was shocked.”",
+            "Methods: “To build the graph, we treated each SNR image as a node, while edges were established following a k-nearest-neighbor (Knn) strategy. Specifically, for each node, we connected it to its $k$ closest neighbors according to the cosine distance”",
+            "Results: “Both dendrograms show that the main driver of the clustering is the membership to a given SNR. However, the hierarchies shown in the dendrograms are still quite informative. In particular, it is worth noticing that the X-ray narrow-band”"
+          ],
+          "research_progress": "Establishes an automated, quantitative dendrogram and GNN framework capable of classifying SNR morphology and ejecta nucleosynthesis without relying on subjective visual inspection or computationally expensive full-remnant spatially resolved spectral fitting grids.",
+          "figures": [
+            {
+              "url": "/arxiv-figures/2610.35181/GNNdendro.png",
+              "caption": "Figure 7: Analysis of the Chandra X-ray flux maps of all the remnants analyzed in this paper. The panel shows the dendrogram obtained using the GNN embeddings ($k=6$), followed by the application of average linkage with Euclidean distance.",
+              "label": "Fig. 7",
+              "category": "observational",
+              "category_badge": "Key Observational Evidence",
+              "physical_core": "Compares dendrograms of Chandra X-ray flux maps across the remnants, showing how their narrow-band emission maps group by similarity. The paper reports strong similarities between Tycho’s and Kepler’s SNRs, and between Cassiopeia A and G292.0+1.8, with W49B more similar to the latter pair.",
+              "is_schematic": false
+            },
+            {
+              "url": "/arxiv-figures/2610.35181/GNN_EW6.png",
+              "caption": "Figure 9: Analysis of the Chandra X-ray EW maps of all the remnants analyzed in this paper. The panel shows the dendrogram obtained using the GNN embeddings ($k=6$), followed by the application of average linkage with Euclidean distance.",
+              "label": "Fig. 9",
+              "category": "observational",
+              "category_badge": "Key Observational Evidence",
+              "physical_core": "Compares dendrograms of Chandra X-ray equivalent-width maps across all remnants. The paper uses these maps to assess similarities related to the spatial distribution of chemical species and plasma temperature.",
+              "is_schematic": false
+            }
+          ],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed.",
+            "Figures from source package have not undergone visual verification."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        }
       },
       {
         "arxiv_id": "2610.35196",
@@ -10680,7 +10831,13 @@
     "opening_brief": {
       "status": "ready",
       "edition_fingerprint": "8c56feb57f9b23293f6e0169d09669899fe1187009e11eddd1c4d972dd29149a",
-      "intro": "本期首看《EP241021a as An Off-nuclear Month-duration Transient in a Dwarf Starburst Galaxy》等 38 篇核心进展。",
+      "intro": "本期首看《EP241021a as An Off-nuclear Month-duration Transient in a Dwarf Starburst Galaxy》等 39 篇核心进展。",
+      "focus_paper": {
+        "arxiv_id": "2610.34217",
+        "revision": 1,
+        "title": "EP241021a as An Off-nuclear Month-duration Transient in a Dwarf Starburst Galaxy",
+        "anchor": "radar-paper-2610-34217-v1"
+      },
       "must_read": [
         {
           "arxiv_id": "2610.34217",
@@ -10726,6 +10883,29 @@
           "label": "The design and flight of the Payload for Ultrahigh Energy Observations (PUEO)",
           "text": "PUEO successfully operated during a 23-day Antarctic flight with an average livetime fraction of $\\sim 55\\%$ (limited by thermal constraints to keep RFSoC temperatures below $80^\\circ\\mathrm{C}$), collecting $114,046,211$ RF trigger events.",
           "anchor": "radar-paper-2610-35675-v1"
+        }
+      ],
+      "key_highlights": [
+        {
+          "arxiv_id": "2610.33161",
+          "revision": 1,
+          "title": "SN Ares: A Strongly Lensed Type IIb Supernova at $\\mathbf{z=1.276}$ with a Predicted 70-Year Time Delay",
+          "anchor": "radar-paper-2610-33161-v1",
+          "result": "SN Ares is spectroscopically classified as a Type IIb core-collapse supernova at $z_{\\rm spec} = 1.276 \\pm 0.002$ magnified by $\\mu \\approx 4.6 - 5.6$."
+        },
+        {
+          "arxiv_id": "2610.33163",
+          "revision": 1,
+          "title": "Wolf-Rayet Stars in M33: The Impact of Stellar Crowding on Spectral Classification and Mass-Loss Diagnostics",
+          "anchor": "radar-paper-2610-33163-v1",
+          "result": "In M33, approximately 27% (33/123) of WR stars suffer moderate-to-severe continuum dilution ($F_{\\rm WR} < 0.85$, with very crowded sources having $F_{\\rm WR} \\lesssim 0.50$ and optical equivalent widths diluted by a factor of $\\gtrsim 2$)."
+        },
+        {
+          "arxiv_id": "2610.33297",
+          "revision": 1,
+          "title": "Initial Conditions of Magnetized AGN Accretion Disks from Cloud Capture and Disruption",
+          "anchor": "radar-paper-2610-33297-v1",
+          "result": "The initial disk formed at the circularization radius $r_t$ is toroidally magnetically dominated with $\\beta \\ll 1$ and $|B_\\phi| \\gg |B_z|, |B_R|$."
         }
       ],
       "worth_knowing": [
@@ -10892,6 +11072,12 @@
           "guide_fingerprint": "b767ddd9ecbf98afdb2f2cd2818df4d4a77f0192750d3584bcbdae6f643c71db"
         },
         {
+          "arxiv_id": "2610.35181",
+          "revision": 1,
+          "source_fingerprint": "e5a85a29f5a0d4f8982c7fbabdde86874a8b4afaa2a045a2170e3a99ea2289d7",
+          "guide_fingerprint": "04cd48c599b04368c4f27808ed8e42dd88c29845f6ceb66dcdf26e2d7d202733"
+        },
+        {
           "arxiv_id": "2610.35379",
           "revision": 1,
           "source_fingerprint": "495bf21522aad8b8db32e59d9405847bdedd52cf05a1cef0545123f4e8e1b626",
@@ -10926,6 +11112,33 @@
           "revision": 1,
           "source_fingerprint": "cb9107930b3f5f7b82cb4af0319ecfdca24d662a3eee4136e9b0c379d76904cf",
           "guide_fingerprint": "a51891b486e6c79d83e5f93694cb3f5bff1898aa18aede9b22bc1cf7801701c0"
+        }
+      ],
+      "skim_topics": [
+        {
+          "arxiv_id": "2610.33154",
+          "revision": 1,
+          "title": "A Composite Rest-Frame UV Spectrum of Galaxies at $5.7 < z < 6.9$: Ionization, Outflows, and Implications for Intergalactic Metal Enrichment"
+        },
+        {
+          "arxiv_id": "2610.33155",
+          "revision": 1,
+          "title": "$El\\ Ascua$: An ultra-luminous, radio-loud, Compton-thick AGN at $z\\sim 3.8$ hiding in plain sight revealed by MINERVA multi-band MIRI observations"
+        },
+        {
+          "arxiv_id": "2610.33157",
+          "revision": 1,
+          "title": "Dark Matter and MOND successes and degeneracies in reproducing SPARC rotation curves and weak lensing data"
+        },
+        {
+          "arxiv_id": "2610.33159",
+          "revision": 1,
+          "title": "Assessing the detectability of a realistic massive black hole binary population in LSST"
+        },
+        {
+          "arxiv_id": "2610.33162",
+          "revision": 1,
+          "title": "The Hosts and Mass Distribution Function of the Most Massive Black Holes: Implications for the nHz Gravitational Wave Background"
         }
       ],
       "skip": [

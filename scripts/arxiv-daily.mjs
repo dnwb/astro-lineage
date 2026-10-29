@@ -2127,13 +2127,17 @@ async function readRunState(artifactRoot) {
 async function readAuthoritativeRunState(artifactRoot) {
   const root = resolve(artifactRoot);
   const statePath = join(root, "run-state.json");
-  const published = await readPublishedFileSet({
-    pointerPath: join(root, "current-generation.json"),
-    generationRoot: join(root, "generations"),
-    targets: [statePath],
-    allowRecovery: false,
-  });
-  if (published) return parseRunState(published.files.get(statePath));
+  try {
+    const published = await readPublishedFileSet({
+      pointerPath: join(root, "current-generation.json"),
+      generationRoot: join(root, "generations"),
+      targets: [statePath],
+      allowRecovery: false,
+    });
+    if (published?.files?.has(statePath)) return parseRunState(published.files.get(statePath));
+  } catch (error) {
+    if (error?.code !== "ARXIV_PUBLISH_INCOMPLETE") throw error;
+  }
   return readRunState(root);
 }
 

@@ -17,6 +17,12 @@
     "status": "ready",
     "edition_fingerprint": "dea601733798dfba85bafbc02444fab40c9b5cbb6409a6285adbdca9ee5d23aa",
     "intro": "本期首看《Study of the Ultra-Long GRB 220627A: Exploring a Possible Blue Supergiant Collapsar Origin》等 12 篇核心进展。",
+    "focus_paper": {
+      "arxiv_id": "2610.02889",
+      "revision": 1,
+      "title": "Study of the Ultra-Long GRB 220627A: Exploring a Possible Blue Supergiant Collapsar Origin",
+      "anchor": "radar-paper-2610-02889-v1"
+    },
     "must_read": [
       {
         "arxiv_id": "2610.02889",
@@ -53,6 +59,29 @@
         "label": "Comparing the size evolution of GRB 221009A with afterglow models",
         "text": "联合5与8 GHz尺寸数据得到 $s(t)=s_0(t/t_0)^a$，其中 $t_0=90\\,\\mathrm{d}$、$a=0.52^{+0.14}_{-0.12}$，误差为68%可信区间；膨胀显著性约为 $4.5\\sigma$。",
         "anchor": "radar-paper-2610-02988-v1"
+      }
+    ],
+    "key_highlights": [
+      {
+        "arxiv_id": "2610.02332",
+        "revision": 1,
+        "title": "Neutrino flavor instabilities intermediate between slow and fast",
+        "anchor": "radar-paper-2610-02332-v1",
+        "result": "在角分布坡度族的 $(\\eta_F,s)$ 平面中，$s=\\omega_{\\max}/\\mu$，能量积分 ELN 满足 $G(v)\\propto0.8+\\eta_F(v-1/2)$，其内部交叉阈值为 $\\eta_F>8/15$。"
+      },
+      {
+        "arxiv_id": "2610.02429",
+        "revision": 1,
+        "title": "Extending the Pulsar radio population through Quantum Vacuum Cherenkov Emission",
+        "anchor": "radar-paper-2610-02429-v1",
+        "result": "在作者的真空间隙模型及发射几何假设下，量子真空 Cherenkov（QC）通道给出 $h_{\\rm QC}\\simeq\\ell_{\\rm acc}=4.7P^{1/2}B_*^{-1}(\\sin\\theta_{\\perp,e})^{-1/2}\\,\\mathrm{cm}$，以及 $\\Delta V=6.1\\times10^7B_*^{-1}(\\sin\\theta_{\\perp,e})^{-1}\\,\\mathrm{V}$，其中 $B_*=B/B_S$、$B_S\\simeq4.41\\times10^{13}\\,\\mathrm{G}$，周期按秒计。"
+      },
+      {
+        "arxiv_id": "2610.02475",
+        "revision": 1,
+        "title": "Suppression of spiral density waves in collisionless accretion flows",
+        "anchor": "radar-paper-2610-02475-v1",
+        "result": "层流方位磁场中，$k_yv_{\\rm th,i}\\gtrsim10\\Omega$ 的螺旋密度波受到强Landau/Barnes阻尼，但MRI主要激发的 $k_yv_{\\rm th,i}\\sim\\Omega$ 波几乎不受该机制影响；微不稳定性诱发的粒子散射则可引入显著黏性耗散。"
       }
     ],
     "worth_knowing": [
@@ -103,6 +132,33 @@
         "revision": 1,
         "source_fingerprint": "5ba97f60a065d58483911a9a88c364360f7a54a21cf190872177514653d6bef5",
         "guide_fingerprint": "5d9e78e3d61f8e65635702f957ef418f19c6d787f7542664b2b078004fa73268"
+      }
+    ],
+    "skim_topics": [
+      {
+        "arxiv_id": "2610.02308",
+        "revision": 1,
+        "title": "Towards robust simulations of the galactic dynamo: a cross-code comparison between Eulerian and Lagrangian schemes"
+      },
+      {
+        "arxiv_id": "2610.02317",
+        "revision": 1,
+        "title": "Chaotic signatures in extreme-mass-ratio systems surrounded by bosonic environments"
+      },
+      {
+        "arxiv_id": "2610.02328",
+        "revision": 1,
+        "title": "Inferring magnetic field strengths in high-redshift lensing galaxies from Faraday rotation measure observations"
+      },
+      {
+        "arxiv_id": "2610.02367",
+        "revision": 1,
+        "title": "Full orbital solution and dynamical masses for a new shell-Be + sdOB binary AN Col"
+      },
+      {
+        "arxiv_id": "2610.02389",
+        "revision": 1,
+        "title": "Collapse-accelerated small-scale dynamos in the first stars and galaxies"
       }
     ],
     "skip": [
@@ -3794,6 +3850,12 @@
       "status": "ready",
       "edition_fingerprint": "dea601733798dfba85bafbc02444fab40c9b5cbb6409a6285adbdca9ee5d23aa",
       "intro": "本期首看《Study of the Ultra-Long GRB 220627A: Exploring a Possible Blue Supergiant Collapsar Origin》等 12 篇核心进展。",
+      "focus_paper": {
+        "arxiv_id": "2610.02889",
+        "revision": 1,
+        "title": "Study of the Ultra-Long GRB 220627A: Exploring a Possible Blue Supergiant Collapsar Origin",
+        "anchor": "radar-paper-2610-02889-v1"
+      },
       "must_read": [
         {
           "arxiv_id": "2610.02889",
@@ -3830,6 +3892,29 @@
           "label": "Comparing the size evolution of GRB 221009A with afterglow models",
           "text": "联合5与8 GHz尺寸数据得到 $s(t)=s_0(t/t_0)^a$，其中 $t_0=90\\,\\mathrm{d}$、$a=0.52^{+0.14}_{-0.12}$，误差为68%可信区间；膨胀显著性约为 $4.5\\sigma$。",
           "anchor": "radar-paper-2610-02988-v1"
+        }
+      ],
+      "key_highlights": [
+        {
+          "arxiv_id": "2610.02332",
+          "revision": 1,
+          "title": "Neutrino flavor instabilities intermediate between slow and fast",
+          "anchor": "radar-paper-2610-02332-v1",
+          "result": "在角分布坡度族的 $(\\eta_F,s)$ 平面中，$s=\\omega_{\\max}/\\mu$，能量积分 ELN 满足 $G(v)\\propto0.8+\\eta_F(v-1/2)$，其内部交叉阈值为 $\\eta_F>8/15$。"
+        },
+        {
+          "arxiv_id": "2610.02429",
+          "revision": 1,
+          "title": "Extending the Pulsar radio population through Quantum Vacuum Cherenkov Emission",
+          "anchor": "radar-paper-2610-02429-v1",
+          "result": "在作者的真空间隙模型及发射几何假设下，量子真空 Cherenkov（QC）通道给出 $h_{\\rm QC}\\simeq\\ell_{\\rm acc}=4.7P^{1/2}B_*^{-1}(\\sin\\theta_{\\perp,e})^{-1/2}\\,\\mathrm{cm}$，以及 $\\Delta V=6.1\\times10^7B_*^{-1}(\\sin\\theta_{\\perp,e})^{-1}\\,\\mathrm{V}$，其中 $B_*=B/B_S$、$B_S\\simeq4.41\\times10^{13}\\,\\mathrm{G}$，周期按秒计。"
+        },
+        {
+          "arxiv_id": "2610.02475",
+          "revision": 1,
+          "title": "Suppression of spiral density waves in collisionless accretion flows",
+          "anchor": "radar-paper-2610-02475-v1",
+          "result": "层流方位磁场中，$k_yv_{\\rm th,i}\\gtrsim10\\Omega$ 的螺旋密度波受到强Landau/Barnes阻尼，但MRI主要激发的 $k_yv_{\\rm th,i}\\sim\\Omega$ 波几乎不受该机制影响；微不稳定性诱发的粒子散射则可引入显著黏性耗散。"
         }
       ],
       "worth_knowing": [
@@ -3880,6 +3965,33 @@
           "revision": 1,
           "source_fingerprint": "5ba97f60a065d58483911a9a88c364360f7a54a21cf190872177514653d6bef5",
           "guide_fingerprint": "5d9e78e3d61f8e65635702f957ef418f19c6d787f7542664b2b078004fa73268"
+        }
+      ],
+      "skim_topics": [
+        {
+          "arxiv_id": "2610.02308",
+          "revision": 1,
+          "title": "Towards robust simulations of the galactic dynamo: a cross-code comparison between Eulerian and Lagrangian schemes"
+        },
+        {
+          "arxiv_id": "2610.02317",
+          "revision": 1,
+          "title": "Chaotic signatures in extreme-mass-ratio systems surrounded by bosonic environments"
+        },
+        {
+          "arxiv_id": "2610.02328",
+          "revision": 1,
+          "title": "Inferring magnetic field strengths in high-redshift lensing galaxies from Faraday rotation measure observations"
+        },
+        {
+          "arxiv_id": "2610.02367",
+          "revision": 1,
+          "title": "Full orbital solution and dynamical masses for a new shell-Be + sdOB binary AN Col"
+        },
+        {
+          "arxiv_id": "2610.02389",
+          "revision": 1,
+          "title": "Collapse-accelerated small-scale dynamos in the first stars and galaxies"
         }
       ],
       "skip": [

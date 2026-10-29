@@ -17,6 +17,12 @@
     "status": "ready",
     "edition_fingerprint": "cb9fc6585af361bc0b28972e42dbd36c9bac22416a0d5e882594d8ae48780711",
     "intro": "本期首看《Source velocities of fast radio bursts constrained by their dispersion measure variations》等 26 篇核心进展。",
+    "focus_paper": {
+      "arxiv_id": "2610.27311",
+      "revision": 1,
+      "title": "Source velocities of fast radio bursts constrained by their dispersion measure variations",
+      "anchor": "radar-paper-2610-27311-v1"
+    },
     "must_read": [
       {
         "arxiv_id": "2610.27311",
@@ -44,6 +50,29 @@
         "label": "Constraining the FRB Central Engine from Flux Variations of Persistent Radio Sources: FRB 20240114A as the First Attempt",
         "text": "通过将磁星风云（MWN）多波段光变及同步辐射自吸收（SSA）截断与观测拟合，发现相对论电子注入截断洛伦兹因子需满足 $\\gamma_{\\rm b} < 10^3$，基准最佳拟合为 $\\gamma_{\\rm b} \\sim 2 \\times 10^2$。",
         "anchor": "radar-paper-2610-27489-v1"
+      }
+    ],
+    "key_highlights": [
+      {
+        "arxiv_id": "2610.27051",
+        "revision": 1,
+        "title": "Graph Neural Networks for Astrophysics and Cosmology",
+        "anchor": "radar-paper-2610-27051-v1",
+        "result": "系统阐释了 GNN 在天体物理非欧几何数据结构中的建模优势：(1) 在大尺度结构与星系巡天中，利用包含节点与边特征的宇宙图无似然推断直接提取非高斯统计信息，对宇宙学参数 $\\Omega_m$ 与 $\\sigma_8$ 的约束优于标准 N 点关联函数；(2) 单步消息传递机制的物理本质等价于可学习的广义相互作用力定律加单步积分器，其单步计算复杂度由边数、节点数和隐藏层维度主导：$N_\\mathrm{total} \\sim N_\\mathrm{E} N_\\mathrm{lat} N_\\mathrm{hid} \\sim N_\\mathrm{V} \\langle k \\rangle N_\\mathrm{lat} N_\\mathrm{hid}$；(3) 针对中微子望远镜（IceCube 等）和宇宙线探测器的不规则阵列重建，引入光锥因果连边条件 $A_{ij}=1\\text{ if }d_{ij}\\le c\\cdot(t_j-t_i)$，在精度与运行速度上显著超越传统似然重建；(4) 指明了求和（sum）聚合相较于均值（mean）能更完备保留局部密度等物理量，并揭示了多体相互作用消息（如 MACE 架构扩展至 $\\nu+1$ 阶 $\\sum_{j_1<\\dots<j_\\nu}\\psi(\\mathbf{x}_i,\\mathbf{x}_{j_1},\\dots,\\mathbf{x}_{j_\\nu})$）对抑制过平滑（oversmoothing）与过挤压（over-squashing）的作用。"
+      },
+      {
+        "arxiv_id": "2610.27075",
+        "revision": 1,
+        "title": "Optical and Ultraviolet Emission from the Gas Photoionized by Gaia BH3: Archival Constraints and Predictions for the 2029 Periastron",
+        "anchor": "radar-paper-2610-27075-v1",
+        "result": "研究给出 Chandra X 射线远星点上限限制氢电离光子产生率 $Q(\\mathrm{H}) < 1.8 \\times 10^{40}\\,\\mathrm{s^{-1}}$（对应 ADAF 吸积率 $f_{\\rm Edd} < 7.6 \\times 10^{-7}$）。"
+      },
+      {
+        "arxiv_id": "2610.27081",
+        "revision": 1,
+        "title": "Localizing binary neutron stars with the Einstein Telescope: a full Bayesian comparison of the triangular and 2L configurations",
+        "anchor": "radar-paper-2610-27081-v1",
+        "result": "对于占主体的中低信噪比事件（$\\mathrm{SNR} < 100$），$\\Delta$ 构型由于天线响应简并，天区后验会裂解为 8 个离散模式，其 $90\\%$ 可信天区面积 $\\Delta\\Omega_{90\\%}$ 可达 $\\sim 2 \\times 10^4\\ \\mathrm{deg}^2$，真实位置仅占 $\\sim 10\\%$ 概率；而 2L 构型能有效打破简并，天区聚焦于包含 $\\ge 50\\%$ 概率的单一主导模式，$\\Delta\\Omega_{90\\%}$ 缩小 1 到 2 个数量级（例如降至 $80 \\sim 470\\ \\mathrm{deg}^2$）。"
       }
     ],
     "worth_knowing": [
@@ -184,6 +213,33 @@
         "revision": 1,
         "source_fingerprint": "2f15f6ea346b404ae1c3440ba7ac8b4800cb836abd777408307f1f80e02b3407",
         "guide_fingerprint": "22e62839aed8db8bd3ac7e3963b6fd966df7a8684c1bd729b058a75bad51f581"
+      }
+    ],
+    "skim_topics": [
+      {
+        "arxiv_id": "2610.27052",
+        "revision": 1,
+        "title": "The ALMA REBELS Survey: The [C II] Luminosity Function of UV-Selected Galaxies at $z\\sim7$"
+      },
+      {
+        "arxiv_id": "2610.27055",
+        "revision": 1,
+        "title": "Planets surviving common envelope evolution should be rare, massive, and orbit very close to their host star"
+      },
+      {
+        "arxiv_id": "2610.27056",
+        "revision": 1,
+        "title": "Annihilation feedback on elastic scattering in self-interacting dark matter"
+      },
+      {
+        "arxiv_id": "2610.27061",
+        "revision": 1,
+        "title": "How does a galaxy's quenching probability depend on its black hole's mass?"
+      },
+      {
+        "arxiv_id": "2610.27064",
+        "revision": 1,
+        "title": "Metal-poor molecular clouds in dwarf galaxies at parsec-scale resolution"
       }
     ],
     "skip": [
@@ -7758,6 +7814,12 @@
       "status": "ready",
       "edition_fingerprint": "cb9fc6585af361bc0b28972e42dbd36c9bac22416a0d5e882594d8ae48780711",
       "intro": "本期首看《Source velocities of fast radio bursts constrained by their dispersion measure variations》等 26 篇核心进展。",
+      "focus_paper": {
+        "arxiv_id": "2610.27311",
+        "revision": 1,
+        "title": "Source velocities of fast radio bursts constrained by their dispersion measure variations",
+        "anchor": "radar-paper-2610-27311-v1"
+      },
       "must_read": [
         {
           "arxiv_id": "2610.27311",
@@ -7785,6 +7847,29 @@
           "label": "Constraining the FRB Central Engine from Flux Variations of Persistent Radio Sources: FRB 20240114A as the First Attempt",
           "text": "通过将磁星风云（MWN）多波段光变及同步辐射自吸收（SSA）截断与观测拟合，发现相对论电子注入截断洛伦兹因子需满足 $\\gamma_{\\rm b} < 10^3$，基准最佳拟合为 $\\gamma_{\\rm b} \\sim 2 \\times 10^2$。",
           "anchor": "radar-paper-2610-27489-v1"
+        }
+      ],
+      "key_highlights": [
+        {
+          "arxiv_id": "2610.27051",
+          "revision": 1,
+          "title": "Graph Neural Networks for Astrophysics and Cosmology",
+          "anchor": "radar-paper-2610-27051-v1",
+          "result": "系统阐释了 GNN 在天体物理非欧几何数据结构中的建模优势：(1) 在大尺度结构与星系巡天中，利用包含节点与边特征的宇宙图无似然推断直接提取非高斯统计信息，对宇宙学参数 $\\Omega_m$ 与 $\\sigma_8$ 的约束优于标准 N 点关联函数；(2) 单步消息传递机制的物理本质等价于可学习的广义相互作用力定律加单步积分器，其单步计算复杂度由边数、节点数和隐藏层维度主导：$N_\\mathrm{total} \\sim N_\\mathrm{E} N_\\mathrm{lat} N_\\mathrm{hid} \\sim N_\\mathrm{V} \\langle k \\rangle N_\\mathrm{lat} N_\\mathrm{hid}$；(3) 针对中微子望远镜（IceCube 等）和宇宙线探测器的不规则阵列重建，引入光锥因果连边条件 $A_{ij}=1\\text{ if }d_{ij}\\le c\\cdot(t_j-t_i)$，在精度与运行速度上显著超越传统似然重建；(4) 指明了求和（sum）聚合相较于均值（mean）能更完备保留局部密度等物理量，并揭示了多体相互作用消息（如 MACE 架构扩展至 $\\nu+1$ 阶 $\\sum_{j_1<\\dots<j_\\nu}\\psi(\\mathbf{x}_i,\\mathbf{x}_{j_1},\\dots,\\mathbf{x}_{j_\\nu})$）对抑制过平滑（oversmoothing）与过挤压（over-squashing）的作用。"
+        },
+        {
+          "arxiv_id": "2610.27075",
+          "revision": 1,
+          "title": "Optical and Ultraviolet Emission from the Gas Photoionized by Gaia BH3: Archival Constraints and Predictions for the 2029 Periastron",
+          "anchor": "radar-paper-2610-27075-v1",
+          "result": "研究给出 Chandra X 射线远星点上限限制氢电离光子产生率 $Q(\\mathrm{H}) < 1.8 \\times 10^{40}\\,\\mathrm{s^{-1}}$（对应 ADAF 吸积率 $f_{\\rm Edd} < 7.6 \\times 10^{-7}$）。"
+        },
+        {
+          "arxiv_id": "2610.27081",
+          "revision": 1,
+          "title": "Localizing binary neutron stars with the Einstein Telescope: a full Bayesian comparison of the triangular and 2L configurations",
+          "anchor": "radar-paper-2610-27081-v1",
+          "result": "对于占主体的中低信噪比事件（$\\mathrm{SNR} < 100$），$\\Delta$ 构型由于天线响应简并，天区后验会裂解为 8 个离散模式，其 $90\\%$ 可信天区面积 $\\Delta\\Omega_{90\\%}$ 可达 $\\sim 2 \\times 10^4\\ \\mathrm{deg}^2$，真实位置仅占 $\\sim 10\\%$ 概率；而 2L 构型能有效打破简并，天区聚焦于包含 $\\ge 50\\%$ 概率的单一主导模式，$\\Delta\\Omega_{90\\%}$ 缩小 1 到 2 个数量级（例如降至 $80 \\sim 470\\ \\mathrm{deg}^2$）。"
         }
       ],
       "worth_knowing": [
@@ -7925,6 +8010,33 @@
           "revision": 1,
           "source_fingerprint": "2f15f6ea346b404ae1c3440ba7ac8b4800cb836abd777408307f1f80e02b3407",
           "guide_fingerprint": "22e62839aed8db8bd3ac7e3963b6fd966df7a8684c1bd729b058a75bad51f581"
+        }
+      ],
+      "skim_topics": [
+        {
+          "arxiv_id": "2610.27052",
+          "revision": 1,
+          "title": "The ALMA REBELS Survey: The [C II] Luminosity Function of UV-Selected Galaxies at $z\\sim7$"
+        },
+        {
+          "arxiv_id": "2610.27055",
+          "revision": 1,
+          "title": "Planets surviving common envelope evolution should be rare, massive, and orbit very close to their host star"
+        },
+        {
+          "arxiv_id": "2610.27056",
+          "revision": 1,
+          "title": "Annihilation feedback on elastic scattering in self-interacting dark matter"
+        },
+        {
+          "arxiv_id": "2610.27061",
+          "revision": 1,
+          "title": "How does a galaxy's quenching probability depend on its black hole's mass?"
+        },
+        {
+          "arxiv_id": "2610.27064",
+          "revision": 1,
+          "title": "Metal-poor molecular clouds in dwarf galaxies at parsec-scale resolution"
         }
       ],
       "skip": [

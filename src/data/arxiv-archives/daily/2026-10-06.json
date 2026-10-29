@@ -17,7 +17,36 @@
     "status": "ready",
     "edition_fingerprint": "959a4e3dd3aaae1ed39295329bdc0f812bbd4abd1ee8059eb86175401d368dcd",
     "intro": "本期首看《Magnus: neutrino oscillation probabilities for any Hermitian Hamiltonian, any number of flavors, and any matter profile》等 3 篇核心进展。",
+    "focus_paper": {
+      "arxiv_id": "2610.07159",
+      "revision": 1,
+      "title": "Magnus: neutrino oscillation probabilities for any Hermitian Hamiltonian, any number of flavors, and any matter profile",
+      "anchor": "radar-paper-2610-07159-v1"
+    },
     "must_read": [],
+    "key_highlights": [
+      {
+        "arxiv_id": "2610.07159",
+        "revision": 1,
+        "title": "Magnus: neutrino oscillation probabilities for any Hermitian Hamiltonian, any number of flavors, and any matter profile",
+        "anchor": "radar-paper-2610-07159-v1",
+        "result": "数值求解器单步幺正性偏离低至 $4\\times 10^{-16}$，在保持几何精度的同时比 DOP853 自适应积分提速 30 至 4800 倍。"
+      },
+      {
+        "arxiv_id": "2610.07241",
+        "revision": 1,
+        "title": "Radial Modes of Hot Neutrino-Trapped Hybrid Stars",
+        "anchor": "radar-paper-2610-07241-v1",
+        "result": "混合星的基态径向频率 $f_0 = \\omega_0/2\\pi$ 在中心进入强子-夸克两相共存区前与纯强子星重合，退禁闭发生后出现显著软化并在极限质量处 $f_0 \\\\to 0$（符合 BTM 判据）。"
+      },
+      {
+        "arxiv_id": "2610.07424",
+        "revision": 1,
+        "title": "Adaptive proposals for nonparametric equation-of-state inference with RIFT: iterative Gaussian-process refinement in a compressed sequence representation",
+        "anchor": "radar-paper-2610-07424-v1",
+        "result": "联合 GW170817、NICER 及大质量脉冲星观测后验，中子星典型参量收敛至 $R(1.4) = 11.7 \\pm 0.4\\,\\mathrm{km}$、$\\Lambda(1.4) = 309 \\pm 90$、$M_{\\rm max} = 2.4 \\pm 0.2\\,M_{\\odot}$。"
+      }
+    ],
     "worth_knowing": [
       {
         "arxiv_id": "2610.07159",
@@ -36,6 +65,33 @@
         "revision": 1,
         "source_fingerprint": "5e9a58a09ab0fdb111bd500fd9a80fac51fdec42b7bad50d4ee3f98d49143dab",
         "guide_fingerprint": "3dee66293dcac829f4b36cd9936b9c58ecbe011416be75224166bed1af4d9575"
+      }
+    ],
+    "skim_topics": [
+      {
+        "arxiv_id": "2610.07133",
+        "revision": 1,
+        "title": "First Direct Identification of a Multi-Star Microlens System Hosting a Planet"
+      },
+      {
+        "arxiv_id": "2610.07137",
+        "revision": 1,
+        "title": "Optimal Photon Counting with Fast, Low Noise Astronomical Imagers"
+      },
+      {
+        "arxiv_id": "2610.07138",
+        "revision": 1,
+        "title": "Cracking open the \"dragon egg\": ALMA 1.3mm observations of a compact, young high-mass core candidate at 30mas resolution"
+      },
+      {
+        "arxiv_id": "2610.07140",
+        "revision": 1,
+        "title": "And Then There WEre Baryons (ATWEB): The Baryon Budget of the Universe in Halos and the IGM over 13 Billion Years of Cosmic Time"
+      },
+      {
+        "arxiv_id": "2610.07148",
+        "revision": 1,
+        "title": "Unlocking new information in stellar circular polarisation with second-order least-squares deconvolution"
       }
     ],
     "skip": [
@@ -4848,7 +4904,36 @@
       "status": "ready",
       "edition_fingerprint": "959a4e3dd3aaae1ed39295329bdc0f812bbd4abd1ee8059eb86175401d368dcd",
       "intro": "本期首看《Magnus: neutrino oscillation probabilities for any Hermitian Hamiltonian, any number of flavors, and any matter profile》等 3 篇核心进展。",
+      "focus_paper": {
+        "arxiv_id": "2610.07159",
+        "revision": 1,
+        "title": "Magnus: neutrino oscillation probabilities for any Hermitian Hamiltonian, any number of flavors, and any matter profile",
+        "anchor": "radar-paper-2610-07159-v1"
+      },
       "must_read": [],
+      "key_highlights": [
+        {
+          "arxiv_id": "2610.07159",
+          "revision": 1,
+          "title": "Magnus: neutrino oscillation probabilities for any Hermitian Hamiltonian, any number of flavors, and any matter profile",
+          "anchor": "radar-paper-2610-07159-v1",
+          "result": "数值求解器单步幺正性偏离低至 $4\\times 10^{-16}$，在保持几何精度的同时比 DOP853 自适应积分提速 30 至 4800 倍。"
+        },
+        {
+          "arxiv_id": "2610.07241",
+          "revision": 1,
+          "title": "Radial Modes of Hot Neutrino-Trapped Hybrid Stars",
+          "anchor": "radar-paper-2610-07241-v1",
+          "result": "混合星的基态径向频率 $f_0 = \\omega_0/2\\pi$ 在中心进入强子-夸克两相共存区前与纯强子星重合，退禁闭发生后出现显著软化并在极限质量处 $f_0 \\\\to 0$（符合 BTM 判据）。"
+        },
+        {
+          "arxiv_id": "2610.07424",
+          "revision": 1,
+          "title": "Adaptive proposals for nonparametric equation-of-state inference with RIFT: iterative Gaussian-process refinement in a compressed sequence representation",
+          "anchor": "radar-paper-2610-07424-v1",
+          "result": "联合 GW170817、NICER 及大质量脉冲星观测后验，中子星典型参量收敛至 $R(1.4) = 11.7 \\pm 0.4\\,\\mathrm{km}$、$\\Lambda(1.4) = 309 \\pm 90$、$M_{\\rm max} = 2.4 \\pm 0.2\\,M_{\\odot}$。"
+        }
+      ],
       "worth_knowing": [
         {
           "arxiv_id": "2610.07159",
@@ -4867,6 +4952,33 @@
           "revision": 1,
           "source_fingerprint": "5e9a58a09ab0fdb111bd500fd9a80fac51fdec42b7bad50d4ee3f98d49143dab",
           "guide_fingerprint": "3dee66293dcac829f4b36cd9936b9c58ecbe011416be75224166bed1af4d9575"
+        }
+      ],
+      "skim_topics": [
+        {
+          "arxiv_id": "2610.07133",
+          "revision": 1,
+          "title": "First Direct Identification of a Multi-Star Microlens System Hosting a Planet"
+        },
+        {
+          "arxiv_id": "2610.07137",
+          "revision": 1,
+          "title": "Optimal Photon Counting with Fast, Low Noise Astronomical Imagers"
+        },
+        {
+          "arxiv_id": "2610.07138",
+          "revision": 1,
+          "title": "Cracking open the \"dragon egg\": ALMA 1.3mm observations of a compact, young high-mass core candidate at 30mas resolution"
+        },
+        {
+          "arxiv_id": "2610.07140",
+          "revision": 1,
+          "title": "And Then There WEre Baryons (ATWEB): The Baryon Budget of the Universe in Halos and the IGM over 13 Billion Years of Cosmic Time"
+        },
+        {
+          "arxiv_id": "2610.07148",
+          "revision": 1,
+          "title": "Unlocking new information in stellar circular polarisation with second-order least-squares deconvolution"
         }
       ],
       "skip": [

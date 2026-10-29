@@ -11,6 +11,7 @@ import {
   deriveFigurePhysicalCore,
   getDefaultWebsiteBase,
   getDefaultLocalWebsiteBase,
+  formatAuthorList,
 } from "./academic-domain.mjs";
 
 export const READING_ANCHORS = Object.freeze([
@@ -100,12 +101,11 @@ export function buildChannelPostDraft(item, date, topic, options = {}) {
         .replace(/\bR1[–—-]R7\b/gu, "all group research directions")
         .replace(/\bR[1-7]\b/gu, (id) => TOPIC_ENGLISH_LABELS[id] || id);
 
-  const authorStr =
+  const formattedAuthors =
     Array.isArray(item.authors) && item.authors.length
-      ? ` · ${item.authors.slice(0, 3).join(", ")}${
-          item.authors.length > 3 ? (isLegacy ? " 等" : " et al.") : ""
-        }`
+      ? formatAuthorList(item.authors, { isLegacy, max: 3 })
       : "";
+  const authorStr = formattedAuthors ? ` · ${formattedAuthors}` : "";
 
   const problem = claimText(a.problem?.detailed_text || a.problem?.problem || a.problem || "");
   const result = claimText(a.result?.detailed_text || a.result?.bluf || a.result || "");

@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { test } from "node:test";
-import { renderMathMarkup, splitMath } from "../scripts/reader-math.mjs";
+import { renderMathMarkup, splitMath } from "../src/domain/scientific-text/index.mjs";
 import { fileURLToPath } from "node:url";
 
 const projectRoot = fileURLToPath(new URL("..", import.meta.url));
@@ -161,10 +161,7 @@ test("formula CSS uses local KaTeX assets and a bounded wide-equation viewport",
   const workflow = await readFile(join(projectRoot, ".github/workflows/verify.yml"), "utf8");
   assert.match(css, /@import\s+["']katex\/dist\/katex\.min\.css["']/u);
   assert.match(css, /\.reader-math\s*>\s*\.katex\s*\{/u);
-  assert.match(
-    css,
-    /\.reader-math:not\(\.reader-math-display\)\s*\{[\s\S]*display:\s*inline/u
-  );
+  assert.match(css, /\.reader-math:not\(\.reader-math-display\)\s*\{[\s\S]*display:\s*inline/u);
   assert.match(
     css,
     /\.reader-math:not\(\.reader-math-display\)\s*>\s*\.katex\s*\{[\s\S]*line-height:\s*1/u

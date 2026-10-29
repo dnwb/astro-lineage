@@ -880,15 +880,14 @@ export function getBibliographicSourceName(options = {}) {
 }
 
 /**
- * Format paper author list for display, truncating after 3 authors with "et al.".
+ * Format paper author list for display, truncating after max authors with "et al." or " 等".
  *
  * @param {string[]} authors
+ * @param {{ isLegacy?: boolean, max?: number }} [options]
  * @returns {string}
  */
-export function formatAuthorList(authors) {
+export function formatAuthorList(authors, { isLegacy = false, max = 3 } = {}) {
   if (!authors || authors.length === 0) return "Not recorded";
-  return authors.length > 3
-    ? `${authors.slice(0, 3).join(", ")} et al.`
-    : authors.join(", ");
+  const suffix = isLegacy ? " 等" : " et al.";
+  return authors.length > max ? `${authors.slice(0, max).join(", ")}${suffix}` : authors.join(", ");
 }
-

@@ -5,7 +5,7 @@ import { ensureDistBuilt } from "./helpers/ensure-dist.mjs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { test } from "node:test";
-import { renderMathMarkup, splitMath } from "../scripts/reader-math.mjs";
+import { renderMathMarkup, splitMath } from "../src/domain/scientific-text/index.mjs";
 
 const projectRoot = fileURLToPath(new URL("..", import.meta.url));
 const distRoot = join(projectRoot, "dist");

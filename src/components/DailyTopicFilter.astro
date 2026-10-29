@@ -58,9 +58,13 @@ const activeTopicFilters = TOPIC_FILTER_SPECS
     gap: 0.35rem;
     margin: 0.25rem 0 0.75rem;
     padding: 0.35rem 0.65rem;
-    background: var(--code-bg, #f8fafc);
+    background: var(--bg-surface, #ffffff);
+    backdrop-filter: blur(8px);
     border: 1px solid var(--border-color, #e2e8f0);
     border-radius: 0.375rem;
+    position: sticky;
+    top: 3.25rem;
+    z-index: 19;
   }
   .daily-filter-title {
     font-size: 0.8rem;

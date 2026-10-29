@@ -259,11 +259,14 @@ function priorityLabel(priority: string) {
             <a class="radar-arxiv-badge" href={item.url} target="_blank" rel="noopener">arXiv:{item.arxiv_id}</a>
             <a class="radar-pdf-badge" href={`https://arxiv.org/pdf/${item.arxiv_id}`} target="_blank" rel="noopener" title="Read or download official PDF">📄 PDF</a>
           </div>
-          <h4 class="radar-card-title skim-card-title">
-            <a class="paper-title" href={item.url} title={item.title}>
-              <span class="paper-title-en">{item.title}</span>
-            </a>
-          </h4>
+          <div class="skim-main-col">
+            <h4 class="radar-card-title skim-card-title">
+              <a class="paper-title" href={item.url} title={item.title}>
+                <span class="paper-title-en">{item.title}</span>
+              </a>
+            </h4>
+            <p class="skim-result-preview"><ReaderText text={resultClaim?.detailed_text || guide.reason || guide.result || ""} /></p>
+          </div>
           <div class="skim-meta-trailing">
             {scientificTags.map((tag: string) => (
               <span class="radar-category-tag">{tag}</span>
@@ -889,6 +892,25 @@ function priorityLabel(priority: string) {
     align-items: center;
     gap: 0.35rem;
     flex-shrink: 0;
+  }
+  .skim-main-col {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+  }
+  .skim-result-preview {
+    margin: 0.15rem 0 0 0;
+    font-size: 0.8rem;
+    line-height: 1.4;
+    color: var(--text-secondary, #475569);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    max-inline-size: var(--measure-prose, 72ch);
+  }
+  :global([data-theme="dark"]) .skim-result-preview {
+    color: var(--text-muted, #94a3b8);
   }
   .skim-card-title {
     margin: 0 !important;

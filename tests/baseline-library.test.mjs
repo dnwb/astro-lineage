@@ -5,7 +5,7 @@ import { test } from "node:test";
 import { loadCanonicalContent } from "../scripts/content-loader.mjs";
 import { validateCanonicalContent } from "../scripts/content-validator.mjs";
 import { parseReadingMarkdown } from "../scripts/reader-markdown.mjs";
-import { renderMathMarkup, splitMath } from "../scripts/reader-math.mjs";
+import { renderMathMarkup, splitMath } from "../src/domain/scientific-text/index.mjs";
 import { projectVisibleSnapshot } from "../scripts/reader-projection.mjs";
 
 const projectRoot = fileURLToPath(new URL("..", import.meta.url));

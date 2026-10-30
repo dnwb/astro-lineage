@@ -6,6 +6,25 @@
  * and scientific transient event matching from runtime execution engines.
  */
 
+import { existsSync } from "node:fs";
+import { join } from "node:path";
+import { fileURLToPath } from "node:url";
+
+const PUBLIC_ROOT_DIR = fileURLToPath(new URL("../../public", import.meta.url));
+
+/**
+ * Checks whether a figure's local asset file actually exists in the public directory.
+ *
+ * @param {object} fig
+ * @returns {boolean}
+ */
+export function hasVerifiedFigureAsset(fig) {
+  const src = fig?.url || fig?.image_url || "";
+  if (!src || typeof src !== "string") return false;
+  if (src.startsWith("http://") || src.startsWith("https://")) return true;
+  return existsSync(join(PUBLIC_ROOT_DIR, src.replace(/^\/+/u, "")));
+}
+
 // 1. Scientific Taxonomy & Phenomenon Tags
 export const SCIENTIFIC_TAGS = [
   { id: "ALL", label: "All", englishLabel: "All" },
@@ -213,6 +232,7 @@ export {
  * @param {string} [figure.category_badge]
  * @param {string} [figure.caption]
  * @param {Object} [context]
+ * @param {string} [context.title]
  * @param {string} [context.result]
  * @param {string} [context.problem]
  * @param {string[]} [context.assumptions]
@@ -890,4 +910,122 @@ export function formatAuthorList(authors, { isLegacy = false, max = 3 } = {}) {
   if (!authors || authors.length === 0) return "Not recorded";
   const suffix = isLegacy ? " 等" : " et al.";
   return authors.length > max ? `${authors.slice(0, max).join(", ")}${suffix}` : authors.join(", ");
+}
+
+/**
+ * Group weekly top picks by thematic cluster so readers can study related papers together.
+ * Preserves thematic order from `weeklyData.themes` / `weeklyData.thematic_highlights` when available,
+ * and falls back to keyword/category clustering for unmatched picks.
+ *
+ * @param {Array<Object>} picks
+ * @param {Object} [weeklyData]
+ * @returns {Array<{ theme: string, description: string, picks: Array<Object> }>}
+ */
+export function groupPicksByTheme(picks, weeklyData = {}) {
+  if (!Array.isArray(picks) || picks.length === 0) return [];
+
+  const groups = [];
+  const assignedIds = new Set();
+
+  const rawThemes =
+    Array.isArray(weeklyData?.themes) && weeklyData.themes.length > 0
+      ? weeklyData.themes
+      : Array.isArray(weeklyData?.thematic_highlights)
+        ? weeklyData.thematic_highlights
+        : [];
+
+  for (const t of rawThemes) {
+    const themeName = (t.theme || t.title || "").trim();
+    if (!themeName) continue;
+    const keyPaperIds = new Set(
+      (Array.isArray(t.key_papers) ? t.key_papers : []).map((id) =>
+        String(id)
+          .replace(/^arXiv:/i, "")
+          .trim()
+      )
+    );
+    const matched = picks.filter((p) => {
+      const pid = String(p.arxiv_id || "")
+        .replace(/^arXiv:/i, "")
+        .trim();
+      if (!pid || assignedIds.has(pid)) return false;
+      return keyPaperIds.has(pid);
+    });
+    if (matched.length > 0) {
+      for (const m of matched) {
+        assignedIds.add(
+          String(m.arxiv_id || "")
+            .replace(/^arXiv:/i, "")
+            .trim()
+        );
+      }
+      groups.push({
+        theme: themeName,
+        description: (t.description || t.summary || "").trim(),
+        picks: matched,
+      });
+    }
+  }
+
+  // Any remaining picks not explicitly linked in themes.key_papers:
+  const remaining = picks.filter(
+    (p) =>
+      !assignedIds.has(
+        String(p.arxiv_id || "")
+          .replace(/^arXiv:/i, "")
+          .trim()
+      )
+  );
+
+  if (remaining.length > 0) {
+    // Try matching remaining picks to existing groups by keyword overlap or category
+    const stillUnassigned = [];
+    for (const p of remaining) {
+      const text =
+        `${p.title || ""} ${(p.keywords || []).join(" ")} ${p.key_insight || ""}`.toLowerCase();
+      let bestGroup = null;
+      for (const g of groups) {
+        const themeTokens = g.theme
+          .toLowerCase()
+          .split(/[\s、，,/\-—()（）]+/)
+          .filter((tok) => tok.length >= 2);
+        if (themeTokens.some((tok) => text.includes(tok))) {
+          bestGroup = g;
+          break;
+        }
+      }
+      if (bestGroup) {
+        bestGroup.picks.push(p);
+      } else {
+        stillUnassigned.push(p);
+      }
+    }
+
+    if (stillUnassigned.length > 0) {
+      if (groups.length === 0) {
+        // Group by primary category or first keyword when no themes metadata exists
+        const byCat = new Map();
+        for (const p of stillUnassigned) {
+          const cat = p.categories?.[0] || p.keywords?.[0] || "综合前沿课题 (General Highlights)";
+          if (!byCat.has(cat)) byCat.set(cat, []);
+          byCat.get(cat).push(p);
+        }
+        for (const [cat, items] of byCat.entries()) {
+          groups.push({
+            theme: cat,
+            description: "",
+            picks: items,
+          });
+        }
+      } else {
+        groups.push({
+          theme: "交叉与前沿拓展课题 (Cross-Disciplinary & Extended Highlights)",
+          description: "",
+          picks: stillUnassigned,
+        });
+      }
+    }
+  }
+
+  return groups;
 }

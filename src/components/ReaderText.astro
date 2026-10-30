@@ -3,14 +3,38 @@ import { renderMathMarkup, splitMath } from "../domain/scientific-text/index.mjs
 
 interface Props {
   text: string;
+  linkArxivToAnchorPrefix?: string;
 }
 
 type ReaderTextSegment =
   | { kind: "text"; value: string }
   | { kind: "math"; value: string; display: boolean };
 
-const { text } = Astro.props;
+const { text, linkArxivToAnchorPrefix } = Astro.props;
 const segments = splitMath(text) as ReaderTextSegment[];
+
+type TextSubPart =
+  | { kind: "plain"; value: string }
+  | { kind: "arxiv"; id: string; label: string };
+
+function splitArxivTokens(str: string): TextSubPart[] {
+  if (!linkArxivToAnchorPrefix || !str) return [{ kind: "plain", value: str }];
+  const regex = /\barXiv:(\d{4}\.\d{4,5})\b/g;
+  const parts: TextSubPart[] = [];
+  let lastIdx = 0;
+  let match: RegExpExecArray | null;
+  while ((match = regex.exec(str)) !== null) {
+    if (match.index > lastIdx) {
+      parts.push({ kind: "plain", value: str.slice(lastIdx, match.index) });
+    }
+    parts.push({ kind: "arxiv", id: match[1], label: match[0] });
+    lastIdx = regex.lastIndex;
+  }
+  if (lastIdx < str.length) {
+    parts.push({ kind: "plain", value: str.slice(lastIdx) });
+  }
+  return parts.length > 0 ? parts : [{ kind: "plain", value: str }];
+}
 ---
 
 {segments.map((segment) => (
@@ -21,5 +45,19 @@ const segments = splitMath(text) as ReaderTextSegment[];
       aria-label={segment.display ? "Formula, scroll horizontally to view" : undefined}
       set:html={renderMathMarkup(segment.value, segment.display)}
     />
-  ) : segment.value
+  ) : linkArxivToAnchorPrefix ? (
+    splitArxivTokens(segment.value).map((part) =>
+      part.kind === "arxiv" ? (
+        <a
+          href={`${linkArxivToAnchorPrefix}${part.id}`}
+          class="inline-paper-jump-link"
+          title={`Jump to in-depth review of ${part.label}`}
+        >{part.label} ↓</a>
+      ) : (
+        part.value
+      )
+    )
+  ) : (
+    segment.value
+  )
 ))}

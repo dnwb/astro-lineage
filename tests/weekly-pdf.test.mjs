@@ -29,18 +29,25 @@ test("generateWeeklyMarkdownDocument produces bilingual titles, expands must_rea
   assert.match(md, /# 高能天体物理 arXiv 每周学术脉络 · 2026 年第 42 周 \(2026-W42\)/u);
   assert.match(md, /https:\/\/astro\.example\.com\/arxiv-weekly\/2026-W42\//u);
 
-  // 2. Sections
+  // 2. Sections (Thematic Highlights standalone section removed; Must-Read grouped by theme)
   assert.match(md, /## 1\. 本周综述与宏观脉络/u);
-  assert.match(md, /## 2\. 前沿专题动态与交叉脉络/u);
-  assert.match(md, /## 3\. ⭐ 核心必读文献深度解析/u);
-  assert.match(md, /## 4\. 📌 本周重点关注文献/u);
+  assert.doesNotMatch(md, /## 2\. 前沿专题动态与交叉脉络/u);
+  assert.match(md, /## 2\. ⭐ 核心必读文献深度解析/u);
+  assert.match(md, /### 🧭 专题 01：/u);
+  assert.match(md, /## 3\. 📌 本周重点关注文献/u);
+
+  // 2b. Executive summary contains jump links to detailed paper reviews
+  assert.match(
+    md,
+    /\[arXiv:2610\.\d{4,5} ↓\]\(https:\/\/astro\.example\.com\/arxiv-weekly\/2026-W42\/#paper-2610\.\d{4,5}\)/u
+  );
 
   // 3. Must-read deep dive expansion
-  assert.match(md, /### \[arXiv:2610\.13062\]/u);
-  assert.match(md, /#### 科学问题/u);
-  assert.match(md, /#### 观测与研究方法/u);
-  assert.match(md, /#### 物理模型与关键假设/u);
-  assert.match(md, /#### 关键结论与定量测量/u);
+  assert.match(md, /#### \[arXiv:2610\.13062\]/u);
+  assert.match(md, /##### 科学问题/u);
+  assert.match(md, /##### 观测与研究方法/u);
+  assert.match(md, /##### 物理模型与关键假设/u);
+  assert.match(md, /##### 关键结论与定量测量/u);
 
   // 4. Worth-knowing compact items (not expanded)
   assert.match(md, /### \[arXiv:2610\.13011\]/u);
@@ -48,11 +55,11 @@ test("generateWeeklyMarkdownDocument produces bilingual titles, expands must_rea
   assert.match(md, /- \*\*核心要点\*\*：/u);
 
   // Verify that worth-knowing section does not have deep dive expansion
-  const worthKnowingSection = md.split("## 4. 📌 本周重点关注文献")[1];
+  const worthKnowingSection = md.split("## 3. 📌 本周重点关注文献")[1];
   assert.ok(worthKnowingSection);
-  assert.doesNotMatch(worthKnowingSection, /#### 科学问题/u);
-  assert.doesNotMatch(worthKnowingSection, /#### 观测与研究方法/u);
-  assert.doesNotMatch(worthKnowingSection, /#### 物理模型与关键假设/u);
+  assert.doesNotMatch(worthKnowingSection, /##### 科学问题/u);
+  assert.doesNotMatch(worthKnowingSection, /##### 观测与研究方法/u);
+  assert.doesNotMatch(worthKnowingSection, /##### 物理模型与关键假设/u);
 });
 
 test("generatePublicationWeeklyHtml creates dedicated academic layout with Base64 figures and links", async () => {

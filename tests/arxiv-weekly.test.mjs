@@ -67,9 +67,11 @@ test("arXiv weekly HTML is properly generated with expected content and links", 
   const html = await readFile(distWeeklyHtmlUrl, "utf8");
 
   assert.match(html, /(?:每周总结|Weekly Synthesis)/u);
-  assert.match(html, /(?:本周综述|宏观学术脉络综述|Executive Summary)/u);
-  assert.match(html, /(?:前沿专题动态与物理突破|Thematic Highlights)/u);
+  assert.match(html, /(?:本周综述|宏观学术脉络综述|Executive Summary|Weekly Summary)/u);
   assert.match(html, /(?:本周必读解读|本周精选重点论文解读|Weekly Top Picks)/u);
+  assert.match(html, /class="inline-paper-jump-link"/u);
+  assert.match(html, /id="order-theme"/u);
+  assert.match(html, /id="order-default"/u);
   const weeklyData = JSON.parse(await readFile(weeklyJsonUrl, "utf8"));
   if (weeklyData.papers?.[0]) {
     assert.match(html, new RegExp(weeklyData.papers[0].arxiv_id.replace(".", "\\.")));
@@ -281,14 +283,19 @@ test("arXiv weekly layout prioritizes reading: executive summary and top picks p
     const histHtml = await readFile(distHistoricalWeekHtmlUrl, "utf8");
     const hExecIdx = histHtml.indexOf('id="executive-summary"');
     const hTopPicksIdx = histHtml.indexOf('id="top-picks"');
-    const hThematicIdx = histHtml.indexOf('id="thematic-highlights"');
     const hAuditIdx = histHtml.indexOf('id="audit-and-index"');
 
     assert.ok(hExecIdx < hTopPicksIdx, "historical week: executive summary before top picks");
-    assert.ok(hTopPicksIdx < hThematicIdx, "historical week: top picks before thematic highlights");
-    assert.ok(
-      hThematicIdx < hAuditIdx,
-      "historical week: thematic highlights before audit section"
+    assert.ok(hTopPicksIdx < hAuditIdx, "historical week: top picks before audit section");
+    assert.doesNotMatch(
+      histHtml,
+      /id="thematic-highlights"/u,
+      "historical week: standalone thematic-highlights section is removed in favor of thematic top picks"
+    );
+    assert.match(
+      histHtml,
+      /class="pick-theme-group-header"/u,
+      "historical week: top picks are grouped by theme"
     );
     assert.doesNotMatch(
       histHtml,

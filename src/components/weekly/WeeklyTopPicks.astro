@@ -3,7 +3,18 @@ import ReaderText from "../ReaderText.astro";
 import DailyRadarGuide from "../DailyRadarGuide.astro";
 import DailyRadarSource from "../DailyRadarSource.astro";
 import { radarCardAnchor } from "../../../scripts/daily-radar.mjs";
-import { matchScientificTags, extractTransientIdentifiers, formatAnnouncementInBeijing, TOPIC_FILTER_SPECS, getBibliographicUrl, getBibliographicSourceName, formatAuthorList } from "../../domain/academic-domain.mjs";
+import {
+  matchScientificTags,
+  extractTransientIdentifiers,
+  formatAnnouncementInBeijing,
+  TOPIC_FILTER_SPECS,
+  getBibliographicUrl,
+  getBibliographicSourceName,
+  formatAuthorList,
+  deriveFigurePhysicalCore,
+  hasVerifiedFigureAsset,
+  groupPicksByTheme,
+} from "../../domain/academic-domain.mjs";
 import { resolvePaperTitleZhSync } from "../../domain/paper-translation.mjs";
 
 interface Props {
@@ -14,6 +25,7 @@ interface Props {
   dailyAnalysisMap?: Map<string, any>;
   dailyItemMap?: Map<string, any>;
   weekId?: string;
+  weeklyData?: any;
 }
 
 const {
@@ -24,6 +36,7 @@ const {
   dailyAnalysisMap = new Map(),
   dailyItemMap = new Map(),
   weekId = "",
+  weeklyData = {},
 } = Astro.props;
 
 const priorityLabels: Record<string, { zh: string; en: string; class: string }> = {
@@ -97,11 +110,39 @@ const totalCount = topPicks?.length ?? 0;
 const mustCount = (topPicks ?? []).filter((p: any) => p.priority === "must_read").length;
 const worthCount = (topPicks ?? []).filter((p: any) => p.priority === "worth_knowing").length;
 
+const BADGE_MAP: Record<string, string> = {
+  "数据拟合与模型对比": "Model vs Data Fitting",
+  "物理模型示意图": "Physical Model Schematic",
+  "核心物理演化图": "Physical Evolution",
+  "核心物理结果": "Physical Result",
+  "核心观测结果": "Observational Evidence",
+  "观测总体曲线/能谱": "Observational Light Curve / SED",
+};
+
+function resolveFigureBadge(fig: any): string {
+  const raw = fig?.category_badge || fig?.categoryBadge || "";
+  return BADGE_MAP[raw] || raw || fig?.label || "Key Figure";
+}
+
 const enrichedPicks = (topPicks ?? []).map((pick: any) => {
   const paperObj = paperMap.get(pick.arxiv_id);
   const dailyDate = paperDailyDateMap.get(pick.arxiv_id);
   const dailyItem = getDailyItem(pick.arxiv_id, pick);
   const dailyRec = dailyAnalysisMap.get(pick.arxiv_id);
+  const rawFigures = pick.figures || dailyRec?.analysis?.analysis?.figures || dailyRec?.analysis?.figures || dailyRec?.figures || [];
+  const figures = Array.isArray(rawFigures) ? rawFigures.filter(hasVerifiedFigureAsset) : [];
+  const primaryFigure = figures.length > 0 ? figures[0] : null;
+  const primaryFigureCore = primaryFigure
+    ? deriveFigurePhysicalCore(
+        primaryFigure,
+        {
+          result: pick.core_insight || dailyRec?.analysis?.analysis?.result,
+          problem: pick.recommendation_reason || dailyRec?.analysis?.analysis?.problem,
+        },
+        { lang: "en" }
+      )
+    : "";
+  const primaryFigureBadge = primaryFigure ? resolveFigureBadge(primaryFigure) : "";
 
   const fullText = [
     pick.title || "",
@@ -136,6 +177,10 @@ const enrichedPicks = (topPicks ?? []).map((pick: any) => {
     paperObj,
     dailyDate,
     dailyItem,
+    figures,
+    primaryFigure,
+    primaryFigureCore,
+    primaryFigureBadge,
     modalId: `modal-pick-${pick.arxiv_id.replace(/\./g, "-")}`,
     badge: priorityLabels[pick.priority] ?? priorityLabels.worth_knowing,
     tags,
@@ -146,6 +191,54 @@ const enrichedPicks = (topPicks ?? []).map((pick: any) => {
 const activeTopicFilters = TOPIC_FILTER_SPECS
   .map((spec) => ({ ...spec, count: topicCounts[spec.id] || 0 }))
   .filter((spec) => spec.count > 0);
+
+// Group picks by theme for thematic ordering while retaining default index
+const rawThemeGroups = groupPicksByTheme(
+  enrichedPicks.map((ep) => ({
+    ...ep.pick,
+    keywords: ep.tags,
+    categories: ep.paperObj?.categories || ep.pick.categories || [],
+    key_insight: ep.pick.core_insight || "",
+    _enriched: ep,
+  })),
+  weeklyData
+);
+
+let themeSlotCursor = 1;
+const themeGroups = rawThemeGroups.map((group, gIdx) => {
+  const headerOrder = themeSlotCursor++;
+  const items = group.picks.map((wrapped: any) => {
+    const ep = wrapped._enriched;
+    const themeOrder = themeSlotCursor++;
+    return { ...ep, themeOrder };
+  });
+  return {
+    themeIndex: gIdx + 1,
+    theme: group.theme,
+    description: group.description,
+    headerOrder,
+    items,
+  };
+});
+
+const enrichedWithOrder = enrichedPicks.map((ep, idx) => {
+  let matchedThemeOrder = idx + 1;
+  let matchedThemeName = "";
+  for (const g of themeGroups) {
+    const found = g.items.find((it: any) => it.pick.arxiv_id === ep.pick.arxiv_id);
+    if (found) {
+      matchedThemeOrder = found.themeOrder;
+      matchedThemeName = g.theme;
+      break;
+    }
+  }
+  return {
+    ...ep,
+    defaultOrder: idx + 1,
+    themeOrder: matchedThemeOrder,
+    themeName: matchedThemeName,
+  };
+});
 ---
 
 <section class="weekly-section picks-section" id="top-picks">
@@ -154,9 +247,78 @@ const activeTopicFilters = TOPIC_FILTER_SPECS
     <h2>Weekly Top Picks</h2>
   </div>
 
-  <!-- Pure CSS Topic & Priority Filter Bar -->
+  <!-- At-a-Glance Visual Triage Matrix (retained from previous version) -->
+  {enrichedWithOrder.length > 0 && (
+    <details class="web-triage-details" open>
+      <summary class="web-triage-summary">
+        <div class="web-triage-summary-left">
+          <span class="web-triage-kicker">★ AT-A-GLANCE VISUAL TRIAGE</span>
+          <span class="web-triage-title">Weekly Top Picks Overview ({mustCount} Must Read · {worthCount} Followed)</span>
+        </div>
+        <span class="web-triage-toggle-hint">Click to collapse / expand ▾</span>
+      </summary>
+      <div class="web-triage-grid">
+        {enrichedWithOrder.map(({ pick, primaryFigure, primaryFigureBadge, badge, tags }) => {
+          const cleanFigPath = typeof primaryFigure?.url === "string" ? primaryFigure.url.replace(/^\/arxiv-figures\//u, "") : "";
+          const arxivFigFallback = cleanFigPath ? `https://arxiv.org/html/${cleanFigPath}` : (primaryFigure?.url || "");
+          return (
+            <div class={`web-triage-card ${pick.priority === "must_read" ? "web-triage-must" : "web-triage-worth"}`}>
+              <div class="web-triage-main">
+                <div class="web-triage-meta">
+                  <span class={`pick-badge ${badge.class}`}>{badge.en}</span>
+                  <a href={`#paper-${pick.arxiv_id}`} class="web-triage-id-jump" title="Jump to detailed review below">
+                    arXiv:{pick.arxiv_id} ↓
+                  </a>
+                  {tags.slice(0, 3).map((tag: string) => (
+                    <span class="pick-category-tag">{tag}</span>
+                  ))}
+                </div>
+                <h4 class="web-triage-card-title">
+                  <a href={`#paper-${pick.arxiv_id}`}>
+                    <ReaderText text={pick.title} />
+                  </a>
+                </h4>
+                {pick.core_insight && (
+                  <p class="web-triage-insight">
+                    <strong>Key Insight: </strong>
+                    <ReaderText text={pick.core_insight} />
+                  </p>
+                )}
+                <div class="web-triage-links">
+                  <a href={`#paper-${pick.arxiv_id}`} class="triage-jump-pill">📖 Jump to Detail ↓</a>
+                  <a href={`https://arxiv.org/abs/${pick.arxiv_id}`} target="_blank" rel="noopener noreferrer" class="triage-ext-pill">arXiv ↗</a>
+                  <a href={`https://arxiv.org/pdf/${pick.arxiv_id}`} target="_blank" rel="noopener noreferrer" class="triage-ext-pill">PDF ↗</a>
+                </div>
+              </div>
+              {primaryFigure && (
+                <a href={`#paper-${pick.arxiv_id}`} class="web-triage-thumb" title="Jump to detailed review and figure">
+                  <img
+                    src={primaryFigure.url}
+                    alt={primaryFigure.caption || `${pick.title} figure`}
+                    loading="lazy"
+                    onerror={`this.onerror=null;this.src='${arxivFigFallback}';`}
+                  />
+                  <span class="web-triage-fig-label">{primaryFigure.label || primaryFigureBadge || "Key Fig"}</span>
+                </a>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </details>
+  )}
+
+  <!-- Pure CSS Topic, Priority & Order Mode Bar -->
   {totalCount > 0 && (
-    <div class="weekly-filter-bar" role="tablist" aria-label="Filter weekly picks by topic and priority">
+    <div class="weekly-filter-bar" role="tablist" aria-label="Filter and sort weekly picks">
+      <span class="filter-bar-title">🗂️ Order:</span>
+      <input type="radio" name="top-pick-order" id="order-theme" class="topic-radio" checked />
+      <label for="order-theme" class="topic-filter-pill order-pill">By Theme (分专题)</label>
+      <input type="radio" name="top-pick-order" id="order-default" class="topic-radio" />
+      <label for="order-default" class="topic-filter-pill order-pill">Default Order (默认顺序)</label>
+
+      <span class="filter-bar-divider" aria-hidden="true">|</span>
+
       <span class="filter-bar-title">🏷️ Filter:</span>
       <input type="radio" name="top-pick-filter" id="filter-all" class="topic-radio" checked />
       <label for="filter-all" class="topic-filter-pill">All ({totalCount})</label>
@@ -187,17 +349,39 @@ const activeTopicFilters = TOPIC_FILTER_SPECS
   )}
 
   <div class="picks-list">
-    {enrichedPicks && enrichedPicks.length > 0 ? (
-      enrichedPicks.map(({ pick, paperObj, dailyDate, dailyItem, modalId, badge, tags, transientIds }) => {
+    {themeGroups.map((g) => (
+      <div
+        class="pick-theme-group-header"
+        style={`--theme-order: ${g.headerOrder};`}
+      >
+        <div class="pick-theme-group-title-row">
+          <span class="pick-theme-kicker">Theme 0{g.themeIndex}</span>
+          <h3 class="pick-theme-title">{g.theme}</h3>
+          <span class="pick-theme-count">{g.items.length} {g.items.length === 1 ? "paper" : "papers"}</span>
+        </div>
+        {g.description && (
+          <p class="pick-theme-desc"><ReaderText text={g.description} linkArxivToAnchorPrefix="#paper-" /></p>
+        )}
+      </div>
+    ))}
+    {enrichedWithOrder && enrichedWithOrder.length > 0 ? (
+      enrichedWithOrder.map(({ pick, paperObj, dailyDate, dailyItem, figures, primaryFigure, primaryFigureCore, primaryFigureBadge, modalId, badge, tags, transientIds, defaultOrder, themeOrder, themeName }) => {
+        const cleanFigPath = typeof primaryFigure?.url === "string" ? primaryFigure.url.replace(/^\/arxiv-figures\//u, "") : "";
+        const arxivFigFallback = cleanFigPath ? `https://arxiv.org/html/${cleanFigPath}` : (primaryFigure?.url || "");
         return (
           <article
-            class={`pick-card ${pick.priority === "must_read" ? "pick-card-must" : "pick-card-worth"}`}
+            id={`paper-${pick.arxiv_id}`}
+            class={`pick-card ${pick.priority === "must_read" ? "pick-card-must" : "pick-card-worth"} ${primaryFigure ? "pick-card-has-figure" : ""}`}
             data-priority={pick.priority}
             data-topics={tags.join(" ")}
+            style={`--default-order: ${defaultOrder}; --theme-order: ${themeOrder};`}
           >
             <div class="pick-header">
               <div class="pick-header-badges">
                 <span class={`pick-badge ${badge.class}`}>{badge.en}</span>
+                {themeName && (
+                  <span class="pick-theme-pill" title="Thematic Group">🧭 {themeName}</span>
+                )}
                 {transientIds.map((tid: string) => (
                   <span class="pick-transient-tag" title="Transient Target">🔭 {tid}</span>
                 ))}
@@ -232,43 +416,80 @@ const activeTopicFilters = TOPIC_FILTER_SPECS
                 ) : null}
               </div>
             </div>
-            <h3 class="pick-title">
-              {dailyItem ? (
-                <button
-                  type="button"
-                  class="pick-title-btn"
-                  popovertarget={modalId}
-                  title="Click to read this paper"
-                >
-                  <span class="pick-title-en">{pick.title}</span>
-                </button>
-              ) : dailyDate ? (
-                <a href={`/arxiv-daily/${dailyDate}/#${radarCardAnchor(pick.arxiv_id, pick.revision || 1)}`} class="pick-title-link" title="Click to read daily guide">
-                  <span class="pick-title-en">{pick.title}</span>
-                </a>
-              ) : (
-                <span class="pick-title-plain">
-                  <span class="pick-title-en">{pick.title}</span>
-                </span>
-              )}
-            </h3>
-            {resolveAuthors(pick.arxiv_id, pick).length > 0 ? (
-              <p class="pick-authors">Authors: {formatAuthorList(resolveAuthors(pick.arxiv_id, pick))}</p>
-            ) : null}
 
-            <div class="pick-details">
-              <div class="detail-row">
-                <span class="detail-label">Reason:</span>
-                <span class="detail-text"><ReaderText text={pick.recommendation_reason} /></span>
+            <div class={primaryFigure ? "pick-content-split" : "pick-content-single"}>
+              <div class="pick-main-col">
+                <h3 class="pick-title">
+                  {dailyItem ? (
+                    <button
+                      type="button"
+                      class="pick-title-btn"
+                      popovertarget={modalId}
+                      title="Click to read this paper"
+                    >
+                      <span class="pick-title-en"><ReaderText text={pick.title} /></span>
+                    </button>
+                  ) : dailyDate ? (
+                    <a href={`/arxiv-daily/${dailyDate}/#${radarCardAnchor(pick.arxiv_id, pick.revision || 1)}`} class="pick-title-link" title="Click to read daily guide">
+                      <span class="pick-title-en"><ReaderText text={pick.title} /></span>
+                    </a>
+                  ) : (
+                    <span class="pick-title-plain">
+                      <span class="pick-title-en"><ReaderText text={pick.title} /></span>
+                    </span>
+                  )}
+                </h3>
+                {resolveAuthors(pick.arxiv_id, pick).length > 0 ? (
+                  <p class="pick-authors">Authors: {formatAuthorList(resolveAuthors(pick.arxiv_id, pick))}</p>
+                ) : null}
+
+                <div class="pick-details">
+                  <div class="detail-row highlight-row">
+                    <span class="detail-label">Key Insight:</span>
+                    <span class="detail-text"><ReaderText text={pick.core_insight} /></span>
+                  </div>
+                  <div class="detail-row">
+                    <span class="detail-label">Reason:</span>
+                    <span class="detail-text"><ReaderText text={pick.recommendation_reason} /></span>
+                  </div>
+                  <div class="detail-row guide-row">
+                    <span class="detail-label">Reading Guide:</span>
+                    <span class="detail-text"><ReaderText text={pick.reading_guide} /></span>
+                  </div>
+                </div>
               </div>
-              <div class="detail-row highlight-row">
-                <span class="detail-label">Key Insight:</span>
-                <span class="detail-text"><ReaderText text={pick.core_insight} /></span>
-              </div>
-              <div class="detail-row guide-row">
-                <span class="detail-label">Reading Guide:</span>
-                <span class="detail-text"><ReaderText text={pick.reading_guide} /></span>
-              </div>
+
+              {primaryFigure && (
+                <figure class="pick-inline-figure">
+                  <div class="pick-figure-frame">
+                    <a href={primaryFigure.url} target="_blank" rel="noopener noreferrer" class="pick-figure-link" title="Click to inspect full-resolution figure">
+                      <img
+                        src={primaryFigure.url}
+                        alt={primaryFigure.caption || `${pick.title} key figure`}
+                        loading="lazy"
+                        onerror={`this.onerror=null;this.src='${arxivFigFallback}';if(this.parentElement&&this.parentElement.tagName==='A')this.parentElement.href='${arxivFigFallback}';`}
+                      />
+                    </a>
+                    {figures.length > 1 && (
+                      <span class="pick-figure-count-badge" title={`${figures.length} key figures in Deep Reading`}>
+                        +{figures.length - 1} more
+                      </span>
+                    )}
+                  </div>
+                  <figcaption class="pick-figure-caption">
+                    <div class="pick-figure-meta-row">
+                      <span class={`pick-fig-badge pick-fig-${primaryFigure.category || "theoretical"}`}>
+                        {primaryFigure.label ? `${primaryFigure.label} · ${primaryFigureBadge}` : primaryFigureBadge}
+                      </span>
+                    </div>
+                    {primaryFigureCore && (
+                      <p class="pick-figure-core">
+                        <ReaderText text={primaryFigureCore} />
+                      </p>
+                    )}
+                  </figcaption>
+                </figure>
+              )}
             </div>
 
             {dailyItem && (
@@ -463,6 +684,8 @@ const activeTopicFilters = TOPIC_FILTER_SPECS
     border-color: #64748b;
     color: #f8fafc;
   }
+  .weekly-filter-bar:has(#order-theme:checked) label[for="order-theme"],
+  .weekly-filter-bar:has(#order-default:checked) label[for="order-default"],
   .weekly-filter-bar:has(#filter-all:checked) label[for="filter-all"],
   .weekly-filter-bar:has(#filter-must:checked) label[for="filter-must"],
   .weekly-filter-bar:has(#filter-worth:checked) label[for="filter-worth"],
@@ -479,6 +702,8 @@ const activeTopicFilters = TOPIC_FILTER_SPECS
     font-weight: 600;
     box-shadow: 0 1px 3px rgba(37, 99, 235, 0.25);
   }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .weekly-filter-bar:has(#order-theme:checked) label[for="order-theme"],
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .weekly-filter-bar:has(#order-default:checked) label[for="order-default"],
   :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .weekly-filter-bar:has(#filter-all:checked) label[for="filter-all"],
   :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .weekly-filter-bar:has(#filter-must:checked) label[for="filter-must"],
   :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .weekly-filter-bar:has(#filter-worth:checked) label[for="filter-worth"],
@@ -492,6 +717,340 @@ const activeTopicFilters = TOPIC_FILTER_SPECS
     background: rgba(37, 99, 235, 0.28);
     border-color: rgba(96, 165, 250, 0.45);
     color: #93c5fd;
+  }
+  .filter-bar-divider {
+    color: #cbd5e1;
+    margin: 0 0.25rem;
+    font-weight: 400;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .filter-bar-divider {
+    color: #475569;
+  }
+  /* At-a-Glance Visual Triage Matrix */
+  .web-triage-details {
+    margin-bottom: 1.35rem;
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .web-triage-details {
+    background: #0f172a;
+    border-color: #334155;
+  }
+  .web-triage-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1.1rem;
+    cursor: pointer;
+    user-select: none;
+    background: #eff6ff;
+    border-bottom: 1px solid #dbeafe;
+    list-style: none;
+  }
+  .web-triage-summary::-webkit-details-marker {
+    display: none;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .web-triage-summary {
+    background: rgba(30, 58, 138, 0.28);
+    border-bottom-color: rgba(59, 130, 246, 0.25);
+  }
+  .web-triage-summary-left {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    flex-wrap: wrap;
+  }
+  .web-triage-kicker {
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    color: #1d4ed8;
+    background: #dbeafe;
+    padding: 0.14rem 0.5rem;
+    border-radius: 9999px;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .web-triage-kicker {
+    color: #93c5fd;
+    background: rgba(59, 130, 246, 0.22);
+  }
+  .web-triage-title {
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: #0f172a;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .web-triage-title {
+    color: #f8fafc;
+  }
+  .web-triage-toggle-hint {
+    font-size: 0.76rem;
+    color: #64748b;
+    font-weight: 500;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .web-triage-toggle-hint {
+    color: #94a3b8;
+  }
+  .web-triage-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 0.85rem;
+    padding: 0.95rem 1.1rem;
+  }
+  .web-triage-card {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.85rem;
+    padding: 0.8rem 0.95rem;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    align-items: flex-start;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .web-triage-card {
+    background: #1e293b;
+    border-color: #334155;
+  }
+  .web-triage-must {
+    border-left: 4px solid #dc2626;
+  }
+  .web-triage-worth {
+    border-left: 4px solid #d97706;
+  }
+  .web-triage-main {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+  .web-triage-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    flex-wrap: wrap;
+  }
+  .web-triage-id-jump {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #1d4ed8;
+    text-decoration: none;
+    background: #eff6ff;
+    padding: 0.1rem 0.4rem;
+    border-radius: 4px;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .web-triage-id-jump {
+    color: #93c5fd;
+    background: rgba(59, 130, 246, 0.18);
+  }
+  .web-triage-card-title {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.38;
+    font-weight: 700;
+  }
+  .web-triage-card-title a {
+    color: #0f172a;
+    text-decoration: none;
+  }
+  .web-triage-card-title a:hover {
+    color: #2563eb;
+    text-decoration: underline;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .web-triage-card-title a {
+    color: #f8fafc;
+  }
+  .web-triage-insight {
+    margin: 0;
+    font-size: 0.8rem;
+    line-height: 1.45;
+    color: #475569;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .web-triage-insight {
+    color: #cbd5e1;
+  }
+  .web-triage-links {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin-top: 0.15rem;
+    flex-wrap: wrap;
+  }
+  .triage-jump-pill {
+    font-size: 0.74rem;
+    font-weight: 700;
+    color: #1d4ed8;
+    text-decoration: none;
+  }
+  .triage-jump-pill:hover {
+    text-decoration: underline;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .triage-jump-pill {
+    color: #93c5fd;
+  }
+  .triage-ext-pill {
+    font-size: 0.72rem;
+    color: #64748b;
+    text-decoration: none;
+  }
+  .triage-ext-pill:hover {
+    color: #0f172a;
+    text-decoration: underline;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .triage-ext-pill {
+    color: #94a3b8;
+  }
+  .web-triage-thumb {
+    flex: 0 0 112px;
+    width: 112px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    padding: 0.25rem;
+    text-decoration: none;
+    overflow: hidden;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .web-triage-thumb {
+    background: #0f172a;
+    border-color: #334155;
+  }
+  .web-triage-thumb img {
+    width: 100%;
+    height: 76px;
+    object-fit: contain;
+    display: block;
+    background: #ffffff;
+    border-radius: 4px;
+  }
+  .web-triage-fig-label {
+    font-size: 0.64rem;
+    font-weight: 600;
+    color: #475569;
+    margin-top: 0.2rem;
+    text-align: center;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .web-triage-fig-label {
+    color: #94a3b8;
+  }
+
+  /* Thematic vs Default Ordering Rules */
+  .picks-section:has(#order-theme:checked) .pick-card {
+    order: var(--theme-order, 0);
+  }
+  .picks-section:has(#order-theme:checked) .pick-theme-group-header {
+    order: var(--theme-order, 0);
+    display: flex;
+  }
+  .picks-section:has(#order-default:checked) .pick-card {
+    order: var(--default-order, 0);
+  }
+  .picks-section:has(#order-default:checked) .pick-theme-group-header {
+    display: none !important;
+  }
+  /* Hide theme headers when a narrow topic/priority filter is active to avoid empty headers */
+  .picks-section:has(#filter-must:checked) .pick-theme-group-header,
+  .picks-section:has(#filter-worth:checked) .pick-theme-group-header,
+  .picks-section:has(#filter-frb:checked) .pick-theme-group-header,
+  .picks-section:has(#filter-sn:checked) .pick-theme-group-header,
+  .picks-section:has(#filter-grb:checked) .pick-theme-group-header,
+  .picks-section:has(#filter-gw:checked) .pick-theme-group-header,
+  .picks-section:has(#filter-mag:checked) .pick-theme-group-header,
+  .picks-section:has(#filter-tde:checked) .pick-theme-group-header,
+  .picks-section:has(#filter-multi:checked) .pick-theme-group-header {
+    display: none !important;
+  }
+
+  .pick-theme-group-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding: 0.85rem 1.15rem;
+    margin-top: 0.5rem;
+    background: linear-gradient(90deg, #eff6ff 0%, #f8fafc 100%);
+    border-left: 4px solid #2563eb;
+    border-radius: 0 8px 8px 0;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .pick-theme-group-header {
+    background: linear-gradient(90deg, rgba(37, 99, 235, 0.18) 0%, rgba(15, 23, 42, 0.6) 100%);
+    border-left-color: #60a5fa;
+  }
+  .pick-theme-group-title-row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+  }
+  .pick-theme-kicker {
+    font-size: 0.72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #1d4ed8;
+    background: #dbeafe;
+    padding: 0.12rem 0.48rem;
+    border-radius: 4px;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .pick-theme-kicker {
+    color: #93c5fd;
+    background: rgba(59, 130, 246, 0.25);
+  }
+  .pick-theme-title {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #0f172a;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .pick-theme-title {
+    color: #f8fafc;
+  }
+  .pick-theme-count {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #64748b;
+    margin-left: auto;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .pick-theme-count {
+    color: #94a3b8;
+  }
+  .pick-theme-desc {
+    margin: 0;
+    font-size: 0.86rem;
+    line-height: 1.55;
+    color: #475569;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .pick-theme-desc {
+    color: #cbd5e1;
+  }
+  .pick-theme-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.12rem 0.48rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    background: #eff6ff;
+    color: #1e40af;
+    border: 1px solid #bfdbfe;
+    border-radius: 0.25rem;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .pick-theme-pill {
+    background: rgba(59, 130, 246, 0.15);
+    color: #93c5fd;
+    border-color: rgba(59, 130, 246, 0.3);
+  }
+  .pick-card {
+    scroll-margin-top: 5rem;
   }
   .picks-section:has(#filter-must:checked) .pick-card:not([data-priority="must_read"]) {
     display: none !important;
@@ -826,6 +1385,134 @@ const activeTopicFilters = TOPIC_FILTER_SPECS
   }
   :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .highlight-row .detail-label {
     color: #60a5fa;
+  }
+  .pick-content-split {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1rem;
+    align-items: start;
+  }
+  @media (min-width: 768px) {
+    .pick-content-split {
+      grid-template-columns: minmax(0, 1fr) 260px;
+      gap: 1.25rem;
+    }
+  }
+  .pick-main-col {
+    min-width: 0;
+  }
+  .pick-inline-figure {
+    margin: 0;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    background: #f8fafc;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .pick-inline-figure {
+    background: #0f172a;
+    border-color: #334155;
+  }
+  .pick-figure-frame {
+    position: relative;
+    background: #ffffff;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.35rem;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .pick-figure-frame {
+    border-bottom-color: #334155;
+  }
+  .pick-figure-link {
+    display: block;
+    width: 100%;
+    line-height: 0;
+  }
+  .pick-figure-frame img {
+    width: 100%;
+    max-height: 175px;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+    cursor: zoom-in;
+    transition: transform 0.15s ease;
+  }
+  .pick-figure-frame img:hover {
+    transform: scale(1.02);
+  }
+  .pick-figure-count-badge {
+    position: absolute;
+    bottom: 0.35rem;
+    right: 0.35rem;
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 0.1rem 0.4rem;
+    border-radius: 4px;
+    background: rgba(15, 23, 42, 0.78);
+    color: #f8fafc;
+    backdrop-filter: blur(2px);
+    line-height: 1.2;
+  }
+  .pick-figure-caption {
+    padding: 0.45rem 0.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  .pick-figure-meta-row {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    flex-wrap: wrap;
+  }
+  .pick-fig-badge {
+    display: inline-block;
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 0.08rem 0.38rem;
+    border-radius: 3px;
+    background: #e0f2fe;
+    color: #0369a1;
+  }
+  .pick-fig-theoretical {
+    background: #f3e8ff;
+    color: #6b21a8;
+  }
+  .pick-fig-observational {
+    background: #e0f2fe;
+    color: #0369a1;
+  }
+  .pick-fig-fitting {
+    background: #fef08a;
+    color: #854d0e;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .pick-fig-theoretical {
+    background: #3b0764;
+    color: #d8b4fe;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .pick-fig-observational {
+    background: #082f49;
+    color: #7dd3fc;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .pick-fig-fitting {
+    background: #422006;
+    color: #fde047;
+  }
+  .pick-figure-core {
+    margin: 0;
+    font-size: 0.74rem;
+    line-height: 1.4;
+    color: #475569;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .pick-figure-core {
+    color: #94a3b8;
   }
   .pick-deep-dive-bar {
     margin-top: 0.85rem;

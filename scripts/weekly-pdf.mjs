@@ -30,6 +30,8 @@ import {
   getDefaultWebsiteBase,
   getBibliographicUrl,
   getBibliographicSourceName,
+  deriveFigurePhysicalCore,
+  groupPicksByTheme,
 } from "../src/domain/academic-domain.mjs";
 import {
   tokenizeScientificText,
@@ -238,101 +240,132 @@ export async function generateWeeklyMarkdownDocument({
   lines.push(`> 在线精读入口：${base}/arxiv-weekly/${weekId}/`);
   lines.push("");
 
-  // 1. 本周综述
-  lines.push("## 1. 本周综述与宏观脉络");
-  lines.push(weeklyData.executive_summary || "暂无本周综述。");
-  lines.push("");
-
-  // 2. 前沿专题动态
-  if (Array.isArray(weeklyData.thematic_highlights) && weeklyData.thematic_highlights.length > 0) {
-    lines.push("## 2. 前沿专题动态与交叉脉络");
-    for (let i = 0; i < weeklyData.thematic_highlights.length; i++) {
-      const t = weeklyData.thematic_highlights[i];
-      const pLinks = (t.paper_ids || [])
-        .map((id) => `[arXiv:${id}](https://arxiv.org/abs/${id})`)
-        .join(" ｜ ");
-      lines.push(`### 专题 ${i + 1}：${t.theme_name}`);
-      lines.push(t.summary || "");
-      if (pLinks) {
-        lines.push(`\n**代表文献**：${pLinks}`);
-      }
-      lines.push("");
-    }
-  }
-
-  // 3. ⭐ 核心必读精选解读（必须展开全部精读细节）
-  lines.push("## 3. ⭐ 核心必读文献深度解析 (Must-Read In-Depth Deep Dives)");
-  lines.push("本节精选最具物理突破、观测约束或模型创新的论文，展开完整精读细节。");
-  lines.push("");
-
-  for (const p of mustReads) {
+  // 1. 本周精选一页速览（Quick Triage Matrix：标题 + 核心结论 + 主图 + 超链接）
+  lines.push(`## ★ 本周精选速览矩阵 (At-a-Glance Visual Triage · 共 ${topPicks.length} 篇)`);
+  lines.push(
+    "以下矩阵汇总本周全部核心必读与特选关注论文的核心结论（Key Insight）、主图与原文/PDF直达链接，供 1 分钟快速判断是否深入阅读。\n"
+  );
+  for (let i = 0; i < topPicks.length; i++) {
+    const p = topPicks[i];
     const aid = p.arxiv_id;
     const titleZh = resolvePaperTitleZhSync(p) || p.title || aid;
     const titleEn = p.title || aid;
-    const feed = dailyEntryMap.get(aid);
-    const authors = (p.authors && p.authors.length > 0 ? p.authors : feed?.authors) || [];
-    const authorStr = authors.slice(0, 5).join(", ") + (authors.length > 5 ? " 等" : "");
-    const dailyA = dailyAnalysisMap.get(aid)?.analysis || {};
-
-    lines.push(`### [arXiv:${aid}](https://arxiv.org/abs/${aid}) ${titleZh}`);
-    lines.push(`- **英文原题**：${titleEn}`);
-    lines.push(`- **作者**：${authorStr}`);
+    const tierBadge = p.priority === "must_read" ? "⭐ 必读" : "📌 关注";
+    const dailyRec = dailyAnalysisMap.get(aid);
+    const dailyA = dailyRec?.analysis?.analysis || dailyRec?.analysis || {};
+    const figs = p.figures || dailyA.figures || [];
+    const primaryFig = Array.isArray(figs) && figs.length > 0 ? figs[0] : null;
+    const insight = p.core_insight || dailyA.result || p.recommendation_reason || "无";
     lines.push(
-      `- **文献链接**：[arXiv 原文](https://arxiv.org/abs/${aid}) ｜ [${getBibliographicSourceName()}](${getBibliographicUrl(aid)}) ｜ [在线精读](${base}/arxiv-weekly/${weekId}/#paper-${aid})`
+      `- **${String(i + 1).padStart(2, "0")}. [${tierBadge}] [arXiv:${aid}](https://arxiv.org/abs/${aid}) ${titleZh}**（*${titleEn}*）`
     );
-    lines.push(`- **推荐理由**：${p.recommendation_reason || "无"}`);
-    lines.push(`- **核心突破**：${p.core_insight || "无"}`);
-    lines.push("");
+    lines.push(`  - **Key Insight**：${insight}`);
+    lines.push(
+      `  - **直达链接**：[arXiv 摘要](https://arxiv.org/abs/${aid}) ｜ [PDF 原文](https://arxiv.org/pdf/${aid}) ｜ [${getBibliographicSourceName()}](${getBibliographicUrl(aid)}) ｜ [站内精读](${base}/arxiv-weekly/${weekId}/#paper-${aid})`
+    );
+    if (primaryFig?.url) {
+      const figUrl = primaryFig.url.startsWith("http")
+        ? primaryFig.url
+        : `${base}${primaryFig.url}`;
+      const figLabel = primaryFig.label || "Fig. 1";
+      const figCore =
+        deriveFigurePhysicalCore(primaryFig, { result: insight, title: titleEn }) || "";
+      lines.push(`  - **核心图表 (${figLabel})**：![${figLabel}](${figUrl}) ${figCore}`);
+    }
+  }
+  lines.push("");
 
-    if (dailyA.problem) {
-      lines.push(`#### 科学问题\n\n${dailyA.problem}\n`);
+  // 1. 本周综述（将 arXiv:XXXX.XXXXX 转化为站内精读锚点跳转链接）
+  lines.push("## 1. 本周综述与宏观脉络");
+  const rawExecMd = weeklyData.executive_summary || "暂无本周综述。";
+  const linkedExecMd = rawExecMd.replace(
+    /\barXiv:(\d{4}\.\d{4,5})\b/g,
+    (_, id) => `[arXiv:${id} ↓](${base}/arxiv-weekly/${weekId}/#paper-${id})`
+  );
+  lines.push(linkedExecMd);
+  lines.push("");
+
+  // 2. ⭐ 核心必读精选解读（按专题分组展开全部精读细节）
+  lines.push("## 2. ⭐ 核心必读文献深度解析 (Must-Read In-Depth Deep Dives · 按专题分组)");
+  lines.push("本节精选最具物理突破、观测约束或模型创新的论文，按研究专题顺序展开完整精读细节。");
+  lines.push("");
+
+  const mustReadThemeGroups = groupPicksByTheme(mustReads, weeklyData);
+  for (let gIdx = 0; gIdx < mustReadThemeGroups.length; gIdx++) {
+    const group = mustReadThemeGroups[gIdx];
+    lines.push(`### 🧭 专题 0${gIdx + 1}：${group.theme}`);
+    if (group.description) {
+      lines.push(`> ${group.description}\n`);
     }
-    if (dailyA.method) {
-      lines.push(`#### 观测与研究方法\n\n${dailyA.method}\n`);
-    }
-    if (dailyA.assumptions) {
-      const ass = dailyA.assumptions;
-      lines.push("#### 物理模型与关键假设\n");
-      if (Array.isArray(ass)) {
-        for (const item of ass) lines.push(`- ${item}`);
-      } else {
-        lines.push(String(ass));
-      }
+    for (const p of group.picks) {
+      const aid = p.arxiv_id;
+      const titleZh = resolvePaperTitleZhSync(p) || p.title || aid;
+      const titleEn = p.title || aid;
+      const feed = dailyEntryMap.get(aid);
+      const authors = (p.authors && p.authors.length > 0 ? p.authors : feed?.authors) || [];
+      const authorStr = authors.slice(0, 5).join(", ") + (authors.length > 5 ? " 等" : "");
+      const dailyA = dailyAnalysisMap.get(aid)?.analysis || {};
+
+      lines.push(`#### [arXiv:${aid}](https://arxiv.org/abs/${aid}) ${titleZh}`);
+      lines.push(`- **英文原题**：${titleEn}`);
+      lines.push(`- **作者**：${authorStr}`);
+      lines.push(
+        `- **文献链接**：[arXiv 原文](https://arxiv.org/abs/${aid}) ｜ [${getBibliographicSourceName()}](${getBibliographicUrl(aid)}) ｜ [在线精读](${base}/arxiv-weekly/${weekId}/#paper-${aid})`
+      );
+      lines.push(`- **推荐理由**：${p.recommendation_reason || "无"}`);
+      lines.push(`- **核心突破**：${p.core_insight || "无"}`);
       lines.push("");
-    }
-    if (Array.isArray(dailyA.figures) && dailyA.figures.length > 0) {
-      lines.push("#### 核心学术图表\n");
-      for (let fIdx = 0; fIdx < dailyA.figures.length; fIdx++) {
-        const fig = dailyA.figures[fIdx];
-        const label = fig.label || `图 ${fIdx + 1}`;
-        const badge = fig.category_badge ? ` (${fig.category_badge})` : "";
-        const cleanCaption = fig.caption ? fig.caption.replace(/[\r\n]+/gu, " ") : "";
-        const imgUrl = fig.url?.startsWith("http") ? fig.url : `${base}${fig.url || ""}`;
-        lines.push(`![${label}${badge}](${imgUrl})`);
-        if (cleanCaption) lines.push(`*${label}${badge}：${cleanCaption}*\n`);
+
+      if (dailyA.problem) {
+        lines.push(`##### 科学问题\n\n${dailyA.problem}\n`);
       }
-    }
-    if (dailyA.result) {
-      lines.push(`#### 关键结论与定量测量\n\n${dailyA.result}\n`);
-    }
-    if (dailyA.limits) {
-      const lims = dailyA.limits;
-      lines.push("#### 局限性与观测边界\n");
-      if (Array.isArray(lims)) {
-        for (const item of lims) lines.push(`- ${item}`);
-      } else {
-        lines.push(String(lims));
+      if (dailyA.method) {
+        lines.push(`##### 观测与研究方法\n\n${dailyA.method}\n`);
       }
-      lines.push("");
+      if (dailyA.assumptions) {
+        const ass = dailyA.assumptions;
+        lines.push("##### 物理模型与关键假设\n");
+        if (Array.isArray(ass)) {
+          for (const item of ass) lines.push(`- ${item}`);
+        } else {
+          lines.push(String(ass));
+        }
+        lines.push("");
+      }
+      if (Array.isArray(dailyA.figures) && dailyA.figures.length > 0) {
+        lines.push("##### 核心学术图表\n");
+        for (let fIdx = 0; fIdx < dailyA.figures.length; fIdx++) {
+          const fig = dailyA.figures[fIdx];
+          const label = fig.label || `图 ${fIdx + 1}`;
+          const badge = fig.category_badge ? ` (${fig.category_badge})` : "";
+          const cleanCaption = fig.caption ? fig.caption.replace(/[\r\n]+/gu, " ") : "";
+          const imgUrl = fig.url?.startsWith("http") ? fig.url : `${base}${fig.url || ""}`;
+          lines.push(`![${label}${badge}](${imgUrl})`);
+          if (cleanCaption) lines.push(`*${label}${badge}：${cleanCaption}*\n`);
+        }
+      }
+      if (dailyA.result) {
+        lines.push(`##### 关键结论与定量测量\n\n${dailyA.result}\n`);
+      }
+      if (dailyA.limits) {
+        const lims = dailyA.limits;
+        lines.push("##### 局限性与观测边界\n");
+        if (Array.isArray(lims)) {
+          for (const item of lims) lines.push(`- ${item}`);
+        } else {
+          lines.push(String(lims));
+        }
+        lines.push("");
+      }
+      if (p.reading_guide || dailyA.reading_entry) {
+        lines.push(`##### 建议精读切入点\n\n${p.reading_guide || dailyA.reading_entry}\n`);
+      }
+      lines.push("---\n");
     }
-    if (p.reading_guide || dailyA.reading_entry) {
-      lines.push(`#### 建议精读切入点\n\n${p.reading_guide || dailyA.reading_entry}\n`);
-    }
-    lines.push("---\n");
   }
 
-  // 4. 📌 本周重点关注文献（全量紧凑条目，精读不展开）
-  lines.push(`## 4. 📌 本周重点关注文献 (Worth-Knowing Selected Works · 共 ${worths.length} 篇)`);
+  // 3. 📌 本周重点关注文献（全量紧凑条目，精读不展开）
+  lines.push(`## 3. 📌 本周重点关注文献 (Worth-Knowing Selected Works · 共 ${worths.length} 篇)`);
   lines.push(
     "以下文献针对特定机制或子方向提供重要观测线索与实测约束，保持精炼条目，不展开精读详情。\n"
   );
@@ -616,6 +649,56 @@ export async function generatePublicationWeeklyHtml({
     .theme-papers {
       font-size: 7.4pt;
       color: #64748b;
+    }
+    .pdf-inline-jump {
+      display: inline-block;
+      font-family: monospace;
+      font-size: 7.8pt;
+      font-weight: 700;
+      color: #0369a1;
+      background: #e0f2fe;
+      border: 1px solid #bae6fd;
+      border-radius: 2.5px;
+      padding: 0 3.5px;
+      text-decoration: none;
+    }
+    .must-read-theme-header {
+      background: linear-gradient(90deg, #eff6ff 0%, #f8fafc 100%);
+      border-left: 3.5px solid #0284c7;
+      border-radius: 0 3px 3px 0;
+      padding: 5px 9px;
+      margin: 8px 0 6px 0;
+      break-after: avoid;
+      page-break-after: avoid;
+    }
+    .must-read-theme-title {
+      font-family: "Source Han Serif CN", "Noto Serif CJK SC", Georgia, serif;
+      font-size: 9.4pt;
+      font-weight: 700;
+      color: #0f172a;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .must-read-theme-kicker {
+      font-family: sans-serif;
+      font-size: 6.8pt;
+      font-weight: 800;
+      color: #0369a1;
+      background: #dbeafe;
+      padding: 1px 4.5px;
+      border-radius: 2px;
+      text-transform: uppercase;
+    }
+    .must-read-theme-desc {
+      font-size: 7.7pt;
+      color: #334155;
+      margin: 2px 0 0 0;
+      line-height: 1.36;
+    }
+    .must-read-theme-desc p {
+      margin: 0;
     }
     .must-read-card {
       border: 1.2px solid #cbd5e1;
@@ -914,6 +997,199 @@ export async function generatePublicationWeeklyHtml({
       justify-content: space-between;
       align-items: center;
     }
+
+    /* Visual Triage Matrix (1-2 Page At-a-Glance Paper & Figure Index) */
+    .triage-matrix-section {
+      margin-bottom: 10px;
+    }
+    .triage-lead-bar {
+      font-size: 7.6pt;
+      color: #334155;
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-left: 3.5px solid #0284c7;
+      border-radius: 2px;
+      padding: 4px 8px;
+      margin-bottom: 6px;
+      line-height: 1.38;
+    }
+    .triage-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 5px;
+    }
+    .triage-card {
+      border: 1px solid #cbd5e1;
+      border-radius: 2.5px;
+      padding: 4.5px 6.5px;
+      background: #ffffff;
+      break-inside: avoid;
+      page-break-inside: avoid;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .triage-card.triage-must {
+      border-left: 3px solid #0284c7;
+      background: #fcfdff;
+    }
+    .triage-card.triage-worth {
+      border-left: 3px solid #64748b;
+    }
+    .triage-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 4px;
+      margin-bottom: 2.5px;
+      border-bottom: 1px dashed #e2e8f0;
+      padding-bottom: 2px;
+    }
+    .triage-badges {
+      display: inline-flex;
+      align-items: center;
+      gap: 3.5px;
+      flex-wrap: wrap;
+    }
+    .triage-num {
+      background: #0f172a;
+      color: #ffffff;
+      font-size: 6.2pt;
+      font-weight: 700;
+      padding: 0.5px 3.5px;
+      border-radius: 2px;
+      font-family: monospace;
+    }
+    .triage-tier-must {
+      background: #0284c7;
+      color: #ffffff;
+      font-size: 6.2pt;
+      font-weight: 700;
+      padding: 0.5px 4px;
+      border-radius: 2px;
+    }
+    .triage-tier-worth {
+      background: #475569;
+      color: #ffffff;
+      font-size: 6.2pt;
+      font-weight: 700;
+      padding: 0.5px 4px;
+      border-radius: 2px;
+    }
+    .triage-links {
+      font-size: 6.6pt;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+    }
+    .triage-links a {
+      color: #0284c7;
+      text-decoration: underline;
+      font-weight: 600;
+    }
+    .triage-links .triage-pdf-link {
+      color: #dc2626;
+    }
+    .triage-links .triage-jump-link {
+      color: #0f766e;
+    }
+    .triage-body {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 5px;
+      align-items: start;
+    }
+    .triage-body.has-fig {
+      grid-template-columns: minmax(0, 1fr) 86px;
+    }
+    .triage-main {
+      min-width: 0;
+    }
+    .triage-title-zh {
+      font-family: "Source Han Serif CN", "Noto Serif CJK SC", "Songti SC", Georgia, serif;
+      font-size: 8.1pt;
+      font-weight: 700;
+      color: #0f172a;
+      line-height: 1.26;
+      margin: 0 0 1px 0;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .triage-title-zh a {
+      color: #0f172a;
+      text-decoration: none;
+    }
+    .triage-title-en {
+      font-size: 6.7pt;
+      color: #64748b;
+      font-style: italic;
+      line-height: 1.2;
+      margin: 0 0 2.5px 0;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .triage-insight {
+      font-size: 7.2pt;
+      color: #1e293b;
+      line-height: 1.32;
+      background: #f8fafc;
+      border-left: 2px solid #0284c7;
+      padding: 2px 4.5px;
+      border-radius: 1.5px;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .triage-insight strong {
+      color: #0369a1;
+    }
+    .triage-fig-box {
+      width: 86px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 2px;
+      padding: 2px;
+      text-decoration: none;
+      color: inherit;
+    }
+    .triage-fig-img-wrap {
+      width: 80px;
+      height: 56px;
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .triage-fig-img-wrap img {
+      max-width: 100%;
+      max-height: 54px;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      display: block;
+    }
+    .triage-fig-cap {
+      font-size: 5.9pt;
+      color: #475569;
+      line-height: 1.15;
+      margin-top: 1.5px;
+      text-align: center;
+      width: 100%;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
   </style>
 </head>
 <body>
@@ -932,38 +1208,84 @@ export async function generatePublicationWeeklyHtml({
     </div>
   </header>
 
-  <section>
+  <section class="triage-matrix-section" id="visual-triage-matrix">
     <div class="section-title">
-      <span>1. 本周综述与宏观脉络 (Executive Synthesis)</span>
-      <span style="font-size: 7.4pt; color: #64748b; font-family: sans-serif; font-weight: normal;">EDITORIAL OVERVIEW</span>
+      <span>★ 本周精选速览矩阵 (At-a-Glance Visual Triage · 共 ${topPicks.length} 篇)</span>
+      <span style="font-size: 7.4pt; color: #0284c7; font-family: sans-serif; font-weight: 700;">1-MINUTE VISUAL TRIAGE · KEY INSIGHTS &amp; FIGURES</span>
     </div>
-    <div class="executive-box">
-      <div class="executive-label">ABSTRACT / 学术总览</div>
-      ${renderMarkdownWithMath(weeklyData.executive_summary || "暂无本周综述。")}
+    <div class="triage-lead-bar">
+      <strong>快速研读指引：</strong>下表浓缩本周全部 ${mustReads.length} 篇核心必读与 ${topPicks.length - mustReads.length} 篇特选关注论文的<strong>一句话核心结论 (Key Insight)</strong>、<strong>关键科学图表</strong>与<strong>直达超链接</strong>（点击页内编号跳至精读详情，点击 arXiv / PDF 直达原文），助您在 1–2 页内快速判断哪些文章值得精读。
     </div>
-  </section>
-
-  <section>
-    <div class="section-title">
-      <span>2. 前沿专题动态与交叉脉络 (Thematic Highlights)</span>
-      <span style="font-size: 7.4pt; color: #64748b; font-family: sans-serif; font-weight: normal;">${(weeklyData.thematic_highlights || []).length} THEMATIC CLUSTERS</span>
-    </div>
-    <div class="theme-grid">
+    <div class="triage-grid">
 `);
 
-  for (let i = 0; i < (weeklyData.thematic_highlights || []).length; i++) {
-    const t = weeklyData.thematic_highlights[i];
-    const pLinks = (t.paper_ids || [])
-      .map((pid) => `<a href="https://arxiv.org/abs/${pid}">arXiv:${pid}</a>`)
-      .join(" ｜ ");
+  for (let tIdx = 0; tIdx < topPicks.length; tIdx++) {
+    const p = topPicks[tIdx];
+    const aid = p.arxiv_id;
+    const isMust = p.priority === "must_read";
+    const titleZh = resolvePaperTitleZhSync(p) || p.title || aid;
+    const titleEn = p.title || aid;
+    const dailyRec = dailyAnalysisMap.get(aid);
+    const dailyA = dailyRec?.analysis?.analysis || dailyRec?.analysis || {};
+    const rawFigs = p.figures || dailyA.figures || [];
+    const figs = Array.isArray(rawFigs) ? rawFigs.filter((f) => f && f.url) : [];
+    const primaryFig = figs.length > 0 ? figs[0] : null;
+    const rawThumb = primaryFig ? resolveImageBase64(primaryFig.url, searchDirs) : "";
+    const b64Thumb = rawThumb.startsWith("data:") ? rawThumb : "";
+    const figLabel = primaryFig?.label || "Fig. 1";
+    const figBadge = primaryFig?.category_badge || "";
+    const insightText =
+      p.core_insight || dailyA.result || p.recommendation_reason || "详见正文解析";
+
     html.push(`
-      <div class="theme-card">
-        <div class="theme-title">专题 ${i + 1}：${t.theme_name || ""}</div>
-        <div class="theme-summary">${renderMarkdownWithMath(t.summary || "")}</div>
-        <div class="theme-papers"><strong>代表文献：</strong>${pLinks}</div>
+      <div class="triage-card ${isMust ? "triage-must" : "triage-worth"}">
+        <div class="triage-card-top">
+          <div class="triage-badges">
+            <span class="triage-num">#${String(tIdx + 1).padStart(2, "0")}</span>
+            <span class="${isMust ? "triage-tier-must" : "triage-tier-worth"}">${isMust ? "⭐ 必读" : "📌 关注"}</span>
+            <a href="https://arxiv.org/abs/${aid}" style="font-family: monospace; font-size: 6.6pt; font-weight: 700; color: #334155; text-decoration: none;">arXiv:${aid}</a>
+          </div>
+          <div class="triage-links">
+            <a href="#pdf-paper-${aid}" class="triage-jump-link">↓详情</a>
+            <span>·</span>
+            <a href="https://arxiv.org/abs/${aid}">arXiv</a>
+            <span>·</span>
+            <a href="https://arxiv.org/pdf/${aid}" class="triage-pdf-link">PDF</a>
+            <span>·</span>
+            <a href="${base}/arxiv-weekly/${weekId}/#paper-${aid}">网页</a>
+          </div>
+        </div>
+        <div class="triage-body ${b64Thumb ? "has-fig" : ""}">
+          <div class="triage-main">
+            <div class="triage-title-zh"><a href="#pdf-paper-${aid}">${escapeHtml(titleZh)}</a></div>
+            <div class="triage-title-en">${escapeHtml(titleEn)}</div>
+            <div class="triage-insight"><strong>Key Insight：</strong>${renderInlineMarkdownWithMath(insightText)}</div>
+          </div>
+          ${
+            b64Thumb
+              ? `
+          <a href="#pdf-paper-${aid}" class="triage-fig-box" title="点击跳转至页内图表与精读详情">
+            <div class="triage-fig-img-wrap">
+              <img src="${b64Thumb}" alt="${escapeHtml(figLabel)}" />
+            </div>
+            <div class="triage-fig-cap">${escapeHtml(figLabel)}${figBadge ? ` · ${escapeHtml(figBadge)}` : ""}</div>
+          </a>`
+              : ""
+          }
+        </div>
       </div>
 `);
   }
+
+  const renderedExecutiveHtml = renderMarkdownWithMath(
+    weeklyData.executive_summary || "暂无本周综述。"
+  ).replace(
+    /\barXiv:(\d{4}\.\d{4,5})\b/g,
+    (_, id) =>
+      `<a href="#pdf-paper-${id}" class="pdf-inline-jump" title="跳转至本文下方深度精读">arXiv:${id} ↓</a>`
+  );
+
+  const mustReadThemeGroups = groupPicksByTheme(mustReads, weeklyData);
 
   html.push(`
     </div>
@@ -971,27 +1293,60 @@ export async function generatePublicationWeeklyHtml({
 
   <section>
     <div class="section-title">
-      <span>3. ⭐ 核心必读文献深度解析 (Must-Read In-Depth Deep Dives)</span>
-      <span style="font-size: 7.4pt; color: #64748b; font-family: sans-serif; font-weight: normal;">${mustReads.length} ARTICLES EXPANDED</span>
+      <span>1. 本周综述与宏观脉络 (Executive Synthesis · 点击编号直达精读)</span>
+      <span style="font-size: 7.4pt; color: #64748b; font-family: sans-serif; font-weight: normal;">EDITORIAL OVERVIEW</span>
+    </div>
+    <div class="executive-box">
+      <div class="executive-label">ABSTRACT / 学术总览（点击文内 arXiv 编号 ↓ 可直接跳至下方详细精读）</div>
+      ${renderedExecutiveHtml}
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">
+      <span>2. ⭐ 核心必读文献深度解析 (Must-Read In-Depth Deep Dives · 按专题分组)</span>
+      <span style="font-size: 7.4pt; color: #64748b; font-family: sans-serif; font-weight: normal;">${mustReads.length} ARTICLES IN ${mustReadThemeGroups.length} THEMES</span>
     </div>
 `);
 
-  for (let pIdx = 0; pIdx < mustReads.length; pIdx++) {
-    const p = mustReads[pIdx];
-    const aid = p.arxiv_id;
-    const titleZh = resolvePaperTitleZhSync(p) || p.title || aid;
-    const titleEn = p.title || aid;
-    const feed = dailyEntryMap.get(aid);
-    const authors = (p.authors && p.authors.length > 0 ? p.authors : feed?.authors) || [];
-    const authorStr = authors.slice(0, 5).join(", ") + (authors.length > 5 ? " 等" : "");
-    const dailyA = dailyAnalysisMap.get(aid)?.analysis || {};
+  let pIdx = 0;
+  for (let gIdx = 0; gIdx < mustReadThemeGroups.length; gIdx++) {
+    const group = mustReadThemeGroups[gIdx];
+    const groupDescHtml = group.description
+      ? renderInlineMarkdownWithMath(group.description).replace(
+          /\barXiv:(\d{4}\.\d{4,5})\b/g,
+          (_, id) => `<a href="#pdf-paper-${id}" class="pdf-inline-jump">arXiv:${id} ↓</a>`
+        )
+      : "";
 
     html.push(`
-    <article class="must-read-card">
+    <div class="must-read-theme-header">
+      <div class="must-read-theme-title">
+        <span class="must-read-theme-kicker">专题 0${gIdx + 1}</span>
+        <span>${escapeHtml(group.theme)}</span>
+        <span style="font-size: 7.2pt; font-weight: normal; color: #64748b; margin-left: auto;">本专题收录 ${group.picks.length} 篇必读文献</span>
+      </div>
+      ${groupDescHtml ? `<div class="must-read-theme-desc">${groupDescHtml}</div>` : ""}
+    </div>
+`);
+
+    for (const p of group.picks) {
+      pIdx++;
+      const aid = p.arxiv_id;
+      const titleZh = resolvePaperTitleZhSync(p) || p.title || aid;
+      const titleEn = p.title || aid;
+      const feed = dailyEntryMap.get(aid);
+      const authors = (p.authors && p.authors.length > 0 ? p.authors : feed?.authors) || [];
+      const authorStr = authors.slice(0, 5).join(", ") + (authors.length > 5 ? " 等" : "");
+      const dailyA = dailyAnalysisMap.get(aid)?.analysis || {};
+
+      html.push(`
+    <article class="must-read-card" id="pdf-paper-${aid}">
       <div class="paper-header">
         <div class="paper-badge-bar">
-          <span class="badge-paper-num">PAPER ${String(pIdx + 1).padStart(2, "0")}</span>
+          <span class="badge-paper-num">PAPER ${String(pIdx).padStart(2, "0")}</span>
           <span class="badge-must">⭐ 必读精选</span>
+          <span style="font-size: 7.1pt; color: #0369a1; background: #e0f2fe; padding: 1px 4px; border-radius: 2px; font-weight: 600;">🧭 ${escapeHtml(group.theme)}</span>
           <span style="font-size: 7.4pt; color: #64748b; font-family: monospace;">arXiv:${aid}</span>
         </div>
         <h2 class="paper-title-zh"><a href="https://arxiv.org/abs/${aid}">[arXiv:${aid}] ${escapeHtml(titleZh)}</a></h2>
@@ -1000,6 +1355,7 @@ export async function generatePublicationWeeklyHtml({
           <span><strong>作者：</strong>${escapeHtml(authorStr)}</span>
           <span class="paper-links-bar">
             <a href="https://arxiv.org/abs/${aid}">arXiv 原文</a> ｜
+            <a href="https://arxiv.org/pdf/${aid}">PDF 直达</a> ｜
             <a href="${getBibliographicUrl(aid)}">${escapeHtml(getBibliographicSourceName())}</a> ｜
             <a href="${base}/arxiv-weekly/${weekId}/#paper-${aid}">站内交互雷达</a>
           </span>
@@ -1064,24 +1420,25 @@ export async function generatePublicationWeeklyHtml({
       </div>
 `);
 
-    if (Array.isArray(dailyA.figures) && dailyA.figures.length > 0) {
-      for (let fIdx = 0; fIdx < dailyA.figures.length; fIdx++) {
-        const fig = dailyA.figures[fIdx];
-        const b64Src = resolveImageBase64(fig.url, searchDirs);
-        const label = fig.label || `图 ${fIdx + 1}`;
-        const badge = fig.category_badge ? ` [${fig.category_badge}]` : "";
-        const caption = fig.caption || "";
-        html.push(`
+      if (Array.isArray(dailyA.figures) && dailyA.figures.length > 0) {
+        for (let fIdx = 0; fIdx < dailyA.figures.length; fIdx++) {
+          const fig = dailyA.figures[fIdx];
+          const b64Src = resolveImageBase64(fig.url, searchDirs);
+          if (!b64Src.startsWith("data:")) continue;
+          const label = fig.label || `图 ${fIdx + 1}`;
+          const badge = fig.category_badge ? ` [${fig.category_badge}]` : "";
+          const caption = fig.caption || "";
+          html.push(`
       <div class="figure-block">
         <img src="${b64Src}" alt="${escapeHtml(label)}" />
         <div class="figure-caption"><strong>${escapeHtml(label)}${escapeHtml(badge)}：</strong>${renderInlineMarkdownWithMath(caption)}</div>
       </div>
 `);
+        }
       }
-    }
 
-    if (dailyA.result) {
-      html.push(`
+      if (dailyA.result) {
+        html.push(`
       <div class="deep-dive-full">
         <div class="deep-dive-result-box">
           <div class="deep-dive-label">📊 关键结论与定量测量 (Quantitative Results)</div>
@@ -1089,34 +1446,35 @@ export async function generatePublicationWeeklyHtml({
         </div>
       </div>
 `);
-    }
+      }
 
-    if (p.reading_guide || dailyA.reading_entry) {
-      html.push(`
+      if (p.reading_guide || dailyA.reading_entry) {
+        html.push(`
       <div class="deep-dive-guide-box">
         <div class="deep-dive-label">🎯 建议精读切入点 (Reading Guide)</div>
         <div class="deep-dive-content">${renderInlineMarkdownWithMath(p.reading_guide || dailyA.reading_entry)}</div>
       </div>
 `);
-    }
+      }
 
-    html.push(`
+      html.push(`
     </article>
 `);
+    }
   }
 
   html.push(`
   </section>
 `);
 
-  // 4. 重点关注文献（分层展现：top_picks 精选卡片 + 其余文献学术表格）
+  // 3. 重点关注文献（分层展现：top_picks 精选卡片 + 其余文献学术表格）
   const topWorths = worths.filter((p) => p.isTopPick);
   const otherWorths = worths.filter((p) => !p.isTopPick);
 
   html.push(`
   <section>
     <div class="section-title">
-      <span>4. 📌 本周重点关注文献 (Worth-Knowing Selected Works · 共 ${worths.length} 篇)</span>
+      <span>3. 📌 本周重点关注文献 (Worth-Knowing Selected Works · 共 ${worths.length} 篇)</span>
       <span style="font-size: 7.4pt; color: #64748b; font-family: sans-serif; font-weight: normal;">STRUCTURED COMPENDIUM</span>
     </div>
     <p style="font-size: 7.8pt; color: #64748b; margin-top: -3px; margin-bottom: 8px;">以下文献针对特定物理机制或子方向提供重要观测线索与实测约束，采用前沿精选卡片与总览表格双轨呈现。</p>
@@ -1124,7 +1482,7 @@ export async function generatePublicationWeeklyHtml({
 
   if (topWorths.length > 0) {
     html.push(`
-    <div class="section-title-sub">4.1 重点关注 · 特选导读 (Featured Highlights · 共 ${topWorths.length} 篇)</div>
+    <div class="section-title-sub">3.1 重点关注 · 特选导读 (Featured Highlights · 共 ${topWorths.length} 篇)</div>
     <div class="worth-grid">
 `);
 
@@ -1137,12 +1495,12 @@ export async function generatePublicationWeeklyHtml({
       const authorStr = authors.slice(0, 3).join(", ") + (authors.length > 3 ? " 等" : "");
 
       html.push(`
-      <div class="worth-card">
+      <div class="worth-card" id="pdf-paper-${aid}">
         <div>
           <span class="badge-worth" style="background:#0284c7;color:#ffffff;">⭐ 重点关注</span>
           <div class="worth-title-zh"><a href="https://arxiv.org/abs/${aid}">[arXiv:${aid}] ${escapeHtml(titleZh)}</a></div>
         </div>
-        <div class="worth-meta"><strong>原题：</strong>${escapeHtml(titleEn)} ｜ <strong>作者：</strong>${escapeHtml(authorStr)}</div>
+        <div class="worth-meta"><strong>原题：</strong>${escapeHtml(titleEn)} ｜ <strong>作者：</strong>${escapeHtml(authorStr)} ｜ <a href="https://arxiv.org/pdf/${aid}">PDF</a></div>
         ${p.recommendation_reason ? `<div class="worth-desc"><strong>【推荐理由】：</strong>${renderInlineMarkdownWithMath(p.recommendation_reason)}</div>` : ""}
         ${p.core_insight ? `<div class="worth-desc"><strong>【核心要点】：</strong>${renderInlineMarkdownWithMath(p.core_insight)}</div>` : ""}
         ${p.reading_guide ? `<div class="worth-desc" style="color: #64748b;"><strong>【阅读切入】：</strong>${renderInlineMarkdownWithMath(p.reading_guide)}</div>` : ""}
@@ -1157,7 +1515,7 @@ export async function generatePublicationWeeklyHtml({
 
   if (otherWorths.length > 0) {
     html.push(`
-    <div class="section-title-sub">4.2 重点关注 · 全周论文简表 (Weekly Compendium · 共 ${otherWorths.length} 篇)</div>
+    <div class="section-title-sub">3.2 重点关注 · 全周论文简表 (Weekly Compendium · 共 ${otherWorths.length} 篇)</div>
     <table class="compendium-table">
       <thead>
         <tr>
@@ -1180,7 +1538,7 @@ export async function generatePublicationWeeklyHtml({
       const date = p.announcement_date || "";
 
       html.push(`
-        <tr>
+        <tr id="pdf-paper-${aid}">
           <td>
             <a href="https://arxiv.org/abs/${aid}" class="table-aid">arXiv:${aid}</a>
             ${date ? `<div class="table-date">${escapeHtml(date)}</div>` : ""}

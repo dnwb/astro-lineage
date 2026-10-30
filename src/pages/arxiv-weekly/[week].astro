@@ -164,12 +164,6 @@ Generated: ${generatedLabel}
 ## Weekly Executive Summary
 ${weeklyData.executive_summary}
 
-## Thematic Highlights & Developments
-${(weeklyData.thematic_highlights ?? []).map((t: any, i: number) => `### Topic 0${i + 1}: ${t.theme_name}
-${t.summary}
-
-Related Papers: ${(t.paper_ids ?? []).map((id: string) => `arXiv:${id}`).join(", ")}`).join("\n\n")}
-
 ## Weekly Top Picks
 ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read" ? "Must Read" : "Follow"}] arXiv:${p.arxiv_id} - ${p.title}
 - **Recommendation**: ${p.recommendation_reason}
@@ -274,54 +268,10 @@ ${(weeklyData.top_picks ?? []).map((p: any) => `### [${p.priority === "must_read
         dailyItemMap={dailyItemMap}
         dailyAnalysisMap={dailyAnalysisMap}
         weekId={weeklyData.week_id}
+        weeklyData={weeklyData}
       />
 
-      <!-- 3. Thematic Highlights -->
-      {weeklyData.thematic_highlights && weeklyData.thematic_highlights.length > 0 && (
-        <section class="weekly-section thematic-section" id="thematic-highlights">
-          <div class="section-heading">
-            <p class="section-kicker">Focus Themes</p>
-            <h2>Thematic Highlights</h2>
-          </div>
-          <div class="thematic-grid">
-            {weeklyData.thematic_highlights?.map((theme: any, idx: number) => (
-              <article class="thematic-card">
-                <div class="thematic-header">
-                  <span class="theme-index">Theme 0{idx + 1}</span>
-                  <h3>{theme.theme_name}</h3>
-                </div>
-                <div class="thematic-body">
-                  <ReaderText text={theme.summary} />
-                </div>
-                {theme.paper_ids && theme.paper_ids.length > 0 ? (
-                  <div class="thematic-papers">
-                    <span class="thematic-papers-label">Key Papers:</span>
-                    <div class="paper-tag-list">
-                      {theme.paper_ids.map((id: string) => {
-                        const dailyDate = paperDailyDateMap.get(id);
-                        return (
-                          <span class="thematic-paper-entry">
-                            <a class="paper-tag" href={`https://arxiv.org/abs/${id}`} target="_blank" rel="noopener noreferrer">
-                              arXiv:{id}
-                            </a>
-                            {dailyDate && (
-                              <a class="paper-daily-link" href={`/arxiv-daily/${dailyDate}/#${radarCardAnchor(id, 1)}`} title={`Go to ${dailyDate} daily brief for reading notes and model hypotheses`}>
-                                📅 {dailyDate} →
-                              </a>
-                            )}
-                          </span>
-                        );
-                      })}
-                    </div>
-                  </div>
-                ) : null}
-              </article>
-            ))}
-          </div>
-        </section>
-      )}
-
-      <!-- 4. Collapsed Audit & Index Section -->
+      <!-- 3. Collapsed Audit & Index Section -->
       <section class="weekly-section audit-section" id="audit-and-index">
         <details class="audit-details">
           <summary class="audit-summary-btn">

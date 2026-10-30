@@ -16,12 +16,34 @@ import dailyFeed from "../data/arxiv-daily.json";
 import archiveManifest from "../data/arxiv-archives/manifest.json";
 import ScientificEventTimeline from "../components/ScientificEventTimeline.astro";
 import { radarCardAnchor } from "../../scripts/daily-radar.mjs";
-import { parseStructuredExecutiveSummary, formatAnnouncementInBeijing, formatWeekIdZh } from "../domain/academic-domain.mjs";
+import {
+  parseStructuredExecutiveSummary,
+  formatAnnouncementInBeijing,
+  formatWeekIdZh,
+  formatAuthorList,
+  deriveFigurePhysicalCore,
+  hasVerifiedFigureAsset,
+} from "../domain/academic-domain.mjs";
 import { resolvePaperTitleZhSync } from "../domain/paper-translation.mjs";
 import "../styles/global.css";
 
+const FIGURE_BADGE_MAP: Record<string, string> = {
+  "核心物理演化图": "Physical Evolution",
+  "光变与辐射特征": "Light Curve & Radiation",
+  "能谱与谱线诊断": "Spectral Diagnostics",
+  "统计相关性与参数空间": "Parameter Space",
+  "空间成图与形态演化": "Spatial Morphology",
+  "观测与理论机制图解": "Mechanism & Observation",
+  "数据拟合与模型对比": "Model vs Data Fitting",
+  "物理模型示意图": "Physical Model Schematic",
+  "核心物理结果": "Physical Result",
+  "核心观测结果": "Observational Evidence",
+  "观测总体曲线/能谱": "Observational Light Curve / SED",
+};
+
 const dailyArchiveModules = import.meta.glob<{ default: any }>("../data/arxiv-archives/daily/*.json", { eager: true });
 const paperDailyDateMap = new Map<string, string>();
+const paperFiguresMap = new Map<string, any[]>();
 for (const mod of Object.values(dailyArchiveModules)) {
   const data = (mod as any).default || mod;
   const date = data.date;
@@ -32,22 +54,32 @@ for (const mod of Object.values(dailyArchiveModules)) {
     if (a.arxiv_id && date && !paperDailyDateMap.has(a.arxiv_id)) {
       paperDailyDateMap.set(a.arxiv_id, date);
     }
+    const rawFigs = a.analysis?.analysis?.figures ?? a.analysis?.figures ?? a.figures ?? [];
+    const figs = Array.isArray(rawFigs) ? rawFigs.filter(hasVerifiedFigureAsset) : [];
+    if (a.arxiv_id && figs.length > 0 && !paperFiguresMap.has(a.arxiv_id)) {
+      paperFiguresMap.set(a.arxiv_id, figs);
+    }
+  }
+}
+for (const a of (dailyRadar as any).analyses ?? []) {
+  const rawFigs = a.analysis?.analysis?.figures ?? a.analysis?.figures ?? a.figures ?? [];
+  const figs = Array.isArray(rawFigs) ? rawFigs.filter(hasVerifiedFigureAsset) : [];
+  if (a.arxiv_id && figs.length > 0 && !paperFiguresMap.has(a.arxiv_id)) {
+    paperFiguresMap.set(a.arxiv_id, figs);
   }
 }
 
 const paperAuthorsMap = new Map<string, string>();
 for (const p of (weeklyData as any).papers ?? []) {
   if (p.arxiv_id && Array.isArray(p.authors) && p.authors.length > 0) {
-    const formatted = p.authors.length > 2 ? `${p.authors[0]} et al.` : p.authors.join(", ");
-    paperAuthorsMap.set(p.arxiv_id, formatted);
+    paperAuthorsMap.set(p.arxiv_id, formatAuthorList(p.authors));
   }
 }
 for (const mod of Object.values(dailyArchiveModules)) {
   const data = (mod as any).default || mod;
   for (const entry of data.feed?.entries ?? []) {
     if (entry.arxiv_id && Array.isArray(entry.authors) && entry.authors.length > 0 && !paperAuthorsMap.has(entry.arxiv_id)) {
-      const formatted = entry.authors.length > 2 ? `${entry.authors[0]} et al.` : entry.authors.join(", ");
-      paperAuthorsMap.set(entry.arxiv_id, formatted);
+      paperAuthorsMap.set(entry.arxiv_id, formatAuthorList(entry.authors));
     }
   }
 }
@@ -184,27 +216,81 @@ const bjtDailyInfo = formatAnnouncementInBeijing(latestDate, radarWeekday);
                   {dailyMustReads.map((paper: any) => {
                     const paperDate = paperDailyDateMap.get(paper.arxiv_id) || latestDate;
                     const paperTargetUrl = `/arxiv-daily/${paperDate}/#${radarCardAnchor(paper.arxiv_id, paper.revision || 1)}`;
-                    const authorStr = paperAuthorsMap.get(paper.arxiv_id) || (Array.isArray(paper.entry?.authors) && paper.entry.authors.length > 0 ? (paper.entry.authors.length > 2 ? `${paper.entry.authors[0]} et al.` : paper.entry.authors.join(", ")) : "");
+                    const authorStr = paperAuthorsMap.get(paper.arxiv_id) || formatAuthorList(paper.entry?.authors ?? []);
                     const analysis = paper.analysis?.analysis || paper.analysis || {};
                     const result = analysis.result;
+                    const rawDailyFigs = Array.isArray(analysis.figures) && analysis.figures.length > 0
+                      ? analysis.figures
+                      : (paperFiguresMap.get(paper.arxiv_id) ?? []);
+                    const figures = rawDailyFigs.filter(hasVerifiedFigureAsset);
+                    const primaryFigure = figures.length > 0 ? figures[0] : null;
+                    const primaryFigureSrc = primaryFigure?.url || primaryFigure?.image_url || "";
+                    const cleanFigPath = typeof primaryFigureSrc === "string" ? primaryFigureSrc.replace(/^\/arxiv-figures\//u, "") : "";
+                    const primaryFigureFallback = primaryFigure?.fallback_image_url || (cleanFigPath ? `https://arxiv.org/html/${cleanFigPath}` : primaryFigureSrc);
+                    const primaryFigureLabel = primaryFigure?.label || primaryFigure?.figure_id || "Fig. 1";
+                    const primaryFigureCore = primaryFigure
+                      ? deriveFigurePhysicalCore(
+                          primaryFigure,
+                          { title: paper.entry?.title || paper.arxiv_id, result: result || "" },
+                          { lang: "en" }
+                        )
+                      : "";
+                    const primaryFigureBadge = primaryFigure?.category_badge
+                      ? (FIGURE_BADGE_MAP[primaryFigure.category_badge] ?? primaryFigure.category_badge)
+                      : "Key Figure";
                     return (
                       <li class="intel-daily-quick-item">
-                        <div class="quick-item-top">
-                          <span class="quick-tier-pill">⭐ Must Read</span>
-                          <span class="quick-arxiv-id">arXiv:{paper.arxiv_id}</span>
-                          {authorStr && <span class="quick-authors">Authors: {authorStr}</span>}
+                        <div class={`intel-item-split ${primaryFigure && primaryFigureSrc ? "has-figure" : ""}`}>
+                          <div class="intel-item-main">
+                            <div class="quick-item-top">
+                              <span class="quick-tier-pill">⭐ Must Read</span>
+                              <span class="quick-arxiv-id">arXiv:{paper.arxiv_id}</span>
+                              {authorStr && <span class="quick-authors">Authors: {authorStr}</span>}
+                            </div>
+                            <h4 class="quick-paper-title">
+                              <a href={paperTargetUrl} class="intel-paper-title-link" title="Click to view full reading guide">
+                                <ReaderText text={paper.entry?.title || paper.arxiv_id} />
+                              </a>
+                            </h4>
+                            {result && result !== "unknown" && !result.startsWith("\u672a\u80fd\u4ece\u5df2\u68c0\u67e5\u6750\u6599") && !result.startsWith("Could not be derived") && (
+                              <p class="quick-paper-result">
+                                <strong class="quick-res-lead">Result: </strong>
+                                <span class="quick-res-text"><ReaderText text={result} /></span>
+                              </p>
+                            )}
+                          </div>
+                          {primaryFigure && primaryFigureSrc && (
+                            <aside class="intel-inline-figure" aria-label={`Key figure for arXiv:${paper.arxiv_id}`}>
+                              <a
+                                href={paperTargetUrl}
+                                class="intel-figure-link"
+                                title="View full paper analysis and figures"
+                              >
+                                <div class="intel-figure-head">
+                                  <span class="intel-figure-badge">{primaryFigureBadge}</span>
+                                  <span class="intel-figure-id">{primaryFigureLabel}</span>
+                                  {figures.length > 1 && (
+                                    <span class="intel-figure-more">+{figures.length - 1} more</span>
+                                  )}
+                                </div>
+                                <div class="intel-figure-img-wrap">
+                                  <img
+                                    src={primaryFigureSrc}
+                                    alt={`${primaryFigureLabel}: ${primaryFigureCore}`}
+                                    class="intel-figure-img"
+                                    loading="lazy"
+                                    onerror={primaryFigureFallback ? `if(!this.dataset.fb){this.dataset.fb='1';this.src='${primaryFigureFallback}'}` : undefined}
+                                  />
+                                </div>
+                                {primaryFigureCore && (
+                                  <p class="intel-figure-core">
+                                    <ReaderText text={primaryFigureCore} />
+                                  </p>
+                                )}
+                              </a>
+                            </aside>
+                          )}
                         </div>
-                        <h4 class="quick-paper-title">
-                          <a href={paperTargetUrl} class="intel-paper-title-link" title="Click to view full reading guide">
-                            <ReaderText text={paper.entry?.title || paper.arxiv_id} />
-                          </a>
-                        </h4>
-                        {result && result !== "unknown" && !result.startsWith("\u672a\u80fd\u4ece\u5df2\u68c0\u67e5\u6750\u6599") && !result.startsWith("Could not be derived") && (
-                          <p class="quick-paper-result">
-                            <strong class="quick-res-lead">Result: </strong>
-                            <span class="quick-res-text"><ReaderText text={result} /></span>
-                          </p>
-                        )}
                       </li>
                     );
                   })}
@@ -251,81 +337,132 @@ const bjtDailyInfo = formatAnnouncementInBeijing(latestDate, radarWeekday);
                 <ReaderText text={weeklyLeadSummary} />
               </p>
               {weeklyStructured.items.length > 0 && (
-                <ul class="intel-summary-hl-list">
-                  {weeklyStructured.items.slice(0, 3).map((item: any) => (
-                    <li class="intel-summary-hl-item">
-                      <strong class="hl-topic-lead">{item.topic}:</strong>
-                      <span class="hl-body-text"><ReaderText text={item.body} /></span>
-                    </li>
-                  ))}
-                </ul>
+                <details class="intel-summary-details">
+                  <summary class="intel-summary-toggle">
+                    <span>View domain breakdown ({weeklyStructured.items.length} themes · {weeklyStats.total_analyzed} papers analyzed · {weeklyStats.must_read_count} Must Read · {weeklyStats.worth_knowing_count} Follow)</span>
+                  </summary>
+                  <ul class="intel-summary-hl-list">
+                    {weeklyStructured.items.slice(0, 4).map((item: any) => (
+                      <li class="intel-summary-hl-item">
+                        <strong class="hl-topic-lead">{item.topic}:</strong>
+                        <span class="hl-body-text"><ReaderText text={item.body} /></span>
+                      </li>
+                    ))}
+                  </ul>
+                </details>
               )}
-            </div>
-
-            <div class="intel-metrics-strip">
-              <div class="intel-metric-item">
-                <span class="intel-metric-val">{weeklyStats.total_analyzed}</span>
-                <span class="intel-metric-lbl">Papers</span>
-              </div>
-              <div class="intel-metric-item highlight-must-read">
-                <span class="intel-metric-val">{weeklyStats.must_read_count}</span>
-                <span class="intel-metric-lbl">Must Read</span>
-              </div>
-              <div class="intel-metric-item highlight-worth-knowing">
-                <span class="intel-metric-val">{weeklyStats.worth_knowing_count}</span>
-                <span class="intel-metric-lbl">Follow</span>
-              </div>
-              <div class="intel-metric-item highlight-topics">
-                <span class="intel-metric-val">{thematicHighlights.length}</span>
-                <span class="intel-metric-lbl">Themes</span>
-              </div>
             </div>
 
             {weeklyTopPicks.length > 0 && (
               <div class="intel-picks-box">
-                <p class="intel-picks-label">Weekly Top Picks ({Math.min(weeklyTopPicks.length, 4)}/{weeklyTopPicks.length}):</p>
+                <div class="intel-picks-head-row">
+                  <p class="intel-picks-label">
+                    Weekly Must-Read Highlights ({weeklyTopPicks.filter((p: any) => p.priority === "must_read").length || Math.min(weeklyTopPicks.length, 6)} of {weeklyTopPicks.length} selected works):
+                  </p>
+                  <a class="intel-picks-view-all" href="/arxiv-weekly/#top-picks">
+                    See all {weeklyTopPicks.length} picks →
+                  </a>
+                </div>
                 <ul class="intel-picks-list">
-                  {weeklyTopPicks.slice(0, 4).map((pick: any) => {
+                  {(weeklyTopPicks.filter((p: any) => p.priority === "must_read").length > 0
+                    ? weeklyTopPicks.filter((p: any) => p.priority === "must_read")
+                    : weeklyTopPicks.slice(0, 6)
+                  ).map((pick: any) => {
                     const dailyDate = paperDailyDateMap.get(pick.arxiv_id) || latestDate;
                     const pickTargetUrl = `/arxiv-daily/${dailyDate}/#${radarCardAnchor(pick.arxiv_id, pick.revision || 1)}`;
                     const authorStr = paperAuthorsMap.get(pick.arxiv_id);
+                    const rawPickFigs = Array.isArray(pick.figures) && pick.figures.length > 0
+                      ? pick.figures
+                      : (paperFiguresMap.get(pick.arxiv_id) ?? []);
+                    const figures = rawPickFigs.filter(hasVerifiedFigureAsset);
+                    const primaryFigure = figures.length > 0 ? figures[0] : null;
+                    const primaryFigureSrc = primaryFigure?.url || primaryFigure?.image_url || "";
+                    const cleanFigPath = typeof primaryFigureSrc === "string" ? primaryFigureSrc.replace(/^\/arxiv-figures\//u, "") : "";
+                    const primaryFigureFallback = primaryFigure?.fallback_image_url || (cleanFigPath ? `https://arxiv.org/html/${cleanFigPath}` : primaryFigureSrc);
+                    const primaryFigureLabel = primaryFigure?.label || primaryFigure?.figure_id || "Fig. 1";
+                    const primaryFigureCore = primaryFigure
+                      ? deriveFigurePhysicalCore(
+                          primaryFigure,
+                          { title: pick.title || pick.arxiv_id, result: pick.core_insight || "" },
+                          { lang: "en" }
+                        )
+                      : "";
+                    const primaryFigureBadge = primaryFigure?.category_badge
+                      ? (FIGURE_BADGE_MAP[primaryFigure.category_badge] ?? primaryFigure.category_badge)
+                      : "Key Figure";
                     return (
                       <li class="intel-pick-item">
-                        <div class="intel-pick-header">
-                          <span class={`intel-pick-badge ${pick.priority === "must_read" ? "badge-must-read" : "badge-worth-knowing"}`}>
-                            {pick.priority === "must_read" ? "⭐ Must Read" : "📌 Follow"}
-                          </span>
-                          <div class="intel-pick-links">
-                            <a class="intel-pick-daily-link" href={pickTargetUrl} title="View daily brief and scientific evidence">
-                              📖 Deep Read ({dailyDate}) →
-                            </a>
-                            <a class="intel-pick-id" href={`https://arxiv.org/abs/${pick.arxiv_id}`} target="_blank" rel="noopener noreferrer">
-                              arXiv:{pick.arxiv_id} ↗
-                            </a>
-                            <a class="intel-pick-pdf" href={`https://arxiv.org/pdf/${pick.arxiv_id}`} target="_blank" rel="noopener noreferrer" title="Read official PDF directly">
-                              📄 PDF
-                            </a>
+                        <div class={`intel-item-split ${primaryFigure && primaryFigureSrc ? "has-figure" : ""}`}>
+                          <div class="intel-item-main">
+                            <div class="intel-pick-header">
+                              <span class={`intel-pick-badge ${pick.priority === "must_read" ? "badge-must-read" : "badge-worth-knowing"}`}>
+                                {pick.priority === "must_read" ? "⭐ Must Read" : "📌 Follow"}
+                              </span>
+                              <div class="intel-pick-links">
+                                <a class="intel-pick-daily-link" href={pickTargetUrl} title="View daily brief and scientific evidence">
+                                  📖 Deep Read ({dailyDate}) →
+                                </a>
+                                <a class="intel-pick-id" href={`https://arxiv.org/abs/${pick.arxiv_id}`} target="_blank" rel="noopener noreferrer">
+                                  arXiv:{pick.arxiv_id} ↗
+                                </a>
+                                <a class="intel-pick-pdf" href={`https://arxiv.org/pdf/${pick.arxiv_id}`} target="_blank" rel="noopener noreferrer" title="Read official PDF directly">
+                                  📄 PDF
+                                </a>
+                              </div>
+                            </div>
+                            <h4 class="intel-pick-title">
+                              <a href={pickTargetUrl} class="intel-paper-title-link" title="Open deep reading brief">
+                                <ReaderText text={pick.title} />
+                              </a>
+                            </h4>
+                            {authorStr && (
+                              <p class="intel-pick-authors">Authors: {authorStr}</p>
+                            )}
+                            <div class="intel-pick-bluf">
+                              <p class="intel-bluf-row">
+                                <strong class="bluf-lead result-lead">Key Insight: </strong>
+                                <span class="bluf-text"><ReaderText text={pick.core_insight} /></span>
+                              </p>
+                              {pick.recommendation_reason ? (
+                                <p class="intel-bluf-row">
+                                  <strong class="bluf-lead reason-lead">Reason: </strong>
+                                  <span class="bluf-text"><ReaderText text={pick.recommendation_reason} /></span>
+                                </p>
+                              ) : null}
+                            </div>
                           </div>
-                        </div>
-                        <h4 class="intel-pick-title">
-                          <a href={pickTargetUrl} class="intel-paper-title-link" title="Open deep reading brief">
-                            <ReaderText text={pick.title} />
-                          </a>
-                        </h4>
-                        {authorStr && (
-                          <p class="intel-pick-authors">Authors: {authorStr}</p>
-                        )}
-                        <div class="intel-pick-bluf">
-                          <p class="intel-bluf-row">
-                            <strong class="bluf-lead result-lead">Result: </strong>
-                            <span class="bluf-text"><ReaderText text={pick.core_insight} /></span>
-                          </p>
-                          {pick.recommendation_reason ? (
-                            <p class="intel-bluf-row">
-                              <strong class="bluf-lead reason-lead">Reason: </strong>
-                              <span class="bluf-text"><ReaderText text={pick.recommendation_reason} /></span>
-                            </p>
-                          ) : null}
+
+                          {primaryFigure && primaryFigureSrc && (
+                            <aside class="intel-inline-figure" aria-label={`Key figure for arXiv:${pick.arxiv_id}`}>
+                              <a
+                                href={pickTargetUrl}
+                                class="intel-figure-link"
+                                title="View full paper analysis and figures"
+                              >
+                                <div class="intel-figure-head">
+                                  <span class="intel-figure-badge">{primaryFigureBadge}</span>
+                                  <span class="intel-figure-id">{primaryFigureLabel}</span>
+                                  {figures.length > 1 && (
+                                    <span class="intel-figure-more">+{figures.length - 1} more</span>
+                                  )}
+                                </div>
+                                <div class="intel-figure-img-wrap">
+                                  <img
+                                    src={primaryFigureSrc}
+                                    alt={`${primaryFigureLabel}: ${primaryFigureCore}`}
+                                    class="intel-figure-img"
+                                    loading="lazy"
+                                    onerror={primaryFigureFallback ? `if(!this.dataset.fb){this.dataset.fb='1';this.src='${primaryFigureFallback}'}` : undefined}
+                                  />
+                                </div>
+                                {primaryFigureCore && (
+                                  <p class="intel-figure-core">
+                                    <ReaderText text={primaryFigureCore} />
+                                  </p>
+                                )}
+                              </a>
+                            </aside>
+                          )}
                         </div>
                       </li>
                     );
@@ -782,6 +919,172 @@ const bjtDailyInfo = formatAnnouncementInBeijing(latestDate, radarWeekday);
       }
       :global([data-theme="dark"]) .baseline-col-more {
         color: #60a5fa;
+      }
+
+      /* Compact summary fold & inline figure previews on homepage */
+      .intel-summary-details {
+        margin-top: 0.55rem;
+        border-top: 1px dashed #cbd5e1;
+        padding-top: 0.45rem;
+      }
+      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .intel-summary-details {
+        border-top-color: #334155;
+      }
+      .intel-summary-toggle {
+        cursor: pointer;
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: #2563eb;
+        user-select: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+      }
+      .intel-summary-toggle:hover {
+        text-decoration: underline;
+      }
+      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .intel-summary-toggle {
+        color: #60a5fa;
+      }
+      .intel-picks-head-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 0.65rem;
+      }
+      .intel-picks-head-row .intel-picks-label {
+        margin: 0;
+      }
+      .intel-picks-view-all {
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: #2563eb;
+        text-decoration: none;
+      }
+      .intel-picks-view-all:hover {
+        text-decoration: underline;
+      }
+      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .intel-picks-view-all {
+        color: #60a5fa;
+      }
+      .intel-item-split {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        min-width: 0;
+        max-width: 100%;
+      }
+      @media (min-width: 768px) {
+        .intel-item-split.has-figure {
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) 235px;
+          gap: 1.1rem;
+          align-items: start;
+        }
+      }
+      .intel-item-main {
+        min-width: 0;
+        max-width: 100%;
+      }
+      .intel-inline-figure {
+        min-width: 0;
+        max-width: 100%;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 0.5rem;
+        overflow: hidden;
+        transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      }
+      .intel-inline-figure:hover {
+        border-color: #93c5fd;
+        box-shadow: 0 2px 8px rgba(37, 99, 235, 0.08);
+      }
+      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .intel-inline-figure {
+        background: #0f172a;
+        border-color: #334155;
+      }
+      .intel-figure-link {
+        display: flex;
+        flex-direction: column;
+        padding: 0.45rem 0.55rem;
+        text-decoration: none;
+        color: inherit;
+        gap: 0.35rem;
+      }
+      .intel-figure-head {
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
+        flex-wrap: wrap;
+        font-size: 0.7rem;
+      }
+      .intel-figure-badge {
+        font-weight: 700;
+        color: #1e40af;
+        background: #dbeafe;
+        padding: 0.08rem 0.38rem;
+        border-radius: 0.25rem;
+      }
+      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .intel-figure-badge {
+        color: #93c5fd;
+        background: rgba(30, 58, 138, 0.45);
+      }
+      .intel-figure-id {
+        font-family: ui-monospace, monospace;
+        font-weight: 600;
+        color: #475569;
+      }
+      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .intel-figure-id {
+        color: #94a3b8;
+      }
+      .intel-figure-more {
+        margin-left: auto;
+        font-size: 0.68rem;
+        font-weight: 600;
+        color: #2563eb;
+      }
+      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .intel-figure-more {
+        color: #60a5fa;
+      }
+      .intel-figure-img-wrap {
+        width: 100%;
+        height: 138px;
+        background: #ffffff;
+        border: 1px solid #f1f5f9;
+        border-radius: 0.35rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        padding: 0.2rem;
+      }
+      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .intel-figure-img-wrap {
+        background: #020617;
+        border-color: #1e293b;
+      }
+      .intel-figure-img {
+        max-width: 100%;
+        max-height: 130px;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+        display: block;
+      }
+      .intel-figure-core {
+        margin: 0;
+        font-size: 0.74rem;
+        line-height: 1.38;
+        color: #475569;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        word-break: break-word;
+      }
+      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .intel-figure-core {
+        color: #94a3b8;
       }
     </style>
   </body>

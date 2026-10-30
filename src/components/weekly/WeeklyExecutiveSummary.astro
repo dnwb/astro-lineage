@@ -22,7 +22,7 @@ const { structuredExecutive, rawSummary } = Astro.props;
     {structuredExecutive.lead && (
       <div class="executive-lead-box">
         <span class="executive-lead-pill">🌐 Core Causal Chain</span>
-        <p class="executive-lead"><ReaderText text={structuredExecutive.lead} /></p>
+        <p class="executive-lead"><ReaderText text={structuredExecutive.lead} linkArxivToAnchorPrefix="#paper-" /></p>
       </div>
     )}
 
@@ -34,13 +34,13 @@ const { structuredExecutive, rawSummary } = Astro.props;
               <span class="lineage-topic-badge">{item.topic}</span>
             </div>
             <div class="lineage-item-body">
-              <ReaderText text={item.body} />
+              <ReaderText text={item.body} linkArxivToAnchorPrefix="#paper-" />
             </div>
           </li>
         ))}
       </ul>
     ) : (
-      <p class="executive-lead"><ReaderText text={rawSummary} /></p>
+      <p class="executive-lead"><ReaderText text={rawSummary} linkArxivToAnchorPrefix="#paper-" /></p>
     )}
   </div>
 </section>

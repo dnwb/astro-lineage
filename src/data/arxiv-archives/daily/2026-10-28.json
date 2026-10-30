@@ -7,20 +7,106 @@
   "generated_at": "2026-10-30T02:00:23.529Z",
   "counts": {
     "total": 31,
-    "analyzed": 22,
-    "must_read": 0,
-    "worth_knowing": 0,
+    "analyzed": 31,
+    "must_read": 1,
+    "worth_knowing": 8,
     "skip": 22,
-    "pending": 9
+    "pending": 0
   },
   "opening_brief": {
     "status": "ready",
     "edition_fingerprint": "2edd21076ec41444aa3cf88de1f225a2f1b6d4418b41ee7ef3a22ec8891e590e",
-    "intro": "Standard screening batch, focused primarily on abstract skimming.",
-    "focus_paper": null,
-    "must_read": [],
-    "key_highlights": [],
-    "worth_knowing": [],
+    "intro": "Featured reading: \"Thinner Disks Struggle to Launch Jets: GRMHD Simulations of Magnetic Field Generation and Transport\" and 8 other key developments.",
+    "focus_paper": {
+      "arxiv_id": "2610.37758",
+      "revision": 1,
+      "title": "Thinner Disks Struggle to Launch Jets: GRMHD Simulations of Magnetic Field Generation and Transport",
+      "anchor": "radar-paper-2610-37758-v1"
+    },
+    "must_read": [
+      {
+        "arxiv_id": "2610.37758",
+        "revision": 1,
+        "source_fingerprint": "386f3a56b1929d6c3f7d93d2516e4acb23e4776dce952f399719607140349a7c",
+        "guide_fingerprint": "0111f995e8c9f41acde91728e2d06ef47bd5ede53f7781ad1e849aecc3685577",
+        "label": "Thinner Disks Struggle to Launch Jets: GRMHD Simulations of Magnetic Field Generation and Transport",
+        "text": "Thick disks ($h/r \\sim 0.3$) achieve the magnetically arrested disk (MAD) state ($\\phi_{\\rm BH} = 50$) by $t \\simeq 2\\times 10^4\\,r_g/c$ with electromagnetic jet efficiency $\\eta_{\\rm EM} \\ge 100\\%$, whereas thinner disks fail to reach MAD within comparable runtimes, giving $\\phi_{\\rm BH} \\sim 5$ ($\\eta_{\\rm EM} \\sim 0.1$) for $h/r=0.2$ and $\\phi_{\\rm BH} \\sim 3\\times 10^{-2}$ ($\\eta_{\\rm EM} \\sim 0.01$) for $h/r=0.1$.",
+        "anchor": "radar-paper-2610-37758-v1"
+      }
+    ],
+    "key_highlights": [
+      {
+        "arxiv_id": "2610.37759",
+        "revision": 1,
+        "title": "Extreme eccentricity in double neutron stars without exotic physics",
+        "anchor": "radar-paper-2610-37759-v1",
+        "result": "The extreme eccentricity $e=0.9924$ ($P=79.1\\;{\\rm days}$, periastron distance $q=a(1-e)\\simeq 0.83\\;R_{\\odot}$) can be naturally reproduced by an ultra-stripped supernova with an asymmetric natal kick $w\\sim 220-350\\;{\\rm km\\,s}^{-1}$ from a pre-SN progenitor helium star of $M_{\\rm He,f}\\simeq 1.5-2.0\\;M_{\\odot}$ in an initial orbit $P_0 < 0.10\\;{\\rm days}$."
+      },
+      {
+        "arxiv_id": "2610.37893",
+        "revision": 1,
+        "title": "The MARTINI platform II. Tracing r-process nucleosynthesis in neutron star mergers with long-lived remnants",
+        "anchor": "radar-paper-2610-37893-v1",
+        "result": "Light, Fe-peak, and first-peak nuclei are robustly synthesized with total masses $>10^{-3}\\,M_{\\odot}$ across all models, whereas second-peak, rare-earth, third-peak, and trans-lead nuclei vary substantially by over an order of magnitude."
+      },
+      {
+        "arxiv_id": "2610.37895",
+        "revision": 1,
+        "title": "Considering Numerical Relativity Surrogate Models for AGN Channel Merger Dynamics",
+        "anchor": "radar-paper-2610-37895-v1",
+        "result": "Incorporating the numerical relativity surrogate model (McFACTSsur) reveals that hierarchical remnants exhibit high spins ($2g$ mergers centered around $a_{\\mathrm{final}} \\sim 0.85$, $3g+$ mergers at $\\sim 0.9$) and a broad kick distribution $v_{\\mathrm{kick}} \\sim [1, 2000]~\\mathrm{km/s}$ with a bimodal feature in $2g$ mergers, while average kicks decrease (mean $\\langle v_{\\mathrm{kick}} \\rangle = 119.21~\\mathrm{km/s}$) compared to analytic models ($\\n127.17~\\mathrm{km/s}$), and higher-generation effective spins shift to $\\chi_{\\rm eff} \\in [0.5, 0.95]$."
+      }
+    ],
+    "worth_knowing": [
+      {
+        "arxiv_id": "2610.37759",
+        "revision": 1,
+        "source_fingerprint": "6df2854f99be93ff6444405312dcab743f616ed64bdfcbbc2a75dcb0aa590e9f",
+        "guide_fingerprint": "da6096233d9bc449fdf09f7437487f2f190d7d552b8d632206d6f83d18dde74b"
+      },
+      {
+        "arxiv_id": "2610.37893",
+        "revision": 1,
+        "source_fingerprint": "61af347977c34a2d104ae704f626953da9f8d265f530ed9a31d90533497dc3f1",
+        "guide_fingerprint": "1f44643b0b750660fb29e8534f5187540b789eea6100585c405ff64a905659e1"
+      },
+      {
+        "arxiv_id": "2610.37895",
+        "revision": 1,
+        "source_fingerprint": "424d148cedc22e9a845ee2cf1d5de396ee8350aa7eadfcee188e56d32070de13",
+        "guide_fingerprint": "c3d5d36fb4210b5f3bd40f414e342e39e7bc911ee0a68b635ef4de3987669017"
+      },
+      {
+        "arxiv_id": "2610.37902",
+        "revision": 1,
+        "source_fingerprint": "727af94d1ae7fc8e329b3824b13774c4eda524633dd72521edb9893c310c6fb1",
+        "guide_fingerprint": "9460f3b5fff0a518685b9ddf6cb52d2e7b051c65381288f87a5482eafeb9bca7"
+      },
+      {
+        "arxiv_id": "2610.37997",
+        "revision": 1,
+        "source_fingerprint": "8c706c6dc1c5f24ce23bdbe057df9acdfe60158bcc76a8e296542f71be10d7c9",
+        "guide_fingerprint": "9ac090ee1d4b023c4e205a6e9dd3871c3e18a4e17f10b1ba9179125c19ee81d4"
+      },
+      {
+        "arxiv_id": "2610.37999",
+        "revision": 1,
+        "source_fingerprint": "e56509d527fe113b335f1e5d131574a09d055e5f0415df4d5fa99538913d72ce",
+        "guide_fingerprint": "ae14e1d9c06b81cd12477ed58f52fc4e708e5b57bbd942584b377b76bee2f8b9"
+      },
+      {
+        "arxiv_id": "2610.38107",
+        "revision": 1,
+        "source_fingerprint": "6adb12fab866a33c632bd00edc7bc49557900fdf4a77145753caf2bcb905c219",
+        "guide_fingerprint": "e42e2d17b5eb39ff207e1a8b5d9c55fa1cbc929738e2c5b0f4eb0b9c050849d9"
+      },
+      {
+        "arxiv_id": "2610.38232",
+        "revision": 1,
+        "source_fingerprint": "e8ebf7bd29bd671046c4121d0fbae0b9dc459c939063fac307b4add02ad49964",
+        "guide_fingerprint": "1b1baf451bc1c1dc8c4e462046baf12943d959134992b59abecd2ed978b0e4fb"
+      }
+    ],
     "skim_topics": [
       {
         "arxiv_id": "2610.37747",
@@ -182,9 +268,65 @@
         "guide_fingerprint": "8231c28c4aea1e1c4bf9c183607c446983afaa84e8fd503c0b981f4797762384"
       }
     ],
+    "worth_knowing_summary": "The extreme eccentricity $e=0.9924$ ($P=79.1\\;{\\rm days}$, periastron distance $q=a(1-e)\\simeq 0.83\\;R_{\\odot}$) can be naturally reproduced by an ultra-stripped supernova with an asymmetric natal kick $w\\sim 220-350\\;{\\rm km\\,s}^{-1}$ from a pre-SN progenitor helium star of $M_{\\rm He,f}\\simeq 1.5-2.0\\;M_{\\odot}$ in an initial orbit $P_0 < 0.10\\;{\\rm days}$.; Light, Fe-peak, and first-peak nuclei are robustly synthesized with total masses $>10^{-3}\\,M_{\\odot}$ across all models, whereas second-peak, rare-earth, third-peak, and trans-lead nuclei vary substantially by over an order of magnitude., among others.",
     "skim_summary": "Topics include Identifying Scientifically Interesting Galaxies with Vision-Language Models, A GLIMPSE of Dark Matter: JWST Constraints on Early Structure Formation, among others."
   },
-  "highlights": [],
+  "highlights": [
+    {
+      "arxiv_id": "2610.37758",
+      "priority": "must_read",
+      "title": "Thinner Disks Struggle to Launch Jets: GRMHD Simulations of Magnetic Field Generation and Transport",
+      "reason": "This work directly addresses the physical mechanism of magnetic flux generation, transport, and relativistic jet launching in black hole accretion systems across varying disk thicknesses ($h/r=0.1$--$0.3$) using 3D GRMHD simulations, providing crucial scaling relations for MAD formation timescales and jet power relevant to GRBs, TDEs, and high-energy transients."
+    },
+    {
+      "arxiv_id": "2610.37759",
+      "priority": "worth_knowing",
+      "title": "Extreme eccentricity in double neutron stars without exotic physics",
+      "reason": "This paper presents a definitive orbital dynamics and evolutionary model explaining the origin of the record-breaking eccentric double neutron star PSR J0653+0443 within standard isolated binary evolution without requiring exotic dynamical channels."
+    },
+    {
+      "arxiv_id": "2610.37893",
+      "priority": "worth_knowing",
+      "title": "The MARTINI platform II. Tracing r-process nucleosynthesis in neutron star mergers with long-lived remnants",
+      "reason": "The paper provides public r-process nucleosynthesis yields and tracer trajectories from numerical relativity BNS merger simulations with long-lived remnants and M1 neutrino transport, directly relevant to kilonova physics and heavy element nucleosynthesis."
+    },
+    {
+      "arxiv_id": "2610.37895",
+      "priority": "worth_knowing",
+      "title": "Considering Numerical Relativity Surrogate Models for AGN Channel Merger Dynamics",
+      "reason": "The paper benchmarks numerical relativity surrogate models against analytic approximations within the McFACTS framework for AGN disk-assisted hierarchical binary black hole mergers, directly informing compact object retention, kick distributions, and high-energy merger environments."
+    },
+    {
+      "arxiv_id": "2610.37902",
+      "priority": "worth_knowing",
+      "title": "Validating an X-ray-based method for identifying Fermi blazars",
+      "reason": "The paper provides an observational validation of an X-ray-based identification technique for Fermi unidentified gamma-ray sources (UGSs), testing counterpart association with relativistic jets (BL Lacs and gamma-ray Seyferts). This informs multi-wavelength counterparts and relativistic jet associations for high-energy transient and gamma-ray catalogs."
+    },
+    {
+      "arxiv_id": "2610.37997",
+      "priority": "worth_knowing",
+      "title": "Search for Eccentric Neutron Star-Black Hole Binaries in Advanced LIGO's Fourth Observing Run using Effective-One-Body Waveforms",
+      "reason": "The paper presents the first systematic search for eccentric neutron star-black hole (NSBH) binaries using effective-one-body (EOB) waveforms on Advanced LIGO O4 data, demonstrating a ~20x pipeline speedup via multibanding/ratio-filtering and establishing the tightest merger rate upper limits to date."
+    },
+    {
+      "arxiv_id": "2610.37999",
+      "priority": "worth_knowing",
+      "title": "Phase-resolved X-ray spectroscopy of the Vela pulsar with NICER observations",
+      "reason": "This paper presents phase-resolved X-ray spectroscopy of the Vela pulsar using NICER and Chandra, measuring hotspot thermal properties and testing surface/magnetospheric stability across the 2021 giant glitch."
+    },
+    {
+      "arxiv_id": "2610.38107",
+      "priority": "worth_knowing",
+      "title": "Tayler Instability and Its Saturation in Rotating Stars",
+      "reason": "This work quantitatively constrains the saturation amplitude and radial magnetic field regeneration of the Tayler instability (TI) in rapidly rotating stars, demonstrating that the Tayler-Spruit dynamo alone is inefficient for angular momentum transport, which directly informs core-collapse progenitor spin, proto-neutron star evolution, and neutron star merger remnant lifetimes."
+    },
+    {
+      "arxiv_id": "2610.38232",
+      "priority": "worth_knowing",
+      "title": "A Spectral-model-independent Diagnostic of Phase-resolved Spectral Convergence in Swift J0243.6+6124",
+      "reason": "The study provides a model-independent diagnostic metric to trace the geometry and spectral evolution across critical accretion transitions in the Galactic ultraluminous X-ray pulsar Swift J0243.6+6124."
+    }
+  ],
   "feed": {
     "schema_version": "arxiv-daily-discovery-v1",
     "generated_at": "2026-10-30T02:00:23.529Z",
@@ -2097,6 +2239,891 @@
         },
         "historical_edition": "announcement-2026-10-28",
         "historical_edition_fingerprint": "2edd21076ec41444aa3cf88de1f225a2f1b6d4418b41ee7ef3a22ec8891e590e"
+      },
+      {
+        "arxiv_id": "2610.37758",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "386f3a56b1929d6c3f7d93d2516e4acb23e4776dce952f399719607140349a7c",
+        "priority": "must_read",
+        "coverage": {
+          "level": "full_body",
+          "label": "已检查版本匹配的完整 TeX 正文",
+          "source_version": "arXiv:2610.37758v1",
+          "inspected_sections": [
+            "Introduction",
+            "Thinner Disks Struggle to Launch Jets: GRMHD Simulations of Magnetic Field Generation and Transport",
+            "1 Introduction",
+            "2 Methods",
+            "2.1 Numerical methods",
+            "2.2 Analysis methods",
+            "3 Description of the simulations",
+            "3.1 Flux on the black hole",
+            "3.2 General structure",
+            "3.3 Local turbulent behavior",
+            "4 Field generation",
+            "4.1 Toroidal magnetic field budget",
+            "4.2 Poloidal magnetic field budget",
+            "4.3 Mode structure",
+            "5 Large scale transport",
+            "5.1 Angular momentum transport",
+            "5.2 Large scale magnetic field transport",
+            "6 Connection to jet launching and MAD formation",
+            "6.1 Scalings of field generation and transport with disk thickness",
+            "6.2 Flux reservoir and MAD accumulation timescale",
+            "6.3 What can we say about jets?",
+            "7 discussion and conclusion",
+            "7.1 Conclusion",
+            "7.2 Theoretical context and numerical limitations",
+            "7.3 Observational consequences",
+            "Acknowledgements",
+            "Data Availability",
+            "References",
+            "Appendix A Radial correlation length scale for the large scale flux",
+            "Appendix B Resolution requirements",
+            "Instructions for reporting errors"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_source_package",
+              "url": "https://export.arxiv.org/src/2610.37758v1",
+              "locator": "Full body",
+              "description": "Complete, revision-matched arXiv TeX source package",
+              "sha256": "ee9c83a43afb29ad6d71f8c6f9d51ce89184753cb050e0a9ec5ff0f843aa143c"
+            }
+          ],
+          "source_sections": [
+            "Introduction",
+            "Thinner Disks Struggle to Launch Jets: GRMHD Simulations of Magnetic Field Generation and Transport",
+            "1 Introduction",
+            "2 Methods",
+            "2.1 Numerical methods",
+            "2.2 Analysis methods",
+            "3 Description of the simulations",
+            "3.1 Flux on the black hole",
+            "3.2 General structure",
+            "3.3 Local turbulent behavior",
+            "4 Field generation",
+            "4.1 Toroidal magnetic field budget",
+            "4.2 Poloidal magnetic field budget",
+            "4.3 Mode structure",
+            "5 Large scale transport",
+            "5.1 Angular momentum transport",
+            "5.2 Large scale magnetic field transport",
+            "6 Connection to jet launching and MAD formation",
+            "6.1 Scalings of field generation and transport with disk thickness",
+            "6.2 Flux reservoir and MAD accumulation timescale",
+            "6.3 What can we say about jets?",
+            "7 discussion and conclusion",
+            "7.1 Conclusion",
+            "7.2 Theoretical context and numerical limitations",
+            "7.3 Observational consequences",
+            "Acknowledgements",
+            "Data Availability",
+            "References",
+            "Appendix A Radial correlation length scale for the large scale flux",
+            "Appendix B Resolution requirements",
+            "Instructions for reporting errors"
+          ],
+          "section_coverage": {
+            "problem": true,
+            "assumptions": false,
+            "method": true,
+            "results": true,
+            "limitations": true,
+            "appendices": "checked"
+          }
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "gpt-6-luna",
+          "analyzed_at": "2026-10-30T18:15:53.752Z",
+          "reason": "This work directly addresses the physical mechanism of magnetic flux generation, transport, and relativistic jet launching in black hole accretion systems across varying disk thicknesses ($h/r=0.1$--$0.3$) using 3D GRMHD simulations, providing crucial scaling relations for MAD formation timescales and jet power relevant to GRBs, TDEs, and high-energy transients.",
+          "result": "Thick disks ($h/r \\sim 0.3$) achieve the magnetically arrested disk (MAD) state ($\\phi_{\\rm BH} = 50$) by $t \\simeq 2\\times 10^4\\,r_g/c$ with electromagnetic jet efficiency $\\eta_{\\rm EM} \\ge 100\\%$, whereas thinner disks fail to reach MAD within comparable runtimes, giving $\\phi_{\\rm BH} \\sim 5$ ($\\eta_{\\rm EM} \\sim 0.1$) for $h/r=0.2$ and $\\phi_{\\rm BH} \\sim 3\\times 10^{-2}$ ($\\eta_{\\rm EM} \\sim 0.01$) for $h/r=0.1$. The poloidal magnetic pressure ratio and turbulent parameter scale as $\\beta_p^{-1} \\propto (h/r)^{4.5}$ and $\\alpha_\\nu \\propto (h/r)^{2.5}$, yielding steep transport scalings $v_{\\Phi}/V_k \\propto v_{\\rm acc}/V_k \\propto (h/r)^{3.5}$. The required timescale to accumulate MAD-level flux grows dramatically as $t_{\\rm MAD} \\sim \\hat{v}^{-1}(\\phi_{\\rm MAD}/a_\\phi)^{3/(2\\xi)}$, taking $t_{\\rm MAD} \\sim 4\\times 10^4\\,r_g/c$ for $h/r=0.3$, $\\sim 7\\times 10^5\\,r_g/c$ for $h/r=0.2$, and $\\sim 10^8\\,r_g/c$ (requiring a minimum flux reservoir radius $r_{\\rm MAD}^{\\rm min} \\sim 1200\\,r_g$) for $h/r=0.1$.",
+          "reading_entry": "6 Connection to jet launching and MAD formation",
+          "problem": "Whether geometrically thin and moderately thin accretion disks can self-consistently generate large-scale poloidal magnetic flux from purely toroidal magnetic fields via dynamo processes, efficiently transport it inward to the event horizon, and launch powerful relativistic jets.",
+          "method": "Three-dimensional ideal GRMHD simulations executed with the H-AMR code in Kerr-Schild coordinates around high-spin black holes ($a = 0.9$ or $0.9375$), initialized with a purely toroidal magnetic field ($\\beta_{\\rm ini} = 5$) and cooled via Noble et al. prescriptions to maintain disk aspect ratios $h/r = 0.1, 0.2, 0.3$. Analyses employ azimuthal Reynolds decomposition $X = \\langle X \\rangle + \\delta X$ with mean-field induction $\\partial_t \\langle\\mathbf{B}\\rangle = \\boldsymbol{\\nabla} \\times (\\langle\\mathbf{u}\\rangle \\times \\langle\\mathbf{B}\\rangle + \\boldsymbol{\\mathcal{E}})$, Fourier modal decomposition of the turbulent EMF $\\boldsymbol{\\mathcal{E}} = \\langle\\delta\\mathbf{u} \\times \\delta\\mathbf{B}\\rangle$, and magnetic flux advection tracing $v_\\Phi = -\\partial_t \\Phi / \\partial_r \\Phi$.",
+          "assumptions": [
+            "Initial magnetic field is strictly toroidal with uniform plasma $\\beta=5$, containing zero net initial poloidal magnetic flux."
+          ],
+          "limits": [
+            "Finite grid resolution in the thinnest disk ($h/r=0.1$) where the strict linear vertical MRI quality factor $Q_\\theta^{\\rm Jann}$ drops below recommended thresholds ($Q_\\theta^{\\rm Jann} < 2$) at $r \\lesssim 30\\,r_g$.",
+            "Analytic flux advection trajectories break down near the innermost stable circular orbit and horizon ($r \\lesssim 5\\,r_g$), and turbulent reconnection of magnetic loops at large radii may erode the available flux reservoir."
+          ],
+          "citation_leads": [
+            "Thinner Disks Struggle to Launch Jets: GRMHD Simulations of Magnetic Field Generation and Transport: “We investigate this connection using three-dimensional GRMHD simulations of disks with $h/r=0.1$–$0.3$, initialized with a toroidal magnetic field with plasma $\\beta=5$.”",
+            "1 Introduction: “We find that the strength of MRI-driven turbulence depends strongly on the disk thickness, rather than simply on the initial toroidal field strength. The magnetic flux accumulated on the black hole also decreases steeply with decreasing”",
+            "3.1 Flux on the black hole: “The thick disk ($h/r\\sim 0.3$) reaches the MAD state, conventionally defined by $\\phi_{\\rm BH}=50$, by $t=2\\times 10^{4}\\,r_{g}/c$. In contrast, the thinner disks do not approach this state during the duration of our simulations”",
+            "3.3 Local turbulent behavior: “In all simulations, we observe an exponential growth of both the turbulent magnetic field, $\\delta\\beta^{-1}$, and the mean large-scale poloidal field, $\\beta_{p}^{-1}$. This growth occurs rapidly, within $\\sim 10\\Omega_{k}^{-1}$”",
+            "4.2 Poloidal magnetic field budget: “Applying Parseval’s theorem, the turbulent EMF can be decomposed into contributions from individual azimuthal modes,”",
+            "5.1 Angular momentum transport: “As the disk becomes thinner, the accretion velocity decreases dramatically, from $4\\times 10^{-2}V_{k}$ for $h/r\\sim 0.3$, to $4.4\\times 10^{-3}V_{k}$ for $h/r=0.2$, and finally to $4.5\\times 10^{-4}V_{k}$ for $h/r=0.1$.”",
+            "5.2 Large scale magnetic field transport: “To understand why the magnetic flux accumulates onto the black hole at such different rates, we must examine how magnetic flux is transported through the accretion disk.”",
+            "7.1 Conclusion: “Using the measured flux distribution and transport velocities, we estimate the timescale required to accumulate MAD-level magnetic flux. This timescale increases rapidly toward smaller $h/r$, reaching $\\sim 10^{8}\\,r_{g}/c$ for $h/r=0.1$.”",
+            "7.3 Observational consequences: “Even if delayed flux accumulation eventually produces a MAD, the accretion rate may have declined by orders of magnitude, resulting in a much weaker jet despite its high efficiency.”",
+            "Appendix B Resolution requirements: “In particular, the characteristic transition wavelengths $\\lambda_{I}$ and $\\lambda_{S}$, which separate the large-, intermediate-, and small-scale contributions to the dynamo, are nearly identical between simulations”"
+          ],
+          "research_progress": "Reveals that as $h/r$ decreases, the MRI dynamo transitions from a global coherent dynamo to a vertically stratified dynamo confined to the disk surface atmosphere ($2h \\lesssim |z| \\lesssim 5h$), steepening the accretion velocity to $v_{\\rm acc} \\propto (h/r)^{3.5}$ (much steeper than standard Shakura-Sunyaev $v_{\\rm acc} \\propto (h/r)^2$), and causing the timescale to accumulate MAD-level flux to escalate to $\\sim 10^8\\,r_g/c$ for $h/r=0.1$, which naturally explains delayed or suppressed jet launching in thin-disk transients.",
+          "figures": [
+            {
+              "url": "/arxiv-figures/2610.37758/field_lines.png",
+              "caption": "Figure 2: Poloidal slices of the three simulations showing the $\\varphi$ -averaged toroidal magnetic field in colour and the $\\varphi$ -averaged poloidal field lines as white streamlines for $r\\leq 25r_{g}$. Columns show $t=10^{3}$, $4\\times 10^{3}$, and $3.7\\times 10^{4}\\,r_{g}/c$, while rows correspond to $h/r\\sim 0.3$, $0.2$, and $0.1$. The magnetic field becomes more organized with time, with the degree of large-scale coherence decreasing strongly toward thinner disks.",
+              "label": "Fig. 2",
+              "category": "theoretical",
+              "category_badge": "Physical Evolution",
+              "physical_core": "The time evolution of the azimuthally averaged magnetic field shows that large-scale field coherence decreases as disk thickness falls from $h/r\\sim0.3$ to $0.1$.",
+              "is_schematic": true
+            },
+            {
+              "url": "/arxiv-figures/2610.37758/triple_Phi.png",
+              "caption": "Figure 14: Spacetime evolution of the signed magnetic flux, $\\Phi(r,t)$, for $h/r=0.3$ (a), $0.2$ (b), and $0.1$ (c). Colours indicate magnetic polarity and contours trace magnetic flux surfaces as they evolve through the disk. In all simulations, progressively larger magnetic loops are generated and advected inward, producing a coherent large-scale flux structure at late times. The dotted black curves traces representative magnetic flux surfaces identified in the simulation, while the solid black lines show a corresponding analytical trajectories. The agreement deteriorates at small radii ($r\\leq 5r_{g}$), where ISCO and near-horizon dynamics are not captured by the simple transport model. The markedly slower transport in thinner disks explains their correspondingly slower black-hole flux accumulation.",
+              "label": "Fig. 14",
+              "category": "theoretical",
+              "category_badge": "Physical Evolution",
+              "physical_core": "The spacetime evolution of signed magnetic flux, $\\Phi(r,t)$, shows magnetic loops generated in the disk and advected inward; transport and black-hole flux accumulation are slower in thinner disks. The comparison between simulated flux surfaces and analytical trajectories also shows where the transport model departs from the simulation at $r\\leq5r_g$.",
+              "is_schematic": true
+            }
+          ],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed.",
+            "Figures from source package have not undergone visual verification."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        },
+        "historical_edition": "announcement-2026-10-28",
+        "historical_edition_fingerprint": "2edd21076ec41444aa3cf88de1f225a2f1b6d4418b41ee7ef3a22ec8891e590e"
+      },
+      {
+        "arxiv_id": "2610.37759",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "6df2854f99be93ff6444405312dcab743f616ed64bdfcbbc2a75dcb0aa590e9f",
+        "priority": "worth_knowing",
+        "coverage": {
+          "level": "body_partial",
+          "label": "已检查正文中支撑判断的指定章节",
+          "source_version": "arXiv:2610.37759v1",
+          "inspected_sections": [
+            "Introduction",
+            "Extreme eccentricity in double neutron stars without exotic physics",
+            "References",
+            "EXTENDED DATA FIGURES",
+            "SUPPLEMENTARY INFORMATION",
+            "Instructions for reporting errors"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_source_package",
+              "url": "https://export.arxiv.org/src/2610.37759v1",
+              "locator": "Introduction; Extreme eccentricity in double neutron stars without exotic physics; References; EXTENDED DATA FIGURES; SUPPLEMENTARY INFORMATION; Instructions for reporting errors",
+              "description": "Complete, revision-matched arXiv TeX source package",
+              "sha256": "2c9bc795440d205373cbc48a7e4eae75283ca2d1f23a2ec6ae73c71f091118f4"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "gpt-6-luna",
+          "analyzed_at": "2026-10-30T18:15:13.814Z",
+          "reason": "This paper presents a definitive orbital dynamics and evolutionary model explaining the origin of the record-breaking eccentric double neutron star PSR J0653+0443 within standard isolated binary evolution without requiring exotic dynamical channels.",
+          "result": "The extreme eccentricity $e=0.9924$ ($P=79.1\\;{\\rm days}$, periastron distance $q=a(1-e)\\simeq 0.83\\;R_{\\odot}$) can be naturally reproduced by an ultra-stripped supernova with an asymmetric natal kick $w\\sim 220-350\\;{\\rm km\\,s}^{-1}$ from a pre-SN progenitor helium star of $M_{\\rm He,f}\\simeq 1.5-2.0\\;M_{\\odot}$ in an initial orbit $P_0 < 0.10\\;{\\rm days}$. The theoretical probability of producing marginally bound systems with $e\\ge e_0$ under isotropic kicks is analytically derived as $P(e \\geq e_0) \\simeq \\frac{(1-e_0)b}{4k}\\approx 0.42\\%$, demonstrating that no fine-tuning beyond standard post-SN distributions is required. At gravitational-wave frequency $10\\;{\\rm Hz}$, orbital circularization leaves residual eccentricity $e\\sim 10^{-5}$.",
+          "reading_entry": "Extreme eccentricity in double neutron stars without exotic physics",
+          "problem": "Investigating whether the extreme eccentricity ($e=0.9924$) of the double neutron star PSR J0653+0443 demands exotic dynamical pathways (such as Kozai-Lidov cycles in triples or dynamical capture in globular clusters) or can be accounted for by isolated binary evolution and core-collapse supernova kinematics.",
+          "method": "Supernova orbital dynamics reconstruction across parameter space ($P_{0}=0.035-280\\;{\\rm days}$, $M_{\\rm He,f}=1.60-4.40\\;M_{\\odot}$, $w=0-1000\\;{\\rm km\\,s}^{-1}$) constrained by pulsar recycling accretion threshold $\\Delta M_{\\rm eq} \\simeq 0.22\\,M_{\\odot}\\,(M/M_{\\odot})^{1/3}\\,P_{\\rm ms}^{-4/3}$ and Peters gravitational radiation orbital backwards-integration exploiting the periastron freezing effect $q(e) \\simeq 0.566\\,c_0$.",
+          "assumptions": [
+            "The pre-supernova orbit is circularized due to tidal interaction and Case BB mass transfer prior to core collapse."
+          ],
+          "limits": [
+            "The system enters the ground-based gravitational-wave detection band ($\\sim 10\\;{\\rm Hz}$) with negligible residual eccentricity ($e\\sim 10^{-5}$), making it indistinguishable from circular mergers, and its current low-frequency GW signal is undetectable by LISA (SNR $\\rho \\sim 0.1$)."
+          ],
+          "citation_leads": [
+            "Extreme eccentricity in double neutron stars without exotic physics: “The extreme eccentricity of PSR J0653+0443 leads to highly concentrated GW emission at periastron, with the instantaneous GW power near periastron exceeding that near apastron by $\\sim 9$ orders of magnitude”",
+            "Extreme eccentricity in double neutron stars without exotic physics: “The full pre-SN parameter range includes: $P_{0}=0.035-280\\;{\\rm days}$, $M_{\\rm He,f}=1.60-4.40\\;M_{\\odot}$, and $w=0-1000\\;{\\rm km\\,s}^{-1}$.”",
+            "SUPPLEMENTARY INFORMATION: “The assumption of a circular pre-SN orbit is well justified for relatively tight binaries following mass transfer.”",
+            "SUPPLEMENTARY INFORMATION: “Thus, in the near-disruption limit, the probability that an isotropic kick produces a marginally bound, extremely eccentric post-SN orbit with $e\\geq e_{0}$ is approximately:”",
+            "SUPPLEMENTARY INFORMATION: “At very high eccentricities, $q$ is approximately constant because GW losses remove angular momentum most efficiently near periastron, causing the apastron to collapse while the periastron shrinks only slowly”",
+            "SUPPLEMENTARY INFORMATION: “Regardless of whether the detector-band entry is defined via the quadrupole or peak GW harmonic, the system remains essentially circular ($e\\sim 10^{-5}$), well below the detectability threshold.”"
+          ],
+          "research_progress": "Provides an analytical scaling formula for the near-disruption post-supernova high-eccentricity formation probability $P(e \\geq e_0) \\simeq \\frac{(1-e_0)b}{4k}$, establishing that extreme-eccentricity binary neutron stars naturally represent the high-eccentricity tail of normal isolated binary population synthesis.",
+          "figures": [
+            {
+              "url": "/arxiv-figures/2610.37759/DNS_sim_FASTeDNS_realistic.png",
+              "caption": "Extended Data Fig. 5 “Realistic” progenitor systems. Parameter space of solutions producing a post-SN DNS with orbital period and eccentricity similar to the current values of PSR J0653+0443 within small error bars ($P=79.1\\pm 2.4\\;{\\rm days}$, and $e=0.992\\pm 0.002$) using pre-SN priors determined by detailed Case BB RLO calculations (Fig. 3) and $P_{\\rm spin}\\lesssim 50\\;{\\rm ms}$. Based on simulations of $6\\times 10^{8}$ binaries. Note the minimum required kick of $w\\gtrsim 220\\;{\\rm km\\,s}^{-1}$. The red star in panel A indicates the birth position of the system assuming a true age of $t=1.0\\;{\\rm Gyr}$. The red points in panel F indicate kick directions along the pre-SN orbital angular-momentum axis.",
+              "label": "Fig. 7",
+              "category": "theoretical",
+              "category_badge": "Physical Evolution",
+              "physical_core": "Shows post-supernova binary solutions consistent with the observed orbital period and eccentricity when progenitor priors are set by detailed Case BB Roche-lobe overflow calculations and the first-born neutron star has $P_{\\rm spin}\\lesssim 50\\;{\\rm ms}$. The caption reports a minimum required kick of $w\\gtrsim 220\\;{\\rm km\\,s^{-1}}$.",
+              "is_schematic": true
+            },
+            {
+              "url": "/arxiv-figures/2610.37759/SN-NSNS-ecc-angle2.png",
+              "caption": "Extended Data Fig. 6 Dependence of the post-SN eccentricity on the direction of the kick. Eccentricity analysis of a SN with an assumed kick of $w=350\\;{\\rm km\\,s}^{-1}$. The pre-SN parameters in this example are $P_{0}=0.05\\;{\\rm days}$ and $M_{\\rm He,f}=1.90\\;M_{\\odot}$ and the companion star (first-born NS) is assumed to have a mass of $M_{2}=1.41\\;M_{\\odot}$. The resulting NS is produced with a mass of $M_{\\rm NS}=1.40\\;M_{\\odot}$. Systems with a kick angle $\\theta$ within $\\Delta\\theta_{\\rm crit}=0.63^{\\circ}$ of the critical angle $\\theta_{\\rm crit}=49.03^{\\circ}$ (magenta arrow) will produce extremely eccentric post-SN orbits with $e\\geq 0.992$ similar to PSR J0653+0443. The probability that the post-SN remains bound for isotropic kick directions is $P_{\\rm bound}=(1+\\cos\\theta_{\\rm crit})/2\\simeq 0.828$. The black arrow in the left margin indicates the $\\theta$ value ($112.9^{\\circ}$) above which the orbits shrink because of the SN (i.e. $a<a_{0}$). The small black areas in the center of the red regions indicate almost perfectly circular post-SN orbits with $e<0.015$.",
+              "label": "Fig. 8",
+              "category": "theoretical",
+              "category_badge": "Physical Evolution",
+              "physical_core": "For an example supernova with $w=350\\;{\\rm km\\,s^{-1}}$, the post-supernova eccentricity depends sensitively on kick direction. Kicks within $\\Delta\\theta_{\\rm crit}=0.63^{\\circ}$ of $\\theta_{\\rm crit}=49.03^{\\circ}$ produce $e\\geq 0.992$; the caption gives $P_{\\rm bound}\\simeq 0.828$ for isotropic kick directions.",
+              "is_schematic": true
+            }
+          ],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed.",
+            "Figures from source package have not undergone visual verification."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        },
+        "historical_edition": "announcement-2026-10-28",
+        "historical_edition_fingerprint": "2edd21076ec41444aa3cf88de1f225a2f1b6d4418b41ee7ef3a22ec8891e590e"
+      },
+      {
+        "arxiv_id": "2610.37893",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "61af347977c34a2d104ae704f626953da9f8d265f530ed9a31d90533497dc3f1",
+        "priority": "worth_knowing",
+        "coverage": {
+          "level": "body_partial",
+          "label": "已检查正文中支撑判断的指定章节",
+          "source_version": "arXiv:2610.37893v1",
+          "inspected_sections": [
+            "Introduction",
+            "3.3 Nucleosynthesis",
+            "1 Introduction",
+            "2 Method",
+            "2.1 BNS merger simulations",
+            "2.2 Ejected matter",
+            "2.3 Tracer particles selection",
+            "2.4 Nucleosynthesis calculations",
+            "3 Results",
+            "3.1 Ejected matter",
+            "3.2 Tracers evolution",
+            "3.3.1 Yields at 1 day",
+            "3.3.2 Yields at 1 Gyr",
+            "4 Discussion",
+            "5 Nuclear yields in the MARTINI platform",
+            "5.1 Example of application: chronometer pairs",
+            "6 Conclusions",
+            "Data availability",
+            "References",
+            "Appendix A Testing tracers mass assignment",
+            "Instructions for reporting errors",
+            "The MARTINI platform II. Tracing $r$-process nucleosynthesis in neutron star mergers with long-lived remnants"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_source_package",
+              "url": "https://export.arxiv.org/src/2610.37893v1",
+              "locator": "Introduction; 3.3 Nucleosynthesis; 1 Introduction; 2 Method; 2.1 BNS merger simulations; 2.2 Ejected matter; 2.3 Tracer particles selection; 2.4 Nucleosynthesis calculations; 3 Results; 3.1 Ejected matter; 3.2 Tracers evolution; 3.3.1 Yields at 1 day; 3.3.2 Yields at 1 Gyr; 4 Discussion; 5 Nuclear yields in the MARTINI platform; 5.1 Example of application: chronometer pairs; 6 Conclusions; Data availability; References; Appendix A Testing tracers mass assignment; Instructions for reporting errors; The MARTINI platform II. Tracing $r$-process nucleosynthesis in neutron star mergers with long-lived remnants",
+              "description": "Complete, revision-matched arXiv TeX source package",
+              "sha256": "74ac257f9eaba4ea4f822000200638d29d28c43db8a07312f724177c0979ff1c"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "gpt-6-luna",
+          "analyzed_at": "2026-10-30T18:16:00.656Z",
+          "reason": "The paper provides public r-process nucleosynthesis yields and tracer trajectories from numerical relativity BNS merger simulations with long-lived remnants and M1 neutrino transport, directly relevant to kilonova physics and heavy element nucleosynthesis.",
+          "result": "Light, Fe-peak, and first-peak nuclei are robustly synthesized with total masses $>10^{-3}\\,M_{\\odot}$ across all models, whereas second-peak, rare-earth, third-peak, and trans-lead nuclei vary substantially by over an order of magnitude. Neutrino irradiation in the disk wind produces elevated helium mass fractions ($X_{\\rm He} > 0.1$, peaking at $0.6\\text{--}0.8$ in polar ejecta with $v_r \\gtrsim 0.2\\,c$) such that $X_{\\rm He} > X_{\\rm Sr}$ throughout the ejecta. Asymmetric systems ($q=0.7$) yield substantially lower electron fractions (reaching $\\langle Y_e \\rangle < 0.15$ in tidal ejecta), driving enhanced lanthanide/actinide production. The chronometer ratio $\\log\\epsilon(\\mathrm{U/Th}) \\sim -0.6$ is remarkably robust, while $\\log\\epsilon(\\mathrm{Th/Dy})$ ranges from actinide-boost values ($>-0.9$) to normal/deficient values depending on the disk wind fraction $n$.",
+          "reading_entry": "3.3 Nucleosynthesis",
+          "problem": "How neutrino irradiation modeled via M1 transport in binary neutron star mergers with long-lived remnants modifies the electron fraction $Y_e$ of dynamic and disk-wind ejecta, and how these changes govern the synthesis of light versus heavy $r$-process elements.",
+          "method": "Conducted 8 full general-relativistic BNS simulations with the WhiskyTHC code coupled to CTGamma and the THC_M1 two-moment neutrino transport scheme for DD2 and SFHo equations of state. Ejecta were identified at $r_{\\rm det} \\simeq 443\\,\\mathrm{km}$ using the Bernoulli unbound condition $|h u_t| > 1$ with $v_r > 0$, differentiating dynamical ejecta $m_{\\rm dyn}$ and secular wind ejecta parameterized via $m_{\\rm wind}^{n} = m_{\\rm wind, sim} + \\frac{n}{10}(m_{\\rm disc} - m_{\\rm disc}^{\\rm bern})$ for $n \\in \\{0,1,2,3,4\\}$. Representative tracer particles ($3000\\text{--}5000$ downsampled from $2^{18}$) were coupled to the WinNet nuclear reaction network (8904 isotopes) assuming homologous expansion $\\rho \\propto t^{-3}$ once temperature dropped below $T = 7\\,\\mathrm{GK}$.",
+          "assumptions": [
+            "Tracer trajectories follow homologous expansion $\\rho \\propto t^{-3}$ after the temperature permanently drops below $T = 7\\,\\mathrm{GK}$."
+          ],
+          "limits": [
+            "Focuses exclusively on systems with long-lived neutron star remnants surviving $\\ge 50\\text{--}80\\,\\mathrm{ms}$, without exploring prompt collapse to a black hole."
+          ],
+          "citation_leads": [
+            "The MARTINI platform II. Tracing $r$-process nucleosynthesis in neutron star mergers with long-lived remnants: “We present and publicly release a set of tracer trajectories and nucleosynthesis yields for BNS mergers that form long-lived”",
+            "2.2 Ejected matter: “To compute the properties of the ejected matter, we combine two complementary approaches.”",
+            "2.3 Tracer particles selection: “redistribute its mass among the $3\\times 3\\times 3-1=26$ neighboring cells in the three-dimensional parameter space”",
+            "3.3.2 Yields at 1 Gyr: “All models produce similarly large total masses ($>10^{-3}\\penalty\\ M_{\\odot}$) of He, Fe-peak, and first-peak nuclei”",
+            "4 Discussion: “ranges over $\\langle Y_{e}\\rangle=0.17$–$0.30$ in our simulations”",
+            "5.1 Example of application: chronometer pairs: “The nucleosynthesis yields released through the MARTINI platform can be readily evolved beyond $t=1$ Gyr”"
+          ],
+          "research_progress": "Constructs and publicly releases the first comprehensive library of tracer trajectories and $r$-process yields from full-GR M1-neutrino simulations of long-lived BNS remnants under the MARTINI platform, showing systematic enhancement of light elements (He, Ni, Sr, Y) via neutrino irradiation and identifying the conditions leading to actinide-boost signatures.",
+          "figures": [
+            {
+              "url": "/arxiv-figures/2610.37893/origin_elements_SFHo_M12980-12980_M1_SR_ye_s_1day_tref7.png",
+              "caption": "Figure 8: Tracer distribution in the $Y_{e}$ - $s$ plane at time $t_{7}$, defined such that $T(t) t_{7}$, for the simulation SFHo $\\_$ M12980-12980 $\\_$ M1 $\\_$ HR. The color scale indicates the mass of the element produced by each tracer at $t=1$ day after merger. The element corresponding to each panel is indicated in its title.",
+              "label": "Fig. 8",
+              "category": "theoretical",
+              "category_badge": "Physical Evolution",
+              "physical_core": "Maps tracer conditions in the $Y_e$–$s$ plane to the mass of each element produced at $t=1$ day, showing how ejecta properties relate to nucleosynthetic yields.",
+              "is_schematic": true
+            },
+            {
+              "url": "/arxiv-figures/2610.37893/all_sims_solar.png",
+              "caption": "Figure 12: Final isotopic mass distribution for all simulations listed in Table 2, considering the contribution from dynamical ejecta (green), wind ejecta (light blue), and the sum of the two (blue), compared to the solar $r$ -process abundance (black dots) from Prantzos et al. (2020), normalized to 130 Te.",
+              "label": "Fig. 12",
+              "category": "observational",
+              "category_badge": "Key Observational Evidence",
+              "physical_core": "Compares the final isotopic mass distributions from dynamical ejecta, wind ejecta, and their sum with the solar r-process abundance pattern normalized to $^{130}\\mathrm{Te}$.",
+              "is_schematic": false
+            }
+          ],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed.",
+            "Figures from source package have not undergone visual verification."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        },
+        "historical_edition": "announcement-2026-10-28",
+        "historical_edition_fingerprint": "2edd21076ec41444aa3cf88de1f225a2f1b6d4418b41ee7ef3a22ec8891e590e"
+      },
+      {
+        "arxiv_id": "2610.37895",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "424d148cedc22e9a845ee2cf1d5de396ee8350aa7eadfcee188e56d32070de13",
+        "priority": "worth_knowing",
+        "coverage": {
+          "level": "body_partial",
+          "label": "已检查正文中支撑判断的指定章节",
+          "source_version": "arXiv:2610.37895v1",
+          "inspected_sections": [
+            "Introduction",
+            "Considering Numerical Relativity Surrogate Models for AGN Channel Merger Dynamics",
+            "I introduction",
+            "II methods",
+            "II.1 McFACTS Default",
+            "II.1.1 McFACTS Structure",
+            "II.1.2 Mass",
+            "II.1.3 Spin",
+            "II.1.4 Kick Velocity",
+            "II.2 Numerical Relativity Surrogate",
+            "II.3 Alternative Methods",
+            "II.3.1 precession",
+            "II.3.2 Hard Coded Filter",
+            "III Results",
+            "III.1 Spin",
+            "III.1.1 McFACTSnosur",
+            "III.1.2 McFACTSsur",
+            "III.1.3 McFACTS + Alternatives",
+            "III.2 Kick Velocity",
+            "III.3 Mass",
+            "III.4 Spin 2",
+            "III.5 Effective Spin",
+            "IV discussion",
+            "IV.1 BH populations in AGN",
+            "IV.2 LVK Detections",
+            "IV.3 Implications for GW Channels",
+            "V acknowledgments",
+            "References",
+            "Instructions for reporting errors"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_source_package",
+              "url": "https://export.arxiv.org/src/2610.37895v1",
+              "locator": "Introduction; Considering Numerical Relativity Surrogate Models for AGN Channel Merger Dynamics; I introduction; II methods; II.1 McFACTS Default; II.1.1 McFACTS Structure; II.1.2 Mass; II.1.3 Spin; II.1.4 Kick Velocity; II.2 Numerical Relativity Surrogate; II.3 Alternative Methods; II.3.1 precession; II.3.2 Hard Coded Filter; III Results; III.1 Spin; III.1.1 McFACTSnosur; III.1.2 McFACTSsur; III.1.3 McFACTS + Alternatives; III.2 Kick Velocity; III.3 Mass; III.4 Spin 2; III.5 Effective Spin; IV discussion; IV.1 BH populations in AGN; IV.2 LVK Detections; IV.3 Implications for GW Channels; V acknowledgments; References; Instructions for reporting errors",
+              "description": "Complete, revision-matched arXiv TeX source package",
+              "sha256": "f8a76f30bc8064cddf9560dee70d534189f9c89d20124a83f3ca89827f309e6c"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "gpt-6-luna",
+          "analyzed_at": "2026-10-30T18:17:16.833Z",
+          "reason": "The paper benchmarks numerical relativity surrogate models against analytic approximations within the McFACTS framework for AGN disk-assisted hierarchical binary black hole mergers, directly informing compact object retention, kick distributions, and high-energy merger environments.",
+          "result": "Incorporating the numerical relativity surrogate model (McFACTSsur) reveals that hierarchical remnants exhibit high spins ($2g$ mergers centered around $a_{\\mathrm{final}} \\sim 0.85$, $3g+$ mergers at $\\sim 0.9$) and a broad kick distribution $v_{\\mathrm{kick}} \\sim [1, 2000]~\\mathrm{km/s}$ with a bimodal feature in $2g$ mergers, while average kicks decrease (mean $\\langle v_{\\mathrm{kick}} \\rangle = 119.21~\\mathrm{km/s}$) compared to analytic models ($\\n127.17~\\mathrm{km/s}$), and higher-generation effective spins shift to $\\chi_{\\rm eff} \\in [0.5, 0.95]$.",
+          "reading_entry": "II.2 Numerical Relativity Surrogate",
+          "problem": "Analytic fitting formulas for BBH remnant spin and kick velocity (e.g. Tichy & Marronetti 2008) are calibrated only over narrow mass-ratio intervals ($q \\in [0.67, 1.0]$) and fail in hierarchical AGN channel mergers where mass ratios can drop to $q \\le 0.1$.",
+          "method": "The authors implement a Gaussian process regression numerical relativity surrogate model (`surfinBH`, trained to $q \\ge 0.125$ with 3.5 PN TaylorT1 pre-merger evolution up to $100M$ before peak strain) into the McFACTS Monte Carlo code, comparing it against the default analytic fits, orbital-averaged post-Newtonian precession (`precession`), and a heuristic filter model.",
+          "assumptions": [
+            "Hierarchical merger efficiency is determined by kick magnitude, local BH density, and local escape velocity."
+          ],
+          "limits": [
+            "The surrogate model domain is limited to mass ratios $q \\ge 0.125$, requiring alternative PN or analytic extrapolations for extreme mass-ratio encounters."
+          ],
+          "citation_leads": [
+            "I introduction: “Hierarchical merger model efficiency therefore depends on three things: the magnitude of the kick that the BBH merger remnant experiences, the density of BH in the local environment, and most importantly, the local escape velocity.”",
+            "II.2 Numerical Relativity Surrogate: “Surrogate models describing BH mergers save computational expense by interpolating the outputs of fully evolved numerical solutions over the input parameter space to build a map of the output remnant parameters.”",
+            "III.1 Spin: “higher generation mergers (purple, red) have a wider range of $v_{\\mathrm{kick}}\\sim[1,2000]{\\rm km/s}$ with McFACTSsur than with any other model, there is a bimodal distribution in $v_{\\rm kick}$ among the $2g$ (purple) mergers”",
+            "III.3 Mass: “The first population gathers along the migration trap, a region in which the disk torques limit migration, set at $700R_{g}$, the second population gathers along the migration swamp, a region in which the disk density rapidly changes and”",
+            "References: “GW231123: a binary black hole merger with total mass 190–265 m⊙.”"
+          ],
+          "research_progress": "Quantified how NR surrogate corrections suppress high-generation kick velocities and shift effective spin distributions upward ($\\n\\chi_{\\rm eff} \\sim 0.5\\text{--}0.95$), demonstrating that short-lived ($\\sim 1~\\mathrm{Myr}$) AGN disks can retain remnants to naturally reproduce massive, highly spinning events like GW231123 ($M_f = 222_{-42}^{+28}~M_\\odot$, $\\chi_f = 0.84_{-0.16}^{+0.08}$).",
+          "figures": [
+            {
+              "url": "/arxiv-figures/2610.37895/spin2_spin_final.png",
+              "caption": "Figure 5: The spins of the secondary object in a BBH merger, $a_{2}$, as a function of the final remnant spin, $a_{\\mathrm{final}}$.",
+              "label": "Fig. 5",
+              "category": "theoretical",
+              "category_badge": "Physical Evolution",
+              "physical_core": "Shows remnant kick velocity, $v_{\\mathrm{kick}}$, versus disk radius, $R_g$, for the default McFACTS run and the run using the NR surrogate after the binary reaches a separation of $1000\\,M$. It also compares the kick-velocity distributions with the radius-dependent escape velocity.",
+              "is_schematic": true
+            },
+            {
+              "url": "/arxiv-figures/2610.37895/mass_v_spin.png",
+              "caption": "Figure 7: Remnant spin versus remnant mass of McFACTSnosur, on the left, and McFACTSsur, on the right. Also depicted is the BBH merger GW231123 highlighted in cyan.",
+              "label": "Fig. 7",
+              "category": "observational",
+              "category_badge": "Key Observational Evidence",
+              "physical_core": "Compares remnant spin versus remnant mass for McFACTSnosur and McFACTSsur, and marks the BBH merger GW231123 in cyan.",
+              "is_schematic": false
+            }
+          ],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed.",
+            "Figures from source package have not undergone visual verification."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        },
+        "historical_edition": "announcement-2026-10-28",
+        "historical_edition_fingerprint": "2edd21076ec41444aa3cf88de1f225a2f1b6d4418b41ee7ef3a22ec8891e590e"
+      },
+      {
+        "arxiv_id": "2610.37902",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "727af94d1ae7fc8e329b3824b13774c4eda524633dd72521edb9893c310c6fb1",
+        "priority": "worth_knowing",
+        "coverage": {
+          "level": "body_partial",
+          "label": "已检查正文中支撑判断的指定章节",
+          "source_version": "arXiv:2610.37902v1",
+          "inspected_sections": [
+            "Introduction",
+            "Validating an X-ray-based method for identifying Fermi blazars",
+            "1 Introduction",
+            "2 Methodology",
+            "3 Results",
+            "3.1 Estimation of contamination due to false positives",
+            "3.2 Notes on peculiar objects",
+            "3.2.1 3FGL J0006.2+0135",
+            "3.2.2 3FGLJ1132.0-4736",
+            "3.2.3 3FGL J1627.8+3217",
+            "3.2.4 3FGL J2015.3-1431",
+            "3.3 Sources associated in the literature not spatially coincident with the X-ray counterparts",
+            "4 Discussion",
+            "5 Summary and conclusions",
+            "References",
+            "Appendix A Supplementary figures and tables",
+            "Instructions for reporting errors"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_source_package",
+              "url": "https://export.arxiv.org/src/2610.37902v1",
+              "locator": "Introduction; Validating an X-ray-based method for identifying Fermi blazars; 1 Introduction; 2 Methodology; 3 Results; 3.1 Estimation of contamination due to false positives; 3.2 Notes on peculiar objects; 3.2.1 3FGL J0006.2+0135; 3.2.2 3FGLJ1132.0-4736; 3.2.3 3FGL J1627.8+3217; 3.2.4 3FGL J2015.3-1431; 3.3 Sources associated in the literature not spatially coincident with the X-ray counterparts; 4 Discussion; 5 Summary and conclusions; References; Appendix A Supplementary figures and tables; Instructions for reporting errors",
+              "description": "Complete, revision-matched arXiv TeX source package",
+              "sha256": "6cb20ae5f65169421f1e9b1aeac1e5010d65babcb97f855c723ca56cd9689871"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "gpt-6-luna",
+          "analyzed_at": "2026-10-30T18:17:52.438Z",
+          "reason": "The paper provides an observational validation of an X-ray-based identification technique for Fermi unidentified gamma-ray sources (UGSs), testing counterpart association with relativistic jets (BL Lacs and gamma-ray Seyferts). This informs multi-wavelength counterparts and relativistic jet associations for high-energy transient and gamma-ray catalogs.",
+          "result": "Among 71 UGSs with confirmed optical spectra selected via Swift-XRT X-ray counterparts, 80.28% (57/71) are classified as BL Lacs (enhancement factor $\\mathrm{IF} = 2.50$) and 5.63% (4/71) as Seyferts ($\\mathrm{IF} = 21.65$). Based on 2SXPS background density $\\rho \\approx 2.81\\,\\mathrm{deg^{-2}}$ and total error area $1.54\\,\\mathrm{deg^2}$, the expected number of spurious matches is $N_{\\rm FP} \\approx 4 \\pm 2$ (false positive rate $\\sim 6\\%$). A 2D Gaussian KDE method applied to 57 BL Lacs divides them into 28 HBL candidates, 11 LBL candidates, and 18 uncertain candidates.",
+          "reading_entry": "3 Results",
+          "problem": "Fermi-LAT catalogues suffer from a large fraction ($\\sim 34\\%$, e.g., 2830 sources in 4FGL-DR4) of unidentified gamma-ray sources (UGSs) due to large positional uncertainties ($\\sim 10'$), requiring validation of whether X-ray-selected candidates reliably trace relativistic jet emitters like BL Lacs without substantial false-positive contamination.",
+          "method": "Optical spectroscopy verification of Swift-XRT X-ray counterparts ($S/N > 3$, exposure $1\\text{--}10\\,\\mathrm{ksec}$) for 148 3FGL UGSs at $|b| > 10^\\circ$. BL Lac candidates are subclassified into HBL and LBL via 2D Gaussian Kernel Density Estimation (KDE) over X-ray flux-hardness ratio planes and WISE color-color diagrams: $P(\\mathrm{HBL})_X = \\frac{\\mathrm{KDE}_{\\mathrm{HBL},X}}{\\mathrm{KDE}_{\\mathrm{HBL},X} + \\mathrm{KDE}_{\\mathrm{LBL},X}}$.",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "3 Results: “Among the 71 sources, 80.28% were ultimately classified as BL Lacs. It is important to emphasize that, since the selection criteria are strongly based on X-ray detections, a high identification rate of BL Lac objects is expected.”",
+            "4 Discussion: “To distinguish between the HBL or LBL sources among the objects classified as BL Lacs, we adopted an approach similar to that in [Marchesini et al. (2016)](#bib.bib38).”",
+            "4 Discussion: “We find that out of the 57 BL Lac objects, 28 are HBL candidates, 11 are LBL candidates and the remaining 18 are UC.”",
+            "3 Results: “Among the 71 sources, 80.28% were ultimately classified as BL Lacs. It is important to emphasize that, since the selection criteria are strongly based on X-ray detections, a high identification rate of BL Lac objects is expected.”"
+          ],
+          "research_progress": "Quantitatively validates the X-ray selection technique for Fermi blazar identification, demonstrating an 80.28% BL Lac recovery rate with a low false positive rate ($\\sim 6\\%$, $N_{\\rm FP} \\sim 4$), and confirms its efficiency in uncovering rare jet-emitting Seyfert galaxies with an improvement factor of $\\mathrm{IF} = 21.65$.",
+          "figures": [
+            {
+              "url": "/arxiv-figures/2610.37902/BLL_classified_HR_flux.png",
+              "caption": "Figure 11: 70%, 80%, and 90% isodensity contours, as obtained from the KDE analysis on the Roma-BZCAT sample and the BLL sample. The LBL candidate sources are shown in orange and the HBL candidate sources in green. Left panel: Flux Vs. $\\mathrm{HR_{x}}$. Right panel: Wise color-color diagram.",
+              "label": "Fig. 11",
+              "category": "observational",
+              "category_badge": "Key Observational Evidence",
+              "physical_core": "The figure compares LBL and HBL candidate distributions with the Roma-BZCAT and BLL samples using 70%, 80%, and 90% KDE contours in X-ray flux–hardness-ratio and WISE color-color space.",
+              "is_schematic": false
+            },
+            {
+              "url": "/arxiv-figures/2610.37902/UGS_classified_HR_flux.png",
+              "caption": "Figure 12: 70%, 80%, and 90% isodensity contours, as obtained from the KDE analysis on the Roma-BZCAT sample and the UGS sample. The LBL candidate sources are shown in red and the HBL candidate sources in cyan. Both correspond to UGS. Left panel: Flux vs. $\\mathrm{HR_{x}}$. Right panel: Wise color-color diagram.",
+              "label": "Fig. 12",
+              "category": "observational",
+              "category_badge": "Key Observational Evidence",
+              "physical_core": "The figure places UGS LBL and HBL candidates against KDE distributions from the Roma-BZCAT sample, in both X-ray flux–hardness-ratio and WISE color-color space.",
+              "is_schematic": false
+            }
+          ],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed.",
+            "Figures from source package have not undergone visual verification."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        },
+        "historical_edition": "announcement-2026-10-28",
+        "historical_edition_fingerprint": "2edd21076ec41444aa3cf88de1f225a2f1b6d4418b41ee7ef3a22ec8891e590e"
+      },
+      {
+        "arxiv_id": "2610.37997",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "8c706c6dc1c5f24ce23bdbe057df9acdfe60158bcc76a8e296542f71be10d7c9",
+        "priority": "worth_knowing",
+        "coverage": {
+          "level": "body_partial",
+          "label": "已检查正文中支撑判断的指定章节",
+          "source_version": "arXiv:2610.37997v1",
+          "inspected_sections": [
+            "Introduction",
+            "Search for Eccentric Neutron Star–Black Hole Binaries in Advanced LIGO’s Fourth Observing Run using Effective-One-Body Waveforms",
+            "Data Availability",
+            "References",
+            "Appendix A Eccentric Binary Waveform Models and Physical Approximations",
+            "Appendix B Stochastic Template Bank Construction and Parameter Space Coverage",
+            "Appendix C Waveform Compression and Rapid Nodal Reconstruction",
+            "Appendix D Matched Filtering with Multibanding and Ratio-Filtering Details",
+            "Appendix E Signal Consistency Implementation and Observational Validation",
+            "Appendix F Single-Node Benchmarks and Contention Profiling",
+            "Appendix G Relative Sensitivity and Comparison with Simplified Waveform Models",
+            "Instructions for reporting errors"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_source_package",
+              "url": "https://export.arxiv.org/src/2610.37997v1",
+              "locator": "Introduction; Search for Eccentric Neutron Star–Black Hole Binaries in Advanced LIGO’s Fourth Observing Run using Effective-One-Body Waveforms; Data Availability; References; Appendix A Eccentric Binary Waveform Models and Physical Approximations; Appendix B Stochastic Template Bank Construction and Parameter Space Coverage; Appendix C Waveform Compression and Rapid Nodal Reconstruction; Appendix D Matched Filtering with Multibanding and Ratio-Filtering Details; Appendix E Signal Consistency Implementation and Observational Validation; Appendix F Single-Node Benchmarks and Contention Profiling; Appendix G Relative Sensitivity and Comparison with Simplified Waveform Models; Instructions for reporting errors",
+              "description": "Complete, revision-matched arXiv TeX source package",
+              "sha256": "e383e6cc1b0aedd00f1e535d001c692dfc24fcffe8f837cb3bed61248b39cdeb"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "gpt-6-luna",
+          "analyzed_at": "2026-10-30T18:18:03.065Z",
+          "reason": "The paper presents the first systematic search for eccentric neutron star-black hole (NSBH) binaries using effective-one-body (EOB) waveforms on Advanced LIGO O4 data, demonstrating a ~20x pipeline speedup via multibanding/ratio-filtering and establishing the tightest merger rate upper limits to date.",
+          "result": "No new gravitational-wave events with orbital eccentricity $e_{20} \\geq 0.05$ were detected in 401 days of O4 data. The study established 90% credible upper limits on the local merger rate density of eccentric NSBH systems across the search space of $\\mathcal{R}_{90\\%} \\leq 7.5\\text{--}57\\ \\mathrm{Gpc}^{-3}\\ \\mathrm{yr}^{-1}$ (and $\\mathcal{R}_{90\\%} \\leq 12.1\\ \\mathrm{Gpc}^{-3}\\ \\mathrm{yr}^{-1}$ for GW200105_162426-like parameters), improving sensitivity by $\\sim 25\\%\\text{--}30\\%$ in sensitive volume for $0.20 \\leq e_{20} \\leq 0.28$ compared to TaylorF2Ecc.",
+          "reading_entry": "Search for Eccentric Neutron Star–Black Hole Binaries in Advanced LIGO’s Fourth Observing Run using Effective-One-Body Waveforms",
+          "problem": "Traditional searches for eccentric low-mass compact binaries rely on post-Newtonian approximations (TaylorF2Ecc) that neglect apsidal precession and inter-harmonic modulations, causing significant sensitivity loss at $e_{20} > 0.1$, while fully accurate time-domain EOB waveforms were historically computationally prohibitive for large-scale template banks.",
+          "method": "Implemented a multibanded ratio-filtering architecture within PyCBC using time-domain EOB waveforms ($8.86 \\times 10^7$ templates) split across $20\\text{--}256\\ \\mathrm{Hz}$ and $256\\text{--}1024\\ \\mathrm{Hz}$, utilizing sparse nodal interpolation for waveform compression (decompression in ms, mismatch $< 10^{-3}$) and a 251-tap FIR ratio filter (median mismatch $\\sim 4 \\times 10^{-5}$, residual $\\sigma(\\Delta\\rho) \\simeq 0.017$) combined with a modified Allen $\\chi^2$ signal-consistency discriminator.",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Search for Eccentric Neutron Star–Black Hole Binaries in Advanced LIGO’s Fourth Observing Run using Effective-One-Body Waveforms: “Finding no new gravitational-wave events with orbital eccentricity ($e_{20}\\geq 0.05$), we place $90\\%$ credible upper limits on the local merger rate density of eccentric NSBH systems across the search space of $\\mathcal{R}_{90\\%}\\leq”",
+            "Search for Eccentric Neutron Star–Black Hole Binaries in Advanced LIGO’s Fourth Observing Run using Effective-One-Body Waveforms: “Finding no new gravitational-wave events with non-zero eccentricity, we established the deepest rate density upper limits to date on eccentric NSBH mergers ($\\mathcal{R}_{90\\%}\\sim 7.5\\text{--}57\\ \\mathrm{Gpc}^{-3}\\ \\mathrm{yr}^{-1}$)”",
+            "Search for Eccentric Neutron Star–Black Hole Binaries in Advanced LIGO’s Fourth Observing Run using Effective-One-Body Waveforms: “The multiband pipeline processes $\\sim 9.2\\times 10^{4}$ templates per core, compared with $\\sim 4.7\\times 10^{3}$ for PyCBC Inspiral, an improvement of $\\sim 20\\times$.”",
+            "Appendix A Eccentric Binary Waveform Models and Physical Approximations: “This model captures the effective secular dephasing induced by the emission of gravitational radiation and the resulting circularization of the orbit”",
+            "Appendix C Waveform Compression and Rapid Nodal Reconstruction: “The full dynamic decompression executes in milliseconds per template, removing waveform generation as a computational bottleneck.”",
+            "Appendix G Relative Sensitivity and Comparison with Simplified Waveform Models: “For highly eccentric signals, the TEOBResumS bank recovers\\n$\\sim 25$–$30\\%$ more sensitive volume than the TaylorF2Ecc bank,”"
+          ],
+          "research_progress": "Constructed the first EOB-based template bank of $8.86 \\times 10^7$ templates for eccentric NSBH systems, achieved a computational throughput of $\\sim 9.2 \\times 10^4\\ \\mathrm{templates/core}$ (a $\\sim 20\\times$ improvement over standard PyCBC Inspiral), and recovered a sensitive volume $VT$ gain of $25\\%\\text{--}30\\%$ for highly eccentric systems ($0.20 \\leq e_{20} \\leq 0.28$).",
+          "figures": [
+            {
+              "url": "/arxiv-figures/2610.37997/fig4_rate_limits.png",
+              "caption": "Figure 4: The 90% credible merger rate density upper limits $\\mathcal{R}_{90\\%}$ (left axis) and effective sensitive distance reach $R_{\\mathrm{eff}}$ (right axis) from the O4a and O4b search as a function of chirp mass $\\mathcal{M}_{c}$, compared against the prior O3 analysis of Dhurkunde et al. [ 39 ]. Green curves present our O4 limits for mass ratios $q\\in\\{2,4,8\\}$ ($m_{1}/m_{2}$), with the shaded green region denoting the newly ruled-out parameter space relative to O3. Gray curves bound the O3 search limits spanning $e_{20}\\to 0$ (dashed) up to $e_{20}\\sim 0.28$ (solid, rescaled by the $25\\text{--}30\\%$ volume gain of EOB templates over TaylorF2Ecc ), with the shaded gray band indicating the O3 range. Across the parameter space, our search achieves up to a $\\sim 4\\times$ improvement over previous observational constraints. The upper-right inset shows the relative sensitive volume-time $\\langle V\\tau\\rangle$ drop-off beyond the template bank boundary as a function of orbital eccentricity $e_{20}$ (normalized to the sensitivity at the template bank boundary $e_{20}=0.28$, marked by the vertical dashed line).",
+              "label": "Fig. 4",
+              "category": "observational",
+              "category_badge": "Key Observational Evidence",
+              "physical_core": "The figure shows the 90% credible upper limits on the eccentric NSBH merger rate density, $\\mathcal{R}_{90\\%}$, versus chirp mass for mass ratios $q\\in\\{2,4,8\\}$, and compares them with O3 constraints. Across the parameter space, the O4 search improves on previous observational constraints by up to a factor of $\\sim 4$.",
+              "is_schematic": false
+            },
+            {
+              "url": "/arxiv-figures/2610.37997/fig14_relative_sensitivity.png",
+              "caption": "Figure 16: Sensitive volume-time $VT$ of each template bank relative to the TaylorF2Ecc bank, measured from prototype injection campaigns on one week of O4a H1 and L1 data. Injections are distributed uniformly in eccentricity at 20 Hz, over $0.20\\leq e_{20}\\leq 0.28$ in the left panel and $0\\leq e_{20}\\leq 0.1$ in the right panel. Results are shown for two injection sets generated with TEOBResumS including higher-order modes, with aligned spins (filled circles) and precessing spins (open squares), at inverse false-alarm-rate thresholds of 1, 10, and 100 years. Error bars denote Monte Carlo errors of the ratio. For highly eccentric signals, the TEOBResumS bank recovers $\\sim 25$ – $30\\%$ more sensitive volume than the TaylorF2Ecc bank, while the TaylorF2 bank reaches only $\\sim 25$ – $30\\%$ of the TaylorF2Ecc sensitivity. At low eccentricity, all three banks are consistent within uncertainties.",
+              "label": "Fig. 16",
+              "category": "observational",
+              "category_badge": "Key Observational Evidence",
+              "physical_core": "Injection campaigns compare the sensitive volume-time $VT$ of template banks with TaylorF2Ecc. For $0.20\\leq e_{20}\\leq 0.28$, the TEOBResumS bank recovers $\\sim 25\\text{--}30\\%$ more sensitive volume; at low eccentricity, the banks are consistent within uncertainties.",
+              "is_schematic": false
+            }
+          ],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed.",
+            "Figures from source package have not undergone visual verification."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        },
+        "historical_edition": "announcement-2026-10-28",
+        "historical_edition_fingerprint": "2edd21076ec41444aa3cf88de1f225a2f1b6d4418b41ee7ef3a22ec8891e590e"
+      },
+      {
+        "arxiv_id": "2610.37999",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "e56509d527fe113b335f1e5d131574a09d055e5f0415df4d5fa99538913d72ce",
+        "priority": "worth_knowing",
+        "coverage": {
+          "level": "body_partial",
+          "label": "已检查正文中支撑判断的指定章节",
+          "source_version": "arXiv:2610.37999v1",
+          "inspected_sections": [
+            "Phase-resolved X-ray spectroscopy of the Vela pulsar with NICER observations",
+            "2.3 NICER observations",
+            "3.5 Phase-resolved X-ray spectra",
+            "4 Discussion",
+            "Instructions for reporting errors",
+            "Introduction",
+            "1 Introduction",
+            "2 Observations and data reduction",
+            "2.1 Radio observations",
+            "2.2 Chandra observations",
+            "3 Results",
+            "3.1 Analysis of the Chandra data",
+            "3.2 Radio timing and the 2021 Vela glitch",
+            "3.3 X-ray profile before and after the glitch",
+            "3.4 Folded X-ray profile",
+            "References"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_source_package",
+              "url": "https://export.arxiv.org/src/2610.37999v1",
+              "locator": "Phase-resolved X-ray spectroscopy of the Vela pulsar with NICER observations; 2.3 NICER observations; 3.5 Phase-resolved X-ray spectra; 4 Discussion; Instructions for reporting errors; Introduction; 1 Introduction; 2 Observations and data reduction; 2.1 Radio observations; 2.2 Chandra observations; 3 Results; 3.1 Analysis of the Chandra data; 3.2 Radio timing and the 2021 Vela glitch; 3.3 X-ray profile before and after the glitch; 3.4 Folded X-ray profile; References",
+              "description": "Complete, revision-matched arXiv TeX source package",
+              "sha256": "5edb36acfc227f69e23bfe0e10c283af612e006ff9b6ac2c3c3e603d89068842"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "gpt-6-luna",
+          "analyzed_at": "2026-10-30T18:19:05.036Z",
+          "reason": "This paper presents phase-resolved X-ray spectroscopy of the Vela pulsar using NICER and Chandra, measuring hotspot thermal properties and testing surface/magnetospheric stability across the 2021 giant glitch.",
+          "result": "The pulsed X-ray emission across all pulse phases is best described by thermal components (single or double blackbody models) rather than non-thermal power laws. The inferred hotspot temperatures span $0.79(7) \\times 10^{6}\\,\\mathrm{K} \\leq T \\leq 4.8^{+0.8}_{-0.6} \\times 10^{6}\\,\\mathrm{K}$ with emission radii ranging from $0.048^{+0.016}_{-0.009}\\,\\mathrm{km} \\leq R \\leq 3.9^{+0.9}_{-0.6}\\,\\mathrm{km}$ and luminosities bounded within $5 \\times 10^{30}\\,\\mathrm{erg\\,s^{-1}} \\lesssim L < 1 \\times 10^{32}\\,\\mathrm{erg\\,s^{-1}}$. No significant variation in pulse profile is detected across the 2021 giant glitch ($\\chi^2 = 228.43$ for $\\mathrm{dof}=255$).",
+          "reading_entry": "3.5 Phase-resolved X-ray spectra",
+          "problem": "Disentangling the intrinsic pulsed surface thermal emission of the Vela pulsar from severe contamination by its surrounding bright pulsar wind nebula (PWN) in non-imaging NICER observations, and determining whether giant glitches alter surface magnetic topology or hotspot heating.",
+          "method": "Combined high-cadence radio timing from IAR (MJD 58522–60428) via PRESTO/TEMPO2 to fold 321 NICER observations ($530.8\\,\\mathrm{ks}$ total net exposure) with Chandra ACIS imaging spectroscopy (ObsID 24711, $61\\,\\mathrm{ks}$) to spatially decouple the pulsar from the PWN ($N_{\\mathrm{H}} = (0.037 \\pm 0.013) \\times 10^{22}\\,\\mathrm{cm}^{-2}$, $kT_{\\mathrm{apec}} \\approx 0.21\\,\\mathrm{keV}$, $\\Gamma_{\\mathrm{PWN}} \\approx 1.56$), followed by phase-resolved spectral fitting across 7 phase bins using the off-pulse phase (0.68–0.72) as background.",
+          "assumptions": [],
+          "limits": [
+            "The pulsar represents less than $40\\text{--}45\\%$ of total counts below $0.9\\,\\mathrm{keV}$, dropping to $3\\text{--}4\\%$ at $0.9\\text{--}2.0\\,\\mathrm{keV}$ and $\\sim 2\\%$ above $2\\,\\mathrm{keV}$, where the PWN heavily dominates."
+          ],
+          "citation_leads": [
+            "Phase-resolved X-ray spectroscopy of the Vela pulsar with NICER observations: “The pulsar contribution to the total observed emission represents less than 40–45% of the flux below 0.9 keV, dropping to 3–4% in the 0.9–2.0 keV range and further down to $\\sim$2% above 2 keV, where the PWN fully dominates.”",
+            "2.3 NICER observations: “We used 321 observations between February 2019 and April 2024 (MJD 58518–60426) that, in total, correspond to a total exposure time of $530.8\\penalty\\ \\mathrm{ks}$.”",
+            "3.5 Phase-resolved X-ray spectra: “For all regions, the best model is bbodyrad or bbodyrad+bbodyrad, which indicates that the pulsed emission is composed of pure thermal emission.”",
+            "4 Discussion: “The temperatures of the hotspots range between $0.79(7)\\times 10^{6}\\,\\mathrm{K}\\leq T\\leq 4.8^{+0.8}_{-0.6}\\times 10^{6}\\,\\mathrm{K}$, while their sizes vary between $0.048^{+0.016}_{-0.009}\\,\\mathrm{km}\\leq R\\leq”"
+          ],
+          "research_progress": "Provides refined constraints on surface hotspot dimensions and multi-temperature structure on the Vela pulsar, confirming that the 2021 giant glitch did not perturb its thermal hotspots or magnetospheric geometry, and demonstrates pure thermal origins for the pulsed X-ray components.",
+          "figures": [
+            {
+              "url": "/arxiv-figures/2610.37999/spectral_fits_all_regions_rebinned_counts_v2.png",
+              "caption": "Figure 8: NICER phase-resolved spectra of the studied regions. $kT_{i}$ refers to the pulsed blackbody component of each region. When the model includes two blackbodies, the components are shown with dashed and dotted lines respectively, while the total model is shown with solid lines. The data has been rebinned for visualization purposes.",
+              "label": "Fig. 8",
+              "category": "fitting",
+              "category_badge": "Model vs Data Fitting",
+              "physical_core": "Phase-resolved NICER spectra for the selected pulse-profile regions are compared with blackbody models; regions requiring two blackbodies show both components and their total model.",
+              "is_schematic": false
+            },
+            {
+              "url": "/arxiv-figures/2610.37999/rt_diagram_1to3sigma_distprop.png",
+              "caption": "Figure 9: Relation between radius and temperature of the hotspots. The dashed lines indicate curves of constant luminosity. The displayed distributions correspond to the 1, 2 and 3 $\\sigma$ regions. For regions modeled with two blackbodies, the main component is shown with solid lines and the hotter secondary component with dashed lines.",
+              "label": "Fig. 9",
+              "category": "fitting",
+              "category_badge": "Model vs Data Fitting",
+              "physical_core": "Hotspot radius and temperature constraints are shown with constant-luminosity curves, including the main and hotter secondary components where two blackbodies are used.",
+              "is_schematic": false
+            }
+          ],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed.",
+            "Figures from source package have not undergone visual verification."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        },
+        "historical_edition": "announcement-2026-10-28",
+        "historical_edition_fingerprint": "2edd21076ec41444aa3cf88de1f225a2f1b6d4418b41ee7ef3a22ec8891e590e"
+      },
+      {
+        "arxiv_id": "2610.38107",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "6adb12fab866a33c632bd00edc7bc49557900fdf4a77145753caf2bcb905c219",
+        "priority": "worth_knowing",
+        "coverage": {
+          "level": "body_partial",
+          "label": "已检查正文中支撑判断的指定章节",
+          "source_version": "arXiv:2610.38107v1",
+          "inspected_sections": [
+            "Introduction",
+            "Tayler Instability and Its Saturation in Rotating Stars",
+            "I Introduction",
+            "II Methods",
+            "II.1 Governing equations",
+            "II.2 Background Magnetic field",
+            "II.3 Numerical model",
+            "II.4 Diagnostics",
+            "III Confirming Linear Theory",
+            "III.1 Review of linear theory",
+            "III.2 Effect of rotation on stability",
+            "III.3 Linear phase of the rotating TI",
+            "IV Nonlinear saturation of the rotating TI",
+            "V Theory of saturation",
+            "V.1 Timescales",
+            "V.2 Saturation amplitudes",
+            "V.3 Radial field regeneration",
+            "VI Discussion",
+            "Appendix A Parameter scan of the Rotation Rate",
+            "Appendix B Nonlinear coupling of azimuthal modes",
+            "References",
+            "Instructions for reporting errors"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_source_package",
+              "url": "https://export.arxiv.org/src/2610.38107v1",
+              "locator": "Introduction; Tayler Instability and Its Saturation in Rotating Stars; I Introduction; II Methods; II.1 Governing equations; II.2 Background Magnetic field; II.3 Numerical model; II.4 Diagnostics; III Confirming Linear Theory; III.1 Review of linear theory; III.2 Effect of rotation on stability; III.3 Linear phase of the rotating TI; IV Nonlinear saturation of the rotating TI; V Theory of saturation; V.1 Timescales; V.2 Saturation amplitudes; V.3 Radial field regeneration; VI Discussion; Appendix A Parameter scan of the Rotation Rate; Appendix B Nonlinear coupling of azimuthal modes; References; Instructions for reporting errors",
+              "description": "Complete, revision-matched arXiv TeX source package",
+              "sha256": "74181b03602152493a001a22695f821f3abf9e736f5686326329a0f135dcb533"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "gpt-6-luna",
+          "analyzed_at": "2026-10-30T18:20:27.967Z",
+          "reason": "This work quantitatively constrains the saturation amplitude and radial magnetic field regeneration of the Tayler instability (TI) in rapidly rotating stars, demonstrating that the Tayler-Spruit dynamo alone is inefficient for angular momentum transport, which directly informs core-collapse progenitor spin, proto-neutron star evolution, and neutron star merger remnant lifetimes.",
+          "result": "The Tayler instability in rotating stars ($2\\Omega > \\omega_{\\rm A}$) saturates differently depending on the diffusive excitation mode: magnetostrophic waves (MW, mediated by thermal or viscous diffusion $k_\\kappa, k_\\nu$) saturate at large magnetic amplitudes $\\delta B/B_0 \\sim 1$ with radial velocity $\\delta u/v_{\\rm A} \\propto (2\\Omega/\\omega_{\\rm A})^{-1}$ and regenerate an axisymmetric radial field $\\overline{B}_r/B_0 \\sim (k_{\\rm TI} R)^{-1}$, whereas inertial waves (IW, mediated by magnetic diffusion $k_\\eta$) undergo secondary parametric instabilities saturating at much weaker amplitudes $\\delta B/B_0 \\propto (k_\\eta R)^{-1} (2\\Omega/\\omega_{\\rm A})^{-2} \\ll 1$ and $\\delta u/v_{\\rm A} \\propto (k_\\eta R)^{-1} (2\\Omega/\\omega_{\\rm A})^{-1}$.",
+          "reading_entry": "IV Nonlinear saturation of the rotating TI",
+          "problem": "Resolving whether the nonlinearly saturated Tayler instability in rotating stellar radiative zones saturates at large displacement amplitudes (Fuller et al. 2019 model) or small amplitudes (Spruit 2002 / Zahn et al. 2007), and determining the scaling of regenerated radial magnetic field $\\overline{B}_r$ and angular momentum transport.",
+          "method": "Direct numerical simulations of 3D incompressible MHD equations under the Boussinesq approximation using the Dedalus pseudo-spectral solver on a spherical domain of radius $R$ with uniform rotation $\\boldsymbol{\\Omega} = \\Omega \\hat{z}$ and a background toroidal field $\\boldsymbol{B}_0 = B_0 (r/R)\\sin\\theta\\cos\\theta\\hat{\\phi}$ (Alfven frequency $\\omega_{\\rm A} = B_0/(\\sqrt{4\\pi\\rho}R)$), isolating $k_\\kappa$, $k_\\nu$, and $k_\\eta$ diffusive modes.",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "III.1 Review of linear theory: “The unstable wave modes are categorized as either MW or IW based on their frequency (see below).”",
+            "IV Nonlinear saturation of the rotating TI: “Saturation stops the exponential growth of the unstable eigenmodes. This occurs around $t\\omega_{\\rm A}^{2}/4\\Omega\\gtrsim 35$ in the $k_{\\kappa}$ simulation, and $t\\omega_{\\rm A}^{2}/4\\Omega\\gtrsim 15$ in the $k_{\\nu}$ and $k_{\\eta}$”",
+            "VI Discussion: “Our results favoring the [[42](#bib.bib48)] model of the TSD imply that the TSD alone cannot account for the efficient AM transport inferred in evolving low-mass stars [[11](#bib.bib46), [14](#bib.bib34)].”"
+          ],
+          "research_progress": "Confirms the linear diffusion-activated TI theory of Skoutnev et al. (2026) and proves that MW-mode saturation stops exponential growth at dimensionless time $t\\omega_{\\rm A}^2/(4\\Omega) \\sim 15\\text{--}35$, ruling out enhanced small-amplitude TSD variants and validating the large-amplitude saturation regime with modest angular momentum transport efficiency.",
+          "figures": [
+            {
+              "url": "/arxiv-figures/2610.38107/NL.png",
+              "caption": "Figure 3: TI saturation in the $k_{\\kappa},k_{\\nu},$ and $k_{\\eta}$ simulations following the linear phase shown in Figure 2. Simulations are organized by column and visualized at times $t\\omega_{\\rm A}^{2}/4\\Omega=40$, $20$, and $20$, respectively. Top three rows correspond to different components of the fields normalized to their maximum values. Bottom row tracks the time evolution. MW saturation results in large-scale displacements of toroidal field loops and perturbations with $\\delta B\\sim B_{0}$, which destroys the initial axisymmetry of the toroidal field as seen in panels (a) and (b). IW saturation is mild by comparison, with $\\delta B\\ll B_{0}$ and minor distortion of the initial toroidal field as seen in panel (c).",
+              "label": "Fig. 3",
+              "category": "theoretical",
+              "category_badge": "Physical Evolution",
+              "physical_core": "The figure compares nonlinear saturation of magnetostrophic waves (MWs) and inertial waves (IWs): MWs produce large perturbations, $\\delta B\\sim B_0$, and strongly distort the toroidal field, whereas IWs produce smaller perturbations, $\\delta B\\ll B_0$, and only mildly distort it.",
+              "is_schematic": true
+            },
+            {
+              "url": "/arxiv-figures/2610.38107/Scaling.png",
+              "caption": "Figure 4: Amplitudes of the magnetic and velocity perturbations at TI saturation versus rotation parameter $2\\Omega/\\omega_{\\rm A}$. Results for the $k_{\\kappa}$, $k_{\\nu}$, and $k_{\\eta}$ modes of TI are presented in panels (a), (b), and (c), respectively. The colored points show the measured saturated amplitudes of $\\delta B$, $\\delta B_{\\theta}$, $\\delta u_{\\theta}$, and $\\overline{B}_{r}$, with normalizations indicated at the top of the figure. Their theoretical scalings developed in Section V are indicated by the black lines. One can see that the MW instability (panels a,b) and the IW instability (panel c) give different scalings of the saturation amplitudes with rotation.",
+              "label": "Fig. 4",
+              "category": "theoretical",
+              "category_badge": "Physical Evolution",
+              "physical_core": "The figure plots saturated magnetic and velocity perturbation amplitudes against the rotation parameter $2\\Omega/\\omega_{\\rm A}$ for the $k_{\\kappa}$, $k_{\\nu}$, and $k_{\\eta}$ modes, and compares measured amplitudes with theoretical scalings. The MW and IW branches show different saturation-amplitude scalings with rotation.",
+              "is_schematic": true
+            }
+          ],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed.",
+            "Figures from source package have not undergone visual verification."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        },
+        "historical_edition": "announcement-2026-10-28",
+        "historical_edition_fingerprint": "2edd21076ec41444aa3cf88de1f225a2f1b6d4418b41ee7ef3a22ec8891e590e"
+      },
+      {
+        "arxiv_id": "2610.38232",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "e8ebf7bd29bd671046c4121d0fbae0b9dc459c939063fac307b4add02ad49964",
+        "priority": "worth_knowing",
+        "coverage": {
+          "level": "body_partial",
+          "label": "已检查正文中支撑判断的指定章节",
+          "source_version": "arXiv:2610.38232v1",
+          "inspected_sections": [
+            "3.2. Phase-resolved Spectral Convergence",
+            "5. Summary and Implications",
+            "A Spectral-model-independent Diagnostic of Phase-resolved Spectral Convergence in Swift J0243.6+6124",
+            "1. Introduction",
+            "2. Observations and Data Reduction",
+            "3. Results",
+            "3.1. Pulse Profile Reversal",
+            "3.3. Spectral Parameter Ratios",
+            "4. Discussion",
+            "Acknowledgments",
+            "Appendix Additional Pulse and Spectral Analysis Figures",
+            "ORCID iDs",
+            "References"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_source_package",
+              "url": "https://export.arxiv.org/src/2610.38232v1",
+              "locator": "3.2. Phase-resolved Spectral Convergence; 5. Summary and Implications; A Spectral-model-independent Diagnostic of Phase-resolved Spectral Convergence in Swift J0243.6+6124; 1. Introduction; 2. Observations and Data Reduction; 3. Results; 3.1. Pulse Profile Reversal; 3.3. Spectral Parameter Ratios; 4. Discussion; Acknowledgments; Appendix Additional Pulse and Spectral Analysis Figures; ORCID iDs; References",
+              "description": "Complete, revision-matched arXiv TeX source package",
+              "sha256": "b6a8f366ac802a3617514cb76f05930347bf56bd34f0167e0b2f2d42a75d2b70"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "gpt-6-luna",
+          "analyzed_at": "2026-10-30T18:19:05.161Z",
+          "reason": "The study provides a model-independent diagnostic metric to trace the geometry and spectral evolution across critical accretion transitions in the Galactic ultraluminous X-ray pulsar Swift J0243.6+6124.",
+          "result": "Phase-resolved spectral evolution follows a non-monotonic three-stage convergence–redivergence pattern demarcated by two transition luminosities, $L_{\\mathrm{t}} \\sim 4.5 \\times 10^{37} \\ \\mathrm{erg\\ s^{-1}}$ and $L_{\\mathrm{t}}^* \\sim 8.8 \\times 10^{37} \\ \\mathrm{erg\\ s^{-1}}$. The phase-difference metric reaches a minimum of $\\delta_{\\mathrm{rms}} \\sim 2\\%$ near $L_{\\mathrm{t}}^*$, indicating phase-resolved spectral convergence (PRSC) where spectra in opposite pulse phases become nearly identical before rediverging at higher luminosities.",
+          "reading_entry": "3.2. Phase-resolved Spectral Convergence",
+          "problem": "Disentangling whether pulse profile reversal and phase-resolved spectral changes in ultraluminous X-ray pulsars arise from intrinsic beam pattern transitions, continuum model ambiguities, absorption degeneracies, or geometrical reweighting of emission components.",
+          "method": "Formulated a spectral-model-independent shape metric over 2–50 keV: $$\\delta_{\\mathrm{rms}} = \\left[ \\frac{\\sum_i \\Delta E_i \\left( \\frac{f_{1,i} - f_{2,i}}{\\bar{f}_i} \\right)^2}{\\sum_i \\Delta E_i} \\right]^{1/2}$$ where $f_{k,i} = F_{k,i} / A_k$ is the normalized area fraction for geometrically opposite pulse phase intervals ($\\phi = 0.0-0.5$ and $0.5-1.0$), applied to Insight-HXMT observations across the 2018, 2019, and 2023 outbursts covering $L_{\\mathrm{bol}} = 7.9 \\times 10^{36} - 1.2 \\times 10^{38} \\ \\mathrm{erg\\ s^{-1}}$.",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "3.2. Phase-resolved Spectral Convergence: “Between $L _ { \\mathrm { t } }$ and $L _ { \\mathrm { t } } ^ { * }$ , the convergence continues and reaches a deep minimum near $L _ { \\mathrm { t } } ^ { * }$ , where $\\delta _ { \\mathrm { r m s } } \\sim 2 \\%$ , implying nearly identical”",
+            "5. Summary and Implications: “We introduced a spectral-model-independent spectral-shape metric, $\\delta _ { \\mathrm { r m s } } ,$ , and found a reproducible convergence–redivergence pattern with luminosity in the Galactic ULXP”"
+          ],
+          "research_progress": "Demonstrated that spectral convergence near $L_{\\mathrm{t}}^*$ is driven by geometric re-weighting between direct accretion column emission and broad stellar surface reflection/reprocessing, resolving pulse profile reversal without requiring abrupt changes in intrinsic beam profiles.",
+          "figures": [],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed.",
+            "Figures from source package have not undergone visual verification."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        },
+        "historical_edition": "announcement-2026-10-28",
+        "historical_edition_fingerprint": "2edd21076ec41444aa3cf88de1f225a2f1b6d4418b41ee7ef3a22ec8891e590e"
       }
     ],
     "knowledge_points": [],
@@ -2127,11 +3154,97 @@
     "opening_brief": {
       "status": "ready",
       "edition_fingerprint": "2edd21076ec41444aa3cf88de1f225a2f1b6d4418b41ee7ef3a22ec8891e590e",
-      "intro": "Standard screening batch, focused primarily on abstract skimming.",
-      "focus_paper": null,
-      "must_read": [],
-      "key_highlights": [],
-      "worth_knowing": [],
+      "intro": "Featured reading: \"Thinner Disks Struggle to Launch Jets: GRMHD Simulations of Magnetic Field Generation and Transport\" and 8 other key developments.",
+      "focus_paper": {
+        "arxiv_id": "2610.37758",
+        "revision": 1,
+        "title": "Thinner Disks Struggle to Launch Jets: GRMHD Simulations of Magnetic Field Generation and Transport",
+        "anchor": "radar-paper-2610-37758-v1"
+      },
+      "must_read": [
+        {
+          "arxiv_id": "2610.37758",
+          "revision": 1,
+          "source_fingerprint": "386f3a56b1929d6c3f7d93d2516e4acb23e4776dce952f399719607140349a7c",
+          "guide_fingerprint": "0111f995e8c9f41acde91728e2d06ef47bd5ede53f7781ad1e849aecc3685577",
+          "label": "Thinner Disks Struggle to Launch Jets: GRMHD Simulations of Magnetic Field Generation and Transport",
+          "text": "Thick disks ($h/r \\sim 0.3$) achieve the magnetically arrested disk (MAD) state ($\\phi_{\\rm BH} = 50$) by $t \\simeq 2\\times 10^4\\,r_g/c$ with electromagnetic jet efficiency $\\eta_{\\rm EM} \\ge 100\\%$, whereas thinner disks fail to reach MAD within comparable runtimes, giving $\\phi_{\\rm BH} \\sim 5$ ($\\eta_{\\rm EM} \\sim 0.1$) for $h/r=0.2$ and $\\phi_{\\rm BH} \\sim 3\\times 10^{-2}$ ($\\eta_{\\rm EM} \\sim 0.01$) for $h/r=0.1$.",
+          "anchor": "radar-paper-2610-37758-v1"
+        }
+      ],
+      "key_highlights": [
+        {
+          "arxiv_id": "2610.37759",
+          "revision": 1,
+          "title": "Extreme eccentricity in double neutron stars without exotic physics",
+          "anchor": "radar-paper-2610-37759-v1",
+          "result": "The extreme eccentricity $e=0.9924$ ($P=79.1\\;{\\rm days}$, periastron distance $q=a(1-e)\\simeq 0.83\\;R_{\\odot}$) can be naturally reproduced by an ultra-stripped supernova with an asymmetric natal kick $w\\sim 220-350\\;{\\rm km\\,s}^{-1}$ from a pre-SN progenitor helium star of $M_{\\rm He,f}\\simeq 1.5-2.0\\;M_{\\odot}$ in an initial orbit $P_0 < 0.10\\;{\\rm days}$."
+        },
+        {
+          "arxiv_id": "2610.37893",
+          "revision": 1,
+          "title": "The MARTINI platform II. Tracing r-process nucleosynthesis in neutron star mergers with long-lived remnants",
+          "anchor": "radar-paper-2610-37893-v1",
+          "result": "Light, Fe-peak, and first-peak nuclei are robustly synthesized with total masses $>10^{-3}\\,M_{\\odot}$ across all models, whereas second-peak, rare-earth, third-peak, and trans-lead nuclei vary substantially by over an order of magnitude."
+        },
+        {
+          "arxiv_id": "2610.37895",
+          "revision": 1,
+          "title": "Considering Numerical Relativity Surrogate Models for AGN Channel Merger Dynamics",
+          "anchor": "radar-paper-2610-37895-v1",
+          "result": "Incorporating the numerical relativity surrogate model (McFACTSsur) reveals that hierarchical remnants exhibit high spins ($2g$ mergers centered around $a_{\\mathrm{final}} \\sim 0.85$, $3g+$ mergers at $\\sim 0.9$) and a broad kick distribution $v_{\\mathrm{kick}} \\sim [1, 2000]~\\mathrm{km/s}$ with a bimodal feature in $2g$ mergers, while average kicks decrease (mean $\\langle v_{\\mathrm{kick}} \\rangle = 119.21~\\mathrm{km/s}$) compared to analytic models ($\\n127.17~\\mathrm{km/s}$), and higher-generation effective spins shift to $\\chi_{\\rm eff} \\in [0.5, 0.95]$."
+        }
+      ],
+      "worth_knowing": [
+        {
+          "arxiv_id": "2610.37759",
+          "revision": 1,
+          "source_fingerprint": "6df2854f99be93ff6444405312dcab743f616ed64bdfcbbc2a75dcb0aa590e9f",
+          "guide_fingerprint": "da6096233d9bc449fdf09f7437487f2f190d7d552b8d632206d6f83d18dde74b"
+        },
+        {
+          "arxiv_id": "2610.37893",
+          "revision": 1,
+          "source_fingerprint": "61af347977c34a2d104ae704f626953da9f8d265f530ed9a31d90533497dc3f1",
+          "guide_fingerprint": "1f44643b0b750660fb29e8534f5187540b789eea6100585c405ff64a905659e1"
+        },
+        {
+          "arxiv_id": "2610.37895",
+          "revision": 1,
+          "source_fingerprint": "424d148cedc22e9a845ee2cf1d5de396ee8350aa7eadfcee188e56d32070de13",
+          "guide_fingerprint": "c3d5d36fb4210b5f3bd40f414e342e39e7bc911ee0a68b635ef4de3987669017"
+        },
+        {
+          "arxiv_id": "2610.37902",
+          "revision": 1,
+          "source_fingerprint": "727af94d1ae7fc8e329b3824b13774c4eda524633dd72521edb9893c310c6fb1",
+          "guide_fingerprint": "9460f3b5fff0a518685b9ddf6cb52d2e7b051c65381288f87a5482eafeb9bca7"
+        },
+        {
+          "arxiv_id": "2610.37997",
+          "revision": 1,
+          "source_fingerprint": "8c706c6dc1c5f24ce23bdbe057df9acdfe60158bcc76a8e296542f71be10d7c9",
+          "guide_fingerprint": "9ac090ee1d4b023c4e205a6e9dd3871c3e18a4e17f10b1ba9179125c19ee81d4"
+        },
+        {
+          "arxiv_id": "2610.37999",
+          "revision": 1,
+          "source_fingerprint": "e56509d527fe113b335f1e5d131574a09d055e5f0415df4d5fa99538913d72ce",
+          "guide_fingerprint": "ae14e1d9c06b81cd12477ed58f52fc4e708e5b57bbd942584b377b76bee2f8b9"
+        },
+        {
+          "arxiv_id": "2610.38107",
+          "revision": 1,
+          "source_fingerprint": "6adb12fab866a33c632bd00edc7bc49557900fdf4a77145753caf2bcb905c219",
+          "guide_fingerprint": "e42e2d17b5eb39ff207e1a8b5d9c55fa1cbc929738e2c5b0f4eb0b9c050849d9"
+        },
+        {
+          "arxiv_id": "2610.38232",
+          "revision": 1,
+          "source_fingerprint": "e8ebf7bd29bd671046c4121d0fbae0b9dc459c939063fac307b4add02ad49964",
+          "guide_fingerprint": "1b1baf451bc1c1dc8c4e462046baf12943d959134992b59abecd2ed978b0e4fb"
+        }
+      ],
       "skim_topics": [
         {
           "arxiv_id": "2610.37747",
@@ -2293,6 +3406,7 @@
           "guide_fingerprint": "8231c28c4aea1e1c4bf9c183607c446983afaa84e8fd503c0b981f4797762384"
         }
       ],
+      "worth_knowing_summary": "The extreme eccentricity $e=0.9924$ ($P=79.1\\;{\\rm days}$, periastron distance $q=a(1-e)\\simeq 0.83\\;R_{\\odot}$) can be naturally reproduced by an ultra-stripped supernova with an asymmetric natal kick $w\\sim 220-350\\;{\\rm km\\,s}^{-1}$ from a pre-SN progenitor helium star of $M_{\\rm He,f}\\simeq 1.5-2.0\\;M_{\\odot}$ in an initial orbit $P_0 < 0.10\\;{\\rm days}$.; Light, Fe-peak, and first-peak nuclei are robustly synthesized with total masses $>10^{-3}\\,M_{\\odot}$ across all models, whereas second-peak, rare-earth, third-peak, and trans-lead nuclei vary substantially by over an order of magnitude., among others.",
       "skim_summary": "Topics include Identifying Scientifically Interesting Galaxies with Vision-Language Models, A GLIMPSE of Dark Matter: JWST Constraints on Early Structure Formation, among others."
     },
     "historical_analyses": []

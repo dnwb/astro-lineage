@@ -7,16 +7,16 @@
   "generated_at": "2026-10-30T05:39:21.796Z",
   "counts": {
     "total": 81,
-    "analyzed": 63,
-    "must_read": 1,
-    "worth_knowing": 6,
-    "skip": 56,
-    "pending": 18
+    "analyzed": 81,
+    "must_read": 3,
+    "worth_knowing": 21,
+    "skip": 57,
+    "pending": 0
   },
   "opening_brief": {
     "status": "ready",
     "edition_fingerprint": "e8f1fd40fc00373139feba535a7d47620f9ab907fff9a78330b19a0f1baf5dae",
-    "intro": "Featured reading: \"Black Hole Spin Evolution in Magnetized Accretion Flows\" and 6 other key developments.",
+    "intro": "Featured reading: \"Black Hole Spin Evolution in Magnetized Accretion Flows\" and 23 other key developments.",
     "focus_paper": {
       "arxiv_id": "2610.38673",
       "revision": 1,
@@ -32,6 +32,24 @@
         "label": "Black Hole Spin Evolution in Magnetized Accretion Flows",
         "text": "The equilibrium spin declines steeply with normalized horizon magnetic flux $\\tilde{\\phi} \\equiv \\phi / \\phi_{\\rm MAD}$, dropping from $a_{\\star;{\\rm eq}} \\approx 0.9$ in weakly magnetized flows ($\\tilde{\\phi} \\lesssim 0.2$), through $a_{\\star;{\\rm eq}}(\\tilde{\\phi}=0.5) \\approx 0.5$, down to $a_{\\star;{\\rm eq}} \\approx 0.05\\text{--}0.06$ at MAD saturation ($\\tilde{\\phi} = 1$).",
         "anchor": "radar-paper-2610-38673-v1"
+      },
+      {
+        "arxiv_id": "2610.39240",
+        "revision": 1,
+        "source_fingerprint": "ed47f296135959db7be57921429eee9cafee5004ef9dc35915dcaf940132faab",
+        "guide_fingerprint": "abe4516ed71e407c4f43a91d20de9124ada43f0b86299a455c3d983d0a772e26",
+        "label": "A universal relation predicts the observed reversal of a supernova chirp",
+        "text": "The paper derives a universal linear relation in the $(D,C)$ plane between the chirp rate $C(t) \\equiv -d\\ln P/d\\ln t$ and dimming rate $D(t) \\equiv -d\\ln L_w/d\\ln t$: $$C(t)=\\frac{K\\chi u}{w-2}-\\left(\\frac{K}{w-2}+\\frac{q}{n+1}\\right)D(t)$$ For SN 2024afav, independent baseline fitting yields magnetar spin-down parameters $P_{\\rm spin} = 3.9 \\pm 0.2\\,\\mathrm{ms}$, $B = (0.51 \\pm 0.05)\\times 10^{14}\\,\\mathrm{G}$, and spin-down timescale $t_p = 87 \\pm 11\\,\\mathrm{d}$.",
+        "anchor": "radar-paper-2610-39240-v1"
+      },
+      {
+        "arxiv_id": "2610.40053",
+        "revision": 1,
+        "source_fingerprint": "1260a8d6507aa96874c078d1cb543e1c15258217568a6fae5fe091fe6139e39f",
+        "guide_fingerprint": "52e0caae12f119571d66fbe540c0fa20950421e8a1c3a7f895b71917ca471682",
+        "label": "KM3-230213A: The Highest-Energy Cosmic Neutrino",
+        "text": "KM3NeT/ARCA detected event KM3-230213A as a near-horizontal track triggering $N_{\\text{trig}}=3672$ PMTs, with muon energy $E_{\\mu} = 120^{+110}_{-60}\\,\\mathrm{PeV}$ ($90\\%$ C.I.",
+        "anchor": "radar-paper-2610-40053-v1"
       }
     ],
     "key_highlights": [
@@ -83,10 +101,100 @@
         "guide_fingerprint": "3c901632e5a0be8c9fe8648a33b4d893f2dcc47986383a89a30aeba588b40e9c"
       },
       {
+        "arxiv_id": "2610.39089",
+        "revision": 1,
+        "source_fingerprint": "ef5ff3714738a0787b0edbb2a39b2bec8a589c702c20e51df317f3d38fbcb50a",
+        "guide_fingerprint": "2278c44feb38a488ad2278250f0cd3b2b87dc974feefcccb63b6ee94e9172481"
+      },
+      {
+        "arxiv_id": "2610.39130",
+        "revision": 1,
+        "source_fingerprint": "816a0c77a9d67f4be3d3a122383ae092d394843acda50eb4848e5773d936bdae",
+        "guide_fingerprint": "6541ce86dce7278181c56d618d9d2a146d6d447c7b2244b21464dd37d287a74c"
+      },
+      {
+        "arxiv_id": "2610.39200",
+        "revision": 1,
+        "source_fingerprint": "5de04d309ee191796ef3ef800ccb0836b9ea4a3501acf7ca4df72f5b78c9dbbc",
+        "guide_fingerprint": "2806c939d81bc9c8be20c2895cc3098f2f4935fd6fd43a03bd1da604887a318f"
+      },
+      {
+        "arxiv_id": "2610.39384",
+        "revision": 1,
+        "source_fingerprint": "c49be3329b44061789583f2b407835186d85108ce49814869c6c54c32031e11b",
+        "guide_fingerprint": "c430f847f4cf90ceabf679232e28d2fa16d427e8421931f5b6dba346dba03d1b"
+      },
+      {
+        "arxiv_id": "2610.39603",
+        "revision": 1,
+        "source_fingerprint": "2941a9fc295f2330598204bc3f767884990205b9c7f32c4b95d96ae38ccb7cd5",
+        "guide_fingerprint": "a6a3735aef1a37bc9c8609f56b1efd328159cf420dce2aa889e828fe334dd211"
+      },
+      {
+        "arxiv_id": "2610.39792",
+        "revision": 1,
+        "source_fingerprint": "679bd787759891c31fd4615ea9f728ccd440a14d79846891ce5cd1aa968185a5",
+        "guide_fingerprint": "06dd6dc4163b3b0ba3759fd55ac3af765583a7c5d46f9220bc8cb898df03a4aa"
+      },
+      {
+        "arxiv_id": "2610.39801",
+        "revision": 1,
+        "source_fingerprint": "7da47d6f72bbd6d7f85dcdefa1d2433fe1140d0ffba2616bd8d1c99565be6adb",
+        "guide_fingerprint": "b0c269f13c013560adfa282fff540f539b5710ac5a32ff33b862c703f001db9f"
+      },
+      {
+        "arxiv_id": "2610.39862",
+        "revision": 1,
+        "source_fingerprint": "53277153ab038b4770c0cf15316175ee6835d467eb2c1e8c14d188699586ed6e",
+        "guide_fingerprint": "2c43f2c691b7d39ca15f5d883936f15a09f2c4d9e79d621fbabd825186c8293b"
+      },
+      {
         "arxiv_id": "2610.40024",
         "revision": 1,
         "source_fingerprint": "982e70e18c9558f4a1fd4306e26ef83346bf71d174e73f7f3ca8bbf6cd7e780f",
         "guide_fingerprint": "85fc1648c0708524a60b83acbdc49a90b7f8b64ad704fbec310e4ac4a527f46a"
+      },
+      {
+        "arxiv_id": "2610.40049",
+        "revision": 1,
+        "source_fingerprint": "7a3e543e73b3416a8b49d49ab12b121577b6ee37c9f517347592146d2cb57efd",
+        "guide_fingerprint": "8799f929f1f9e08631132b6d7618e44a3fe378442d6da05eeaedd43a63e0b08d"
+      },
+      {
+        "arxiv_id": "2610.40092",
+        "revision": 1,
+        "source_fingerprint": "b10585d0d66ece94b82bde1f63ddb139e8ce5679f8d1c15a39ba7e792d1ff5b1",
+        "guide_fingerprint": "650ac977f04c37073bad4eae3043caefa1c75f67886b366c229b312dc99ac188"
+      },
+      {
+        "arxiv_id": "2610.40242",
+        "revision": 1,
+        "source_fingerprint": "ce56c1d0d7896aeedc0f5e19a893947c8b7273447d58018d92c95cefddd3cb1a",
+        "guide_fingerprint": "2e4fcf1c729229fd1275f0f28d41a4ac5a3eb302a3089b1a24eca4f8113c5c9a"
+      },
+      {
+        "arxiv_id": "2610.40255",
+        "revision": 1,
+        "source_fingerprint": "f04d041f35ac9f04b0a9571b2374c84fdf5106c244da60c0dfbc29af47ca1c47",
+        "guide_fingerprint": "82855471042f93012ceacea5043e30e50216d6f85ee5a258dc2027706bbac975"
+      },
+      {
+        "arxiv_id": "2610.40326",
+        "revision": 1,
+        "source_fingerprint": "19155101121f90327a47cd12fe0eef05f6c07fe698179ef286a62401ccba6e0b",
+        "guide_fingerprint": "9b5f32fc85e5d76390df4b1d73ce118afa692a9dfdc129605fdb22eba330db65"
+      },
+      {
+        "arxiv_id": "2610.40441",
+        "revision": 1,
+        "source_fingerprint": "fc6e6f9881c3ccf66496dc486495cc3e3c3b8410172b6ac9a37f6fbf6bbef60e",
+        "guide_fingerprint": "93a0d7dd74d505a568a2062ffac96d6f473cb6efcda0e8c3db42ca7323916bd0"
+      },
+      {
+        "arxiv_id": "2610.40606",
+        "revision": 1,
+        "source_fingerprint": "0ef77abbd3046832259b34077c51906b4937dcc568bca9513c08d463742f6ded",
+        "guide_fingerprint": "09f829b6e030b2614f0a138bbfcce56c182a3bcd7d57add722fd7db401c9c1cc"
       },
       {
         "arxiv_id": "2610.40609",
@@ -340,6 +448,12 @@
         "guide_fingerprint": "fa33353ce770c069835127163542abdf7433cb543fe705e3aa8ec8f89b7410e5"
       },
       {
+        "arxiv_id": "2610.40014",
+        "revision": 1,
+        "source_fingerprint": "496ecdd0b174a5ec23c32ddea0e6220adc8dae1bb90b328c62ffab943b3ec6eb",
+        "guide_fingerprint": "239dc96713a5b3934b56a6ab62e12dff6a905ef8856f637ea4c9f00967de2ff6"
+      },
+      {
         "arxiv_id": "2610.40015",
         "revision": 1,
         "source_fingerprint": "0e2178c063ff710dde9dfdc17b827939d9c558a7f9050e805a4e97f246b6dc02",
@@ -471,6 +585,18 @@
       "reason": "This paper presents the first systematic study of black hole spin evolution across the continuous transition from weakly magnetized (SANE) to magnetically arrested disks (MAD) using 3D GRMHD simulations with live spacetime updates, providing an analytical subgrid prescription for spin-up/spin-down equilibria in relativistic jets and compact accretors."
     },
     {
+      "arxiv_id": "2610.39240",
+      "priority": "must_read",
+      "title": "A universal relation predicts the observed reversal of a supernova chirp",
+      "reason": "The paper develops a universal scaling relation linking the modulation chirp rate to the supernova dimming rate for magnetar-disk engines and confirms its predicted chirp reversal (antichirp) in the superluminous supernova SN 2024afav, providing direct evidence for magnetar-driven advective thick disks."
+    },
+    {
+      "arxiv_id": "2610.40053",
+      "priority": "must_read",
+      "title": "KM3-230213A: The Highest-Energy Cosmic Neutrino",
+      "reason": "KM3-230213A is the highest-energy cosmic neutrino recorded to date ($E_\\mu = 120^{+110}_{-60}\\,\\mathrm{PeV}$, median parent neutrino energy $\\sim 220\\,\\mathrm{PeV}$), establishing multi-PeV/EeV detection capabilities and setting crucial multi-messenger constraints on AGN/GRB hadronic models, cosmogenic neutrino production, and BSM physics."
+    },
+    {
       "arxiv_id": "2610.38765",
       "priority": "worth_knowing",
       "title": "Constructing likelihoods for a non-Gaussian gravitational-wave background",
@@ -495,10 +621,100 @@
       "reason": "The paper investigates the detection and constraints on non-Einstein scalar breathing polarizations ($\\alpha_B$) from binary neutron star mergers using next-generation gravitational-wave detectors (Cosmic Explorer and Einstein Telescope), demonstrating a critical degenerated scaling $\\sigma(\\alpha_B) \\propto 1/\\sin^2\\iota$ with the relativistic jet/source inclination angle."
     },
     {
+      "arxiv_id": "2610.39089",
+      "priority": "worth_knowing",
+      "title": "Simultaneous Real-Color Time-Domain Survey of the Coma Field with the Multi-channel Photometric Survey Telescope (Mephisto)",
+      "reason": "The paper reports the initial results of the Mephisto simultaneous three-channel ($u/v, g/r, i/z$) time-domain survey in the Coma field, providing time-skew-free early multi-band light curves to probe shock cooling and CSM interaction in supernovae (such as SN IIP 2026dyr)."
+    },
+    {
+      "arxiv_id": "2610.39130",
+      "priority": "worth_knowing",
+      "title": "Harmonic brightness oscillations point to magnetar giant flares in rare short gamma-ray bursts",
+      "reason": "This paper resolves the physical origin of rare kHz quasi-periodic oscillations in short gamma-ray bursts by identifying a common $\\approx 360\\ \\mathrm{Hz}$ harmonic structure between GRB 910711 and the magnetar giant flare GRB 200415A, challenging previous post-merger hypermassive neutron star interpretations."
+    },
+    {
+      "arxiv_id": "2610.39200",
+      "priority": "worth_knowing",
+      "title": "XRISM/Resolve Study of Large Scale Properties in Tycho's Supernova Remnant",
+      "reason": "This work uses high-resolution XRISM/Resolve microcalorimeter spectroscopy to decouple Doppler kinematics from non-equilibrium ionization in Tycho's SNR, placing stringent observational constraints on Type Ia supernova explosion progenitor channels."
+    },
+    {
+      "arxiv_id": "2610.39384",
+      "priority": "worth_knowing",
+      "title": "The Disk Awakens: IXPE's Sequel Observation of GS 1354-64 Suggests Changing-Look Behavior in the Steep-Power-Law State",
+      "reason": "This paper presents multi-wavelength IXPE and NuSTAR observations of the black hole transient GS 1354-64 during its steep-power-law (SPL) state, revealing two distinct intensity tracks driven primarily by changes in thermal accretion disk emission rather than corona geometry."
+    },
+    {
+      "arxiv_id": "2610.39603",
+      "priority": "worth_knowing",
+      "title": "The Peculiar Astrometric Behaviour and Radio Structure of the Quasar 1524-136 Revealed with Very Long Baseline Interferometry",
+      "reason": "The paper investigates the physical origin of a massive >100 mas astrometric shift in the CSS quasar 1524-136, demonstrating that relativistic jet reactivation and core brightening alter the brightness centroid relative to the terminal hotspot."
+    },
+    {
+      "arxiv_id": "2610.39792",
+      "priority": "worth_knowing",
+      "title": "RAKI: High-Order Alternative Finite Differences for General Relativistic Magnetohydrodynamics",
+      "reason": "The paper presents RAKI, a new high-order alternative finite-difference (AFD-WENO) GRMHD code using a vector potential formulation that maintains machine-precision divergence-free magnetic fields ($<10^{-16}$) during binary neutron star (BNS) mergers. It is highly relevant to compact binary engine modeling and relativistic astrophysics simulations."
+    },
+    {
+      "arxiv_id": "2610.39801",
+      "priority": "worth_knowing",
+      "title": "The first mass peak of merging black holes from core binding energies and jet-driven explosions",
+      "reason": "The paper investigates the origin of the first black hole mass peak ($M_{\\rm p1}\\simeq 10M_{\\odot}$) observed by LIGO-Virgo-KAGRA within the jittering jets explosion mechanism (JJEM), providing theoretical prescriptions linking stellar core binding energy and fixed-axis jets to black hole formation without failed supernovae."
+    },
+    {
+      "arxiv_id": "2610.39862",
+      "priority": "worth_knowing",
+      "title": "Tidal disruption or plunge: the role of neutron star internal structure in black hole-neutron star mergers",
+      "reason": "The paper provides a general relativistic mass-shedding criterion in Kerr spacetime incorporating the neutron star internal structure parameter to predict BHNS merger remnants, directly relevant to central engines and electromagnetic counterparts of compact binary mergers."
+    },
+    {
       "arxiv_id": "2610.40024",
       "priority": "worth_knowing",
       "title": "Inverse Gertsenshteǐn-Zel'dovich Effect in Time-Independent Electromagnetic Field",
       "reason": "The paper establishes a generalized framework for the inverse Gertsenshteǐn-Zel'dovich effect across 6 gravitational wave polarizations in time-independent electromagnetic fields, deriving conversion efficiency scalings $\\alpha \\propto B^2 R^2$ relevant to potential fast radio burst (FRB) flux densities in neutron star magnetospheres."
+    },
+    {
+      "arxiv_id": "2610.40049",
+      "priority": "worth_knowing",
+      "title": "Can the $\\sim 5$ kpc starburst ring in MW create eROSITA bubbles?",
+      "reason": "The paper uses 3D hydrodynamic simulations to directly refute recent claims that the Milky Way eROSITA bubbles are produced by a ~5 kpc starburst ring, demonstrating that a compact Galactic Center energy injection is required to reproduce the coherent large-scale X-ray bubble morphology."
+    },
+    {
+      "arxiv_id": "2610.40092",
+      "priority": "worth_knowing",
+      "title": "Evolutionary tracks and isochrones of the inverse Hall cascade",
+      "reason": "The paper provides numerical simulations of the inverse Hall cascade relevant to magnetar crusts, deriving scaling laws, evolutionary tracks, and isochrones governing magnetic field decay and coherence length growth."
+    },
+    {
+      "arxiv_id": "2610.40242",
+      "priority": "worth_knowing",
+      "title": "From photons to neutrinos : Advancing multi-messenger modeling with Gammapy",
+      "reason": "The paper presents a forward-folding multi-wavelength and multi-messenger framework built in Gammapy to fit physical radiation models directly to instrumental photon/neutrino event counts rather than intermediate flux points, mitigating parameter biases and error underestimation in relativistic jet modeling."
+    },
+    {
+      "arxiv_id": "2610.40255",
+      "priority": "worth_knowing",
+      "title": "A Candidate Binary Microlensing Event in the 2018 Gamma-Ray Flare of 3C 279",
+      "reason": "The paper investigates the sharp double-peaked structure in the 2018 gamma-ray flare of blazar 3C 279 via a binary microlensing framework, providing constraints on both the sub-parsec jet emission region and intervening compact planetary/stellar lenses."
+    },
+    {
+      "arxiv_id": "2610.40326",
+      "priority": "worth_knowing",
+      "title": "Polarization and Burst Properties of the Repeating FRB~20240209A in a Quiescent Elliptical Host",
+      "reason": "Single-burst frequency-dependent depolarization makes this directly useful for studying the magnetoionic environments of repeaters, especially in an old, quiescent host. The three-burst sample provides valuable environmental constraints, but the proposed submillisecond spacing remains statistically tentative."
+    },
+    {
+      "arxiv_id": "2610.40441",
+      "priority": "worth_knowing",
+      "title": "Influence of $Δ$ resonances in hyperonic neutron stars on gravitational-wave inspiral signatures",
+      "reason": "The paper provides useful theoretical modeling of hyperonic neutron star equations of state with $\\Delta$ resonances and evaluates their distinct gravitational-wave phase and tidal signatures in binary neutron star inspirals."
+    },
+    {
+      "arxiv_id": "2610.40606",
+      "priority": "worth_knowing",
+      "title": "The unresolved high-mass frontier of the black hole Fundamental Plane",
+      "reason": "This work quantitatively reassesses the black hole Fundamental Plane (FP) linking radio synchrotron jet emission and X-ray accretion luminosity to black hole mass, directly relevant to understanding relativistic jet launching efficiency and compact object accretion scaling relations."
     },
     {
       "arxiv_id": "2610.40609",
@@ -3953,10 +4169,90 @@
       {
         "arxiv_id": "2610.39089",
         "revision": 1,
+        "status": "ready",
         "source_fingerprint": "ef5ff3714738a0787b0edbb2a39b2bec8a589c702c20e51df317f3d38fbcb50a",
-        "status": "failed",
-        "failure_reason": "The operation was aborted due to timeout",
-        "priority": "worth_knowing"
+        "priority": "worth_knowing",
+        "coverage": {
+          "level": "body_partial",
+          "label": "已检查正文中支撑判断的指定章节",
+          "source_version": "arXiv:2610.39089v1",
+          "inspected_sections": [
+            "1 Introduction",
+            "2.1 Coma Field Survey Strategy and Data Reduction Pipeline",
+            "3 Pilot Survey Results: Discovery of Nine Supernovae",
+            "4.3 Light curve modeling of SN 2026dyr",
+            "5 Expected Transient Rates and Pilot Coma Survey Yield",
+            "7 DISCUSSION AND CONCLUSION",
+            "References",
+            "Introduction",
+            "Simultaneous Real-Color Time-Domain Survey of the Coma Field with the Multi-channel Photometric Survey Telescope (Mephisto)",
+            "2 Survey Performance and Data Processing",
+            "2.2 Transient Detection Pipeline",
+            "4 Description of individual supernovae in the Coma field",
+            "4.1 Light curve properties of SN 2026dyr",
+            "4.2 Comparison of SN 2026dyr with other SNe II events",
+            "6 Other Extreme Transients in the Coma Cluster",
+            "6.1 Tidal Disruption Events and AGN Variability",
+            "6.2 Intra-cluster Transients and Ultra-Diffuse Galaxies",
+            "6.3 Short-timescale Galactic Exotics",
+            "Acknowledgements",
+            "Data Availability",
+            "Instructions for reporting errors"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_source_package",
+              "url": "https://export.arxiv.org/src/2610.39089v1",
+              "locator": "1 Introduction; 2.1 Coma Field Survey Strategy and Data Reduction Pipeline; 3 Pilot Survey Results: Discovery of Nine Supernovae; 4.3 Light curve modeling of SN 2026dyr; 5 Expected Transient Rates and Pilot Coma Survey Yield; 7 DISCUSSION AND CONCLUSION; References; Introduction; Simultaneous Real-Color Time-Domain Survey of the Coma Field with the Multi-channel Photometric Survey Telescope (Mephisto); 2 Survey Performance and Data Processing; 2.2 Transient Detection Pipeline; 4 Description of individual supernovae in the Coma field; 4.1 Light curve properties of SN 2026dyr; 4.2 Comparison of SN 2026dyr with other SNe II events; 6 Other Extreme Transients in the Coma Cluster; 6.1 Tidal Disruption Events and AGN Variability; 6.2 Intra-cluster Transients and Ultra-Diffuse Galaxies; 6.3 Short-timescale Galactic Exotics; Acknowledgements; Data Availability; Instructions for reporting errors",
+              "description": "Complete, revision-matched arXiv TeX source package",
+              "sha256": "0b6626d66880067ebbc900c2649b8f7a9223e24161e515efa67c612aa6466591"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "gpt-6-luna",
+          "analyzed_at": "2026-10-30T18:02:03.096Z",
+          "reason": "The paper reports the initial results of the Mephisto simultaneous three-channel ($u/v, g/r, i/z$) time-domain survey in the Coma field, providing time-skew-free early multi-band light curves to probe shock cooling and CSM interaction in supernovae (such as SN IIP 2026dyr).",
+          "result": "The pilot survey discovered 9 supernovae and modeled SN IIP 2026dyr ($D_{\\rm L}=66.0\\,\\mathrm{Mpc}$) with an optically thick plateau phase of $89.8\\,\\mathrm{days}$ and plateau luminosity $\\log(L_{\\rm bol}/\\mathrm{erg\\,s^{-1}})\\simeq 41.4$. Two-component modeling yielded ejecta mass $M_{\\rm ej}=9.0\\,M_\\odot$, kinetic energy $E_{\\rm k}=1.4\\,\\mathrm{foe}$, thermal energy $E_{\\rm th}=0.5\\,\\mathrm{foe}$, progenitor core radius $R_0\\simeq 245\\,R_\\odot$, envelope mass $M_{\\rm sh}=0.250\\,M_\\odot$ with envelope radius $R_{\\rm env}=287\\,R_\\odot$, synthesized nickel mass $M_{\\rm Ni}=0.028\\pm 0.005\\,M_\\odot$, and progenitor mass-loss rate $\\dot{M}\\lesssim 10^{-5}\\,M_\\odot\\,\\mathrm{yr}^{-1}$.",
+          "reading_entry": "4.3 Light curve modeling of SN 2026dyr",
+          "problem": "Traditional time-domain surveys with rotating filter wheels introduce time-skew delays between bands, obscuring true early-time color evolution and creating parameter degeneracies in modeling shock breakout, shock cooling, and early circumstellar material (CSM) interaction.",
+          "method": "Simultaneous real-color imaging in three channels using the 1.6-m Mephisto telescope across $22.58\\,\\mathrm{deg}^2$, combined with a HOTPANTS PSF-matched image subtraction pipeline, followed by two-component semi-analytic light curve modeling (dense core plus dilute envelope).",
+          "assumptions": [
+            "Semi-analytic two-component model with a dense core and an extended low-density envelope describes the SN IIP early shock cooling and plateau light curve."
+          ],
+          "limits": [
+            "Pilot phase single-epoch exposure is 45 s, reaching an absolute magnitude limit of $M_{g/r} \\lesssim -13\\,\\mathrm{mag}$ at $100\\,\\mathrm{Mpc}$."
+          ],
+          "citation_leads": [
+            "1 Introduction: “To accurately decipher the extreme physics governing the nascent stages of stellar explosions and to identify fast-evolving anomalous sources, obtaining simultaneous multi-wavelength coverage is imperative.”",
+            "3 Pilot Survey Results: Discovery of Nine Supernovae: “These early blue-band data serve as critical anchor points for identifying early shock breakout and early circumstellar material (CSM) interactions, effectively mapping the final, episodic mass-loss history of the massive star prior to its”",
+            "4.3 Light curve modeling of SN 2026dyr: “This model yields an ejecta mass of $M_{\\rm ej}=9.0\\,M_{\\odot}$ and a kinetic energy of $E_{\\rm k}=1.4\\,\\mathrm{foe}$. The initial thermal energy is $E_{\\rm th}=0.5\\,\\mathrm{foe}$”",
+            "7 DISCUSSION AND CONCLUSION: “These real-time color diagnostics are indispensable for breaking physical degeneracies in shock-cooling models, probing early circumstellar material (CSM) interactions”"
+          ],
+          "research_progress": "Demonstrated that simultaneous multi-band high-cadence monitoring breaks degeneracies in shock cooling parameters and constrains episodic mass-loss rates ($\\dot{M}\\lesssim 10^{-5}\\,M_\\odot\\,\\mathrm{yr}^{-1}$) at the infant stage of core-collapse supernovae.",
+          "figures": [
+            {
+              "url": "/arxiv-figures/2610.39089/panel-1.png",
+              "caption": "Figure 3: Image cutouts of the identified supernovae. Each stamp covers a $1′\\times 1′$ FoV. For each supernova, the science, reference, and difference images are shown from left to right for a representative epoch, with different rows corresponding to different photometric bands. North is up and east is to the left in each stamp.",
+              "label": "Fig. 3",
+              "category": "observational",
+              "category_badge": "Key Observational Evidence",
+              "physical_core": "The figure shows science, reference, and difference-image cutouts for the identified supernovae across multiple photometric bands, providing visual evidence of the transient detections.",
+              "is_schematic": false
+            }
+          ],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed.",
+            "Figures from source package have not undergone visual verification."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        }
       },
       {
         "arxiv_id": "2610.39094",
@@ -4059,10 +4355,102 @@
       {
         "arxiv_id": "2610.39130",
         "revision": 1,
+        "status": "ready",
         "source_fingerprint": "816a0c77a9d67f4be3d3a122383ae092d394843acda50eb4848e5773d936bdae",
-        "status": "failed",
-        "failure_reason": "The operation was aborted due to timeout",
-        "priority": "must_read"
+        "priority": "worth_knowing",
+        "coverage": {
+          "level": "body_partial",
+          "label": "已检查正文中支撑判断的指定章节",
+          "source_version": "arXiv:2610.39130v1",
+          "inspected_sections": [
+            "Harmonic brightness oscillations point to magnetar giant flares in rare short gamma-ray bursts",
+            "Suggestive evidence for a 360-Hz harmonic-like organization",
+            "Temporal analysis",
+            "Quasi-periodic oscillation analysis",
+            "Synthetic light-curve generation and statistical tests.",
+            "Energy budgets and host searches",
+            "Exploratory Discussion on Possible Physical Interpretations of the $approx$360 Hz Characteristic Scale",
+            "Introduction",
+            "The Interpretive Tension in GRB 910711",
+            "Results",
+            "Comparison between GRB 910711 and GRB 200415A",
+            "Temporal structure similarities",
+            "Low-frequency excesses associated with the reported kilohertz brightness oscillations",
+            "Distance constraints and MGF plausibility of GRB 910711",
+            "Discussion",
+            "Physical implications",
+            "Observational implications",
+            "Materials and Methods",
+            "Instrument and data",
+            "Spectral fitting of GRB 910711",
+            "References",
+            "Acknowledgments",
+            "Supplementary materials",
+            "Supplementary Materials for Harmonic brightness oscillations point to magnetar giant flares in rare short gamma-ray bursts",
+            "This PDF file includes:",
+            "Supplementary Text",
+            "Instructions for reporting errors"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_source_package",
+              "url": "https://export.arxiv.org/src/2610.39130v1",
+              "locator": "Harmonic brightness oscillations point to magnetar giant flares in rare short gamma-ray bursts; Suggestive evidence for a 360-Hz harmonic-like organization; Temporal analysis; Quasi-periodic oscillation analysis; Synthetic light-curve generation and statistical tests.; Energy budgets and host searches; Exploratory Discussion on Possible Physical Interpretations of the $approx$360 Hz Characteristic Scale; Introduction; The Interpretive Tension in GRB 910711; Results; Comparison between GRB 910711 and GRB 200415A; Temporal structure similarities; Low-frequency excesses associated with the reported kilohertz brightness oscillations; Distance constraints and MGF plausibility of GRB 910711; Discussion; Physical implications; Observational implications; Materials and Methods; Instrument and data; Spectral fitting of GRB 910711; References; Acknowledgments; Supplementary materials; Supplementary Materials for Harmonic brightness oscillations point to magnetar giant flares in rare short gamma-ray bursts; This PDF file includes:; Supplementary Text; Instructions for reporting errors",
+              "description": "Complete, revision-matched arXiv TeX source package",
+              "sha256": "eefe13b2fbe5cb5a54d1ce9a600e680612b911ae1753431461ab00979e40aecc"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "gpt-6-luna",
+          "analyzed_at": "2026-10-30T18:03:05.426Z",
+          "reason": "This paper resolves the physical origin of rare kHz quasi-periodic oscillations in short gamma-ray bursts by identifying a common $\\approx 360\\ \\mathrm{Hz}$ harmonic structure between GRB 910711 and the magnetar giant flare GRB 200415A, challenging previous post-merger hypermassive neutron star interpretations.",
+          "result": "Both GRB 910711 and GRB 200415A display an initial $\\approx 10\\ \\mathrm{ms}$ spike with sub-millisecond variability (narrowest features have $\\mathrm{FWHM} \\approx 90\\ \\mu\\mathrm{s}$ and $\\approx 65\\ \\mu\\mathrm{s}$). GRB 910711 exhibits an extremely hard spectrum best fitted by a blackbody ($kT = 216.27^{+43.14}_{-37.21}\\ \\mathrm{keV}$, $\\mathrm{BIC}=39.37$) or a cutoff power law with low-energy photon index $\\alpha = 0.87^{+0.68}_{-0.69}$ and peak energy $E_{\\rm p} = 957.19^{+508.35}_{-209.02}\\ \\mathrm{keV}$. Power spectrum analysis reveals that timing excesses organize into integer harmonics $n \\times f_0$ of a fundamental frequency $f_0 \\approx 360\\ \\mathrm{Hz}$ (up to $n=12$), with a shared dominant peak at $6 \\times f_0 \\approx 2160\\ \\mathrm{Hz}$ (Whittle likelihood improvement test statistics $\\mathrm{TS} = 13.4$ and $\\mathrm{TS} = 33.9$). Bispectrum tests reject pure pulse-envelope origins with $p = 1.3 \\times 10^{-4}$ (GRB 910711) and $p = 4.5 \\times 10^{-4}$ (GRB 200415A), and place GRB 910711 consistently as a magnetar giant flare at luminosity distance $D_{\\rm L} \\lesssim 55\\ \\mathrm{Mpc}$.",
+          "reading_entry": "Suggestive evidence for a 360-Hz harmonic-like organization",
+          "problem": "Whether candidate kHz quasi-periodic oscillations in rare short GRBs like GRB 910711 reflect post-merger hypermassive neutron star (HMNS) oscillations or extragalactic magnetar giant flares (MGFs), especially given the theoretical tension between maintaining coherent kHz modulations and the scattering optical depth implied by the observed hard spectrum.",
+          "method": "Light curves were analyzed using Bayesian blocks and double fast-rise-exponential-decay (FRED) models $F(t)$ matched across common energy bands (60–325 keV). Oscillation features were assessed via 10-times oversampled Lomb-Scargle periodograms, Weighted Wavelet Z-transform (WWZ), and the bispectrum $|\\hat{B}(f_1, f_2)| = |X(f_1) X(f_2) X^*(f_1+f_2)|$ across candidate harmonic pairs $(x \\times f_0, y \\times f_0)$. Significance was evaluated against $10^5$ synthetic Poisson-sampled multi-FRED envelopes and Whittle log-likelihood continuum fits $\\ln\\mathcal{L} = -\\sum_i [\\ln P_{\\rm model}(f_i) + P_{\\rm obs}(f_i)/P_{\\rm model}(f_i)]$.",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Harmonic brightness oscillations point to magnetar giant flares in rare short gamma-ray bursts: “The similar harmonic-like pattern in GRB 910711 and in the confirmed magnetar giant flare (MGF) event GRB 200415A”",
+            "Suggestive evidence for a 360-Hz harmonic-like organization: “cluster near integer multiples of a characteristic frequency scale of $\\approx$360 Hz”",
+            "Temporal analysis: “The overall light-curve morphology of GRB 910711 and GRB 200415A in a common energy range is thus similar”",
+            "Quasi-periodic oscillation analysis: “Formally, for a real, uniformly sampled time series $x(t)$ with Fourier transform $X(f)$, the (ensemble) bispectrum is”",
+            "Energy budgets and host searches: “Symbols $H(x,y)$ (equivalent to $H(y,x)$) denote harmonic features at the frequency pair $(x\\times f,\\,y\\times f)”"
+          ],
+          "research_progress": "Demonstrates that kilohertz brightness oscillations in short GRBs can arise naturally from nonlinearly coupled harmonic eigenmodes ($f_0 \\approx 360\\ \\mathrm{Hz}$) during magnetar giant flares, removing the requirement for a surviving post-merger HMNS and unifying the spectral and temporal properties of hard-spectrum sub-millisecond gamma-ray bursts.",
+          "figures": [
+            {
+              "url": "/arxiv-figures/2610.39130/Figure_3.png",
+              "caption": "Figure 3: Harmonic analysis of the shared 360-Hz oscillation feature in GRB 910711 and GRB 200415A. Top: Light curves binned at 0.1 ms without energy selection are shown in the top panels, with corresponding spectrograms from 2- $\\mu$ s-binned data below. Blue contours mark the top 95% of the test statistics. Harmonic candidates appear during the initial spikes at integer multiples $n\\times f$ with $f=360$ Hz simultaneously, with $n=1,3,5,6,11$ for GRB 910711 and $n=1,2,4,6,12$ for GRB 200415A. Bottom: Bispectrum of the initial spike of GRB 910711 and GRB 200415A over the interval [96, 106] ms (red-shaded region in top panel), computed with 50- $\\mu$ s bins. The frequency grid is refined to 10 Hz resolution through zero padding [ 69 ], and a Hamming window [ 68 ] is applied to reduce red-noise leakage. Brighter regions in the bispectrum indicate larger bispectral magnitudes, corresponding to stronger nonlinear coupling. Symbols $H(x,y)$ (equivalent to $H(y,x)$) denote harmonic features at the frequency pair $(x\\times f,\\,y\\times f)$, representing nonlinear coupling between two oscillations. Such coupling generates power at $x\\times f$, $y\\times f$, and their sum $(x+y)\\times f$ in the Fourier spectrum. Frequency pairs closely associated with the harmonic peaks in spectrograms are marked with red stars, indicating the presence of a consistent harmonic system in both events.",
+              "label": "Fig. 3",
+              "category": "observational",
+              "category_badge": "Key Observational Evidence",
+              "physical_core": "Both GRB 910711 and GRB 200415A show candidate oscillation features at integer multiples of a shared characteristic frequency, $f=360$ Hz, during their initial spikes. Their bispectra also show frequency-pair features associated with nonlinear coupling among harmonics.",
+              "is_schematic": false
+            },
+            {
+              "url": "/arxiv-figures/2610.39130/Figure_S5.png",
+              "caption": "Figure S5: Monte Carlo tests of the bispectral harmonic-node structure. (A) Example comparison between the observed light curve and one synthetic FRED-envelope realization, together with the corresponding bispectral map and the joint harmonic statistic $S(f_{0})$. Red contours mark the local regions around the candidate harmonic coupling nodes used to evaluate the bispectral statistics. The observed data show a preference near $f_{0}=360$ Hz, while the example synthetic realization does not reproduce the same harmonic-node pattern. (B) Monte Carlo distributions from $10^{5}$ FRED-envelope synthetic light curves. The left panel shows the distribution of the preferred characteristic frequency, defined as the $f_{0}$ that maximizes the joint harmonic statistic over 260–460 Hz. The middle panel shows the distribution of the maximum joint statistic over this interval, and the right panel shows the distribution of the joint statistic evaluated specifically at $f_{0}=360$ Hz. Purple dashed lines mark the observed values. (C) Marginal distributions of grouped harmonic-node statistics at $f_{0}=360$ Hz. These panels show how different parts of the candidate harmonic structure contribute to the observed joint statistic. (D–F) Same as (A–C), but for GRB 200415A. Despite differences in the specific harmonic nodes recovered in the two bursts, both observed events favor a characteristic frequency close to 360 Hz and show enhanced joint harmonic statistics relative to the FRED-envelope null simulations.",
+              "label": "Fig. 5",
+              "category": "fitting",
+              "category_badge": "Model vs Data Fitting",
+              "physical_core": "For both bursts, the observed data favor a characteristic frequency near $f_0=360$ Hz and show enhanced joint harmonic statistics relative to Monte Carlo synthetic light curves generated from FRED-envelope null models.",
+              "is_schematic": false
+            }
+          ],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed.",
+            "Figures from source package have not undergone visual verification."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        }
       },
       {
         "arxiv_id": "2610.39181",
@@ -4116,18 +4504,209 @@
       {
         "arxiv_id": "2610.39200",
         "revision": 1,
+        "status": "ready",
         "source_fingerprint": "5de04d309ee191796ef3ef800ccb0836b9ea4a3501acf7ca4df72f5b78c9dbbc",
-        "status": "failed",
-        "failure_reason": "The operation was aborted due to timeout",
-        "priority": "worth_knowing"
+        "priority": "worth_knowing",
+        "coverage": {
+          "level": "body_partial",
+          "label": "已检查正文中支撑判断的指定章节",
+          "source_version": "arXiv:2610.39200v1",
+          "inspected_sections": [
+            "Introduction",
+            "XRISM/Resolve Study of Large Scale Properties in Tycho’s Supernova RemnantFacilities: XRISM (Resolve), Chandra (ACIS)",
+            "I Introduction",
+            "II XRISM/Resolve Data",
+            "III Spectral Fitting",
+            "IV Fitting Results",
+            "IV.1 Fitting of All Data",
+            "V Discussion",
+            "VI Conclusions",
+            "Appendix A XSPEC Outputs",
+            "References",
+            "Instructions for reporting errors"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_source_package",
+              "url": "https://export.arxiv.org/src/2610.39200v1",
+              "locator": "Introduction; XRISM/Resolve Study of Large Scale Properties in Tycho’s Supernova RemnantFacilities: XRISM (Resolve), Chandra (ACIS); I Introduction; II XRISM/Resolve Data; III Spectral Fitting; IV Fitting Results; IV.1 Fitting of All Data; V Discussion; VI Conclusions; Appendix A XSPEC Outputs; References; Instructions for reporting errors",
+              "description": "Complete, revision-matched arXiv TeX source package",
+              "sha256": "d9f9703582085954d33db0090770cba0a4a78c0702e0426dfa8dc20ceafe9293"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "gpt-6-luna",
+          "analyzed_at": "2026-10-30T18:01:41.091Z",
+          "reason": "This work uses high-resolution XRISM/Resolve microcalorimeter spectroscopy to decouple Doppler kinematics from non-equilibrium ionization in Tycho's SNR, placing stringent observational constraints on Type Ia supernova explosion progenitor channels.",
+          "result": "Abundance ratios of iron-peak elements favor sub-Chandrasekhar mass explosion models (SCH097 and SCH106) and formally exclude tested $M_{\\mathrm{Ch}}$ models based on $\\mathrm{Cr/Fe}$ and $\\mathrm{Ni/Fe}$ yields. Radial velocities show a kinematically asymmetric shell where the blueshifted iron-group element (IGE) centroid is at $6340_{-5}^{+5}\\ \\mathrm{eV}$ while the redshifted centroid is at $6469_{-7}^{+6}\\ \\mathrm{eV}$, with intermediate-mass element (IME) velocity dispersion $\\sigma_{v} \\approx 1500\\ \\mathrm{km\\ s^{-1}}$ (radial velocity $v_{r} \\approx 4000\\ \\mathrm{km\\ s^{-1}}$) and IGE velocity dispersion $\\sigma_{v} \\approx 2500\\ \\mathrm{km\\ s^{-1}}$ ($v_{r} \\approx 2500\\text{--}4000\\ \\mathrm{km\\ s^{-1}}$).",
+          "reading_entry": "V Discussion",
+          "problem": "Disentangling bulk Doppler kinematic shifts from non-equilibrium ionization (NEI) states in the expanding ejecta of Tycho's supernova remnant to test explosion symmetry and nucleosynthetic yields.",
+          "method": "Multi-region spectral fitting in the $1.5\\text{--}15.0\\ \\mathrm{keV}$ range using the model $\\mathrm{TBabs}(4\\times \\mathrm{bvvpshock} + \\mathrm{powerlaw}) + \\mathrm{NXB}$, which adopts two redshifted and two blueshifted plane-parallel shock components for IME and IGE ejecta with parameter tying across extraction zones and Goodman-Weare MCMC sampling.",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "XRISM/Resolve Study of Large Scale Properties in Tycho’s Supernova RemnantFacilities: XRISM (Resolve), Chandra (ACIS): “Resolve, the microcalorimeter array aboard the X-Ray Imaging and Spectroscopy Mission (XRISM), provides an unprecedented spectral view of Tycho’s Supernova Remnant (SNR).”",
+            "III Spectral Fitting: “All spectra are fit from 1.5–15.0 keV with the combined model TBabs(4*bvvpshock + powerlaw) + NXB where two pshock components are meant to represent redshifted and blueshifted IME-dominant plasmas, respectively, and two are for”",
+            "V Discussion: “The Cr/Fe and Ni/Fe ratios measured favor the SCH097 and SCH106 sub-M${}_{\\text{Ch}}$ models, and formally exclude these particular M${}_{\\text{Ch}}$ models.”"
+          ],
+          "research_progress": "Demonstrates large-scale quasi-spherical symmetry and uniform IME/IGE abundance ratios in Tycho's SNR while uncovering an intrinsic kinematic asymmetry between the approaching and receding IGE shells.",
+          "figures": [
+            {
+              "url": "/arxiv-figures/2610.39200/rsl_multicolor_final.PNG",
+              "caption": "Figure 1: Here we show the Resolve detector images, normalized by counts s -1, overlayed on a broadband image generated from multiple stacked Chandra/ACIS observations. The colors are purely for illustrative purposes to differentiate the data sets.",
+              "label": "Fig. 1",
+              "category": "theoretical",
+              "category_badge": "Physical Model Schematic",
+              "physical_core": "",
+              "is_schematic": true
+            }
+          ],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed.",
+            "Figures from source package have not undergone visual verification."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        }
       },
       {
         "arxiv_id": "2610.39240",
         "revision": 1,
+        "status": "ready",
         "source_fingerprint": "ed47f296135959db7be57921429eee9cafee5004ef9dc35915dcaf940132faab",
-        "status": "failed",
-        "failure_reason": "The operation was aborted due to timeout",
-        "priority": "must_read"
+        "priority": "must_read",
+        "coverage": {
+          "level": "full_body",
+          "label": "已检查版本匹配的完整 TeX 正文",
+          "source_version": "arXiv:2610.39240v1",
+          "inspected_sections": [
+            "Introduction",
+            "A universal relation predicts the observed reversal of a supernova chirp",
+            "I A universal relation for the engine",
+            "II The predicted period minimum",
+            "III Chirp reversal observed in SN 2024afav",
+            "IV Circumstellar interaction does not set the timing",
+            "V Discrete properties of the universal relation",
+            "VI Summary of the observed chirp reversal",
+            "References",
+            "Appendix A Materials and methods",
+            "A.1 Observations of SN 2024afav",
+            "A.2 Fit to the magnetar model",
+            "A.3 Construction of the universal relation",
+            "A.4 Assessment of modulations",
+            "A.5 Red noise analysis",
+            "Appendix B Supplementary Text",
+            "B.1 Validation of chirp-antichirp behavior",
+            "B.2 Selection of discrete menu for the universal relation",
+            "Disk prescriptions",
+            "Thin disk.",
+            "Thick disk.",
+            "Appendix C Supplementary Figures and Tables",
+            "Instructions for reporting errors"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_source_package",
+              "url": "https://export.arxiv.org/src/2610.39240v1",
+              "locator": "Full body",
+              "description": "Complete, revision-matched arXiv TeX source package",
+              "sha256": "c177f971ac52de3b94788fe702895d807e9d109f980a4a3a8529d477755d9ae0"
+            }
+          ],
+          "source_sections": [
+            "Introduction",
+            "A universal relation predicts the observed reversal of a supernova chirp",
+            "I A universal relation for the engine",
+            "II The predicted period minimum",
+            "III Chirp reversal observed in SN 2024afav",
+            "IV Circumstellar interaction does not set the timing",
+            "V Discrete properties of the universal relation",
+            "VI Summary of the observed chirp reversal",
+            "References",
+            "Appendix A Materials and methods",
+            "A.1 Observations of SN 2024afav",
+            "A.2 Fit to the magnetar model",
+            "A.3 Construction of the universal relation",
+            "A.4 Assessment of modulations",
+            "A.5 Red noise analysis",
+            "Appendix B Supplementary Text",
+            "B.1 Validation of chirp-antichirp behavior",
+            "B.2 Selection of discrete menu for the universal relation",
+            "Disk prescriptions",
+            "Thin disk.",
+            "Thick disk.",
+            "Appendix C Supplementary Figures and Tables",
+            "Instructions for reporting errors"
+          ],
+          "section_coverage": {
+            "problem": true,
+            "assumptions": true,
+            "method": true,
+            "results": true,
+            "limitations": false,
+            "appendices": "checked"
+          }
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "gpt-6-luna",
+          "analyzed_at": "2026-10-30T18:04:01.220Z",
+          "reason": "The paper develops a universal scaling relation linking the modulation chirp rate to the supernova dimming rate for magnetar-disk engines and confirms its predicted chirp reversal (antichirp) in the superluminous supernova SN 2024afav, providing direct evidence for magnetar-driven advective thick disks.",
+          "result": "The paper derives a universal linear relation in the $(D,C)$ plane between the chirp rate $C(t) \\equiv -d\\ln P/d\\ln t$ and dimming rate $D(t) \\equiv -d\\ln L_w/d\\ln t$: $$C(t)=\\frac{K\\chi u}{w-2}-\\left(\\frac{K}{w-2}+\\frac{q}{n+1}\\right)D(t)$$ For SN 2024afav, independent baseline fitting yields magnetar spin-down parameters $P_{\\rm spin} = 3.9 \\pm 0.2\\,\\mathrm{ms}$, $B = (0.51 \\pm 0.05)\\times 10^{14}\\,\\mathrm{G}$, and spin-down timescale $t_p = 87 \\pm 11\\,\\mathrm{d}$. The universal relation successfully predicted a chirp reversal (transition from period contraction to expansion) at rest-frame $t_{\\rm min} = 132 \\pm 3\\,\\mathrm{d}$ with $\\dot{P} = 0.28 \\pm 0.12$. The observed slope $dC/dD = 11.6 \\pm 1.6$ statistically excludes radiatively cooled thin disks (reduced $\\chi^2 = 9.8$, $p = 3\\times 10^{-15}$) and pinpoints a hot advective thick disk with inflow/outflow index $p \\sim 0.46$ governed by Lense-Thirring precession.",
+          "reading_entry": "I A universal relation for the engine",
+          "problem": "Quasi-periodic modulations with decreasing periods ('chirps') in superluminous supernovae such as SN 2024afav suffer from severe parameter degeneracies, leaving their physical origin—whether driven by central magnetar-disk interaction or circumstellar medium (CSM) shock collisions—unresolved and unverified.",
+          "method": "The authors model an engine comprising a central newborn magnetar with braking index $n$ (spin-down dipole luminosity $L_w = L_0(1+\\tau)^{-(n+1)/(n-1)}$ with $\\tau \\equiv t/t_p$) interacting with a fallback accretion disk ($\\,\\dot{M} \\propto t^{-\\chi}$). Balancing magnetar wind pressure $L_w/r_i^2$ with disk pressure $\\propto \\dot{M}^u r_i^{-w}$ determines disk inner radius $r_i$, while precession scales as $P \\propto r_i^K J^{-q}$. Photometric baselines from ATLAS and LCO are decomposed with MOSFiT and spline subtractions, while red-noise synthetic light curves evaluate CSM stochastic contamination.",
+          "assumptions": [
+            "Disk inner radius $r_i$ is determined by the pressure balance between magnetar wind pressure $L_w/r_i^2$ and disk pressure $\\propto \\dot{M}^u r_i^{-w}$."
+          ],
+          "limits": [
+            "Requires an inflow/outflow index $p < 1/2$ in the super-Eddington advective disk to enable chirp reversal."
+          ],
+          "citation_leads": [
+            "I A universal relation for the engine: “Regardless of any particular choice of system parameters, the measured evolution of the supernova in the ($D,C$) plane must trace a straight line.”",
+            "III Chirp reversal observed in SN 2024afav: “The modulation frequency unambiguously rises and then falls—the chirp reverses.”",
+            "VI Summary of the observed chirp reversal: “The sharpness of the reversal (relation slope $dC/dD=11.6\\pm 1.6$) excludes every radiatively-cooled thin disk and points to a hot, advective inner flow.”",
+            "A.3 Construction of the universal relation: “A chirp observed with a period continuing to decrease beyond $\\tau_{\\rm min}$ therefore falsifies the model for that system.”",
+            "Thick disk.: “In a super-Eddington disk the flow becomes radiatively inefficient inside the photon-trapping (spherization) radius, so $r_{\\rm out}=r_{\\rm tr}\\propto\\dot{M}_{0}$”"
+          ],
+          "research_progress": "The paper transforms light curve bump analysis in superluminous supernovae from post-hoc curve fitting into a predictive framework: it provides an exact mathematical criterion for disk-driven chirp reversal, successfully confirms this reversal in SN 2024afav, and rules out CSM red noise ($p \\lesssim 0.1\\%$) as well as standard thin disks.",
+          "figures": [
+            {
+              "url": "/arxiv-figures/2610.39240/modulations.png",
+              "caption": "Figure 2: Timing of the modulations. The post-peak light curve of SN 2024afav shows multiple significant modulations. Here, we characterize their timing using the bolometric luminosity as fit from the multi-band photometry following [ 31 ]. The chirp reported in the previous work (data left of the indicated purple line in panels A and B) is clearly recovered, with $\\sim 3$ cycles of a chirping modulation visible. After approximately $t=170$ d, several new modulations are visible in the residual (data subtracted from a smoothing cubic spline) and the unsubtracted light curve. The late-time modulations display extrema spaced increasingly far apart, reproduced in a weighted wavelet z-transform [ 18 ] refined via the method of synchrosqueezing [ 11 ] (panel C, see subsection B.1 ). The evolution of the late-time modulations mirrors the originally-reported chirp, and its peaks and troughs are well-described by a sinusoid (blue curve, panel B; dashed blue line, panel C) whose period evolution is a symmetric parabola centered at $t\\approx 158$ d. We phenomenologically characterize this new set of modulations as an “antichirp” due to the lengthening period.",
+              "label": "Fig. 2",
+              "category": "observational",
+              "category_badge": "Observational Light Curve / SED",
+              "physical_core": "The bolometric light curve and its residuals show the previously reported increasing-frequency chirp followed by late-time modulations with lengthening periods. The new modulations are characterized by a sinusoid with a period evolution described as a symmetric parabola centered at $t\\approx158$ d.",
+              "is_schematic": false
+            },
+            {
+              "url": "/arxiv-figures/2610.39240/fig_rednoise_simple.png",
+              "caption": "Figure 6: Are the SN 2024afav modulations likely to be red noise? A common explanation for modulations in SLSNe-I is interaction with randomly-distributed shells of CSM. We test this explanation against the modulations observed in SN 2024afav, which have two unique features relative to other SLSNe. First, they are unusually high-amplitude, and second, they produce a chirp followed by an antichirp. We constructed a synthetic red noise power spectrum by modeling the post-peak modulations of six SLSNe-I as red noise and generating $\\sim 5\\times 10^{4}$ realizations similar to SN 2024afav’s photometric uncertainty and cadence (examples shown in panel C). We then measured the rms amplitude and extracted extrema timings in an identical manner to our procedure for SN 2024afav. We find that that SN 2024afav is an extreme outlier even in a red noise distribution tuned to modulations in SLSNe-I. The two-dimensional distribution of realizations in parabola contrast and modulation power is shown in panel B; the distribution of a joint score of rarity (constructed based on the $p$ -value of each realization relative to the overall marginal distribution in modulation power or parabola contrast, then combining those scores via a log product) is shown in panel A. Fewer than 100 realizations were more extreme than SN 2024afav; a sample of these few are shown in panel D.",
+              "label": "Fig. 6",
+              "category": "observational",
+              "category_badge": "Key Observational Evidence",
+              "physical_core": "A red-noise test compares SN 2024afav’s modulation amplitude and extrema timing pattern with approximately $5\\times10^{4}$ synthetic realizations matched to its photometric uncertainty and cadence. The paper reports that the observed modulations are an extreme outlier, with fewer than 100 realizations more extreme.",
+              "is_schematic": false
+            }
+          ],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed.",
+            "Figures from source package have not undergone visual verification."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        }
       },
       {
         "arxiv_id": "2610.39253",
@@ -4181,10 +4760,96 @@
       {
         "arxiv_id": "2610.39384",
         "revision": 1,
+        "status": "ready",
         "source_fingerprint": "c49be3329b44061789583f2b407835186d85108ce49814869c6c54c32031e11b",
-        "status": "failed",
-        "failure_reason": "The operation was aborted due to timeout",
-        "priority": "worth_knowing"
+        "priority": "worth_knowing",
+        "coverage": {
+          "level": "body_partial",
+          "label": "已检查正文中支撑判断的指定章节",
+          "source_version": "arXiv:2610.39384v1",
+          "inspected_sections": [
+            "I Introduction",
+            "II Observations and Data Reduction",
+            "II.1 Observations",
+            "II.1.1 MAXI Monitoring",
+            "II.1.2 IXPE",
+            "II.1.3 NuSTAR",
+            "II.2 Data Reduction",
+            "II.2.1 Model-Independent Polarimetric Analyses",
+            "III Results",
+            "III.1 IXPE Observation",
+            "III.2 Polarimetry",
+            "III.3 Spectroscopy",
+            "III.3.1 NuSTAR spectral fitting",
+            "III.3.2 Time-averaged IXPE intensity spectrum",
+            "III.3.3 Track-resolved spectroscopy",
+            "III.4 Spectropolarimetry",
+            "III.4.1 Joint comparison with the intermediate state",
+            "IV Discussion",
+            "IV.1 Polarimetric evolution from the intermediate to the SPL state",
+            "IV.2 The origin of the two intensity tracks",
+            "IV.3 Polarimetric constraints on the trough geometry",
+            "IV.4 A changing-state analogy across the black-hole mass scale",
+            "V Conclusion",
+            "Appendix A IXPE Timing Analysis",
+            "References",
+            "Introduction",
+            "The Disk Awakens: IXPE’s Sequel Observation of GS 1354$-$64 Suggests Changing-Look Behavior in the Steep-Power-Law StateFacilities: IXPE [[93](bib.bib7), [79](bib.bib6)], MAXI [[51](bib.bib39)], NuSTAR [[27](bib.bib25)]",
+            "77 Massachusetts Avenue, Cambridge, MA 02139, USA",
+            "Instructions for reporting errors"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_source_package",
+              "url": "https://export.arxiv.org/src/2610.39384v1",
+              "locator": "I Introduction; II Observations and Data Reduction; II.1 Observations; II.1.1 MAXI Monitoring; II.1.2 IXPE; II.1.3 NuSTAR; II.2 Data Reduction; II.2.1 Model-Independent Polarimetric Analyses; III Results; III.1 IXPE Observation; III.2 Polarimetry; III.3 Spectroscopy; III.3.1 NuSTAR spectral fitting; III.3.2 Time-averaged IXPE intensity spectrum; III.3.3 Track-resolved spectroscopy; III.4 Spectropolarimetry; III.4.1 Joint comparison with the intermediate state; IV Discussion; IV.1 Polarimetric evolution from the intermediate to the SPL state; IV.2 The origin of the two intensity tracks; IV.3 Polarimetric constraints on the trough geometry; IV.4 A changing-state analogy across the black-hole mass scale; V Conclusion; Appendix A IXPE Timing Analysis; References; Introduction; The Disk Awakens: IXPE’s Sequel Observation of GS 1354$-$64 Suggests Changing-Look Behavior in the Steep-Power-Law StateFacilities: IXPE [[93](bib.bib7), [79](bib.bib6)], MAXI [[51](bib.bib39)], NuSTAR [[27](bib.bib25)]; 77 Massachusetts Avenue, Cambridge, MA 02139, USA; Instructions for reporting errors",
+              "description": "Complete, revision-matched arXiv TeX source package",
+              "sha256": "101ea5d926d2dae6efb7dfea4578d9fd9977a00df23ba7c4097dc1b88487551e"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "gpt-6-luna",
+          "analyzed_at": "2026-10-30T18:04:55.739Z",
+          "reason": "This paper presents multi-wavelength IXPE and NuSTAR observations of the black hole transient GS 1354-64 during its steep-power-law (SPL) state, revealing two distinct intensity tracks driven primarily by changes in thermal accretion disk emission rather than corona geometry.",
+          "result": "In the $2\\text{--}8\\ \\mathrm{keV}$ band, the time-averaged linear polarization is measured at $\\mathrm{PD} = 2.3 \\pm 0.2\\%$ and $\\mathrm{PA} = 5^\\circ \\pm 3^\\circ$ ($9.7\\sigma$). The upper track exhibits an energy-dependent polarization slope $\\mathcal{G}_{E,\\mathrm{upper}} = 1.5 \\pm 0.2\\%\\ \\mathrm{keV}^{-1}$, whereas the lower track exhibits a flattened profile ($\\mathcal{G}_E = 0.7^{+0.3}_{-0.5}\\%\\ \\mathrm{keV}^{-1}$ or constant $\\mathrm{PD} = 2.4 \\pm 0.5\\%$). Track-resolved spectroscopy reveals that $\\sim 83\\%$ of the flux variation between tracks is governed by disk cooling and normalization drop ($kT_{\\rm in} = 0.703 \\pm 0.007\\ \\mathrm{keV}$ to $0.632 \\pm 0.009\\ \\mathrm{keV}$, $N_{\\rm disk} = 255 \\pm 4$ to $224 \\pm 5$) while the Comptonized component parameters remain unchanged ($\\Gamma = 2.36 \\pm 0.08$, $N_{\\rm nthComp} = 0.11 \\pm 0.01$).",
+          "reading_entry": "IV.2 The origin of the two intensity tracks",
+          "problem": "Investigating whether flux dips and state bifurcations in black hole X-ray binary steep-power-law states arise from obscuration, coronal geometric reconfigurations, or intrinsic thermal disk instability across black hole mass scales.",
+          "method": "Track-resolved spectropolarimetric analysis using IXPE Stokes $I, Q, U$ data combined with broad-band $3\\text{--}79\\ \\mathrm{keV}$ NuSTAR spectroscopy, fitting linear energy-dependent polarization $\\mathrm{PD}(E) = A_1 + (E - 1\\ \\mathrm{keV})A_{\\rm slope}$ alongside nested phenomenological and physical models (`constant*nuMLI*TBabs(diskbb+nthComp*smedge+laor)`).",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "I Introduction: “Black hole X-ray binaries (BHXBs) serve as dynamic laboratories of accretion, changing their luminosity, spectral shape, and rapid variability as they traverse a sequence of characteristic X-ray states”",
+            "III.2 Polarimetry: “PCUBE measures a PD of $2.3\\pm 0.2\\%$ and a PA of $5\\arcdeg\\pm 3\\arcdeg$ ($1\\sigma$ uncertainties), corresponding to a significance of $9.7\\sigma$.”",
+            "III.2 Polarimetry: “For the upper track, the scout_const analysis gives ${\\rm PD}=2.0\\pm 0.3\\%$ and ${\\rm PA}=3^{+5}_{-4}{}^{\\circ}$, while the lower-track analysis gives ${\\rm PD}=2.8\\pm 0.4\\%$ and ${\\rm PA}=5^{+5}_{-4}{}^{\\circ}$.”",
+            "III.3.3 Track-resolved spectroscopy: “We adopt Case 3 as the preferred description of the track-resolved spectra. It is the simplest model that captures the principal spectral differences, and the addition of track-dependent Comptonization parameters does not produce a”",
+            "IV.1 Polarimetric evolution from the intermediate to the SPL state: “The dominant polarimetric evolution is therefore a reduction and flattening of the PD spectrum, rather than a rotation of its PA. The consistent PAs indicate that the disk–corona system retained the same projected orientation across the”",
+            "IV.2 The origin of the two intensity tracks: “The lower track spectrum is therefore not simply a fainter realization of the same continuum: it has a cooler and fainter disk with no independent change in the nthComp photon index or normalization required.”"
+          ],
+          "research_progress": "Demonstrates that transient dipping and track-bifurcation in the steep-power-law state can be driven purely by thermal disk variability ('disk dilution') without corona reorientation or significant obscuration, supporting changing-state analogies that scale linearly with black hole mass ($t_{\\rm AGN} \\propto M_{\\rm AGN}$).",
+          "figures": [
+            {
+              "url": "/arxiv-figures/2610.39384/1354_lc_easter.png",
+              "caption": "Figure 1: MAXI /GSC light curve of GS 1354 $-$ 64 during its 2025–2026 outburst (MJD 61038–61141). The dashed blue box in the 2–20 keV light curve depicts the intermediate-state IXPE observation (05002101) reported in [ 67 ], the solid purple box depicts the SPL IXPE observation (05250399), and the gray shading denotes the contemporaneous NuSTAR observation (81202310002). The middle and top panels show the SPL IXPE 2–8 keV light curve and 4–8/2–4 keV hardness ratio, respectively, calculated from the combined event lists of all three DUs and binned at 50 s and 3 ks, respectively. Pink shading marks the time intervals identified with the lower-track troughs.",
+              "label": "Fig. 1",
+              "category": "observational",
+              "category_badge": "Observational Light Curve / SED",
+              "physical_core": "Shows the 2025–2026 outburst context and the SPL IXPE observation, including the 2–8 keV light curve, 4–8/2–4 keV hardness ratio, and intervals identified as lower-track troughs.",
+              "is_schematic": false
+            }
+          ],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed.",
+            "Figures from source package have not undergone visual verification."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        }
       },
       {
         "arxiv_id": "2610.39390",
@@ -4336,10 +5001,72 @@
       {
         "arxiv_id": "2610.39603",
         "revision": 1,
+        "status": "ready",
         "source_fingerprint": "2941a9fc295f2330598204bc3f767884990205b9c7f32c4b95d96ae38ccb7cd5",
-        "status": "failed",
-        "failure_reason": "The operation was aborted due to timeout",
-        "priority": "worth_knowing"
+        "priority": "worth_knowing",
+        "coverage": {
+          "level": "body_partial",
+          "label": "已检查正文中支撑判断的指定章节",
+          "source_version": "arXiv:2610.39603v1",
+          "inspected_sections": [
+            "The Peculiar Astrometric Behaviour and Radio Structure of the Quasar 1524−136 Revealed with Very Long Baseline Interferometry",
+            "Positions at S and X Bands",
+            "6. Summary and Conclusions",
+            "References",
+            "Check for updates",
+            "1. Introduction",
+            "2. The Target Object",
+            "3. Astrometric Observations and Analysis",
+            "4. VLBI Imaging",
+            "5. Discussion",
+            "5.1. Astrometry",
+            "5.2. Imaging",
+            "5.3. Possible Physical Explanations of Core Brightening",
+            "Abbreviations"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_source_package",
+              "url": "https://export.arxiv.org/src/2610.39603v1",
+              "locator": "The Peculiar Astrometric Behaviour and Radio Structure of the Quasar 1524−136 Revealed with Very Long Baseline Interferometry; Positions at S and X Bands; 6. Summary and Conclusions; References; Check for updates; 1. Introduction; 2. The Target Object; 3. Astrometric Observations and Analysis; 4. VLBI Imaging; 5. Discussion; 5.1. Astrometry; 5.2. Imaging; 5.3. Possible Physical Explanations of Core Brightening; Abbreviations",
+              "description": "Complete, revision-matched arXiv TeX source package",
+              "sha256": "65b88516b225a370e44a68392154f9ac158c567c811b00a497a696b4fcede6f7"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "gpt-6-luna",
+          "analyzed_at": "2026-10-30T18:04:13.338Z",
+          "reason": "The paper investigates the physical origin of a massive >100 mas astrometric shift in the CSS quasar 1524-136, demonstrating that relativistic jet reactivation and core brightening alter the brightness centroid relative to the terminal hotspot.",
+          "result": "The apparent position shift (>100 mas) is driven by the brightening of the compact flat-spectrum core region ($C$) relative to the northern hotspot ($N$) at $X$ band ($\\sim 8.4\\text{ GHz}$), where core flux increased by $\\sim 0.1\\text{ Jy}$. In standard dual-band ionosphere-free linear combinations, a frequency-dependent positional offset between $S$ and $X$ introduces an astrometric bias $\\tau_0 = \\frac{\\vec{B} \\cdot \\vec{s}_X}{c} + \\frac{\\vec{B} \\cdot (\\Delta \\vec{s}_X - \\Delta \\vec{s}_S)}{c} \\frac{f_S^2}{f_X^2 - f_S^2}$ with scaling factor $K_S = f_S^2 / (f_X^2 - f_S^2) \\approx 0.075$, leading to a $-7.34\\text{ mas}$ declination bias.",
+          "reading_entry": "5.3. Possible Physical Explanations of Core Brightening",
+          "problem": "The CSS quasar 1524-136 exhibited an anomalous apparent position jump of $>0.1''$ (>100 mas) between ICRF2 (1997) and ICRF3/subsequent epochs, conflicting with the assumption that astrometric reference sources possess stationary, point-like core centroids.",
+          "method": "Multi-epoch geodetic and imaging VLBI analysis comparing $S$ band ($f_S = 2.27\\text{ GHz}$) and $X$ band ($f_X = 8.67\\text{ GHz}$) data, employing GNSS-derived Global Ionospheric Maps (GIMs) to perform single-band ionospheric delay corrections independently instead of standard dual-band linear combinations, referenced against Gaia DR3 optical positions.",
+          "assumptions": [
+            "Radio positions are conventionally measured at X band (∼8.4 GHz) and assume point-like or stationary source morphology across bands in standard geodetic VLBI."
+          ],
+          "limits": [
+            "Dual-band ionosphere-free linear combinations fail when source structure differs significantly across observing frequencies."
+          ],
+          "citation_leads": [
+            "The Peculiar Astrometric Behaviour and Radio Structure of the Quasar 1524−136 Revealed with Very Long Baseline Interferometry: “At the X band (∼ 8.4 GHz frequency), where radio positions are conventionally measured, the core region brightened substantially relative to the hotspot at the end of the northern jet.”",
+            "Positions at S and X Bands: “According to the standard geodetic VLBI approach [6], radio sources are observed simultaneously at two frequency bands, S and X. The reported astrometric position conventionally refers to the X band”",
+            "6. Summary and Conclusions: “The calculation of the ionospheric contribution was performed using GIMs produced by the CODE Analysis Center”"
+          ],
+          "research_progress": "Demonstrated that the >100 mas shift in 1524-136 was caused by jet reactivation/core brightening between 1998 and 2014 overcoming the northern hotspot, and validated GIM-based single-band ionospheric calibration to mitigate systematic astrometric errors in multi-component AGN jets.",
+          "figures": [],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed.",
+            "Figures from source package have not undergone visual verification."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        }
       },
       {
         "arxiv_id": "2610.39629",
@@ -4638,26 +5365,270 @@
       {
         "arxiv_id": "2610.39792",
         "revision": 1,
+        "status": "ready",
         "source_fingerprint": "679bd787759891c31fd4615ea9f728ccd440a14d79846891ce5cd1aa968185a5",
-        "status": "failed",
-        "failure_reason": "The operation was aborted due to timeout",
-        "priority": "worth_knowing"
+        "priority": "worth_knowing",
+        "coverage": {
+          "level": "body_partial",
+          "label": "已检查正文中支撑判断的指定章节",
+          "source_version": "arXiv:2610.39792v1",
+          "inspected_sections": [
+            "RAKI: High-Order Alternative Finite Differences for General Relativistic Magnetohydrodynamics",
+            "II General Relativistic Magnetohydrodynamics",
+            "IV.3.2 Binary neutron star merger",
+            "A.2 Reconstruction of the fields",
+            "A.3 Computing the correction term",
+            "References",
+            "Introduction",
+            "I Introduction",
+            "III Numerical Methods",
+            "III.1 Alternative Finite Difference (AFD)",
+            "III.2 Implementation",
+            "IV Tests",
+            "IV.1 1D Tests",
+            "IV.1.1 Circularly Polarised Alfvén Waves",
+            "IV.1.2 Balsara Tests",
+            "IV.2 2D Tests",
+            "IV.3 3D Tests",
+            "IV.3.1 TOV tests",
+            "IV.4 Performance",
+            "V Summary and Conclusion",
+            "Acknowledgements",
+            "Use of Large Language Models",
+            "Appendix A AFD-WENO details",
+            "A.1 Update formula",
+            "Instructions for reporting errors"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_source_package",
+              "url": "https://export.arxiv.org/src/2610.39792v1",
+              "locator": "RAKI: High-Order Alternative Finite Differences for General Relativistic Magnetohydrodynamics; II General Relativistic Magnetohydrodynamics; IV.3.2 Binary neutron star merger; A.2 Reconstruction of the fields; A.3 Computing the correction term; References; Introduction; I Introduction; III Numerical Methods; III.1 Alternative Finite Difference (AFD); III.2 Implementation; IV Tests; IV.1 1D Tests; IV.1.1 Circularly Polarised Alfvén Waves; IV.1.2 Balsara Tests; IV.2 2D Tests; IV.3 3D Tests; IV.3.1 TOV tests; IV.4 Performance; V Summary and Conclusion; Acknowledgements; Use of Large Language Models; Appendix A AFD-WENO details; A.1 Update formula; Instructions for reporting errors",
+              "description": "Complete, revision-matched arXiv TeX source package",
+              "sha256": "7e0c6c146b5009f7ba63d9479b1ecf94bceb00411b585589a201100d52ca8f68"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "gpt-6-luna",
+          "analyzed_at": "2026-10-30T18:06:34.082Z",
+          "reason": "The paper presents RAKI, a new high-order alternative finite-difference (AFD-WENO) GRMHD code using a vector potential formulation that maintains machine-precision divergence-free magnetic fields ($<10^{-16}$) during binary neutron star (BNS) mergers. It is highly relevant to compact binary engine modeling and relativistic astrophysics simulations.",
+          "result": "RAKI achieves up to ninth-order spatial convergence in smooth relativistic tests. For magnetized TOV and BNS merger simulations, discrete magnetic divergence is maintained at machine precision below $10^{-16}$. In magnetized TOV tests at resolution $\\Delta x = 369\\,\\mathrm{m}$, maximum magnetic field strength decays by only $0.2\\%$ at $t = 90\\,M_\\odot$ (preserving $99.2\\%$ of the field over $\\sim 2\\,\\mathrm{ms}$), outperforming IllinoisGRMHD (which decays by $9.38\\%$), while gravitational-wave phase extraction shows approximately third-order convergence.",
+          "reading_entry": "RAKI: High-Order Alternative Finite Differences for General Relativistic Magnetohydrodynamics",
+          "problem": "Traditional high-order finite-volume GRMHD schemes require computationally expensive multi-dimensional face-averaged reconstructions and complex staggered constrained-transport grids to enforce $\\nabla \\cdot \\mathbf{B} = 0$, leading to significant numerical dissipation and high computational costs in dynamical spacetimes such as BNS mergers.",
+          "method": "RAKI couples high-order alternative finite differences (AFD-WENO-AO) with an unstaggered, vertex-centred vector-potential formulation for $B^i = \\frac{1}{\\sqrt{\\gamma}}\\varepsilon^{ijk}\\partial_j A_k$ under generalized Lorenz gauge damping $\\xi = 1.5/\\Delta t_{\\max}$. High-order interface fluxes are constructed via single Riemann evaluations corrected by spatial derivatives: $\\hat{\\mathbf{f}}_{i+1/2} = \\mathbf{f}^*(\\mathbf{q}^-_{i+1/2}, \\mathbf{q}^+_{i+1/2}) + \\sum c_{2k}(\\Delta x)^{2k}[\\partial_x^{2k-1}(\\frac{\\partial \\mathbf{f}}{\\partial \\mathbf{q}}\\partial_x \\mathbf{q})]_{i+1/2}$, combined with the HLLE approximate Riemann solver and RePrimAnd for primitive recovery.",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "RAKI: High-Order Alternative Finite Differences for General Relativistic Magnetohydrodynamics: “In this work, we present RAKI (Relativistic Astrophysics Code Implementation of the Alternative Finite Difference Approach for GRMHD), the first GRMHD code to simulate BNS mergers using high-order alternative finite-difference methods”",
+            "II General Relativistic Magnetohydrodynamics: “In RAKI, we adopt the vector-potential approach and reconstruct the magnetic field from the curl of the spatial vector potential $A_{i}$”",
+            "IV.3.2 Binary neutron star merger: “Despite these additional complications, RAKI maintains the discrete magnetic divergence below $10^{-16}$.”",
+            "A.3 Computing the correction term: “we have enough information to construct the solution to the Riemann problem at the cell interfaces, and to construct the term needed for the correction, $\\partial_{q}f\\partial_{x}q$, at nodes.”"
+          ],
+          "research_progress": "Introduces the first GRMHD code utilizing alternative finite-difference (AFD) methods to simulate binary neutron star mergers, showing nearly two orders of magnitude computational efficiency gain over lower-order schemes (like IllinoisGRMHD) when matching target magnetic fidelity.",
+          "figures": [
+            {
+              "url": "/arxiv-figures/2610.39792/raki_magtov3d.png",
+              "caption": "Figure 6: Evolution of the magnetic field in a magnetised TOV star at $t=0.00$, $5.00$, and $10.00\\,\\mathrm{ms}$. The panels show three-dimensional magnetic field lines coloured by the magnetic field strength, $|B|$, in Gauss. The initial magnetic field has a maximum strength of approximately $10^{15}\\,\\mathrm{G}$ and is confined to the stellar interior. During the evolution, the initially ordered poloidal field becomes distorted. The blue contours mark a rest-mass density of $\\rho=10^{13}\\,\\mathrm{g\\,cm^{-3}}$.",
+              "label": "Fig. 6",
+              "category": "theoretical",
+              "category_badge": "Physical Evolution",
+              "physical_core": "Shows how the magnetic field in a magnetised TOV star evolves from an initially ordered poloidal configuration confined to the stellar interior: the field becomes distorted over time, with its strength indicated by colour.",
+              "is_schematic": true
+            },
+            {
+              "url": "/arxiv-figures/2610.39792/raki_bns_2d.png",
+              "caption": "Figure 10: Snapshots of the rest-mass density (left column) and magnetic field strength (right column) in the equatorial plane during the binary neutron star merger. From top to bottom, the panels correspond to $t=0.00$, $8.87$, and $10.28\\,\\mathrm{ms}$ for the highest resolution simulation ($\\Delta x=277\\,\\mathrm{m}$). The contours mark a rest-mass density of $\\rho=10^{13}\\,\\mathrm{g\\,cm^{-3}}$.",
+              "label": "Fig. 10",
+              "category": "theoretical",
+              "category_badge": "Physical Evolution",
+              "physical_core": "Shows equatorial-plane snapshots of rest-mass density and magnetic-field strength during a binary neutron star merger, including the initial state and two later merger stages.",
+              "is_schematic": true
+            }
+          ],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed.",
+            "Figures from source package have not undergone visual verification."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        }
       },
       {
         "arxiv_id": "2610.39801",
         "revision": 1,
+        "status": "ready",
         "source_fingerprint": "7da47d6f72bbd6d7f85dcdefa1d2433fe1140d0ffba2616bd8d1c99565be6adb",
-        "status": "failed",
-        "failure_reason": "The operation was aborted due to timeout",
-        "priority": "worth_knowing"
+        "priority": "worth_knowing",
+        "coverage": {
+          "level": "body_partial",
+          "label": "已检查正文中支撑判断的指定章节",
+          "source_version": "arXiv:2610.39801v1",
+          "inspected_sections": [
+            "Introduction",
+            "The first mass peak of merging black holes from core binding energies and jet-driven explosions",
+            "I Introduction",
+            "II Method",
+            "II.1 The shape of the distribution function",
+            "II.2 Binding energy of massive cores",
+            "II.3 Binding energy prescription",
+            "II.4 With polar mass removal",
+            "III BH mass distribution in jet-driven explosions",
+            "IV Summary",
+            "Acknowledgements",
+            "References",
+            "Instructions for reporting errors"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_source_package",
+              "url": "https://export.arxiv.org/src/2610.39801v1",
+              "locator": "Introduction; The first mass peak of merging black holes from core binding energies and jet-driven explosions; I Introduction; II Method; II.1 The shape of the distribution function; II.2 Binding energy of massive cores; II.3 Binding energy prescription; II.4 With polar mass removal; III BH mass distribution in jet-driven explosions; IV Summary; Acknowledgements; References; Instructions for reporting errors",
+              "description": "Complete, revision-matched arXiv TeX source package",
+              "sha256": "ebbd8001b60a37b8f0e2ca126a759fcde5fff8021ec7da6f2fd04e1a64ef1ca9"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "gpt-6-luna",
+          "analyzed_at": "2026-10-30T18:05:42.177Z",
+          "reason": "The paper investigates the origin of the first black hole mass peak ($M_{\\rm p1}\\simeq 10M_{\\odot}$) observed by LIGO-Virgo-KAGRA within the jittering jets explosion mechanism (JJEM), providing theoretical prescriptions linking stellar core binding energy and fixed-axis jets to black hole formation without failed supernovae.",
+          "result": "By requiring a threshold core binding energy $E_{\\rm threshold}\\simeq (0.4-0.9)\\times 10^{51}\\ {\\rm erg}$ to prevent equatorial shock unbinding, equatorial material falls back onto the proto-neutron star, driving black hole formation with a mass peak at $M_p \\simeq 8-12M_\\odot$. Accounting for polar mass removal by jets with half-opening angle $\\alpha = 30^\\circ$ (volume fraction $\\eta = 1 - \\cos\\alpha = 0.13$) yields a corrected peak mass of $(M_p)_{\\rm p} \\simeq 7-11M_\\odot$ (e.g., $(M_p)_{\\rm p} = 8.9-9.7M_\\odot$ for $E_{\\rm threshold}=0.5\\times 10^{51}\\ {\\rm erg}$), consistent with the observed $M_{\\rm p1}\\simeq 10M_\\odot$.",
+          "reading_entry": "II.2 Binding energy of massive cores",
+          "problem": "Explaining the physical origin of the first mass peak at $M_{\\rm p1}\\simeq 10M_{\\odot}$ in the merging binary black hole distribution without relying on failed supernovae, which are challenged by the lack of observed vanishing red supergiants and observed point-symmetric supernova remnants.",
+          "method": "MESA (v24.08.1) stellar evolution simulations ($M_{\\rm ZAMS}=15\\text{--}46\\ M_\\odot$, metallicity $z=1.42\\times 10^{-2}$) to calculate the outer binding energy profiles $E_{\\rm bin}(m)$, combined with an IMF-weighted distribution model $dN/dM_{\\rm BH} = (dN/dM_i)(dM_i/dM_{\\rm BH})H_{\\rm BH}(M_i - M_c)$ and analytic mappings $M_{i,{\\rm L}} = [a'\\tan^{-1}((M_{\\rm BH}-M_p)/\\sigma)+b]^{-0.7692}$ (Lorentzian) and $M_{i,{\\rm G}} = [a'\\mathrm{erf}((M_{\\rm BH}-M_p)/\\sigma)+b]^{-0.7692}$ (Gaussian), corrected for polar ejection $M_{\\rm BH,p}=(1-\\eta)M_{\\rm BH}+\\eta M_\\odot$.",
+          "assumptions": [
+            "All massive stars explode via pairs of jets without failed supernovae (JJEM framework).",
+            "Pre-collapse core rotates rapidly enough that the accretion disk launches jets along a fixed axis, failing to unbind material near the equatorial plane.",
+            "Matter outside the maximum neutron star baryonic mass ($m \\simeq 2.65M_\\odot$) falls back if its binding energy exceeds a phenomenological threshold $E_{\\rm threshold}$."
+          ],
+          "limits": [
+            "The toy model uses a 1D binding energy threshold prescription rather than fully self-consistent 3D rotating jet-driven hydrodynamic explosion simulations."
+          ],
+          "citation_leads": [
+            "I Introduction: “In the JJEM there are no failed supernovae; all massive stars explode by pairs of jets.”",
+            "II.2 Binding energy of massive cores: “In the JJEM, all massive stars explode, including all cases of BH formation. There are two conditions to form a BH: (1) The pre-collapse core is rapidly rotating such that the newly born central star launches a pair of jets with a fixed”",
+            "III BH mass distribution in jet-driven explosions: “To have a prominent peak in the region $M_{p}\\simeq 8-12M_{\\odot}$ according to the binding energy prescription, the threshold energy should be in the range of $E_{\\rm threshold}\\simeq 0.4-0.9\\times 10^{51}{~\\rm erg}$.”"
+          ],
+          "research_progress": "Demonstrated that the $\\sim 10M_\\odot$ LVK BH mass peak can arise naturally from the binding energy profile of massive cores undergoing fixed-axis jet explosions, identifying $E_{\\rm threshold}\\simeq 0.4-0.9\\times 10^{51}\\ {\\rm erg}$ as the necessary energy threshold for equatorial accretion.",
+          "figures": [
+            {
+              "url": "/arxiv-figures/2610.39801/fit_1p.png",
+              "caption": "Figure 3: Fitting the data for binding energy prescription. Top panel shows $M_{i}$ (ZAMS mass) as a function of $M_{\\rm BH}$ according to equation ( 9 ). We fit a line to the data to yield a Lorentzian (solid lines) or a Gaussian (dashed lines) for $\\frac{dN}{dM_{\\rm BH}}$, which we present in the bottom panel. Thick green lines are for the H-rich stellar models, and the thin blue lines are for the stripped envelope (H-removed and H+He removed) models.",
+              "label": "Fig. 3",
+              "category": "fitting",
+              "category_badge": "Model vs Data Fitting",
+              "physical_core": "The toy model maps initial stellar mass to black hole mass using the binding-energy prescription, then compares the resulting Lorentzian or Gaussian black hole mass distributions for H-rich and stripped-envelope stellar models.",
+              "is_schematic": false
+            },
+            {
+              "url": "/arxiv-figures/2610.39801/env_1p.png",
+              "caption": "Figure 4: The change in BH mass distribution for H-rich models for the Lorentzian and Gaussian fits as the threshold $E_{\\rm threshold}$ varies. The top row shows the threshold $E_{\\rm threshold}$ for each peak. The bottom panels show the location of the peak as a function of threshold energy $E_{\\rm threshold}$. The color of the points corresponds to the $r^{2}$ value of the $M_{i}(M_{\\rm BH)}$ fit. The vertical dashed lines represent the values of mass distribution peaks when we add polar mass removal according to equation ( 10 ) for a polar conical half-opening angle of $0^{\\circ}-30^{\\circ}$. The horizontal line in panel (a) corresponds to the points above the graph in panel (c); this is a case where our fitting does not work. This shows that the prescription we use does not work well for $E_{\\rm threshold}>10^{51}{~\\rm erg}$.",
+              "label": "Fig. 4",
+              "category": "theoretical",
+              "category_badge": "Physical Evolution",
+              "physical_core": "For H-rich models, the figure shows how the predicted black hole mass-distribution peak changes with the threshold binding energy, and indicates how polar mass removal for opening angles of 0°–30° shifts the peak.",
+              "is_schematic": true
+            }
+          ],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed.",
+            "Figures from source package have not undergone visual verification."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        }
       },
       {
         "arxiv_id": "2610.39862",
         "revision": 1,
+        "status": "ready",
         "source_fingerprint": "53277153ab038b4770c0cf15316175ee6835d467eb2c1e8c14d188699586ed6e",
-        "status": "failed",
-        "failure_reason": "The operation was aborted due to timeout",
-        "priority": "worth_knowing"
+        "priority": "worth_knowing",
+        "coverage": {
+          "level": "body_partial",
+          "label": "已检查正文中支撑判断的指定章节",
+          "source_version": "arXiv:2610.39862v1",
+          "inspected_sections": [
+            "Introduction",
+            "Tidal disruption or plunge: the role of neutron star internal structure in black hole–neutron star mergers",
+            "II.1 Mass shedding equation in general relativistic framework",
+            "II.4 Equations of state and numerical-relativity data",
+            "III.1 Tidal disruption or Plunge",
+            "III.2 Remnant disk mass",
+            "III.3 Parameter space study",
+            "I Introduction",
+            "II Formalism",
+            "II.2 Remnant mass model",
+            "II.3 Comparison with previous work",
+            "III Results",
+            "IV Summary and conclusions",
+            "Acknowledgements",
+            "References",
+            "Instructions for reporting errors"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_source_package",
+              "url": "https://export.arxiv.org/src/2610.39862v1",
+              "locator": "Introduction; Tidal disruption or plunge: the role of neutron star internal structure in black hole–neutron star mergers; II.1 Mass shedding equation in general relativistic framework; II.4 Equations of state and numerical-relativity data; III.1 Tidal disruption or Plunge; III.2 Remnant disk mass; III.3 Parameter space study; I Introduction; II Formalism; II.2 Remnant mass model; II.3 Comparison with previous work; III Results; IV Summary and conclusions; Acknowledgements; References; Instructions for reporting errors",
+              "description": "Complete, revision-matched arXiv TeX source package",
+              "sha256": "f30f86e41a7ac900a0c091ceef4d5d06278c6785843d0b74fc5547bddec72bda"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "gpt-6-luna",
+          "analyzed_at": "2026-10-30T18:07:44.238Z",
+          "reason": "The paper provides a general relativistic mass-shedding criterion in Kerr spacetime incorporating the neutron star internal structure parameter to predict BHNS merger remnants, directly relevant to central engines and electromagnetic counterparts of compact binary mergers.",
+          "result": "The authors derive a general-relativistic tidal disruption radius $r_{\\rm TD}$ from a mass-shedding algebraic equation parameterized by $\\eta = \\rho_c/\\bar{\\rho}$, yielding an analytical remnant disk mass model $\\hat{M}^{\\rm rem}_{\\rm model} = [\\max(\\alpha \\xi_{\\rm TD} - \\beta \\hat{r}_{\\rm ISCO} \\frac{\\rho}{\\nu} + \\gamma, 0)]^\\delta$ calibrated against 70 numerical relativity simulations with best-fit coefficients $\\alpha=0.123\\pm 0.017$, $\\beta=0.162\\pm 0.008$, $\\gamma=0.635\\pm 0.064$, and $\\delta=1.830\\pm 0.254$ ($\\,\\sigma_{\\rm rms} = 0.043$). Application to events demonstrates that GW200105 and GW200115 inevitably plunged ($\\Delta r = r_{\\rm TD} - r_{\\rm ISCO} < 0$ by $-17$ to $-43\\,\\mathrm{km}$), whereas GW230529 is marginal with $\\Delta r \\sim 0$, producing remnant disk mass $\\hat{M}^{\\rm rem} \\sim 0.08\\,M_{\\rm NS}^{\\rm b}$ only in favorable low-mass, prograde-spin configurations.",
+          "reading_entry": "II.1 Mass shedding equation in general relativistic framework",
+          "problem": "Accurately determining whether a black hole-neutron star merger undergoes tidal disruption or plunges into the event horizon, and quantifying how the internal structure of the neutron star and Kerr spacetime relativistic tides dictate the formation of an accretion disk and ejecta.",
+          "method": "Using the equation of geodesic deviation in the local free-fall frame on equatorial circular orbits in Kerr metric, the negative eigenvalue of the tidal tensor $\\lambda_{\\min} = -\\frac{M}{r^3}(2+\\frac{3k}{r^2})$ is equated to self-gravity via the internal density profile parameter $\\eta \\simeq \\rho_c/\\bar{\\rho}$ to solve for $\\xi_{\\rm TD} \\equiv r_{\\rm TD}/R_{\\rm NS}$. The model is calibrated across 70 NR simulations spanning mass ratios $3\\le Q\\le 7$ and spins $-0.5\\le \\chi_{\\rm BH}\\le 0.9$.",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Tidal disruption or plunge: the role of neutron star internal structure in black hole–neutron star mergers: “The outcome of black hole–neutron star (BHNS) mergers is studied using a general-relativistic mass-shedding condition in the Kerr spacetime, which determines the tidal-disruption radius from the mass ratio, the black hole (BH) spin, the”",
+            "II.1 Mass shedding equation in general relativistic framework: “Geodesic motion in the Kerr spacetime admits three constants of motion per unit rest mass:”",
+            "II.4 Equations of state and numerical-relativity data: “The EOS dependence of the outcome, whether plunge or tidal disruption, is investigated using both mean-field and agnostic EOS models.”",
+            "III.1 Tidal disruption or Plunge: “The remnant-mass model, which is calibrated on NR simulations and does not impose the sharp threshold, predicts a small but nonzero remnant mass for the lower and favoured cases of GW230529”",
+            "III.2 Remnant disk mass: “For the nuclear-physics EOSs the model shows no significant systematic bias, with a mean offset\n$\\langle\\hat{M}^{\\rm rem}_{\\rm NR}-\\hat{M}^{\\rm rem}_{\\rm model}\\rangle=0.001\\,M_{\\rm NS}^{\\rm b}$”",
+            "III.3 Parameter space study: “GW230529 is the only event for which $\\Delta r$ approaches zero within its credible range, making it the most promising candidate for partial tidal disruption.”"
+          ],
+          "research_progress": "Replaces phenomenological Newtonian or numerical ellipsoidal sequence estimations with a closed-form relativistic mass-shedding equation, increasing the tidal disruption radius by up to $\\sim 11\\%$ in strong-field regimes and providing unbiased remnant mass fitting for nuclear-physics EOSs with $\\langle\\hat{M}^{\\rm rem}_{\\rm NR}-\\hat{M}^{\\rm rem}_{\\rm model}\\rangle=0.001\\,M_{\\rm NS}^{\\rm b}$.",
+          "figures": [
+            {
+              "url": "/arxiv-figures/2610.39862/fig1a.png",
+              "caption": "Figure 1: Tidal disruption (TD) and plunge criteria for the DDB EOS. Left: neutron star (NS) with mass $1.4\\,M_{\\odot}$ ($R_{\\rm NS}=13.14\\,\\mathrm{km}$, $\\eta=2.13$). Right: NS with mass $2.0\\,M_{\\odot}$ ($R_{\\rm NS}=13.09\\,\\mathrm{km}$, $\\eta=2.15$). The black solid line is the critical point where tidal radius is equal to the ISCO radius, and the colour map shows the difference $r_{\\rm TD}-r_{\\rm ISCO}$. The dashed line marks a nonspinning BH, $\\chi=0$. Binaries above the solid line are tidally disrupted.",
+              "label": "Fig. 1",
+              "category": "theoretical",
+              "category_badge": "Physical Evolution",
+              "physical_core": "Maps the boundary between tidal disruption and direct plunge for two neutron-star masses in the DDB EOS. The boundary is set by the condition $r_{\\rm TD}=r_{\\rm ISCO}$; the color map shows $r_{\\rm TD}-r_{\\rm ISCO}$, and systems above the boundary are tidally disrupted.",
+              "is_schematic": true
+            }
+          ],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed.",
+            "Figures from source package have not undergone visual verification."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        }
       },
       {
         "arxiv_id": "2610.39865",
@@ -5005,10 +5976,98 @@
       {
         "arxiv_id": "2610.40014",
         "revision": 1,
+        "status": "ready",
         "source_fingerprint": "496ecdd0b174a5ec23c32ddea0e6220adc8dae1bb90b328c62ffab943b3ec6eb",
-        "status": "failed",
-        "failure_reason": "The operation was aborted due to timeout",
-        "priority": "worth_knowing"
+        "priority": "skip",
+        "coverage": {
+          "level": "body_partial",
+          "label": "已检查正文中支撑判断的指定章节",
+          "source_version": "arXiv:2610.40014v1",
+          "inspected_sections": [
+            "I Introduction",
+            "II Data",
+            "II.1 Elemental abundances",
+            "II.2 Abundance Uncertainties",
+            "III Results and Discussion",
+            "III.1 Classification of the sample stars",
+            "III.2 Comparison with Literature",
+            "III.3 $r$-process-enhanced stars",
+            "III.3.1 Abundance pattern fitting",
+            "III.3.2 The differences between the $r$-I and $r$-II stars in $rmleft[mathrmX/mathrmEuright]$",
+            "III.3.3 Zn-rich star: J1158+0734",
+            "III.4 CEMP stars",
+            "III.4.1 CEMP-s stars",
+            "III.4.2 CEMP-r/s and CEMP-r+s stars",
+            "IV Conclusion",
+            "Introduction",
+            "Four-hundred Very Metal-poor Stars Studied with LAMOST and Subaru. IV. Heavy Elements Enhanced StarsFacilities: LAMOST, Subaru",
+            "V Acknowledgments",
+            "Appendix A Appendix information",
+            "References",
+            "Instructions for reporting errors"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_source_package",
+              "url": "https://export.arxiv.org/src/2610.40014v1",
+              "locator": "I Introduction; II Data; II.1 Elemental abundances; II.2 Abundance Uncertainties; III Results and Discussion; III.1 Classification of the sample stars; III.2 Comparison with Literature; III.3 $r$-process-enhanced stars; III.3.1 Abundance pattern fitting; III.3.2 The differences between the $r$-I and $r$-II stars in $rmleft[mathrmX/mathrmEuright]$; III.3.3 Zn-rich star: J1158+0734; III.4 CEMP stars; III.4.1 CEMP-s stars; III.4.2 CEMP-r/s and CEMP-r+s stars; IV Conclusion; Introduction; Four-hundred Very Metal-poor Stars Studied with LAMOST and Subaru. IV. Heavy Elements Enhanced StarsFacilities: LAMOST, Subaru; V Acknowledgments; Appendix A Appendix information; References; Instructions for reporting errors",
+              "description": "Complete, revision-matched arXiv TeX source package",
+              "sha256": "f6bdd921b89db6f0658ee3b09da29b3e226c68e5601a240bb727e910da639b65"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "gpt-6-luna",
+          "analyzed_at": "2026-10-30T18:11:10.003Z",
+          "reason": "This paper focuses on stellar atmospheric parameters, neutron-capture elemental abundances, and classification of very metal-poor stars, which lies within Galactic chemical evolution and stellar archaeology rather than high-energy transient astrophysics.",
+          "result": "The authors analyze heavy element abundances across very metal-poor stars, showing that for heavy neutron-capture elements ($Z \\ge 56$) the average $s$-process fraction $F_{s} = \\frac{1}{N}\\sum_{i}^{N}\\frac{10^{\\log\\epsilon(X)_{s}+O_{s}}}{10^{\\log\\epsilon(X)}}$ increases with metallicity over $-3.5 < [\\mathrm{Fe}/\\mathrm{H}] < -1.5$, and they propose revised classification criteria for CEMP-$r$+$s$ stars satisfying $-0.2 \\leqslant [\\mathrm{La}/\\mathrm{Nd}] \\leqslant 0.2$ and $-0.5 \\leqslant [\\mathrm{Eu}/\\mathrm{Nd}] \\leqslant 0.0$.",
+          "reading_entry": "III.3 r-process-enhanced stars",
+          "problem": "Disentangling the relative nucleosynthetic contributions of rapid ($r$), slow ($s$), and intermediate ($i$) neutron-capture processes in heavy-element-enhanced very metal-poor stars and constraining the empirical boundary criteria for CEMP subclasses.",
+          "method": "High-resolution stellar spectroscopy using Subaru/HDS ($R=36{,}000$) and LAMOST, deriving elemental abundances through equivalent width analysis with TAME and synthetic spectrum fitting using MOOG with 1D ATLAS NEWODF LTE model atmospheres, complemented by multi-epoch radial velocity monitoring.",
+          "assumptions": [],
+          "limits": [
+            "Uncertainties in nuclear physics inputs and the lack of blue/UV spectral coverage below 4000 Å limit precise constraints on the astrophysical sites of r-process nucleosynthesis."
+          ],
+          "citation_leads": [
+            "I Introduction: “Elements heavier than Fe are predominantly produced via neutron-capture processes.”",
+            "II Data: “Subsequent test calculations confirmed that any discrepancies yield abundance differences that fall well within our quoted uncertainties.”",
+            "III.3.1 Abundance pattern fitting: “Over the metallicity range -3.5 <[Fe/H]< -1.5, we observe an increase in F_{s} with increasing metallicity”",
+            "III.3.3 Zn-rich star: J1158+0734: “Consequently, uncertainties in nuclear physics inputs constitute a major limitation in precisely identifying the astrophysical origin of the”",
+            "IV Conclusion: “stars satisfying -0.2 \\leqslant [La/Nd] \\leqslant 0.2 and -0.5 \\leqslant [Eu/Nd] \\leqslant 0.0 could be classified as [CEMP](#id15)-$r$+$s$.”"
+          ],
+          "research_progress": "Quantifies the s-process contamination fraction $F_s$ across metallicity space and refines empirical criteria identifying dual $r+s$ enrichment in metal-poor stellar atmospheres.",
+          "figures": [
+            {
+              "url": "/arxiv-figures/2610.40014/solar_rs_fraction_color.png",
+              "caption": "Figure 8: The variation of $s$-process contribution fraction ($F_{s}$) as a function of $\\rm\\left[\\mathrm{Fe}/\\mathrm{H}\\right]$ in $r$ -I and $r$ -II stars. The color scale represents the corresponding $\\rm\\left[\\mathrm{Ba}/\\mathrm{Eu}\\right]$ values for individual stars. The red shaded area indicates the region where 0 $\\leqslant$ $F_{s}$ $\\leqslant$ 0.10, encompassing stars that we consider to be essentially free from $s$-process contamination, as discussed in the main text.",
+              "label": "Fig. 8",
+              "category": "observational",
+              "category_badge": "Key Observational Evidence",
+              "physical_core": "Shows the inferred s-process contribution fraction $F_s$ versus $\\rm [Fe/H]$ for r-I and r-II stars, with color indicating $\\rm [Ba/Eu]$ and shading marking $0 \\leq F_s \\leq 0.10$.",
+              "is_schematic": false
+            },
+            {
+              "url": "/arxiv-figures/2610.40014/J1158_0734_2d_C_Na_Mg_Si_Ca_Ti_V_Mn_Fe_Co_Ni_Zn.png",
+              "caption": "Figure 15: Probability density distribution of the progenitor derived from the light-element abundances of J1158+0734. The color scale indicates the joint probability density across different combinations of progenitor mass and explosion energy. The histogram at the top (right) shows the marginal probability distribution of progenitor mass (explosion energy), obtained by integrating over all possible explosion energies (masses).",
+              "label": "Fig. 15",
+              "category": "fitting",
+              "category_badge": "Model vs Data Fitting",
+              "physical_core": "Shows the joint probability density for progenitor mass and explosion energy derived from the light-element abundances of J1158+0734, along with the marginal probability distributions for each parameter.",
+              "is_schematic": false
+            }
+          ],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed.",
+            "Figures from source package have not undergone visual verification."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        }
       },
       {
         "arxiv_id": "2610.40015",
@@ -5183,18 +6242,238 @@
       {
         "arxiv_id": "2610.40049",
         "revision": 1,
+        "status": "ready",
         "source_fingerprint": "7a3e543e73b3416a8b49d49ab12b121577b6ee37c9f517347592146d2cb57efd",
-        "status": "failed",
-        "failure_reason": "The operation was aborted due to timeout",
-        "priority": "worth_knowing"
+        "priority": "worth_knowing",
+        "coverage": {
+          "level": "body_partial",
+          "label": "已检查正文中支撑判断的指定章节",
+          "source_version": "arXiv:2610.40049v1",
+          "inspected_sections": [
+            "Introduction",
+            "Can the $sim 5$ kpc starburst ring in MW create eROSITA bubbles?",
+            "I Introduction",
+            "II Simulation set up",
+            "III Results & Conclusion",
+            "References",
+            "Instructions for reporting errors"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_source_package",
+              "url": "https://export.arxiv.org/src/2610.40049v1",
+              "locator": "Introduction; Can the $sim 5$ kpc starburst ring in MW create eROSITA bubbles?; I Introduction; II Simulation set up; III Results & Conclusion; References; Instructions for reporting errors",
+              "description": "Complete, revision-matched arXiv TeX source package",
+              "sha256": "3d3f68c8e0780046b7e4b52893f645b3756da694317e114f213a2a409afcf4e2"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "gpt-6-luna",
+          "analyzed_at": "2026-10-30T18:07:09.373Z",
+          "reason": "The paper uses 3D hydrodynamic simulations to directly refute recent claims that the Milky Way eROSITA bubbles are produced by a ~5 kpc starburst ring, demonstrating that a compact Galactic Center energy injection is required to reproduce the coherent large-scale X-ray bubble morphology.",
+          "result": "Distributed star formation peaking at $R \\sim 4\\text{--}5\\text{ kpc}$ produces hot gas chimneys ($T \\sim 10^{7}\\text{--}10^{8}\\text{ K}$) extending vertically up to $z \\sim 8\\text{ kpc}$ with densities $n \\sim 10^{-5}\\text{--}10^{-4}\\text{ cm}^{-3}$, lacking sharp edges and failing to create large-scale coherent bubble structures in projected ROSAT R4 band ($0.44\\text{--}1.01\\text{ keV}$) surface brightness maps. In contrast, adding central mass and energy injection equivalent to $\\mathrm{SFR} = 0.5\\,M_\\odot\\text{ yr}^{-1}$ for $\\approx 27\\text{ Myr}$ within an injection radius $r = 50\\text{ pc}$ successfully reproduces two symmetric, sharply edged X-ray structures of size $\\sim 80^{\\circ}$.",
+          "reading_entry": "III Results & Conclusion",
+          "problem": "Whether the eROSITA bubbles (and by extension the Fermi Bubbles) originate from compact nuclear feedback at the Galactic Center or from overlapping hot gas plumes rising from the Milky Way's $\\sim 5\\text{ kpc}$ starburst ring as proposed by recent radio polarization studies.",
+          "method": "Three-dimensional hydrodynamic simulations using the PLUTO code on a Cartesian domain ($[-12, 12]\\text{ kpc} \\times [-12, 12]\\text{ kpc} \\times [0, 15]\\text{ kpc}$) with broken power-law radiative cooling $\\Lambda(T) = \\Lambda_0 T^\\alpha$ across 9 bins from Cloudy-v17. Two setups are compared: 'DI' (distributed star formation sampled from a cluster mass function $dN/dM \\propto M^{-2}$ with $M_{\\rm cl} \\in [10^3, 10^6]\\,M_\\odot$ and Starburst99 injection) and 'DI+CI' (distributed injection plus central spherical injection of radius $50\\text{ pc}$ starting at $t = 23\\text{ Myr}$). Synthetic X-ray surface brightness maps in ROSAT R4 band are generated with the PASS code integrated with the APEC plasma model across 12 solar observer positions.",
+          "assumptions": [
+            "Steady-state Galactic background consisting of a rotating ISM ($T_{\\rm ism} = 4\\times 10^4\\text{ K}$) and isothermal non-rotating CGM ($T_{\\rm cgm} = 3\\times 10^6\\text{ K}$) in a cored NFW halo and Miyamoto-Nagai disk potential.",
+            "Star cluster formation obeys a power-law mass function of index $-2$ between $10^3$ and $10^6\\,M_\\odot$, with individual cluster injection rates derived from Starburst99 models."
+          ],
+          "limits": [
+            "Pure hydrodynamic simulations omitting magnetic fields and cosmic rays, precluding direct synthetic modeling of radio polarization or gamma-ray emission from the Fermi bubbles."
+          ],
+          "citation_leads": [
+            "I Introduction: “In this work, we investigate whether stellar feedback associated with the $\\sim 5$ kpc star-forming ring can give rise to the large-scale structures observed in the X-ray all-sky maps, or whether energy injection confined to the central region of the Galaxy is required”",
+            "II Simulation set up: “We perform our hydrodynamical simulations in three-dimensional Cartesian coordinates using the publicly available code pluto [10].”",
+            "II Simulation set up: “In simulation DI, we inject mass and energy solely from star clusters, as described above. In simulation DI+CI, in addition to star cluster feedback, we also inject mass and energy at the Galactic center”",
+            "II Simulation set up: “In the first run, we launch outflows solely due to disk-wide star formation, with a peak star-formation around $\\sim 5$ kpc. We refer to this run as ‘DI’ (distributed injection). In the second run, along with disk-wide stellar energy injection, we also inject energy at the central region of the Galaxy. We refer to this run as ‘DI+CI’”",
+            "III Results & Conclusion: “chimneys of hot gas ($T\\sim 10^{7}-10^{8}$ K) extend all the way to $\\approx 10$ kpc in the radial direction and up to $8$ kpc in the vertical direction and have a width of about $\\sim 5$ kpc”",
+            "III Results & Conclusion: “the density of these hot chimneys is $\\sim 10^{-5}-10^{-4}$ cm-3 , making these chimneys unsuitable for strong X-ray emission at $\\sim 1$ keV energies. Therefore, these chimneys are unlikely to represent the sharply edged eRBs.”",
+            "III Results & Conclusion: “we see the presence of two large and coherent X-ray structures of size $\\sim 80^{\\circ}$ at $50$ Myr among the previously seen smaller structures. The size, brightness, and sharpness of their outer edge resemble the eROSITA bubbles.”",
+            "III Results & Conclusion: “This clearly demonstrates that the overlapping hot chimneys from the $\\sim 5$ kpc star formation ring are inadequate to create the eRB-like structure in our Galaxy, and we require a strong central injection”",
+            "III Results & Conclusion: “To examine whether enhanced metallicity could produce an eRB-like feature in the X-ray maps, we artificially increased the metallicity of the injected stellar feedback material by factors of 10. However, no bubble-like structures were observed”",
+            "III Results & Conclusion: “It would be worthwhile to extend the present simulations by including additional physical processes such as magnetic fields and cosmic rays to conclude about radio emission related to the eRBs and their polarization properties.”",
+            "II Simulation set up: “The ISM is initialized at a temperature of $T_{\\rm ism}=4\\times 10^{4}$ K (thermal plus dynamic temperature), while the CGM is set to $T_{\\rm cgm}=3\\times 10^{6}$ K.”",
+            "II Simulation set up: “We sample the mass of star clusters from a power-law cluster mass function with index $-2$, with lower and upper mass limits of $10^{3}$ and $10^{6}$ M⊙, respectively”"
+          ],
+          "research_progress": "Numerically tests and rules out the distributed $\\sim 5\\text{ kpc}$ star-forming ring hypothesis for eRBs, demonstrating that neither viewing angle variations, metallicity enhancement up to $10\\times$, nor different X-ray energy bands can generate the observed eROSITA bubble morphology without compact central energy injection.",
+          "figures": [
+            {
+              "url": "/arxiv-figures/2610.40049/temp_CI.png",
+              "caption": "Figure 2: Same as Figure 1, but for the distributed + central injection (DI+CI) case.",
+              "label": "Fig. 2",
+              "category": "theoretical",
+              "category_badge": "Physical Evolution",
+              "physical_core": "Temperature maps of the distributed + central injection simulation at 17, 33, and 50 Myr show how the simulated hot gas evolves when energy is injected both by star formation and at the Galactic Center.",
+              "is_schematic": true
+            },
+            {
+              "url": "/arxiv-figures/2610.40049/SBmap_DI_vs_CI.png",
+              "caption": "Figure 3: X-ray surface brightness maps of two scenarios of star formation in the MW. One, without the presence of the central energy injection (left panel), and second, with the presence of a central energy injection corresponding to an SFR $=0.5$ M ⊙ yr -1 (right panel). The absence of an eROSITA bubble in the first case clearly showcases that the $\\sim 5$ kpc star formation ring in the MW is not able to produce the eRBs, and a central injection is necessary.",
+              "label": "Fig. 3",
+              "category": "observational",
+              "category_badge": "Key Observational Evidence",
+              "physical_core": "The X-ray surface brightness maps compare the star-formation-ring scenario without central injection to a scenario with central injection corresponding to an SFR of 0.5 M⊙ yr⁻¹; the caption reports no eROSITA bubble in the former case.",
+              "is_schematic": false
+            }
+          ],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed.",
+            "Figures from source package have not undergone visual verification."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        }
       },
       {
         "arxiv_id": "2610.40053",
         "revision": 1,
+        "status": "ready",
         "source_fingerprint": "1260a8d6507aa96874c078d1cb543e1c15258217568a6fae5fe091fe6139e39f",
-        "status": "failed",
-        "failure_reason": "The operation was aborted due to timeout",
-        "priority": "must_read"
+        "priority": "must_read",
+        "coverage": {
+          "level": "full_body",
+          "label": "已检查版本匹配的完整 TeX 正文",
+          "source_version": "arXiv:2610.40053v1",
+          "inspected_sections": [
+            "Introduction",
+            "KM3-230213A: The Highest-Energy Cosmic Neutrino",
+            "1 Introduction",
+            "2 Observation of the KM3-230213A event",
+            "2.1 Background estimation",
+            "2.2 Flux estimation and global neutrino landscape",
+            "3 Interpretation and possible origins",
+            "3.1 Observational constraints",
+            "3.2 Constraints on a Galactic origin",
+            "3.3 Active galactic nuclei and blazars",
+            "3.4 Gamma-Ray Bursts and transient sources",
+            "3.5 Cosmogenic neutrino interpretation",
+            "3.6 Exotic physics and BSM scenarios",
+            "3.6.1 Modified neutrino propagation and Lorentz invariance violation",
+            "3.6.2 Neutrino non-standard interactions",
+            "3.6.3 Dark matter scenarios",
+            "3.6.4 Primordial black holes and early-universe relics",
+            "3.6.5 Exotic particles and non-standard messengers",
+            "3.6.6 Electroweak vacuum instability in black-hole mergers",
+            "3.7 Comparison of the proposed scenarios",
+            "4 Multi-messenger observations and follow-up studies",
+            "4.1 Gamma-ray and high-energy constraints",
+            "4.2 Radio follow-up and candidate counterparts",
+            "5 Future experimental prospects",
+            "6 Conclusions",
+            "Acknowledgments",
+            "Conflicts of Interest",
+            "References",
+            "Instructions for reporting errors"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_source_package",
+              "url": "https://export.arxiv.org/src/2610.40053v1",
+              "locator": "Full body",
+              "description": "Complete, revision-matched arXiv TeX source package",
+              "sha256": "b77c1f1359d323d0e604129bfa00c33a607162579b1eee2f3cff33addeb15dea"
+            }
+          ],
+          "source_sections": [
+            "Introduction",
+            "KM3-230213A: The Highest-Energy Cosmic Neutrino",
+            "1 Introduction",
+            "2 Observation of the KM3-230213A event",
+            "2.1 Background estimation",
+            "2.2 Flux estimation and global neutrino landscape",
+            "3 Interpretation and possible origins",
+            "3.1 Observational constraints",
+            "3.2 Constraints on a Galactic origin",
+            "3.3 Active galactic nuclei and blazars",
+            "3.4 Gamma-Ray Bursts and transient sources",
+            "3.5 Cosmogenic neutrino interpretation",
+            "3.6 Exotic physics and BSM scenarios",
+            "3.6.1 Modified neutrino propagation and Lorentz invariance violation",
+            "3.6.2 Neutrino non-standard interactions",
+            "3.6.3 Dark matter scenarios",
+            "3.6.4 Primordial black holes and early-universe relics",
+            "3.6.5 Exotic particles and non-standard messengers",
+            "3.6.6 Electroweak vacuum instability in black-hole mergers",
+            "3.7 Comparison of the proposed scenarios",
+            "4 Multi-messenger observations and follow-up studies",
+            "4.1 Gamma-ray and high-energy constraints",
+            "4.2 Radio follow-up and candidate counterparts",
+            "5 Future experimental prospects",
+            "6 Conclusions",
+            "Acknowledgments",
+            "Conflicts of Interest",
+            "References",
+            "Instructions for reporting errors"
+          ],
+          "section_coverage": {
+            "problem": true,
+            "assumptions": false,
+            "method": false,
+            "results": true,
+            "limitations": true,
+            "appendices": "not_applicable"
+          }
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "gpt-6-luna",
+          "analyzed_at": "2026-10-30T18:09:09.764Z",
+          "reason": "KM3-230213A is the highest-energy cosmic neutrino recorded to date ($E_\\mu = 120^{+110}_{-60}\\,\\mathrm{PeV}$, median parent neutrino energy $\\sim 220\\,\\mathrm{PeV}$), establishing multi-PeV/EeV detection capabilities and setting crucial multi-messenger constraints on AGN/GRB hadronic models, cosmogenic neutrino production, and BSM physics.",
+          "result": "KM3NeT/ARCA detected event KM3-230213A as a near-horizontal track triggering $N_{\\text{trig}}=3672$ PMTs, with muon energy $E_{\\mu} = 120^{+110}_{-60}\\,\\mathrm{PeV}$ ($90\\%$ C.I. $35\\text{--}380\\,\\mathrm{PeV}$) and inferred parent neutrino median energy $E_\\nu \\sim 220\\,\\mathrm{PeV}$ ($72\\,\\mathrm{PeV}\\text{--}2.6\\,\\mathrm{EeV}$ under an $E_\\nu^{-2}$ spectrum). Galactic photopion production requires parent cosmic-ray nucleons with $E_p \\gtrsim 4\\,\\mathrm{EeV}$, disfavoring a steady Galactic origin. Cosmogenic neutrino production requires strong cosmological source evolution $S(z) \\propto (1+z)^m$ with $m>3$ and high-energy proton fractions up to $z_{\\max} \\sim 6$.",
+          "reading_entry": "2 Observation of the KM3-230213A event",
+          "problem": "Pinpointing the origin of an unprecedented ultra-high-energy (UHE) neutrino event at $\\sim 200\\,\\mathrm{PeV}$ while resolving tensions with existing null non-detections / diffuse flux upper limits from IceCube and Pierre Auger and the absence of detectable transient/steady GeV-TeV gamma-ray counterparts.",
+          "method": "Reconstruction of near-horizontal muon tracks using a saturated-PMT-tolerant energy estimator based on triggered PMT multiplicity $N_{\\text{trig}}$, extensive Monte Carlo simulations under power-law neutrino spectra, background attenuation modeling across a $\\sim 300\\,\\mathrm{km}$ water-equivalent baseline, and joint likelihood / parameter-space analyses comparing blazar $pp/p\\gamma$ models, transient GRB shock flares ($T \\lesssim 2\\,\\mathrm{yr}$, $E \\sim 10^{50}\\,\\mathrm{erg}$), cosmogenic UHECR interactions, and LIV-induced pair-production energy losses.",
+          "assumptions": [],
+          "limits": [
+            "Single-event statistics preclude definitive discrimination between an isolated transient flare, a sub-threshold steady source, or cosmogenic origin.",
+            "Electromagnetic counterpart searches yielded no significant GeV-TeV gamma-ray association (VERITAS upper limit $< 1.8\\%$ Crab at $E_\\gamma > 550\\,\\mathrm{GeV}$) and thousands of unresolvable radio sources in the $68\\%$ containment region."
+          ],
+          "citation_leads": [
+            "2 Observation of the KM3-230213A event: “KM3-230213A was recorded on February 13, 2023, when the KM3NeT/ARCA detector comprised 21 operational detection lines.”",
+            "3.2 Constraints on a Galactic origin: “For a photopion-production scenario, the observed neutrino would require parent cosmic rays with energies of at least approximately $4$ EeV per nucleon”",
+            "3.6.1 Modified neutrino propagation and Lorentz invariance violation: “In superluminal scenarios, UHE neutrinos would undergo rapid energy losses through processes such as electron–positron pair emission, preventing them from reaching Earth with energies as high as observed.”",
+            "4.2 Radio follow-up and candidate counterparts: “Radio observations provide a complementary probe for identifying potential counterparts within the localization region.”",
+            "6 Conclusions: “Although based on a single event, it demonstrates the capability of KM3NeT to probe the neutrino sky beyond 100 PeV and opens the way toward population studies at the highest energies.”"
+          ],
+          "research_progress": "Expands neutrino observational astronomy beyond $100\\,\\mathrm{PeV}$ using undersea Cherenkov arrays, ruling out atmospheric backgrounds, setting the most stringent empirical bounds on superluminal Lorentz invariance violation parameters $\\delta \\equiv c_\\nu^2 - 1$, and demonstrating that steady diffuse blazar populations require extreme baryonic loading ($\\eta \\sim 10^3$) unless transient flaring regimes are invoked.",
+          "figures": [
+            {
+              "url": "/arxiv-figures/2610.40053/cosmogenic.png",
+              "caption": "Figure 11: Cosmogenic-neutrino predictions as a function of UHECR source evolution and composition. Left: expected number of events in ARCA21 as a function of the source-evolution parameter $m$, defined through $S(z)\\propto(1+z)^{m}$, for source populations extending up to $z_{\\max}=1$ (circles) and $z_{\\max}=6$ (squares); the colour scale indicates the UHECR source emissivity. The expected event rate increases for stronger positive source evolution and for populations extending to higher redshift. Right: diffuse single-flavor cosmogenic neutrino fluxes for different values of $m$, including an additional subdominant proton component at the highest UHECR energies; stronger positive source evolution enhances the predicted flux. The blue cross represents the KM3-230213A equivalent flux, with the horizontal bar indicating the central 90% parent-neutrino energy range and the vertical bars the 1, 2, and 3 $\\sigma$ Feldman–Cousins intervals. The purple and pink bands show the 68% confidence intervals of IceCube single-power-law fits; measurements and upper limits from ANTARES, IceCube, and the Pierre Auger Observatory are also shown. Compatibility with KM3-230213A is enhanced for a source population extending to high redshift, strong positive source evolution, and a non-negligible proton fraction at the highest energies. Figure adapted from [ 31 ].",
+              "label": "Fig. 11",
+              "category": "theoretical",
+              "category_badge": "Physical Evolution",
+              "physical_core": "The figure shows how cosmogenic-neutrino predictions depend on UHECR source evolution and composition. With $S(z)\\propto(1+z)^m$, stronger positive evolution and a population extending to higher redshift increase the predicted event rate and diffuse flux; a non-negligible proton component at the highest UHECR energies further improves compatibility with KM3-230213A.",
+              "is_schematic": true
+            },
+            {
+              "url": "/arxiv-figures/2610.40053/SED_Neronov.png",
+              "caption": "Figure 10: Spectral energy distribution of TXS 0614-083, the AGN closest to the KM3-230213A direction, compared with the neutrino flux required in the isolated-source flare scenario. The black data point shows the estimated muon-neutrino flux for a one-year flare, obtained by combining the KM3NeT/ARCA detection with the IceCube non-detection; its uncertainty corresponds to the 90% confidence interval. Radio, infrared, and X-ray measurements are from GLEAM, WISE, and eROSITA, respectively, while upper limits from SVOM and Fermi-LAT constrain the electromagnetic emission. IceCube sensitivities and the one-year and 14-year Pierre Auger Observatory sensitivities are also shown. The red curves illustrate secondary-neutrino spectra produced by interactions of $10^{19}$ and $10^{20}$ eV protons and demonstrate that a hard neutrino spectrum is required to avoid overproduction of lower-energy neutrinos. The transient interpretation assumes an isolated source flare with duration $T\\lesssim 2$ yr. Figure adapted from [ 26 ].",
+              "label": "Fig. 10",
+              "category": "observational",
+              "category_badge": "Key Observational Evidence",
+              "physical_core": "The SED of TXS 0614-083 is compared with the neutrino flux required by an isolated-source flare lasting $T\\lesssim2$ yr, alongside multiwavelength measurements and upper limits. The secondary-neutrino spectra from $10^{19}$ and $10^{20}$ eV protons show that a hard neutrino spectrum is required to avoid overproducing lower-energy neutrinos.",
+              "is_schematic": false
+            }
+          ],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed.",
+            "Figures from source package have not undergone visual verification."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        }
       },
       {
         "arxiv_id": "2610.40063",
@@ -5248,10 +6527,97 @@
       {
         "arxiv_id": "2610.40092",
         "revision": 1,
+        "status": "ready",
         "source_fingerprint": "b10585d0d66ece94b82bde1f63ddb139e8ce5679f8d1c15a39ba7e792d1ff5b1",
-        "status": "failed",
-        "failure_reason": "The operation was aborted due to timeout",
-        "priority": "worth_knowing"
+        "priority": "worth_knowing",
+        "coverage": {
+          "level": "body_partial",
+          "label": "已检查正文中支撑判断的指定章节",
+          "source_version": "arXiv:2610.40092v1",
+          "inspected_sections": [
+            "Introduction",
+            "Evolutionary tracks and isochrones of the inverse Hall cascade",
+            "1 Introduction",
+            "2 Dimensions in Hall and MHD",
+            "3 Our model",
+            "3.1 Initial conditions",
+            "3.2 Diagnostic quantities",
+            "3.3 Possibility of using magnetic hyperdiffusivity",
+            "4 Results",
+            "4.1 Subinertial range spectrum",
+            "4.2 Visual appearance of the Hall cascade",
+            "4.3 Scaling exponents in the inverse Hall cascade",
+            "4.4 Evolutionary tracks and isochrones in the diagnostic diagram",
+            "4.5 Conservation of the Hosking integral",
+            "4.6 Comparison with reconnection",
+            "5 Conclusions",
+            "Acknowledgements",
+            "Data availability statement",
+            "Appendix A Helical decay in 2.5-D",
+            "Authors’ ORCIDs",
+            "References",
+            "Instructions for reporting errors"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_source_package",
+              "url": "https://export.arxiv.org/src/2610.40092v1",
+              "locator": "Introduction; Evolutionary tracks and isochrones of the inverse Hall cascade; 1 Introduction; 2 Dimensions in Hall and MHD; 3 Our model; 3.1 Initial conditions; 3.2 Diagnostic quantities; 3.3 Possibility of using magnetic hyperdiffusivity; 4 Results; 4.1 Subinertial range spectrum; 4.2 Visual appearance of the Hall cascade; 4.3 Scaling exponents in the inverse Hall cascade; 4.4 Evolutionary tracks and isochrones in the diagnostic diagram; 4.5 Conservation of the Hosking integral; 4.6 Comparison with reconnection; 5 Conclusions; Acknowledgements; Data availability statement; Appendix A Helical decay in 2.5-D; Authors’ ORCIDs; References; Instructions for reporting errors",
+              "description": "Complete, revision-matched arXiv TeX source package",
+              "sha256": "b1bebcdc7a510f0380d5fd1eacb3250ee0b93748783794882b54b9fcc65dedcf"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "gpt-6-luna",
+          "analyzed_at": "2026-10-30T18:08:56.980Z",
+          "reason": "The paper provides numerical simulations of the inverse Hall cascade relevant to magnetar crusts, deriving scaling laws, evolutionary tracks, and isochrones governing magnetic field decay and coherence length growth.",
+          "result": "In 2.5-D nonhelical Hall cascades, the magnetic integral scale evolves as $\\xi_{\\rm M} \\propto t^{q}$ and magnetic energy as ${\\cal E}_{\\rm M} \\propto t^{-p}$, yielding measured indices $p \\approx 2/3$ and $q \\approx 1/3$ asymptotically along the Hall line $p = 2(1 - 2q)$, with evolutionary tracks obeying $B \\propto \\xi_{\\rm M}^{-1}$. The endpoints of turbulent evolution form isochrones scaling as $B \\approx C_{\\rm M} \\xi_{\\rm M}^2 / t$ with $C_{\\rm M} \\approx C_{\\rm M}^{\\max} \\mathrm{Lu}^{1/2}/\\sqrt{\\mathrm{Lu}_{0} + \\mathrm{Lu}}$, suggesting that fields exceeding $10^{15}\\,{\\rm G}$ can only be compatible with turbulent evolution if the scale exceeds the neutron star size.",
+          "reading_entry": "4.4 Evolutionary tracks and isochrones in the diagnostic diagram",
+          "problem": "Understanding how the inverse Hall cascade redistributes magnetic energy to larger scales in neutron star crusts, and establishing the exact scaling exponents, isochrones, and resistivity dependence governing crustal magnetic field evolution.",
+          "method": "Direct numerical simulations of 2.5-D decaying Hall turbulence using the Pencil Code to solve the Hall induction equation $\\frac{\\partial\\bm{B}}{\\partial t}=-\\bm{\\nabla}\\times\\left(\\frac{1}{en_{\\mathrm{e}}}\\bm{J}\\times\\bm{B}+\\eta\\mu_{0}\\bm{J}\\right)$ with magnetic hyperdiffusivity $\\eta_{\\mathrm{hyp}}\\nabla^{6}\\bm{A}$, diagnosing spectra, the Lundquist number $\\mathrm{Lu}$, and Hosking integral conservation.",
+          "assumptions": [],
+          "limits": [
+            "Magnetic fields above $10^{15}\\,{\\rm G}$ can only be compatible with turbulent evolution if the length scale exceeds the neutron star size."
+          ],
+          "citation_leads": [
+            "2 Dimensions in Hall and MHD: “The differences between the Hall and MHD cascades come from the fact that the natural dimension of the magnetic field in the Hall cascade”",
+            "4.4 Evolutionary tracks and isochrones in the diagnostic diagram: “The endpoints of the evolution lie on a line $\\propto\\xi_{\\rm M}^{2}/t$ for the Hall cascade, compared to a $\\propto\\xi_{\\rm M}/t$ line for MHD.”",
+            "5 Conclusions: “In particular, this line of endpoints suggests that magnetic fields above $10^{15}\\,{\\rm G}$ can only be compatible”"
+          ],
+          "research_progress": "Demonstrated that the inverse Hall cascade endpoints follow an isochrone $\\propto \\xi_{\\rm M}^{2} / t$ (compared to $\\propto \\xi_{\\rm M} / t$ in MHD), determined the empirical scaling exponents ($p \\approx 2/3$, $q \\approx 1/3$, $\\beta \\approx 1$), and characterized the coefficient $C_{\\rm M}(\\mathrm{Lu})$ saturation behavior.",
+          "figures": [
+            {
+              "url": "/arxiv-figures/2610.40092/pkpm_vs_lam.png",
+              "caption": "Figure 4: Evolutionary tracks for Runs E (green), G (orange), H (red), I (blue), and J (black). The plus signs indicate times in logarithmic intervals of one sixth per decade. The dashed-dotted line indicates the isochrone $B\\approx C_{\\rm M}\\xi_{\\rm M}^{2}/t$ for the time $t=100$. The filled symbols denote the data points for the same time. The dotted line shows the corresponding Hall line for which $B=\\xi_{\\rm M}^{2}/t$.",
+              "label": "Fig. 4",
+              "category": "theoretical",
+              "category_badge": "Physical Evolution",
+              "physical_core": "The evolutionary tracks compare runs E, G, H, I, and J against the isochrone $B\\approx C_{\\rm M}\\xi_{\\rm M}^{2}/t$ at $t=100$, alongside the Hall line $B=\\xi_{\\rm M}^{2}/t$. This shows how the magnetic-field scale and correlation-length scale evolve relative to the stated time-dependent relations.",
+              "is_schematic": true
+            },
+            {
+              "url": "/arxiv-figures/2610.40092/pkpm_comp_Lu.png",
+              "caption": "Figure 5: Parametric representation of $C_{\\rm M}(t)$ vs. $\\mbox{\\rm Lu}(t)$ for Runs D (red), F (orange), G (green), K (blue), L (brown), and M (black).",
+              "label": "Fig. 5",
+              "category": "theoretical",
+              "category_badge": "Physical Evolution",
+              "physical_core": "The figure parametrically compares $C_{\\rm M}(t)$ with the Lundquist number $\\mathrm{Lu}(t)$ for Runs D, F, G, K, L, and M, probing how the evolution coefficient varies with the resistive parameter.",
+              "is_schematic": true
+            }
+          ],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed.",
+            "Figures from source package have not undergone visual verification."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        }
       },
       {
         "arxiv_id": "2610.40144",
@@ -5403,18 +6769,178 @@
       {
         "arxiv_id": "2610.40242",
         "revision": 1,
+        "status": "ready",
         "source_fingerprint": "ce56c1d0d7896aeedc0f5e19a893947c8b7273447d58018d92c95cefddd3cb1a",
-        "status": "failed",
-        "failure_reason": "The operation was aborted due to timeout",
-        "priority": "worth_knowing"
+        "priority": "worth_knowing",
+        "coverage": {
+          "level": "body_partial",
+          "label": "已检查正文中支撑判断的指定章节",
+          "source_version": "arXiv:2610.40242v1",
+          "inspected_sections": [
+            "1 Introduction",
+            "2 An application: simulating blazar emission",
+            "3 Performance of the two algorithms",
+            "4 Conclusion and outlook"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_source_package",
+              "url": "https://export.arxiv.org/src/2610.40242v1",
+              "locator": "1 Introduction; 2 An application: simulating blazar emission; 3 Performance of the two algorithms; 4 Conclusion and outlook",
+              "description": "Complete, revision-matched arXiv TeX source package",
+              "sha256": "2db55a84ac432e8f71c1d9573b043990f7baac12f4f473a1a889a4968bc51450"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "gpt-6-luna",
+          "analyzed_at": "2026-10-30T18:09:31.021Z",
+          "reason": "The paper presents a forward-folding multi-wavelength and multi-messenger framework built in Gammapy to fit physical radiation models directly to instrumental photon/neutrino event counts rather than intermediate flux points, mitigating parameter biases and error underestimation in relativistic jet modeling.",
+          "result": "Forward-folding fits directly on instrumental counts dramatically outperform traditional $\\chi^2$ fits to pre-computed flux points in convergence and error estimation. In flux-point fits, iminuit covariance contours severely underestimate parameter uncertainties compared to nested sampling posteriors, whereas count-level covariance contours closely match nested sampling distributions. For an SSC model with simulated parameters $B=0.1\\,\\mathrm{G}$, $N=5\\,\\mathrm{cm}^{-3}$, $\\gamma_{\\rm break}=5\\times 10^5$, $p_1=3.5$, and $p=2.5$, the count fit achieves a substantially higher fraction of accurate fits (Mahalanobis distance $D(u,v,\\mathrm{V})=\\sqrt{(u-v)\\times\\mathrm{V}^{-1}\\times(u-v)^{\\mathrm{T}}} < 5$). Count fitting with 3 free parameters takes $\\sim 10\\,\\mathrm{min}$ compared to $\\sim 5\\,\\mathrm{min}$ for flux points, whereas nested sampling takes $> 3\\,\\mathrm{h}$.",
+          "reading_entry": "3 Performance of the two algorithms",
+          "problem": "Standard multi-wavelength and multi-messenger modeling relies on fitting physical models to pre-calculated flux points using $\\chi^2$ statistics. This induces systematic biases because flux points assume specific empirical functional forms (e.g. power-law or log-parabola) within individual bands, and handles upper limits as rigid boundaries rather than full Poisson likelihoods.",
+          "method": "The authors developed a forward-folding multi-instrument framework based on Gammapy v2.0 and the gammapy-mwl extension, integrating the JetSeT leptonic Synchrotron Self-Compton (SSC) plugin with instrument response functions (IRFs) from Swift-UVOT, Swift-XRT, Fermi-LAT, and CTAO (prod5). They conducted 100 simulated realizations comparing iminuit gradient-based optimization and the MLFriends nested sampling Monte Carlo algorithm (via UltraNest) across count datasets and flux-point datasets with good and random initial parameter guesses.",
+          "assumptions": [
+            "A single-zone Synchrotron Self-Compton (SSC) blazar emission model with broken power-law electron distribution ($p$, $p_1$, $\\gamma_{\\rm break}$) subject to optical reddening, neutral hydrogen absorption, and extragalactic background light absorption."
+          ],
+          "limits": [
+            "The demonstration is currently restricted to a leptonic SSC blazar model; full hadronic and neutrino multi-messenger implementations are computationally heavy and remain under development.",
+            "iminuit fits to flux points yield unreliably small uncertainties, necessitating either count-based forward folding or computationally expensive ($> 3\\,\\mathrm{h}$) nested sampling."
+          ],
+          "citation_leads": [
+            "1 Introduction: “Current approaches for multi-wavelength and multi-messenger analyses typically involve the computation of flux points estimated in each waveband, followed by fitting a physical model with $\\chi^{2}$ statistics.”",
+            "1 Introduction: “Because this framework operates directly on events/counts, it inherently accounts for ULs and does not introduce any bias from flux-point estimation.”",
+            "2 An application: simulating blazar emission: “The assumed spectral model was a Synchrotron Self-Compton (SSC) model of a blazar, simulated using the Gammapy plugin of the JetSeT code”",
+            "3 Performance of the two algorithms: “The simulated values are $B=0.1\\,\\text{G}$, $N=5\\,\\,\\text{cm}^{-3}$, $\\gamma_{\\text{break}}=5\\times 10^{5}$, $p_{1}=3.5$, and $p=2.5$.”",
+            "3 Performance of the two algorithms: “While the nested sampling posteriors align well with the covariance contours for the count dataset, the covariance contours for the flux-point dataset are significantly smaller than the nested sampling posteriors.”",
+            "3 Performance of the two algorithms: “$D(u,v,\\mathrm{V})=\\sqrt{(u-v)\\times\\mathrm{V}^{-1}\\times(u-v)^{\\mathrm{T}}}$”",
+            "3 Performance of the two algorithms: “Fitting to counts significantly increases convergence compared to fitting to flux points.”",
+            "3 Performance of the two algorithms: “Indeed, the standard fit to flux points with 3 free physical parameters takes $\\sim 5\\penalty\\ \\mathrm{min}$, while the standard fit on counts takes $\\sim 10\\penalty\\ \\mathrm{min}$.”",
+            "4 Conclusion and outlook: “While our application focuses on a leptonic model, this tool can be used on (lepto-)hadronic models as well.”"
+          ],
+          "research_progress": "Implements an open-source count-level forward-folding fitting engine for multi-instrument high-energy astronomy within Gammapy, demonstrating that direct count fitting resolves the severe error underestimation inherent to standard flux-point SED fitting while requiring only modest computation time ($\\sim 10\\,\\mathrm{min}$ vs $\\sim 5\\,\\mathrm{min}$).",
+          "figures": [
+            {
+              "url": "/arxiv-figures/2610.40242/Counts_dataset.png",
+              "caption": "Figure 1: Left: simulated binned counts for SWIFT-UVOT/XRT and CTAO and simulated Fermi-LAT count map. Right: flux points for each instrument and simulated SSC model (solid line).",
+              "label": "Fig. 1",
+              "category": "fitting",
+              "category_badge": "Model vs Data Fitting",
+              "physical_core": "Simulated multi-instrument counts and corresponding flux points are compared with a synchrotron self-Compton (SSC) model, illustrating a leptonic broadband emission fit.",
+              "is_schematic": false
+            },
+            {
+              "url": "/arxiv-figures/2610.40242/final_version_Gamma2026_proceeding_counts.png",
+              "caption": "Figure 2: Left: $1-3\\penalty\\ \\sigma$ iminuit covariance contours for the count dataset (solid orange contours) and nested sampling equivalents (dashed orange lines). The 1D histograms and nested sampling posteriors for each parameter are represented on the diagonal plots. The simulated values of the parameters are shown in gray dashed lines. Right: $1-3\\penalty\\ \\sigma$ iminuit covariance contours for the flux-point dataset (plain blue contours) and nested sampling equivalents (dashed blue lines). The 1D histograms and nested sampling posteriors for each parameter are represented on the diagonal plots. The simulated values of the parameters are shown in gray dashed lines.",
+              "label": "Fig. 2",
+              "category": "fitting",
+              "category_badge": "Model vs Data Fitting",
+              "physical_core": "Parameter constraints from count-level fitting are compared with those from fitting flux points, with simulated parameter values shown for reference.",
+              "is_schematic": false
+            }
+          ],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed.",
+            "Figures from source package have not undergone visual verification."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        }
       },
       {
         "arxiv_id": "2610.40255",
         "revision": 1,
+        "status": "ready",
         "source_fingerprint": "f04d041f35ac9f04b0a9571b2374c84fdf5106c244da60c0dfbc29af47ca1c47",
-        "status": "failed",
-        "failure_reason": "The operation was aborted due to timeout",
-        "priority": "worth_knowing"
+        "priority": "worth_knowing",
+        "coverage": {
+          "level": "body_partial",
+          "label": "已检查正文中支撑判断的指定章节",
+          "source_version": "arXiv:2610.40255v1",
+          "inspected_sections": [
+            "Introduction",
+            "A Candidate Binary Microlensing Event in the 2018 Gamma-Ray Flare of 3C 279",
+            "I Introduction",
+            "II LAT Flare Morphology",
+            "III Binary-lens Model and Fit",
+            "IV Discussion",
+            "IV.1 Intrinsic Variability and Event Incidence",
+            "IV.2 Possible Nature of the Lens",
+            "IV.3 Size of the Gamma-Ray Emitting Region",
+            "V Conclusions",
+            "Appendix A LAT Analysis, Temporal and Spectral Statistics",
+            "A.1 Comparison Flare Sample",
+            "A.2 Photon-index Distribution",
+            "Appendix B Gaussian-process Analysis and Binary-lens Fitting",
+            "B.1 Gaussian-process Fit to the Observed Light Curve",
+            "B.2 Parameter Search and Local Posterior",
+            "Appendix C Galactic Lens and Source Scalings",
+            "References",
+            "Instructions for reporting errors"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_source_package",
+              "url": "https://export.arxiv.org/src/2610.40255v1",
+              "locator": "Introduction; A Candidate Binary Microlensing Event in the 2018 Gamma-Ray Flare of 3C 279; I Introduction; II LAT Flare Morphology; III Binary-lens Model and Fit; IV Discussion; IV.1 Intrinsic Variability and Event Incidence; IV.2 Possible Nature of the Lens; IV.3 Size of the Gamma-Ray Emitting Region; V Conclusions; Appendix A LAT Analysis, Temporal and Spectral Statistics; A.1 Comparison Flare Sample; A.2 Photon-index Distribution; Appendix B Gaussian-process Analysis and Binary-lens Fitting; B.1 Gaussian-process Fit to the Observed Light Curve; B.2 Parameter Search and Local Posterior; Appendix C Galactic Lens and Source Scalings; References; Instructions for reporting errors",
+              "description": "Complete, revision-matched arXiv TeX source package",
+              "sha256": "809b8d6be31d882ccf79b409a676a50d3e6db0a777df8a550c371c9ce970a236"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "gpt-6-luna",
+          "analyzed_at": "2026-10-30T18:10:30.116Z",
+          "reason": "The paper investigates the sharp double-peaked structure in the 2018 gamma-ray flare of blazar 3C 279 via a binary microlensing framework, providing constraints on both the sub-parsec jet emission region and intervening compact planetary/stellar lenses.",
+          "result": "The double-peaked GeV flare is well described by a binary-lens model yielding mass ratio $q = 0.0975^{+0.0846}_{-0.0435}$, Einstein crossing timescale $t_{\\rm E} = 28263^{+6232}_{-858}\\ {\\rm s} \\simeq 0.327\\ {\\rm d}$, normalized source radius $\\rho = 0.1205^{+0.0590}_{-0.0314}$, projected separation $s = 1.714^{+0.015}_{-0.208}$, impact parameter $u_0 = 0.2134^{+0.0308}_{-0.0205}$, and trajectory angle $\\alpha = 0.3198^{+0.1016}_{-0.0166}\\ {\\rm rad}$. The binary-lens plus Gaussian-process model achieves deviance $D = -2\\ln\\mathcal{L} = 1364.92$, outperforming the single-lens model by $\\Delta D = 38.05$.",
+          "reading_entry": "III Binary-lens Model and Fit",
+          "problem": "Explaining the physical origin of the exceptionally sharp, asymmetric double-peaked profile observed during the April 2018 Fermi-LAT flare of blazar 3C 279 ($z=0.536$).",
+          "method": "The observed flux is modeled as $F_{\\rm obs}(t) = \\mu(t)[F_{\\rm int}(t) + g(t)] + \\eta(t)$, combining a smooth double-exponential intrinsic flare $F_{\\rm int}(t)$, binary microlensing magnification $\\mu(t)$ evaluated via VBBinaryLensing, and intrinsic stochastic fluctuations parameterized by a Gaussian process $g(t)$ with a damped simple harmonic oscillator kernel, optimized through CMA-ES and sampled via MCMC.",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "A Candidate Binary Microlensing Event in the 2018 Gamma-Ray Flare of 3C 279: “A jointly fitted model of binary-lens magnification, a smooth intrinsic flare, and Gaussian-process variability reproduces the principal double-peaked structure of the GeV light curve.”",
+            "IV.2 Possible Nature of the Lens: “For an intervening lens, the relative proper motion can be dominated by the apparent motion of a compact emitting feature in the jet.”",
+            "B.1 Gaussian-process Fit to the Observed Light Curve: “The binary-lens model gives $D=-2\\ln\\mathcal{L}=1364.92$, compared with $D=1402.97$ for the single-lens model, an improvement of $\\Delta D=38.05$.”"
+          ],
+          "research_progress": "Demonstrated that an intervening binary lens quantitatively reproduces sharp blazar gamma-ray peaks without requiring extreme in situ jet magnetic reconnection parameters, simultaneously probing sub-parsec jet structures and low-mass free-floating compact binaries.",
+          "figures": [
+            {
+              "url": "/arxiv-figures/2610.40255/joint_geometry.png",
+              "caption": "Figure 2: Magnification pattern and source trajectory for the adopted binary-lens solution. Top: magnification map with caustics (black curves) and the fitted source trajectory (white line); the arrow indicates the direction of source motion. The color scale gives the magnification $\\mu$. Bottom: finite-source magnification along the same trajectory, plotted against the source coordinate $y_{2}/\\theta_{\\rm E}$. Source-plane angular coordinates are normalized by the Einstein radius $\\theta_{\\rm E}$ of the total binary mass.",
+              "label": "Fig. 2",
+              "category": "theoretical",
+              "category_badge": "Physical Model Schematic",
+              "physical_core": "Shows the adopted binary-lens magnification map, its caustics, and the fitted source trajectory; the lower panel gives the finite-source magnification along that trajectory as a function of $y_2/\\theta_{\\rm E}$.",
+              "is_schematic": true
+            },
+            {
+              "url": "/arxiv-figures/2610.40255/joint_corner.png",
+              "caption": "Figure B4: Local posterior distributions of the 15 lens, intrinsic-flare, and SHO parameters. Shaded contours show the 68% and 95% two-dimensional density regions, and red lines mark the adopted best-fit parameters used in Figures 1 and 2. The sampled coordinates include $\\log_{10}\\rho$, $\\log_{10}s$, and $\\log_{10}q$; the parameter table reports their transformed values.",
+              "label": "Fig. 3",
+              "category": "fitting",
+              "category_badge": "Model vs Data Fitting",
+              "physical_core": "Shows local posterior distributions for 15 lens, intrinsic-flare, and SHO parameters, including $\\log_{10}\\rho$, $\\log_{10}s$, and $\\log_{10}q$; the red lines mark the adopted best-fit parameters.",
+              "is_schematic": false
+            }
+          ],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed.",
+            "Figures from source package have not undergone visual verification."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        }
       },
       {
         "arxiv_id": "2610.40272",
@@ -5517,10 +7043,90 @@
       {
         "arxiv_id": "2610.40326",
         "revision": 1,
+        "status": "ready",
         "source_fingerprint": "19155101121f90327a47cd12fe0eef05f6c07fe698179ef286a62401ccba6e0b",
-        "status": "failed",
-        "failure_reason": "The operation was aborted due to timeout",
-        "priority": "must_read"
+        "priority": "worth_knowing",
+        "coverage": {
+          "level": "body_partial",
+          "label": "已检查正文中支撑判断的指定章节",
+          "source_version": "arXiv:2610.40326v1",
+          "inspected_sections": [
+            "II Observations and data processing",
+            "III.1 Burst properties",
+            "IV.2 Polarization and environment",
+            "References",
+            "Introduction",
+            "Polarization and Burst Properties of the Repeating FRB 20240209A in a Quiescent Elliptical HostFacilities: GBT (VEGAS)",
+            "I Introduction",
+            "III Results",
+            "III.2 Polarization",
+            "III.3 Candidate submillisecond spacing",
+            "IV Discussion",
+            "IV.1 Implications of the candidate spacing",
+            "V Conclusions",
+            "Appendix A RM-synthesis curves",
+            "Instructions for reporting errors"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_source_package",
+              "url": "https://export.arxiv.org/src/2610.40326v1",
+              "locator": "II Observations and data processing; III.1 Burst properties; IV.2 Polarization and environment; References; Introduction; Polarization and Burst Properties of the Repeating FRB 20240209A in a Quiescent Elliptical HostFacilities: GBT (VEGAS); I Introduction; III Results; III.2 Polarization; III.3 Candidate submillisecond spacing; IV Discussion; IV.1 Implications of the candidate spacing; V Conclusions; Appendix A RM-synthesis curves; Instructions for reporting errors",
+              "description": "Complete, revision-matched arXiv TeX source package",
+              "sha256": "41324856520d7a1fd2357d036970e75494e905713ad4f96409ee428d9c318f20"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "gpt-6-luna",
+          "analyzed_at": "2026-10-30T18:12:25.873Z",
+          "reason": "Single-burst frequency-dependent depolarization makes this directly useful for studying the magnetoionic environments of repeaters, especially in an old, quiescent host. The three-burst sample provides valuable environmental constraints, but the proposed submillisecond spacing remains statistically tentative.",
+          "result": "Three bursts were detected with the GBT. Burst 3 has $E_{\\rm iso}=(4.69\\pm0.02)\\times10^{39}\\,\\mathrm{erg}$, $\\mathrm{DM}=174.93\\pm0.12\\,\\mathrm{pc\\,cm^{-3}}$, and downward frequency drift $\\dot{\\nu}=-8.5\\pm0.9\\,\\mathrm{MHz\\,ms^{-1}}$. Its measured $\\mathrm{RM}=-45.5\\pm0.2\\,\\mathrm{rad\\,m^{-2}}$ corresponds to a foreground-corrected host-frame $\\mathrm{RM}_{\\rm host}=-33\\pm14\\,\\mathrm{rad\\,m^{-2}}$. Its linear polarization rises from $54.0\\pm1.1\\%$ at 745 MHz to $78.4\\pm0.8\\%$ at 895 MHz. The discussion reports a depolarization fit with $p_0=100\\%$ and $\\sigma_{\\rm RM}=3.50\\pm0.14\\,\\mathrm{rad\\,m^{-2}}$, or $\\sigma_{\\rm RM,host}=4.5\\pm0.2\\,\\mathrm{rad\\,m^{-2}}$. An empirical PRS relation predicts $L_\\nu\\sim2\\times10^{28}\\,\\mathrm{erg\\,s^{-1}\\,Hz^{-1}}$, consistent with the reported VLASS upper limit rather than a PRS detection. Eight Burst 3 peaks yield candidate spacing $P\\simeq0.42\\,\\mathrm{ms}$, but its significance is only $2.48\\sigma$ with $p=0.01314$.",
+          "reading_entry": "IV.2 Polarization and environment",
+          "problem": "The study investigates whether a repeater in an old, quiescent elliptical-host environment can possess a complex magnetoionic medium comparable to those of repeaters in star-forming hosts. It also tests whether the frequency-dependent polarization within one burst reflects low-frequency depolarization rather than temporal evolution of drifting components.",
+          "method": "GBT observations used the 1.1–1.9 GHz and 720–920 MHz bands. Burst characterization included DM_phase dispersion optimization and equivalent width $W_{\\rm eq}=\\mathcal{F}/S_{\\rm pk}$. A linear fit of eight component frequency centroids against peak times measured $\\dot{\\nu}$. Polarization was modeled with $L(\\nu)/I(\\nu)=p_0\\exp[-2\\sigma_{\\rm RM}^2\\lambda^4]$, with host-frame conversion $\\sigma_{\\rm RM,host}=(1+z)^2\\sigma_{\\rm RM}$. Four 50 MHz subbands and comparisons within 1.97 ms time bins tested the frequency dependence against temporal evolution. Rayleigh $Z_1^2$ and timing analyses searched for regular peak spacing; $10^7$ shifted-exponential simulations assessed its significance.",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "II Observations and data processing: “We observed FRB 20240209A on 2024 August 18 with the GBT”",
+            "III.1 Burst properties: “A linear fit of these eight frequency centroids against the component peak times”",
+            "III.1 Burst properties: “$\\dot{\\nu}=-8.5\\pm 0.9~{\\rm MHz~ms^{-1}}$”",
+            "IV.2 Polarization and environment: “These measurements establish a frequency-dependent polarization change within a single burst”",
+            "IV.2 Polarization and environment: “support depolarization at lower frequencies.”"
+          ],
+          "research_progress": "The main advance is resolving low-frequency depolarization within a single burst from a repeater in a quiescent, approximately 11 Gyr stellar environment, while testing against temporal component drift. A modest mean host RM coexists with measurable RM dispersion, constraining environmental models without requiring a large net Faraday rotation. The empirical relation $L_\\nu\\propto\\sigma_{\\rm RM,host}^{0.76\\pm0.31}$ translates the inferred dispersion into a testable PRS luminosity prediction. The host comparison supports an old-population formation channel for repeaters, but does not uniquely identify the progenitor.",
+          "figures": [
+            {
+              "url": "/arxiv-figures/2610.40326/figure1_burst_polarization.png",
+              "caption": "Figure 1: Polarization properties of the three bursts from FRB 20240209A observed with the GBT. The three columns show Bursts 1, 2, and 3, respectively. A: RM-corrected polarization position angle (PA). The gray dashed lines mark $\\pm 90^{\\circ}$. B: Frequency-integrated profiles of total intensity (black), linear polarization (red), and circular polarization (blue). C: Dedispersed Stokes- $I$ dynamic spectra. The white bands indicate masked RFI channels.",
+              "label": "Fig. 1",
+              "category": "observational",
+              "category_badge": "Key Observational Evidence",
+              "physical_core": "Shows the polarization position angles, total and polarized intensity profiles, and dedispersed Stokes-I dynamic spectra of three bursts. The caption identifies the bursts and plotted observables but does not specify numerical polarization fractions or rotation measures.",
+              "is_schematic": false
+            },
+            {
+              "url": "/arxiv-figures/2610.40326/figure2_drift_scintillation.png",
+              "caption": "Figure 2: Frequency drift and spectral autocorrelation of Burst 3. A: Dedispersed Stokes- $I$ dynamic spectrum. The orange circles mark the frequency centroids, and the orange line represents the linear fit. B: Normalized frequency autocorrelation function (ACF) shown as a gray step, together with its Lorentzian fit shown as a yellow dashed line. The yellow dotted lines mark $\\pm\\Delta\\nu_{\\rm d}$.",
+              "label": "Fig. 2",
+              "category": "observational",
+              "category_badge": "Key Observational Evidence",
+              "physical_core": "Shows Burst 3's dedispersed Stokes-I dynamic spectrum, frequency centroids with a linear fit, and a frequency autocorrelation function with a Lorentzian fit and marked decorrelation bandwidth.",
+              "is_schematic": false
+            }
+          ],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed.",
+            "Figures from source package have not undergone visual verification."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        }
       },
       {
         "arxiv_id": "2610.40332",
@@ -5819,10 +7425,71 @@
       {
         "arxiv_id": "2610.40441",
         "revision": 1,
+        "status": "ready",
         "source_fingerprint": "fc6e6f9881c3ccf66496dc486495cc3e3c3b8410172b6ac9a37f6fbf6bbef60e",
-        "status": "failed",
-        "failure_reason": "The operation was aborted due to timeout",
-        "priority": "worth_knowing"
+        "priority": "worth_knowing",
+        "coverage": {
+          "level": "body_partial",
+          "label": "已检查正文中支撑判断的指定章节",
+          "source_version": "arXiv:2610.40441v1",
+          "inspected_sections": [
+            "Introduction",
+            "Influence of $Delta$ resonances in hyperonic neutron stars on gravitational-wave inspiral signatures",
+            "I Introduction",
+            "II Formalism",
+            "II.1 RMF Model",
+            "II.2 Coupling Parameters",
+            "II.3 Mass-Radius relation",
+            "II.4 Tidal Deformability",
+            "II.5 Post-Newtonian GW Formalism",
+            "III Results",
+            "IV Summary and Conclusions",
+            "Acknowledgements",
+            "References",
+            "Instructions for reporting errors"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_source_package",
+              "url": "https://export.arxiv.org/src/2610.40441v1",
+              "locator": "Introduction; Influence of $Delta$ resonances in hyperonic neutron stars on gravitational-wave inspiral signatures; I Introduction; II Formalism; II.1 RMF Model; II.2 Coupling Parameters; II.3 Mass-Radius relation; II.4 Tidal Deformability; II.5 Post-Newtonian GW Formalism; III Results; IV Summary and Conclusions; Acknowledgements; References; Instructions for reporting errors",
+              "description": "Complete, revision-matched arXiv TeX source package",
+              "sha256": "bcf1b9d35e30db23bd6c5c80803756785b6c57d0895e128d850280972255b7df"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "gpt-6-luna",
+          "analyzed_at": "2026-10-30T18:12:08.056Z",
+          "reason": "The paper provides useful theoretical modeling of hyperonic neutron star equations of state with $\\Delta$ resonances and evaluates their distinct gravitational-wave phase and tidal signatures in binary neutron star inspirals.",
+          "result": "Incorporating $\\Delta$ baryons increases the maximum neutron star mass to $M_{\\rm max} = 2.0031\\text{--}2.1049\\,M_{\\odot}$ (compared to $1.9828\\,M_{\\odot}$ for pure hyperons) and substantially reduces the $1.4\\,M_{\\odot}$ tidal deformability to $\\Lambda_{1.4} = 187.95\\text{--}310.25$ via $\\Lambda = \\frac{2}{3}k_2 C^{-5}$, satisfying GW170817 constraints. At $f = 1400\\text{ Hz}$, the GW phase differences between pure hyperonic (NY) and $\\Delta$-admixed (NY$\\Delta$) models reach $\\Delta\\Phi = 2.50\\text{--}3.36\\text{ rad}$ with mismatch $\\mathcal{M} \\approx (3.98\\text{--}7.19) \\times 10^{-3}$, yielding a distinguishability critical signal-to-noise ratio $\\rho_{\\rm crit} \\approx 8.33\\text{--}11.21$.",
+          "reading_entry": "III Results",
+          "problem": "Pure hyperonic neutron star equations of state often struggle to concurrently satisfy the $2.0\\,M_{\\odot}$ maximum mass observation (hyperon puzzle) and the low tidal deformability constraints from GW170817, and the quantitative impact of $\\Delta$ resonances on late inspiral GW phase signatures requires systematic assessment.",
+          "method": "A density-dependent relativistic mean-field (DD-RMF) framework based on the DDME2 parameter set was implemented, incorporating nucleons, leptons, the hyperon octet, and $\\Delta$ baryons, solved via the Tolman-Oppenheimer-Volkoff (TOV) and tidal Love number equations, coupled to the post-Newtonian Taylor-T4 binary inspiral approximation with a 3.5PN relative tidal contribution $F_{\\rm Tidal}(x)=\\frac{52k_{2}}{5M_{\\rm tot}C^{5}}x^{5}\\left(1+\\frac{5203}{4368}x\\right)$.",
+          "assumptions": [
+            "Meson-$\\Delta$ couplings satisfy the constraint $x_{\\omega\\Delta} = x_{\\sigma\\Delta} - 0.2$ with $x_{\\rho\\Delta} = 1.0$ and $g_{\\phi\\Delta} = 0$."
+          ],
+          "limits": [],
+          "citation_leads": [
+            "Influence of $Delta$ resonances in hyperonic neutron stars on gravitational-wave inspiral signatures: “In this work, we investigate the gravitational wave signatures of hyperonic neutron stars containing $\\Delta$ baryons within a density-dependent relativistic mean-field framework based on the DDME2 parametrization.”",
+            "II.2 Coupling Parameters: “We investigate the coupling sequence $1.23\\leq x_{\\sigma\\Delta}\\leq 1.50$, imposing $x_{\\omega\\Delta}=x_{\\sigma\\Delta}-0.2$ and fixing $x_{\\rho\\Delta}=1.0$.”",
+            "III Results: “The reference EOS with NY composition supports a maximum mass of $1.9828\\,M_{\\odot}$. This is $0.0972\\,M_{\\odot}$ ($\\simeq 1.39\\sigma$) below the central mass estimate $2.08\\pm 0.07\\,M_{\\odot}$ for PSR J0740+6620”",
+            "III Results: “At a common GW frequency of $f=1400$ Hz, the phase differences between the NY and NY$\\Delta$ models are approximately 3.36, 3.05, 2.85, and 2.50 rad for $x_{\\sigma\\Delta}=1.23$, 1.30, 1.40, and 1.50, respectively.”"
+          ],
+          "research_progress": "Quantified the parametric impact of the scalar coupling $x_{\\sigma\\Delta} \\in [1.23, 1.50]$ on GW inspiral phase evolution $\\Phi(t_{\\rm ret})$ and established the critical SNR $\\rho_{\\rm crit} \\approx 8.33\\text{--}11.21$ needed for next-generation detectors (ET, CE) to distinguish hyperonic $\\Delta$-resonance models.",
+          "figures": [],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed.",
+            "Figures from source package have not undergone visual verification."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        }
       },
       {
         "arxiv_id": "2610.40534",
@@ -5925,10 +7592,99 @@
       {
         "arxiv_id": "2610.40606",
         "revision": 1,
+        "status": "ready",
         "source_fingerprint": "0ef77abbd3046832259b34077c51906b4937dcc568bca9513c08d463742f6ded",
-        "status": "failed",
-        "failure_reason": "The operation was aborted due to timeout",
-        "priority": "worth_knowing"
+        "priority": "worth_knowing",
+        "coverage": {
+          "level": "body_partial",
+          "label": "已检查正文中支撑判断的指定章节",
+          "source_version": "arXiv:2610.40606v1",
+          "inspected_sections": [
+            "The unresolved high-mass frontier of the black hole Fundamental Plane",
+            "III.3 High-Mass Break Test",
+            "IV.3 Proxy-Mass Archive Constraints",
+            "A.1 Forward Calibration and Mock Surveys",
+            "Introduction",
+            "I Introduction",
+            "II Data",
+            "II.1 Direct-Mass Calibration Sample",
+            "II.2 Proxy-Mass BCG Archive",
+            "II.3 Direct-Mass BCG Sample",
+            "III High-Mass Fundamental Plane Tests",
+            "III.1 Forward FP Calibration",
+            "III.2 Proxy-Mass Archive Analysis",
+            "III.4 Mock-Catalog Validation",
+            "IV Results",
+            "IV.1 FP Predictive Width",
+            "IV.2 High-Mass Extrapolation",
+            "IV.4 High-Mass Break Detectability",
+            "IV.5 Physical Origin of Radio Residuals",
+            "V Discussion",
+            "V.1 Origin of the FP Scatter",
+            "V.2 Offset versus Break",
+            "V.3 Observing Strategy",
+            "V.4 Future Facilities",
+            "V.5 Limitations",
+            "VI Conclusions",
+            "Data availability",
+            "Appendix A Model Details",
+            "A.2 Proxy-Mass Archive Model",
+            "Appendix B Validation and Supporting Data",
+            "References",
+            "Instructions for reporting errors"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_source_package",
+              "url": "https://export.arxiv.org/src/2610.40606v1",
+              "locator": "The unresolved high-mass frontier of the black hole Fundamental Plane; III.3 High-Mass Break Test; IV.3 Proxy-Mass Archive Constraints; A.1 Forward Calibration and Mock Surveys; Introduction; I Introduction; II Data; II.1 Direct-Mass Calibration Sample; II.2 Proxy-Mass BCG Archive; II.3 Direct-Mass BCG Sample; III High-Mass Fundamental Plane Tests; III.1 Forward FP Calibration; III.2 Proxy-Mass Archive Analysis; III.4 Mock-Catalog Validation; IV Results; IV.1 FP Predictive Width; IV.2 High-Mass Extrapolation; IV.4 High-Mass Break Detectability; IV.5 Physical Origin of Radio Residuals; V Discussion; V.1 Origin of the FP Scatter; V.2 Offset versus Break; V.3 Observing Strategy; V.4 Future Facilities; V.5 Limitations; VI Conclusions; Data availability; Appendix A Model Details; A.2 Proxy-Mass Archive Model; Appendix B Validation and Supporting Data; References; Instructions for reporting errors",
+              "description": "Complete, revision-matched arXiv TeX source package",
+              "sha256": "7365a27d3906afc893687a64b42c10c7b8fd57d8a48408a0b1a32fb102f8c354"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "gpt-6-luna",
+          "analyzed_at": "2026-10-30T18:13:26.659Z",
+          "reason": "This work quantitatively reassesses the black hole Fundamental Plane (FP) linking radio synchrotron jet emission and X-ray accretion luminosity to black hole mass, directly relevant to understanding relativistic jet launching efficiency and compact object accretion scaling relations.",
+          "result": "The forward FP calibrated on 29 direct-mass dynamical systems yields slopes $b_X = 0.71^{+0.13}_{-0.14}$ and $b_M = 0.74^{+0.21}_{-0.23}$, but exhibits a large forward predictive dispersion $\\sigma_R = 1.07^{+0.20}_{-0.16}\\,\\mathrm{dex}$ (RMS width $\\sigma_{R,\\mathrm{op}} = 1.11\\,\\mathrm{dex}$). In proxy-mass BCG archives, the apparent radio excess is strongly degenerate with the $K$-band mass proxy offset $\\delta_K$, constraining only the combination $\\Delta_R + b_M \\delta_K = 0.71_{-0.43}^{+0.39}\\,\\mathrm{dex}$. Current direct-mass data have large transition magnitude uncertainty $\\sigma(\\widehat{\\Delta}) = 2.40\\,\\mathrm{dex}$ at $\\mu_{\\rm brk} = 10$, rendering an ultramassive break statistically undetectable.",
+          "reading_entry": "IV.3 Proxy-Mass Archive Constraints",
+          "problem": "Whether accreting supermassive black holes exhibit a sharp break or radio excess in the Fundamental Plane relation at the ultramassive regime ($M_\\bullet \\gtrsim 10^{10}\\,M_\\odot$), and whether previously claimed radio offsets in brightest cluster galaxies (BCGs) reflect genuine jet physics or observational selection and mass-proxy systematics.",
+          "method": "A hierarchical Bayesian framework modeling the forward FP $R = 38 + a + b_X(X - 40) + b_M(\\mu - 8) + \\varepsilon$, combining a mock-catalog error covariance $C = \\operatorname{diag}(\\sigma_R^2 + b_M^2 s_{\\mu,i}^2 + \\sigma_{\\mathrm{meas},i}^2) + Z\\,\\mathrm{Cov}(\\theta)\\,Z^\\mathsf{T}$ that accounts for calibration parameter uncertainties, an orthogonal projection test ($I_{\\rm step} = g_\\perp^\\mathsf{T} C^{-1} g_\\perp$) for break detectability, and a logistic radio flux selection function $P(S_i=1) = 1/\\{1 + \\exp[-(\\log_{10}F_{\\nu,i} - \\log_{10}f_0)/w]\\}$.",
+          "assumptions": [],
+          "limits": [
+            "The 16 direct-mass BCGs span only $\\sim 1\\,\\mathrm{dex}$ in mass near $10^{10}\\,M_\\odot$, where smooth step-like deviations degenerate with overall FP slope and normalization adjustments."
+          ],
+          "citation_leads": [
+            "The unresolved high-mass frontier of the black hole Fundamental Plane: “Accreting black holes follow a Fundamental Plane (FP) linking radio and X-ray luminosities to black hole mass, but whether this relation changes in the ultramassive regime, above $\\sim 10^{10}\\,M_{\\odot}$, remains unresolved.”",
+            "III.3 High-Mass Break Test: “Over the approximately $1\\,\\mathrm{dex}$ mass span of the direct-mass BCGs, much of this smooth pattern can be reproduced by shifting the FP normalization and slightly changing its mass dependence.”",
+            "IV.3 Proxy-Mass Archive Constraints: “The mass proxy and the radio offset are nearly degenerate: if the $K$-band masses are systematically low by $\\delta_{K}$, the predicted radio luminosity falls by $b_{M}\\delta_{K}$ and the sample appears radio-bright by exactly that amount.”",
+            "A.1 Forward Calibration and Mock Surveys: “The diagonal term contains the object-by-object sources of dispersion: the FP predictive width, propagation of each mass uncertainty through the FP mass slope, and the remaining measurement contribution.”"
+          ],
+          "research_progress": "Demonstrated that claims of radio excess in ultramassive BCGs are dominated by the proxy degeneracy $\\Delta_R + b_M \\delta_K$, showing that distinguishing a physical break at $M_\\bullet \\sim 10^{10}\\,M_\\odot$ requires reducing dispersion to $\\sigma_R \\lesssim 0.40\\,\\mathrm{dex}$ with sample sizes $N \\gtrsim 320$ under uniform high-resolution core extraction protocols.",
+          "figures": [
+            {
+              "url": "/arxiv-figures/2610.40606/fig5_attribution.png",
+              "caption": "Figure 5: Physical-origin test for two $N=64$ mock surveys at the demonstrated width $\\sigma_{R}=1.11\\,\\mathrm{dex}$. Rows give the physical effect inserted into the mock catalog; columns give the effect selected by the analysis, with the final column denoting an inconclusive result. Red boxes mark correct identifications. Both survey designs contain the same masses, mass uncertainties, X-ray luminosities, and the same total numbers of objects in each environmental and accretion-state category. They differ only in where those categories fall in mass. Left: in the overall-balanced design, equal overall category counts do not prevent environment or accretion state from remaining correlated with mass near the proposed break. Right: in the mass-matched design, each environmental and accretion-state category is represented on both sides of the trial break within comparable mass intervals. The detection threshold is calibrated so that the probability of selecting any spurious physical cause when none is present is $1\\%$.",
+              "label": "Fig. 5",
+              "category": "fitting",
+              "category_badge": "Model vs Data Fitting",
+              "physical_core": "The figure tests whether mock surveys can correctly identify the physical origin of a putative high-mass radio excess at a predictive width of $\\sigma_R=1.11\\,\\mathrm{dex}$. It shows that balancing overall category counts does not remove correlations with mass near the trial break, while mass-matching environmental and accretion-state categories across the break improves the design for distinguishing causes.",
+              "is_schematic": false
+            }
+          ],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed.",
+            "Figures from source package have not undergone visual verification."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        }
       },
       {
         "arxiv_id": "2610.40609",
@@ -6201,7 +7957,7 @@
     "opening_brief": {
       "status": "ready",
       "edition_fingerprint": "e8f1fd40fc00373139feba535a7d47620f9ab907fff9a78330b19a0f1baf5dae",
-      "intro": "Featured reading: \"Black Hole Spin Evolution in Magnetized Accretion Flows\" and 6 other key developments.",
+      "intro": "Featured reading: \"Black Hole Spin Evolution in Magnetized Accretion Flows\" and 23 other key developments.",
       "focus_paper": {
         "arxiv_id": "2610.38673",
         "revision": 1,
@@ -6217,6 +7973,24 @@
           "label": "Black Hole Spin Evolution in Magnetized Accretion Flows",
           "text": "The equilibrium spin declines steeply with normalized horizon magnetic flux $\\tilde{\\phi} \\equiv \\phi / \\phi_{\\rm MAD}$, dropping from $a_{\\star;{\\rm eq}} \\approx 0.9$ in weakly magnetized flows ($\\tilde{\\phi} \\lesssim 0.2$), through $a_{\\star;{\\rm eq}}(\\tilde{\\phi}=0.5) \\approx 0.5$, down to $a_{\\star;{\\rm eq}} \\approx 0.05\\text{--}0.06$ at MAD saturation ($\\tilde{\\phi} = 1$).",
           "anchor": "radar-paper-2610-38673-v1"
+        },
+        {
+          "arxiv_id": "2610.39240",
+          "revision": 1,
+          "source_fingerprint": "ed47f296135959db7be57921429eee9cafee5004ef9dc35915dcaf940132faab",
+          "guide_fingerprint": "abe4516ed71e407c4f43a91d20de9124ada43f0b86299a455c3d983d0a772e26",
+          "label": "A universal relation predicts the observed reversal of a supernova chirp",
+          "text": "The paper derives a universal linear relation in the $(D,C)$ plane between the chirp rate $C(t) \\equiv -d\\ln P/d\\ln t$ and dimming rate $D(t) \\equiv -d\\ln L_w/d\\ln t$: $$C(t)=\\frac{K\\chi u}{w-2}-\\left(\\frac{K}{w-2}+\\frac{q}{n+1}\\right)D(t)$$ For SN 2024afav, independent baseline fitting yields magnetar spin-down parameters $P_{\\rm spin} = 3.9 \\pm 0.2\\,\\mathrm{ms}$, $B = (0.51 \\pm 0.05)\\times 10^{14}\\,\\mathrm{G}$, and spin-down timescale $t_p = 87 \\pm 11\\,\\mathrm{d}$.",
+          "anchor": "radar-paper-2610-39240-v1"
+        },
+        {
+          "arxiv_id": "2610.40053",
+          "revision": 1,
+          "source_fingerprint": "1260a8d6507aa96874c078d1cb543e1c15258217568a6fae5fe091fe6139e39f",
+          "guide_fingerprint": "52e0caae12f119571d66fbe540c0fa20950421e8a1c3a7f895b71917ca471682",
+          "label": "KM3-230213A: The Highest-Energy Cosmic Neutrino",
+          "text": "KM3NeT/ARCA detected event KM3-230213A as a near-horizontal track triggering $N_{\\text{trig}}=3672$ PMTs, with muon energy $E_{\\mu} = 120^{+110}_{-60}\\,\\mathrm{PeV}$ ($90\\%$ C.I.",
+          "anchor": "radar-paper-2610-40053-v1"
         }
       ],
       "key_highlights": [
@@ -6268,10 +8042,100 @@
           "guide_fingerprint": "3c901632e5a0be8c9fe8648a33b4d893f2dcc47986383a89a30aeba588b40e9c"
         },
         {
+          "arxiv_id": "2610.39089",
+          "revision": 1,
+          "source_fingerprint": "ef5ff3714738a0787b0edbb2a39b2bec8a589c702c20e51df317f3d38fbcb50a",
+          "guide_fingerprint": "2278c44feb38a488ad2278250f0cd3b2b87dc974feefcccb63b6ee94e9172481"
+        },
+        {
+          "arxiv_id": "2610.39130",
+          "revision": 1,
+          "source_fingerprint": "816a0c77a9d67f4be3d3a122383ae092d394843acda50eb4848e5773d936bdae",
+          "guide_fingerprint": "6541ce86dce7278181c56d618d9d2a146d6d447c7b2244b21464dd37d287a74c"
+        },
+        {
+          "arxiv_id": "2610.39200",
+          "revision": 1,
+          "source_fingerprint": "5de04d309ee191796ef3ef800ccb0836b9ea4a3501acf7ca4df72f5b78c9dbbc",
+          "guide_fingerprint": "2806c939d81bc9c8be20c2895cc3098f2f4935fd6fd43a03bd1da604887a318f"
+        },
+        {
+          "arxiv_id": "2610.39384",
+          "revision": 1,
+          "source_fingerprint": "c49be3329b44061789583f2b407835186d85108ce49814869c6c54c32031e11b",
+          "guide_fingerprint": "c430f847f4cf90ceabf679232e28d2fa16d427e8421931f5b6dba346dba03d1b"
+        },
+        {
+          "arxiv_id": "2610.39603",
+          "revision": 1,
+          "source_fingerprint": "2941a9fc295f2330598204bc3f767884990205b9c7f32c4b95d96ae38ccb7cd5",
+          "guide_fingerprint": "a6a3735aef1a37bc9c8609f56b1efd328159cf420dce2aa889e828fe334dd211"
+        },
+        {
+          "arxiv_id": "2610.39792",
+          "revision": 1,
+          "source_fingerprint": "679bd787759891c31fd4615ea9f728ccd440a14d79846891ce5cd1aa968185a5",
+          "guide_fingerprint": "06dd6dc4163b3b0ba3759fd55ac3af765583a7c5d46f9220bc8cb898df03a4aa"
+        },
+        {
+          "arxiv_id": "2610.39801",
+          "revision": 1,
+          "source_fingerprint": "7da47d6f72bbd6d7f85dcdefa1d2433fe1140d0ffba2616bd8d1c99565be6adb",
+          "guide_fingerprint": "b0c269f13c013560adfa282fff540f539b5710ac5a32ff33b862c703f001db9f"
+        },
+        {
+          "arxiv_id": "2610.39862",
+          "revision": 1,
+          "source_fingerprint": "53277153ab038b4770c0cf15316175ee6835d467eb2c1e8c14d188699586ed6e",
+          "guide_fingerprint": "2c43f2c691b7d39ca15f5d883936f15a09f2c4d9e79d621fbabd825186c8293b"
+        },
+        {
           "arxiv_id": "2610.40024",
           "revision": 1,
           "source_fingerprint": "982e70e18c9558f4a1fd4306e26ef83346bf71d174e73f7f3ca8bbf6cd7e780f",
           "guide_fingerprint": "85fc1648c0708524a60b83acbdc49a90b7f8b64ad704fbec310e4ac4a527f46a"
+        },
+        {
+          "arxiv_id": "2610.40049",
+          "revision": 1,
+          "source_fingerprint": "7a3e543e73b3416a8b49d49ab12b121577b6ee37c9f517347592146d2cb57efd",
+          "guide_fingerprint": "8799f929f1f9e08631132b6d7618e44a3fe378442d6da05eeaedd43a63e0b08d"
+        },
+        {
+          "arxiv_id": "2610.40092",
+          "revision": 1,
+          "source_fingerprint": "b10585d0d66ece94b82bde1f63ddb139e8ce5679f8d1c15a39ba7e792d1ff5b1",
+          "guide_fingerprint": "650ac977f04c37073bad4eae3043caefa1c75f67886b366c229b312dc99ac188"
+        },
+        {
+          "arxiv_id": "2610.40242",
+          "revision": 1,
+          "source_fingerprint": "ce56c1d0d7896aeedc0f5e19a893947c8b7273447d58018d92c95cefddd3cb1a",
+          "guide_fingerprint": "2e4fcf1c729229fd1275f0f28d41a4ac5a3eb302a3089b1a24eca4f8113c5c9a"
+        },
+        {
+          "arxiv_id": "2610.40255",
+          "revision": 1,
+          "source_fingerprint": "f04d041f35ac9f04b0a9571b2374c84fdf5106c244da60c0dfbc29af47ca1c47",
+          "guide_fingerprint": "82855471042f93012ceacea5043e30e50216d6f85ee5a258dc2027706bbac975"
+        },
+        {
+          "arxiv_id": "2610.40326",
+          "revision": 1,
+          "source_fingerprint": "19155101121f90327a47cd12fe0eef05f6c07fe698179ef286a62401ccba6e0b",
+          "guide_fingerprint": "9b5f32fc85e5d76390df4b1d73ce118afa692a9dfdc129605fdb22eba330db65"
+        },
+        {
+          "arxiv_id": "2610.40441",
+          "revision": 1,
+          "source_fingerprint": "fc6e6f9881c3ccf66496dc486495cc3e3c3b8410172b6ac9a37f6fbf6bbef60e",
+          "guide_fingerprint": "93a0d7dd74d505a568a2062ffac96d6f473cb6efcda0e8c3db42ca7323916bd0"
+        },
+        {
+          "arxiv_id": "2610.40606",
+          "revision": 1,
+          "source_fingerprint": "0ef77abbd3046832259b34077c51906b4937dcc568bca9513c08d463742f6ded",
+          "guide_fingerprint": "09f829b6e030b2614f0a138bbfcce56c182a3bcd7d57add722fd7db401c9c1cc"
         },
         {
           "arxiv_id": "2610.40609",
@@ -6523,6 +8387,12 @@
           "revision": 1,
           "source_fingerprint": "31fa4940454b783a55d768a43edc23dadc0baf7c5838a29ee9eefc218073c3dd",
           "guide_fingerprint": "fa33353ce770c069835127163542abdf7433cb543fe705e3aa8ec8f89b7410e5"
+        },
+        {
+          "arxiv_id": "2610.40014",
+          "revision": 1,
+          "source_fingerprint": "496ecdd0b174a5ec23c32ddea0e6220adc8dae1bb90b328c62ffab943b3ec6eb",
+          "guide_fingerprint": "239dc96713a5b3934b56a6ab62e12dff6a905ef8856f637ea4c9f00967de2ff6"
         },
         {
           "arxiv_id": "2610.40015",

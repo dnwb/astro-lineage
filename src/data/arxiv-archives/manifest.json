@@ -1,6 +1,6 @@
 {
   "schema_version": "astrolineage-arxiv-archive-manifest-v1",
-  "updated_at": "2026-10-30T06:18:06.799Z",
+  "updated_at": "2026-10-30T18:22:45.160Z",
   "total_weeks": 8,
   "total_daily_editions": 39,
   "latest_week_id": "2026-W44",
@@ -11,14 +11,14 @@
       "title": "Weekly Scientific Lineage · 2026-W44",
       "date_range": "2026-10-26 ~ 2026-11-01",
       "has_weekly_summary": true,
-      "executive_summary": "This week's progress spans the causal chain of high-energy transients from black hole spin equilibria and magnetohydrodynamic outflows to relativistic shock radiation, core-collapse neutrino backgrounds, and non-canonical engines. Major advances include:\n- **Collapsar Nucleosynthesis & Engine Physics**: arXiv:2610.31758 proved analytically that neutrino-dominated accretion flows in collapsars cannot synthesize heavy $r$-process elements because magnetically launched unbinding demands high inflow velocities that suppress electron captures, establishing a strict lower bound of $Y_{\\rm e}^{\\min} > 0.28$; concurrently, arXiv:2610.38673 demonstrated via 3D GRMHD that magnetized accretion flows drive the black hole equilibrium spin downward from $a_{\\star;{\\rm eq}} \\approx 0.9$ (SANE) to $a_{\\star;{\\rm eq}} \\approx 0.05\\text{--}0.06$ at MAD saturation.\n- **Relativistic Jets, Microphysics & Gamma-Ray Bursts**: arXiv:2610.32861 mapped the colossal energetics ($E_{\\gamma,{\\rm iso}} \\simeq 9.79 \\times 10^{54}\\;{\\rm erg}$) of GRB 260924A, attributing excess $\\sim 43\\;{\\rm GeV}$ photons to reverse-shock synchrotron self-Compton scattering in a stratified wind ($k \\simeq 1.2$); arXiv:2610.37044 solved the non-steady kinetic evolution of fast-cooling relativistic electrons below $\\gamma_m$, deriving an exact smooth broken power-law spectrum $f_{\\rm U}(\\gamma_e, t) \\propto \\gamma_e^{-2}[1 + \\gamma_0(t)/\\gamma_e]^{-\\beta}$; arXiv:2610.37214 demonstrated via 3D PIC simulations that 100% polarized X-mode coherent radio waves are robustly generated via flux rope mergers in relativistic reconnection with efficiency $\\eta \\sim 10^{-3}$.\n- **Exotic Engines & Fast X-Ray Transients**: arXiv:2610.34217 resolved the off-nuclear transient EP241021a in a dwarf starburst host, demonstrating that its month-long plateau and coordinated optical-X-ray plunge exclude standard core-collapse and SMBH models, favoring an intermediate-mass black hole or micro-TDE; arXiv:2610.34810 modeled EP251129a as an off-axis two-component jet whose double X-ray plateaus and delayed radio afterglow reflect a supramassive magnetar collapsing to a black hole fed by fallback accretion ($E_{\\rm inj} \\simeq 6\\times 10^{51}\\;{\\rm erg}$).\n- **Compact Binaries & Multi-Messenger Particle Astrophysics**: arXiv:2610.35539 discovered an intermediate-mass stripped star orbiting a neutron star in a $4.2\\;{\\rm h}$ orbit, confirming the long-sought progenitor phase to Case BB mass transfer and double neutron star mergers; arXiv:2610.35619 reported a $2.6\\sigma$ indication of the Diffuse Supernova Neutrino Background using $5003.0\\;{\\rm d}$ of Super-Kamiokande data with an electron antineutrino flux of $3.6^{+1.6}_{-1.5}\\;{\\rm cm^{-2}\\,s^{-1}}$ ($E_\\nu > 13.3\\;{\\rm MeV}$); arXiv:2610.35675 reported the maiden flight of PUEO, demonstrating real-time RFSoC interferometric phased-array triggering down to ${\\rm SNR} = 1.4$ for ultrahigh-energy neutrinos.",
+      "executive_summary": "This week's high-energy astrophysics landscape advances our understanding along the causal chain from compact-object engines and relativistic flows to particle acceleration, shock dissipation, and multi-messenger signatures. Key progress includes:\n- **Collapsar Engines & Nucleosynthesis**: arXiv:2610.31758 analytically demonstrates that neutrino-cooled collapsar accretion disks cannot synthesize heavy $r$-process elements ($Y_{\\rm e} \\le 0.25$) under long-GRB isotropic jet power constraints ($P_j \\lesssim 5\\times 10^{51}\\,{\\rm erg\\,s^{-1}}$), setting a fundamental lower bound $Y_{\\rm e}^{\\min}(R_{\\rm unb}) \\ge 0.28$.\n- **Relativistic Jets & Shock Dissipation**: arXiv:2610.32861 establishes that GRB 260924A ($E_{\\gamma,\\mathrm{iso}} \\simeq 9.79\\times 10^{54}\\,{\\rm erg}$) requires a structured circumstellar medium $n(R) \\propto R^{-1.2}$ and a reverse-shock synchrotron self-Compton (SSC) origin for prompt-to-early GeV excess exceeding the standard synchrotron burnoff limit; arXiv:2610.37044 derives an exact non-steady-state broken power law $f_{\\rm U}(\\gamma_e, t) \\propto \\gamma_e^{-2}[1 + \\gamma_0(t)/\\gamma_e]^{-\\beta}$ for fast-cooling electrons below the minimum injection Lorentz factor $\\gamma_m$.\n- **Magnetized Disk Dynamos & Jet Launching**: arXiv:2610.37758 discovers via 3D GRMHD that thin accretion disks ($h/r \\le 0.1$) cannot achieve magnetically arrested disk (MAD) states on dynamical timescales due to steep transport suppression $v_{\\Phi}/V_k \\propto (h/r)^{3.5}$, requiring $t_{\\rm MAD} \\sim 10^8\\,r_g/c$; arXiv:2610.38673 quantifies black hole equilibrium spin $a_{\\star;{\\rm eq}}$ as a continuous monotonic function of dimensionless horizon magnetic flux $\\tilde{\\phi}$, dropping from $\\sim 0.9$ (SANE) to $\\sim 0.05$ (saturated MAD).\n- **Coherent Radio Emission & Plasma Astrophysics**: arXiv:2610.37214 demonstrates with 3D PIC simulations that 3D flux rope mergers in relativistic reconnection generate coherent fast magnetosonic waves in the 100% linearly polarized X-mode with conversion efficiency $\\eta \\sim (1\\text{--}2)\\times 10^{-3}$.\n- **Supernova Physics & Engine Diagnostics**: arXiv:2610.39240 introduces a universal relation $C(t) = \\frac{K\\chi u}{w-2} - (\\frac{K}{w-2} + \\frac{q}{n+1})D(t)$ that accurately predicts the frequency chirp reversal in the superluminous supernova SN 2024afav, ruling out thin fallback disks and confirming Lense-Thirring precession in an advective thick torus around a newborn millisecond magnetar.\n- **Extragalactic Transients & Compact Binaries**: arXiv:2610.34217 pinpoints EP241021a as an off-nuclear transient at $0.95\\pm 0.13\\,\\mathrm{kpc}$ in a dwarf starburst galaxy, excluding stellar-mass core-collapse engines in favor of an intermediate-mass black hole tidal disruption; arXiv:2610.34810 resolves the fast X-ray transient EP251129a into a dual-plateau architecture governed sequentially by gravitational-wave-dominated magnetar spin-down and subsequent black hole fallback accretion ($E_{\\rm inj} \\simeq 6\\times 10^{51}\\,{\\rm erg}$); arXiv:2610.35539 establishes an intermediate-mass stripped helium star ($M_1 \\approx 2.5\\text{--}3.8\\,M_\\odot$) in a 4.2-hour orbit around a compact object ($M_2 \\approx 1.58\\,M_\\odot$), unveiling an elusive Case BB mass-transfer progenitor of double neutron star systems.\n- **Multi-Messenger Particle Astrophysics**: arXiv:2610.40053 reports the detection of ultra-high-energy neutrino candidate KM3-230213A by KM3NeT/ARCA with reconstructed muon energy $E_\\mu = 120^{+110}_{-60}\\,\\mathrm{PeV}$ (parent neutrino $E_\\nu \\sim 220\\,\\mathrm{PeV}$), favoring cosmogenic interactions or transient relativistic engines; arXiv:2610.35619 presents $2.6\\sigma$ evidence for the diffuse supernova neutrino background (DSNB) $\\bar{\\nu}_e$ flux of $3.6^{+1.6}_{-1.5}\\,\\mathrm{cm}^{-2}\\,\\mathrm{s}^{-1}$ ($E_\\nu > 13.3\\,\\mathrm{MeV}$) across 5003 days of Super-Kamiokande data; arXiv:2610.35675 details the design and sub-thermal-noise trigger performance of the PUEO ultra-high-energy neutrino balloon payload.",
       "statistics": {
-        "total_analyzed": 321,
-        "must_read_count": 10,
-        "worth_knowing_count": 76,
-        "skip_count": 235
+        "total_analyzed": 348,
+        "must_read_count": 13,
+        "worth_knowing_count": 99,
+        "skip_count": 236
       },
-      "top_picks_count": 20,
+      "top_picks_count": 23,
       "days": [
         {
           "date": "2026-10-29",
@@ -26,19 +26,31 @@
           "week_id": "2026-W44",
           "batch_id": "announcement-2026-10-29",
           "total_papers": 81,
-          "analyzed_count": 63,
-          "must_read_count": 1,
-          "worth_knowing_count": 6,
-          "skip_count": 56,
-          "pending_count": 18,
+          "analyzed_count": 81,
+          "must_read_count": 3,
+          "worth_knowing_count": 21,
+          "skip_count": 57,
+          "pending_count": 0,
           "brief_status": "ready",
-          "brief_intro": "Featured reading: \"Black Hole Spin Evolution in Magnetized Accretion Flows\" and 6 other key developments.",
+          "brief_intro": "Featured reading: \"Black Hole Spin Evolution in Magnetized Accretion Flows\" and 23 other key developments.",
           "highlights": [
             {
               "arxiv_id": "2610.38673",
               "priority": "must_read",
               "title": "Black Hole Spin Evolution in Magnetized Accretion Flows",
               "reason": "This paper presents the first systematic study of black hole spin evolution across the continuous transition from weakly magnetized (SANE) to magnetically arrested disks (MAD) using 3D GRMHD simulations with live spacetime updates, providing an analytical subgrid prescription for spin-up/spin-down equilibria in relativistic jets and compact accretors."
+            },
+            {
+              "arxiv_id": "2610.39240",
+              "priority": "must_read",
+              "title": "A universal relation predicts the observed reversal of a supernova chirp",
+              "reason": "The paper develops a universal scaling relation linking the modulation chirp rate to the supernova dimming rate for magnetar-disk engines and confirms its predicted chirp reversal (antichirp) in the superluminous supernova SN 2024afav, providing direct evidence for magnetar-driven advective thick disks."
+            },
+            {
+              "arxiv_id": "2610.40053",
+              "priority": "must_read",
+              "title": "KM3-230213A: The Highest-Energy Cosmic Neutrino",
+              "reason": "KM3-230213A is the highest-energy cosmic neutrino recorded to date ($E_\\mu = 120^{+110}_{-60}\\,\\mathrm{PeV}$, median parent neutrino energy $\\sim 220\\,\\mathrm{PeV}$), establishing multi-PeV/EeV detection capabilities and setting crucial multi-messenger constraints on AGN/GRB hadronic models, cosmogenic neutrino production, and BSM physics."
             }
           ],
           "data_file": "daily/2026-10-29.json"
@@ -49,14 +61,21 @@
           "week_id": "2026-W44",
           "batch_id": "announcement-2026-10-28",
           "total_papers": 31,
-          "analyzed_count": 22,
-          "must_read_count": 0,
-          "worth_knowing_count": 0,
+          "analyzed_count": 31,
+          "must_read_count": 1,
+          "worth_knowing_count": 8,
           "skip_count": 22,
-          "pending_count": 9,
+          "pending_count": 0,
           "brief_status": "ready",
-          "brief_intro": "Standard screening batch, focused primarily on abstract skimming.",
-          "highlights": [],
+          "brief_intro": "Featured reading: \"Thinner Disks Struggle to Launch Jets: GRMHD Simulations of Magnetic Field Generation and Transport\" and 8 other key developments.",
+          "highlights": [
+            {
+              "arxiv_id": "2610.37758",
+              "priority": "must_read",
+              "title": "Thinner Disks Struggle to Launch Jets: GRMHD Simulations of Magnetic Field Generation and Transport",
+              "reason": "This work directly addresses the physical mechanism of magnetic flux generation, transport, and relativistic jet launching in black hole accretion systems across varying disk thicknesses ($h/r=0.1$--$0.3$) using 3D GRMHD simulations, providing crucial scaling relations for MAD formation timescales and jet power relevant to GRBs, TDEs, and high-energy transients."
+            }
+          ],
           "data_file": "daily/2026-10-28.json"
         },
         {

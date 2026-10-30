@@ -1,25 +1,41 @@
 {
   "schema_version": "astrolineage-arxiv-archive-manifest-v1",
-  "updated_at": "2026-10-29T18:01:58.087Z",
+  "updated_at": "2026-10-30T02:12:54.449Z",
   "total_weeks": 8,
-  "total_daily_editions": 37,
+  "total_daily_editions": 38,
   "latest_week_id": "2026-W44",
-  "latest_daily_date": "2026-10-27",
+  "latest_daily_date": "2026-10-28",
   "weeks": [
     {
       "week_id": "2026-W44",
       "title": "Weekly Scientific Lineage · 2026-W44",
       "date_range": "2026-10-26 ~ 2026-11-01",
       "has_weekly_summary": true,
-      "executive_summary": "This week's high-energy astrophysics advances trace the causal chain connecting compact binary progenitor channels and central engines to jet microphysics, magnetohydrodynamic dissipation, and multi-messenger neutrino/gravitational-wave signatures. \n- **Central Engines & Heavy Element Nucleosynthesis**: arXiv:2610.31758 establishes from first principles that neutrino-dominated accretion flows in collapsars cannot synthesize heavy $r$-process elements ($Y_{\\rm e} \\le 0.25$) because the magnetic stresses required to unbind disk outflows accelerate the inflow velocity and suppress electron-capture neutronization, setting a strict floor of $Y_{\\rm e}^{\\min} > 0.28$ across all flux regimes. Meanwhile, arXiv:2610.32047 demonstrates that delayed $\\beta$-decay thermalization and radiative diffusion severely degrade the photometric identifiability of transuranic fission signatures ($^{254}\\mathrm{Cf}$) in kilonova light curves.\n- **Relativistic Jets, Shock Dynamics & Fast Transients**: arXiv:2610.32861 reconstructs the multi-wavelength evolution of the hyper-energetic burst GRB 260924A ($E_{\\gamma,\\mathrm{iso}} \\simeq 9.79\\times 10^{54}\\,\\mathrm{erg}$), resolving a $43.31\\,\\mathrm{GeV}$ photon and establishing that an early LAT excess arises from reverse-shock synchrotron self-Compton emission in a stratified circumstellar medium ($n \\propto R^{-1.2}$). In the kinetic domain, arXiv:2610.37044 solves the non-steady fast-cooling kinetics of relativistic electrons below $\\gamma_m$, uncovering a smooth broken power law $f_{\\rm U}(\\gamma_e, t) \\propto \\gamma_e^{-2} [1+\\gamma_0(t)/\\gamma_e]^{-\\beta}$ driven by expansion and synchrotron cooling. Complementarily, arXiv:2610.34810 models the fast X-ray transient EP251129a via fallback accretion onto a newborn black hole yielding an off-axis structured jet, whereas arXiv:2610.34217 uses high-resolution HST imaging of EP241021a to confirm an off-nuclear location in a dwarf starburst galaxy, excluding supermassive black holes in favor of an intermediate-mass black hole or micro-TDE.\n- **Compact Progenitors & Extreme Binary Evolution**: arXiv:2610.35539 confirms the missing evolutionary link in double neutron star formation by identifying an intermediate-mass stripped helium star in a tight $4.2\\,\\mathrm{h}$ circular orbit around a neutron star companion ($M_2 = 1.58\\,M_\\odot$), destined to undergo non-conservative Case BB mass transfer, an interaction-powered Type Ibn supernova, and merge via gravitational radiation in $\\sim 220\\,\\mathrm{Myr}$. In addition, arXiv:2610.31755 establishes end-to-end radiation hydrodynamic models of luminous red novae from companion inspiral inside Betelgeuse-like red supergiants.\n- **Magnetar Electrodynamics & Coherent Emission**: arXiv:2610.37214 demonstrates via 3D relativistic PIC simulations that magnetic flux rope mergers during relativistic reconnection stably generate coherent fast magnetosonic waves with $100\\%$ linearly polarized X-mode radiation at efficiencies $\\eta \\sim 10^{-3}$, providing an ab initio engine for fast radio bursts. At the microphysical level, arXiv:2610.32028 demonstrates that neutral color superconductivity (2SC) in dense quark cores induces tachyonic gluon screening that self-consistently boosts internal magnetic fields to $\\widetilde{B} \\sim 10^{17}\\,\\mathrm{G}$.\n- **Multi-Messenger Particle Astrophysics**: arXiv:2610.35619 reports a $2.6\\sigma$ indication of the diffuse supernova neutrino background (DSNB) $\\bar{\\nu}_e$ flux of $3.6^{+1.6}_{-1.5}\\,\\mathrm{cm}^{-2}\\,\\mathrm{s}^{-1}$ ($E_\\nu > 13.3\\,\\mathrm{MeV}$) across 5003 days of Super-Kamiokande data, and arXiv:2610.35675 details the maiden 23-day flight validation of the PUEO interferometric phased array for ultrahigh-energy neutrino detection over Antarctica.",
+      "executive_summary": "This week's high-energy astrophysics advances trace the complete causal chain from binary progenitor evolution, core collapse, and central engine launch through relativistic outflow dissipation, multi-messenger particle production, and late-time spectroscopic diagnostics.\n- **Central Engines & Heavy Element Nucleosynthesis**: arXiv:2610.31758 proved analytically across magnetic flux regimes from SANE to MAD that collapsar neutrino-dominated accretion flows cannot synthesize heavy $r$-process elements ($Y_{\\rm e} \\le 0.25$), setting an absolute lower bound $Y_{\\rm e}^{\\min}(R_{\\rm unb}) > 0.28$ due to the fundamental incompatibility between high-density electron capture and magnetic unbinding efficiency.\n- **Relativistic Jets, Microphysics & Extreme GRBs**: arXiv:2610.32861 mapped the ultra-energetic GRB 260924A ($E_{\\gamma,\\mathrm{iso}} \\simeq 9.79\\times 10^{54}\\,\\mathrm{erg}$, $z=3.51$) with LAT emission up to $43.31\\,\\mathrm{GeV}$, isolating an early reverse-shock synchrotron self-Compton (SSC) surplus and a stratified circumburst medium $n(R) \\propto R^{-1.2}$. Complementing this, arXiv:2610.37044 solved the non-steady-state kinetic cooling equation for relativistic electrons below the injection Lorentz factor $\\gamma_m$, deriving an exact smooth broken power-law spectrum $f_{\\rm U}(\\gamma_e, t) \\propto \\gamma_e^{-2}[1 + \\gamma_0(t)/\\gamma_e]^{-\\beta}$ that overturns standard assumptions in fast-cooling synchrotron modeling.\n- **Extragalactic Fast X-ray Transients & Engine Breakdowns**: arXiv:2610.34217 utilized HST and Gemini astrometry to localize the month-long X-ray/optical transient EP241021a to an off-nuclear site ($0.95\\,\\mathrm{kpc}$ offset) in a dwarf starburst galaxy, excluding massive collapsar and supermassive black hole engines in favor of an intermediate-mass black hole or micro-TDE with repeating partial disruptions. Concurrently, arXiv:2610.34810 showed that EP251129a exhibited a double X-ray plateau and a delayed, sharply rising radio afterglow ($F_\\nu \\propto t^{2.5}$), deciphered via millisecond magnetar spin-down collapse followed by Blandford-Znajek fallback accretion ($M_{\\rm acc} \\simeq 0.2\\,M_\\odot$) driving a two-component off-axis jet.\n- **Coherent Radio Emission & Reconnection Kinetics**: arXiv:2610.37214 established via 3D TRISTAN-MP PIC simulations with open boundaries that flux rope mergers in relativistic reconnection robustly generate coherent fast magnetosonic waves escaping as $100\\%$ linearly polarized X-mode radiation with conversion efficiencies $\\eta \\sim (1-2) \\times 10^{-3}$, directly validating magnetar/FRB radio emission models in realistic geometry.\n- **Compact Progenitors & Supernova Signatures**: arXiv:2610.35539 discovered an intermediate-mass stripped helium star tightly orbiting a compact object ($P \\approx 4.2\\,\\mathrm{h}$, companion mass $M_2 \\approx 1.58\\,M_\\odot$), identifying the direct progenitor of an interaction-powered Type Ibn supernova leading to an ultra-compact double neutron star merger within $\\tau_{\\rm delay} \\approx 220\\,\\mathrm{Myr}$. In parallel, arXiv:2610.32323 presented an LTE/NLTE spectroscopic framework for nebular JWST observations applied to Type Ic SN 2024aecx, measuring a small Fe/He filling factor ($f_{\\mathrm{FeHe}} \\approx 0.059$) and unmasking minimal radioactive bubble inflation.\n- **Multi-Messenger Astroparticle Frontiers**: arXiv:2610.35619 achieved the first $2.6\\sigma$ observational indication of the Diffuse Supernova Neutrino Background (DSNB) using $5003\\,\\mathrm{days}$ of Super-Kamiokande data (measuring a $\\bar{\\nu}_e$ flux of $3.6^{+1.6}_{-1.5}\\,\\mathrm{cm}^{-2}\\,\\mathrm{s}^{-1}$ for $E_\\nu > 13.3\\,\\mathrm{MeV}$), while arXiv:2610.35675 verified the flight operations and phased-array interferometric triggering of the PUEO ultra-high-energy neutrino mission ($E \\gtrsim 1\\,\\mathrm{EeV}$).",
       "statistics": {
-        "total_analyzed": 236,
+        "total_analyzed": 258,
         "must_read_count": 9,
         "worth_knowing_count": 70,
-        "skip_count": 157
+        "skip_count": 179
       },
       "top_picks_count": 19,
       "days": [
+        {
+          "date": "2026-10-28",
+          "weekday": "Wed",
+          "week_id": "2026-W44",
+          "batch_id": "announcement-2026-10-28",
+          "total_papers": 31,
+          "analyzed_count": 22,
+          "must_read_count": 0,
+          "worth_knowing_count": 0,
+          "skip_count": 22,
+          "pending_count": 9,
+          "brief_status": "ready",
+          "brief_intro": "Standard screening batch, focused primarily on abstract skimming.",
+          "highlights": [],
+          "data_file": "daily/2026-10-28.json"
+        },
         {
           "date": "2026-10-27",
           "weekday": "Tue",

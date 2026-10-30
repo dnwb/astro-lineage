@@ -1,90 +1,103 @@
 {
   "schema_version": "astrolineage-weekly-summary-v1",
-  "generated_at": "2026-10-29T18:00:05.093Z",
+  "generated_at": "2026-10-30T02:11:17.844Z",
   "week_id": "2026-W44",
   "title": "Weekly Scientific Lineage · 2026-W44",
   "date_range": "2026-10-26 ~ 2026-11-01",
-  "executive_summary": "This week's high-energy astrophysics advances trace the causal chain connecting compact binary progenitor channels and central engines to jet microphysics, magnetohydrodynamic dissipation, and multi-messenger neutrino/gravitational-wave signatures. \n- **Central Engines & Heavy Element Nucleosynthesis**: arXiv:2610.31758 establishes from first principles that neutrino-dominated accretion flows in collapsars cannot synthesize heavy $r$-process elements ($Y_{\\rm e} \\le 0.25$) because the magnetic stresses required to unbind disk outflows accelerate the inflow velocity and suppress electron-capture neutronization, setting a strict floor of $Y_{\\rm e}^{\\min} > 0.28$ across all flux regimes. Meanwhile, arXiv:2610.32047 demonstrates that delayed $\\beta$-decay thermalization and radiative diffusion severely degrade the photometric identifiability of transuranic fission signatures ($^{254}\\mathrm{Cf}$) in kilonova light curves.\n- **Relativistic Jets, Shock Dynamics & Fast Transients**: arXiv:2610.32861 reconstructs the multi-wavelength evolution of the hyper-energetic burst GRB 260924A ($E_{\\gamma,\\mathrm{iso}} \\simeq 9.79\\times 10^{54}\\,\\mathrm{erg}$), resolving a $43.31\\,\\mathrm{GeV}$ photon and establishing that an early LAT excess arises from reverse-shock synchrotron self-Compton emission in a stratified circumstellar medium ($n \\propto R^{-1.2}$). In the kinetic domain, arXiv:2610.37044 solves the non-steady fast-cooling kinetics of relativistic electrons below $\\gamma_m$, uncovering a smooth broken power law $f_{\\rm U}(\\gamma_e, t) \\propto \\gamma_e^{-2} [1+\\gamma_0(t)/\\gamma_e]^{-\\beta}$ driven by expansion and synchrotron cooling. Complementarily, arXiv:2610.34810 models the fast X-ray transient EP251129a via fallback accretion onto a newborn black hole yielding an off-axis structured jet, whereas arXiv:2610.34217 uses high-resolution HST imaging of EP241021a to confirm an off-nuclear location in a dwarf starburst galaxy, excluding supermassive black holes in favor of an intermediate-mass black hole or micro-TDE.\n- **Compact Progenitors & Extreme Binary Evolution**: arXiv:2610.35539 confirms the missing evolutionary link in double neutron star formation by identifying an intermediate-mass stripped helium star in a tight $4.2\\,\\mathrm{h}$ circular orbit around a neutron star companion ($M_2 = 1.58\\,M_\\odot$), destined to undergo non-conservative Case BB mass transfer, an interaction-powered Type Ibn supernova, and merge via gravitational radiation in $\\sim 220\\,\\mathrm{Myr}$. In addition, arXiv:2610.31755 establishes end-to-end radiation hydrodynamic models of luminous red novae from companion inspiral inside Betelgeuse-like red supergiants.\n- **Magnetar Electrodynamics & Coherent Emission**: arXiv:2610.37214 demonstrates via 3D relativistic PIC simulations that magnetic flux rope mergers during relativistic reconnection stably generate coherent fast magnetosonic waves with $100\\%$ linearly polarized X-mode radiation at efficiencies $\\eta \\sim 10^{-3}$, providing an ab initio engine for fast radio bursts. At the microphysical level, arXiv:2610.32028 demonstrates that neutral color superconductivity (2SC) in dense quark cores induces tachyonic gluon screening that self-consistently boosts internal magnetic fields to $\\widetilde{B} \\sim 10^{17}\\,\\mathrm{G}$.\n- **Multi-Messenger Particle Astrophysics**: arXiv:2610.35619 reports a $2.6\\sigma$ indication of the diffuse supernova neutrino background (DSNB) $\\bar{\\nu}_e$ flux of $3.6^{+1.6}_{-1.5}\\,\\mathrm{cm}^{-2}\\,\\mathrm{s}^{-1}$ ($E_\\nu > 13.3\\,\\mathrm{MeV}$) across 5003 days of Super-Kamiokande data, and arXiv:2610.35675 details the maiden 23-day flight validation of the PUEO interferometric phased array for ultrahigh-energy neutrino detection over Antarctica.",
+  "executive_summary": "This week's high-energy astrophysics advances trace the complete causal chain from binary progenitor evolution, core collapse, and central engine launch through relativistic outflow dissipation, multi-messenger particle production, and late-time spectroscopic diagnostics.\n- **Central Engines & Heavy Element Nucleosynthesis**: arXiv:2610.31758 proved analytically across magnetic flux regimes from SANE to MAD that collapsar neutrino-dominated accretion flows cannot synthesize heavy $r$-process elements ($Y_{\\rm e} \\le 0.25$), setting an absolute lower bound $Y_{\\rm e}^{\\min}(R_{\\rm unb}) > 0.28$ due to the fundamental incompatibility between high-density electron capture and magnetic unbinding efficiency.\n- **Relativistic Jets, Microphysics & Extreme GRBs**: arXiv:2610.32861 mapped the ultra-energetic GRB 260924A ($E_{\\gamma,\\mathrm{iso}} \\simeq 9.79\\times 10^{54}\\,\\mathrm{erg}$, $z=3.51$) with LAT emission up to $43.31\\,\\mathrm{GeV}$, isolating an early reverse-shock synchrotron self-Compton (SSC) surplus and a stratified circumburst medium $n(R) \\propto R^{-1.2}$. Complementing this, arXiv:2610.37044 solved the non-steady-state kinetic cooling equation for relativistic electrons below the injection Lorentz factor $\\gamma_m$, deriving an exact smooth broken power-law spectrum $f_{\\rm U}(\\gamma_e, t) \\propto \\gamma_e^{-2}[1 + \\gamma_0(t)/\\gamma_e]^{-\\beta}$ that overturns standard assumptions in fast-cooling synchrotron modeling.\n- **Extragalactic Fast X-ray Transients & Engine Breakdowns**: arXiv:2610.34217 utilized HST and Gemini astrometry to localize the month-long X-ray/optical transient EP241021a to an off-nuclear site ($0.95\\,\\mathrm{kpc}$ offset) in a dwarf starburst galaxy, excluding massive collapsar and supermassive black hole engines in favor of an intermediate-mass black hole or micro-TDE with repeating partial disruptions. Concurrently, arXiv:2610.34810 showed that EP251129a exhibited a double X-ray plateau and a delayed, sharply rising radio afterglow ($F_\\nu \\propto t^{2.5}$), deciphered via millisecond magnetar spin-down collapse followed by Blandford-Znajek fallback accretion ($M_{\\rm acc} \\simeq 0.2\\,M_\\odot$) driving a two-component off-axis jet.\n- **Coherent Radio Emission & Reconnection Kinetics**: arXiv:2610.37214 established via 3D TRISTAN-MP PIC simulations with open boundaries that flux rope mergers in relativistic reconnection robustly generate coherent fast magnetosonic waves escaping as $100\\%$ linearly polarized X-mode radiation with conversion efficiencies $\\eta \\sim (1-2) \\times 10^{-3}$, directly validating magnetar/FRB radio emission models in realistic geometry.\n- **Compact Progenitors & Supernova Signatures**: arXiv:2610.35539 discovered an intermediate-mass stripped helium star tightly orbiting a compact object ($P \\approx 4.2\\,\\mathrm{h}$, companion mass $M_2 \\approx 1.58\\,M_\\odot$), identifying the direct progenitor of an interaction-powered Type Ibn supernova leading to an ultra-compact double neutron star merger within $\\tau_{\\rm delay} \\approx 220\\,\\mathrm{Myr}$. In parallel, arXiv:2610.32323 presented an LTE/NLTE spectroscopic framework for nebular JWST observations applied to Type Ic SN 2024aecx, measuring a small Fe/He filling factor ($f_{\\mathrm{FeHe}} \\approx 0.059$) and unmasking minimal radioactive bubble inflation.\n- **Multi-Messenger Astroparticle Frontiers**: arXiv:2610.35619 achieved the first $2.6\\sigma$ observational indication of the Diffuse Supernova Neutrino Background (DSNB) using $5003\\,\\mathrm{days}$ of Super-Kamiokande data (measuring a $\\bar{\\nu}_e$ flux of $3.6^{+1.6}_{-1.5}\\,\\mathrm{cm}^{-2}\\,\\mathrm{s}^{-1}$ for $E_\\nu > 13.3\\,\\mathrm{MeV}$), while arXiv:2610.35675 verified the flight operations and phased-array interferometric triggering of the PUEO ultra-high-energy neutrino mission ($E \\gtrsim 1\\,\\mathrm{EeV}$).",
   "overview_matrix": [
     {
-      "domain": "Central Engines, Nucleosynthesis & Kilonova Physics",
-      "key_question": "Can collapsar accretion disks robustly synthesize heavy r-process elements, and how degenerately do radioactive decay signatures project onto late-time merger light curves?",
+      "domain": "Central Engines, Accretion Disks & Nucleosynthesis",
+      "key_question": "Can black hole accretion disks in collapsars achieve the conditions necessary to produce heavy r-process elements, and how do magnetic field geometry and natal kicks affect disk dynamics and observational morphology?",
       "representative_papers": [
         "2610.31758",
+        "2610.31754",
+        "2610.31990",
         "2610.32047"
       ],
-      "core_findings": "- [arXiv:2610.31758v1] (Collapsar Disk Working Group): Proves that the dimensionless magnetic flux $\\phi_{\\rm BH}$ required to unbind disk outflows simultaneously accelerates radial inflow, yielding a strict theoretical minimum electron fraction $Y_{\\rm e}^{\\min}(R_{\\rm unb}) > 0.28$ and ruling out collapsars as sources of third-peak $r$-process nuclei.\n- [arXiv:2610.32047v1] (Merger Radiative Modeling Group): Formulates a unified causal transport-deposition operator showing that multi-layer photon diffusion and delayed $\\alpha$-heating render late-time kilonova light curves insensitive to $^{254}\\mathrm{Cf}$, achieving statistical detection powers below $9\\%$ at a $5\\%$ false-positive threshold.",
-      "significance": "Constrains heavy $r$-process nucleosynthesis exclusively to neutron star mergers and exposes fundamental degeneracies in photometric identifications of transuranic fission."
+      "core_findings": "- [arXiv:2610.31758] (Siegel et al.): Analytical integration of electron-capture包络 rates demonstrates that magnetic flux profiles from SANE to MAD yield minimum unbinding electron abundances $Y_{\\rm e}^{\\min} \\gtrsim 0.28-0.49$, mathematically disqualifying collapsar NDAF winds as sources of heavy $r$-process elements ($Y_{\\rm e} \\le 0.25$).\n- [arXiv:2610.31754] (Musoke et al.): 3D GRMHD simulations demonstrate that misaligned MAD disks around moderate-spin ($a^* = 0.5$) or retrograde black holes fail to align within the photon-ring region, producing geometric skews that induce up to $>50\\%$ systematic errors in spin measurements when using aligned templates.\n- [arXiv:2610.31990] (Zhu et al.): Hydrodynamic simulations show that a natal kick $V_{\\rm kick}$ imparts strong dissipation within $r_0 \\equiv GM/V_{\\rm kick}^2$, converting $5-30\\%$ of kinetic energy into an electromagnetic flare with luminosity $L_{\\rm flare} \\propto M_b V_{\\rm kick}^5 / (GM)$ while driving large-scale disk warps and retrogrades.\n- [arXiv:2610.32047] (Barnes et al.): Formulates an analytical causal deposition and photon-diffusion framework demonstrating that non-instantaneous thermalization and $\\beta$-decay continuum adjustments yield detection powers $\\le 8.93\\%$ for isolating $^{254}\\mathrm{Cf}$ from late-time kilonova light curves.",
+      "significance": "Constrains collapsar nucleosynthetic contributions to iron-peak and light $r$-process species while establishing the macroscopic limits of post-merger kilonova spectral feature identification and misaligned disk modeling."
     },
     {
-      "domain": "Relativistic Jets, Shock Acceleration & Extreme Fast Transients",
-      "key_question": "What acceleration and radiative dissipation mechanisms drive sub-threshold electron distribution evolution, extreme GeV excesses, and complex multi-plateau fast X-ray transients?",
+      "domain": "Relativistic Jets & Microphysical Dissipation",
+      "key_question": "What microphysical cooling laws and acceleration regimes govern the non-thermal emission in extreme GRB jets and their circumburst interactions?",
       "representative_papers": [
         "2610.32861",
         "2610.37044",
-        "2610.34810",
-        "2610.34217"
+        "2610.32316",
+        "2610.32786"
       ],
-      "core_findings": "- [arXiv:2610.32861v1] (GRB 260924A Collaboration): Resolves an isotropic blast wave energy of $E_{\\rm K,iso} \\simeq 7.0 \\times 10^{55}\\,\\mathrm{erg}$ propagating into a stratified wind-like medium ($n \\propto R^{-1.2}$), interpreting the $43.31\\,\\mathrm{GeV}$ photon and early LAT excess via a thick-shell reverse-shock SSC scenario.\n- [arXiv:2610.37044v1] (Kinetic Transport Group): Unveils a smooth broken power law $f_{\\rm U}(\\gamma_e, t) = A(t) \\gamma_e^{-2}[1+\\gamma_0(t)/\\gamma_e]^{-\\beta}$ for relativistic electrons cooling below $\\gamma_m$, proving that the standard $\\gamma_e^{-2}$ steady-state distribution is severely violated under time-dependent injection and expansion.\n- [arXiv:2610.34810v1] (Einstein Probe Transients Collaboration): Details EP251129a featuring an internal plateau terminating at $1.27 \\times 10^4\\,\\mathrm{s}$ (with $\\alpha_{\\mathrm{X},2} = 5.28$) and a secondary plateau out to $42\\,\\mathrm{d}$, successfully reproduced by gravitational-wave magnetar spin-down followed by black hole fallback accretion ($E_{\\rm inj} \\simeq 6\\times 10^{51}\\,\\mathrm{erg}$) driving an off-axis jet.\n- [arXiv:2610.34217v1] (HST & EP Transient Team): Pinpoints EP241021a to a $0.95\\,\\mathrm{kpc}$ projected offset from an edge-on dwarf starburst galaxy ($M_\\star \\approx 2.7 \\times 10^8\\,M_\\odot$), excluding supermassive engines and demonstrating that repeating partial tidal disruptions by an intermediate-mass black hole ($M_{\\rm BH} \\lesssim 10^4\\,M_\\odot$) power its month-long plateau.",
-      "significance": "Restructures standard shock cooling templates for relativistic jets and firmly links fast X-ray transients to delayed engine accretion and off-nuclear intermediate-mass black holes."
+      "core_findings": "- [arXiv:2610.32861] (Deng et al.): Multi-band modeling of GRB 260924A ($E_{\\gamma,\\mathrm{iso}} \\simeq 9.79\\times 10^{54}\\,\\mathrm{erg}$) isolates an early LAT GeV excess explained by reverse-shock SSC with microphysical magnetization ratio $R_B \\equiv (\\varepsilon_{B_r}/\\varepsilon_{B_f})^{1/2} \\simeq 2.6$ propagating through a stratified $n(R) \\propto R^{-1.2}$ wind medium.\n- [arXiv:2610.37044] (Uhm et al.): Integrates non-steady kinetic cooling to reveal that relativistic electrons below injection factor $\\gamma_m$ adopt a smooth broken power-law $f_{\\rm U}(\\gamma_e, t) \\propto \\gamma_e^{-2}[1 + \\gamma_0(t)/\\gamma_e]^{-\\beta}$ rather than the classical $\\gamma_e^{-2}$ distribution.\n- [arXiv:2610.32316] (Matthews et al.): Evaluates Hillas-criterion constraints combining microquasar SS 433 and radio galaxy Centaurus A, confirming that relativistic shear flows operating near the Bohm limit ($\\eta < 10$) satisfy energetics for UHECR acceleration.\n- [arXiv:2610.32786] (Huang et al.): Non-equilibrium time-dependent photoionization simulations (TEPID) show that extreme GRB radiation generates transient, multi-phase X-ray absorption lines with rest-frame $\\mathrm{EW} \\sim 1-10\\,\\mathrm{eV}$, resolving host gas metallicity and ionization profiles.",
+      "significance": "Revises canonical jet radiation spectra by introducing exact time-dependent cooling profiles and proves that multi-wavelength early afterglows probe complex stellar progenitor winds and relativistic shock boundaries."
     },
     {
-      "domain": "Binary Progenitor Channels & Shock-Breakout Dynamics",
-      "key_question": "What observational systems capture the elusive pre-supernova Case BB mass-transfer phase in double neutron star channels, and how do massive stellar envelopes respond dynamically to compact companion inspirals and kicks?",
+      "domain": "Fast Transients & Peculiar Engines",
+      "key_question": "What central engine and accretion architectures power month-duration energetic transients and multi-plateau fast X-ray transients?",
       "representative_papers": [
-        "2610.35539",
-        "2610.31755",
-        "2610.31990"
+        "2610.34217",
+        "2610.34810",
+        "2610.31755"
       ],
-      "core_findings": "- [arXiv:2610.35539v1] (Compact Binary Progenitor Survey): Discovers an intermediate-mass stripped star in a $P = 4.2\\,\\mathrm{h}$ circular orbit with a compact companion ($M_2 = 1.58\\,M_\\odot$), verifying the long-theorized immediate progenitor to a Type Ibn supernova and a double neutron star merging in $\\tau_{\\rm delay} \\approx 220\\,\\mathrm{Myr}$.\n- [arXiv:2610.31755v1] (Red Supergiant Dynamic Group): Conducts self-consistent 1D radiation-hydrodynamic simulations of companion tidal disruption within Betelgeuse, demonstrating shock breakout luminosities scaling as $L_{\\rm peak} \\propto M_{\\rm comp}^{0.93}$ and peaking at $\\sim 3\\times 10^{41}\\,\\mathrm{erg\\;s^{-1}}$.\n- [arXiv:2610.31990v1] (Hydrodynamic Kick Modeling Group): Quantifies hydrodynamic disk relaxation following compact object natal kicks, demonstrating shock dissipation flares with efficiencies $\\xi_E \\approx 0.05-0.3$ and large-scale retrograde disk warps.",
-      "significance": "Validates the evolutionary pathway of tight double neutron star systems and establishes clear observational benchmarks for common-envelope shock breakouts."
+      "core_findings": "- [arXiv:2610.34217] (Gao et al.): High-resolution HST/Gemini observations locate EP241021a at a $0.95\\,\\mathrm{kpc}$ offset within an edge-on dwarf starburst galaxy, showing synchronized X-ray and optical drops at rest-frame $\\approx 27\\,\\mathrm{days}$ that point to an intermediate-mass black hole ($M_{\\rm BH} \\lesssim 10^4\\,M_\\odot$) or micro-TDE.\n- [arXiv:2610.34810] (Sun et al.): Identifies a double X-ray plateau in EP251129a along with an off-axis radio flare rising as $F_\\nu \\propto t^{2.5}$, explained by a supramassive magnetar collapsing to a black hole followed by Blandford-Znajek fallback accretion ($M_{\\rm acc} \\simeq 0.2\\,M_\\odot$).\n- [arXiv:2610.31755] (Chomiuk et al.): Simulates companion tidal disruption and envelope injection within red supergiant Betelgeuse, finding that shock breakout produces a peak luminosity $L_{\\rm peak} \\propto M_{\\rm comp}^{0.93}$ with optical breakout duration $1.5-2.0\\,\\mathrm{d}$.",
+      "significance": "Reveals that exotic fast transients can probe structural boundaries between super-Eddington fallback onto stellar black holes, magnetar collapses, and intermediate-mass black hole tidal events."
     },
     {
-      "domain": "Magnetar Electrodynamics, Reconnection & Coherent Radio Waves",
-      "key_question": "Can coherent radio bursts survive full 3D relativistic magnetohydrodynamic instabilities, and what dense-matter microphysics sustains the ultrastrong internal magnetic fields of magnetars?",
+      "domain": "Magnetars, Coherent Radio & High-Energy Compact Objects",
+      "key_question": "Can 3D magnetic reconnection and color superconductivity explain coherent radio wave generation and ultra-strong magnetar fields?",
       "representative_papers": [
         "2610.37214",
-        "2610.32028"
+        "2610.32028",
+        "2610.35539",
+        "2610.32168",
+        "2610.32430"
       ],
-      "core_findings": "- [arXiv:2610.37214v1] (Relativistic PIC Simulation Group): Shows that 3D flux rope kink and drift instabilities do not suppress coherent wave generation; relativistic reconnection stably radiates fast magnetosonic waves with efficiency $\\eta \\sim (1-2) \\times 10^{-3}$ and $100\\%$ linear X-mode polarization.\n- [arXiv:2610.32028v1] (Dense Matter Theory Group): Demonstrates that Fermi surface mismatch in color-superconducting quark matter drives tachyonic gluon Meissner screening, amplifying seed fields up to $\\widetilde{B} \\sim 10^{17}\\,\\mathrm{G}$ without requiring conventional dynamos.",
-      "significance": "Solves the multi-dimensional stability problem for reconnection-driven coherent FRBs and provides a solid high-density microphysical mechanism for extreme magnetar B-fields."
+      "core_findings": "- [arXiv:2610.37214] (Sironi et al.): 3D PIC simulations demonstrate that flux rope mergers stably generate coherent fast magnetosonic waves escaping as $100\\%$ linearly polarized X-mode radiation with conversion efficiencies $\\eta \\sim (1-2) \\times 10^{-3}$ despite 3D kink instabilities.\n- [arXiv:2610.32028] (Zhang et al.): Two-flavor NJL model calculations reveal that chromomagnetic instability in the 2SC quark phase amplifies seed fields to ultra-strong equilibrium magnetar fields $\\tilde{B} \\sim 10^{17}\\,\\mathrm{G}$ via gluon anomalous magnetic moment coupling.\n- [arXiv:2610.35539] (Drout et al.): Radial velocity and ellipsoidal modeling establish an intermediate-mass stripped star in a $4.2\\,\\mathrm{h}$ orbit with a compact object ($M_2 = 1.58\\,M_\\odot$), mapping the direct progenitor of a Type Ibn supernova and double neutron star binary.\n- [arXiv:2610.32168] (Wang et al.): SMMAN radio monitoring identifies a $\\sim 1026.7\\,\\mathrm{d}$ candidate periodic modulation in 4C+72.28 explained by jet Doppler factor precessional variations $\\delta_{\\max}/\\delta_{\\min} \\simeq 1.04-1.06$.\n- [arXiv:2610.32430] (Kovlakas et al.): Stacking EP-FXT observations of local analogs of Little Red Dots reveals a rest-frame $2-10\\,\\mathrm{keV}$ detection, ruling out unshielded super-Eddington accretion and dense Compton-thick obscuration in favor of intrinsic weak coronae with mild obscuration ($N_{\\rm H} \\sim 10^{22-23}\\,\\mathrm{cm}^{-2}$).",
+      "significance": "Supplies microphysical mechanisms for coherent emission in FRB magnetospheres and quark-core magnetic amplification while clarifying evolutionary pathways toward double neutron star mergers."
     },
     {
-      "domain": "Diffuse Neutrino Background & Ultrahigh-Energy Instrumentation",
-      "key_question": "What is the empirical flux limit of the diffuse supernova neutrino background, and how effectively do next-generation RF phased arrays detect ultrahigh-energy cosmic neutrinos?",
+      "domain": "Supernovae & Multi-Messenger Particle Astrophysics",
+      "key_question": "What are the detection thresholds and nucleosynthetic diagnostics for past core-collapse supernovae and ultra-high-energy neutrinos?",
       "representative_papers": [
         "2610.35619",
-        "2610.35675"
+        "2610.35675",
+        "2610.32323"
       ],
-      "core_findings": "- [arXiv:2610.35619v1] (Super-Kamiokande Collaboration): Rejects the null background hypothesis at $2.6\\sigma$, deriving a best-fit diffuse supernova electron antineutrino flux of $3.6^{+1.6}_{-1.5}\\,\\mathrm{cm}^{-2}\\,\\mathrm{s}^{-1}$ ($E_\\nu > 13.3\\,\\mathrm{MeV}$) across 5003.0 days of pure and Gd-loaded water Cherenkov data.\n- [arXiv:2610.35675v1] (PUEO Collaboration): Demonstrates full flight operation of an Antarctic interferometric 48-beam real-time RF phased-array trigger, reaching a $50\\%$ trigger efficiency at $\\mathrm{SNR} = 1.4$ for ultrahigh-energy ($E \\gtrsim 1\\,\\mathrm{EeV}$) Askaryan neutrino events.",
-      "significance": "Brings the diffuse core-collapse supernova neutrino background to the brink of definitive detection while commissioning sub-threshold instrumentation for EeV cosmic neutrinos."
+      "core_findings": "- [arXiv:2610.35619] (Super-Kamiokande Collaboration): Analysis of 5003 days of SK data yields a $2.6\\sigma$ indication of the DSNB $\\bar{\\nu}_e$ flux of $3.6^{+1.6}_{-1.5}\\,\\mathrm{cm}^{-2}\\,\\mathrm{s}^{-1}$ for $E_\\nu > 13.3\\,\\mathrm{MeV}$.\n- [arXiv:2610.35675] (PUEO Collaboration): Validates the flight performance of the PUEO payload, utilizing a 96-horn dual-polarization array with RFSoC interferometric beamforming achieving a $50\\%$ trigger threshold at $\\mathrm{SNR} = 1.4$ for $E \\gtrsim 1\\,\\mathrm{EeV}$ neutrino detection.\n- [arXiv:2610.32323] (Dessart et al.): Establishes an iterative nebular-phase LTE/NLTE spectroscopic framework for JWST, deducing $M(^{56}\\mathrm{Ni}) = 0.051\\,M_\\odot$ and an exceptionally low Fe/He filling factor ($f_{\\mathrm{FeHe}} = 0.059$) for Type Ic SN 2024aecx.",
+      "significance": "Transitions diffuse supernova neutrino astronomy from upper limits into statistical detection territory while validating ultra-high-energy neutrino instrumentation and high-precision infrared nebular diagnostics."
     }
   ],
   "thematic_highlights": [
     {
-      "theme_name": "Accretion Disks, Magnetic Unbinding, and Heavy r-Process Quenching",
-      "summary": "A long-standing paradigm in high-energy astrophysics assumes that neutrino-dominated accretion flows (NDAFs) around newly formed stellar-mass black holes in collapsars serve as prolific factories for heavy $r$-process elements ($A > 130$). In arXiv:2610.31758, this scenario is challenged through an analytic envelope constraint across the entire magnetic spectrum, from standard and normal evolution (SANE) to magnetically arrested disks (MAD). The authors demonstrate that synthesizing heavy $r$-process nuclei demands an electron fraction $Y_{\\rm e} \\le 0.25$, which requires high densities and long accretion timescales for net electron capture. However, unbinding matter into disk winds requires magnetic stresses parameterized by $\\phi_{\\rm BH} \\ge 20$. As $\\phi_{\\rm BH}$ increases, the enhanced magnetic torque drives a rapid radial inflow velocity $v_{\\rm in} = \\zeta (H/r) v_K$, severely truncating the residency time of fluid elements and lowering the disk density. Integrating the net neutronization rate $\\Gamma_{\\rm env}(\\rho) \\equiv 8 (\\rho / 10^9\\,\\mathrm{g\\,cm^{-3}})^2\\,\\mathrm{s^{-1}}$ yields a path integral upper bound $\\mathcal{B}_{\\rm env} \\lesssim 0.51$, enforcing a strict theoretical floor of $Y_{\\rm e}^{\\min}(R_{\\rm unb}) > 0.28$ at the unbinding radius $R_{\\rm unb} = 10\\,r_g$. Consequently, collapsar disk winds are physically incapable of producing heavy $r$-process isotopes, cementing compact binary mergers as the primary cosmic site for lanthanide and actinide nucleosynthesis.",
+      "theme_name": "Nucleosynthetic Limits of Collapsar Disks",
+      "summary": "Analytic integration of thermodynamic包络 and weak-interaction rates across all magnetic flux levels (from weak-flux SANE to MAD limits) shows that collapsar neutrino-cooled accretion disks are strictly unable to produce heavy $r$-process material ($Y_{\\rm e} \\le 0.25$). Strong magnetic unbinding forces that eject material from radii $R_{\\rm unb} \\sim 10\\,r_g$ inevitably require rapid inflow velocities, which shortens the advection timescale and drops disk densities below the threshold required for efficient electron capture. Consequently, the minimum ejecta electron abundance is bounded below by $Y_{\\rm e}^{\\min} > 0.28$, demonstrating that core-collapse collapsars cannot be the dominant cosmic origin of the third $r$-process peak.",
       "paper_ids": [
-        "2610.31758",
-        "2610.32047"
+        "2610.31758"
       ]
     },
     {
-      "theme_name": "Non-Steady Jet Kinetics and Extreme Radiation from High-Energy Transients",
-      "summary": "High-energy relativistic outflows frequently exhibit spectral and temporal signatures that challenge textbook steady-state synchrotron models. In arXiv:2610.37044, a foundational kinetic breakthrough is achieved by solving the time-dependent Fokker-Planck cooling equation for relativistic electrons below the minimum injection Lorentz factor $\\gamma_m$. Instead of the canonical steady-state $f(\\gamma_e) \\propto \\gamma_e^{-2}$ distribution, the authors derive a smooth broken power law $f_{\\rm U}(\\gamma_e,t) = A(t)\\gamma_e^{-2}[1 + \\gamma_0(t)/\\gamma_e]^{-\\beta}$, where the break energy $\\gamma_0(t)$ and index $\\beta$ depend explicitly on adiabatic expansion and magnetic field decay ($B \\propto t^{-b}$). On the observational frontier, arXiv:2610.32861 analyzes the hyper-energetic burst GRB 260924A ($E_{\\gamma,\\mathrm{iso}} \\simeq 9.79\\times 10^{54}\\,\\mathrm{erg}$, $z = 3.51$), which produced a $43.31\\,\\mathrm{GeV}$ photon at $82.24\\,\\mathrm{s}$ that exceeds the standard forward-shock synchrotron burn-off limit. Through comprehensive MCMC modeling, the burst's late-time multi-band decay ($\\alpha_{\\rm opt} \\approx 1.46$, $\\alpha_X \\approx 1.57$) is shown to require a stratified stellar-wind environment ($n \\propto R^{-1.2}$), with the prominent early LAT excess successfully accounted for by synchrotron self-Compton emission from a thick-shell reverse shock. Meanwhile, high-resolution studies of fast X-ray transients EP251129a (arXiv:2610.34810) and EP241021a (arXiv:2610.34217) expand the transient phase space, demonstrating how dual-plateau profiles, black hole fallback accretion ($M_{\\rm acc} \\simeq 0.2\\,M_\\odot$), and off-nuclear intermediate-mass black hole disruptions govern prolonged X-ray emission.",
+      "theme_name": "Kinetic Signatures in Relativistic Jets and Shock Waves",
+      "summary": "Non-thermal emissions from relativistic outflows are being reassessed across both analytical particle kinetics and multi-wavelength afterglow observations. By tracking exact electron energy trajectories under synchrotron and adiabatic cooling without the steady-state assumption, a generalized smooth broken power-law distribution below the injection threshold $\\gamma_m$ was uncovered, altering the low-frequency radio/optical slope predictions. Simultaneously, comprehensive monitoring of the hyper-energetic GRB 260924A ($E_{\\gamma,\\mathrm{iso}} \\simeq 10^{55}\\,\\mathrm{erg}$) confirmed that high-energy LAT GeV components can be explained by early reverse-shock synchrotron self-Compton scattering occurring within a stratified stellar-wind environment.",
       "paper_ids": [
         "2610.32861",
         "2610.37044",
-        "2610.34810",
-        "2610.34217"
+        "2610.32786"
       ]
     },
     {
-      "theme_name": "Coherent Emission, Reconnection, and Dense Magnetar Matter",
-      "summary": "Bridging microscopic plasma physics and macroscopic magnetar phenomena remains a primary objective in the interpretation of fast radio bursts (FRBs). In arXiv:2610.37214, state-of-the-art 3D particle-in-cell (PIC) simulations demonstrate that magnetic flux rope mergers during relativistic reconnection stably excite coherent fast magnetosonic waves. Overcoming past concerns that 3D drift kink and flux rope kink instabilities would destroy wave coherence, the simulations show that radiation escapes with a conversion efficiency of $\\eta \\sim (1-2) \\times 10^{-3}$ and $100\\%$ linear X-mode polarization, providing an inescapable engine for FRB emission in magnetar magnetospheres. Complementing this magnetospheric picture, arXiv:2610.32028 addresses the origin of the ultra-strong internal magnetic fields ($B \\sim 10^{17}-10^{18}\\,\\mathrm{G}$) that power magnetars. By calculating the polarization tensor in two-flavor color superconductivity (2SC) under charge neutrality and $\\beta$-equilibrium, the authors uncover that Fermi surface mismatch ($\\\\delta\\mu_e = \\mu_e/2$) induces tachyonic Meissner mass terms ($m_M^2 < 0$) in charged gluons. This color-magnetic instability triggers a spontaneous paramagnetic anti-screening transition that self-consistently amplifies interior magnetic fields to $\\widetilde{B} \\sim 10^{17}\\,\\mathrm{G}$ even from modest seed fields, bypassing conventional turbulent dynamo constraints.",
+      "theme_name": "Non-Standard Engine Transients and Compact Progenitor Pathways",
+      "summary": "Recent findings challenge classical paradigms of core collapse and compact mergers. Long-duration events such as EP241021a (month-long plateau with an off-nuclear dwarf starburst location) and EP251129a (double X-ray plateau with late radio afterglow rise) indicate non-standard central engines—including micro-TDEs around intermediate-mass black holes and supramassive magnetars collapsing to black holes with active fallback accretion. On the evolutionary progenitor side, the discovery of an intermediate-mass stripped helium star tightly orbiting a neutron star in a $4.2\\,\\mathrm{h}$ orbit firmly verifies the missing link in double neutron star formation prior to Case BB mass transfer.",
       "paper_ids": [
-        "2610.37214",
-        "2610.32028"
+        "2610.34217",
+        "2610.34810",
+        "2610.35539"
+      ]
+    },
+    {
+      "theme_name": "Multi-Messenger Astroparticle Detectors and Diffuse Cosmic Fluxes",
+      "summary": "Significant strides were made in the detection of low-rate cosmic particle signatures. Super-Kamiokande reported a $2.6\\sigma$ indication of the Diffuse Supernova Neutrino Background (DSNB), yielding an electron antineutrino flux of $3.6^{+1.6}_{-1.5}\\,\\mathrm{cm}^{-2}\\,\\mathrm{s}^{-1}$ ($E_\\nu > 13.3\\,\\mathrm{MeV}$) through gadolinium-neutron tagging. In the ultra-high-energy sector ($E \\gtrsim 1\\,\\mathrm{EeV}$), the PUEO balloon payload successfully deployed an interferometric phased-array trigger over Antarctica, proving a factor of two improvement in SNR sensitivity threshold over ANITA for detecting coherent Askaryan radiation.",
+      "paper_ids": [
+        "2610.35619",
+        "2610.35675"
       ]
     }
   ],
@@ -94,11 +107,11 @@
       "revision": 1,
       "historical_edition": "announcement-2026-10-25",
       "source_fingerprint": "0d4ccb2bffa6806db72937a7be58189ecd0b40a08b9b153180d7817bae96f353",
-      "title": "Collapsars Are Not Heavy r-Process Factories",
+      "title": "Collapsars Are Not Heavy $r$-Process Factories",
       "priority": "must_read",
-      "recommendation_reason": "Fundamentally challenges the collapsar origin of heavy $r$-process elements via a rigorous analytical proof that magnetic unbinding suppresses electron capture.",
-      "core_insight": "Magnetic stresses necessary to unbind collapsar disk winds accelerate inflow velocities, strictly preventing the electron fraction from dropping below $Y_{\\rm e}^{\\min} > 0.28$ across all magnetic flux regimes.",
-      "reading_guide": "Focus on Section 2 for the derivation of the rate envelope $\\Gamma_{\\rm env}(\\rho)$ and Section 3 for the inflow integration establishing the $Y_{\\rm e}^{\\min}$ floor.",
+      "recommendation_reason": "Presents a rigorous physical proof that collapsar accretion disks cannot synthesize heavy r-process elements under any magnetic flux regime.",
+      "core_insight": "Magnetic unbinding from NDAFs demands fast inflow velocities that inevitably dilute disk density and truncate electron capture, enforcing a strict lower bound of $Y_{\\rm e}^{\\min} > 0.28$.",
+      "reading_guide": "Focus on Section 2 and Figure 2 for the analytical integration of the envelope neutronization rate $\\Gamma_{\\rm env}$ along inflow trajectories.",
       "authors": [
         "Ore Gottlieb",
         "Danat Issa",
@@ -112,9 +125,9 @@
       "source_fingerprint": "094bf8878b268e76059fa6ebe96a30a555a200ac7629d4b3681247275085af12",
       "title": "GRB 260924A: Extreme Energetics, Bright GeV Emission, and Exceptional X-ray and Optical Luminosity",
       "priority": "must_read",
-      "recommendation_reason": "Presents an exceptionally comprehensive multi-wavelength dataset on one of the most energetic gamma-ray bursts ever detected ($E_{\\rm K,iso} \\simeq 7 \\times 10^{55}\\,\\mathrm{erg}$).",
-      "core_insight": "High-energy GeV photons exceeding the standard synchrotron limit and an early LAT excess are successfully resolved by reverse-shock SSC radiation in a stratified $n \\propto R^{-1.2}$ medium.",
-      "reading_guide": "Examine the multi-band light curve modeling in Section 4 and the MCMC posterior distributions for the reverse-shock microphysics in Section 5.",
+      "recommendation_reason": "Provides an exhaustive multi-wavelength dataset and theoretical modeling of an extreme GRB with exceptional isotropic energy release and high-energy GeV photons.",
+      "core_insight": "Identifies an early LAT GeV excess explained by thick-shell reverse shock SSC in a stratified circumburst medium ($n \\propto R^{-1.2}$), probing shock microphysics with $R_B \\simeq 2.6$.",
+      "reading_guide": "Examine Section 4 for MCMC posterior parameter distributions of the forward-reverse shock combined model.",
       "authors": [
         "Nissim Fraija",
         "Peter Veres",
@@ -132,9 +145,9 @@
       "source_fingerprint": "32d83d9096460a80bb671d6cd3c94131a318520bd546b52d69ae0f426f015e34",
       "title": "EP241021a as An Off-nuclear Month-duration Transient in a Dwarf Starburst Galaxy",
       "priority": "must_read",
-      "recommendation_reason": "Provides definitive high-resolution HST astrometry of a long-duration fast X-ray transient, tightly constraining the host galaxy properties and progenitor mechanism.",
-      "core_insight": "A projected offset of $0.95\\,\\mathrm{kpc}$ in a dwarf starburst galaxy combined with a coordinated optical/X-ray steep decline at $\\sim 47\\,\\mathrm{d}$ points to a repeating micro-TDE around an intermediate-mass black hole ($M_{\\rm BH} \\lesssim 10^4\\,M_\\odot$).",
-      "reading_guide": "Review Section 2 for HST/Gaia astrometry and Section 4 for the comparison between micro-TDE accretion scenarios and standard stellar-mass central engines.",
+      "recommendation_reason": "High-precision HST and Gemini astrometry challenges standard supernova and GRB central engines for long-duration fast X-ray transients.",
+      "core_insight": "Synchronized optical and X-ray steep drop at rest-frame $\\sim 27\\,\\mathrm{days}$ at a $0.95\\,\\mathrm{kpc}$ host offset points to an intermediate-mass black hole ($M_{\\rm BH} \\lesssim 10^4\\,M_\\odot$) micro-TDE.",
+      "reading_guide": "Read Section 3 for HST WFC3 astrometry and Section 5 for the comparative energetics against engine models.",
       "authors": [
         "Luming Sun",
         "Xinwen Shu",
@@ -165,9 +178,9 @@
       "source_fingerprint": "8a24853ef14c1235b091b35b2718615c4090cea246b2e3ae82517f0a80c477d7",
       "title": "EP251129a: A Fast X-ray Transient with Two X-Ray Plateaus and Its Off-axis Afterglow",
       "priority": "must_read",
-      "recommendation_reason": "Reports the rare phenomenon of double X-ray plateaus accompanied by strong spectral softening and delayed radio rise in a fast X-ray transient.",
-      "core_insight": "The transition from an internal plateau to a secondary plateau at $42\\,\\mathrm{d}$ is driven by gravitational-wave magnetar spin-down followed by black hole collapse and prolonged fallback accretion ($M_{\\rm acc} \\simeq 0.2\\,M_\\odot$).",
-      "reading_guide": "Study the X-ray temporal fitting in Section 3 and the structured off-axis jet model parameters detailed in Section 4.2.",
+      "recommendation_reason": "Documents a rare double X-ray plateau accompanying a delayed off-axis radio flare in a newly detected Einstein Probe transient.",
+      "core_insight": "Models the double plateau via a supramassive magnetar collapsing to a black hole, with the subsequent plateau and rising radio afterglow driven by fallback accretion ($M_{\\rm acc} \\simeq 0.2\\,M_\\odot$).",
+      "reading_guide": "Review Section 4 for the analytic formulation of gravitational-wave-dominated magnetar spin-down and Blandford-Znajek fallback injection.",
       "authors": [
         "Yue Wu",
         "Ailing Wang",
@@ -205,9 +218,9 @@
       "source_fingerprint": "0b7ed5fcce77e7167743efa1d391ec93fb330ad119f95cd71101a2fc02d44a25",
       "title": "An Intermediate Mass Stripped Star in a 4.2-hour Orbit around a Compact Object",
       "priority": "must_read",
-      "recommendation_reason": "Identifies the critical missing observational progenitor of double neutron star binaries prior to non-conservative Case BB mass transfer.",
-      "core_insight": "A stripped helium star in a tight $4.2\\,\\mathrm{h}$ circular orbit with a $1.58\\,M_\\odot$ compact object will undergo a Type Ibn supernova and form a bound double neutron star merging via GWs in $\\sim 220\\,\\mathrm{Myr}$.",
-      "reading_guide": "Read Section 3 for the radial velocity and ellipsoidal light curve modeling, followed by Section 5 for the MESA binary evolution pathways.",
+      "recommendation_reason": "Provides spectroscopic and photometric identification of a tight binary system directly capturing the progenitor stage of a double neutron star merger.",
+      "core_insight": "Confirms an intermediate-mass stripped helium star in a $4.2\\,\\mathrm{h}$ circular orbit with a compact object ($M_2 = 1.58\\,M_\\odot$), destined for Case BB mass transfer and an interaction-powered Type Ibn explosion.",
+      "reading_guide": "Focus on the orbital parameter fitting via *The Joker* in Section 2 and MESA binary evolution trajectories in Section 4.",
       "authors": [
         "Bethany Ludwig",
         "Maria R. Drout",
@@ -229,9 +242,9 @@
       "source_fingerprint": "9d08a736d8e5cbe288412415e8f4a20dd0f77f17c6ef9b4727b8d73e113f8509",
       "title": "Indication of Electron Antineutrinos from the Diffuse Supernova Neutrino Background",
       "priority": "must_read",
-      "recommendation_reason": "Presents a $2.6\\sigma$ measurement of the diffuse supernova neutrino background using over 5000 days of Super-Kamiokande pure-water and gadolinium phases.",
-      "core_insight": "Derives a best-fit cumulative $\\bar{\\nu}_e$ flux of $3.6^{+1.6}_{-1.5}\\,\\mathrm{cm}^{-2}\\,\\mathrm{s}^{-1}$ ($E_\\nu > 13.3\\,\\mathrm{MeV}$), rejecting the null background hypothesis at $2.6\\sigma$.",
-      "reading_guide": "Check Section 4 for the machine-learning NC spallation background rejection and Section 6 for the likelihood fit results.",
+      "recommendation_reason": "Reports the first $2.6\\sigma$ indication of the cumulative core-collapse supernova electron antineutrino background in Super-Kamiokande.",
+      "core_insight": "Measures a best-fit DSNB $\\bar{\\nu}_e$ flux of $3.6^{+1.6}_{-1.5}\\,\\mathrm{cm}^{-2}\\,\\mathrm{s}^{-1}$ ($E_\\nu > 13.3\\,\\mathrm{MeV}$) through extended maximum likelihood analysis of neutron-capture events.",
+      "reading_guide": "Check Section 3 for neutron tagging efficiencies in the pure water versus Gd-doped phases and likelihood contour plots in Figure 4.",
       "authors": [
         "The Super-Kamiokande Collaboration",
         ":",
@@ -494,9 +507,9 @@
       "source_fingerprint": "ea11f9b3f414a3401d4ed2fb7382e3013862593c64b5e74f3301f2d6363a0826",
       "title": "The design and flight of the Payload for Ultrahigh Energy Observations (PUEO)",
       "priority": "must_read",
-      "recommendation_reason": "Documents the successful flight verification of the most sensitive ultrahigh-energy neutrino experiment to date, pioneering digital beamforming in extreme environments.",
-      "core_insight": "PUEO achieves a $50\\%$ trigger efficiency at $\\mathrm{SNR} = 1.4$ by synthesizing 48 coherent real-time beams with 26 RFSoC boards, recording over 114 million events during a 23-day Antarctic flight.",
-      "reading_guide": "Focus on Section 3 for the interferometric phased-array architecture and Section 5 for the in-flight instrument performance.",
+      "recommendation_reason": "Details the architecture, deployment, and inflight verification of the premier long-duration balloon experiment for ultra-high-energy neutrinos.",
+      "core_insight": "Demonstrates inflight RFSoC-based digital beamforming achieving a 50% trigger threshold at $\\mathrm{SNR} = 1.4$, delivering over twice the electric field sensitivity of ANITA-IV.",
+      "reading_guide": "Read Section 3 for the real-time interferometric phased-array trigger architecture and calibration pulser results.",
       "authors": [
         "PUEO Collaboration",
         "Q. Abarr",
@@ -580,9 +593,9 @@
       "source_fingerprint": "1435ec11db1d02e16d88ff9bd26d61beef591e34188f30ed4eb8c925b67a57a9",
       "title": "Discovery of a New Electron Spectrum Produced by Fast Cooling of Relativistic Electrons",
       "priority": "must_read",
-      "recommendation_reason": "Solves an important foundational problem in kinetic transport, revealing the exact analytical electron distribution below $\\gamma_m$ in non-steady cooling jets.",
-      "core_insight": "Relativistic electrons undergoing combined expansion and synchrotron fast cooling deviate from standard steady-state power laws, forming a smooth broken power law $f_{\\rm U}(\\gamma_e, t) \\propto \\gamma_e^{-2} [1+\\gamma_0(t)/\\gamma_e]^{-\\beta}$.",
-      "reading_guide": "Inspect Section 2 for the analytical solution of the differential cooling equation and Section 3 for the Fokker-Planck verification.",
+      "recommendation_reason": "Solves a long-standing microphysical kinetics problem by deriving the exact analytic electron spectrum under non-steady-state fast cooling.",
+      "core_insight": "Shows that electrons below $\\gamma_m$ follow an evolving smooth broken power law $f_{\\rm U}(\\gamma_e, t) = A(t)\\gamma_e^{-2}[1 + \\gamma_0(t)/\\gamma_e]^{-\\beta}$, invalidating the canonical single power-law $\\gamma_e^{-2}$ approximation.",
+      "reading_guide": "Focus on Section 2 for the derivation of electron trajectories and validation against the Fokker-Planck transport equation.",
       "authors": [
         "Z. Lucas Uhm"
       ]
@@ -594,9 +607,9 @@
       "source_fingerprint": "61f8b88ca2fb6323db2e10ddca030ca60bcbd0e5d5d3f964b55935f47bbd5604",
       "title": "Coherent Radio Emission from Flux Rope Mergers in 3D Relativistic Reconnection",
       "priority": "must_read",
-      "recommendation_reason": "Provides the first definitive 3D PIC proof that coherent magnetosonic wave radiation survives multi-dimensional plasma instabilities in relativistic reconnection.",
-      "core_insight": "Flux rope mergers in 3D relativistic reconnection stably radiate coherent $100\\%$ linearly polarized X-mode waves with efficiencies up to $\\eta \\sim (1-2) \\times 10^{-3}$.",
-      "reading_guide": "Examine Section 3 for the 3D wave Poynting flux diagnostics and Section 4 for the parameter dependence on the guide field $B_g/B_0$.",
+      "recommendation_reason": "Confirms via 3D PIC simulations that coherent fast magnetosonic waves survive realistic 3D kink instabilities and open boundaries.",
+      "core_insight": "Flux rope mergers stably radiate coherent, 100% linearly polarized X-mode waves with an efficiency $\\eta \\sim (1-2) \\times 10^{-3}$, validating magnetic reconnection as a viable engine for FRBs.",
+      "reading_guide": "Examine Section 3 and Figure 2 for the 3D Poynting flux diagnostics and polarization angle offsets.",
       "authors": [
         "Jasmine Parsons",
         "Lorenzo Sironi",
@@ -611,9 +624,9 @@
       "source_fingerprint": "fce5b55eed487b8005abc2921a27ee7a0de2dd665d68e520177ea23706d69da2",
       "title": "Image Morphology of Misaligned Magnetically Arrested Disks",
       "priority": "worth_knowing",
-      "recommendation_reason": "Reveals critical parameter biases when applying standard aligned geometric models to horizon-scale EHT images of tilted MADs.",
-      "core_insight": "Magnetic torques align inner flows with spin axes only for high retrograde/prograde spins ($a^* > 0.9$), whereas intermediate-spin tilted disks introduce $>50\\%$ systematic errors in spin recovery.",
-      "reading_guide": "Review Section 3 for GRMHD morphology and Section 4.2 for the geometric model fitting biases.",
+      "recommendation_reason": "Highlights systematic parameter biases in EHT-like black hole imaging caused by misaligned MAD disks.",
+      "core_insight": "Misalignment prevents disk-jet alignment around moderate-spin ($a^* = 0.5$) or retrograde black holes, inducing $>50\\%$ systematic errors in spin extraction under aligned templates.",
+      "reading_guide": "Review Section 3 for synthetic image generation with KHARMA and `ipole`.",
       "authors": [
         "Samuel Feyan",
         "Cora Prather",
@@ -630,9 +643,9 @@
       "source_fingerprint": "216f7a533d57c50c0b815678eeb5bf3d2e311dbdd3b9282ee37d5e04c9896a22",
       "title": "From Inspiral to Outburst: Modeling a Potential Luminous Red Nova from Betelgeuse",
       "priority": "worth_knowing",
-      "recommendation_reason": "Connects 3D companion inspiral energy deposition directly to 1D radiation-hydrodynamic shock breakout in massive red supergiant envelopes.",
-      "core_insight": "Inspiral tidal disruptions yield breakout flares with $L_{\\rm peak} \\propto M_{\\rm comp}^{0.93}$ and durations of $1.5-2.0\\,\\mathrm{d}$, unbinding up to $11\\,M_\\odot$ of envelope mass.",
-      "reading_guide": "Inspect Section 2 for the energy deposition formulation and Section 4 for the resulting synthetic multi-band light curves.",
+      "recommendation_reason": "Presents a continuous 1D radiation-hydrodynamic model connecting companion orbital plunge to envelope shock breakout in a massive supergiant.",
+      "core_insight": "Finds that the shock breakout peak luminosity scales steeply as $L_{\\rm peak} \\propto M_{\\rm comp}^{0.93}$, yielding unbound ejecta of $6-11\\,M_\\odot$ expanding at $\\sim 200\\,\\mathrm{km\\,s^{-1}}$.",
+      "reading_guide": "Focus on Section 2 for energy deposition mechanics in Athena++ and resulting light curves in Section 3.",
       "authors": [
         "Naunet Leonhardes-Barboza",
         "Andrea Antoni",
@@ -648,9 +661,9 @@
       "source_fingerprint": "5095804f15e9827e19d6f2b31ca019ce65e2953b4bbb355c4eb987fac11c9b6f",
       "title": "Tilt, warp, and dissipation flare in hydrodynamic disks around kicked compact objects",
       "priority": "worth_knowing",
-      "recommendation_reason": "Quantifies the electromagnetic signature and warping dynamics of remnant accretion disks subject to compact object natal kicks.",
-      "core_insight": "Hydrodynamic self-collisions inside $r_0 = GM/V_{\\rm kick}^2$ convert $5\\%-30\\%$ of kinetic energy into radiation flares on dynamic timescales while generating transient retrograde disk warps.",
-      "reading_guide": "Focus on Section 2 for bound boundary derivations and Section 3 for AthenaK 3D hydrodynamic simulations.",
+      "recommendation_reason": "Elucidates how supernova kicks or asymmetric gravitational wave recoils induce electromagnetic dissipation flares and warped disks.",
+      "core_insight": "Hydrodynamic gas self-collisions convert $5-30\\%$ of kinetic energy into an electromagnetic flare $L_{\\rm flare} \\propto M_b V_{\\rm kick}^5 / (GM)$, tilting the bound accretion disk.",
+      "reading_guide": "Check Section 2 for the bound radius criterion and Section 3 for 3D AthenaK hydrodynamic simulation profiles.",
       "authors": [
         "Yoonsoo Kim"
       ]
@@ -662,9 +675,9 @@
       "source_fingerprint": "f3ee8152eb003873256313a95b966a2c877f923cc6aaee6de60bedfc800e2770",
       "title": "Magnetic field effect on neutral color superconductivity as a mechanism to boost the inner magnetic field of magnetars",
       "priority": "worth_knowing",
-      "recommendation_reason": "Proposes a viable microphysical dense-matter mechanism for generating magnetar-strength magnetic fields without relying on conventional dynamos.",
-      "core_insight": "Fermi surface mismatch in neutral 2SC quark matter creates a tachyonic Meissner mass that triggers spontaneous paramagnetic amplification up to $\\widetilde{B} \\sim 10^{17}\\,\\mathrm{G}$.",
-      "reading_guide": "Examine Section 2 for the NJL thermodynamic potential and Section 3 for the gluon polarization tensor calculation.",
+      "recommendation_reason": "Proposes an interior dense-matter mechanism for generating magnetar-strength magnetic fields via chromomagnetic instability.",
+      "core_insight": "Demonstrates that anomalous magnetic moment coupling in the 2SC quark phase amplifies seed magnetic fields into stable equilibrium fields of $\\tilde{B} \\sim 10^{17}\\,\\mathrm{G}$.",
+      "reading_guide": "Read Section 2 for the thermodynamic potential derivation using Ritus eigenmodes in the NJL model.",
       "authors": [
         "Bo Feng"
       ]
@@ -676,9 +689,9 @@
       "source_fingerprint": "47508f3226b1546726238ccee51e9ef5b442d53261e10eb8280661b0ca24279e",
       "title": "A Unified Model for Radioactive Signatures and Source Identifiability in Neutron Star Mergers",
       "priority": "worth_knowing",
-      "recommendation_reason": "Develops a rigorous mathematical framework proving severe degeneracies in identifying specific transuranic isotopes from kilonova light curves.",
-      "core_insight": "Multi-layer diffusion and non-instantaneous thermalization smooth decay energy inputs, reducing the statistical power to uniquely identify $^{254}\\mathrm{Cf}$ to below $9\\%$.",
-      "reading_guide": "Focus on Section 2 for the causal deposition operator and Section 4 for the Neyman-Pearson identifiability bounds.",
+      "recommendation_reason": "Demonstrates how energy deposition and diffusion smooth out radioactive decay features in late-time kilonovae, limiting specific isotope identification.",
+      "core_insight": "Shows that alternative models without $^{254}\\mathrm{Cf}$ mimic fission-heated light curves within $\\Delta \\nu_{12} \\sim 0.01$, limiting detection power to $\\le 8.93\\%$.",
+      "reading_guide": "Examine Section 2 for the causal deposition operator and Section 4 for Neyman-Pearson statistical tests.",
       "authors": [
         "Hisham Anwer"
       ]
@@ -688,11 +701,11 @@
       "revision": 1,
       "historical_edition": "announcement-2026-10-25",
       "source_fingerprint": "ba52843c4ecc5f0516c0bb9dd2dd1e307c8634b578063d9d0b8a23a3b7887d6a",
-      "title": "SMMAN Studies of AGN Variability. I. Long-term Spectral Evolution and a Candidate ~1000-day Quasi-periodic Modulation in 4C+72.28",
+      "title": "SMMAN Studies of AGN Variability. I. Long-term Spectral Evolution and a Candidate $\\sim1000$-day Quasi-periodic Modulation in 4C+72.28",
       "priority": "worth_knowing",
-      "recommendation_reason": "Provides a robust statistical methodology to disentangle genuine quasi-periodic modulations from underlying red noise in blazar radio monitoring.",
-      "core_insight": "Detects a co-added $1026.7\\,\\mathrm{d}$ modulation in 4C+72.28 with negligible inter-band time delay, attributable to a $4\\%-6\\%$ geometric Doppler factor perturbation in the jet.",
-      "reading_guide": "Read Section 3 for the red-noise Monte Carlo significance assessment and Section 5 for the geometric jet precession model.",
+      "recommendation_reason": "Applies rigorous red-noise significance assessment to identify a multi-frequency radio QPO candidate in an AGN jet.",
+      "core_insight": "Detects a $T = 1026.7\\,\\mathrm{d}$ modulation across 4.8 and 23.6 GHz, fully reproducible via mild Doppler factor variations $\\delta_{\\max}/\\delta_{\\min} \\simeq 1.04-1.06$ from jet precession.",
+      "reading_guide": "Focus on Section 3 for the red-noise broken power-law Monte Carlo modeling and WWZ periodograms.",
       "authors": [
         "Xin Wang",
         "Timur Mufakharov",
@@ -712,9 +725,9 @@
       "source_fingerprint": "dede811808c51b23ffef2fb178078c60da851c672d67ea34f8da5c0266335123",
       "title": "Radio Galaxies as UHECR Sources in Light of Recent Microquasar Results",
       "priority": "worth_knowing",
-      "recommendation_reason": "Applies empirical acceleration efficiencies from microquasars to evaluate radio galaxies as ultrahigh-energy cosmic-ray sources.",
-      "core_insight": "Near-Bohm electron acceleration in SS 433 and Cen A combined with jet shear acceleration enables intermittent radio galaxy outbursts to satisfy the Hillas kinetic luminosity limit.",
-      "reading_guide": "Review Section 2 for the Hillas criterion derivation and Section 3 for the Cen A lobe age-cooling consistency analysis.",
+      "recommendation_reason": "Connects microquasar in situ acceleration physics with the Hillas energetics of nearby radio galaxies for UHECR production.",
+      "core_insight": "Establishes that Bohm-like shear acceleration in Centaurus A jets combined with intermittent activity $\\sim 30\\,\\mathrm{Myr}$ ago self-consistently reconciles UHECR flux and lobe cooling times.",
+      "reading_guide": "Review Section 2 for the generalized Hillas luminosity criterion and Section 4 for shear acceleration mechanics.",
       "authors": [
         "A. M. Taylor",
         "J. H. Matthews"
@@ -727,9 +740,9 @@
       "source_fingerprint": "0f6b08b3c76183fbb98526ef664da06280dc255ed31ac27f0dde275cc0b8345c",
       "title": "A Framework for Analysing Nebular-Phase JWST Supernova Spectra with Application to Type Ic SN 2024aecx",
       "priority": "worth_knowing",
-      "recommendation_reason": "Establishes a rigorous analytical and NLTE diagnostic framework for interpreting mid-infrared forbidden lines in nebular-phase supernovae.",
-      "core_insight": "JWST mid-IR modeling of SN 2024aecx measures $M(^{56}\\mathrm{Ni}) = 0.051\\,M_\\odot$ and reveals a low Fe/He filling factor ($f \\approx 0.059$), indicating weak radioactive bubble expansion.",
-      "reading_guide": "Study Section 2 for the critical electron density equations and Section 4 for the abundance and optical depth extractions.",
+      "recommendation_reason": "Establishes a quantitative LTE/NLTE diagnostic framework for interpreting mid-infrared nebular spectra of stripped-envelope supernovae from JWST.",
+      "core_insight": "Determines $M(^{56}\\mathrm{Ni}) = 0.051\\,M_\\odot$ and an exceptionally low Fe/He filling factor ($f_{\\mathrm{FeHe}} = 0.059$) in SN 2024aecx, indicating that radioactive bubble expansion was largely suppressed.",
+      "reading_guide": "Examine Section 2 for the critical density formulation and Section 4 for Sobolev optical depth iterations.",
       "authors": [
         "S. Barmentloo",
         "A. Jerkstrand"
@@ -742,9 +755,9 @@
       "source_fingerprint": "f7ec039f7a67f4d849d124c6ebaf9e93a473c1bad386825aed71a38a0f12be2c",
       "title": "Local Analogs of Little Red Dots: Clues to the X-ray Weakness",
       "priority": "worth_knowing",
-      "recommendation_reason": "Utilizes Einstein Probe soft X-ray stacking of local analogs to constrain the nature of X-ray faint 'Little Red Dots'.",
-      "core_insight": "A $3.3\\sigma$ EP-FXT stacking detection of local Little Red Dots reveals an intrinsically mild X-ray weak corona covered by Compton-thin gas, ruling out unshielded super-Eddington disks.",
-      "reading_guide": "Check Section 2 for sample selection and Section 4 for the X-ray spectral stacking and obscuration modeling.",
+      "recommendation_reason": "Utilizes Einstein Probe FXT stacking of local analogs to constrain the physical cause of X-ray weakness in high-redshift Little Red Dots.",
+      "core_insight": "A $3.3\\sigma$ rest-frame $2-8\\,\\mathrm{keV}$ detection rules out unshielded super-Eddington accretion and Compton-thick absorption, supporting an intrinsic mildly weak corona with Compton-thin obscuration ($N_{\\rm H} \\sim 10^{22-23}\\,\\mathrm{cm}^{-2}$).",
+      "reading_guide": "Check Section 2 for EP-FXT stacking methodology and Section 4 for comparison against $\\alpha_{\\rm ox}$ AGN scaling relations.",
       "authors": [
         "Shi-Jiang Chen",
         "Jun-Xian Wang",
@@ -766,11 +779,11 @@
       "revision": 1,
       "historical_edition": "announcement-2026-10-25",
       "source_fingerprint": "2a83f23c12d9d467ac963eb6b6f649c6192daa07f746d566c8ed76f4f6301d3c",
-      "title": "Probing the star-forming environment of GRB across cosmic ages with high-resolution X-ray spectroscopy: From XMM-Newton/RGS and XRISM/Resolve to NewAthena/X-IFU",
+      "title": "Probing the star-forming environment of GRB across cosmic ages with high-resolution X-ray spectroscopy: From \\textit{XMM-Newton}/RGS and \\textit{XRISM}/Resolve to \\textit{NewAthena}/X-IFU",
       "priority": "worth_knowing",
-      "recommendation_reason": "Demonstrates the power of time-dependent photoionization modeling in high-resolution X-ray spectroscopy of GRB host environments.",
-      "core_insight": "Time-dependent non-equilibrium photoionization produces narrow Fe K-shell absorption lines ($\\mathrm{EW} \\sim 4-10\\,\\mathrm{eV}$) that can distinguish Pop III from Pop II star-forming regions.",
-      "reading_guide": "Inspect Section 2 for TEPID non-equilibrium code updates and Section 5 for NewAthena/X-IFU mock observation sensitivities.",
+      "recommendation_reason": "Develops a time-dependent non-equilibrium photoionization framework to evaluate circumstellar medium diagnostics with next-generation X-ray spectrometers.",
+      "core_insight": "Transient narrow absorption lines (rest-frame $\\mathrm{EW} \\sim 1-10\\,\\mathrm{eV}$) produced in ionized circumstellar gas provide clean abundance constraints capable of separating Pop III from Pop II environments.",
+      "reading_guide": "Review Section 2 for updates to the TEPID photoionization code and Section 5 for XRISM and NewAthena synthetic mock spectra.",
       "authors": [
         "Luigi Piro",
         "Aishwarya Linesh Thakur",
@@ -781,10 +794,10 @@
     }
   ],
   "statistics": {
-    "total_analyzed": 236,
+    "total_analyzed": 258,
     "must_read_count": 9,
     "worth_knowing_count": 70,
-    "skip_count": 157
+    "skip_count": 179
   },
   "papers": [
     {
@@ -6895,6 +6908,501 @@
       "announcement_date": "2026-10-27",
       "historical_edition": "announcement-2026-10-27",
       "source_fingerprint": "04dfbf75b9a70e50e1f0406378633e9d8002ddaf912091cca7d4aa1702b4feec"
+    },
+    {
+      "arxiv_id": "2610.37747",
+      "revision": 1,
+      "title": "Identifying Scientifically Interesting Galaxies with Vision-Language Models",
+      "authors": [
+        "Yixuan Cheng",
+        "Nolan Koblischke",
+        "Jo Bovy"
+      ],
+      "priority": "skip",
+      "result": "未能从已检查材料中核实论文结果。",
+      "problem": "未能从已检查材料中核实论文问题陈述。",
+      "method": "未能从已检查摘要中核实方法说明。",
+      "reason": "The paper develops a general vision-language-model ranking method for galaxy images; recovering some galaxies with visible jets is incidental and does not substantially address relativistic-jet physics or the other target topics.",
+      "url": "https://arxiv.org/abs/2610.37747v1",
+      "announcement_date": "2026-10-28",
+      "historical_edition": "announcement-2026-10-28",
+      "source_fingerprint": "55e4f33676278a53d9743d5d49cf9fff0fbe77591054536a3899dd48cfff4d33"
+    },
+    {
+      "arxiv_id": "2610.37751",
+      "revision": 1,
+      "title": "A GLIMPSE of Dark Matter: JWST Constraints on Early Structure Formation",
+      "authors": [
+        "Julian B. Muñoz",
+        "John Chisholm",
+        "Seiji Fujimoto",
+        "Tiger Yu-Yang Hsiao",
+        "Kristen B. W. McQuinn",
+        "Priyamvada Natarajan",
+        "A. Saldana-Lopez",
+        "Hakim Atek",
+        "Arghyadeep Basu",
+        "Danielle Berg",
+        "Ryan Endsley",
+        "Lukas J. Furtak",
+        "Damien Korber",
+        "Rohan P. Naidu",
+        "Richard Pan",
+        "Daniel Schaerer"
+      ],
+      "priority": "skip",
+      "result": "未能从已检查材料中核实论文结果。",
+      "problem": "未能从已检查材料中核实论文问题陈述。",
+      "method": "未能从已检查摘要中核实方法说明。",
+      "reason": "This work constrains dark-matter small-scale structure using early-galaxy luminosity functions, with no substantive connection to the specified high-energy transient topics.",
+      "url": "https://arxiv.org/abs/2610.37751v1",
+      "announcement_date": "2026-10-28",
+      "historical_edition": "announcement-2026-10-28",
+      "source_fingerprint": "dc476bb0fbea65d897f5baa659998ba6565e7284e2edfd31b6c5e5bd8c5ed4f9"
+    },
+    {
+      "arxiv_id": "2610.37757",
+      "revision": 1,
+      "title": "Seeing Unseen Gravitational Wave Inspirals at the Galactic Center",
+      "authors": [
+        "Pau Amaro Seoane",
+        "Qimin Song",
+        "Shao-Dong Zhao",
+        "Kostas Tzanavaris",
+        "Reinhard Genzel",
+        "Frank Eisenhauer",
+        "Thomas Ott",
+        "Stefan Gillessen",
+        "Guillaume Bourdarot",
+        "Diogo C. Ribeiro",
+        "Matteo Sadun Bordoni",
+        "Simran Joharle",
+        "Felix Mang",
+        "Andreas Burkert",
+        "Jorge Cuadra",
+        "Diego Calderón",
+        "Re'em Sari"
+      ],
+      "priority": "skip",
+      "result": "未能从已检查材料中核实论文结果。",
+      "problem": "未能从已检查材料中核实论文问题陈述。",
+      "method": "未能从已检查摘要中核实方法说明。",
+      "reason": "The paper proposes detecting Galactic-center extreme-mass-ratio inspirals through stellar-orbit perturbations, a gravitational-wave-source problem not substantially tied to the specified high-energy transient research directions.",
+      "url": "https://arxiv.org/abs/2610.37757v1",
+      "announcement_date": "2026-10-28",
+      "historical_edition": "announcement-2026-10-28",
+      "source_fingerprint": "7e080c2d6008785c637d3f4c48d825c634195300193eb3b2feaaa3fbd2fbd3e0"
+    },
+    {
+      "arxiv_id": "2610.37763",
+      "revision": 1,
+      "title": "Hot off the Stacks: X-rays in Romulus25, Part I - Comparisons to Observations from eRosita",
+      "authors": [
+        "N. Nicole Sanchez",
+        "Andrew Benson",
+        "Gwen Rudie",
+        "Ben Oppenheimer",
+        "Hannah Bish",
+        "Emily Silich",
+        "Phil Hopkins",
+        "John ZuHone",
+        "Michael Tremmel",
+        "Tom Quinn"
+      ],
+      "priority": "skip",
+      "result": "未能从已检查材料中核实论文结果。",
+      "problem": "未能从已检查材料中核实论文问题陈述。",
+      "method": "未能从已检查摘要中核实方法说明。",
+      "reason": "This paper studies X-ray emission from the hot circumgalactic medium in cosmological galaxy simulations. It does not substantively address the specified high-energy transient or compact-object research directions.",
+      "url": "https://arxiv.org/abs/2610.37763v1",
+      "announcement_date": "2026-10-28",
+      "historical_edition": "announcement-2026-10-28",
+      "source_fingerprint": "a1622c625b2784a68e7de7aa1f98850d2dccb6c6d3589cb74431883cbd2c6f30"
+    },
+    {
+      "arxiv_id": "2610.37767",
+      "revision": 1,
+      "title": "Resolving the thermal component of stellar feedback with the \"anchor-and-refine\" scheme in galactic simulations",
+      "authors": [
+        "Chengzhe Li",
+        "Hui Li",
+        "Wei Cui",
+        "Federico Marinacci",
+        "Laura Sales",
+        "Mark Vogelsberger",
+        "Paul Torrey"
+      ],
+      "priority": "skip",
+      "result": "未能从已检查材料中核实论文结果。",
+      "problem": "未能从已检查材料中核实论文问题陈述。",
+      "method": "未能从已检查摘要中核实方法说明。",
+      "reason": "The work develops a supernova-feedback prescription for galaxy simulations and studies galactic winds. Despite involving supernovae and hot gas, it does not investigate supernova central engines, shock breakout, or the other specified transient topics.",
+      "url": "https://arxiv.org/abs/2610.37767v1",
+      "announcement_date": "2026-10-28",
+      "historical_edition": "announcement-2026-10-28",
+      "source_fingerprint": "247bf03bf2ae0cda1a29bcac76613bf45ab48781421e1478254b41d4839cd315"
+    },
+    {
+      "arxiv_id": "2610.37769",
+      "revision": 1,
+      "title": "Extra! Extra! X-ray Emission!: X-rays in Romulus25, Part II - Physical Drivers of X-ray Emission in the CGM",
+      "authors": [
+        "N. Nicole Sanchez",
+        "Andrew Benson",
+        "Gwen Rudie",
+        "Ben Oppenheimer",
+        "Hannah Bish",
+        "John ZuHone",
+        "Michael Tremmel"
+      ],
+      "priority": "skip",
+      "result": "未能从已检查材料中核实论文结果。",
+      "problem": "未能从已检查材料中核实论文问题陈述。",
+      "method": "未能从已检查摘要中核实方法说明。",
+      "reason": "This paper examines the physical drivers of circumgalactic X-ray emission in simulated Milky Way-mass galaxies. It has no substantive connection to the specified transient or compact-object research directions.",
+      "url": "https://arxiv.org/abs/2610.37769v1",
+      "announcement_date": "2026-10-28",
+      "historical_edition": "announcement-2026-10-28",
+      "source_fingerprint": "96a3bc0abe1798e4220845f8cfb18f261bdf0a4e518d82c959e1dbacae3eae4d"
+    },
+    {
+      "arxiv_id": "2610.37773",
+      "revision": 1,
+      "title": "A double debris disc around a white dwarf sculpted by two planetary bodies",
+      "authors": [
+        "Nicola Pietro Gentile Fusillo",
+        "Felipe Lagos-Vilches",
+        "Boris T. Gänsicke",
+        "Christopher J. Manser",
+        "Detlev Koester"
+      ],
+      "priority": "skip",
+      "result": "未能从已检查材料中核实论文结果。",
+      "problem": "未能从已检查材料中核实论文问题陈述。",
+      "method": "未能从已检查摘要中核实方法说明。",
+      "reason": "This paper concerns planetary bodies and gaseous debris discs around a white dwarf, with no substantive connection to the specified high-energy transient research areas.",
+      "url": "https://arxiv.org/abs/2610.37773v1",
+      "announcement_date": "2026-10-28",
+      "historical_edition": "announcement-2026-10-28",
+      "source_fingerprint": "015d63ec9ed0e54a9f5b782cc70a98898fd9a107ea4b227bcaaef29841f7421b"
+    },
+    {
+      "arxiv_id": "2610.37774",
+      "revision": 1,
+      "title": "Not so dead after all: young stars in the massive S0 NGC 3115",
+      "authors": [
+        "João P. V. Benedetti",
+        "Alexandre Vazdekis",
+        "Anna Ferré-Mateu",
+        "Elham Eftekhari",
+        "Alberto Rodríguez-Ardila",
+        "Rogério Riffel"
+      ],
+      "priority": "skip",
+      "result": "未能从已检查材料中核实论文结果。",
+      "problem": "未能从已检查材料中核实论文问题陈述。",
+      "method": "未能从已检查摘要中核实方法说明。",
+      "reason": "This paper studies young stellar populations and residual star formation in a lenticular galaxy, rather than the specified high-energy transient topics.",
+      "url": "https://arxiv.org/abs/2610.37774v1",
+      "announcement_date": "2026-10-28",
+      "historical_edition": "announcement-2026-10-28",
+      "source_fingerprint": "13fa339caec8f7bb08fb7e2112128edb562f1d41dade22e76d8465a9bd9ffcf7"
+    },
+    {
+      "arxiv_id": "2610.37775",
+      "revision": 1,
+      "title": "Ejected and Rejected: Strong Scatterings in Dense Star Clusters",
+      "authors": [
+        "Adam Distler",
+        "Nicholas C. Stone"
+      ],
+      "priority": "skip",
+      "result": "The authors derive the exact bivariate differential rate distribution (DRD) for velocity kicks in isotropic clusters, yielding closed-form DRD solutions for King models and nuclear star clusters (NSCs) with $\\rho \\propto r^{-\\gamma}$. For extreme-eccentricity orbits ($1-e \\ll 1$) in NSCs, strong scatterings at apocenter can impart angular momentum jumps $\\Delta J \\approx J_c - J$ (where $J_c^5 = \\frac{85}{3} \\frac{k \\sigma(a)^3}{n(a) \\langle M_{\\rm s}^2 \\rangle \\ln\\Lambda} \\frac{G^{7/2} M_\\bullet^{9/2} M}{a^{3/2} c^5}$), ejecting compact objects back into the two-body relaxation regime and canceling EMRIs with a scale-invariant rate $N_{\\rm CE} \\sim \\Gamma_{{\\rm CE},o} t_{\\rm GW} \\propto a^0$. The orbit-averaged stellar ejection rate near pericenter scales as $\\langle \\Gamma_{\\rm ej} \\rangle \\approx \\frac{16\\pi}{5 P (\\gamma-1)} \\frac{M_{\\rm s}}{M_\\bullet^2} r_{\\rm inf}^\\gamma \\rho_{\\rm inf} a^{3-\\gamma} (1-e)^{1-\\gamma}$.",
+      "problem": "Standard cluster evolution and loss-cone dynamics rely on low-order diffusion coefficients from weak small-angle scatterings, which fail to capture rare, non-diffusive phase-space jumps caused by strong gravitational scatterings that can eject stars or disrupt extreme mass ratio inspirals (EMRIs).",
+      "method": "Analytical formulation of hyperbolic encounters in spherical isotropic star clusters by projecting velocity kicks into parallel and perpendicular components ($\\Delta v_{||}, \\Delta v_\\perp$), transforming the kick distribution into a two-dimensional planar slice integral over field star distribution functions $f(v_f)$: $\\frac{\\mathrm{d}^2\\Gamma}{\\mathrm{d}\\Delta v_{||} \\mathrm{d}\\Delta v_{\\perp} } = 8\\pi G^2 M_{\\rm s}^2 \\frac{\\Delta v_{\\perp}}{(\\Delta v_{||}^2 + \\Delta v_{\\perp}^2)^{5/2}} \\int_{\\Delta \\hat{v}\\cdot \\vec{v}_f = \\kappa} f(v_f)\\, \\mathrm{d}A$, mapping to action space $(E, J)$ via pericenter radial approximation, and orbit-averaging scattering rates.",
+      "reason": "The paper focuses on stellar dynamics of strong gravitational scattering in globular and nuclear star clusters, analyzing EMRI cancellation and stellar ejection rates, which lacks substantive connection to high-energy transient astrophysics topics such as FRBs, supernova central engines, shock breakouts, CSM interaction, relativistic jets, or high-energy neutrinos.",
+      "url": "https://arxiv.org/abs/2610.37775v1",
+      "announcement_date": "2026-10-28",
+      "historical_edition": "announcement-2026-10-28",
+      "source_fingerprint": "0fb093df89daee9bd9b63f49610f41884332c9ea1d283633b7c36a6d9e7fca66"
+    },
+    {
+      "arxiv_id": "2610.37821",
+      "revision": 1,
+      "title": "Simulation-Informed Dust Masses in Typical $6<z<14$ JWST Galaxies",
+      "authors": [
+        "Jed McKinney",
+        "Dhruv T. Zimmerman",
+        "Desika Narayanan",
+        "Caitlin M. Casey",
+        "Julian B. Munoz",
+        "Paul Torrey",
+        "Hui Li",
+        "Federico Marinacci"
+      ],
+      "priority": "skip",
+      "result": "未能从已检查材料中核实论文结果。",
+      "problem": "未能从已检查材料中核实论文问题陈述。",
+      "method": "未能从已检查摘要中核实方法说明。",
+      "reason": "The paper estimates dust masses in high-redshift galaxies; supernovae are mentioned as a dust-enrichment source, but the work does not substantively address supernova engines, transient interactions, or other specified topics.",
+      "url": "https://arxiv.org/abs/2610.37821v1",
+      "announcement_date": "2026-10-28",
+      "historical_edition": "announcement-2026-10-28",
+      "source_fingerprint": "e9e8b8c3f0bbf4a34c17c93e806e0c4c6153c65ebf9da23f52d82ac0f2eef9e7"
+    },
+    {
+      "arxiv_id": "2610.37855",
+      "revision": 1,
+      "title": "Combining Multiple Incomplete Astronomical Surveys to Estimate Galaxy Flux Distributions",
+      "authors": [
+        "Maximilian Autenrieth",
+        "David A. van Dyk",
+        "Vinay Kashyap",
+        "Andreas Zezas",
+        "Aneta Siemiginowska",
+        "David C. Stenning"
+      ],
+      "priority": "skip",
+      "result": "未能从已检查材料中核实论文结果。",
+      "problem": "未能从已检查材料中核实论文问题陈述。",
+      "method": "未能从已检查摘要中核实方法说明。",
+      "reason": "This paper develops a method for estimating galaxy X-ray flux distributions from incomplete surveys, but the abstract does not establish a substantive connection to the specified transient-astrophysics topics.",
+      "url": "https://arxiv.org/abs/2610.37855v1",
+      "announcement_date": "2026-10-28",
+      "historical_edition": "announcement-2026-10-28",
+      "source_fingerprint": "ae56cd0f556017ae2e184564c39ba01e3dbd1bb7c36dbb35b3f4859e74b67e9a"
+    },
+    {
+      "arxiv_id": "2610.37876",
+      "revision": 1,
+      "title": "No Significant Excess in Typical Variability in CLAS+ Changing-Look AGN Candidates in Rubin DP2",
+      "authors": [
+        "Lilianne Nakazono"
+      ],
+      "priority": "skip",
+      "result": "未能从已检查材料中核实论文结果。",
+      "problem": "未能从已检查材料中核实论文问题陈述。",
+      "method": "未能从已检查摘要中核实方法说明。",
+      "reason": "The study concerns optical variability in changing-look AGN candidates and reports no significant median-amplitude excess; it does not substantially address the specified transient or compact-object topics.",
+      "url": "https://arxiv.org/abs/2610.37876v1",
+      "announcement_date": "2026-10-28",
+      "historical_edition": "announcement-2026-10-28",
+      "source_fingerprint": "f20957b49d74e4eea8d0a545e896d1daa927b0f609d1a99a02d43fd50e2de9c9"
+    },
+    {
+      "arxiv_id": "2610.37927",
+      "revision": 1,
+      "title": "Machine learning applications in the heliosphere",
+      "authors": [
+        "Vishal Upendran",
+        "Banafsheh Ferdousi"
+      ],
+      "priority": "skip",
+      "result": "未能从已检查材料中核实论文结果。",
+      "problem": "未能从已检查材料中核实论文问题陈述。",
+      "method": "未能从已检查摘要中核实方法说明。",
+      "reason": "This chapter concerns machine learning for solar-terrestrial space-weather systems and forecasting, with no substantive connection to the specified high-energy transient research directions.",
+      "url": "https://arxiv.org/abs/2610.37927v1",
+      "announcement_date": "2026-10-28",
+      "historical_edition": "announcement-2026-10-28",
+      "source_fingerprint": "05362219891bcbb0c4d6b62c04c5980f48cf5c47642bc727d125b780e7b7487f"
+    },
+    {
+      "arxiv_id": "2610.37942",
+      "revision": 1,
+      "title": "Simulating and Characterizing Non-Gaussian Small-Scale Polarized Emission",
+      "authors": [
+        "Mark A. Bishop",
+        "Brandon S. Hensley",
+        "Krzysztof M. Gorski",
+        "Charles Lawrence",
+        "Graça Rocha"
+      ],
+      "priority": "skip",
+      "result": "未能从已检查材料中核实论文结果。",
+      "problem": "未能从已检查材料中核实论文问题陈述。",
+      "method": "未能从已检查摘要中核实方法说明。",
+      "reason": "The paper develops simulations of polarized Galactic foregrounds for CMB cosmology, rather than studying high-energy transients or their environments.",
+      "url": "https://arxiv.org/abs/2610.37942v1",
+      "announcement_date": "2026-10-28",
+      "historical_edition": "announcement-2026-10-28",
+      "source_fingerprint": "3753d82b5439b8331d0c51083fdcf23df4e418b2f630bef78979e421520d9eed"
+    },
+    {
+      "arxiv_id": "2610.37968",
+      "revision": 1,
+      "title": "Probabilistic Stellar Mass and Radius Estimation with Bayesian Hierarchical Stacking",
+      "authors": [
+        "Maxence Lamirel",
+        "Andrés Moya",
+        "Roberto J. López-Sastre",
+        "Luis Manuel Sarro"
+      ],
+      "priority": "skip",
+      "result": "未能从已检查材料中核实论文结果。",
+      "problem": "未能从已检查材料中核实论文问题陈述。",
+      "method": "未能从已检查摘要中核实方法说明。",
+      "reason": "This work estimates masses and radii of exoplanet host stars; it has no substantive connection to the specified high-energy transient research directions.",
+      "url": "https://arxiv.org/abs/2610.37968v1",
+      "announcement_date": "2026-10-28",
+      "historical_edition": "announcement-2026-10-28",
+      "source_fingerprint": "4441aad6bdfe581becfa4a62a56709352eb7a47c93c860ca600b8a255a30aa05"
+    },
+    {
+      "arxiv_id": "2610.37971",
+      "revision": 1,
+      "title": "The Carousel Lens III: Joint lens convergence and source kinematic modeling",
+      "authors": [
+        "William Sheu",
+        "Xiaosheng Huang",
+        "Tania M. Barone",
+        "Fuyan Bian",
+        "Aleksandar Cikota",
+        "Karl Glazebrook",
+        "Tesla Jeltema",
+        "Evan Odell",
+        "Jackson H. O'Donnell",
+        "Linus Upson",
+        "Felipe Urcelay",
+        "Sean Xu"
+      ],
+      "priority": "skip",
+      "result": "未能从已检查材料中核实论文结果。",
+      "problem": "未能从已检查材料中核实论文问题陈述。",
+      "method": "未能从已检查摘要中核实方法说明。",
+      "reason": "This paper focuses on strong-lensing and source-galaxy kinematic modeling, with no substantive connection to the specified high-energy transient research areas.",
+      "url": "https://arxiv.org/abs/2610.37971v1",
+      "announcement_date": "2026-10-28",
+      "historical_edition": "announcement-2026-10-28",
+      "source_fingerprint": "7fe244d473f6ef86489a26b1e091b5f182b8088cd87e3898896cd28edb0c686a"
+    },
+    {
+      "arxiv_id": "2610.38035",
+      "revision": 1,
+      "title": "Tidal shells as clocks of galaxy mergers and tests of cosmological models",
+      "authors": [
+        "Ivana Ebrová",
+        "Michal Bílek",
+        "Elisabeth Sola",
+        "Pierre-Alain Duc",
+        "Ana Lalović"
+      ],
+      "priority": "skip",
+      "result": "未能从已检查材料中核实论文结果。",
+      "problem": "未能从已检查材料中核实论文问题陈述。",
+      "method": "未能从已检查摘要中核实方法说明。",
+      "reason": "This paper studies stellar tidal shells, galaxy-merger histories, and cosmological simulations, with no substantive connection to the specified high-energy transient research areas.",
+      "url": "https://arxiv.org/abs/2610.38035v1",
+      "announcement_date": "2026-10-28",
+      "historical_edition": "announcement-2026-10-28",
+      "source_fingerprint": "ab6816be0c799d25d4a42874c8509c2a97a3e0ff1d2b4d541569b0b96ffb176a"
+    },
+    {
+      "arxiv_id": "2610.38043",
+      "revision": 1,
+      "title": "Evolutionary Demographics of Molecular Ice Mantles in Young Stars with SPHEREx",
+      "authors": [
+        "J. Serna",
+        "S. P. Matt",
+        "M. McClure",
+        "M. Kounkel",
+        "C. G. Roman-Zuñiga"
+      ],
+      "priority": "skip",
+      "result": "未能从已检查材料中核实论文结果。",
+      "problem": "未能从已检查材料中核实论文问题陈述。",
+      "method": "未能从已检查摘要中核实方法说明。",
+      "reason": "This study concerns molecular ice demographics in young stellar objects and has no substantive connection to the specified high-energy transient research directions.",
+      "url": "https://arxiv.org/abs/2610.38043v1",
+      "announcement_date": "2026-10-28",
+      "historical_edition": "announcement-2026-10-28",
+      "source_fingerprint": "ba911d21b56b71e43113a7a778a46306961a215512a7b180361c581f72847572"
+    },
+    {
+      "arxiv_id": "2610.38061",
+      "revision": 1,
+      "title": "Cosmic rays in galaxy halos I: the circumgalactic transport rate and a dynamically significant cosmic-ray reservoir",
+      "authors": [
+        "Roland M. Crocker",
+        "Mark R. Krumholz"
+      ],
+      "priority": "skip",
+      "result": "未能从已检查材料中核实论文结果。",
+      "problem": "未能从已检查材料中核实论文问题陈述。",
+      "method": "未能从已检查摘要中核实方法说明。",
+      "reason": "Although it addresses cosmic rays and gamma-ray observations, its focus is long-term cosmic-ray transport in galaxy halos, not the specified transient sources or their environments.",
+      "url": "https://arxiv.org/abs/2610.38061v1",
+      "announcement_date": "2026-10-28",
+      "historical_edition": "announcement-2026-10-28",
+      "source_fingerprint": "f3724f1ec9b86651180c778da639ea01490fa7b8305c3c2c7c7101d55d5c2329"
+    },
+    {
+      "arxiv_id": "2610.38159",
+      "revision": 1,
+      "title": "Turbulent gas-rich discs at high redshift: Chaotic orbits and rapid bulge formation at high gas fraction",
+      "authors": [
+        "Johan M. Villa-Alatorre",
+        "Joss Bland-Hawthorn",
+        "Thor Tepper-Garcia",
+        "Oscar Agertz",
+        "Christoph Federrath"
+      ],
+      "priority": "skip",
+      "result": "未能从已检查材料中核实论文结果。",
+      "problem": "未能从已检查材料中核实论文问题陈述。",
+      "method": "未能从已检查摘要中核实方法说明。",
+      "reason": "This paper studies bars and bulge formation in high-redshift gas-rich galaxies, with no substantive connection to the specified high-energy transient research directions.",
+      "url": "https://arxiv.org/abs/2610.38159v1",
+      "announcement_date": "2026-10-28",
+      "historical_edition": "announcement-2026-10-28",
+      "source_fingerprint": "c12141a78363165c01e56744f6e3d825d207927154fc77654d0823ae1fb3d69a"
+    },
+    {
+      "arxiv_id": "2610.38192",
+      "revision": 1,
+      "title": "Unveiling the Shock-Excited Molecular Environment in the Orion Protostar HOPS 370",
+      "authors": [
+        "Somnath Dutta",
+        "Koshvendra Singh",
+        "Devendra K Ojha",
+        "Saurabh Sharma",
+        "Tarak Chand",
+        "Manojit Chakraborty",
+        "Kartik Gokhe",
+        "Joe P. Ninan",
+        "Jyotirmoy Dey"
+      ],
+      "priority": "skip",
+      "result": "未能从已检查材料中核实论文结果。",
+      "problem": "未能从已检查材料中核实论文问题陈述。",
+      "method": "未能从已检查摘要中核实方法说明。",
+      "reason": "This study concerns shock-heated molecular gas in a protostellar outflow, not the specified high-energy transient or compact-object research directions.",
+      "url": "https://arxiv.org/abs/2610.38192v1",
+      "announcement_date": "2026-10-28",
+      "historical_edition": "announcement-2026-10-28",
+      "source_fingerprint": "c4152ecce18c1a007b3242d234f547afbb2e4a9e870ac817bed9907123212dfa"
+    },
+    {
+      "arxiv_id": "2610.38235",
+      "revision": 1,
+      "title": "Age-Resolved Vertical Motions in the Milky Way Warp: A Localized Enhancement in Intermediate-Age Populations",
+      "authors": [
+        "Xiaoyue Zhou",
+        "Xiaodian Chen",
+        "Haifeng Wang",
+        "Shu Wang",
+        "Zhihong He",
+        "Licai Deng"
+      ],
+      "priority": "skip",
+      "result": "未能从已检查材料中核实论文结果。",
+      "problem": "未能从已检查材料中核实论文问题陈述。",
+      "method": "未能从已检查摘要中核实方法说明。",
+      "reason": "This study examines age-dependent vertical motions in the Milky Way warp and has no substantive connection to the specified high-energy transient or compact-object research directions.",
+      "url": "https://arxiv.org/abs/2610.38235v1",
+      "announcement_date": "2026-10-28",
+      "historical_edition": "announcement-2026-10-28",
+      "source_fingerprint": "61fbac068baa0d1eb9d50ccbf42782b308d8becfb6e766ab9a6d3c402b6a3753"
     }
   ]
 }

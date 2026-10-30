@@ -72,8 +72,11 @@ export const AnalysisBodySchema = z
 
 export const RadarAnalysisSchema = z
   .object({
-    arxiv_id: z.string().min(1, "arxiv_id is required"),
-    revision: z.coerce.number().int().positive("revision must be a positive integer"),
+    id: z.string().optional(),
+    arxiv_id: z.string().optional(),
+    doi: z.string().optional(),
+    source: z.string().default("arxiv"),
+    revision: z.coerce.number().int().positive("revision must be a positive integer").default(1),
     status: z.string().default("ready"),
     source_fingerprint: z.string().min(1, "source_fingerprint is required"),
     guide_fingerprint: z.string().optional(),
@@ -86,7 +89,11 @@ export const RadarAnalysisSchema = z
     analysis: AnalysisBodySchema.default({}),
     figures: z.array(FigureSchema).optional(),
   })
-  .passthrough();
+  .passthrough()
+  .refine((data) => Boolean(data.arxiv_id || data.id || data.doi), {
+    message: "A paper must have at least one identifier (arxiv_id, id, or doi)",
+    path: ["arxiv_id"],
+  });
 
 export const RadarEditionSchema = z
   .object({

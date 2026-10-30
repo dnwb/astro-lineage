@@ -48,6 +48,21 @@ test("domain-schemas: RadarAnalysisSchema rejects illegal priority and invalid r
   assert.equal(res2.success, false);
 });
 
+test("domain-schemas: RadarAnalysisSchema supports journal records with source and doi", () => {
+  const journalPaper = {
+    id: "doi:10.1038/s41586-026-00099-1",
+    source: "nature",
+    doi: "10.1038/s41586-026-00099-1",
+    source_fingerprint: "hash-123",
+    priority: "must_read",
+  };
+  const res = RadarAnalysisSchema.safeParse(journalPaper);
+  assert.equal(res.success, true, res.error?.message);
+  assert.equal(res.data.source, "nature");
+  assert.equal(res.data.doi, "10.1038/s41586-026-00099-1");
+  assert.equal(res.data.revision, 1);
+});
+
 test("domain-schemas: CoverageSchema validates known levels and default values", () => {
   const valid = CoverageSchema.parse({ level: "full_body" });
   assert.equal(valid.level, "full_body");

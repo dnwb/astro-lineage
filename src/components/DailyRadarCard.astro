@@ -4,6 +4,7 @@ import DailyRadarGuide from "./DailyRadarGuide.astro";
 import DailyRadarSource from "./DailyRadarSource.astro";
 import { projectPotentialLineage, radarCardAnchor, radarCoverageDescription } from "../../scripts/daily-radar.mjs";
 import { matchScientificTags, extractTransientIdentifiers, normalizeStructuredClaim, formatAuthorList } from "../domain/academic-domain.mjs";
+import { formatSourceBadge, formatPaperCitation } from "../domain/journal-adapter.mjs";
 import { resolvePaperTitleZhSync } from "../domain/paper-translation.mjs";
 
 type AnyRecord = Record<string, any>;
@@ -44,7 +45,11 @@ const scientificTags = matchScientificTags(item);
 const transientIds = extractTransientIdentifiers(
   `${item.title} ${titleZh || ""} ${guide.problem || ""} ${record.analysis.result || ""} ${guide.reason || ""}`
 );
-const searchIndex = `${item.title} ${titleZh || ""} ${item.arxiv_id} ${(item.authors || []).join(" ")} ${guide.problem || ""} ${record.analysis.result || ""} ${guide.reason || ""} ${scientificTags.join(" ")} ${transientIds.join(" ")}`.toLowerCase();
+const isArxiv = !item.source || item.source === "arxiv";
+const sourceLabel = formatSourceBadge(item.source);
+const citationText = formatPaperCitation(item);
+const pdfLink = item.pdf_url || (item.arxiv_id ? `https://arxiv.org/pdf/${item.arxiv_id}` : null);
+const searchIndex = `${item.title} ${titleZh || ""} ${item.arxiv_id || item.doi || ""} ${(item.authors || []).join(" ")} ${guide.problem || ""} ${record.analysis.result || ""} ${guide.reason || ""} ${scientificTags.join(" ")} ${transientIds.join(" ")}`.toLowerCase();
 
 const relationLabels: Record<string, string> = {
   builds_on: "builds on",
@@ -82,8 +87,15 @@ function priorityLabel(priority: string) {
         <div class="radar-card-header-row">
           <div class="header-left-badges">
             <span class="tier-pill priority-pill-must-read">⭐ Must Read</span>
-            <a class="radar-arxiv-badge" href={item.url} target="_blank" rel="noopener">arXiv:{item.arxiv_id}</a>
-            <a class="radar-pdf-badge" href={`https://arxiv.org/pdf/${item.arxiv_id}`} target="_blank" rel="noopener" title="Read or download official PDF">📄 PDF</a>
+            {isArxiv ? (
+              <a class="radar-arxiv-badge" href={item.url} target="_blank" rel="noopener">arXiv:{item.arxiv_id}</a>
+            ) : (
+              <span class={`radar-source-badge radar-source-${item.source}`}>{sourceLabel}</span>
+              <a class="radar-citation-badge" href={item.url} target="_blank" rel="noopener">{citationText}</a>
+            )}
+            {pdfLink && (
+              <a class="radar-pdf-badge" href={pdfLink} target="_blank" rel="noopener" title="Read or download official PDF">📄 PDF</a>
+            )}
             {coverageLevel === "full_body" && (
               <span class="radar-coverage-badge">Full Body</span>
             )}
@@ -192,8 +204,15 @@ function priorityLabel(priority: string) {
         <div class="radar-card-header-row worth-knowing-header-row">
           <div class="header-left-badges">
             <span class="tier-pill priority-pill-worth-knowing">📌 Follow</span>
-            <a class="radar-arxiv-badge" href={item.url} target="_blank" rel="noopener">arXiv:{item.arxiv_id}</a>
-            <a class="radar-pdf-badge" href={`https://arxiv.org/pdf/${item.arxiv_id}`} target="_blank" rel="noopener" title="Read or download official PDF">📄 PDF</a>
+            {isArxiv ? (
+              <a class="radar-arxiv-badge" href={item.url} target="_blank" rel="noopener">arXiv:{item.arxiv_id}</a>
+            ) : (
+              <span class={`radar-source-badge radar-source-${item.source}`}>{sourceLabel}</span>
+              <a class="radar-citation-badge" href={item.url} target="_blank" rel="noopener">{citationText}</a>
+            )}
+            {pdfLink && (
+              <a class="radar-pdf-badge" href={pdfLink} target="_blank" rel="noopener" title="Read or download official PDF">📄 PDF</a>
+            )}
             {transientIds.map((tid: string) => (
               <span class="radar-transient-tag" title="Observational Target">🔭 {tid}</span>
             ))}
@@ -256,8 +275,15 @@ function priorityLabel(priority: string) {
         <div class="radar-skim-row single-row-layout">
           <div class="skim-meta-leading">
             <span class="tier-pill priority-pill-skim">⚡ Skim</span>
-            <a class="radar-arxiv-badge" href={item.url} target="_blank" rel="noopener">arXiv:{item.arxiv_id}</a>
-            <a class="radar-pdf-badge" href={`https://arxiv.org/pdf/${item.arxiv_id}`} target="_blank" rel="noopener" title="Read or download official PDF">📄 PDF</a>
+            {isArxiv ? (
+              <a class="radar-arxiv-badge" href={item.url} target="_blank" rel="noopener">arXiv:{item.arxiv_id}</a>
+            ) : (
+              <span class={`radar-source-badge radar-source-${item.source}`}>{sourceLabel}</span>
+              <a class="radar-citation-badge" href={item.url} target="_blank" rel="noopener">{citationText}</a>
+            )}
+            {pdfLink && (
+              <a class="radar-pdf-badge" href={pdfLink} target="_blank" rel="noopener" title="Read or download official PDF">📄 PDF</a>
+            )}
           </div>
           <div class="skim-main-col">
             <h4 class="radar-card-title skim-card-title">
@@ -318,7 +344,12 @@ function priorityLabel(priority: string) {
               <span class={`tier-pill priority-pill-${cardVariant}`}>
                 {item.analysis.priority === "must_read" ? "⭐ Must Read" : isSkim ? "⚡ Skim" : "📌 Follow"}
               </span>
-              <span class="radar-arxiv-badge">arXiv:{item.arxiv_id}v{item.revision || 1}</span>
+              {isArxiv ? (
+                <span class="radar-arxiv-badge">arXiv:{item.arxiv_id}v{item.revision || 1}</span>
+              ) : (
+                <span class={`radar-source-badge radar-source-${item.source}`}>{sourceLabel}</span>
+                <span class="radar-citation-badge">{citationText}</span>
+              )}
               {scientificTags.map((tag: string) => (
                 <span class="radar-category-tag">{tag}</span>
               ))}
@@ -484,6 +515,62 @@ function priorityLabel(priority: string) {
     background: rgba(30, 41, 59, 0.6);
     color: #cbd5e1;
     border-color: rgba(71, 85, 105, 0.5);
+  }
+
+  .radar-source-badge {
+    display: inline-block;
+    padding: 0.12rem 0.45rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    border-radius: 0.25rem;
+    color: #b45309;
+    background: #fef3c7;
+    border: 1px solid #fde68a;
+  }
+  .radar-source-nature, .radar-source-nature-astronomy {
+    color: #991b1b;
+    background: #fee2e2;
+    border-color: #fecaca;
+  }
+  .radar-source-science {
+    color: #9a3412;
+    background: #ffedd5;
+    border-color: #fed7aa;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .radar-source-nature,
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .radar-source-nature-astronomy {
+    color: #fca5a5;
+    background: rgba(153, 27, 27, 0.25);
+    border-color: rgba(239, 68, 68, 0.4);
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .radar-source-science {
+    color: #fdba74;
+    background: rgba(154, 52, 18, 0.25);
+    border-color: rgba(249, 115, 22, 0.4);
+  }
+
+  .radar-citation-badge {
+    display: inline-block;
+    padding: 0.12rem 0.45rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    font-family: ui-monospace, monospace;
+    color: #334155;
+    background: #f1f5f9;
+    border: 1px solid #cbd5e1;
+    border-radius: 0.25rem;
+    text-decoration: none;
+  }
+  .radar-citation-badge:hover {
+    background: #e2e8f0;
+    text-decoration: underline;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .radar-citation-badge {
+    color: #94a3b8;
+    background: rgba(30, 41, 59, 0.45);
+    border-color: rgba(71, 85, 105, 0.45);
   }
 
   .radar-arxiv-badge {

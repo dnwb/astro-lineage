@@ -902,16 +902,16 @@ function priorityLabel(priority: string) {
 
   /* Must-Read Split & Inline Key Figure */
   .radar-must-split {
-    display: block;
-  }
-  .radar-must-split.has-inline-figure {
     display: grid;
     grid-template-columns: minmax(0, 1.45fr) minmax(240px, 0.95fr);
     gap: 1.1rem;
     align-items: start;
   }
+  .radar-must-single {
+    display: block;
+  }
   @media (max-width: 820px) {
-    .radar-must-split.has-inline-figure {
+    .radar-must-split {
       grid-template-columns: 1fr;
     }
   }

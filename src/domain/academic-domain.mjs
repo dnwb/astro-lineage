@@ -7,13 +7,11 @@
  */
 
 import { existsSync } from "node:fs";
-import { join } from "node:path";
-import { fileURLToPath } from "node:url";
-
-const PUBLIC_ROOT_DIR = fileURLToPath(new URL("../../public", import.meta.url));
+import { join, resolve } from "node:path";
 
 /**
  * Checks whether a figure's local asset file actually exists in the public directory.
+ * Uses process.cwd() so it remains accurate even when bundled by Vite/Astro SSR into dist/_astro/.
  *
  * @param {object} fig
  * @returns {boolean}
@@ -22,7 +20,8 @@ export function hasVerifiedFigureAsset(fig) {
   const src = fig?.url || fig?.image_url || "";
   if (!src || typeof src !== "string") return false;
   if (src.startsWith("http://") || src.startsWith("https://")) return true;
-  return existsSync(join(PUBLIC_ROOT_DIR, src.replace(/^\/+/u, "")));
+  const cleanRel = src.replace(/^\/+/u, "");
+  return existsSync(join(resolve("public"), cleanRel));
 }
 
 // 1. Scientific Taxonomy & Phenomenon Tags

@@ -2124,7 +2124,7 @@ async function readRunState(artifactRoot) {
   }
 }
 
-async function readAuthoritativeRunState(artifactRoot) {
+export async function readAuthoritativeRunState(artifactRoot) {
   const root = resolve(artifactRoot);
   const statePath = join(root, "run-state.json");
   try {

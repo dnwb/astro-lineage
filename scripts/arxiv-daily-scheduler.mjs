@@ -546,6 +546,9 @@ export async function runScheduledArxivRefresh({
           );
         }
       } catch (error) {
+        console.error(
+          `[arxiv-daily-scheduler] Date ${date} failed: [${error?.code ?? "ERROR"}] ${error?.message ?? error}${error?.stack ? `\n${error.stack}` : ""}`
+        );
         ledger.failed_dates = [...new Set([...ledger.failed_dates, date])].sort();
         await saveLedger(root, ledger);
         if (isGlobalRateLimit(error)) break;

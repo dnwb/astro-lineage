@@ -11,6 +11,8 @@ import {
   CoverageSchema,
   OpeningBriefSchema,
 } from "../src/domain/schemas/index.mjs";
+import { buildAnalysisRecord } from "../scripts/arxiv-ai-analyzer.mjs";
+import { buildDailyRadarModel } from "../scripts/daily-radar.mjs";
 
 test("domain-schemas: active daily-radar.json passes Zod schema validation", async () => {
   const raw = await readFile(resolve("src/data/daily-radar.json"), "utf8");
@@ -127,4 +129,110 @@ test("domain-schemas: OpeningBriefSchema validates structured entities (focus_pa
     focus_paper: null,
   });
   assert.equal(parsedNullFocus.focus_paper, null);
+});
+
+test("domain-schemas: contract test between buildAnalysisRecord and analysisDiagnostics", () => {
+  const skipEntry = {
+    id: "http://arxiv.org/abs/2610.12345v1",
+    arxiv_id: "2610.12345",
+    revision: 1,
+    title: "Test Calibration Note",
+    abstract: "A brief instrument calibration report.",
+    authors: ["Test Author"],
+    categories: ["astro-ph.IM"],
+    primary_category: "astro-ph.IM",
+    published: "2026-10-28T00:00:00Z",
+    updated: "2026-10-28T00:00:00Z",
+    url: "https://arxiv.org/abs/2610.12345v1",
+  };
+  const skipParsed = {
+    priority: "skip",
+    reason: "Standard instrumental monitoring note outside priority topics.",
+  };
+  const skipChecked = {
+    reason: "Standard instrumental monitoring note outside priority topics.",
+    result: "Routine calibration check.",
+    reading_entry: "Brief note on calibration.",
+    problem: "Instrumental detector stability.",
+    method: "Photometric zero-point tracking.",
+    assumptions: ["Linear detector response."],
+    limits: ["Only valid for current cycle."],
+    evidence: [],
+    research_progress: "Ongoing instrument monitoring.",
+    figures: [],
+    inspectedSections: ["Abstract"],
+  };
+
+  const skipRecord = buildAnalysisRecord(skipEntry, skipParsed, skipChecked, {
+    modelName: "test-model",
+  });
+  const skipSchemaResult = RadarAnalysisSchema.safeParse(skipRecord);
+  assert.equal(
+    skipSchemaResult.success,
+    true,
+    `RadarAnalysisSchema rejected skip record: ${JSON.stringify(skipSchemaResult.error?.issues)}`
+  );
+  const skipRadar = buildDailyRadarModel({ entries: [skipEntry] }, { analyses: [skipRecord] });
+  assert.equal(skipRadar.pending.length, 0, "skip record should not land in pending");
+  assert.equal(skipRadar.groups.skip.length, 1);
+  assert.equal(skipRadar.groups.skip[0].arxiv_id, "2610.12345");
+
+  const mustReadEntry = {
+    id: "http://arxiv.org/abs/2610.23456v1",
+    arxiv_id: "2610.23456",
+    revision: 1,
+    title: "Groundbreaking Fast Radio Burst Discovery",
+    abstract: "Discovery of coherent radio emission from magnetar.",
+    authors: ["Lead Author"],
+    categories: ["astro-ph.HE"],
+    primary_category: "astro-ph.HE",
+    published: "2026-10-28T00:00:00Z",
+    updated: "2026-10-28T00:00:00Z",
+    url: "https://arxiv.org/abs/2610.23456v1",
+  };
+  const mustReadParsed = {
+    priority: "must_read",
+    title_zh: "磁星相干射电爆发的突破性发现",
+  };
+  const mustReadChecked = {
+    title_zh: "磁星相干射电爆发的突破性发现",
+    reason: "First direct detection of high energy counterpart.",
+    result: "Coherent GHz burst coincident with hard X-ray flare.",
+    reading_entry: "Examines light curves and polarization signatures.",
+    problem: "Mechanism of prompt FRB emission.",
+    method: "Simultaneous radio and X-ray timing.",
+    assumptions: ["Single impulsive trigger event."],
+    limits: ["Bandwidth limited to 1.2-1.6 GHz."],
+    evidence: [{ section: "Method", quote: "Time difference was measured below 1 ms." }],
+    research_progress: "Confirms magnetar origin hypothesis.",
+    figures: [],
+    inspectedSections: [
+      "Introduction",
+      "Model Setup",
+      "Methodology",
+      "Observation Results",
+      "Discussion and Limits",
+    ],
+  };
+  const source = {
+    url: "https://arxiv.org/src/2610.23456v1",
+    sha256: "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+  };
+  const mustReadRecord = buildAnalysisRecord(mustReadEntry, mustReadParsed, mustReadChecked, {
+    modelName: "test-model",
+    source,
+  });
+  const mustReadSchemaResult = RadarAnalysisSchema.safeParse(mustReadRecord);
+  assert.equal(
+    mustReadSchemaResult.success,
+    true,
+    `RadarAnalysisSchema rejected must_read record: ${JSON.stringify(mustReadSchemaResult.error?.issues)}`
+  );
+  const mustReadRadar = buildDailyRadarModel(
+    { entries: [mustReadEntry] },
+    { analyses: [mustReadRecord] }
+  );
+  assert.equal(mustReadRadar.pending.length, 0, "must_read record should not land in pending");
+  assert.equal(mustReadRadar.groups.must_read.length, 1);
+  assert.equal(mustReadRadar.groups.must_read[0].arxiv_id, "2610.23456");
 });

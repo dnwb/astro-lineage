@@ -30,11 +30,13 @@ test("architecture-hygiene: git working tree must have zero untracked artifacts 
       encoding: "utf8",
     }).trim();
     const untracked = status
-      .split("\n")
-      .map((l) => l.trim())
-      .filter((l) => l.startsWith("??"))
-      .filter((l) => !l.includes("public/arxiv-figures/"))
-      .join("\n");
+      ? status
+          .split("\n")
+          .map((l) => l.trim())
+          .filter((l) => l.startsWith("??"))
+          .filter((l) => !/^\?\?\s+public\/arxiv-figures\/\d{4}\.\d{4,5}(v\d+)?\//.test(l))
+          .join("\n")
+      : "";
     assert.equal(
       untracked,
       "",
@@ -44,6 +46,20 @@ test("architecture-hygiene: git working tree must have zero untracked artifacts 
     if (err.code !== "ERR_ASSERTION") throw err;
     throw err;
   }
+});
+
+test("architecture-hygiene: controlled figure filter exempts valid arXiv figures but catches rogue files", () => {
+  const isControlledFigure = (line) =>
+    /^\?\?\s+public\/arxiv-figures\/\d{4}\.\d{4,5}(v\d+)?\//.test(line);
+
+  assert.equal(isControlledFigure("?? public/arxiv-figures/2609.09285/"), true);
+  assert.equal(isControlledFigure("?? public/arxiv-figures/2609.13540v1/"), true);
+  assert.equal(isControlledFigure("?? public/arxiv-figures/2610.12345/fig1.png"), true);
+
+  assert.equal(isControlledFigure("?? public/arxiv-figures/leak-test.png"), false);
+  assert.equal(isControlledFigure("?? public/test-leak.pdf"), false);
+  assert.equal(isControlledFigure("?? public/arxiv-figures/temp-artifact.json"), false);
+  assert.equal(isControlledFigure("?? public/arxiv-figures/random-folder/image.png"), false);
 });
 
 test("architecture-hygiene: KaTeX math rendering is strictly encapsulated in src/domain/scientific-text/", async () => {

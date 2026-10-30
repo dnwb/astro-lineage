@@ -207,6 +207,23 @@ export function collectWorthKnowingPapers(weeklyData, dailyAnalysisMap = new Map
 }
 
 /**
+ * 提取周报条目的中英文标题与格式化作者列表（统一回退至 dailyEntryMap）
+ * @param {Object} p
+ * @param {Map<string, Object>} dailyEntryMap
+ * @param {Object} [options]
+ * @param {number} [options.maxAuthors=5]
+ */
+function resolveWeeklyPickMeta(p, dailyEntryMap, { maxAuthors = 5 } = {}) {
+  const aid = p.arxiv_id;
+  const titleZh = resolvePaperTitleZhSync(p) || p.title || aid;
+  const titleEn = p.title || aid;
+  const feed = dailyEntryMap?.get(aid);
+  const authors = (p.authors && p.authors.length > 0 ? p.authors : feed?.authors) || [];
+  const authorStr = formatAuthorList(authors, { isLegacy: true, max: maxAuthors });
+  return { aid, titleZh, titleEn, authorStr };
+}
+
+/**
  * 解析并生成本期周报的结构化学术 Markdown 文档
  * @param {Object} options
  * @returns {Promise<string>}
@@ -301,12 +318,9 @@ export async function generateWeeklyMarkdownDocument({
       lines.push(`> ${group.description}\n`);
     }
     for (const p of group.picks) {
-      const aid = p.arxiv_id;
-      const titleZh = resolvePaperTitleZhSync(p) || p.title || aid;
-      const titleEn = p.title || aid;
-      const feed = dailyEntryMap.get(aid);
-      const authors = (p.authors && p.authors.length > 0 ? p.authors : feed?.authors) || [];
-      const authorStr = formatAuthorList(authors, { isLegacy: true, max: 5 });
+      const { aid, titleZh, titleEn, authorStr } = resolveWeeklyPickMeta(p, dailyEntryMap, {
+        maxAuthors: 5,
+      });
       const dailyA = dailyAnalysisMap.get(aid)?.analysis || {};
 
       lines.push(`#### [arXiv:${aid}](https://arxiv.org/abs/${aid}) ${titleZh}`);
@@ -374,12 +388,9 @@ export async function generateWeeklyMarkdownDocument({
   );
 
   for (const p of worths) {
-    const aid = p.arxiv_id;
-    const titleZh = resolvePaperTitleZhSync(p) || p.title || aid;
-    const titleEn = p.title || aid;
-    const feed = dailyEntryMap.get(aid);
-    const authors = (p.authors && p.authors.length > 0 ? p.authors : feed?.authors) || [];
-    const authorStr = formatAuthorList(authors, { isLegacy: true, max: 3 });
+    const { aid, titleZh, titleEn, authorStr } = resolveWeeklyPickMeta(p, dailyEntryMap, {
+      maxAuthors: 3,
+    });
     const pickBadge = p.isTopPick ? " [⭐ 重点关注]" : "";
 
     lines.push(`### [arXiv:${aid}](https://arxiv.org/abs/${aid}) ${titleZh}${pickBadge}`);
@@ -1335,12 +1346,9 @@ export async function generatePublicationWeeklyHtml({
 
     for (const p of group.picks) {
       pIdx++;
-      const aid = p.arxiv_id;
-      const titleZh = resolvePaperTitleZhSync(p) || p.title || aid;
-      const titleEn = p.title || aid;
-      const feed = dailyEntryMap.get(aid);
-      const authors = (p.authors && p.authors.length > 0 ? p.authors : feed?.authors) || [];
-      const authorStr = formatAuthorList(authors, { isLegacy: true, max: 5 });
+      const { aid, titleZh, titleEn, authorStr } = resolveWeeklyPickMeta(p, dailyEntryMap, {
+        maxAuthors: 5,
+      });
       const dailyA = dailyAnalysisMap.get(aid)?.analysis || {};
 
       html.push(`
@@ -1490,12 +1498,9 @@ export async function generatePublicationWeeklyHtml({
 `);
 
     for (const p of topWorths) {
-      const aid = p.arxiv_id;
-      const titleZh = resolvePaperTitleZhSync(p) || p.title || aid;
-      const titleEn = p.title || aid;
-      const feed = dailyEntryMap.get(aid);
-      const authors = (p.authors && p.authors.length > 0 ? p.authors : feed?.authors) || [];
-      const authorStr = formatAuthorList(authors, { isLegacy: true, max: 3 });
+      const { aid, titleZh, titleEn, authorStr } = resolveWeeklyPickMeta(p, dailyEntryMap, {
+        maxAuthors: 3,
+      });
 
       html.push(`
       <div class="worth-card" id="pdf-paper-${aid}">
@@ -1532,12 +1537,9 @@ export async function generatePublicationWeeklyHtml({
 `);
 
     for (const p of otherWorths) {
-      const aid = p.arxiv_id;
-      const titleZh = resolvePaperTitleZhSync(p) || p.title || aid;
-      const titleEn = p.title || aid;
-      const feed = dailyEntryMap.get(aid);
-      const authors = (p.authors && p.authors.length > 0 ? p.authors : feed?.authors) || [];
-      const authorStr = formatAuthorList(authors, { isLegacy: true, max: 3 });
+      const { aid, titleZh, titleEn, authorStr } = resolveWeeklyPickMeta(p, dailyEntryMap, {
+        maxAuthors: 3,
+      });
       const date = p.announcement_date || "";
 
       html.push(`

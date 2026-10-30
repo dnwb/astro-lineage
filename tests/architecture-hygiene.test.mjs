@@ -191,13 +191,13 @@ test("architecture-hygiene: domain and lib modules must not resolve public/ via 
   for (const file of files) {
     const content = await readFile(file, "utf8");
     const stripped = content.replace(/\/\*[\s\S]*?\*\//g, "").replace(/\/\/.*$/gm, "");
-    const usesMetaUrlForPublic = /new\s+URL\(\s*["'][^"']*public["']\s*,\s*import\.meta\.url\s*\)/u.test(
-      stripped
-    );
+    const usesMetaUrlForPublic =
+      /new\s+URL\(\s*["'][^"']*public(?:\/[^"']*)?["']\s*,\s*import\.meta\.url\s*\)/u.test(
+        stripped
+      );
     assert.ok(
       !usesMetaUrlForPublic,
       `File ${file.replace(projectRoot, "")} resolves public/ via import.meta.url, which breaks when bundled into dist/_astro/pages/ during Astro SSR build. Use resolve("public") instead.`
     );
   }
 });
-

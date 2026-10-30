@@ -13,6 +13,7 @@ import {
   deriveFigurePhysicalCore,
   formatWeekIdZh,
   formatWeekIdEn,
+  groupPicksByTheme,
 } from "../src/domain/academic-domain.mjs";
 
 test("academic-domain: extractTransientIdentifiers parses standard transient names", () => {
@@ -356,4 +357,46 @@ test("academic-domain: getBibliographicUrl and getBibliographicSourceName format
       delete process.env.BIBLIOGRAPHIC_PROVIDER;
     }
   }
+});
+
+test("academic-domain: groupPicksByTheme groups picks by thematic_highlights (theme_name, paper_ids) and English fallbacks", () => {
+  const picks = [
+    { arxiv_id: "2610.00001v1", title: "Paper 1" },
+    { arxiv_id: "arXiv:2610.00002", title: "Paper 2" },
+    { arxiv_id: "2610.00003", title: "Paper 3" },
+  ];
+  const weeklyData = {
+    thematic_highlights: [
+      {
+        theme_name: "一、磁星与快速射电暴",
+        summary: "本专题聚焦磁层辐射机制。",
+        paper_ids: ["2610.00001", "2610.00002"],
+      },
+      {
+        theme_name: "二、空置专题（无对应必读）",
+        summary: "不应出现在分组结果中。",
+        paper_ids: ["2610.99999"],
+      },
+    ],
+  };
+
+  const groups = groupPicksByTheme(picks, weeklyData);
+  assert.equal(groups.length, 2);
+  assert.equal(groups[0].theme, "一、磁星与快速射电暴");
+  assert.equal(groups[0].description, "本专题聚焦磁层辐射机制。");
+  assert.deepEqual(
+    groups[0].picks.map((p) => p.arxiv_id),
+    ["2610.00001v1", "arXiv:2610.00002"]
+  );
+  assert.equal(groups[1].theme, "Cross-Disciplinary & Extended Highlights");
+  assert.deepEqual(
+    groups[1].picks.map((p) => p.arxiv_id),
+    ["2610.00003"]
+  );
+
+  // Fallback when no thematic_highlights exist
+  const fallbackGroups = groupPicksByTheme(picks, {});
+  assert.equal(fallbackGroups.length, 1);
+  assert.equal(fallbackGroups[0].theme, "General Highlights");
+  assert.equal(fallbackGroups[0].picks.length, 3);
 });

@@ -51,54 +51,6 @@ record_current_build() {
   node scripts/notebooklm-sync.mjs --export "${BUILD_ID}" || DELIVERY_FAILED=1
 }
 
-pull_upstream_master() {
-  if [ "${CRON_GIT_PULL:-false}" != "true" ]; then
-    return 0
-  fi
-
-  echo "[cron-runner] 检查并同步远程 master 最新状态..."
-
-  # 1. 严格分支隔离门禁：仅在 master 分支允许自动前置拉取
-  local current_branch
-  current_branch="$(git symbolic-ref --short HEAD 2>/dev/null || echo '')"
-  if [ "${current_branch}" != "master" ]; then
-    echo "[cron-runner] 当前处于分支 '${current_branch}' (非 master)，安全跳过远程 master 同步"
-    return 0
-  fi
-
-  # 2. 工作区纯净度保护：检测是否存在未提交的非数据代码改动，若有则安全跳过，防止冲突和覆盖
-  local dirty_code
-  dirty_code="$(git status --porcelain 2>/dev/null | grep -v -E '^..\s+(src/data/|public/arxiv-figures/|public/arxiv-weekly/)' || true)"
-  if [ -n "${dirty_code}" ]; then
-    echo "[cron-runner] 检测到工作区存在未提交的代码改动，安全跳过远程同步以保护工作区："
-    echo "${dirty_code}"
-    return 0
-  fi
-
-  # 3. 自动暂存残留数据（若上一轮异常中断遗留了数据文件）
-  local has_dirty_data=0
-  if [ -n "$(git status --porcelain 2>/dev/null)" ]; then
-    git stash push -u -m "cron-runner: pre-pull auto-stash" >/dev/null 2>&1 || true
-    has_dirty_data=1
-  fi
-
-  # 4. 快进同步远程更新（容错设计：失败时不中断流水线，降级使用当前本地基准继续执行）
-  if git fetch origin master; then
-    if ! git merge --ff-only origin/master; then
-      echo "[cron-runner] ⚠️ 警告: 本地 master 与远程 master 产生分叉，快进合并失败，降级使用当前本地版本继续执行" >&2
-    else
-      echo "[cron-runner] ✓ 成功同步远程 master 最新代码与数据"
-    fi
-  else
-    echo "[cron-runner] ⚠️ 警告: git fetch origin master 失败 (可能受网络波动影响)，跳过拉取继续执行" >&2
-  fi
-
-  # 5. 还原暂存数据
-  if [ "${has_dirty_data}" -eq 1 ]; then
-    git stash pop >/dev/null 2>&1 || true
-  fi
-}
-
 sync_git_data() {
   if [ "${CRON_GIT_PUSH:-false}" = "true" ]; then
     echo "[cron-runner] 检查并同步数据变更与最近 7 周图表至 Git 仓库以触发 Cloudflare 部署..."
@@ -160,8 +112,6 @@ echo "Project root: ${PROJECT_DIR}"
 echo "Node binary:  $(which node 2>/dev/null || echo 'not found')"
 echo "NPM binary:   $(which npm 2>/dev/null || echo 'not found')"
 echo "========================================================"
-
-pull_upstream_master
 
 case "${TASK}" in
   auto|sync)
@@ -268,12 +218,8 @@ case "${TASK}" in
     sync_git_data
     ;;
 
-  sync-pull)
-    CRON_GIT_PULL=true pull_upstream_master
-    ;;
-
   *)
-    echo "[cron-runner] 错误：未知任务 '${TASK}'。可用参数: auto, reconcile, group-weekly, daily, weekly, agent, build, notebook, sync-git, sync-pull" >&2
+    echo "[cron-runner] 错误：未知任务 '${TASK}'。可用参数: auto, reconcile, group-weekly, daily, weekly, agent, build, notebook, sync-git" >&2
     exit 1
     ;;
 esac

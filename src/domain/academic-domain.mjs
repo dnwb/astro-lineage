@@ -926,6 +926,12 @@ export function groupPicksByTheme(picks, weeklyData = {}) {
   const groups = [];
   const assignedIds = new Set();
 
+  const normalizeArxivId = (id) =>
+    String(id || "")
+      .replace(/^arXiv:/i, "")
+      .replace(/v\d+$/i, "")
+      .trim();
+
   const rawThemes =
     Array.isArray(weeklyData?.themes) && weeklyData.themes.length > 0
       ? weeklyData.themes
@@ -941,27 +947,15 @@ export function groupPicksByTheme(picks, weeklyData = {}) {
       : Array.isArray(t.paper_ids)
         ? t.paper_ids
         : [];
-    const keyPaperIds = new Set(
-      rawIds.map((id) =>
-        String(id)
-          .replace(/^arXiv:/i, "")
-          .trim()
-      )
-    );
+    const keyPaperIds = new Set(rawIds.map(normalizeArxivId));
     const matched = picks.filter((p) => {
-      const pid = String(p.arxiv_id || "")
-        .replace(/^arXiv:/i, "")
-        .trim();
+      const pid = normalizeArxivId(p.arxiv_id);
       if (!pid || assignedIds.has(pid)) return false;
       return keyPaperIds.has(pid);
     });
     if (matched.length > 0) {
       for (const m of matched) {
-        assignedIds.add(
-          String(m.arxiv_id || "")
-            .replace(/^arXiv:/i, "")
-            .trim()
-        );
+        assignedIds.add(normalizeArxivId(m.arxiv_id));
       }
       groups.push({
         theme: themeName,
@@ -972,14 +966,7 @@ export function groupPicksByTheme(picks, weeklyData = {}) {
   }
 
   // Any remaining picks not explicitly linked in themes.key_papers:
-  const remaining = picks.filter(
-    (p) =>
-      !assignedIds.has(
-        String(p.arxiv_id || "")
-          .replace(/^arXiv:/i, "")
-          .trim()
-      )
-  );
+  const remaining = picks.filter((p) => !assignedIds.has(normalizeArxivId(p.arxiv_id)));
 
   if (remaining.length > 0) {
     // Try matching remaining picks to existing groups by keyword overlap or category

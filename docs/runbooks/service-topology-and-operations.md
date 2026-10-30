@@ -35,12 +35,12 @@ flowchart TD
 
 ### 1. 服务清单
 
-| 服务名称 | 类别 | 运行文件 / 命令 | 核心功能与职责 |
-| :--- | :--- | :--- | :--- |
-| **`astrolineage-web.service`** | Systemd User | `astro dev / astro build` | 承载校园网内文献知识库预览 (`http://10.131.43.83:4321`) |
-| **`astrolineage-qq-bot.service`** | Systemd User | `node scripts/qq-official-bot.mjs` | 连接腾讯官方 WebSocket Gateway，负责 QQ 群、公域/私域频道与私聊即时学术交互 |
-| **`astrolineage-bot.service`** | Systemd User | `node scripts/tencent-channel-bot.mjs` | 定时轮询腾讯频道论坛版块的帖子与评论，执行长文研读与互动 |
-| **arXiv 自动化定时任务** | Crontab | `scripts/cron-runner.sh auto` | 周一至周五 10:00 CST 执行抓取、AI 研判、构建页面与频道自动发布 |
+| 服务名称                          | 类别         | 运行文件 / 命令                        | 核心功能与职责                                                              |
+| :-------------------------------- | :----------- | :------------------------------------- | :-------------------------------------------------------------------------- |
+| **`astrolineage-web.service`**    | Systemd User | `astro dev / astro build`              | 承载校园网内文献知识库预览 (`http://10.131.43.83:4321`)                     |
+| **`astrolineage-qq-bot.service`** | Systemd User | `node scripts/qq-official-bot.mjs`     | 连接腾讯官方 WebSocket Gateway，负责 QQ 群、公域/私域频道与私聊即时学术交互 |
+| **`astrolineage-bot.service`**    | Systemd User | `node scripts/tencent-channel-bot.mjs` | 定时轮询腾讯频道论坛版块的帖子与评论，执行长文研读与互动                    |
+| **arXiv 自动化定时任务**          | Crontab      | `scripts/cron-runner.sh auto`          | 周一至周五 10:00 CST 执行抓取、AI 研判、构建页面与频道自动发布              |
 
 ### 2. 双工作区架构与 Git 同步契约 (Dual-Worktree Architecture)
 
@@ -52,9 +52,12 @@ flowchart TD
 2. **生产宿主工作区 (`/home/long/astro-lineage-cron`)**：
    - 常驻 `master` 分支，承载 Systemd 常驻服务与定时 Crontab 任务；
    - 严禁在此目录进行手工未提交的业务代码修改。
-3. **前置同步与后置推送契约**：
-   - **前置拉取 (`pull_upstream_master`)**：由 `CRON_GIT_PULL=true` 受控激活。只在 master 分支且无未提交代码改动时执行 `git fetch` 与 `git merge --ff-only`；若检测到代码改动或快进分叉，记录告警并安全跳过，降级使用当前版本继续运行，绝不中断核心流水线；
-   - **后置推送 (`sync_git_data`)**：由 `CRON_GIT_PUSH=true` 受控激活。采用 SSH 协议推送，仅在 master 且工作区纯净（仅数据和图表改动）时提交并推送。
+3. **代码部署与数据推送契约**：
+   - **代码更新与部署 (Explicit Deployment)**：`cron-runner.sh` 严禁包含自动代码拉取逻辑，专注于抓取、研判、构建和数据同步。当特性分支合入远程 `master` 后，由部署步骤或运维人员显式执行一条拉取命令更新生产宿主工作区：
+     ```bash
+     git -C /home/long/astro-lineage-cron pull --ff-only origin master
+     ```
+   - **数据后置推送 (`sync_git_data`)**：由 `CRON_GIT_PUSH=true` 受控激活。采用 SSH 协议推送，仅在 master 且工作区纯净（仅数据和图表改动）时提交并推送。
 
 ---
 
@@ -69,6 +72,7 @@ node scripts/qq-official-bot.mjs --doctor
 需要真实连通性检查时，显式运行 `node scripts/qq-official-bot.mjs --doctor --live`。该模式会申请 token 并调用收费模型，但不发送 QQ 消息。CI 不得使用 `--live`。
 
 ### 显式 live 诊断步骤说明
+
 1. **环境变量**：核验 `QQ_APP_ID`（纯数字格式）与 `QQ_APP_SECRET`（纯 32 位 Hex，且无非法前缀）；
 2. **官方 OAuth 凭据交换**：通过 `getAppAccessToken` 向腾讯开放平台换取动态 AccessToken；
 3. **官方 Gateway 路由**：向 `api.sgroup.qq.com/gateway` 确认 WebSocket 网关地址可达；
@@ -76,6 +80,7 @@ node scripts/qq-official-bot.mjs --doctor
 5. **本地数据缓存完整性**：检查 `arxiv-daily.json`、`daily-radar.json`、`arxiv-weekly.json` 的有效性。
 
 **退出码约定**：
+
 - `0`：所选检查通过；默认离线模式不证明凭据、网关或模型可用；
 - `1`：检测到异常项，并在控制台输出明确的定位修复指引。
 
@@ -93,6 +98,7 @@ node scripts/qq-official-bot.mjs --doctor
 ## 三、常用运维管理指令
 
 ### 1. 查看与控制守护进程
+
 ```bash
 # 查看所有 AstroLineage 服务运行状态
 systemctl --user status astrolineage-web.service astrolineage-bot.service astrolineage-qq-bot.service
@@ -107,6 +113,7 @@ systemctl --user enable astrolineage-qq-bot.service
 ```
 
 ### 2. 查看实时日志
+
 ```bash
 # 查看官方 QQ 机器人实时日志（群消息、事件流、心跳、应答）
 journalctl --user -u astrolineage-qq-bot.service -f
@@ -123,14 +130,17 @@ tail -f /tmp/arxiv-task.log
 ## 四、常见故障排查手册 (Troubleshooting)
 
 ### 1. QQ 机器人无法收到群消息
+
 - **排查沙箱群配置**：未正式过审发布的机器人仅在开发者沙箱配置群中生效。检查 [QQ 开放平台 (q.qq.com)](https://q.qq.com) 后台的“沙箱配置”中是否已添加当前群号与测试人员 QQ。
 - **排查事件订阅**：后台需开通 `GROUP_AT_MESSAGE_CREATE` 权限。
 - **排查群内设置**：手机 QQ 群设置 -> 群机器人 -> 确认开启“允许接收消息”。
 
 ### 2. 鉴权报错 (100016 / 11245)
+
 - **100016: invalid appid or secret**：确认 `.env` 中填写的 `QQ_APP_SECRET` 是后台点击“查看”复制的 32 位开发者密钥，而不是第三方工具导出的带 `bot:v1_` 前缀的字符串。
 - **11245: 固定Token已禁用**：腾讯现已废弃旧版长期 Token，必须使用 `QQ_APP_ID` + `QQ_APP_SECRET` 组合。
 
 ### 3. 测试环境 Inode 耗尽 (ENOSPC)
+
 - 系统已在 `package.json` 的 `pretest` 和 `posttest` 中集成 `node scripts/cleanup-test-tmp.mjs`。
 - 测试套件临时目录使用 `createTemporaryWorkspace` 自动由 `t.after()` 销毁，确保 `/tmp` 目录保持净零残留。

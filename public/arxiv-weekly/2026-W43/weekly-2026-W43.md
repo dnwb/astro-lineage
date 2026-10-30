@@ -1,100 +1,94 @@
 # 高能天体物理 arXiv 每周学术脉络 · 2026 年第 43 周 (2026-W43) (2026-W43)
-
 > 报告周期：2026 年第 43 周 (2026-W43) (2026-W43) ｜ 时间跨度：2026-10-19 ~ 2026-10-25 ｜ 纳入研读：8 篇必读，90 篇重点关注
 > 在线精读入口：https://astro-lineage.pages.dev/arxiv-weekly/2026-W43/
 
 ## ★ 本周精选速览矩阵 (At-a-Glance Visual Triage · 共 18 篇)
-
 以下矩阵汇总本周全部核心必读与特选关注论文的核心结论（Key Insight）、主图与原文/PDF直达链接，供 1 分钟快速判断是否深入阅读。
 
-- **01. [⭐ 必读] [arXiv:2610.22653](https://arxiv.org/abs/2610.22653) Sparking Dynamic, Relativistic Magnetic Reconnection in a Twisted Flux Tube**（_Sparking Dynamic, Relativistic Magnetic Reconnection in a Twisted Flux Tube_）
+- **01. [⭐ 必读] [arXiv:2610.22653](https://arxiv.org/abs/2610.22653) Sparking Dynamic, Relativistic Magnetic Reconnection in a Twisted Flux Tube**（*Sparking Dynamic, Relativistic Magnetic Reconnection in a Twisted Flux Tube*）
   - **Key Insight**：非均匀电阻引发入流速度 $\beta_{\rm rec}\sim 0.1$ 的爆发性重联，占横截面 $0.1\%\sim 3\%$ 的电荷匮乏区承担了 $20\%\sim 55\%$ 的欧姆耗散并驱动壳层热膨胀抛射。
   - **直达链接**：[arXiv 摘要](https://arxiv.org/abs/2610.22653) ｜ [PDF 原文](https://arxiv.org/pdf/2610.22653) ｜ [SciX (ADS)](https://scixplorer.org/abs/arXiv:2610.22653?forceMode=astrophysics) ｜ [站内精读](https://astro-lineage.pages.dev/arxiv-weekly/2026-W43/#paper-2610.22653)
   - **核心图表 (Fig. 4)**：![Fig. 4](https://astro-lineage.pages.dev/arxiv-figures/2610.22653/multi_sim_jz_panel_compressed.png) 展示核心天体物理驱动机制、几何拓扑与理论演化模型架构。
-- **02. [⭐ 必读] [arXiv:2610.24849](https://arxiv.org/abs/2610.24849) Tidal Disruption Events in Active Galactic Nuclei: Thermal Radiation and Jets**（_Tidal Disruption Events in Active Galactic Nuclei: Thermal Radiation and Jets_）
+- **02. [⭐ 必读] [arXiv:2610.24849](https://arxiv.org/abs/2610.24849) Tidal Disruption Events in Active Galactic Nuclei: Thermal Radiation and Jets**（*Tidal Disruption Events in Active Galactic Nuclei: Thermal Radiation and Jets*）
   - **Key Insight**：碎屑撞击使盘环向磁场向内平流致使南极磁通量激增 33 倍，激发 $L_{\rm BZ}\simeq 3\times 10^{42}\,{\rm erg\,s^{-1}}$ 喷流，形成“南喷流、北热辐射”的百倍不对称态。
   - **直达链接**：[arXiv 摘要](https://arxiv.org/abs/2610.24849) ｜ [PDF 原文](https://arxiv.org/pdf/2610.24849) ｜ [SciX (ADS)](https://scixplorer.org/abs/arXiv:2610.24849?forceMode=astrophysics) ｜ [站内精读](https://astro-lineage.pages.dev/arxiv-weekly/2026-W43/#paper-2610.24849)
   - **核心图表 (Fig. 1)**：![Fig. 1](https://astro-lineage.pages.dev/arxiv-figures/2610.24849/sim_setup_schematic_for_paper.png) 展示核心天体物理驱动机制、几何拓扑与理论演化模型架构。
-- **03. [⭐ 必读] [arXiv:2610.27311](https://arxiv.org/abs/2610.27311) Source velocities of fast radio bursts constrained by their dispersion measure variations**（_Source velocities of fast radio bursts constrained by their dispersion measure variations_）
+- **03. [⭐ 必读] [arXiv:2610.27311](https://arxiv.org/abs/2610.27311) Source velocities of fast radio bursts constrained by their dispersion measure variations**（*Source velocities of fast radio bursts constrained by their dispersion measure variations*）
   - **Key Insight**：在自由-自由吸收光深 $\tau_{\rm ff}<1$ 约束下，导出重复暴最小运动速度达 $|v_s|\sim 20\text{--}2800\,{\rm km\,s^{-1}}$，与超新星出生反冲磁星吻合。
   - **直达链接**：[arXiv 摘要](https://arxiv.org/abs/2610.27311) ｜ [PDF 原文](https://arxiv.org/pdf/2610.27311) ｜ [SciX (ADS)](https://scixplorer.org/abs/arXiv:2610.27311?forceMode=astrophysics) ｜ [站内精读](https://astro-lineage.pages.dev/arxiv-weekly/2026-W43/#paper-2610.27311)
-- **04. [⭐ 必读] [arXiv:2610.27312](https://arxiv.org/abs/2610.27312) SN 2023iop: An Extreme 1987A-like Supernova and the Death of Very Massive Stars**（_SN 2023iop: An Extreme 1987A-like Supernova and the Death of Very Massive Stars_）
+- **04. [⭐ 必读] [arXiv:2610.27312](https://arxiv.org/abs/2610.27312) SN 2023iop: An Extreme 1987A-like Supernova and the Death of Very Massive Stars**（*SN 2023iop: An Extreme 1987A-like Supernova and the Death of Very Massive Stars*）
   - **Key Insight**：测得该源辐射总能量达 $(4.3\pm 0.3)\times 10^{50}\,{\rm erg}$、连续谱偏振度达 $0.81\pm 0.08\%$，联合禁线诊断将其约束为富氢 PISN 或强非对称 CSM 相互作用。
   - **直达链接**：[arXiv 摘要](https://arxiv.org/abs/2610.27312) ｜ [PDF 原文](https://arxiv.org/pdf/2610.27312) ｜ [SciX (ADS)](https://scixplorer.org/abs/arXiv:2610.27312?forceMode=astrophysics) ｜ [站内精读](https://astro-lineage.pages.dev/arxiv-weekly/2026-W43/#paper-2610.27312)
   - **核心图表 (Fig. 10)**：![Fig. 10](https://astro-lineage.pages.dev/arxiv-figures/2610.27312/SN2023iop_specpol_radar.png) 展示天体物理观测数据与多波段暂现源探测特征。
-- **05. [⭐ 必读] [arXiv:2610.27489](https://arxiv.org/abs/2610.27489) Constraining the FRB Central Engine from Flux Variations of Persistent Radio Sources: FRB 20240114A as the First Attempt**（_Constraining the FRB Central Engine from Flux Variations of Persistent Radio Sources: FRB 20240114A as the First Attempt_）
+- **05. [⭐ 必读] [arXiv:2610.27489](https://arxiv.org/abs/2610.27489) Constraining the FRB Central Engine from Flux Variations of Persistent Radio Sources: FRB 20240114A as the First Attempt**（*Constraining the FRB Central Engine from Flux Variations of Persistent Radio Sources: FRB 20240114A as the First Attempt*）
   - **Key Insight**：磁星风云电子绝热冷却主导拟合表明注入电子截断必须满足 $\gamma_{\rm b}\sim 2\times 10^2$，导出射电辐射效率仅为 $\eta_{\rm r}\sim 10^{-5}\text{--}10^{-4}$。
   - **直达链接**：[arXiv 摘要](https://arxiv.org/abs/2610.27489) ｜ [PDF 原文](https://arxiv.org/pdf/2610.27489) ｜ [SciX (ADS)](https://scixplorer.org/abs/arXiv:2610.27489?forceMode=astrophysics) ｜ [站内精读](https://astro-lineage.pages.dev/arxiv-weekly/2026-W43/#paper-2610.27489)
   - **核心图表 (Fig. 5)**：![Fig. 5](https://astro-lineage.pages.dev/arxiv-figures/2610.27489/prs_lightcurve_ccsn.png) 展示理论模型与实际观测数据的拟合对比及关键参数后验约束。
-- **06. [⭐ 必读] [arXiv:2610.28734](https://arxiv.org/abs/2610.28734) The (missing) gamma-ray counterparts to EP events**（_The (missing) gamma-ray counterparts to EP events_）
+- **06. [⭐ 必读] [arXiv:2610.28734](https://arxiv.org/abs/2610.28734) The (missing) gamma-ray counterparts to EP events**（*The (missing) gamma-ray counterparts to EP events*）
   - **Key Insight**：68% 的 EP 快速 X 射线暂现源无伽马对应体，Fermi/GBM 限制其 $E_{\rm peak}\lesssim 30\text{--}100\,{\rm keV}$ 与 $\Gamma_0 \lesssim 100$，指示中度相对论或激波破越起源。
   - **直达链接**：[arXiv 摘要](https://arxiv.org/abs/2610.28734) ｜ [PDF 原文](https://arxiv.org/pdf/2610.28734) ｜ [SciX (ADS)](https://scixplorer.org/abs/arXiv:2610.28734?forceMode=astrophysics) ｜ [站内精读](https://astro-lineage.pages.dev/arxiv-weekly/2026-W43/#paper-2610.28734)
   - **核心图表 (Fig. 12)**：![Fig. 12](https://astro-lineage.pages.dev/arxiv-figures/2610.28734/ep_zdist_cumulative.png) 展示观测样本的关键物理参量统计分布与总体特征对比。
-- **07. [⭐ 必读] [arXiv:2610.29226](https://arxiv.org/abs/2610.29226) Double-Shock Radiation in Supernova Wind Breakout and EP260321a**（_Double-Shock Radiation in Supernova Wind Breakout and EP260321a_）
+- **07. [⭐ 必读] [arXiv:2610.29226](https://arxiv.org/abs/2610.29226) Double-Shock Radiation in Supernova Wind Breakout and EP260321a**（*Double-Shock Radiation in Supernova Wind Breakout and EP260321a*）
   - **Key Insight**：低速反激波（$\bar{v}_{r,bo}\sim 0.07c$）满足 LTE 并主导黑体热辐射，确定 EP260321a 发生在截断半径 $r_w\sim 10^{13}\,{\rm cm}$ 的致密星风破越中。
   - **直达链接**：[arXiv 摘要](https://arxiv.org/abs/2610.29226) ｜ [PDF 原文](https://arxiv.org/pdf/2610.29226) ｜ [SciX (ADS)](https://scixplorer.org/abs/arXiv:2610.29226?forceMode=astrophysics) ｜ [站内精读](https://astro-lineage.pages.dev/arxiv-weekly/2026-W43/#paper-2610.29226)
   - **核心图表 (Fig. 1)**：![Fig. 1](https://astro-lineage.pages.dev/arxiv-figures/2610.29226/picture.png) 展示核心天体物理驱动机制、几何拓扑与理论演化模型架构。
-- **08. [⭐ 必读] [arXiv:2610.29838](https://arxiv.org/abs/2610.29838) PSR J0653+0443: An Eclipsing Millisecond Pulsar in an Extremely Eccentric Double Neutron Star System**（_PSR J0653+0443: An Eclipsing Millisecond Pulsar in an Extremely Eccentric Double Neutron Star System_）
+- **08. [⭐ 必读] [arXiv:2610.29838](https://arxiv.org/abs/2610.29838) PSR J0653+0443: An Eclipsing Millisecond Pulsar in an Extremely Eccentric Double Neutron Star System**（*PSR J0653+0443: An Eclipsing Millisecond Pulsar in an Extremely Eccentric Double Neutron Star System*）
   - **Key Insight**：测得轨道周期 $79.08\,{\rm d}$、近星点速度 $1140\,{\rm km\,s^{-1}}$ 与平均引力波光度 $1.9\times 10^{-4}\,L_\odot$，通过消除协方差模型精确提取后开普勒参数，约束次级星反冲速度达数百 $\mathrm{km\,s^{-1}}$。
   - **直达链接**：[arXiv 摘要](https://arxiv.org/abs/2610.29838) ｜ [PDF 原文](https://arxiv.org/pdf/2610.29838) ｜ [SciX (ADS)](https://scixplorer.org/abs/arXiv:2610.29838?forceMode=astrophysics) ｜ [站内精读](https://astro-lineage.pages.dev/arxiv-weekly/2026-W43/#paper-2610.29838)
   - **核心图表 (Fig. 3)**：![Fig. 3](https://astro-lineage.pages.dev/arxiv-figures/2610.29838/omdot1-omdot2.png) 展示理论模型与实际观测数据的拟合对比及关键参数后验约束。
-- **09. [📌 关注] [arXiv:2610.22662](https://arxiv.org/abs/2610.22662) The transformative power of ALMA2040 for mm-VLBI**（_The transformative power of ALMA2040 for mm-VLBI_）
+- **09. [📌 关注] [arXiv:2610.22662](https://arxiv.org/abs/2610.22662) The transformative power of ALMA2040 for mm-VLBI**（*The transformative power of ALMA2040 for mm-VLBI*）
   - **Key Insight**：在 230 GHz 获得 4 倍基线灵敏度提升，达到 sub-mJy 极限，可将黑洞视界及瞬变喷流成像拓展到弱 5–10 倍的暗弱目标。
   - **直达链接**：[arXiv 摘要](https://arxiv.org/abs/2610.22662) ｜ [PDF 原文](https://arxiv.org/pdf/2610.22662) ｜ [SciX (ADS)](https://scixplorer.org/abs/arXiv:2610.22662?forceMode=astrophysics) ｜ [站内精读](https://astro-lineage.pages.dev/arxiv-weekly/2026-W43/#paper-2610.22662)
   - **核心图表 (Fig. 3)**：![Fig. 3](https://astro-lineage.pages.dev/arxiv-figures/2610.22662/M87.png) 展示理论模型与实际观测数据的拟合对比及关键参数后验约束。
-- **10. [📌 关注] [arXiv:2610.22709](https://arxiv.org/abs/2610.22709) A New AI/ML Based Image Reconstruction Technique for Hard X-ray Coded Aperture Imagers**（_A New AI/ML Based Image Reconstruction Technique for Hard X-ray Coded Aperture Imagers_）
+- **10. [📌 关注] [arXiv:2610.22709](https://arxiv.org/abs/2610.22709) A New AI/ML Based Image Reconstruction Technique for Hard X-ray Coded Aperture Imagers**（*A New AI/ML Based Image Reconstruction Technique for Hard X-ray Coded Aperture Imagers*）
   - **Key Insight**：CNN-Transformer 混合模型在极高背景噪声（$13000$ 计数）与非平移不变几何下仍可实现 $0.25\,{\rm s}$ 快速推理与 $>67\%$ 的精准单像素定位。
   - **直达链接**：[arXiv 摘要](https://arxiv.org/abs/2610.22709) ｜ [PDF 原文](https://arxiv.org/pdf/2610.22709) ｜ [SciX (ADS)](https://scixplorer.org/abs/arXiv:2610.22709?forceMode=astrophysics) ｜ [站内精读](https://astro-lineage.pages.dev/arxiv-weekly/2026-W43/#paper-2610.22709)
   - **核心图表 (Fig. 7)**：![Fig. 7](https://astro-lineage.pages.dev/arxiv-figures/2610.22709/pred_vs_true_400c.png) 展示天体物理观测数据与多波段暂现源探测特征。
-- **11. [📌 关注] [arXiv:2610.22816](https://arxiv.org/abs/2610.22816) A Unified Solution to the Low-Mass X-ray Binary Diversity Puzzle: Saturated Magnetic Braking Coupled with Irradiation-Driven Winds**（_A Unified Solution to the Low-Mass X-ray Binary Diversity Puzzle: Saturated Magnetic Braking Coupled with Irradiation-Driven Winds_）
+- **11. [📌 关注] [arXiv:2610.22816](https://arxiv.org/abs/2610.22816) A Unified Solution to the Low-Mass X-ray Binary Diversity Puzzle: Saturated Magnetic Braking Coupled with Irradiation-Driven Winds**（*A Unified Solution to the Low-Mass X-ray Binary Diversity Puzzle: Saturated Magnetic Braking Coupled with Irradiation-Driven Winds*）
   - **Key Insight**：引入物理辐照风效率 $f\in [10^{-5}, 10^{-3}]$ 拓宽了通往 UCXB 的分叉空间，自洽重现了 2A 1822–371 反常轨道膨胀与毫秒脉冲星周期空缺。
   - **直达链接**：[arXiv 摘要](https://arxiv.org/abs/2610.22816) ｜ [PDF 原文](https://arxiv.org/pdf/2610.22816) ｜ [SciX (ADS)](https://scixplorer.org/abs/arXiv:2610.22816?forceMode=astrophysics) ｜ [站内精读](https://astro-lineage.pages.dev/arxiv-weekly/2026-W43/#paper-2610.22816)
-- **12. [📌 关注] [arXiv:2610.23028](https://arxiv.org/abs/2610.23028) Gamma-ray calorimetry of Seyfert winds**（_Gamma-ray calorimetry of Seyfert winds_）
+- **12. [📌 关注] [arXiv:2610.23028](https://arxiv.org/abs/2610.23028) Gamma-ray calorimetry of Seyfert winds**（*Gamma-ray calorimetry of Seyfert winds*）
   - **Key Insight**：测得塞弗特星系外流强子量热分数仅为 $\rho_{\rm wind}=0.020$，相比星暴超风低 13.5 倍，表明其缺乏致密靶气体进行有效 $pp$ 碰撞产生 GeV 辐射。
   - **直达链接**：[arXiv 摘要](https://arxiv.org/abs/2610.23028) ｜ [PDF 原文](https://arxiv.org/pdf/2610.23028) ｜ [SciX (ADS)](https://scixplorer.org/abs/arXiv:2610.23028?forceMode=astrophysics) ｜ [站内精读](https://astro-lineage.pages.dev/arxiv-weekly/2026-W43/#paper-2610.23028)
-- **13. [📌 关注] [arXiv:2610.23081](https://arxiv.org/abs/2610.23081) What can a uniform reflection pipeline establish about supermassive black hole spin? An audit and a corrected analysis of 57 AGN with XMM and NuSTAR**（_What can a uniform reflection pipeline establish about supermassive black hole spin? An audit and a corrected analysis of 57 AGN with XMM and NuSTAR_）
+- **13. [📌 关注] [arXiv:2610.23081](https://arxiv.org/abs/2610.23081) What can a uniform reflection pipeline establish about supermassive black hole spin? An audit and a corrected analysis of 57 AGN with XMM and NuSTAR**（*What can a uniform reflection pipeline establish about supermassive black hole spin? An audit and a corrected analysis of 57 AGN with XMM and NuSTAR*）
   - **Key Insight**：在重新扣除背景并消除局部极小值后，41 个样本中仅 18 个通过质检且仅 1 个源（NGC 4051）具有稳健双边自旋约束，多数极向自旋拟合极度脆弱。
   - **直达链接**：[arXiv 摘要](https://arxiv.org/abs/2610.23081) ｜ [PDF 原文](https://arxiv.org/pdf/2610.23081) ｜ [SciX (ADS)](https://scixplorer.org/abs/arXiv:2610.23081?forceMode=astrophysics) ｜ [站内精读](https://astro-lineage.pages.dev/arxiv-weekly/2026-W43/#paper-2610.23081)
   - **核心图表 (Fig. 2)**：![Fig. 2](https://astro-lineage.pages.dev/arxiv-figures/2610.23081/v3_matrix.png) 展示理论模型与实际观测数据的拟合对比及关键参数后验约束。
-- **14. [📌 关注] [arXiv:2610.23089](https://arxiv.org/abs/2610.23089) Maximal efficiency of geometric beaming and polarization of highly super-Eddington X-ray sources**（_Maximal efficiency of geometric beaming and polarization of highly super-Eddington X-ray sources_）
+- **14. [📌 关注] [arXiv:2610.23089](https://arxiv.org/abs/2610.23089) Maximal efficiency of geometric beaming and polarization of highly super-Eddington X-ray sources**（*Maximal efficiency of geometric beaming and polarization of highly super-Eddington X-ray sources*）
   - **Key Insight**：由于多次散射导致的大角度逃逸，现实漏斗几何集束上限为 $\mathcal{B}\lesssim 10$，纯电子散射线偏振度上限 $\sim 10\%$ 且与集束因子呈反相关。
   - **直达链接**：[arXiv 摘要](https://arxiv.org/abs/2610.23089) ｜ [PDF 原文](https://arxiv.org/pdf/2610.23089) ｜ [SciX (ADS)](https://scixplorer.org/abs/arXiv:2610.23089?forceMode=astrophysics) ｜ [站内精读](https://astro-lineage.pages.dev/arxiv-weekly/2026-W43/#paper-2610.23089)
   - **核心图表 (Fig. 4)**：![Fig. 4](https://astro-lineage.pages.dev/arxiv-figures/2610.23089/boost_R_alpha.png) 展示核心天体物理驱动机制、几何拓扑与理论演化模型架构。
-- **15. [📌 关注] [arXiv:2610.23140](https://arxiv.org/abs/2610.23140) Seeing Through the RFI Mask: DT-FISTA Inpainting of Pulsar Dynamic Spectra via Fourier Sparsity**（_Seeing Through the RFI Mask: DT-FISTA Inpainting of Pulsar Dynamic Spectra via Fourier Sparsity_）
+- **15. [📌 关注] [arXiv:2610.23140](https://arxiv.org/abs/2610.23140) Seeing Through the RFI Mask: DT-FISTA Inpainting of Pulsar Dynamic Spectra via Fourier Sparsity**（*Seeing Through the RFI Mask: DT-FISTA Inpainting of Pulsar Dynamic Spectra via Fourier Sparsity*）
   - **Key Insight**：DT-FISTA 算法将归一化均方根误差降低 $37\%\sim 53\%$，运算速度相比稠密维纳滤波提升近万倍（耗时从数小时压缩至 $1.72\,{\rm s}$）。
   - **直达链接**：[arXiv 摘要](https://arxiv.org/abs/2610.23140) ｜ [PDF 原文](https://arxiv.org/pdf/2610.23140) ｜ [SciX (ADS)](https://scixplorer.org/abs/arXiv:2610.23140?forceMode=astrophysics) ｜ [站内精读](https://astro-lineage.pages.dev/arxiv-weekly/2026-W43/#paper-2610.23140)
   - **核心图表 (Fig. 1)**：![Fig. 1](https://astro-lineage.pages.dev/arxiv-figures/2610.23140/fullsize_mean_vs_fista.png) 展示天体物理观测数据与多波段暂现源探测特征。
-- **16. [📌 关注] [arXiv:2610.23155](https://arxiv.org/abs/2610.23155) Ranking Prompt--Plateau Correlations in Gamma-Ray Bursts with Symbolic Regression**（_Ranking Prompt--Plateau Correlations in Gamma-Ray Bursts with Symbolic Regression_）
+- **16. [📌 关注] [arXiv:2610.23155](https://arxiv.org/abs/2610.23155) Ranking Prompt--Plateau Correlations in Gamma-Ray Bursts with Symbolic Regression**（*Ranking Prompt--Plateau Correlations in Gamma-Ray Bursts with Symbolic Regression*）
   - **Key Insight**：收敛发现平面关系 $\log L_a \propto 0.78\log L_{\rm peak} - 0.81\log T_a^{\rm rest}$，内禀弥散降至 $0.52\,{\rm dex}$，偏相关在排查 $D_L(z)$ 影响后依然稳健（$p\sim 10^{-19}$）。
   - **直达链接**：[arXiv 摘要](https://arxiv.org/abs/2610.23155) ｜ [PDF 原文](https://arxiv.org/pdf/2610.23155) ｜ [SciX (ADS)](https://scixplorer.org/abs/arXiv:2610.23155?forceMode=astrophysics) ｜ [站内精读](https://astro-lineage.pages.dev/arxiv-weekly/2026-W43/#paper-2610.23155)
-- **17. [📌 关注] [arXiv:2610.23339](https://arxiv.org/abs/2610.23339) The Dancing Bonfire: An Unusual Persistent X-ray Source in M81 Exhibiting Recurrent Luminous Flares**（_The Dancing Bonfire: An Unusual Persistent X-ray Source in M81 Exhibiting Recurrent Luminous Flares_）
+- **17. [📌 关注] [arXiv:2610.23339](https://arxiv.org/abs/2610.23339) The Dancing Bonfire: An Unusual Persistent X-ray Source in M81 Exhibiting Recurrent Luminous Flares**（*The Dancing Bonfire: An Unusual Persistent X-ray Source in M81 Exhibiting Recurrent Luminous Flares*）
   - **Key Insight**：M81F4 持久光度达 $10^{38\text{--}39}\,{\rm erg\,s^{-1}}$ 且每隔约 $0.5\,{\rm d}$ 爆发一次释放 $10^{41}\,{\rm erg}$ 的百秒耀斑，磁层截断半径解析表明其为 $B\sim 10^{12\text{--}13}\,{\rm G}$ 的中子星。
   - **直达链接**：[arXiv 摘要](https://arxiv.org/abs/2610.23339) ｜ [PDF 原文](https://arxiv.org/pdf/2610.23339) ｜ [SciX (ADS)](https://scixplorer.org/abs/arXiv:2610.23339?forceMode=astrophysics) ｜ [站内精读](https://astro-lineage.pages.dev/arxiv-weekly/2026-W43/#paper-2610.23339)
   - **核心图表 (Fig. 1)**：![Fig. 1](https://astro-lineage.pages.dev/arxiv-figures/2610.23339/rgb.png) 展示暂现源多波段辐射光度与流量随时间演化行为。
-- **18. [📌 关注] [arXiv:2610.23359](https://arxiv.org/abs/2610.23359) A blazar is a blazar is a blazar ... Comparing long-term varaibility properties of PKS 1510-089 and PKS 2155-304**（_A blazar is a blazar is a blazar ... Comparing long-term varaibility properties of PKS 1510-089 and PKS 2155-304_）
+- **18. [📌 关注] [arXiv:2610.23359](https://arxiv.org/abs/2610.23359) A blazar is a blazar is a blazar ... Comparing long-term varaibility properties of PKS 1510-089 and PKS 2155-304**（*A blazar is a blazar is a blazar ... Comparing long-term varaibility properties of PKS 1510-089 and PKS 2155-304*）
   - **Key Insight**：两类源多波段互相关在 $>3\sigma$ 上均无显著延迟，且高能端通量动态范围显著拓宽，PKS 1510-089 呈现盘与喷流双对数正态结构，要求分层喷流模型。
   - **直达链接**：[arXiv 摘要](https://arxiv.org/abs/2610.23359) ｜ [PDF 原文](https://arxiv.org/pdf/2610.23359) ｜ [SciX (ADS)](https://scixplorer.org/abs/arXiv:2610.23359?forceMode=astrophysics) ｜ [站内精读](https://astro-lineage.pages.dev/arxiv-weekly/2026-W43/#paper-2610.23359)
   - **核心图表 (Fig. 2)**：![Fig. 2](https://astro-lineage.pages.dev/arxiv-figures/2610.23359/GAMMA_1510_DCCF_gB_260825.png) 展示天体物理观测数据与多波段暂现源探测特征。
 
 ## 1. 本周综述与宏观脉络
-
 本周高能天体物理与瞬变爆发研究在“前身星演化与坍缩 -> 中心引擎磁流体与辐射动力学 -> 抛射物相互作用与多波段观测印证”这一因果链条上取得了多项定量化突破：
-
 - **磁星磁层耗散与FRB起源**：arXiv:2610.22653v1 论证了扭缠磁通管在非均匀电阻下的相对论磁重联机制，阐明占截面仅 $0.1\%\sim 3\%$ 的电荷匮乏区贡献了 $20\%\sim 55\%$ 的欧姆耗散并能驱动巨耀斑重子抛射；arXiv:2610.27311v1 基于重复 FRB 的色散量年变率导出了中央致密天体的最小空间运动速度下限达 $20\text{--}2800\,{\rm km\,s^{-1}}$，强力支持年轻高速磁星图景；arXiv:2610.27489v1 利用 FRB 20240114A 伴随持续射电源的月度光变，首次拟合得到注入电子洛伦兹因子 $\gamma_{\rm b}\sim 2\times 10^2$ 与射电辐射效率 $\eta_{\rm r}\sim 10^{-5}\text{--}10^{-4}$，约束了磁星风云与超活跃相的物理边界。
 - **致密吸积与强引力场爆发**：arXiv:2610.24849v1 开展了 3D 辐射 MHD 模拟，揭示 TDE 恒星碎屑撞击预存 AGN 盘导致南极磁通量暴增 33 倍，激发出高达 $L_{\rm BZ}\sim 3\times 10^{42}\,{\rm erg\,s^{-1}}$ 的相对论喷流并形成显著的双极不对称性；arXiv:2610.28734v1 对爱因斯坦探针（EP）72 例快速 X 射线暂现源进行伽马射线对应体系统搜寻，限定 68% 的无伽马对应源初始洛伦兹因子 $\Gamma_0 \lesssim 100$，指示其偏离经典高能 GRB 轴向外流。
 - **超新星激波动力学与前身星极限**：arXiv:2610.29226v1 构建了非 LTE 正激波与 LTE 反激波的双激波辐射模型，成功解释了 EP260321a 呈现的软 X 射线暴发与早期光学发射时延；arXiv:2610.27312v1 通过极化与星云谱观测，将超亮超新星 SN 2023iop 归因于 $190\,M_\odot$ 的富氢对不稳定超新星（PISN）或深埋非球对称 CSM 相互作用。
 - **相对论双星系统与演化基准**：arXiv:2610.29838v1 利用 FAST 测时发现了目前已知偏心率最高（$e=0.992387$）的近侧向双中子星系统 PSR J0653+0443，通过近星点进动精准测定中子星质量并给出 Case BB 转移与核塌缩反冲的坚实演化约束。
-
 > 🎯 **筛选边界**：本周重点聚焦相对论磁流体破缺、极端超新星辐射转移、致密喷流激波以及极端相对论双星动力学，严格剔除缺乏高能物理因果机制的常规星系与低能段巡天编目。所有物理参数均以标准 LaTeX 公式呈现。
 
 ## 2. ⭐ 核心必读文献深度解析 (Must-Read In-Depth Deep Dives · 按专题分组)
-
 本节精选最具物理突破、观测约束或模型创新的论文，按研究专题顺序展开完整精读细节。
 
-### 🧭 专题 01：综合前沿课题 (General Highlights)
+### 🧭 专题 01：磁星多尺度物理：从微观耗散到宏观射电环境
+> 本周磁星与 FRB 研究呈现从微观动力学向外流环境深化的闭环趋势。理论模拟方面，arXiv:2610.22653v1 运用超高分辨率阻抗 RMHD 代码 BHAC，发现扭缠磁通管在非均匀电阻作用下可产生高达 $\beta_{\rm rec}\sim 0.1$ 的入流速度，且局域电荷匮乏区承担了过半欧姆耗散，成功解释了磁星巨耀斑中的重子抛射机制。观测反演方面，arXiv:2610.27311v1 通过对重复暴 $d{\rm DM}/dt$ 的湍流与径向分析，将源空间运动速度约束在 $20\text{--}2800\,{\rm km\,s^{-1}}$，直接印证了超新星反冲的中子星起源；而 arXiv:2610.27489v1 针对 FRB 20240114A 持续射电源多波段光变的模拟，明确了低洛伦兹因子（$\gamma_{\rm b}\sim 2\times 10^2$）注入和极低射电效率（$\eta_{\rm r}\sim 10^{-5}\text{--}10^{-4}$），为磁星驱动的 FRB 抛射物理设定了严格边界。
 
 #### [arXiv:2610.22653](https://arxiv.org/abs/2610.22653) Sparking Dynamic, Relativistic Magnetic Reconnection in a Twisted Flux Tube
-
 - **英文原题**：Sparking Dynamic, Relativistic Magnetic Reconnection in a Twisted Flux Tube
 - **作者**：Michael P. Grehan, Christopher Thompson, Bart Ripperda, James R. Beattie
 - **文献链接**：[arXiv 原文](https://arxiv.org/abs/2610.22653) ｜ [SciX (ADS)](https://scixplorer.org/abs/arXiv:2610.22653?forceMode=astrophysics) ｜ [在线精读](https://astro-lineage.pages.dev/arxiv-weekly/2026-W43/#paper-2610.22653)
@@ -116,10 +110,10 @@
 ##### 核心学术图表
 
 ![Fig. 4 (核心物理演化图)](https://astro-lineage.pages.dev/arxiv-figures/2610.22653/multi_sim_jz_panel_compressed.png)
-_Fig. 4 (核心物理演化图)：Figure 4: Time evolution of j z = ( c / 4 ​ π ) ​ ( ∇ × 𝑩 ) z j\_{z}=(c/4\pi)(\bm{\nabla}\times\bm{B})*{z} , in simulations Rev2D , Rev2DNonUni , and Rev2DNonUniRot , as normalized by the root-mean-square (r.m.s.) value in the plotted domain | x | , | y | ≤ 6 ​ R / 5 |x|,|y|\leq 6R/5 . In all three simulations, rapid internal reconnection between domains of opposing B ϕ B*{\phi} develops at a current sheet in the lower left. This sheet is unstable to forming plasmoids. Ejecta from the current sheet become turbulent, filling the outer tube with an alternating sequence of weaker current sheets as the inner twist is dissipated. The main current sheet is thicker in simulation Rev2DNonUni and ejects large-amplitude plasmoids at intervals. In the rotating simulation Rev2DNonUniRot , the reconnection process is supplemented by the shear-driven formation of vortices._
+*Fig. 4 (核心物理演化图)：Figure 4: Time evolution of j z = ( c / 4 ​ π ) ​ ( ∇ × 𝑩 ) z j_{z}=(c/4\pi)(\bm{\nabla}\times\bm{B})_{z} , in simulations Rev2D , Rev2DNonUni , and Rev2DNonUniRot , as normalized by the root-mean-square (r.m.s.) value in the plotted domain | x | , | y | ≤ 6 ​ R / 5 |x|,|y|\leq 6R/5 . In all three simulations, rapid internal reconnection between domains of opposing B ϕ B_{\phi} develops at a current sheet in the lower left. This sheet is unstable to forming plasmoids. Ejecta from the current sheet become turbulent, filling the outer tube with an alternating sequence of weaker current sheets as the inner twist is dissipated. The main current sheet is thicker in simulation Rev2DNonUni and ejects large-amplitude plasmoids at intervals. In the rotating simulation Rev2DNonUniRot , the reconnection process is supplemented by the shear-driven formation of vortices.*
 
 ![Fig. 20 (核心物理演化图)](https://astro-lineage.pages.dev/arxiv-figures/2610.22653/jz_00080.png)
-_Fig. 20 (核心物理演化图)：Figure 20: Two snapshots of j z = ( c / 4 ​ π ) ​ ( ∇ × 𝑩 ) z j\_{z}=(c/4\pi)(\bm{\nabla}\times\bm{B})\_{z} , in 3D simulation Rev3D , normalized by the r.m.s. value in the computational domain. The first column shows cuts in the x ​ y xy -plane at the indicated value of z z . The second and third column are cuts through x = 0 x=0 and y = 0 y=0 . The fourth column is a 3D rendering with opacity scaling with the magnitude of the current. Magnetic field lines are drawn in white. The strong guide field suppresses the growth of structure in the z z -direction and the dynamics are dominated by reconnection in the x ​ y xy -plane._
+*Fig. 20 (核心物理演化图)：Figure 20: Two snapshots of j z = ( c / 4 ​ π ) ​ ( ∇ × 𝑩 ) z j_{z}=(c/4\pi)(\bm{\nabla}\times\bm{B})_{z} , in 3D simulation Rev3D , normalized by the r.m.s. value in the computational domain. The first column shows cuts in the x ​ y xy -plane at the indicated value of z z . The second and third column are cuts through x = 0 x=0 and y = 0 y=0 . The fourth column is a 3D rendering with opacity scaling with the magnitude of the current. Magnetic field lines are drawn in white. The strong guide field suppresses the growth of structure in the z z -direction and the dynamics are dominated by reconnection in the x ​ y xy -plane.*
 
 ##### 关键结论与定量测量
 
@@ -136,50 +130,7 @@ _Fig. 20 (核心物理演化图)：Figure 20: Two snapshots of j z = ( c / 4 ​
 
 ---
 
-#### [arXiv:2610.24849](https://arxiv.org/abs/2610.24849) Tidal Disruption Events in Active Galactic Nuclei: Thermal Radiation and Jets
-
-- **英文原题**：Tidal Disruption Events in Active Galactic Nuclei: Thermal Radiation and Jets
-- **作者**：Nimrod Tripto, Tsvi Piran, Julian Krolik
-- **文献链接**：[arXiv 原文](https://arxiv.org/abs/2610.24849) ｜ [SciX (ADS)](https://scixplorer.org/abs/arXiv:2610.24849?forceMode=astrophysics) ｜ [在线精读](https://astro-lineage.pages.dev/arxiv-weekly/2026-W43/#paper-2610.24849)
-- **推荐理由**：首次利用全 3D 辐射 MHD 模拟定量展示了 TDE 碎屑撞击 AGN 预存吸积盘触发强单极喷流与双极不对称性的全过程。
-- **核心突破**：碎屑撞击使盘环向磁场向内平流致使南极磁通量激增 33 倍，激发 $L_{\rm BZ}\simeq 3\times 10^{42}\,{\rm erg\,s^{-1}}$ 喷流，形成“南喷流、北热辐射”的百倍不对称态。
-
-##### 科学问题
-
-在预先存在磁化吸积盘的活动星系核（AGN）中，潮汐瓦解事件（TDE）产生的恒星碎屑流如何与吸积盘发生流体力学碰撞、如何影响内盘吸积与辐射效率，以及碰撞如何改变黑洞极区磁通量并驱动相对论喷流。
-
-##### 观测与研究方法
-
-使用 Athena++ 辐射磁流体动力学代码，在 Paczyński–Wiita 伪牛顿势 $\Phi_{\rm PW} = -\frac{GM_{\rm BH}}{r-2r_{\rm g}}$ 下进行三维网格模拟；设定黑洞质量 $M_{\rm BH}=5\times 10^6\,M_\odot$；采用辐射-MHD 平衡吸积盘作为初态，以倾角 $i \simeq 86^\circ$、近抛物线轨道注入恒定质量流率 $\dot{M}_{\rm s}=8.3\times 10^{25}\,\mathrm{g\,s^{-1}}=12\,\dot{M}_{\rm Edd}$ 的碎屑流（流盘质量流率比 $\dot{M}_{\rm s}/\dot{M}_{\rm d}\sim 400$），碎屑流自身不注入磁场和辐射能。
-
-##### 物理模型与关键假设
-
-- 碎屑流注入采用等温状态方程 $P=\rho c_{\rm s}^2$，注入物质不含固有磁场与辐射能
-
-##### 核心学术图表
-
-![Fig. 1 (物理模型示意图)](https://astro-lineage.pages.dev/arxiv-figures/2610.24849/sim_setup_schematic_for_paper.png)
-_Fig. 1 (物理模型示意图)：Figure 1: A schematic picture of the simulated scenario. The pre-existing AGN disk is described following Jiang et al. [22] as a 40 ​ r g 40r\_{\rm g} disk supported by radiation and magnetic pressure. This disk is fed by a large mass reservoir, a supply torus centered at 80 ​ r g 80r\_{\rm g} with an inner edge of 40 ​ r g 40r\_{\rm g} . The disk luminosity is 0.08 L Edd L\_{\rm Edd} . A TDE debris stream (blue arrows: injection direction) is injected along a nearly parabolic trajectory into this disk and impacts it at r imp = 15 ​ r g r\_{\rm imp}=15\,r\_{\rm g} and ϕ = 1.52 \phi=1.52 . Because M ˙ s / M ˙ d ∼ 400 \dot{M}*{\rm s}/\dot{M}*{\rm d}\sim 400 (Sec. II.2.3 ), the stream punctures the thin disk. A small fraction of its mass is left behind in the disk. Disk matter is pushed downward, first tilting the disk and then spreading it vertically (Fig. 2 )._
-
-![Fig. 12 (物理模型示意图)](https://astro-lineage.pages.dev/arxiv-figures/2610.24849/temp_rad_cgs_20500_15_sFr_Liso_gray.png)
-_Fig. 12 (物理模型示意图)：Figure 12: Radiation and magnetic fields on two meridional slices at t = 15.35 ​ t orb t=15.35\,t\_{\rm orb} . (Top) Radiation temperature T rad = ( E rad / a ) 1 / 4 T\_{\rm rad}=(E\_{\rm rad}/a)^{1/4} (background) and radiation flux streamlines, colored by the isotropic-equivalent luminosity L iso = 4 ​ π ​ r 2 ​ ( 𝐅 rad ⋅ r ^ ) L\_{\rm iso}=4\pi r^{2}(\mathbf{F}*{\rm rad}\cdot\hat{r}) , ranging from ≃ 10 44 \simeq 10^{44} to ≃ 10 46 ​ erg ​ s − 1 \simeq 10^{46}\,\mathrm{erg\,s^{-1}} , at t = 15.35 ​ t orb t=15.35\,t*{\rm orb} . Inward-going streamlines are colored gray, since L iso L\_{\rm iso} is negative for them. Near the midplane τ ≫ 1 \tau\gg 1 , so 𝐅 rad \mathbf{F}*{\rm rad} is parallel to the flow. In the northern hemisphere, the photosphere is at a few r g r*{\rm g} above the disk. Above it, the flux turns outward and escapes. However, the photosphere in the southern hemisphere lies beyond the range of this plot; hence, some of the flux is directed inwards, and even the flux lines directed outwards are trapped. (Bottom) Density (background) with magnetic-field streamlines. Away from the midplane, the field structure near the inner boundary is nearly monopolar, with field lines pointing toward the black hole. This coherent structure could create strong jets. Flux in the southern hemisphere is × \times few larger than in the northern one, so jets, if produced, would be × \times 10 stronger in the south._
-
-##### 关键结论与定量测量
-
-碎屑流撞击使吸积率从 $\dot{M} \approx 0.07\,\dot{M}_{\rm Edd}$ 跃升至 $\sim 10\text{--}13\,\dot{M}_{\rm Edd}$，辐射热光度因光子俘获（trapping radius $r_{\rm tr}\approx 240(H/r)\,r_{\rm g}$）维持在 $L \sim L_{\rm Edd}$，辐射效率降至 $\eta = L/(\dot{M}c^2) \simeq 0.01$。北半球各向同性等效热光度达 $L_{\rm iso} \simeq 5\,L_{\rm Edd}$ 且谱峰位于极紫外（$10\text{--}100\,\mathrm{eV}$）。撞击将盘环向磁场重组并向内平流，使南极磁通量增加约 33 倍至 $\Phi \simeq 2\times 10^{29}\,\mathrm{G\,cm^2}$，对应 Blandford–Znajek 喷流功率 $L_{\rm BZ}=c\xi_{\rm BZ}\Phi^{2}/(2\pi^{2}r_{\rm g}^{2}) \simeq 3\times 10^{42}\,\mathrm{erg\,s^{-1}}$，南北极 Poynting 通量不对称性达 $10\text{--}100$ 倍，呈现“南喷流、北热辐射”的强双极不对称性。
-
-##### 局限性与观测边界
-
-- 网格低密度区设置了密度、压强和温度截断下限（floors）
-
-##### 建议精读切入点
-
-重点关注磁通量平流重构机制的图示演化以及光子俘获半径对北极辐射热能谱的平滑效应。
-
----
-
 #### [arXiv:2610.27311](https://arxiv.org/abs/2610.27311) Source velocities of fast radio bursts constrained by their dispersion measure variations
-
 - **英文原题**：Source velocities of fast radio bursts constrained by their dispersion measure variations
 - **作者**：S. K. Ocker, A. L. Piro
 - **文献链接**：[arXiv 原文](https://arxiv.org/abs/2610.27311) ｜ [SciX (ADS)](https://scixplorer.org/abs/arXiv:2610.27311?forceMode=astrophysics) ｜ [在线精读](https://astro-lineage.pages.dev/arxiv-weekly/2026-W43/#paper-2610.27311)
@@ -212,48 +163,7 @@ _Fig. 12 (物理模型示意图)：Figure 12: Radiation and magnetic fields on t
 
 ---
 
-#### [arXiv:2610.27312](https://arxiv.org/abs/2610.27312) SN 2023iop: An Extreme 1987A-like Supernova and the Death of Very Massive Stars
-
-- **英文原题**：SN 2023iop: An Extreme 1987A-like Supernova and the Death of Very Massive Stars
-- **作者**：Steve Schulze, Avinash Singh, Nikhil Sarin, Ofer Yaron, Jesper Sollerman 等
-- **文献链接**：[arXiv 原文](https://arxiv.org/abs/2610.27312) ｜ [SciX (ADS)](https://scixplorer.org/abs/arXiv:2610.27312?forceMode=astrophysics) ｜ [在线精读](https://astro-lineage.pages.dev/arxiv-weekly/2026-W43/#paper-2610.27312)
-- **推荐理由**：提供了迄今罕见的兼具超高光度、极长上升期与高偏振度的超亮超新星全面观测，直指 $190\,M_\odot$ 前身星塌缩归宿。
-- **核心突破**：测得该源辐射总能量达 $(4.3\pm 0.3)\times 10^{50}\,{\rm erg}$、连续谱偏振度达 $0.81\pm 0.08\%$，联合禁线诊断将其约束为富氢 PISN 或强非对称 CSM 相互作用。
-
-##### 科学问题
-
-SN 2023iop 具有长达 $\gtrsim 88$ 天的缓慢上升以及高达 $M_r \approx -20.14~\mathrm{mag}$ 的绝对星等，进入富氢超亮超新星（H-rich SLSN）能区。传统中微子驱动核塌缩模型能产生的动能（$\lesssim 2\times 10^{51}~\mathrm{erg}$）和 $^{56}\mathrm{Ni}$ 质量极限（$\lesssim 0.3~M_\odot$）完全无法解释其高达 $4.3\times 10^{50}~\mathrm{erg}$ 的辐射能量与峰值光度；而在光谱未见经典窄发射线与近紫外过剩的条件下，如何协调极高镍产额、超大抛射物质量、长时间维持的光球相与晚期极其平缓的衰减，构成了核心物理疑难。
-
-##### 观测与研究方法
-
-利用全天巡天（ZTF、ATLAS）及多台地面望远镜（VLT、Keck、LBT、LT、NOT、MMT 等）获取覆盖爆发前 $-51.4$ 天至 $+623.8$ 天的多波段测光、高低分辨率光谱及分光偏振（VLT/FORS2）数据。测光采用 AutoPhOT、SFFT 和 HOTPANTS 减算与动态分箱；光谱使用 PypeIt 等流程并严格与多波段测光进行绝对通量定标；结合黑体辐射演化、解析扩散时标标度律（$t_{\rm d} \approx [2\kappa M_{\rm ej}/(\beta c v)]^{1/2}$）、星云相禁线（$[\mathrm{O\;I}]$、$[\mathrm{Ni\;II}]$）光学薄/厚跃迁解析模型、PISN 网格数值模型（如 R190NL）、回落吸积供能模型（$\dot{E}_{\rm acc} = \eta \dot{M} c^2, \dot{M} \propto t^{-5/3}$）及非球对称 CSM 相互作用进行联合动力学与辐射拟合。
-
-##### 物理模型与关键假设
-
-- 在通过光变衰变尾估计镍质量上限时，假设爆炸后晚期星云相能量完全由放射性 $^{56}\mathrm{Co} \to {}^{56}\mathrm{Fe}$ 衰变释放的 $\gamma$ 射线完全热化俘获驱动。
-- 假设无偏振波段（5800–6200 Å 及 7400–7800 Å）测得的偏振主要反映超新星连续谱本征不对称性，而非宿主星系星际偏振（ISP）。
-
-##### 核心学术图表
-
-![Fig. 10 (核心观测结果)](https://astro-lineage.pages.dev/arxiv-figures/2610.27312/SN2023iop_specpol_radar.png)
-_Fig. 10 (核心观测结果)：Figure 10: SN 2023iop in the Stokes Q − U Q-U plane on day +37.3 (binning 50 Å). The points are color-coded by wavelength. Concentric circles show polarization degrees ranging from 0.5 to 2.5%. The photosphere shows a clear departure from spherical symmetry, but the absence of a dominant axis does not indicate an axially symmetric geometry._
-
-##### 关键结论与定量测量
-
-测得该源峰值测辐射热光度为 $L_{\rm bol} = (4.0 \pm 1.0) \times 10^{43}~\mathrm{erg\,s^{-1}}$，全波段积分总辐射能量达 $E_{\rm rad} = (4.3 \pm 0.3) \times 10^{50}~\mathrm{erg}$。由有效光球上升时标 $t_{\rm rise} \gtrsim 88$ 天导出抛射物质量下限 $M_{\rm ej} > 12~M_\odot$；峰值光度需要产生放射性镍质量 $M_{\rm ^{56}Ni} \approx 2.2~M_\odot$。在静止系波长 $5800\text{--}6200~\text{Å}$ 与 $7400\text{--}7800~\text{Å}$ 测得反方差加权平均连续谱线偏振度为 $P = 0.81 \pm 0.08\%$，揭示显著的非球对称几何。晚期 $+326$ 天测得 $[\mathrm{O\;I}]\,\lambda\lambda6300,6364$ 双线通量比 $F_{6300}/F_{6364} \approx 2.3$，处于光学薄与光学厚过渡态。多波段限制给出自由-自由吸收光深遵从标度律 $\tau_{\rm ff} \propto \nu^{-2.1}\,t^{-5}$，深埋中心引擎与 CSM 早期信号受阻碍。联合辐射模型指示其前身星符合 $190~M_\odot$ 的富氢 PISN 模型，晚期平台期辐射由隐蔽或非球对称 CSM 相互作用主导。
-
-##### 局限性与观测边界
-
-- 早期 Swift XRT（$L_{\rm X} < 4\times 10^{42}~\mathrm{erg\,s^{-1}}$）与 AMI-LA 射电（$L_\nu < 4.4\times 10^{28}~\mathrm{erg\,s^{-1}\,Hz^{-1}}$）上限由于致密抛射物内部巨大的束缚-自由和自由-自由吸收光深（$\tau_{\rm ff} \propto \nu^{-2.1} t^{-5}$），无法严格排除致密中心引擎或紧邻星周相互作用。
-
-##### 建议精读切入点
-
-聚焦星云相禁线 $[\mathrm{O\;I}]$ 光学薄/厚跃迁解析拟合与 PISN R190NL 模型的动力学对照分析。
-
----
-
 #### [arXiv:2610.27489](https://arxiv.org/abs/2610.27489) Constraining the FRB Central Engine from Flux Variations of Persistent Radio Sources: FRB 20240114A as the First Attempt
-
 - **英文原题**：Constraining the FRB Central Engine from Flux Variations of Persistent Radio Sources: FRB 20240114A as the First Attempt
 - **作者**：Hirotaka Matsumiya, Kazumi Kashiyama, Tomonori Totani
 - **文献链接**：[arXiv 原文](https://arxiv.org/abs/2610.27489) ｜ [SciX (ADS)](https://scixplorer.org/abs/arXiv:2610.27489?forceMode=astrophysics) ｜ [在线精读](https://astro-lineage.pages.dev/arxiv-weekly/2026-W43/#paper-2610.27489)
@@ -270,13 +180,14 @@ FRB 20240114A 伴随的持续射电源（PRS）在数月时标上呈现出显著
 
 ##### 物理模型与关键假设
 
+
 ##### 核心学术图表
 
 ![Fig. 5 (数据拟合与模型对比)](https://astro-lineage.pages.dev/arxiv-figures/2610.27489/prs_lightcurve_ccsn.png)
-_Fig. 5 (数据拟合与模型对比)：Figure 5: The model-predicted PRS light curves using the representative parameters ( γ b = 2 × 10 2 \gamma\_{\rm b}=2\times 10^{2} , B int = 1.3 × 10 16 ​ G B\_{\rm int}=1.3\times 10^{16}\,{\rm G} , t age = 15.9 ​ yr t\_{\rm age}=15.9\,{\rm yr} , f FRBt = 3 × 10 4 f\_{\rm FRBt}=3\times 10^{4} ) for the CCSN model, together with the observational data. The dashed curves and the two vertical green dashed lines are the same as those shown in Figure 4 . Left panel : The PRS light curves at 650 MHz, 1.5 GHz, 3 GHz, and 5.5 GHz for the CCSN model. The gray shaded region indicates the epochs where τ ff , 1 ​ GHz &gt; 1 \tau\_{\rm ff,1\,GHz}&gt;1 , during which radio waves are unable to escape from the supernova ejecta. Right panel : A zoom-in of the epoch of the observed data._
+*Fig. 5 (数据拟合与模型对比)：Figure 5: The model-predicted PRS light curves using the representative parameters ( γ b = 2 × 10 2 \gamma_{\rm b}=2\times 10^{2} , B int = 1.3 × 10 16 ​ G B_{\rm int}=1.3\times 10^{16}\,{\rm G} , t age = 15.9 ​ yr t_{\rm age}=15.9\,{\rm yr} , f FRBt = 3 × 10 4 f_{\rm FRBt}=3\times 10^{4} ) for the CCSN model, together with the observational data. The dashed curves and the two vertical green dashed lines are the same as those shown in Figure 4 . Left panel : The PRS light curves at 650 MHz, 1.5 GHz, 3 GHz, and 5.5 GHz for the CCSN model. The gray shaded region indicates the epochs where τ ff , 1 ​ GHz &gt; 1 \tau_{\rm ff,1\,GHz}&gt;1 , during which radio waves are unable to escape from the supernova ejecta. Right panel : A zoom-in of the epoch of the observed data.*
 
 ![Fig. 6 (数据拟合与模型对比)](https://astro-lineage.pages.dev/arxiv-figures/2610.27489/prs_spectrum_ccsn.png)
-_Fig. 6 (数据拟合与模型对比)：Figure 6: The model-predicted synchrotron SED of the PRS for the CCSN model, together with the observational data (shown by the orange points), using the same set of parameters as in Figure 5 . The SED is at the epoch of the observed data (late July 2024), with the corresponding age t ∼ 16.4 ​ yr t\sim 16.4\,{\rm yr} derived based on t age t\_{\rm age} ._
+*Fig. 6 (数据拟合与模型对比)：Figure 6: The model-predicted synchrotron SED of the PRS for the CCSN model, together with the observational data (shown by the orange points), using the same set of parameters as in Figure 5 . The SED is at the epoch of the observed data (late July 2024), with the corresponding age t ∼ 16.4 ​ yr t\sim 16.4\,{\rm yr} derived based on t age t_{\rm age} .*
 
 ##### 关键结论与定量测量
 
@@ -284,14 +195,58 @@ _Fig. 6 (数据拟合与模型对比)：Figure 6: The model-predicted synchrotro
 
 ##### 局限性与观测边界
 
+
 ##### 建议精读切入点
 
 重点推敲电子连续性输运方程与同步自吸收（SSA）截断频率在确定系统年龄时的联合拟合方法。
 
 ---
 
-#### [arXiv:2610.28734](https://arxiv.org/abs/2610.28734) The (missing) gamma-ray counterparts to EP events
+### 🧭 专题 02：吸积破缺与高能瞬变外流新范式
+> 强引力场下的非稳态吸积与激波破越展现出高度非对称与多能段分异特征。arXiv:2610.24849v1 开展的高倾角 TDE 碎屑撞击吸积盘模拟揭示了显著的双极不对称性：磁通量在单极急剧聚集引发强 BZ 喷流，另一侧则由极紫外热辐射主导，为 AGN 盘内爆发的多波段判据提供了全新框架。与此同时，arXiv:2610.28734v1 对 72 例 EP 暂现源 Fermi/GBM 数据的系统分析表明大部分 FXT 缺乏伽马对应体，体洛伦兹因子 $\Gamma_0\lesssim 100$ 的限制否定了传统在轴高能 GRB 假说，倾向于低光度外流或激波破越；arXiv:2610.29226v1 则通过解析与 MC 模拟论证了 EP260321a 的双激波辐射机制，确证反激波在密星风破越中决定了软 X 射线热能谱的释放过程。
 
+#### [arXiv:2610.24849](https://arxiv.org/abs/2610.24849) Tidal Disruption Events in Active Galactic Nuclei: Thermal Radiation and Jets
+- **英文原题**：Tidal Disruption Events in Active Galactic Nuclei: Thermal Radiation and Jets
+- **作者**：Nimrod Tripto, Tsvi Piran, Julian Krolik
+- **文献链接**：[arXiv 原文](https://arxiv.org/abs/2610.24849) ｜ [SciX (ADS)](https://scixplorer.org/abs/arXiv:2610.24849?forceMode=astrophysics) ｜ [在线精读](https://astro-lineage.pages.dev/arxiv-weekly/2026-W43/#paper-2610.24849)
+- **推荐理由**：首次利用全 3D 辐射 MHD 模拟定量展示了 TDE 碎屑撞击 AGN 预存吸积盘触发强单极喷流与双极不对称性的全过程。
+- **核心突破**：碎屑撞击使盘环向磁场向内平流致使南极磁通量激增 33 倍，激发 $L_{\rm BZ}\simeq 3\times 10^{42}\,{\rm erg\,s^{-1}}$ 喷流，形成“南喷流、北热辐射”的百倍不对称态。
+
+##### 科学问题
+
+在预先存在磁化吸积盘的活动星系核（AGN）中，潮汐瓦解事件（TDE）产生的恒星碎屑流如何与吸积盘发生流体力学碰撞、如何影响内盘吸积与辐射效率，以及碰撞如何改变黑洞极区磁通量并驱动相对论喷流。
+
+##### 观测与研究方法
+
+使用 Athena++ 辐射磁流体动力学代码，在 Paczyński–Wiita 伪牛顿势 $\Phi_{\rm PW} = -\frac{GM_{\rm BH}}{r-2r_{\rm g}}$ 下进行三维网格模拟；设定黑洞质量 $M_{\rm BH}=5\times 10^6\,M_\odot$；采用辐射-MHD 平衡吸积盘作为初态，以倾角 $i \simeq 86^\circ$、近抛物线轨道注入恒定质量流率 $\dot{M}_{\rm s}=8.3\times 10^{25}\,\mathrm{g\,s^{-1}}=12\,\dot{M}_{\rm Edd}$ 的碎屑流（流盘质量流率比 $\dot{M}_{\rm s}/\dot{M}_{\rm d}\sim 400$），碎屑流自身不注入磁场和辐射能。
+
+##### 物理模型与关键假设
+
+- 碎屑流注入采用等温状态方程 $P=\rho c_{\rm s}^2$，注入物质不含固有磁场与辐射能
+
+##### 核心学术图表
+
+![Fig. 1 (物理模型示意图)](https://astro-lineage.pages.dev/arxiv-figures/2610.24849/sim_setup_schematic_for_paper.png)
+*Fig. 1 (物理模型示意图)：Figure 1: A schematic picture of the simulated scenario. The pre-existing AGN disk is described following Jiang et al. [22] as a 40 ​ r g 40r_{\rm g} disk supported by radiation and magnetic pressure. This disk is fed by a large mass reservoir, a supply torus centered at 80 ​ r g 80r_{\rm g} with an inner edge of 40 ​ r g 40r_{\rm g} . The disk luminosity is 0.08 L Edd L_{\rm Edd} . A TDE debris stream (blue arrows: injection direction) is injected along a nearly parabolic trajectory into this disk and impacts it at r imp = 15 ​ r g r_{\rm imp}=15\,r_{\rm g} and ϕ = 1.52 \phi=1.52 . Because M ˙ s / M ˙ d ∼ 400 \dot{M}_{\rm s}/\dot{M}_{\rm d}\sim 400 (Sec. II.2.3 ), the stream punctures the thin disk. A small fraction of its mass is left behind in the disk. Disk matter is pushed downward, first tilting the disk and then spreading it vertically (Fig. 2 ).*
+
+![Fig. 12 (物理模型示意图)](https://astro-lineage.pages.dev/arxiv-figures/2610.24849/temp_rad_cgs_20500_15_sFr_Liso_gray.png)
+*Fig. 12 (物理模型示意图)：Figure 12: Radiation and magnetic fields on two meridional slices at t = 15.35 ​ t orb t=15.35\,t_{\rm orb} . (Top) Radiation temperature T rad = ( E rad / a ) 1 / 4 T_{\rm rad}=(E_{\rm rad}/a)^{1/4} (background) and radiation flux streamlines, colored by the isotropic-equivalent luminosity L iso = 4 ​ π ​ r 2 ​ ( 𝐅 rad ⋅ r ^ ) L_{\rm iso}=4\pi r^{2}(\mathbf{F}_{\rm rad}\cdot\hat{r}) , ranging from ≃ 10 44 \simeq 10^{44} to ≃ 10 46 ​ erg ​ s − 1 \simeq 10^{46}\,\mathrm{erg\,s^{-1}} , at t = 15.35 ​ t orb t=15.35\,t_{\rm orb} . Inward-going streamlines are colored gray, since L iso L_{\rm iso} is negative for them. Near the midplane τ ≫ 1 \tau\gg 1 , so 𝐅 rad \mathbf{F}_{\rm rad} is parallel to the flow. In the northern hemisphere, the photosphere is at a few r g r_{\rm g} above the disk. Above it, the flux turns outward and escapes. However, the photosphere in the southern hemisphere lies beyond the range of this plot; hence, some of the flux is directed inwards, and even the flux lines directed outwards are trapped. (Bottom) Density (background) with magnetic-field streamlines. Away from the midplane, the field structure near the inner boundary is nearly monopolar, with field lines pointing toward the black hole. This coherent structure could create strong jets. Flux in the southern hemisphere is × \times few larger than in the northern one, so jets, if produced, would be × \times 10 stronger in the south.*
+
+##### 关键结论与定量测量
+
+碎屑流撞击使吸积率从 $\dot{M} \approx 0.07\,\dot{M}_{\rm Edd}$ 跃升至 $\sim 10\text{--}13\,\dot{M}_{\rm Edd}$，辐射热光度因光子俘获（trapping radius $r_{\rm tr}\approx 240(H/r)\,r_{\rm g}$）维持在 $L \sim L_{\rm Edd}$，辐射效率降至 $\eta = L/(\dot{M}c^2) \simeq 0.01$。北半球各向同性等效热光度达 $L_{\rm iso} \simeq 5\,L_{\rm Edd}$ 且谱峰位于极紫外（$10\text{--}100\,\mathrm{eV}$）。撞击将盘环向磁场重组并向内平流，使南极磁通量增加约 33 倍至 $\Phi \simeq 2\times 10^{29}\,\mathrm{G\,cm^2}$，对应 Blandford–Znajek 喷流功率 $L_{\rm BZ}=c\xi_{\rm BZ}\Phi^{2}/(2\pi^{2}r_{\rm g}^{2}) \simeq 3\times 10^{42}\,\mathrm{erg\,s^{-1}}$，南北极 Poynting 通量不对称性达 $10\text{--}100$ 倍，呈现“南喷流、北热辐射”的强双极不对称性。
+
+##### 局限性与观测边界
+
+- 网格低密度区设置了密度、压强和温度截断下限（floors）
+
+##### 建议精读切入点
+
+重点关注磁通量平流重构机制的图示演化以及光子俘获半径对北极辐射热能谱的平滑效应。
+
+---
+
+#### [arXiv:2610.28734](https://arxiv.org/abs/2610.28734) The (missing) gamma-ray counterparts to EP events
 - **英文原题**：The (missing) gamma-ray counterparts to EP events
 - **作者**：Maria Edvige Ravasio, Ansh Chopra, Peter G. Jonker, Qinyu Wu, Eric Burns 等
 - **文献链接**：[arXiv 原文](https://arxiv.org/abs/2610.28734) ｜ [SciX (ADS)](https://scixplorer.org/abs/arXiv:2610.28734?forceMode=astrophysics) ｜ [在线精读](https://astro-lineage.pages.dev/arxiv-weekly/2026-W43/#paper-2610.28734)
@@ -314,7 +269,7 @@ _Fig. 6 (数据拟合与模型对比)：Figure 6: The model-predicted synchrotro
 ##### 核心学术图表
 
 ![Fig. 12 (核心观测结果)](https://astro-lineage.pages.dev/arxiv-figures/2610.28734/ep_zdist_cumulative.png)
-_Fig. 12 (核心观测结果)：Figure 12 : Cumulative redshift distribution of the first-year EP sample, divided into events with an associated GRB (blue), events without a γ \gamma -ray counterpart despite gamma-ray coverage (green, ’no GRBs’), and events lacking any gamma-ray coverage (orange, ’No coverage’)._
+*Fig. 12 (核心观测结果)：Figure 12 : Cumulative redshift distribution of the first-year EP sample, divided into events with an associated GRB (blue), events without a γ \gamma -ray counterpart despite gamma-ray coverage (green, ’no GRBs’), and events lacking any gamma-ray coverage (orange, ’No coverage’).*
 
 ##### 关键结论与定量测量
 
@@ -331,7 +286,6 @@ _Fig. 12 (核心观测结果)：Figure 12 : Cumulative redshift distribution of 
 ---
 
 #### [arXiv:2610.29226](https://arxiv.org/abs/2610.29226) Double-Shock Radiation in Supernova Wind Breakout and EP260321a
-
 - **英文原题**：Double-Shock Radiation in Supernova Wind Breakout and EP260321a
 - **作者**：Zhuo Li, Rui-Ze Shi, Qiang Wang
 - **文献链接**：[arXiv 原文](https://arxiv.org/abs/2610.29226) ｜ [SciX (ADS)](https://scixplorer.org/abs/arXiv:2610.29226?forceMode=astrophysics) ｜ [在线精读](https://astro-lineage.pages.dev/arxiv-weekly/2026-W43/#paper-2610.29226)
@@ -348,13 +302,14 @@ _Fig. 12 (核心观测结果)：Figure 12 : Cumulative redshift distribution of 
 
 ##### 物理模型与关键假设
 
+
 ##### 核心学术图表
 
 ![Fig. 1 (物理模型示意图)](https://astro-lineage.pages.dev/arxiv-figures/2610.29226/picture.png)
-_Fig. 1 (物理模型示意图)：Figure 1: Schematic description of the geometry of the ejecta-wind interaction in a SN wind breakout and the outer extended medium, which is important for radiation transfer for EP260321a._
+*Fig. 1 (物理模型示意图)：Figure 1: Schematic description of the geometry of the ejecta-wind interaction in a SN wind breakout and the outer extended medium, which is important for radiation transfer for EP260321a.*
 
 ![Fig. 2 (数据拟合与模型对比)](https://astro-lineage.pages.dev/arxiv-figures/2610.29226/X-ray_lc.png)
-_Fig. 2 (数据拟合与模型对比)：Figure 2: The prompt X-ray (0.4-2 keV) light curve of EP260321a. The EP-WXT and EP-FXT data are taken from [ 32 ] . The curves are the model light curves from MC simulations: MC 1 (green), δ ​ r = 4 × 10 12 ​ cm \delta r=4\times 10^{12}\,\mathrm{cm} , τ m = 1.5 \tau\_{m}=1.5 ; MC 2 (blue), δ ​ r = 2 × 10 12 ​ cm \delta r=2\times 10^{12}\,\mathrm{cm} , τ m = 2 \tau\_{m}=2 ; MC 3 (red), δ ​ r = 1.5 × 10 12 ​ cm \delta r=1.5\times 10^{12}\,\mathrm{cm} , τ m = 3 \tau\_{m}=3 . See text for the other parameters in the MC simulation._
+*Fig. 2 (数据拟合与模型对比)：Figure 2: The prompt X-ray (0.4-2 keV) light curve of EP260321a. The EP-WXT and EP-FXT data are taken from [ 32 ] . The curves are the model light curves from MC simulations: MC 1 (green), δ ​ r = 4 × 10 12 ​ cm \delta r=4\times 10^{12}\,\mathrm{cm} , τ m = 1.5 \tau_{m}=1.5 ; MC 2 (blue), δ ​ r = 2 × 10 12 ​ cm \delta r=2\times 10^{12}\,\mathrm{cm} , τ m = 2 \tau_{m}=2 ; MC 3 (red), δ ​ r = 1.5 × 10 12 ​ cm \delta r=1.5\times 10^{12}\,\mathrm{cm} , τ m = 3 \tau_{m}=3 . See text for the other parameters in the MC simulation.*
 
 ##### 关键结论与定量测量
 
@@ -362,14 +317,56 @@ _Fig. 2 (数据拟合与模型对比)：Figure 2: The prompt X-ray (0.4-2 keV) l
 
 ##### 局限性与观测边界
 
+
 ##### 建议精读切入点
 
 重点理解正反激波内能比 $\mu = (\delta+2)^{-1}$ 的推导及有限球壳蒙特卡罗辐射转移时延的计算。
 
 ---
 
-#### [arXiv:2610.29838](https://arxiv.org/abs/2610.29838) PSR J0653+0443: An Eclipsing Millisecond Pulsar in an Extremely Eccentric Double Neutron Star System
+### 🧭 专题 03：极端双星系统与超大质量前身星坍缩演化
+> 在极端恒星与双星演化前沿，本周涌现出挑战现有模型框架的观测样本。arXiv:2610.29838v1 报道了 FAST 发现的偏心率世界纪录保持者 PSR J0653+0443（$e=0.992387$），其近星点相对速度达 $1.14\times 10^3\,{\rm km\,s^{-1}}$ 并伴随短时掩食，必须依赖 Case BB 物质转移以及次级星大反冲核塌缩（Fe CCSNe）才能形成，同时成为 mHz 频段独特的脉冲引力波源。在极大质量单星死亡方面，arXiv:2610.27312v1 对富氢超亮超新星 SN 2023iop 进行了长达 600 余天的多波段与分光偏振监测，其高达 $4.3\times 10^{50}\,{\rm erg}$ 的辐射能与极高镍需求，为 $190\,M_\odot$ 的对不稳定超新星（PISN）或非对称深埋 CSM 碰撞模型提供了关键判例。
 
+#### [arXiv:2610.27312](https://arxiv.org/abs/2610.27312) SN 2023iop: An Extreme 1987A-like Supernova and the Death of Very Massive Stars
+- **英文原题**：SN 2023iop: An Extreme 1987A-like Supernova and the Death of Very Massive Stars
+- **作者**：Steve Schulze, Avinash Singh, Nikhil Sarin, Ofer Yaron, Jesper Sollerman 等
+- **文献链接**：[arXiv 原文](https://arxiv.org/abs/2610.27312) ｜ [SciX (ADS)](https://scixplorer.org/abs/arXiv:2610.27312?forceMode=astrophysics) ｜ [在线精读](https://astro-lineage.pages.dev/arxiv-weekly/2026-W43/#paper-2610.27312)
+- **推荐理由**：提供了迄今罕见的兼具超高光度、极长上升期与高偏振度的超亮超新星全面观测，直指 $190\,M_\odot$ 前身星塌缩归宿。
+- **核心突破**：测得该源辐射总能量达 $(4.3\pm 0.3)\times 10^{50}\,{\rm erg}$、连续谱偏振度达 $0.81\pm 0.08\%$，联合禁线诊断将其约束为富氢 PISN 或强非对称 CSM 相互作用。
+
+##### 科学问题
+
+SN 2023iop 具有长达 $\gtrsim 88$ 天的缓慢上升以及高达 $M_r \approx -20.14~\mathrm{mag}$ 的绝对星等，进入富氢超亮超新星（H-rich SLSN）能区。传统中微子驱动核塌缩模型能产生的动能（$\lesssim 2\times 10^{51}~\mathrm{erg}$）和 $^{56}\mathrm{Ni}$ 质量极限（$\lesssim 0.3~M_\odot$）完全无法解释其高达 $4.3\times 10^{50}~\mathrm{erg}$ 的辐射能量与峰值光度；而在光谱未见经典窄发射线与近紫外过剩的条件下，如何协调极高镍产额、超大抛射物质量、长时间维持的光球相与晚期极其平缓的衰减，构成了核心物理疑难。
+
+##### 观测与研究方法
+
+利用全天巡天（ZTF、ATLAS）及多台地面望远镜（VLT、Keck、LBT、LT、NOT、MMT 等）获取覆盖爆发前 $-51.4$ 天至 $+623.8$ 天的多波段测光、高低分辨率光谱及分光偏振（VLT/FORS2）数据。测光采用 AutoPhOT、SFFT 和 HOTPANTS 减算与动态分箱；光谱使用 PypeIt 等流程并严格与多波段测光进行绝对通量定标；结合黑体辐射演化、解析扩散时标标度律（$t_{\rm d} \approx [2\kappa M_{\rm ej}/(\beta c v)]^{1/2}$）、星云相禁线（$[\mathrm{O\;I}]$、$[\mathrm{Ni\;II}]$）光学薄/厚跃迁解析模型、PISN 网格数值模型（如 R190NL）、回落吸积供能模型（$\dot{E}_{\rm acc} = \eta \dot{M} c^2, \dot{M} \propto t^{-5/3}$）及非球对称 CSM 相互作用进行联合动力学与辐射拟合。
+
+##### 物理模型与关键假设
+
+- 在通过光变衰变尾估计镍质量上限时，假设爆炸后晚期星云相能量完全由放射性 $^{56}\mathrm{Co} \to {}^{56}\mathrm{Fe}$ 衰变释放的 $\gamma$ 射线完全热化俘获驱动。
+- 假设无偏振波段（5800–6200 Å 及 7400–7800 Å）测得的偏振主要反映超新星连续谱本征不对称性，而非宿主星系星际偏振（ISP）。
+
+##### 核心学术图表
+
+![Fig. 10 (核心观测结果)](https://astro-lineage.pages.dev/arxiv-figures/2610.27312/SN2023iop_specpol_radar.png)
+*Fig. 10 (核心观测结果)：Figure 10: SN 2023iop in the Stokes Q − U Q-U plane on day +37.3 (binning 50 Å). The points are color-coded by wavelength. Concentric circles show polarization degrees ranging from 0.5 to 2.5%. The photosphere shows a clear departure from spherical symmetry, but the absence of a dominant axis does not indicate an axially symmetric geometry.*
+
+##### 关键结论与定量测量
+
+测得该源峰值测辐射热光度为 $L_{\rm bol} = (4.0 \pm 1.0) \times 10^{43}~\mathrm{erg\,s^{-1}}$，全波段积分总辐射能量达 $E_{\rm rad} = (4.3 \pm 0.3) \times 10^{50}~\mathrm{erg}$。由有效光球上升时标 $t_{\rm rise} \gtrsim 88$ 天导出抛射物质量下限 $M_{\rm ej} > 12~M_\odot$；峰值光度需要产生放射性镍质量 $M_{\rm ^{56}Ni} \approx 2.2~M_\odot$。在静止系波长 $5800\text{--}6200~\text{Å}$ 与 $7400\text{--}7800~\text{Å}$ 测得反方差加权平均连续谱线偏振度为 $P = 0.81 \pm 0.08\%$，揭示显著的非球对称几何。晚期 $+326$ 天测得 $[\mathrm{O\;I}]\,\lambda\lambda6300,6364$ 双线通量比 $F_{6300}/F_{6364} \approx 2.3$，处于光学薄与光学厚过渡态。多波段限制给出自由-自由吸收光深遵从标度律 $\tau_{\rm ff} \propto \nu^{-2.1}\,t^{-5}$，深埋中心引擎与 CSM 早期信号受阻碍。联合辐射模型指示其前身星符合 $190~M_\odot$ 的富氢 PISN 模型，晚期平台期辐射由隐蔽或非球对称 CSM 相互作用主导。
+
+##### 局限性与观测边界
+
+- 早期 Swift XRT（$L_{\rm X} < 4\times 10^{42}~\mathrm{erg\,s^{-1}}$）与 AMI-LA 射电（$L_\nu < 4.4\times 10^{28}~\mathrm{erg\,s^{-1}\,Hz^{-1}}$）上限由于致密抛射物内部巨大的束缚-自由和自由-自由吸收光深（$\tau_{\rm ff} \propto \nu^{-2.1} t^{-5}$），无法严格排除致密中心引擎或紧邻星周相互作用。
+
+##### 建议精读切入点
+
+聚焦星云相禁线 $[\mathrm{O\;I}]$ 光学薄/厚跃迁解析拟合与 PISN R190NL 模型的动力学对照分析。
+
+---
+
+#### [arXiv:2610.29838](https://arxiv.org/abs/2610.29838) PSR J0653+0443: An Eclipsing Millisecond Pulsar in an Extremely Eccentric Double Neutron Star System
 - **英文原题**：PSR J0653+0443: An Eclipsing Millisecond Pulsar in an Extremely Eccentric Double Neutron Star System
 - **作者**：Z. L. Yang, J. L. Han, L. G. Hou, Z. W. Chen, Y. G. Gong 等
 - **文献链接**：[arXiv 原文](https://arxiv.org/abs/2610.29838) ｜ [SciX (ADS)](https://scixplorer.org/abs/arXiv:2610.29838?forceMode=astrophysics) ｜ [在线精读](https://astro-lineage.pages.dev/arxiv-weekly/2026-W43/#paper-2610.29838)
@@ -391,10 +388,10 @@ _Fig. 2 (数据拟合与模型对比)：Figure 2: The prompt X-ray (0.4-2 keV) l
 ##### 核心学术图表
 
 ![Fig. 3 (数据拟合与模型对比)](https://astro-lineage.pages.dev/arxiv-figures/2610.29838/omdot1-omdot2.png)
-_Fig. 3 (数据拟合与模型对比)：Figure S5: Δ ​ χ 2 \Delta\chi^{2} map for ω ˙ GR \dot{\omega}*{\rm GR} and ω ˙ EX \dot{\omega}*{\rm EX} after the best-fitting the timing model to timing data of PSR J0653+0443. Panel ( A ) shows the probability distribution with the contours at the Δ ​ χ 2 = 1 \Delta\chi^{2}=1 , 4 and 9, and the red cross marks the best-fit value. Panels ( B ) and ( C ) show the 1D cumulative possibility density distribution functions (CDF), and the best derived ω ˙ GR + ω ˙ EX = ( 1.7791 − 0.0009 + 0.0013 ) × 10 − 2 \dot{\omega}*{\rm GR}+\dot{\omega}*{\rm EX}=(1.7791^{+0.0013}*{-0.0009})\times 10^{-2} deg yr -1 and ω ˙ EX = ( − 1.50 − 0.80 + 0.88 ) × 10 − 4 \dot{\omega}*{\rm EX}=(-1.50^{+0.88}\_{-0.80})\times 10^{-4} deg yr -1 ._
+*Fig. 3 (数据拟合与模型对比)：Figure S5: Δ ​ χ 2 \Delta\chi^{2} map for ω ˙ GR \dot{\omega}_{\rm GR} and ω ˙ EX \dot{\omega}_{\rm EX} after the best-fitting the timing model to timing data of PSR J0653+0443. Panel ( A ) shows the probability distribution with the contours at the Δ ​ χ 2 = 1 \Delta\chi^{2}=1 , 4 and 9, and the red cross marks the best-fit value. Panels ( B ) and ( C ) show the 1D cumulative possibility density distribution functions (CDF), and the best derived ω ˙ GR + ω ˙ EX = ( 1.7791 − 0.0009 + 0.0013 ) × 10 − 2 \dot{\omega}_{\rm GR}+\dot{\omega}_{\rm EX}=(1.7791^{+0.0013}_{-0.0009})\times 10^{-2} deg yr -1 and ω ˙ EX = ( − 1.50 − 0.80 + 0.88 ) × 10 − 4 \dot{\omega}_{\rm EX}=(-1.50^{+0.88}_{-0.80})\times 10^{-4} deg yr -1 .*
 
 ![Fig. 4 (核心物理演化图)](https://astro-lineage.pages.dev/arxiv-figures/2610.29838/low_kick.png)
-_Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density distribution of DNS systems in the parameter space of orbital period and eccentricity . Panel ( A ) show the probability density distribution of DNS systems produced in electron-capture supernova (ECSNe) or ultra-stripped supernovae (USSNe) in the population synthesis, with a kick velocity dispersion of σ k = 30 ​ km ​ s − 1 \sigma\_{\rm k}=30~{\rm km~s^{-1}} . Squares represent DNS systems in the ATNF Pulsar Catalogue version 2.7.0 (not including those in global clusters), open squares indicate DNS candidates Manchester et al. (2005) , and the red star marks PSR J0653+0443. Panel ( B ) is similar to Panel ( A ) but for DNS systems produced in an iron-core collapse supernova (CCSNe) models with σ k = 265 ​ km ​ s − 1 \sigma\_{\rm k}=265~{\rm km~s^{-1}} ._
+*Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density distribution of DNS systems in the parameter space of orbital period and eccentricity . Panel ( A ) show the probability density distribution of DNS systems produced in electron-capture supernova (ECSNe) or ultra-stripped supernovae (USSNe) in the population synthesis, with a kick velocity dispersion of σ k = 30 ​ km ​ s − 1 \sigma_{\rm k}=30~{\rm km~s^{-1}} . Squares represent DNS systems in the ATNF Pulsar Catalogue version 2.7.0 (not including those in global clusters), open squares indicate DNS candidates Manchester et al. (2005) , and the red star marks PSR J0653+0443. Panel ( B ) is similar to Panel ( A ) but for DNS systems produced in an iron-core collapse supernova (CCSNe) models with σ k = 265 ​ km ​ s − 1 \sigma_{\rm k}=265~{\rm km~s^{-1}} .*
 
 ##### 关键结论与定量测量
 
@@ -411,11 +408,9 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 ---
 
 ## 3. 📌 本周重点关注文献 (Worth-Knowing Selected Works · 共 90 篇)
-
 以下文献针对特定机制或子方向提供重要观测线索与实测约束，保持精炼条目，不展开精读详情。
 
 ### [arXiv:2610.22662](https://arxiv.org/abs/2610.22662) The transformative power of ALMA2040 for mm-VLBI [⭐ 重点关注]
-
 - **英文原题**：The transformative power of ALMA2040 for mm-VLBI
 - **作者**：The Event Horizon Telescope Collaboration
 - **推荐理由**：系统论证了全阵列定相 ALMA2040 对下一代 mm-VLBI 视界尺度喷流成像与致密等离子体组分诊断的技术飞跃。
@@ -423,7 +418,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：重点查看利用频率相位转移（FPT）提升条纹探测信噪比的技术实现方案与 GRMHD 模拟预期对比。
 
 ### [arXiv:2610.22709](https://arxiv.org/abs/2610.22709) A New AI/ML Based Image Reconstruction Technique for Hard X-ray Coded Aperture Imagers [⭐ 重点关注]
-
 - **英文原题**：A New AI/ML Based Image Reconstruction Technique for Hard X-ray Coded Aperture Imagers
 - **作者**：Shayla Sharmin, Branden Allen
 - **推荐理由**：提出了首个打破编码孔径平移不变性限制的深度学习反卷积框架，显著增强了非平面大视场硬 X 射线探测器的瞬变源定位能力。
@@ -431,7 +425,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：关注损失函数中泊松负对数似然与 Softplus 激活的配合使用，评估其在高能宽视场探测器中的落地可能。
 
 ### [arXiv:2610.22816](https://arxiv.org/abs/2610.22816) A Unified Solution to the Low-Mass X-ray Binary Diversity Puzzle: Saturated Magnetic Braking Coupled with Irradiation-Driven Winds [⭐ 重点关注]
-
 - **英文原题**：A Unified Solution to the Low-Mass X-ray Binary Diversity Puzzle: Saturated Magnetic Braking Coupled with Irradiation-Driven Winds
 - **作者**：Zhu-Ling Deng, Xiang-Dong Li, Bo Wang 等
 - **推荐理由**：通过饱和磁制动耦合吸积辐照风，统一解释了中子星低质量 X 射线双星的吸积率阶梯与超致密双星的形成难题。
@@ -439,7 +432,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：阅读 MESA 演化轨迹中辐照风角动量损失放大因子 $\eta$ 与磁制动饱和机制的耦合推导。
 
 ### [arXiv:2610.23028](https://arxiv.org/abs/2610.23028) Gamma-ray calorimetry of Seyfert winds [⭐ 重点关注]
-
 - **英文原题**：Gamma-ray calorimetry of Seyfert winds
 - **作者**：Alberto Domínguez
 - **推荐理由**：通过严谨的 Fermi-LAT 堆叠与量能器建模，定量澄清了射电宁静活动星系核超快外流的强子高能辐射效率。
@@ -447,7 +439,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：关注理论上限光度 $L_{\gamma}^{\max}$ 的定义方法及基于碰撞时标 $t_{pp}$ 的删失数据蒙特卡罗处理。
 
 ### [arXiv:2610.23081](https://arxiv.org/abs/2610.23081) What can a uniform reflection pipeline establish about supermassive black hole spin? An audit and a corrected analysis of 57 AGN with XMM and NuSTAR [⭐ 重点关注]
-
 - **英文原题**：What can a uniform reflection pipeline establish about supermassive black hole spin? An audit and a corrected analysis of 57 AGN with XMM and NuSTAR
 - **作者**：K. Balasubramaniam, H. -K. Chang, Ł. Stawarz
 - **推荐理由**：对采用 X 射线相对论反射谱测量 SMBH 自旋的自动化拟合流程进行了极具批判性的严密审计，揭示出严重系统误差。
@@ -455,7 +446,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：重点查看多起点网格优化如何揭示 $(a_*, i)$ 参数空间中的伪简并以及模型边界截断效应。
 
 ### [arXiv:2610.23089](https://arxiv.org/abs/2610.23089) Maximal efficiency of geometric beaming and polarization of highly super-Eddington X-ray sources [⭐ 重点关注]
-
 - **英文原题**：Maximal efficiency of geometric beaming and polarization of highly super-Eddington X-ray sources
 - **作者**：Varpu Ahlberg, Alexandra Veledina, Eugene Churazov 等
 - **推荐理由**：打破了超爱丁顿吸积源中几何集束的过度简化假设，给出了基于散射辐射转移的真实集束因子上限与偏振预言。
@@ -463,7 +453,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：重点研读利用 Chandrasekhar $H$ 函数精确处理漏斗壁反射边界及 Stokes 参数光行差变换的代码框架。
 
 ### [arXiv:2610.23140](https://arxiv.org/abs/2610.23140) Seeing Through the RFI Mask: DT-FISTA Inpainting of Pulsar Dynamic Spectra via Fourier Sparsity [⭐ 重点关注]
-
 - **英文原题**：Seeing Through the RFI Mask: DT-FISTA Inpainting of Pulsar Dynamic Spectra via Fourier Sparsity
 - **作者**：Yuanshang Huang, Xun Shi
 - **推荐理由**：针对射电脉冲星动态谱 RFI 掩模问题提出快速稀疏修复算法，将运算与显存大幅缩减数千倍，为高保真闪烁弧提取提供关键工具。
@@ -471,7 +460,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：建议重点考察复软阈值调度策略与 Nesterov 动量外推在保证数据一致性投影中的结合方式。
 
 ### [arXiv:2610.23155](https://arxiv.org/abs/2610.23155) Ranking Prompt--Plateau Correlations in Gamma-Ray Bursts with Symbolic Regression [⭐ 重点关注]
-
 - **英文原题**：Ranking Prompt--Plateau Correlations in Gamma-Ray Bursts with Symbolic Regression
 - **作者**：Fatemeh Rastegarnia, Rahim Moradi, Brwa Shukur Ismael 等
 - **推荐理由**：利用符号回归机器学习方法在排除红移虚假相关的严苛条件下，发现了弥散显著优于经典 Dainotti 关系的 GRB 新标度律。
@@ -479,7 +467,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：关注 PySR 符号演化树搜索流程以及基于置换检验的零假设排除测试设计。
 
 ### [arXiv:2610.23339](https://arxiv.org/abs/2610.23339) The Dancing Bonfire: An Unusual Persistent X-ray Source in M81 Exhibiting Recurrent Luminous Flares [⭐ 重点关注]
-
 - **英文原题**：The Dancing Bonfire: An Unusual Persistent X-ray Source in M81 Exhibiting Recurrent Luminous Flares
 - **作者**：Jiachang Zhang, Zhiyuan Li, Xiangdong Li 等
 - **推荐理由**：报道了近邻星系中极为反常的超爱丁顿脉动中子星候选体，其快升慢衰耀斑复发机制对吸积势垒模型提出挑战。
@@ -487,7 +474,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：重点查阅 FRED 耀斑叠加剖面分析与吸积盘 RII 粘滞不稳定性阻滞条件的理论匹配。
 
 ### [arXiv:2610.23359](https://arxiv.org/abs/2610.23359) A blazar is a blazar is a blazar ... Comparing long-term varaibility properties of PKS 1510-089 and PKS 2155-304 [⭐ 重点关注]
-
 - **英文原题**：A blazar is a blazar is a blazar ... Comparing long-term varaibility properties of PKS 1510-089 and PKS 2155-304
 - **作者**：M. Zacharias, A. Wierzcholska
 - **推荐理由**：基于长达 20 年的跨波段监测严格检验了耀变体长期变异性，明确指出了标准单区轻子辐射模型的局限性。
@@ -495,7 +481,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：阅读离散互相关函数（DCCF）显著性蒙特卡罗构建与单/双对数正态分布 AIC 判据对比。
 
 ### [arXiv:2610.31583](https://arxiv.org/abs/2610.31583) Formation and Detectability of PSR J0653+0443-like Extremely Eccentric Binary Neutron Stars in the Milky Way
-
 - **英文原题**：Formation and Detectability of PSR J0653+0443-like Extremely Eccentric Binary Neutron Stars in the Milky Way
 - **作者**：Zhiwei Chen, Jihui Zhang, Youjun Lu
 - **推荐理由**：该工作结合紧凑双星星族合成（CBPS）与 FAST GPPS 巡天射电选择效应，定量限制了极端偏心率（$e > 0.99$）双中子星的形成通道（CCSN 大踢力与质量损失主导），为超新星中心引擎不对称踢角机制和致密双星演化提供了直接观测与统计约束。
@@ -503,7 +488,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：Statistical Properties of Extremely Eccentric BNS
 
 ### [arXiv:2610.31559](https://arxiv.org/abs/2610.31559) A Generalized Framework for Rapid Polarization Response Generation in Wide Field-of-View Compton Polarimeters
-
 - **英文原题**：A Generalized Framework for Rapid Polarization Response Generation in Wide Field-of-View Compton Polarimeters
 - **作者**：Mohamed Gamal Zaid, Merlin Kole, Mark McConnell 等
 - **推荐理由**：针对伽马射线暴（GRB）等高能瞬变源瞬时辐射偏振测量的关键瓶颈，系统解决了宽视场康普顿偏振仪离轴观测时的复合谐波畸变与传统 GEANT4 蒙特卡罗全网格模拟耗时极长的问题，提出了两组可削减 $\ge 95\%$ 计算开销的高精度快速响应构建模式并实现了开源软件落地。
@@ -511,19 +495,15 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：Application to Polarization Analysis
 
 ### [arXiv:2610.31484](https://arxiv.org/abs/2610.31484) Prompt Jet Launching and Delayed Thermal Disk in Tidal Disruption Event for Prolonged Activity GRB 220706A
-
 - **英文原题**：Prompt Jet Launching and Delayed Thermal Disk in Tidal Disruption Event for Prolonged Activity GRB 220706A
 - **作者**：Yuri Sato, Rin Oikawa
 - **推荐理由**：论文定量排除了大包层恒星塌缩星模型（由于 $t_{\rm engine} < t_{\rm bo}$ 喷流在破越前熄灭），提出了中等质量黑洞潮汐瓦解（TDE）模型，成功统一解释了极长持续活动源 GRB 220706A 的早期相对论喷流与约 $10^6\,\mathrm{s}$ 延迟光学黑体辐射成分。
 - **核心要点**：1. 塌缩星模型无法成立：中心引擎在喷流头部到达表面前关闭（$t_{\rm engine} \sim 5\times 10^2\,\mathrm{s} < t_{\rm bo} \sim 10^4\,\mathrm{s}$），喷流被束缚于包层内部。
-
-2. TDE 模型早期喷流：恒星回落时标 $t_{\rm fb} \sim 10^6\,\beta^{-3}(M_{\rm BH}/10^5 M_\odot)^{1/2}(M__/50 M\_\odot)^{-1}(R__/20 R_\odot)^{3/2}\,{\rm s}$，少量碎片在时标 $\tilde{t}_{\rm acc,pro} \sim 10^5\,\beta^{-3/2}(\alpha_{\rm vis}/0.1)^{-1}(M__/50 M\_\odot)^{-1/2}(R__/20 R_\odot)^{3/2}\,{\rm s}$ 内快速吸积输运磁通，通过 BZ 机制驱动喷流，各向同性伽马射线光度为 $L_{\gamma,{\rm iso,obs}} \sim 10^{50}\,x_H^2(\eta_{\rm BZ}/0.1)(\eta_{{\rm rad},\gamma}/0.1)(\theta_j/0.1\,{\rm rad})^{-2}(M_{\rm BH}/10^5 M_\odot)^2(B_H/10^8\,{\rm G})^2\,{\rm erg\,s^{-1}}$。
-3. 延迟主盘与喷流关闭：碎屑在 $\tilde{t}_{\rm circ} \sim 10^6\,\mathrm{s}$ 于圆化半径 $R_c \approx 2R_p$ 形成主盘，产生光度 $L_{\rm opt,obs} \sim 10^{44}\,{\rm erg\,s^{-1}}$ 的光学热辐射；喷流活跃期随超爱丁顿吸积维持，关闭时标预测为 $\tilde{t}_{\rm off} \sim 10^9\,(M_{\rm BH}/10^5 M_\odot)^{-2/5}(M__/50 M\_\odot)^{1/5}(R__/20 R_\odot)^{3/5}\beta^{-6/5}\,{\rm s}$。
-
+2. TDE 模型早期喷流：恒星回落时标 $t_{\rm fb} \sim 10^6\,\beta^{-3}(M_{\rm BH}/10^5 M_\odot)^{1/2}(M_*/50 M_\odot)^{-1}(R_*/20 R_\odot)^{3/2}\,{\rm s}$，少量碎片在时标 $\tilde{t}_{\rm acc,pro} \sim 10^5\,\beta^{-3/2}(\alpha_{\rm vis}/0.1)^{-1}(M_*/50 M_\odot)^{-1/2}(R_*/20 R_\odot)^{3/2}\,{\rm s}$ 内快速吸积输运磁通，通过 BZ 机制驱动喷流，各向同性伽马射线光度为 $L_{\gamma,{\rm iso,obs}} \sim 10^{50}\,x_H^2(\eta_{\rm BZ}/0.1)(\eta_{{\rm rad},\gamma}/0.1)(\theta_j/0.1\,{\rm rad})^{-2}(M_{\rm BH}/10^5 M_\odot)^2(B_H/10^8\,{\rm G})^2\,{\rm erg\,s^{-1}}$。
+3. 延迟主盘与喷流关闭：碎屑在 $\tilde{t}_{\rm circ} \sim 10^6\,\mathrm{s}$ 于圆化半径 $R_c \approx 2R_p$ 形成主盘，产生光度 $L_{\rm opt,obs} \sim 10^{44}\,{\rm erg\,s^{-1}}$ 的光学热辐射；喷流活跃期随超爱丁顿吸积维持，关闭时标预测为 $\tilde{t}_{\rm off} \sim 10^9\,(M_{\rm BH}/10^5 M_\odot)^{-2/5}(M_*/50 M_\odot)^{1/5}(R_*/20 R_\odot)^{3/5}\beta^{-6/5}\,{\rm s}$。
 - **阅读切入**：II Core collapse scenario
 
 ### [arXiv:2610.31450](https://arxiv.org/abs/2610.31450) Simulation-based inference of profile evolution for high-precision pulsar timing
-
 - **英文原题**：Simulation-based inference of profile evolution for high-precision pulsar timing
 - **作者**：Sai C. Susarla, Gregory Ashton, A. Parthasarathy 等
 - **推荐理由**：该工作针对脉冲辐射轮廓随频率演化对到达时间（ToA）和色散测量（DM）引起的系统偏差，提出了基于模拟推断（SBI）的神经后验估计方法，对低频脉冲星与快速射电暴（FRB）的宽带色散演化及精密测量具有直接的方法参考价值。
@@ -531,7 +511,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：Introduction
 
 ### [arXiv:2610.31182](https://arxiv.org/abs/2610.31182) The XMM-Newton view of the DEM L36 superbubble in the Large Magellanic Cloud
-
 - **英文原题**：The XMM-Newton view of the DEM L36 superbubble in the Large Magellanic Cloud
 - **作者**：Pawel M. Janas, Patrick J. Kavanagh, Manami Sasaki 等
 - **推荐理由**：该研究利用 XMM-Newton 及多波段数据对大麦哲伦云超级气泡 DEM L36 进行了详细的高能 X 射线能谱与能量收支解析，直接涉及超新星反馈、星际介质空洞演化与激波/热气体相互作用，为超新星中心引擎与环境反馈提供了实测约束样本。
@@ -539,7 +518,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：Analysis and results
 
 ### [arXiv:2610.30973](https://arxiv.org/abs/2610.30973) Weak Radio and Bright Early Optical Emission in EP260321a: A Comparative Study with XRO 080109 Reveals the Role of Circumstellar Material Mass
-
 - **英文原题**：Weak Radio and Bright Early Optical Emission in EP260321a: A Comparative Study with XRO 080109 Reveals the Role of Circumstellar Material Mass
 - **作者**：Cui-Yuan Dai, Xiang-Yu Wang, Jian-He Zheng
 - **推荐理由**：针对新发现的超新星激波破越（SBO）事件 EP260321a 开展多波段理论建模，结合射电上限与早期明亮光学辐射，定量给出了激波速度上限与星周介质（CSM）质量标度律，为 SBO 及前身星星周介质相互作用提供了清晰的统一物理图像。
@@ -547,7 +525,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：A Unified Interpretation of EP260321a and XRO~080109
 
 ### [arXiv:2610.30879](https://arxiv.org/abs/2610.30879) Relativistic Dynamical Evolution of Kilonova Spectral Emission
-
 - **英文原题**：Relativistic Dynamical Evolution of Kilonova Spectral Emission
 - **作者**：Sara Karimi, Soroush Shakeri
 - **推荐理由**：文章系统结合了等到达时间面（EATS）和多普勒集束效应，构建了千新星中等相对论膨胀抛射物的动力学演化模型，量化了相对论效应对 AT2017gfo 早期能谱及物理参数推断的系统偏差，对双中子星并合抛射物物理与高能激波探测具有直接参考价值。
@@ -555,7 +532,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：Observations and Methods
 
 ### [arXiv:2610.30770](https://arxiv.org/abs/2610.30770) Axial Perturbations of Extended Tolman III in the New $f(R,T)$ Theory
-
 - **英文原题**：Axial Perturbations of Extended Tolman III in the New $f(R,T)$ Theory
 - **作者**：B. N. Jayawiguna, G. A. Sabian, H. S. Ramadhan 等
 - **推荐理由**：文章基于新 $f(R,T)$ 修正引力形式体系推导了常密度超致密星的轴向微扰方程与有效势，并给出了引力波准正规模（QNM）与回声（GW echoes）时延及特征频率，与 GW170817 回声信号和 NICER 观测半径限制进行了对照，对致密天体微扰与致密星内部物理研究有理论参考价值。
@@ -563,7 +539,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：Gravitational (Axial) Perturbation; Effective potential, quasinormal mode, and gravitational wave echoes
 
 ### [arXiv:2610.30722](https://arxiv.org/abs/2610.30722) Search for high-energy neutrinos from Einstein Probe detected Fast X-ray Transients using 14 years of IceCube muon track data
-
 - **英文原题**：Search for high-energy neutrinos from Einstein Probe detected Fast X-ray Transients using 14 years of IceCube muon track data
 - **作者**：Sri Devaki Meduri, Shantanu Desai
 - **推荐理由**：该工作结合了爱因斯坦探针（EP）最新探测到的 27 个具有红移证认的快速 X 射线暂现源（FXTs）与 IceCube 14 年公开缪子径迹数据（IceTracks-DR2），检验了 FXTs 源自偏轴喷流、阻滞喷流（choked jets）或低光度 GRB 时的强子加速与高能中微子发射预言，为瞬变源中心引擎物理与多信使观测提供了经验通量限制。
@@ -571,7 +546,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：Analysis and Results
 
 ### [arXiv:2610.30674](https://arxiv.org/abs/2610.30674) Early panchromatic spectra reveal helium in the thermonuclear supernova 2024kce
-
 - **英文原题**：Early panchromatic spectra reveal helium in the thermonuclear supernova 2024kce
 - **作者**：Abigail Polin, Dillon Hasenour, Sahana Kumar 等
 - **推荐理由**：文章首次在热核超新星极大光度前同步确证了高速 He I 吸收线（$v \approx 16,400\text{ km s}^{-1}$），并结合亚钱氏质量白矮星双爆轰数值模拟，为连接次光度 91bg 类 SN Ia 与富钙瞬变源（Ca-RTs）的表面氦壳双爆轰机制提供了关键观测约束。
@@ -579,7 +553,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：Main:
 
 ### [arXiv:2610.30656](https://arxiv.org/abs/2610.30656) Photometric classification and out-of-taxonomy detection of ZTF transients with FLARE
-
 - **英文原题**：Photometric classification and out-of-taxonomy detection of ZTF transients with FLARE
 - **作者**：Argyro Sasli, Felipe Fontinele Nunes, Xuanrui Zhang 等
 - **推荐理由**：本文提出了针对大视场时域巡天（ZTF 及未来 Rubin/LSST）的测光分类与异常检测框架 FLARE，重点针对超亮超新星（SLSN）、潮汐瓦解事件（TDE）等稀有高能暂现源以及快蓝光学暂现源（FBOT，如 AT 2018cow）和伽马射线暴（GRB）等域外奇异事件的快速筛选与报警，对高能瞬变天体物理巡天证认具有参考价值。
@@ -587,7 +560,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：Methods
 
 ### [arXiv:2610.30604](https://arxiv.org/abs/2610.30604) Multiwavelength Classification of Chandra Sources in Omega Centauri
-
 - **英文原题**：Multiwavelength Classification of Chandra Sources in Omega Centauri
 - **作者**：Steven Chen, Oleg Kargaltsev, Jeremy Hare 等
 - **推荐理由**：该工作首次将多波段机器学习分类管线 MUWCLASS 应用于致密星团环境（球状星团 omega Cen），结合 Chandra、HST、JWST 与 MeerKAT 深度射电数据对 200 余个暗弱致密天体与双星系统（MSP、CV、qLMXB 等）进行了系统性交叉匹配与分类证认，对理解球状星团中致密天体族群演化、蜘蛛脉冲星及低质量 X 射线双星的物理机制具有实用参考价值。
@@ -595,7 +567,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：IV.2 Identification of Counterparts
 
 ### [arXiv:2610.30506](https://arxiv.org/abs/2610.30506) Simulations of a Conducting Sphere Moving through Magnetized Plasma II: Effect of Internal Magnetic Fields and Enhancement of Alfvénic Drag
-
 - **英文原题**：Simulations of a Conducting Sphere Moving through Magnetized Plasma II: Effect of Internal Magnetic Fields and Enhancement of Alfvénic Drag
 - **作者**：Nicholas Corso, Dong Lai
 - **推荐理由**：论文通过三维理想 MHD 数值模拟系统研究了携带内禀偶极磁场的导电天体在磁化等离子体流动中的阿尔芬翼（Alfvén wings）与相互作用，给出了阻力系数和耗散功率随内禀磁场比与偶极倾角的定量标度律，对理解磁化致密星在星周介质或伴星风中的磁相互作用及电磁耗散提供了基础物理参考。
@@ -603,7 +574,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：Sub-Alfv\'enic Regime
 
 ### [arXiv:2610.30378](https://arxiv.org/abs/2610.30378) Chandra and Multiwavelength Study of Pevatron Candiate HESS J1702-420A
-
 - **英文原题**：Chandra and Multiwavelength Study of Pevatron Candiate HESS J1702-420A
 - **作者**：Hui Yang, Yichao Lin, Jeremy Hare 等
 - **推荐理由**：利用 Chandra 亚角秒 X 射线分辨力将极硬能谱 PeVatron 候选源 HESS J1702-420A 视场内的弥散 X 射线源解聚为微弱点源与双瓣结构，对研究银河系超高能粒子加速器及脉冲星风云（PWN）/超新星遗迹（SNR）相互作用具有直接的观测参考价值。
@@ -611,7 +581,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：Discussion
 
 ### [arXiv:2610.30286](https://arxiv.org/abs/2610.30286) Nuclear Millimeter Continuum Emission in Radio-Quiet Active Galactic Nuclei: an ALMA Spectral and Variability Study
-
 - **英文原题**：Nuclear Millimeter Continuum Emission in Radio-Quiet Active Galactic Nuclei: an ALMA Spectral and Variability Study
 - **作者**：Sophie M. Venselaar, Claudio Ricci, Yoshiyuki Inoue 等
 - **推荐理由**：利用 ALMA 毫米波多波段与短时标光变观测，直接探测射电宁静 AGN（RQ AGN）核区未解吸积盘日冕/微弱致密喷流的非热辐射机制与尺度，对理解致密天体吸积系统的高能 X 射线冕磁活动及相对论喷流形成具有参考价值。
@@ -619,7 +588,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：Discussion
 
 ### [arXiv:2610.30276](https://arxiv.org/abs/2610.30276) Gone Without a Bang: A Search for Failed Core-Collapse Supernovae in ZTF and Predictions for Rubin and Roman
-
 - **英文原题**：Gone Without a Bang: A Search for Failed Core-Collapse Supernovae in ZTF and Predictions for Rubin and Roman
 - **作者**：Shion Murakawa, Paul Draghis, Kevin Burdge 等
 - **推荐理由**：该研究利用大视场时域光学巡天（ZTF）搜寻大质量恒星直接坍缩形成黑洞的失败超新星（FccSN），为超新星中心引擎、黑洞形成通道及大质量前身星消失特征提供了直接的观测发生率限制与未来巡天（LSST/Roman）探测预测，符合高能瞬变源与致密天体形成研究兴趣。
@@ -627,7 +595,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：Discussion
 
 ### [arXiv:2610.30262](https://arxiv.org/abs/2610.30262) Charting the Galactic Underworld II: Strategies for Identifying BHs and NSs with LISA
-
 - **英文原题**：Charting the Galactic Underworld II: Strategies for Identifying BHs and NSs with LISA
 - **作者**：Tom Wagg, Frank E. Prince, Katelyn Breivik 等
 - **推荐理由**：论文针对空间引力波探测器 LISA 面临的庞大双白矮星（WDWD）前景混淆难题，系统提出了结合轨道频率 $f_{\rm orb}$、啁啾质量 $\mathcal{M}_c$、偏心率 $e$ 与银盘垂直高度 $|z|$ 区分含 BH/NS 双致密天体（BHBH, BHNS, NSNS, BHWD, NSWD）的判据，为银河系致密天体星族演化与高能引力波源的证认提供了明确的参数空间指导。
@@ -635,7 +602,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：Methods for distinguishing NS and BH DCOs from WDWDs in lisa
 
 ### [arXiv:2610.30259](https://arxiv.org/abs/2610.30259) The deepest X-ray view of a kiloparsec scale jet at z=6.1
-
 - **英文原题**：The deepest X-ray view of a kiloparsec scale jet at z=6.1
 - **作者**：Fabio A. Meanti, Luca Ighina, Alberto Moretti 等
 - **推荐理由**：研究针对红移最高（$z=6.10$）的千秒差距尺度相对论喷流系统 PSO J0309+27 开展了极深 Chandra X 射线成像与谱学分析，对高能瞬变天体物理中高红移 AGN 相对论喷流的 IC/CMB 辐射机制与能量反馈提供了极端环境下的关键观测约束。
@@ -643,7 +609,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：X-ray spectral analysis
 
 ### [arXiv:2610.30255](https://arxiv.org/abs/2610.30255) $γ$hosts from the past: reheating neutron stars with supernova-sourced ALPs
-
 - **英文原题**：$γ$hosts from the past: reheating neutron stars with supernova-sourced ALPs
 - **作者**：Debajit Bose, Sougata Ganguly, Tanmoy Kumar 等
 - **推荐理由**：文章研究核心坍缩超新星（CCSN）原中子星中产生的类轴子粒子（ALP）被引力束缚后通过 $a \to \gamma\gamma$ 衰变持续再加热致密中子星残骸的机制，利用已知最冷中子星及年轻中子星（如 Cas A）的热辐射观测，对 MeV 能段 ALP 与光子的耦合常数给出了极具竞争力的排斥线，属于致密天体高能物理与超新星遗迹中心引擎的交叉理论限制。
@@ -651,7 +616,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：Neutron star reheating and ALP Limits
 
 ### [arXiv:2610.30233](https://arxiv.org/abs/2610.30233) General-purpose equations of state for hadron-quark matter: first application to accretion-induced phase transitions in neutron stars
-
 - **英文原题**：General-purpose equations of state for hadron-quark matter: first application to accretion-induced phase transitions in neutron stars
 - **作者**：János Takátsy, Henrique Gieg, Tim Dietrich
 - **推荐理由**：文章构建了包含夸克相中微子不透明度的通用强子-夸克混合状态方程族，并采用全广义相对论辐射流体动力学首次研究吸积致强子-夸克一阶相变；否定了此前弱相变抛射可观测暂现源抛射物的结论，给出了相变伴随的中微子光度演化与核致密化特征，对超新星中心引擎及致密天体高能暂现源具有重要参考价值。
@@ -659,7 +623,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：Methods
 
 ### [arXiv:2610.30095](https://arxiv.org/abs/2610.30095) Modeling MAD Sgr A* flares and their dependence on spin
-
 - **英文原题**：Modeling MAD Sgr A* flares and their dependence on spin
 - **作者**：Eleni Antonopoulou, Antonios Nathanail, Yosuke Mizuno 等
 - **推荐理由**：该工作利用 3D GRMHD 模拟和 GRRT 计算，研究了磁阻滞盘（MAD）磁通量喷发事件中喷射热斑在不同自旋下的轨迹，并直接拟合 GRAVITY 对 Sgr A* 耀斑的天体测量数据，为超大质量黑洞自旋约束和相对论喷流/耀变物理提供了定量的动力学校准。
@@ -667,7 +630,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：Conclusions
 
 ### [arXiv:2610.30093](https://arxiv.org/abs/2610.30093) Extended vs. thin screen approximation in astrophysical settings
-
 - **英文原题**：Extended vs. thin screen approximation in astrophysical settings
 - **作者**：Manuel Adlberger, Tobias Kramer
 - **推荐理由**：文章系统对比了脉冲星与 FRB 射电波在引力透镜和等离子体湍流介质中传播时全三维波动光学与薄屏近似的适用界限，首次量化了延展介质中分枝流（branched flow）对二次谱（secondary spectra）不对称闪烁弧的调制机制，对理解 FRB 闪烁微结构与周星介质层析具有直接参考价值。
@@ -675,7 +637,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：Thin screen approach in a random medium
 
 ### [arXiv:2610.29962](https://arxiv.org/abs/2610.29962) The diversity of late-time interaction in Type II supernovae
-
 - **英文原题**：The diversity of late-time interaction in Type II supernovae
 - **作者**：Luc Dessart, Wynn V. Jacobson-Galán, K. Azalee Bostroem
 - **推荐理由**：该工作系统研究了不同包层剥离程度的II型超新星在爆发数百天后与周星介质相互作用的辐射转移特征，阐明了冷致密壳层（CDS）物理性质与激波供能机制对紫外及光学光谱多样性的控制规律。
@@ -683,7 +644,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：Dependence on CDS mass
 
 ### [arXiv:2610.29942](https://arxiv.org/abs/2610.29942) PBR sensitivity to boosted dark matter explanation for the KM3-230213A event
-
 - **英文原题**：PBR sensitivity to boosted dark matter explanation for the KM3-230213A event
 - **作者**：M. H. Reno, T. Venters, M. Abrate 等
 - **推荐理由**：针对 KM3NeT/ARCA 探测到的超高能近水平事件 KM3-230213A（$E_\mu \sim 120\text{ PeV}$）及其超出标准模型（BSM）的增能暗物质（BDM）假说，系统评估了未来超压气球载先导实验 PBR（POEMMA-Balloon with Radio）通过掠地 $\tau$ 轻子衰变诱发的大气簇射进行探测的能力，为超高能中微子与瞬态粒子探测提供了关键的仪器灵敏度标度。
@@ -691,7 +651,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：Results
 
 ### [arXiv:2610.29923](https://arxiv.org/abs/2610.29923) Cosmic Ray Observations using Coincident Scintillator and Radio Signals with the Beamforming Elevated Array for COsmic Neutrinos (BEACON)
-
 - **英文原题**：Cosmic Ray Observations using Coincident Scintillator and Radio Signals with the Beamforming Elevated Array for COsmic Neutrinos (BEACON)
 - **作者**：Zachary Martin, Jackson Hinkel, Kira Perna 等
 - **推荐理由**：BEACON 旨在通过高山相控射电阵列探测超高能中微子（掠地 tau 中微子）及超高能宇宙线（UHE CR）广延空气簇射（EAS）。该工作报道了利用闪烁体阵列与 6 天线射电阵列符合探测在极低背景下成功证认 22 例宇宙线事件，展示了相干射电脉冲、电场反卷积与偏振测量技术，对高能瞬变源射电/中微子多信使探测方法有直接参考价值。
@@ -699,7 +658,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：labelsec:analysis
 
 ### [arXiv:2610.29833](https://arxiv.org/abs/2610.29833) Neutron Star-Main-Sequence Star Collision: Formation and Long-Term Evolution of Thorne-Żytkow Objects
-
 - **英文原题**：Neutron Star-Main-Sequence Star Collision: Formation and Long-Term Evolution of Thorne-Żytkow Objects
 - **作者**：Yuhao Guo, Xiao-Tian Xu, Dong Lai
 - **推荐理由**：本文揭示了新生中子星与主序伴星直接碰撞形成索恩–热特科夫天体（TŻO）的自洽动力学演化及长期宿命，证实其晚期具有极强超爱丁顿脉动不稳定性，并可能伴随剧烈爆发抛射或黑洞喷流破越，为高能瞬变源与致密天体演化提供了动力学机制参考。
@@ -707,7 +665,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：Result
 
 ### [arXiv:2610.29800](https://arxiv.org/abs/2610.29800) SpinOctopus: A Versatile, User-Friendly, and Extensible Public Code for General-Relativistic Ray-Tracing in axisymmetric spacetime
-
 - **英文原题**：SpinOctopus: A Versatile, User-Friendly, and Extensible Public Code for General-Relativistic Ray-Tracing in axisymmetric spacetime
 - **作者**：Shiyang Hu, Dan Li, Chen Deng 等
 - **推荐理由**：文章发布了一款适用于任意渐近平直、定态轴对称时空的广义相对论光线追踪与协变辐射转移开源数值工具 \texttt{SpinOctopus}，能够对黑洞双极相对论喷流、几何薄/厚吸积流及大质量粒子轨道光变进行高精度成像模拟，可为致密天体吸积系统与相对论喷流的多波段强引力场观测特征提供理论建模支持。
@@ -715,7 +672,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：Ray-Tracing and Radiative Transfer
 
 ### [arXiv:2610.29436](https://arxiv.org/abs/2610.29436) Searches for coincident Gravitational Waves and High-Energy Neutrinos from the KM3NeT and ANTARES telescopes during O3
-
 - **英文原题**：Searches for coincident Gravitational Waves and High-Energy Neutrinos from the KM3NeT and ANTARES telescopes during O3
 - **作者**：ANTARES Collaboration, KM3NeT Collaboration, O. Adriani 等
 - **推荐理由**：该工作结合LIGO/Virgo第三次观测运行（O3）以及地中海中微子望远镜ANTARES和KM3NeT/ORCA6的数据，针对高能瞬变源（如BNS、NSBH、相对论喷流及核坍缩超新星）开展了GW-HEN触发与阈下多信使联合证认，给出了辐射能量与源率密度的严格上限，与本组关于致密天体多信使高能观测和相对论喷流研究密切相关。
@@ -723,7 +679,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：Triggered search
 
 ### [arXiv:2610.29259](https://arxiv.org/abs/2610.29259) General Relativistic Simulations of the Nonlinear Evolution of r-modes in Rapidly Rotating Neutron Stars
-
 - **英文原题**：General Relativistic Simulations of the Nonlinear Evolution of r-modes in Rapidly Rotating Neutron Stars
 - **作者**：Justin K. Yu, Andrew Melatos
 - **推荐理由**：该工作首次在摒弃 Cowling 近似和后牛顿近似的完全广义相对论时空-流体自洽演化框架下，模拟了快速自转中子星（$f_{\rm spin} \approx 792\,\mathrm{Hz}$）中非线性 $l=|m|=2$ r 模的动力学行为，精确测定了模式频率、非线性频移、引力波应变与非线性三模耦合，为超新星后快速自转致密天体遗迹演化及连续引力波搜寻提供了基准参数约束。
@@ -731,7 +686,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：Nonlinear r-modes
 
 ### [arXiv:2610.29243](https://arxiv.org/abs/2610.29243) Hybrid Stars with a Crossover Equation of State
-
 - **英文原题**：Hybrid Stars with a Crossover Equation of State
 - **作者**：G. A. Tsalis, Ch. C. Moustakidis
 - **推荐理由**：文章构建了从强子到解禁夸克相（CFL模型）的平滑跨越（crossover）物态方程，放弃了传统的 Maxwell 压力平衡要求，给出了相变交叉化学势的指数标度律，并计算了混合星最大质量及潮汐形变度 $\Lambda$。该结果为超新星中心引擎致密残骸的相变软化、大质量中子星支撑以及双中子星并合引力波（如 GW170817）观测提供了核物理与致密天体微观物理约束。
@@ -739,7 +693,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：Crossover Equation of State
 
 ### [arXiv:2610.29127](https://arxiv.org/abs/2610.29127) Investigating a TeV-Halo Candidate around PSR J1928+1746 with HAWC
-
 - **英文原题**：Investigating a TeV-Halo Candidate around PSR J1928+1746 with HAWC
 - **作者**：The HAWC Collaboration, R. Alfaro, C. Alvarez 等
 - **推荐理由**：该工作利用 HAWC 对银道面拥挤天区的中年脉冲星 PSR J1928+1746 进行高精度空间与能谱解构，确认了覆盖 2 TeV 至 >100 TeV 的延展超额 HAWC J1928+1750，为致密天体高能观测及脉冲星周围 TeV 晕的粒子扩散抑制提供了重要实测约束。
@@ -747,7 +700,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：The TeV-Halo Candidate near PSR~J1928+1746
 
 ### [arXiv:2610.28938](https://arxiv.org/abs/2610.28938) X-ray Comptonization in an Accreting Kerr Black Hole System with a Tilted Disc and Thermal Corona: A General-Relativistic Monte Carlo Simulation. II. Polarization Signatures
-
 - **英文原题**：X-ray Comptonization in an Accreting Kerr Black Hole System with a Tilted Disc and Thermal Corona: A General-Relativistic Monte Carlo Simulation. II. Polarization Signatures
 - **作者**：Mainak Chatterjee, Dipankar Bhattacharya
 - **推荐理由**：该工作建立了包含 Kerr 黑洞强引力光线弯曲、Walker-Penrose 偏振平行输运、热日冕偏振康普顿散射和倾斜外吸积盘偏振反射的完整广义相对论蒙特卡罗（GRMC）偏振辐射转移模型，定量揭示了致密天体强引力弯折（增加 DOP）与多次散射/外盘发射稀释（抑制 DOP 及其进动调制）之间的竞争机制，对理解致密天体吸积系统（如黑洞 X 射线双星硬态高偏振度及 QPO 偏振调制缺失）具有重要理论和模拟价值。
@@ -755,7 +707,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：Conclusions
 
 ### [arXiv:2610.28817](https://arxiv.org/abs/2610.28817) Probing the QPO and spectro-temporal evolution of MAXI J1750-327 with XPoSat during its first detected outburst : Constraints on black-hole mass and spin
-
 - **英文原题**：Probing the QPO and spectro-temporal evolution of MAXI J1750-327 with XPoSat during its first detected outburst : Constraints on black-hole mass and spin
 - **作者**：Meghamani Haldar, Biki Ram, Shubhrangshu Ghosh 等
 - **推荐理由**：该工作利用印度 XPoSat 卫星的 XSPECT 载荷，对黑洞双星瞬变源 MAXI J1750-327 首次爆发进行了谱-时联合观测，捕捉到了 Type-C 到 Type-B QPO 的演化以及截断盘向 ISCO 移动的物理过程，并基于全局 Lense-Thirring (LT) 进动模型给出了黑洞质量和自旋的定量限制，属于致密天体高能吸积与进动物理的典型观测样本研究。
@@ -763,7 +714,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：Discussion
 
 ### [arXiv:2610.28781](https://arxiv.org/abs/2610.28781) A Comprehensive X-ray Characterization of the Pulsar Wind Nebula CTB 87: Evidence for Reverse-Shock Interaction from Its X-ray and Broadband Emissions
-
 - **英文原题**：A Comprehensive X-ray Characterization of the Pulsar Wind Nebula CTB 87: Evidence for Reverse-Shock Interaction from Its X-ray and Broadband Emissions
 - **作者**：Jaegeun Park, Jason Alford, Hongjun An 等
 - **推荐理由**：该工作结合 Chandra、XMM-Newton 与 NuSTAR 对脉冲星风云 CTB 87 进行了高精度 X 射线空间分辨与能谱分析，揭示了强同步冷却及内在谱曲率，并结合演化单区与多区模型探讨了反向激波压缩对粒子布居与宽波段辐射的深刻影响，为研究脉冲星风与超新星遗迹相互作用环境提供了典型观测约束与模型对比。
@@ -771,7 +721,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：Discussion
 
 ### [arXiv:2610.28775](https://arxiv.org/abs/2610.28775) Can we constrain the binary neutron star merger time from kilonova light curves?
-
 - **英文原题**：Can we constrain the binary neutron star merger time from kilonova light curves?
 - **作者**：Noah Jamsin, Marion Pillas, Marko Ristić 等
 - **推荐理由**：文章系统量化了利用多波段千新星（KN）测光反演双中子星（BNS）并合时刻 $t_0$ 的精度与物理限制。这直接服务于无引力波（GW）触发或孤立千新星的光学后随巡天及引力波次阈值回溯搜索，切合研究组致密天体高能观测与电磁对应体物理兴趣。
@@ -779,7 +728,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：Discussion and Conclusions
 
 ### [arXiv:2610.28744](https://arxiv.org/abs/2610.28744) The renormalization-group running of neutrino mixing is undetectable
-
 - **英文原题**：The renormalization-group running of neutrino mixing is undetectable
 - **作者**：Gabriela Barenboim, Mauricio Bustamante, Qinrui Liu
 - **推荐理由**：针对近期文献声称高能中微子探测与天体物理中微子味比会随相互作用动量转移 $Q$ 发生重整化群跑动的假说，本文从场论在壳重整化角度给出了关键理论限制，证明中微子混合由质壳（$p^2 = m_i^2$）自能决定的常数矩阵 $\hat{U}$ 给出，所谓动量依赖源于不自洽截断，为高能天体中微子味比与振荡唯象学提供了重要理论约束。
@@ -787,7 +735,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：The argument, step by step
 
 ### [arXiv:2610.28741](https://arxiv.org/abs/2610.28741) Exploring PSR J0901-4046 as an ultra-slowly rotating neutron star versus a white dwarf
-
 - **英文原题**：Exploring PSR J0901-4046 as an ultra-slowly rotating neutron star versus a white dwarf
 - **作者**：Banibrata Mukhopadhyay, Nirupam Roy, Zenia Zuraiq 等
 - **推荐理由**：针对超慢周期脉冲星 PSR J0901-4046 等源在中子星偶极假设下磁场过高（达 $\sim 5\times 10^{16}\text{ G}$）导致对产生受抑的理论困境，系统建立了多极电磁与非电磁减速模型，并与强磁化白矮星模型对比，为长周期射电暂现源的物理本质提供了关键理论判据。
@@ -795,7 +742,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：Modelling pulsar as a multipolar object
 
 ### [arXiv:2610.28740](https://arxiv.org/abs/2610.28740) A Hybrid Neural Network Emulator for M1 Neutrino Reaction Rates in Binary Neutron Star Merger Simulations
-
 - **英文原题**：A Hybrid Neural Network Emulator for M1 Neutrino Reaction Rates in Binary Neutron Star Merger Simulations
 - **作者**：Yi Qiu, David Radice, Raffaele Ferrari 等
 - **推荐理由**：该工作提出了一种利用轻量神经网络替代高开销 2D 积分核、同时保留解析 1D 反应的混合仿真方案，成功消除了双中子星（BNS）并合通用相对论辐射磁流体（GRMHD）模拟中灰体 M1 中微子反应率的计算瓶颈，显著提升计算吞吐量且完好保持了核合成与千新星诊断相关的电子丰度 $Y_e$ 和外流特征。
@@ -803,7 +749,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：Results
 
 ### [arXiv:2610.28728](https://arxiv.org/abs/2610.28728) Exploring the origin of slow-rotating pulsars: Emission from STARS simulated white dwarfs
-
 - **英文原题**：Exploring the origin of slow-rotating pulsars: Emission from STARS simulated white dwarfs
 - **作者**：Zenia Zuraiq, Banibrata Mukhopadhyay
 - **推荐理由**：文章探讨了慢自转脉冲星（SRP）及超长周期瞬变源（LPT）的白矮星（WD）假说。常规中子星模型推导出的偶极磁场系统性超过Schwinger临界场 $B_c \approx 4.41 \times 10^{13}\,\mathrm{G}$，易抑制电子对产生且落入脉冲星死区；而采用恒星演化程序模拟的磁化WD及其超钱德拉塞卡解能提供自然的自转与磁场参数匹配，有助于高能瞬变源与射电瞬变引擎的理论证认。
@@ -811,7 +756,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：textttSTARS
 
 ### [arXiv:2610.28633](https://arxiv.org/abs/2610.28633) Constraints on Millimeter-wave Extragalactic Transient Populations from 4 Years of SPT-3G data
-
 - **英文原题**：Constraints on Millimeter-wave Extragalactic Transient Populations from 4 Years of SPT-3G data
 - **作者**：S. Guns, C. Tandoi, D. Anbajagane 等
 - **推荐理由**：该工作利用南极望远镜第三代相机（SPT-3G）4年巡天数据系统搜寻了短时标毫米波河外瞬变源，虽未探测到 GRB 反向激波（RS）候选体，但对产生明亮 RS 的爆发比例 $f_{\mathrm{RS}}$ 和全天发生率给出了强物理约束，对相对论喷流激波破越与介质相互作用的理论定标具有重要价值。
@@ -819,20 +763,16 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：GRB Model Constraints
 
 ### [arXiv:2610.28609](https://arxiv.org/abs/2610.28609) Dynamical stability of Magnetic Supramassive Neutron Stars
-
 - **英文原题**：Dynamical stability of Magnetic Supramassive Neutron Stars
 - **作者**：Jorge L. Rodríguez-Monteverde, Sebastiano Bernuzzi, William Cook 等
 - **推荐理由**：该工作通过三维全广义相对论磁流体动力学（GRMHD）模拟，首次系统研究了接近质量脱落极限的强磁化超大质量中子星（SMNS）的动力学稳定性，揭示了由 Lehnert 数 $\mathrm{Le} \gtrsim 1$ 表征的磁不稳定性与角动量输运机制，对双中子星并合残余物演化、黑洞形成时标以及短 GRB 延展辐射和千新星重子风中心引擎具有直接理论参考价值。
 - **核心要点**：研究给出了强磁场超大质量中子星动力学稳定性的关键标度与物理机制：
-
 1. 演化机制受 Lehnert 数 $\mathrm{Le} \equiv P/\tau_A$ 控制（其中 $\tau_A \sim 2R/\langle v_A \rangle$ 为阿尔芬时标，$v_A^2 = b^2/(b^2+\rho h)$）。当 $\mathrm{Le} \gtrsim 1$（强磁场 $B_{\rm max} \sim 10^{17}\,\mathrm{G}$）时，Tayler/kink 不稳定性（$m=1$ 模）快速发展并抑制纯磁卷绕，使得环向磁场能量饱和在总磁能的 $25\%\text{--}45\%$（弱磁场 $\mathrm{Le} < 1$ 构型则增长至 $60\%\text{--}80\%$）；
 2. 麦克斯韦应力 $T^r_{\ \phi} \sim b^r b^\phi$ 高效向外输运角动量，使星体内核（$\varrho \lesssim 1\,\mathrm{km}$）自转角速度降低 $40\%\text{--}50\%$。处于边缘稳定支（$\partial M/\partial \rho_c \lesssim 0$）的模型因丧失核心离心支撑而触发引力坍缩形成黑洞，残余黑洞视界角速度高达 $\Omega_H > 17\,\mathrm{kHz}$，外流风带走近 $8\%$ 的总角动量；
 3. 稳定支构型重组为具有混合磁场和差动自转的准稳态，并驱动外流磁化度 $\sigma \lesssim 0.2$、累积质量达 $\sim 10^{-3}\,M_\odot$ 的重子主导赤道风。
-
 - **阅读切入**：Conclusion
 
 ### [arXiv:2610.28428](https://arxiv.org/abs/2610.28428) Identifying a jet-shaped point-symmetric morphology in the supernova remnant HB9
-
 - **英文原题**：Identifying a jet-shaped point-symmetric morphology in the supernova remnant HB9
 - **作者**：Noam Soker
 - **推荐理由**：论文通过对超新星遗迹 HB9 的多波段及射电图像进行视觉形态分析，证认出由喷流塑造的点对称结构，并结合 SNR S147 的视向速度分布反驳星周介质塑造假说，为抖动喷流爆炸机制（JJEM）驱动核心坍缩超新星提供了观测形态学线索。
@@ -840,7 +780,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：Identifying a point-symmetric morphology in HB9
 
 ### [arXiv:2610.28408](https://arxiv.org/abs/2610.28408) Hybrid Stars with Different Amount of Quark Matter
-
 - **英文原题**：Hybrid Stars with Different Amount of Quark Matter
 - **作者**：Milena Albino, Tuhin Malik, Márcio Ferreira 等
 - **推荐理由**：该研究利用 NICER X 射线脉冲轮廓建模（PSR J0030+0451, J0740+6620, J0437+4715）与 GW170817 潮汐形变等致密天体观测数据，贝叶斯推断约束混合星物态方程（EoS），探讨中子星内部夸克退禁闭相变及核物质参数，为致密天体高能观测的理论解释提供状态方程基准。
@@ -848,7 +787,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：Results
 
 ### [arXiv:2610.28182](https://arxiv.org/abs/2610.28182) Hidden engines in tidal disruption events: multimessenger signatures in a lepto-hadronic framework
-
 - **英文原题**：Hidden engines in tidal disruption events: multimessenger signatures in a lepto-hadronic framework
 - **作者**：D. Kantzas, D. A. Langis, I. Liodakis 等
 - **推荐理由**：该工作构建了非喷流/隐藏引擎潮汐瓦解事件（TDE）的多区稳态轻-强子（lepto-hadronic）辐射与光学厚度模型，系统澄清了光致介子产生中微子与高能光子衰减级联之间的物理权衡，对致密天体多信使及中微子源证认具有直接参考价值。
@@ -856,7 +794,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：5.2 Comparison between the sources
 
 ### [arXiv:2610.28073](https://arxiv.org/abs/2610.28073) Pulsar J1909+0749 and Supernova Remnant G42.1-0.2: A case of a pulsar that has exited the shell of its associated supernova remnant
-
 - **英文原题**：Pulsar J1909+0749 and Supernova Remnant G42.1-0.2: A case of a pulsar that has exited the shell of its associated supernova remnant
 - **作者**：R. Dokara, M. Kramer, A. Brunthaler 等
 - **推荐理由**：该工作证认了一个极其罕见的脉冲星逃出母超新星遗迹（SNR）壳层的系统，通过射电非热能谱（$\alpha = -0.36 \pm 0.08$）确认新 SNR G42.1-0.2，并揭示了 PSR J1909+0749 具有高达 $v_{\perp} \sim 1460\,\mathrm{km\,s^{-1}}$ 的极端横向切向速度，为大质量恒星超新星爆发中心引擎的原初踢力（kick）机制及致密天体与星际环境相互作用提供了关键观测样本。
@@ -864,7 +801,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：3.2 The shell: G42.1-0.2
 
 ### [arXiv:2610.28049](https://arxiv.org/abs/2610.28049) On the superbursts as photodisintegrators of ashes from the rp-process -- Numerical simulations of superbursts with MESA II
-
 - **英文原题**：On the superbursts as photodisintegrators of ashes from the rp-process -- Numerical simulations of superbursts with MESA II
 - **作者**：M. Nava-Callejas, S. Goriely, N. Chamel
 - **推荐理由**：该工作聚焦低质量X射线双星中子星表面的超级爆发（superbursts，致密天体表面由碳燃烧驱动的高能热核瞬变现象），利用 MESA 进行多区流体和扩展核反应网络计算，深入研究了 rp-过程灰烬的光致蜕变及其粒子再捕获反应对超级爆发点火条件、辐射光度与核合成的影响，属于致密天体高能瞬变辐射机制研究。
@@ -872,7 +808,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：4 Discussion
 
 ### [arXiv:2610.28034](https://arxiv.org/abs/2610.28034) Rapid Variability of Radiative Signatures from Driven Relativistic Reconnection
-
 - **英文原题**：Rapid Variability of Radiative Signatures from Driven Relativistic Reconnection
 - **作者**：Clarissa Mora, Fabio Bacchini, Camille Granier 等
 - **推荐理由**：文章利用大尺度 2.5D PIC 模拟研究驱动相对论磁重联（力游磁通量管碰撞并合）过程中的同步辐射光变与非热能谱演化，揭示了光变上升时标与黑洞/脉冲星耀变特征尺度的定标关系，对理解相对论喷流、磁星耀发及高能瞬变源的亚时标爆发机制具有重要物理参考价值。
@@ -880,7 +815,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：III Results
 
 ### [arXiv:2610.28023](https://arxiv.org/abs/2610.28023) Direct Urca process facilitated by non-Fermi-liquid quantum criticality
-
 - **英文原题**：Direct Urca process facilitated by non-Fermi-liquid quantum criticality
 - **作者**：Hao-Fu Zhu, Guo-Zhu Liu
 - **推荐理由**：该工作将强关联凝聚态中的非费米液体（NFL）量子临界理论引入致密核物质，揭示中子超流与质子超导相变量子临界点（QCP）附近费米面的抹平机制，为低质量中子星以及软 X 射线暂现源中反常快速冷却与中微子辐射提供了全新的理论解释，密切关联中子星热演化与高能致密天体观测。
@@ -888,7 +822,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：Direct Urca process facilitated by non-Fermi-liquid quantum criticality
 
 ### [arXiv:2610.27931](https://arxiv.org/abs/2610.27931) The environments of type Ibn supernovae: evidence for a strong Wolf-Rayet star component
-
 - **英文原题**：The environments of type Ibn supernovae: evidence for a strong Wolf-Rayet star component
 - **作者**：Timo Kravtsov, Hanindyo Kuncarayakti, Joseph P. Anderson
 - **推荐理由**：该工作利用 VLT/MUSE 积分视场光谱（IFS）对 24 个 Ibn 型超新星宿主星系展开环境空间分辨研究，通过 $\mathrm{H}\alpha$ 归一化累积排名（NCR）和强发射线比值测量，揭示其与极端恒星形成区及沃尔夫-拉叶（WR）星的紧密联系，对确定富氦周星介质（CSM）相互作用起源及超新星前身星剥蚀通道具有直接参考价值。
@@ -896,7 +829,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：Results
 
 ### [arXiv:2610.27925](https://arxiv.org/abs/2610.27925) A bright X-ray flaring event from the intermediate supergiant fast X-ray transient IGR J00370+6122 observed with NuSTAR
-
 - **英文原题**：A bright X-ray flaring event from the intermediate supergiant fast X-ray transient IGR J00370+6122 observed with NuSTAR
 - **作者**：L. Ducci, M. M. Serim, P. Romano 等
 - **推荐理由**：利用 NuSTAR 与长期 Swift/BAT 监测深入剖析了中间型超巨星快速 X 射线暂现源（intermediate SFXT）的吸积几何与耀发动力学，为致密天体准球对称沉降吸积（settling accretion）提供了高质量的高能宽波段观测限制。
@@ -904,7 +836,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：Results
 
 ### [arXiv:2610.27807](https://arxiv.org/abs/2610.27807) What Shapes the Ultraviolet Spectra of Type Ia Supernovae?
-
 - **英文原题**：What Shapes the Ultraviolet Spectra of Type Ia Supernovae?
 - **作者**：Snehasish Bhattacharjee, Yen-Chen Pan, Anirban Dutta 等
 - **推荐理由**：文章基于 Swift UVOT 光栅光谱样本量化了 SNe Ia 紫外光谱多样性与光变衰减率 $\Delta m_{15}(B)$ 的波长反向相关，并通过 TARDIS 辐射转移模拟揭示了 $^{56}\mathrm{Ni}$ 合成丰度与铁族元素谱线覆盖效应的主导机制，同时对早期测光超强事件排除了强周星介质（CSM）激波相互作用假设。
@@ -912,7 +843,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：Discussions
 
 ### [arXiv:2610.27775](https://arxiv.org/abs/2610.27775) An improved self-gravity treatment in general relativistic smoothed particle hydrodynamics
-
 - **英文原题**：An improved self-gravity treatment in general relativistic smoothed particle hydrodynamics
 - **作者**：Pritam Banerjee, Kowsona Chakraborty, Niles Mondal 等
 - **推荐理由**：文章针对大质量黑洞潮汐瓦解恒星事件（TDE）等相对论流体问题，解决了现有 GRSPH 模拟直接使用牛顿自引力导致的严重物理失真（高估自引力达 $2r_g/(r_p - 2r_g) \propto \beta M_{\rm BH}^{2/3}$），提出了基于度规弱摄动与全局坐标变换的领头阶自引力改进算法，对高能瞬变源数值模拟与回落光变曲线预测具有重要方法学价值。
@@ -920,7 +850,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：Comparative Study of Self-Gravity treatment in TDE simulations
 
 ### [arXiv:2610.27708](https://arxiv.org/abs/2610.27708) Short-timescale X-ray variability of the blazar 1ES 1959+650 observed with AstroSat/SXT
-
 - **英文原题**：Short-timescale X-ray variability of the blazar 1ES 1959+650 observed with AstroSat/SXT
 - **作者**：Sikandar Akbar, Zahir Shah
 - **推荐理由**：该工作利用 AstroSat/SXT 观测系统分析了高同步峰耀变体 1ES 1959+650 的短时标 X 射线能段时变、功率谱与软硬能段时延，涉及相对论喷流中高能电子的辐射冷却与加速机制，属于相对论喷流与致密天体高能观测方向的有效观测约束。
@@ -928,7 +857,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：Results
 
 ### [arXiv:2610.27328](https://arxiv.org/abs/2610.27328) Core-Collapse Supernova Rates in the Dark Energy Survey
-
 - **英文原题**：Core-Collapse Supernova Rates in the Dark Energy Survey
 - **作者**：K. Boyne, O. Graur, M. Vincenzi 等
 - **推荐理由**：该工作利用 DES 5年观测样本精确测定了 $0 < z < 1.3$ 范围内的核心坍缩超新星（CC SN）体积发生率演化及剥离包层（SE SNe）占比，对超新星中心引擎宿主环境、前身星演化通道（双星 vs 单星风）以及宇宙恒星形成历史（CSFH）提供了重要限制。
@@ -936,7 +864,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：Discussion
 
 ### [arXiv:2610.27287](https://arxiv.org/abs/2610.27287) The presence and order of QCD phase transitions from gravitational-wave observations of neutron star mergers
-
 - **英文原题**：The presence and order of QCD phase transitions from gravitational-wave observations of neutron star mergers
 - **作者**：Paul D. Lasky, Alexander Clevinger, Andre G. da Silva 等
 - **推荐理由**：文章构建了包含无相变、一阶、二阶及三阶相变的庞大中子星状态方程参数库，并通过贝叶斯推断定量评估当前及未来地面引力波探测器（A+、A$^\sharp$、Cosmic Explorer）对星核超核物质向夸克物质相变阶数的甄别能力，对高能致密天体中心引擎及物态物理研究具有重要参考价值。
@@ -944,7 +871,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：Phase transitions in neutron stars
 
 ### [arXiv:2610.27186](https://arxiv.org/abs/2610.27186) Evolution of Massive Main-Sequence Stars in Binary Population Synthesis. II. Consequences for Black Hole High-Mass X-ray Binaries and Binary Black Holes
-
 - **英文原题**：Evolution of Massive Main-Sequence Stars in Binary Population Synthesis. II. Consequences for Black Hole High-Mass X-ray Binaries and Binary Black Holes
 - **作者**：Adam Brček, Ryosuke Hirai, Ilya Mandel 等
 - **推荐理由**：该工作通过在快速星族合成中自洽追踪主序阶段对流核与富氦层演化，系统修正了黑洞大质量X射线双星（BH-HMXB）与双黑洞（BBH）并合通道的物理图像，为致密双星形成、引力波源质量比分布及致密天体高能吸积观测提供了直接的理论演化约束。
@@ -952,7 +878,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：Results: Binary black holes
 
 ### [arXiv:2610.27183](https://arxiv.org/abs/2610.27183) The Imprint of Core-collapse Asymmetries on Supernova Shock Breakout
-
 - **英文原题**：The Imprint of Core-collapse Asymmetries on Supernova Shock Breakout
 - **作者**：David K. Khatami, David Vartanyan, Hai P. Le 等
 - **推荐理由**：该工作采用三维辐射流体模拟与辐射转移后处理，探讨了核心坍缩三维大尺度不对称性对超新星激波破越辐射特征的影响，为紫外时域观测诊断前身星及其中心引擎不对称性提供了关键物理标度与理论预期。
@@ -960,7 +885,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：Shock Breakout Evolution
 
 ### [arXiv:2610.27158](https://arxiv.org/abs/2610.27158) Numerical shock broadening and supernova neutrino conversion: implications for DUNE
-
 - **英文原题**：Numerical shock broadening and supernova neutrino conversion: implications for DUNE
 - **作者**：Rafael C. R. de Lima, Pedro Martins Bailer
 - **推荐理由**：文章系统研究了三维超新星数值模拟中网格展宽（激波被人为抹平覆盖数个网格）对中微子穿过 MSW H 共振区时非绝热味转换的虚假抑制效应，提出了激波前沿陡峭重构方案，并量化了该效应在 DUNE 等下一代探测器中的探测偏差与湍流微扰标度律，对超新星中心引擎与中微子信号建模具有重要参考价值。
@@ -968,7 +892,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：Conclusions
 
 ### [arXiv:2610.27121](https://arxiv.org/abs/2610.27121) Twenty-five years of XMM-Newton EPIC-MOS2 Unfocused Particle Background: Solar Cycle Modulation, Galactic Cosmic-Ray Correlation, and Implications for NewAthena
-
 - **英文原题**：Twenty-five years of XMM-Newton EPIC-MOS2 Unfocused Particle Background: Solar Cycle Modulation, Galactic Cosmic-Ray Correlation, and Implications for NewAthena
 - **作者**：B. Vaia, F. Gastaldello, S. Molendi 等
 - **推荐理由**：该工作利用 XMM-Newton EPIC-MOS2 积累 25 年的视场外数据，系统量化了空间 X 射线探测器非聚焦粒子背景随 11 年太阳周期、22 年 Hale 磁极性周期及 $\sim 27\,\mathrm{day}$ 太阳自转调制的演化规律，并与 AMS-02 和 Chandra ACIS 数据建立了精确的标度对应关系（相对本征弥散仅 $1.1\% \pm 0.1\%$），对高能瞬变源观测（如 X 射线暂现源、超新星及致密天体高能连续谱分析）的数据本底扣除和未来空间 X 射线巡天（NewAthena）的本底建模具有重要参考价值。
@@ -976,7 +899,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：Results
 
 ### [arXiv:2610.27081](https://arxiv.org/abs/2610.27081) Localizing binary neutron stars with the Einstein Telescope: a full Bayesian comparison of the triangular and 2L configurations
-
 - **英文原题**：Localizing binary neutron stars with the Einstein Telescope: a full Bayesian comparison of the triangular and 2L configurations
 - **作者**：Filippo Santoliquido, Jacopo Tissino, Marica Branchesi 等
 - **推荐理由**：该工作针对下一代引力波望远镜爱因斯坦望远镜（ET）的选址与几何构型争论（单址三角形 $\Delta$ vs 双址 2L），通过高阶模与地球自转效应的全贝叶斯参数估计，直接给出了双中子星（BNS）天区定位能力的定量对比，这对未来千新星（KN）及短 GRB 的多信使电磁后随观测策略具有关键指导意义。
@@ -984,7 +906,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：Results
 
 ### [arXiv:2610.27075](https://arxiv.org/abs/2610.27075) Optical and Ultraviolet Emission from the Gas Photoionized by Gaia BH3: Archival Constraints and Predictions for the 2029 Periastron
-
 - **英文原题**：Optical and Ultraviolet Emission from the Gas Photoionized by Gaia BH3: Archival Constraints and Predictions for the 2029 Periastron
 - **作者**：Nico Cappelluti, Fabio Pacucci
 - **推荐理由**：该工作聚焦休眠恒星级黑洞 Gaia BH3 的星风吸积与光致电离机制，结合 Chandra X 射线限制与 ESPRESSO/UVES 高分辨率光谱，精确模拟了吸积流非平衡平流效应与宽发射线轮廓，对致密天体高能观测与环境光电离建模具有参考价值。
@@ -992,7 +913,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：Theoretical Model
 
 ### [arXiv:2610.27051](https://arxiv.org/abs/2610.27051) Graph Neural Networks for Astrophysics and Cosmology
-
 - **英文原题**：Graph Neural Networks for Astrophysics and Cosmology
 - **作者**：Christian Kragh Jespersen
 - **推荐理由**：本文是针对天体物理学与宇宙学中图神经网络（GNN）与几何深度学习的系统综述。文章不仅梳理了宇宙学大尺度结构、暗物质晕并合树、引力系统动力学以及仪器探测（如 IceCube 等中微子和宇宙线探测器的事例重建与光纤调度）中 GNN 的架构原理，还深入建立了平移/旋转等变性与消息传递机制的物理数学映射，对高能瞬变天体物理及相关中微子望远镜数据处理有重要方法学参考价值。
@@ -1000,7 +920,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：Applications in Astrophysics and Cosmology
 
 ### [arXiv:2610.25895](https://arxiv.org/abs/2610.25895) A high-Galactic-altitude scattering screen: scintillation from Globular Cluster pulsar M53A
-
 - **英文原题**：A high-Galactic-altitude scattering screen: scintillation from Globular Cluster pulsar M53A
 - **作者**：Qiuyi He, Xun Shi, Dejiang Yin 等
 - **推荐理由**：文章首次利用 FAST 对高银纬球状星团脉冲星 M53A 的动态谱二次谱分析探测到来自深银晕/银冕介质（CGM）的闪烁弧，测定出距银面高达 $Z \sim 12\,\mathrm{kpc}$ 的散射屏，为研究银晕极细小电离湍流结构、激波壳微结构以及未来高银纬 FRB 的宿主/银晕散射背景提供了重要的观测依据与新方法。
@@ -1008,7 +927,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：III.2 Scattering screen distance
 
 ### [arXiv:2610.25674](https://arxiv.org/abs/2610.25674) Constraints on the Progenitor of SN 2023bee from its Nebular-Phase Spectra
-
 - **英文原题**：Constraints on the Progenitor of SN 2023bee from its Nebular-Phase Spectra
 - **作者**：Sophie von Coelln, Qinan Wang, Matthew R. Siebert 等
 - **推荐理由**：该工作利用晚期星云相光谱对具有早期光度多余（early excess）的 Ia 型超新星前身星性质进行了严格诊断。通过未探测到窄 H/He 发射线给出了伴星剥离物质上限，并利用 [Ni II]/[Fe II] 铁族元素发射线比测量了极低稳定镍铁比，强力排除了非简并伴星单简并模型，支持亚钱氏质量双重爆轰机制，为超新星前身星判别与爆炸激波早期相互作用提供了关键观测约束。
@@ -1016,7 +934,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：Narrow H/He Features and non-degenerate companion
 
 ### [arXiv:2610.25514](https://arxiv.org/abs/2610.25514) Hyperonic Direct-Urca Neutrino Emission with Lattice-QCD-Informed Form Factors
-
 - **英文原题**：Hyperonic Direct-Urca Neutrino Emission with Lattice-QCD-Informed Form Factors
 - **作者**：Andreas Konstantinou
 - **推荐理由**：文章系统结合格点QCD输入的六个弱形状因子与相对论平均场（RMF），重新计算了致密中子星物质中超子直接Urca过程的中微子发射率与整星红移光度。揭示了介质中动能动量转移 $q_F^2$ 的类时偏置对辐射率带来的显著非平凡修正（可达约60%），为中子星冷却和致密星核心引擎热演化提供了关键微观物理输入。
@@ -1024,7 +941,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：Neutrino Emissivity
 
 ### [arXiv:2610.25427](https://arxiv.org/abs/2610.25427) Statistical Analysis of Neutron Star Cooling: Implications for the Nuclear Equation of State and Nucleon Pairing
-
 - **英文原题**：Statistical Analysis of Neutron Star Cooling: Implications for the Nuclear Equation of State and Nucleon Pairing
 - **作者**：Afonso Ávila, Ricardo Z. Ferreira, Violetta Sagun
 - **推荐理由**：该工作系统分析了 24 颗孤立中子星的热光度–年龄演化观测数据，对比了约 $10^5$ 条理论冷却曲线，并检验了核区直接 Urca（DU）过程、Cooper 对破缺与形成（PBF）中微子辐射机制以及核状态方程（EoS），对理解超新星遗迹中心致密天体（CCO）及年轻中子星热演化具有直接理论与观测参考价值。
@@ -1032,7 +948,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：6 Conclusions and discussion
 
 ### [arXiv:2610.25214](https://arxiv.org/abs/2610.25214) Lorentz-Invariance Violation with neutrinos from gamma-ray bursts using IceCube High-Energy Starting Events 12-year dataset
-
 - **英文原题**：Lorentz-Invariance Violation with neutrinos from gamma-ray bursts using IceCube High-Energy Starting Events 12-year dataset
 - **作者**：Mathieu Lamoureux, José Manuel Carmona, José Luis Cortés 等
 - **推荐理由**：文章利用 IceCube 12年 HESE 数据集与 746 个具有红移的 GRB 样本，在有效场论（EFT）框架下考虑超光速中微子衰变效应与内禀时差，通过似然分析检验洛伦兹对称性破缺（LIV），属于中微子高能观测与 GRB 相对论喷流多信使物理的前沿交叉检验。
@@ -1040,7 +955,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：Statistical analysis
 
 ### [arXiv:2610.25117](https://arxiv.org/abs/2610.25117) MACE: Multigroup-Multiangle Integrated Thermal Compton Scattering Kernel
-
 - **英文原题**：MACE: Multigroup-Multiangle Integrated Thermal Compton Scattering Kernel
 - **作者**：Itamar Giron, Menahem Krief, Elad Steinberg
 - **推荐理由**：论文开发了开源确定性多能群-多角度热康普顿散射积分框架 MACE，解决了相对论热等离子体中康普顿散射核因冷反冲脊、热展宽及前向奇异性跨越多个数量级而极难精确积分的问题，为 TDE、GRB 及致密天体吸积流的高精度多维多群辐射流体与辐射输运模拟提供了核心微观物理输入与高阶温度导数计算。
@@ -1048,7 +962,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：Multigroup-Multiangle Quadrature of the Kernel
 
 ### [arXiv:2610.25097](https://arxiv.org/abs/2610.25097) Destinies of Plasmoids Formed from the Magnetic Reconnection Occurring within the Ergo Region of a Rotating Black Hole
-
 - **英文原题**：Destinies of Plasmoids Formed from the Magnetic Reconnection Occurring within the Ergo Region of a Rotating Black Hole
 - **作者**：Ho-Yun YuChih, Ye Shen
 - **推荐理由**：该工作深入探讨了利用旋转黑洞能层内 Comisso-Asenjo 磁重联机制提取自旋能量的关键物理瓶颈，明确了携带正能量的等离子体团逃逸条件，对理解相对论喷流驱动机制及致密天体中心引擎极限自旋具有直接的理论指导意义。
@@ -1056,7 +969,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：IV.2 Covering Factor for Escaping $p^+$
 
 ### [arXiv:2610.24660](https://arxiv.org/abs/2610.24660) Clumpy Outflows from Super-Eddington Accreting Black Holes. II. Conditions for Clump Formation
-
 - **英文原题**：Clumpy Outflows from Super-Eddington Accreting Black Holes. II. Conditions for Clump Formation
 - **作者**：Haojie Hu, Yuta Asahina, Shogo Yoshioka 等
 - **推荐理由**：该工作通过高分辨率二维广义相对论辐射流体力学（GR-RHD）模拟，系统解构了超Eddington吸积黑洞超快外流（UFOs）中团块（clump）结构的形成物理机制，对理解致密天体超Eddington风、光电离吸收体及相对论性/半相对论性外流多相结构具有明确的物理增量。
@@ -1064,27 +976,22 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：IV.1 Signatures for Instabilities
 
 ### [arXiv:2610.24276](https://arxiv.org/abs/2610.24276) Mass-loss Rates of 74 Bow Shock OB Stars: No Evidence for Bi-stability Behavior
-
 - **英文原题**：Mass-loss Rates of 74 Bow Shock OB Stars: No Evidence for Bi-stability Behavior
 - **作者**：Nikhil Patten, Henry A. Kobulnicky
 - **推荐理由**：该工作利用红外恒星弓激波的冲日压平衡，独立于经典紫外/光学谱线测量了大质量OB星的恒星风质量损失率 $\dot{M}$，校正了低速星受星际介质流动导致的系统偏差，并排除了此前支持双稳态跃迁的观测假象，为超新星前身星演化与致密天体形成提供了关键的星风物理基准与理论模型约束。
-- **核心要点**：通过弓激波平衡测定了 74 颗早型星的质量损失率，范围跨越 $\log(L__/L\_\odot) \approx 4.5$ 处的 $2\times 10^{-9}\,M\_\odot\,{\rm yr}^{-1}$ 至 $\log(L__/L_\odot) \approx 6.3$ 处的 $4\times 10^{-6}\,M_\odot\,{\rm yr}^{-1}$。修正介质流动速度下限 $V_a = 20\,{\rm km\,s}^{-1}$ 后，$\dot{M}$ 与 $L_*$ 表现出极强相关性，与 Björklund (B23) 模型吻合极好（中位偏差仅 $+0.01\,{\rm dex}$），但系统性低于 Vink 等人（V01）公式约 $0.83\,{\rm dex}$；在 $T_{\rm eff} \approx 22.5\text{--}27.5\,{\rm kK}$ 区间未发现双稳态跃迁引起的 $\dot{M}$ 突增，证实先前的高值系因仪器像元尺度误用及背景扣除不足所致。
+- **核心要点**：通过弓激波平衡测定了 74 颗早型星的质量损失率，范围跨越 $\log(L_*/L_\odot) \approx 4.5$ 处的 $2\times 10^{-9}\,M_\odot\,{\rm yr}^{-1}$ 至 $\log(L_*/L_\odot) \approx 6.3$ 处的 $4\times 10^{-6}\,M_\odot\,{\rm yr}^{-1}$。修正介质流动速度下限 $V_a = 20\,{\rm km\,s}^{-1}$ 后，$\dot{M}$ 与 $L_*$ 表现出极强相关性，与 Björklund (B23) 模型吻合极好（中位偏差仅 $+0.01\,{\rm dex}$），但系统性低于 Vink 等人（V01）公式约 $0.83\,{\rm dex}$；在 $T_{\rm eff} \approx 22.5\text{--}27.5\,{\rm kK}$ 区间未发现双稳态跃迁引起的 $\dot{M}$ 突增，证实先前的高值系因仪器像元尺度误用及背景扣除不足所致。
 - **阅读切入**：Discussion & Conclusions
 
 ### [arXiv:2610.23852](https://arxiv.org/abs/2610.23852) Flashing with colours: Photometric indicators of an early interaction in type II supernovae
-
 - **英文原题**：Flashing with colours: Photometric indicators of an early interaction in type II supernovae
 - **作者**：A. Mendez-Llorca, G. Folatelli, C. P. Gutierrez 等
 - **推荐理由**：文章系统对比了具有早期闪光光谱（flash-spectroscopy，指示致密CSM相互作用）与无闪光特征的II型超新星的大样本（86例）多波段测光与颜色演化。提出了利用早期颜色拐折斜率变化 $\Delta cs$ 结合峰值绝对星等 $M_{\mathrm{peak}}$ 诊断致密星周介质相互作用的测光判据，并给出了闪光特征持续时间 $t_{\mathrm{IIn}}$ 与测光极小值相位 $t_{\mathrm{min}}$、转折相位 $t_{\mathrm{break}}$ 之间的关键定量时序约束 $t_{\mathrm{min}} \le t_{\mathrm{IIn}} < t_{\mathrm{break}}$。
 - **核心要点**：1. 强闪光电离特征样本（Class 1+2）在所有光学波段均显著更亮且更蓝，其峰值绝对星等 $M_{\mathrm{peak}} \lesssim -17.5\ \mathrm{mag}$（如 $g$ 波段加权均值为 $-18.31 \pm 0.33\ \mathrm{mag}$），与无闪光样本差异显著（$p^{\mathrm{KS}} < 10^{-4},\ p^{\mathrm{AD}} < 0.01$）。
-
 2. 早期颜色曲线（5–30天）双折线拟合表明，Class 1+2 样本早期变红速率 $cs_0$ 更快，转折后速率 $cs_1$ 减缓，其斜率差 $\Delta cs = cs_0 - cs_1 > 0$ 与绝对峰值星等 $M_{\mathrm{peak}}$ 构成的参数空间能清晰分离强相互作用与无相互作用事件。
 3. 在 $(g-r)$ 颜色演化中，闪光电离光谱特征持续时间 $t_{\mathrm{IIn}}$ 被严格限制在颜色极小值时间 $t_{\mathrm{min}}$ 与转折时间 $t_{\mathrm{break}}$ 之间：$$t_{\mathrm{min}} \le t_{\mathrm{IIn}} < t_{\mathrm{break}}$$\n且 $t_{\mathrm{IIn}}$ 与 $t_{\mathrm{min}}$ 呈强正相关（Pearson $r = 0.86$, $p = 7 \times 10^{-4}$）。\n4. 仅具备宽 ledge 特征（宽 He II $\lambda 4686$）的事件与 non-flash 事件行为类似，对应较低密度星周风（$\dot{M} \sim 10^{-6}\ M_\odot\ \mathrm{yr}^{-1}$），并非高密度致密 CSM 的可靠指示源。
-
 - **阅读切入**：6.4. Break time, colour minimum, and flash-feature duration
 
 ### [arXiv:2610.23738](https://arxiv.org/abs/2610.23738) A precessing AGN with S-shaped morphology discovered in MALS
-
 - **英文原题**：A precessing AGN with S-shaped morphology discovered in MALS
 - **作者**：J. D. Wagenveld, N. Gupta
 - **推荐理由**：利用MeerKAT的高灵敏度低频射电巡天发现了一例典型S型进动喷流射电星系J1221$-$1354，通过射电谱老化分析和弹道进动喷流模型限制了相对论喷流运动学参量，为致密双黑洞（SMBHB）驱动喷流进动的物理图景提供了定量观测约束。
@@ -1092,7 +999,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：3.3 Spectral modelling
 
 ### [arXiv:2610.23581](https://arxiv.org/abs/2610.23581) Andreev Beta Conversion and Bulk Viscosity in Superfluid Neutron-Star Matter
-
 - **英文原题**：Andreev Beta Conversion and Bulk Viscosity in Superfluid Neutron-Star Matter
 - **作者**：Tingyu Zhang, Honoka Hoshino, Hiroyuki Tajima 等
 - **推荐理由**：论文通过非平衡场论提出了超流中子凝聚体与正常相粒子共存时的 Andreev 贝塔转换新通道，揭示了极低温下弱相互作用弛豫率从指数压低转变为幂律温控行为，为超新星残骸致密天体冷却、中子星并合震荡阻尼及中微子辐射物理提供了微观理论修正。
@@ -1100,7 +1006,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：Andreev Beta Conversion and Bulk Viscosity in Superfluid Neutron-Star Matter
 
 ### [arXiv:2610.23425](https://arxiv.org/abs/2610.23425) ExHaLe-jet: Modeling blazar jets with an extended hadro-leptonic radiation code
-
 - **英文原题**：ExHaLe-jet: Modeling blazar jets with an extended hadro-leptonic radiation code
 - **作者**：M. Zacharias, A. Zech, A. Reimer 等
 - **推荐理由**：本文应用扩展动力学辐射代码 ExHaLe-jet 模拟耀变体相对论喷流全尺度空间演化，自洽求解强子与轻子含时输运及多信使辐射（光子与高能中微子），符合研究组对相对论喷流、多信使辐射机制及中心引擎能量耗散的研究关注。
@@ -1108,7 +1013,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：1 Introduction
 
 ### [arXiv:2610.23414](https://arxiv.org/abs/2610.23414) SN 2025wiu: A Type Ib Supernova with Post-Peak Optical Rebrightening
-
 - **英文原题**：SN 2025wiu: A Type Ib Supernova with Post-Peak Optical Rebrightening
 - **作者**：Cheng-Han Lai, Ting-Wan Chen, Yu-Hao Zhang 等
 - **推荐理由**：该工作报道了一例罕见的具有峰后光学再次增亮特征的 Type Ib 超新星 SN 2025wiu，详细分析了双峰光学光变、全波段热光度演化以及光谱特征，并对中心引擎（磁星/吸积）与非球对称 CSM 相互作用等能量机制进行了深入甄别，对研究剥层超新星（SESN）晚期能量注入及隐藏星周环境具有参考价值。
@@ -1116,7 +1020,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：IV.2 Modeling the Later Luminosity Excess
 
 ### [arXiv:2610.23395](https://arxiv.org/abs/2610.23395) Impact of neutron captures on the r-process: I. Propagation of statistical model uncertainties
-
 - **英文原题**：Impact of neutron captures on the r-process: I. Propagation of statistical model uncertainties
 - **作者**：Yu An, Jan Kuske, Almudena Arcones
 - **推荐理由**：文章系统量化了双中子星并合（NSM）及其吸积盘外流中，快中子俘获反应（n, gamma）统计模型输入（核能级密度 NLD 与 gamma 强度函数 GSF）对 r-过程核合成丰度的理论不确定度传播，与千新星中心引擎后光度及致密天体抛射物环境密切相关。
@@ -1124,7 +1027,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：IV.1 Overview of statistical model impact on the r-process
 
 ### [arXiv:2610.23393](https://arxiv.org/abs/2610.23393) Exploring Cosmic Rays from Gravity-Limited Acceleration at Supermassive Black Holes
-
 - **英文原题**：Exploring Cosmic Rays from Gravity-Limited Acceleration at Supermassive Black Holes
 - **作者**：Elena Manao, Elisa Resconi, Frank M. Rieger 等
 - **推荐理由**：文章探讨了超大质量黑洞（SMBH）视界尺度引力限制磁场加速超高能宇宙线（UHECR）的理论机制，并利用皮埃尔·奥格天文台（PAO）观测数据检验了宁静态星系核与 AGN 的空间角相关性，与高能粒子加速及致密天体环境直接相关。
@@ -1132,7 +1034,6 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：Exploring Cosmic Rays from Gravity-Limited Acceleration at Supermassive Black Holes
 
 ### [arXiv:2610.23385](https://arxiv.org/abs/2610.23385) Prospects for Simultaneously Detecting Long and Short Duration Gravitational Waves from Pulsar Glitches with Current and Future Detectors
-
 - **英文原题**：Prospects for Simultaneously Detecting Long and Short Duration Gravitational Waves from Pulsar Glitches with Current and Future Detectors
 - **作者**：M. Ball, D. Keitel
 - **推荐理由**：文章系统量化了当前与第三代（3G）地面引力波网络协同探测脉冲星自转突变（glitch）时长时标瞬态连续波（tCW，瞬态山）与短时标爆发（f-mode 阻尼振荡）的灵敏度，明确指出了双重探测瓶颈在于高频 burst 搜寻及天区位置依赖，对致密天体多信使引力波搜寻与中子星物态方程限制具有明确的参考价值。
@@ -1140,13 +1041,11 @@ _Fig. 4 (核心物理演化图)：Figure S6: Normalized probability density dist
 - **阅读切入**：VII Observational Prospects 与 VII.3 Improvement on Constraints in Future Observing Runs
 
 ### [arXiv:2610.23380](https://arxiv.org/abs/2610.23380) Three-dimensional spatial modelling of nuclear de-excitation lines
-
 - **英文原题**：Three-dimensional spatial modelling of nuclear de-excitation lines
 - **作者**：Tomohiko Oka, Thomas Siegert, Tristan Bouchet 等
 - **推荐理由**：论文通过结合 GALPROP 3D 宇宙线输运与 TALYS 核反应截面，系统模拟了银河系低能宇宙线（LECR）引发的原子核退激发 MeV 伽马射线发射（如 4.4 MeV、6.1 MeV 和 1.6 MeV）。研究对银心区域高电离率所需的宇宙线能量预算进行了定量限制，指出其所需的注入功率远超超新星遗迹（SNR）的常规加速能力，对致密天体环境、高能粒子加速与 MeV 伽马射线观测（如 COSI）具有参考价值。
-- **核心要点**：基准模型在常规大尺度银道脊区域（$|l|\leq 60^{\circ}, |b|\leq 10^{\circ}$）预测的 $^{12}\mathrm{C}^_$（$4.4\,\mathrm{MeV}$）、$^{16}\mathrm{O}^_$（$6.1\,\mathrm{MeV}$）和 $^{20}\mathrm{Ne}^*$（$1.6\,\mathrm{MeV}$）线强分别为 $5.8\times 10^{-7}$、$2.6\times 10^{-7}$ 和 $2.7\times 10^{-7}\,\mathrm{ph\,cm^{-2}\,s^{-1}\,sr^{-1}}$，退激发发射仅占轻子连续谱的 $\lesssim 1\%$；但加入符合高电离率观测的银心集中 LECR 组分后，在银心天区（$|b|, |l| \lesssim 2^{\circ}$）该比值可超过 $100\%$。此外，$6.1\,\mathrm{MeV}/4.4\,\mathrm{MeV}$ 线强比对 LECR 注入截止能量 $E_{\rm max}$ 高度敏感，变化可达 $\sim 30\%$。若要解释观测电离率，额外 LECR 组分所需的注入功率高达 $1\times 10^{43}\,\mathrm{erg\,s^{-1}}$（基准 LECR）或 $7\times 10^{42}\,\mathrm{erg\,s^{-1}}$（银心集中），显著高于银河系超新星能提供的常规宇宙线总功率 $L_{\rm SNR} \sim 10^{41}\,\mathrm{erg\,s^{-1}}$。
+- **核心要点**：基准模型在常规大尺度银道脊区域（$|l|\leq 60^{\circ}, |b|\leq 10^{\circ}$）预测的 $^{12}\mathrm{C}^*$（$4.4\,\mathrm{MeV}$）、$^{16}\mathrm{O}^*$（$6.1\,\mathrm{MeV}$）和 $^{20}\mathrm{Ne}^*$（$1.6\,\mathrm{MeV}$）线强分别为 $5.8\times 10^{-7}$、$2.6\times 10^{-7}$ 和 $2.7\times 10^{-7}\,\mathrm{ph\,cm^{-2}\,s^{-1}\,sr^{-1}}$，退激发发射仅占轻子连续谱的 $\lesssim 1\%$；但加入符合高电离率观测的银心集中 LECR 组分后，在银心天区（$|b|, |l| \lesssim 2^{\circ}$）该比值可超过 $100\%$。此外，$6.1\,\mathrm{MeV}/4.4\,\mathrm{MeV}$ 线强比对 LECR 注入截止能量 $E_{\rm max}$ 高度敏感，变化可达 $\sim 30\%$。若要解释观测电离率，额外 LECR 组分所需的注入功率高达 $1\times 10^{43}\,\mathrm{erg\,s^{-1}}$（基准 LECR）或 $7\times 10^{42}\,\mathrm{erg\,s^{-1}}$（银心集中），显著高于银河系超新星能提供的常规宇宙线总功率 $L_{\rm SNR} \sim 10^{41}\,\mathrm{erg\,s^{-1}}$。
 - **阅读切入**：3.1 Spectra from conventional large-scale regions
 
 ---
-
-_AstroLineage 前沿学术雷达 · 报告自动编译生成 ｜ 包含 98 篇精读文献_
+*AstroLineage 前沿学术雷达 · 报告自动编译生成 ｜ 包含 98 篇精读文献*

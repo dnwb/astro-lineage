@@ -42,6 +42,20 @@ flowchart TD
 | **`astrolineage-bot.service`** | Systemd User | `node scripts/tencent-channel-bot.mjs` | 定时轮询腾讯频道论坛版块的帖子与评论，执行长文研读与互动 |
 | **arXiv 自动化定时任务** | Crontab | `scripts/cron-runner.sh auto` | 周一至周五 10:00 CST 执行抓取、AI 研判、构建页面与频道自动发布 |
 
+### 2. 双工作区架构与 Git 同步契约 (Dual-Worktree Architecture)
+
+为了保证主线定时流水线的无人值守稳定性，宿主机物理环境区分为两个专职 Git Worktree：
+
+1. **开发工作区 (`/home/long/astro-lineage`)**：
+   - 供人工 Session 与开发 Agent 进行日常编码、特性分支开发与单元测试；
+   - 严禁在此目录运行长周期 Crontab 自动同步。
+2. **生产宿主工作区 (`/home/long/astro-lineage-cron`)**：
+   - 常驻 `master` 分支，承载 Systemd 常驻服务与定时 Crontab 任务；
+   - 严禁在此目录进行手工未提交的业务代码修改。
+3. **前置同步与后置推送契约**：
+   - **前置拉取 (`pull_upstream_master`)**：由 `CRON_GIT_PULL=true` 受控激活。只在 master 分支且无未提交代码改动时执行 `git fetch` 与 `git merge --ff-only`；若检测到代码改动或快进分叉，记录告警并安全跳过，降级使用当前版本继续运行，绝不中断核心流水线；
+   - **后置推送 (`sync_git_data`)**：由 `CRON_GIT_PUSH=true` 受控激活。采用 SSH 协议推送，仅在 master 且工作区纯净（仅数据和图表改动）时提交并推送。
+
 ---
 
 ## 二、一键健康检查与诊断 (`--doctor`)

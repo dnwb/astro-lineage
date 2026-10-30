@@ -32,6 +32,8 @@ import {
   getBibliographicSourceName,
   deriveFigurePhysicalCore,
   groupPicksByTheme,
+  formatAuthorList,
+  hasVerifiedFigureAsset,
 } from "../src/domain/academic-domain.mjs";
 import {
   tokenizeScientificText,
@@ -253,8 +255,9 @@ export async function generateWeeklyMarkdownDocument({
     const tierBadge = p.priority === "must_read" ? "⭐ 必读" : "📌 关注";
     const dailyRec = dailyAnalysisMap.get(aid);
     const dailyA = dailyRec?.analysis?.analysis || dailyRec?.analysis || {};
-    const figs = p.figures || dailyA.figures || [];
-    const primaryFig = Array.isArray(figs) && figs.length > 0 ? figs[0] : null;
+    const rawFigs = p.figures || dailyA.figures || [];
+    const figs = Array.isArray(rawFigs) ? rawFigs.filter(hasVerifiedFigureAsset) : [];
+    const primaryFig = figs.length > 0 ? figs[0] : null;
     const insight = p.core_insight || dailyA.result || p.recommendation_reason || "无";
     lines.push(
       `- **${String(i + 1).padStart(2, "0")}. [${tierBadge}] [arXiv:${aid}](https://arxiv.org/abs/${aid}) ${titleZh}**（*${titleEn}*）`
@@ -303,7 +306,7 @@ export async function generateWeeklyMarkdownDocument({
       const titleEn = p.title || aid;
       const feed = dailyEntryMap.get(aid);
       const authors = (p.authors && p.authors.length > 0 ? p.authors : feed?.authors) || [];
-      const authorStr = authors.slice(0, 5).join(", ") + (authors.length > 5 ? " 等" : "");
+      const authorStr = formatAuthorList(authors, { isLegacy: true, max: 5 });
       const dailyA = dailyAnalysisMap.get(aid)?.analysis || {};
 
       lines.push(`#### [arXiv:${aid}](https://arxiv.org/abs/${aid}) ${titleZh}`);
@@ -376,7 +379,7 @@ export async function generateWeeklyMarkdownDocument({
     const titleEn = p.title || aid;
     const feed = dailyEntryMap.get(aid);
     const authors = (p.authors && p.authors.length > 0 ? p.authors : feed?.authors) || [];
-    const authorStr = authors.slice(0, 3).join(", ") + (authors.length > 3 ? " 等" : "");
+    const authorStr = formatAuthorList(authors, { isLegacy: true, max: 3 });
     const pickBadge = p.isTopPick ? " [⭐ 重点关注]" : "";
 
     lines.push(`### [arXiv:${aid}](https://arxiv.org/abs/${aid}) ${titleZh}${pickBadge}`);
@@ -1337,7 +1340,7 @@ export async function generatePublicationWeeklyHtml({
       const titleEn = p.title || aid;
       const feed = dailyEntryMap.get(aid);
       const authors = (p.authors && p.authors.length > 0 ? p.authors : feed?.authors) || [];
-      const authorStr = authors.slice(0, 5).join(", ") + (authors.length > 5 ? " 等" : "");
+      const authorStr = formatAuthorList(authors, { isLegacy: true, max: 5 });
       const dailyA = dailyAnalysisMap.get(aid)?.analysis || {};
 
       html.push(`
@@ -1492,7 +1495,7 @@ export async function generatePublicationWeeklyHtml({
       const titleEn = p.title || aid;
       const feed = dailyEntryMap.get(aid);
       const authors = (p.authors && p.authors.length > 0 ? p.authors : feed?.authors) || [];
-      const authorStr = authors.slice(0, 3).join(", ") + (authors.length > 3 ? " 等" : "");
+      const authorStr = formatAuthorList(authors, { isLegacy: true, max: 3 });
 
       html.push(`
       <div class="worth-card" id="pdf-paper-${aid}">
@@ -1534,7 +1537,7 @@ export async function generatePublicationWeeklyHtml({
       const titleEn = p.title || aid;
       const feed = dailyEntryMap.get(aid);
       const authors = (p.authors && p.authors.length > 0 ? p.authors : feed?.authors) || [];
-      const authorStr = authors.slice(0, 3).join(", ") + (authors.length > 3 ? " 等" : "");
+      const authorStr = formatAuthorList(authors, { isLegacy: true, max: 3 });
       const date = p.announcement_date || "";
 
       html.push(`

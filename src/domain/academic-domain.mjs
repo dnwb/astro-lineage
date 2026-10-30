@@ -934,10 +934,15 @@ export function groupPicksByTheme(picks, weeklyData = {}) {
         : [];
 
   for (const t of rawThemes) {
-    const themeName = (t.theme || t.title || "").trim();
+    const themeName = (t.theme || t.theme_name || t.title || "").trim();
     if (!themeName) continue;
+    const rawIds = Array.isArray(t.key_papers)
+      ? t.key_papers
+      : Array.isArray(t.paper_ids)
+        ? t.paper_ids
+        : [];
     const keyPaperIds = new Set(
-      (Array.isArray(t.key_papers) ? t.key_papers : []).map((id) =>
+      rawIds.map((id) =>
         String(id)
           .replace(/^arXiv:/i, "")
           .trim()
@@ -1005,7 +1010,7 @@ export function groupPicksByTheme(picks, weeklyData = {}) {
         // Group by primary category or first keyword when no themes metadata exists
         const byCat = new Map();
         for (const p of stillUnassigned) {
-          const cat = p.categories?.[0] || p.keywords?.[0] || "综合前沿课题 (General Highlights)";
+          const cat = p.categories?.[0] || p.keywords?.[0] || "General Highlights";
           if (!byCat.has(cat)) byCat.set(cat, []);
           byCat.get(cat).push(p);
         }
@@ -1018,7 +1023,7 @@ export function groupPicksByTheme(picks, weeklyData = {}) {
         }
       } else {
         groups.push({
-          theme: "交叉与前沿拓展课题 (Cross-Disciplinary & Extended Highlights)",
+          theme: "Cross-Disciplinary & Extended Highlights",
           description: "",
           picks: stillUnassigned,
         });

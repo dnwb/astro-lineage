@@ -1,17 +1,69 @@
 {
   "schema_version": "astrolineage-arxiv-archive-manifest-v1",
-  "updated_at": "2026-11-02T02:00:40.811Z",
-  "total_weeks": 8,
-  "total_daily_editions": 39,
-  "latest_week_id": "2026-W44",
-  "latest_daily_date": "2026-10-29",
+  "updated_at": "2026-11-02T18:22:41.189Z",
+  "total_weeks": 9,
+  "total_daily_editions": 40,
+  "latest_week_id": "2026-W45",
+  "latest_daily_date": "2026-11-01",
   "weeks": [
+    {
+      "week_id": "2026-W45",
+      "title": "Weekly Scientific Lineage · 2026-W45",
+      "date_range": "2026-11-02 ~ 2026-11-08",
+      "has_weekly_summary": true,
+      "executive_summary": "This week's high-energy transient research establishes rigorous causal links bridging dense nuclear matter equations of state, central engine formation, relativistic jet dissipation, and early multi-messenger follow-up architectures.\n- **Pulsar Surface Emission & Dense Matter Constraints**: The NICER collaboration et al. (arXiv:2610.41846) conducted comprehensive multi-wavelength pulse profile modeling from far-UV to hard X-rays on PSR J0437$-$4715, simultaneously resolving thermal surface emission and non-thermal magnetospheric power laws to measure an equatorial radius of $R_{\\rm eq} = 11.35_{-0.39}^{+0.40}\\,\\mathrm{km}$ and mass of $M = 1.377_{-0.034}^{+0.038}\\,M_\\odot$, ruling out stiff equations of state with $R_{1.4} > 12.0\\,\\mathrm{km}$ at the $68\\%$ credible level.\n- **Relativistic Jets and Prompt Gamma-Ray Bursts**: The SVOM and EP teams et al. (arXiv:2610.41005) characterized GRB 241113B across $0.5\\text{--}1000\\,\\mathrm{keV}$, establishing that its soft prompt spectrum ($E_{\\rm peak}^{\\rm obs} \\approx 35\\text{--}37\\,\\mathrm{keV}$) arises from intrinsic jet dissipation with bulk Lorentz factor $\\Gamma_0 > 100$ decelerating into a stellar wind ($s=2$), definitively excluding shock breakout and dirty-fireball baryonic loading scenarios.\n- **Multi-Messenger Gravitational-Wave Follow-up**: The Deep Synoptic Array collaboration et al. (arXiv:2610.40958) developed a reinforcement-learning-guided rapid slewing policy capturing up to $75\\%\\text{--}90\\%$ of immediate binary neutron star coalescences down to coherent radio fluences of $20\\,\\mathrm{mJy\\,ms}$, probing prompt radio emission fractions down to $10^{-13}\\text{--}10^{-10}$ of available central engine energy reservoirs.\n- **Compact Remnant Microphysics and Nucleosynthesis**: Zhu et al. (arXiv:2610.40907) showed via comprehensive network calculations that $^{250}\\mathrm{Cm}$ dominates the $0.2\\text{--}5\\,\\mathrm{MeV}$ $\\gamma$-ray line flux of strong $r$-process remnants from $2{,}000$ to $20{,}000\\,\\mathrm{yr}$ post-merger, providing an unambiguous actinide nucleosynthetic tracer, while Caplan et al. (arXiv:2610.40892) demonstrated via molecular dynamics that static shear strain exponentially enhances defect-mediated diffusion in crustal Yukawa lattices.\n- **Dynamical Transients and Binary Coalescence Populations**: Zevin et al. (arXiv:2610.40782) resolved the apparent age tension of GW170817 by finding that empirical delay-time distributions favor extended delays ($t_{\\rm min} > 7.5\\,\\mathrm{Gyr}$), while Grishin et al. (arXiv:2610.40767) demonstrated that chaotic diving orbits in flattened nuclear potentials boost tidal disruption rates by $\\sim 10\\times$ above standard two-body loss-cone limits.",
+      "statistics": {
+        "total_analyzed": 60,
+        "must_read_count": 3,
+        "worth_knowing_count": 16,
+        "skip_count": 41
+      },
+      "top_picks_count": 13,
+      "days": [
+        {
+          "date": "2026-11-01",
+          "weekday": "Sun",
+          "week_id": "2026-W45",
+          "batch_id": "announcement-2026-11-01",
+          "total_papers": 60,
+          "analyzed_count": 60,
+          "must_read_count": 3,
+          "worth_knowing_count": 16,
+          "skip_count": 41,
+          "pending_count": 0,
+          "brief_status": "ready",
+          "brief_intro": "Featured reading: \"Optimizing Prompt Radio Counterpart Searches for Gravitational-Wave Events with the Deep Synoptic Array\" and 18 other key developments.",
+          "highlights": [
+            {
+              "arxiv_id": "2610.40958",
+              "priority": "must_read",
+              "title": "Optimizing Prompt Radio Counterpart Searches for Gravitational-Wave Events with the Deep Synoptic Array",
+              "reason": "The paper directly addresses prompt coherent radio counterpart searches (FRB-like emission) from compact binary coalescences using gravitational-wave early warnings, combining RL-based telescope pointing optimization with DSA and the Chronoscope backend."
+            },
+            {
+              "arxiv_id": "2610.41005",
+              "priority": "must_read",
+              "title": "GRB 241113B: the first SVOM and EP gamma-ray burst A soft GRB likely seen on-axis, from soft X-rays to gamma-rays",
+              "reason": "This is the first joint detection of a gamma-ray burst (GRB 241113B) by both SVOM and Einstein Probe, bridging the gap between soft X-ray transients and classic GRBs with high-precision broadband spectro-temporal modeling."
+            },
+            {
+              "arxiv_id": "2610.41846",
+              "priority": "must_read",
+              "title": "A multi-wavelength view of PSR J0437-4715 with NICER and other missions: Radius measurements from far-ultraviolet to hard X-ray pulse profile modeling",
+              "reason": "This work performs an unprecedented multi-wavelength pulse profile modeling (PPM) of the nearest millisecond pulsar PSR J0437-4715 combining HST, NICER, XMM-Newton, and NuSTAR datasets to obtain the tightest neutron star radius and equation of state constraints to date."
+            }
+          ],
+          "data_file": "daily/2026-11-01.json"
+        }
+      ],
+      "weekly_data_file": "weekly/2026-W45.json"
+    },
     {
       "week_id": "2026-W44",
       "title": "Weekly Scientific Lineage · 2026-W44",
       "date_range": "2026-10-26 ~ 2026-11-01",
       "has_weekly_summary": true,
-      "executive_summary": "This week's high-energy astrophysics landscape advances our understanding along the causal chain from compact-object engines and relativistic flows to particle acceleration, shock dissipation, and multi-messenger signatures. Key progress includes:\n- **Collapsar Engines & Nucleosynthesis**: arXiv:2610.31758 analytically demonstrates that neutrino-cooled collapsar accretion disks cannot synthesize heavy $r$-process elements ($Y_{\\rm e} \\le 0.25$) under long-GRB isotropic jet power constraints ($P_j \\lesssim 5\\times 10^{51}\\,{\\rm erg\\,s^{-1}}$), setting a fundamental lower bound $Y_{\\rm e}^{\\min}(R_{\\rm unb}) \\ge 0.28$.\n- **Relativistic Jets & Shock Dissipation**: arXiv:2610.32861 establishes that GRB 260924A ($E_{\\gamma,\\mathrm{iso}} \\simeq 9.79\\times 10^{54}\\,{\\rm erg}$) requires a structured circumstellar medium $n(R) \\propto R^{-1.2}$ and a reverse-shock synchrotron self-Compton (SSC) origin for prompt-to-early GeV excess exceeding the standard synchrotron burnoff limit; arXiv:2610.37044 derives an exact non-steady-state broken power law $f_{\\rm U}(\\gamma_e, t) \\propto \\gamma_e^{-2}[1 + \\gamma_0(t)/\\gamma_e]^{-\\beta}$ for fast-cooling electrons below the minimum injection Lorentz factor $\\gamma_m$.\n- **Magnetized Disk Dynamos & Jet Launching**: arXiv:2610.37758 discovers via 3D GRMHD that thin accretion disks ($h/r \\le 0.1$) cannot achieve magnetically arrested disk (MAD) states on dynamical timescales due to steep transport suppression $v_{\\Phi}/V_k \\propto (h/r)^{3.5}$, requiring $t_{\\rm MAD} \\sim 10^8\\,r_g/c$; arXiv:2610.38673 quantifies black hole equilibrium spin $a_{\\star;{\\rm eq}}$ as a continuous monotonic function of dimensionless horizon magnetic flux $\\tilde{\\phi}$, dropping from $\\sim 0.9$ (SANE) to $\\sim 0.05$ (saturated MAD).\n- **Coherent Radio Emission & Plasma Astrophysics**: arXiv:2610.37214 demonstrates with 3D PIC simulations that 3D flux rope mergers in relativistic reconnection generate coherent fast magnetosonic waves in the 100% linearly polarized X-mode with conversion efficiency $\\eta \\sim (1\\text{--}2)\\times 10^{-3}$.\n- **Supernova Physics & Engine Diagnostics**: arXiv:2610.39240 introduces a universal relation $C(t) = \\frac{K\\chi u}{w-2} - (\\frac{K}{w-2} + \\frac{q}{n+1})D(t)$ that accurately predicts the frequency chirp reversal in the superluminous supernova SN 2024afav, ruling out thin fallback disks and confirming Lense-Thirring precession in an advective thick torus around a newborn millisecond magnetar.\n- **Extragalactic Transients & Compact Binaries**: arXiv:2610.34217 pinpoints EP241021a as an off-nuclear transient at $0.95\\pm 0.13\\,\\mathrm{kpc}$ in a dwarf starburst galaxy, excluding stellar-mass core-collapse engines in favor of an intermediate-mass black hole tidal disruption; arXiv:2610.34810 resolves the fast X-ray transient EP251129a into a dual-plateau architecture governed sequentially by gravitational-wave-dominated magnetar spin-down and subsequent black hole fallback accretion ($E_{\\rm inj} \\simeq 6\\times 10^{51}\\,{\\rm erg}$); arXiv:2610.35539 establishes an intermediate-mass stripped helium star ($M_1 \\approx 2.5\\text{--}3.8\\,M_\\odot$) in a 4.2-hour orbit around a compact object ($M_2 \\approx 1.58\\,M_\\odot$), unveiling an elusive Case BB mass-transfer progenitor of double neutron star systems.\n- **Multi-Messenger Particle Astrophysics**: arXiv:2610.40053 reports the detection of ultra-high-energy neutrino candidate KM3-230213A by KM3NeT/ARCA with reconstructed muon energy $E_\\mu = 120^{+110}_{-60}\\,\\mathrm{PeV}$ (parent neutrino $E_\\nu \\sim 220\\,\\mathrm{PeV}$), favoring cosmogenic interactions or transient relativistic engines; arXiv:2610.35619 presents $2.6\\sigma$ evidence for the diffuse supernova neutrino background (DSNB) $\\bar{\\nu}_e$ flux of $3.6^{+1.6}_{-1.5}\\,\\mathrm{cm}^{-2}\\,\\mathrm{s}^{-1}$ ($E_\\nu > 13.3\\,\\mathrm{MeV}$) across 5003 days of Super-Kamiokande data; arXiv:2610.35675 details the design and sub-thermal-noise trigger performance of the PUEO ultra-high-energy neutrino balloon payload.",
+      "executive_summary": "This week's high-energy astrophysics advances trace the causal chain from central engine dynamics and heavy-element nucleosynthesis to relativistic shock kinematics, off-axis multi-wavelength transients, and multi-messenger neutrino bounds.\n- **Central Engines & Heavy-Element Nucleosynthesis**: arXiv:2610.31758 proved that neutrino-cooled collapsar accretion disks cannot synthesize heavy $r$-process elements ($Y_e \\le 0.25$) under long GRB energetic constraints, bounding $Y_e^{\\min} > 0.28$ across all magnetization regimes; arXiv:2610.37758 demonstrated via 3D GRMHD that thin disks ($h/r \\le 0.1$) fail to establish magnetically arrested disk (MAD) states on accretion timescales, suppressing jet launching with electromagnetic efficiency $\\eta_{\\rm EM} \\sim 0.01$; arXiv:2610.38673 tracked self-consistent black hole spin evolution, proving that black holes in saturated MAD states rapidly spin down to an equilibrium spin of $a_{\\star;{\\rm eq}} \\approx 0.05-0.06$.\n- **Relativistic Jets, Microphysics & GRBs**: arXiv:2610.32861 identified the hyper-energetic GRB 260924A ($E_{\\gamma,\\mathrm{iso}} \\simeq 9.79\\times 10^{54}\\,\\mathrm{erg}$) in a stratified wind medium ($n \\propto R^{-1.2}$), interpreting early $43.3\\,\\mathrm{GeV}$ excess photons via reverse shock synchrotron self-Compton radiation; arXiv:2610.37044 established a new exact electron distribution below $\\gamma_m$ under fast cooling, demonstrating that boundary effects bend the canonical $f(\\gamma_e) \\propto \\gamma_e^{-2}$ distribution into a broken power law $f(\\gamma_e) \\propto \\gamma_e^{-2+\\beta}$; arXiv:2610.37214 confirmed using 3D PIC simulations that flux rope mergers in relativistic magnetic reconnection stably produce coherent X-mode waves with Poynting efficiencies $\\eta \\sim (1-2) \\times 10^{-3}$.\n- **Engine-Driven Transients & Double Compact Progenitors**: arXiv:2610.34217 discovered that the month-long off-nuclear transient EP241021a is powered by sustained accretion onto an intermediate-mass black hole ($M_{\\mathrm{BH}} \\lesssim 10^4\\,M_\\odot$) or a micro-TDE rather than a standard collapsar or binary merger; arXiv:2610.34810 modeled EP251129a, showing its double X-ray plateau and delayed radio brightening are driven by an off-axis two-component jet re-energized by $0.2\\,M_\\odot$ black hole fallback accretion; arXiv:2610.39240 derived a universal relation between chirp rate and dimming rate, accurately predicting the period reversal of SN 2024afav and verifying a hot advective disk precessing around a nascent magnetar; arXiv:2610.35539 identified a stripped intermediate-mass helium star in a $4.2\\,\\mathrm{h}$ orbit with a $1.58\\,M_\\odot$ compact object, establishing the missing evolutionary progenitor to double neutron star mergers.\n- **Multi-Messenger High-Energy Neutrinos**: arXiv:2610.35619 reported Super-Kamiokande's detection of the diffuse supernova neutrino background electron antineutrino flux at $2.6\\sigma$ ($3.6^{+1.6}_{-1.5}\\,\\mathrm{cm}^{-2}\\,\\mathrm{s}^{-1}$ for $E_\\nu > 13.3\\,\\mathrm{MeV}$); arXiv:2610.40053 presented KM3NeT's detection of the horizontal muon neutrino KM3-230213A with parent energy $E_\\nu \\sim 220\\,\\mathrm{PeV}$, demanding extreme source evolution or transient flaring engines; arXiv:2610.35675 verified the high-sensitivity flight performance of the PUEO ultra-high-energy neutrino interferometric payload.",
       "statistics": {
         "total_analyzed": 348,
         "must_read_count": 13,

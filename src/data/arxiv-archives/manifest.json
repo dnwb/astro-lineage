@@ -1,25 +1,60 @@
 {
   "schema_version": "astrolineage-arxiv-archive-manifest-v1",
-  "updated_at": "2026-11-03T02:10:01.045Z",
+  "updated_at": "2026-11-03T18:28:32.122Z",
   "total_weeks": 9,
-  "total_daily_editions": 40,
+  "total_daily_editions": 41,
   "latest_week_id": "2026-W45",
-  "latest_daily_date": "2026-11-01",
+  "latest_daily_date": "2026-11-02",
   "weeks": [
     {
       "week_id": "2026-W45",
       "title": "Weekly Scientific Lineage · 2026-W45",
       "date_range": "2026-11-02 ~ 2026-11-08",
       "has_weekly_summary": true,
-      "executive_summary": "This week's high-energy transient research establishes rigorous causal links bridging dense nuclear matter equations of state, central engine formation, relativistic jet dissipation, and early multi-messenger follow-up architectures.\n- **Pulsar Surface Emission & Dense Matter Constraints**: The NICER collaboration et al. (arXiv:2610.41846) conducted comprehensive multi-wavelength pulse profile modeling from far-UV to hard X-rays on PSR J0437$-$4715, simultaneously resolving thermal surface emission and non-thermal magnetospheric power laws to measure an equatorial radius of $R_{\\rm eq} = 11.35_{-0.39}^{+0.40}\\,\\mathrm{km}$ and mass of $M = 1.377_{-0.034}^{+0.038}\\,M_\\odot$, ruling out stiff equations of state with $R_{1.4} > 12.0\\,\\mathrm{km}$ at the $68\\%$ credible level.\n- **Relativistic Jets and Prompt Gamma-Ray Bursts**: The SVOM and EP teams et al. (arXiv:2610.41005) characterized GRB 241113B across $0.5\\text{--}1000\\,\\mathrm{keV}$, establishing that its soft prompt spectrum ($E_{\\rm peak}^{\\rm obs} \\approx 35\\text{--}37\\,\\mathrm{keV}$) arises from intrinsic jet dissipation with bulk Lorentz factor $\\Gamma_0 > 100$ decelerating into a stellar wind ($s=2$), definitively excluding shock breakout and dirty-fireball baryonic loading scenarios.\n- **Multi-Messenger Gravitational-Wave Follow-up**: The Deep Synoptic Array collaboration et al. (arXiv:2610.40958) developed a reinforcement-learning-guided rapid slewing policy capturing up to $75\\%\\text{--}90\\%$ of immediate binary neutron star coalescences down to coherent radio fluences of $20\\,\\mathrm{mJy\\,ms}$, probing prompt radio emission fractions down to $10^{-13}\\text{--}10^{-10}$ of available central engine energy reservoirs.\n- **Compact Remnant Microphysics and Nucleosynthesis**: Zhu et al. (arXiv:2610.40907) showed via comprehensive network calculations that $^{250}\\mathrm{Cm}$ dominates the $0.2\\text{--}5\\,\\mathrm{MeV}$ $\\gamma$-ray line flux of strong $r$-process remnants from $2{,}000$ to $20{,}000\\,\\mathrm{yr}$ post-merger, providing an unambiguous actinide nucleosynthetic tracer, while Caplan et al. (arXiv:2610.40892) demonstrated via molecular dynamics that static shear strain exponentially enhances defect-mediated diffusion in crustal Yukawa lattices.\n- **Dynamical Transients and Binary Coalescence Populations**: Zevin et al. (arXiv:2610.40782) resolved the apparent age tension of GW170817 by finding that empirical delay-time distributions favor extended delays ($t_{\\rm min} > 7.5\\,\\mathrm{Gyr}$), while Grishin et al. (arXiv:2610.40767) demonstrated that chaotic diving orbits in flattened nuclear potentials boost tidal disruption rates by $\\sim 10\\times$ above standard two-body loss-cone limits.",
+      "executive_summary": "This week's high-energy astrophysical advances delineate the causal chain connecting compact binary progenitors and relativistic plasma instabilities to energetic jet breakouts, dense multi-messenger environments, and multi-wavelength emission signatures. \n- **Central Engines & Relativistic Jets**: Huang et al. (arXiv:2610.41005) established through joint EP and SVOM multi-band observations of GRB 241113B that X-ray rich bursts with $E_{\\mathrm{peak}}^{\\mathrm{obs}} \\approx 35\\text{--}37\\,\\mathrm{keV}$ can arise from standard highly relativistic jets with $\\Gamma_0 > 100$ decelerating in wind-like circumstellar media ($s=2$), excluding dirty fireballs and shock breakout origins. Sridhar et al. (arXiv:2611.02126) demonstrated via 2D Tristan-MP v2 kinetic simulations that relativistic plasmoid chains originate from a primary x-line Weibel/current-filamentation instability with peak growth rate $\\Gamma_{\\mathrm{max}} \\approx 0.1\\,\\omega_{p0}$ rather than classical Harris-sheet tearing, being dynamically quenched beyond an isotropization scale $\\ell_{\\mathrm{iso}} \\sim 10\\,\\sigma_0 d_0$.\n- **Nuclear Equation of State & Neutron Star Structure**: Salmi et al. (arXiv:2610.41846) coupled NICER, NuSTAR, XMM-Newton, and HST STIS multi-wavelength pulse profile modeling to break the surface temperature and non-thermal tail degeneracies of PSR J0437-4715, tightly constraining the equatorial radius to $R_{\\mathrm{eq}} = 11.35_{-0.39}^{+0.40}\\,\\mathrm{km}$ for $M = 1.377_{-0.034}^{+0.038}\\,M_\\odot$ and ruling out stiff equations of state with $R_{1.4} > 12.0\\,\\mathrm{km}$ at the $68\\%$ credible level. Jakobus et al. (arXiv:2610.41242) showed via general-relativistic hydrodynamic simulations that post-bounce quark-hadron phase transitions drive secondary core collapse and naturally reproduce the empirical bimodal neutron star mass peak at $1.55\\text{--}1.70\\,M_\\odot$.\n- **Multi-Messenger Mergers & Gravitational Waves**: Farrah et al. (arXiv:2611.00440) discovered a statistically significant association ($P_{\\mathrm{2GW}} = 7.6 \\times 10^{-5}$) between a temporally clustered gravitational-wave pair separated by $\\Delta t \\simeq 7.1\\,\\mathrm{hr}$ and the Type IIb stripped-envelope supernova SN 2019rsq, supporting gravitational disk fragmentation into coalescing compact remnants. Zhang et al. (arXiv:2610.40958) formulated a predictive Markov Decision Process framework with Proximal Policy Optimization enabling the Deep Synoptic Array to reach capture fractions of $75\\%\\text{--}90\\%$ for prompt coherent radio bursts from binary neutron star mergers under real-time early-warning localization maps. Anjos et al. (arXiv:2611.00205) modeled Pierre Auger Phase I composition and spectral data, proving at $\\ge 7.2\\sigma$ that binary neutron star mergers with $r$-process-rich ejecta and relativistic proton jets ($E^{\\mathrm{jet}} \\approx 12\\,\\mathrm{EeV}$) explain the observed ultrahigh-energy cosmic ray spectrum.",
       "statistics": {
-        "total_analyzed": 60,
-        "must_read_count": 3,
-        "worth_knowing_count": 16,
-        "skip_count": 41
+        "total_analyzed": 158,
+        "must_read_count": 6,
+        "worth_knowing_count": 45,
+        "skip_count": 107
       },
-      "top_picks_count": 13,
+      "top_picks_count": 16,
       "days": [
+        {
+          "date": "2026-11-02",
+          "weekday": "Mon",
+          "week_id": "2026-W45",
+          "batch_id": "announcement-2026-11-02",
+          "total_papers": 98,
+          "analyzed_count": 98,
+          "must_read_count": 3,
+          "worth_knowing_count": 29,
+          "skip_count": 66,
+          "pending_count": 0,
+          "brief_status": "ready",
+          "brief_intro": "Featured reading: \"Lightest and heaviest nuclei as keys to the origin of ultrahigh energy cosmic rays\" and 31 other key developments.",
+          "highlights": [
+            {
+              "arxiv_id": "2611.00205",
+              "priority": "must_read",
+              "title": "Lightest and heaviest nuclei as keys to the origin of ultrahigh energy cosmic rays",
+              "reason": "This paper presents a definitive multi-messenger test of binary neutron star mergers (BNSMs) as the primary sources of ultrahigh energy cosmic rays (UHECRs), demonstrating that Auger data strongly favor a two-component jet plus bulk outflow origin at $\\ge 7.2\\sigma$."
+            },
+            {
+              "arxiv_id": "2611.00440",
+              "priority": "must_read",
+              "title": "A temporally clustered gravitational wave pair and a Type IIb supernova",
+              "reason": "The paper reports a statistically significant triplet association between a temporally clustered gravitational wave pair (S190910d and S190910h, separated by $7.1\\,\\mathrm{hr}$) and the Type IIb stripped-envelope supernova SN 2019rsq ($D_{\\rm L} = 140.6\\,\\mathrm{Mpc}$). It introduces a physical collapsar accretion disk fragmentation framework that explains compact binary formation and sequential mergers inside a collapsing massive star's core engine."
+            },
+            {
+              "arxiv_id": "2611.02126",
+              "priority": "must_read",
+              "title": "The Birth of Plasmoids: Weibel-Driven Secondary Tearing and its Suppression in Relativistic Reconnection",
+              "reason": "The paper provides a foundational kinetic breakthrough by uncovering that plasmoids in relativistic magnetic reconnection are born via Weibel-driven current filamentation induced by counter-streaming carrier anisotropy at the primary x-line, with the instability quenched at an isotropization scale $\\ell_{\\rm iso} \\sim \\frac{1+\\sigma_0}{\\beta_{\\rm rec}} d_0$, governing plasmoid formation and reconnection morphology in relativistic jets and magnetar environments."
+            }
+          ],
+          "data_file": "daily/2026-11-02.json"
+        },
         {
           "date": "2026-11-01",
           "weekday": "Sun",

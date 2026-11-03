@@ -8,7 +8,7 @@ test("arxiv-figures: classifyScientificFigure detects theoretical schematic", ()
   const result = classifyScientificFigure(caption);
   assert.ok(result);
   assert.equal(result.type, "theoretical");
-  assert.equal(result.badge, "物理模型示意图");
+  assert.equal(result.badge, "Physical Model Schematic");
   assert.equal(result.score, 30);
 });
 
@@ -18,7 +18,7 @@ test("arxiv-figures: classifyScientificFigure detects observational multi-wavele
   const result = classifyScientificFigure(caption);
   assert.ok(result);
   assert.equal(result.type, "observational");
-  assert.equal(result.badge, "观测总体曲线/能谱");
+  assert.equal(result.badge, "Observational Light Curve / SED");
   assert.equal(result.score, 25);
 });
 
@@ -28,7 +28,7 @@ test("arxiv-figures: classifyScientificFigure detects model vs data fitting comp
   const result = classifyScientificFigure(caption);
   assert.ok(result);
   assert.equal(result.type, "fitting");
-  assert.equal(result.badge, "数据拟合与模型对比");
+  assert.equal(result.badge, "Model vs Data Fitting");
   assert.equal(result.score, 20);
 });
 

@@ -29,6 +29,15 @@ import {
 
 const execFileAsync = promisify(execFile);
 
+const hasPlotEnvironment = await (async () => {
+  try {
+    await execFileAsync("python3", ["-c", "import numpy, matplotlib"]);
+    return true;
+  } catch {
+    return false;
+  }
+})();
+
 // =============================================================================
 // Slice 1: Alias Unification, Deduplication & Canonical T0 Priority
 // =============================================================================
@@ -366,6 +375,10 @@ test("Slice 4: tracks last_circular_id cursor and evaluates 7-day inactivity sun
 // Slice 5: Sandboxed Light-Curve Plot Generation & Zero Workspace Leakage
 // =============================================================================
 test("Slice 5: gcn-plot.py renders publication-grade figure into sandboxed directory with zero workspace leakage", async (t) => {
+  if (!hasPlotEnvironment) {
+    t.skip("Skipping gcn-plot test: numpy or matplotlib not installed in python3 environment");
+    return;
+  }
   const ws = await createTemporaryWorkspace("gcn-plot-test-", t);
 
   const mockLedger = {
@@ -676,6 +689,10 @@ at a mid time of t-t0 ~ 10.47 hours after the GBM trigger.
 });
 
 test("Slice 9: gcn-plot.py suppresses plot generation when photometry points are insufficient (< 2)", async (t) => {
+  if (!hasPlotEnvironment) {
+    t.skip("Skipping gcn-plot test: numpy or matplotlib not installed in python3 environment");
+    return;
+  }
   const sandbox = await createTemporaryWorkspace("gcn-suppress-test", t);
   const ledgerPath = join(sandbox.path, "test-event.json");
   const outputPath = join(sandbox.path, "test-event.png");

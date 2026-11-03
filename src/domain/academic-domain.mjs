@@ -1200,5 +1200,147 @@ export function getHighEnergyConventions() {
   return "Flux decay: $F_\\nu \\propto t^{-\\alpha}\\nu^{-\\beta}$ · $\\Gamma$ denotes bulk Lorentz factor · Errors reported at 90% CL ($\\Delta\\chi^2 = 2.71$) unless specified · Flat $\\Lambda\\mathrm{CDM}$ ($H_0 = 67.4\\ \\mathrm{km\\ s^{-1}\\ Mpc^{-1}}, \\Omega_m = 0.315$)";
 }
 
+/**
+ * Pure projection deriving a topological DAG representation with branching parallel stages
+ * and epistemic roles from a canonical physical_account object.
+ *
+ * @param {Object} physicalAccount - Account containing stages and links
+ * @returns {{ levels: Array<Object>, links: Array<Object>, totalStages: number, hasBranches: boolean }}
+ */
+export function projectMechanismDAG(physicalAccount) {
+  if (!physicalAccount || !Array.isArray(physicalAccount.stages) || physicalAccount.stages.length === 0) {
+    return { levels: [], links: [], totalStages: 0, hasBranches: false };
+  }
+
+  const rawStages = physicalAccount.stages;
+  const rawLinks = Array.isArray(physicalAccount.links) ? physicalAccount.links : [];
+
+  // Build node map
+  const nodeMap = new Map();
+  for (const stage of rawStages) {
+    if (!stage || !stage.id) continue;
+    nodeMap.set(stage.id, {
+      ...stage,
+      incomingLinks: [],
+      outgoingLinks: [],
+    });
+  }
+
+  // Populate links
+  const validLinks = [];
+  for (const link of rawLinks) {
+    if (!link || !link.source_stage_id || !link.target_stage_id) continue;
+    const sourceNode = nodeMap.get(link.source_stage_id);
+    const targetNode = nodeMap.get(link.target_stage_id);
+    if (sourceNode && targetNode) {
+      sourceNode.outgoingLinks.push(link);
+      targetNode.incomingLinks.push(link);
+      validLinks.push(link);
+    }
+  }
+
+  // Compute in-degrees and assign default epistemic roles
+  const inDegreeMap = new Map();
+  for (const [id, node] of nodeMap.entries()) {
+    const inDegree = node.incomingLinks.length;
+    inDegreeMap.set(id, inDegree);
+
+    if (!node.role) {
+      const labelLower = (node.label || "").toLowerCase();
+      const isAdoptedKeyword = ["reservoir", "ambient", "density", "progenitor", "initial", "baseline"].some(
+        (kw) => labelLower.includes(kw)
+      );
+      node.role = (inDegree === 0 || isAdoptedKeyword) ? "adopted" : "proposed";
+    }
+  }
+
+  // Topological leveling via queue
+  const levelAssignment = new Map();
+  const queue = [];
+  for (const [id, deg] of inDegreeMap.entries()) {
+    if (deg === 0) {
+      levelAssignment.set(id, 0);
+      queue.push(id);
+    }
+  }
+
+  // Fallback if all nodes are cyclic
+  if (queue.length === 0) {
+    for (const id of nodeMap.keys()) {
+      levelAssignment.set(id, 0);
+      queue.push(id);
+    }
+  }
+
+  const currentDegrees = new Map(inDegreeMap);
+  while (queue.length > 0) {
+    const currId = queue.shift();
+    const currLevel = levelAssignment.get(currId) || 0;
+    const currNode = nodeMap.get(currId);
+
+    for (const link of currNode.outgoingLinks) {
+      const targetId = link.target_stage_id;
+      const prevLevel = levelAssignment.get(targetId) || 0;
+      levelAssignment.set(targetId, Math.max(prevLevel, currLevel + 1));
+
+      const remainingDeg = (currentDegrees.get(targetId) || 1) - 1;
+      currentDegrees.set(targetId, remainingDeg);
+      if (remainingDeg === 0) {
+        queue.push(targetId);
+      }
+    }
+  }
+
+  // Handle any disconnected or cyclic nodes not assigned
+  let maxAssignedLevel = 0;
+  for (const lvl of levelAssignment.values()) {
+    if (lvl > maxAssignedLevel) maxAssignedLevel = lvl;
+  }
+  for (const id of nodeMap.keys()) {
+    if (!levelAssignment.has(id)) {
+      levelAssignment.set(id, maxAssignedLevel + 1);
+    }
+  }
+
+  // Group into levels
+  const levelBuckets = new Map();
+  for (const [id, node] of nodeMap.entries()) {
+    const lvl = levelAssignment.get(id) || 0;
+    if (!levelBuckets.has(lvl)) {
+      levelBuckets.set(lvl, []);
+    }
+    levelBuckets.get(lvl).push(node);
+  }
+
+  const sortedLevels = Array.from(levelBuckets.keys()).sort((a, b) => a - b);
+  const levels = sortedLevels.map((lvlIndex) => {
+    const stagesInLevel = levelBuckets.get(lvlIndex) || [];
+    let title = `Stage Level ${lvlIndex + 1}`;
+    if (lvlIndex === 0) {
+      title = "Initial Physical Setup";
+    } else if (lvlIndex === sortedLevels.length - 1) {
+      title = "Terminal Radiation & Dissipation";
+    } else {
+      title = stagesInLevel.length > 1 ? "Parallel Dynamic Branches" : "Propagation & Interaction";
+    }
+
+    return {
+      level: lvlIndex,
+      title,
+      stages: stagesInLevel,
+    };
+  });
+
+  const hasBranches = levels.some((lvl) => lvl.stages.length > 1);
+
+  return {
+    levels,
+    links: validLinks,
+    totalStages: nodeMap.size,
+    hasBranches,
+  };
+}
+
+
 
 

@@ -31,9 +31,11 @@ import {
   getBibliographicSourceName,
   detectContestedClaims,
   getHighEnergyConventions,
+  projectMechanismDAG,
 } from "../../domain/academic-domain.mjs";
 import { renderInlineScientificMarkdownWithMath } from "../../domain/scientific-text/index.mjs";
 import SiteNav from "../../components/SiteNav.astro";
+import MechanismDAGStream from "../../components/MechanismDAGStream.astro";
 import "../../styles/global.css";
 
 type AnyRecord = Record<string, any>;
@@ -175,6 +177,7 @@ const disputeInfo = detectContestedClaims(workId, scientificEdges);
 const conventionsRaw = getHighEnergyConventions();
 const conventionsHtml = renderInlineScientificMarkdownWithMath(conventionsRaw);
 const hasPhysicalAccount = (physicalAccount.stages?.length ?? 0) > 0;
+const mechanismDAG = projectMechanismDAG(physicalAccount);
 ---
 
 <!doctype html>
@@ -247,6 +250,10 @@ const hasPhysicalAccount = (physicalAccount.stages?.length ?? 0) > 0;
         <h2 id="delta-heading">Scientific Delta</h2>
         <ReadingProse blocks={readingSections.delta} localizationKey={workId} localizationSection="delta" />
       </section>
+
+      {hasPhysicalAccount && mechanismDAG.totalStages > 0 && (
+        <MechanismDAGStream dag={mechanismDAG} />
+      )}
 
       {!hasPhysicalAccount && (
         <section class="panel observational-setup-card" aria-labelledby="observational-setup-heading">
@@ -391,6 +398,12 @@ const hasPhysicalAccount = (physicalAccount.stages?.length ?? 0) > 0;
                 <li><a href="#takeaway-heading">Takeaway</a></li>
                 <li><a href="#assumptions-heading">Assumptions</a></li>
                 <li><a href="#delta-heading">Scientific Delta</a></li>
+                {hasPhysicalAccount && mechanismDAG.totalStages > 0 && (
+                  <li><a href="#mechanism-stream-heading">Physical Mechanism</a></li>
+                )}
+                {!hasPhysicalAccount && (
+                  <li><a href="#observational-setup-heading">Empirical Profile</a></li>
+                )}
                 <li><a href="#connections-heading">Connections</a></li>
                 <li><a href="#research-context-heading">Research Context</a></li>
                 <li><a href="#provenance-detail">Provenance & Evidence</a></li>

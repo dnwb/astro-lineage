@@ -1,3 +1,105 @@
 work_id: work:yu-li-dai-2015
-stages: []
-links: []
+stages:
+  - id: stage:yu-li-dai-core-collapse-magnetar-birth
+    annotation_id: annotation:yu-li-dai-progenitor-system
+    label: Stripped core collapse leaving rapidly spinning magnetar
+  - id: stage:yu-li-dai-rotational-energy-reservoir
+    annotation_id: annotation:yu-li-dai-energy-reservoir
+    label: Millisecond magnetar rotational kinetic energy reservoir
+  - id: stage:yu-li-dai-spin-down-power-injection
+    annotation_id: annotation:yu-li-dai-energy-transfer
+    label: Continuous magnetic dipole spin-down power injection
+  - id: stage:yu-li-dai-low-mass-outflow-expansion
+    annotation_id: annotation:yu-li-dai-dynamics
+    label: Low-mass non-relativistic outflow expansion
+  - id: stage:yu-li-dai-fast-radiative-diffusion
+    annotation_id: annotation:yu-li-dai-transport-process
+    label: Rapid radiative diffusion through low optical depth ejecta
+  - id: stage:yu-li-dai-rapid-luminous-transient
+    annotation_id: annotation:yu-li-dai-observable
+    label: Rapidly rising and luminous optical transient light curve
+links:
+  - id: causal-link:yu-li-dai-collapse-to-reservoir
+    source_stage_id: stage:yu-li-dai-core-collapse-magnetar-birth
+    target_stage_id: stage:yu-li-dai-rotational-energy-reservoir
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Core collapse forms a rapidly spinning millisecond magnetar with high rotational energy.
+    evidence_ids: [evidence:yu-li-dai-2015-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:yu-li-dai-collapse-to-outflow
+    source_stage_id: stage:yu-li-dai-core-collapse-magnetar-birth
+    target_stage_id: stage:yu-li-dai-low-mass-outflow-expansion
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Explosion expels a low-mass non-relativistic envelope of ~0.01-0.1 M_sun.
+    evidence_ids: [evidence:yu-li-dai-2015-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:yu-li-dai-reservoir-to-injection
+    source_stage_id: stage:yu-li-dai-rotational-energy-reservoir
+    target_stage_id: stage:yu-li-dai-spin-down-power-injection
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Magnetar rotational energy is tapped via magnetic dipole radiation.
+    evidence_ids: [evidence:yu-li-dai-2015-magnetar-injection]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:yu-li-dai-injection-to-expansion
+    source_stage_id: stage:yu-li-dai-spin-down-power-injection
+    target_stage_id: stage:yu-li-dai-low-mass-outflow-expansion
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Injected energy accelerates and heats the expanding low-mass outflow.
+    evidence_ids: [evidence:yu-li-dai-2015-magnetar-injection]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:yu-li-dai-outflow-to-diffusion
+    source_stage_id: stage:yu-li-dai-low-mass-outflow-expansion
+    target_stage_id: stage:yu-li-dai-fast-radiative-diffusion
+    relation: enables
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Small ejecta mass yields low optical depth, enabling rapid diffusion in a few days.
+    evidence_ids: [evidence:yu-li-dai-2015-rapid-light-curves]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:yu-li-dai-injection-to-diffusion
+    source_stage_id: stage:yu-li-dai-spin-down-power-injection
+    target_stage_id: stage:yu-li-dai-fast-radiative-diffusion
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Continuous spin-down thermalization provides the high internal radiation energy.
+    evidence_ids: [evidence:yu-li-dai-2015-magnetar-injection]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:yu-li-dai-diffusion-to-transient
+    source_stage_id: stage:yu-li-dai-fast-radiative-diffusion
+    target_stage_id: stage:yu-li-dai-rapid-luminous-transient
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Fast photon leakage produces rapid light curve rise and extreme peak luminosity.
+    evidence_ids: [evidence:yu-li-dai-2015-rapid-light-curves]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed

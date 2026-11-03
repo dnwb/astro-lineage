@@ -1,3 +1,189 @@
 work_id: work:transfit-csm-2025
-annotations: []
+annotations:
+  - id: annotation:transfit-csm-progenitor-system
+    axis: progenitor_system
+    assessment:
+      state: present
+      values:
+        - term_id: term:evolved-helium-star-collapse
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:transfit-csm-2025-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T16:00:00Z"
+    review_state: unreviewed
+  - id: annotation:transfit-csm-central-object
+    axis: central_object
+    assessment:
+      state: not_applicable
+      values: []
+    interpretive_risk: descriptive
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T16:00:00Z"
+    review_state: unreviewed
+  - id: annotation:transfit-csm-energy-reservoir
+    axis: energy_reservoir
+    assessment:
+      state: unknown
+      values: []
+    interpretive_risk: descriptive
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T16:00:00Z"
+    review_state: unreviewed
+  - id: annotation:transfit-csm-energy-transfer
+    axis: energy_transfer
+    assessment:
+      state: present
+      values:
+        - term_id: term:expansion-work-energy-transfer
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:transfit-csm-2025-moving-boundary]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T16:00:00Z"
+    review_state: unreviewed
+  - id: annotation:transfit-csm-outflow
+    axis: outflow
+    assessment:
+      state: present
+      values:
+        - term_id: term:expanding-ejecta
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:transfit-csm-2025-moving-boundary]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T16:00:00Z"
+    review_state: unreviewed
+  - id: annotation:transfit-csm-environment
+    axis: environment
+    assessment:
+      state: present
+      values:
+        - term_id: term:external-ambient-medium
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:transfit-csm-2025-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T16:00:00Z"
+    review_state: unreviewed
+  - id: annotation:transfit-csm-dynamics
+    axis: dynamics
+    assessment:
+      state: present
+      values:
+        - term_id: term:homologous-expansion
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:transfit-csm-2025-moving-boundary]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T16:00:00Z"
+    review_state: unreviewed
+  - id: annotation:transfit-csm-energy-dissipation
+    axis: energy_dissipation
+    assessment:
+      state: unknown
+      values: []
+    interpretive_risk: descriptive
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T16:00:00Z"
+    review_state: unreviewed
+  - id: annotation:transfit-csm-particle-interaction
+    axis: particle_interaction
+    assessment:
+      state: not_applicable
+      values: []
+    interpretive_risk: descriptive
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T16:00:00Z"
+    review_state: unreviewed
+  - id: annotation:transfit-csm-emission-process
+    axis: emission_process
+    assessment:
+      state: present
+      values:
+        - term_id: term:blackbody-spectrum-approximation
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:transfit-csm-2025-bolometric-solution]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T16:00:00Z"
+    review_state: unreviewed
+  - id: annotation:transfit-csm-transport-process
+    axis: transport_process
+    assessment:
+      state: present
+      values:
+        - term_id: term:radiative-diffusion-escape
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:transfit-csm-2025-bolometric-solution]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T16:00:00Z"
+    review_state: unreviewed
+  - id: annotation:transfit-csm-phenomenon
+    axis: phenomenon
+    assessment:
+      state: present
+      values:
+        - term_id: term:transient-light-curve-evolution
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:transfit-csm-2025-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T16:00:00Z"
+    review_state: unreviewed
+  - id: annotation:transfit-csm-messenger
+    axis: messenger
+    assessment:
+      state: present
+      values:
+        - term_id: term:photons
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:transfit-csm-2025-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T16:00:00Z"
+    review_state: unreviewed
+  - id: annotation:transfit-csm-photon-band
+    axis: photon_band
+    assessment:
+      state: present
+      values:
+        - term_id: term:optical-band
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:transfit-csm-2025-bolometric-solution]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T16:00:00Z"
+    review_state: unreviewed
+  - id: annotation:transfit-csm-observable
+    axis: observable
+    assessment:
+      state: present
+      values:
+        - term_id: term:light-curves
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:transfit-csm-2025-bolometric-solution]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T16:00:00Z"
+    review_state: unreviewed
+  - id: annotation:transfit-csm-inference-target
+    axis: inference_target
+    assessment:
+      state: present
+      values:
+        - term_id: term:ejecta-physical-properties
+    interpretive_risk: interpretive
+    risk_escalation:
+      reason: MCMC fitting of interaction-powered light curves allows constraining ejecta mass, velocity, CSM density slope, and total CSM mass.
+    evidence_ids: [evidence:transfit-csm-2025-moving-boundary, evidence:transfit-csm-2025-bolometric-solution]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T16:00:00Z"
+    review_state: unreviewed
 method_annotations: []

@@ -6,12 +6,30 @@ evidence:
     locator:
       type: paragraph
       paragraph: Abstract
-    excerpt: Sub-arcsecond localization of the repeating fast radio burst FRB 121102
-      revealed its coincidence with a dwarf host galaxy and a steady
-      (`quiescent') non-thermal radio source. We show that the properties of the
-      host galaxy are consistent with those of long-duration gamma-ray bursts
-      (LGRB) and hydrogen-poor superluminous supernovae (SLSNe-I).
-    review_state: unreviewed
+    excerpt: Sub-arcsecond localization of the repeating fast radio burst FRB 121102 revealed its coincidence with a dwarf host galaxy and a steady (`quiescent') non-thermal radio source. We show that the properties of the host galaxy are consistent with those of long-duration gamma-ray bursts (LGRB) and hydrogen-poor superluminous supernovae (SLSNe-I).
     curation_provenance:
       actor_id: actor:agent-curator
-      recorded_at: 2026-09-06T22:35:47Z
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: evidence:metzger-2017-engine-injection
+    version_id: version:metzger-2017-arxiv-v5
+    source_url: https://arxiv.org/abs/1701.02370v5
+    locator:
+      type: section
+      section: "3. Magnetar Engine and Nebula Evolution"
+    excerpt: "The newborn millisecond magnetar initially powers a GRB or SLSN by injecting rotational energy into the surrounding supernova ejecta, which subsequently expands and dilutes."
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: evidence:metzger-2017-frb-repetition
+    version_id: version:metzger-2017-arxiv-v5
+    source_url: https://arxiv.org/abs/1701.02370v5
+    locator:
+      type: section
+      section: "4. Fast Radio Burst Generation and Propagation"
+    excerpt: "Decades after the explosion, the magnetar flaring activity produces repeating FRBs, which escape through the diluted, ionized nebula producing high dispersion measure and persistent synchrotron emission."
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed

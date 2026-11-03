@@ -1,0 +1,64 @@
+{
+  "primary_id": "GRB 261026A",
+  "slug": "grb-261026a",
+  "aliases": [],
+  "event_type": "GRB",
+  "canonical_t0": {
+    "instrument": "SVOM/ECLAIRs",
+    "utc_iso": "2026-10-26T06:09:37.680Z",
+    "circular_id": 46068
+  },
+  "best_redshift": null,
+  "has_redshift_conflict": false,
+  "redshifts": [],
+  "photometry_points": [
+    {
+      "circular_id": 46064,
+      "dt_hours": 6,
+      "band": "J",
+      "mag": 18.55,
+      "mag_err": 0.1,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "AB",
+      "telescope": "MDM/MIRAGE",
+      "discrepancy_note": null,
+      "time_approximate": true,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 46047,
+      "dt_hours": 6.67,
+      "band": "J",
+      "mag": 19.37,
+      "mag_err": 0.14,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "AB",
+      "telescope": "Follow-up",
+      "discrepancy_note": null,
+      "time_approximate": true,
+      "version_conflict": false
+    }
+  ],
+  "xray_points": [
+    {
+      "circular_id": 46058,
+      "dt_hours": 0.783,
+      "band": "0.5-10 keV",
+      "flux_erg_cm2_s": 2.8e-12,
+      "flux_err": 1.83e-13,
+      "is_upper_limit": false,
+      "instrument": "EP-FXT"
+    }
+  ],
+  "radio_points": [],
+  "multi_messenger": [],
+  "feature_zoom": {
+    "enabled": false
+  },
+  "circular_count": 17,
+  "last_circular_id": 46110,
+  "last_updated_utc": "2026-10-30T13:09:20.914Z",
+  "status": "active"
+}

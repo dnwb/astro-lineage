@@ -6,9 +6,30 @@ evidence:
     locator:
       type: paragraph
       paragraph: Abstract
-    excerpt: The detailed structure of the interaction of a strong stellar wind with
-      the interstellar medium is presented.
-    review_state: unreviewed
+    excerpt: The detailed structure of the interaction of a strong stellar wind with the interstellar medium is presented.
     curation_provenance:
       actor_id: actor:agent-curator
-      recorded_at: 2026-09-06T22:35:47Z
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: evidence:weaver-1977-bubble-structure
+    version_id: version:weaver-1977-journal
+    source_url: https://ui.adsabs.harvard.edu/abs/1977ApJ...218..377W/abstract
+    locator:
+      type: section
+      section: "II. Physical Structure of the Interstellar Bubble"
+    excerpt: "The interaction produces four distinct zones: (1) hypersonic stellar wind, (2) shocked stellar wind cavity with high temperature and low density, (3) thin shell of shocked interstellar gas, and (4) unshocked interstellar medium."
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: evidence:weaver-1977-shock-expansion
+    version_id: version:weaver-1977-journal
+    source_url: https://ui.adsabs.harvard.edu/abs/1977ApJ...218..377W/abstract
+    locator:
+      type: section
+      section: "III. Energy Balance and Evolution"
+    excerpt: "Thermal conduction across the contact discontinuity evaporates cold shell material into the hot cavity, controlling the bubble interior temperature and expansion dynamics."
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed

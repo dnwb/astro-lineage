@@ -6,16 +6,30 @@ evidence:
     locator:
       type: paragraph
       paragraph: Abstract
-    excerpt: PSR J1932$+$2121 is a newly discovered spider pulsar with a pronounced
-      radio eclipse identified by the Five-hundred-meter Aperture Spherical
-      radio Telescope (FAST); it provides an ideal laboratory for studying the
-      eclipse mechanism and high-energy emission from its intrabinary shock
-      (IBS). By modeling the orbital-phase-dependent dispersion measure
-      variations and flux profiles during the eclipse region with the wind
-      interaction and IBS geometry, we constrain the system to a nearly edge-on
-      inclination ($i_{\mathrm{o}} \simeq 88.55^{\circ}$) and a weak stellar
-      wind from a low-mass main-sequence companion.
-    review_state: unreviewed
+    excerpt: PSR J1932+2121 is a newly discovered spider pulsar with a pronounced radio eclipse identified by FAST. By modeling the orbital-phase-dependent dispersion measure variations and flux profiles during the eclipse region with the wind interaction and IBS geometry, we constrain the system to a nearly edge-on inclination and a weak stellar wind from a low-mass main-sequence companion.
     curation_provenance:
       actor_id: actor:agent-curator
-      recorded_at: 2026-09-06T22:35:47Z
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: evidence:du-psr-j1932-2026-radio-eclipse
+    version_id: version:du-psr-j1932-2026-arxiv-v1
+    source_url: https://arxiv.org/abs/2606.24069v1
+    locator:
+      type: section
+      section: "2. FAST Observations and Radio Eclipse Analysis"
+    excerpt: "FAST observations detect a broad radio eclipse of PSR J1932+2121 caused by free-free absorption and dispersion in the evaporated companion wind."
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: evidence:du-psr-j1932-2026-intrabinary-shock
+    version_id: version:du-psr-j1932-2026-arxiv-v1
+    source_url: https://arxiv.org/abs/2606.24069v1
+    locator:
+      type: section
+      section: "3. Intrabinary Shock Modeling and X-ray Prospect"
+    excerpt: "Modeling the intrabinary shock geometry and wind collision constrains an edge-on binary inclination and predicts non-thermal X-ray emission."
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed

@@ -23,7 +23,23 @@ import {
   localizedWorkTitle,
 } from "../../lib/reader-localization";
 import { loadSiteConfig } from "../../lib/site-config";
+import {
+  formatAuthorList,
+  formatSystemTime,
+  formatScientificEpoch,
+  formatWorkBibTeX,
+  formatVersionPinnedLocator,
+  getBibliographicUrl,
+  getBibliographicSourceName,
+  detectContestedClaims,
+  getHighEnergyConventions,
+  projectMechanismDAG,
+  partitionScientificEdges,
+} from "../../domain/academic-domain.mjs";
+import { renderInlineScientificMarkdownWithMath } from "../../domain/scientific-text/index.mjs";
 import SiteNav from "../../components/SiteNav.astro";
+import MechanismDAGStream from "../../components/MechanismDAGStream.astro";
+import EvidenceLedger from "../../components/EvidenceLedger.astro";
 import "../../styles/global.css";
 
 type AnyRecord = Record<string, any>;
@@ -98,10 +114,6 @@ const relationLabels: Record<string, { outbound: string; inbound: string }> = {
   corrects: { outbound: "Corrects", inbound: "Corrected by" },
 };
 
-function authors(version: AnyRecord) {
-  return (version.authors ?? []).map((author: AnyRecord) => author.display_name).filter(Boolean).join(", ");
-}
-
 function describeLocator(locator: AnyRecord | undefined) {
   if (!locator?.type) return "typed locator unavailable";
   const englishParts = [String(locator.type)];
@@ -114,7 +126,7 @@ function describeLocator(locator: AnyRecord | undefined) {
 function reviewContext(value: AnyRecord) {
   const context = value.review_context;
   if (!context?.status) return "Review context unavailable";
-  return `${localizedReviewStatus(context.status)}${context.reviewer_actor_id ? ` (reviewed by ${context.reviewer_actor_id}${context.reviewed_at ? ` at ${context.reviewed_at}` : ""})` : ""}`;
+  return `${localizedReviewStatus(context.status)}${context.reviewer_actor_id ? ` (reviewed by ${context.reviewer_actor_id}${context.reviewed_at ? ` at ${formatSystemTime(context.reviewed_at)}` : ""})` : ""}`;
 }
 
 function relationLabel(edge: AnyRecord) {
@@ -147,10 +159,27 @@ function connectedPaper(edge: AnyRecord) {
   return {
     href: workReaderPath(snapshot, connectedWorkId),
     title: localizedWorkTitle(connectedWorkId, connectedVersion.title),
-    authors: authors(connectedVersion),
+    authors: formatAuthorList(connectedVersion.authors, { max: 10 }),
     year: connectedVersion.release_date?.value?.slice(0, 4),
   };
 }
+
+const scixUrl = preferredVersion.arxiv_id
+  ? getBibliographicUrl(preferredVersion.arxiv_id)
+  : preferredVersion.doi
+    ? getBibliographicUrl(preferredVersion.doi)
+    : null;
+const scixName = getBibliographicSourceName();
+const arxivPdfUrl = preferredVersion.arxiv_id ? `https://arxiv.org/pdf/${preferredVersion.arxiv_id}.pdf` : null;
+const arxivHtmlUrl = preferredVersion.arxiv_id ? `https://arxiv.org/html/${preferredVersion.arxiv_id}` : null;
+
+const disputeInfo = detectContestedClaims(workId, scientificEdges);
+const conventionsRaw = getHighEnergyConventions();
+const conventionsHtml = renderInlineScientificMarkdownWithMath(conventionsRaw);
+const hasPhysicalAccount = (physicalAccount.stages?.length ?? 0) > 0;
+const mechanismDAG = projectMechanismDAG(physicalAccount);
+const { upstream: upstreamEdges, downstream: downstreamEdges } = partitionScientificEdges(workId, scientificEdges);
+const versionsById = new Map(versions.map((v: AnyRecord) => [v.id, v]));
 ---
 
 <!doctype html>
@@ -166,10 +195,12 @@ function connectedPaper(edge: AnyRecord) {
       <SiteNav />
       <p class="eyebrow"><a href="/papers/">Papers</a> · Paper Detail</p>
 
-      <header class="reader-header">
+      <div class="paper-detail-grid">
+        <div class="paper-main-content">
+          <header class="reader-header">
         <p class="section-kicker">Bibliographic Record</p>
         <h1>{title()}</h1>
-        <p class="paper-meta">{authors(preferredVersion)} · {preferredVersion.release_date.value.slice(0, 4)}</p>
+        <p class="paper-meta">{formatAuthorList(preferredVersion.authors, { max: 10 })} · {preferredVersion.release_date.value.slice(0, 4)}</p>
         {isCandidate ? (
           <p class="reader-note"><span class="tag">Candidate Baseline</span> This entry has completed source verification and formula review.</p>
         ) : null}
@@ -182,6 +213,24 @@ function connectedPaper(edge: AnyRecord) {
           ))}
         </ul>
       </header>
+
+      {disputeInfo.isContested && (
+        <div class="paper-dispute-banner" role="alert">
+          <span class="dispute-icon">⚠</span>
+          <div class="dispute-content">
+            <strong>Academic Dispute / Contested Claim:</strong>
+            <span>
+              Core conclusions or assumptions of this work are contested by {disputeInfo.contestedCount} connected paper{disputeInfo.contestedCount > 1 ? "s" : ""}.
+              <a href="#connections-heading">Inspect conflicting evidence ↓</a>
+            </span>
+          </div>
+        </div>
+      )}
+
+      <div class="paper-conventions-line" aria-label="Physical Notation and Reporting Conventions">
+        <span class="conventions-badge">Conventions</span>
+        <span class="conventions-text" set:html={conventionsHtml} />
+      </div>
 
       <section class="panel reading-section" aria-labelledby="why-heading">
         <h2 id="why-heading">Why This Work Matters</h2>
@@ -204,30 +253,126 @@ function connectedPaper(edge: AnyRecord) {
         <ReadingProse blocks={readingSections.delta} localizationKey={workId} localizationSection="delta" />
       </section>
 
-      <section class="panel" aria-labelledby="connections-heading">
-        <h2 id="connections-heading">Scientific Connections</h2>
-        {scientificEdges.length === 0 ? (
-          <p class="empty-state">No reviewed scientific connections stored for this work.</p>
-        ) : (
-          <ul class="compact-list edge-list">
-            {scientificEdges.map((edge) => {
-              const connected = connectedPaper(edge);
-              return (
-                <li>
-                  <p>
-                    <span class="tag">{relationLabel(edge)}</span>
-                    <span class="edge-direction">{edge.source_work_id === workId ? "outbound" : "inbound"}</span>
-                    {edge.disposition === "contested" ? <strong class="dispute-indicator"> Contested</strong> : null}
-                  </p>
-                  <h3><a href={connected.href}>{connected.title}</a></h3>
-                  <p class="paper-meta">{connected.authors} · {connected.year}</p>
-                  <p>{localizedEdgeReason(edge.id, edge.reason)}</p>
-                  <p><a href={connected.href}>Read connected paper</a></p>
-                </li>
-              );
-            })}
-          </ul>
-        )}
+      {hasPhysicalAccount && mechanismDAG.totalStages > 0 && (
+        <MechanismDAGStream dag={mechanismDAG} />
+      )}
+
+      {!hasPhysicalAccount && (
+        <section class="panel observational-setup-card" aria-labelledby="observational-setup-heading">
+          <h2 id="observational-setup-heading">Observational & Empirical Profile</h2>
+          <p class="section-intro">This work contributes empirical observations, catalogs, or methodological analysis rather than an isolated microphysical stage model.</p>
+          {(work.method_annotations ?? []).length > 0 && (
+            <div class="methods-summary">
+              <h3>Applied Methods</h3>
+              <ul class="inline-list">
+                {(work.method_annotations ?? []).map((method: AnyRecord) => (
+                  <li><span class="tag">{method.technique_id}</span> ({method.basis})</li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {statements.length > 0 && (
+            <div class="statements-summary">
+              <h3>Key Empirical Statements</h3>
+              <ul class="compact-list">
+                {statements.map((statement: AnyRecord) => (
+                  <li><strong>{statement.kind}</strong>: {statement.canonical_text}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </section>
+      )}
+
+      <section class="panel connections-container" aria-labelledby="connections-heading">
+        <h2 id="connections-heading">Scientific Connections & Directed Lineage</h2>
+        <p class="section-intro">Causal intellectual trajectory partitioned into upstream foundational heritage and downstream empirical testing.</p>
+
+        <div class="lineage-stream-group">
+          <div class="lineage-substream">
+            <h3 id="foundational-lineage-heading" class="substream-heading">Foundational Lineage (Upstream Heritage)</h3>
+            {upstreamEdges.length === 0 ? (
+              <p class="empty-state">No upstream foundational dependencies recorded.</p>
+            ) : (
+              <ul class="edge-list upstream-edges">
+                {upstreamEdges.map((edge: AnyRecord) => {
+                  const connected = connectedPaper(edge);
+                  return (
+                    <li class={`edge-card polarity-${edge.polarity}`}>
+                      <div class="edge-card-header">
+                        <span class={`polarity-badge polarity-${edge.polarity}`}>
+                          {edge.polarity === "supports" ? "Adopts / Supports" : edge.polarity === "contradicts" ? "Challenges / Contests" : "Neutral Baseline"}
+                        </span>
+                        <span class="tag relation-tag">{relationLabel(edge)}</span>
+                        <span class="edge-direction">{edge.source_work_id === workId ? "outbound" : "inbound"}</span>
+                        {edge.disposition === "contested" ? <strong class="dispute-indicator"> Contested</strong> : null}
+                      </div>
+                      <h4><a href={connected.href}>{connected.title}</a></h4>
+                      <p class="paper-meta">{connected.authors} · {connected.year}</p>
+                      <p class="edge-reason">{localizedEdgeReason(edge.id, edge.reason)}</p>
+                      {(edge.evidence_ids ?? []).length > 0 && (
+                        <div class="edge-evidence-links">
+                          <span class="evidence-link-title">Evidence:</span>
+                          {(edge.evidence_ids ?? []).map((evId: string) => {
+                            const ev = evidenceById.get(evId);
+                            const loc = ev ? formatVersionPinnedLocator(ev.locator, preferredVersion) : evId;
+                            return (
+                              <a href={`#evidence-${evId}`} class="evidence-chip" title="Jump to verified evidence in ledger">
+                                📌 {loc}
+                              </a>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </div>
+
+          <div class="lineage-substream">
+            <h3 id="downstream-tests-heading" class="substream-heading">Empirical Tests & Applications (Downstream Validations)</h3>
+            {downstreamEdges.length === 0 ? (
+              <p class="empty-state">No downstream tests or extensions recorded yet.</p>
+            ) : (
+              <ul class="edge-list downstream-edges">
+                {downstreamEdges.map((edge: AnyRecord) => {
+                  const connected = connectedPaper(edge);
+                  return (
+                    <li class={`edge-card polarity-${edge.polarity}`}>
+                      <div class="edge-card-header">
+                        <span class={`polarity-badge polarity-${edge.polarity}`}>
+                          {edge.polarity === "supports" ? "Validates / Extends" : edge.polarity === "contradicts" ? "Challenges / Constrains" : "Empirical Test"}
+                        </span>
+                        <span class="tag relation-tag">{relationLabel(edge)}</span>
+                        <span class="edge-direction">{edge.source_work_id === workId ? "outbound" : "inbound"}</span>
+                        {edge.disposition === "contested" ? <strong class="dispute-indicator"> Contested</strong> : null}
+                      </div>
+                      <h4><a href={connected.href}>{connected.title}</a></h4>
+                      <p class="paper-meta">{connected.authors} · {connected.year}</p>
+                      <p class="edge-reason">{localizedEdgeReason(edge.id, edge.reason)}</p>
+                      {(edge.evidence_ids ?? []).length > 0 && (
+                        <div class="edge-evidence-links">
+                          <span class="evidence-link-title">Evidence:</span>
+                          {(edge.evidence_ids ?? []).map((evId: string) => {
+                            const ev = evidenceById.get(evId);
+                            const loc = ev ? formatVersionPinnedLocator(ev.locator, preferredVersion) : evId;
+                            return (
+                              <a href={`#evidence-${evId}`} class="evidence-chip" title="Jump to verified evidence in ledger">
+                                📌 {loc}
+                              </a>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </div>
+        </div>
       </section>
 
       <section class="panel" aria-labelledby="research-context-heading">
@@ -246,7 +391,9 @@ function connectedPaper(edge: AnyRecord) {
         )}
       </section>
 
-      <details class="panel provenance-detail">
+      <EvidenceLedger evidenceRecords={evidenceRecords} versionsById={versionsById} preferredVersion={preferredVersion} />
+
+      <details class="panel provenance-detail" id="provenance-detail">
         <summary>Provenance & Scientific Evidence</summary>
         <p class="layer-intro">Inspect projection, evidence, scientific ontology, and review records.</p>
 
@@ -287,7 +434,7 @@ function connectedPaper(edge: AnyRecord) {
           <ul class="compact-list">
             {publicationRelations.map((relation) => {
               const sources = (relation.bibliographic_source_ids ?? []).map((sourceId: string) => bibliographicSourcesById.get(sourceId)).filter(Boolean) as AnyRecord[];
-              return <li>{relation.source_version_id} <strong>{relation.relation}</strong> {relation.target_version_id}{relation.basis ? ` (${relation.basis})` : ""}: {relation.reason}{sources.length === 0 ? " Bibliographic Provenance: unavailable" : <span> Bibliographic Provenance: {sources.map((source) => <span> {source.id} ({source.provider}, {source.record_id}, retrieved {source.retrieved_at}){source.source_url ? <> — <a href={source.source_url}>source</a></> : null}</span>)}</span>}</li>;
+              return <li>{relation.source_version_id} <strong>{relation.relation}</strong> {relation.target_version_id}{relation.basis ? ` (${relation.basis})` : ""}: {relation.reason}{sources.length === 0 ? " Bibliographic Provenance: unavailable" : <span> Bibliographic Provenance: {sources.map((source) => <span> {source.id} ({source.provider}, {source.record_id}, retrieved {formatSystemTime(source.retrieved_at)}){source.source_url ? <> — <a href={source.source_url}>source</a></> : null}</span>)}</span>}</li>;
             })}
           </ul>
         )}
@@ -308,6 +455,70 @@ function connectedPaper(edge: AnyRecord) {
           {evidenceRecords.map((evidence) => <li><strong>{evidence.id}</strong>{evidence.work_id ? ` (work ${evidence.work_id})` : ""}{` — version ${evidence.version_id}; ${describeLocator(evidence.locator)}; "${evidence.excerpt}"`}{evidence.source_url ? <> — <a href={evidence.source_url}>source</a></> : null}{evidence.review_context?.status ? `; review: ${reviewContext(evidence)}` : ""}</li>)}
         </ul>
       </details>
+        </div>
+
+        <aside class="paper-sticky-sidebar" aria-label="Reading Navigation and Actions">
+          <div class="sidebar-sticky-wrapper">
+            <nav class="paper-toc" aria-label="Table of Contents">
+              <p class="sidebar-kicker">Navigation</p>
+              <ul class="toc-list">
+                <li><a href="#why-heading">Why This Matters</a></li>
+                <li><a href="#problem-heading">Problem</a></li>
+                <li><a href="#takeaway-heading">Takeaway</a></li>
+                <li><a href="#assumptions-heading">Assumptions</a></li>
+                <li><a href="#delta-heading">Scientific Delta</a></li>
+                {hasPhysicalAccount && mechanismDAG.totalStages > 0 && (
+                  <li><a href="#mechanism-stream-heading">Physical Mechanism</a></li>
+                )}
+                {!hasPhysicalAccount && (
+                  <li><a href="#observational-setup-heading">Empirical Profile</a></li>
+                )}
+                <li><a href="#connections-heading">Lineage & Connections</a></li>
+                <li><a href="#research-context-heading">Research Context</a></li>
+                <li><a href="#evidence-ledger-heading">Evidence Ledger</a></li>
+                <li><a href="#provenance-detail">Provenance & Deep Ontology</a></li>
+              </ul>
+            </nav>
+
+            <div class="paper-action-tray">
+              <p class="sidebar-kicker">Scholarly Actions</p>
+              <button
+                type="button"
+                class="btn-copy-bibtex"
+                data-bibtex={formatWorkBibTeX(work, preferredVersion)}
+                aria-label="Copy BibTeX Citation"
+                onclick="try{var b=this,orig=b.innerHTML;navigator.clipboard.writeText(b.getAttribute('data-bibtex')).then(function(){b.innerHTML='<span class=\'btn-icon\'>✓</span> Copied!';setTimeout(function(){b.innerHTML=orig;},2000);});}catch(e){}"
+              >
+                <span class="btn-icon">📋</span> Copy BibTeX
+              </button>
+
+              <div class="paper-external-links">
+                {scixUrl ? (
+                  <a href={scixUrl} target="_blank" rel="noopener noreferrer" class="ext-link-pill">
+                    {scixName} ↗
+                  </a>
+                ) : null}
+                {preferredVersion.doi ? (
+                  <a href={`https://doi.org/${preferredVersion.doi}`} target="_blank" rel="noopener noreferrer" class="ext-link-pill">
+                    DOI ↗
+                  </a>
+                ) : null}
+                {arxivPdfUrl ? (
+                  <a href={arxivPdfUrl} target="_blank" rel="noopener noreferrer" class="ext-link-pill">
+                    arXiv PDF ↗
+                  </a>
+                ) : null}
+                {arxivHtmlUrl ? (
+                  <a href={arxivHtmlUrl} target="_blank" rel="noopener noreferrer" class="ext-link-pill">
+                    arXiv HTML ↗
+                  </a>
+                ) : null}
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+
     </main>
   </body>
 </html>

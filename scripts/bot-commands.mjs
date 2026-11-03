@@ -387,6 +387,19 @@ export function matchBotCommand(rawQuery) {
     return { type: "week", query };
   }
 
+  // 9. \gcn / /gcn <target> / 快讯 <target>
+  const gcnMatch =
+    query.match(/^[\\/](?:gcn|circulars?)(?:\s+(.+))?$/iu) ||
+    query.match(/^(?:gcn|快讯|暂现源|瞬变源)(?:\s+(.+))?$/iu);
+  if (gcnMatch) {
+    const target = (gcnMatch[1] || "").trim();
+    return {
+      type: "gcn",
+      arg: target || null,
+      query,
+    };
+  }
+
   return null;
 }
 
@@ -674,6 +687,111 @@ export async function executeBotCommand(cmd, options = {}) {
         return await formatWeeklyList({ websiteBase, channelUrl });
       } catch (err) {
         return `[AstroLineage] 获取周报列表失败: ${err.message}`;
+      }
+    }
+
+    case "gcn": {
+      try {
+        const gcnDir =
+          options.gcnDir || fileURLToPath(new URL("../src/data/gcn-events", import.meta.url));
+        const indexPath = join(gcnDir, "index.json");
+        let indexData = { events: {} };
+        if (existsSync(indexPath)) {
+          try {
+            indexData = JSON.parse(await readFile(indexPath, "utf8"));
+          } catch {}
+        }
+
+        const events = Object.values(indexData.events || {});
+        if (!cmd.arg) {
+          // List tracked events
+          if (events.length === 0) {
+            return "🛰️ [AstroLineage GCN 暂现源追踪] 当前暂无正在追踪的 GCN 快速通报事件。发送 `\\gcn <事件名>` (例如 `\\gcn GRB 261029A`) 查询。";
+          }
+          const lines = [
+            "🛰️ **AstroLineage NASA GCN 暂现源追踪列表**",
+            "",
+            ...events.map((e) => {
+              const zStr = e.best_redshift?.z
+                ? ` · z=${e.best_redshift.z} (${e.best_redshift.type})`
+                : "";
+              const t0Str = e.canonical_t0?.utc_iso
+                ? ` · T₀=${e.canonical_t0.utc_iso.slice(0, 10)}`
+                : "";
+              const statusStr = e.status === "archived" ? "已归档" : "活跃中";
+              return `• **${e.primary_id}** [${e.event_type}] (${statusStr}): 汇聚 ${e.circular_count} 篇 GCN${zStr}${t0Str}\n  网页查看: ${websiteBase}/events/#detail-event-${e.slug}`;
+            }),
+            "",
+            "💡 发送 `\\gcn <事件名>` (例如 `\\gcn GRB 261029A`) 查看专属光变曲线与详细观测数据。",
+          ];
+          return lines.join("\n");
+        }
+
+        // Query specific event
+        const targetQuery = cmd.arg.trim();
+        const targetSlug = targetQuery
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/^-+|-+$/g, "");
+        const targetDedupe = targetQuery.replace(/[^a-zA-Z0-9]/g, "").toUpperCase();
+
+        let matchedEvent = events.find((e) => {
+          if (e.slug === targetSlug) return true;
+          const eKeys = [e.primary_id, ...(e.aliases || [])].map((id) =>
+            id.replace(/[^a-zA-Z0-9]/g, "").toUpperCase()
+          );
+          return eKeys.includes(targetDedupe);
+        });
+
+        // Try reading directly from event JSON
+        const eventJsonPath = join(gcnDir, `${targetSlug}.json`);
+        let ledger = null;
+        if (existsSync(eventJsonPath)) {
+          try {
+            ledger = JSON.parse(await readFile(eventJsonPath, "utf8"));
+          } catch {}
+        }
+
+        if (!matchedEvent && !ledger) {
+          return `🛰️ [AstroLineage GCN 追踪] 未找到暂现源目标 "${targetQuery}" 的 GCN 归档数据。输入 \`\\gcn\` 可列出当前所有追踪事件。`;
+        }
+
+        const primaryId =
+          ledger?.primary_id || matchedEvent?.primary_id || targetQuery.toUpperCase();
+        const aliases = ledger?.aliases || matchedEvent?.aliases || [];
+        const circularCount = ledger?.circular_count || matchedEvent?.circular_count || 0;
+        const status = ledger?.status || matchedEvent?.status || "active";
+        const canonicalT0 = ledger?.canonical_t0 || matchedEvent?.canonical_t0;
+        const bestZ = ledger?.best_redshift || matchedEvent?.best_redshift;
+        const photoCount = ledger?.photometry_points?.length || 0;
+
+        const lines = [
+          `🛰️ **AstroLineage GCN 暂现源多波段追踪 · ${primaryId}**`,
+          aliases.length > 0 ? `别名协同: ${aliases.join(" / ")}` : "",
+          `状态: ${status === "archived" ? "📦 已归档 (7日无新快讯)" : "⚡ 活跃追踪中"} ｜ GCN 通报: 共汇聚 ${circularCount} 篇`,
+          canonicalT0?.utc_iso
+            ? `触发时刻 T₀: ${canonicalT0.utc_iso.slice(0, 19)}Z (${canonicalT0.instrument})`
+            : "",
+          bestZ?.z != null
+            ? `红移测定: z = ${bestZ.z} (${bestZ.type}${bestZ.instrument ? ` · ${bestZ.instrument}` : ""})`
+            : "",
+          "",
+          `📊 **多波段观测概况 (零同质化架构)**:`,
+          `- 光学/近红外原生测光点: 共 ${photoCount} 个 (含 AB/Vega/Clear 各系统及 $3\\sigma$ 上限)`,
+          ledger?.xray_points?.length
+            ? `- X射线探测点: ${ledger.xray_points.length} 个 (EP-FXT)`
+            : "",
+          "",
+          `🌐 **全波段光变曲线与详细图谱**:`,
+          `- 知识库在线全景: ${websiteBase}/events/#detail-event-${ledger?.slug || targetSlug}`,
+          `- 光变曲线图谱 (PNG): ${websiteBase}/gcn-figures/${ledger?.slug || targetSlug}.png`,
+          "",
+          `💡 提示: 本光变数据严格保留各观测台站原生报告星等，未做外推同质化校正，虚线为 $\\alpha=1.4$ 幂律衰减参考。`,
+        ];
+
+        return lines.filter(Boolean).join("\n");
+      } catch (err) {
+        return `[AstroLineage] GCN 查询失败: ${err.message}`;
       }
     }
 

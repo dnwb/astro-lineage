@@ -1,3 +1,78 @@
 work_id: work:xie-sgr-j1935-2025
-stages: []
-links: []
+stages:
+  - id: stage:xie-sgr-j1935-magnetic-crust-instability
+    annotation_id: annotation:xie-sgr-j1935-energy-reservoir
+    label: Magnetar crustal fracture and magnetic reconnection
+  - id: stage:xie-sgr-j1935-trapped-fireball
+    annotation_id: annotation:xie-sgr-j1935-energy-transfer
+    label: Magnetospheric corotating trapped pair-photon fireball
+  - id: stage:xie-sgr-j1935-thermal-photospheric-emission
+    annotation_id: annotation:xie-sgr-j1935-emission-process
+    label: Fireball quasi-thermal X-ray burst radiation
+  - id: stage:xie-sgr-j1935-stellar-self-eclipse
+    annotation_id: annotation:xie-sgr-j1935-inference-target
+    label: Magnetar body rotational occultation and self-eclipse
+  - id: stage:xie-sgr-j1935-eclipsed-burst-light-curve
+    annotation_id: annotation:xie-sgr-j1935-observable
+    label: Eclipsed burst light curve profile and geometric constraint
+links:
+  - id: causal-link:xie-sgr-j1935-instability-to-fireball
+    source_stage_id: stage:xie-sgr-j1935-magnetic-crust-instability
+    target_stage_id: stage:xie-sgr-j1935-trapped-fireball
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Sudden release of magnetic free energy injects dense pair plasma into closed field loops.
+    evidence_ids: [evidence:xie-sgr-j1935-2025-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:xie-sgr-j1935-fireball-to-emission
+    source_stage_id: stage:xie-sgr-j1935-trapped-fireball
+    target_stage_id: stage:xie-sgr-j1935-thermal-photospheric-emission
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Trapped pair plasma cools by radiating quasi-thermal X-rays from its photosphere.
+    evidence_ids: [evidence:xie-sgr-j1935-2025-fireball-geometry]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:xie-sgr-j1935-fireball-to-eclipse
+    source_stage_id: stage:xie-sgr-j1935-trapped-fireball
+    target_stage_id: stage:xie-sgr-j1935-stellar-self-eclipse
+    relation: enables
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Fireball proximity to the stellar surface allows rotation to carry it behind the neutron star limb.
+    evidence_ids: [evidence:xie-sgr-j1935-2025-eclipse-signature]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:xie-sgr-j1935-emission-to-light-curve
+    source_stage_id: stage:xie-sgr-j1935-thermal-photospheric-emission
+    target_stage_id: stage:xie-sgr-j1935-eclipsed-burst-light-curve
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Radiated X-ray flux provides the baseline burst light curve emission.
+    evidence_ids: [evidence:xie-sgr-j1935-2025-eclipse-signature]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:xie-sgr-j1935-eclipse-modulates-light-curve
+    source_stage_id: stage:xie-sgr-j1935-stellar-self-eclipse
+    target_stage_id: stage:xie-sgr-j1935-eclipsed-burst-light-curve
+    relation: modulates
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Geometric occultation causes a sharp eclipse dip in the observed burst light curve.
+    evidence_ids: [evidence:xie-sgr-j1935-2025-eclipse-signature]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed

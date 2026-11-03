@@ -65,7 +65,7 @@ sync_git_data() {
 
     # 2. 工作区纯净度门禁：除数据和图片外，若存在任何未提交的代码改动，安全跳过提交与推送
     local dirty_non_data
-    dirty_non_data="$(git status --porcelain | grep -v -E '^..\s+(src/data/|public/arxiv-figures/|public/arxiv-weekly/)' || true)"
+    dirty_non_data="$(git status --porcelain | grep -v -E '^..\s+(src/data/|public/arxiv-figures/|public/arxiv-weekly/|public/gcn-figures/)' || true)"
     if [ -n "${dirty_non_data}" ]; then
       echo "[cron-runner] 检测到工作区存在未提交的代码改动，为防止代码被误推或污染，安全跳过自动 Git 提交与远程推送："
       echo "${dirty_non_data}"
@@ -81,6 +81,10 @@ sync_git_data() {
 
     if [ -d "public/arxiv-weekly" ] && [ -n "$(git status --porcelain public/arxiv-weekly/)" ]; then
       git add public/arxiv-weekly/
+    fi
+
+    if [ -d "public/gcn-figures" ] && [ -n "$(git status --porcelain public/gcn-figures/)" ]; then
+      git add public/gcn-figures/
     fi
 
     # 检查暂存区是否有更新需要提交
@@ -122,6 +126,10 @@ case "${TASK}" in
     node scripts/arxiv-weekly-summary.mjs || true
     echo "[cron-runner] 检查并级联更新历史脏自然周..."
     node scripts/arxiv-weekly-summary.mjs --cascade || true
+
+    echo "[cron-runner] 步骤 1.8/4: 执行 GCN 暂现源巡检与光变曲线绘制..."
+    node scripts/gcn-tracker-cli.mjs --all || true
+    node scripts/transient-event-cluster.mjs || true
 
     echo "[cron-runner] 步骤 2/4: 重新构建全站静态发布页面并热加载 Web 服务..."
     capture_current_build

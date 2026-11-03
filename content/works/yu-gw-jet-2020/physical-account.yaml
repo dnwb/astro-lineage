@@ -1,3 +1,78 @@
 work_id: work:yu-gw-jet-2020
-stages: []
-links: []
+stages:
+  - id: stage:yu-gw-jet-central-engine-injection
+    annotation_id: annotation:yu-gw-jet-energy-reservoir
+    label: Collapsar central engine relativistic jet power launch
+  - id: stage:yu-gw-jet-head-propagation
+    annotation_id: annotation:yu-gw-jet-dynamics
+    label: Relativistic jet head propagation through stellar progenitor mantle
+  - id: stage:yu-gw-jet-cocoon-formation
+    annotation_id: annotation:yu-gw-jet-outflow
+    label: Overpressured shocked cocoon formation and collimation
+  - id: stage:yu-gw-jet-breakout-expansion
+    annotation_id: annotation:yu-gw-jet-inference-target
+    label: Stellar surface jet breakout and acceleration
+  - id: stage:yu-gw-jet-gw-memory-signal
+    annotation_id: annotation:yu-gw-jet-messenger
+    label: Permanent non-oscillatory gravitational-wave memory waveform
+links:
+  - id: causal-link:yu-gw-jet-injection-to-head
+    source_stage_id: stage:yu-gw-jet-central-engine-injection
+    target_stage_id: stage:yu-gw-jet-head-propagation
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Central engine supplies continuous relativistic momentum driving the jet head into the star.
+    evidence_ids: [evidence:yu-gw-jet-2020-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:yu-gw-jet-head-to-cocoon
+    source_stage_id: stage:yu-gw-jet-head-propagation
+    target_stage_id: stage:yu-gw-jet-cocoon-formation
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Shocked jet matter spills laterally from the working surface, inflating the surrounding cocoon.
+    evidence_ids: [evidence:yu-gw-jet-2020-jet-cocoon-memory]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:yu-gw-jet-head-to-breakout
+    source_stage_id: stage:yu-gw-jet-head-propagation
+    target_stage_id: stage:yu-gw-jet-breakout-expansion
+    relation: transforms_into
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Jet head crosses the stellar envelope boundary, emerging into circumstellar space.
+    evidence_ids: [evidence:yu-gw-jet-2020-waveform-probes]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:yu-gw-jet-cocoon-modulates-breakout
+    source_stage_id: stage:yu-gw-jet-cocoon-formation
+    target_stage_id: stage:yu-gw-jet-breakout-expansion
+    relation: modulates
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Cocoon thermal pressure collimates the jet channel, sustaining efficient breakout through the stellar surface.
+    evidence_ids: [evidence:yu-gw-jet-2020-jet-cocoon-memory]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:yu-gw-jet-breakout-to-memory
+    source_stage_id: stage:yu-gw-jet-breakout-expansion
+    target_stage_id: stage:yu-gw-jet-gw-memory-signal
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Asymmetric acceleration and directional mass-energy ejection generate permanent spacetime metric displacement.
+    evidence_ids: [evidence:yu-gw-jet-2020-waveform-probes]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed

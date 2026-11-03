@@ -1,3 +1,143 @@
 work_id: work:zhang-agn-jet-2024
-stages: []
-links: []
+stages:
+  - id: stage:zhang-agn-jet-engine-power
+    annotation_id: annotation:zhang-agn-jet-2024-energy-reservoir
+    label: Relativistic jet luminosity supplied by compact central engine
+  - id: stage:zhang-agn-jet-injection
+    annotation_id: annotation:zhang-agn-jet-2024-energy-transfer
+    label: Relativistic hydrodynamic jet boundary injection
+  - id: stage:zhang-agn-jet-collimated-outflow
+    annotation_id: annotation:zhang-agn-jet-2024-outflow
+    label: Relativistic jet spine and pressurized cocoon outflow
+  - id: stage:zhang-agn-jet-agn-disk
+    annotation_id: annotation:zhang-agn-jet-2024-environment
+    label: Ultra-dense AGN accretion disk external medium
+  - id: stage:zhang-agn-jet-head-propagation
+    annotation_id: annotation:zhang-agn-jet-2024-dynamics
+    label: Jet-head propagation and disk choking dynamics
+  - id: stage:zhang-agn-jet-head-dissipation
+    annotation_id: annotation:zhang-agn-jet-2024-energy-dissipation
+    label: Jet head shock heating and particle acceleration
+  - id: stage:zhang-agn-jet-cocoon-breakout
+    annotation_id: annotation:zhang-agn-jet-2024-emission-process
+    label: Shock breakout emission from expanding cocoon
+  - id: stage:zhang-agn-jet-photon-trapping
+    annotation_id: annotation:zhang-agn-jet-2024-transport-process
+    label: Gamma-ray trapping and optical depth degradation in dense disk
+  - id: stage:zhang-agn-jet-transient-signal
+    annotation_id: annotation:zhang-agn-jet-2024-observable
+    label: Measurable cocoon shock-breakout photon transient
+  - id: stage:zhang-agn-jet-inferred-conditions
+    annotation_id: annotation:zhang-agn-jet-2024-inference-target
+    label: Inferred jet choking criteria and breakout timescale
+links:
+  - id: causal-link:zhang-agn-jet-engine-drives-injection
+    source_stage_id: stage:zhang-agn-jet-engine-power
+    target_stage_id: stage:zhang-agn-jet-injection
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Central engine jet power drives continuous boundary injection.
+    evidence_ids: [evidence:zhang-agn-jet-2024-head-propagation]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:zhang-agn-jet-injection-produces-outflow
+    source_stage_id: stage:zhang-agn-jet-injection
+    target_stage_id: stage:zhang-agn-jet-collimated-outflow
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Jet injection establishes the relativistic collimated jet spine and surrounding cocoon.
+    evidence_ids: [evidence:zhang-agn-jet-2024-head-propagation]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:zhang-agn-jet-outflow-drives-propagation
+    source_stage_id: stage:zhang-agn-jet-collimated-outflow
+    target_stage_id: stage:zhang-agn-jet-head-propagation
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Relativistic jet momentum drives forward shock advance through the disk.
+    evidence_ids: [evidence:zhang-agn-jet-2024-head-propagation]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:zhang-agn-jet-disk-modulates-propagation
+    source_stage_id: stage:zhang-agn-jet-agn-disk
+    target_stage_id: stage:zhang-agn-jet-head-propagation
+    relation: modulates
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: High ambient density of the AGN disk exerts opposing ram pressure, setting deceleration and choking threshold.
+    evidence_ids:
+      - evidence:zhang-agn-jet-2024-abstract
+      - evidence:zhang-agn-jet-2024-head-propagation
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:zhang-agn-jet-propagation-produces-dissipation
+    source_stage_id: stage:zhang-agn-jet-head-propagation
+    target_stage_id: stage:zhang-agn-jet-head-dissipation
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Ram-pressure shock interaction at the jet head dissipates kinetic energy into thermal and particle heating.
+    evidence_ids: [evidence:zhang-agn-jet-2024-head-propagation]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:zhang-agn-jet-dissipation-enables-breakout
+    source_stage_id: stage:zhang-agn-jet-head-dissipation
+    target_stage_id: stage:zhang-agn-jet-cocoon-breakout
+    relation: enables
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Thermalized shock energy inflates the pressurized cocoon, enabling lateral expansion and surface breakout.
+    evidence_ids: [evidence:zhang-agn-jet-2024-cocoon-emission]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:zhang-agn-jet-breakout-produces-trapping
+    source_stage_id: stage:zhang-agn-jet-cocoon-breakout
+    target_stage_id: stage:zhang-agn-jet-photon-trapping
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: High-energy photons generated by shock breakout enter the dense disk medium and undergo radiative diffusion and trapping.
+    evidence_ids: [evidence:zhang-agn-jet-2024-cocoon-emission]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:zhang-agn-jet-trapping-produces-transient
+    source_stage_id: stage:zhang-agn-jet-photon-trapping
+    target_stage_id: stage:zhang-agn-jet-transient-signal
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Degraded photons emerging from the disk surface form the observable soft X-ray and UV breakout transient.
+    evidence_ids: [evidence:zhang-agn-jet-2024-cocoon-emission]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:zhang-agn-jet-transient-enables-inference
+    source_stage_id: stage:zhang-agn-jet-transient-signal
+    target_stage_id: stage:zhang-agn-jet-inferred-conditions
+    relation: enables
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Characteristics of the detected transient allow deriving jet choking criteria and breakout timescale across disk parameters.
+    evidence_ids: [evidence:zhang-agn-jet-2024-choking-breakout]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed

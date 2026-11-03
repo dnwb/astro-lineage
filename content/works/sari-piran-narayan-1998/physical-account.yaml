@@ -1,3 +1,126 @@
 work_id: work:sari-piran-narayan-1998
-stages: []
-links: []
+stages:
+  - id: stage:sari-piran-narayan-energy-reservoir
+    annotation_id: annotation:sari-piran-narayan-energy-reservoir
+    label: Blast wave kinetic energy reservoir
+  - id: stage:sari-piran-narayan-blast-injection
+    annotation_id: annotation:sari-piran-narayan-energy-transfer
+    label: Relativistic blast wave expansion work
+  - id: stage:sari-piran-narayan-relativistic-shell
+    annotation_id: annotation:sari-piran-narayan-outflow
+    label: Decelerating relativistic shell
+  - id: stage:sari-piran-narayan-external-medium
+    annotation_id: annotation:sari-piran-narayan-environment
+    label: Uniform external ambient medium
+  - id: stage:sari-piran-narayan-blast-deceleration
+    annotation_id: annotation:sari-piran-narayan-dynamics
+    label: Relativistic blast wave self-similar deceleration
+  - id: stage:sari-piran-narayan-electron-acceleration
+    annotation_id: annotation:sari-piran-narayan-energy-dissipation
+    label: Forward-shock electron acceleration and heating
+  - id: stage:sari-piran-narayan-synchrotron-transport
+    annotation_id: annotation:sari-piran-narayan-transport-process
+    label: Broadband synchrotron cooling and spectral regimes
+  - id: stage:sari-piran-narayan-afterglow-light-curves
+    annotation_id: annotation:sari-piran-narayan-observable
+    label: Multi-band afterglow temporal and spectral light curves
+  - id: stage:sari-piran-narayan-inferred-energetics
+    annotation_id: annotation:sari-piran-narayan-inference-target
+    label: Inferred blast wave energetics and microphysical fractions
+links:
+  - id: causal-link:sari-piran-narayan-power-drives-injection
+    source_stage_id: stage:sari-piran-narayan-energy-reservoir
+    target_stage_id: stage:sari-piran-narayan-blast-injection
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Blast wave initial kinetic energy drives relativistic expansion against the external medium.
+    evidence_ids: [evidence:sari-piran-narayan-1998-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:sari-piran-narayan-injection-produces-shell
+    source_stage_id: stage:sari-piran-narayan-blast-injection
+    target_stage_id: stage:sari-piran-narayan-relativistic-shell
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Energy injection drives the expanding ultra-relativistic shell into the circumburst medium.
+    evidence_ids: [evidence:sari-piran-narayan-1998-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:sari-piran-narayan-shell-drives-deceleration
+    source_stage_id: stage:sari-piran-narayan-relativistic-shell
+    target_stage_id: stage:sari-piran-narayan-blast-deceleration
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Expanding relativistic shell drives shock propagation and swept-up mass deceleration described by BM76.
+    evidence_ids: [evidence:sari-piran-narayan-1998-abstract, evidence:sari-piran-narayan-1998-cooling-regimes]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:sari-piran-narayan-medium-modulates-deceleration
+    source_stage_id: stage:sari-piran-narayan-external-medium
+    target_stage_id: stage:sari-piran-narayan-blast-deceleration
+    relation: modulates
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Ambient circumburst density sets the swept-up mass accumulation rate and deceleration radius.
+    evidence_ids: [evidence:sari-piran-narayan-1998-abstract, evidence:sari-piran-narayan-1998-cooling-regimes]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:sari-piran-narayan-deceleration-drives-acceleration
+    source_stage_id: stage:sari-piran-narayan-blast-deceleration
+    target_stage_id: stage:sari-piran-narayan-electron-acceleration
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Forward shock deceleration converts bulk flow kinetic energy into power-law accelerated relativistic electrons and magnetic fields.
+    evidence_ids: [evidence:sari-piran-narayan-1998-cooling-regimes]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:sari-piran-narayan-electrons-produce-synchrotron
+    source_stage_id: stage:sari-piran-narayan-electron-acceleration
+    target_stage_id: stage:sari-piran-narayan-synchrotron-transport
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Shock-accelerated relativistic electrons radiate synchrotron emission, creating characteristic break frequencies nu_m and nu_c.
+    evidence_ids: [evidence:sari-piran-narayan-1998-cooling-regimes]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:sari-piran-narayan-synchrotron-produces-light-curves
+    source_stage_id: stage:sari-piran-narayan-synchrotron-transport
+    target_stage_id: stage:sari-piran-narayan-afterglow-light-curves
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Synchrotron emission from decelerating downstream shock matter produces the piecewise multi-band temporal decays.
+    evidence_ids: [evidence:sari-piran-narayan-1998-light-curve-scalings]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:sari-piran-narayan-light-curves-enables-inference
+    source_stage_id: stage:sari-piran-narayan-afterglow-light-curves
+    target_stage_id: stage:sari-piran-narayan-inferred-energetics
+    relation: enables
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Observed afterglow temporal slopes and spectral indices enable derivation of isotropic equivalent energy E_iso and shock fractions epsilon_e, epsilon_B.
+    evidence_ids: [evidence:sari-piran-narayan-1998-cooling-regimes, evidence:sari-piran-narayan-1998-light-curve-scalings]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed

@@ -1,3 +1,100 @@
 work_id: work:chevalier-1982
-stages: []
-links: []
+stages:
+  - id: stage:chevalier-ejecta-expansion
+    annotation_id: annotation:chevalier-outflow
+    label: Power-law expanding outer ejecta
+  - id: stage:chevalier-expansion-work
+    annotation_id: annotation:chevalier-energy-transfer
+    label: Ejecta expansion-work energy transfer
+  - id: stage:chevalier-ambient-csm
+    annotation_id: annotation:chevalier-environment
+    label: Stationary power-law circumstellar medium
+  - id: stage:chevalier-homologous-dynamics
+    annotation_id: annotation:chevalier-dynamics
+    label: Homologous ejecta expansion dynamics
+  - id: stage:chevalier-self-similar-shock
+    annotation_id: annotation:chevalier-dynamics
+    label: Self-similar forward and reverse shock system
+  - id: stage:chevalier-light-curves
+    annotation_id: annotation:chevalier-observable
+    label: Modeled shock-driven light-curve evolution
+  - id: stage:chevalier-ejecta-properties
+    annotation_id: annotation:chevalier-inference-target
+    label: Inferred ejecta and circumstellar medium density parameters
+links:
+  - id: causal-link:chevalier-expansion-drives-dynamics
+    source_stage_id: stage:chevalier-ejecta-expansion
+    target_stage_id: stage:chevalier-homologous-dynamics
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Expanding outer ejecta supplies the momentum and velocity field powering the homologous expansion.
+    evidence_ids: [evidence:chevalier-1982-density-profile]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:chevalier-expansion-work-enables-shock
+    source_stage_id: stage:chevalier-expansion-work
+    target_stage_id: stage:chevalier-self-similar-shock
+    relation: enables
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Mechanical work done by the expanding ejecta provides energy for driving shocks upon collision with ambient medium.
+    evidence_ids: [evidence:chevalier-1982-density-profile]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:chevalier-collision-drives-shock
+    source_stage_id: stage:chevalier-homologous-dynamics
+    target_stage_id: stage:chevalier-self-similar-shock
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Dynamic collision of the expanding ejecta with circumstellar gas drives forward and reverse shock propagation.
+    evidence_ids: [evidence:chevalier-1982-shock-scaling]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:chevalier-csm-modulates-shock
+    source_stage_id: stage:chevalier-ambient-csm
+    target_stage_id: stage:chevalier-self-similar-shock
+    relation: modulates
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: The ambient circumstellar medium density profile modulates the self-similar shock deceleration exponent m = (n-3)/(n-s).
+    evidence_ids:
+      - evidence:chevalier-1982-ambient-medium
+      - evidence:chevalier-1982-shock-scaling
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:chevalier-shock-produces-light
+    source_stage_id: stage:chevalier-self-similar-shock
+    target_stage_id: stage:chevalier-light-curves
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Self-similar shock propagation and kinetic dissipation produce the observable transient light-curve evolution.
+    evidence_ids:
+      - evidence:chevalier-1982-abstract
+      - evidence:chevalier-1982-shock-scaling
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:chevalier-shock-enables-inference
+    source_stage_id: stage:chevalier-self-similar-shock
+    target_stage_id: stage:chevalier-ejecta-properties
+    relation: enables
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Observed self-similar shock dynamics enable inference of ejecta index n and circumstellar density normalization q.
+    evidence_ids: [evidence:chevalier-1982-shock-scaling]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed

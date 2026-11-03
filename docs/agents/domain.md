@@ -3,10 +3,10 @@
 ## Before exploring, read these
 
 - Root `CONTEXT.md`
-- Relevant accepted ADRs under `docs/adr/`
+- Top-level system architecture blueprint in `ARCHITECTURE.md`
 - The authoritative source hierarchy declared by this repository
 
-If a referenced domain document is absent, proceed silently.
+If a referenced domain document is absent, proceed silently. (Note: `docs/adr/` holds historical archived decisions and is not read during routine daily development).
 
 ## Layout
 

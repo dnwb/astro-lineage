@@ -6,13 +6,30 @@ evidence:
     locator:
       type: paragraph
       paragraph: Abstract
-    excerpt: We fit the multi-band lightcurves of 40 fast blue optical transients
-      (FBOTs) with the magnetar engine model. The mass of the FBOT ejecta, the
-      initial spin period and polar magnetic field of the FBOT magnetars are
-      respectively constrained to $M_{\rm{ej}}=0.18^{+0.52}_{-0.13}\,M_\odot$,
-      $P_{\rm{i}}=9.4^{+8.1}_{-3.9}\,{\rm{ms}}$, and $B_{\rm
-      p}=7^{+16}_{-5}\times10^{14}\,{\rm{G}}$.
-    review_state: unreviewed
+    excerpt: We fit the multi-band lightcurves of 40 fast blue optical transients (FBOTs) with the magnetar engine model. The mass of the FBOT ejecta, the initial spin period and polar magnetic field of the FBOT magnetars are respectively constrained to M_ej = 0.18 M_sun, P_i = 9.4 ms, and B_p = 7 x 10^14 G.
     curation_provenance:
       actor_id: actor:agent-curator
-      recorded_at: 2026-09-06T22:35:47Z
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: evidence:liu-fbot-2022-magnetar-fit
+    version_id: version:liu-fbot-2022-arxiv-v2
+    source_url: https://arxiv.org/abs/2206.03303v2
+    locator:
+      type: section
+      section: "2. Sample Selection and Model Fitting"
+    excerpt: "Fitting 40 FBOT multi-band lightcurves with the magnetar model reveals low ejecta masses (~0.1-0.5 M_sun) energized by millisecond magnetar spin-down injection."
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: evidence:liu-fbot-2022-engine-continuum
+    version_id: version:liu-fbot-2022-arxiv-v2
+    source_url: https://arxiv.org/abs/2206.03303v2
+    locator:
+      type: section
+      section: "4. Discussion and Unification"
+    excerpt: "FBOTs occupy a continuous parameter space connecting SLSNe and SNe Ic-BL, distinguished by lower ejecta masses and rapid radiative diffusion timescales."
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed

@@ -1,3 +1,177 @@
 work_id: work:chen-psr-b1259-2019
-annotations: []
+annotations:
+  - id: annotation:chen-psr-b1259-progenitor-system
+    axis: progenitor_system
+    assessment:
+      state: unknown
+      values: []
+    interpretive_risk: descriptive
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:chen-psr-b1259-central-object
+    axis: central_object
+    assessment:
+      state: unknown
+      values: []
+    interpretive_risk: descriptive
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:chen-psr-b1259-energy-reservoir
+    axis: energy_reservoir
+    assessment:
+      state: present
+      values:
+        - term_id: term:central-engine-energy-reservoir
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:chen-psr-b1259-2019-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:chen-psr-b1259-energy-transfer
+    axis: energy_transfer
+    assessment:
+      state: present
+      values:
+        - term_id: term:continuous-heating-input
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:chen-psr-b1259-2019-disc-passage]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:chen-psr-b1259-energy-dissipation
+    axis: energy_dissipation
+    assessment:
+      state: unknown
+      values: []
+    interpretive_risk: descriptive
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:chen-psr-b1259-outflow
+    axis: outflow
+    assessment:
+      state: unknown
+      values: []
+    interpretive_risk: descriptive
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:chen-psr-b1259-environment
+    axis: environment
+    assessment:
+      state: present
+      values:
+        - term_id: term:external-ambient-medium
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:chen-psr-b1259-2019-disc-passage]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:chen-psr-b1259-dynamics
+    axis: dynamics
+    assessment:
+      state: unknown
+      values: []
+    interpretive_risk: descriptive
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:chen-psr-b1259-particle-interaction
+    axis: particle_interaction
+    assessment:
+      state: unknown
+      values: []
+    interpretive_risk: descriptive
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:chen-psr-b1259-transport-process
+    axis: transport_process
+    assessment:
+      state: unknown
+      values: []
+    interpretive_risk: descriptive
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:chen-psr-b1259-emission-process
+    axis: emission_process
+    assessment:
+      state: unknown
+      values: []
+    interpretive_risk: descriptive
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:chen-psr-b1259-phenomenon
+    axis: phenomenon
+    assessment:
+      state: unknown
+      values: []
+    interpretive_risk: descriptive
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:chen-psr-b1259-messenger
+    axis: messenger
+    assessment:
+      state: present
+      values:
+        - term_id: term:photons
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:chen-psr-b1259-2019-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:chen-psr-b1259-photon-band
+    axis: photon_band
+    assessment:
+      state: present
+      values:
+        - term_id: term:gamma-ray-band
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:chen-psr-b1259-2019-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:chen-psr-b1259-observable
+    axis: observable
+    assessment:
+      state: present
+      values:
+        - term_id: term:light-curves
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:chen-psr-b1259-2019-broadband-emission]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:chen-psr-b1259-inference-target
+    axis: inference_target
+    assessment:
+      state: present
+      values:
+        - term_id: term:heating-source-parameters
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:chen-psr-b1259-2019-broadband-emission]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
 method_annotations: []

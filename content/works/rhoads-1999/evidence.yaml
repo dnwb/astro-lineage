@@ -6,11 +6,30 @@ evidence:
     locator:
       type: paragraph
       paragraph: Abstract
-    excerpt: The dynamics and light curves of relativistic jets expanding into the
-      interstellar medium are investigated. Lateral expansion causes an
-      exponential slowing of the jet once the bulk Lorentz factor drops below
-      the inverse opening angle.
-    review_state: unreviewed
+    excerpt: The dynamics and light curves of relativistic jets expanding into the interstellar medium are investigated. Lateral expansion causes an exponential slowing of the jet once the bulk Lorentz factor drops below the inverse opening angle.
     curation_provenance:
       actor_id: actor:agent-curator
-      recorded_at: 2026-09-20T05:00:00Z
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: evidence:rhoads-1999-lateral-expansion
+    version_id: version:rhoads-1999-arxiv-v1
+    source_url: https://arxiv.org/abs/astro-ph/9903399
+    locator:
+      type: section
+      section: "2. Dynamics of Jet Propagation"
+    excerpt: "When the bulk Lorentz factor decelerates to Gamma ~ 1/theta_0, the relativistic jet begins rapid lateral expansion at the local sound speed, causing exponential deceleration."
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: evidence:rhoads-1999-jet-break
+    version_id: version:rhoads-1999-arxiv-v1
+    source_url: https://arxiv.org/abs/astro-ph/9903399
+    locator:
+      type: section
+      section: "3. Light Curves and Jet Breaks"
+    excerpt: "The transition from spherical-like deceleration to lateral spreading produces an achromatic break in the multi-wavelength afterglow light curves, steepening the temporal decay."
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed

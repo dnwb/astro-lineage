@@ -6,12 +6,30 @@ evidence:
     locator:
       type: paragraph
       paragraph: Abstract
-    excerpt: Magnetar engines are widely invoked to power luminous optical
-      transients, but their early emission depends on the coupled evolution of
-      engine injection, shock heating, adiabatic cooling, and radiative
-      diffusion. We present \texttt{TransFit-MAG}, a time-dependent
-      radiative-diffusion framework for magnetar-powered transients.
-    review_state: unreviewed
+    excerpt: "Magnetar engines are widely invoked to power luminous optical transients, but their early emission depends on the coupled evolution of engine injection, shock heating, adiabatic cooling, and radiative diffusion. We present TransFit-MAG, a time-dependent radiative-diffusion framework."
     curation_provenance:
       actor_id: actor:agent-curator
-      recorded_at: 2026-09-06T22:35:47Z
+      recorded_at: "2026-09-06T22:35:47Z"
+    review_state: unreviewed
+  - id: evidence:transfit-mag-2026-spin-down-coupling
+    version_id: version:transfit-mag-2026-arxiv-v1
+    source_url: https://arxiv.org/abs/2606.18842v1
+    locator:
+      type: section
+      section: "2. Engine-Ejecta Hydrodynamic Coupling"
+    excerpt: "The magnetar wind inflates an interior radiation bubble, driving a forward shock outward through the expanding ejecta and supplying continuous dipole spin-down heating Q_sd(t)."
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T16:00:00Z"
+    review_state: unreviewed
+  - id: evidence:transfit-mag-2026-diffusion-light-curve
+    version_id: version:transfit-mag-2026-arxiv-v1
+    source_url: https://arxiv.org/abs/2606.18842v1
+    locator:
+      type: section
+      section: "3. Time-Dependent Radiative Diffusion"
+    excerpt: "Solving the moving-boundary energy diffusion equation with flux limiters captures the interplay between moving shock heating and optical depth evolution, generating complex multi-peaked light curves."
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T16:00:00Z"
+    review_state: unreviewed

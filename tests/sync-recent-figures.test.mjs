@@ -31,7 +31,7 @@ test("sync-recent-figures: collectReferencedFiguresForWeeks extracts only existi
   assert.ok(figures.size > 0, "Expected at least 1 figure in recent 7 weeks");
 
   for (const p of figures) {
-    assert.match(p, /^public\/arxiv-figures\//u);
+    assert.match(p, /^public\/(?:arxiv-figures|gcn-figures)\//u);
   }
 
   // An empty week set should return at most current radar figures

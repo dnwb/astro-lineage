@@ -6,11 +6,30 @@ evidence:
     locator:
       type: paragraph
       paragraph: Abstract
-    excerpt: We studied the millihertz quasi-periodic oscillation (mHz QPO) in the
-      2020 outburst of the Be/X-ray binary 1A 0535 + 262 using Insight-HXMT data
-      over a broad energy band. The detection of QPOs above 100 keV challenges
-      current Keplerian frequency models.
-    review_state: unreviewed
+    excerpt: We studied the millihertz quasi-periodic oscillation (mHz QPO) in the 2020 outburst of the Be/X-ray binary 1A 0535 + 262 using Insight-HXMT data over a broad energy band. The detection of QPOs above 100 keV challenges current Keplerian frequency models.
     curation_provenance:
       actor_id: actor:agent-curator
-      recorded_at: 2026-09-20T05:00:00Z
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: evidence:bu-hxmt-1a0535-2022-mhz-qpo
+    version_id: version:bu-hxmt-1a0535-2022-journal
+    source_url: https://doi.org/10.1093/mnras/stac2768
+    locator:
+      type: section
+      section: "3. Timing Analysis and QPO Detection"
+    excerpt: "Insight-HXMT discovers millihertz quasi-periodic oscillations above 100 keV in the Be/X-ray binary 1A 0535+262 during its giant 2020 outburst."
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: evidence:bu-hxmt-1a0535-2022-torque-model
+    version_id: version:bu-hxmt-1a0535-2022-journal
+    source_url: https://doi.org/10.1093/mnras/stac2768
+    locator:
+      type: section
+      section: "4. Discussion and Model Constraints"
+    excerpt: "The detection of high-energy QPOs challenges purely Keplerian accretion disk models, supporting disk-magnetosphere beat frequency and accretion torque coupling."
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed

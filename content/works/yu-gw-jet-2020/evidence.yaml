@@ -6,13 +6,30 @@ evidence:
     locator:
       type: paragraph
       paragraph: Abstract
-    excerpt: It is believed that the relativistic jets of gamma-ray bursts (GRBs)
-      should initially propagate through a heavy envelope of the massive
-      progenitor stars or through a merger ejecta formed from the compact binary
-      mergers. The interaction of a jet with a stellar envelope or a merger
-      ejecta can lead to the deceleration of the head material of the jet and
-      simultaneously the formation of a hot cocoon.
-    review_state: unreviewed
+    excerpt: It is believed that the relativistic jets of gamma-ray bursts (GRBs) should initially propagate through a heavy envelope of the massive progenitor stars or through a merger ejecta formed from the compact binary mergers. The interaction of a jet with a stellar envelope or a merger ejecta can lead to the deceleration of the head material of the jet and simultaneously the formation of a hot cocoon.
     curation_provenance:
       actor_id: actor:agent-curator
-      recorded_at: 2026-09-06T22:35:47Z
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: evidence:yu-gw-jet-2020-jet-cocoon-memory
+    version_id: version:yu-gw-jet-2020-arxiv-v3
+    source_url: https://arxiv.org/abs/2001.00205v3
+    locator:
+      type: section
+      section: "2. Jet-Envelope Interaction and Cocoon Dynamics"
+    excerpt: "The acceleration, collimation, and breakout of the relativistic jet and cocoon through the stellar envelope generates a non-oscillatory gravitational-wave memory signal."
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: evidence:yu-gw-jet-2020-waveform-probes
+    version_id: version:yu-gw-jet-2020-arxiv-v3
+    source_url: https://arxiv.org/abs/2001.00205v3
+    locator:
+      type: section
+      section: "3. Gravitational-Wave Memory Waveforms"
+    excerpt: "The amplitude and rise time of the GW memory waveform directly probe the progenitor radius, envelope density profile, and jet opening angle."
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed

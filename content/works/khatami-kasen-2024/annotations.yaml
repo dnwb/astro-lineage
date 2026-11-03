@@ -1,3 +1,189 @@
 work_id: work:khatami-kasen-2024
-annotations: []
+annotations:
+  - id: annotation:khatami-kasen-progenitor-system
+    axis: progenitor_system
+    assessment:
+      state: present
+      values:
+        - term_id: term:massive-star-collapsar-system
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:khatami-kasen-2024-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:khatami-kasen-central-object
+    axis: central_object
+    assessment:
+      state: unknown
+      values: []
+    interpretive_risk: descriptive
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:khatami-kasen-energy-reservoir
+    axis: energy_reservoir
+    assessment:
+      state: unknown
+      values: []
+    interpretive_risk: descriptive
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:khatami-kasen-energy-transfer
+    axis: energy_transfer
+    assessment:
+      state: present
+      values:
+        - term_id: term:continuous-heating-input
+        - term_id: term:expansion-work-energy-transfer
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:khatami-kasen-2024-shock-cooling]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:khatami-kasen-energy-dissipation
+    axis: energy_dissipation
+    assessment:
+      state: unknown
+      values: []
+    interpretive_risk: descriptive
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:khatami-kasen-outflow
+    axis: outflow
+    assessment:
+      state: present
+      values:
+        - term_id: term:expanding-ejecta
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:khatami-kasen-2024-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:khatami-kasen-environment
+    axis: environment
+    assessment:
+      state: present
+      values:
+        - term_id: term:external-ambient-medium
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:khatami-kasen-2024-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:khatami-kasen-dynamics
+    axis: dynamics
+    assessment:
+      state: present
+      values:
+        - term_id: term:homologous-expansion
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:khatami-kasen-2024-shock-cooling]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:khatami-kasen-particle-interaction
+    axis: particle_interaction
+    assessment:
+      state: unknown
+      values: []
+    interpretive_risk: descriptive
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:khatami-kasen-transport-process
+    axis: transport_process
+    assessment:
+      state: present
+      values:
+        - term_id: term:radiative-diffusion-escape
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:khatami-kasen-2024-shock-cooling]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:khatami-kasen-emission-process
+    axis: emission_process
+    assessment:
+      state: present
+      values:
+        - term_id: term:blackbody-spectrum-approximation
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:khatami-kasen-2024-scaling-relations]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:khatami-kasen-phenomenon
+    axis: phenomenon
+    assessment:
+      state: present
+      values:
+        - term_id: term:transient-light-curve-evolution
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:khatami-kasen-2024-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:khatami-kasen-messenger
+    axis: messenger
+    assessment:
+      state: present
+      values:
+        - term_id: term:photons
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:khatami-kasen-2024-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:khatami-kasen-photon-band
+    axis: photon_band
+    assessment:
+      state: present
+      values:
+        - term_id: term:optical-band
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:khatami-kasen-2024-scaling-relations]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:khatami-kasen-observable
+    axis: observable
+    assessment:
+      state: present
+      values:
+        - term_id: term:light-curves
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:khatami-kasen-2024-scaling-relations]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:khatami-kasen-inference-target
+    axis: inference_target
+    assessment:
+      state: present
+      values:
+        - term_id: term:ejecta-physical-properties
+        - term_id: term:intrinsic-luminosity
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:khatami-kasen-2024-scaling-relations]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
 method_annotations: []

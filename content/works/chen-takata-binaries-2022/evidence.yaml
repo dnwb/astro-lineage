@@ -6,11 +6,30 @@ evidence:
     locator:
       type: paragraph
       paragraph: Abstract
-    excerpt: Be/$γ$-ray binaries comprise a confirmed or presumptive pulsar orbiting
-      a Be star and emit luminous $γ$-rays. Non-thermal emissions are thought to
-      arise from synchrotron radiation and inverse-Compton (IC) scattering in
-      the shock where the pulsar wind is terminated by the stellar outflow.
-    review_state: unreviewed
+    excerpt: Be/gamma-ray binaries comprise a confirmed or presumptive pulsar orbiting a Be star and emit luminous gamma-rays. Non-thermal emissions are thought to arise from synchrotron radiation and inverse-Compton (IC) scattering in the shock where the pulsar wind is terminated by the stellar outflow.
     curation_provenance:
       actor_id: actor:agent-curator
-      recorded_at: 2026-09-06T22:35:47Z
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: evidence:chen-takata-binaries-2022-shock-model
+    version_id: version:chen-takata-binaries-2022-arxiv-v1
+    source_url: https://arxiv.org/abs/2112.00345v1
+    locator:
+      type: section
+      section: "2. 2D Steady Shock and Electron Distribution"
+    excerpt: "A 2D steady-state shock model calculates the non-thermal electron distribution under continuous synchrotron and inverse-Compton cooling."
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: evidence:chen-takata-binaries-2022-correlated-light-curves
+    version_id: version:chen-takata-binaries-2022-arxiv-v1
+    source_url: https://arxiv.org/abs/2112.00345v1
+    locator:
+      type: section
+      section: "3. Correlated keV/TeV Emissions and Results"
+    excerpt: "Orbital variation in stellar photon field density and Doppler boosting naturally produces the observed correlated keV X-ray and TeV gamma-ray light curves."
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed

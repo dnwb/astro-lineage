@@ -1,3 +1,90 @@
 work_id: work:du-frb-2026
-stages: []
-links: []
+stages:
+  - id: stage:du-frb-magnetar-binary-system
+    annotation_id: annotation:du-frb-energy-reservoir
+    label: Magnetar in binary orbit with companion star
+  - id: stage:du-frb-companion-stellar-wind
+    annotation_id: annotation:du-frb-environment
+    label: Magnetized stellar wind filling the intra-binary space
+  - id: stage:du-frb-companion-spin-precession
+    annotation_id: annotation:du-frb-inference-target
+    label: Companion spin and magnetic axis orbital precession
+  - id: stage:du-frb-magnetospheric-burst-propagation
+    annotation_id: annotation:du-frb-messenger
+    label: Fast radio burst pulse propagation through binary wind
+  - id: stage:du-frb-super-orbital-rm-modulation
+    annotation_id: annotation:du-frb-environment
+    label: Super-orbital rotation measure variations and sign reversal
+links:
+  - id: causal-link:du-frb-binary-to-wind
+    source_stage_id: stage:du-frb-magnetar-binary-system
+    target_stage_id: stage:du-frb-companion-stellar-wind
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Companion star mass loss produces a dense, magnetized plasma wind around the orbit.
+    evidence_ids: [evidence:du-frb-2026-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:du-frb-binary-to-precession
+    source_stage_id: stage:du-frb-magnetar-binary-system
+    target_stage_id: stage:du-frb-companion-spin-precession
+    relation: enables
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Gravitational tidal torque in non-coplanar orbit drives companion spin precession.
+    evidence_ids: [evidence:du-frb-2026-companion-precession]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:du-frb-precession-modulates-wind
+    source_stage_id: stage:du-frb-companion-spin-precession
+    target_stage_id: stage:du-frb-companion-stellar-wind
+    relation: modulates
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Precession alters the orientation of the companion magnetic field line of sight.
+    evidence_ids: [evidence:du-frb-2026-companion-precession]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:du-frb-wind-enables-propagation
+    source_stage_id: stage:du-frb-companion-stellar-wind
+    target_stage_id: stage:du-frb-magnetospheric-burst-propagation
+    relation: enables
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Line-of-sight path from magnetar to observer passes through the precessing wind screen.
+    evidence_ids: [evidence:du-frb-2026-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:du-frb-wind-drives-rm-modulation
+    source_stage_id: stage:du-frb-companion-stellar-wind
+    target_stage_id: stage:du-frb-super-orbital-rm-modulation
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Integrated electron density and parallel magnetic field along the path determine Faraday rotation.
+    evidence_ids: [evidence:du-frb-2026-rm-reversal]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:du-frb-propagation-to-rm
+    source_stage_id: stage:du-frb-magnetospheric-burst-propagation
+    target_stage_id: stage:du-frb-super-orbital-rm-modulation
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Burst transmission through the rotating field vector creates the observed RM reversal signal.
+    evidence_ids: [evidence:du-frb-2026-rm-reversal]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed

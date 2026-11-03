@@ -6,13 +6,30 @@ evidence:
     locator:
       type: paragraph
       paragraph: Abstract
-    excerpt: We provide a general analysis on the properties of emitting material of
-      some rapidly evolving and luminous transients discovered recently with the
-      Pan-STARRS1 Medium Deep Survey. It is found that these transients are
-      probably produced by a low-mass non-relativistic outflow that is
-      continuously powered by a newly born, rapidly spinning, and highly
-      magnetized neutron star.
-    review_state: unreviewed
+    excerpt: We provide a general analysis on the properties of emitting material of some rapidly evolving and luminous transients discovered recently with the Pan-STARRS1 Medium Deep Survey. It is found that these transients are probably produced by a low-mass non-relativistic outflow that is continuously powered by a newly born, rapidly spinning, and highly magnetized neutron star.
     curation_provenance:
       actor_id: actor:agent-curator
-      recorded_at: 2026-09-06T22:35:47Z
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: evidence:yu-li-dai-2015-magnetar-injection
+    version_id: version:yu-li-dai-2015-arxiv-v1
+    source_url: https://arxiv.org/abs/1505.03251v1
+    locator:
+      type: section
+      section: "2. Outflow Dynamics with Magnetar Energy Injection"
+    excerpt: "Continuous spin-down energy injection from a newly born, rapidly spinning magnetar powers the low-mass outflow, driving rapid optical transient evolution."
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: evidence:yu-li-dai-2015-rapid-light-curves
+    version_id: version:yu-li-dai-2015-arxiv-v1
+    source_url: https://arxiv.org/abs/1505.03251v1
+    locator:
+      type: section
+      section: "3. Light Curves and Comparison with Pan-STARRS1 Transients"
+    excerpt: "For ejecta mass M_ej ~ 0.01 - 0.1 M_sun, the radiative diffusion timescale is only a few days, producing peak luminosities comparable to superluminous supernovae."
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed

@@ -1,0 +1,377 @@
+---
+/**
+ * src/components/EventFigureShowcase.astro
+ *
+ * Reusable visual showcase component for scientific transient events.
+ * Implements dual-tier showcase toggling between primary GCN multi-band observed
+ * light curves and reference arXiv preprint diagrams.
+ */
+import ReaderText from "./ReaderText.astro";
+
+interface Props {
+  event: any;
+  prefix?: string;
+}
+
+const { event, prefix = "fig" } = Astro.props;
+const hasVisual = Boolean(event.gcn_figure_path || event.lead_figure);
+const eventSlug = String(event.event_id || "").replace(/[^a-zA-Z0-9]/g, "_");
+const radioName = `tier-${prefix}-${eventSlug}`;
+const dataId = `tier-data-${prefix}-${eventSlug}`;
+const paperId = `tier-paper-${prefix}-${eventSlug}`;
+---
+
+{hasVisual && (
+  <div class="card-visual-showcase" data-event-id={event.event_id}>
+    {event.gcn_figure_path && event.lead_figure ? (
+      <div class="figure-tier-container dual-tier">
+        <input type="radio" name={radioName} id={dataId} class="tier-radio-data" checked />
+        <input type="radio" name={radioName} id={paperId} class="tier-radio-paper" />
+        <div class="tier-segmented-bar">
+          <span class="tier-segmented-hint">Figure Tier:</span>
+          <label for={dataId} class="tier-tab-btn tier-tab-btn-data">
+            📊 Light Curve (Data)
+          </label>
+          <label for={paperId} class="tier-tab-btn tier-tab-btn-paper">
+            🔬 Discovery Paper (Ref)
+          </label>
+        </div>
+
+        <div class="tier-panel tier-panel-data">
+          <div class="gcn-figure-header">
+            <div class="figure-badge-title">
+              <span class="tier-tag tier-tag-data">Primary · GCN Photometry</span>
+              <span class="gcn-figure-title">GCN Multi-band Light Curve (Zero Homogenization)</span>
+            </div>
+            <div class="figure-actions">
+              <a href={event.gcn_figure_path} target="_blank" rel="noopener noreferrer" class="gcn-figure-expand">HD PNG ↗</a>
+              <a href={event.gcn_figure_path.replace(/\.png$/, ".svg")} target="_blank" rel="noopener noreferrer" class="gcn-figure-expand gcn-svg-link">Vector SVG ↗</a>
+            </div>
+          </div>
+          <a href={event.gcn_figure_path} target="_blank" rel="noopener noreferrer" class="gcn-figure-link">
+            <img src={event.gcn_figure_path} alt={`${event.event_id} Multi-Wavelength Light Curve`} class="gcn-light-curve-img" loading="lazy" />
+          </a>
+        </div>
+
+        <div class="tier-panel tier-panel-paper">
+          <div class="gcn-figure-header">
+            <div class="figure-badge-title">
+              <span class="tier-tag tier-tag-paper">Reference · Discovery Paper</span>
+              <span class="gcn-figure-title">
+                {event.lead_figure.category_badge || "Preprint Reference Diagram"}
+                {event.lead_figure_arxiv_id && <span class="font-mono text-xs opacity-75"> [{event.lead_figure_arxiv_id}]</span>}
+              </span>
+            </div>
+            <a href={event.lead_figure.url} target="_blank" rel="noopener noreferrer" class="gcn-figure-expand">Open Full Figure ↗</a>
+          </div>
+          <a href={event.lead_figure.url} target="_blank" rel="noopener noreferrer" class="gcn-figure-link">
+            <img src={event.lead_figure.url} alt={event.lead_figure.caption || `${event.event_id} Preprint Reference`} class="gcn-light-curve-img" loading="lazy" />
+          </a>
+          {event.lead_figure.physical_core && (
+            <div class="lead-figure-core-note">
+              <span class="lead-figure-label">{event.lead_figure.label || "Reference"}:</span>
+              <ReaderText text={event.lead_figure.physical_core} />
+            </div>
+          )}
+        </div>
+      </div>
+    ) : event.gcn_figure_path ? (
+      <div class="card-gcn-figure-wrapper tier-data-standalone">
+        <div class="gcn-figure-header">
+          <div class="figure-badge-title">
+            <span class="tier-tag tier-tag-data">Primary · GCN Photometry</span>
+            <span class="gcn-figure-title">GCN Multi-band Light Curve (Zero Homogenization)</span>
+          </div>
+          <div class="figure-actions">
+            <a href={event.gcn_figure_path} target="_blank" rel="noopener noreferrer" class="gcn-figure-expand">HD PNG ↗</a>
+            <a href={event.gcn_figure_path.replace(/\.png$/, ".svg")} target="_blank" rel="noopener noreferrer" class="gcn-figure-expand gcn-svg-link">Vector SVG ↗</a>
+          </div>
+        </div>
+        <a href={event.gcn_figure_path} target="_blank" rel="noopener noreferrer" class="gcn-figure-link">
+          <img src={event.gcn_figure_path} alt={`${event.event_id} Multi-Wavelength Light Curve`} class="gcn-light-curve-img" loading="lazy" />
+        </a>
+      </div>
+    ) : event.lead_figure ? (
+      <div class="card-gcn-figure-wrapper tier-paper-standalone">
+        <div class="gcn-figure-header">
+          <div class="figure-badge-title">
+            <span class="tier-tag tier-tag-paper">Reference · Discovery Paper</span>
+            <span class="gcn-figure-title">
+              {event.lead_figure.category_badge || "Preprint Reference Diagram"}
+              {event.lead_figure_arxiv_id && <span class="font-mono text-xs opacity-75"> [{event.lead_figure_arxiv_id}]</span>}
+            </span>
+          </div>
+          <a href={event.lead_figure.url} target="_blank" rel="noopener noreferrer" class="gcn-figure-expand">Open Full Figure ↗</a>
+        </div>
+        <a href={event.lead_figure.url} target="_blank" rel="noopener noreferrer" class="gcn-figure-link">
+          <img src={event.lead_figure.url} alt={event.lead_figure.caption || `${event.event_id} Core Diagram`} class="gcn-light-curve-img" loading="lazy" />
+        </a>
+        {event.lead_figure.physical_core && (
+          <div class="lead-figure-core-note">
+            <span class="lead-figure-label">{event.lead_figure.label || "Reference"}:</span>
+            <ReaderText text={event.lead_figure.physical_core} />
+          </div>
+        )}
+      </div>
+    ) : null}
+  </div>
+)}
+
+<style>
+  .card-visual-showcase {
+    margin: 1rem 0;
+  }
+
+  .card-gcn-figure-wrapper,
+  .figure-tier-container {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
+    overflow: hidden;
+  }
+
+  .tier-data-standalone,
+  .tier-paper-standalone {
+    margin: 1rem 0;
+    padding: 0.75rem;
+  }
+
+  .figure-tier-container {
+    position: relative;
+  }
+
+  .tier-radio-data,
+  .tier-radio-paper {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+    margin: 0;
+  }
+
+  .tier-segmented-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    background: #f1f5f9;
+    border-bottom: 1px solid #e2e8f0;
+    flex-wrap: wrap;
+  }
+
+  .tier-segmented-hint {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #64748b;
+    letter-spacing: 0.03em;
+  }
+
+  .tier-tab-btn {
+    border: 1px solid #cbd5e1;
+    background: #ffffff;
+    color: #475569;
+    font-size: 0.76rem;
+    font-weight: 600;
+    padding: 0.22rem 0.65rem;
+    border-radius: 0.35rem;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.15s ease;
+  }
+
+  .tier-tab-btn:hover {
+    color: #1e293b;
+    border-color: #94a3b8;
+  }
+
+  .tier-radio-data:checked ~ .tier-segmented-bar .tier-tab-btn-data {
+    background: #1e40af;
+    color: #ffffff;
+    border-color: #1e40af;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+  }
+
+  .tier-radio-paper:checked ~ .tier-segmented-bar .tier-tab-btn-paper {
+    background: #0f766e;
+    color: #ffffff;
+    border-color: #0f766e;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+  }
+
+  .tier-panel {
+    display: none;
+    padding: 0.75rem;
+  }
+
+  .tier-radio-data:checked ~ .tier-panel-data {
+    display: block;
+  }
+
+  .tier-radio-paper:checked ~ .tier-panel-paper {
+    display: block;
+  }
+
+  .gcn-figure-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    font-size: 0.82rem;
+  }
+
+  .figure-badge-title {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    flex-wrap: wrap;
+  }
+
+  .tier-tag {
+    font-size: 0.68rem;
+    font-weight: 800;
+    padding: 0.1rem 0.42rem;
+    border-radius: 0.25rem;
+    letter-spacing: 0.02em;
+    flex-shrink: 0;
+  }
+
+  .tier-tag-data {
+    background: #dbeafe;
+    color: #1e40af;
+    border: 1px solid #bfdbfe;
+  }
+
+  .tier-tag-paper {
+    background: #ccfbf1;
+    color: #0f766e;
+    border: 1px solid #99f6e4;
+  }
+
+  .gcn-figure-title {
+    font-weight: 700;
+    color: #1e293b;
+  }
+
+  .figure-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+  }
+
+  .gcn-figure-expand {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .gcn-figure-expand:hover {
+    text-decoration: underline;
+  }
+
+  .gcn-svg-link {
+    color: #059669;
+  }
+
+  .gcn-figure-link {
+    display: block;
+    cursor: zoom-in;
+  }
+
+  .gcn-light-curve-img {
+    width: 100%;
+    height: auto;
+    max-height: 480px;
+    object-fit: contain;
+    border-radius: 0.375rem;
+    border: 1px solid #cbd5e1;
+    background: #ffffff;
+    display: block;
+  }
+
+  .lead-figure-core-note {
+    margin-top: 0.65rem;
+    font-size: 0.82rem;
+    line-height: 1.55;
+    color: #334155;
+    background: #f1f5f9;
+    padding: 0.55rem 0.85rem;
+    border-radius: 0.35rem;
+    border-left: 3.5px solid #2563eb;
+  }
+
+  .lead-figure-label {
+    font-weight: 700;
+    margin-right: 0.35rem;
+    color: #1e40af;
+  }
+
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .card-gcn-figure-wrapper,
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .figure-tier-container,
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .tier-data-standalone,
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .tier-paper-standalone {
+    background: #0f172a;
+    border-color: #334155;
+  }
+
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .tier-segmented-bar {
+    background: #1e293b;
+    border-bottom-color: #334155;
+  }
+
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .tier-segmented-hint {
+    color: #94a3b8;
+  }
+
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .tier-tab-btn {
+    background: #0f172a;
+    border-color: #334155;
+    color: #cbd5e1;
+  }
+
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .tier-tab-btn:hover {
+    border-color: #64748b;
+    color: #f8fafc;
+  }
+
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .tier-radio-data:checked ~ .tier-segmented-bar .tier-tab-btn-data {
+    background: #2563eb;
+    color: #ffffff;
+    border-color: #2563eb;
+  }
+
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .tier-radio-paper:checked ~ .tier-segmented-bar .tier-tab-btn-paper {
+    background: #0d9488;
+    color: #ffffff;
+    border-color: #0d9488;
+  }
+
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .tier-tag-data {
+    background: rgba(59, 130, 246, 0.2);
+    color: #93c5fd;
+    border-color: rgba(96, 165, 250, 0.35);
+  }
+
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .tier-tag-paper {
+    background: rgba(20, 184, 166, 0.2);
+    color: #5eead4;
+    border-color: rgba(45, 212, 191, 0.35);
+  }
+
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .gcn-figure-title {
+    color: #f1f5f9;
+  }
+
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .lead-figure-core-note {
+    background: #1e293b;
+    color: #cbd5e1;
+    border-left-color: #3b82f6;
+  }
+
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .lead-figure-label {
+    color: #60a5fa;
+  }
+
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .gcn-light-curve-img {
+    background: #0f172a;
+    border-color: #334155;
+  }
+</style>

@@ -6,11 +6,30 @@ evidence:
     locator:
       type: paragraph
       paragraph: Abstract
-    excerpt: In theory, burst activity of the magnetar can lead to the formation of
-      fireballs trapped by the magnetic field and corotating with the star.
-      However, the smoking-gun observational evidence of the fireball is
-      elusive.
-    review_state: unreviewed
+    excerpt: In theory, burst activity of the magnetar can lead to the formation of fireballs trapped by the magnetic field and corotating with the star. However, the smoking-gun observational evidence of the fireball is elusive.
     curation_provenance:
       actor_id: actor:agent-curator
-      recorded_at: 2026-09-06T22:35:47Z
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: evidence:xie-sgr-j1935-2025-fireball-geometry
+    version_id: version:xie-sgr-j1935-2025-arxiv-v3
+    source_url: https://arxiv.org/abs/2510.24075v3
+    locator:
+      type: section
+      section: "2. Corotating Trapped Fireball Model"
+    excerpt: "Magnetospheric burst activity creates a trapped electron-positron fireball corotating with the magnetar surface."
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: evidence:xie-sgr-j1935-2025-eclipse-signature
+    version_id: version:xie-sgr-j1935-2025-arxiv-v3
+    source_url: https://arxiv.org/abs/2510.24075v3
+    locator:
+      type: section
+      section: "3. Eclipse Observations and Spatial Scale"
+    excerpt: "Partial stellar self-eclipse of the corotating fireball provides geometric constraints on the fireball altitude and spatial scale."
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed

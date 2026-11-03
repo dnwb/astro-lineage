@@ -1,3 +1,98 @@
 work_id: work:blandford-mckee-1976
-stages: []
-links: []
+stages:
+  - id: stage:blandford-mckee-engine-energy
+    annotation_id: annotation:blandford-mckee-energy-reservoir
+    label: Relativistic explosion energy reservoir
+  - id: stage:blandford-mckee-blast-injection
+    annotation_id: annotation:blandford-mckee-energy-transfer
+    label: Blast wave energy injection
+  - id: stage:blandford-mckee-relativistic-shell
+    annotation_id: annotation:blandford-mckee-outflow
+    label: Thin relativistic shock shell
+  - id: stage:blandford-mckee-ambient-density
+    annotation_id: annotation:blandford-mckee-environment
+    label: Power-law external ambient medium
+  - id: stage:blandford-mckee-shock-propagation
+    annotation_id: annotation:blandford-mckee-dynamics
+    label: Ultra-relativistic blast wave propagation
+  - id: stage:blandford-mckee-postshock-heating
+    annotation_id: annotation:blandford-mckee-energy-dissipation
+    label: Post-shock fluid heating and compression
+  - id: stage:blandford-mckee-bulk-transport
+    annotation_id: annotation:blandford-mckee-transport-process
+    label: Bulk relativistic energy transport
+links:
+  - id: causal-link:blandford-mckee-reservoir-drives-injection
+    source_stage_id: stage:blandford-mckee-engine-energy
+    target_stage_id: stage:blandford-mckee-blast-injection
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Fixed explosion energy or central power supplies the blast wave energy input.
+    evidence_ids: [evidence:blandford-mckee-1976-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:blandford-mckee-injection-produces-shell
+    source_stage_id: stage:blandford-mckee-blast-injection
+    target_stage_id: stage:blandford-mckee-relativistic-shell
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Relativistic energy injection drives the geometrically thin shock shell downstream.
+    evidence_ids: [evidence:blandford-mckee-1976-shock-scaling]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:blandford-mckee-shell-drives-propagation
+    source_stage_id: stage:blandford-mckee-relativistic-shell
+    target_stage_id: stage:blandford-mckee-shock-propagation
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Ultra-relativistic shell momentum drives self-similar shock deceleration.
+    evidence_ids: [evidence:blandford-mckee-1976-shock-scaling]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:blandford-mckee-ambient-modulates-propagation
+    source_stage_id: stage:blandford-mckee-ambient-density
+    target_stage_id: stage:blandford-mckee-shock-propagation
+    relation: modulates
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Ambient density gradient exponent k sets the Lorentz factor deceleration rate Gamma^2 proportional to R^-(3-k).
+    evidence_ids:
+      - evidence:blandford-mckee-1976-ambient-medium
+      - evidence:blandford-mckee-1976-shock-scaling
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:blandford-mckee-propagation-produces-heating
+    source_stage_id: stage:blandford-mckee-shock-propagation
+    target_stage_id: stage:blandford-mckee-postshock-heating
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Strong shock compression converts blast kinetic energy into thermal and magnetic internal energy of the downstream fluid.
+    evidence_ids: [evidence:blandford-mckee-1976-shock-scaling]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:blandford-mckee-propagation-enables-transport
+    source_stage_id: stage:blandford-mckee-shock-propagation
+    target_stage_id: stage:blandford-mckee-bulk-transport
+    relation: enables
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Hydrodynamic shock propagation governs the bulk spatial transport of blast wave energy across the ambient medium.
+    evidence_ids: [evidence:blandford-mckee-1976-shock-scaling]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed

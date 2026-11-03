@@ -1,3 +1,66 @@
 work_id: work:du-bu-vela-x1-2026
-stages: []
-links: []
+stages:
+  - id: stage:du-bu-vela-x1-stellar-wind-accretion
+    annotation_id: annotation:du-bu-vela-x1-environment
+    label: Supergiant massive companion stellar wind capture
+  - id: stage:du-bu-vela-x1-magnetic-funneling
+    annotation_id: annotation:du-bu-vela-x1-energy-transfer
+    label: Dipole magnetosphere channeling onto neutron star polar caps
+  - id: stage:du-bu-vela-x1-accretion-column-shock
+    annotation_id: annotation:du-bu-vela-x1-energy-reservoir
+    label: Radiative shock formation in accretion column mound
+  - id: stage:du-bu-vela-x1-cyclotron-resonant-scattering
+    annotation_id: annotation:du-bu-vela-x1-inference-target
+    label: Resonant cyclotron scattering features in hard X-ray spectrum
+  - id: stage:du-bu-vela-x1-long-term-crsf-stability
+    annotation_id: annotation:du-bu-vela-x1-messenger
+    label: Multi-decade CRSF centroid energy stability and luminosity relation
+links:
+  - id: causal-link:du-bu-vela-x1-wind-to-funneling
+    source_stage_id: stage:du-bu-vela-x1-stellar-wind-accretion
+    target_stage_id: stage:du-bu-vela-x1-magnetic-funneling
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Accreted stellar wind plasma is captured at the magnetospheric boundary and funneled along magnetic field lines.
+    evidence_ids: [evidence:du-bu-vela-x1-2026-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:du-bu-vela-x1-funneling-to-shock
+    source_stage_id: stage:du-bu-vela-x1-magnetic-funneling
+    target_stage_id: stage:du-bu-vela-x1-accretion-column-shock
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Gravitational infall onto the magnetic poles decelerates via a radiative shock column.
+    evidence_ids: [evidence:du-bu-vela-x1-2026-magnetic-geometry]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:du-bu-vela-x1-shock-to-crsf
+    source_stage_id: stage:du-bu-vela-x1-accretion-column-shock
+    target_stage_id: stage:du-bu-vela-x1-cyclotron-resonant-scattering
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: X-ray continuum photons passing through the 10^12 G magnetic field undergo resonant electron cyclotron scattering.
+    evidence_ids: [evidence:du-bu-vela-x1-2026-magnetic-geometry]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:du-bu-vela-x1-crsf-to-stability
+    source_stage_id: stage:du-bu-vela-x1-cyclotron-resonant-scattering
+    target_stage_id: stage:du-bu-vela-x1-long-term-crsf-stability
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Consistent magnetic field strength over decades results in stable line centroid energy across pulse phases.
+    evidence_ids: [evidence:du-bu-vela-x1-2026-cyclotron-evolution]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed

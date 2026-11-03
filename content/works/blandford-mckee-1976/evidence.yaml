@@ -6,13 +6,30 @@ evidence:
     locator:
       type: paragraph
       paragraph: Abstract
-    excerpt: A fluid dynamical treatment of an ultra-relativistic spherical blast
-      wave enclosed by a strong shock is presented. A simple similarity solution
-      describing the explosion of a fixed amount of energy in a uniform medium
-      is derived, and this is generalized to include cases in which power is
-      supplied by a central source and the density of the external medium varies
-      with radius.
-    review_state: unreviewed
+    excerpt: "A fluid dynamical treatment of an ultra-relativistic spherical blast wave enclosed by a strong shock is presented. A simple similarity solution describing the explosion of a fixed amount of energy in a uniform medium is derived."
     curation_provenance:
       actor_id: actor:agent-curator
-      recorded_at: 2026-09-06T22:35:47Z
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: evidence:blandford-mckee-1976-shock-scaling
+    version_id: version:blandford-mckee-1976-journal
+    source_url: https://api.crossref.org/works/10.1063/1.861619
+    locator:
+      type: section
+      section: "II. Self-Similar Blast Waves"
+    excerpt: "In the ultra-relativistic limit where Gamma >> 1, the shocked fluid is concentrated in a thin shell of thickness delta R ~ R / Gamma^2, with shock Lorentz factor scaling as Gamma^2 proportional to R^-(3-k)."
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: evidence:blandford-mckee-1976-ambient-medium
+    version_id: version:blandford-mckee-1976-journal
+    source_url: https://api.crossref.org/works/10.1063/1.861619
+    locator:
+      type: section
+      section: "II. Self-Similar Blast Waves"
+    excerpt: "The ambient external medium density varies with radius as rho proportional to R^-k, generalized to adiabatic and energy-injected blast wave regimes."
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed

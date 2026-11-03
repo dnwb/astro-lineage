@@ -1,3 +1,117 @@
 work_id: work:liu-multiple-ejecta-csm-2018
-stages: []
-links: []
+stages:
+  - id: stage:liu-multiple-ejecta-episodic-eruptive-loss
+    annotation_id: annotation:liu-multiple-ejecta-progenitor-system
+    label: Massive star episodic eruptive pre-supernova mass loss
+  - id: stage:liu-multiple-ejecta-concentric-csm-shells
+    annotation_id: annotation:liu-multiple-ejecta-environment
+    label: Concentric detached circumstellar shells
+  - id: stage:liu-multiple-ejecta-core-collapse-ejecta
+    annotation_id: annotation:liu-multiple-ejecta-outflow
+    label: Stripped core-collapse primary supernova ejecta
+  - id: stage:liu-multiple-ejecta-first-shell-collision
+    annotation_id: annotation:liu-multiple-ejecta-energy-transfer
+    label: Primary ejecta collision with inner circumstellar shell
+  - id: stage:liu-multiple-ejecta-second-shell-collision
+    annotation_id: annotation:liu-multiple-ejecta-energy-transfer
+    label: Subsequent shock collision with outer circumstellar shell
+  - id: stage:liu-multiple-ejecta-multi-peaked-light-curve
+    annotation_id: annotation:liu-multiple-ejecta-observable
+    label: Multi-peaked and bumpy optical light curve evolution
+links:
+  - id: causal-link:liu-multiple-ejecta-progenitor-to-shells
+    source_stage_id: stage:liu-multiple-ejecta-episodic-eruptive-loss
+    target_stage_id: stage:liu-multiple-ejecta-concentric-csm-shells
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Episodic mass eruptions at different epochs produce multiple detached concentric shells.
+    evidence_ids: [evidence:liu-multiple-ejecta-csm-2018-episodic-shells]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:liu-multiple-ejecta-progenitor-to-ejecta
+    source_stage_id: stage:liu-multiple-ejecta-episodic-eruptive-loss
+    target_stage_id: stage:liu-multiple-ejecta-core-collapse-ejecta
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Final core collapse expels the remaining envelope as high-velocity primary ejecta.
+    evidence_ids: [evidence:liu-multiple-ejecta-csm-2018-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:liu-multiple-ejecta-ejecta-to-first-collision
+    source_stage_id: stage:liu-multiple-ejecta-core-collapse-ejecta
+    target_stage_id: stage:liu-multiple-ejecta-first-shell-collision
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Supernova ejecta sweeps up and collides with the innermost CSM shell.
+    evidence_ids: [evidence:liu-multiple-ejecta-csm-2018-multi-peaked-lc]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:liu-multiple-ejecta-shells-to-first-collision
+    source_stage_id: stage:liu-multiple-ejecta-concentric-csm-shells
+    target_stage_id: stage:liu-multiple-ejecta-first-shell-collision
+    relation: enables
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: The presence of an inner shell provides target material for the initial radiative shock.
+    evidence_ids: [evidence:liu-multiple-ejecta-csm-2018-episodic-shells]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:liu-multiple-ejecta-first-to-second-collision
+    source_stage_id: stage:liu-multiple-ejecta-first-shell-collision
+    target_stage_id: stage:liu-multiple-ejecta-second-shell-collision
+    relation: transforms_into
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Forward shock breaks through the inner shell and continues outwards towards the outer shell.
+    evidence_ids: [evidence:liu-multiple-ejecta-csm-2018-multi-peaked-lc]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:liu-multiple-ejecta-shells-to-second-collision
+    source_stage_id: stage:liu-multiple-ejecta-concentric-csm-shells
+    target_stage_id: stage:liu-multiple-ejecta-second-shell-collision
+    relation: enables
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: The detached outer shell provides target density for the secondary shock interaction.
+    evidence_ids: [evidence:liu-multiple-ejecta-csm-2018-episodic-shells]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:liu-multiple-ejecta-first-collision-to-lc
+    source_stage_id: stage:liu-multiple-ejecta-first-shell-collision
+    target_stage_id: stage:liu-multiple-ejecta-multi-peaked-light-curve
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: First collision shock dissipates kinetic energy into the primary optical light curve peak.
+    evidence_ids: [evidence:liu-multiple-ejecta-csm-2018-multi-peaked-lc]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:liu-multiple-ejecta-second-collision-to-lc
+    source_stage_id: stage:liu-multiple-ejecta-second-shell-collision
+    target_stage_id: stage:liu-multiple-ejecta-multi-peaked-light-curve
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Second collision shock produces the delayed second peak and late-time spectroscopic features.
+    evidence_ids: [evidence:liu-multiple-ejecta-csm-2018-multi-peaked-lc]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed

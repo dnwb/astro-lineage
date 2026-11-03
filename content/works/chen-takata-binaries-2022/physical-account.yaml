@@ -1,3 +1,66 @@
 work_id: work:chen-takata-binaries-2022
-stages: []
-links: []
+stages:
+  - id: stage:chen-takata-binaries-pulsar-wind
+    annotation_id: annotation:chen-takata-binaries-energy-reservoir
+    label: Pulsar rotation-powered relativistic particle wind
+  - id: stage:chen-takata-binaries-intrabinary-termination-shock
+    annotation_id: annotation:chen-takata-binaries-environment
+    label: Stellar wind interaction intrabinary termination shock
+  - id: stage:chen-takata-binaries-electron-acceleration
+    annotation_id: annotation:chen-takata-binaries-energy-transfer
+    label: Shock electron acceleration to multi-TeV energies
+  - id: stage:chen-takata-binaries-synchrotron-ic-cooling
+    annotation_id: annotation:chen-takata-binaries-inference-target
+    label: Non-thermal synchrotron and inverse-Compton radiation cooling
+  - id: stage:chen-takata-binaries-correlated-kev-tev-emission
+    annotation_id: annotation:chen-takata-binaries-observable
+    label: Orbital modulated correlated keV X-ray and TeV gamma-ray light curves
+links:
+  - id: causal-link:chen-takata-binaries-wind-to-shock
+    source_stage_id: stage:chen-takata-binaries-pulsar-wind
+    target_stage_id: stage:chen-takata-binaries-intrabinary-termination-shock
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Pulsar wind terminates in a strong shock against the Be star outflow.
+    evidence_ids: [evidence:chen-takata-binaries-2022-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:chen-takata-binaries-shock-to-acceleration
+    source_stage_id: stage:chen-takata-binaries-intrabinary-termination-shock
+    target_stage_id: stage:chen-takata-binaries-electron-acceleration
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: First-order Fermi acceleration energizes electrons across the shock layer.
+    evidence_ids: [evidence:chen-takata-binaries-2022-shock-model]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:chen-takata-binaries-acceleration-to-cooling
+    source_stage_id: stage:chen-takata-binaries-electron-acceleration
+    target_stage_id: stage:chen-takata-binaries-synchrotron-ic-cooling
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Relativistic electrons radiate via magnetic synchrotron and target inverse-Compton channels.
+    evidence_ids: [evidence:chen-takata-binaries-2022-shock-model]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:chen-takata-binaries-cooling-to-light-curves
+    source_stage_id: stage:chen-takata-binaries-synchrotron-ic-cooling
+    target_stage_id: stage:chen-takata-binaries-correlated-kev-tev-emission
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Orbital variation in stellar photon angle and magnetic field strength produces tightly correlated keV/TeV flares.
+    evidence_ids: [evidence:chen-takata-binaries-2022-correlated-light-curves]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed

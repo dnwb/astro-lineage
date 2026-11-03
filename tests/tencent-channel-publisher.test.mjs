@@ -764,6 +764,7 @@ function fakeCli() {
       }
       const feed = {
         feed_id: String(calls),
+        author_id: "test-bot-user",
         create_time_raw: String(calls + 100),
         channel_id: arg("--channel-id"),
         title: arg("--title"),

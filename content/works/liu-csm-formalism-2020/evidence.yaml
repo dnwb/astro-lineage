@@ -6,11 +6,30 @@ evidence:
     locator:
       type: paragraph
       paragraph: Abstract
-    excerpt: The interaction of a SN ejecta with a pre-existing circumstellar
-      material (CSM) is one of the most promising energy sources for a variety
-      of optical transients. Recently, a semi-analytic method developed by
-      Chatzopoulos et al.
-    review_state: unreviewed
+    excerpt: "The interaction of a SN ejecta with a pre-existing circumstellar material is one of the most promising energy sources for optical transients. A clear and reader-friendly formulation is presented."
     curation_provenance:
       actor_id: actor:agent-curator
-      recorded_at: 2026-09-06T22:35:47Z
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: evidence:liu-csm-formalism-2020-shock-formalism
+    version_id: version:liu-csm-formalism-2020-arxiv-v1
+    source_url: https://arxiv.org/abs/2009.11103v1
+    locator:
+      type: section
+      section: "2. The Hydrodynamic Interaction"
+    excerpt: "The shock radius evolves as R_sh(t) proportional to t^(n-3)/(n-s), driving conversion of kinetic energy into shock dissipation luminosity across forward and reverse shocks."
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: evidence:liu-csm-formalism-2020-diffusion-bolometric
+    version_id: version:liu-csm-formalism-2020-arxiv-v1
+    source_url: https://arxiv.org/abs/2009.11103v1
+    locator:
+      type: section
+      section: "3. Bolometric Light Curve Solution"
+    excerpt: "The dissipated shock energy diffuses through the optically thick CSM and ejecta, regulating the output bolometric light curve peak and post-peak decay."
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed

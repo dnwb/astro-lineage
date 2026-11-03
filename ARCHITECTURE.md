@@ -53,6 +53,15 @@
   - 沉淀的不可变快照与归档数据存放于 `src/data/arxiv-archives/`（每日归档每文件约 200~400KB）。
   - `src/data/daily-radar.json` 为当天活跃窗口快照（严格控制在 2,500 行 / 100KB 以内，杜绝无界历史累积）。
 
+### 1.3 瞬变源事件与多波段光变图管线 (Transient Surveillance & Light Curve Pipeline)
+
+- **职责**：追踪 NASA GCN Circulars 高能爆发圆报（GRB、AT2024gsa、EP 瞬变等），抽取确定性物理触发时刻 $T_0$、光学/近红外（$u, b, v, g, r, i, z, J, H, K$）及高能 X 射线测光点，生成波长驱动的出版级光变曲线。
+- **核心模块与数据流**：
+  - **圆报摄取与抽取**：`scripts/gcn-tracker.mjs`（CLI: `scripts/gcn-tracker-cli.mjs`）以 15 批次并发抓取圆报，正则严格提取仪器权威 $T_0$（GW > Fermi/GBM > Swift/BAT > SVOM/ECLAIRs），按波长抽取测光点。支持 `--inspect <EVENT>` 与 `--dry-run` 纯观测调试。
+  - **光变绘图与空图抑制**：`scripts/gcn-plot.py` 基于 SVO 滤光片有效波长与巡天望远镜形状绘制光变图。少于 2 个光学/NIR 测光点的事件**强制抑制绘图**（`figure_path: null`），严禁在 `public/gcn-figures/` 残留空图。
+  - **实体聚类准则**：`scripts/transient-event-cluster.mjs` 归并多源事件，**严格执行主标识符（Primary ID）最高优先判定**，仅在未命中主键时回退至别名（Alias）检查，杜绝圆报中历史对照源反向劫持事件聚类。
+  - **呈现端**：`src/pages/events/index.astro` 聚合渲染为 `[Data Plot] ⇋ [Paper Figure]` 双层视觉呈现。
+
 ---
 
 ## 2. 核心领域模块单点真理源 (Domain SSOT)

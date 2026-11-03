@@ -1,3 +1,181 @@
 work_id: work:sari-piran-narayan-1998
-annotations: []
+annotations:
+  - id: annotation:sari-piran-narayan-progenitor-system
+    axis: progenitor_system
+    assessment:
+      state: unknown
+      values: []
+    interpretive_risk: descriptive
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:sari-piran-narayan-central-object
+    axis: central_object
+    assessment:
+      state: unknown
+      values: []
+    interpretive_risk: descriptive
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:sari-piran-narayan-energy-reservoir
+    axis: energy_reservoir
+    assessment:
+      state: unknown
+      values: []
+    interpretive_risk: descriptive
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:sari-piran-narayan-energy-transfer
+    axis: energy_transfer
+    assessment:
+      state: present
+      values:
+        - term_id: term:expansion-work-energy-transfer
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:sari-piran-narayan-1998-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:sari-piran-narayan-outflow
+    axis: outflow
+    assessment:
+      state: unknown
+      values: []
+    interpretive_risk: descriptive
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:sari-piran-narayan-environment
+    axis: environment
+    assessment:
+      state: present
+      values:
+        - term_id: term:external-ambient-medium
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:sari-piran-narayan-1998-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:sari-piran-narayan-dynamics
+    axis: dynamics
+    assessment:
+      state: unknown
+      values: []
+    interpretive_risk: descriptive
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:sari-piran-narayan-energy-dissipation
+    axis: energy_dissipation
+    assessment:
+      state: unknown
+      values: []
+    interpretive_risk: descriptive
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:sari-piran-narayan-particle-interaction
+    axis: particle_interaction
+    assessment:
+      state: not_applicable
+      values: []
+    interpretive_risk: descriptive
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:sari-piran-narayan-emission-process
+    axis: emission_process
+    assessment:
+      state: unknown
+      values: []
+    interpretive_risk: descriptive
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:sari-piran-narayan-transport-process
+    axis: transport_process
+    assessment:
+      state: unknown
+      values: []
+    interpretive_risk: descriptive
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:sari-piran-narayan-phenomenon
+    axis: phenomenon
+    assessment:
+      state: present
+      values:
+        - term_id: term:transient-light-curve-evolution
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:sari-piran-narayan-1998-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:sari-piran-narayan-messenger
+    axis: messenger
+    assessment:
+      state: present
+      values:
+        - term_id: term:photons
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:sari-piran-narayan-1998-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:sari-piran-narayan-photon-band
+    axis: photon_band
+    assessment:
+      state: present
+      values:
+        - term_id: term:optical-band
+        - term_id: term:gamma-ray-band
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:sari-piran-narayan-1998-light-curve-scalings]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:sari-piran-narayan-observable
+    axis: observable
+    assessment:
+      state: present
+      values:
+        - term_id: term:light-curves
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:sari-piran-narayan-1998-light-curve-scalings]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:sari-piran-narayan-inference-target
+    axis: inference_target
+    assessment:
+      state: present
+      values:
+        - term_id: term:intrinsic-luminosity
+        - term_id: term:ejecta-physical-properties
+    interpretive_risk: interpretive
+    risk_escalation:
+      reason: Mapping multi-band afterglow temporal slopes and spectral indices to blast wave energy and microphysical shock fractions requires piecewise synchrotron closure relations.
+    evidence_ids: [evidence:sari-piran-narayan-1998-cooling-regimes, evidence:sari-piran-narayan-1998-light-curve-scalings]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
 method_annotations: []

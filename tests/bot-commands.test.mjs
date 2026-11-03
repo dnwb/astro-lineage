@@ -262,11 +262,11 @@ test("handleBotCommand handles \\week and returns latest weekly synthesis", asyn
   const weekIds = await getAvailableWeeklyIds();
   const res = await handleBotCommand("\\week");
   assert.equal(res.matched, true);
-  assert.match(res.replyText, /# \[\[\d{4}-W\d\d\] 前沿周报/u);
+  assert.match(res.replyText, /# \[\[\d{4}-W\d\d\]/u);
   assert.match(res.replyText, new RegExp(`\\[${weekIds[0]}\\]`, "u"));
-  assert.match(res.replyText, /研读共 \d+ 篇/u);
+  assert.match(res.replyText, /(研读共 \d+ 篇|papers analyzed|Total Papers)/iu);
   assert.match(res.replyText, /https:\/\/pd\.qq\.com\/s\/[a-zA-Z0-9]+/u);
-  assert.match(res.replyText, /进入周报讨论帖/u);
+  assert.match(res.replyText, /(进入周报讨论帖|Join (Weekly|Channel) Discussion)/u);
 });
 
 test("handleBotCommand handles \\last_week and returns previous week", async () => {
@@ -274,9 +274,9 @@ test("handleBotCommand handles \\last_week and returns previous week", async () 
   const expectedPrev = weekIds[1] || weekIds[0];
   const res = await handleBotCommand("\\last_week");
   assert.equal(res.matched, true);
-  assert.match(res.replyText, /# \[\[\d{4}-W\d\d\] 前沿周报/u);
+  assert.match(res.replyText, /# \[\[\d{4}-W\d\d\]/u);
   assert.match(res.replyText, new RegExp(`\\[${expectedPrev}\\]`, "u"));
-  assert.match(res.replyText, /研读共 \d+ 篇/u);
+  assert.match(res.replyText, /(研读共 \d+ 篇|papers analyzed|Total Papers)/iu);
   assert.match(res.replyText, /https:\/\/pd\.qq\.com\/s\/[a-zA-Z0-9]+/u);
 });
 
@@ -307,26 +307,29 @@ test("handleBotCommand handles \\week pdf and returns weekly PDF report package"
   assert.equal(res.matched, true);
   assert.match(
     res.replyText,
-    /📄 \*\*AstroLineage 前沿学术周报 · .+ 年第 \d+ 周 \(.+\) PDF 精读版\*\*/u
+    /📄 \*\*(AstroLineage 前沿学术周报 · .+ 年第 \d+ 周 \(.+\) PDF 精读版|AstroLineage Weekly Report · \d{4}-W\d{2} PDF Edition)\*\*/u
   );
-  assert.match(res.replyText, /📥 \*\*PDF 完整报告下载\*\*/u);
+  assert.match(res.replyText, /(📥 \*\*PDF 完整报告下载\*\*|📥 \*\*PDF Report Download\*\*)/u);
   assert.match(
     res.replyText,
     new RegExp(`/arxiv-weekly/${latestWeek}/weekly-${latestWeek}\\.pdf`, "u")
   );
-  assert.match(res.replyText, /🌐 \*\*周报网页在线精读入口\*\*/u);
-  assert.match(res.replyText, /📊 \*\*报告概览\*\*：共研读 \d+ 篇文献/u);
+  assert.match(res.replyText, /(🌐 \*\*周报网页在线精读入口\*\*|🌐 \*\*Online Reading\*\*)/u);
+  assert.match(
+    res.replyText,
+    /(📊 \*\*报告概览\*\*：共研读 \d+ 篇文献|📊 \*\*Overview\*\*:\s*\d+\s*papers analyzed)/u
+  );
 
   // 2. /week pdf
   const resSlash = await handleBotCommand("/week pdf", testOptions);
   assert.equal(resSlash.matched, true);
-  assert.match(resSlash.replyText, /PDF 精读版/u);
+  assert.match(resSlash.replyText, /(PDF 精读版|PDF Edition)/u);
 
   // 3. \last_week pdf
   const expectedPrev = weekIds[1] || weekIds[0];
   const resLastWeek = await handleBotCommand("\\last_week pdf", testOptions);
   assert.equal(resLastWeek.matched, true);
-  assert.match(resLastWeek.replyText, new RegExp(`\\(${expectedPrev}\\)`, "u"));
+  assert.match(resLastWeek.replyText, new RegExp(`(${expectedPrev}|\\(${expectedPrev}\\))`, "u"));
   assert.match(
     resLastWeek.replyText,
     new RegExp(`/arxiv-weekly/${expectedPrev}/weekly-${expectedPrev}\\.pdf`, "u")
@@ -336,7 +339,7 @@ test("handleBotCommand handles \\week pdf and returns weekly PDF report package"
   const specificWeek = weekIds.find((w) => w === "2026-W41") || weekIds[0];
   const resSpecific = await handleBotCommand(`\\week ${specificWeek} pdf`, testOptions);
   assert.equal(resSpecific.matched, true);
-  assert.match(resSpecific.replyText, new RegExp(`\\(${specificWeek}\\)`, "u"));
+  assert.match(resSpecific.replyText, new RegExp(`(${specificWeek}|\\(${specificWeek}\\))`, "u"));
   assert.match(
     resSpecific.replyText,
     new RegExp(`/arxiv-weekly/${specificWeek}/weekly-${specificWeek}\\.pdf`, "u")
@@ -366,4 +369,58 @@ test("handleBotCommand handles \\list_week and returns formatted weekly list", a
   assert.equal(res.matched, true);
   assert.match(res.replyText, /前沿周报脉络归档列表/u);
   assert.match(res.replyText, /2026-W/u);
+});
+
+test("matchBotCommand and handleBotCommand handle \\gcn commands cleanly", async (t) => {
+  const ws = await createTemporaryWorkspace("bot-gcn-test-", t);
+  const mockGcnIndex = {
+    events: {
+      "grb-261029a": {
+        slug: "grb-261029a",
+        primary_id: "GRB 261029A",
+        aliases: ["AT 2026ahaw", "GOTO26LLT"],
+        event_type: "GRB",
+        canonical_t0: { instrument: "Fermi/GBM", utc_iso: "2026-10-29T01:27:03.000Z" },
+        best_redshift: { z: 3.27, type: "spectroscopic", instrument: "NOT/ALFOSC" },
+        circular_count: 32,
+        status: "active",
+      },
+    },
+  };
+  const mockLedger = {
+    ...mockGcnIndex.events["grb-261029a"],
+    photometry_points: [{ dt_hours: 0.2, mag: 13.69, band: "Clear/L" }],
+    xray_points: [{ dt_hours: 0.78, flux_erg_cm2_s: 2.8e-11, instrument: "EP-FXT" }],
+  };
+
+  await writeFile(join(ws.path, "index.json"), JSON.stringify(mockGcnIndex), "utf8");
+  await writeFile(join(ws.path, "grb-261029a.json"), JSON.stringify(mockLedger), "utf8");
+
+  // 1. matchBotCommand matching
+  assert.deepEqual(matchBotCommand("\\gcn"), { type: "gcn", arg: null, query: "\\gcn" });
+  assert.deepEqual(matchBotCommand("/gcn GRB 261029A"), {
+    type: "gcn",
+    arg: "GRB 261029A",
+    query: "/gcn GRB 261029A",
+  });
+  assert.deepEqual(matchBotCommand("快讯 GRB 261029A"), {
+    type: "gcn",
+    arg: "GRB 261029A",
+    query: "快讯 GRB 261029A",
+  });
+
+  // 2. handleBotCommand listing
+  const listRes = await handleBotCommand("\\gcn", { gcnDir: ws.path });
+  assert.equal(listRes.matched, true);
+  assert.match(listRes.replyText, /NASA GCN 暂现源追踪列表/u);
+  assert.match(listRes.replyText, /GRB 261029A/u);
+
+  // 3. handleBotCommand querying target
+  const targetRes = await handleBotCommand("\\gcn GRB 261029A", { gcnDir: ws.path });
+  assert.equal(targetRes.matched, true);
+  assert.match(targetRes.replyText, /GRB 261029A/u);
+  assert.match(targetRes.replyText, /AT 2026ahaw/u);
+  assert.match(targetRes.replyText, /z = 3.27/u);
+  assert.match(targetRes.replyText, /Fermi\/GBM/u);
+  assert.match(targetRes.replyText, /零同质化架构/u);
 });

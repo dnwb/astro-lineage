@@ -1,3 +1,126 @@
 work_id: work:transfit-csm-2025
-stages: []
-links: []
+stages:
+  - id: stage:transfit-csm-expanding-ejecta
+    annotation_id: annotation:transfit-csm-outflow
+    label: Expanding outer supernova ejecta
+  - id: stage:transfit-csm-expansion-work
+    annotation_id: annotation:transfit-csm-energy-transfer
+    label: Mechanical expansion work energy transfer
+  - id: stage:transfit-csm-csm-environment
+    annotation_id: annotation:transfit-csm-environment
+    label: Circumstellar medium density structure
+  - id: stage:transfit-csm-homologous-dynamics
+    annotation_id: annotation:transfit-csm-dynamics
+    label: Homologous ejecta expansion dynamics
+  - id: stage:transfit-csm-shock-heating-boundary
+    annotation_id: annotation:transfit-csm-dynamics
+    label: Advancing shock and moving heating boundary
+  - id: stage:transfit-csm-dynamic-diffusion
+    annotation_id: annotation:transfit-csm-transport-process
+    label: Radiative diffusion across evolving optical depth
+  - id: stage:transfit-csm-photospheric-emission
+    annotation_id: annotation:transfit-csm-emission-process
+    label: Thermal blackbody emission from dynamic photosphere
+  - id: stage:transfit-csm-bolometric-light-curve
+    annotation_id: annotation:transfit-csm-observable
+    label: Bolometric and multi-band light curves
+  - id: stage:transfit-csm-inferred-parameters
+    annotation_id: annotation:transfit-csm-inference-target
+    label: Inferred ejecta and circumstellar medium properties
+links:
+  - id: causal-link:transfit-csm-ejecta-drives-dynamics
+    source_stage_id: stage:transfit-csm-expanding-ejecta
+    target_stage_id: stage:transfit-csm-homologous-dynamics
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Ejecta expansion momentum drives macroscopic kinematic homologous expansion.
+    evidence_ids: [evidence:transfit-csm-2025-moving-boundary]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T16:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:transfit-csm-work-enables-shock
+    source_stage_id: stage:transfit-csm-expansion-work
+    target_stage_id: stage:transfit-csm-shock-heating-boundary
+    relation: enables
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Mechanical work done by the expanding shell supplies kinetic energy dissipated at the shock front.
+    evidence_ids: [evidence:transfit-csm-2025-moving-boundary]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T16:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:transfit-csm-collision-drives-shock
+    source_stage_id: stage:transfit-csm-homologous-dynamics
+    target_stage_id: stage:transfit-csm-shock-heating-boundary
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Kinetic impact between ejecta and CSM drives advancing forward and reverse shocks with a moving heating source term Q(r,t).
+    evidence_ids: [evidence:transfit-csm-2025-moving-boundary]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T16:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:transfit-csm-csm-modulates-shock
+    source_stage_id: stage:transfit-csm-csm-environment
+    target_stage_id: stage:transfit-csm-shock-heating-boundary
+    relation: modulates
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Circumstellar density distribution and optical depth profile modulate shock deceleration and input dissipation luminosity.
+    evidence_ids: [evidence:transfit-csm-2025-abstract, evidence:transfit-csm-2025-moving-boundary]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T16:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:transfit-csm-shock-enables-diffusion
+    source_stage_id: stage:transfit-csm-shock-heating-boundary
+    target_stage_id: stage:transfit-csm-dynamic-diffusion
+    relation: enables
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Shock-generated thermal energy enters the moving-boundary radiative diffusion equation across evolving optical depth.
+    evidence_ids: [evidence:transfit-csm-2025-moving-boundary, evidence:transfit-csm-2025-bolometric-solution]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T16:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:transfit-csm-diffusion-produces-emission
+    source_stage_id: stage:transfit-csm-dynamic-diffusion
+    target_stage_id: stage:transfit-csm-photospheric-emission
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Radiative diffusion delivers internal thermal energy to the moving effective photosphere.
+    evidence_ids: [evidence:transfit-csm-2025-bolometric-solution]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T16:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:transfit-csm-emission-produces-light-curve
+    source_stage_id: stage:transfit-csm-photospheric-emission
+    target_stage_id: stage:transfit-csm-bolometric-light-curve
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Thermal photospheric radiation determines the time-dependent bolometric and optical band light curves.
+    evidence_ids: [evidence:transfit-csm-2025-abstract, evidence:transfit-csm-2025-bolometric-solution]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T16:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:transfit-csm-light-curve-enables-inference
+    source_stage_id: stage:transfit-csm-bolometric-light-curve
+    target_stage_id: stage:transfit-csm-inferred-parameters
+    relation: enables
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Fitting observed light curve morphology enables deriving ejecta mass, kinetic energy, and circumstellar density profile.
+    evidence_ids: [evidence:transfit-csm-2025-moving-boundary, evidence:transfit-csm-2025-bolometric-solution]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T16:00:00Z"
+    review_state: unreviewed

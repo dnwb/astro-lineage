@@ -6,13 +6,30 @@ evidence:
     locator:
       type: paragraph
       paragraph: Abstract
-    excerpt: We show that energy deposited into an expanding supernova remnant by a
-      highly magnetic (B ~ 5 x 10^14 G) neutron star spinning at an initial
-      period of P ~ 2-20 ms can substantially brighten the light curve. For
-      magnetars with parameters in this range, the rotational energy is released
-      on a timescale of days to weeks, which is comparable to the effective
-      diffusion time through the supernova remnant.
-    review_state: unreviewed
+    excerpt: "The rotational energy of a young, highly magnetic neutron star spinning at P ~ 2-20 ms can substantially brighten the light curve of a core-collapse supernova, releasing energy on timescales comparable to diffusion time."
     curation_provenance:
       actor_id: actor:agent-curator
-      recorded_at: 2026-09-06T22:35:47Z
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: evidence:kasen-bildsten-2010-spin-down-power
+    version_id: version:kasen-bildsten-2010-arxiv-v1
+    source_url: https://arxiv.org/abs/0911.0680v1
+    locator:
+      type: section
+      section: "2. Energy Injection from a Magnetar"
+    excerpt: "A newborn magnetar spins down by magnetic dipole radiation, injecting power L_p(t) = (E_p / t_p) / (1 + t/t_p)^2, where rotational energy E_p ~ 10^50-10^52 erg."
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: evidence:kasen-bildsten-2010-light-curve-diffusion
+    version_id: version:kasen-bildsten-2010-arxiv-v1
+    source_url: https://arxiv.org/abs/0911.0680v1
+    locator:
+      type: section
+      section: "3. Supernova Light Curves"
+    excerpt: "Energy injected by the magnetar thermalizes behind the expanding ejecta, diffusing outward on timescale t_d to power superluminous optical peaks and broadened light curves."
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed

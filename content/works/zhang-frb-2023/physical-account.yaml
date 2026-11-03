@@ -1,3 +1,66 @@
 work_id: work:zhang-frb-2023
-stages: []
-links: []
+stages:
+  - id: stage:zhang-frb-magnetar-engine
+    annotation_id: annotation:zhang-frb-energy-reservoir
+    label: Active magnetar central engine and magnetic energy release
+  - id: stage:zhang-frb-coherent-radiation-generation
+    annotation_id: annotation:zhang-frb-inference-target
+    label: Coherent curvature radiation or synchrotron maser generation
+  - id: stage:zhang-frb-magnetospheric-escape
+    annotation_id: annotation:zhang-frb-environment
+    label: Radio wavepacket propagation through local magnetosphere
+  - id: stage:zhang-frb-intergalactic-plasma-propagation
+    annotation_id: annotation:zhang-frb-environment
+    label: Interstellar and intergalactic plasma dispersion and scattering
+  - id: stage:zhang-frb-observed-millisecond-burst
+    annotation_id: annotation:zhang-frb-messenger
+    label: Observed millisecond-duration coherent fast radio burst signal
+links:
+  - id: causal-link:zhang-frb-engine-to-coherent-emission
+    source_stage_id: stage:zhang-frb-magnetar-engine
+    target_stage_id: stage:zhang-frb-coherent-radiation-generation
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Magnetar magnetic activity supplies energy to relativistic plasma instabilities producing coherent emission.
+    evidence_ids: [evidence:zhang-frb-2023-coherent-mechanisms]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:zhang-frb-emission-to-escape
+    source_stage_id: stage:zhang-frb-coherent-radiation-generation
+    target_stage_id: stage:zhang-frb-magnetospheric-escape
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Coherent radio waves propagate outward through the surrounding relativistic magnetosphere.
+    evidence_ids: [evidence:zhang-frb-2023-coherent-mechanisms]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:zhang-frb-escape-to-propagation
+    source_stage_id: stage:zhang-frb-magnetospheric-escape
+    target_stage_id: stage:zhang-frb-intergalactic-plasma-propagation
+    relation: enables
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Once escaping local plasma absorption, radio pulses traverse host galaxy and intergalactic media.
+    evidence_ids: [evidence:zhang-frb-2023-propagation-effects]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:zhang-frb-propagation-to-observed-burst
+    source_stage_id: stage:zhang-frb-intergalactic-plasma-propagation
+    target_stage_id: stage:zhang-frb-observed-millisecond-burst
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Cumulative plasma propagation imprints dispersion measure and rotation measure onto the received burst pulse.
+    evidence_ids: [evidence:zhang-frb-2023-propagation-effects]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed

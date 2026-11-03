@@ -6,10 +6,30 @@ evidence:
     locator:
       type: paragraph
       paragraph: Abstract
-    excerpt: The optical transient AT2017gfo associated with GW170817 is modeled. We
-      show that a long-lived remnant magnetar with rotational energy injection
-      can self-consistently explain the multi-band light curves.
-    review_state: unreviewed
+    excerpt: The optical transient AT2017gfo associated with GW170817 is modeled. We show that a long-lived remnant magnetar with rotational energy injection can self-consistently explain the multi-band light curves.
     curation_provenance:
       actor_id: actor:agent-curator
-      recorded_at: 2026-09-20T05:00:00Z
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: evidence:li-gw170817-2018-magnetar-injection
+    version_id: version:li-gw170817-2018-arxiv-v1
+    source_url: https://arxiv.org/abs/1804.06597v2
+    locator:
+      type: section
+      section: "2. Magnetar-Powered Kilonova Model"
+    excerpt: "Rotational energy injection from a long-lived millisecond magnetar continuously thermalizes within the merger ejecta, powering both early blue and late red components."
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: evidence:li-gw170817-2018-at2017gfo-fitting
+    version_id: version:li-gw170817-2018-arxiv-v1
+    source_url: https://arxiv.org/abs/1804.06597v2
+    locator:
+      type: section
+      section: "3. Fitting Results and Discussion"
+    excerpt: "Joint fitting to AT2017gfo multi-band light curves constrains the magnetar magnetic field B_p ~ 10^15 G and ejecta mass M_ej ~ 0.02 - 0.05 M_sun."
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed

@@ -1,3 +1,93 @@
 work_id: work:tan-yu-2020
-stages: []
-links: []
+stages:
+  - id: stage:tan-yu-bns-merger-progenitor
+    annotation_id: annotation:tan-yu-progenitor-system
+    label: Binary neutron star merger gravitational wave progenitor
+  - id: stage:tan-yu-central-engine-jet-launch
+    annotation_id: annotation:tan-yu-energy-reservoir
+    label: Central engine relativistic jet power launch
+  - id: stage:tan-yu-jet-angular-structure
+    annotation_id: annotation:tan-yu-dynamics
+    label: Structured jet angular Lorentz factor and energy profile
+  - id: stage:tan-yu-bulk-relativistic-transport
+    annotation_id: annotation:tan-yu-transport-process
+    label: Bulk relativistic jet hydrodynamic transport
+  - id: stage:tan-yu-prompt-gamma-ray-emission
+    annotation_id: annotation:tan-yu-observable
+    label: Prompt short gamma-ray burst luminosity
+  - id: stage:tan-yu-off-axis-viewing-detection
+    annotation_id: annotation:tan-yu-inference-target
+    label: Off-axis viewing angle Doppler deboosting and population detection
+links:
+  - id: causal-link:tan-yu-merger-to-launch
+    source_stage_id: stage:tan-yu-bns-merger-progenitor
+    target_stage_id: stage:tan-yu-central-engine-jet-launch
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Binary neutron star coalescence forms a compact central engine launching relativistic outflows.
+    evidence_ids: [evidence:tan-yu-2020-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:tan-yu-launch-to-structure
+    source_stage_id: stage:tan-yu-central-engine-jet-launch
+    target_stage_id: stage:tan-yu-jet-angular-structure
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Jet propagation through merger ejecta establishes an angular profile with a narrow core and wider wings.
+    evidence_ids: [evidence:tan-yu-2020-structured-jet]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:tan-yu-structure-to-transport
+    source_stage_id: stage:tan-yu-jet-angular-structure
+    target_stage_id: stage:tan-yu-bulk-relativistic-transport
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Collimated structured flow transports energy into the circum-burst medium.
+    evidence_ids: [evidence:tan-yu-2020-structured-jet]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:tan-yu-transport-to-prompt
+    source_stage_id: stage:tan-yu-bulk-relativistic-transport
+    target_stage_id: stage:tan-yu-prompt-gamma-ray-emission
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Bulk relativistic flow dissipates internal energy to power prompt gamma-ray emission.
+    evidence_ids: [evidence:tan-yu-2020-luminosity-function]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:tan-yu-structure-modulates-detection
+    source_stage_id: stage:tan-yu-jet-angular-structure
+    target_stage_id: stage:tan-yu-off-axis-viewing-detection
+    relation: modulates
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Jet opening angle and wing profile dictate the observer line-of-sight Doppler factor and detection probability.
+    evidence_ids: [evidence:tan-yu-2020-structured-jet]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:tan-yu-prompt-to-detection
+    source_stage_id: stage:tan-yu-prompt-gamma-ray-emission
+    target_stage_id: stage:tan-yu-off-axis-viewing-detection
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Intrinsic prompt luminosity combines with viewing angle effects to shape the detected flux distribution.
+    evidence_ids: [evidence:tan-yu-2020-luminosity-function]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed

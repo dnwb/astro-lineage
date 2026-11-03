@@ -1,3 +1,78 @@
 work_id: work:bu-extp-strong-gravity-2025
-stages: []
-links: []
+stages:
+  - id: stage:bu-extp-strong-gravity-kerr-spacetime
+    annotation_id: annotation:bu-extp-strong-gravity-energy-reservoir
+    label: Rotating black hole Kerr spacetime and frame dragging
+  - id: stage:bu-extp-strong-gravity-inner-accretion-disk
+    annotation_id: annotation:bu-extp-strong-gravity-environment
+    label: Relativistic inner accretion disk down to ISCO
+  - id: stage:bu-extp-strong-gravity-corona-illumination
+    annotation_id: annotation:bu-extp-strong-gravity-inference-target
+    label: Compact X-ray corona disk illumination
+  - id: stage:bu-extp-strong-gravity-relativistic-reverberation
+    annotation_id: annotation:bu-extp-strong-gravity-messenger
+    label: Relativistic iron line reflection and reverberation lags
+  - id: stage:bu-extp-strong-gravity-polarimetric-spectrotiming
+    annotation_id: annotation:bu-extp-strong-gravity-inference-target
+    label: eXTP polarimetric spectro-timing mapping of black hole spin
+links:
+  - id: causal-link:bu-extp-strong-gravity-kerr-to-disk
+    source_stage_id: stage:bu-extp-strong-gravity-kerr-spacetime
+    target_stage_id: stage:bu-extp-strong-gravity-inner-accretion-disk
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Strong gravity spacetime geometry sets the inner disk ISCO radius and orbital dynamics.
+    evidence_ids: [evidence:bu-extp-strong-gravity-2025-spacetime-mapping]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:bu-extp-strong-gravity-disk-to-corona
+    source_stage_id: stage:bu-extp-strong-gravity-inner-accretion-disk
+    target_stage_id: stage:bu-extp-strong-gravity-corona-illumination
+    relation: enables
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Accretion power feeds the hot electron corona above the black hole.
+    evidence_ids: [evidence:bu-extp-strong-gravity-2025-spectro-timing]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:bu-extp-strong-gravity-corona-to-reverberation
+    source_stage_id: stage:bu-extp-strong-gravity-corona-illumination
+    target_stage_id: stage:bu-extp-strong-gravity-relativistic-reverberation
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Hard X-ray illumination excites fluorescent iron K-alpha emission in the inner disk.
+    evidence_ids: [evidence:bu-extp-strong-gravity-2025-spectro-timing]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:bu-extp-strong-gravity-kerr-modulates-reverberation
+    source_stage_id: stage:bu-extp-strong-gravity-kerr-spacetime
+    target_stage_id: stage:bu-extp-strong-gravity-relativistic-reverberation
+    relation: modulates
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Strong light bending and gravitational redshift skew the reflected line profile.
+    evidence_ids: [evidence:bu-extp-strong-gravity-2025-spacetime-mapping]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:bu-extp-strong-gravity-reverberation-to-mapping
+    source_stage_id: stage:bu-extp-strong-gravity-relativistic-reverberation
+    target_stage_id: stage:bu-extp-strong-gravity-polarimetric-spectrotiming
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Broad-band spectro-timing and polarimetric lags provide direct precision constraints on black hole spin and spacetime.
+    evidence_ids: [evidence:bu-extp-strong-gravity-2025-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed

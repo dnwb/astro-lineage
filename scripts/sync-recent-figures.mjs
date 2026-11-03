@@ -77,13 +77,14 @@ export async function collectReferencedFiguresForWeeks(recentWeekIds, options = 
   let currentBytes = 0;
 
   const extractUrls = (content) => {
-    const matches = String(content).matchAll(/\/arxiv-figures\/([^\s"'\\<>]+)/gu);
+    const matches = String(content).matchAll(/\/(arxiv-figures|gcn-figures)\/([^\s"'\\<>]+)/gu);
     for (const match of matches) {
-      const cleanSubpath = match[1].replace(/#.*$/u, "").replace(/\?.*$/u, "");
-      const repoRelPath = `public/arxiv-figures/${cleanSubpath}`;
+      const folder = match[1];
+      const cleanSubpath = match[2].replace(/#.*$/u, "").replace(/\?.*$/u, "");
+      const repoRelPath = `public/${folder}/${cleanSubpath}`;
       if (referencedPaths.has(repoRelPath)) continue;
 
-      const diskPath = join(publicDir, "arxiv-figures", cleanSubpath);
+      const diskPath = join(publicDir, folder, cleanSubpath);
       if (existsSync(diskPath)) {
         const stat = statSync(diskPath);
         if (stat.isFile()) {
@@ -124,6 +125,15 @@ export async function collectReferencedFiguresForWeeks(recentWeekIds, options = 
     }
   } catch {}
 
+  // 3. 扫描 GCN 瞬变图表索引
+  const gcnIndexPath = join(publicDir, "..", "src/data/gcn-events/index.json");
+  if (existsSync(gcnIndexPath)) {
+    try {
+      const gcnContent = await readFile(gcnIndexPath, "utf8");
+      extractUrls(gcnContent);
+    } catch {}
+  }
+
   // 附加总字节数元数据供调试分析
   referencedPaths.totalBytes = currentBytes;
   return referencedPaths;
@@ -157,7 +167,7 @@ export async function syncRecentFiguresToGit({
   // 获取当前 Git 已跟踪的所有图片文件
   let trackedFiles = [];
   try {
-    const out = execSync("git ls-files public/arxiv-figures/", {
+    const out = execSync("git ls-files public/arxiv-figures/ public/gcn-figures/", {
       cwd: projectRoot,
       encoding: "utf8",
       stdio: ["pipe", "pipe", "ignore"],

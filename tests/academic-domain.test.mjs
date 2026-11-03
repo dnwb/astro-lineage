@@ -14,6 +14,10 @@ import {
   formatWeekIdZh,
   formatWeekIdEn,
   groupPicksByTheme,
+  formatSystemTime,
+  formatScientificEpoch,
+  formatWorkBibTeX,
+  formatAuthorList,
 } from "../src/domain/academic-domain.mjs";
 
 test("academic-domain: extractTransientIdentifiers parses standard transient names", () => {
@@ -399,4 +403,116 @@ test("academic-domain: groupPicksByTheme groups picks by thematic_highlights (th
   assert.equal(fallbackGroups.length, 1);
   assert.equal(fallbackGroups[0].theme, "General Highlights");
   assert.equal(fallbackGroups[0].picks.length, 3);
+});
+
+test("academic-domain: formatSystemTime formats system timestamps to Beijing Time (UTC+8)", () => {
+  // Exact UTC timestamp: 2026-11-02 12:00:00 UTC -> 2026-11-02 20:00:00 UTC+8
+  const formatted = formatSystemTime("2026-11-02T12:00:00Z");
+  assert.match(formatted, /2026-11-02 20:00/u);
+  assert.match(formatted, /UTC\+8/u);
+
+  // Date only option
+  const dateOnly = formatSystemTime("2026-11-02T18:00:00Z", { dateOnly: true });
+  assert.equal(dateOnly, "2026-11-03"); // crossed midnight in UTC+8
+
+  // Edge cases & invalid inputs
+  assert.equal(formatSystemTime(null), "");
+  assert.equal(formatSystemTime(""), "");
+  assert.equal(formatSystemTime("invalid-date"), "invalid-date");
+});
+
+test("academic-domain: formatScientificEpoch strictly preserves native scientific temporal frames without time-zone shifting", () => {
+  // ISO UTC string should stay UTC, not shifted to UTC+8
+  const utcEpoch = formatScientificEpoch("2026-09-10T12:00:00Z");
+  assert.match(utcEpoch, /2026-09-10 12:00:00/u);
+  assert.match(utcEpoch, /UTC/u);
+  assert.doesNotMatch(utcEpoch, /20:00/u); // must NOT shift to 20:00 UTC+8!
+
+  // MJD input
+  const mjdEpoch = formatScientificEpoch({ mjd: 59832.54167 });
+  assert.equal(mjdEpoch, "MJD 59832.54167");
+
+  // Relative time from trigger T0
+  const relativeEpoch = formatScientificEpoch({ relativeSeconds: 124.5, reference: "T0" });
+  assert.equal(relativeEpoch, "+124.5 s post-T0");
+
+  // Labeled custom epoch object
+  const labeledEpoch = formatScientificEpoch({
+    utc: "2026-10-09T13:16:59.99Z",
+    mjd: 60226.55347,
+    label: "GRB 261009A Trigger T0",
+  });
+  assert.match(labeledEpoch, /GRB 261009A Trigger T0/u);
+  assert.match(labeledEpoch, /13:16:59\.99 UTC/u);
+  assert.match(labeledEpoch, /MJD 60226\.55347/u);
+
+  // Graceful fallback for empty/null
+  assert.equal(formatScientificEpoch(null), "");
+  assert.equal(formatScientificEpoch(""), "");
+});
+
+test("academic-domain: formatWorkBibTeX generates valid standard BibTeX for journal and arXiv versions", () => {
+  // Journal version (e.g. Arnett 1982)
+  const journalVersion = {
+    title: "Type I Supernovae. I. An Analytic Solution for the Light Curve",
+    authors: [{ display_name: "W. D. Arnett" }],
+    release_date: { value: "1982-10-01" },
+    journal: {
+      name: "Astrophysical Journal",
+      volume: "253",
+      first_page: "785",
+    },
+    doi: "10.1086/159681",
+  };
+  const bib1 = formatWorkBibTeX({}, journalVersion);
+  assert.match(bib1, /@article\{arnett1982,/u);
+  assert.match(
+    bib1,
+    /title = \{Type I Supernovae\. I\. An Analytic Solution for the Light Curve\}/u
+  );
+  assert.match(bib1, /author = \{W\. D\. Arnett\}/u);
+  assert.match(bib1, /journal = \{Astrophysical Journal\}/u);
+  assert.match(bib1, /volume = \{253\}/u);
+  assert.match(bib1, /pages = \{785\}/u);
+  assert.match(bib1, /doi = \{10\.1086\/159681\}/u);
+
+  // arXiv version (e.g. recent preprint)
+  const arxivVersion = {
+    title: "Fast Radio Burst Polarimetry and Magnetar Outflows",
+    authors: [{ display_name: "Wei-Cheng Long" }, { display_name: "Yun-Wei Yu" }],
+    release_date: { value: "2026-03-15" },
+    arxiv_id: "2603.01234",
+  };
+  const bib2 = formatWorkBibTeX({}, arxivVersion);
+  assert.match(bib2, /@article\{long2026,/u);
+  assert.match(bib2, /author = \{Wei-Cheng Long and Yun-Wei Yu\}/u);
+  assert.match(bib2, /eprint = \{2603\.01234\}/u);
+  assert.match(bib2, /archivePrefix = \{arXiv\}/u);
+
+  // Fallback for null
+  assert.equal(formatWorkBibTeX({}, null), "");
+});
+
+test("academic-domain: formatAuthorList handles strings, author objects, max limits, and legacy mode", () => {
+  // Empty or invalid
+  assert.equal(formatAuthorList(null), "Not recorded");
+  assert.equal(formatAuthorList([]), "Not recorded");
+
+  // String array
+  assert.equal(formatAuthorList(["Author A", "Author B"]), "Author A, Author B");
+  assert.equal(formatAuthorList(["A", "B", "C", "D"], { max: 3 }), "A, B, C et al.");
+  assert.equal(formatAuthorList(["A", "B", "C", "D"], { max: 3, isLegacy: true }), "A, B, C 等");
+
+  // Object array (OpenAlex / work reader schema)
+  const objAuthors = [
+    { display_name: "Wei-Cheng Long" },
+    { display_name: "Yun-Wei Yu" },
+    { display_name: "Zheng-Xiang Li" },
+    { display_name: "Zhi-Qiang Shen" },
+  ];
+  assert.equal(formatAuthorList(objAuthors, { max: 2 }), "Wei-Cheng Long, Yun-Wei Yu et al.");
+  assert.equal(
+    formatAuthorList(objAuthors, { max: 5 }),
+    "Wei-Cheng Long, Yun-Wei Yu, Zheng-Xiang Li, Zhi-Qiang Shen"
+  );
 });

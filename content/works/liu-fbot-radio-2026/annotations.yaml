@@ -1,3 +1,181 @@
 work_id: work:liu-fbot-radio-2026
-annotations: []
+annotations:
+  - id: annotation:liu-fbot-radio-progenitor-system
+    axis: progenitor_system
+    assessment:
+      state: present
+      values:
+        - term_id: term:evolved-helium-star-collapse
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:liu-fbot-radio-2026-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:liu-fbot-radio-central-object
+    axis: central_object
+    assessment:
+      state: unknown
+      values: []
+    interpretive_risk: descriptive
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:liu-fbot-radio-energy-reservoir
+    axis: energy_reservoir
+    assessment:
+      state: unknown
+      values: []
+    interpretive_risk: descriptive
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:liu-fbot-radio-energy-transfer
+    axis: energy_transfer
+    assessment:
+      state: present
+      values:
+        - term_id: term:expansion-work-energy-transfer
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:liu-fbot-radio-2026-trans-relativistic-shock]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:liu-fbot-radio-energy-dissipation
+    axis: energy_dissipation
+    assessment:
+      state: unknown
+      values: []
+    interpretive_risk: descriptive
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:liu-fbot-radio-outflow
+    axis: outflow
+    assessment:
+      state: present
+      values:
+        - term_id: term:expanding-ejecta
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:liu-fbot-radio-2026-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:liu-fbot-radio-environment
+    axis: environment
+    assessment:
+      state: present
+      values:
+        - term_id: term:external-ambient-medium
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:liu-fbot-radio-2026-steep-csm-cutoff]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:liu-fbot-radio-dynamics
+    axis: dynamics
+    assessment:
+      state: present
+      values:
+        - term_id: term:homologous-expansion
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:liu-fbot-radio-2026-trans-relativistic-shock]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:liu-fbot-radio-particle-interaction
+    axis: particle_interaction
+    assessment:
+      state: unknown
+      values: []
+    interpretive_risk: descriptive
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:liu-fbot-radio-transport-process
+    axis: transport_process
+    assessment:
+      state: unknown
+      values: []
+    interpretive_risk: descriptive
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:liu-fbot-radio-emission-process
+    axis: emission_process
+    assessment:
+      state: unknown
+      values: []
+    interpretive_risk: descriptive
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:liu-fbot-radio-phenomenon
+    axis: phenomenon
+    assessment:
+      state: present
+      values:
+        - term_id: term:transient-light-curve-evolution
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:liu-fbot-radio-2026-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:liu-fbot-radio-messenger
+    axis: messenger
+    assessment:
+      state: present
+      values:
+        - term_id: term:photons
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:liu-fbot-radio-2026-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:liu-fbot-radio-photon-band
+    axis: photon_band
+    assessment:
+      state: unknown
+      values: []
+    interpretive_risk: descriptive
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:liu-fbot-radio-observable
+    axis: observable
+    assessment:
+      state: present
+      values:
+        - term_id: term:light-curves
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:liu-fbot-radio-2026-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:liu-fbot-radio-inference-target
+    axis: inference_target
+    assessment:
+      state: present
+      values:
+        - term_id: term:ejecta-physical-properties
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:liu-fbot-radio-2026-steep-csm-cutoff]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
 method_annotations: []

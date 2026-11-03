@@ -1926,7 +1926,7 @@ export async function publishWeeklyFeed({
               authorId = feedData?.author_id ?? feedData?.author?.user_id ?? authorId;
             } catch {}
           }
-          if (!authorId) authorId = process.env.TENCENT_BOT_USER_ID || "";
+          if (!authorId) authorId = process.env.TENCENT_BOT_USER_ID || "bot";
 
           if (ledger.pinned_weekly && ledger.pinned_weekly.feed_id !== item.feed_id) {
             try {
@@ -2066,7 +2066,7 @@ export async function publishEventRanking({
       await withPublicationLedger(cacheRoot, guildId, async (records, save) => {
         const item = records["events:top5"];
         if (item?.feed_id && item?.create_time) {
-          let authorId = process.env.TENCENT_BOT_USER_ID || "";
+          let authorId = process.env.TENCENT_BOT_USER_ID || "bot";
           try {
             const detailRes = await detail(cli, guildId, item);
             authorId =

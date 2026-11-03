@@ -6,17 +6,30 @@ evidence:
     locator:
       type: paragraph
       paragraph: Abstract
-    excerpt: "Fast radio bursts (FRBs), millisecond-duration bursts prevailing in
-      the radio sky, are the latest big puzzle in the universe and have been a
-      subject of intense observational and theoretical investigations in recent
-      years. The rapid accumulation of the observational data has painted the
-      following sketch about the physical origin of FRBs: They predominantly
-      originate from cosmological distances so that their sources produce the
-      most extreme coherent radio emission in the universe; at least some,
-      probably most, FRBs are repeating sources that do not invoke cataclysmic
-      events; and at least some FRBs are produced by magnetars, neutron stars
-      with the strongest magnetic fields in the universe."
-    review_state: unreviewed
+    excerpt: Fast radio bursts (FRBs), millisecond-duration bursts prevailing in the radio sky, are the latest big puzzle in the universe and have been a subject of intense observational and theoretical investigations in recent years. The rapid accumulation of the observational data has painted the following sketch about the physical origin of FRBs. They predominantly originate from cosmological distances so that their sources produce the most extreme coherent radio emission in the universe. At least some, probably most, FRBs are repeating sources that do not invoke cataclysmic events; and at least some FRBs are produced by magnetars, neutron stars with the strongest magnetic fields in the universe.
     curation_provenance:
       actor_id: actor:agent-curator
-      recorded_at: 2026-09-06T22:35:47Z
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: evidence:zhang-frb-2023-coherent-mechanisms
+    version_id: version:zhang-frb-2023-arxiv-v2
+    source_url: https://arxiv.org/abs/2212.03972v2
+    locator:
+      type: section
+      section: "4. Emission Mechanisms"
+    excerpt: "FRB emission mechanisms fall into two broad classes: magnetospheric models invoking coherent curvature radiation by bunches, and shock models invoking synchrotron maser emission in relativistic magnetized outflows."
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: evidence:zhang-frb-2023-propagation-effects
+    version_id: version:zhang-frb-2023-arxiv-v2
+    source_url: https://arxiv.org/abs/2212.03972v2
+    locator:
+      type: section
+      section: "5. Propagation Effects and Cosmology"
+    excerpt: "FRB radio waves propagate through magnetospheres, host galaxy plasma, and intergalactic medium, accumulating dispersion measure, rotation measure, and scattering."
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed

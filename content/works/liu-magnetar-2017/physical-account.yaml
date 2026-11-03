@@ -1,3 +1,123 @@
 work_id: work:liu-magnetar-2017
-stages: []
-links: []
+stages:
+  - id: stage:liu-magnetar-rotational-energy
+    annotation_id: annotation:liu-magnetar-energy-reservoir
+    label: Millisecond magnetar rotational kinetic energy reservoir
+  - id: stage:liu-magnetar-dipole-injection
+    annotation_id: annotation:liu-magnetar-energy-transfer
+    label: Continuous magnetic dipole spin-down power injection
+  - id: stage:liu-magnetar-supernova-ejecta
+    annotation_id: annotation:liu-magnetar-outflow
+    label: Stripped-envelope core-collapse supernova ejecta
+  - id: stage:liu-magnetar-wind-accelerated-expansion
+    annotation_id: annotation:liu-magnetar-dynamics
+    label: Wind-accelerated homologous ejecta expansion dynamics
+  - id: stage:liu-magnetar-radiative-diffusion
+    annotation_id: annotation:liu-magnetar-transport-process
+    label: Radiative diffusion and gamma-ray leakage through ejecta
+  - id: stage:liu-magnetar-photospheric-emission
+    annotation_id: annotation:liu-magnetar-emission-process
+    label: Photospheric thermal optical radiation
+  - id: stage:liu-magnetar-slsn-light-curve
+    annotation_id: annotation:liu-magnetar-observable
+    label: Superluminous supernova optical light curve
+  - id: stage:liu-magnetar-inferred-parameters
+    annotation_id: annotation:liu-magnetar-inference-target
+    label: Inferred magnetar magnetic field, spin period, and ejecta mass
+links:
+  - id: causal-link:liu-magnetar-rotation-drives-injection
+    source_stage_id: stage:liu-magnetar-rotational-energy
+    target_stage_id: stage:liu-magnetar-dipole-injection
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Magnetar rotational kinetic energy powers the magnetic dipole radiation and Poynting flux.
+    evidence_ids: [evidence:liu-magnetar-2017-magnetar-model]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T16:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:liu-magnetar-injection-modulates-expansion
+    source_stage_id: stage:liu-magnetar-dipole-injection
+    target_stage_id: stage:liu-magnetar-wind-accelerated-expansion
+    relation: modulates
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Magnetar wind pressure accelerates the expanding ejecta, boosting photospheric velocities.
+    evidence_ids: [evidence:liu-magnetar-2017-magnetar-model]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T16:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:liu-magnetar-injection-enables-diffusion
+    source_stage_id: stage:liu-magnetar-dipole-injection
+    target_stage_id: stage:liu-magnetar-radiative-diffusion
+    relation: enables
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Thermalized dipole spin-down power supplies the internal radiation field that diffuses through the ejecta.
+    evidence_ids: [evidence:liu-magnetar-2017-magnetar-model]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T16:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:liu-magnetar-ejecta-drives-expansion
+    source_stage_id: stage:liu-magnetar-supernova-ejecta
+    target_stage_id: stage:liu-magnetar-wind-accelerated-expansion
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Stripped-envelope core-collapse ejecta momentum establishes baseline homologous expansion.
+    evidence_ids: [evidence:liu-magnetar-2017-abstract, evidence:liu-magnetar-2017-magnetar-model]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T16:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:liu-magnetar-expansion-modulates-diffusion
+    source_stage_id: stage:liu-magnetar-wind-accelerated-expansion
+    target_stage_id: stage:liu-magnetar-radiative-diffusion
+    relation: modulates
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Dynamic ejecta expansion decreases optical depth over time, setting diffusion timescale and leakage transition.
+    evidence_ids: [evidence:liu-magnetar-2017-magnetar-model]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T16:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:liu-magnetar-diffusion-produces-emission
+    source_stage_id: stage:liu-magnetar-radiative-diffusion
+    target_stage_id: stage:liu-magnetar-photospheric-emission
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Radiative diffusion transports thermalized energy to the effective photosphere, generating thermal optical emission.
+    evidence_ids: [evidence:liu-magnetar-2017-mcmc-fits]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T16:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:liu-magnetar-emission-produces-light-curve
+    source_stage_id: stage:liu-magnetar-photospheric-emission
+    target_stage_id: stage:liu-magnetar-slsn-light-curve
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Photospheric thermal flux determines the observed superluminous optical light curve and color temperature evolution.
+    evidence_ids: [evidence:liu-magnetar-2017-abstract, evidence:liu-magnetar-2017-mcmc-fits]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T16:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:liu-magnetar-light-curve-enables-inference
+    source_stage_id: stage:liu-magnetar-slsn-light-curve
+    target_stage_id: stage:liu-magnetar-inferred-parameters
+    relation: enables
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: MCMC fits of multi-band light curves, temperature, and expansion velocity constrain magnetar B_p, P_0, and ejecta mass M_ej.
+    evidence_ids: [evidence:liu-magnetar-2017-magnetar-model, evidence:liu-magnetar-2017-mcmc-fits]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T16:00:00Z"
+    review_state: unreviewed

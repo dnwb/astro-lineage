@@ -6,11 +6,30 @@ evidence:
     locator:
       type: paragraph
       paragraph: Abstract
-    excerpt: We investigated the long-term evolution of the cyclotron line energy,
-      as well as the relationship between cyclotron line energy and luminosity
-      in the accreting pulsar Vela X-1 across a multi-decade baseline using a
-      pulse-to-pulse approach.
-    review_state: unreviewed
+    excerpt: We investigated the long-term evolution of the cyclotron line energy, as well as the relationship between cyclotron line energy and luminosity in the accreting pulsar Vela X-1 across a multi-decade baseline using a pulse-to-pulse approach.
     curation_provenance:
       actor_id: actor:agent-curator
-      recorded_at: 2026-09-20T05:00:00Z
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: evidence:du-bu-vela-x1-2026-cyclotron-evolution
+    version_id: version:du-bu-vela-x1-2026-journal
+    source_url: https://doi.org/10.1051/0004-6361/202556470
+    locator:
+      type: section
+      section: "3. Pulse-to-Pulse Spectral Analysis"
+    excerpt: "Pulse-to-pulse spectroscopy reveals the multi-decade stability and luminosity dependence of the cyclotron resonant scattering feature (CRSF) in Vela X-1."
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: evidence:du-bu-vela-x1-2026-magnetic-geometry
+    version_id: version:du-bu-vela-x1-2026-journal
+    source_url: https://doi.org/10.1051/0004-6361/202556470
+    locator:
+      type: section
+      section: "4. Accretion Column Physics and Discussion"
+    excerpt: "The observed CRSF centroid energy at ~25 keV directly measures a surface magnetic field of B ~ 2.8 x 10^12 G at the accreting magnetic polar cap."
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed

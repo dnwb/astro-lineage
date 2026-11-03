@@ -1,3 +1,120 @@
 work_id: work:wu-magnetar-csm-2026
-stages: []
-links: []
+stages:
+  - id: stage:wu-magnetar-csm-progenitor-and-wind
+    annotation_id: annotation:wu-magnetar-csm-progenitor-system
+    label: Stripped progenitor mass loss creating dense CSM
+  - id: stage:wu-magnetar-csm-magnetar-birth
+    annotation_id: annotation:wu-magnetar-csm-energy-reservoir
+    label: Newborn millisecond magnetar rotational energy reservoir
+  - id: stage:wu-magnetar-csm-spin-down-injection
+    annotation_id: annotation:wu-magnetar-csm-energy-transfer
+    label: Magnetar wind continuous energy injection into inner ejecta
+  - id: stage:wu-magnetar-csm-ejecta-expansion
+    annotation_id: annotation:wu-magnetar-csm-dynamics
+    label: Wind-accelerated ejecta expansion
+  - id: stage:wu-magnetar-csm-forward-csm-shock
+    annotation_id: annotation:wu-magnetar-csm-environment
+    label: Outer ejecta radiative shock with dense circumstellar medium
+  - id: stage:wu-magnetar-csm-coupled-thermal-diffusion
+    annotation_id: annotation:wu-magnetar-csm-transport-process
+    label: Dual-zone coupled radiative diffusion through expanding ejecta
+  - id: stage:wu-magnetar-csm-hybrid-slsn-light-curve
+    annotation_id: annotation:wu-magnetar-csm-observable
+    label: Luminous and broadened hybrid SLSN optical light curve
+links:
+  - id: causal-link:wu-magnetar-csm-progenitor-to-magnetar
+    source_stage_id: stage:wu-magnetar-csm-progenitor-and-wind
+    target_stage_id: stage:wu-magnetar-csm-magnetar-birth
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Stellar core collapse produces a central millisecond magnetar.
+    evidence_ids: [evidence:wu-magnetar-csm-2026-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:wu-magnetar-csm-progenitor-to-shock
+    source_stage_id: stage:wu-magnetar-csm-progenitor-and-wind
+    target_stage_id: stage:wu-magnetar-csm-forward-csm-shock
+    relation: enables
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Pre-explosion mass loss provides the dense CSM necessary for outer shock interaction.
+    evidence_ids: [evidence:wu-magnetar-csm-2026-coupled-dynamics]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:wu-magnetar-csm-magnetar-to-injection
+    source_stage_id: stage:wu-magnetar-csm-magnetar-birth
+    target_stage_id: stage:wu-magnetar-csm-spin-down-injection
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Rotational kinetic energy powers continuous magnetic dipole and particle wind injection.
+    evidence_ids: [evidence:wu-magnetar-csm-2026-coupled-dynamics]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:wu-magnetar-csm-injection-to-expansion
+    source_stage_id: stage:wu-magnetar-csm-spin-down-injection
+    target_stage_id: stage:wu-magnetar-csm-ejecta-expansion
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Magnetar wind pressure accelerates the expanding ejecta from within.
+    evidence_ids: [evidence:wu-magnetar-csm-2026-coupled-dynamics]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:wu-magnetar-csm-expansion-to-shock
+    source_stage_id: stage:wu-magnetar-csm-ejecta-expansion
+    target_stage_id: stage:wu-magnetar-csm-forward-csm-shock
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: The expanding outer ejecta envelope impacts the dense CSM, driving radiative shocks.
+    evidence_ids: [evidence:wu-magnetar-csm-2026-coupled-dynamics]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:wu-magnetar-csm-injection-to-diffusion
+    source_stage_id: stage:wu-magnetar-csm-spin-down-injection
+    target_stage_id: stage:wu-magnetar-csm-coupled-thermal-diffusion
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Central engine heating contributes thermal radiation that diffuses through the ejecta.
+    evidence_ids: [evidence:wu-magnetar-csm-2026-coupled-dynamics]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:wu-magnetar-csm-shock-to-diffusion
+    source_stage_id: stage:wu-magnetar-csm-forward-csm-shock
+    target_stage_id: stage:wu-magnetar-csm-coupled-thermal-diffusion
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Outer radiative shock thermalizes kinetic energy, creating an external photon diffusion source.
+    evidence_ids: [evidence:wu-magnetar-csm-2026-coupled-dynamics]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:wu-magnetar-csm-diffusion-to-lc
+    source_stage_id: stage:wu-magnetar-csm-coupled-thermal-diffusion
+    target_stage_id: stage:wu-magnetar-csm-hybrid-slsn-light-curve
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Coupled dual-source radiation diffuses outward to produce high peak luminosity and broad duration.
+    evidence_ids: [evidence:wu-magnetar-csm-2026-hybrid-light-curve]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed

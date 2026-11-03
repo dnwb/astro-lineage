@@ -31,8 +31,8 @@ test("the five frozen npm commands retain their verification contract", async ()
       validate: "node scripts/validate.mjs",
       test: "node --test --test-concurrency=4 tests/*.test.mjs",
       check: "astro check",
-      build: "npm run validate && npm run build:site",
-      verify: "npm run validate && npm run test && npm run check && npm run build:site",
+      build: "npm run validate && node scripts/editorial-index.mjs && astro build",
+      verify: "npm run validate && npm run test && npm run check && npm run build",
     }
   );
 
@@ -41,7 +41,7 @@ test("the five frozen npm commands retain their verification contract", async ()
     "npm run validate",
     "npm run test",
     "npm run check",
-    "npm run build:site",
+    "npm run build",
   ]);
   assert.match(packageJson.scripts.build, /^npm run validate && /u);
   assert.doesNotMatch(packageJson.scripts.verify, /arxiv|refresh/iu);

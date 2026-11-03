@@ -27,15 +27,18 @@ import {
   formatSystemTime,
   formatScientificEpoch,
   formatWorkBibTeX,
+  formatVersionPinnedLocator,
   getBibliographicUrl,
   getBibliographicSourceName,
   detectContestedClaims,
   getHighEnergyConventions,
   projectMechanismDAG,
+  partitionScientificEdges,
 } from "../../domain/academic-domain.mjs";
 import { renderInlineScientificMarkdownWithMath } from "../../domain/scientific-text/index.mjs";
 import SiteNav from "../../components/SiteNav.astro";
 import MechanismDAGStream from "../../components/MechanismDAGStream.astro";
+import EvidenceLedger from "../../components/EvidenceLedger.astro";
 import "../../styles/global.css";
 
 type AnyRecord = Record<string, any>;
@@ -178,6 +181,8 @@ const conventionsRaw = getHighEnergyConventions();
 const conventionsHtml = renderInlineScientificMarkdownWithMath(conventionsRaw);
 const hasPhysicalAccount = (physicalAccount.stages?.length ?? 0) > 0;
 const mechanismDAG = projectMechanismDAG(physicalAccount);
+const { upstream: upstreamEdges, downstream: downstreamEdges } = partitionScientificEdges(workId, scientificEdges);
+const versionsById = new Map(versions.map((v: AnyRecord) => [v.id, v]));
 ---
 
 <!doctype html>
@@ -282,30 +287,91 @@ const mechanismDAG = projectMechanismDAG(physicalAccount);
         </section>
       )}
 
-      <section class="panel" aria-labelledby="connections-heading">
-        <h2 id="connections-heading">Scientific Connections</h2>
-        {scientificEdges.length === 0 ? (
-          <p class="empty-state">No reviewed scientific connections stored for this work.</p>
-        ) : (
-          <ul class="compact-list edge-list">
-            {scientificEdges.map((edge) => {
-              const connected = connectedPaper(edge);
-              return (
-                <li>
-                  <p>
-                    <span class="tag">{relationLabel(edge)}</span>
-                    <span class="edge-direction">{edge.source_work_id === workId ? "outbound" : "inbound"}</span>
-                    {edge.disposition === "contested" ? <strong class="dispute-indicator"> Contested</strong> : null}
-                  </p>
-                  <h3><a href={connected.href}>{connected.title}</a></h3>
-                  <p class="paper-meta">{connected.authors} · {connected.year}</p>
-                  <p>{localizedEdgeReason(edge.id, edge.reason)}</p>
-                  <p><a href={connected.href}>Read connected paper</a></p>
-                </li>
-              );
-            })}
-          </ul>
-        )}
+      <section class="panel connections-container" aria-labelledby="connections-heading">
+        <h2 id="connections-heading">Scientific Connections & Directed Lineage</h2>
+        <p class="section-intro">Causal intellectual trajectory partitioned into upstream foundational heritage and downstream empirical testing.</p>
+
+        <div class="lineage-stream-group">
+          <div class="lineage-substream">
+            <h3 id="foundational-lineage-heading" class="substream-heading">Foundational Lineage (Upstream Heritage)</h3>
+            {upstreamEdges.length === 0 ? (
+              <p class="empty-state">No upstream foundational dependencies recorded.</p>
+            ) : (
+              <ul class="edge-list upstream-edges">
+                {upstreamEdges.map((edge: AnyRecord) => {
+                  const connected = connectedPaper(edge);
+                  return (
+                    <li class={`edge-card polarity-${edge.polarity}`}>
+                      <div class="edge-card-header">
+                        <span class={`polarity-badge polarity-${edge.polarity}`}>
+                          {edge.polarity === "supports" ? "Adopts / Supports" : edge.polarity === "contradicts" ? "Challenges / Contests" : "Neutral Baseline"}
+                        </span>
+                        <span class="tag relation-tag">{relationLabel(edge)}</span>
+                      </div>
+                      <h4><a href={connected.href}>{connected.title}</a></h4>
+                      <p class="paper-meta">{connected.authors} · {connected.year}</p>
+                      <p class="edge-reason">{localizedEdgeReason(edge.id, edge.reason)}</p>
+                      {(edge.evidence_ids ?? []).length > 0 && (
+                        <div class="edge-evidence-links">
+                          <span class="evidence-link-title">Evidence:</span>
+                          {(edge.evidence_ids ?? []).map((evId: string) => {
+                            const ev = evidenceById.get(evId);
+                            const loc = ev ? formatVersionPinnedLocator(ev.locator, preferredVersion) : evId;
+                            return (
+                              <a href={`#evidence-${evId}`} class="evidence-chip" title="Jump to verified evidence in ledger">
+                                📌 {loc}
+                              </a>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </div>
+
+          <div class="lineage-substream">
+            <h3 id="downstream-tests-heading" class="substream-heading">Empirical Tests & Applications (Downstream Validations)</h3>
+            {downstreamEdges.length === 0 ? (
+              <p class="empty-state">No downstream tests or extensions recorded yet.</p>
+            ) : (
+              <ul class="edge-list downstream-edges">
+                {downstreamEdges.map((edge: AnyRecord) => {
+                  const connected = connectedPaper(edge);
+                  return (
+                    <li class={`edge-card polarity-${edge.polarity}`}>
+                      <div class="edge-card-header">
+                        <span class={`polarity-badge polarity-${edge.polarity}`}>
+                          {edge.polarity === "supports" ? "Validates / Extends" : edge.polarity === "contradicts" ? "Challenges / Constrains" : "Empirical Test"}
+                        </span>
+                        <span class="tag relation-tag">{relationLabel(edge)}</span>
+                      </div>
+                      <h4><a href={connected.href}>{connected.title}</a></h4>
+                      <p class="paper-meta">{connected.authors} · {connected.year}</p>
+                      <p class="edge-reason">{localizedEdgeReason(edge.id, edge.reason)}</p>
+                      {(edge.evidence_ids ?? []).length > 0 && (
+                        <div class="edge-evidence-links">
+                          <span class="evidence-link-title">Evidence:</span>
+                          {(edge.evidence_ids ?? []).map((evId: string) => {
+                            const ev = evidenceById.get(evId);
+                            const loc = ev ? formatVersionPinnedLocator(ev.locator, preferredVersion) : evId;
+                            return (
+                              <a href={`#evidence-${evId}`} class="evidence-chip" title="Jump to verified evidence in ledger">
+                                📌 {loc}
+                              </a>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </div>
+        </div>
       </section>
 
       <section class="panel" aria-labelledby="research-context-heading">
@@ -323,6 +389,8 @@ const mechanismDAG = projectMechanismDAG(physicalAccount);
           </ul>
         )}
       </section>
+
+      <EvidenceLedger evidenceRecords={evidenceRecords} versionsById={versionsById} preferredVersion={preferredVersion} />
 
       <details class="panel provenance-detail" id="provenance-detail">
         <summary>Provenance & Scientific Evidence</summary>
@@ -404,9 +472,10 @@ const mechanismDAG = projectMechanismDAG(physicalAccount);
                 {!hasPhysicalAccount && (
                   <li><a href="#observational-setup-heading">Empirical Profile</a></li>
                 )}
-                <li><a href="#connections-heading">Connections</a></li>
+                <li><a href="#connections-heading">Lineage & Connections</a></li>
                 <li><a href="#research-context-heading">Research Context</a></li>
-                <li><a href="#provenance-detail">Provenance & Evidence</a></li>
+                <li><a href="#evidence-ledger-heading">Evidence Ledger</a></li>
+                <li><a href="#provenance-detail">Provenance & Deep Ontology</a></li>
               </ul>
             </nav>
 

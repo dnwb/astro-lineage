@@ -1,0 +1,109 @@
+---
+import { renderInlineScientificMarkdownWithMath } from "../domain/scientific-text/index.mjs";
+import { formatVersionPinnedLocator, formatSystemTime } from "../domain/academic-domain.mjs";
+
+interface EvidenceRecord {
+  id: string;
+  work_id?: string;
+  version_id?: string;
+  locator?: {
+    type?: string;
+    section?: string | number;
+    equation?: string | number;
+    table?: string | number;
+    figure?: string | number;
+    paragraph?: string | number;
+    page?: string | number;
+  };
+  excerpt?: string;
+  source_url?: string;
+  review_context?: {
+    status?: string;
+    reviewer_actor_id?: string;
+    reviewed_at?: string;
+  };
+}
+
+interface Props {
+  evidenceRecords: any[];
+  versionsById?: any;
+  preferredVersion?: any;
+}
+
+const { evidenceRecords = [], versionsById = new Map(), preferredVersion } = Astro.props;
+---
+
+<section class="panel evidence-ledger-panel" aria-labelledby="evidence-ledger-heading">
+  <div class="evidence-ledger-header">
+    <div class="ledger-title-group">
+      <h2 id="evidence-ledger-heading">Scientific Evidence Ledger</h2>
+      <span class="evidence-count-badge">{evidenceRecords.length} record{evidenceRecords.length === 1 ? "" : "s"}</span>
+    </div>
+    <p class="section-intro">
+      Version-pinned excerpt citations verified against official arXiv and journal publications.
+    </p>
+  </div>
+
+  {evidenceRecords.length === 0 ? (
+    <p class="empty-state">No verified evidence excerpts registered for this work.</p>
+  ) : (
+    <div class="evidence-grid">
+      {evidenceRecords.map((evidence) => {
+        const version = (evidence.version_id && versionsById.get(evidence.version_id)) || preferredVersion;
+        const locatorLabel = formatVersionPinnedLocator(evidence.locator, version);
+        const arxivId = version?.arxiv_id;
+        const directSourceUrl = evidence.source_url || (arxivId ? `https://ar5iv.labs.arxiv.org/abs/${arxivId}` : null);
+        const htmlFallbackUrl = arxivId ? `https://arxiv.org/html/${arxivId}` : null;
+        const excerptHtml = evidence.excerpt ? renderInlineScientificMarkdownWithMath(evidence.excerpt) : null;
+        const status = evidence.review_context?.status || "verified";
+
+        return (
+          <article class="evidence-card" id={`evidence-${evidence.id}`}>
+            <header class="evidence-card-header">
+              <div class="evidence-locator-group">
+                <span class="evidence-pin-icon" aria-hidden="true">📌</span>
+                <strong class="evidence-locator-label">{locatorLabel}</strong>
+                <code class="evidence-id-tag">{evidence.id}</code>
+              </div>
+              <span class={`evidence-status-pill status-${status}`}>{status}</span>
+            </header>
+
+            {excerptHtml && (
+              <blockquote class="evidence-quote">
+                <div class="quote-content" set:html={excerptHtml} />
+              </blockquote>
+            )}
+
+            <footer class="evidence-card-footer">
+              <div class="evidence-meta">
+                {evidence.review_context?.reviewer_actor_id && (
+                  <span class="reviewer-tag">
+                    Reviewed by {evidence.review_context.reviewer_actor_id}
+                    {evidence.review_context.reviewed_at && (
+                      <time datetime={evidence.review_context.reviewed_at}>
+                        {" "}· {formatSystemTime(evidence.review_context.reviewed_at)}
+                      </time>
+                    )}
+                  </span>
+                )}
+              </div>
+
+              <div class="evidence-links">
+                {directSourceUrl && (
+                  <a href={directSourceUrl} target="_blank" rel="noopener noreferrer" class="evidence-source-link">
+                    Source text (ar5iv/journal) ↗
+                  </a>
+                )}
+                {htmlFallbackUrl && directSourceUrl !== htmlFallbackUrl && (
+                  <a href={htmlFallbackUrl} target="_blank" rel="noopener noreferrer" class="evidence-source-link fallback">
+                    arXiv HTML ↗
+                  </a>
+                )}
+              </div>
+            </footer>
+          </article>
+        );
+      })}
+    </div>
+  )}
+</section>

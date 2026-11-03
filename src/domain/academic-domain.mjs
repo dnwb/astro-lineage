@@ -1341,6 +1341,120 @@ export function projectMechanismDAG(physicalAccount) {
   };
 }
 
+/**
+ * Format a version-pinned locator string (e.g. "arXiv:2305.12345v2 §3.2, Eq. 14").
+ *
+ * @param {Object} [locator]
+ * @param {string} [locator.type]
+ * @param {string|number} [locator.section]
+ * @param {string|number} [locator.equation]
+ * @param {string|number} [locator.table]
+ * @param {string|number} [locator.figure]
+ * @param {string|number} [locator.paragraph]
+ * @param {string|number} [locator.page]
+ * @param {Object} [version]
+ * @param {string} [version.arxiv_id]
+ * @param {string|number} [version.arxiv_revision]
+ * @returns {string}
+ */
+export function formatVersionPinnedLocator(locator, version = null) {
+  if (!locator || typeof locator !== "object") {
+    return "Locator unavailable";
+  }
+
+  const parts = [];
+
+  if (locator.section !== undefined && locator.section !== null) {
+    parts.push(`§${locator.section}`);
+  }
+  if (locator.equation !== undefined && locator.equation !== null) {
+    parts.push(`Eq. ${locator.equation}`);
+  }
+  if (locator.table !== undefined && locator.table !== null) {
+    parts.push(`Table ${locator.table}`);
+  }
+  if (locator.figure !== undefined && locator.figure !== null) {
+    parts.push(`Fig. ${locator.figure}`);
+  }
+  if (locator.page !== undefined && locator.page !== null) {
+    parts.push(`p. ${locator.page}`);
+  }
+  if (locator.paragraph !== undefined && locator.paragraph !== null) {
+    parts.push(`para. ${locator.paragraph}`);
+  }
+
+  const locatorStr = parts.length > 0 ? parts.join(", ") : (locator.type ? String(locator.type) : "Document");
+
+  if (version && typeof version === "object") {
+    if (version.arxiv_id) {
+      const rev = version.arxiv_revision ? `v${version.arxiv_revision}` : "";
+      return `arXiv:${version.arxiv_id}${rev} ${locatorStr}`.trim();
+    }
+  }
+
+  return locatorStr;
+}
+
+/**
+ * Partition scientific connections into upstream foundations and downstream tests with polarity.
+ *
+ * @param {string} workId
+ * @param {Array<Object>} [edges]
+ * @returns {{ upstream: Array<Object>, downstream: Array<Object> }}
+ */
+export function partitionScientificEdges(workId, edges = []) {
+  if (!Array.isArray(edges)) {
+    return { upstream: [], downstream: [] };
+  }
+
+  const upstream = [];
+  const downstream = [];
+
+  for (const edge of edges) {
+    if (!edge || typeof edge !== "object") continue;
+    const isOutbound = edge.source_work_id === workId;
+    const isInbound = edge.target_work_id === workId;
+    if (!isOutbound && !isInbound) continue;
+
+    let polarity = "neutral";
+    const relation = edge.relation || "";
+    const disposition = edge.disposition || "";
+
+    if (
+      relation === "challenges" ||
+      relation === "corrects" ||
+      relation === "replaces_assumption" ||
+      disposition === "contested" ||
+      disposition === "refuting"
+    ) {
+      polarity = "contradicts";
+    } else if (
+      relation === "builds_on" ||
+      relation === "extends" ||
+      disposition === "supporting" ||
+      disposition === "confirmed"
+    ) {
+      polarity = "supports";
+    }
+
+    if (isOutbound) {
+      upstream.push({
+        ...edge,
+        direction: "outbound",
+        polarity,
+      });
+    } else {
+      downstream.push({
+        ...edge,
+        direction: "inbound",
+        polarity,
+      });
+    }
+  }
+
+  return { upstream, downstream };
+}
+
 
 
 

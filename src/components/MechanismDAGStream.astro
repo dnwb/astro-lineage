@@ -30,7 +30,7 @@ interface MechanismDAG {
 }
 
 interface Props {
-  dag: MechanismDAG;
+  dag: any;
 }
 
 const { dag } = Astro.props;
@@ -51,7 +51,7 @@ const { dag } = Astro.props;
   </div>
 
   <ol class="mechanism-levels-list">
-    {dag.levels.map((level) => (
+    {(dag.levels ?? []).map((level: any) => (
       <li class="mechanism-level-item">
         <div class="mechanism-level-indicator">
           <span class="mechanism-level-badge">Stage {level.level + 1}</span>
@@ -59,7 +59,7 @@ const { dag } = Astro.props;
         </div>
 
         <div class="mechanism-branch-row">
-          {level.stages.map((stage) => {
+          {(level.stages ?? []).map((stage: any) => {
             const roleClass = stage.role === "adopted" ? "role-adopted" : "role-proposed";
             const roleLabel = stage.role === "adopted" ? "Adopted Baseline" : "Proposed Mechanism";
 
@@ -76,7 +76,7 @@ const { dag } = Astro.props;
                   <div class="stage-causality-group">
                     <span class="causality-heading">Drives:</span>
                     <ul class="causal-links-list">
-                      {stage.outgoingLinks.map((link) => (
+                      {(stage.outgoingLinks ?? []).map((link: any) => (
                         <li class="causal-link-item">
                           <span class="causal-action">
                             <span class="relation-token">{link.relation}</span>

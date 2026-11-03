@@ -37,7 +37,7 @@
     "check:syntax": "node --check scripts/*.mjs tests/*.mjs src/domain/*.mjs src/domain/**/*.mjs && python3 -m py_compile scripts/gcn-plot.py",
     "validate": "node scripts/validate.mjs",
     "pretest": "node scripts/cleanup-test-tmp.mjs",
-    "test": "node --test --test-concurrency=1 tests/*.test.mjs",
+    "test": "node --test --test-concurrency=4 tests/*.test.mjs",
     "posttest": "node scripts/cleanup-test-tmp.mjs",
     "check": "astro check",
     "typecheck": "astro check",

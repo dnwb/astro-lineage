@@ -304,6 +304,8 @@ const versionsById = new Map(versions.map((v: AnyRecord) => [v.id, v]));
                           {edge.polarity === "supports" ? "Adopts / Supports" : edge.polarity === "contradicts" ? "Challenges / Contests" : "Neutral Baseline"}
                         </span>
                         <span class="tag relation-tag">{relationLabel(edge)}</span>
+                        <span class="edge-direction">{edge.source_work_id === workId ? "outbound" : "inbound"}</span>
+                        {edge.disposition === "contested" ? <strong class="dispute-indicator"> Contested</strong> : null}
                       </div>
                       <h4><a href={connected.href}>{connected.title}</a></h4>
                       <p class="paper-meta">{connected.authors} · {connected.year}</p>
@@ -344,6 +346,8 @@ const versionsById = new Map(versions.map((v: AnyRecord) => [v.id, v]));
                           {edge.polarity === "supports" ? "Validates / Extends" : edge.polarity === "contradicts" ? "Challenges / Constrains" : "Empirical Test"}
                         </span>
                         <span class="tag relation-tag">{relationLabel(edge)}</span>
+                        <span class="edge-direction">{edge.source_work_id === workId ? "outbound" : "inbound"}</span>
+                        {edge.disposition === "contested" ? <strong class="dispute-indicator"> Contested</strong> : null}
                       </div>
                       <h4><a href={connected.href}>{connected.title}</a></h4>
                       <p class="paper-meta">{connected.authors} · {connected.year}</p>
@@ -483,6 +487,7 @@ const versionsById = new Map(versions.map((v: AnyRecord) => [v.id, v]));
                 class="btn-copy-bibtex"
                 data-bibtex={formatWorkBibTeX(work, preferredVersion)}
                 aria-label="Copy BibTeX Citation"
+                onclick="try{var b=this,orig=b.innerHTML;navigator.clipboard.writeText(b.getAttribute('data-bibtex')).then(function(){b.innerHTML='<span class=\'btn-icon\'>✓</span> Copied!';setTimeout(function(){b.innerHTML=orig;},2000);});}catch(e){}"
               >
                 <span class="btn-icon">📋</span> Copy BibTeX
               </button>
@@ -514,21 +519,6 @@ const versionsById = new Map(versions.map((v: AnyRecord) => [v.id, v]));
         </aside>
       </div>
 
-      <script is:inline>
-        document.addEventListener("click", (e) => {
-          const btn = e.target.closest(".btn-copy-bibtex");
-          if (!btn) return;
-          const bibtex = btn.getAttribute("data-bibtex");
-          if (!bibtex) return;
-          navigator.clipboard.writeText(bibtex).then(() => {
-            const orig = btn.innerHTML;
-            btn.innerHTML = '<span class="btn-icon">✓</span> Copied!';
-            setTimeout(() => {
-              btn.innerHTML = orig;
-            }, 2000);
-          }).catch(() => {});
-        });
-      </script>
     </main>
   </body>
 </html>

@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { cp, mkdtemp, readFile, rm, symlink, writeFile } from "node:fs/promises";
+import { cp, mkdir, mkdtemp, readFile, rm, symlink, writeFile } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -171,6 +171,9 @@ async function writeFixtureProject(root, fixture) {
     cp(join(projectRoot, "package.json"), join(root, "package.json")),
     symlink(join(projectRoot, "node_modules"), join(root, "node_modules"), "dir"),
   ]);
+  const pagesDir = join(root, "src/pages");
+  await rm(pagesDir, { recursive: true, force: true });
+  await mkdir(pagesDir, { recursive: true });
   await writeFile(
     join(root, "src/data/arxiv-daily.json"),
     `${JSON.stringify(fixture.feed, null, 2)}\n`,
@@ -298,9 +301,18 @@ test("Daily Radar contract: unified counter toolbar, Beijing Time UTC+8 represen
 
   if (!existsSync(indexHtmlPath) || !existsSync(archiveHtmlPath)) {
     // If not pre-built, verify directly from the Astro page components
-    const indexAstro = await readFile(join(projectRoot, "src/pages/arxiv-daily/index.astro"), "utf8");
-    const archiveAstro = await readFile(join(projectRoot, "src/pages/arxiv-daily/[date].astro"), "utf8");
-    const switcherAstro = await readFile(join(projectRoot, "src/components/DailyDateSwitcher.astro"), "utf8");
+    const indexAstro = await readFile(
+      join(projectRoot, "src/pages/arxiv-daily/index.astro"),
+      "utf8"
+    );
+    const archiveAstro = await readFile(
+      join(projectRoot, "src/pages/arxiv-daily/[date].astro"),
+      "utf8"
+    );
+    const switcherAstro = await readFile(
+      join(projectRoot, "src/components/DailyDateSwitcher.astro"),
+      "utf8"
+    );
 
     assert.match(indexAstro, /Beijing Time UTC\+8/);
     assert.match(archiveAstro, /Beijing Time UTC\+8/);
@@ -320,7 +332,10 @@ test("Daily Radar contract: unified counter toolbar, Beijing Time UTC+8 represen
 
   // 1. Beijing Time UTC+8 primary representation
   assert.match(indexHtml, /Batch \d{4}-\d{2}-\d{2} \(Beijing Time UTC\+8\) · US \d{4}-\d{2}-\d{2}/);
-  assert.match(archiveHtml, /Batch \d{4}-\d{2}-\d{2} \(Beijing Time UTC\+8\) · US \d{4}-\d{2}-\d{2}/);
+  assert.match(
+    archiveHtml,
+    /Batch \d{4}-\d{2}-\d{2} \(Beijing Time UTC\+8\) · US \d{4}-\d{2}-\d{2}/
+  );
 
   // 2. Unified counter toolbar present on both pages
   assert.match(indexHtml, /class="[^"]*unified-counter-toolbar[^"]*"/);
@@ -344,7 +359,10 @@ test("DailyRadarCard author truncation and details button contract", async () =>
     join(projectRoot, "src/components/DailyRadarCard.astro"),
     "utf8"
   );
-  assert.match(cardAstro, /import\s*\{[^}]*\bformatAuthorList\b[^}]*\}\s*from\s*"\.\.\/domain\/academic-domain\.mjs"/);
+  assert.match(
+    cardAstro,
+    /import\s*\{[^}]*\bformatAuthorList\b[^}]*\}\s*from\s*"\.\.\/domain\/academic-domain\.mjs"/
+  );
   assert.match(cardAstro, /formatAuthorList\(item\.authors\)/);
   assert.doesNotMatch(cardAstro, /item\.authors\.slice/);
   assert.match(cardAstro, /class="radar-open-modal-btn skim-modal-btn"[\s\S]*?Details ↗/);
@@ -362,7 +380,12 @@ test("Daily Radar above-the-fold visibility: first Must Read card y < 850px on 1
   const indexHtmlPath = join(distDir, "arxiv-daily/index.html");
   const archiveHtmlPath = join(distDir, "arxiv-daily/2026-10-26/index.html");
 
-  if (!existsSync(indexHtmlPath) || !existsSync(archiveHtmlPath) || !existsSync("/usr/bin/chromium") || !hasPlaywright()) {
+  if (
+    !existsSync(indexHtmlPath) ||
+    !existsSync(archiveHtmlPath) ||
+    !existsSync("/usr/bin/chromium") ||
+    !hasPlaywright()
+  ) {
     t.skip("Skipping browser inspection: dist/ pages, chromium or python playwright not available");
     return;
   }

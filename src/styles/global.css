@@ -4633,4 +4633,200 @@ article p {
   color: var(--text-secondary, #5d6470);
 }
 
+/* ==========================================================================
+   Paper Detail Two-Column Layout, 68ch Measure, Breakout & Sticky Aside (#42)
+   ========================================================================== */
+
+.paper-detail-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.75rem;
+  align-items: start;
+  margin-top: 1rem;
+}
+
+@media (min-width: 960px) {
+  .paper-detail-grid {
+    grid-template-columns: minmax(0, 1fr) 18rem;
+    gap: 2.25rem;
+  }
+}
+
+.paper-main-content {
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* 68ch reading measure for paper main content prose */
+.paper-main-content .reading-prose p,
+.paper-main-content .reading-prose li,
+.paper-main-content .reading-prose dd,
+.paper-main-content .reading-section p {
+  max-inline-size: min(100%, 68ch);
+}
+
+/* Breakout containers up to 100% of main column with smooth scroll containment */
+.paper-main-content .breakout,
+.paper-main-content .math-display,
+.paper-main-content .formula-block,
+.paper-main-content .delta-table-container,
+.paper-main-content .mechanism-container {
+  max-inline-size: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Sticky Sidebar */
+.paper-sticky-sidebar {
+  min-width: 0;
+}
+
+@media (min-width: 960px) {
+  .sidebar-sticky-wrapper {
+    position: sticky;
+    top: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    padding: 1.15rem 1.25rem;
+    background: var(--bg-surface, #ffffff);
+    border: 1px solid var(--border-color, #e2e8f0);
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  }
+
+  :global([data-theme="dark"]) .sidebar-sticky-wrapper {
+    background: var(--bg-surface, #1e293b);
+    border-color: var(--border-color, #334155);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  }
+}
+
+.sidebar-kicker {
+  margin: 0 0 0.5rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted, #64748b);
+}
+
+.toc-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.toc-list li a {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--text-secondary, #475569);
+  text-decoration: none;
+  padding: 0.25rem 0.45rem;
+  border-radius: 0.25rem;
+  transition: all 0.15s ease-in-out;
+}
+
+.toc-list li a:hover,
+.toc-list li a:focus {
+  background: var(--bg-hover, #f1f5f9);
+  color: var(--text-primary, #0f172a);
+}
+
+:global([data-theme="dark"]) .toc-list li a {
+  color: #94a3b8;
+}
+
+:global([data-theme="dark"]) .toc-list li a:hover,
+:global([data-theme="dark"]) .toc-list li a:focus {
+  background: #334155;
+  color: #f8fafc;
+}
+
+/* Scholarly Action Tray */
+.paper-action-tray {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--border-color, #e2e8f0);
+}
+
+:global([data-theme="dark"]) .paper-action-tray {
+  border-top-color: #334155;
+}
+
+.btn-copy-bibtex {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  width: 100%;
+  padding: 0.45rem 0.75rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #0f172a;
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-copy-bibtex:hover {
+  background: #f1f5f9;
+  border-color: #94a3b8;
+}
+
+:global([data-theme="dark"]) .btn-copy-bibtex {
+  color: #f8fafc;
+  background: #0f172a;
+  border-color: #475569;
+}
+
+:global([data-theme="dark"]) .btn-copy-bibtex:hover {
+  background: #1e293b;
+  border-color: #64748b;
+}
+
+.paper-external-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.ext-link-pill {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.75rem;
+  padding: 0.2rem 0.5rem;
+  background: #f1f5f9;
+  color: #0f172a;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.25rem;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.15s ease;
+}
+
+.ext-link-pill:hover {
+  background: #e2e8f0;
+  border-color: #94a3b8;
+}
+
+:global([data-theme="dark"]) .ext-link-pill {
+  background: #0f172a;
+  color: #e2e8f0;
+  border-color: #334155;
+}
+
+:global([data-theme="dark"]) .ext-link-pill:hover {
+  background: #1e293b;
+  border-color: #64748b;
+}
+
+
 

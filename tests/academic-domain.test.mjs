@@ -16,6 +16,7 @@ import {
   groupPicksByTheme,
   formatSystemTime,
   formatScientificEpoch,
+  formatWorkBibTeX,
 } from "../src/domain/academic-domain.mjs";
 
 test("academic-domain: extractTransientIdentifiers parses standard transient names", () => {
@@ -448,4 +449,44 @@ test("academic-domain: formatScientificEpoch strictly preserves native scientifi
   assert.equal(formatScientificEpoch(null), "");
   assert.equal(formatScientificEpoch(""), "");
 });
+
+test("academic-domain: formatWorkBibTeX generates valid standard BibTeX for journal and arXiv versions", () => {
+  // Journal version (e.g. Arnett 1982)
+  const journalVersion = {
+    title: "Type I Supernovae. I. An Analytic Solution for the Light Curve",
+    authors: [{ display_name: "W. D. Arnett" }],
+    release_date: { value: "1982-10-01" },
+    journal: {
+      name: "Astrophysical Journal",
+      volume: "253",
+      first_page: "785",
+    },
+    doi: "10.1086/159681",
+  };
+  const bib1 = formatWorkBibTeX({}, journalVersion);
+  assert.match(bib1, /@article\{arnett1982,/u);
+  assert.match(bib1, /title = \{Type I Supernovae\. I\. An Analytic Solution for the Light Curve\}/u);
+  assert.match(bib1, /author = \{W\. D\. Arnett\}/u);
+  assert.match(bib1, /journal = \{Astrophysical Journal\}/u);
+  assert.match(bib1, /volume = \{253\}/u);
+  assert.match(bib1, /pages = \{785\}/u);
+  assert.match(bib1, /doi = \{10\.1086\/159681\}/u);
+
+  // arXiv version (e.g. recent preprint)
+  const arxivVersion = {
+    title: "Fast Radio Burst Polarimetry and Magnetar Outflows",
+    authors: [{ display_name: "Wei-Cheng Long" }, { display_name: "Yun-Wei Yu" }],
+    release_date: { value: "2026-03-15" },
+    arxiv_id: "2603.01234",
+  };
+  const bib2 = formatWorkBibTeX({}, arxivVersion);
+  assert.match(bib2, /@article\{long2026,/u);
+  assert.match(bib2, /author = \{Wei-Cheng Long and Yun-Wei Yu\}/u);
+  assert.match(bib2, /eprint = \{2603\.01234\}/u);
+  assert.match(bib2, /archivePrefix = \{arXiv\}/u);
+
+  // Fallback for null
+  assert.equal(formatWorkBibTeX({}, null), "");
+});
+
 

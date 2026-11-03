@@ -1118,3 +1118,49 @@ export function formatScientificEpoch(input) {
   return String(input);
 }
 
+/**
+ * Format a canonical BibTeX entry for a given work and preferred version.
+ *
+ * @param {Object} work - Canonical work record
+ * @param {Object} version - Preferred version record
+ * @returns {string} Standard BibTeX string
+ */
+export function formatWorkBibTeX(work, version) {
+  if (!version) return "";
+  const firstAuthorRaw = version.authors?.[0]?.family_name || version.authors?.[0]?.display_name || "work";
+  const authorMatch = firstAuthorRaw.match(/([a-zA-Z]+)(?:,\s*[A-Z]|\s*$)/u);
+  const firstAuthorToken = (authorMatch ? authorMatch[1] : firstAuthorRaw).toLowerCase().replace(/[^a-z0-9]/gi, "");
+  const year = version.release_date?.value?.slice(0, 4) || "nodate";
+  const citeKey = `${firstAuthorToken || "work"}${year}`;
+
+  const authorsStr = (version.authors || [])
+    .map((a) => a.display_name || "")
+    .filter(Boolean)
+    .join(" and ");
+
+  const lines = [
+    `@article{${citeKey},`,
+    `  title = {${version.title || ""}},`,
+    `  author = {${authorsStr}},`,
+    `  year = {${year}},`,
+  ];
+
+  if (version.journal?.name) {
+    lines.push(`  journal = {${version.journal.name}},`);
+    if (version.journal.volume) lines.push(`  volume = {${version.journal.volume}},`);
+    if (version.journal.first_page) lines.push(`  pages = {${version.journal.first_page}},`);
+  } else if (version.arxiv_id) {
+    lines.push(`  journal = {arXiv preprint arXiv:${version.arxiv_id}},`);
+    lines.push(`  eprint = {${version.arxiv_id}},`);
+    lines.push(`  archivePrefix = {arXiv},`);
+  }
+
+  if (version.doi) {
+    lines.push(`  doi = {${version.doi}},`);
+  }
+
+  lines.push("}");
+  return lines.join("\n");
+}
+
+

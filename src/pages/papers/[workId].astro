@@ -23,7 +23,13 @@ import {
   localizedWorkTitle,
 } from "../../lib/reader-localization";
 import { loadSiteConfig } from "../../lib/site-config";
-import { formatSystemTime, formatScientificEpoch } from "../../domain/academic-domain.mjs";
+import {
+  formatSystemTime,
+  formatScientificEpoch,
+  formatWorkBibTeX,
+  getBibliographicUrl,
+  getBibliographicSourceName,
+} from "../../domain/academic-domain.mjs";
 import SiteNav from "../../components/SiteNav.astro";
 import "../../styles/global.css";
 
@@ -152,6 +158,15 @@ function connectedPaper(edge: AnyRecord) {
     year: connectedVersion.release_date?.value?.slice(0, 4),
   };
 }
+
+const scixUrl = preferredVersion.arxiv_id
+  ? getBibliographicUrl(preferredVersion.arxiv_id)
+  : preferredVersion.doi
+    ? getBibliographicUrl(preferredVersion.doi)
+    : null;
+const scixName = getBibliographicSourceName();
+const arxivPdfUrl = preferredVersion.arxiv_id ? `https://arxiv.org/pdf/${preferredVersion.arxiv_id}.pdf` : null;
+const arxivHtmlUrl = preferredVersion.arxiv_id ? `https://arxiv.org/html/${preferredVersion.arxiv_id}` : null;
 ---
 
 <!doctype html>
@@ -167,7 +182,9 @@ function connectedPaper(edge: AnyRecord) {
       <SiteNav />
       <p class="eyebrow"><a href="/papers/">Papers</a> · Paper Detail</p>
 
-      <header class="reader-header">
+      <div class="paper-detail-grid">
+        <div class="paper-main-content">
+          <header class="reader-header">
         <p class="section-kicker">Bibliographic Record</p>
         <h1>{title()}</h1>
         <p class="paper-meta">{authors(preferredVersion)} · {preferredVersion.release_date.value.slice(0, 4)}</p>
@@ -247,7 +264,7 @@ function connectedPaper(edge: AnyRecord) {
         )}
       </section>
 
-      <details class="panel provenance-detail">
+      <details class="panel provenance-detail" id="provenance-detail">
         <summary>Provenance & Scientific Evidence</summary>
         <p class="layer-intro">Inspect projection, evidence, scientific ontology, and review records.</p>
 
@@ -309,6 +326,77 @@ function connectedPaper(edge: AnyRecord) {
           {evidenceRecords.map((evidence) => <li><strong>{evidence.id}</strong>{evidence.work_id ? ` (work ${evidence.work_id})` : ""}{` — version ${evidence.version_id}; ${describeLocator(evidence.locator)}; "${evidence.excerpt}"`}{evidence.source_url ? <> — <a href={evidence.source_url}>source</a></> : null}{evidence.review_context?.status ? `; review: ${reviewContext(evidence)}` : ""}</li>)}
         </ul>
       </details>
+        </div>
+
+        <aside class="paper-sticky-sidebar" aria-label="Reading Navigation and Actions">
+          <div class="sidebar-sticky-wrapper">
+            <nav class="paper-toc" aria-label="Table of Contents">
+              <p class="sidebar-kicker">Navigation</p>
+              <ul class="toc-list">
+                <li><a href="#why-heading">Why This Matters</a></li>
+                <li><a href="#problem-heading">Problem</a></li>
+                <li><a href="#takeaway-heading">Takeaway</a></li>
+                <li><a href="#assumptions-heading">Assumptions</a></li>
+                <li><a href="#delta-heading">Scientific Delta</a></li>
+                <li><a href="#connections-heading">Connections</a></li>
+                <li><a href="#research-context-heading">Research Context</a></li>
+                <li><a href="#provenance-detail">Provenance & Evidence</a></li>
+              </ul>
+            </nav>
+
+            <div class="paper-action-tray">
+              <p class="sidebar-kicker">Scholarly Actions</p>
+              <button
+                type="button"
+                class="btn-copy-bibtex"
+                data-bibtex={formatWorkBibTeX(work, preferredVersion)}
+                aria-label="Copy BibTeX Citation"
+              >
+                <span class="btn-icon">📋</span> Copy BibTeX
+              </button>
+
+              <div class="paper-external-links">
+                {scixUrl ? (
+                  <a href={scixUrl} target="_blank" rel="noopener noreferrer" class="ext-link-pill">
+                    {scixName} ↗
+                  </a>
+                ) : null}
+                {preferredVersion.doi ? (
+                  <a href={`https://doi.org/${preferredVersion.doi}`} target="_blank" rel="noopener noreferrer" class="ext-link-pill">
+                    DOI ↗
+                  </a>
+                ) : null}
+                {arxivPdfUrl ? (
+                  <a href={arxivPdfUrl} target="_blank" rel="noopener noreferrer" class="ext-link-pill">
+                    arXiv PDF ↗
+                  </a>
+                ) : null}
+                {arxivHtmlUrl ? (
+                  <a href={arxivHtmlUrl} target="_blank" rel="noopener noreferrer" class="ext-link-pill">
+                    arXiv HTML ↗
+                  </a>
+                ) : null}
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <script is:inline>
+        document.addEventListener("click", (e) => {
+          const btn = e.target.closest(".btn-copy-bibtex");
+          if (!btn) return;
+          const bibtex = btn.getAttribute("data-bibtex");
+          if (!bibtex) return;
+          navigator.clipboard.writeText(bibtex).then(() => {
+            const orig = btn.innerHTML;
+            btn.innerHTML = '<span class="btn-icon">✓</span> Copied!';
+            setTimeout(() => {
+              btn.innerHTML = orig;
+            }, 2000);
+          }).catch(() => {});
+        });
+      </script>
     </main>
   </body>
 </html>

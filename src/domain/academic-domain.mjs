@@ -911,8 +911,14 @@ export function getBibliographicSourceName(options = {}) {
  */
 export function formatAuthorList(authors, { isLegacy = false, max = 3 } = {}) {
   if (!authors || authors.length === 0) return "Not recorded";
+  const authorNames = authors
+    .map((a) => (typeof a === "string" ? a : a?.display_name || a?.name || String(a)))
+    .filter(Boolean);
+  if (authorNames.length === 0) return "Not recorded";
   const suffix = isLegacy ? " 等" : " et al.";
-  return authors.length > max ? `${authors.slice(0, max).join(", ")}${suffix}` : authors.join(", ");
+  return authorNames.length > max
+    ? `${authorNames.slice(0, max).join(", ")}${suffix}`
+    : authorNames.join(", ");
 }
 
 /**

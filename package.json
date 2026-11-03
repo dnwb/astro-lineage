@@ -28,6 +28,7 @@
     "deploy:check": "node scripts/deploy-doctor.mjs",
     "deploy:doctor": "node scripts/deploy-doctor.mjs",
     "figures:sync": "node scripts/sync-recent-figures.mjs",
+    "anchor:pilot": "node scripts/causal-anchor-cli.mjs",
     "gcn:track": "node scripts/gcn-tracker-cli.mjs",
     "events:cluster": "node scripts/transient-event-cluster.mjs",
     "test:bot": "node --test tests/agent-core.test.mjs tests/qq-official-bot.test.mjs tests/qq-users.test.mjs tests/qq-cli-isolation.test.mjs tests/tencent-channel-publisher.test.mjs tests/bot-commands.test.mjs tests/qq-media.test.mjs tests/qq-vision-e2e.test.mjs",

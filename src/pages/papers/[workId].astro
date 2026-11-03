@@ -24,6 +24,7 @@ import {
 } from "../../lib/reader-localization";
 import { loadSiteConfig } from "../../lib/site-config";
 import {
+  formatAuthorList,
   formatSystemTime,
   formatScientificEpoch,
   formatWorkBibTeX,
@@ -113,10 +114,6 @@ const relationLabels: Record<string, { outbound: string; inbound: string }> = {
   corrects: { outbound: "Corrects", inbound: "Corrected by" },
 };
 
-function authors(version: AnyRecord) {
-  return (version.authors ?? []).map((author: AnyRecord) => author.display_name).filter(Boolean).join(", ");
-}
-
 function describeLocator(locator: AnyRecord | undefined) {
   if (!locator?.type) return "typed locator unavailable";
   const englishParts = [String(locator.type)];
@@ -162,7 +159,7 @@ function connectedPaper(edge: AnyRecord) {
   return {
     href: workReaderPath(snapshot, connectedWorkId),
     title: localizedWorkTitle(connectedWorkId, connectedVersion.title),
-    authors: authors(connectedVersion),
+    authors: formatAuthorList(connectedVersion.authors, { max: 10 }),
     year: connectedVersion.release_date?.value?.slice(0, 4),
   };
 }
@@ -203,7 +200,7 @@ const versionsById = new Map(versions.map((v: AnyRecord) => [v.id, v]));
           <header class="reader-header">
         <p class="section-kicker">Bibliographic Record</p>
         <h1>{title()}</h1>
-        <p class="paper-meta">{authors(preferredVersion)} · {preferredVersion.release_date.value.slice(0, 4)}</p>
+        <p class="paper-meta">{formatAuthorList(preferredVersion.authors, { max: 10 })} · {preferredVersion.release_date.value.slice(0, 4)}</p>
         {isCandidate ? (
           <p class="reader-note"><span class="tag">Candidate Baseline</span> This entry has completed source verification and formula review.</p>
         ) : null}

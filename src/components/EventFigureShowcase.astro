@@ -28,24 +28,24 @@ const paperId = `tier-paper-${prefix}-${eventSlug}`;
         <input type="radio" name={radioName} id={dataId} class="tier-radio-data" checked />
         <input type="radio" name={radioName} id={paperId} class="tier-radio-paper" />
         <div class="tier-segmented-bar">
-          <span class="tier-segmented-hint">图示层级：</span>
+          <span class="tier-segmented-hint">Figure Tier:</span>
           <label for={dataId} class="tier-tab-btn tier-tab-btn-data">
-            📊 实测光变 (Data)
+            📊 Light Curve (Data)
           </label>
           <label for={paperId} class="tier-tab-btn tier-tab-btn-paper">
-            🔬 文献参考 (Paper)
+            🔬 Discovery Paper (Ref)
           </label>
         </div>
 
         <div class="tier-panel tier-panel-data">
           <div class="gcn-figure-header">
             <div class="figure-badge-title">
-              <span class="tier-tag tier-tag-data">主级 · 实测数据</span>
-              <span class="gcn-figure-title">NASA GCN 零同质化多波段应急光变 (Data Plot)</span>
+              <span class="tier-tag tier-tag-data">Primary · GCN Photometry</span>
+              <span class="gcn-figure-title">GCN Multi-band Light Curve (Zero Homogenization)</span>
             </div>
             <div class="figure-actions">
-              <a href={event.gcn_figure_path} target="_blank" rel="noopener noreferrer" class="gcn-figure-expand">高清 PNG ↗</a>
-              <a href={event.gcn_figure_path.replace(/\.png$/, ".svg")} target="_blank" rel="noopener noreferrer" class="gcn-figure-expand gcn-svg-link">矢量 SVG ↗</a>
+              <a href={event.gcn_figure_path} target="_blank" rel="noopener noreferrer" class="gcn-figure-expand">HD PNG ↗</a>
+              <a href={event.gcn_figure_path.replace(/\.png$/, ".svg")} target="_blank" rel="noopener noreferrer" class="gcn-figure-expand gcn-svg-link">Vector SVG ↗</a>
             </div>
           </div>
           <a href={event.gcn_figure_path} target="_blank" rel="noopener noreferrer" class="gcn-figure-link">
@@ -56,13 +56,13 @@ const paperId = `tier-paper-${prefix}-${eventSlug}`;
         <div class="tier-panel tier-panel-paper">
           <div class="gcn-figure-header">
             <div class="figure-badge-title">
-              <span class="tier-tag tier-tag-paper">参考级 · 文献原图</span>
+              <span class="tier-tag tier-tag-paper">Reference · Discovery Paper</span>
               <span class="gcn-figure-title">
                 {event.lead_figure.category_badge || "Preprint Reference Diagram"}
                 {event.lead_figure_arxiv_id && <span class="font-mono text-xs opacity-75"> [{event.lead_figure_arxiv_id}]</span>}
               </span>
             </div>
-            <a href={event.lead_figure.url} target="_blank" rel="noopener noreferrer" class="gcn-figure-expand">查看高清原图 ↗</a>
+            <a href={event.lead_figure.url} target="_blank" rel="noopener noreferrer" class="gcn-figure-expand">Open Full Figure ↗</a>
           </div>
           <a href={event.lead_figure.url} target="_blank" rel="noopener noreferrer" class="gcn-figure-link">
             <img src={event.lead_figure.url} alt={event.lead_figure.caption || `${event.event_id} Preprint Reference`} class="gcn-light-curve-img" loading="lazy" />
@@ -79,12 +79,12 @@ const paperId = `tier-paper-${prefix}-${eventSlug}`;
       <div class="card-gcn-figure-wrapper tier-data-standalone">
         <div class="gcn-figure-header">
           <div class="figure-badge-title">
-            <span class="tier-tag tier-tag-data">主级 · 实测数据</span>
-            <span class="gcn-figure-title">NASA GCN 零同质化多波段应急光变 (Data Plot)</span>
+            <span class="tier-tag tier-tag-data">Primary · GCN Photometry</span>
+            <span class="gcn-figure-title">GCN Multi-band Light Curve (Zero Homogenization)</span>
           </div>
           <div class="figure-actions">
-            <a href={event.gcn_figure_path} target="_blank" rel="noopener noreferrer" class="gcn-figure-expand">高清 PNG ↗</a>
-            <a href={event.gcn_figure_path.replace(/\.png$/, ".svg")} target="_blank" rel="noopener noreferrer" class="gcn-figure-expand gcn-svg-link">矢量 SVG ↗</a>
+            <a href={event.gcn_figure_path} target="_blank" rel="noopener noreferrer" class="gcn-figure-expand">HD PNG ↗</a>
+            <a href={event.gcn_figure_path.replace(/\.png$/, ".svg")} target="_blank" rel="noopener noreferrer" class="gcn-figure-expand gcn-svg-link">Vector SVG ↗</a>
           </div>
         </div>
         <a href={event.gcn_figure_path} target="_blank" rel="noopener noreferrer" class="gcn-figure-link">
@@ -95,13 +95,13 @@ const paperId = `tier-paper-${prefix}-${eventSlug}`;
       <div class="card-gcn-figure-wrapper tier-paper-standalone">
         <div class="gcn-figure-header">
           <div class="figure-badge-title">
-            <span class="tier-tag tier-tag-paper">参考级 · 文献原图</span>
+            <span class="tier-tag tier-tag-paper">Reference · Discovery Paper</span>
             <span class="gcn-figure-title">
               {event.lead_figure.category_badge || "Preprint Reference Diagram"}
               {event.lead_figure_arxiv_id && <span class="font-mono text-xs opacity-75"> [{event.lead_figure_arxiv_id}]</span>}
             </span>
           </div>
-          <a href={event.lead_figure.url} target="_blank" rel="noopener noreferrer" class="gcn-figure-expand">查看高清原图 ↗</a>
+          <a href={event.lead_figure.url} target="_blank" rel="noopener noreferrer" class="gcn-figure-expand">Open Full Figure ↗</a>
         </div>
         <a href={event.lead_figure.url} target="_blank" rel="noopener noreferrer" class="gcn-figure-link">
           <img src={event.lead_figure.url} alt={event.lead_figure.caption || `${event.event_id} Core Diagram`} class="gcn-light-curve-img" loading="lazy" />

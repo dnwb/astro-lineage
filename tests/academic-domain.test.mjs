@@ -17,6 +17,7 @@ import {
   formatSystemTime,
   formatScientificEpoch,
   formatWorkBibTeX,
+  formatAuthorList,
 } from "../src/domain/academic-domain.mjs";
 
 test("academic-domain: extractTransientIdentifiers parses standard transient names", () => {
@@ -465,7 +466,10 @@ test("academic-domain: formatWorkBibTeX generates valid standard BibTeX for jour
   };
   const bib1 = formatWorkBibTeX({}, journalVersion);
   assert.match(bib1, /@article\{arnett1982,/u);
-  assert.match(bib1, /title = \{Type I Supernovae\. I\. An Analytic Solution for the Light Curve\}/u);
+  assert.match(
+    bib1,
+    /title = \{Type I Supernovae\. I\. An Analytic Solution for the Light Curve\}/u
+  );
   assert.match(bib1, /author = \{W\. D\. Arnett\}/u);
   assert.match(bib1, /journal = \{Astrophysical Journal\}/u);
   assert.match(bib1, /volume = \{253\}/u);
@@ -489,4 +493,26 @@ test("academic-domain: formatWorkBibTeX generates valid standard BibTeX for jour
   assert.equal(formatWorkBibTeX({}, null), "");
 });
 
+test("academic-domain: formatAuthorList handles strings, author objects, max limits, and legacy mode", () => {
+  // Empty or invalid
+  assert.equal(formatAuthorList(null), "Not recorded");
+  assert.equal(formatAuthorList([]), "Not recorded");
 
+  // String array
+  assert.equal(formatAuthorList(["Author A", "Author B"]), "Author A, Author B");
+  assert.equal(formatAuthorList(["A", "B", "C", "D"], { max: 3 }), "A, B, C et al.");
+  assert.equal(formatAuthorList(["A", "B", "C", "D"], { max: 3, isLegacy: true }), "A, B, C 等");
+
+  // Object array (OpenAlex / work reader schema)
+  const objAuthors = [
+    { display_name: "Wei-Cheng Long" },
+    { display_name: "Yun-Wei Yu" },
+    { display_name: "Zheng-Xiang Li" },
+    { display_name: "Zhi-Qiang Shen" },
+  ];
+  assert.equal(formatAuthorList(objAuthors, { max: 2 }), "Wei-Cheng Long, Yun-Wei Yu et al.");
+  assert.equal(
+    formatAuthorList(objAuthors, { max: 5 }),
+    "Wei-Cheng Long, Yun-Wei Yu, Zheng-Xiang Li, Zhi-Qiang Shen"
+  );
+});

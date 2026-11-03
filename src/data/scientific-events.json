@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-03T11:32:57.976Z",
+  "generated_at": "2026-11-03T11:52:59.140Z",
   "total_events": 128,
   "events": [
     {
@@ -11,7 +11,7 @@
         "MULTI",
         "Transient Surveillance"
       ],
-      "heat_score": 219,
+      "heat_score": 218.7,
       "paper_count": 18,
       "headline": "利用GW170817对应千新星AT2017gfo的晚期近红外光谱",
       "narrative": "GW170817 是近期重点瞬变天体事件，活跃跨度 2026-09-16 至 2026-11-01，共聚合 18 篇研读文献（含 3 篇必读突破）。核心突破研判：模型将1.4、1.6和2.1微米特征分别主要归于La III、Ce III和Te III；推得Te、La、Ce质量分数约为0.04–0.08、0.025–0.05和0.05–0.1，Kr和Sb质量分数上限约为0.03和0.003。La和Ce约束仍属暂定。",
@@ -703,41 +703,6 @@
       "gcn_status": "active"
     },
     {
-      "event_id": "GRB 261026A",
-      "event_type": "GRB",
-      "tags": [
-        "Transient Surveillance",
-        "GCN Circulars",
-        "GRB"
-      ],
-      "heat_score": 30.5,
-      "paper_count": 0,
-      "headline": "GRB 261026A 空间与地面望远镜全波段应急协同追踪",
-      "narrative": "已汇聚 NASA GCN Circulars 快速通报 17 份。红移 待确定，触发时刻 T0: 2026-10-26 06:09:37 UTC (SVOM/ECLAIRs)。多波段光变曲线与早期测光点已完成零同质化聚合。",
-      "first_seen": "2026-10-26",
-      "last_updated": "2026-10-30",
-      "papers": [],
-      "lead_figure": null,
-      "lead_figure_arxiv_id": null,
-      "canonical_t0": {
-        "instrument": "SVOM/ECLAIRs",
-        "utc_iso": "2026-10-26T06:09:37.680Z",
-        "circular_id": 46068
-      },
-      "best_redshift": null,
-      "has_redshift_conflict": false,
-      "multi_messenger": [],
-      "gcn_aliases_label": null,
-      "canonical_t0_label": "2026-10-26 06:09:37 UTC (SVOM/ECLAIRs)",
-      "best_redshift_label": null,
-      "multi_messenger_badges": [],
-      "gcn_circular_count": 17,
-      "gcn_figure_path": "/gcn-figures/grb-261026a.png",
-      "gcn_aliases": [],
-      "gcn_slug": "grb-261026a",
-      "gcn_status": "active"
-    },
-    {
       "event_id": "GRB 261024D",
       "event_type": "GRB",
       "tags": [
@@ -769,6 +734,41 @@
       "gcn_status": "active"
     },
     {
+      "event_id": "GRB 261026A",
+      "event_type": "GRB",
+      "tags": [
+        "Transient Surveillance",
+        "GCN Circulars",
+        "GRB"
+      ],
+      "heat_score": 30.4,
+      "paper_count": 0,
+      "headline": "GRB 261026A 空间与地面望远镜全波段应急协同追踪",
+      "narrative": "已汇聚 NASA GCN Circulars 快速通报 17 份。红移 待确定，触发时刻 T0: 2026-10-26 06:09:37 UTC (SVOM/ECLAIRs)。多波段光变曲线与早期测光点已完成零同质化聚合。",
+      "first_seen": "2026-10-26",
+      "last_updated": "2026-10-30",
+      "papers": [],
+      "lead_figure": null,
+      "lead_figure_arxiv_id": null,
+      "canonical_t0": {
+        "instrument": "SVOM/ECLAIRs",
+        "utc_iso": "2026-10-26T06:09:37.680Z",
+        "circular_id": 46068
+      },
+      "best_redshift": null,
+      "has_redshift_conflict": false,
+      "multi_messenger": [],
+      "gcn_aliases_label": null,
+      "canonical_t0_label": "2026-10-26 06:09:37 UTC (SVOM/ECLAIRs)",
+      "best_redshift_label": null,
+      "multi_messenger_badges": [],
+      "gcn_circular_count": 17,
+      "gcn_figure_path": "/gcn-figures/grb-261026a.png",
+      "gcn_aliases": [],
+      "gcn_slug": "grb-261026a",
+      "gcn_status": "active"
+    },
+    {
       "event_id": "EP 261025a",
       "event_type": "EP",
       "tags": [
@@ -776,7 +776,7 @@
         "GCN Circulars",
         "EP"
       ],
-      "heat_score": 21.9,
+      "heat_score": 21.8,
       "paper_count": 0,
       "headline": "EP 261025a 空间与地面望远镜全波段应急协同追踪",
       "narrative": "已汇聚 NASA GCN Circulars 快速通报 2 份。红移 待确定，触发时刻 T0: 待校准。多波段光变曲线与早期测光点已完成零同质化聚合。",
@@ -1016,7 +1016,7 @@
         "Transient Surveillance",
         "GCN Photometry"
       ],
-      "heat_score": 19.6,
+      "heat_score": 19.5,
       "paper_count": 1,
       "headline": "Unveiling the physical origin of...",
       "narrative": "GRB 241113B 是近期重点瞬变天体事件，监测日期 2026-11-01，共聚合 1 篇研读文献（含 1 篇必读突破）。核心突破研判：GRB 241113B is confirmed as an intrinsically soft Type II GRB (XRR/XRF) observed on-axis within a redshift range $0.5 \\lesssim z \\lesssim 3.5$. Joint prompt spectral fitting favors a cutoff power-law (CPL) model with photon index $\\alpha = -1.80^{+0.16}_{-0.10}$ and $E^{\\mathrm{obs}}_{\\mathrm{peak}} \\approx 35\\text{--}37\\text{ keV}$. The prompt duration follows an energy-dependent scaling law $\\log T_{90} = \\alpha \\log(E/50\\,\\mathrm{keV}) + \\log K_{50}$ with $\\alpha = -0.35^{+0.10}_{-0.06}$ ($K_{50} = 54.2^{+2.8}_{-4.2}$). The early multiband afterglow peaks at deceleration time $t_b = 263^{+68}_{-91}\\,\\mathrm{s}$ and decays with $\\alpha_2 = -1.40^{+0.03}_{-0.04}$ and spectral index $\\beta_{\\mathrm{OX}} = 0.66^{+0.04}_{-0.03}$. VegasAfterglow modeling confirms a relativistic top-hat jet propagating into a wind-like circumstellar medium ($s=2$) in the slow cooling regime ($\\nu_m < \\nu_{\\mathrm{opt}} < \\nu_{\\mathrm{X}} < \\nu_c$) with electron index $p = 2.31 \\pm 0.08$. The bulk Lorentz factor is constrained to $\\Gamma_0 > 100$ (posterior bounds $\\Gamma_0 \\sim 125\\text{--}263$), ruling out both shock breakout (SBO) and high baryon loading (dirty fireball) scenarios.",
@@ -1290,7 +1290,7 @@
         "TDE",
         "Transient Surveillance"
       ],
-      "heat_score": 17.3,
+      "heat_score": 17.2,
       "paper_count": 2,
       "headline": "Accounting for the multi-epoch o...",
       "narrative": "EP241021A 是近期重点瞬变天体事件，活跃跨度 2026-10-22 至 2026-10-26，共聚合 2 篇研读文献（含 1 篇必读突破）。核心突破研判：EP241021a ($z = 0.748$, $D_L = 4.620\\ \\mathrm{Gpc}$, $E_{\\mathrm{iso}} \\lesssim 2 \\times 10^{51}\\ \\mathrm{erg}$) occurred at a projected offset of $129 \\pm 18\\ \\mathrm{mas}$ ($0.95 \\pm 0.13\\ \\mathrm{kpc}$) from the nucleus of an edge-on dwarf starburst galaxy ($M_\\star = (2.7 \\pm 1.2) \\times 10^8\\ M_\\odot$, $\\mathrm{SFR} = 4.5 \\pm 2.4\\ M_\\odot\\ \\mathrm{yr}^{-1}$, effective radius $R_e = 0.23'' \\approx 1.7\\ \\mathrm{kpc}$). The host-subtracted optical transient underwent a rapid break/drop at observer-frame $t_{\\mathrm{brk}} = 47.0^{+5.4}_{-3.7}\\ \\mathrm{d}$ (rest-frame $26.9^{+3.1}_{-2.1}\\ \\mathrm{d}$) at $\\log(L_{\\mathrm{brk}} / [\\mathrm{erg\\ s^{-1}}]) = 42.92 \\pm 0.08$, synchronized with the X-ray light-curve steep decline. The month-long accretion timescale and off-nuclear site exclude both standard core-collapse supernova engines and supermassive black holes, favoring an intermediate-mass black hole ($M_{\\mathrm{BH}} \\lesssim 10^4\\ M_\\odot$) or a stellar-mass compact object micro-TDE undergoing repeating partial disruptions.",
@@ -2843,7 +2843,7 @@
         "FRB",
         "GW"
       ],
-      "heat_score": 7.2,
+      "heat_score": 7.1,
       "paper_count": 1,
       "headline": "Periodically repeating Fast Radi...",
       "narrative": "FRB 20121102A 是近期重点瞬变天体事件，监测日期 2026-10-27，共聚合 1 篇研读文献。核心突破研判：Pure Keplerian self-lensing fails with a tiny activity window $\\tau_{\\mathrm{aw}}^{\\mathrm{KP}} \\sim \\mathcal{O}(0.5\\,\\mathrm{hours})$, whereas Lense-Thirring precession with period $\\tau_{\\mathrm{LT}} = \\frac{\\pi(1-e^{2})^{3/2}c^{3}a^{3}}{G^{2}M_{\\mathrm{BH}}^{2}\\chi} = 2\\tau_{\\mathrm{FRB}}$ reproduces wide activity windows $\\tau_{\\mathrm{aw}}^{\\mathrm{LT}} \\sim 0.5\\tau_{\\mathrm{FRB}}$ for small inclinations $i \\sim (5\\text{--}8) \\times 10^{-2}\\,{^\\circ}$. Splitting time delays $\\tau_{\\mathrm{lens}}^{\\mathrm{Spl}} \\approx \\frac{4GM_{\\mathrm{BH}}}{c^3}(1+z)\\lambda(r_s/a)^{1/2} \\sim 10^{-3}\\text{--}10^{-2}\\,\\mathrm{s}$ match the observed millisecond waiting-time peak in FRB 20121102A, constraining the companion mass to $M_{\\mathrm{BH}} \\sim 10^3\\text{--}10^4\\,M_\\odot$ with maximum amplification $\\mathcal{A}_{\\max} \\approx \\sqrt{8r_{s}a/R^{2}} \\sim 10^4$ and gravitational wave merger timescale $\\tau_{\\mathrm{GW}} \\sim 10^3\\,\\mathrm{yr}$.",
@@ -2926,7 +2926,7 @@
       "tags": [
         "SN"
       ],
-      "heat_score": 7.2,
+      "heat_score": 7.1,
       "paper_count": 1,
       "headline": "Theoretical ECSN models from sup...",
       "narrative": "SN 2008S 是近期重点瞬变天体事件，监测日期 2026-10-27，共聚合 1 篇研读文献。核心突破研判：Standard ECSN models with dusty winds cannot simultaneously reproduce the light curves and colors of ILRTs: the intrinsic drop in input luminosity after the plateau causes $r_{\\rm sub} \\propto L_{\\rm input}^{1/2}$ to shrink, triggering a runaway increase in optical depth $\\tau_V$ and causing the optical luminosity to plummet by orders of magnitude; attempting to flatten the decline using dense CSM shock interaction ($L_{s,\\rm rad} \\propto t^{-0.3}$) requires $\\dot{M}_{\\rm dense} \\simeq 9.7 \\times 10^{-3}\\,M_\\odot\\,\\mathrm{yr}^{-1}$ and produces excessively red post-plateau colors ($B - V > 4$) that contradict observed ILRT colors ($B - V \\lesssim 1.2\\text{--}1.6$).",

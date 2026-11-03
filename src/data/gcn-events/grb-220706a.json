@@ -1,0 +1,84 @@
+{
+  "primary_id": "GRB 220706A",
+  "slug": "grb-220706a",
+  "aliases": [
+    "GRB 220607A"
+  ],
+  "event_type": "GRB",
+  "canonical_t0": {
+    "instrument": "Swift/BAT",
+    "utc_iso": "2022-07-06T16:09:14.000Z",
+    "circular_id": 32329
+  },
+  "best_redshift": null,
+  "has_redshift_conflict": false,
+  "redshifts": [],
+  "photometry_points": [
+    {
+      "circular_id": 32351,
+      "dt_hours": 0.051,
+      "band": "white",
+      "mag": 20.5,
+      "mag_err": null,
+      "is_upper_limit": true,
+      "limit_sigma": 3,
+      "system": "Vega",
+      "telescope": "Swift/UVOT",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 32351,
+      "dt_hours": 0.124,
+      "band": "u",
+      "mag": 20,
+      "mag_err": null,
+      "is_upper_limit": true,
+      "limit_sigma": 3,
+      "system": "Vega",
+      "telescope": "Swift/UVOT",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 32351,
+      "dt_hours": 0.157,
+      "band": "white",
+      "mag": 20.5,
+      "mag_err": null,
+      "is_upper_limit": true,
+      "limit_sigma": 3,
+      "system": "Vega",
+      "telescope": "Swift/UVOT",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 32351,
+      "dt_hours": 0.211,
+      "band": "b",
+      "mag": 18.5,
+      "mag_err": null,
+      "is_upper_limit": true,
+      "limit_sigma": 3,
+      "system": "Vega",
+      "telescope": "Swift/UVOT",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    }
+  ],
+  "xray_points": [],
+  "radio_points": [],
+  "multi_messenger": [],
+  "feature_zoom": {
+    "enabled": false
+  },
+  "circular_count": 14,
+  "last_circular_id": 32353,
+  "last_updated_utc": "2022-07-09T00:07:58.000Z",
+  "status": "archived"
+}

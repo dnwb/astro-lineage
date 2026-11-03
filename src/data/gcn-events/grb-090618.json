@@ -1,0 +1,157 @@
+{
+  "primary_id": "GRB 090618",
+  "slug": "grb-090618",
+  "aliases": [
+    "SN 1998bw",
+    "AT 2009june"
+  ],
+  "event_type": "GRB",
+  "canonical_t0": {
+    "instrument": "Fermi/GBM",
+    "utc_iso": "2009-06-18T08:28:26.660Z",
+    "circular_id": 9535
+  },
+  "best_redshift": {
+    "z": 0.54,
+    "z_err": null,
+    "type": "spectroscopic",
+    "instrument": "Optical Spectroscopy",
+    "circular_id": 9518,
+    "note": ""
+  },
+  "has_redshift_conflict": false,
+  "redshifts": [
+    {
+      "circular_id": 9518,
+      "z": 0.54,
+      "z_err": null,
+      "type": "spectroscopic",
+      "instrument": "Optical Spectroscopy",
+      "note": ""
+    }
+  ],
+  "photometry_points": [
+    {
+      "circular_id": 9512,
+      "dt_hours": 0.036,
+      "band": "white",
+      "mag": 14.36,
+      "mag_err": 0.01,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "Vega",
+      "telescope": "Swift/UVOT",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 9527,
+      "dt_hours": 0.057,
+      "band": "white",
+      "mag": 14.27,
+      "mag_err": 0.01,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "Vega",
+      "telescope": "Swift/UVOT",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 9527,
+      "dt_hours": 0.129,
+      "band": "u",
+      "mag": 14.62,
+      "mag_err": 0.01,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "Vega",
+      "telescope": "Swift/UVOT",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 9527,
+      "dt_hours": 0.168,
+      "band": "b",
+      "mag": 15.92,
+      "mag_err": 0.06,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "Vega",
+      "telescope": "Swift/UVOT",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 9527,
+      "dt_hours": 0.183,
+      "band": "uvw2",
+      "mag": 15.27,
+      "mag_err": 0.1,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "Vega",
+      "telescope": "Swift/UVOT",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 9527,
+      "dt_hours": 0.189,
+      "band": "v",
+      "mag": 15.6,
+      "mag_err": 0.09,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "Vega",
+      "telescope": "Swift/UVOT",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 9527,
+      "dt_hours": 0.196,
+      "band": "uvm2",
+      "mag": 15.23,
+      "mag_err": 0.12,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "Vega",
+      "telescope": "Swift/UVOT",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 9527,
+      "dt_hours": 0.203,
+      "band": "uvw1",
+      "mag": 15.09,
+      "mag_err": 0.08,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "Vega",
+      "telescope": "Swift/UVOT",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    }
+  ],
+  "xray_points": [],
+  "radio_points": [],
+  "multi_messenger": [],
+  "feature_zoom": {
+    "enabled": false
+  },
+  "circular_count": 32,
+  "last_circular_id": 9665,
+  "last_updated_utc": "2009-07-15T08:23:22.000Z",
+  "status": "archived"
+}

@@ -143,6 +143,601 @@
       "status": "archived",
       "has_photometry": true,
       "figure_path": "/gcn-figures/grb-211211a.png"
+    },
+    "grb-060614": {
+      "slug": "grb-060614",
+      "primary_id": "GRB 060614",
+      "aliases": [
+        "GRB 031203",
+        "GRB 060218",
+        "GRB 090618",
+        "GRB 980425",
+        "SN 1998bw",
+        "SN 2003lw",
+        "SN 2006aj",
+        "AT 5634a",
+        "AT 7388a"
+      ],
+      "event_type": "GRB",
+      "canonical_t0": {
+        "instrument": "Swift/BAT",
+        "utc_iso": "2006-06-14T12:43:48.000Z",
+        "circular_id": 5252
+      },
+      "best_redshift": {
+        "z": 1.2,
+        "z_err": null,
+        "type": "spectroscopic",
+        "instrument": "Optical Spectroscopy",
+        "circular_id": 15560,
+        "note": ""
+      },
+      "circular_count": 17,
+      "last_updated_utc": "2013-12-02T17:16:04.000Z",
+      "status": "archived",
+      "has_photometry": true,
+      "figure_path": "/gcn-figures/grb-060614.png"
+    },
+    "grb-230307a": {
+      "slug": "grb-230307a",
+      "primary_id": "GRB 230307A",
+      "aliases": [
+        "GRB 130427A",
+        "GRB 191019A",
+        "GRB 211211A",
+        "GRB 221009A",
+        "GRB 230703A"
+      ],
+      "event_type": "GRB",
+      "canonical_t0": {
+        "instrument": "Fermi/GBM",
+        "utc_iso": "2023-03-07T15:44:06.000Z",
+        "circular_id": 33405
+      },
+      "best_redshift": null,
+      "circular_count": 47,
+      "last_updated_utc": "2023-05-08T21:30:32.592Z",
+      "status": "archived",
+      "has_photometry": true,
+      "figure_path": "/gcn-figures/grb-230307a.png"
+    },
+    "grb-260924a": {
+      "slug": "grb-260924a",
+      "primary_id": "GRB 260924A",
+      "aliases": [
+        "GRB 221009A",
+        "AT 4000aa"
+      ],
+      "event_type": "GRB",
+      "canonical_t0": {
+        "instrument": "Fermi/GBM",
+        "utc_iso": "2026-09-24T01:13:23.000Z",
+        "circular_id": 45721
+      },
+      "best_redshift": {
+        "z": 3.51,
+        "z_err": null,
+        "type": "spectroscopic",
+        "instrument": "Optical Spectroscopy",
+        "circular_id": 45775,
+        "note": ""
+      },
+      "circular_count": 28,
+      "last_updated_utc": "2026-09-28T17:43:09.325Z",
+      "status": "archived",
+      "has_photometry": true,
+      "figure_path": "/gcn-figures/grb-260924a.png"
+    },
+    "grb-250419a": {
+      "slug": "grb-250419a",
+      "primary_id": "GRB 250419A",
+      "aliases": [],
+      "event_type": "GRB",
+      "canonical_t0": {
+        "instrument": "SVOM/ECLAIRs",
+        "utc_iso": "2025-04-19T07:10:59.000Z",
+        "circular_id": 40174
+      },
+      "best_redshift": {
+        "z": 0.845,
+        "z_err": null,
+        "type": "spectroscopic",
+        "instrument": "Optical Spectroscopy",
+        "circular_id": 40245,
+        "note": ""
+      },
+      "circular_count": 28,
+      "last_updated_utc": "2025-04-25T07:34:22.631Z",
+      "status": "archived",
+      "has_photometry": true,
+      "figure_path": "/gcn-figures/grb-250419a.png"
+    },
+    "grb-240825a": {
+      "slug": "grb-240825a",
+      "primary_id": "GRB 240825A",
+      "aliases": [],
+      "event_type": "GRB",
+      "canonical_t0": {
+        "instrument": "Fermi/GBM",
+        "utc_iso": "2024-08-25T15:53:00.000Z",
+        "circular_id": 37301
+      },
+      "best_redshift": {
+        "z": 0.659,
+        "z_err": null,
+        "type": "spectroscopic",
+        "instrument": "Optical Spectroscopy",
+        "circular_id": 37367,
+        "note": ""
+      },
+      "circular_count": 49,
+      "last_updated_utc": "2024-09-30T14:36:08.982Z",
+      "status": "archived",
+      "has_photometry": true,
+      "figure_path": "/gcn-figures/grb-240825a.png"
+    },
+    "grb-251222a": {
+      "slug": "grb-251222a",
+      "primary_id": "GRB 251222A",
+      "aliases": [
+        "EP 251222b",
+        "EP 251202b"
+      ],
+      "event_type": "GRB",
+      "canonical_t0": {
+        "instrument": "Fermi/GBM",
+        "utc_iso": "2025-12-22T17:05:51.000Z",
+        "circular_id": 43186
+      },
+      "best_redshift": {
+        "z": 3.171,
+        "z_err": null,
+        "type": "spectroscopic",
+        "instrument": "Optical Spectroscopy",
+        "circular_id": 43236,
+        "note": ""
+      },
+      "circular_count": 33,
+      "last_updated_utc": "2026-01-26T11:12:41.943Z",
+      "status": "archived",
+      "has_photometry": true,
+      "figure_path": "/gcn-figures/grb-251222a.png"
+    },
+    "grb-090618": {
+      "slug": "grb-090618",
+      "primary_id": "GRB 090618",
+      "aliases": [
+        "SN 1998bw",
+        "AT 2009june"
+      ],
+      "event_type": "GRB",
+      "canonical_t0": {
+        "instrument": "Fermi/GBM",
+        "utc_iso": "2009-06-18T08:28:26.660Z",
+        "circular_id": 9535
+      },
+      "best_redshift": {
+        "z": 0.54,
+        "z_err": null,
+        "type": "spectroscopic",
+        "instrument": "Optical Spectroscopy",
+        "circular_id": 9518,
+        "note": ""
+      },
+      "circular_count": 32,
+      "last_updated_utc": "2009-07-15T08:23:22.000Z",
+      "status": "archived",
+      "has_photometry": true,
+      "figure_path": "/gcn-figures/grb-090618.png"
+    },
+    "grb-181201a": {
+      "slug": "grb-181201a",
+      "primary_id": "GRB 181201A",
+      "aliases": [
+        "GRB 180112A",
+        "GRB 181201"
+      ],
+      "event_type": "GRB",
+      "canonical_t0": {
+        "instrument": "Konus-Wind",
+        "utc_iso": "2018-12-04T02:39:58.020Z",
+        "circular_id": 23501
+      },
+      "best_redshift": {
+        "z": 0.45,
+        "z_err": null,
+        "type": "spectroscopic",
+        "instrument": "Optical Spectroscopy",
+        "circular_id": 23488,
+        "note": ""
+      },
+      "circular_count": 31,
+      "last_updated_utc": "2019-01-03T20:40:28.000Z",
+      "status": "archived",
+      "has_photometry": true,
+      "figure_path": "/gcn-figures/grb-181201a.png"
+    },
+    "grb-241030a": {
+      "slug": "grb-241030a",
+      "primary_id": "GRB 241030A",
+      "aliases": [
+        "EP 241030a",
+        "GRB 241026A",
+        "EP 241026a",
+        "AT 1671aa",
+        "AT 2374aa",
+        "AT 2800aa",
+        "AT 2852aa"
+      ],
+      "event_type": "GRB",
+      "canonical_t0": {
+        "instrument": "Fermi/GBM",
+        "utc_iso": "2024-10-30T05:48:03.000Z",
+        "circular_id": 37958
+      },
+      "best_redshift": {
+        "z": 1.411,
+        "z_err": null,
+        "type": "spectroscopic",
+        "instrument": "NOT/ALFOSC",
+        "circular_id": 37959,
+        "note": "Absorption features Lyman series, Si II, C IV"
+      },
+      "circular_count": 41,
+      "last_updated_utc": "2024-11-19T05:08:59.513Z",
+      "status": "archived",
+      "has_photometry": true,
+      "figure_path": "/gcn-figures/grb-241030a.png"
+    },
+    "grb-251013c": {
+      "slug": "grb-251013c",
+      "primary_id": "GRB 251013C",
+      "aliases": [
+        "SN 1998bw"
+      ],
+      "event_type": "GRB",
+      "canonical_t0": {
+        "instrument": "Fermi/GBM",
+        "utc_iso": "2025-10-13T17:39:41.000Z",
+        "circular_id": 42492
+      },
+      "best_redshift": {
+        "z": 0.572,
+        "z_err": null,
+        "type": "spectroscopic",
+        "instrument": "Optical Spectroscopy",
+        "circular_id": 42695,
+        "note": ""
+      },
+      "circular_count": 52,
+      "last_updated_utc": "2025-11-18T15:46:36.001Z",
+      "status": "archived",
+      "has_photometry": true,
+      "figure_path": "/gcn-figures/grb-251013c.png"
+    },
+    "grb-241113b": {
+      "slug": "grb-241113b",
+      "primary_id": "GRB 241113B",
+      "aliases": [
+        "EP 241113b"
+      ],
+      "event_type": "GRB",
+      "canonical_t0": {
+        "instrument": "SVOM/ECLAIRs",
+        "utc_iso": "2024-11-15T11:24:48.000Z",
+        "circular_id": 38232
+      },
+      "best_redshift": null,
+      "circular_count": 11,
+      "last_updated_utc": "2024-12-03T16:29:28.947Z",
+      "status": "archived",
+      "has_photometry": true,
+      "figure_path": "/gcn-figures/grb-241113b.png"
+    },
+    "grb-210619b": {
+      "slug": "grb-210619b",
+      "primary_id": "GRB 210619B",
+      "aliases": [
+        "GRB 110918A",
+        "GRB 210420B"
+      ],
+      "event_type": "GRB",
+      "canonical_t0": {
+        "instrument": "Fermi/GBM",
+        "utc_iso": "2021-06-19T23:59:21.940Z",
+        "circular_id": 30284
+      },
+      "best_redshift": null,
+      "circular_count": 43,
+      "last_updated_utc": "2021-09-09T21:25:26.000Z",
+      "status": "archived",
+      "has_photometry": true,
+      "figure_path": "/gcn-figures/grb-210619b.png"
+    },
+    "grb-110503a": {
+      "slug": "grb-110503a",
+      "primary_id": "GRB 110503A",
+      "aliases": [
+        "AT 2011may"
+      ],
+      "event_type": "GRB",
+      "canonical_t0": {
+        "instrument": "Swift/BAT",
+        "utc_iso": "2011-05-03T17:35:45.000Z",
+        "circular_id": 11991
+      },
+      "best_redshift": {
+        "z": 1.613,
+        "z_err": null,
+        "type": "spectroscopic",
+        "instrument": "Optical Spectroscopy",
+        "circular_id": 11993,
+        "note": ""
+      },
+      "circular_count": 20,
+      "last_updated_utc": "2011-05-16T15:06:57.000Z",
+      "status": "archived",
+      "has_photometry": true,
+      "figure_path": "/gcn-figures/grb-110503a.png"
+    },
+    "gw170817": {
+      "slug": "gw170817",
+      "primary_id": "GW170817",
+      "aliases": [
+        "GRB 150101B",
+        "GRB 170817A",
+        "AT 1216days",
+        "AT 1234d",
+        "AT 1575d",
+        "AT 1671d",
+        "AT 1734d"
+      ],
+      "event_type": "GW170817",
+      "canonical_t0": null,
+      "best_redshift": null,
+      "circular_count": 36,
+      "last_updated_utc": "2024-05-04T17:30:15.564Z",
+      "status": "archived",
+      "has_photometry": false,
+      "figure_path": null
+    },
+    "ep-241021a": {
+      "slug": "ep-241021a",
+      "primary_id": "EP 241021a",
+      "aliases": [
+        "GRB 241021A",
+        "AT 4897aa",
+        "AT 6519aa"
+      ],
+      "event_type": "EP",
+      "canonical_t0": {
+        "instrument": "EP/WXT",
+        "utc_iso": "2024-12-19T01:36:13.000Z",
+        "circular_id": 38640
+      },
+      "best_redshift": null,
+      "circular_count": 7,
+      "last_updated_utc": "2025-01-13T15:44:13.147Z",
+      "status": "archived",
+      "has_photometry": false,
+      "figure_path": null
+    },
+    "ep-240414a": {
+      "slug": "ep-240414a",
+      "primary_id": "EP 240414a",
+      "aliases": [],
+      "event_type": "EP",
+      "canonical_t0": {
+        "instrument": "EP/WXT",
+        "utc_iso": "2024-04-14T22:07:38.000Z",
+        "circular_id": 36105
+      },
+      "best_redshift": {
+        "z": 0.41,
+        "z_err": null,
+        "type": "spectroscopic",
+        "instrument": "Optical Spectroscopy",
+        "circular_id": 36110,
+        "note": ""
+      },
+      "circular_count": 3,
+      "last_updated_utc": "2024-04-16T06:23:58.722Z",
+      "status": "archived",
+      "has_photometry": false,
+      "figure_path": null
+    },
+    "ep-260321a": {
+      "slug": "ep-260321a",
+      "primary_id": "EP 260321a",
+      "aliases": [],
+      "event_type": "EP",
+      "canonical_t0": null,
+      "best_redshift": null,
+      "circular_count": 1,
+      "last_updated_utc": "2026-03-24T18:32:10.460Z",
+      "status": "archived",
+      "has_photometry": false,
+      "figure_path": null
+    },
+    "grb-220706a": {
+      "slug": "grb-220706a",
+      "primary_id": "GRB 220706A",
+      "aliases": [
+        "GRB 220607A"
+      ],
+      "event_type": "GRB",
+      "canonical_t0": {
+        "instrument": "Swift/BAT",
+        "utc_iso": "2022-07-06T16:09:14.000Z",
+        "circular_id": 32329
+      },
+      "best_redshift": null,
+      "circular_count": 14,
+      "last_updated_utc": "2022-07-09T00:07:58.000Z",
+      "status": "archived",
+      "has_photometry": true,
+      "figure_path": "/gcn-figures/grb-220706a.png"
+    },
+    "grb-200415a": {
+      "slug": "grb-200415a",
+      "primary_id": "GRB 200415A",
+      "aliases": [
+        "GRB 051103",
+        "GRB 070201",
+        "GRB 200415",
+        "AT 2020hok",
+        "SGR 1806-20"
+      ],
+      "event_type": "GRB",
+      "canonical_t0": {
+        "instrument": "Fermi/GBM",
+        "utc_iso": "2020-04-15T08:48:05.000Z",
+        "circular_id": 27579
+      },
+      "best_redshift": null,
+      "circular_count": 13,
+      "last_updated_utc": "2020-04-23T08:21:58.000Z",
+      "status": "archived",
+      "has_photometry": false,
+      "figure_path": null
+    },
+    "grb-060218": {
+      "slug": "grb-060218",
+      "primary_id": "GRB 060218",
+      "aliases": [
+        "GRB 980425",
+        "SN 2006aj",
+        "SN 1998bw",
+        "AT 1280mhz"
+      ],
+      "event_type": "GRB",
+      "canonical_t0": {
+        "instrument": "Swift/BAT",
+        "utc_iso": "2006-02-18T03:34:30.000Z",
+        "circular_id": 4775
+      },
+      "best_redshift": {
+        "z": 0.033,
+        "z_err": null,
+        "type": "spectroscopic",
+        "instrument": "Optical Spectroscopy",
+        "circular_id": 5376,
+        "note": ""
+      },
+      "circular_count": 40,
+      "last_updated_utc": "2006-08-01T03:39:43.000Z",
+      "status": "archived",
+      "has_photometry": false,
+      "figure_path": null
+    },
+    "grb-111209a": {
+      "slug": "grb-111209a",
+      "primary_id": "GRB 111209A",
+      "aliases": [
+        "GRB 060218",
+        "GRB 101225A",
+        "SN 2006aj"
+      ],
+      "event_type": "GRB",
+      "canonical_t0": {
+        "instrument": "Swift/BAT",
+        "utc_iso": "2011-12-09T07:12:08.000Z",
+        "circular_id": 12632
+      },
+      "best_redshift": {
+        "z": 0.677,
+        "z_err": null,
+        "type": "spectroscopic",
+        "instrument": "Optical Spectroscopy",
+        "circular_id": 12648,
+        "note": ""
+      },
+      "circular_count": 21,
+      "last_updated_utc": "2012-01-04T05:37:27.000Z",
+      "status": "archived",
+      "has_photometry": true,
+      "figure_path": "/gcn-figures/grb-111209a.png"
+    },
+    "grb-191019a": {
+      "slug": "grb-191019a",
+      "primary_id": "GRB 191019A",
+      "aliases": [],
+      "event_type": "GRB",
+      "canonical_t0": {
+        "instrument": "Swift/BAT",
+        "utc_iso": "2019-10-19T15:12:33.000Z",
+        "circular_id": 26031
+      },
+      "best_redshift": null,
+      "circular_count": 15,
+      "last_updated_utc": "2019-10-30T05:46:27.000Z",
+      "status": "archived",
+      "has_photometry": true,
+      "figure_path": "/gcn-figures/grb-191019a.png"
+    },
+    "grb-211227a": {
+      "slug": "grb-211227a",
+      "primary_id": "GRB 211227A",
+      "aliases": [
+        "GRB 060614",
+        "SN 1998bw",
+        "AT 2017gfo"
+      ],
+      "event_type": "GRB",
+      "canonical_t0": {
+        "instrument": "Swift/BAT",
+        "utc_iso": "2021-12-27T23:32:06.000Z",
+        "circular_id": 31316
+      },
+      "best_redshift": null,
+      "circular_count": 16,
+      "last_updated_utc": "2022-02-03T10:32:43.000Z",
+      "status": "archived",
+      "has_photometry": true,
+      "figure_path": "/gcn-figures/grb-211227a.png"
+    },
+    "grb-220627a": {
+      "slug": "grb-220627a",
+      "primary_id": "GRB 220627A",
+      "aliases": [],
+      "event_type": "GRB",
+      "canonical_t0": {
+        "instrument": "Fermi/GBM",
+        "utc_iso": "2022-06-27T21:21:00.000Z",
+        "circular_id": 32278
+      },
+      "best_redshift": null,
+      "circular_count": 16,
+      "last_updated_utc": "2022-08-10T16:47:21.000Z",
+      "status": "archived",
+      "has_photometry": true,
+      "figure_path": null
+    },
+    "grb-250920c": {
+      "slug": "grb-250920c",
+      "primary_id": "GRB 250920C",
+      "aliases": [
+        "GOTO25HJU"
+      ],
+      "event_type": "GRB",
+      "canonical_t0": {
+        "instrument": "Fermi/GBM",
+        "utc_iso": "2025-09-17T16:39:05.000Z",
+        "circular_id": 41907
+      },
+      "best_redshift": {
+        "z": 1.399,
+        "z_err": null,
+        "type": "spectroscopic",
+        "instrument": "Optical Spectroscopy",
+        "circular_id": 42009,
+        "note": ""
+      },
+      "circular_count": 25,
+      "last_updated_utc": "2025-11-06T15:48:20.347Z",
+      "status": "archived",
+      "has_photometry": true,
+      "figure_path": "/gcn-figures/grb-250920c.png"
     }
   }
 }

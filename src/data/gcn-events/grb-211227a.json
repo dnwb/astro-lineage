@@ -1,0 +1,100 @@
+{
+  "primary_id": "GRB 211227A",
+  "slug": "grb-211227a",
+  "aliases": [
+    "GRB 060614",
+    "SN 1998bw",
+    "AT 2017gfo"
+  ],
+  "event_type": "GRB",
+  "canonical_t0": {
+    "instrument": "Swift/BAT",
+    "utc_iso": "2021-12-27T23:32:06.000Z",
+    "circular_id": 31316
+  },
+  "best_redshift": null,
+  "has_redshift_conflict": false,
+  "redshifts": [],
+  "photometry_points": [
+    {
+      "circular_id": 31328,
+      "dt_hours": 0.044,
+      "band": "white",
+      "mag": 19.4,
+      "mag_err": null,
+      "is_upper_limit": true,
+      "limit_sigma": 3,
+      "system": "Vega",
+      "telescope": "Swift/UVOT",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 31328,
+      "dt_hours": 0.153,
+      "band": "white",
+      "mag": 19.5,
+      "mag_err": null,
+      "is_upper_limit": true,
+      "limit_sigma": 3,
+      "system": "Vega",
+      "telescope": "Swift/UVOT",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 31328,
+      "dt_hours": 0.179,
+      "band": "b",
+      "mag": 18.6,
+      "mag_err": null,
+      "is_upper_limit": true,
+      "limit_sigma": 3,
+      "system": "Vega",
+      "telescope": "Swift/UVOT",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 31328,
+      "dt_hours": 0.77,
+      "band": "v",
+      "mag": 18.7,
+      "mag_err": null,
+      "is_upper_limit": true,
+      "limit_sigma": 3,
+      "system": "Vega",
+      "telescope": "Swift/UVOT",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 31328,
+      "dt_hours": 0.795,
+      "band": "u",
+      "mag": 19.4,
+      "mag_err": null,
+      "is_upper_limit": true,
+      "limit_sigma": 3,
+      "system": "Vega",
+      "telescope": "Swift/UVOT",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    }
+  ],
+  "xray_points": [],
+  "radio_points": [],
+  "multi_messenger": [],
+  "feature_zoom": {
+    "enabled": false
+  },
+  "circular_count": 16,
+  "last_circular_id": 31544,
+  "last_updated_utc": "2022-02-03T10:32:43.000Z",
+  "status": "archived"
+}

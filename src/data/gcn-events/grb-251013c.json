@@ -1,0 +1,147 @@
+{
+  "primary_id": "GRB 251013C",
+  "slug": "grb-251013c",
+  "aliases": [
+    "SN 1998bw"
+  ],
+  "event_type": "GRB",
+  "canonical_t0": {
+    "instrument": "Fermi/GBM",
+    "utc_iso": "2025-10-13T17:39:41.000Z",
+    "circular_id": 42492
+  },
+  "best_redshift": {
+    "z": 0.572,
+    "z_err": null,
+    "type": "spectroscopic",
+    "instrument": "Optical Spectroscopy",
+    "circular_id": 42695,
+    "note": ""
+  },
+  "has_redshift_conflict": false,
+  "redshifts": [
+    {
+      "circular_id": 42695,
+      "z": 0.572,
+      "z_err": null,
+      "type": "spectroscopic",
+      "instrument": "Optical Spectroscopy",
+      "note": ""
+    },
+    {
+      "circular_id": 42259,
+      "z": 0.572,
+      "z_err": null,
+      "type": "spectroscopic",
+      "instrument": "NOT/ALFOSC",
+      "note": "Absorption features Lyman series, Si II, C IV"
+    },
+    {
+      "circular_id": 42254,
+      "z": 0.572,
+      "z_err": null,
+      "type": "spectroscopic",
+      "instrument": "Optical Spectroscopy",
+      "note": ""
+    },
+    {
+      "circular_id": 42227,
+      "z": 0.572,
+      "z_err": null,
+      "type": "spectroscopic",
+      "instrument": "NOT/ALFOSC",
+      "note": "Absorption features Lyman series, Si II, C IV"
+    }
+  ],
+  "photometry_points": [
+    {
+      "circular_id": 42298,
+      "dt_hours": 0.842,
+      "band": "u",
+      "mag": 15.22,
+      "mag_err": 0.03,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "Vega",
+      "telescope": "Swift/UVOT",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 42298,
+      "dt_hours": 37.688,
+      "band": "white",
+      "mag": 21.66,
+      "mag_err": 0.2,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "Vega",
+      "telescope": "Swift/UVOT",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 42492,
+      "dt_hours": 52.08,
+      "band": "i",
+      "mag": 16.3,
+      "mag_err": 0.018,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "AB",
+      "telescope": "Follow-up",
+      "discrepancy_note": null,
+      "time_approximate": true,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 42492,
+      "dt_hours": 52.08,
+      "band": "r",
+      "mag": 16.63,
+      "mag_err": 0.2,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "AB",
+      "telescope": "Follow-up",
+      "discrepancy_note": null,
+      "time_approximate": true,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 42492,
+      "dt_hours": 52.08,
+      "band": "g",
+      "mag": 16.75,
+      "mag_err": 0.017,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "AB",
+      "telescope": "Follow-up",
+      "discrepancy_note": null,
+      "time_approximate": true,
+      "version_conflict": false
+    }
+  ],
+  "xray_points": [],
+  "radio_points": [],
+  "multi_messenger": [],
+  "feature_zoom": {
+    "enabled": true,
+    "bands": [
+      "r",
+      "i"
+    ],
+    "t_min_hours": 8,
+    "t_max_hours": 42,
+    "alpha_ref": 1.4,
+    "title": "Late-time plateau & rebrightening zoom",
+    "callouts": []
+  },
+  "circular_count": 52,
+  "last_circular_id": 42736,
+  "last_updated_utc": "2025-11-18T15:46:36.001Z",
+  "status": "archived"
+}

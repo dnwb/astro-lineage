@@ -1,0 +1,143 @@
+{
+  "primary_id": "GRB 181201A",
+  "slug": "grb-181201a",
+  "aliases": [
+    "GRB 180112A",
+    "GRB 181201"
+  ],
+  "event_type": "GRB",
+  "canonical_t0": {
+    "instrument": "Konus-Wind",
+    "utc_iso": "2018-12-04T02:39:58.020Z",
+    "circular_id": 23501
+  },
+  "best_redshift": {
+    "z": 0.45,
+    "z_err": null,
+    "type": "spectroscopic",
+    "instrument": "Optical Spectroscopy",
+    "circular_id": 23488,
+    "note": ""
+  },
+  "has_redshift_conflict": false,
+  "redshifts": [
+    {
+      "circular_id": 23488,
+      "z": 0.45,
+      "z_err": null,
+      "type": "spectroscopic",
+      "instrument": "Optical Spectroscopy",
+      "note": ""
+    }
+  ],
+  "photometry_points": [
+    {
+      "circular_id": 23499,
+      "dt_hours": 5.659,
+      "band": "uvw2",
+      "mag": 15.39,
+      "mag_err": 0.02,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "Vega",
+      "telescope": "Swift/UVOT",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 23499,
+      "dt_hours": 18.128,
+      "band": "white",
+      "mag": 17.53,
+      "mag_err": 0.03,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "Vega",
+      "telescope": "Swift/UVOT",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 23499,
+      "dt_hours": 18.183,
+      "band": "v",
+      "mag": 17.7,
+      "mag_err": 0.1,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "Vega",
+      "telescope": "Swift/UVOT",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 23499,
+      "dt_hours": 18.611,
+      "band": "u",
+      "mag": 17.25,
+      "mag_err": 0.03,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "Vega",
+      "telescope": "Swift/UVOT",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 23499,
+      "dt_hours": 43.388,
+      "band": "u",
+      "mag": 18.3,
+      "mag_err": 0.05,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "Vega",
+      "telescope": "Swift/UVOT",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 23499,
+      "dt_hours": 43.536,
+      "band": "white",
+      "mag": 18.71,
+      "mag_err": 0.04,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "Vega",
+      "telescope": "Swift/UVOT",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 23499,
+      "dt_hours": 45.202,
+      "band": "v",
+      "mag": 18.7,
+      "mag_err": 0.26,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "Vega",
+      "telescope": "Swift/UVOT",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    }
+  ],
+  "xray_points": [],
+  "radio_points": [],
+  "multi_messenger": [],
+  "feature_zoom": {
+    "enabled": false
+  },
+  "circular_count": 31,
+  "last_circular_id": 23601,
+  "last_updated_utc": "2019-01-03T20:40:28.000Z",
+  "status": "archived"
+}

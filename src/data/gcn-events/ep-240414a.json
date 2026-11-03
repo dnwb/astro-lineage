@@ -1,0 +1,41 @@
+{
+  "primary_id": "EP 240414a",
+  "slug": "ep-240414a",
+  "aliases": [],
+  "event_type": "EP",
+  "canonical_t0": {
+    "instrument": "EP/WXT",
+    "utc_iso": "2024-04-14T22:07:38.000Z",
+    "circular_id": 36105
+  },
+  "best_redshift": {
+    "z": 0.41,
+    "z_err": null,
+    "type": "spectroscopic",
+    "instrument": "Optical Spectroscopy",
+    "circular_id": 36110,
+    "note": ""
+  },
+  "has_redshift_conflict": false,
+  "redshifts": [
+    {
+      "circular_id": 36110,
+      "z": 0.41,
+      "z_err": null,
+      "type": "spectroscopic",
+      "instrument": "Optical Spectroscopy",
+      "note": ""
+    }
+  ],
+  "photometry_points": [],
+  "xray_points": [],
+  "radio_points": [],
+  "multi_messenger": [],
+  "feature_zoom": {
+    "enabled": false
+  },
+  "circular_count": 3,
+  "last_circular_id": 36130,
+  "last_updated_utc": "2024-04-16T06:23:58.722Z",
+  "status": "archived"
+}

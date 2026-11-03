@@ -1,0 +1,178 @@
+{
+  "primary_id": "GRB 241030A",
+  "slug": "grb-241030a",
+  "aliases": [
+    "EP 241030a",
+    "GRB 241026A",
+    "EP 241026a",
+    "AT 1671aa",
+    "AT 2374aa",
+    "AT 2800aa",
+    "AT 2852aa"
+  ],
+  "event_type": "GRB",
+  "canonical_t0": {
+    "instrument": "Fermi/GBM",
+    "utc_iso": "2024-10-30T05:48:03.000Z",
+    "circular_id": 37958
+  },
+  "best_redshift": {
+    "z": 1.411,
+    "z_err": null,
+    "type": "spectroscopic",
+    "instrument": "NOT/ALFOSC",
+    "circular_id": 37959,
+    "note": "Absorption features Lyman series, Si II, C IV"
+  },
+  "has_redshift_conflict": false,
+  "redshifts": [
+    {
+      "circular_id": 37959,
+      "z": 1.411,
+      "z_err": null,
+      "type": "spectroscopic",
+      "instrument": "NOT/ALFOSC",
+      "note": "Absorption features Lyman series, Si II, C IV"
+    }
+  ],
+  "photometry_points": [
+    {
+      "circular_id": 37956,
+      "dt_hours": 0.023,
+      "band": "white",
+      "mag": 15.42,
+      "mag_err": 0.14,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "Vega",
+      "telescope": "Swift/UVOT",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 37974,
+      "dt_hours": 0.044,
+      "band": "white",
+      "mag": 15.43,
+      "mag_err": 0.02,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "Vega",
+      "telescope": "Swift/UVOT",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 37974,
+      "dt_hours": 0.117,
+      "band": "u",
+      "mag": 12.96,
+      "mag_err": 0.02,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "Vega",
+      "telescope": "Swift/UVOT",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 37974,
+      "dt_hours": 0.156,
+      "band": "b",
+      "mag": 13.96,
+      "mag_err": 0.04,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "Vega",
+      "telescope": "Swift/UVOT",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 37974,
+      "dt_hours": 0.163,
+      "band": "white",
+      "mag": 13.8,
+      "mag_err": 0.05,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "Vega",
+      "telescope": "Swift/UVOT",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 37974,
+      "dt_hours": 0.176,
+      "band": "v",
+      "mag": 13.71,
+      "mag_err": 0.05,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "Vega",
+      "telescope": "Swift/UVOT",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 37974,
+      "dt_hours": 0.211,
+      "band": "white",
+      "mag": 14.19,
+      "mag_err": 0.04,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "Vega",
+      "telescope": "Swift/UVOT",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 38107,
+      "dt_hours": 12,
+      "band": "r",
+      "mag": 19.29,
+      "mag_err": 0.12,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "AB",
+      "telescope": "BOOTES",
+      "discrepancy_note": null,
+      "time_approximate": true,
+      "version_conflict": false
+    }
+  ],
+  "xray_points": [],
+  "radio_points": [],
+  "multi_messenger": [],
+  "feature_zoom": {
+    "enabled": true,
+    "bands": [
+      "r",
+      "i"
+    ],
+    "t_min_hours": 8,
+    "t_max_hours": 42,
+    "alpha_ref": 1.4,
+    "title": "Late-time plateau & rebrightening zoom",
+    "callouts": [
+      {
+        "dt_hours": 12,
+        "mag": 19.29,
+        "band": "r",
+        "text": "BOOTES r\ntime approximate"
+      }
+    ]
+  },
+  "circular_count": 41,
+  "last_circular_id": 38275,
+  "last_updated_utc": "2024-11-19T05:08:59.513Z",
+  "status": "archived"
+}

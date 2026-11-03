@@ -773,3 +773,68 @@ test("Slice 10: gcn-tracker-cli supports --dry-run and --inspect flags", async (
   assert.match(stdout, /Plot Eligible:\s*true/);
   assert.match(stdout, /Dry Run Mode:\s*true/);
 });
+
+test("Slice 11: extracts 4-column UVOT, white upper-limit tabular, and date-UT formats", () => {
+  // 1. 4-column Swift/UVOT format (GCN 5255 for GRB 060614)
+  const circular4Col = {
+    circularId: 5255,
+    subject: "GRB 060614: Swift/UVOT Observations",
+    body: `
+Filter   T_mid(s)    Exposure(s)    Mag   Err
+    V       5753         189        19.54 0.30
+    B       5143         196        19.91 0.21
+  UVW1      4730         189        18.35 0.17
+White       147          92        18.30 0.14
+`,
+  };
+  const pts4Col = extractDeterministicPhotometry(circular4Col);
+  assert.equal(pts4Col.length, 4);
+  assert.equal(pts4Col[0].band, "v");
+  assert.equal(pts4Col[0].mag, 19.54);
+  assert.equal(pts4Col[0].mag_err, 0.3);
+  assert.equal(pts4Col[3].band, "white");
+  assert.equal(pts4Col[3].dt_hours, Math.round((147 / 3600) * 1000) / 1000);
+
+  // 2. UVOT tabular with white and upper limits (GCN 33471 for GRB 230307A)
+  const circularUvotTab = {
+    circularId: 33471,
+    subject: "GRB 230307A: Swift/UVOT detection",
+    body: `
+Filter      T_start(s) T_stop(s)   Exp(s)   Mag
+
+white        99525      110441      2265     21.28 +/- 0.16
+white       212899      420530      3418    >22.25
+u            83621       88252       422    >20.44
+`,
+  };
+  const ptsUvotTab = extractDeterministicPhotometry(circularUvotTab);
+  assert.equal(ptsUvotTab.length, 3);
+  assert.equal(ptsUvotTab[0].band, "white");
+  assert.equal(ptsUvotTab[0].is_upper_limit, false);
+  assert.equal(ptsUvotTab[0].mag, 21.28);
+  assert.equal(ptsUvotTab[1].band, "white");
+  assert.equal(ptsUvotTab[1].is_upper_limit, true);
+  assert.equal(ptsUvotTab[1].mag, 22.25);
+  assert.equal(ptsUvotTab[2].band, "u");
+  assert.equal(ptsUvotTab[2].is_upper_limit, true);
+  assert.equal(ptsUvotTab[2].mag, 20.44);
+
+  // 3. Date-UT tabular format (GCN 2260 for GRB 030329)
+  const circularDateUt = {
+    circularId: 2260,
+    subject: "GRB 030329: optical observations",
+    body: `
+Date  UT     R     err
+05-20 21:45  21.65 0.28
+05-21 21:20  21.41 0.06
+`,
+  };
+  const ptsDateUt = extractDeterministicPhotometry(circularDateUt, {
+    canonicalT0Iso: "2003-03-29T11:37:14.000Z",
+  });
+  assert.equal(ptsDateUt.length, 2);
+  assert.equal(ptsDateUt[0].band, "R");
+  assert.equal(ptsDateUt[0].mag, 21.65);
+  assert.equal(ptsDateUt[0].mag_err, 0.28);
+  assert.ok(ptsDateUt[0].dt_hours > 1000);
+});

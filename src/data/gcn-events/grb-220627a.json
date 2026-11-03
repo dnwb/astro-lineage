@@ -1,0 +1,56 @@
+{
+  "primary_id": "GRB 220627A",
+  "slug": "grb-220627a",
+  "aliases": [],
+  "event_type": "GRB",
+  "canonical_t0": {
+    "instrument": "Fermi/GBM",
+    "utc_iso": "2022-06-27T21:21:00.000Z",
+    "circular_id": 32278
+  },
+  "best_redshift": null,
+  "has_redshift_conflict": false,
+  "redshifts": [],
+  "photometry_points": [
+    {
+      "circular_id": 32302,
+      "dt_hours": 38.757,
+      "band": "u",
+      "mag": 22,
+      "mag_err": null,
+      "is_upper_limit": true,
+      "limit_sigma": 3,
+      "system": "Vega",
+      "telescope": "Swift/UVOT",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    }
+  ],
+  "xray_points": [],
+  "radio_points": [],
+  "multi_messenger": [],
+  "feature_zoom": {
+    "enabled": true,
+    "bands": [
+      "r",
+      "i"
+    ],
+    "t_min_hours": 8,
+    "t_max_hours": 42,
+    "alpha_ref": 1.4,
+    "title": "Late-time plateau & rebrightening zoom",
+    "callouts": [
+      {
+        "dt_hours": 38.757,
+        "mag": 22,
+        "band": "u",
+        "text": "$3\\sigma$ upper limits"
+      }
+    ]
+  },
+  "circular_count": 16,
+  "last_circular_id": 32454,
+  "last_updated_utc": "2022-08-10T16:47:21.000Z",
+  "status": "archived"
+}

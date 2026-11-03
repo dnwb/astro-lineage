@@ -131,10 +131,11 @@ function extractDeterministicTriggerT0(circular) {
     const parsed = new Date(rawIso);
     if (!Number.isNaN(parsed.getTime())) {
       let inst = "Trigger";
-      if (/Fermi/i.test(text)) inst = "Fermi/GBM";
-      else if (/SVOM/i.test(text)) inst = "SVOM/ECLAIRs";
-      else if (/Swift/i.test(text)) inst = "Swift/BAT";
-      else if (/EP|Einstein Probe/i.test(text)) inst = "EP/WXT";
+      if (/\bFermi\b/i.test(text)) inst = "Fermi/GBM";
+      else if (/\bSVOM\b/i.test(text)) inst = "SVOM/ECLAIRs";
+      else if (/\bSwift\b/i.test(text)) inst = "Swift/BAT";
+      else if (/\bHETE(?:-2)?\b/i.test(text)) inst = "HETE-2";
+      else if (/\bEP\b|Einstein\s*Probe|\bWXT\b/i.test(text)) inst = "EP/WXT";
       return {
         instrument: inst,
         utc_iso: parsed.toISOString(),
@@ -145,7 +146,7 @@ function extractDeterministicTriggerT0(circular) {
 
   // 2. "At [YYYY-MM-DD] HH:MM:SS UT [on DD Month YYYY]" or "At HH:MM:SS UT"
   const atMatch = text.match(
-    /(?:^|\W)At\s+(?:(\d{4}-\d{2}-\d{2})\s+)?(\d{1,2}:\d{2}:\d{2}(?:\.\d+)?)\s*UT(?:\s*on\s*(\d{1,2}\s+[A-Za-z]+\s+\d{4}|\d{4}-\d{2}-\d{2}))?/i
+    /(?:^|\W)At\s+(?:(\d{4}-\d{2}-\d{2})\s+)?(\d{1,2}:\d{2}:\d{2}(?:\.\d+)?)\s*UTC?(?:\s*\([^)]*\))?(?:\s*on\s*(\d{1,2}\s+[A-Za-z]+\s+\d{4}|\d{4}-\d{2}-\d{2}))?/i
   );
   if (atMatch) {
     const isoDate = atMatch[1];
@@ -163,8 +164,9 @@ function extractDeterministicTriggerT0(circular) {
           inst = "Fermi/GBM";
         else if (/Swift\s+(?:Burst\s+Alert\s+Telescope|BAT)|\bSwift\/BAT\b|\bBAT\b/i.test(text))
           inst = "Swift/BAT";
+        else if (/\bHETE(?:-2)?\b/i.test(text)) inst = "HETE-2";
         else if (/SVOM\s+(?:ECLAIRs)|\bSVOM\/ECLAIRs\b/i.test(text)) inst = "SVOM/ECLAIRs";
-        else if (/EP|Einstein\s*Probe|WXT/i.test(text)) inst = "EP/WXT";
+        else if (/\bEP\b|Einstein\s*Probe|\bWXT\b/i.test(text)) inst = "EP/WXT";
         else if (/Konus(?:-Wind)?/i.test(text)) inst = "Konus-Wind";
         else if (/GECAM/i.test(text)) inst = "GECAM";
 
@@ -268,7 +270,14 @@ export function extractDeterministicPhotometry(
         const dtDays = parseFloat(parts[2]);
         const band = parts[3];
         const valStr = parts[5];
-        if (!Number.isNaN(dtDays) && band && valStr) {
+        if (
+          !Number.isNaN(dtDays) &&
+          dtDays > 0 &&
+          dtDays < 365 &&
+          band &&
+          !/^\d/.test(band) &&
+          valStr
+        ) {
           const dt_hours = Math.round(dtDays * 24 * 1000) / 1000;
           if (valStr.includes(">")) {
             // Upper limit
@@ -556,9 +565,9 @@ export function extractDeterministicPhotometry(
     }
   }
 
-  // 2f. UVOT tabular format (GCN 31222, etc.):
+  // 2f. UVOT tabular format (GCN 31222, 33471, etc.):
   const uvotTabMatches = body.matchAll(
-    /\b(wh(?:_FC)?|uvw2|uvm2|uvw1|u|b|v)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+\.\d+)\s*(?:\+\/-|±)\s*(\d+\.\d+)/gi
+    /\b(wh(?:ite)?(?:_FC)?|uvw2|uvm2|uvw1|u|b|v)\s+(\d+)\s+(\d+)\s+(\d+)\s+(>)?\s*(\d+\.\d+)(?:\s*(?:\+\/-|±)\s*(\d+\.\d+))?/gi
   );
   for (const um of uvotTabMatches) {
     let b = um[1].toLowerCase();
@@ -567,23 +576,87 @@ export function extractDeterministicPhotometry(
     const tStop = parseFloat(um[3]);
     const tMidSec = (tStart + tStop) / 2;
     const dt_hours = Math.round((tMidSec / 3600) * 1000) / 1000;
-    const mVal = parseFloat(um[5]);
-    const eVal = parseFloat(um[6]);
+    const isUl = Boolean(um[5]);
+    const mVal = parseFloat(um[6]);
+    const eVal = um[7] ? parseFloat(um[7]) : null;
     if (!Number.isNaN(mVal) && dt_hours > 0) {
       points.push({
         circular_id: circular.circularId,
         dt_hours,
         band: b,
         mag: mVal,
-        mag_err: eVal,
-        is_upper_limit: false,
-        limit_sigma: null,
+        mag_err: isUl ? null : eVal,
+        is_upper_limit: isUl,
+        limit_sigma: isUl ? 3 : null,
         system: "Vega",
         telescope: "Swift/UVOT",
         discrepancy_note: null,
         time_approximate: false,
         version_conflict: isSuperseded,
       });
+    }
+  }
+
+  // 2f2. UVOT 4-column tabular format: Filter T_mid(s) Exp(s) Mag Err (GCN 5255, etc.)
+  const uvot4ColMatches = body.matchAll(
+    /^\s*(white|uvw2|uvm2|uvw1|u|b|v)\s+(\d+)\s+(\d+)\s*(>)?\s*(\d+\.\d+)(?:\s+(\d+\.\d+)|\s*(?:\+\/-|±)\s*(\d+\.\d+))?/gim
+  );
+  for (const um of uvot4ColMatches) {
+    let b = um[1].toLowerCase();
+    const tMidSec = parseFloat(um[2]);
+    const dt_hours = Math.round((tMidSec / 3600) * 1000) / 1000;
+    const isUl = Boolean(um[4]);
+    const mVal = parseFloat(um[5]);
+    const eVal = um[6] ? parseFloat(um[6]) : um[7] ? parseFloat(um[7]) : null;
+    if (!Number.isNaN(mVal) && dt_hours > 0) {
+      points.push({
+        circular_id: circular.circularId,
+        dt_hours,
+        band: b,
+        mag: mVal,
+        mag_err: isUl ? null : eVal,
+        is_upper_limit: isUl,
+        limit_sigma: isUl ? 3 : null,
+        system: "Vega",
+        telescope: "Swift/UVOT",
+        discrepancy_note: null,
+        time_approximate: false,
+        version_conflict: isSuperseded,
+      });
+    }
+  }
+
+  // 2f3. Date-UT table (e.g. GCN 2260 RTT150):
+  // Date UT R err
+  // 05-20 21:45 21.65 0.28
+  if (Number.isFinite(t0EpochMs) && canonicalT0Iso) {
+    const t0Year = new Date(canonicalT0Iso).getUTCFullYear();
+    const dateUtMatches = body.matchAll(
+      /^\s*(\d{2}-\d{2})\s+(\d{1,2}:\d{2})\s+(\d+\.\d+)\s+(\d+\.\d+)/gim
+    );
+    for (const dm of dateUtMatches) {
+      const monthDay = dm[1];
+      const timeStr = dm[2];
+      const mVal = parseFloat(dm[3]);
+      const eVal = parseFloat(dm[4]);
+      const obsTime = new Date(`${t0Year}-${monthDay}T${timeStr}:00.000Z`).getTime();
+      if (!Number.isNaN(obsTime) && obsTime > t0EpochMs) {
+        const dt_hours = Math.round(((obsTime - t0EpochMs) / 3600000) * 1000) / 1000;
+        points.push({
+          circular_id: circular.circularId,
+          dt_hours,
+          band: "R",
+          mag: mVal,
+          mag_err: Number.isNaN(eVal) ? null : eVal,
+          is_upper_limit: false,
+          limit_sigma: null,
+          system: "Vega",
+          telescope: telescope !== "Unknown" ? telescope : "Optical",
+          discrepancy_note: null,
+          time_approximate: false,
+          version_conflict: isSuperseded,
+        });
+      }
     }
   }
 

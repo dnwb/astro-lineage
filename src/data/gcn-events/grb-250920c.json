@@ -1,0 +1,116 @@
+{
+  "primary_id": "GRB 250920C",
+  "slug": "grb-250920c",
+  "aliases": [
+    "GOTO25HJU"
+  ],
+  "event_type": "GRB",
+  "canonical_t0": {
+    "instrument": "Fermi/GBM",
+    "utc_iso": "2025-09-17T16:39:05.000Z",
+    "circular_id": 41907
+  },
+  "best_redshift": {
+    "z": 1.399,
+    "z_err": null,
+    "type": "spectroscopic",
+    "instrument": "Optical Spectroscopy",
+    "circular_id": 42009,
+    "note": ""
+  },
+  "has_redshift_conflict": false,
+  "redshifts": [
+    {
+      "circular_id": 42009,
+      "z": 1.399,
+      "z_err": null,
+      "type": "spectroscopic",
+      "instrument": "Optical Spectroscopy",
+      "note": ""
+    },
+    {
+      "circular_id": 41929,
+      "z": 1.4,
+      "z_err": null,
+      "type": "spectroscopic",
+      "instrument": "Optical Spectroscopy",
+      "note": ""
+    },
+    {
+      "circular_id": 41928,
+      "z": 1.4,
+      "z_err": null,
+      "type": "spectroscopic",
+      "instrument": "NOT/ALFOSC",
+      "note": "Absorption features Lyman series, Si II, C IV"
+    }
+  ],
+  "photometry_points": [
+    {
+      "circular_id": 41920,
+      "dt_hours": 0.034,
+      "band": "v",
+      "mag": 10.1,
+      "mag_err": 14.56,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "Vega",
+      "telescope": "Swift/UVOT",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 41920,
+      "dt_hours": 0.036,
+      "band": "v",
+      "mag": 0.1,
+      "mag_err": null,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "Vega",
+      "telescope": "Swift/UVOT",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 41920,
+      "dt_hours": 0.049,
+      "band": "white",
+      "mag": 0.5,
+      "mag_err": null,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "Vega",
+      "telescope": "Swift/UVOT",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 41907,
+      "dt_hours": 0.13,
+      "band": "L",
+      "mag": 15.91,
+      "mag_err": 0.01,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "AB",
+      "telescope": "GOTO",
+      "discrepancy_note": null,
+      "time_approximate": true,
+      "version_conflict": false
+    }
+  ],
+  "xray_points": [],
+  "radio_points": [],
+  "multi_messenger": [],
+  "feature_zoom": {
+    "enabled": false
+  },
+  "circular_count": 25,
+  "last_circular_id": 42600,
+  "last_updated_utc": "2025-11-06T15:48:20.347Z",
+  "status": "archived"
+}

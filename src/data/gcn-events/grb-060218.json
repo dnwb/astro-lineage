@@ -1,0 +1,54 @@
+{
+  "primary_id": "GRB 060218",
+  "slug": "grb-060218",
+  "aliases": [
+    "GRB 980425",
+    "SN 2006aj",
+    "SN 1998bw",
+    "AT 1280mhz"
+  ],
+  "event_type": "GRB",
+  "canonical_t0": {
+    "instrument": "Swift/BAT",
+    "utc_iso": "2006-02-18T03:34:30.000Z",
+    "circular_id": 4775
+  },
+  "best_redshift": {
+    "z": 0.033,
+    "z_err": null,
+    "type": "spectroscopic",
+    "instrument": "Optical Spectroscopy",
+    "circular_id": 5376,
+    "note": ""
+  },
+  "has_redshift_conflict": false,
+  "redshifts": [
+    {
+      "circular_id": 5376,
+      "z": 0.033,
+      "z_err": null,
+      "type": "spectroscopic",
+      "instrument": "Optical Spectroscopy",
+      "note": ""
+    },
+    {
+      "circular_id": 4822,
+      "z": 0.033,
+      "z_err": null,
+      "type": "spectroscopic",
+      "instrument": "Optical Spectroscopy",
+      "note": ""
+    }
+  ],
+  "photometry_points": [],
+  "xray_points": [],
+  "radio_points": [],
+  "multi_messenger": [],
+  "feature_zoom": {
+    "enabled": false
+  },
+  "circular_count": 40,
+  "last_circular_id": 5376,
+  "last_updated_utc": "2006-08-01T03:39:43.000Z",
+  "status": "archived"
+}

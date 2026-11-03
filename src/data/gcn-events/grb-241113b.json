@@ -1,0 +1,56 @@
+{
+  "primary_id": "GRB 241113B",
+  "slug": "grb-241113b",
+  "aliases": [
+    "EP 241113b"
+  ],
+  "event_type": "GRB",
+  "canonical_t0": {
+    "instrument": "SVOM/ECLAIRs",
+    "utc_iso": "2024-11-15T11:24:48.000Z",
+    "circular_id": 38232
+  },
+  "best_redshift": null,
+  "has_redshift_conflict": false,
+  "redshifts": [],
+  "photometry_points": [
+    {
+      "circular_id": 38306,
+      "dt_hours": 3.87,
+      "band": "B",
+      "mag": 22.5,
+      "mag_err": 0.1,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "AB",
+      "telescope": "SVOM/VT",
+      "discrepancy_note": null,
+      "time_approximate": true,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 38306,
+      "dt_hours": 3.87,
+      "band": "R",
+      "mag": 21.95,
+      "mag_err": 0.06,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "AB",
+      "telescope": "SVOM/VT",
+      "discrepancy_note": null,
+      "time_approximate": true,
+      "version_conflict": false
+    }
+  ],
+  "xray_points": [],
+  "radio_points": [],
+  "multi_messenger": [],
+  "feature_zoom": {
+    "enabled": false
+  },
+  "circular_count": 11,
+  "last_circular_id": 38431,
+  "last_updated_utc": "2024-12-03T16:29:28.947Z",
+  "status": "archived"
+}

@@ -1,0 +1,190 @@
+{
+  "primary_id": "GRB 240825A",
+  "slug": "grb-240825a",
+  "aliases": [],
+  "event_type": "GRB",
+  "canonical_t0": {
+    "instrument": "Fermi/GBM",
+    "utc_iso": "2024-08-25T15:53:00.000Z",
+    "circular_id": 37301
+  },
+  "best_redshift": {
+    "z": 0.659,
+    "z_err": null,
+    "type": "spectroscopic",
+    "instrument": "Optical Spectroscopy",
+    "circular_id": 37367,
+    "note": ""
+  },
+  "has_redshift_conflict": false,
+  "redshifts": [
+    {
+      "circular_id": 37367,
+      "z": 0.659,
+      "z_err": null,
+      "type": "spectroscopic",
+      "instrument": "Optical Spectroscopy",
+      "note": ""
+    },
+    {
+      "circular_id": 37293,
+      "z": 0.659,
+      "z_err": null,
+      "type": "spectroscopic",
+      "instrument": "Optical Spectroscopy",
+      "note": ""
+    }
+  ],
+  "photometry_points": [
+    {
+      "circular_id": 37274,
+      "dt_hours": 0.026,
+      "band": "white",
+      "mag": 15.57,
+      "mag_err": 0.14,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "Vega",
+      "telescope": "Swift/UVOT",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 37296,
+      "dt_hours": 0.047,
+      "band": "white",
+      "mag": 15.58,
+      "mag_err": 0.02,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "Vega",
+      "telescope": "Swift/UVOT",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 37296,
+      "dt_hours": 0.119,
+      "band": "u",
+      "mag": 16.93,
+      "mag_err": 0.05,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "Vega",
+      "telescope": "Swift/UVOT",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 37296,
+      "dt_hours": 0.158,
+      "band": "b",
+      "mag": 17.54,
+      "mag_err": 0.15,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "Vega",
+      "telescope": "Swift/UVOT",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 37296,
+      "dt_hours": 0.227,
+      "band": "v",
+      "mag": 17.02,
+      "mag_err": 0.2,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "Vega",
+      "telescope": "Swift/UVOT",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 37280,
+      "dt_hours": 1.91,
+      "band": "R",
+      "mag": 18.97,
+      "mag_err": 0.04,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "AB",
+      "telescope": "Swift/UVOT",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 37295,
+      "dt_hours": 9.1,
+      "band": "r",
+      "mag": 20.5,
+      "mag_err": 0.3,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "AB",
+      "telescope": "REM",
+      "discrepancy_note": null,
+      "time_approximate": true,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 37295,
+      "dt_hours": 9.1,
+      "band": "J",
+      "mag": 17.7,
+      "mag_err": 0.3,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "AB",
+      "telescope": "REM",
+      "discrepancy_note": null,
+      "time_approximate": true,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 37303,
+      "dt_hours": 17.5,
+      "band": "J",
+      "mag": 18.9,
+      "mag_err": 0.2,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "AB",
+      "telescope": "REM",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 37303,
+      "dt_hours": 34,
+      "band": "H",
+      "mag": 18.5,
+      "mag_err": 0.2,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "AB",
+      "telescope": "REM",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    }
+  ],
+  "xray_points": [],
+  "radio_points": [],
+  "multi_messenger": [],
+  "feature_zoom": {
+    "enabled": false
+  },
+  "circular_count": 49,
+  "last_circular_id": 37638,
+  "last_updated_utc": "2024-09-30T14:36:08.982Z",
+  "status": "archived"
+}

@@ -1,0 +1,168 @@
+{
+  "primary_id": "GRB 251222A",
+  "slug": "grb-251222a",
+  "aliases": [
+    "EP 251222b",
+    "EP 251202b"
+  ],
+  "event_type": "GRB",
+  "canonical_t0": {
+    "instrument": "Fermi/GBM",
+    "utc_iso": "2025-12-22T17:05:51.000Z",
+    "circular_id": 43186
+  },
+  "best_redshift": {
+    "z": 3.171,
+    "z_err": null,
+    "type": "spectroscopic",
+    "instrument": "Optical Spectroscopy",
+    "circular_id": 43236,
+    "note": ""
+  },
+  "has_redshift_conflict": false,
+  "redshifts": [
+    {
+      "circular_id": 43236,
+      "z": 3.171,
+      "z_err": null,
+      "type": "spectroscopic",
+      "instrument": "Optical Spectroscopy",
+      "note": ""
+    },
+    {
+      "circular_id": 43212,
+      "z": 3.171,
+      "z_err": null,
+      "type": "spectroscopic",
+      "instrument": "Optical Spectroscopy",
+      "note": ""
+    },
+    {
+      "circular_id": 43204,
+      "z": 3.171,
+      "z_err": null,
+      "type": "spectroscopic",
+      "instrument": "NOT/ALFOSC",
+      "note": "Absorption features Lyman series, Si II, C IV"
+    }
+  ],
+  "photometry_points": [
+    {
+      "circular_id": 43236,
+      "dt_hours": 17.55,
+      "band": "i",
+      "mag": 19.48,
+      "mag_err": 0.07,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "AB",
+      "telescope": "Unknown",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 43250,
+      "dt_hours": 45,
+      "band": "g",
+      "mag": 18.28,
+      "mag_err": 0.05,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "AB",
+      "telescope": "Unknown",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 43250,
+      "dt_hours": 45,
+      "band": "i",
+      "mag": 17.6,
+      "mag_err": 0.03,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "AB",
+      "telescope": "Unknown",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 43250,
+      "dt_hours": 60,
+      "band": "r",
+      "mag": 19.18,
+      "mag_err": 0.08,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "AB",
+      "telescope": "Unknown",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 43250,
+      "dt_hours": 60,
+      "band": "z",
+      "mag": 19.02,
+      "mag_err": 0.23,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "AB",
+      "telescope": "Unknown",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 43207,
+      "dt_hours": 81.12,
+      "band": "R",
+      "mag": 18.39,
+      "mag_err": 0.01,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "AB",
+      "telescope": "DFOT",
+      "discrepancy_note": null,
+      "time_approximate": true,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 43224,
+      "dt_hours": 620.16,
+      "band": "I",
+      "mag": 19.55,
+      "mag_err": 0.02,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "AB",
+      "telescope": "DFOT",
+      "discrepancy_note": null,
+      "time_approximate": true,
+      "version_conflict": false
+    }
+  ],
+  "xray_points": [],
+  "radio_points": [],
+  "multi_messenger": [],
+  "feature_zoom": {
+    "enabled": true,
+    "bands": [
+      "r",
+      "i"
+    ],
+    "t_min_hours": 8,
+    "t_max_hours": 42,
+    "alpha_ref": 1.4,
+    "title": "Late-time plateau & rebrightening zoom",
+    "callouts": []
+  },
+  "circular_count": 33,
+  "last_circular_id": 43516,
+  "last_updated_utc": "2026-01-26T11:12:41.943Z",
+  "status": "archived"
+}

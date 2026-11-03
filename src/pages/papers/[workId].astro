@@ -29,7 +29,10 @@ import {
   formatWorkBibTeX,
   getBibliographicUrl,
   getBibliographicSourceName,
+  detectContestedClaims,
+  getHighEnergyConventions,
 } from "../../domain/academic-domain.mjs";
+import { renderInlineScientificMarkdownWithMath } from "../../domain/scientific-text/index.mjs";
 import SiteNav from "../../components/SiteNav.astro";
 import "../../styles/global.css";
 
@@ -167,6 +170,11 @@ const scixUrl = preferredVersion.arxiv_id
 const scixName = getBibliographicSourceName();
 const arxivPdfUrl = preferredVersion.arxiv_id ? `https://arxiv.org/pdf/${preferredVersion.arxiv_id}.pdf` : null;
 const arxivHtmlUrl = preferredVersion.arxiv_id ? `https://arxiv.org/html/${preferredVersion.arxiv_id}` : null;
+
+const disputeInfo = detectContestedClaims(workId, scientificEdges);
+const conventionsRaw = getHighEnergyConventions();
+const conventionsHtml = renderInlineScientificMarkdownWithMath(conventionsRaw);
+const hasPhysicalAccount = (physicalAccount.stages?.length ?? 0) > 0;
 ---
 
 <!doctype html>
@@ -201,6 +209,24 @@ const arxivHtmlUrl = preferredVersion.arxiv_id ? `https://arxiv.org/html/${prefe
         </ul>
       </header>
 
+      {disputeInfo.isContested && (
+        <div class="paper-dispute-banner" role="alert">
+          <span class="dispute-icon">⚠</span>
+          <div class="dispute-content">
+            <strong>Academic Dispute / Contested Claim:</strong>
+            <span>
+              Core conclusions or assumptions of this work are contested by {disputeInfo.contestedCount} connected paper{disputeInfo.contestedCount > 1 ? "s" : ""}.
+              <a href="#connections-heading">Inspect conflicting evidence ↓</a>
+            </span>
+          </div>
+        </div>
+      )}
+
+      <div class="paper-conventions-line" aria-label="Physical Notation and Reporting Conventions">
+        <span class="conventions-badge">Conventions</span>
+        <span class="conventions-text" set:html={conventionsHtml} />
+      </div>
+
       <section class="panel reading-section" aria-labelledby="why-heading">
         <h2 id="why-heading">Why This Work Matters</h2>
         <ReadingProse blocks={readingSections.why} localizationKey={workId} localizationSection="why" />
@@ -221,6 +247,33 @@ const arxivHtmlUrl = preferredVersion.arxiv_id ? `https://arxiv.org/html/${prefe
         <h2 id="delta-heading">Scientific Delta</h2>
         <ReadingProse blocks={readingSections.delta} localizationKey={workId} localizationSection="delta" />
       </section>
+
+      {!hasPhysicalAccount && (
+        <section class="panel observational-setup-card" aria-labelledby="observational-setup-heading">
+          <h2 id="observational-setup-heading">Observational & Empirical Profile</h2>
+          <p class="section-intro">This work contributes empirical observations, catalogs, or methodological analysis rather than an isolated microphysical stage model.</p>
+          {(work.method_annotations ?? []).length > 0 && (
+            <div class="methods-summary">
+              <h3>Applied Methods</h3>
+              <ul class="inline-list">
+                {(work.method_annotations ?? []).map((method: AnyRecord) => (
+                  <li><span class="tag">{method.technique_id}</span> ({method.basis})</li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {statements.length > 0 && (
+            <div class="statements-summary">
+              <h3>Key Empirical Statements</h3>
+              <ul class="compact-list">
+                {statements.map((statement: AnyRecord) => (
+                  <li><strong>{statement.kind}</strong>: {statement.canonical_text}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </section>
+      )}
 
       <section class="panel" aria-labelledby="connections-heading">
         <h2 id="connections-heading">Scientific Connections</h2>

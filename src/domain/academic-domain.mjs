@@ -1163,4 +1163,42 @@ export function formatWorkBibTeX(work, version) {
   return lines.join("\n");
 }
 
+/**
+ * Detect whether a work's scientific claims or assumptions are contested by downstream or connected works.
+ *
+ * @param {string} workId - Canonical work ID
+ * @param {Array<Object>} scientificEdges - Scientific edges connected to the work
+ * @returns {{ isContested: boolean, contestedCount: number, contestedEdges: Array<Object> }}
+ */
+export function detectContestedClaims(workId, scientificEdges = []) {
+  if (!Array.isArray(scientificEdges) || scientificEdges.length === 0) {
+    return { isContested: false, contestedCount: 0, contestedEdges: [] };
+  }
+
+  const contestedEdges = scientificEdges.filter((edge) => {
+    if (!edge) return false;
+    if (edge.disposition === "contested") return true;
+    if (edge.relation === "challenges" || edge.relation === "corrects" || edge.relation === "replaces_assumption") {
+      return true;
+    }
+    return false;
+  });
+
+  return {
+    isContested: contestedEdges.length > 0,
+    contestedCount: contestedEdges.length,
+    contestedEdges,
+  };
+}
+
+/**
+ * Return default reporting and physical notation conventions for high-energy astrophysics.
+ *
+ * @returns {string} LaTeX-formatted conventions string
+ */
+export function getHighEnergyConventions() {
+  return "Flux decay: $F_\\nu \\propto t^{-\\alpha}\\nu^{-\\beta}$ · $\\Gamma$ denotes bulk Lorentz factor · Errors reported at 90% CL ($\\Delta\\chi^2 = 2.71$) unless specified · Flat $\\Lambda\\mathrm{CDM}$ ($H_0 = 67.4\\ \\mathrm{km\\ s^{-1}\\ Mpc^{-1}}, \\Omega_m = 0.315$)";
+}
+
+
 

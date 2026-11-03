@@ -1024,3 +1024,457 @@ export function groupPicksByTheme(picks, weeklyData = {}) {
 
   return groups;
 }
+
+/**
+ * Format system operation, crawl, or build timestamp into Beijing Time (Asia/Shanghai, UTC+8).
+ *
+ * @param {string|Date|number|null|undefined} input - Timestamp input
+ * @param {Object} [options]
+ * @param {boolean} [options.dateOnly=false] - When true, outputs YYYY-MM-DD only
+ * @param {boolean} [options.includeSeconds=false] - When true, outputs YYYY-MM-DD HH:mm:ss (UTC+8)
+ * @returns {string} Formatted Beijing Time string
+ */
+export function formatSystemTime(input, options = {}) {
+  if (!input) return "";
+  let date;
+  if (input instanceof Date) {
+    date = input;
+  } else if (typeof input === "number") {
+    date = new Date(input);
+  } else if (typeof input === "string") {
+    const trimmed = input.trim();
+    if (!trimmed) return "";
+    date = new Date(trimmed);
+    if (isNaN(date.getTime())) {
+      return trimmed;
+    }
+  } else {
+    return String(input);
+  }
+
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Shanghai",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hourCycle: "h23",
+  }).formatToParts(date);
+
+  const p = Object.fromEntries(parts.map((x) => [x.type, x.value]));
+  if (options.dateOnly) {
+    return `${p.year}-${p.month}-${p.day}`;
+  }
+  if (options.includeSeconds) {
+    return `${p.year}-${p.month}-${p.day} ${p.hour}:${p.minute}:${p.second} (UTC+8)`;
+  }
+  return `${p.year}-${p.month}-${p.day} ${p.hour}:${p.minute} (UTC+8)`;
+}
+
+/**
+ * Format astronomical scientific epochs (T0, merger time, MJD, relative timing)
+ * preserving native UTC, MJD, and rest-frame scales WITHOUT time-zone shifting to UTC+8.
+ *
+ * @param {string|number|Object|null|undefined} input - Scientific epoch description
+ * @returns {string} Unshifted scientific epoch representation
+ */
+export function formatScientificEpoch(input) {
+  if (!input) return "";
+  if (typeof input === "number") {
+    if (input > 30000 && input < 90000) {
+      return `MJD ${input}`;
+    }
+    return `${input}`;
+  }
+  if (typeof input === "string") {
+    const trimmed = input.trim();
+    if (!trimmed) return "";
+    if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?Z$/i.test(trimmed)) {
+      return trimmed.replace("T", " ").replace("Z", " UTC");
+    }
+    return trimmed;
+  }
+  if (typeof input === "object") {
+    const parts = [];
+    if (input.label) {
+      parts.push(input.label);
+    }
+    if (input.utc) {
+      const utcStr =
+        typeof input.utc === "string"
+          ? input.utc.endsWith("Z")
+            ? input.utc.replace("T", " ").replace("Z", " UTC")
+            : `${input.utc} UTC`
+          : String(input.utc);
+      parts.push(utcStr);
+    }
+    if (input.mjd !== undefined && input.mjd !== null) {
+      parts.push(`MJD ${input.mjd}`);
+    }
+    if (input.relativeSeconds !== undefined && input.relativeSeconds !== null) {
+      const sign = input.relativeSeconds >= 0 ? "+" : "";
+      const ref = input.reference ? ` post-${input.reference}` : " s";
+      parts.push(`${sign}${input.relativeSeconds} s${ref.startsWith(" post-") ? ref : ""}`);
+    }
+    if (parts.length > 0) {
+      return parts.join(" · ");
+    }
+  }
+  return String(input);
+}
+
+/**
+ * Format a canonical BibTeX entry for a given work and preferred version.
+ *
+ * @param {Object} work - Canonical work record
+ * @param {Object} version - Preferred version record
+ * @returns {string} Standard BibTeX string
+ */
+export function formatWorkBibTeX(work, version) {
+  if (!version) return "";
+  const firstAuthorRaw =
+    version.authors?.[0]?.family_name || version.authors?.[0]?.display_name || "work";
+  const authorMatch = firstAuthorRaw.match(/([a-zA-Z]+)(?:,\s*[A-Z]|\s*$)/u);
+  const firstAuthorToken = (authorMatch ? authorMatch[1] : firstAuthorRaw)
+    .toLowerCase()
+    .replace(/[^a-z0-9]/gi, "");
+  const year = version.release_date?.value?.slice(0, 4) || "nodate";
+  const citeKey = `${firstAuthorToken || "work"}${year}`;
+
+  const authorsStr = (version.authors || [])
+    .map((a) => a.display_name || "")
+    .filter(Boolean)
+    .join(" and ");
+
+  const lines = [
+    `@article{${citeKey},`,
+    `  title = {${version.title || ""}},`,
+    `  author = {${authorsStr}},`,
+    `  year = {${year}},`,
+  ];
+
+  if (version.journal?.name) {
+    lines.push(`  journal = {${version.journal.name}},`);
+    if (version.journal.volume) lines.push(`  volume = {${version.journal.volume}},`);
+    if (version.journal.first_page) lines.push(`  pages = {${version.journal.first_page}},`);
+  } else if (version.arxiv_id) {
+    lines.push(`  journal = {arXiv preprint arXiv:${version.arxiv_id}},`);
+    lines.push(`  eprint = {${version.arxiv_id}},`);
+    lines.push(`  archivePrefix = {arXiv},`);
+  }
+
+  if (version.doi) {
+    lines.push(`  doi = {${version.doi}},`);
+  }
+
+  lines.push("}");
+  return lines.join("\n");
+}
+
+/**
+ * Detect whether a work's scientific claims or assumptions are contested by downstream or connected works.
+ *
+ * @param {string} workId - Canonical work ID
+ * @param {Array<Object>} scientificEdges - Scientific edges connected to the work
+ * @returns {{ isContested: boolean, contestedCount: number, contestedEdges: Array<Object> }}
+ */
+export function detectContestedClaims(workId, scientificEdges = []) {
+  if (!Array.isArray(scientificEdges) || scientificEdges.length === 0) {
+    return { isContested: false, contestedCount: 0, contestedEdges: [] };
+  }
+
+  const contestedEdges = scientificEdges.filter((edge) => {
+    if (!edge) return false;
+    if (edge.disposition === "contested") return true;
+    if (
+      edge.relation === "challenges" ||
+      edge.relation === "corrects" ||
+      edge.relation === "replaces_assumption"
+    ) {
+      return true;
+    }
+    return false;
+  });
+
+  return {
+    isContested: contestedEdges.length > 0,
+    contestedCount: contestedEdges.length,
+    contestedEdges,
+  };
+}
+
+/**
+ * Return default reporting and physical notation conventions for high-energy astrophysics.
+ *
+ * @returns {string} LaTeX-formatted conventions string
+ */
+export function getHighEnergyConventions() {
+  return "Flux decay: $F_\\nu \\propto t^{-\\alpha}\\nu^{-\\beta}$ · $\\Gamma$ denotes bulk Lorentz factor · Errors reported at 90% CL ($\\Delta\\chi^2 = 2.71$) unless specified · Flat $\\Lambda\\mathrm{CDM}$ ($H_0 = 67.4\\ \\mathrm{km\\ s^{-1}\\ Mpc^{-1}}, \\Omega_m = 0.315$)";
+}
+
+/**
+ * Pure projection deriving a topological DAG representation with branching parallel stages
+ * and epistemic roles from a canonical physical_account object.
+ *
+ * @param {Object} physicalAccount - Account containing stages and links
+ * @returns {{ levels: Array<Object>, links: Array<Object>, totalStages: number, hasBranches: boolean }}
+ */
+export function projectMechanismDAG(physicalAccount) {
+  if (
+    !physicalAccount ||
+    !Array.isArray(physicalAccount.stages) ||
+    physicalAccount.stages.length === 0
+  ) {
+    return { levels: [], links: [], totalStages: 0, hasBranches: false };
+  }
+
+  const rawStages = physicalAccount.stages;
+  const rawLinks = Array.isArray(physicalAccount.links) ? physicalAccount.links : [];
+
+  // Build node map
+  const nodeMap = new Map();
+  for (const stage of rawStages) {
+    if (!stage || !stage.id) continue;
+    nodeMap.set(stage.id, {
+      ...stage,
+      incomingLinks: [],
+      outgoingLinks: [],
+    });
+  }
+
+  // Populate links
+  const validLinks = [];
+  for (const link of rawLinks) {
+    if (!link || !link.source_stage_id || !link.target_stage_id) continue;
+    const sourceNode = nodeMap.get(link.source_stage_id);
+    const targetNode = nodeMap.get(link.target_stage_id);
+    if (sourceNode && targetNode) {
+      sourceNode.outgoingLinks.push(link);
+      targetNode.incomingLinks.push(link);
+      validLinks.push(link);
+    }
+  }
+
+  // Compute in-degrees and assign default epistemic roles
+  const inDegreeMap = new Map();
+  for (const [id, node] of nodeMap.entries()) {
+    const inDegree = node.incomingLinks.length;
+    inDegreeMap.set(id, inDegree);
+
+    if (!node.role) {
+      const labelLower = (node.label || "").toLowerCase();
+      const isAdoptedKeyword = [
+        "reservoir",
+        "ambient",
+        "density",
+        "progenitor",
+        "initial",
+        "baseline",
+      ].some((kw) => labelLower.includes(kw));
+      node.role = inDegree === 0 || isAdoptedKeyword ? "adopted" : "proposed";
+    }
+  }
+
+  // Topological leveling via queue
+  const levelAssignment = new Map();
+  const queue = [];
+  for (const [id, deg] of inDegreeMap.entries()) {
+    if (deg === 0) {
+      levelAssignment.set(id, 0);
+      queue.push(id);
+    }
+  }
+
+  // Fallback if all nodes are cyclic
+  if (queue.length === 0) {
+    for (const id of nodeMap.keys()) {
+      levelAssignment.set(id, 0);
+      queue.push(id);
+    }
+  }
+
+  const currentDegrees = new Map(inDegreeMap);
+  while (queue.length > 0) {
+    const currId = queue.shift();
+    const currLevel = levelAssignment.get(currId) || 0;
+    const currNode = nodeMap.get(currId);
+
+    for (const link of currNode.outgoingLinks) {
+      const targetId = link.target_stage_id;
+      const prevLevel = levelAssignment.get(targetId) || 0;
+      levelAssignment.set(targetId, Math.max(prevLevel, currLevel + 1));
+
+      const remainingDeg = (currentDegrees.get(targetId) || 1) - 1;
+      currentDegrees.set(targetId, remainingDeg);
+      if (remainingDeg === 0) {
+        queue.push(targetId);
+      }
+    }
+  }
+
+  // Handle any disconnected or cyclic nodes not assigned
+  let maxAssignedLevel = 0;
+  for (const lvl of levelAssignment.values()) {
+    if (lvl > maxAssignedLevel) maxAssignedLevel = lvl;
+  }
+  for (const id of nodeMap.keys()) {
+    if (!levelAssignment.has(id)) {
+      levelAssignment.set(id, maxAssignedLevel + 1);
+    }
+  }
+
+  // Group into levels
+  const levelBuckets = new Map();
+  for (const [id, node] of nodeMap.entries()) {
+    const lvl = levelAssignment.get(id) || 0;
+    if (!levelBuckets.has(lvl)) {
+      levelBuckets.set(lvl, []);
+    }
+    levelBuckets.get(lvl).push(node);
+  }
+
+  const sortedLevels = Array.from(levelBuckets.keys()).sort((a, b) => a - b);
+  const levels = sortedLevels.map((lvlIndex) => {
+    const stagesInLevel = levelBuckets.get(lvlIndex) || [];
+    let title = `Stage Level ${lvlIndex + 1}`;
+    if (lvlIndex === 0) {
+      title = "Initial Physical Setup";
+    } else if (lvlIndex === sortedLevels.length - 1) {
+      title = "Terminal Radiation & Dissipation";
+    } else {
+      title = stagesInLevel.length > 1 ? "Parallel Dynamic Branches" : "Propagation & Interaction";
+    }
+
+    return {
+      level: lvlIndex,
+      title,
+      stages: stagesInLevel,
+    };
+  });
+
+  const hasBranches = levels.some((lvl) => lvl.stages.length > 1);
+
+  return {
+    levels,
+    links: validLinks,
+    totalStages: nodeMap.size,
+    hasBranches,
+  };
+}
+
+/**
+ * Format a version-pinned locator string (e.g. "arXiv:2305.12345v2 §3.2, Eq. 14").
+ *
+ * @param {Object} [locator]
+ * @param {string} [locator.type]
+ * @param {string|number} [locator.section]
+ * @param {string|number} [locator.equation]
+ * @param {string|number} [locator.table]
+ * @param {string|number} [locator.figure]
+ * @param {string|number} [locator.paragraph]
+ * @param {string|number} [locator.page]
+ * @param {Object} [version]
+ * @param {string} [version.arxiv_id]
+ * @param {string|number} [version.arxiv_revision]
+ * @returns {string}
+ */
+export function formatVersionPinnedLocator(locator, version = null) {
+  if (!locator || typeof locator !== "object") {
+    return "Locator unavailable";
+  }
+
+  const parts = [];
+
+  if (locator.section !== undefined && locator.section !== null) {
+    parts.push(`§${locator.section}`);
+  }
+  if (locator.equation !== undefined && locator.equation !== null) {
+    parts.push(`Eq. ${locator.equation}`);
+  }
+  if (locator.table !== undefined && locator.table !== null) {
+    parts.push(`Table ${locator.table}`);
+  }
+  if (locator.figure !== undefined && locator.figure !== null) {
+    parts.push(`Fig. ${locator.figure}`);
+  }
+  if (locator.page !== undefined && locator.page !== null) {
+    parts.push(`p. ${locator.page}`);
+  }
+  if (locator.paragraph !== undefined && locator.paragraph !== null) {
+    parts.push(`para. ${locator.paragraph}`);
+  }
+
+  const locatorStr =
+    parts.length > 0 ? parts.join(", ") : locator.type ? String(locator.type) : "Document";
+
+  if (version && typeof version === "object") {
+    if (version.arxiv_id) {
+      const rev = version.arxiv_revision ? `v${version.arxiv_revision}` : "";
+      return `arXiv:${version.arxiv_id}${rev} ${locatorStr}`.trim();
+    }
+  }
+
+  return locatorStr;
+}
+
+/**
+ * Partition scientific connections into upstream foundations and downstream tests with polarity.
+ *
+ * @param {string} workId
+ * @param {Array<Object>} [edges]
+ * @returns {{ upstream: Array<Object>, downstream: Array<Object> }}
+ */
+export function partitionScientificEdges(workId, edges = []) {
+  if (!Array.isArray(edges)) {
+    return { upstream: [], downstream: [] };
+  }
+
+  const upstream = [];
+  const downstream = [];
+
+  for (const edge of edges) {
+    if (!edge || typeof edge !== "object") continue;
+    const isOutbound = edge.source_work_id === workId;
+    const isInbound = edge.target_work_id === workId;
+    if (!isOutbound && !isInbound) continue;
+
+    let polarity = "neutral";
+    const relation = edge.relation || "";
+    const disposition = edge.disposition || "";
+
+    if (
+      relation === "challenges" ||
+      relation === "corrects" ||
+      relation === "replaces_assumption" ||
+      disposition === "contested" ||
+      disposition === "refuting"
+    ) {
+      polarity = "contradicts";
+    } else if (
+      relation === "builds_on" ||
+      relation === "extends" ||
+      disposition === "supporting" ||
+      disposition === "confirmed"
+    ) {
+      polarity = "supports";
+    }
+
+    if (isOutbound) {
+      upstream.push({
+        ...edge,
+        direction: "outbound",
+        polarity,
+      });
+    } else {
+      downstream.push({
+        ...edge,
+        direction: "inbound",
+        polarity,
+      });
+    }
+  }
+
+  return { upstream, downstream };
+}

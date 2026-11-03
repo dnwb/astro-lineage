@@ -1020,3 +1020,101 @@ export function groupPicksByTheme(picks, weeklyData = {}) {
 
   return groups;
 }
+
+/**
+ * Format system operation, crawl, or build timestamp into Beijing Time (Asia/Shanghai, UTC+8).
+ *
+ * @param {string|Date|number|null|undefined} input - Timestamp input
+ * @param {Object} [options]
+ * @param {boolean} [options.dateOnly=false] - When true, outputs YYYY-MM-DD only
+ * @param {boolean} [options.includeSeconds=false] - When true, outputs YYYY-MM-DD HH:mm:ss (UTC+8)
+ * @returns {string} Formatted Beijing Time string
+ */
+export function formatSystemTime(input, options = {}) {
+  if (!input) return "";
+  let date;
+  if (input instanceof Date) {
+    date = input;
+  } else if (typeof input === "number") {
+    date = new Date(input);
+  } else if (typeof input === "string") {
+    const trimmed = input.trim();
+    if (!trimmed) return "";
+    date = new Date(trimmed);
+    if (isNaN(date.getTime())) {
+      return trimmed;
+    }
+  } else {
+    return String(input);
+  }
+
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Shanghai",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hourCycle: "h23",
+  }).formatToParts(date);
+
+  const p = Object.fromEntries(parts.map((x) => [x.type, x.value]));
+  if (options.dateOnly) {
+    return `${p.year}-${p.month}-${p.day}`;
+  }
+  if (options.includeSeconds) {
+    return `${p.year}-${p.month}-${p.day} ${p.hour}:${p.minute}:${p.second} (UTC+8)`;
+  }
+  return `${p.year}-${p.month}-${p.day} ${p.hour}:${p.minute} (UTC+8)`;
+}
+
+/**
+ * Format astronomical scientific epochs (T0, merger time, MJD, relative timing)
+ * preserving native UTC, MJD, and rest-frame scales WITHOUT time-zone shifting to UTC+8.
+ *
+ * @param {string|number|Object|null|undefined} input - Scientific epoch description
+ * @returns {string} Unshifted scientific epoch representation
+ */
+export function formatScientificEpoch(input) {
+  if (!input) return "";
+  if (typeof input === "number") {
+    if (input > 30000 && input < 90000) {
+      return `MJD ${input}`;
+    }
+    return `${input}`;
+  }
+  if (typeof input === "string") {
+    const trimmed = input.trim();
+    if (!trimmed) return "";
+    if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?Z$/i.test(trimmed)) {
+      return trimmed.replace("T", " ").replace("Z", " UTC");
+    }
+    return trimmed;
+  }
+  if (typeof input === "object") {
+    const parts = [];
+    if (input.label) {
+      parts.push(input.label);
+    }
+    if (input.utc) {
+      const utcStr = typeof input.utc === "string"
+        ? (input.utc.endsWith("Z") ? input.utc.replace("T", " ").replace("Z", " UTC") : `${input.utc} UTC`)
+        : String(input.utc);
+      parts.push(utcStr);
+    }
+    if (input.mjd !== undefined && input.mjd !== null) {
+      parts.push(`MJD ${input.mjd}`);
+    }
+    if (input.relativeSeconds !== undefined && input.relativeSeconds !== null) {
+      const sign = input.relativeSeconds >= 0 ? "+" : "";
+      const ref = input.reference ? ` post-${input.reference}` : " s";
+      parts.push(`${sign}${input.relativeSeconds} s${ref.startsWith(" post-") ? ref : ""}`);
+    }
+    if (parts.length > 0) {
+      return parts.join(" · ");
+    }
+  }
+  return String(input);
+}
+

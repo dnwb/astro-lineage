@@ -23,6 +23,7 @@ import {
   localizedWorkTitle,
 } from "../../lib/reader-localization";
 import { loadSiteConfig } from "../../lib/site-config";
+import { formatSystemTime, formatScientificEpoch } from "../../domain/academic-domain.mjs";
 import SiteNav from "../../components/SiteNav.astro";
 import "../../styles/global.css";
 
@@ -114,7 +115,7 @@ function describeLocator(locator: AnyRecord | undefined) {
 function reviewContext(value: AnyRecord) {
   const context = value.review_context;
   if (!context?.status) return "Review context unavailable";
-  return `${localizedReviewStatus(context.status)}${context.reviewer_actor_id ? ` (reviewed by ${context.reviewer_actor_id}${context.reviewed_at ? ` at ${context.reviewed_at}` : ""})` : ""}`;
+  return `${localizedReviewStatus(context.status)}${context.reviewer_actor_id ? ` (reviewed by ${context.reviewer_actor_id}${context.reviewed_at ? ` at ${formatSystemTime(context.reviewed_at)}` : ""})` : ""}`;
 }
 
 function relationLabel(edge: AnyRecord) {
@@ -287,7 +288,7 @@ function connectedPaper(edge: AnyRecord) {
           <ul class="compact-list">
             {publicationRelations.map((relation) => {
               const sources = (relation.bibliographic_source_ids ?? []).map((sourceId: string) => bibliographicSourcesById.get(sourceId)).filter(Boolean) as AnyRecord[];
-              return <li>{relation.source_version_id} <strong>{relation.relation}</strong> {relation.target_version_id}{relation.basis ? ` (${relation.basis})` : ""}: {relation.reason}{sources.length === 0 ? " Bibliographic Provenance: unavailable" : <span> Bibliographic Provenance: {sources.map((source) => <span> {source.id} ({source.provider}, {source.record_id}, retrieved {source.retrieved_at}){source.source_url ? <> — <a href={source.source_url}>source</a></> : null}</span>)}</span>}</li>;
+              return <li>{relation.source_version_id} <strong>{relation.relation}</strong> {relation.target_version_id}{relation.basis ? ` (${relation.basis})` : ""}: {relation.reason}{sources.length === 0 ? " Bibliographic Provenance: unavailable" : <span> Bibliographic Provenance: {sources.map((source) => <span> {source.id} ({source.provider}, {source.record_id}, retrieved {formatSystemTime(source.retrieved_at)}){source.source_url ? <> — <a href={source.source_url}>source</a></> : null}</span>)}</span>}</li>;
             })}
           </ul>
         )}

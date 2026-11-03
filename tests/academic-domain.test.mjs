@@ -14,6 +14,8 @@ import {
   formatWeekIdZh,
   formatWeekIdEn,
   groupPicksByTheme,
+  formatSystemTime,
+  formatScientificEpoch,
 } from "../src/domain/academic-domain.mjs";
 
 test("academic-domain: extractTransientIdentifiers parses standard transient names", () => {
@@ -400,3 +402,50 @@ test("academic-domain: groupPicksByTheme groups picks by thematic_highlights (th
   assert.equal(fallbackGroups[0].theme, "General Highlights");
   assert.equal(fallbackGroups[0].picks.length, 3);
 });
+
+test("academic-domain: formatSystemTime formats system timestamps to Beijing Time (UTC+8)", () => {
+  // Exact UTC timestamp: 2026-11-02 12:00:00 UTC -> 2026-11-02 20:00:00 UTC+8
+  const formatted = formatSystemTime("2026-11-02T12:00:00Z");
+  assert.match(formatted, /2026-11-02 20:00/u);
+  assert.match(formatted, /UTC\+8/u);
+
+  // Date only option
+  const dateOnly = formatSystemTime("2026-11-02T18:00:00Z", { dateOnly: true });
+  assert.equal(dateOnly, "2026-11-03"); // crossed midnight in UTC+8
+
+  // Edge cases & invalid inputs
+  assert.equal(formatSystemTime(null), "");
+  assert.equal(formatSystemTime(""), "");
+  assert.equal(formatSystemTime("invalid-date"), "invalid-date");
+});
+
+test("academic-domain: formatScientificEpoch strictly preserves native scientific temporal frames without time-zone shifting", () => {
+  // ISO UTC string should stay UTC, not shifted to UTC+8
+  const utcEpoch = formatScientificEpoch("2026-09-10T12:00:00Z");
+  assert.match(utcEpoch, /2026-09-10 12:00:00/u);
+  assert.match(utcEpoch, /UTC/u);
+  assert.doesNotMatch(utcEpoch, /20:00/u); // must NOT shift to 20:00 UTC+8!
+
+  // MJD input
+  const mjdEpoch = formatScientificEpoch({ mjd: 59832.54167 });
+  assert.equal(mjdEpoch, "MJD 59832.54167");
+
+  // Relative time from trigger T0
+  const relativeEpoch = formatScientificEpoch({ relativeSeconds: 124.5, reference: "T0" });
+  assert.equal(relativeEpoch, "+124.5 s post-T0");
+
+  // Labeled custom epoch object
+  const labeledEpoch = formatScientificEpoch({
+    utc: "2026-10-09T13:16:59.99Z",
+    mjd: 60226.55347,
+    label: "GRB 261009A Trigger T0",
+  });
+  assert.match(labeledEpoch, /GRB 261009A Trigger T0/u);
+  assert.match(labeledEpoch, /13:16:59\.99 UTC/u);
+  assert.match(labeledEpoch, /MJD 60226\.55347/u);
+
+  // Graceful fallback for empty/null
+  assert.equal(formatScientificEpoch(null), "");
+  assert.equal(formatScientificEpoch(""), "");
+});
+

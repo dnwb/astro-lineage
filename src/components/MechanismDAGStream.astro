@@ -1,0 +1,100 @@
+---
+import { renderInlineScientificMarkdownWithMath } from "../domain/scientific-text/index.mjs";
+
+interface StageLink {
+  source_stage_id: string;
+  target_stage_id: string;
+  relation: string;
+  reason?: string;
+}
+
+interface MechanismStage {
+  id: string;
+  label: string;
+  role?: "adopted" | "proposed";
+  incomingLinks?: StageLink[];
+  outgoingLinks?: StageLink[];
+}
+
+interface MechanismLevel {
+  level: number;
+  title: string;
+  stages: MechanismStage[];
+}
+
+interface MechanismDAG {
+  levels: MechanismLevel[];
+  links: StageLink[];
+  totalStages: number;
+  hasBranches: boolean;
+}
+
+interface Props {
+  dag: any;
+}
+
+const { dag } = Astro.props;
+---
+
+<section class="panel mechanism-container breakout" aria-labelledby="mechanism-stream-heading">
+  <div class="mechanism-header">
+    <div class="mechanism-title-row">
+      <h2 id="mechanism-stream-heading">Physical Mechanism & Stage Evolution</h2>
+      <div class="mechanism-legend">
+        <span class="legend-item role-adopted"><span class="legend-swatch"></span> Adopted Baseline</span>
+        <span class="legend-item role-proposed"><span class="legend-swatch"></span> Proposed Hypothesis</span>
+      </div>
+    </div>
+    <p class="section-intro">
+      Topological progression of theoretical stages, highlighting parallel shock branches and epistemic commitments.
+    </p>
+  </div>
+
+  <ol class="mechanism-levels-list">
+    {(dag.levels ?? []).map((level: any) => (
+      <li class="mechanism-level-item">
+        <div class="mechanism-level-indicator">
+          <span class="mechanism-level-badge">Stage {level.level + 1}</span>
+          <span class="mechanism-level-label">{level.title}</span>
+        </div>
+
+        <div class="mechanism-branch-row">
+          {(level.stages ?? []).map((stage: any) => {
+            const roleClass = stage.role === "adopted" ? "role-adopted" : "role-proposed";
+            const roleLabel = stage.role === "adopted" ? "Adopted Baseline" : "Proposed Mechanism";
+
+            return (
+              <article class={`mechanism-stage-card ${roleClass}`} id={stage.id}>
+                <div class="stage-card-header">
+                  <span class={`stage-role-tag ${roleClass}`}>{roleLabel}</span>
+                  <code class="stage-id-chip">{stage.id}</code>
+                </div>
+
+                <h3 class="stage-card-title">{stage.label}</h3>
+
+                {stage.outgoingLinks && stage.outgoingLinks.length > 0 && (
+                  <div class="stage-causality-group">
+                    <span class="causality-heading">Drives:</span>
+                    <ul class="causal-links-list">
+                      {(stage.outgoingLinks ?? []).map((link: any) => (
+                        <li class="causal-link-item">
+                          <span class="causal-action">
+                            <span class="relation-token">{link.relation}</span>
+                            <span class="target-token">→ {link.target_stage_id}</span>
+                          </span>
+                          {link.reason && (
+                            <p class="causal-reason" set:html={renderInlineScientificMarkdownWithMath(link.reason)} />
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </article>
+            );
+          })}
+        </div>
+      </li>
+    ))}
+  </ol>
+</section>

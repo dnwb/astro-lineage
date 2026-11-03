@@ -31,7 +31,13 @@ function buildReader() {
 function assertInOrder(source, markers, label) {
   let cursor = -1;
   for (const marker of markers) {
-    const next = source.indexOf(marker, cursor + 1);
+    let next = -1;
+    if (marker instanceof RegExp) {
+      const match = source.slice(cursor + 1).match(marker);
+      next = match && match.index !== undefined ? cursor + 1 + match.index : -1;
+    } else {
+      next = source.indexOf(marker, cursor + 1);
+    }
     assert.notEqual(next, -1, `${label}: missing ${marker}`);
     assert(next > cursor, `${label}: ${marker} is out of order`);
     cursor = next;
@@ -43,7 +49,7 @@ test.before(buildReader);
 test("Papers index lets readers choose every projected Paper with scientific context", async () => {
   const html = await readFile(join(projectRoot, "dist", "papers", "index.html"), "utf8");
 
-  assert.match(html, /41 篇基准文献/u);
+  assert.match(html, /(?:41 篇基准文献|41 benchmark works)/u);
   for (const expected of [
     "Type I supernovae. I - Analytic solutions for the early part of the light curve",
     "The Propagation of Relativistic Jets in External Media",
@@ -74,7 +80,7 @@ test("Papers index lets readers choose every projected Paper with scientific con
       `missing generated destination for ${href}`
     );
   }
-  assert.equal((html.match(/>阅读论文<\/a>/gu) ?? []).length, 41);
+  assert.equal((html.match(/>(?:阅读论文|Read paper →)<\/a>/gu) ?? []).length, 41);
 });
 
 test("the reader build preserves canonical and per-Work visibility digests", async () => {
@@ -111,14 +117,14 @@ test("Paper Detail presents the complete scientific reading loop before on-deman
     assertInOrder(
       html,
       [
-        "为什么这项工作重要</h2>",
-        "问题</h2>",
-        "科学要点</h2>",
-        "假设</h2>",
-        "科学增量</h2>",
-        "科学关联</h2>",
-        "研究背景</h2>",
-        "溯源与科学证据</summary>",
+        /(?:为什么这项工作重要|Why This Work Matters)<\/h2>/u,
+        /(?:问题|Problem)<\/h2>/u,
+        /(?:科学要点|Scientific Takeaway)<\/h2>/u,
+        /(?:假设|Assumptions)<\/h2>/u,
+        /(?:科学增量|Scientific Delta)<\/h2>/u,
+        /(?:科学关联|Scientific Connections & Directed Lineage)<\/h2>/u,
+        /(?:研究背景|Research Context)<\/h2>/u,
+        /(?:溯源与科学证据|Provenance & Scientific Evidence)<\/summary>/u,
       ],
       slug
     );
@@ -126,7 +132,11 @@ test("Paper Detail presents the complete scientific reading loop before on-deman
       html,
       new RegExp(`href="${publicUrl.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&")}"`, "u")
     );
-    assert.match(html, /<summary>溯源与科学证据<\/summary>/u, slug);
+    assert.match(
+      html,
+      /<summary>(?:溯源与科学证据|Provenance & Scientific Evidence)<\/summary>/u,
+      slug
+    );
     assert.doesNotMatch(html, /<details[^>]*\sopen(?:[\s=>])/u, slug);
     assert.doesNotMatch(html, /(?:visibility_approvals|reader_state)/u, slug);
   }
@@ -155,15 +165,17 @@ test("Paper Detail presents the complete scientific reading loop before on-deman
 
 test("Paper connections preserve canonical direction while linking both endpoints", async () => {
   const expectations = [
-    ["arnett-1982", "受到挑战", "/papers/transfit-2025/"],
-    ["transfit-2025", "挑战", "/papers/arnett-1982/"],
-    ["zhu-2021", "被扩展", "/papers/long-yu-2026/"],
-    ["long-yu-2026", "扩展", "/papers/zhu-2021/"],
+    ["arnett-1982", "(?:受到挑战|Challenged by)", "/papers/transfit-2025/"],
+    ["transfit-2025", "(?:挑战|Challenges)", "/papers/arnett-1982/"],
+    ["zhu-2021", "(?:被扩展|Extended by)", "/papers/long-yu-2026/"],
+    ["long-yu-2026", "(?:扩展|Extends)", "/papers/zhu-2021/"],
   ];
 
   for (const [slug, relation, href] of expectations) {
     const html = await readFile(join(projectRoot, "dist", "papers", slug, "index.html"), "utf8");
-    const connections = html.slice(html.indexOf("科学关联</h2>"), html.indexOf("研究背景</h2>"));
+    const startIdx = html.search(/(?:id="connections-heading"|科学关联<\/h2>)/u);
+    const endIdx = html.search(/(?:aria-labelledby="research-context-heading"|研究背景<\/h2>)/u);
+    const connections = html.slice(startIdx, endIdx);
     assert.match(connections, new RegExp(`>${relation}<`, "u"), slug);
     assert.match(connections, new RegExp(`href="${href}"`, "u"), slug);
   }

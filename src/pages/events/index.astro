@@ -7,6 +7,16 @@ import { formatAnnouncementInBeijing, parseTransientEpoch } from "../../domain/a
 import { loadSiteConfig } from "../../lib/site-config";
 import "../../styles/global.css";
 
+const dailyArchiveModules = import.meta.glob<{ default: any }>(
+  "../../data/arxiv-archives/daily/*.json",
+  { eager: true }
+);
+const validDailyDates = new Set(
+  Object.keys(dailyArchiveModules)
+    .map((file) => file.match(/(\d{4}-\d{2}-\d{2})\.json$/)?.[1])
+    .filter((d): d is string => Boolean(d))
+);
+
 function paperTitle(paper: any): string {
   return paper.title || paper.arxiv_id || "";
 }
@@ -453,9 +463,11 @@ const dynamicCalendarCss = dynamicMonthCss + "\n" + dynamicDateCss;
                             <span class="detail-us-batch font-mono">arXiv US Batch: {usDate}</span>
                           </div>
                           <div class="detail-header-actions">
-                            <a href={`/arxiv-daily/${usDate}/`} class="detail-daily-link">
-                              Daily Radar →
-                            </a>
+                            {validDailyDates.has(usDate) ? (
+                              <a href={`/arxiv-daily/${usDate}/`} class="detail-daily-link">
+                                Daily Radar →
+                              </a>
+                            ) : null}
                             <a href={`#station-${dStr}`} class="detail-spine-link" title="Navigate to station in timeline below">
                               Timeline Track ↓
                             </a>

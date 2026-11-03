@@ -30,16 +30,8 @@ jobs:
           node-version: 22.20.0
           cache: npm
 
-      - name: Set up Python 3.11
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-          cache: 'pip'
-
       - name: Install locked dependencies
-        run: |
-          npm ci --ignore-scripts
-          pip install -r requirements.txt
+        run: npm ci --ignore-scripts
 
       # Verification reads only committed canonical content and never
       # contacts bibliographic providers or paper sources.

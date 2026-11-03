@@ -6,6 +6,7 @@ import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { parse, stringify } from "yaml";
 import { test } from "node:test";
+import { ensureDistBuilt } from "./helpers/ensure-dist.mjs";
 
 const projectRoot = fileURLToPath(new URL("..", import.meta.url));
 const paperSlugs = [
@@ -157,7 +158,7 @@ function runBuild(root) {
 }
 
 test("Home provides the four reader entry areas, projected content, and complete global navigation", async () => {
-  runBuild(projectRoot);
+  ensureDistBuilt(projectRoot);
   const home = await readFile(join(projectRoot, "dist", "index.html"), "utf8");
   assert.ok(
     home.includes("基准文献、科学关联与学习路径") ||

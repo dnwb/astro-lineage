@@ -1,3 +1,105 @@
 work_id: work:li-gw170817-2018
-stages: []
-links: []
+stages:
+  - id: stage:li-gw170817-bns-merger-remnant
+    annotation_id: annotation:li-gw170817-phenomenon
+    label: Binary neutron star merger and long-lived magnetar formation
+  - id: stage:li-gw170817-magnetar-rotational-energy
+    annotation_id: annotation:li-gw170817-energy-reservoir
+    label: Supramassive millisecond magnetar rotational kinetic energy
+  - id: stage:li-gw170817-spin-down-heating
+    annotation_id: annotation:li-gw170817-energy-transfer
+    label: Continuous spin-down Poynting flux heating of merger ejecta
+  - id: stage:li-gw170817-merger-ejecta-expansion
+    annotation_id: annotation:li-gw170817-dynamics
+    label: Multi-component merger ejecta accelerated homologous expansion
+  - id: stage:li-gw170817-radiative-diffusion
+    annotation_id: annotation:li-gw170817-transport-process
+    label: Wavelength-dependent radiative diffusion through lanthanide opacities
+  - id: stage:li-gw170817-at2017gfo-light-curves
+    annotation_id: annotation:li-gw170817-observable
+    label: Observed multi-band optical and infrared light curves of AT2017gfo
+links:
+  - id: causal-link:li-gw170817-merger-to-magnetar
+    source_stage_id: stage:li-gw170817-bns-merger-remnant
+    target_stage_id: stage:li-gw170817-magnetar-rotational-energy
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: BNS coalescence produces a supramassive millisecond magnetar remnant storing rotational energy.
+    evidence_ids: [evidence:li-gw170817-2018-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:li-gw170817-merger-to-ejecta
+    source_stage_id: stage:li-gw170817-bns-merger-remnant
+    target_stage_id: stage:li-gw170817-merger-ejecta-expansion
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Dynamical and disk wind processes eject neutron-rich matter expanding into space.
+    evidence_ids: [evidence:li-gw170817-2018-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:li-gw170817-magnetar-to-heating
+    source_stage_id: stage:li-gw170817-magnetar-rotational-energy
+    target_stage_id: stage:li-gw170817-spin-down-heating
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Magnetar magnetic dipole torque taps rotational energy to power continuous Poynting wind heating.
+    evidence_ids: [evidence:li-gw170817-2018-magnetar-injection]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:li-gw170817-heating-to-ejecta
+    source_stage_id: stage:li-gw170817-spin-down-heating
+    target_stage_id: stage:li-gw170817-merger-ejecta-expansion
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Injected energy does work on the ejecta, accelerating the envelope.
+    evidence_ids: [evidence:li-gw170817-2018-magnetar-injection]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:li-gw170817-ejecta-to-diffusion
+    source_stage_id: stage:li-gw170817-merger-ejecta-expansion
+    target_stage_id: stage:li-gw170817-radiative-diffusion
+    relation: enables
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Geometric expansion lowers the optical depth, allowing thermal radiation to diffuse outward.
+    evidence_ids: [evidence:li-gw170817-2018-at2017gfo-fitting]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:li-gw170817-heating-to-diffusion
+    source_stage_id: stage:li-gw170817-spin-down-heating
+    target_stage_id: stage:li-gw170817-radiative-diffusion
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Spin-down thermalization provides the internal energy reservoir diffusing through the ejecta.
+    evidence_ids: [evidence:li-gw170817-2018-magnetar-injection]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:li-gw170817-diffusion-to-light-curves
+    source_stage_id: stage:li-gw170817-radiative-diffusion
+    target_stage_id: stage:li-gw170817-at2017gfo-light-curves
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Escaping photons form the observed blue-to-red multi-band optical light curve of AT2017gfo.
+    evidence_ids: [evidence:li-gw170817-2018-at2017gfo-fitting]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed

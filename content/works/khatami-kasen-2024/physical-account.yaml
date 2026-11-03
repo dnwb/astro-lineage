@@ -1,3 +1,66 @@
 work_id: work:khatami-kasen-2024
-stages: []
-links: []
+stages:
+  - id: stage:khatami-kasen-core-collapse-ejecta
+    annotation_id: annotation:khatami-kasen-outflow
+    label: Core-collapse supernova homologous ejecta launch
+  - id: stage:khatami-kasen-dense-csm-envelope
+    annotation_id: annotation:khatami-kasen-environment
+    label: Circumstellar medium density profile configuration
+  - id: stage:khatami-kasen-shock-conversion
+    annotation_id: annotation:khatami-kasen-energy-transfer
+    label: Ejecta-CSM radiative shock kinetic energy conversion
+  - id: stage:khatami-kasen-radiative-diffusion
+    annotation_id: annotation:khatami-kasen-transport-process
+    label: Trapped shock radiation diffusion through optically thick envelope
+  - id: stage:khatami-kasen-transient-light-curve
+    annotation_id: annotation:khatami-kasen-observable
+    label: Bolometric and optical light curve peak and rise evolution
+links:
+  - id: causal-link:khatami-kasen-ejecta-to-shock
+    source_stage_id: stage:khatami-kasen-core-collapse-ejecta
+    target_stage_id: stage:khatami-kasen-shock-conversion
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Expanding supernova ejecta impacts surrounding medium, converting kinetic energy into radiation.
+    evidence_ids: [evidence:khatami-kasen-2024-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:khatami-kasen-csm-to-shock
+    source_stage_id: stage:khatami-kasen-dense-csm-envelope
+    target_stage_id: stage:khatami-kasen-shock-conversion
+    relation: enables
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Circumstellar mass density determines shock strength, radiative efficiency, and deceleration rate.
+    evidence_ids: [evidence:khatami-kasen-2024-shock-cooling]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:khatami-kasen-shock-to-diffusion
+    source_stage_id: stage:khatami-kasen-shock-conversion
+    target_stage_id: stage:khatami-kasen-radiative-diffusion
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Internal radiative shocks generate photon energy that diffuses outward across optical depth gradients.
+    evidence_ids: [evidence:khatami-kasen-2024-shock-cooling]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:khatami-kasen-diffusion-to-light-curve
+    source_stage_id: stage:khatami-kasen-radiative-diffusion
+    target_stage_id: stage:khatami-kasen-transient-light-curve
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Photon diffusion across the dynamic photosphere produces the observed optical light curve landscape.
+    evidence_ids: [evidence:khatami-kasen-2024-scaling-relations]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed

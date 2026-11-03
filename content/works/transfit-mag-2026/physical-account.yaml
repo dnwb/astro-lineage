@@ -1,3 +1,126 @@
 work_id: work:transfit-mag-2026
-stages: []
-links: []
+stages:
+  - id: stage:transfit-mag-rotational-energy
+    annotation_id: annotation:transfit-mag-energy-reservoir
+    label: Magnetar rotational kinetic energy reservoir
+  - id: stage:transfit-mag-dipole-injection
+    annotation_id: annotation:transfit-mag-energy-transfer
+    label: Continuous dipole spin-down power injection
+  - id: stage:transfit-mag-supernova-ejecta
+    annotation_id: annotation:transfit-mag-outflow
+    label: Expanding supernova ejecta shell
+  - id: stage:transfit-mag-homologous-dynamics
+    annotation_id: annotation:transfit-mag-dynamics
+    label: Homologous ejecta expansion dynamics
+  - id: stage:transfit-mag-shock-cavity-heating
+    annotation_id: annotation:transfit-mag-dynamics
+    label: Forward shock propagation and cavity heating boundary
+  - id: stage:transfit-mag-coupled-diffusion
+    annotation_id: annotation:transfit-mag-transport-process
+    label: Multi-grid time-dependent radiative diffusion
+  - id: stage:transfit-mag-photospheric-emission
+    annotation_id: annotation:transfit-mag-emission-process
+    label: Photospheric thermal optical radiation
+  - id: stage:transfit-mag-multipeak-light-curve
+    annotation_id: annotation:transfit-mag-observable
+    label: Multi-peaked optical light curve
+  - id: stage:transfit-mag-inferred-magnetar-parameters
+    annotation_id: annotation:transfit-mag-inference-target
+    label: Inferred magnetar period, field, and ejecta parameters
+links:
+  - id: causal-link:transfit-mag-rotation-drives-injection
+    source_stage_id: stage:transfit-mag-rotational-energy
+    target_stage_id: stage:transfit-mag-dipole-injection
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Magnetar rotational energy powers dipole radiation and Poynting flux injection.
+    evidence_ids: [evidence:transfit-mag-2026-spin-down-coupling]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T16:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:transfit-mag-injection-drives-shock
+    source_stage_id: stage:transfit-mag-dipole-injection
+    target_stage_id: stage:transfit-mag-shock-cavity-heating
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Injected spin-down luminosity inflates an interior radiation bubble that drives a forward shock into the ejecta.
+    evidence_ids: [evidence:transfit-mag-2026-spin-down-coupling]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T16:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:transfit-mag-ejecta-drives-dynamics
+    source_stage_id: stage:transfit-mag-supernova-ejecta
+    target_stage_id: stage:transfit-mag-homologous-dynamics
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Expanding core-collapse ejecta momentum governs macroscopic homologous velocity profile.
+    evidence_ids: [evidence:transfit-mag-2026-spin-down-coupling]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T16:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:transfit-mag-dynamics-modulates-shock
+    source_stage_id: stage:transfit-mag-homologous-dynamics
+    target_stage_id: stage:transfit-mag-shock-cavity-heating
+    relation: modulates
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Ejecta expansion and density profile set the resisting ram pressure opposing forward shock advance.
+    evidence_ids: [evidence:transfit-mag-2026-spin-down-coupling]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T16:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:transfit-mag-shock-enables-diffusion
+    source_stage_id: stage:transfit-mag-shock-cavity-heating
+    target_stage_id: stage:transfit-mag-coupled-diffusion
+    relation: enables
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Shock dissipation and cavity energy thermalize, feeding the time-dependent radiation diffusion equation.
+    evidence_ids: [evidence:transfit-mag-2026-diffusion-light-curve]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T16:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:transfit-mag-diffusion-produces-emission
+    source_stage_id: stage:transfit-mag-coupled-diffusion
+    target_stage_id: stage:transfit-mag-photospheric-emission
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Time-dependent radiative diffusion carries energy outward to the expanding effective photosphere.
+    evidence_ids: [evidence:transfit-mag-2026-diffusion-light-curve]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T16:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:transfit-mag-emission-produces-light-curve
+    source_stage_id: stage:transfit-mag-photospheric-emission
+    target_stage_id: stage:transfit-mag-multipeak-light-curve
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Emerging photospheric flux shapes the multi-peaked optical light curve.
+    evidence_ids: [evidence:transfit-mag-2026-abstract, evidence:transfit-mag-2026-diffusion-light-curve]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T16:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:transfit-mag-light-curve-enables-inference
+    source_stage_id: stage:transfit-mag-multipeak-light-curve
+    target_stage_id: stage:transfit-mag-inferred-magnetar-parameters
+    relation: enables
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Multi-band light curve morphology enables constraining magnetar magnetic field B, period P_0, and ejecta mass M_ej.
+    evidence_ids: [evidence:transfit-mag-2026-spin-down-coupling, evidence:transfit-mag-2026-diffusion-light-curve]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T16:00:00Z"
+    review_state: unreviewed

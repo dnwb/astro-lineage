@@ -1,3 +1,105 @@
 work_id: work:liu-fbot-2022
-stages: []
-links: []
+stages:
+  - id: stage:liu-fbot-stripped-envelope-collapse
+    annotation_id: annotation:liu-fbot-progenitor-system
+    label: Stripped massive star core collapse
+  - id: stage:liu-fbot-magnetar-rotational-energy
+    annotation_id: annotation:liu-fbot-energy-reservoir
+    label: Millisecond magnetar rotational kinetic energy reservoir
+  - id: stage:liu-fbot-spin-down-power-injection
+    annotation_id: annotation:liu-fbot-energy-transfer
+    label: Rapid continuous magnetic dipole spin-down injection
+  - id: stage:liu-fbot-low-mass-ejecta-expansion
+    annotation_id: annotation:liu-fbot-dynamics
+    label: Low-mass ejecta high-velocity homologous expansion
+  - id: stage:liu-fbot-rapid-radiative-diffusion
+    annotation_id: annotation:liu-fbot-transport-process
+    label: Fast radiative diffusion through low-mass ejecta
+  - id: stage:liu-fbot-fast-blue-optical-light-curve
+    annotation_id: annotation:liu-fbot-observable
+    label: Rapidly rising luminous fast blue optical transient light curve
+links:
+  - id: causal-link:liu-fbot-collapse-to-magnetar
+    source_stage_id: stage:liu-fbot-stripped-envelope-collapse
+    target_stage_id: stage:liu-fbot-magnetar-rotational-energy
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Core collapse of the stripped star leaves behind a millisecond magnetar remnant.
+    evidence_ids: [evidence:liu-fbot-2022-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:liu-fbot-collapse-to-ejecta
+    source_stage_id: stage:liu-fbot-stripped-envelope-collapse
+    target_stage_id: stage:liu-fbot-low-mass-ejecta-expansion
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Explosion expels a low-mass envelope of ~0.1-0.5 M_sun at high velocity.
+    evidence_ids: [evidence:liu-fbot-2022-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:liu-fbot-magnetar-to-injection
+    source_stage_id: stage:liu-fbot-magnetar-rotational-energy
+    target_stage_id: stage:liu-fbot-spin-down-power-injection
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Rotational kinetic energy powers strong dipole spin-down heating.
+    evidence_ids: [evidence:liu-fbot-2022-magnetar-fit]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:liu-fbot-injection-to-expansion
+    source_stage_id: stage:liu-fbot-spin-down-power-injection
+    target_stage_id: stage:liu-fbot-low-mass-ejecta-expansion
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Magnetar wind accelerates the low-mass ejecta shell.
+    evidence_ids: [evidence:liu-fbot-2022-magnetar-fit]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:liu-fbot-ejecta-to-diffusion
+    source_stage_id: stage:liu-fbot-low-mass-ejecta-expansion
+    target_stage_id: stage:liu-fbot-rapid-radiative-diffusion
+    relation: enables
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Low ejecta mass yields low optical depth and very short photon diffusion time.
+    evidence_ids: [evidence:liu-fbot-2022-engine-continuum]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:liu-fbot-injection-to-diffusion
+    source_stage_id: stage:liu-fbot-spin-down-power-injection
+    target_stage_id: stage:liu-fbot-rapid-radiative-diffusion
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Magnetar heating provides the high thermal luminosity diffusing outward.
+    evidence_ids: [evidence:liu-fbot-2022-magnetar-fit]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:liu-fbot-diffusion-to-lc
+    source_stage_id: stage:liu-fbot-rapid-radiative-diffusion
+    target_stage_id: stage:liu-fbot-fast-blue-optical-light-curve
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Short diffusion time and luminous engine create the rapid rise and decline of the optical transient.
+    evidence_ids: [evidence:liu-fbot-2022-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed

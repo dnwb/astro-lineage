@@ -1,3 +1,66 @@
 work_id: work:weaver-1977
-stages: []
-links: []
+stages:
+  - id: stage:weaver-stellar-wind-source
+    annotation_id: annotation:weaver-energy-reservoir
+    label: Early-type stellar wind kinetic energy injection
+  - id: stage:weaver-hypersonic-wind-zone
+    annotation_id: annotation:weaver-energy-transfer
+    label: Hypersonic unshocked stellar wind expansion
+  - id: stage:weaver-wind-reverse-shock
+    annotation_id: annotation:weaver-energy-transfer
+    label: Inner wind reverse shock thermalization
+  - id: stage:weaver-shocked-wind-cavity
+    annotation_id: annotation:weaver-inference-target
+    label: High-temperature shocked wind bubble cavity
+  - id: stage:weaver-forward-shock-propagation
+    annotation_id: annotation:weaver-environment
+    label: Thin radiative shell and ambient interstellar shock propagation
+links:
+  - id: causal-link:weaver-source-to-wind
+    source_stage_id: stage:weaver-stellar-wind-source
+    target_stage_id: stage:weaver-hypersonic-wind-zone
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Stellar mass loss injects steady mechanical wind power into circumstellar space.
+    evidence_ids: [evidence:weaver-1977-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:weaver-wind-to-reverse-shock
+    source_stage_id: stage:weaver-hypersonic-wind-zone
+    target_stage_id: stage:weaver-wind-reverse-shock
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Deceleration against high-pressure shocked interior forms an inner reverse shock.
+    evidence_ids: [evidence:weaver-1977-bubble-structure]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:weaver-reverse-shock-to-cavity
+    source_stage_id: stage:weaver-wind-reverse-shock
+    target_stage_id: stage:weaver-shocked-wind-cavity
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Reverse shock converts hypersonic kinetic energy into a hot, low-density gas cavity.
+    evidence_ids: [evidence:weaver-1977-bubble-structure]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:weaver-cavity-to-forward-shock
+    source_stage_id: stage:weaver-shocked-wind-cavity
+    target_stage_id: stage:weaver-forward-shock-propagation
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: High thermal pressure in the bubble drives an outer forward shock into the ambient interstellar medium.
+    evidence_ids: [evidence:weaver-1977-shock-expansion]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed

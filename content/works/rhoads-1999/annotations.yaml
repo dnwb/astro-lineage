@@ -1,3 +1,190 @@
 work_id: work:rhoads-1999
-annotations: []
+annotations:
+  - id: annotation:rhoads-progenitor-system
+    axis: progenitor_system
+    assessment:
+      state: present
+      values:
+        - term_id: term:gamma-ray-burst-progenitor-system
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:rhoads-1999-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:rhoads-central-object
+    axis: central_object
+    assessment:
+      state: unknown
+      values: []
+    interpretive_risk: descriptive
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:rhoads-energy-reservoir
+    axis: energy_reservoir
+    assessment:
+      state: present
+      values:
+        - term_id: term:central-engine-jet-power
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:rhoads-1999-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:rhoads-energy-transfer
+    axis: energy_transfer
+    assessment:
+      state: present
+      values:
+        - term_id: term:relativistic-jet-injection
+        - term_id: term:expansion-work-energy-transfer
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:rhoads-1999-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:rhoads-energy-dissipation
+    axis: energy_dissipation
+    assessment:
+      state: unknown
+      values: []
+    interpretive_risk: descriptive
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:rhoads-outflow
+    axis: outflow
+    assessment:
+      state: present
+      values:
+        - term_id: term:relativistic-hydrodynamic-jet
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:rhoads-1999-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:rhoads-environment
+    axis: environment
+    assessment:
+      state: present
+      values:
+        - term_id: term:external-ambient-medium
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:rhoads-1999-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:rhoads-dynamics
+    axis: dynamics
+    assessment:
+      state: present
+      values:
+        - term_id: term:jet-head-propagation
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:rhoads-1999-lateral-expansion]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:rhoads-particle-interaction
+    axis: particle_interaction
+    assessment:
+      state: unknown
+      values: []
+    interpretive_risk: descriptive
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:rhoads-transport-process
+    axis: transport_process
+    assessment:
+      state: present
+      values:
+        - term_id: term:bulk-jet-energy-transport
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:rhoads-1999-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:rhoads-emission-process
+    axis: emission_process
+    assessment:
+      state: unknown
+      values: []
+    interpretive_risk: descriptive
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:rhoads-phenomenon
+    axis: phenomenon
+    assessment:
+      state: present
+      values:
+        - term_id: term:relativistic-jet-propagation
+        - term_id: term:transient-light-curve-evolution
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:rhoads-1999-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:rhoads-messenger
+    axis: messenger
+    assessment:
+      state: present
+      values:
+        - term_id: term:photons
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:rhoads-1999-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:rhoads-photon-band
+    axis: photon_band
+    assessment:
+      state: present
+      values:
+        - term_id: term:optical-band
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:rhoads-1999-jet-break]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:rhoads-observable
+    axis: observable
+    assessment:
+      state: present
+      values:
+        - term_id: term:jet-break-opening-angle
+        - term_id: term:light-curves
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:rhoads-1999-jet-break]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:rhoads-inference-target
+    axis: inference_target
+    assessment:
+      state: present
+      values:
+        - term_id: term:jet-collimation-regime
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:rhoads-1999-lateral-expansion]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
 method_annotations: []

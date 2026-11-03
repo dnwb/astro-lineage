@@ -6,12 +6,30 @@ evidence:
     locator:
       type: paragraph
       paragraph: Abstract
-    excerpt: In this paper, we investigate two hydrogen-poor superluminous
-      supernovae (SLSNe) iPTF15esb and iPTF13dcc whose light curves (LCs) show
-      significant deviation from the smooth rise and fall. The LC of iPTF15esb
-      exhibits two peaks and a post-peak plateau, and furthermore the late-time
-      spectrum of iPTF15esb shows a strong, broad H$α$ emission line.
-    review_state: unreviewed
+    excerpt: In this paper, we investigate two hydrogen-poor superluminous supernovae (SLSNe) iPTF15esb and iPTF13dcc whose light curves (LCs) show significant deviation from the smooth rise and fall. The LC of iPTF15esb exhibits two peaks and a post-peak plateau, and furthermore the late-time spectrum of iPTF15esb shows a strong, broad H$α$ emission line.
     curation_provenance:
       actor_id: actor:agent-curator
-      recorded_at: 2026-09-06T22:35:47Z
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: evidence:liu-multiple-ejecta-csm-2018-episodic-shells
+    version_id: version:liu-multiple-ejecta-csm-2018-arxiv-v1
+    source_url: https://arxiv.org/abs/1802.08164v1
+    locator:
+      type: section
+      section: "2. Multiple Ejecta-CSM Interaction Model"
+    excerpt: "Episodic pre-supernova mass loss creates detached, concentric CSM shells around the progenitor star."
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: evidence:liu-multiple-ejecta-csm-2018-multi-peaked-lc
+    version_id: version:liu-multiple-ejecta-csm-2018-arxiv-v1
+    source_url: https://arxiv.org/abs/1802.08164v1
+    locator:
+      type: section
+      section: "3. Application to iPTF15esb and iPTF13dcc"
+    excerpt: "Successive shock collisions between the expanding supernova ejecta and discrete CSM shells naturally reproduce bumpy and multi-peaked light curves of SLSNe iPTF15esb and iPTF13dcc."
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed

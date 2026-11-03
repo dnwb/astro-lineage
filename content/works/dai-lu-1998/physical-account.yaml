@@ -1,3 +1,111 @@
 work_id: work:dai-lu-1998
-stages: []
-links: []
+stages:
+  - id: stage:dai-lu-magnetar-rotational-energy
+    annotation_id: annotation:dai-lu-energy-reservoir
+    label: Millisecond magnetar rotational energy reservoir
+  - id: stage:dai-lu-dipole-power-injection
+    annotation_id: annotation:dai-lu-energy-transfer
+    label: Continuous magnetic dipole energy replenishment
+  - id: stage:dai-lu-relativistic-blast
+    annotation_id: annotation:dai-lu-outflow
+    label: Relativistic shock blast wave
+  - id: stage:dai-lu-ambient-medium
+    annotation_id: annotation:dai-lu-environment
+    label: External circumburst medium
+  - id: stage:dai-lu-arrested-deceleration
+    annotation_id: annotation:dai-lu-dynamics
+    label: Blast wave propagation with arrested deceleration
+  - id: stage:dai-lu-shock-thermalization
+    annotation_id: annotation:dai-lu-energy-dissipation
+    label: Downstream shock thermalization and particle heating
+  - id: stage:dai-lu-plateau-light-curve
+    annotation_id: annotation:dai-lu-observable
+    label: Afterglow light curve with characteristic plateau
+  - id: stage:dai-lu-inferred-magnetar-parameters
+    annotation_id: annotation:dai-lu-inference-target
+    label: Inferred magnetar magnetic field and initial spin period
+links:
+  - id: causal-link:dai-lu-rotational-energy-drives-injection
+    source_stage_id: stage:dai-lu-magnetar-rotational-energy
+    target_stage_id: stage:dai-lu-dipole-power-injection
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Millisecond magnetar rotational kinetic energy powers the magnetic dipole energy release.
+    evidence_ids: [evidence:dai-lu-1998-dipole-injection]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:dai-lu-injection-modulates-propagation
+    source_stage_id: stage:dai-lu-dipole-power-injection
+    target_stage_id: stage:dai-lu-arrested-deceleration
+    relation: modulates
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Injected Poynting flux catches up with the decelerating shock front, replenishing energy and flattening the deceleration rate.
+    evidence_ids: [evidence:dai-lu-1998-dipole-injection, evidence:dai-lu-1998-plateau-prediction]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:dai-lu-blast-drives-propagation
+    source_stage_id: stage:dai-lu-relativistic-blast
+    target_stage_id: stage:dai-lu-arrested-deceleration
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Initial burst kinetic energy drives the relativistic blast wave expansion into the ambient medium.
+    evidence_ids: [evidence:dai-lu-1998-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:dai-lu-medium-modulates-propagation
+    source_stage_id: stage:dai-lu-ambient-medium
+    target_stage_id: stage:dai-lu-arrested-deceleration
+    relation: modulates
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Circumburst medium resistance sets the baseline deceleration rate counterbalanced by continuous energy injection.
+    evidence_ids: [evidence:dai-lu-1998-abstract, evidence:dai-lu-1998-plateau-prediction]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:dai-lu-propagation-produces-thermalization
+    source_stage_id: stage:dai-lu-arrested-deceleration
+    target_stage_id: stage:dai-lu-shock-thermalization
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Blast wave hydrodynamic evolution shock-heats downstream electrons and magnetic fields.
+    evidence_ids: [evidence:dai-lu-1998-plateau-prediction]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:dai-lu-thermalization-produces-plateau
+    source_stage_id: stage:dai-lu-shock-thermalization
+    target_stage_id: stage:dai-lu-plateau-light-curve
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Shock-heated electrons radiate synchrotron emission, creating the extended temporal plateau in multi-band afterglow curves.
+    evidence_ids: [evidence:dai-lu-1998-abstract, evidence:dai-lu-1998-plateau-prediction]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:dai-lu-plateau-enables-inference
+    source_stage_id: stage:dai-lu-plateau-light-curve
+    target_stage_id: stage:dai-lu-inferred-magnetar-parameters
+    relation: enables
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Observed plateau luminosity and end time allow constraining the magnetar surface dipole field B and initial period P_0.
+    evidence_ids: [evidence:dai-lu-1998-dipole-injection, evidence:dai-lu-1998-plateau-prediction]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed

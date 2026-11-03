@@ -494,3 +494,37 @@ _Avoid_: Global paper property, primary role, Method Taxonomy technique
 **Hub**:
 A Physics Concept shared across multiple Research Lines that helps reveal connections between Papers; it is not a Paper Graph node.
 _Avoid_: Hub paper, graph node
+
+### Transient Event Tracking & GCN Surveillance
+
+**Transient Event**:
+A first-class astrophysical transient entity (such as a GRB, AT, SN, FRB, GW, or SGR) tracked independently of whether any scholarly Work has been published about it. A Transient Event is identified by a canonical primary identifier and owns an alias set uniting cross-facility designations (e.g., `GRB 261029A` and `AT 2026ahaw`).
+_Avoid_: Paper-only cluster tag, isolated designation
+
+**GCN Circular**:
+A rapid, unrefereed observational report distributed via the NASA General Coordinates Network concerning one or more Transient Events, identified by an immutable integer `circularId` and carrying raw text and submission metadata.
+_Avoid_: Refereed paper, Work, Version
+
+**Trigger Reference Epoch (`T0`)**:
+The authoritative UTC timestamp of the initial burst or alert trigger for a Transient Event, against which observer-frame elapsed times ($\Delta t = T - T_0$) are measured.
+_Avoid_: Circular publication time, arbitrary local observation time
+
+**Photometry Point**:
+A single time-tagged brightness or flux measurement (or non-detection upper limit) of a Transient Event extracted from a GCN Circular, preserving its reported passband, photometric system, uncertainty status, and provenance `circularId` without forced cross-band homogenization or unstated extinction correction.
+_Avoid_: Homogenized synthetic magnitude, unattributed data point
+
+**Observational Discrepancy**:
+An explicit flag on a Photometry Point or event property indicating unreported uncertainty, approximate observation epoch, or conflicting values across GCN Circular revisions, rendered visually with open markers and callout annotations rather than silently discarded or averaged.
+_Avoid_: Silent outlier removal, fabricated error bar
+
+**Multi-Messenger Counterpart**:
+A non-optical observational signal or alert associated with a Transient Event—such as an X-ray flux light curve, radio flux density measurement, gravitational-wave trigger, high-energy neutrino arrival, or VHE gamma-ray detection—recorded in its native physical units without forced conversion into optical magnitudes.
+_Avoid_: Synthetic cross-messenger magnitude
+
+**Tiered Redshift Record**:
+A provenance-backed redshift measurement or constraint extracted from a GCN Circular, ranked by evidentiary authority (`spectroscopic` > `host` > `photometric` > `upper_limit`) while preserving conflicting measurements side by side when unresolved.
+_Avoid_: Unattributed single redshift scalar
+
+**Feature Zoom Panel**:
+A secondary light-curve sub-panel triggered when a Transient Event exhibits late-time structural departures from a simple power-law decay (such as a plateau, rebrightening, jet break, supernova/kilonova bump, or cross-circular version conflict), isolating the relevant passbands and epoch window with a reference power-law extrapolation line.
+_Avoid_: Arbitrary duplicate plot, unannotated fit line

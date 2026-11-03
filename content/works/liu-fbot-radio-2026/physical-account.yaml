@@ -1,3 +1,78 @@
 work_id: work:liu-fbot-radio-2026
-stages: []
-links: []
+stages:
+  - id: stage:liu-fbot-radio-progenitor-eruptive-csm
+    annotation_id: annotation:liu-fbot-radio-environment
+    label: Stripped progenitor eruptive mass loss creating confined CSM
+  - id: stage:liu-fbot-radio-trans-relativistic-outflow
+    annotation_id: annotation:liu-fbot-radio-outflow
+    label: Trans-relativistic blast wave ejecta launch
+  - id: stage:liu-fbot-radio-shock-interaction
+    annotation_id: annotation:liu-fbot-radio-energy-transfer
+    label: Trans-relativistic shock propagation in dense CSM
+  - id: stage:liu-fbot-radio-synchrotron-absorption
+    annotation_id: annotation:liu-fbot-radio-observable
+    label: Synchrotron self-absorption radio emission
+  - id: stage:liu-fbot-radio-csm-boundary-breakout
+    annotation_id: annotation:liu-fbot-radio-dynamics
+    label: Shock breakout past outer CSM edge causing steep flux drop
+links:
+  - id: causal-link:liu-fbot-radio-csm-to-shock
+    source_stage_id: stage:liu-fbot-radio-progenitor-eruptive-csm
+    target_stage_id: stage:liu-fbot-radio-shock-interaction
+    relation: enables
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Compact circumstellar shell provides target density for the trans-relativistic shock.
+    evidence_ids: [evidence:liu-fbot-radio-2026-steep-csm-cutoff]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:liu-fbot-radio-outflow-to-shock
+    source_stage_id: stage:liu-fbot-radio-trans-relativistic-outflow
+    target_stage_id: stage:liu-fbot-radio-shock-interaction
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Fast trans-relativistic outflow drives a collisionless shock into the CSM.
+    evidence_ids: [evidence:liu-fbot-radio-2026-trans-relativistic-shock]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:liu-fbot-radio-shock-to-synchrotron
+    source_stage_id: stage:liu-fbot-radio-shock-interaction
+    target_stage_id: stage:liu-fbot-radio-synchrotron-absorption
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Shock-accelerated relativistic electrons generate synchrotron radio emission with self-absorption.
+    evidence_ids: [evidence:liu-fbot-radio-2026-trans-relativistic-shock]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:liu-fbot-radio-shock-to-breakout
+    source_stage_id: stage:liu-fbot-radio-shock-interaction
+    target_stage_id: stage:liu-fbot-radio-csm-boundary-breakout
+    relation: transforms_into
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Shock reaches the outer steep boundary of the confined circumstellar shell.
+    evidence_ids: [evidence:liu-fbot-radio-2026-steep-csm-cutoff]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:liu-fbot-radio-breakout-modulates-synchrotron
+    source_stage_id: stage:liu-fbot-radio-csm-boundary-breakout
+    target_stage_id: stage:liu-fbot-radio-synchrotron-absorption
+    relation: modulates
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Shock exit into dilute medium shuts off synchrotron injection, producing steep decline in radio flux.
+    evidence_ids: [evidence:liu-fbot-radio-2026-steep-csm-cutoff]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed

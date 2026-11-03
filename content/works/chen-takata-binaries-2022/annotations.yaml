@@ -1,3 +1,177 @@
 work_id: work:chen-takata-binaries-2022
-annotations: []
+annotations:
+  - id: annotation:chen-takata-binaries-progenitor-system
+    axis: progenitor_system
+    assessment:
+      state: unknown
+      values: []
+    interpretive_risk: descriptive
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:chen-takata-binaries-central-object
+    axis: central_object
+    assessment:
+      state: unknown
+      values: []
+    interpretive_risk: descriptive
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:chen-takata-binaries-energy-reservoir
+    axis: energy_reservoir
+    assessment:
+      state: present
+      values:
+        - term_id: term:central-engine-energy-reservoir
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:chen-takata-binaries-2022-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:chen-takata-binaries-energy-transfer
+    axis: energy_transfer
+    assessment:
+      state: present
+      values:
+        - term_id: term:continuous-heating-input
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:chen-takata-binaries-2022-shock-model]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:chen-takata-binaries-energy-dissipation
+    axis: energy_dissipation
+    assessment:
+      state: unknown
+      values: []
+    interpretive_risk: descriptive
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:chen-takata-binaries-outflow
+    axis: outflow
+    assessment:
+      state: unknown
+      values: []
+    interpretive_risk: descriptive
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:chen-takata-binaries-environment
+    axis: environment
+    assessment:
+      state: present
+      values:
+        - term_id: term:external-ambient-medium
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:chen-takata-binaries-2022-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:chen-takata-binaries-dynamics
+    axis: dynamics
+    assessment:
+      state: unknown
+      values: []
+    interpretive_risk: descriptive
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:chen-takata-binaries-particle-interaction
+    axis: particle_interaction
+    assessment:
+      state: unknown
+      values: []
+    interpretive_risk: descriptive
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:chen-takata-binaries-transport-process
+    axis: transport_process
+    assessment:
+      state: unknown
+      values: []
+    interpretive_risk: descriptive
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:chen-takata-binaries-emission-process
+    axis: emission_process
+    assessment:
+      state: unknown
+      values: []
+    interpretive_risk: descriptive
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:chen-takata-binaries-phenomenon
+    axis: phenomenon
+    assessment:
+      state: unknown
+      values: []
+    interpretive_risk: descriptive
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:chen-takata-binaries-messenger
+    axis: messenger
+    assessment:
+      state: present
+      values:
+        - term_id: term:photons
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:chen-takata-binaries-2022-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:chen-takata-binaries-photon-band
+    axis: photon_band
+    assessment:
+      state: present
+      values:
+        - term_id: term:gamma-ray-band
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:chen-takata-binaries-2022-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:chen-takata-binaries-observable
+    axis: observable
+    assessment:
+      state: present
+      values:
+        - term_id: term:light-curves
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:chen-takata-binaries-2022-correlated-light-curves]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:chen-takata-binaries-inference-target
+    axis: inference_target
+    assessment:
+      state: present
+      values:
+        - term_id: term:heating-source-parameters
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:chen-takata-binaries-2022-correlated-light-curves]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
 method_annotations: []

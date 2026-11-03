@@ -1,3 +1,66 @@
 work_id: work:dubus-2013
-stages: []
-links: []
+stages:
+  - id: stage:dubus-pulsar-wind-power
+    annotation_id: annotation:dubus-energy-reservoir
+    label: Rotation-powered pulsar relativistic wind injection
+  - id: stage:dubus-stellar-wind-collision
+    annotation_id: annotation:dubus-environment
+    label: Massive companion stellar wind interaction
+  - id: stage:dubus-intrabinary-bow-shock
+    annotation_id: annotation:dubus-energy-transfer
+    label: Intrabinary colliding wind bow shock
+  - id: stage:dubus-particle-acceleration
+    annotation_id: annotation:dubus-inference-target
+    label: Diffusive shock lepton acceleration
+  - id: stage:dubus-gamma-ray-emission
+    annotation_id: annotation:dubus-observable
+    label: Inverse-Compton high-energy gamma-ray light curve modulation
+links:
+  - id: causal-link:dubus-pulsar-to-collision
+    source_stage_id: stage:dubus-pulsar-wind-power
+    target_stage_id: stage:dubus-stellar-wind-collision
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Relativistic pulsar wind streams outward to collide with the companion stellar wind.
+    evidence_ids: [evidence:dubus-2013-shock-geometry]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:dubus-collision-to-shock
+    source_stage_id: stage:dubus-stellar-wind-collision
+    target_stage_id: stage:dubus-intrabinary-bow-shock
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Ram pressure balance between the two winds forms an intrabinary termination shock.
+    evidence_ids: [evidence:dubus-2013-shock-geometry]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:dubus-shock-to-acceleration
+    source_stage_id: stage:dubus-intrabinary-bow-shock
+    target_stage_id: stage:dubus-particle-acceleration
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Shock front accelerates electrons and positrons to multi-TeV energies.
+    evidence_ids: [evidence:dubus-2013-spectral-modeling]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:dubus-acceleration-to-gamma-ray
+    source_stage_id: stage:dubus-particle-acceleration
+    target_stage_id: stage:dubus-gamma-ray-emission
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Accelerated leptons scatter stellar UV photons via inverse-Compton process, producing orbital gamma-ray emission.
+    evidence_ids: [evidence:dubus-2013-spectral-modeling]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed

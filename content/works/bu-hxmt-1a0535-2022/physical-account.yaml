@@ -1,3 +1,78 @@
 work_id: work:bu-hxmt-1a0535-2022
-stages: []
-links: []
+stages:
+  - id: stage:bu-hxmt-1a0535-be-disc-giant-outburst
+    annotation_id: annotation:bu-hxmt-1a0535-environment
+    label: Giant accretion outburst from Be circumstellar decretion disc
+  - id: stage:bu-hxmt-1a0535-disk-magnetosphere-boundary
+    annotation_id: annotation:bu-hxmt-1a0535-energy-transfer
+    label: Accretion disc truncation at magnetospheric boundary
+  - id: stage:bu-hxmt-1a0535-beat-frequency-instability
+    annotation_id: annotation:bu-hxmt-1a0535-inference-target
+    label: Disc-magnetosphere beat frequency millihertz oscillation
+  - id: stage:bu-hxmt-1a0535-polar-cap-column-radiation
+    annotation_id: annotation:bu-hxmt-1a0535-energy-reservoir
+    label: Magnetic polar cap accretion column hard X-ray radiation
+  - id: stage:bu-hxmt-1a0535-high-energy-qpo-signal
+    annotation_id: annotation:bu-hxmt-1a0535-messenger
+    label: Detected mHz QPOs above 100 keV with Insight-HXMT
+links:
+  - id: causal-link:bu-hxmt-1a0535-disc-to-boundary
+    source_stage_id: stage:bu-hxmt-1a0535-be-disc-giant-outburst
+    target_stage_id: stage:bu-hxmt-1a0535-disk-magnetosphere-boundary
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Infalling disk matter impinges onto the neutron star magnetosphere at the Alfven radius.
+    evidence_ids: [evidence:bu-hxmt-1a0535-2022-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:bu-hxmt-1a0535-boundary-to-beat
+    source_stage_id: stage:bu-hxmt-1a0535-disk-magnetosphere-boundary
+    target_stage_id: stage:bu-hxmt-1a0535-beat-frequency-instability
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Differential rotation between Keplerian disk flow and rotating magnetic field excites beat-frequency oscillations.
+    evidence_ids: [evidence:bu-hxmt-1a0535-2022-torque-model]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:bu-hxmt-1a0535-boundary-to-column
+    source_stage_id: stage:bu-hxmt-1a0535-disk-magnetosphere-boundary
+    target_stage_id: stage:bu-hxmt-1a0535-polar-cap-column-radiation
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Matter is funneled onto the magnetic poles, creating high-temperature accretion columns.
+    evidence_ids: [evidence:bu-hxmt-1a0535-2022-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:bu-hxmt-1a0535-beat-modulates-qpo
+    source_stage_id: stage:bu-hxmt-1a0535-beat-frequency-instability
+    target_stage_id: stage:bu-hxmt-1a0535-high-energy-qpo-signal
+    relation: modulates
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Periodic mass accretion rate variations modulate the hard X-ray luminosity at mHz frequencies.
+    evidence_ids: [evidence:bu-hxmt-1a0535-2022-mhz-qpo]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:bu-hxmt-1a0535-column-to-qpo
+    source_stage_id: stage:bu-hxmt-1a0535-polar-cap-column-radiation
+    target_stage_id: stage:bu-hxmt-1a0535-high-energy-qpo-signal
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Hard X-ray emission above 100 keV exhibits strong power spectral density peaks at the QPO frequency.
+    evidence_ids: [evidence:bu-hxmt-1a0535-2022-mhz-qpo]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed

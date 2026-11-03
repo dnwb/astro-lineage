@@ -1,0 +1,208 @@
+{
+  "primary_id": "GRB 211211A",
+  "slug": "grb-211211a",
+  "aliases": [
+    "GRB 060614",
+    "AT 2017gfo",
+    "AT 7063aa"
+  ],
+  "event_type": "GRB",
+  "canonical_t0": {
+    "instrument": "Fermi/GBM",
+    "utc_iso": "2021-12-11T13:09:59.000Z",
+    "circular_id": 31201
+  },
+  "best_redshift": {
+    "z": 0.076,
+    "z_err": null,
+    "type": "spectroscopic",
+    "instrument": "Optical Spectroscopy",
+    "circular_id": 31230,
+    "note": ""
+  },
+  "has_redshift_conflict": false,
+  "redshifts": [
+    {
+      "circular_id": 31230,
+      "z": 0.076,
+      "z_err": null,
+      "type": "spectroscopic",
+      "instrument": "Optical Spectroscopy",
+      "note": ""
+    }
+  ],
+  "photometry_points": [
+    {
+      "circular_id": 31222,
+      "dt_hours": 0.046,
+      "band": "white",
+      "mag": 18.93,
+      "mag_err": 0.22,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "Vega",
+      "telescope": "Swift/UVOT",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 31222,
+      "dt_hours": 1.056,
+      "band": "b",
+      "mag": 18.97,
+      "mag_err": 0.28,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "Vega",
+      "telescope": "Swift/UVOT",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 31222,
+      "dt_hours": 1.113,
+      "band": "white",
+      "mag": 18.33,
+      "mag_err": 0.09,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "Vega",
+      "telescope": "Swift/UVOT",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 31222,
+      "dt_hours": 1.182,
+      "band": "u",
+      "mag": 18.26,
+      "mag_err": 0.16,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "Vega",
+      "telescope": "Swift/UVOT",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 31222,
+      "dt_hours": 4.549,
+      "band": "u",
+      "mag": 18.44,
+      "mag_err": 0.11,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "Vega",
+      "telescope": "Swift/UVOT",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 31222,
+      "dt_hours": 4.76,
+      "band": "b",
+      "mag": 19.27,
+      "mag_err": 0.28,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "Vega",
+      "telescope": "Swift/UVOT",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 31222,
+      "dt_hours": 18.821,
+      "band": "b",
+      "mag": 19.7,
+      "mag_err": 0.24,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "Vega",
+      "telescope": "Swift/UVOT",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 31299,
+      "dt_hours": 33.84,
+      "band": "R",
+      "mag": 21.66,
+      "mag_err": 0.07,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "AB",
+      "telescope": "DFOT",
+      "discrepancy_note": null,
+      "time_approximate": true,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 31227,
+      "dt_hours": 34.21,
+      "band": "r",
+      "mag": 21.19,
+      "mag_err": null,
+      "is_upper_limit": true,
+      "limit_sigma": 3,
+      "system": "AB",
+      "telescope": "GIT",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 31235,
+      "dt_hours": 96,
+      "band": "K",
+      "mag": 20.5,
+      "mag_err": 0.1,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "AB",
+      "telescope": "Gemini",
+      "discrepancy_note": null,
+      "time_approximate": true,
+      "version_conflict": false
+    }
+  ],
+  "xray_points": [],
+  "radio_points": [],
+  "multi_messenger": [],
+  "feature_zoom": {
+    "enabled": true,
+    "bands": [
+      "r",
+      "i"
+    ],
+    "t_min_hours": 8,
+    "t_max_hours": 42,
+    "alpha_ref": 1.4,
+    "title": "Late-time plateau & rebrightening zoom",
+    "callouts": [
+      {
+        "dt_hours": 33.84,
+        "mag": 21.66,
+        "band": "R",
+        "text": "DFOT R\ntime approximate"
+      },
+      {
+        "dt_hours": 34.21,
+        "mag": 21.19,
+        "band": "r",
+        "text": "$3\\sigma$ upper limits"
+      }
+    ]
+  },
+  "circular_count": 29,
+  "last_circular_id": 31299,
+  "last_updated_utc": "2021-12-24T16:40:23.000Z",
+  "status": "archived"
+}

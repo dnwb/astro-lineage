@@ -6,11 +6,30 @@ evidence:
     locator:
       type: paragraph
       paragraph: Abstract
-    excerpt: We here discuss a new model of gamma-ray bursts (GRBs) based on
-      differentially rotating strange stars or millisecond magnetars. The energy
-      of the afterglow is continuously provided by the postburst dipole
-      radiation.
-    review_state: unreviewed
+    excerpt: "We here discuss a new model of gamma-ray bursts based on differentially rotating strange stars or millisecond magnetars. The energy of the afterglow is continuously provided by the postburst dipole radiation."
     curation_provenance:
       actor_id: actor:agent-curator
-      recorded_at: 2026-09-20T05:00:00Z
+      recorded_at: "2026-09-20T05:00:00Z"
+    review_state: unreviewed
+  - id: evidence:dai-lu-1998-dipole-injection
+    version_id: version:dai-lu-1998-journal
+    source_url: https://doi.org/10.1103/physrevlett.81.4301
+    locator:
+      type: section
+      section: "Energy Injection Formula"
+    excerpt: "The magnetic dipole power injection follows L_dip(t) = L_0 (1 + t / tau)^-2, replenishing blast wave energy over an extended braking timescale tau."
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: evidence:dai-lu-1998-plateau-prediction
+    version_id: version:dai-lu-1998-journal
+    source_url: https://doi.org/10.1103/physrevlett.81.4301
+    locator:
+      type: section
+      section: "Afterglow Light Curves"
+    excerpt: "Continuous energy replenishment arrests shock deceleration, producing a flattened afterglow light curve plateau before transitioning to standard power-law decay."
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed

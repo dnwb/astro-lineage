@@ -6,14 +6,30 @@ evidence:
     locator:
       type: paragraph
       paragraph: Abstract
-    excerpt: SNe Ibn and SNe Icn are stripped-envelope explosions whose optical
-      emission is commonly linked to interaction with H-poor circumstellar
-      material (CSM), whereas fast blue optical transients (FBOTs) form an
-      observational class of rapidly evolving, blue, and luminous events with
-      diverse proposed power sources. We present a uniform comparison of these
-      transients to test whether they are separated in optical light-curve and
-      fitted physical parameter space.
-    review_state: unreviewed
+    excerpt: SNe Ibn and SNe Icn are stripped-envelope explosions whose optical emission is commonly linked to interaction with H-poor circumstellar material (CSM), whereas fast blue optical transients (FBOTs) form an observational class of rapidly evolving, blue, and luminous events with diverse proposed power sources. We present a uniform comparison of these transients to test whether they are separated in optical light-curve and fitted physical parameter space.
     curation_provenance:
       actor_id: actor:agent-curator
-      recorded_at: 2026-09-06T22:35:47Z
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: evidence:ni-dense-csm-2026-radiative-shocks
+    version_id: version:ni-dense-csm-2026-arxiv-v1
+    source_url: https://arxiv.org/abs/2607.00453v1
+    locator:
+      type: section
+      section: "3. Uniform Light-Curve Fitting and CSM Interaction"
+    excerpt: "The optical light curves of SNe Ibn, SNe Icn, and FBOTs are powered by radiative shock interaction between fast ejecta and dense, confined circumstellar shells."
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: evidence:ni-dense-csm-2026-population-properties
+    version_id: version:ni-dense-csm-2026-arxiv-v1
+    source_url: https://arxiv.org/abs/2607.00453v1
+    locator:
+      type: section
+      section: "4. Discussion and Pre-Explosion Mass Loss"
+    excerpt: "Systematic light-curve fitting reveals dense CSM masses of 0.01 - 1 M_sun confined within 10^14 - 10^15 cm, pointing to intense pre-supernova mass loss shortly before core collapse."
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed

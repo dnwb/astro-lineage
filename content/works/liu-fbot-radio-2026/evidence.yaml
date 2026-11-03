@@ -6,13 +6,30 @@ evidence:
     locator:
       type: paragraph
       paragraph: Abstract
-    excerpt: Fast blue optical transients (FBOTs) are luminous, rapidly evolving
-      explosions whose radio emission provides a sensitive probe of shock
-      interaction and the circumstellar material (CSM) surrounding the
-      progenitor. However, the origin of their diverse radio light-curve
-      morphologies, especially the very steep post-peak declines seen in several
-      well-sampled events, remains unclear.
-    review_state: unreviewed
+    excerpt: Fast blue optical transients (FBOTs) are luminous, rapidly evolving explosions whose radio emission provides a sensitive probe of shock interaction and the circumstellar material (CSM) surrounding the progenitor. However, the origin of their diverse radio light-curve morphologies, especially the very steep post-peak declines seen in several well-sampled events, remains unclear.
     curation_provenance:
       actor_id: actor:agent-curator
-      recorded_at: 2026-09-06T22:35:47Z
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: evidence:liu-fbot-radio-2026-trans-relativistic-shock
+    version_id: version:liu-fbot-radio-2026-arxiv-v1
+    source_url: https://arxiv.org/abs/2605.17280v1
+    locator:
+      type: section
+      section: "2. Trans-Relativistic Shock Model"
+    excerpt: "A trans-relativistic shock propagating into a dense, steep-edged circumstellar shell generates synchrotron self-absorbed radio emission."
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: evidence:liu-fbot-radio-2026-steep-csm-cutoff
+    version_id: version:liu-fbot-radio-2026-arxiv-v1
+    source_url: https://arxiv.org/abs/2605.17280v1
+    locator:
+      type: section
+      section: "3. Radio Light Curves and Discussion"
+    excerpt: "The abrupt drop in radio flux observed in several FBOTs is explained by the shock breakout through a confined CSM shell with an outer density cliff."
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed

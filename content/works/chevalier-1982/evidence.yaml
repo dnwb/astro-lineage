@@ -6,9 +6,41 @@ evidence:
     locator:
       type: paragraph
       paragraph: Abstract
-    excerpt: The interaction of a uniformly expanding gas with a stationary ambient
-      medium is studied...
-    review_state: unreviewed
+    excerpt: "The interaction of a uniformly expanding gas with a stationary ambient medium is studied. Self-similar solutions are obtained for the interaction of power-law ejecta with a power-law circumstellar medium."
     curation_provenance:
       actor_id: actor:agent-curator
-      recorded_at: 2026-09-06T22:35:47Z
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: evidence:chevalier-1982-density-profile
+    version_id: version:chevalier-1982-journal
+    source_url: https://ui.adsabs.harvard.edu/abs/1982ApJ...258..790C/abstract
+    locator:
+      type: section
+      section: "II. Self-Similar Solutions"
+    excerpt: "The outer density profile of the expanding ejecta is assumed to follow a steep power law rho_ej proportional to t^-3 (r/t)^-n with n between 7 and 12."
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: evidence:chevalier-1982-ambient-medium
+    version_id: version:chevalier-1982-journal
+    source_url: https://ui.adsabs.harvard.edu/abs/1982ApJ...258..790C/abstract
+    locator:
+      type: section
+      section: "II. Self-Similar Solutions"
+    excerpt: "The circumstellar medium is represented by a stationary density distribution rho_CSM = q r^-s, where s=2 describes steady stellar wind and s=0 uniform medium."
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: evidence:chevalier-1982-shock-scaling
+    version_id: version:chevalier-1982-journal
+    source_url: https://ui.adsabs.harvard.edu/abs/1982ApJ...258..790C/abstract
+    locator:
+      type: section
+      section: "III. Hydrodynamic Structure"
+    excerpt: "The shock radius expands according to R_sh proportional to t^m with m = (n-3)/(n-s), driving forward and reverse shocks separated by a contact discontinuity."
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed

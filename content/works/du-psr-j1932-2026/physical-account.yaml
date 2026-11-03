@@ -1,3 +1,78 @@
 work_id: work:du-psr-j1932-2026
-stages: []
-links: []
+stages:
+  - id: stage:du-psr-j1932-spider-pulsar-wind
+    annotation_id: annotation:du-psr-j1932-energy-reservoir
+    label: Spider millisecond pulsar relativistic particle wind
+  - id: stage:du-psr-j1932-companion-evaporated-wind
+    annotation_id: annotation:du-psr-j1932-environment
+    label: Low-mass companion star irradiated evaporation outflow
+  - id: stage:du-psr-j1932-intrabinary-bow-shock
+    annotation_id: annotation:du-psr-j1932-energy-transfer
+    label: Intrabinary colliding wind bow shock structure
+  - id: stage:du-psr-j1932-radio-free-free-eclipse
+    annotation_id: annotation:du-psr-j1932-messenger
+    label: Orbital radio pulse dispersion and free-free absorption eclipse
+  - id: stage:du-psr-j1932-intrabinary-xray-emission
+    annotation_id: annotation:du-psr-j1932-inference-target
+    label: Shock-accelerated non-thermal intrabinary X-ray emission
+links:
+  - id: causal-link:du-psr-j1932-pulsar-to-evaporation
+    source_stage_id: stage:du-psr-j1932-spider-pulsar-wind
+    target_stage_id: stage:du-psr-j1932-companion-evaporated-wind
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Energetic pulsar radiation and wind heat the companion surface, evaporating stellar gas.
+    evidence_ids: [evidence:du-psr-j1932-2026-radio-eclipse]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:du-psr-j1932-pulsar-to-shock
+    source_stage_id: stage:du-psr-j1932-spider-pulsar-wind
+    target_stage_id: stage:du-psr-j1932-intrabinary-bow-shock
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Relativistic pulsar wind impacts the companion outflow to form an intrabinary shock.
+    evidence_ids: [evidence:du-psr-j1932-2026-intrabinary-shock]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:du-psr-j1932-evaporation-to-shock
+    source_stage_id: stage:du-psr-j1932-companion-evaporated-wind
+    target_stage_id: stage:du-psr-j1932-intrabinary-bow-shock
+    relation: enables
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: The evaporated companion plasma provides the confining momentum for the bow shock.
+    evidence_ids: [evidence:du-psr-j1932-2026-intrabinary-shock]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:du-psr-j1932-evaporation-to-eclipse
+    source_stage_id: stage:du-psr-j1932-companion-evaporated-wind
+    target_stage_id: stage:du-psr-j1932-radio-free-free-eclipse
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: High free electron column density along the line of sight absorbs and disperses radio pulses.
+    evidence_ids: [evidence:du-psr-j1932-2026-radio-eclipse]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:du-psr-j1932-shock-to-xray
+    source_stage_id: stage:du-psr-j1932-intrabinary-bow-shock
+    target_stage_id: stage:du-psr-j1932-intrabinary-xray-emission
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Particle acceleration in the shock layer radiates synchrotron X-rays with orbital modulation.
+    evidence_ids: [evidence:du-psr-j1932-2026-intrabinary-shock]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed

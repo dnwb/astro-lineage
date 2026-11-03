@@ -6,13 +6,30 @@ evidence:
     locator:
       type: paragraph
       paragraph: Abstract
-    excerpt: The interaction of supernova ejecta with a surrounding circumstellar
-      medium (CSM) generates a strong shock which can convert the ejecta kinetic
-      energy into observable radiation. Given the diversity of potential CSM
-      structures (arising from diverse mass loss processes such as late-stage
-      stellar outbursts, binary interaction, and winds), the resulting
-      transients can display a wide range of light curve morphologies.
-    review_state: unreviewed
+    excerpt: The interaction of supernova ejecta with a surrounding circumstellar medium (CSM) generates a strong shock which can convert the ejecta kinetic energy into observable radiation. Given the diversity of potential CSM structures (arising from diverse mass loss processes such as late-stage stellar outbursts, binary interaction, and winds), the resulting transients can display a wide range of light curve morphologies.
     curation_provenance:
       actor_id: actor:agent-curator
-      recorded_at: 2026-09-06T22:35:47Z
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: evidence:khatami-kasen-2024-shock-cooling
+    version_id: version:khatami-kasen-2024-arxiv-v2
+    source_url: https://arxiv.org/abs/2304.03360v2
+    locator:
+      type: section
+      section: "2. Shock Dynamics and Radiative Diffusion"
+    excerpt: "Strong radiative shocks in dense CSM convert ejecta kinetic energy into radiation, which diffuses out through the optically thick wind or shell."
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: evidence:khatami-kasen-2024-scaling-relations
+    version_id: version:khatami-kasen-2024-arxiv-v2
+    source_url: https://arxiv.org/abs/2304.03360v2
+    locator:
+      type: section
+      section: "3. Universal Scaling Relations"
+    excerpt: "Universal relations relate peak luminosity and rise time to ejecta mass, velocity, and CSM density parameter, mapping the landscape of thermal transients."
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed

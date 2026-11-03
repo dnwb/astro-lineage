@@ -1,3 +1,111 @@
 work_id: work:kasen-bildsten-2010
-stages: []
-links: []
+stages:
+  - id: stage:kasen-bildsten-magnetar-rotational-energy
+    annotation_id: annotation:kasen-bildsten-energy-reservoir
+    label: Magnetar rotational energy reservoir
+  - id: stage:kasen-bildsten-dipole-spin-down
+    annotation_id: annotation:kasen-bildsten-energy-transfer
+    label: Continuous magnetic dipole spin-down power injection
+  - id: stage:kasen-bildsten-expanding-ejecta
+    annotation_id: annotation:kasen-bildsten-outflow
+    label: Supernova expanding ejecta
+  - id: stage:kasen-bildsten-homologous-expansion
+    annotation_id: annotation:kasen-bildsten-dynamics
+    label: Homologous ejecta expansion dynamics
+  - id: stage:kasen-bildsten-radiative-diffusion
+    annotation_id: annotation:kasen-bildsten-transport-process
+    label: Time-dependent radiative diffusion through ejecta
+  - id: stage:kasen-bildsten-photospheric-emission
+    annotation_id: annotation:kasen-bildsten-emission-process
+    label: Photospheric thermal optical emission
+  - id: stage:kasen-bildsten-superluminous-light-curve
+    annotation_id: annotation:kasen-bildsten-observable
+    label: Superluminous optical light curve
+  - id: stage:kasen-bildsten-inferred-magnetar-parameters
+    annotation_id: annotation:kasen-bildsten-inference-target
+    label: Inferred magnetar initial period and magnetic field
+links:
+  - id: causal-link:kasen-bildsten-rotational-energy-drives-injection
+    source_stage_id: stage:kasen-bildsten-magnetar-rotational-energy
+    target_stage_id: stage:kasen-bildsten-dipole-spin-down
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Magnetar rotational kinetic energy powers the magnetic dipole radiation and Poynting flux.
+    evidence_ids: [evidence:kasen-bildsten-2010-spin-down-power]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:kasen-bildsten-injection-enables-diffusion
+    source_stage_id: stage:kasen-bildsten-dipole-spin-down
+    target_stage_id: stage:kasen-bildsten-radiative-diffusion
+    relation: enables
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Spin-down power thermalizes behind the ejecta and supplies the internal radiation field that diffuses outward.
+    evidence_ids: [evidence:kasen-bildsten-2010-spin-down-power, evidence:kasen-bildsten-2010-light-curve-diffusion]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:kasen-bildsten-ejecta-drives-expansion
+    source_stage_id: stage:kasen-bildsten-expanding-ejecta
+    target_stage_id: stage:kasen-bildsten-homologous-expansion
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Core-collapse explosion ejects several solar masses undergoing homologous expansion.
+    evidence_ids: [evidence:kasen-bildsten-2010-abstract, evidence:kasen-bildsten-2010-light-curve-diffusion]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:kasen-bildsten-expansion-modulates-diffusion
+    source_stage_id: stage:kasen-bildsten-homologous-expansion
+    target_stage_id: stage:kasen-bildsten-radiative-diffusion
+    relation: modulates
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Ejecta expansion decreases optical depth with time, setting the effective diffusion timescale t_d.
+    evidence_ids: [evidence:kasen-bildsten-2010-light-curve-diffusion]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:kasen-bildsten-diffusion-produces-emission
+    source_stage_id: stage:kasen-bildsten-radiative-diffusion
+    target_stage_id: stage:kasen-bildsten-photospheric-emission
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Radiative diffusion carries thermalized energy to the photosphere, producing thermal blackbody emission.
+    evidence_ids: [evidence:kasen-bildsten-2010-light-curve-diffusion]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:kasen-bildsten-emission-produces-light-curve
+    source_stage_id: stage:kasen-bildsten-photospheric-emission
+    target_stage_id: stage:kasen-bildsten-superluminous-light-curve
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Photospheric flux output determines the optical band light curve peak luminosity and duration.
+    evidence_ids: [evidence:kasen-bildsten-2010-abstract, evidence:kasen-bildsten-2010-light-curve-diffusion]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:kasen-bildsten-light-curve-enables-inference
+    source_stage_id: stage:kasen-bildsten-superluminous-light-curve
+    target_stage_id: stage:kasen-bildsten-inferred-magnetar-parameters
+    relation: enables
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Fitting observed superluminous light curves allows inferring magnetar initial period P_0 and dipole field B.
+    evidence_ids: [evidence:kasen-bildsten-2010-spin-down-power, evidence:kasen-bildsten-2010-light-curve-diffusion]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed

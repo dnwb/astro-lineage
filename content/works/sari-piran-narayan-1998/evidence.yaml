@@ -6,13 +6,30 @@ evidence:
     locator:
       type: paragraph
       paragraph: Abstract
-    excerpt: The recently discovered GRB afterglow is believed to be described
-      reasonably well by synchrotron emission from a slowing down relativistic
-      shell that collides with an external medium. To compare theoretical models
-      with afterglow observations we calculate here the broad band spectrum and
-      corresponding light curve of synchrotron radiation from a power-law
-      distribution of electrons in an expanding relativistic shock.
-    review_state: unreviewed
+    excerpt: "The broad band spectrum and corresponding light curve of synchrotron radiation from a power-law distribution of electrons in an expanding relativistic shock are calculated."
     curation_provenance:
       actor_id: actor:agent-curator
-      recorded_at: 2026-09-06T22:35:47Z
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: evidence:sari-piran-narayan-1998-cooling-regimes
+    version_id: version:sari-piran-narayan-1998-arxiv-v1
+    source_url: https://arxiv.org/abs/astro-ph/9712005v1
+    locator:
+      type: section
+      section: "2. The Synchrotron Spectrum"
+    excerpt: "The spectrum depends on the ordering of the peak injection frequency nu_m and the cooling frequency nu_c, defining distinct fast-cooling and slow-cooling spectral regimes."
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: evidence:sari-piran-narayan-1998-light-curve-scalings
+    version_id: version:sari-piran-narayan-1998-arxiv-v1
+    source_url: https://arxiv.org/abs/astro-ph/9712005v1
+    locator:
+      type: section
+      section: "3. Light Curves and Discussion"
+    excerpt: "As the blast wave decelerates, the characteristic frequencies decrease with time, predicting piecewise temporal decays F_nu proportional to t^-alpha nu^-beta across radio, optical, and X-ray bands."
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed

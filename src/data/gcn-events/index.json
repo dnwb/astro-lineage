@@ -1,0 +1,148 @@
+{
+  "events": {
+    "grb-261029a": {
+      "slug": "grb-261029a",
+      "primary_id": "GRB 261029A",
+      "aliases": [
+        "AT 2026ahaw",
+        "GOTO26LLT"
+      ],
+      "event_type": "GRB",
+      "canonical_t0": {
+        "instrument": "Fermi/GBM",
+        "utc_iso": "2026-10-29T01:27:03.000Z",
+        "circular_id": 46113
+      },
+      "best_redshift": {
+        "z": 3.27,
+        "z_err": null,
+        "type": "spectroscopic",
+        "instrument": "Optical Spectroscopy",
+        "circular_id": 46103,
+        "note": ""
+      },
+      "circular_count": 32,
+      "last_updated_utc": "2026-10-30T21:20:44.715Z",
+      "status": "active",
+      "has_photometry": true,
+      "figure_path": "/gcn-figures/grb-261029a.png"
+    },
+    "grb-261026a": {
+      "slug": "grb-261026a",
+      "primary_id": "GRB 261026A",
+      "aliases": [],
+      "event_type": "GRB",
+      "canonical_t0": {
+        "instrument": "SVOM/ECLAIRs",
+        "utc_iso": "2026-10-26T06:09:37.680Z",
+        "circular_id": 46068
+      },
+      "best_redshift": null,
+      "circular_count": 17,
+      "last_updated_utc": "2026-10-30T13:09:20.914Z",
+      "status": "active",
+      "has_photometry": true,
+      "figure_path": "/gcn-figures/grb-261026a.png"
+    },
+    "grb-260730b": {
+      "slug": "grb-260730b",
+      "primary_id": "GRB 260730B",
+      "aliases": [],
+      "event_type": "GRB",
+      "canonical_t0": null,
+      "best_redshift": null,
+      "circular_count": 5,
+      "last_updated_utc": "2026-10-26T14:08:24.837Z",
+      "status": "active",
+      "has_photometry": false,
+      "figure_path": null
+    },
+    "grb-261024d": {
+      "slug": "grb-261024d",
+      "primary_id": "GRB 261024D",
+      "aliases": [],
+      "event_type": "GRB",
+      "canonical_t0": null,
+      "best_redshift": null,
+      "circular_count": 7,
+      "last_updated_utc": "2026-10-30T13:30:23.733Z",
+      "status": "active",
+      "has_photometry": false,
+      "figure_path": null
+    },
+    "ep-261025a": {
+      "slug": "ep-261025a",
+      "primary_id": "EP 261025a",
+      "aliases": [],
+      "event_type": "EP",
+      "canonical_t0": null,
+      "best_redshift": null,
+      "circular_count": 2,
+      "last_updated_utc": "2026-10-27T04:30:30.018Z",
+      "status": "active",
+      "has_photometry": false,
+      "figure_path": null
+    },
+    "grb-221009a": {
+      "slug": "grb-221009a",
+      "primary_id": "GRB 221009A",
+      "aliases": [
+        "GRB 130427A",
+        "GRB 160625B",
+        "GRB 180720B",
+        "GRB 190114C",
+        "GRB 211023A",
+        "GRB 220930A",
+        "SN 1998bw",
+        "SN 2022xiw"
+      ],
+      "event_type": "GRB",
+      "canonical_t0": {
+        "instrument": "Fermi/GBM",
+        "utc_iso": "2022-10-09T13:19:55.000Z",
+        "circular_id": 32663
+      },
+      "best_redshift": {
+        "z": 0.151,
+        "z_err": null,
+        "type": "spectroscopic",
+        "instrument": "Optical Spectroscopy",
+        "circular_id": 32780,
+        "note": ""
+      },
+      "circular_count": 91,
+      "last_updated_utc": "2023-04-23T02:40:59.226Z",
+      "status": "archived",
+      "has_photometry": true,
+      "figure_path": "/gcn-figures/grb-221009a.png"
+    },
+    "grb-211211a": {
+      "slug": "grb-211211a",
+      "primary_id": "GRB 211211A",
+      "aliases": [
+        "GRB 060614",
+        "AT 2017gfo",
+        "AT 7063aa"
+      ],
+      "event_type": "GRB",
+      "canonical_t0": {
+        "instrument": "Fermi/GBM",
+        "utc_iso": "2021-12-11T13:09:59.000Z",
+        "circular_id": 31201
+      },
+      "best_redshift": {
+        "z": 0.076,
+        "z_err": null,
+        "type": "spectroscopic",
+        "instrument": "Optical Spectroscopy",
+        "circular_id": 31230,
+        "note": ""
+      },
+      "circular_count": 29,
+      "last_updated_utc": "2021-12-24T16:40:23.000Z",
+      "status": "archived",
+      "has_photometry": true,
+      "figure_path": "/gcn-figures/grb-211211a.png"
+    }
+  }
+}

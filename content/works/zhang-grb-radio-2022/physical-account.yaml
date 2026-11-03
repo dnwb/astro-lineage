@@ -1,3 +1,78 @@
 work_id: work:zhang-grb-radio-2022
-stages: []
-links: []
+stages:
+  - id: stage:zhang-grb-radio-relativistic-jet
+    annotation_id: annotation:zhang-grb-radio-energy-reservoir
+    label: GRB central engine relativistic jet launch
+  - id: stage:zhang-grb-radio-power-law-medium
+    annotation_id: annotation:zhang-grb-radio-environment
+    label: Generalized power-law circumburst medium density
+  - id: stage:zhang-grb-radio-forward-shock-propagation
+    annotation_id: annotation:zhang-grb-radio-dynamics
+    label: Relativistic forward blast wave shock propagation
+  - id: stage:zhang-grb-radio-synchrotron-spectral-evolution
+    annotation_id: annotation:zhang-grb-radio-inference-target
+    label: Synchrotron characteristic frequency and self-absorption evolution
+  - id: stage:zhang-grb-radio-multiband-light-curves
+    annotation_id: annotation:zhang-grb-radio-observable
+    label: Multi-band radio afterglow light curves and temporal breaks
+links:
+  - id: causal-link:zhang-grb-radio-jet-to-shock
+    source_stage_id: stage:zhang-grb-radio-relativistic-jet
+    target_stage_id: stage:zhang-grb-radio-forward-shock-propagation
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Relativistic jet drives an expanding blast wave into the circumburst medium.
+    evidence_ids: [evidence:zhang-grb-radio-2022-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:zhang-grb-radio-medium-to-shock
+    source_stage_id: stage:zhang-grb-radio-power-law-medium
+    target_stage_id: stage:zhang-grb-radio-forward-shock-propagation
+    relation: enables
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Ambient density structure sets the swept-up mass rate and shock deceleration profile.
+    evidence_ids: [evidence:zhang-grb-radio-2022-blastwave-scaling]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:zhang-grb-radio-shock-to-synchrotron
+    source_stage_id: stage:zhang-grb-radio-forward-shock-propagation
+    target_stage_id: stage:zhang-grb-radio-synchrotron-spectral-evolution
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Shock-accelerated electrons generate synchrotron emission whose peak frequencies depend on bulk Lorentz factor.
+    evidence_ids: [evidence:zhang-grb-radio-2022-blastwave-scaling]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:zhang-grb-radio-synchrotron-to-light-curves
+    source_stage_id: stage:zhang-grb-radio-synchrotron-spectral-evolution
+    target_stage_id: stage:zhang-grb-radio-multiband-light-curves
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Frequency crossings across observing radio bands produce the observed multi-band light curves and breaks.
+    evidence_ids: [evidence:zhang-grb-radio-2022-radio-light-curves]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:zhang-grb-radio-medium-modulates-light-curves
+    source_stage_id: stage:zhang-grb-radio-power-law-medium
+    target_stage_id: stage:zhang-grb-radio-multiband-light-curves
+    relation: modulates
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Ambient density index k uniquely shapes the temporal decay and spectral slope of the radio afterglow.
+    evidence_ids: [evidence:zhang-grb-radio-2022-radio-light-curves]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed

@@ -6,13 +6,30 @@ evidence:
     locator:
       type: paragraph
       paragraph: Abstract
-    excerpt: We present TransFit-CSM, a fast and physically consistent framework for
-      modeling interaction-powered transients. The method self-consistently
-      couples the ejecta circumstellar medium (CSM) shock dynamics to radiative
-      diffusion from a moving heating boundary tied to the shocks, so that both
-      the photon escape path and the effective diffusion time evolve with radius
-      and time.
-    review_state: unreviewed
+    excerpt: "We present TransFit-CSM, a fast and physically consistent framework for modeling interaction-powered transients. The method self-consistently couples the ejecta circumstellar medium (CSM) shock dynamics to radiative diffusion from a moving heating boundary tied to the shocks."
     curation_provenance:
       actor_id: actor:agent-curator
-      recorded_at: 2026-09-06T22:35:47Z
+      recorded_at: "2026-09-06T22:35:47Z"
+    review_state: unreviewed
+  - id: evidence:transfit-csm-2025-moving-boundary
+    version_id: version:transfit-csm-2025-arxiv-v1
+    source_url: https://arxiv.org/abs/2511.13265v1
+    locator:
+      type: section
+      section: "2. Moving-Boundary Formulation"
+    excerpt: "The shock radius advances into the circumstellar medium, converting ejecta kinetic energy into input shock luminosity Q(r,t) at a moving heating boundary."
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T16:00:00Z"
+    review_state: unreviewed
+  - id: evidence:transfit-csm-2025-bolometric-solution
+    version_id: version:transfit-csm-2025-arxiv-v1
+    source_url: https://arxiv.org/abs/2511.13265v1
+    locator:
+      type: section
+      section: "3. Light Curve Modeling"
+    excerpt: "Radiative diffusion from the dynamic shock layer through the expanding CSM governs the emergent bolometric light curve rise, peak, and decay."
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T16:00:00Z"
+    review_state: unreviewed

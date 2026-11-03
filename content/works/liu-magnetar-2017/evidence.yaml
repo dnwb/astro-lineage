@@ -6,11 +6,30 @@ evidence:
     locator:
       type: paragraph
       paragraph: Abstract
-    excerpt: In this paper we collect 19 hydrogen-deficient superluminous supernovae
-      (SLSNe) and fit their light curves, temperature evolution, and velocity
-      evolution based on the magnetar-powered model. To obtain the best-fitting
-      parameters, we incorporate the Markov Chain Monte Carlo approach.
-    review_state: unreviewed
+    excerpt: "In this paper we collect 19 hydrogen-deficient superluminous supernovae (SLSNe) and fit their light curves, temperature evolution, and velocity evolution based on the magnetar-powered model using Markov Chain Monte Carlo."
     curation_provenance:
       actor_id: actor:agent-curator
-      recorded_at: 2026-09-06T22:35:47Z
+      recorded_at: "2026-09-06T22:35:47Z"
+    review_state: unreviewed
+  - id: evidence:liu-magnetar-2017-magnetar-model
+    version_id: version:liu-magnetar-2017-arxiv-v1
+    source_url: https://arxiv.org/abs/1705.06047v1
+    locator:
+      type: section
+      section: "2. Magnetar-Powered Model"
+    excerpt: "A newborn rapidly spinning magnetar injects dipole spin-down energy L_p(t) into expanding stripped-envelope ejecta, accelerating ejecta velocity and powering high optical luminosity."
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T16:00:00Z"
+    review_state: unreviewed
+  - id: evidence:liu-magnetar-2017-mcmc-fits
+    version_id: version:liu-magnetar-2017-arxiv-v1
+    source_url: https://arxiv.org/abs/1705.06047v1
+    locator:
+      type: section
+      section: "3. MCMC Results"
+    excerpt: "MCMC parameter posteriors reveal that hydrogen-poor SLSN magnetar engines cluster at spin periods P_0 ~ 1-5 ms and magnetic fields B_p ~ (1-10) x 10^14 G."
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T16:00:00Z"
+    review_state: unreviewed

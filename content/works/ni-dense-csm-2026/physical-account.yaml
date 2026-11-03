@@ -1,3 +1,93 @@
 work_id: work:ni-dense-csm-2026
-stages: []
-links: []
+stages:
+  - id: stage:ni-dense-csm-stripped-progenitor
+    annotation_id: annotation:ni-dense-csm-progenitor-system
+    label: Stripped massive star progenitor episodic mass loss
+  - id: stage:ni-dense-csm-confined-shell
+    annotation_id: annotation:ni-dense-csm-environment
+    label: Confined circumstellar shell envelope
+  - id: stage:ni-dense-csm-supernova-ejecta
+    annotation_id: annotation:ni-dense-csm-outflow
+    label: Fast stripped-envelope core-collapse ejecta
+  - id: stage:ni-dense-csm-radiative-shock
+    annotation_id: annotation:ni-dense-csm-energy-transfer
+    label: Ejecta-CSM radiative shock interaction
+  - id: stage:ni-dense-csm-photospheric-diffusion
+    annotation_id: annotation:ni-dense-csm-transport-process
+    label: Optical radiation diffusion across dynamic photosphere
+  - id: stage:ni-dense-csm-light-curve-evolution
+    annotation_id: annotation:ni-dense-csm-observable
+    label: Rapidly evolving blue optical transient light curve
+links:
+  - id: causal-link:ni-dense-csm-progenitor-to-shell
+    source_stage_id: stage:ni-dense-csm-stripped-progenitor
+    target_stage_id: stage:ni-dense-csm-confined-shell
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Pre-supernova eruptive mass loss forms a compact, dense circumstellar shell surrounding the star.
+    evidence_ids: [evidence:ni-dense-csm-2026-population-properties]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:ni-dense-csm-progenitor-to-ejecta
+    source_stage_id: stage:ni-dense-csm-stripped-progenitor
+    target_stage_id: stage:ni-dense-csm-supernova-ejecta
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Core collapse of the stripped progenitor star expels high-velocity supernova ejecta.
+    evidence_ids: [evidence:ni-dense-csm-2026-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:ni-dense-csm-ejecta-to-shock
+    source_stage_id: stage:ni-dense-csm-supernova-ejecta
+    target_stage_id: stage:ni-dense-csm-radiative-shock
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Fast ejecta impacts the surrounding confined shell, driving strong radiative shocks.
+    evidence_ids: [evidence:ni-dense-csm-2026-radiative-shocks]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:ni-dense-csm-shell-to-shock
+    source_stage_id: stage:ni-dense-csm-confined-shell
+    target_stage_id: stage:ni-dense-csm-radiative-shock
+    relation: enables
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: High CSM density enables efficient conversion of bulk kinetic energy into thermal radiation.
+    evidence_ids: [evidence:ni-dense-csm-2026-radiative-shocks]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:ni-dense-csm-shock-to-diffusion
+    source_stage_id: stage:ni-dense-csm-radiative-shock
+    target_stage_id: stage:ni-dense-csm-photospheric-diffusion
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Shock-generated thermal photons diffuse outward through the optically thick circumstellar layer.
+    evidence_ids: [evidence:ni-dense-csm-2026-radiative-shocks]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:ni-dense-csm-diffusion-to-light-curve
+    source_stage_id: stage:ni-dense-csm-photospheric-diffusion
+    target_stage_id: stage:ni-dense-csm-light-curve-evolution
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Diffuse radiation escapes at the photosphere, producing luminous, rapidly declining optical emission.
+    evidence_ids: [evidence:ni-dense-csm-2026-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed

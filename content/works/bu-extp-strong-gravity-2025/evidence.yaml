@@ -6,11 +6,30 @@ evidence:
     locator:
       type: paragraph
       paragraph: Abstract
-    excerpt: We present the novel capabilities of the enhanced X-ray Timing and
-      Polarimetry (eXTP) mission to study the strong gravity region around
-      stellar-mass and supermassive black holes through high-throughput
-      spectral-timing and polarimetric observations.
-    review_state: unreviewed
+    excerpt: We present the novel capabilities of the enhanced X-ray Timing and Polarimetry (eXTP) mission to study the strong gravity region around stellar-mass and supermassive black holes through high-throughput spectral-timing and polarimetric observations.
     curation_provenance:
       actor_id: actor:agent-curator
-      recorded_at: 2026-09-20T05:00:00Z
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: evidence:bu-extp-strong-gravity-2025-spectro-timing
+    version_id: version:bu-extp-strong-gravity-2025-arxiv-v1
+    source_url: https://arxiv.org/abs/2506.08105v1
+    locator:
+      type: section
+      section: "2. Spectral-Timing Diagnostics of Strong Gravity"
+    excerpt: "eXTP combines massive collecting area and polarimetry to resolve relativistic iron line reverberation and high-frequency QPOs in the strong gravity regime."
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: evidence:bu-extp-strong-gravity-2025-spacetime-mapping
+    version_id: version:bu-extp-strong-gravity-2025-arxiv-v1
+    source_url: https://arxiv.org/abs/2506.08105v1
+    locator:
+      type: section
+      section: "3. Spacetime Geometry and Polarization Constraints"
+    excerpt: "Polarimetric and timing observations probe frame dragging, black hole spin, and matter dynamics near the innermost stable circular orbit (ISCO)."
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed

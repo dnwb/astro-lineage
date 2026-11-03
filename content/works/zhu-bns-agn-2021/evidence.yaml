@@ -6,12 +6,30 @@ evidence:
     locator:
       type: paragraph
       paragraph: Abstract
-    excerpt: Neutron star mergers are believed to occur in accretion disks around
-      supermassive black holes. Here we show that a putative jet launched from
-      the merger of a binary neutron star (BNS) or a neutron star--black hole
-      (NSBH) merger occurring at the migration trap in an active galactic
-      nucleus (AGN) disk would be choked.
-    review_state: unreviewed
+    excerpt: Neutron star mergers are believed to occur in accretion disks around supermassive black holes. Here we show that a putative jet launched from the merger of a binary neutron star (BNS) or a neutron star--black hole (NSBH) merger occurring at the migration trap in an active galactic nucleus (AGN) disk would be choked.
     curation_provenance:
       actor_id: actor:agent-curator
-      recorded_at: 2026-09-06T22:35:47Z
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: evidence:zhu-bns-agn-2021-choked-jet
+    version_id: version:zhu-bns-agn-2021-arxiv-v3
+    source_url: https://arxiv.org/abs/2011.08428v3
+    locator:
+      type: section
+      section: "2. Jet Propagation and Choking Condition in AGN Disks"
+    excerpt: "Due to extreme gas density in the AGN disk migration trap, relativistic jets launched from neutron star mergers are choked before breaking out."
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: evidence:zhu-bns-agn-2021-shock-breakout-emission
+    version_id: version:zhu-bns-agn-2021-arxiv-v3
+    source_url: https://arxiv.org/abs/2011.08428v3
+    locator:
+      type: section
+      section: "3. Cocoon and Ejecta Shock Breakouts"
+    excerpt: "The choked jet deposits its energy into an expanding cocoon and ejecta shock breakout, powering a luminous UV/optical and soft X-ray transient."
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed

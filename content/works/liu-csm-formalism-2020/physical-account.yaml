@@ -1,3 +1,126 @@
 work_id: work:liu-csm-formalism-2020
-stages: []
-links: []
+stages:
+  - id: stage:liu-csm-formalism-expanding-ejecta
+    annotation_id: annotation:liu-csm-formalism-outflow
+    label: Expanding broken power-law ejecta
+  - id: stage:liu-csm-formalism-expansion-work
+    annotation_id: annotation:liu-csm-formalism-energy-transfer
+    label: Ejecta expansion work energy transfer
+  - id: stage:liu-csm-formalism-csm-medium
+    annotation_id: annotation:liu-csm-formalism-environment
+    label: Pre-existing circumstellar material
+  - id: stage:liu-csm-formalism-homologous-dynamics
+    annotation_id: annotation:liu-csm-formalism-dynamics
+    label: Homologous ejecta expansion dynamics
+  - id: stage:liu-csm-formalism-double-shock
+    annotation_id: annotation:liu-csm-formalism-dynamics
+    label: Forward and reverse shock hydrodynamic interaction
+  - id: stage:liu-csm-formalism-radiative-diffusion
+    annotation_id: annotation:liu-csm-formalism-transport-process
+    label: Diffusion-regulated photon escape through CSM
+  - id: stage:liu-csm-formalism-thermal-photosphere
+    annotation_id: annotation:liu-csm-formalism-emission-process
+    label: Photospheric thermal radiation
+  - id: stage:liu-csm-formalism-bolometric-light-curve
+    annotation_id: annotation:liu-csm-formalism-observable
+    label: Bolometric and multi-band optical light curves
+  - id: stage:liu-csm-formalism-inferred-ejecta-parameters
+    annotation_id: annotation:liu-csm-formalism-inference-target
+    label: Inferred ejecta mass, kinetic energy, and CSM density profile
+links:
+  - id: causal-link:liu-csm-formalism-ejecta-drives-dynamics
+    source_stage_id: stage:liu-csm-formalism-expanding-ejecta
+    target_stage_id: stage:liu-csm-formalism-homologous-dynamics
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Expanding supernova ejecta supplies the velocity profile and kinetic energy for homologous expansion.
+    evidence_ids: [evidence:liu-csm-formalism-2020-shock-formalism]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:liu-csm-formalism-expansion-work-enables-shock
+    source_stage_id: stage:liu-csm-formalism-expansion-work
+    target_stage_id: stage:liu-csm-formalism-double-shock
+    relation: enables
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Mechanical work done by the expanding ejecta supplies internal energy to the shock front upon impact.
+    evidence_ids: [evidence:liu-csm-formalism-2020-shock-formalism]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:liu-csm-formalism-collision-drives-shock
+    source_stage_id: stage:liu-csm-formalism-homologous-dynamics
+    target_stage_id: stage:liu-csm-formalism-double-shock
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Dynamic collision of ejecta with ambient matter drives the self-similar forward and reverse shock system.
+    evidence_ids: [evidence:liu-csm-formalism-2020-shock-formalism]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:liu-csm-formalism-csm-modulates-shock
+    source_stage_id: stage:liu-csm-formalism-csm-medium
+    target_stage_id: stage:liu-csm-formalism-double-shock
+    relation: modulates
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: CSM density slope s and mass distribution modulate the shock deceleration exponent and shock radius evolution.
+    evidence_ids: [evidence:liu-csm-formalism-2020-abstract, evidence:liu-csm-formalism-2020-shock-formalism]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:liu-csm-formalism-shock-enables-diffusion
+    source_stage_id: stage:liu-csm-formalism-double-shock
+    target_stage_id: stage:liu-csm-formalism-radiative-diffusion
+    relation: enables
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Forward and reverse shock dissipation generates input thermal luminosity that enters the radiative diffusion equation.
+    evidence_ids: [evidence:liu-csm-formalism-2020-shock-formalism, evidence:liu-csm-formalism-2020-diffusion-bolometric]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:liu-csm-formalism-diffusion-produces-photosphere
+    source_stage_id: stage:liu-csm-formalism-radiative-diffusion
+    target_stage_id: stage:liu-csm-formalism-thermal-photosphere
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Radiative diffusion through expanding CSM transports energy to the thermal photosphere.
+    evidence_ids: [evidence:liu-csm-formalism-2020-diffusion-bolometric]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:liu-csm-formalism-photosphere-produces-light-curve
+    source_stage_id: stage:liu-csm-formalism-thermal-photosphere
+    target_stage_id: stage:liu-csm-formalism-bolometric-light-curve
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Photospheric thermal radiation produces the emergent bolometric and multi-band light curves.
+    evidence_ids: [evidence:liu-csm-formalism-2020-abstract, evidence:liu-csm-formalism-2020-diffusion-bolometric]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:liu-csm-formalism-light-curve-enables-inference
+    source_stage_id: stage:liu-csm-formalism-bolometric-light-curve
+    target_stage_id: stage:liu-csm-formalism-inferred-ejecta-parameters
+    relation: enables
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Fitting observed bolometric curves enables inferring ejecta mass M_ej, explosion energy E_sn, and CSM mass M_csm.
+    evidence_ids: [evidence:liu-csm-formalism-2020-shock-formalism, evidence:liu-csm-formalism-2020-diffusion-bolometric]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed

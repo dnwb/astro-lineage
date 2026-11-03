@@ -91,6 +91,8 @@ export const TOPIC_FILTER_SPECS = [
 export const TRANSIENT_IDENTIFIER_PATTERNS = [
   // GRBs: e.g. GRB 221009A, GRB 250419A, GRB230307A
   { type: "GRB", regex: /\b(GRB\s*\d{6}[A-Z]?)\b/gi },
+  // Einstein Probe: e.g. EP 240315a, EP260119a, EP J223759.5+531421
+  { type: "EP", regex: /\b(EP\s*(?:\d{6}[a-z]?|J\d{6}(?:\.\d)?[+-]\d{4,6}))\b/gi },
   // Supernovae: e.g. SN 2024ggi, SN 1987A, SN 2023ixf
   { type: "SN", regex: /\b(SN\s*\d{4}[a-z]{1,4})\b/gi },
   // Astronomical Transients: e.g. AT 2024ggi, AT2018hyz, AT 2020mrf
@@ -134,6 +136,8 @@ export function parseTransientEpoch(eventId) {
   if (m) return `20${m[1]}-${m[2]}-${m[3]}`;
   m = id.match(/^GRB\s*(\d{2})(\d{2})(\d{2})/i);
   if (m) return `${parseInt(m[1], 10) > 50 ? "19" : "20"}${m[1]}-${m[2]}-${m[3]}`;
+  m = id.match(/^EP\s*(\d{2})(\d{2})(\d{2})/i);
+  if (m) return `20${m[1]}-${m[2]}-${m[3]}`;
   m = id.match(/^(?:SN|AT)\s*(\d{4})/i);
   if (m) return m[1];
   m = id.match(/^FRB\s*(\d{4}|\d{2})(\d{2})(\d{2})/i);

@@ -1,3 +1,66 @@
 work_id: work:zhu-bns-agn-2021
-stages: []
-links: []
+stages:
+  - id: stage:zhu-bns-agn-binary-coalescence
+    annotation_id: annotation:zhu-bns-agn-energy-reservoir
+    label: Binary neutron star coalescence and relativistic jet launch
+  - id: stage:zhu-bns-agn-dense-disk-environment
+    annotation_id: annotation:zhu-bns-agn-environment
+    label: Dense AGN accretion disk migration trap medium
+  - id: stage:zhu-bns-agn-jet-choking-interaction
+    annotation_id: annotation:zhu-bns-agn-dynamics
+    label: Severe ram-pressure deceleration and jet choking
+  - id: stage:zhu-bns-agn-cocoon-energy-deposition
+    annotation_id: annotation:zhu-bns-agn-energy-dissipation
+    label: Jet kinetic energy thermalization in inflated hot cocoon
+  - id: stage:zhu-bns-agn-shock-breakout-transient
+    annotation_id: annotation:zhu-bns-agn-observable
+    label: Disk surface cocoon shock breakout optical/UV and soft X-ray flash
+links:
+  - id: causal-link:zhu-bns-agn-coalescence-to-choking
+    source_stage_id: stage:zhu-bns-agn-binary-coalescence
+    target_stage_id: stage:zhu-bns-agn-jet-choking-interaction
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Relativistic jet launched from the merger propagates into the surrounding accretion disk.
+    evidence_ids: [evidence:zhu-bns-agn-2021-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:zhu-bns-agn-disk-enables-choking
+    source_stage_id: stage:zhu-bns-agn-dense-disk-environment
+    target_stage_id: stage:zhu-bns-agn-jet-choking-interaction
+    relation: enables
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Enormous gas density of the AGN disk creates immense ram pressure exceeding jet forward thrust.
+    evidence_ids: [evidence:zhu-bns-agn-2021-choked-jet]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:zhu-bns-agn-choking-to-cocoon
+    source_stage_id: stage:zhu-bns-agn-jet-choking-interaction
+    target_stage_id: stage:zhu-bns-agn-cocoon-energy-deposition
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Choked jet stalls within disk scale height, dumping its total kinetic energy into the expanding cocoon.
+    evidence_ids: [evidence:zhu-bns-agn-2021-choked-jet]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:zhu-bns-agn-cocoon-to-breakout
+    source_stage_id: stage:zhu-bns-agn-cocoon-energy-deposition
+    target_stage_id: stage:zhu-bns-agn-shock-breakout-transient
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Expanding cocoon shock breaks through the AGN disk photosphere, producing a brilliant shock breakout transient.
+    evidence_ids: [evidence:zhu-bns-agn-2021-shock-breakout-emission]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed

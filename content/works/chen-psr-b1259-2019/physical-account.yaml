@@ -1,3 +1,66 @@
 work_id: work:chen-psr-b1259-2019
-stages: []
-links: []
+stages:
+  - id: stage:chen-psr-b1259-pulsar-wind-injection
+    annotation_id: annotation:chen-psr-b1259-energy-reservoir
+    label: Relativistic pulsar wind kinetic power injection
+  - id: stage:chen-psr-b1259-be-stellar-disc
+    annotation_id: annotation:chen-psr-b1259-environment
+    label: Inclined equatorial Be stellar decretion disc
+  - id: stage:chen-psr-b1259-disc-crossing-shock
+    annotation_id: annotation:chen-psr-b1259-energy-transfer
+    label: Periastron disc-crossing hydrodynamic and radiative shock
+  - id: stage:chen-psr-b1259-shock-particle-acceleration
+    annotation_id: annotation:chen-psr-b1259-inference-target
+    label: Lepton diffusive shock acceleration
+  - id: stage:chen-psr-b1259-multiwavelength-flares
+    annotation_id: annotation:chen-psr-b1259-observable
+    label: Correlated X-ray and delayed GeV gamma-ray flare light curves
+links:
+  - id: causal-link:chen-psr-b1259-wind-to-crossing
+    source_stage_id: stage:chen-psr-b1259-pulsar-wind-injection
+    target_stage_id: stage:chen-psr-b1259-disc-crossing-shock
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Pulsar wind impacts the dense equatorial circumstellar disc during orbital transit.
+    evidence_ids: [evidence:chen-psr-b1259-2019-disc-passage]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:chen-psr-b1259-disc-to-crossing
+    source_stage_id: stage:chen-psr-b1259-be-stellar-disc
+    target_stage_id: stage:chen-psr-b1259-disc-crossing-shock
+    relation: enables
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Dense Be star disc provides the high gas and photon density needed for strong shock interaction.
+    evidence_ids: [evidence:chen-psr-b1259-2019-disc-passage]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:chen-psr-b1259-crossing-to-acceleration
+    source_stage_id: stage:chen-psr-b1259-disc-crossing-shock
+    target_stage_id: stage:chen-psr-b1259-shock-particle-acceleration
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Intense compression at the shock front accelerates electrons to relativistic Lorentz factors.
+    evidence_ids: [evidence:chen-psr-b1259-2019-broadband-emission]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:chen-psr-b1259-acceleration-to-flares
+    source_stage_id: stage:chen-psr-b1259-shock-particle-acceleration
+    target_stage_id: stage:chen-psr-b1259-multiwavelength-flares
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Relativistic electrons cool via synchrotron (X-ray) and inverse-Compton (GeV/TeV gamma-ray) emission.
+    evidence_ids: [evidence:chen-psr-b1259-2019-broadband-emission]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed

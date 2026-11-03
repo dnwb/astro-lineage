@@ -1,3 +1,108 @@
 work_id: work:metzger-2017
-stages: []
-links: []
+stages:
+  - id: stage:metzger-core-collapse-magnetar-birth
+    annotation_id: annotation:metzger-progenitor-system
+    label: Progenitor core collapse leaving millisecond magnetar remnant
+  - id: stage:metzger-magnetar-rotational-energy-reservoir
+    annotation_id: annotation:metzger-energy-reservoir
+    label: Millisecond magnetar rotational kinetic energy reservoir
+  - id: stage:metzger-continuous-wind-energy-injection
+    annotation_id: annotation:metzger-energy-transfer
+    label: Continuous dipole spin-down and particle wind energy injection
+  - id: stage:metzger-ejecta-homologous-expansion
+    annotation_id: annotation:metzger-dynamics
+    label: Supernova ejecta homologous expansion
+  - id: stage:metzger-radiative-diffusion-slsn-peak
+    annotation_id: annotation:metzger-transport-process
+    label: Radiative diffusion powering superluminous supernova light curve
+  - id: stage:metzger-nebular-expansion-and-dilution
+    annotation_id: annotation:metzger-outflow
+    label: Magnetar wind nebula expansion and plasma dilution
+  - id: stage:metzger-coherent-radio-burst-escape
+    annotation_id: annotation:metzger-phenomenon
+    label: Magnetar flaring and coherent fast radio burst emission
+links:
+  - id: causal-link:metzger-core-collapse-to-reservoir
+    source_stage_id: stage:metzger-core-collapse-magnetar-birth
+    target_stage_id: stage:metzger-magnetar-rotational-energy-reservoir
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Stellar core collapse leaves behind a rapidly spinning millisecond magnetar storing rotational energy.
+    evidence_ids: [evidence:metzger-2017-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:metzger-reservoir-to-injection
+    source_stage_id: stage:metzger-magnetar-rotational-energy-reservoir
+    target_stage_id: stage:metzger-continuous-wind-energy-injection
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Magnetar rotational kinetic energy is extracted via magnetic dipole radiation and relativistic particle wind.
+    evidence_ids: [evidence:metzger-2017-engine-injection]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:metzger-injection-to-expansion
+    source_stage_id: stage:metzger-continuous-wind-energy-injection
+    target_stage_id: stage:metzger-ejecta-homologous-expansion
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Injected energy does work on the ejecta envelope, accelerating and sustaining homologous expansion.
+    evidence_ids: [evidence:metzger-2017-engine-injection]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:metzger-injection-to-diffusion
+    source_stage_id: stage:metzger-continuous-wind-energy-injection
+    target_stage_id: stage:metzger-radiative-diffusion-slsn-peak
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Thermalized wind energy provides the heating source for the superluminous supernova optical emission.
+    evidence_ids: [evidence:metzger-2017-engine-injection]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:metzger-expansion-to-diffusion
+    source_stage_id: stage:metzger-ejecta-homologous-expansion
+    target_stage_id: stage:metzger-radiative-diffusion-slsn-peak
+    relation: enables
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Ejecta expansion lowers optical depth, allowing trapped radiation to diffuse out at the peak.
+    evidence_ids: [evidence:metzger-2017-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:metzger-expansion-to-nebular-dilution
+    source_stage_id: stage:metzger-ejecta-homologous-expansion
+    target_stage_id: stage:metzger-nebular-expansion-and-dilution
+    relation: transforms_into
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Decades of expansion dilute the remnant plasma into a transparent wind nebula.
+    evidence_ids: [evidence:metzger-2017-frb-repetition]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:metzger-dilution-to-radio-burst-escape
+    source_stage_id: stage:metzger-nebular-expansion-and-dilution
+    target_stage_id: stage:metzger-coherent-radio-burst-escape
+    relation: enables
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Drop in free-free optical depth and plasma frequency allows GHz fast radio bursts to propagate through the nebula.
+    evidence_ids: [evidence:metzger-2017-frb-repetition]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed

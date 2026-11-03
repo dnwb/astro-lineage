@@ -6,11 +6,30 @@ evidence:
     locator:
       type: paragraph
       paragraph: Abstract
-    excerpt: PSR B1259-63/LS 2883 is an elliptical pulsar/Be star binary and emits
-      broadband emissions from radio to TeV $γ$-rays. The massive star possesses
-      an equatorial disc, which is inclined with the orbital plane of the
-      pulsar.
-    review_state: unreviewed
+    excerpt: PSR B1259-63/LS 2883 is an elliptical pulsar/Be star binary and emits broadband emissions from radio to TeV gamma-rays. The massive star possesses an equatorial disc, which is inclined with the orbital plane of the pulsar.
     curation_provenance:
       actor_id: actor:agent-curator
-      recorded_at: 2026-09-06T22:35:47Z
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: evidence:chen-psr-b1259-2019-disc-passage
+    version_id: version:chen-psr-b1259-2019-arxiv-v2
+    source_url: https://arxiv.org/abs/1904.07527v2
+    locator:
+      type: section
+      section: "2. Dynamics of Pulsar-Disc Interaction"
+    excerpt: "As the pulsar passes through the equatorial Be stellar disc near periastron, the enhanced target photon and matter density intensifies the intrabinary shock."
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: evidence:chen-psr-b1259-2019-broadband-emission
+    version_id: version:chen-psr-b1259-2019-arxiv-v2
+    source_url: https://arxiv.org/abs/1904.07527v2
+    locator:
+      type: section
+      section: "3. Non-Thermal Radiation and Light Curves"
+    excerpt: "Multi-wavelength modeling demonstrates that synchrotron cooling produces the double-peaked X-ray light curve, while inverse-Compton scattering powers the delayed GeV flare."
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed

@@ -1,3 +1,108 @@
 work_id: work:yu-zhang-gao-2013
-stages: []
-links: []
+stages:
+  - id: stage:yu-zhang-gao-binary-merger-remnant
+    annotation_id: annotation:yu-zhang-gao-phenomenon
+    label: Binary neutron star merger producing millisecond magnetar remnant
+  - id: stage:yu-zhang-gao-rotational-energy-reservoir
+    annotation_id: annotation:yu-zhang-gao-energy-reservoir
+    label: Millisecond magnetar rotational kinetic energy reservoir
+  - id: stage:yu-zhang-gao-spin-down-power-injection
+    annotation_id: annotation:yu-zhang-gao-energy-transfer
+    label: Continuous magnetic dipole spin-down power injection
+  - id: stage:yu-zhang-gao-ejecta-homologous-expansion
+    annotation_id: annotation:yu-zhang-gao-dynamics
+    label: Merger ejecta accelerated homologous expansion
+  - id: stage:yu-zhang-gao-thermalization-and-heating
+    annotation_id: annotation:yu-zhang-gao-energy-transfer
+    label: Spin-down and radioactive heating thermalization within ejecta
+  - id: stage:yu-zhang-gao-radiative-diffusion-escape
+    annotation_id: annotation:yu-zhang-gao-transport-process
+    label: Radiative diffusion escape from the expanding ejecta photosphere
+  - id: stage:yu-zhang-gao-mergernova-light-curve
+    annotation_id: annotation:yu-zhang-gao-observable
+    label: Luminous optical merger-nova light curve
+links:
+  - id: causal-link:yu-zhang-gao-merger-to-reservoir
+    source_stage_id: stage:yu-zhang-gao-binary-merger-remnant
+    target_stage_id: stage:yu-zhang-gao-rotational-energy-reservoir
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Binary neutron star merger leaves behind a rapidly spinning millisecond magnetar storing rotational energy.
+    evidence_ids: [evidence:yu-zhang-gao-2013-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:yu-zhang-gao-merger-to-expansion
+    source_stage_id: stage:yu-zhang-gao-binary-merger-remnant
+    target_stage_id: stage:yu-zhang-gao-ejecta-homologous-expansion
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Dynamical and wind processes during coalescence eject mass that expands outward into ambient space.
+    evidence_ids: [evidence:yu-zhang-gao-2013-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:yu-zhang-gao-reservoir-to-injection
+    source_stage_id: stage:yu-zhang-gao-rotational-energy-reservoir
+    target_stage_id: stage:yu-zhang-gao-spin-down-power-injection
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Magnetar rotational kinetic energy is tapped by magnetic dipole radiation and Poynting wind.
+    evidence_ids: [evidence:yu-zhang-gao-2013-spin-down-injection]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:yu-zhang-gao-injection-to-heating
+    source_stage_id: stage:yu-zhang-gao-spin-down-power-injection
+    target_stage_id: stage:yu-zhang-gao-thermalization-and-heating
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Injected spin-down luminosity thermalizes within the expanding envelope, providing strong continuous heating.
+    evidence_ids: [evidence:yu-zhang-gao-2013-spin-down-injection]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:yu-zhang-gao-expansion-to-diffusion
+    source_stage_id: stage:yu-zhang-gao-ejecta-homologous-expansion
+    target_stage_id: stage:yu-zhang-gao-radiative-diffusion-escape
+    relation: enables
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Ongoing geometric expansion decreases optical depth, opening the radiative diffusion window.
+    evidence_ids: [evidence:yu-zhang-gao-2013-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:yu-zhang-gao-heating-to-diffusion
+    source_stage_id: stage:yu-zhang-gao-thermalization-and-heating
+    target_stage_id: stage:yu-zhang-gao-radiative-diffusion-escape
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: High internal thermal pressure drives radiative diffusion towards the expanding photosphere.
+    evidence_ids: [evidence:yu-zhang-gao-2013-spin-down-injection]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:yu-zhang-gao-diffusion-to-light-curve
+    source_stage_id: stage:yu-zhang-gao-radiative-diffusion-escape
+    target_stage_id: stage:yu-zhang-gao-mergernova-light-curve
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Diffusing thermal photons produce a luminous optical/UV transient exceeding ordinary kilonovae.
+    evidence_ids: [evidence:yu-zhang-gao-2013-mergernova-light-curve]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed

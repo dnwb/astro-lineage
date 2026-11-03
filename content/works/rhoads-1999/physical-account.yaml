@@ -1,3 +1,81 @@
 work_id: work:rhoads-1999
-stages: []
-links: []
+stages:
+  - id: stage:rhoads-collimated-relativistic-jet
+    annotation_id: annotation:rhoads-energy-reservoir
+    label: Collimated relativistic jet central engine injection
+  - id: stage:rhoads-forward-shock-propagation
+    annotation_id: annotation:rhoads-dynamics
+    label: Ultra-relativistic forward shock propagation in ambient medium
+  - id: stage:rhoads-relativistic-deceleration
+    annotation_id: annotation:rhoads-energy-transfer
+    label: Conical relativistic deceleration by swept-up ambient gas
+  - id: stage:rhoads-lateral-expansion-onset
+    annotation_id: annotation:rhoads-dynamics
+    label: Relativistic beaming opening and lateral expansion onset
+  - id: stage:rhoads-exponential-deceleration
+    annotation_id: annotation:rhoads-transport-process
+    label: Sideways spreading driven exponential flow deceleration
+  - id: stage:rhoads-achromatic-jet-break
+    annotation_id: annotation:rhoads-observable
+    label: Achromatic temporal steepening and afterglow jet break
+links:
+  - id: causal-link:rhoads-injection-to-shock
+    source_stage_id: stage:rhoads-collimated-relativistic-jet
+    target_stage_id: stage:rhoads-forward-shock-propagation
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Central engine power injects a relativistic jet that drives an external blast wave.
+    evidence_ids: [evidence:rhoads-1999-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:rhoads-shock-to-deceleration
+    source_stage_id: stage:rhoads-forward-shock-propagation
+    target_stage_id: stage:rhoads-relativistic-deceleration
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Swept-up ambient medium extracts bulk kinetic energy, causing the jet to decelerate.
+    evidence_ids: [evidence:rhoads-1999-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:rhoads-deceleration-to-lateral-expansion
+    source_stage_id: stage:rhoads-relativistic-deceleration
+    target_stage_id: stage:rhoads-lateral-expansion-onset
+    relation: enables
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: When Lorentz factor drops to 1/theta_0, internal sound speed enables lateral expansion.
+    evidence_ids: [evidence:rhoads-1999-lateral-expansion]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:rhoads-lateral-expansion-to-exponential-deceleration
+    source_stage_id: stage:rhoads-lateral-expansion-onset
+    target_stage_id: stage:rhoads-exponential-deceleration
+    relation: drives
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Sideways expansion increases effective cross section and mass sweeping, driving exponential slowing.
+    evidence_ids: [evidence:rhoads-1999-lateral-expansion]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: causal-link:rhoads-exponential-deceleration-to-jet-break
+    source_stage_id: stage:rhoads-exponential-deceleration
+    target_stage_id: stage:rhoads-achromatic-jet-break
+    relation: produces
+    origin: explicit
+    interpretive_risk: interpretive
+    reason: Fast deceleration and spreading geometry combine to produce an achromatic steepening of afterglow light curves.
+    evidence_ids: [evidence:rhoads-1999-jet-break]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed

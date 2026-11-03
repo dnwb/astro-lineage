@@ -1,3 +1,171 @@
 work_id: work:bu-extp-strong-gravity-2025
-annotations: []
+annotations:
+  - id: annotation:bu-extp-strong-gravity-progenitor-system
+    axis: progenitor_system
+    assessment:
+      state: unknown
+      values: []
+    interpretive_risk: descriptive
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:bu-extp-strong-gravity-central-object
+    axis: central_object
+    assessment:
+      state: unknown
+      values: []
+    interpretive_risk: descriptive
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:bu-extp-strong-gravity-energy-reservoir
+    axis: energy_reservoir
+    assessment:
+      state: present
+      values:
+        - term_id: term:central-engine-energy-reservoir
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:bu-extp-strong-gravity-2025-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:bu-extp-strong-gravity-energy-transfer
+    axis: energy_transfer
+    assessment:
+      state: unknown
+      values: []
+    interpretive_risk: descriptive
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:bu-extp-strong-gravity-energy-dissipation
+    axis: energy_dissipation
+    assessment:
+      state: unknown
+      values: []
+    interpretive_risk: descriptive
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:bu-extp-strong-gravity-outflow
+    axis: outflow
+    assessment:
+      state: unknown
+      values: []
+    interpretive_risk: descriptive
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:bu-extp-strong-gravity-environment
+    axis: environment
+    assessment:
+      state: present
+      values:
+        - term_id: term:agn-accretion-disk
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:bu-extp-strong-gravity-2025-spacetime-mapping]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:bu-extp-strong-gravity-dynamics
+    axis: dynamics
+    assessment:
+      state: unknown
+      values: []
+    interpretive_risk: descriptive
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:bu-extp-strong-gravity-particle-interaction
+    axis: particle_interaction
+    assessment:
+      state: unknown
+      values: []
+    interpretive_risk: descriptive
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:bu-extp-strong-gravity-transport-process
+    axis: transport_process
+    assessment:
+      state: unknown
+      values: []
+    interpretive_risk: descriptive
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:bu-extp-strong-gravity-emission-process
+    axis: emission_process
+    assessment:
+      state: unknown
+      values: []
+    interpretive_risk: descriptive
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:bu-extp-strong-gravity-phenomenon
+    axis: phenomenon
+    assessment:
+      state: unknown
+      values: []
+    interpretive_risk: descriptive
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:bu-extp-strong-gravity-messenger
+    axis: messenger
+    assessment:
+      state: present
+      values:
+        - term_id: term:photons
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:bu-extp-strong-gravity-2025-abstract]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:bu-extp-strong-gravity-photon-band
+    axis: photon_band
+    assessment:
+      state: unknown
+      values: []
+    interpretive_risk: descriptive
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:bu-extp-strong-gravity-observable
+    axis: observable
+    assessment:
+      state: unknown
+      values: []
+    interpretive_risk: descriptive
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
+  - id: annotation:bu-extp-strong-gravity-inference-target
+    axis: inference_target
+    assessment:
+      state: present
+      values:
+        - term_id: term:heating-source-parameters
+    interpretive_risk: descriptive
+    evidence_ids: [evidence:bu-extp-strong-gravity-2025-spectro-timing]
+    curation_provenance:
+      actor_id: actor:agent-curator
+      recorded_at: "2026-11-02T12:00:00Z"
+    review_state: unreviewed
 method_annotations: []

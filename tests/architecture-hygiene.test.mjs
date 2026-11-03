@@ -2,6 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { execSync } from "node:child_process";
 import { readdir, readFile } from "node:fs/promises";
+import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -34,7 +35,12 @@ test("architecture-hygiene: git working tree must have zero untracked artifacts 
           .split("\n")
           .map((l) => l.trim())
           .filter((l) => l.startsWith("??"))
-          .filter((l) => !/^\?\?\s+public\/arxiv-figures\/\d{4}\.\d{4,5}(v\d+)?\//.test(l))
+          .filter(
+            (l) =>
+              !/^\?\?\s+public\/(?:arxiv-figures\/\d{4}\.\d{4,5}(v\d+)?\/|gcn-figures\/(?:$|[a-z0-9-]+\.(?:png|svg)$))/.test(
+                l
+              )
+          )
           .join("\n")
       : "";
     assert.equal(
@@ -50,16 +56,48 @@ test("architecture-hygiene: git working tree must have zero untracked artifacts 
 
 test("architecture-hygiene: controlled figure filter exempts valid arXiv figures but catches rogue files", () => {
   const isControlledFigure = (line) =>
-    /^\?\?\s+public\/arxiv-figures\/\d{4}\.\d{4,5}(v\d+)?\//.test(line);
+    /^\?\?\s+public\/(?:arxiv-figures\/\d{4}\.\d{4,5}(v\d+)?\/|gcn-figures\/(?:$|[a-z0-9-]+\.(?:png|svg)$))/.test(
+      line
+    );
 
   assert.equal(isControlledFigure("?? public/arxiv-figures/2609.09285/"), true);
   assert.equal(isControlledFigure("?? public/arxiv-figures/2609.13540v1/"), true);
   assert.equal(isControlledFigure("?? public/arxiv-figures/2610.12345/fig1.png"), true);
+  assert.equal(isControlledFigure("?? public/gcn-figures/"), true);
+  assert.equal(isControlledFigure("?? public/gcn-figures/grb-261029a.png"), true);
 
   assert.equal(isControlledFigure("?? public/arxiv-figures/leak-test.png"), false);
   assert.equal(isControlledFigure("?? public/test-leak.pdf"), false);
   assert.equal(isControlledFigure("?? public/arxiv-figures/temp-artifact.json"), false);
   assert.equal(isControlledFigure("?? public/arxiv-figures/random-folder/image.png"), false);
+  assert.equal(isControlledFigure("?? public/gcn-figures/test.tmp"), false);
+  assert.equal(isControlledFigure("?? public/gcn-figures/sandbox.json"), false);
+});
+
+test("architecture-hygiene: events with fewer than 2 photometry points must suppress figure path and artifacts", async () => {
+  const gcnIndexPath = join(projectRoot, "src", "data", "gcn-events", "index.json");
+  if (!existsSync(gcnIndexPath)) return;
+  const gcnData = JSON.parse(await readFile(gcnIndexPath, "utf8"));
+  const events = gcnData.events || {};
+
+  for (const [slug, meta] of Object.entries(events)) {
+    const ledgerPath = join(projectRoot, "src", "data", "gcn-events", `${slug}.json`);
+    if (!existsSync(ledgerPath)) continue;
+    const ledger = JSON.parse(await readFile(ledgerPath, "utf8"));
+    const opticalCount = (ledger.photometry_points || []).length;
+
+    if (opticalCount < 2) {
+      assert.equal(
+        meta.figure_path,
+        null,
+        `Event ledger ${slug} has ${opticalCount} optical points but index.json declares figure_path: ${meta.figure_path}`
+      );
+      const pngPath = join(projectRoot, "public", "gcn-figures", `${slug}.png`);
+      const svgPath = join(projectRoot, "public", "gcn-figures", `${slug}.svg`);
+      assert.equal(existsSync(pngPath), false, `Found orphaned blank plot file: ${pngPath}`);
+      assert.equal(existsSync(svgPath), false, `Found orphaned blank plot file: ${svgPath}`);
+    }
+  }
 });
 
 test("architecture-hygiene: KaTeX math rendering is strictly encapsulated in src/domain/scientific-text/", async () => {

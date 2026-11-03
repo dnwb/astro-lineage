@@ -1,6 +1,7 @@
 ---
 import SiteNav from "../../components/SiteNav.astro";
 import ReaderText from "../../components/ReaderText.astro";
+import EventFigureShowcase from "../../components/EventFigureShowcase.astro";
 import eventsData from "../../data/scientific-events.json";
 import { formatAnnouncementInBeijing, parseTransientEpoch } from "../../domain/academic-domain.mjs";
 import { loadSiteConfig } from "../../lib/site-config";
@@ -10,8 +11,50 @@ function paperTitle(paper: any): string {
   return paper.title || paper.arxiv_id || "";
 }
 
+interface ScientificEvent {
+  event_id: string;
+  event_type: string;
+  tags: string[];
+  heat_score: number;
+  paper_count: number;
+  headline: string;
+  narrative: string;
+  first_seen: string;
+  last_updated: string;
+  papers: any[];
+  canonical_t0?: { instrument?: string; utc_iso?: string; circular_id?: number } | null;
+  best_redshift?: { z?: number; type?: string; instrument?: string } | null;
+  has_redshift_conflict?: boolean;
+  multi_messenger?: any[];
+  gcn_aliases_label?: string | null;
+  canonical_t0_label?: string | null;
+  best_redshift_label?: string | null;
+  multi_messenger_badges?: string[];
+  gcn_circular_count?: number;
+  gcn_figure_path?: string | null;
+  gcn_aliases?: string[];
+  gcn_slug?: string | null;
+  gcn_status?: string | null;
+  lead_figure?: {
+    url: string;
+    label?: string;
+    caption?: string;
+    category?: string;
+    category_badge?: string;
+    physical_core?: string;
+  } | null;
+  lead_figure_arxiv_id?: string | null;
+}
+
+interface EventWithBjt extends ScientificEvent {
+  usDate: string;
+  bjtDate: string;
+  bjtShort: string;
+  bjtWeekday: string;
+}
+
 const site = loadSiteConfig();
-const allEvents = eventsData.events || [];
+const allEvents: ScientificEvent[] = (eventsData.events as unknown as ScientificEvent[]) || [];
 const topEvents = [...allEvents].sort((a, b) => (b.heat_score || 0) - (a.heat_score || 0)).slice(0, 5);
 
 // Calculate type counts
@@ -27,23 +70,6 @@ const counts: Record<string, number> = {
 for (const e of allEvents) {
   if (counts[e.event_type] !== undefined) counts[e.event_type]++;
   else counts[e.event_type] = 1;
-}
-
-interface EventWithBjt {
-  event_id: string;
-  event_type: string;
-  tags: string[];
-  heat_score: number;
-  paper_count: number;
-  headline: string;
-  narrative: string;
-  first_seen: string;
-  last_updated: string;
-  papers: any[];
-  usDate: string;
-  bjtDate: string;
-  bjtShort: string;
-  bjtWeekday: string;
 }
 
 // Map each event to Beijing Time announcement date
@@ -445,13 +471,38 @@ const dynamicCalendarCss = dynamicMonthCss + "\n" + dynamicDateCss;
                                   <div class="card-id-cluster">
                                     <span class={`event-type-badge ${typeBadgeColor(event.event_type)}`}>{event.event_type}</span>
                                     <h3 class="card-event-name">{event.event_id}</h3>
-                                    {epoch && (
+                                    {event.gcn_aliases_label && (
+                                      <span class="card-aliases-pill" title="Cross-facility aliases">
+                                        aka: {event.gcn_aliases_label}
+                                      </span>
+                                    )}
+                                    {event.canonical_t0_label && (
+                                      <span class="card-t0-pill" title={`Canonical Burst Trigger: ${event.canonical_t0?.instrument || "T0"}`}>
+                                        ⏱️ T₀: {event.canonical_t0_label}
+                                      </span>
+                                    )}
+                                    {event.best_redshift_label && (
+                                      <span class="card-redshift-pill" title={`Tiered Best Redshift: ${event.best_redshift?.type || ""}`}>
+                                        🔴 {event.best_redshift_label}
+                                      </span>
+                                    )}
+                                    {event.multi_messenger_badges && event.multi_messenger_badges.map((badge: string) => (
+                                      <span class="card-messenger-pill" title="Multi-Messenger Counterpart">
+                                        🌐 {badge}
+                                      </span>
+                                    ))}
+                                    {epoch && !event.canonical_t0_label && (
                                       <span class="card-epoch-pill" title="Astrophysical outburst / detection epoch">
                                         ⚡ Outburst: {epoch}
                                       </span>
                                     )}
                                   </div>
                                   <div class="card-metrics-cluster">
+                                    {event.gcn_circular_count ? (
+                                      <span class="metric-gcn-chip" title="NASA GCN Circulars Rapid Follow-up Reports">
+                                        🛰️ <strong>{event.gcn_circular_count}</strong> GCNs
+                                      </span>
+                                    ) : null}
                                     <span class="metric-heat-chip" title="Heat score decays with a 7-day half-life">
                                       🔥 Heat <strong>{event.heat_score}</strong>
                                     </span>
@@ -468,34 +519,70 @@ const dynamicCalendarCss = dynamicMonthCss + "\n" + dynamicDateCss;
                                   </p>
                                 </div>
 
+                                <EventFigureShowcase event={event} prefix="top" />
+
                                 <div class="card-papers-stream">
-                                  <div class="stream-label">📄 Associated Papers & Findings:</div>
-                                  <ul class="station-paper-list">
-                                    {event.papers.map((paper) => {
-                                      const priority = priorityPill(paper.priority);
-                                      const dailyAnchor = `/arxiv-daily/${paper.date}/#card-${paper.arxiv_id}-v${paper.revision || 1}`;
-                                      return (
-                                        <li class="station-paper-item">
-                                          <div class="paper-item-top">
-                                            <span class={`priority-badge ${priority.cls}`}>{priority.label}</span>
-                                            <a href={dailyAnchor} class="paper-title-anchor">
-                                              <span class="paper-arxiv-id font-mono">[{paper.arxiv_id}]</span> {paperTitle(paper)}
-                                            </a>
-                                          </div>
-                                          {paper.bluf_result && (
-                                            <p class="paper-bluf-row">
-                                              <strong class="bluf-key">BLUF:</strong>
-                                              <span class="bluf-val">{paper.bluf_result}</span>
-                                            </p>
-                                          )}
-                                          <div class="paper-links-bar">
-                                            <a href={dailyAnchor} class="link-radar-deep">Daily Radar Analysis →</a>
-                                            <a href={`https://arxiv.org/abs/${paper.arxiv_id}`} target="_blank" rel="noopener noreferrer" class="link-arxiv-origin">arXiv ↗</a>
-                                          </div>
-                                        </li>
-                                      );
-                                    })}
-                                  </ul>
+                                  {event.papers.length > 0 ? (
+                                    <>
+                                      <div class="stream-label">📄 Associated Papers & Findings:</div>
+                                      <ul class="station-paper-list">
+                                        {event.papers.map((paper) => {
+                                          const priority = priorityPill(paper.priority);
+                                          const dailyAnchor = `/arxiv-daily/${paper.date}/#card-${paper.arxiv_id}-v${paper.revision || 1}`;
+                                          return (
+                                            <li class="station-paper-item">
+                                              <div class="paper-item-top">
+                                                <span class={`priority-badge ${priority.cls}`}>{priority.label}</span>
+                                                <a href={dailyAnchor} class="paper-title-anchor">
+                                                  <span class="paper-arxiv-id font-mono">[{paper.arxiv_id}]</span> {paperTitle(paper)}
+                                                </a>
+                                              </div>
+                                              {paper.bluf_result && (
+                                                <p class="paper-bluf-row">
+                                                  <strong class="bluf-key">BLUF:</strong>
+                                                  <span class="bluf-val">{paper.bluf_result}</span>
+                                                </p>
+                                              )}
+                                              {paper.primary_figure && (
+                                                <div class="paper-figure-preview">
+                                                  <a href={paper.primary_figure.url} target="_blank" rel="noopener noreferrer" class="paper-fig-thumb-link" title="Click to view full figure">
+                                                    <img
+                                                      src={paper.primary_figure.url}
+                                                      alt={paper.primary_figure.caption || `${paper.arxiv_id} figure`}
+                                                      class="paper-fig-thumb"
+                                                      loading="lazy"
+                                                    />
+                                                  </a>
+                                                  <div class="paper-fig-meta">
+                                                    <div class="paper-fig-badge-row">
+                                                      <span class="paper-fig-origin-badge">📖 文献原图</span>
+                                                      {paper.primary_figure.category_badge && (
+                                                        <span class="paper-fig-badge">{paper.primary_figure.category_badge}</span>
+                                                      )}
+                                                      <span class="paper-fig-label">{paper.primary_figure.label || "Key Figure"}</span>
+                                                    </div>
+                                                    {paper.primary_figure.physical_core && (
+                                                      <p class="paper-fig-caption">
+                                                        <ReaderText text={paper.primary_figure.physical_core} />
+                                                      </p>
+                                                    )}
+                                                  </div>
+                                                </div>
+                                              )}
+                                              <div class="paper-links-bar">
+                                                <a href={dailyAnchor} class="link-radar-deep">Daily Radar Analysis →</a>
+                                                <a href={`https://arxiv.org/abs/${paper.arxiv_id}`} target="_blank" rel="noopener noreferrer" class="link-arxiv-origin">arXiv ↗</a>
+                                              </div>
+                                            </li>
+                                          );
+                                        })}
+                                      </ul>
+                                    </>
+                                  ) : (
+                                    <div class="gcn-empty-papers-notice">
+                                      ⚡ <strong>GCN Rapid Alert Active</strong>：已聚合 {event.gcn_circular_count || 0} 份 NASA GCN 观测快讯与光变数据点，首篇 arXiv 预印本尚未发表。随访观测持续中。
+                                    </div>
+                                  )}
                                 </div>
                               </article>
                             );
@@ -593,13 +680,38 @@ const dynamicCalendarCss = dynamicMonthCss + "\n" + dynamicDateCss;
                             <div class="card-id-cluster">
                               <span class={`event-type-badge ${typeBadgeColor(event.event_type)}`}>{event.event_type}</span>
                               <h3 class="card-event-name">{event.event_id}</h3>
-                              {epoch && (
+                              {event.gcn_aliases_label && (
+                                <span class="card-aliases-pill" title="Cross-facility aliases">
+                                  aka: {event.gcn_aliases_label}
+                                </span>
+                              )}
+                              {event.canonical_t0_label && (
+                                <span class="card-t0-pill" title={`Canonical Burst Trigger: ${event.canonical_t0?.instrument || "T0"}`}>
+                                  ⏱️ T₀: {event.canonical_t0_label}
+                                </span>
+                              )}
+                              {event.best_redshift_label && (
+                                <span class="card-redshift-pill" title={`Tiered Best Redshift: ${event.best_redshift?.type || ""}`}>
+                                  🔴 {event.best_redshift_label}
+                                </span>
+                              )}
+                              {event.multi_messenger_badges && event.multi_messenger_badges.map((badge: string) => (
+                                <span class="card-messenger-pill" title="Multi-Messenger Counterpart">
+                                  🌐 {badge}
+                                </span>
+                              ))}
+                              {epoch && !event.canonical_t0_label && (
                                 <span class="card-epoch-pill" title="Astrophysical outburst / detection epoch">
                                   ⚡ Outburst: {epoch}
                                 </span>
                               )}
                             </div>
                             <div class="card-metrics-cluster">
+                              {event.gcn_circular_count ? (
+                                <span class="metric-gcn-chip" title="NASA GCN Circulars Rapid Follow-up Reports">
+                                  🛰️ <strong>{event.gcn_circular_count}</strong> GCNs
+                                </span>
+                              ) : null}
                               <span class="metric-heat-chip" title="Heat score decays with a 7-day half-life">
                                 🔥 Heat <strong>{event.heat_score}</strong>
                               </span>
@@ -616,34 +728,70 @@ const dynamicCalendarCss = dynamicMonthCss + "\n" + dynamicDateCss;
                             </p>
                           </div>
 
+                          <EventFigureShowcase event={event} prefix="batch" />
+
                           <div class="card-papers-stream">
-                            <div class="stream-label">📄 Associated Papers & Findings:</div>
-                            <ul class="station-paper-list">
-                              {event.papers.map((paper) => {
-                                const priority = priorityPill(paper.priority);
-                                const dailyAnchor = `/arxiv-daily/${paper.date}/#card-${paper.arxiv_id}-v${paper.revision || 1}`;
-                                return (
-                                  <li class="station-paper-item">
-                                    <div class="paper-item-top">
-                                      <span class={`priority-badge ${priority.cls}`}>{priority.label}</span>
-                                      <a href={dailyAnchor} class="paper-title-anchor">
-                                        <span class="paper-arxiv-id font-mono">[{paper.arxiv_id}]</span> {paperTitle(paper)}
-                                      </a>
-                                    </div>
-                                    {paper.bluf_result && (
-                                      <p class="paper-bluf-row">
-                                        <strong class="bluf-key">BLUF:</strong>
-                                        <span class="bluf-val">{paper.bluf_result}</span>
-                                      </p>
-                                    )}
-                                    <div class="paper-links-bar">
-                                      <a href={dailyAnchor} class="link-radar-deep">Daily Radar Analysis →</a>
-                                      <a href={`https://arxiv.org/abs/${paper.arxiv_id}`} target="_blank" rel="noopener noreferrer" class="link-arxiv-origin">arXiv ↗</a>
-                                    </div>
-                                  </li>
-                                );
-                              })}
-                            </ul>
+                            {event.papers.length > 0 ? (
+                              <>
+                                <div class="stream-label">📄 Associated Papers & Findings:</div>
+                                <ul class="station-paper-list">
+                                  {event.papers.map((paper) => {
+                                    const priority = priorityPill(paper.priority);
+                                    const dailyAnchor = `/arxiv-daily/${paper.date}/#card-${paper.arxiv_id}-v${paper.revision || 1}`;
+                                    return (
+                                      <li class="station-paper-item">
+                                        <div class="paper-item-top">
+                                          <span class={`priority-badge ${priority.cls}`}>{priority.label}</span>
+                                          <a href={dailyAnchor} class="paper-title-anchor">
+                                            <span class="paper-arxiv-id font-mono">[{paper.arxiv_id}]</span> {paperTitle(paper)}
+                                          </a>
+                                        </div>
+                                        {paper.bluf_result && (
+                                          <p class="paper-bluf-row">
+                                            <strong class="bluf-key">BLUF:</strong>
+                                            <span class="bluf-val">{paper.bluf_result}</span>
+                                          </p>
+                                        )}
+                                        {paper.primary_figure && (
+                                          <div class="paper-figure-preview">
+                                            <a href={paper.primary_figure.url} target="_blank" rel="noopener noreferrer" class="paper-fig-thumb-link" title="Click to view full figure">
+                                              <img
+                                                src={paper.primary_figure.url}
+                                                alt={paper.primary_figure.caption || `${paper.arxiv_id} figure`}
+                                                class="paper-fig-thumb"
+                                                loading="lazy"
+                                              />
+                                            </a>
+                                            <div class="paper-fig-meta">
+                                              <div class="paper-fig-badge-row">
+                                                <span class="paper-fig-origin-badge">📖 文献原图</span>
+                                                {paper.primary_figure.category_badge && (
+                                                  <span class="paper-fig-badge">{paper.primary_figure.category_badge}</span>
+                                                )}
+                                                <span class="paper-fig-label">{paper.primary_figure.label || "Key Figure"}</span>
+                                              </div>
+                                              {paper.primary_figure.physical_core && (
+                                                <p class="paper-fig-caption">
+                                                  <ReaderText text={paper.primary_figure.physical_core} />
+                                                </p>
+                                              )}
+                                            </div>
+                                          </div>
+                                        )}
+                                        <div class="paper-links-bar">
+                                          <a href={dailyAnchor} class="link-radar-deep">Daily Radar Analysis →</a>
+                                          <a href={`https://arxiv.org/abs/${paper.arxiv_id}`} target="_blank" rel="noopener noreferrer" class="link-arxiv-origin">arXiv ↗</a>
+                                        </div>
+                                      </li>
+                                    );
+                                  })}
+                                </ul>
+                              </>
+                            ) : (
+                              <div class="gcn-empty-papers-notice">
+                                ⚡ <strong>GCN Rapid Alert Active</strong>：已聚合 {event.gcn_circular_count || 0} 份 NASA GCN 观测快讯与光变数据点，首篇 arXiv 预印本尚未发表。随访观测持续中。
+                              </div>
+                            )}
                           </div>
                         </article>
                       );
@@ -689,13 +837,38 @@ const dynamicCalendarCss = dynamicMonthCss + "\n" + dynamicDateCss;
                             <div class="card-id-cluster">
                               <span class={`event-type-badge ${typeBadgeColor(event.event_type)}`}>{event.event_type}</span>
                               <h3 class="card-event-name">{event.event_id}</h3>
-                              {epoch && (
+                              {event.gcn_aliases_label && (
+                                <span class="card-aliases-pill" title="Cross-facility aliases">
+                                  aka: {event.gcn_aliases_label}
+                                </span>
+                              )}
+                              {event.canonical_t0_label && (
+                                <span class="card-t0-pill" title={`Canonical Burst Trigger: ${event.canonical_t0?.instrument || "T0"}`}>
+                                  ⏱️ T₀: {event.canonical_t0_label}
+                                </span>
+                              )}
+                              {event.best_redshift_label && (
+                                <span class="card-redshift-pill" title={`Tiered Best Redshift: ${event.best_redshift?.type || ""}`}>
+                                  🔴 {event.best_redshift_label}
+                                </span>
+                              )}
+                              {event.multi_messenger_badges && event.multi_messenger_badges.map((badge: string) => (
+                                <span class="card-messenger-pill" title="Multi-Messenger Counterpart">
+                                  🌐 {badge}
+                                </span>
+                              ))}
+                              {epoch && !event.canonical_t0_label && (
                                 <span class="card-epoch-pill" title="Astrophysical outburst / detection epoch">
                                   ⚡ Outburst: {epoch}
                                 </span>
                               )}
                             </div>
                             <div class="card-metrics-cluster">
+                              {event.gcn_circular_count ? (
+                                <span class="metric-gcn-chip" title="NASA GCN Circulars Rapid Follow-up Reports">
+                                  🛰️ <strong>{event.gcn_circular_count}</strong> GCNs
+                                </span>
+                              ) : null}
                               <span class="metric-heat-chip">🔥 Heat <strong>{event.heat_score}</strong></span>
                               <span class="metric-papers-chip">📚 <strong>{event.paper_count}</strong> Papers</span>
                             </div>
@@ -708,29 +881,65 @@ const dynamicCalendarCss = dynamicMonthCss + "\n" + dynamicDateCss;
                             </p>
                           </div>
 
+                          <EventFigureShowcase event={event} prefix="all" />
+
                           <div class="card-papers-stream">
-                            <div class="stream-label">📄 Recent Tracking:</div>
-                            <ul class="station-paper-list">
-                              {event.papers.map((paper) => {
-                                const priority = priorityPill(paper.priority);
-                                const dailyAnchor = `/arxiv-daily/${paper.date}/#card-${paper.arxiv_id}-v${paper.revision || 1}`;
-                                return (
-                                  <li class="station-paper-item">
-                                    <div class="paper-item-top">
-                                      <span class={`priority-badge ${priority.cls}`}>{priority.label}</span>
-                                      <span class="paper-date-pill font-mono">{paper.date}</span>
-                                      <a href={dailyAnchor} class="paper-title-anchor">
-                                        <span class="paper-arxiv-id font-mono">[{paper.arxiv_id}]</span> {paperTitle(paper)}
-                                      </a>
-                                    </div>
-                                    <div class="paper-links-bar">
-                                      <a href={dailyAnchor} class="link-radar-deep">Daily Radar Analysis →</a>
-                                      <a href={`https://arxiv.org/abs/${paper.arxiv_id}`} target="_blank" rel="noopener noreferrer" class="link-arxiv-origin">arXiv ↗</a>
-                                    </div>
-                                  </li>
-                                );
-                              })}
-                            </ul>
+                            {event.papers.length > 0 ? (
+                              <>
+                                <div class="stream-label">📄 Recent Tracking:</div>
+                                <ul class="station-paper-list">
+                                  {event.papers.map((paper) => {
+                                    const priority = priorityPill(paper.priority);
+                                    const dailyAnchor = `/arxiv-daily/${paper.date}/#card-${paper.arxiv_id}-v${paper.revision || 1}`;
+                                    return (
+                                      <li class="station-paper-item">
+                                        <div class="paper-item-top">
+                                          <span class={`priority-badge ${priority.cls}`}>{priority.label}</span>
+                                          <span class="paper-date-pill font-mono">{paper.date}</span>
+                                          <a href={dailyAnchor} class="paper-title-anchor">
+                                            <span class="paper-arxiv-id font-mono">[{paper.arxiv_id}]</span> {paperTitle(paper)}
+                                          </a>
+                                        </div>
+                                        {paper.primary_figure && (
+                                          <div class="paper-figure-preview">
+                                            <a href={paper.primary_figure.url} target="_blank" rel="noopener noreferrer" class="paper-fig-thumb-link" title="Click to view full figure">
+                                              <img
+                                                src={paper.primary_figure.url}
+                                                alt={paper.primary_figure.caption || `${paper.arxiv_id} figure`}
+                                                class="paper-fig-thumb"
+                                                loading="lazy"
+                                              />
+                                            </a>
+                                            <div class="paper-fig-meta">
+                                              <div class="paper-fig-badge-row">
+                                                <span class="paper-fig-origin-badge">📖 文献原图</span>
+                                                {paper.primary_figure.category_badge && (
+                                                  <span class="paper-fig-badge">{paper.primary_figure.category_badge}</span>
+                                                )}
+                                                <span class="paper-fig-label">{paper.primary_figure.label || "Key Figure"}</span>
+                                              </div>
+                                              {paper.primary_figure.physical_core && (
+                                                <p class="paper-fig-caption">
+                                                  <ReaderText text={paper.primary_figure.physical_core} />
+                                                </p>
+                                              )}
+                                            </div>
+                                          </div>
+                                        )}
+                                        <div class="paper-links-bar">
+                                          <a href={dailyAnchor} class="link-radar-deep">Daily Radar Analysis →</a>
+                                          <a href={`https://arxiv.org/abs/${paper.arxiv_id}`} target="_blank" rel="noopener noreferrer" class="link-arxiv-origin">arXiv ↗</a>
+                                        </div>
+                                      </li>
+                                    );
+                                  })}
+                                </ul>
+                              </>
+                            ) : (
+                              <div class="gcn-empty-papers-notice">
+                                ⚡ <strong>GCN Rapid Alert Active</strong>：已聚合 {event.gcn_circular_count || 0} 份 NASA GCN 观测快讯与光变数据点，首篇 arXiv 预印本尚未发表。随访观测持续中。
+                              </div>
+                            )}
                           </div>
                         </article>
                       );
@@ -1613,6 +1822,237 @@ const dynamicCalendarCss = dynamicMonthCss + "\n" + dynamicDateCss;
     padding: 0.15rem 0.5rem;
     border-radius: 0.3rem;
   }
+  .card-aliases-pill {
+    font-size: 0.78rem;
+    font-weight: 600;
+    font-family: ui-monospace, monospace;
+    color: #475569;
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    padding: 0.15rem 0.5rem;
+    border-radius: 0.3rem;
+  }
+  .card-t0-pill {
+    font-size: 0.78rem;
+    font-weight: 600;
+    font-family: ui-monospace, monospace;
+    color: #1e40af;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    padding: 0.15rem 0.5rem;
+    border-radius: 0.3rem;
+  }
+  .card-redshift-pill {
+    font-size: 0.78rem;
+    font-weight: 700;
+    font-family: ui-monospace, monospace;
+    color: #991b1b;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    padding: 0.15rem 0.5rem;
+    border-radius: 0.3rem;
+  }
+  .card-messenger-pill {
+    font-size: 0.78rem;
+    font-weight: 600;
+    font-family: ui-monospace, monospace;
+    color: #065f46;
+    background: #ecfdf5;
+    border: 1px solid #a7f3d0;
+    padding: 0.15rem 0.5rem;
+    border-radius: 0.3rem;
+  }
+  .metric-gcn-chip {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #0284c7;
+    background: #f0f9ff;
+    border: 1px solid #bae6fd;
+    padding: 0.15rem 0.5rem;
+    border-radius: 0.35rem;
+  }
+  .card-gcn-figure-wrapper {
+    margin: 1rem 0;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
+    padding: 0.75rem;
+  }
+  .gcn-figure-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    font-size: 0.82rem;
+  }
+  .gcn-figure-title {
+    font-weight: 700;
+    color: #1e293b;
+  }
+  .gcn-figure-expand {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .gcn-figure-expand:hover {
+    text-decoration: underline;
+  }
+  .gcn-figure-link {
+    display: block;
+    cursor: zoom-in;
+  }
+  .gcn-light-curve-img {
+    width: 100%;
+    height: auto;
+    max-height: 480px;
+    object-fit: contain;
+    border-radius: 0.375rem;
+    border: 1px solid #cbd5e1;
+    background: #ffffff;
+  }
+
+  /* Dual-Tier Visual Showcase (Data-driven Plot vs Preprint Reference) */
+  .card-visual-showcase {
+    margin: 1rem 0;
+  }
+  .figure-tier-container {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
+    overflow: hidden;
+  }
+  .tier-radio-data,
+  .tier-radio-paper {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .tier-segmented-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    background: #f1f5f9;
+    border-bottom: 1px solid #e2e8f0;
+    flex-wrap: wrap;
+  }
+  .tier-segmented-hint {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #64748b;
+    letter-spacing: 0.03em;
+  }
+  .tier-tab-btn {
+    border: 1px solid #cbd5e1;
+    background: #ffffff;
+    color: #475569;
+    font-size: 0.76rem;
+    font-weight: 600;
+    padding: 0.22rem 0.65rem;
+    border-radius: 0.35rem;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.15s ease;
+  }
+  .tier-tab-btn:hover {
+    color: #1e293b;
+    border-color: #94a3b8;
+  }
+  .tier-radio-data:checked ~ .tier-segmented-bar .tier-tab-btn-data {
+    background: #1e40af;
+    color: #ffffff;
+    border-color: #1e40af;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+  }
+  .tier-radio-paper:checked ~ .tier-segmented-bar .tier-tab-btn-paper {
+    background: #0f766e;
+    color: #ffffff;
+    border-color: #0f766e;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+  }
+  .tier-panel {
+    display: none;
+    padding: 0.75rem;
+  }
+  .tier-radio-data:checked ~ .tier-panel-data {
+    display: block;
+  }
+  .tier-radio-paper:checked ~ .tier-panel-paper {
+    display: block;
+  }
+  .tier-data-standalone,
+  .tier-paper-standalone {
+    margin: 1rem 0;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
+    padding: 0.75rem;
+  }
+  .figure-badge-title {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    flex-wrap: wrap;
+  }
+  .tier-tag {
+    font-size: 0.68rem;
+    font-weight: 800;
+    padding: 0.1rem 0.42rem;
+    border-radius: 0.25rem;
+    letter-spacing: 0.02em;
+    flex-shrink: 0;
+  }
+  .tier-tag-data {
+    background: #dbeafe;
+    color: #1e40af;
+    border: 1px solid #bfdbfe;
+  }
+  .tier-tag-paper {
+    background: #ccfbf1;
+    color: #0f766e;
+    border: 1px solid #99f6e4;
+  }
+  .figure-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+  }
+  .gcn-svg-link {
+    color: #059669;
+  }
+  .paper-fig-origin-badge {
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 0.08rem 0.35rem;
+    border-radius: 0.2rem;
+    background: #f1f5f9;
+    color: #475569;
+    border: 1px solid #e2e8f0;
+  }
+  .gcn-empty-papers-notice {
+    font-size: 0.88rem;
+    color: #475569;
+    background: #f8fafc;
+    border-left: 3px solid #0284c7;
+    padding: 0.6rem 0.8rem;
+    border-radius: 0.25rem;
+    margin-top: 0.5rem;
+  }
+  .lead-figure-core-note {
+    margin-top: 0.65rem;
+    font-size: 0.82rem;
+    line-height: 1.55;
+    color: #334155;
+    background: #f1f5f9;
+    padding: 0.55rem 0.85rem;
+    border-radius: 0.35rem;
+    border-left: 3.5px solid #2563eb;
+  }
+  .lead-figure-label {
+    font-weight: 700;
+    color: #1e40af;
+    margin-right: 0.35rem;
+  }
   .card-metrics-cluster {
     display: flex;
     align-items: center;
@@ -1768,6 +2208,75 @@ const dynamicCalendarCss = dynamicMonthCss + "\n" + dynamicDateCss;
     text-decoration: underline;
   }
 
+  .paper-figure-preview {
+    display: flex;
+    gap: 0.85rem;
+    align-items: flex-start;
+    margin: 0.55rem 0;
+    padding: 0.55rem;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.375rem;
+  }
+  .paper-fig-thumb-link {
+    flex-shrink: 0;
+    width: 140px;
+    height: 96px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.25rem;
+    overflow: hidden;
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    cursor: zoom-in;
+  }
+  .paper-fig-thumb {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: transform 0.2s ease;
+  }
+  .paper-fig-thumb-link:hover .paper-fig-thumb {
+    transform: scale(1.05);
+  }
+  .paper-fig-meta {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+  .paper-fig-badge-row {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    flex-wrap: wrap;
+  }
+  .paper-fig-badge {
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 0.08rem 0.38rem;
+    border-radius: 0.2rem;
+    background: #e0f2fe;
+    color: #0369a1;
+  }
+  .paper-fig-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #64748b;
+  }
+  .paper-fig-caption {
+    margin: 0;
+    font-size: 0.78rem;
+    line-height: 1.45;
+    color: #475569;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
   /* Responsive */
   @media (max-width: 860px) {
     .month-split-container {
@@ -1786,6 +2295,13 @@ const dynamicCalendarCss = dynamicMonthCss + "\n" + dynamicDateCss;
     }
     .station-pulse-node {
       left: calc(-1.75rem + 0.5rem - 7px);
+    }
+    .paper-figure-preview {
+      flex-direction: column;
+    }
+    .paper-fig-thumb-link {
+      width: 100%;
+      height: 140px;
     }
   }
 
@@ -1929,6 +2445,81 @@ const dynamicCalendarCss = dynamicMonthCss + "\n" + dynamicDateCss;
     border-color: rgba(56, 189, 248, 0.35);
     color: #7dd3fc;
   }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .card-aliases-pill {
+    background: #0f172a;
+    border-color: #334155;
+    color: #94a3b8;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .card-t0-pill {
+    background: rgba(59, 130, 246, 0.18);
+    border-color: rgba(96, 165, 250, 0.35);
+    color: #93c5fd;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .card-redshift-pill {
+    background: rgba(239, 68, 68, 0.18);
+    border-color: rgba(248, 113, 113, 0.35);
+    color: #fca5a5;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .card-messenger-pill {
+    background: rgba(16, 185, 129, 0.18);
+    border-color: rgba(52, 211, 153, 0.35);
+    color: #6ee7b7;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .metric-gcn-chip {
+    background: rgba(2, 132, 199, 0.2);
+    border-color: rgba(56, 189, 248, 0.4);
+    color: #38bdf8;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .card-gcn-figure-wrapper,
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .figure-tier-container,
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .tier-data-standalone,
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .tier-paper-standalone {
+    background: #0f172a;
+    border-color: #334155;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .tier-segmented-bar {
+    background: #1e293b;
+    border-bottom-color: #334155;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .tier-segmented-hint {
+    color: #94a3b8;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .tier-tab-btn {
+    background: #0f172a;
+    border-color: #334155;
+    color: #cbd5e1;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .tier-tab-btn:hover {
+    border-color: #64748b;
+    color: #f8fafc;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .tier-radio-data:checked ~ .tier-segmented-bar .tier-tab-btn-data {
+    background: #2563eb;
+    color: #ffffff;
+    border-color: #2563eb;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .tier-radio-paper:checked ~ .tier-segmented-bar .tier-tab-btn-paper {
+    background: #0d9488;
+    color: #ffffff;
+    border-color: #0d9488;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .tier-tag-data {
+    background: rgba(59, 130, 246, 0.2);
+    color: #93c5fd;
+    border-color: rgba(96, 165, 250, 0.35);
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .tier-tag-paper {
+    background: rgba(20, 184, 166, 0.2);
+    color: #5eead4;
+    border-color: rgba(45, 212, 191, 0.35);
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .gcn-figure-title {
+    color: #f1f5f9;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .gcn-empty-papers-notice {
+    background: #0f172a;
+    color: #cbd5e1;
+  }
   :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .metric-heat-chip {
     background: rgba(234, 88, 12, 0.18);
     border-color: rgba(251, 146, 60, 0.35);
@@ -1976,6 +2567,32 @@ const dynamicCalendarCss = dynamicMonthCss + "\n" + dynamicDateCss;
     color: #86efac;
   }
   :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .link-arxiv-origin {
+    color: #94a3b8;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .lead-figure-core-note {
+    background: #0f172a;
+    color: #cbd5e1;
+    border-left-color: #60a5fa;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .lead-figure-label {
+    color: #93c5fd;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .paper-figure-preview {
+    background: #0f172a;
+    border-color: #334155;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .paper-fig-thumb-link {
+    background: #1e293b;
+    border-color: #334155;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .paper-fig-badge {
+    background: rgba(14, 165, 233, 0.2);
+    color: #38bdf8;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .paper-fig-label {
+    color: #94a3b8;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .paper-fig-caption {
     color: #94a3b8;
   }
   :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .calendar-hot-events-fold {

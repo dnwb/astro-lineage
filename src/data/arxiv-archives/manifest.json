@@ -1,25 +1,41 @@
 {
   "schema_version": "astrolineage-arxiv-archive-manifest-v1",
-  "updated_at": "2026-11-04T02:01:49.871Z",
+  "updated_at": "2026-11-04T18:22:09.792Z",
   "total_weeks": 9,
-  "total_daily_editions": 41,
+  "total_daily_editions": 42,
   "latest_week_id": "2026-W45",
-  "latest_daily_date": "2026-11-02",
+  "latest_daily_date": "2026-11-03",
   "weeks": [
     {
       "week_id": "2026-W45",
       "title": "Weekly Scientific Lineage · 2026-W45",
       "date_range": "2026-11-02 ~ 2026-11-08",
       "has_weekly_summary": true,
-      "executive_summary": "This week's high-energy transient research traces the unified causal chain from dense nuclear matter equations of state and compact binary coalescence channels to relativistic jet dissipative microphysics and prompt multi-messenger counterpart detection. \n- **Relativistic Jets and Gamma-Ray Bursts**: arXiv:2610.41005 demonstrates that the soft burst GRB 241113B (jointly captured by SVOM and EP) originates from an intrinsically soft, on-axis relativistic top-hat jet propagating into a wind-stratified medium ($s=2$, electron index $p = 2.31 \\pm 0.08$) with an initial Lorentz factor $\\Gamma_0 \\sim 125\\text{--}263$, definitively ruling out shock breakout and heavy baryon contamination models.\n- **Relativistic Plasma Microphysics & Kinetic Dissipation**: arXiv:2611.02126 demonstrates via 2D Tristan-MP v2 kinetic simulations that secondary plasmoid formation in relativistic magnetic reconnection is initiated by an electromagnetic Weibel/current-filamentation instability driven by counter-streaming drift anisotropy near the primary x-line, which is subsequently thermally quenched beyond the isotropization lengthscale $\\ell_{\\rm iso} \\sim 10\\sigma_0 d_0$.\n- **Equation of State & Neutron Star Structure**: arXiv:2610.41846 constraints the radius of PSR J0437-4715 to $R_{\\rm eq} = 11.35_{-0.39}^{+0.40}\\,\\mathrm{km}$ for $M = 1.377_{-0.034}^{+0.038}\\,M_\\odot$ by breaking parameter degeneracies with combined far-UV (HST) and hard X-ray (NuSTAR) pulse profile modeling, effectively ruling out stiff equations of state with $R_{1.4} > 12.0\\,\\mathrm{km}$ at the $68\\%$ credible level.\n- **Multi-Messenger Mergers & Environmental Astrophysics**: arXiv:2611.00440 connects the temporally clustered gravitational-wave pair S190910d/S190910h (separated by $7.1\\,\\mathrm{hr}$) to the Type IIb stripped-envelope core-collapse supernova SN 2019rsq ($M_{\\rm ej} \\simeq 3\\,M_\\odot$, $E_{\\rm K} \\simeq 10^{51}\\,\\mathrm{erg}$), formulating a coherent disk-fragmentation merger channel; meanwhile, arXiv:2610.40958 devises an optimal MDP reinforcement-learning pointing policy for DSA, achieving $75\\%\\text{--}90\\%$ capture fractions for prompt coherent radio flashes from binary neutron star mergers.",
+      "executive_summary": "This week's research deepens the physical causal chain from progenitor collapse and binary coalescence to relativistic jet dissipation and multi-messenger counterpart identification.\n- **Gamma-Ray Bursts & Jet Dynamics**: arXiv:2610.41005 (Huang et al.) conduct the first joint SVOM and EP analysis of GRB 241113B, establishing it as an intrinsically soft XRF observed on-axis with bulk Lorentz factor $\\Gamma_0 \\sim 125\\text{--}263$ decelerating in a wind-like medium ($s=2$), decisively ruling out shock breakout and dirty fireball hypotheses. arXiv:2611.02126 (Sridhar et al.) perform 2D PIC simulations demonstrating that secondary plasmoids in relativistic reconnection sheets are seeded by a Weibel-type current-filamentation instability with peak growth rate $\\Gamma_{\\rm max} \\sim 0.1\\,\\omega_{p0}$, which is quenched beyond an isotropization scale $\\ell_{\\rm iso} \\sim 10\\sigma_0 d_0$.\n- **Dense Environments & Multi-Messenger Transients**: arXiv:2610.40958 (Sharma et al.) deploy deep reinforcement learning (PPO) on the Deep Synoptic Array to optimize rapid GW slewing, achieving $75\\%\\text{--}90\\%$ capture fractions for BNS mergers and probing coherent radio burst luminosities down to $L_{\\rm iso} \\sim 10^{38}\\text{--}10^{39}\\,\\mathrm{erg\\,s^{-1}}$. arXiv:2611.00440 (Biscoveanu et al.) analyze the temporal cluster S190910d/h and SN 2019rsq ($P_{\\rm null} = 7.6 \\times 10^{-5}$), explaining the multi-trigger sequence via sequential gravitational fragmentation and coalescence in a collapsar disk with inspiral timescales $\\tau_{\\rm NSBH} \\sim 1.1\\,\\mathrm{hr}$. arXiv:2610.41119 (Duan et al.) establish the MAGIKS multimodal framework, achieving a kilonova Recall@1 of $39.8\\%$ in massive transient galleries by cross-attending light curves with GW physical ejecta parameters. arXiv:2610.40787 (Garg et al.) demonstrate that AGN disk viscosity dictates BBH merger rates, where $\\alpha=0.1$ yields local rates $\\mathcal{R}(z=0.2) \\sim 0.5\\text{--}6\\,\\mathrm{Gpc^{-3}\\,yr^{-1}}$ matching electromagnetic flare upper limits.\n- **Compact Star Structure & Nuclear Equations of State**: arXiv:2610.41846 (Salmi et al.) resolve structural degeneracies in PSR J0437-4715 by coupling NICER, NuSTAR, and HST STIS far-UV spectroscopy, establishing $R_{\\rm eq} = 11.35_{-0.39}^{+0.40}\\,\\mathrm{km}$ for $M = 1.377_{-0.034}^{+0.038}\\,M_{\\odot}$ and ruling out stiff equations of state with $R > 12.0\\,\\mathrm{km}$ at $68\\%$ credibility. arXiv:2610.41242 (Kuroda et al.) demonstrate that quark-hadron phase transitions trigger secondary collapse in core-collapse supernovae, naturally producing a peaked high-mass neutron star distribution around $\\sim 1.70\\,M_\\odot$. arXiv:2610.40892 (Baiko et al.) show via molecular dynamics that static shear strain $\\varepsilon$ exponentially enhances self-diffusion in crustal Yukawa crystals by lowering the Frenkel defect activation barrier over $N_{\\rm act} \\approx 31$ ions.",
       "statistics": {
-        "total_analyzed": 158,
+        "total_analyzed": 225,
         "must_read_count": 6,
-        "worth_knowing_count": 45,
-        "skip_count": 107
+        "worth_knowing_count": 65,
+        "skip_count": 154
       },
-      "top_picks_count": 10,
+      "top_picks_count": 16,
       "days": [
+        {
+          "date": "2026-11-03",
+          "weekday": "Tue",
+          "week_id": "2026-W45",
+          "batch_id": "announcement-2026-11-03",
+          "total_papers": 67,
+          "analyzed_count": 67,
+          "must_read_count": 0,
+          "worth_knowing_count": 20,
+          "skip_count": 47,
+          "pending_count": 0,
+          "brief_status": "ready",
+          "brief_intro": "Featured reading: \"Jets and winds from the most powerful compact object in NGC 5408\" and 19 other key developments.",
+          "highlights": [],
+          "data_file": "daily/2026-11-03.json"
+        },
         {
           "date": "2026-11-02",
           "weekday": "Mon",

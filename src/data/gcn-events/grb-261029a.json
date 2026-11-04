@@ -104,6 +104,34 @@
       "version_conflict": false
     },
     {
+      "circular_id": 46090,
+      "dt_hours": 0.42,
+      "band": "r",
+      "mag": 19.74,
+      "mag_err": 0.07,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "AB",
+      "telescope": "PKU 60cm",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 46090,
+      "dt_hours": 0.46,
+      "band": "i",
+      "mag": 19.74,
+      "mag_err": 0.19,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "AB",
+      "telescope": "PKU 60cm",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    },
+    {
       "circular_id": 46092,
       "dt_hours": 0.77,
       "band": "VT_B",
@@ -127,6 +155,34 @@
       "limit_sigma": null,
       "system": "AB",
       "telescope": "SVOM/VT",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 46113,
+      "dt_hours": 1.43,
+      "band": "r",
+      "mag": 22.14,
+      "mag_err": null,
+      "is_upper_limit": true,
+      "limit_sigma": 3,
+      "system": "AB",
+      "telescope": "PKU 60cm",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 46113,
+      "dt_hours": 1.5,
+      "band": "i",
+      "mag": 21.48,
+      "mag_err": null,
+      "is_upper_limit": true,
+      "limit_sigma": 3,
+      "system": "AB",
+      "telescope": "PKU 60cm",
       "discrepancy_note": null,
       "time_approximate": false,
       "version_conflict": false
@@ -550,6 +606,20 @@
       "discrepancy_note": null,
       "time_approximate": false,
       "version_conflict": false
+    },
+    {
+      "circular_id": 46104,
+      "dt_hours": 120,
+      "band": "g",
+      "mag": 20.73,
+      "mag_err": 0.02,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "AB",
+      "telescope": "WFST",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
     }
   ],
   "xray_points": [
@@ -596,8 +666,8 @@
       }
     ]
   },
-  "circular_count": 32,
-  "last_circular_id": 46117,
-  "last_updated_utc": "2026-10-30T21:20:44.715Z",
+  "circular_count": 36,
+  "last_circular_id": 46141,
+  "last_updated_utc": "2026-11-04T01:24:41.656Z",
   "status": "active"
 }

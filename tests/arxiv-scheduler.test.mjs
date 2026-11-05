@@ -600,6 +600,11 @@ test("runScheduledArxivRefresh records provisional status before finalization", 
       !ledger.finalized_dates?.includes(date),
       "Scheduled refresh must not mark date as finalized"
     );
+
+    const lastRun = JSON.parse(await readFile(join(artifactRoot, "last-run.json"), "utf8"));
+    assert.equal(lastRun.status, "refreshed");
+    assert.deepEqual(lastRun.refreshed_dates, [date]);
+    assert.equal(lastRun.announcement_date, date);
   } finally {
     await rm(directory, { recursive: true, force: true });
   }

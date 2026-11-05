@@ -423,7 +423,7 @@ export async function runScheduledArxivRefresh({
       .filter((d) => !ledger.finalized_dates?.includes(d))
       .sort();
     await saveLedger(root, ledger);
-    return {
+    const dateResult = {
       status: "refreshed",
       payload,
       refreshed_dates: [announcementDate],
@@ -431,6 +431,17 @@ export async function runScheduledArxivRefresh({
       failed_dates: [],
       time_zone: timeZone,
     };
+    try {
+      await writeJsonAtomically(join(root, "last-run.json"), {
+        status: dateResult.status,
+        announcement_date: announcementDate,
+        refreshed_dates: dateResult.refreshed_dates,
+        pending_dates: dateResult.pending_dates,
+        failed_dates: dateResult.failed_dates,
+        timestamp: new Date().toISOString(),
+      });
+    } catch {}
+    return dateResult;
   }
 
   if (!Number.isInteger(maxBatchesPerRun) || maxBatchesPerRun < 1)
@@ -641,7 +652,7 @@ export async function runScheduledArxivRefresh({
       }
     }
     const completed = remaining.length === 0;
-    return {
+    const finalResult = {
       status: refreshedPrimary ? "refreshed" : "skipped",
       reason: completed ? (refreshedPrimary ? undefined : "already-processed") : "catch-up-pending",
       announcement_date: through,
@@ -654,6 +665,18 @@ export async function runScheduledArxivRefresh({
       active_is_current:
         activeIsCurrent || currentAfterRefresh === through || refreshedPrimary !== null,
     };
+    try {
+      await writeJsonAtomically(join(root, "last-run.json"), {
+        status: finalResult.status,
+        reason: finalResult.reason,
+        announcement_date: finalResult.announcement_date,
+        refreshed_dates: finalResult.refreshed_dates,
+        pending_dates: finalResult.pending_dates,
+        failed_dates: finalResult.failed_dates,
+        timestamp: new Date().toISOString(),
+      });
+    } catch {}
+    return finalResult;
   } finally {
     await releaseRefreshLock(schedulerLock);
   }
@@ -902,13 +925,22 @@ export async function reconcilePreviousEdition({
     markLedgerDateSuccess(ledger, targetDate);
     await saveLedger(root, ledger);
 
-    return {
+    const recResult = {
       status: "reconciled",
       target_date: targetDate,
       total_entries: finalFeed?.entries?.length || 0,
       newly_added: newlyAddedCount,
       finalized: true,
     };
+    try {
+      await writeJsonAtomically(join(root, "last-run.json"), {
+        ...recResult,
+        refreshed_dates: newlyAddedCount > 0 ? [targetDate] : [],
+        timestamp: new Date().toISOString(),
+      });
+    } catch {}
+
+    return recResult;
   } finally {
     await releaseRefreshLock(schedulerLock);
   }

@@ -122,6 +122,19 @@ case "${TASK}" in
     echo "[cron-runner] 步骤 1/4: 执行每日 arXiv 调度器与 AI 研判..."
     node scripts/arxiv-daily-scheduler.mjs
 
+    # 前置短路守卫 (Early Short-circuit Guard):
+    # 针对冬令时阶梯巡检 (10:00, 12:00, 14:00, 16:00)：
+    # 若本轮未拉取到新论文批次且无积压脏周：
+    # 直接短路跳过学术周报生成、GCN 暂现源聚类与全站静态构建 (~1.5 分钟)。
+    REFRESHED_COUNT=$(node -e "try { const r = JSON.parse(require('fs').readFileSync('.cache/arxiv-daily/last-run.json')); console.log(r.refreshed_dates?.length || 0); } catch { console.log(0); }")
+    DIRTY_WEEKS_COUNT=$(node -e "try { const d = JSON.parse(require('fs').readFileSync('.cache/dirty-weeks.json')); console.log(Array.isArray(d) ? d.length : 0); } catch { console.log(0); }")
+
+    if [ "${REFRESHED_COUNT}" -eq 0 ] && [ "${DIRTY_WEEKS_COUNT}" -eq 0 ]; then
+      echo "[cron-runner] ✓ 本轮调度器无新论文批次且无脏周积压，短路跳过周报生成、暂现源聚类与全量构建。"
+      sync_git_data
+      exit 0
+    fi
+
     echo "[cron-runner] 步骤 1.5/4: 执行每周学术脉络总结与脏周级联更新..."
     node scripts/arxiv-weekly-summary.mjs || true
     echo "[cron-runner] 检查并级联更新历史脏自然周..."
@@ -130,6 +143,16 @@ case "${TASK}" in
     echo "[cron-runner] 步骤 1.8/4: 执行 GCN 暂现源巡检与光变曲线绘制..."
     node scripts/gcn-tracker-cli.mjs --all || true
     node scripts/transient-event-cluster.mjs || true
+
+    # 短路守卫 (Short-circuit Guard):
+    # 若本轮未拉取到新论文（如上游空批次或当日已处理），且暂无数据/图表变更或未推送提交，
+    # 则跳过耗时的全站静态构建（~1.5 分钟）与下游重复交付，以退出码 0 快速完成。
+    DATA_CHANGES="$(git status --porcelain src/data/ public/arxiv-weekly/ public/gcn-figures/ 2>/dev/null || true)"
+    UNPUSHED_CHANGES="$(git log origin/master..HEAD --oneline 2>/dev/null || true)"
+    if [ -z "${DATA_CHANGES}" ] && [ -z "${UNPUSHED_CHANGES}" ]; then
+      echo "[cron-runner] ✓ 本轮无新论文或数据变更，系统已是最新状态，短路跳过全量构建与推送。"
+      exit 0
+    fi
 
     echo "[cron-runner] 步骤 2/4: 重新构建全站静态发布页面并热加载 Web 服务..."
     capture_current_build

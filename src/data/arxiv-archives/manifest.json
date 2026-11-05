@@ -1,25 +1,54 @@
 {
   "schema_version": "astrolineage-arxiv-archive-manifest-v1",
-  "updated_at": "2026-11-05T02:02:15.405Z",
+  "updated_at": "2026-11-05T06:52:13.791Z",
   "total_weeks": 9,
-  "total_daily_editions": 42,
+  "total_daily_editions": 43,
   "latest_week_id": "2026-W45",
-  "latest_daily_date": "2026-11-03",
+  "latest_daily_date": "2026-11-04",
   "weeks": [
     {
       "week_id": "2026-W45",
       "title": "Weekly Scientific Lineage · 2026-W45",
       "date_range": "2026-11-02 ~ 2026-11-08",
       "has_weekly_summary": true,
-      "executive_summary": "This week's advances trace the full causal astrophysical chain from nuclear equations of state, microphysical kinetic reconnection, and progenitor binary coalescence to relativistic jet dissipation and multi-messenger electromagnetic signatures.\n- **Relativistic Jets and Prompt Gamma-Ray Bursts**: First SVOM and EP observations of GRB 241113B by Lead Author et al. (arXiv:2610.41005v1) demonstrate an intrinsically soft X-ray rich burst seen on-axis with $\\Gamma_0 \\gtrsim 100$ and $E^{\\mathrm{obs}}_{\\mathrm{peak}} \\approx 35\\text{--}37\\,\\mathrm{keV}$, ruling out both shock breakout and dirty fireball scenarios.\n- **Pulsar Emission Modeling and Dense Matter Equations of State**: Multi-wavelength pulse profile modeling of PSR J0437-4715 by Lead Author et al. (arXiv:2610.41846v1) across NICER, XMM-Newton, NuSTAR, and HST breaks non-thermal power-law degeneracies to constrain $R_{\\mathrm{eq}} = 11.35_{-0.39}^{+0.40}\\,\\mathrm{km}$ and $R_{1.4} = 11.52_{-0.50}^{+0.66}\\,\\mathrm{km}$, disfavoring stiff equations of state with $R > 12.0\\,\\mathrm{km}$ at $68\\%$ credibility.\n- **Microphysical Dissipation and Reconnection Dynamics**: Relativistic kinetic simulations by Lead Author et al. (arXiv:2611.02126v1) uncover that secondary plasmoid formation in current sheets is initiated by a Weibel/current-filamentation instability with peak growth rate $\\Gamma_{\\max} \\sim 0.1\\,\\omega_{p0}$ rather than classical tearing, which is thermally suppressed beyond an isotropization scale $\\ell_{\\mathrm{iso}} \\sim 10\\,\\sigma_0 d_0$.\n- **Compact Binary Progenitors and Multi-Messenger Transients**: Lead Author et al. (arXiv:2610.40958v1) show that early-warning PPO-based antenna scheduling on DSA enables $75\\%\\text{--}90\\%$ capture rates of prompt coherent radio emission at fluences $\\sim 20\\,\\mathrm{mJy\\,ms}$ ($L_{\\mathrm{iso}} \\sim 10^{38}\\text{--}10^{39}\\,\\mathrm{erg\\,s^{-1}}$), while Lead Author et al. (arXiv:2611.00440v1) establish a $7.6 \\times 10^{-5}$ null chance coincidence for the double-GW trigger (S190910d/h) linked to stripped-envelope SN 2019rsq via disk fragmentation.\n- **Cosmic-Ray Acceleration and Nuclear Signatures**: Lead Author et al. (arXiv:2611.00205v1) find a $\\ge 7.2\\sigma$ statistical preference for a two-component binary neutron star merger origin of UHECRs accelerating $r$-process nuclei ($A \\sim 80$) to $R_{\\max} \\approx 7.2\\,\\mathrm{EV}$ and protons to $12\\,\\mathrm{EeV}$, while Lead Author et al. (arXiv:2610.40907v1) show $^{250}\\mathrm{Cm}$ decays dominate the $0.2\\text{--}5\\,\\mathrm{MeV}$ $\\gamma$-ray flux in $2{,}000\\text{--}20{,}000$-year-old remnants.",
+      "executive_summary": "This week’s work connects progenitor and compact-object environments to central-engine activity, outflow and jet dynamics, interaction with surrounding media, energy dissipation and radiation, and ultimately multimessenger observables and physical inference; several papers also develop the plasma and nuclear microphysics needed to interpret these links. The supplied analysis does not identify first-author names, so individual claims below use arXiv identifiers as the traceable grammatical subjects rather than inventing authors.\n\n- **Gravitational-wave counterparts and merger environments**: arXiv:2610.40958 (first author not specified in the supplied analysis) formulated a finite-horizon observing policy for prompt coherent radio searches, reaching simulated capture fractions of about $75\\%$–$90\\%$ for immediately observable BNS events and $30\\%$–$55\\%$ for NSBH events. arXiv:2610.41119 linked multimodal GW and optical information to kilonova ranking, reporting Recall@1 of $39.8\\%$ in galleries of $5{,}000$ transients and $87.3\\%$ for GW170817 under Rubin-like conditions. These studies address complementary stages of the inference chain: obtaining prompt radio coverage and identifying optical ejecta counterparts amid contamination.\n- **Relativistic jets and GRBs**: arXiv:2610.41005 (first author not specified in the supplied analysis) interpreted GRB 241113B as an intrinsically soft, likely on-axis Type II burst, while afterglow modeling favored a wind-like environment and constrained the initial Lorentz factor to $\\Gamma_0>100$ (posterior range about $125$–$263$). The combination disfavors a shock-breakout origin and a heavily baryon-loaded dirty fireball, illustrating why prompt softness alone does not determine viewing geometry or jet composition.\n- **Relativistic plasma dissipation and particle acceleration**: arXiv:2611.02126 identified Weibel-driven current filamentation, rather than ordinary Harris-sheet tearing, as the trigger for secondary plasmoids in its relativistic reconnection simulations; plasma loading subsequently suppresses the anisotropy needed for filamentation. arXiv:2611.05948 found that a strong wave in an overdense pair plasma can transfer about $85\\%$ of its energy to pair kinetic energy, primarily through longitudinal-field acceleration. These are microphysical mechanisms potentially relevant to high-energy transient emission, but their connection to observed transient spectra remains model-dependent.\n- **Compact-object mergers, magnetic amplification, and multimessenger implications**: arXiv:2611.05880 found that the kinematic Kelvin–Helmholtz dynamo becomes approximately Reynolds-number independent at high $\\mathrm{Re}_{\\Delta}$, with $\\gamma_E t_{\\Delta}\\sim0.02$ and amplified mean fields of $10^{14}$–$10^{15}\\,\\mathrm{G}$ in the modeled BNS conditions. arXiv:2611.00205 argued that a two-component BNS-merger source model fits UHECR spectrum and composition data substantially better than single-component alternatives, while predicting a relativistic-jet proton contribution of about $5\\%$–$10\\%$ above $10\\,\\mathrm{EeV}$. These results connect merger-scale field generation and ejecta/jet channels to possible high-energy messengers, although the UHECR attribution is a population-model inference rather than a direct identification.\n- **Supernovae, compact-binary formation, and delayed merger populations**: arXiv:2611.00440 examined a temporally clustered GW pair and Type IIb SN 2019rsq, reporting a pairwise chance-coincidence probability of $7.6\\times10^{-5}$ under its localization tests and modeling the SN with $M_{\\rm ej}\\simeq3\\,M_{\\odot}$ and $E_{\\rm K}\\simeq10^{51}\\,\\mathrm{erg}$. Its proposed common-system interpretation is intriguing but depends on association and formation-channel assumptions. arXiv:2610.40782 inferred an old stellar population for NGC 4993 and found that an efficiency-normalized BNS delay-time model can favor minimum delays of several Gyr over a canonical $10\\,\\mathrm{Myr}$ minimum; this is a host-based constraint that should not be generalized from a single event without population-level tests.\n- **AGN environments and compact-object populations**: arXiv:2610.40787 showed that predicted AGN-disk BBH merger rates vary strongly with disk viscosity and SMBH growth assumptions: for $\\alpha=0.01$, its rate peaks near $z\\simeq1.8$, while $\\alpha=0.1$ gives substantially lower rates and can satisfy the cited electromagnetic-flare upper limits. arXiv:2610.40788 found in simulations that turbulence can simultaneously sustain gas supply and open channels for jet escape, with median jet powers reaching $10^{40}$–$10^{42}\\,\\mathrm{erg\\,s^{-1}}$ for Mach-$4$ driving. Together they emphasize that AGN-assisted transients depend on both population evolution and local gas dynamics.\n- **Compact-star structure and dense-matter constraints**: arXiv:2610.41846 combined far-UV through hard-X-ray pulse-profile information to constrain PSR J0437-4715 to $R_{\\rm eq}=11.35^{+0.40}_{-0.39}\\,\\mathrm{km}$ and $M=1.377^{+0.038}_{-0.034}\\,M_{\\odot}$ in its headline model, reducing spectral-component degeneracies. arXiv:2610.41242 found that a quark–hadron phase transition can trigger a second collapse and shock in its 1D progenitor calculations, producing high-mass neutron-star peaks whose locations depend on the adopted transition model. These are complementary constraints on neutron-star structure: one uses observed pulse profiles, the other explores a proposed supernova formation mechanism.\n- **Ejecta composition and delayed radioactive signatures**: arXiv:2610.40907 identified $^{250}\\mathrm{Cm}$ as a potentially important late-time gamma-ray tracer in strong $r$-process ejecta, with modeled dominance in parts of the $0.2$–$5\\,\\mathrm{MeV}$ photon budget at ages of roughly $2{,}000$–$20{,}000\\,\\mathrm{yr}$. The prediction motivates searches for long-lived nucleosynthetic signatures but depends on uncertain yields, decay data, ejecta conditions, and detectability.\n- **Focused scope and exclusions**: arXiv:2610.40767, arXiv:2610.40774, arXiv:2610.40892, arXiv:2610.41082, and arXiv:2611.02126 have varying degrees of contextual value for nuclear dynamics, compact-object populations, or plasma physics; they are not all direct transient-observation studies. This synthesis therefore distinguishes direct transient relevance from enabling microphysics and broader context instead of treating every retained paper as an equally central explosion result.",
       "statistics": {
-        "total_analyzed": 225,
-        "must_read_count": 6,
-        "worth_knowing_count": 65,
-        "skip_count": 154
+        "total_analyzed": 288,
+        "must_read_count": 8,
+        "worth_knowing_count": 76,
+        "skip_count": 204
       },
-      "top_picks_count": 16,
+      "top_picks_count": 7,
       "days": [
+        {
+          "date": "2026-11-04",
+          "weekday": "Wed",
+          "week_id": "2026-W45",
+          "batch_id": "announcement-2026-11-04",
+          "total_papers": 64,
+          "analyzed_count": 63,
+          "must_read_count": 2,
+          "worth_knowing_count": 11,
+          "skip_count": 50,
+          "pending_count": 1,
+          "brief_status": "ready",
+          "brief_intro": "Featured reading: \"The kinematic Kelvin-Helmholtz instability-driven dynamo: implications for merging compact objects\" and 12 other key developments.",
+          "highlights": [
+            {
+              "arxiv_id": "2611.05880",
+              "priority": "must_read",
+              "title": "The kinematic Kelvin-Helmholtz instability-driven dynamo: implications for merging compact objects",
+              "reason": "This work uncovers the physical chronology of the Kelvin-Helmholtz instability (KHI) kinematic dynamo in binary neutron star mergers, showing that the dynamo is not standard turbulence-driven because asymptotic growth rates become independent of $\\mathrm{Re}$, mediated instead by secondary Rayleigh-Taylor instability (RTI)."
+            },
+            {
+              "arxiv_id": "2611.05948",
+              "priority": "must_read",
+              "title": "Longitudinal-field particle acceleration in channels generated by strong electromagnetic waves in pair plasma",
+              "reason": "This paper investigates the nonlinear interaction of ultra-strong electromagnetic waves with dense pair plasma, discovering that wave depletion is dominated by surfing acceleration in self-generated longitudinal channel fields rather than plasma expulsion, directly revising wave-damping paradigms for fast radio bursts (FRBs)."
+            }
+          ],
+          "data_file": "daily/2026-11-04.json"
+        },
         {
           "date": "2026-11-03",
           "weekday": "Tue",

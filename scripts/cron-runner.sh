@@ -122,6 +122,19 @@ case "${TASK}" in
     echo "[cron-runner] 步骤 1/4: 执行每日 arXiv 调度器与 AI 研判..."
     node scripts/arxiv-daily-scheduler.mjs
 
+    # 前置短路守卫 (Early Short-circuit Guard):
+    # 针对冬令时阶梯巡检 (10:00, 12:00, 14:00, 16:00)：
+    # 若本轮未拉取到新论文批次且无积压脏周：
+    # 直接短路跳过学术周报生成、GCN 暂现源聚类与全站静态构建 (~1.5 分钟)。
+    REFRESHED_COUNT=$(node -e "try { const r = JSON.parse(require('fs').readFileSync('.cache/arxiv-daily/last-run.json')); console.log(r.refreshed_dates?.length || 0); } catch { console.log(0); }")
+    DIRTY_WEEKS_COUNT=$(node -e "try { const d = JSON.parse(require('fs').readFileSync('.cache/dirty-weeks.json')); console.log(Array.isArray(d) ? d.length : 0); } catch { console.log(0); }")
+
+    if [ "${REFRESHED_COUNT}" -eq 0 ] && [ "${DIRTY_WEEKS_COUNT}" -eq 0 ]; then
+      echo "[cron-runner] ✓ 本轮调度器无新论文批次且无脏周积压，短路跳过周报生成、暂现源聚类与全量构建。"
+      sync_git_data
+      exit 0
+    fi
+
     echo "[cron-runner] 步骤 1.5/4: 执行每周学术脉络总结与脏周级联更新..."
     node scripts/arxiv-weekly-summary.mjs || true
     echo "[cron-runner] 检查并级联更新历史脏自然周..."

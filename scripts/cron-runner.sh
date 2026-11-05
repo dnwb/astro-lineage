@@ -131,6 +131,16 @@ case "${TASK}" in
     node scripts/gcn-tracker-cli.mjs --all || true
     node scripts/transient-event-cluster.mjs || true
 
+    # 短路守卫 (Short-circuit Guard):
+    # 若本轮未拉取到新论文（如上游空批次或当日已处理），且暂无数据/图表变更或未推送提交，
+    # 则跳过耗时的全站静态构建（~1.5 分钟）与下游重复交付，以退出码 0 快速完成。
+    DATA_CHANGES="$(git status --porcelain src/data/ public/arxiv-weekly/ public/gcn-figures/ 2>/dev/null || true)"
+    UNPUSHED_CHANGES="$(git log origin/master..HEAD --oneline 2>/dev/null || true)"
+    if [ -z "${DATA_CHANGES}" ] && [ -z "${UNPUSHED_CHANGES}" ]; then
+      echo "[cron-runner] ✓ 本轮无新论文或数据变更，系统已是最新状态，短路跳过全量构建与推送。"
+      exit 0
+    fi
+
     echo "[cron-runner] 步骤 2/4: 重新构建全站静态发布页面并热加载 Web 服务..."
     capture_current_build
     npm run build

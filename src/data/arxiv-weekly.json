@@ -1,124 +1,114 @@
 {
   "schema_version": "astrolineage-weekly-summary-v1",
-  "generated_at": "2026-11-05T07:28:56.542Z",
+  "generated_at": "2026-11-05T18:00:35.953Z",
   "week_id": "2026-W45",
   "title": "Weekly Scientific Lineage · 2026-W45",
   "date_range": "2026-11-02 ~ 2026-11-08",
-  "executive_summary": "This week's high-energy astrophysical literature advances our understanding across the end-to-end causal chain from compact object mergers and core-collapse engines to kinetic microphysics and multimodal electromagnetic follow-up. Key quantitative findings and mechanistic insights are summarized below:\n- **Dense Matter Equation of State and Pulsar Modeling**: Joint analysis of far-UV to hard X-ray data for PSR J0437-4715 by multi-mission collaborations (arXiv:2610.41846) constrains the equatorial radius to $R_{\\rm eq} = 11.35_{-0.39}^{+0.40}\\,\\mathrm{km}$ and $M = 1.377_{-0.034}^{+0.038}\\,M_{\\odot}$, breaking multi-component degeneracies and ruling out stiff equations of state with $R_{1.4} > 12.0\\,\\mathrm{km}$ at the $68\\%$ credibility level.\n- **Gamma-Ray Bursts & Prompt Emission Mechanisms**: Multi-instrument observations of GRB 241113B combining SVOM and Einstein Probe (arXiv:2610.41005) reveal an intrinsically soft Type II burst ($E_{\\rm peak}^{\\rm obs} \\approx 35\\text{--}37\\,\\mathrm{keV}$) with bulk Lorentz factor $\\Gamma_0 \\sim 125\\text{--}263$, definitively ruling out shock breakout and dirty fireball origins for this soft burst.\n- **Compact Binary Mergers, Magnetic Dynamos & GW Multi-Messenger Synergy**: High-resolution 3D MHD simulations (arXiv:2611.05880) reveal that the Kelvin-Helmholtz dynamo at binary neutron star merger shear interfaces saturates at an $\\mathrm{Re}$-independent growth rate $\\gamma_E t_\\Delta \\sim 0.02$ ($\\,\\gamma_E \\simeq 36\\,\\mathrm{ms}^{-1}$), amplifying magnetic fields to $\\overline{B}_z \\sim 10^{14}\\text{--}10^{15}\\,\\mathrm{G}$ at microscopic scales $\\lambda_{\\rm RTI}^\\infty \\approx 6\\,\\mathrm{cm}$. Simultaneously, deep learning and decision-process frameworks (arXiv:2610.40958, arXiv:2610.41119) optimize real-time radio and optical counterpart capture, achieving up to $90\\%$ coherent radio capture fractions and boosting kilonova candidate retrieval from wide-field surveys.\n- **Plasma Kinetics, Reconnection & Wave-Driven Acceleration**: Kinetic 2D/3D PIC simulations demonstrate that secondary plasmoids in relativistic magnetic reconnection are triggered by counter-streaming Weibel/current-filamentation instabilities rather than Harris tearing (arXiv:2611.02126), while strong linearly polarized electromagnetic pulses evacuate pair plasma channels where particles surf superluminal longitudinal electric fields, transferring $\\approx 85\\%$ of pulse energy into kinetic acceleration (arXiv:2611.05948).\n- **Cosmic-Ray Origins & Nuclear Signatures**: Cosmic-ray transport modeling (arXiv:2611.00205) indicates that Pierre Auger Phase I spectrum and composition data favor a two-component binary neutron star merger model at $\\ge 7.2\\sigma$, with $r$-process ejecta contributing $\\sim 7\\%$ of nuclei ($A=80$) and a relativistic proton jet ($E_{\\rm max} \\approx 12\\,\\mathrm{EeV}$); complementary nucleosynthetic calculations (arXiv:2610.40907) demonstrate that $^{250}\\mathrm{Cm}$ decay dominates the $0.2\\text{--}5\\,\\mathrm{MeV}$ line flux in $r$-process remnants at $2{,}000\\text{--}20{,}000\\,\\mathrm{yr}$.",
+  "executive_summary": "This week's research deepens the causal chain from central engine microphysics and dense-matter equations of state to jet dynamics, relativistic particle acceleration, and multi-messenger counterpart identification across the transient sky.\n- **Equation of State & Compact Object Structure**: arXiv:2610.41846 (Salmi et al.) achieved tight simultaneous mass-radius constraints on PSR J0437-4715 ($R_{\\rm eq} = 11.35_{-0.39}^{+0.40}\\,\\mathrm{km}$, $M = 1.377_{-0.034}^{+0.038}\\,M_{\\odot}$) via broadband NICER/XMM/NuSTAR/HST pulse profile modeling, definitively disfavoring stiff EOS models with $R_{1.4} > 12.0\\,\\mathrm{km}$ at the $68\\%$ credible level; arXiv:2610.41242 (Zha et al.) demonstrated that hadron-quark phase transitions in core-collapse supernovae induce secondary shock revivals that concentrate remnant neutron star gravitational masses into narrow high-mass peaks around $\\sim 1.70\\,M_\\odot$; arXiv:2610.41082 (Chau et al.) mapped dynamic two-fluid radial stability boundaries for dark-matter-admixed compact objects, uncovering stable super-Buchdahl surface redshifts ($z_{\\rm OM} > 2$).\n- **Relativistic Jets & Microphysical Acceleration**: arXiv:2610.41005 (Huang et al.) analyzed the joint SVOM/EP detection of GRB 241113B, proving that soft prompt emission ($E_{\\rm peak} \\approx 35\\text{--}37\\,\\mathrm{keV}$) can arise from an intrinsically relativistic on-axis jet ($\\Gamma_0 > 100$) propagating into a stellar wind ($s=2$), thus refuting baryon-loaded dirty fireball and shock breakout scenarios; arXiv:2611.02126 (Sironi et al.) identified current-filamentation/Weibel instabilities near the primary x-line as the microphysical trigger for secondary plasmoid birth in kinetic reconnection, showing that upstream loading suppresses plasmoids beyond an isotropization scale $\\ell_{\\rm iso} \\sim 10\\sigma_0 d_0$; arXiv:2611.05948 (Bao et al.) discovered that strong linearly polarized electromagnetic pulses ($a_0 = 50$) clearing pair plasma channels dissipate $\\approx 85\\%$ of their energy via longitudinal electric field acceleration, phase-locking surfing pairs to normalized energies $\\Delta\\tilde{\\varepsilon} \\approx 12$.\n- **Compact Object Mergers & Engine Dynamos**: arXiv:2611.05880 (Palenzuela et al.) resolved the kinematic Kelvin-Helmholtz dynamo in post-merger shear layers, finding that centrifugal Rayleigh-Taylor instability disrupts vortex sheets and drives Reynolds-independent growth rates $\\gamma_E t_\\Delta \\sim 0.02$ with a Kazantsev spectrum ($k^{3/2}$) amplifying mean vertical fields to $\\overline{B}_z \\sim 10^{14}\\text{--}10^{15}\\,\\mathrm{G}$; arXiv:2611.00440 (Yang et al.) presented statistical and hydrodynamic evidence ($P = 7.6\\times 10^{-5}$) connecting a temporal GW pair (S190910d/h) to Type IIb SN 2019rsq via sequential gravitational fragmentation of a collapsar accretion disk; arXiv:2610.40782 (Bhattacharya et al.) reconstructed an extremely old stellar population ($12.4\\,\\mathrm{Gyr}$) for NGC 4993, constraining binary neutron star merger minimum delay times to $t_{\\rm min} > 7.5\\,\\mathrm{Gyr}$ and challenging standard $t^{-1}$ delay-time distributions.\n- **Multi-Messenger Strategies & Cosmic Environments**: arXiv:2610.40958 (Sarin et al.) established an MDP/PPO reinforcement learning framework enabling the Deep Synoptic Array (DSA) to achieve $75\\%\\text{--}90\\%$ capture rates of prompt coherent radio bursts from BNS mergers during early-warning alerts; arXiv:2610.41119 (Sheng et al.) presented MAGIKS, an align-before-fuse multimodal deep learning model achieving a Recall@1 of $39.8\\%$ in isolating kilonovae from wide-field optical contamination conditioned on GW parameter posteriors; arXiv:2611.00205 (Ehlert et al.) confirmed that Pierre Auger UHECR spectra and composition favor a two-component BNS merger model at $\\ge 7.2\\sigma$ with $r$-process bulk outflows ($R_{\\rm max} \\approx 7.2\\,\\mathrm{EV}$) and relativistic jet proton acceleration ($E^{\\rm jet} \\approx 12\\,\\mathrm{EeV}$).",
   "overview_matrix": [
     {
-      "domain": "Neutron Star Structure & Dense Matter Equation of State",
-      "key_question": "Can joint multi-wavelength pulse profile modeling simultaneously break degeneracies between magnetospheric non-thermal emission, localized hot spots, and diffuse surface emission to tightly constrain the cold dense matter EOS?",
+      "domain": "Equation of State & Dense Matter Microphysics",
+      "key_question": "What are the precise radius and state constraints on supranuclear matter, and how do phase transitions or exotic cores affect neutron star stability and mass distributions?",
       "representative_papers": [
         "2610.41846",
-        "2610.41242"
+        "2610.41242",
+        "2610.41082",
+        "2610.40892"
       ],
-      "core_findings": "- [arXiv:2610.41846] (Multi-mission Collaboration et al.): Joint Bayesian inference spanning HST far-UV ($1150\\text{--}1700\\,\\mathring{\\mathrm{A}}$) to NuSTAR hard X-rays ($3.0\\text{--}16.0\\,\\mathrm{keV}$) for PSR J0437-4715 constrains $R_{\\rm eq} = 11.35_{-0.39}^{+0.40}\\,\\mathrm{km}$, $M = 1.377_{-0.034}^{+0.038}\\,M_\\odot$, and effective warm surface temperature $T_{\\rm else}^\\infty = (2.26 \\pm 0.03) \\times 10^5\\,\\mathrm{K}$, ruling out stiff EOS models with $R_{1.4} > 12.0\\,\\mathrm{km}$ at $68\\%$ credibility.\n- [arXiv:2610.41242] (Progenitor Modeling Team et al.): General-relativistic 1D CCSN simulations with hybrid RDF1.1/RDF1.2 quark-hadron phase transitions show that transition-induced collapse naturally reproduces the observed high-mass neutron star peak at $\\sim 1.70\\,M_\\odot$ across progenitor compactness thresholds $\\xi_{1.75} \\sim 0.59\\text{--}1.07$.",
-      "significance": "Broadband multi-wavelength constraints directly eliminate high-radius degeneracies in millisecond pulsar timing, while hadron-quark phase transitions provide a natural physical explanation for the observed bimodal neutron star mass distribution."
+      "core_findings": "- [arXiv:2610.41846] (Salmi et al.): Joint NICER, XMM-Newton, NuSTAR, and HST pulse-profile modeling of PSR J0437-4715 resolves non-thermal degeneracies to measure $R_{\\rm eq} = 11.35_{-0.39}^{+0.40}\\,\\mathrm{km}$ and $M = 1.377_{-0.034}^{+0.038}\\,M_\\odot$, ruling out stiff EOSs with $R_{1.4} > 12.0\\,\\mathrm{km}$ at $68\\%$ credibility.\n- [arXiv:2610.41242] (Zha et al.): Quark-hadron phase transitions trigger delayed core collapses and secondary shocks that convert high-compactness progenitors into compact remnants, producing a peaked NS mass distribution at $1.55\\text{--}1.72\\,M_\\odot$.\n- [arXiv:2610.41082] (Chau et al.): Dynamic two-fluid radial pulsation stability requires $\\omega_0^2 > 0$, showing that degenerate dark matter envelopes support stable compact configurations with surface gravitational redshifts $z_{\\rm OM} > 2$, transcending the classical Buchdahl limit.\n- [arXiv:2610.40892] (Lau et al.): Elastic shear stress lowers the Frenkel defect activation barrier in bcc crustal lattices, boosting self-diffusion exponentially as $D \\propto \\exp[\\frac{1}{2} N_{\\rm act} \\tilde{\\mu} \\Gamma \\varepsilon^2]$ with an activation core of $N_{\\rm act} \\approx 31$ ions.",
+      "significance": "Multi-wavelength pulse profile modeling and hybrid EOS simulations directly constrain the dense-matter equation of state, confirming soft nucleonic matter at intermediate densities while revealing how crustal microphysics and core phase transitions govern stellar structural stability."
     },
     {
-      "domain": "Relativistic Jets & Gamma-Ray Bursts",
-      "key_question": "What is the physical origin of prompt spectral softness in X-ray rich bursts and X-ray flashes: off-axis jet geometry, shock breakout, dirty fireballs, or intrinsic jet radiative physics?",
+      "domain": "Relativistic Jets & Non-Thermal Dissipation",
+      "key_question": "What microphysical mechanisms govern prompt emission softness, plasmoid births, and extreme particle acceleration in relativistic magnetized plasma flows?",
       "representative_papers": [
-        "2610.41005"
-      ],
-      "core_findings": "- [arXiv:2610.41005] (SVOM & EP Collaboration et al.): Joint prompt and multiband afterglow modeling of GRB 241113B yields $E_{\\rm peak}^{\\rm obs} \\approx 35\\text{--}37\\,\\mathrm{keV}$, bulk Lorentz factor $\\Gamma_0 \\sim 125\\text{--}263$, and forward shock propagation into a wind medium ($s=2$) with electron index $p = 2.31 \\pm 0.08$, ruling out both shock breakout (SBO) and high baryon loading (dirty fireball) scenarios.",
-      "significance": "Confirms that soft X-ray flashes can originate intrinsically from highly relativistic ($\\,\\Gamma_0 > 100$), on-axis dissipative jets rather than geometry-induced viewing angle or baryon-loading effects."
-    },
-    {
-      "domain": "High-Energy Kinetics: Reconnection & Wave-Plasma Acceleration",
-      "key_question": "What microphysical instabilities drive secondary tearing and plasmoid formation in relativistic reconnection, and how do large-amplitude coherent waves dissipate energy in overdense pair plasmas?",
-      "representative_papers": [
+        "2610.41005",
         "2611.02126",
         "2611.05948"
       ],
-      "core_findings": "- [arXiv:2611.02126] (Plasma Simulation Team et al.): Kinetic 2D PIC simulations demonstrate that secondary plasmoids in relativistic reconnection are seeded by a transverse Weibel/current-filamentation instability with peak growth rate $\\Gamma_{\\rm max} \\sim 0.1\\,\\omega_{p0}$ near $\\sigma_0 \\sim 10$, which is suppressed beyond an isotropization length $\\ell_{\\rm iso} \\sim 10\\sigma_0 d_0$ due to sheet density loading.\n- [arXiv:2611.05948] (High-Field Electrodynamics Group et al.): 3D PIC simulations show that strong linearly polarized electromagnetic pulses ($a_0 = 50$) clearing an overdense pair plasma channel ($n_0 = 10 n_{\\rm cr}$) deposit $\\approx 85\\%$ of their energy into pair kinetic energy primarily via longitudinal electric fields ($W_x \\gg W_y$) through superluminal phase-locked surf-riding acceleration.",
-      "significance": "Establishes filamentation-mediated tearing as the origin of reconnection plasmoids and identifies longitudinal wave-surfing as an efficient energy-loss and particle acceleration mechanism in magnetar and FRB environments."
+      "core_findings": "- [arXiv:2610.41005] (Huang et al.): Joint EP/SVOM observations of GRB 241113B reveal a prompt peak energy $E_{\\rm peak} \\approx 35\\text{--}37\\,\\mathrm{keV}$ driven by an on-axis jet with $\\Gamma_0 > 100$ decelerating in a wind profile ($s=2$), ruling out high baryon-loading dirty fireballs and relativistic shock breakouts.\n- [arXiv:2611.02126] (Sironi et al.): Relativistic reconnection layers trigger plasmoids via current-filamentation/Weibel instability driven by drift velocity anisotropy $\\beta_z$ near the x-line, which is quenched beyond $\\ell_{\\rm iso} \\sim 10\\sigma_0 d_0$ as plasma loading isotropizes the sheet.\n- [arXiv:2611.05948] (Bao et al.): Relativistic electromagnetic pulses ($a_0 = 50$) clearing pair plasma channels lose $\\approx 85\\%$ of their energy to longitudinal electric field acceleration $W_x$, accelerating surf-locked pairs to maximum energies $\\Delta\\tilde{\\varepsilon} \\approx 12$ across channel fronts moving at $\\beta_b \\approx 0.83\\text{--}0.89$.",
+      "significance": "Prompt transient softness does not require low bulk Lorentz factors, while kinetic plasma dynamics reveal that Weibel drift instabilities and longitudinal wave surf-acceleration mediate primary magnetic and electromagnetic dissipation in extreme out-flows."
     },
     {
-      "domain": "Binary Neutron Star Dynamos & Multi-Messenger Synergy",
-      "key_question": "How rapidly does shear turbulence amplify magnetic fields during compact binary coalescence, and how can real-time scheduling maximize early multi-messenger counterpart detection?",
+      "domain": "Engine Dynamos & Multi-Messenger Mergers",
+      "key_question": "How are magnetic fields amplified during compact mergers, and what astrophysical mechanisms govern the multi-messenger signatures of gravitational wave sources?",
       "representative_papers": [
         "2611.05880",
-        "2610.40958",
-        "2610.41119"
+        "2611.00440",
+        "2610.40782",
+        "2611.00205"
       ],
-      "core_findings": "- [arXiv:2611.05880] (Turbulence MHD Team et al.): Compressible viscous-resistive MHD simulations reveal that shear winding transitions via centrifugal Rayleigh-Taylor instability into an $\\mathrm{Re}$-independent kinematic dynamo with growth rate $\\gamma_E \\simeq 36\\,\\mathrm{ms}^{-1}$, amplifying vertical magnetic fields to $\\overline{B}_z \\sim 10^{14}\\text{--}10^{15}\\,\\mathrm{G}$ at microscopic scales $\\lambda_{\\rm RTI}^\\infty \\approx 6\\,\\mathrm{cm}$.\n- [arXiv:2610.40958] (Radio Follow-up Collaboration et al.): Formulating DSA antenna pointing as a Markov Decision Process solved via PPO achieves follow-up capture fractions of $75\\%\\text{--}90\\%$ for BNS early-warning alerts, probing coherent 1-ms radio bursts down to isotropic luminosities $L_{\\rm iso} \\sim 10^{38}\\text{--}10^{39}\\,\\mathrm{erg\\,s^{-1}}$.\n- [arXiv:2610.41119] (Multimodal Machine Learning Team et al.): The MAGIKS framework fuses gravitational-wave posteriors and optical light curves via ejecta-conditioned dual cross-attention, improving candidate retrieval from 5000-transient galleries to Recall@1 of $39.8\\%$ compared to $4.8\\%$ for optical-only baselines.",
-      "significance": "Demonstrates rapid magnetar-strength field generation during mergers and provides operational optimization algorithms for immediate radio and optical identification of kilonovae and prompt coherent bursts."
+      "core_findings": "- [arXiv:2611.05880] (Palenzuela et al.): Direct MHD simulations demonstrate that secondary RTI disrupts post-merger shear layers, transitioning the KHI dynamo to an $\\mathrm{Re}$-independent growth rate $\\gamma_E t_\\Delta \\sim 0.02$ (Kazantsev spectrum $k^{3/2}$) amplifying vertical fields to $\\overline{B}_z \\sim 10^{14}\\text{--}10^{15}\\,\\mathrm{G}$.\n- [arXiv:2611.00440] (Yang et al.): A tightly clustered gravitational wave pair (S190910d/h, $\\Delta t = 7.1\\,\\mathrm{hr}$) spatial and temporal coincidence with Type IIb SN 2019rsq ($P = 7.6\\times 10^{-5}$) is explained by disk gravitational fragmentation and sequential compact inspirals inside a single collapsar.\n- [arXiv:2610.40782] (Bhattacharya et al.): Reconstructing the $12.4\\,\\mathrm{Gyr}$ stellar population of NGC 4993 yields a strict constraint $t_{\\rm min} > 7.5\\,\\mathrm{Gyr}$ ($90\\%$ CL) on BNS delay times, exhibiting severe statistical tension with canonical $t^{-1}$ power-law models.\n- [arXiv:2611.00205] (Ehlert et al.): Global multi-messenger modeling of Pierre Auger Phase I data rules out single-component models at $\\ge 7.2\\sigma$, demonstrating that BNS mergers account for both heavy $r$-process nuclei ($A=80, R_{\\rm max} \\approx 7.2\\,\\mathrm{EV}$) and jet-accelerated protons ($E^{\\rm jet} \\approx 12\\,\\mathrm{EeV}$).",
+      "significance": "Shear dynamos naturally generate magnetar-strength fields on millisecond timescales during mergers, while observed multi-messenger transients indicate complex formation channels ranging from collapsar disk fragmentation to delayed cosmic merger histories."
     },
     {
-      "domain": "Cosmic Rays, Nucleosynthesis & Remnant Signatures",
-      "key_question": "Can binary neutron star mergers explain the observed spectrum, mass composition, and neutrino limits of UHECRs, and what long-lived radioactive gamma-ray lines identify strong r-process remnants?",
+      "domain": "Prompt Follow-up, Transient Classification & Dense Environments",
+      "key_question": "How can multi-messenger observation strategies and classification frameworks be optimized to filter real transient counterparts in complex astrophysical environments?",
       "representative_papers": [
-        "2611.00205",
+        "2610.40958",
+        "2610.41119",
+        "2610.40787",
+        "2610.40767",
+        "2610.40788",
+        "2610.40774",
         "2610.40907"
       ],
-      "core_findings": "- [arXiv:2611.00205] (Cosmic Ray Consortium et al.): Combined fits to Pierre Auger Phase I spectrum and composition data demonstrate that a two-component BNS merger model (bulk $r$-process ejecta with $R_{\\rm max} \\approx 7.2\\,\\mathrm{EV}$ plus a $5\\text{--}10\\%$ relativistic proton jet with $E_{\\rm max} \\approx 12\\,\\mathrm{EeV}$) is preferred over single-component models at $\\ge 7.2\\sigma$.\n- [arXiv:2610.40907] (Nucleosynthesis Group et al.): Comprehensive nuclear reaction network calculations identify $^{250}\\mathrm{Cm}$ ($t_{1/2} \\approx 8300\\,\\mathrm{yr}$) as the dominant gamma-ray emitter ($67\\%\\text{--}87\\%$ of the $0.2\\text{--}5\\,\\mathrm{MeV}$ flux) in strong $r$-process remnants at $t \\sim 2{,}000\\text{--}20{,}000\\,\\mathrm{yr}$, producing distinct diagnostic nuclear lines at $989\\,\\mathrm{keV}$, $1032\\,\\mathrm{keV}$, $1079\\,\\mathrm{keV}$, and $1596\\,\\mathrm{keV}$.",
-      "significance": "Establishes a self-consistent picture where BNS mergers account for both UHECR composition trends and late-time MeV gamma-ray line signatures in galactic supernova/merger remnants."
+      "core_findings": "- [arXiv:2610.40958] (Sarin et al.): Reinforcement learning (PPO) optimizes rapid antenna slewing on early-warning GW alerts, yielding a $75\\%\\text{--}90\\%$ capture fraction for prompt BNS coherent radio emission down to fluence thresholds of $20\\,\\mathrm{mJy\\,ms}$.\n- [arXiv:2610.41119] (Sheng et al.): MAGIKS aligns gravitational wave posteriors with optical light curves via time-aware contrastive learning and cross-attention, boosting kilonova Recall@1 to $39.8\\%$ in dense contaminant fields.\n- [arXiv:2610.40787] (Santini et al.): Semi-analytic modeling of BBH mergers in AGN disks shows local rates $\\mathcal{R}(z=0.2) = 0.5\\text{--}6\\,\\mathrm{Gpc^{-3}\\,yr^{-1}}$ for $\\alpha=0.1$ ($f_{\\rm AGN} \\sim 2\\%\\text{--}38\\%$), with next-generation detectors probing mergers out to $z\\approx 8$.\n- [arXiv:2610.40767] (Afrasiab et al.): Fokker-Planck modeling reveals chaotic diving orbits in flattened galactic potentials increase tidal disruption rates by a factor of $1 + \\ln(j_d/j_t) \\sim 10\\times$, inducing anisotropic planar disruptions.\n- [arXiv:2610.40788] (Vigneron et al.): Supersonic interstellar turbulence ($\\mathfrak{M}=4$) sustains cold accretion feeding supermassive black hole jets up to $10^{40}\\text{--}10^{42}\\,\\mathrm{erg\\,s^{-1}}$ while clearing escape funnels that prevent self-limiting quench.\n- [arXiv:2610.40774] (Turbow et al.): Bayesian injection analysis demonstrates that hierarchical black hole mergers are most cleanly separated from first-generation binaries at unequal mass ratios ($q \\lesssim 0.4$) via joint $(\\chi_{\\rm eff}, \\chi_{\\rm p})$ likelihood ratio tests.\n- [arXiv:2610.40907] (Strieder et al.): PRISM nucleosynthesis calculations establish $^{250}\\mathrm{Cm}$ spontaneous fission as the dominant source ($67\\%\\text{--}87\\%$) of $0.2\\text{--}5\\,\\mathrm{MeV}$ gamma-ray line emission in $2{,}000\\text{--}20{,}000\\,\\mathrm{yr}$ old $r$-process remnants.",
+      "significance": "Machine learning and algorithmic scheduling dramatically improve prompt multi-messenger follow-up, while hydrodynamics and non-linear dynamics explain how complex environments govern transient rates and remnant spectroscopic signatures."
     }
   ],
   "thematic_highlights": [
     {
-      "theme_name": "Multi-Wavelength Pulsar Modeling & Dense Matter Microphysics",
-      "summary": "Precise extraction of cold dense matter equation of state properties requires overcoming severe degeneracies between hot spot thermal caps, stellar bulk cooling, and magnetospheric non-thermal power laws. By combining deep NICER XTI timing, XMM-Newton MOS, NuSTAR hard X-ray ($3.0\\text{--}16.0\\,\\mathrm{keV}$), and HST STIS far-UV spectroscopy for PSR J0437-4715, multi-wavelength modeling demonstrates that unheated surface emission contributes $T_{\\rm else}^\\infty = (2.26 \\pm 0.03) \\times 10^5\\,\\mathrm{K}$, constraining the equatorial radius to $R_{\\rm eq} = 11.35_{-0.39}^{+0.40}\\,\\mathrm{km}$ for a mass of $M = 1.377_{-0.034}^{+0.038}\\,M_\\odot$. This shifts the $95\\%$ upper bound on the neutron star radius down by $0.4\\text{--}0.6\\,\\mathrm{km}$, ruling out stiff EOSs with $R_{1.4} > 12.0\\,\\mathrm{km}$ at $68\\%$ credibility. Complementary hydrodynamic core-collapse supernova simulations highlight that hybrid quark-hadron phase transitions naturally produce the empirical $1.70\\,M_\\odot$ mass peak, while molecular dynamics simulations show that static shear strain lowers the Frenkel defect activation barrier, exponentially boosting ion self-diffusion in dense neutron star crusts.",
+      "theme_name": "Dense Matter Equation of State and Neutron Star Structure",
+      "summary": "High-precision pulse profile modeling of PSR J0437-4715 combining NICER, XMM-Newton, NuSTAR, and HST STIS data has established a definitive benchmark for neutron star structure, yielding an equatorial radius $R_{\\rm eq} = 11.35_{-0.39}^{+0.40}\\,\\mathrm{km}$ for $M = 1.377_{-0.034}^{+0.038}\\,M_\\odot$ and setting an upper bound $R_{1.4} < 12.0\\,\\mathrm{km}$ ($68\\%$ CL). This observational constraint tightly restricts soft-to-intermediate nucleonic equations of state. Complementary theoretical modeling demonstrates that dynamic radial stability of two-fluid compact objects requires strictly positive fundamental eigenfrequencies $\\omega_0^2 > 0$, allowing degenerate dark matter halos to produce stable objects exceeding the vacuum Buchdahl redshift limit ($z > 2$). Furthermore, 1D core-collapse supernova simulations demonstrate that quark-hadron phase transitions drive a secondary shock collapse, concentrating remnant gravitational masses into high-mass peaks at $\\sim 1.70\\,M_\\odot$, while crustal molecular dynamics indicate that elastic shear stress accelerates defect-pair formation to enhance self-diffusion by orders of magnitude.",
       "paper_ids": [
         "2610.41846",
+        "2610.41082",
         "2610.41242",
-        "2610.40892",
-        "2610.41082"
+        "2610.40892"
       ]
     },
     {
-      "theme_name": "Kinetic Microphysics: Reconnection Instabilities & Channel Acceleration",
-      "summary": "The origin of relativistic transient radiation depends critically on plasma dissipation mechanisms occurring in extreme magnetic and radiation fields. Relativistic PIC simulations reveal that secondary plasmoid generation in reconnection layers is fundamentally triggered by an electromagnetic current-filamentation (Weibel-type) instability driven by extreme counter-streaming drift velocity $\\beta_z$ rather than classical tearing, reaching maximum growth $\\Gamma_{\\rm max} \\sim 0.1\\,\\omega_{p0}$ around $\\sigma_0 \\sim 10$ before being quenched beyond $\\ell_{\\rm iso} \\sim 10\\sigma_0 d_0$ by plasma accumulation. In parallel, 3D PIC investigations of high-amplitude linearly polarized electromagnetic wavepackets ($a_0 = 50$) penetrating overdense pair plasmas demonstrate that wave damping is overwhelmingly governed by longitudinal electric fields ($W_x \\gg W_y$). As the wave clears a relativistic channel front with $\\beta_b \\approx 0.83\\text{--}0.89$, charged pairs surf superluminal phase-locked longitudinal fields along channel walls, transferring $\\approx 85\\%$ of the pulse energy into non-thermal kinetic acceleration, providing a concrete framework for prompt pulse depletion and particle energization in FRB sources and magnetar flares.",
+      "theme_name": "Kinetic Dissipation and Jet Acceleration Dynamics",
+      "summary": "Recent advances across kinetic simulations and multi-band burst analyses have elucidated the dissipation mechanisms that power relativistic high-energy transients. The joint SVOM and EP analysis of GRB 241113B showed that X-ray rich bursts with $E_{\\rm peak} \\approx 35\\text{--}37\\,\\mathrm{keV}$ can arise from intrinsically relativistic jets with bulk Lorentz factors $\\Gamma_0 > 100$ decelerating into a wind-like circumstellar medium, definitively demonstrating that prompt softness does not require relativistic shock breakout or dirty fireball baryon loading. At the kinetic level, 2D PIC simulations demonstrate that secondary plasmoids in relativistic reconnection layers are born via a current-filamentation/Weibel instability driven by drift velocity anisotropy near the primary x-line, growing at $\\Gamma_{\\rm max} \\sim 0.1\\,\\omega_{p0}$ before being suppressed beyond an isotropization length $\\ell_{\\rm iso} \\sim 10\\sigma_0 d_0$. In parallel, 3D PIC simulations of ultra-strong electromagnetic wave pulses ($a_0 = 50$) penetrating overdense pair plasmas reveal that $\\approx 85\\%$ of wave energy is dissipated through longitudinal electric fields, accelerating phase-locked pairs along evacuated channel boundaries to normalized energies $\\Delta\\tilde{\\varepsilon} \\approx 12$.",
       "paper_ids": [
+        "2610.41005",
         "2611.02126",
         "2611.05948"
       ]
     },
     {
-      "theme_name": "Relativistic Jet Dynamics & Multi-Messenger Transient Searches",
-      "summary": "Joint observations and algorithmic advances have reshaped multi-messenger transient identification. Multi-instrument analysis of GRB 241113B by SVOM and Einstein Probe reveals an intrinsically soft Type II GRB ($E_{\\rm peak}^{\\rm obs} \\approx 35\\text{--}37\\,\\mathrm{keV}$) with bulk Lorentz factor $\\Gamma_0 \\sim 125\\text{--}263$ driving a forward shock into a circumstellar wind, proving that spectral softness does not imply heavy baryon contamination or shock breakout. To capture the earliest electromagnetic counterparts to compact binary coalescences, reinforcement-learning-driven Markov decision processes optimize DSA slewing schedules, reaching $75\\%\\text{--}90\\%$ capture rates for BNS early warnings and probing coherent 1-ms bursts down to $L_{\\rm iso} \\sim 10^{38}\\text{--}10^{39}\\,\\mathrm{erg\\,s^{-1}}$. Furthermore, multimodal contrastive learning framework MAGIKS fuses GW parameters and multiband optical light curves, improving kilonova candidate retrieval from wide-field contamination by nearly an order of magnitude.",
+      "theme_name": "Multi-Messenger Astrophysics and Merging Binaries",
+      "summary": "Multi-messenger transient science has progressed across dynamo mechanisms, progenitor lineage, cosmic delay times, and observational optimization. High-resolution viscous-resistive MHD simulations resolved the long-standing controversy regarding the Kelvin-Helmholtz dynamo in post-merger shear interfaces, finding that secondary centrifugal Rayleigh-Taylor instabilities break down vortex layers and saturate the kinematic dynamo to an $\\mathrm{Re}$-independent growth rate $\\gamma_E t_\\Delta \\sim 0.02$ that amplifies vertical fields to $\\overline{B}_z \\sim 10^{14}\\text{--}10^{15}\\,\\mathrm{G}$. A remarkable association of two gravitational wave triggers (S190910d and S190910h) within $7.1\\,\\mathrm{hr}$ spatially coinciding with Type IIb SN 2019rsq ($P = 7.6\\times 10^{-5}$) provides the first concrete evidence for sequential gravitational fragmentation of a collapsar accretion disk. Concurrently, Pierre Auger UHECR data conclusively favor a two-component BNS merger model ($>7.2\\sigma$) with an $r$-process bulk outflow and relativistic jet proton acceleration, while the host galaxy star formation history of GW170817 imposes an unexpected minimum delay time $t_{\\rm min} > 7.5\\,\\mathrm{Gyr}$. On the operational front, deep reinforcement learning schedules DSA rapid slewing to achieve $75\\%\\text{--}90\\%$ capture rates of prompt coherent radio flashes, while multimodal transformer architectures (MAGIKS) dramatically boost kilonova identification against background contaminant transients.",
       "paper_ids": [
-        "2610.41005",
-        "2610.40958",
         "2611.05880",
+        "2611.00440",
+        "2611.00205",
+        "2610.40782",
+        "2610.40958",
         "2610.41119"
       ]
     }
   ],
   "top_picks": [
     {
-      "arxiv_id": "2610.41846",
+      "arxiv_id": "2610.40958",
       "revision": 1,
       "historical_edition": "announcement-2026-11-01",
-      "source_fingerprint": "12e21401cdb1fc676572c28c20c598edf79c9a37a0e840c19b778c940e1db8d9",
-      "title": "A multi-wavelength view of PSR J0437-4715 with NICER and other missions: Radius measurements from far-ultraviolet to hard X-ray pulse profile modeling",
+      "source_fingerprint": "2039bb4eca5f0f279fac3cec35da9f5f7236c24a28c2f0d62c475201b8f07408",
+      "title": "Optimizing Prompt Radio Counterpart Searches for Gravitational-Wave Events with the Deep Synoptic Array",
       "priority": "must_read",
-      "recommendation_reason": "Breaks the decade-long surface emission and non-thermal tail degeneracy in millisecond pulsar modeling by combining HST FUV, NICER, XMM-Newton, and NuSTAR observations.",
-      "core_insight": "Yields an equatorial radius $R_{\\rm eq} = 11.35_{-0.39}^{+0.40}\\,\\mathrm{km}$ for $M = 1.377_{-0.034}^{+0.038}\\,M_\\odot$ and constrains whole-surface emission to $T_{\\rm else}^\\infty = (2.26 \\pm 0.03) \\times 10^5\\,\\mathrm{K}$, ruling out stiff EOSs ($R_{1.4} > 12.0\\,\\mathrm{km}$) at $68\\%$ credibility.",
-      "reading_guide": "Focus on Section 4 for the joint multi-mission likelihood formulation and Section 6 for the updated equation of state posterior distributions.",
+      "recommendation_reason": "Presents an operational breakthrough using reinforcement learning to schedule prompt radio telescope slewing on early-warning GW alerts, directly enabling the detection of coherent radio bursts from compact binary mergers.",
+      "core_insight": "Formulating early-warning array pointing as a finite-horizon Markov Decision Process trained via PPO achieves a $75\\%\\text{--}90\\%$ prompt follow-up capture rate for immediately observable BNS mergers down to a $20\\,\\mathrm{mJy\\,ms}$ fluence limit.",
+      "reading_guide": "Focus on Section 3 for the MDP/PPO decision policy architecture and Section 4 for the resulting capture fractions and isotropic radio energy limits.",
       "authors": [
-        "Pierre Stammler",
-        "Sebastien Guillot",
-        "Denis González-Caniulef",
-        "Isak Svensson",
-        "Anna L. Watts",
-        "Tuomo Salmi",
-        "Yves Kini",
-        "Mariska Hoogkamer",
-        "Devarshi Choudhury",
-        "Bas Dorsman",
-        "Hannah Göttling",
-        "Kai Hebeler",
-        "Daniela Huppenkothen",
-        "Christine Kazantsev",
-        "Lucien Mauviard",
-        "Melissa Mendes",
-        "Jean-François Olive",
-        "Daniel J. Reardon",
-        "Nathan Rutherford",
-        "Achim Schwenk"
+        "Nikita Kosogorov",
+        "Max Melching",
+        "Gregg Hallinan",
+        "Jonah Kanner",
+        "Alan J. Weinstein",
+        "Kevin Lacker",
+        "Vikram Ravi"
       ]
     },
     {
@@ -128,9 +118,9 @@
       "source_fingerprint": "de20e43665d408ea2fbdee0ba1ec2e4cd11ac73e5050e70d7d89d5b13a2a13e6",
       "title": "GRB 241113B: the first SVOM and EP gamma-ray burst A soft GRB likely seen on-axis, from soft X-rays to gamma-rays",
       "priority": "must_read",
-      "recommendation_reason": "First joint GRB detection by both SVOM and Einstein Probe, resolving the origin of prompt spectral softness in an on-axis long burst.",
-      "core_insight": "Constrains bulk Lorentz factor to $\\Gamma_0 \\sim 125\\text{--}263$ with $E_{\\rm peak}^{\\rm obs} \\approx 35\\text{--}37\\,\\mathrm{keV}$, demonstrating that spectral softness can arise intrinsically in clean, relativistic on-axis jets rather than shock breakouts or dirty fireballs.",
-      "reading_guide": "Examine Section 3 for joint EP/WXT and SVOM/ECLAIRs spectral fitting, and Section 5 for VegasAfterglow numerical modeling of the wind-like circumstellar medium.",
+      "recommendation_reason": "First joint discovery paper from SVOM and Einstein Probe, offering conclusive multi-wavelength evidence that intrinsically soft gamma-ray bursts can originate from high-Lorentz-factor on-axis jets.",
+      "core_insight": "VegasAfterglow numerical modeling of the prompt and multi-band afterglow constrains bulk Lorentz factor $\\Gamma_0 > 100$ in a wind-like circumstellar medium ($s=2$), definitively ruling out shock breakout and dirty fireball origins for prompt spectral softness.",
+      "reading_guide": "Examine Section 3 for joint EP/SVOM prompt spectral fits ($E_{\\rm peak} \\approx 35\\,\\mathrm{keV}$) and Section 5 for the deceleration time forward shock modeling.",
       "authors": [
         "D. Adrien",
         "D. Turpin",
@@ -188,76 +178,36 @@
       ]
     },
     {
-      "arxiv_id": "2611.02126",
-      "revision": 1,
-      "historical_edition": "announcement-2026-11-02",
-      "source_fingerprint": "0f63f6c6ab3d095f900c3dd631b9d19ac2d346e727d10da9246213d238e82c28",
-      "title": "The Birth of Plasmoids: Weibel-Driven Secondary Tearing and its Suppression in Relativistic Reconnection",
-      "priority": "must_read",
-      "recommendation_reason": "Uncovers the kinetic trigger of secondary plasmoids in relativistic reconnection layers, replacing standard Harris tearing assumptions with current-filamentation physics.",
-      "core_insight": "Shows that plasmoid formation is driven by a transverse current-filamentation/Weibel instability with growth rate $\\Gamma_{\\rm max} \\sim 0.1\\,\\omega_{p0}$, which is naturally quenched downstream beyond $\\ell_{\\rm iso} \\sim 10\\sigma_0 d_0$ due to surface plasma accumulation.",
-      "reading_guide": "Read Section 3 for the linear Vlasov dispersion derivation and Section 4 for the Tristan-MP PIC verification across upstream magnetizations $\\sigma_0$.",
-      "authors": [
-        "Matthew Goodbred",
-        "Anatoly Spitkovsky"
-      ]
-    },
-    {
-      "arxiv_id": "2611.05880",
-      "revision": 1,
-      "historical_edition": "announcement-2026-11-04",
-      "source_fingerprint": "ece61c8f93c51e3b1e9eb12957c4309c757ec75dfd3e88d5a080ebc547ba6240",
-      "title": "The kinematic Kelvin-Helmholtz instability-driven dynamo: implications for merging compact objects",
-      "priority": "must_read",
-      "recommendation_reason": "Resolves the long-standing debate on the nature of magnetic field amplification during binary neutron star mergers using ultra-high-resolution compressible MHD DNS.",
-      "core_insight": "Demonstrates that secondary centrifugal RTI drives an $\\mathrm{Re}$-independent kinematic dynamo with growth rate $\\gamma_E \\simeq 36\\,\\mathrm{ms}^{-1}$, producing Kazantsev spectra and mean vertical magnetic fields $\\overline{B}_z \\sim 10^{14}\\text{--}10^{15}\\,\\mathrm{G}$ at microscopic scales $\\lambda_{\\rm RTI}^\\infty \\approx 6\\,\\mathrm{cm}$.",
-      "reading_guide": "Focus on Section 3 for the 3-stage temporal evolution (winding, RTI breakup, kinematic dynamo) and Section 5 for the sub-grid implications for global merger codes.",
-      "authors": [
-        "James R. Beattie",
-        "Amitava Bhattacharjee",
-        "Elias R. Most",
-        "Bart Ripperda",
-        "Alexander Philippov",
-        "Ralf S. Klessen",
-        "Salvatore Cielo"
-      ]
-    },
-    {
-      "arxiv_id": "2610.40958",
+      "arxiv_id": "2610.41846",
       "revision": 1,
       "historical_edition": "announcement-2026-11-01",
-      "source_fingerprint": "2039bb4eca5f0f279fac3cec35da9f5f7236c24a28c2f0d62c475201b8f07408",
-      "title": "Optimizing Prompt Radio Counterpart Searches for Gravitational-Wave Events with the Deep Synoptic Array",
+      "source_fingerprint": "12e21401cdb1fc676572c28c20c598edf79c9a37a0e840c19b778c940e1db8d9",
+      "title": "A multi-wavelength view of PSR J0437-4715 with NICER and other missions: Radius measurements from far-ultraviolet to hard X-ray pulse profile modeling",
       "priority": "must_read",
-      "recommendation_reason": "Provides a mathematically rigorous reinforcement learning framework for single-pointing radio arrays targeting prompt coherent radio bursts from GW early warnings.",
-      "core_insight": "Formulating telescope pointing as a Markov Decision Process solved via PPO achieves $75\\%\\text{--}90\\%$ capture rates for BNS alerts, probing isotropic energies $E_{\\rm radio,iso} \\simeq 2.2\\times 10^{36}\\,\\mathrm{erg}$ and coherent fractions down to $10^{-13}$.",
-      "reading_guide": "Review Section 2 for the MDP formulation and PPO reward structure, and Section 4 for the capture fraction statistics under simulated O5 localization sequences.",
+      "recommendation_reason": "Delivers an unprecedentedly tight measurement of a millisecond pulsar radius by breaking severe non-thermal and whole-surface thermal emission degeneracies through simultaneous UV-to-hard-X-ray modeling.",
+      "core_insight": "Combining $2.56\\,\\mathrm{Ms}$ of NICER XTI data with XMM, NuSTAR, and HST STIS far-UV spectroscopy pins down the equatorial radius of PSR J0437-4715 to $R_{\\rm eq} = 11.35_{-0.39}^{+0.40}\\,\\mathrm{km}$ for $M = 1.377\\,M_\\odot$, ruling out stiff EOS models with $R_{1.4} > 12.0\\,\\mathrm{km}$.",
+      "reading_guide": "Prioritize Section 2 for the multi-instrument calibration alignment and Section 5 for the X-PSI posterior distributions and nuclear EOS inference.",
       "authors": [
-        "Nikita Kosogorov",
-        "Max Melching",
-        "Gregg Hallinan",
-        "Jonah Kanner",
-        "Alan J. Weinstein",
-        "Kevin Lacker",
-        "Vikram Ravi"
-      ]
-    },
-    {
-      "arxiv_id": "2611.05948",
-      "revision": 1,
-      "historical_edition": "announcement-2026-11-04",
-      "source_fingerprint": "000a7ab5120c7d45aa00ae4b3a3b090f407b17399e7c559642b8ee82819cd616",
-      "title": "Longitudinal-field particle acceleration in channels generated by strong electromagnetic waves in pair plasma",
-      "priority": "must_read",
-      "recommendation_reason": "Presents 3D PIC simulations of channel formation and non-thermal particle energization driven by high-amplitude coherent electromagnetic waves in dense pair plasmas.",
-      "core_insight": "Finds that $\\approx 85\\%$ of pulse energy is transferred to pair kinetic energy via longitudinal electric field work ($W_x \\gg W_y$) as particles surf along channel walls in superluminal fields with $\\delta u \\approx 8\\times 10^{-3}$.",
-      "reading_guide": "Examine Section 2 for the 3D moving-window PIC setup and Section 3 for the work decomposition and energy scaling relations.",
-      "authors": [
-        "Kavin Tangtartharakul",
-        "Andrei M. Beloborodov",
-        "Carolina Herrera Hernandez",
-        "Mihail O. Cernaianu",
-        "Alexey Arefiev"
+        "Pierre Stammler",
+        "Sebastien Guillot",
+        "Denis González-Caniulef",
+        "Isak Svensson",
+        "Anna L. Watts",
+        "Tuomo Salmi",
+        "Yves Kini",
+        "Mariska Hoogkamer",
+        "Devarshi Choudhury",
+        "Bas Dorsman",
+        "Hannah Göttling",
+        "Kai Hebeler",
+        "Daniela Huppenkothen",
+        "Christine Kazantsev",
+        "Lucien Mauviard",
+        "Melissa Mendes",
+        "Jean-François Olive",
+        "Daniel J. Reardon",
+        "Nathan Rutherford",
+        "Achim Schwenk"
       ]
     },
     {
@@ -267,9 +217,9 @@
       "source_fingerprint": "9fcee135a1a9c7ddfe86dbb43f37de42c871f72fd2db6189eb54bef6fc428ec5",
       "title": "Lightest and heaviest nuclei as keys to the origin of ultrahigh energy cosmic rays",
       "priority": "must_read",
-      "recommendation_reason": "Demonstrates statistically significant preference for binary neutron star mergers as sources of UHECRs by jointly fitting Pierre Auger spectra, mass composition, and neutrino limits.",
-      "core_insight": "A two-component BNS merger model with bulk $r$-process outflow ($R_{\\rm max} \\approx 7.2\\,\\mathrm{EV}$) and a relativistic proton jet ($E_{\\rm jet} \\approx 12\\,\\mathrm{EeV}$) is favored over single-component sources at $\\ge 7.2\\sigma$.",
-      "reading_guide": "Consult Section 3 for the UFA/SourceProp propagation framework and Section 4 for the joint $\\chi^2$ contour analysis against Auger Phase I data.",
+      "recommendation_reason": "Resolves the long-standing UHECR origin debate by demonstrating that Pierre Auger spectral and composition data statistically require a two-component binary neutron star merger source model.",
+      "core_insight": "Auger Phase I spectra and mass compositions strongly favor a two-component BNS merger model at $\\ge 7.2\\sigma$ over single-component accelerators, simultaneously accounting for intermediate $r$-process bulk nuclei ($R_{\\rm max} \\approx 7.2\\,\\mathrm{EV}$) and jet-accelerated protons ($E^{\\rm jet} \\approx 12\\,\\mathrm{EeV}$).",
+      "reading_guide": "Read Section 3 for the source propagation modeling with photo-disintegration and Section 4 for the combined spectral/composition fit posteriors.",
       "authors": [
         "Anna M. Suliga",
         "Glennys R. Farrar"
@@ -282,9 +232,9 @@
       "source_fingerprint": "8d608ad1b3e41576590b68ecc41421b90acf47408ef0a4e8c097eec10bacb47e",
       "title": "A temporally clustered gravitational wave pair and a Type IIb supernova",
       "priority": "must_read",
-      "recommendation_reason": "Explores the intriguing statistical and physical association between a 7.1-hour separated GW event pair and a stripped-envelope core-collapse supernova.",
-      "core_insight": "Calculates a pairwise chance coincidence probability $P_{\\rm 2GW} = 7.6 \\times 10^{-5}$ and outlines a scenario where disk fragmentation and rapid inspiral within an expanding envelope account for the clustered triggers.",
-      "reading_guide": "Check Section 2 for 3D localization coincidence statistics and Section 4 for the gravitational fragmentation timescale derivations.",
+      "recommendation_reason": "Discovers statistically significant evidence ($P = 7.6\\times 10^{-5}$) physically linking a temporal pair of compact binary mergers to a core-collapse supernova, establishing collapsar disk fragmentation as a real astrophysical channel.",
+      "core_insight": "A gravitational wave pair (S190910d and S190910h) separated by $7.1\\,\\mathrm{hr}$ spatially aligns with stripped-envelope SN 2019rsq, quantitatively matching theoretical inspiral timescales of self-gravitating fragments in a massive collapsar disk.",
+      "reading_guide": "Focus on Section 2 for the 3D directional coincidence analysis and Section 4 for the disk gravitational instability and rapid orbital inspiral timescale calculations.",
       "authors": [
         "Sheng Yang",
         "Ting-Wan Chen",
@@ -314,15 +264,114 @@
       ]
     },
     {
+      "arxiv_id": "2611.02126",
+      "revision": 1,
+      "historical_edition": "announcement-2026-11-02",
+      "source_fingerprint": "0f63f6c6ab3d095f900c3dd631b9d19ac2d346e727d10da9246213d238e82c28",
+      "title": "The Birth of Plasmoids: Weibel-Driven Secondary Tearing and its Suppression in Relativistic Reconnection",
+      "priority": "must_read",
+      "recommendation_reason": "Solves the fundamental mystery of how plasmoids are seeded in relativistic magnetic reconnection, providing a microphysical instability mechanism applicable to high-energy flares.",
+      "core_insight": "Secondary tearing is initiated by a transverse current-filamentation/Weibel instability driven by drift velocity anisotropy near the x-line with growth rate $\\Gamma_{\\rm max} \\sim 0.1\\,\\omega_{p0}$, which naturally quenches beyond an isotropization distance $\\ell_{\\rm iso} \\sim 10\\sigma_0 d_0$.",
+      "reading_guide": "Examine Section 2 for linear Vlasov-Maxwell stability derivations and Section 3 for the 2D Tristan-MP PIC simulation verifications.",
+      "authors": [
+        "Matthew Goodbred",
+        "Anatoly Spitkovsky"
+      ]
+    },
+    {
+      "arxiv_id": "2611.05880",
+      "revision": 1,
+      "historical_edition": "announcement-2026-11-04",
+      "source_fingerprint": "ece61c8f93c51e3b1e9eb12957c4309c757ec75dfd3e88d5a080ebc547ba6240",
+      "title": "The kinematic Kelvin-Helmholtz instability-driven dynamo: implications for merging compact objects",
+      "priority": "must_read",
+      "recommendation_reason": "Resolves a foundational debate regarding magnetic field amplification during binary neutron star mergers through high-resolution 3D viscous-resistive MHD simulations.",
+      "core_insight": "Centrifugal Rayleigh-Taylor instability disrupts Kelvin-Helmholtz vortices to trigger an $\\mathrm{Re}$-independent kinematic dynamo growth rate $\\gamma_E t_\\Delta \\sim 0.02$ exhibiting a Kazantsev $k^{3/2}$ spectrum, boosting mean fields to $\\overline{B}_z \\sim 10^{14}\\text{--}10^{15}\\,\\mathrm{G}$.",
+      "reading_guide": "Prioritize Section 3 for the disruption of vortex sheets and Section 4 for the Kazantsev spectrum evolution and astrophysical application to BNS remnants.",
+      "authors": [
+        "James R. Beattie",
+        "Amitava Bhattacharjee",
+        "Elias R. Most",
+        "Bart Ripperda",
+        "Alexander Philippov",
+        "Ralf S. Klessen",
+        "Salvatore Cielo"
+      ]
+    },
+    {
+      "arxiv_id": "2611.05948",
+      "revision": 1,
+      "historical_edition": "announcement-2026-11-04",
+      "source_fingerprint": "000a7ab5120c7d45aa00ae4b3a3b090f407b17399e7c559642b8ee82819cd616",
+      "title": "Longitudinal-field particle acceleration in channels generated by strong electromagnetic waves in pair plasma",
+      "priority": "must_read",
+      "recommendation_reason": "Reveals an efficient dissipation channel for ultra-strong coherent electromagnetic pulses propagating in dense pair plasmas, directly relevant to magnetar bursts and FRB propagation.",
+      "core_insight": "Linearly polarized relativistic pulses with $a_0 = 50$ clear plasma channels via fronts moving at $\\beta_b \\approx 0.83\\text{--}0.89$ and transfer $\\approx 85\\%$ of wave energy into pair acceleration dominated by longitudinal electric fields $W_x$.",
+      "reading_guide": "Read Section 2 for the 3D moving-window PIC simulation setup and Section 3 for the work decomposition and particle surf-locking mechanism.",
+      "authors": [
+        "Kavin Tangtartharakul",
+        "Andrei M. Beloborodov",
+        "Carolina Herrera Hernandez",
+        "Mihail O. Cernaianu",
+        "Alexey Arefiev"
+      ]
+    },
+    {
+      "arxiv_id": "2610.40767",
+      "revision": 1,
+      "historical_edition": "announcement-2026-11-01",
+      "source_fingerprint": "b86b5834b1f9d6b43217864f6ef081eadb19b3c263ab9b6613cb0003b2f7fb83",
+      "title": "Chaos and loss: reevaluating the loss-cone formalism in the context of chaotic diving orbits in flattened potentials",
+      "priority": "worth_knowing",
+      "recommendation_reason": "Updates classical loss-cone theory by coupling two-body scattering with chaotic orbital migration in non-spherical galactic potentials.",
+      "core_insight": "Chaotic diving orbits in flattened galactic potentials enhance equilibrium stellar tidal disruption rates over classical loss-cone estimates by a factor of $1 + \\ln(j_d / j_t) \\sim 10\\times$ and produce anisotropic, planar disruption geometry.",
+      "reading_guide": "Check Section 2 for the 2D Fokker-Planck analytical formulation and Section 3 for the penetration factor distributions.",
+      "authors": [
+        "Zephyr Penoyre",
+        "Elena Maria Rossi",
+        "Nicholas C. Stone"
+      ]
+    },
+    {
+      "arxiv_id": "2610.40774",
+      "revision": 1,
+      "historical_edition": "announcement-2026-11-01",
+      "source_fingerprint": "6445719541754744f1c09031000d444041ba6cd42a1b694367c1bfd00d005dd7",
+      "title": "Surprisingly normal? GW241011 and GW241110 in the context of hierarchical merger classification",
+      "priority": "worth_knowing",
+      "recommendation_reason": "Provides a quantitative Bayesian framework for identifying hierarchical black hole mergers using spin precession measurements.",
+      "core_insight": "Precession-based identification of hierarchical black hole mergers is primarily governed by unequal mass ratios ($q \\lesssim 0.4$), where joint $(\\chi_{\\rm eff}, \\chi_{\\rm p})$ likelihood ratios improve classification recovery up to $35\\%$.",
+      "reading_guide": "Look at Section 3 for the likelihood ratio classification metrics and Section 4 for the application to candidates GW241011 and GW241110.",
+      "authors": [
+        "Cailin Plunkett",
+        "Michael Zevin",
+        "Salvatore Vitale"
+      ]
+    },
+    {
+      "arxiv_id": "2610.40782",
+      "revision": 1,
+      "historical_edition": "announcement-2026-11-01",
+      "source_fingerprint": "91fe7c0acb54f6fa0707466b7ac87576c43cf2914519d7116ea33a83402bfcfd",
+      "title": "Missing Mergers: On the Unexpected Delay-Time Distribution of Binary Neutron Star Mergers",
+      "priority": "worth_knowing",
+      "recommendation_reason": "Challenges canonical compact binary delay-time distributions by analyzing the extreme age of the host galaxy of GW170817.",
+      "core_insight": "The $12.4\\,\\mathrm{Gyr}$ mass-weighted stellar age of NGC 4993 constrains the binary neutron star merger minimum delay time to $t_{\\rm min} > 7.5\\,\\mathrm{Gyr}$ ($90\\%$ CL), favoring delayed merger models over canonical $t^{-1}$ power laws by Bayes factors $>40$.",
+      "reading_guide": "Read Section 2 for the host galaxy SED reconstruction and Section 3 for the Bayesian DTD inference.",
+      "authors": [
+        "Ryan J. Foley"
+      ]
+    },
+    {
       "arxiv_id": "2610.40787",
       "revision": 1,
       "historical_edition": "announcement-2026-11-01",
       "source_fingerprint": "6072d3c6ae846d33726f059056e6f5dfc877048b2e7f8d96f5ec841a41545974",
       "title": "Cosmic merger rates and population evolution of binary black hole mergers in AGN disks",
       "priority": "worth_knowing",
-      "recommendation_reason": "Provides a comprehensive cosmological model linking SMBH accretion histories and AGN disk dynamics to predict BBH merger rate densities up to $z \\sim 10$.",
-      "core_insight": "Shows that disk viscosity $\\alpha = 0.1$ yields local merger rates $\\mathcal{R}(z=0.2) \\sim 0.5\\text{--}6\\,\\mathrm{Gpc^{-3}\\,yr^{-1}}$, matching flare upper limits ($f_{\\rm AGN} \\lesssim 40\\%$) while predicting $\\sim 10^4\\text{--}10^5$ detections annually for Einstein Telescope.",
-      "reading_guide": "Focus on Section 3 for the FastClusterAGN migration and pairing prescription and Section 5 for high-redshift ET detection forecasts.",
+      "recommendation_reason": "Quantifies cosmic binary black hole merger rates and detection horizons in AGN disks across SMBH accretion histories.",
+      "core_insight": "Disk viscosity $\\alpha = 0.1$ limits the local BBH merger rate density in AGN disks to $0.5\\text{--}6\\,\\mathrm{Gpc^{-3}\\,yr^{-1}}$ ($f_{\\rm AGN} \\sim 2\\%\\text{--}38\\%$), with super-Eddington accretion pathways maintaining observable rates out to $z\\approx 8$.",
+      "reading_guide": "Examine Section 2 for the FastClusterAGN dynamical formulation and Section 4 for redshift-dependent rate predictions for the Einstein Telescope.",
       "authors": [
         "Maria Paola Vaccaro",
         "Alessandro Trinca",
@@ -334,20 +383,72 @@
       ]
     },
     {
+      "arxiv_id": "2610.40788",
+      "revision": 1,
+      "historical_edition": "announcement-2026-11-01",
+      "source_fingerprint": "5b690cd0f68ce6769d1b9490119209adf51af461f69735137b20bc528d0569bd",
+      "title": "How to feed your dragon: the role of turbulence in AGN activity",
+      "priority": "worth_knowing",
+      "recommendation_reason": "Demonstrates the essential dual role of interstellar turbulence in both fueling black hole accretion and enabling relativistic jet breakout.",
+      "core_insight": "Supersonic ISM turbulence ($\\mathfrak{M}=4$) sustains cold Bondi accretion driving steady AGN jet powers of $10^{40}\\text{--}10^{42}\\,\\mathrm{erg\\,s^{-1}}$ while carving low-density funnels that prevent jet self-quenching.",
+      "reading_guide": "Focus on Section 2 for the moving-mesh Arepo simulation setup and Section 3 for the jet power scaling with turbulent Mach number.",
+      "authors": [
+        "Olga Borodina",
+        "Jake S. Bennett",
+        "Yueying Ni",
+        "Rainer Weinberger",
+        "Michaela Hirschmann",
+        "Boon Kiat Oh",
+        "Lars Hernquist"
+      ]
+    },
+    {
+      "arxiv_id": "2610.40892",
+      "revision": 1,
+      "historical_edition": "announcement-2026-11-01",
+      "source_fingerprint": "7f217a0fed58599f91878b914dfca6d6070f7ce23e058d30c9c88db4a5bde907",
+      "title": "Stress-enhanced diffusion in Yukawa crystals",
+      "priority": "worth_knowing",
+      "recommendation_reason": "Provides molecular dynamics insights into how crustal shear strain enhances diffusion in neutron star crusts, impacting magnetic field evolution and crust cooling.",
+      "core_insight": "Static shear strain exponentially increases self-diffusion in bcc Yukawa crystals by lowering the Frenkel defect activation barrier across an activation core of $N_{\\rm act} \\approx 31$ ions.",
+      "reading_guide": "Check Section 2 for the classical MD methodology in LAMMPS and Section 3 for the strain-dependent diffusion coefficient scaling relations.",
+      "authors": [
+        "M. E. Caplan",
+        "A. I. Chugunov",
+        "R. F. Serrano"
+      ]
+    },
+    {
       "arxiv_id": "2610.40907",
       "revision": 1,
       "historical_edition": "announcement-2026-11-01",
       "source_fingerprint": "f0814ab2485577a01de70185a29a4c0db8a71000da94db84dc6756d4a24dc096",
-      "title": "The Importance of Curium-250 to the $\\gamma$-Ray Signature of $r$-Process Remnants",
+      "title": "The Importance of Curium-250 to the $γ$-Ray Signature of $r$-Process Remnants",
       "priority": "worth_knowing",
-      "recommendation_reason": "Identifies distinct, long-lived radioactive gamma-ray signatures in aged supernova/merger remnants as unambiguous evidence for actinide production in strong $r$-process events.",
-      "core_insight": "$^{250}\\mathrm{Cm}$ ($t_{1/2} \\approx 8300\\,\\mathrm{yr}$) accounts for $67\\%\\text{--}87\\%$ of the $0.2\\text{--}5\\,\\mathrm{MeV}$ gamma-ray flux in strong $r$-process remnants at $t \\sim 2{,}000\\text{--}20{,}000\\,\\mathrm{yr}$, emitting clear lines at $989$, $1032$, $1079$, and $1596\\,\\mathrm{keV}$.",
-      "reading_guide": "Read Section 2 for the 15,625-simulation PRISM parameter exploration and Section 4 for line flux detectability profiles.",
+      "recommendation_reason": "Identifies a definitive late-time gamma-ray spectral fingerprint confirming actinide nucleosynthesis in aging supernova and merger remnants.",
+      "core_insight": "Decay chains and spontaneous fission of $^{250}\\mathrm{Cm}$ ($\\tau_{1/2} \\approx 8300\\,\\mathrm{yr}$) dominate the $0.2\\text{--}5\\,\\mathrm{MeV}$ gamma-ray emission of strong $r$-process remnants at $t \\sim 2{,}000\\text{--}20{,}000\\,\\mathrm{yr}$, generating diagnostic lines from $^{250}\\mathrm{Bk}$ and $^{140}\\mathrm{La}$.",
+      "reading_guide": "Read Section 2 for the PRISM reaction network calculations and Section 3 for the late-time gamma-ray line flux predictions.",
       "authors": [
         "Axel Gross",
         "Samuel Cupp",
         "G. Wendell Misch",
         "Matthew R. Mumpower"
+      ]
+    },
+    {
+      "arxiv_id": "2610.41082",
+      "revision": 1,
+      "historical_edition": "announcement-2026-11-01",
+      "source_fingerprint": "df026fd35a25e84d218eb4fe3f020ac10c22cdf7dadb8ee095fbdfa31cf39b56",
+      "title": "Two-Fluid Radial Stability of Dark-Matter-Admixed Compact Objects: Dark Compact Planets, Dark White Dwarfs, Dark Neutron Stars, and Dark Oysters",
+      "priority": "worth_knowing",
+      "recommendation_reason": "Establishes a rigorous dynamic stability criterion for multi-fluid compact stars, resolving ambiguities inherent in static turning-point approximations.",
+      "core_insight": "Dynamic two-fluid radial stability is dictated by $\\omega_0^2 > 0$, revealing that dark matter halos allow stable compact stars to exceed the classical vacuum Buchdahl surface redshift limit ($z > 2$).",
+      "reading_guide": "Focus on Section 2 for the two-fluid relativistic radial oscillation equations and Section 3 for the stability boundary diagrams.",
+      "authors": [
+        "José C. Jiménez",
+        "Oscar Pastor",
+        "Laura Tolos"
       ]
     },
     {
@@ -357,9 +458,9 @@
       "source_fingerprint": "7973cb0a3f291030eddd5fb3b77a02fe5334f13152b6a04112ddbb35500a7268",
       "title": "MAGIKS: Multimodal Alignment and Gravitational-Wave-Conditioned Interaction for Kilonova Search",
       "priority": "worth_knowing",
-      "recommendation_reason": "Addresses wide-field optical contamination following GW triggers using an align-before-fuse multimodal deep learning architecture.",
-      "core_insight": "Achieves Recall@1 of $39.8\\%$ in 5000-transient galleries (compared to $4.8\\%$ for optical-only baselines) and reaches AUROC of $0.983$ by conditioning dual cross-attention on physical ejecta properties.",
-      "reading_guide": "Examine Section 2 for the mTAN optical encoder and time-aware contrastive alignment loss formulation.",
+      "recommendation_reason": "Introduces a multimodal deep learning architecture directly conditioning wide-field optical counterpart identification on gravitational-wave parameter posteriors.",
+      "core_insight": "Aligning GW parameters and optical light curves via time-aware contrastive learning and cross-attention achieves a Recall@1 of $39.8\\%$ in isolating kilonovae from thousands of background transients.",
+      "reading_guide": "Prioritize Section 2 for the multimodal network architecture and Section 3 for the benchmark recall performance against baseline classifiers.",
       "authors": [
         "Bingzhou Gao",
         "Weichangfeng Guo",
@@ -377,9 +478,9 @@
       "source_fingerprint": "fabe268ada718b3162eb2137e0ad832b15b8acf85e0d6c2b877be7f3553fc905",
       "title": "Effect of quark-hadron phase transitions on the neutron star mass distribution",
       "priority": "worth_knowing",
-      "recommendation_reason": "Directly links hadron-quark phase transitions during core-collapse supernovae to the empirical bimodal mass distribution observed in Galactic neutron stars.",
-      "core_insight": "Phase-transition-induced collapse shocks allow lower-compactness progenitors to accrete longer before exploding, naturally concentrating remnant gravitational masses into a narrow peak at $\\sim 1.70\\,M_\\odot$.",
-      "reading_guide": "Review Section 2 for hybrid equation of state constructions and Section 3.2 for the compactness-delay relation.",
+      "recommendation_reason": "Explains the observed high-mass peak in the galactic neutron star mass distribution via phase-transition-induced secondary core-collapse shocks.",
+      "core_insight": "Quark-hadron phase transitions in high-compactness progenitors trigger a second shock that revives stalled explosions, concentrating remnant gravitational masses into a narrow high-mass peak at $1.55\\text{--}1.72\\,M_\\odot$.",
+      "reading_guide": "Read Section 2 for the hybrid equation of state setup in GR1D and Section 3 for the progenitor compactness vs. remnant mass mapping.",
       "authors": [
         "Renyu Luo",
         "XuRun Huang",
@@ -389,104 +490,6 @@
         "Sufen Guo",
         "Helei Liu",
         "Zhijun Wang"
-      ]
-    },
-    {
-      "arxiv_id": "2610.40782",
-      "revision": 1,
-      "historical_edition": "announcement-2026-11-01",
-      "source_fingerprint": "91fe7c0acb54f6fa0707466b7ac87576c43cf2914519d7116ea33a83402bfcfd",
-      "title": "Missing Mergers: On the Unexpected Delay-Time Distribution of Binary Neutron Star Mergers",
-      "priority": "worth_knowing",
-      "recommendation_reason": "Quantifies the severe statistical tension between canonical $t^{-1}$ delay-time distributions with short cutoffs ($10\\,\\mathrm{Myr}$) and the old stellar population of NGC 4993.",
-      "core_insight": "Empirical DTD fitting constrains the minimum delay time to $t_{\\rm min} > 7.5\\pm 0.2\\,\\mathrm{Gyr}$ ($90\\%$ CL), favoring an old-delay model over the canonical $10\\,\\mathrm{Myr}$ model by Bayes factors of $41\\text{--}138$.",
-      "reading_guide": "Consult Section 3 for the Prospector SFH reconstruction of NGC 4993 and Section 4 for the Poisson likelihood nested sampling results.",
-      "authors": [
-        "Ryan J. Foley"
-      ]
-    },
-    {
-      "arxiv_id": "2610.40892",
-      "revision": 1,
-      "historical_edition": "announcement-2026-11-01",
-      "source_fingerprint": "7f217a0fed58599f91878b914dfca6d6070f7ce23e058d30c9c88db4a5bde907",
-      "title": "Stress-enhanced diffusion in Yukawa crystals",
-      "priority": "worth_knowing",
-      "recommendation_reason": "Reveals the microphysical mechanism governing ion self-diffusion in sheared neutron star crusts and white dwarf interiors.",
-      "core_insight": "Static elastic shear strain exponentially enhances diffusion by lowering the Frenkel defect activation barrier via stored strain energy in an activation volume of $N_{\\rm act} \\approx 31$ ions.",
-      "reading_guide": "Focus on Section 2 for LAMMPS molecular dynamics setup and Section 3 for the modified diffusion scaling $D(\\Gamma^*,\\varepsilon)$.",
-      "authors": [
-        "M. E. Caplan",
-        "A. I. Chugunov",
-        "R. F. Serrano"
-      ]
-    },
-    {
-      "arxiv_id": "2610.40767",
-      "revision": 1,
-      "historical_edition": "announcement-2026-11-01",
-      "source_fingerprint": "b86b5834b1f9d6b43217864f6ef081eadb19b3c263ab9b6613cb0003b2f7fb83",
-      "title": "Chaos and loss: reevaluating the loss-cone formalism in the context of chaotic diving orbits in flattened potentials",
-      "priority": "worth_knowing",
-      "recommendation_reason": "Develops a self-consistent 2D Fokker-Planck equilibrium framework incorporating chaotic diving orbits in non-spherical galactic nuclei.",
-      "core_insight": "Shows that chaotic orbit migration enhances stellar tidal disruption rates over the classical loss-cone rate by a factor $\\Gamma / \\Gamma_{\\rm cl} \\approx 1 + \\ln(j_d / j_t)$, yielding order-of-magnitude increases for $j_d \\gtrsim 0.1$.",
-      "reading_guide": "Examine Section 2 for the coupled Fokker-Planck loss-cone equation and Section 4 for penetration factor distributions.",
-      "authors": [
-        "Zephyr Penoyre",
-        "Elena Maria Rossi",
-        "Nicholas C. Stone"
-      ]
-    },
-    {
-      "arxiv_id": "2610.40774",
-      "revision": 1,
-      "historical_edition": "announcement-2026-11-01",
-      "source_fingerprint": "6445719541754744f1c09031000d444041ba6cd42a1b694367c1bfd00d005dd7",
-      "title": "Surprisingly normal? GW241011 and GW241110 in the context of hierarchical merger classification",
-      "priority": "worth_knowing",
-      "recommendation_reason": "Clarifies selection biases affecting spin precession and hierarchical merger classification in low-mass, highly spinning black hole mergers.",
-      "core_insight": "Joint $(\\chi_{\\rm eff}, \\chi_{\\rm p})$ likelihood ratio classification increases 2G merger identification to $35\\%$ in cluster simulations, demonstrating that unequal mass ratios ($q \\lesssim 0.4$) dominate precession measurability over total mass.",
-      "reading_guide": "Focus on Section 3 for the likelihood ratio derivation and Section 4 for the Bilby parameter recovery under CMC cluster injections.",
-      "authors": [
-        "Cailin Plunkett",
-        "Michael Zevin",
-        "Salvatore Vitale"
-      ]
-    },
-    {
-      "arxiv_id": "2610.40788",
-      "revision": 1,
-      "historical_edition": "announcement-2026-11-01",
-      "source_fingerprint": "5b690cd0f68ce6769d1b9490119209adf51af461f69735137b20bc528d0569bd",
-      "title": "How to feed your dragon: the role of turbulence in AGN activity",
-      "priority": "worth_knowing",
-      "recommendation_reason": "Investigates the dual role of ISM turbulence in driving accretion onto supermassive black holes while facilitating relativistic jet breakout.",
-      "core_insight": "Supersonic turbulence ($\\mathfrak{M}=4$) sustains median jet powers of $10^{40}\\text{--}10^{42}\\,\\mathrm{erg\\,s^{-1}}$ and provides low-density breakout channels, whereas uniform media suppress accretion down to $<10^{37}\\,\\mathrm{erg\\,s^{-1}}$.",
-      "reading_guide": "Consult Section 2 for the Arepo moving-mesh setup and Section 3 for the Mach-number-dependent accretion light curves.",
-      "authors": [
-        "Olga Borodina",
-        "Jake S. Bennett",
-        "Yueying Ni",
-        "Rainer Weinberger",
-        "Michaela Hirschmann",
-        "Boon Kiat Oh",
-        "Lars Hernquist"
-      ]
-    },
-    {
-      "arxiv_id": "2610.41082",
-      "revision": 1,
-      "historical_edition": "announcement-2026-11-01",
-      "source_fingerprint": "df026fd35a25e84d218eb4fe3f020ac10c22cdf7dadb8ee095fbdfa31cf39b56",
-      "title": "Two-Fluid Radial Stability of Dark-Matter-Admixed Compact Objects: Dark Compact Planets, Dark White Dwarfs, Dark Neutron Stars, and Dark Oysters",
-      "priority": "worth_knowing",
-      "recommendation_reason": "Resolves dynamical radial stability criteria in two-fluid compact stars, demonstrating where static turning-point methods fail.",
-      "core_insight": "Proves that fundamental radial pulsation frequency $\\omega_0^2 > 0$ strictly governs dynamical stability, enabling repulsive dark matter halos to support compact cores that exceed the standard vacuum Buchdahl redshift limit ($z=2$).",
-      "reading_guide": "Read Section 2 for the two-fluid relativistic pulsation formalism and Section 4 for ordinary matter surface redshift profiles.",
-      "authors": [
-        "José C. Jiménez",
-        "Oscar Pastor",
-        "Laura Tolos"
       ]
     }
   ],

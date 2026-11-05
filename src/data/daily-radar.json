@@ -1253,10 +1253,78 @@
     {
       "arxiv_id": "2611.05694",
       "revision": 1,
+      "status": "ready",
       "source_fingerprint": "dac5afe91d0ea8d34809719b082aa4ec350e656b90c8a62051ad8fb681c30092",
-      "status": "failed",
-      "failure_reason": "Must Read must inspect every section in the complete source package",
-      "priority": "must_read"
+      "priority": "worth_knowing",
+      "coverage": {
+        "level": "body_partial",
+        "label": "已检查正文中支撑判断的指定章节",
+        "source_version": "arXiv:2611.05694v1",
+        "inspected_sections": [
+          "1 Introduction",
+          "2 Observations and archival data",
+          "2.1 ALMA",
+          "2.2 HSA",
+          "3 Modelling the magnetar wind nebula spectrum",
+          "4 Conclusions"
+        ],
+        "source_references": [
+          {
+            "kind": "arxiv_source_package",
+            "url": "https://export.arxiv.org/src/2611.05694v1",
+            "locator": "1 Introduction; 2 Observations and archival data; 2.1 ALMA; 2.2 HSA; 3 Modelling the magnetar wind nebula spectrum; 4 Conclusions",
+            "description": "Complete, revision-matched arXiv TeX source package",
+            "sha256": "089eac0218e2e2c60eba00e37825e2055d5b036f484ca14e4e6fa1cf790cdbb9"
+          }
+        ]
+      },
+      "analysis": {
+        "origin": "ai",
+        "model": "gpt-6-luna",
+        "analyzed_at": "2026-11-05T07:28:45.789Z",
+        "reason": "This paper presents the first millimeter detection (ALMA Band 3 at $\\sim 100$ GHz) of the persistent radio source (PRS) associated with FRB 20201124A, identifying a high-frequency turnover that directly tests and supports the young magnetar wind nebula scenario.",
+        "result": "The combined VLA (6, 15, 22 GHz) and ALMA ($\\sim 100$ GHz) spectrum reveals a turnover fitted by a broken power law in the slow-cooling regime, yielding an injection break frequency $\\nu_{m} = 63^{+100}_{-33}$ GHz, a peak flux density $F_{m} = 28 \\pm 9\\ \\mu\\mathrm{Jy}$, and a corresponding spectral peak luminosity $L_{m} = 6.7 \\times 10^{27}\\ \\mathrm{erg\\ s^{-1}\\ Hz^{-1}}$. The self-absorption frequency is constrained to lie below $\\sim 0.5$ GHz, consistent with a young ($t \\lesssim 20$ yr), rotation-powered magnetar wind nebula.",
+        "reading_entry": "3 Modelling the magnetar wind nebula spectrum",
+        "problem": "Prior radio observations of the PRS associated with FRB 20201124A were limited to $\\le 22$ GHz where the spectrum remained flat/inverted, leaving the spectral peak frequency, optically thin spectral index, and underlying nebular engine unconstrained.",
+        "method": "The authors analyzed archival ALMA Band 3 observations (synthesized beam $1.69'' \\times 1.33''$, image rms $11\\ \\mu\\mathrm{Jy\\ beam^{-1}}$) and performed a two-component Gaussian deblending in CASA to isolate the FRB position ($20 \\pm 11\\ \\mu\\mathrm{Jy}$). They fitted the radio-to-millimeter SED using Bayesian dynamic nested sampling (`dynesty`) with the Granot-Sari slow-cooling synchrotron broken power law ($F_\\nu \\propto \\nu^{1/3}$ below $\\nu_m$ and $F_\\nu \\propto \\nu^{-(p-1)/2}$ above $\\nu_m$, with fixed $p=2.5$). They also analyzed High Sensitivity Array (HSA) 15 GHz VLBI data ($5\\sigma$ limit $40\\ \\mu\\mathrm{Jy\\ beam^{-1}}$).",
+        "assumptions": [
+          "The electron energy distribution index is fixed to $p = 2.5$, setting the optically thin high-frequency slope to $-(p-1)/2 = -0.75$."
+        ],
+        "limits": [
+          "HSA 15 GHz observations yielded a $5\\sigma$ upper limit of $40\\ \\mu\\mathrm{Jy\\ beam^{-1}}$, which is above the VLA flux density ($20.0 \\pm 3.5\\ \\mu\\mathrm{Jy}$) and thus insufficient to constrain parsec-scale compactness."
+        ],
+        "citation_leads": [
+          "1 Introduction: “PRSs are the immediate magneto-ionic environment of the FRB central engine.”",
+          "1 Introduction: “leaving the peak frequency and the optically thin slope essentially unconstrained.”",
+          "3 Modelling the magnetar wind nebula spectrum: “We fit the radio spectrum with this broken power-law model using Bayesian statistics.”",
+          "3 Modelling the magnetar wind nebula spectrum: “The spectral peak luminosity corresponding to $\\nu_{m}$ is $L_{m}=6.7\\times 10^{27}\\,\\mathrm{erg\\,s^{-1}\\,Hz^{-1}}$.”",
+          "4 Conclusions: “With its inverted spectrum extending to tens of gigahertz and the highest peak frequency among known PRSs”",
+          "3 Modelling the magnetar wind nebula spectrum: “We fix the electron index $p$ at the value used by [Rahaman et al. (2025)](#bib.bib22), $p=2.5$”",
+          "2.2 HSA: “the observation is not deep enough to test whether the persistent emission is compact on parsec scales.”"
+        ],
+        "research_progress": "By identifying a spectral turnover at $\\nu_m = 63^{+100}_{-33}$ GHz, the study proves that the PRS of FRB 20201124A possesses the highest peak frequency among known PRSs and demonstrates consistency with a rotation-powered magnetar wind nebula slowed by a massive ejecta shell at an age of $t \\lesssim 20$ yr.",
+        "figures": [
+          {
+            "url": "/arxiv-figures/2611.05694/radio_spectrum_fit_2PL.png",
+            "caption": "Figure 2: Left panel: radio-to-millimetre spectrum of the persistent source associated with FRB 20201124A. Red points are VLA measurements at 6, 15 and 22 GHz from Bruni et al. (2024); the yellow star is the ALMA Band 3 detection at $\\sim$ 100 GHz presented in this work. Upper limits from NOEMA ( Bruni et al., 2024 ) are shown as downward arrows. The solid line is the median of the 10 000 best-likelihood spectra, and the shaded blue areas within the dashed lines show the 1, 2 and 3 $\\sigma$ credible regions. Right panel: corner plot of the two-parameter fit shown in the left panel, made using corner ( Foreman-Mackey, 2016 ).",
+            "label": "Fig. 2",
+            "category": "fitting",
+            "category_badge": "Model vs Data Fitting",
+            "physical_core": "The radio-to-millimetre spectrum combines VLA measurements at 6, 15, and 22 GHz with the ALMA detection at approximately 100 GHz and NOEMA upper limits. The fitted broken power law peaks at $\\nu_m = 63^{+100}_{-33}\\,\\mathrm{GHz}$ with peak flux $F_m = 28\\pm9\\,\\mu\\mathrm{Jy}$; the figure also shows the credible regions and the two-parameter fit constraints.",
+            "is_schematic": false
+          }
+        ],
+        "unresolved_checks": [
+          "No independent peer review or line-by-line recalculation performed.",
+          "Figures from source package have not undergone visual verification."
+        ],
+        "potential_lineage": {
+          "status": "no_match",
+          "reason": "No candidate scientific lineage identified from current evidence.",
+          "candidates": []
+        },
+        "prerequisite_works": []
+      }
     },
     {
       "arxiv_id": "2611.05740",
@@ -12061,12 +12129,90 @@
       },
       "historical_edition": "announcement-2026-11-04",
       "historical_edition_fingerprint": "2c27345f14534c2b08b570ad21b4c4d8572409575af754f5814211b5b74562c4"
+    },
+    {
+      "arxiv_id": "2611.05694",
+      "revision": 1,
+      "status": "ready",
+      "source_fingerprint": "dac5afe91d0ea8d34809719b082aa4ec350e656b90c8a62051ad8fb681c30092",
+      "priority": "worth_knowing",
+      "coverage": {
+        "level": "body_partial",
+        "label": "已检查正文中支撑判断的指定章节",
+        "source_version": "arXiv:2611.05694v1",
+        "inspected_sections": [
+          "1 Introduction",
+          "2 Observations and archival data",
+          "2.1 ALMA",
+          "2.2 HSA",
+          "3 Modelling the magnetar wind nebula spectrum",
+          "4 Conclusions"
+        ],
+        "source_references": [
+          {
+            "kind": "arxiv_source_package",
+            "url": "https://export.arxiv.org/src/2611.05694v1",
+            "locator": "1 Introduction; 2 Observations and archival data; 2.1 ALMA; 2.2 HSA; 3 Modelling the magnetar wind nebula spectrum; 4 Conclusions",
+            "description": "Complete, revision-matched arXiv TeX source package",
+            "sha256": "089eac0218e2e2c60eba00e37825e2055d5b036f484ca14e4e6fa1cf790cdbb9"
+          }
+        ]
+      },
+      "analysis": {
+        "origin": "ai",
+        "model": "gpt-6-luna",
+        "analyzed_at": "2026-11-05T07:28:45.789Z",
+        "reason": "This paper presents the first millimeter detection (ALMA Band 3 at $\\sim 100$ GHz) of the persistent radio source (PRS) associated with FRB 20201124A, identifying a high-frequency turnover that directly tests and supports the young magnetar wind nebula scenario.",
+        "result": "The combined VLA (6, 15, 22 GHz) and ALMA ($\\sim 100$ GHz) spectrum reveals a turnover fitted by a broken power law in the slow-cooling regime, yielding an injection break frequency $\\nu_{m} = 63^{+100}_{-33}$ GHz, a peak flux density $F_{m} = 28 \\pm 9\\ \\mu\\mathrm{Jy}$, and a corresponding spectral peak luminosity $L_{m} = 6.7 \\times 10^{27}\\ \\mathrm{erg\\ s^{-1}\\ Hz^{-1}}$. The self-absorption frequency is constrained to lie below $\\sim 0.5$ GHz, consistent with a young ($t \\lesssim 20$ yr), rotation-powered magnetar wind nebula.",
+        "reading_entry": "3 Modelling the magnetar wind nebula spectrum",
+        "problem": "Prior radio observations of the PRS associated with FRB 20201124A were limited to $\\le 22$ GHz where the spectrum remained flat/inverted, leaving the spectral peak frequency, optically thin spectral index, and underlying nebular engine unconstrained.",
+        "method": "The authors analyzed archival ALMA Band 3 observations (synthesized beam $1.69'' \\times 1.33''$, image rms $11\\ \\mu\\mathrm{Jy\\ beam^{-1}}$) and performed a two-component Gaussian deblending in CASA to isolate the FRB position ($20 \\pm 11\\ \\mu\\mathrm{Jy}$). They fitted the radio-to-millimeter SED using Bayesian dynamic nested sampling (`dynesty`) with the Granot-Sari slow-cooling synchrotron broken power law ($F_\\nu \\propto \\nu^{1/3}$ below $\\nu_m$ and $F_\\nu \\propto \\nu^{-(p-1)/2}$ above $\\nu_m$, with fixed $p=2.5$). They also analyzed High Sensitivity Array (HSA) 15 GHz VLBI data ($5\\sigma$ limit $40\\ \\mu\\mathrm{Jy\\ beam^{-1}}$).",
+        "assumptions": [
+          "The electron energy distribution index is fixed to $p = 2.5$, setting the optically thin high-frequency slope to $-(p-1)/2 = -0.75$."
+        ],
+        "limits": [
+          "HSA 15 GHz observations yielded a $5\\sigma$ upper limit of $40\\ \\mu\\mathrm{Jy\\ beam^{-1}}$, which is above the VLA flux density ($20.0 \\pm 3.5\\ \\mu\\mathrm{Jy}$) and thus insufficient to constrain parsec-scale compactness."
+        ],
+        "citation_leads": [
+          "1 Introduction: “PRSs are the immediate magneto-ionic environment of the FRB central engine.”",
+          "1 Introduction: “leaving the peak frequency and the optically thin slope essentially unconstrained.”",
+          "3 Modelling the magnetar wind nebula spectrum: “We fit the radio spectrum with this broken power-law model using Bayesian statistics.”",
+          "3 Modelling the magnetar wind nebula spectrum: “The spectral peak luminosity corresponding to $\\nu_{m}$ is $L_{m}=6.7\\times 10^{27}\\,\\mathrm{erg\\,s^{-1}\\,Hz^{-1}}$.”",
+          "4 Conclusions: “With its inverted spectrum extending to tens of gigahertz and the highest peak frequency among known PRSs”",
+          "3 Modelling the magnetar wind nebula spectrum: “We fix the electron index $p$ at the value used by [Rahaman et al. (2025)](#bib.bib22), $p=2.5$”",
+          "2.2 HSA: “the observation is not deep enough to test whether the persistent emission is compact on parsec scales.”"
+        ],
+        "research_progress": "By identifying a spectral turnover at $\\nu_m = 63^{+100}_{-33}$ GHz, the study proves that the PRS of FRB 20201124A possesses the highest peak frequency among known PRSs and demonstrates consistency with a rotation-powered magnetar wind nebula slowed by a massive ejecta shell at an age of $t \\lesssim 20$ yr.",
+        "figures": [
+          {
+            "url": "/arxiv-figures/2611.05694/radio_spectrum_fit_2PL.png",
+            "caption": "Figure 2: Left panel: radio-to-millimetre spectrum of the persistent source associated with FRB 20201124A. Red points are VLA measurements at 6, 15 and 22 GHz from Bruni et al. (2024); the yellow star is the ALMA Band 3 detection at $\\sim$ 100 GHz presented in this work. Upper limits from NOEMA ( Bruni et al., 2024 ) are shown as downward arrows. The solid line is the median of the 10 000 best-likelihood spectra, and the shaded blue areas within the dashed lines show the 1, 2 and 3 $\\sigma$ credible regions. Right panel: corner plot of the two-parameter fit shown in the left panel, made using corner ( Foreman-Mackey, 2016 ).",
+            "label": "Fig. 2",
+            "category": "fitting",
+            "category_badge": "Model vs Data Fitting",
+            "physical_core": "The radio-to-millimetre spectrum combines VLA measurements at 6, 15, and 22 GHz with the ALMA detection at approximately 100 GHz and NOEMA upper limits. The fitted broken power law peaks at $\\nu_m = 63^{+100}_{-33}\\,\\mathrm{GHz}$ with peak flux $F_m = 28\\pm9\\,\\mu\\mathrm{Jy}$; the figure also shows the credible regions and the two-parameter fit constraints.",
+            "is_schematic": false
+          }
+        ],
+        "unresolved_checks": [
+          "No independent peer review or line-by-line recalculation performed.",
+          "Figures from source package have not undergone visual verification."
+        ],
+        "potential_lineage": {
+          "status": "no_match",
+          "reason": "No candidate scientific lineage identified from current evidence.",
+          "candidates": []
+        },
+        "prerequisite_works": []
+      },
+      "historical_edition": "announcement-2026-11-04",
+      "historical_edition_fingerprint": "2c27345f14534c2b08b570ad21b4c4d8572409575af754f5814211b5b74562c4"
     }
   ],
   "opening_brief": {
     "status": "ready",
     "edition_fingerprint": "2c27345f14534c2b08b570ad21b4c4d8572409575af754f5814211b5b74562c4",
-    "intro": "Featured reading: \"The kinematic Kelvin-Helmholtz instability-driven dynamo: implications for merging compact objects\" and 12 other key developments.",
+    "intro": "Featured reading: \"The kinematic Kelvin-Helmholtz instability-driven dynamo: implications for merging compact objects\" and 13 other key developments.",
     "focus_paper": {
       "arxiv_id": "2611.05880",
       "revision": 1,
@@ -12134,6 +12280,12 @@
         "revision": 1,
         "source_fingerprint": "396da52a8ae0271dca3497a0c94dcb326f9e88c20186b6216b04d1c6fc7c8865",
         "guide_fingerprint": "ea1b9c5cbfaa440392b4e6e92aeb2c86079bdbf4a8ff2c0a59e34290b85834c6"
+      },
+      {
+        "arxiv_id": "2611.05694",
+        "revision": 1,
+        "source_fingerprint": "dac5afe91d0ea8d34809719b082aa4ec350e656b90c8a62051ad8fb681c30092",
+        "guide_fingerprint": "d42734231b6e941485c34c2691b1a5d0b79bfd0b70c5d76b479fb0f2933e9279"
       },
       {
         "arxiv_id": "2611.05790",

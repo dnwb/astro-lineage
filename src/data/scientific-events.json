@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-11-05T07:12:11.681Z",
-  "total_events": 130,
+  "generated_at": "2026-11-05T07:30:49.782Z",
+  "total_events": 131,
   "events": [
     {
       "event_id": "GW170817",
@@ -12,7 +12,7 @@
         "MULTI",
         "GRB"
       ],
-      "heat_score": 250.6,
+      "heat_score": 250.3,
       "paper_count": 19,
       "headline": "利用GW170817对应千新星AT2017gfo的晚期近红外光谱",
       "narrative": "GW170817 是近期重点瞬变天体事件，活跃跨度 2026-09-16 至 2026-11-04，共聚合 19 篇研读文献（含 3 篇必读突破）。核心突破研判：模型将1.4、1.6和2.1微米特征分别主要归于La III、Ce III和Te III；推得Te、La、Ce质量分数约为0.04–0.08、0.025–0.05和0.05–0.1，Kr和Sb质量分数上限约为0.03和0.003。La和Ce约束仍属暂定。",
@@ -566,7 +566,7 @@
         "Transient Surveillance",
         "GCN Photometry"
       ],
-      "heat_score": 31.9,
+      "heat_score": 31.8,
       "paper_count": 4,
       "headline": "解释极端高能暴 GRB 260924A 的能量学分配机制、在 $...",
       "narrative": "GRB 221009A 是近期重点瞬变天体事件，活跃跨度 2026-10-04 至 2026-10-27，共聚合 4 篇研读文献（含 2 篇必读突破）。核心突破研判：测定暴源红移为 $z=3.51\\pm 0.10$，$1\\text{--}10{,}000\\,\\mathrm{keV}$ 能段各向同性释放能量高达 $E_{\\gamma,\\mathrm{iso}} \\simeq 9.79\\times 10^{54}\\,\\mathrm{erg}$，初始各向同性动能 $E_{\\mathrm{K,iso}} \\simeq 7.0\\times 10^{55}\\,\\mathrm{erg}$，瞬时辐射效率 $\\eta_\\gamma \\simeq 0.12$。Fermi/LAT 探测到最高达 $43.31\\,\\mathrm{GeV}$ 的高能光子（在 $82.24\\,\\mathrm{s}$ 到达）。晚期余辉衰减指数为 $\\alpha_{\\rm opt}=1.46\\pm 0.01$ 与 $\\alpha_X=1.57\\pm 0.04$，在慢冷却闭合关系 $\\alpha^{\\rm syn}=\\frac{3(p-1)}{4}+\\frac{k}{2(4-k)}$ 下排除了常规均匀介质（$k=0$）或纯自由星风（$k=2$），测定星周介质为密度梯度介质 $n(R)\\propto R^{-k}$（$k\\simeq 1.0\\text{--}1.3$，基准 $k=1.2$），电子谱指数 $p\\simeq 2.75$。早期 $70.04\\text{--}164.9\\,\\mathrm{s}$ 处的 LAT 通量超出后续外推达 $2.25\\pm 0.59$ 倍，由厚壳层反向激波 SSC 过程主导解释；激波微观磁能分配比为 $R_B\\equiv (\\varepsilon_{B_r}/\\varepsilon_{B_f})^{1/2}\\simeq 2.6$。",
@@ -711,41 +711,6 @@
       "gcn_status": "archived"
     },
     {
-      "event_id": "GRB 261026A",
-      "event_type": "GRB",
-      "tags": [
-        "Transient Surveillance",
-        "GCN Circulars",
-        "GRB"
-      ],
-      "heat_score": 25.5,
-      "paper_count": 0,
-      "headline": "GRB 261026A 空间与地面望远镜全波段应急协同追踪",
-      "narrative": "已汇聚 NASA GCN Circulars 快速通报 17 份。红移 待确定，触发时刻 T0: 2026-10-26 06:09:37 UTC (SVOM/ECLAIRs)。多波段光变曲线与早期测光点已完成零同质化聚合。",
-      "first_seen": "2026-10-26",
-      "last_updated": "2026-10-30",
-      "papers": [],
-      "lead_figure": null,
-      "lead_figure_arxiv_id": null,
-      "canonical_t0": {
-        "instrument": "SVOM/ECLAIRs",
-        "utc_iso": "2026-10-26T06:09:37.680Z",
-        "circular_id": 46068
-      },
-      "best_redshift": null,
-      "has_redshift_conflict": false,
-      "multi_messenger": [],
-      "gcn_aliases_label": null,
-      "canonical_t0_label": "2026-10-26 06:09:37 UTC (SVOM/ECLAIRs)",
-      "best_redshift_label": null,
-      "multi_messenger_badges": [],
-      "gcn_circular_count": 17,
-      "gcn_figure_path": "/gcn-figures/grb-261026a.png",
-      "gcn_aliases": [],
-      "gcn_slug": "grb-261026a",
-      "gcn_status": "active"
-    },
-    {
       "event_id": "GRB 261024D",
       "event_type": "GRB",
       "tags": [
@@ -781,56 +746,39 @@
       "gcn_status": "active"
     },
     {
-      "event_id": "FRB20201124A",
-      "event_type": "FRB",
-      "tags": [],
-      "heat_score": 22,
-      "paper_count": 1,
-      "headline": "FRB20201124A 快速射电暴环境与磁星辐射机制",
-      "narrative": "FRB20201124A 是近期重点瞬变天体事件，监测日期 2026-11-04，共聚合 1 篇研读文献（含 1 篇必读突破）。核心突破研判：未记录",
-      "first_seen": "2026-11-04",
-      "last_updated": "2026-11-04",
-      "papers": [
-        {
-          "arxiv_id": "2611.05694",
-          "revision": 1,
-          "title": "A high-frequency turnover in the persistent radio source of FRB20201124A",
-          "authors": [
-            "G. Bruni",
-            "G. Gianfagna",
-            "L. Piro",
-            "A. L. Thakur",
-            "L. Nicastro",
-            "E. Palazzi",
-            "A. Rossi",
-            "S. Savaglio",
-            "A. Gardini",
-            "Y. -P. Yang",
-            "B. Zhang"
-          ],
-          "date": "2026-11-04",
-          "priority": "must_read",
-          "bluf_result": "未记录",
-          "bluf_problem": "未记录",
-          "figures": [],
-          "primary_figure": null
-        }
+      "event_id": "GRB 261026A",
+      "event_type": "GRB",
+      "tags": [
+        "Transient Surveillance",
+        "GCN Circulars",
+        "GRB"
       ],
+      "heat_score": 25.4,
+      "paper_count": 0,
+      "headline": "GRB 261026A 空间与地面望远镜全波段应急协同追踪",
+      "narrative": "已汇聚 NASA GCN Circulars 快速通报 17 份。红移 待确定，触发时刻 T0: 2026-10-26 06:09:37 UTC (SVOM/ECLAIRs)。多波段光变曲线与早期测光点已完成零同质化聚合。",
+      "first_seen": "2026-10-26",
+      "last_updated": "2026-10-30",
+      "papers": [],
       "lead_figure": null,
       "lead_figure_arxiv_id": null,
-      "canonical_t0": null,
+      "canonical_t0": {
+        "instrument": "SVOM/ECLAIRs",
+        "utc_iso": "2026-10-26T06:09:37.680Z",
+        "circular_id": 46068
+      },
       "best_redshift": null,
       "has_redshift_conflict": false,
       "multi_messenger": [],
       "gcn_aliases_label": null,
-      "canonical_t0_label": null,
+      "canonical_t0_label": "2026-10-26 06:09:37 UTC (SVOM/ECLAIRs)",
       "best_redshift_label": null,
       "multi_messenger_badges": [],
-      "gcn_circular_count": 0,
-      "gcn_figure_path": null,
+      "gcn_circular_count": 17,
+      "gcn_figure_path": "/gcn-figures/grb-261026a.png",
       "gcn_aliases": [],
-      "gcn_slug": null,
-      "gcn_status": null
+      "gcn_slug": "grb-261026a",
+      "gcn_status": "active"
     },
     {
       "event_id": "SN 2019RSQ",
@@ -1868,6 +1816,168 @@
       ],
       "gcn_slug": "grb-211211a",
       "gcn_status": "archived"
+    },
+    {
+      "event_id": "FRB20201124A",
+      "event_type": "FRB",
+      "tags": [
+        "FRB",
+        "MAG"
+      ],
+      "heat_score": 13.2,
+      "paper_count": 1,
+      "headline": "Prior radio observations of the ...",
+      "narrative": "FRB20201124A 是近期重点瞬变天体事件，监测日期 2026-11-04，共聚合 1 篇研读文献。核心突破研判：The combined VLA (6, 15, 22 GHz) and ALMA ($\\sim 100$ GHz) spectrum reveals a turnover fitted by a broken power law in the slow-cooling regime, yielding an injection break frequency $\\nu_{m} = 63^{+100}_{-33}$ GHz, a peak flux density $F_{m} = 28 \\pm 9\\ \\mu\\mathrm{Jy}$, and a corresponding spectral peak luminosity $L_{m} = 6.7 \\times 10^{27}\\ \\mathrm{erg\\ s^{-1}\\ Hz^{-1}}$. The self-absorption frequency is constrained to lie below $\\sim 0.5$ GHz, consistent with a young ($t \\lesssim 20$ yr), rotation-powered magnetar wind nebula.",
+      "first_seen": "2026-11-04",
+      "last_updated": "2026-11-04",
+      "papers": [
+        {
+          "arxiv_id": "2611.05694",
+          "revision": 1,
+          "title": "A high-frequency turnover in the persistent radio source of FRB20201124A",
+          "authors": [
+            "G. Bruni",
+            "G. Gianfagna",
+            "L. Piro",
+            "A. L. Thakur",
+            "L. Nicastro",
+            "E. Palazzi",
+            "A. Rossi",
+            "S. Savaglio",
+            "A. Gardini",
+            "Y. -P. Yang",
+            "B. Zhang"
+          ],
+          "date": "2026-11-04",
+          "priority": "worth_knowing",
+          "bluf_result": "The combined VLA (6, 15, 22 GHz) and ALMA ($\\sim 100$ GHz) spectrum reveals a turnover fitted by a broken power law in the slow-cooling regime, yielding an injection break frequency $\\nu_{m} = 63^{+100}_{-33}$ GHz, a peak flux density $F_{m} = 28 \\pm 9\\ \\mu\\mathrm{Jy}$, and a corresponding spectral peak luminosity $L_{m} = 6.7 \\times 10^{27}\\ \\mathrm{erg\\ s^{-1}\\ Hz^{-1}}$. The self-absorption frequency is constrained to lie below $\\sim 0.5$ GHz, consistent with a young ($t \\lesssim 20$ yr), rotation-powered magnetar wind nebula.",
+          "bluf_problem": "Prior radio observations of the PRS associated with FRB 20201124A were limited to $\\le 22$ GHz where the spectrum remained flat/inverted, leaving the spectral peak frequency, optically thin spectral index, and underlying nebular engine unconstrained.",
+          "figures": [
+            {
+              "url": "/arxiv-figures/2611.05694/radio_spectrum_fit_2PL.png",
+              "label": "Fig. 2",
+              "caption": "Figure 2: Left panel: radio-to-millimetre spectrum of the persistent source associated with FRB 20201124A. Red points are VLA measurements at 6, 15 and 22 GHz from Bruni et al. (2024); the yellow star is the ALMA Band 3 detection at $\\sim$ 100 GHz presented in this work. Upper limits from NOEMA ( Bruni et al., 2024 ) are shown as downward arrows. The solid line is the median of the 10 000 best-likelihood spectra, and the shaded blue areas within the dashed lines show the 1, 2 and 3 $\\sigma$ credible regions. Right panel: corner plot of the two-parameter fit shown in the left panel, made using corner ( Foreman-Mackey, 2016 ).",
+              "category": "fitting",
+              "category_badge": "Model vs Data Fitting",
+              "physical_core": "The radio-to-millimetre spectrum combines VLA measurements at 6, 15, and 22 GHz with the ALMA detection at approximately 100 GHz and NOEMA upper limits. The fitted broken power law peaks at $\\nu_m = 63^{+100}_{-33}\\,\\mathrm{GHz}$ with peak flux $F_m = 28\\pm9\\,\\mu\\mathrm{Jy}$; the figure also shows the credible regions and the two-parameter fit constraints.",
+              "is_schematic": false
+            }
+          ],
+          "primary_figure": {
+            "url": "/arxiv-figures/2611.05694/radio_spectrum_fit_2PL.png",
+            "label": "Fig. 2",
+            "caption": "Figure 2: Left panel: radio-to-millimetre spectrum of the persistent source associated with FRB 20201124A. Red points are VLA measurements at 6, 15 and 22 GHz from Bruni et al. (2024); the yellow star is the ALMA Band 3 detection at $\\sim$ 100 GHz presented in this work. Upper limits from NOEMA ( Bruni et al., 2024 ) are shown as downward arrows. The solid line is the median of the 10 000 best-likelihood spectra, and the shaded blue areas within the dashed lines show the 1, 2 and 3 $\\sigma$ credible regions. Right panel: corner plot of the two-parameter fit shown in the left panel, made using corner ( Foreman-Mackey, 2016 ).",
+            "category": "fitting",
+            "category_badge": "Model vs Data Fitting",
+            "physical_core": "The radio-to-millimetre spectrum combines VLA measurements at 6, 15, and 22 GHz with the ALMA detection at approximately 100 GHz and NOEMA upper limits. The fitted broken power law peaks at $\\nu_m = 63^{+100}_{-33}\\,\\mathrm{GHz}$ with peak flux $F_m = 28\\pm9\\,\\mu\\mathrm{Jy}$; the figure also shows the credible regions and the two-parameter fit constraints.",
+            "is_schematic": false
+          }
+        }
+      ],
+      "lead_figure": {
+        "url": "/arxiv-figures/2611.05694/radio_spectrum_fit_2PL.png",
+        "label": "Fig. 2",
+        "caption": "Figure 2: Left panel: radio-to-millimetre spectrum of the persistent source associated with FRB 20201124A. Red points are VLA measurements at 6, 15 and 22 GHz from Bruni et al. (2024); the yellow star is the ALMA Band 3 detection at $\\sim$ 100 GHz presented in this work. Upper limits from NOEMA ( Bruni et al., 2024 ) are shown as downward arrows. The solid line is the median of the 10 000 best-likelihood spectra, and the shaded blue areas within the dashed lines show the 1, 2 and 3 $\\sigma$ credible regions. Right panel: corner plot of the two-parameter fit shown in the left panel, made using corner ( Foreman-Mackey, 2016 ).",
+        "category": "fitting",
+        "category_badge": "Model vs Data Fitting",
+        "physical_core": "The radio-to-millimetre spectrum combines VLA measurements at 6, 15, and 22 GHz with the ALMA detection at approximately 100 GHz and NOEMA upper limits. The fitted broken power law peaks at $\\nu_m = 63^{+100}_{-33}\\,\\mathrm{GHz}$ with peak flux $F_m = 28\\pm9\\,\\mu\\mathrm{Jy}$; the figure also shows the credible regions and the two-parameter fit constraints.",
+        "is_schematic": false
+      },
+      "lead_figure_arxiv_id": "2611.05694",
+      "canonical_t0": null,
+      "best_redshift": null,
+      "has_redshift_conflict": false,
+      "multi_messenger": [],
+      "gcn_aliases_label": null,
+      "canonical_t0_label": null,
+      "best_redshift_label": null,
+      "multi_messenger_badges": [],
+      "gcn_circular_count": 0,
+      "gcn_figure_path": null,
+      "gcn_aliases": [],
+      "gcn_slug": null,
+      "gcn_status": null
+    },
+    {
+      "event_id": "FRB 20201124A",
+      "event_type": "FRB",
+      "tags": [
+        "FRB",
+        "MAG"
+      ],
+      "heat_score": 13.2,
+      "paper_count": 1,
+      "headline": "Prior radio observations of the ...",
+      "narrative": "FRB 20201124A 是近期重点瞬变天体事件，监测日期 2026-11-04，共聚合 1 篇研读文献。核心突破研判：The combined VLA (6, 15, 22 GHz) and ALMA ($\\sim 100$ GHz) spectrum reveals a turnover fitted by a broken power law in the slow-cooling regime, yielding an injection break frequency $\\nu_{m} = 63^{+100}_{-33}$ GHz, a peak flux density $F_{m} = 28 \\pm 9\\ \\mu\\mathrm{Jy}$, and a corresponding spectral peak luminosity $L_{m} = 6.7 \\times 10^{27}\\ \\mathrm{erg\\ s^{-1}\\ Hz^{-1}}$. The self-absorption frequency is constrained to lie below $\\sim 0.5$ GHz, consistent with a young ($t \\lesssim 20$ yr), rotation-powered magnetar wind nebula.",
+      "first_seen": "2026-11-04",
+      "last_updated": "2026-11-04",
+      "papers": [
+        {
+          "arxiv_id": "2611.05694",
+          "revision": 1,
+          "title": "A high-frequency turnover in the persistent radio source of FRB20201124A",
+          "authors": [
+            "G. Bruni",
+            "G. Gianfagna",
+            "L. Piro",
+            "A. L. Thakur",
+            "L. Nicastro",
+            "E. Palazzi",
+            "A. Rossi",
+            "S. Savaglio",
+            "A. Gardini",
+            "Y. -P. Yang",
+            "B. Zhang"
+          ],
+          "date": "2026-11-04",
+          "priority": "worth_knowing",
+          "bluf_result": "The combined VLA (6, 15, 22 GHz) and ALMA ($\\sim 100$ GHz) spectrum reveals a turnover fitted by a broken power law in the slow-cooling regime, yielding an injection break frequency $\\nu_{m} = 63^{+100}_{-33}$ GHz, a peak flux density $F_{m} = 28 \\pm 9\\ \\mu\\mathrm{Jy}$, and a corresponding spectral peak luminosity $L_{m} = 6.7 \\times 10^{27}\\ \\mathrm{erg\\ s^{-1}\\ Hz^{-1}}$. The self-absorption frequency is constrained to lie below $\\sim 0.5$ GHz, consistent with a young ($t \\lesssim 20$ yr), rotation-powered magnetar wind nebula.",
+          "bluf_problem": "Prior radio observations of the PRS associated with FRB 20201124A were limited to $\\le 22$ GHz where the spectrum remained flat/inverted, leaving the spectral peak frequency, optically thin spectral index, and underlying nebular engine unconstrained.",
+          "figures": [
+            {
+              "url": "/arxiv-figures/2611.05694/radio_spectrum_fit_2PL.png",
+              "label": "Fig. 2",
+              "caption": "Figure 2: Left panel: radio-to-millimetre spectrum of the persistent source associated with FRB 20201124A. Red points are VLA measurements at 6, 15 and 22 GHz from Bruni et al. (2024); the yellow star is the ALMA Band 3 detection at $\\sim$ 100 GHz presented in this work. Upper limits from NOEMA ( Bruni et al., 2024 ) are shown as downward arrows. The solid line is the median of the 10 000 best-likelihood spectra, and the shaded blue areas within the dashed lines show the 1, 2 and 3 $\\sigma$ credible regions. Right panel: corner plot of the two-parameter fit shown in the left panel, made using corner ( Foreman-Mackey, 2016 ).",
+              "category": "fitting",
+              "category_badge": "Model vs Data Fitting",
+              "physical_core": "The radio-to-millimetre spectrum combines VLA measurements at 6, 15, and 22 GHz with the ALMA detection at approximately 100 GHz and NOEMA upper limits. The fitted broken power law peaks at $\\nu_m = 63^{+100}_{-33}\\,\\mathrm{GHz}$ with peak flux $F_m = 28\\pm9\\,\\mu\\mathrm{Jy}$; the figure also shows the credible regions and the two-parameter fit constraints.",
+              "is_schematic": false
+            }
+          ],
+          "primary_figure": {
+            "url": "/arxiv-figures/2611.05694/radio_spectrum_fit_2PL.png",
+            "label": "Fig. 2",
+            "caption": "Figure 2: Left panel: radio-to-millimetre spectrum of the persistent source associated with FRB 20201124A. Red points are VLA measurements at 6, 15 and 22 GHz from Bruni et al. (2024); the yellow star is the ALMA Band 3 detection at $\\sim$ 100 GHz presented in this work. Upper limits from NOEMA ( Bruni et al., 2024 ) are shown as downward arrows. The solid line is the median of the 10 000 best-likelihood spectra, and the shaded blue areas within the dashed lines show the 1, 2 and 3 $\\sigma$ credible regions. Right panel: corner plot of the two-parameter fit shown in the left panel, made using corner ( Foreman-Mackey, 2016 ).",
+            "category": "fitting",
+            "category_badge": "Model vs Data Fitting",
+            "physical_core": "The radio-to-millimetre spectrum combines VLA measurements at 6, 15, and 22 GHz with the ALMA detection at approximately 100 GHz and NOEMA upper limits. The fitted broken power law peaks at $\\nu_m = 63^{+100}_{-33}\\,\\mathrm{GHz}$ with peak flux $F_m = 28\\pm9\\,\\mu\\mathrm{Jy}$; the figure also shows the credible regions and the two-parameter fit constraints.",
+            "is_schematic": false
+          }
+        }
+      ],
+      "lead_figure": {
+        "url": "/arxiv-figures/2611.05694/radio_spectrum_fit_2PL.png",
+        "label": "Fig. 2",
+        "caption": "Figure 2: Left panel: radio-to-millimetre spectrum of the persistent source associated with FRB 20201124A. Red points are VLA measurements at 6, 15 and 22 GHz from Bruni et al. (2024); the yellow star is the ALMA Band 3 detection at $\\sim$ 100 GHz presented in this work. Upper limits from NOEMA ( Bruni et al., 2024 ) are shown as downward arrows. The solid line is the median of the 10 000 best-likelihood spectra, and the shaded blue areas within the dashed lines show the 1, 2 and 3 $\\sigma$ credible regions. Right panel: corner plot of the two-parameter fit shown in the left panel, made using corner ( Foreman-Mackey, 2016 ).",
+        "category": "fitting",
+        "category_badge": "Model vs Data Fitting",
+        "physical_core": "The radio-to-millimetre spectrum combines VLA measurements at 6, 15, and 22 GHz with the ALMA detection at approximately 100 GHz and NOEMA upper limits. The fitted broken power law peaks at $\\nu_m = 63^{+100}_{-33}\\,\\mathrm{GHz}$ with peak flux $F_m = 28\\pm9\\,\\mu\\mathrm{Jy}$; the figure also shows the credible regions and the two-parameter fit constraints.",
+        "is_schematic": false
+      },
+      "lead_figure_arxiv_id": "2611.05694",
+      "canonical_t0": null,
+      "best_redshift": null,
+      "has_redshift_conflict": false,
+      "multi_messenger": [],
+      "gcn_aliases_label": null,
+      "canonical_t0_label": null,
+      "best_redshift_label": null,
+      "multi_messenger_badges": [],
+      "gcn_circular_count": 0,
+      "gcn_figure_path": null,
+      "gcn_aliases": [],
+      "gcn_slug": null,
+      "gcn_status": null
     },
     {
       "event_id": "SN 2024AFAV",
@@ -4031,106 +4141,6 @@
       "gcn_status": null
     },
     {
-      "event_id": "GW190814",
-      "event_type": "GW",
-      "tags": [
-        "FRB"
-      ],
-      "heat_score": 4.9,
-      "paper_count": 2,
-      "headline": "论文旨在检验带电夸克星能否在非标准引力和统一相互作用夸克物质状态...",
-      "narrative": "GW190814 是近期重点瞬变天体事件，活跃跨度 2026-09-21 至 2026-10-22，共聚合 2 篇研读文献。核心突破研判：结果表明，电荷与能量-动量平方引力耦合的共同作用可显著提高夸克星的最大质量和半径，在强负耦合及较强相互作用参数下，模型质量可接近 $3M_{\\odot}$。带电构型的最大质量中心密度降低约 $10$--$15\\%$，并可满足因果性及多项现有脉冲星、NICER观测约束。",
-      "first_seen": "2026-09-21",
-      "last_updated": "2026-10-22",
-      "papers": [
-        {
-          "arxiv_id": "2610.31032",
-          "revision": 1,
-          "title": "Parameter Constraints on $f(R^{1+ε},T_{μν}T^{μν})$ Gravity from Exotic Compact Objects",
-          "authors": [
-            "S. Wilhelmina",
-            "B. N. Jayawiguna",
-            "A. Sulaksono"
-          ],
-          "date": "2026-10-22",
-          "priority": "skip",
-          "bluf_result": "当几何参数 $\\epsilon < 0$ 且能量-动量耦合常数 $\\alpha > 0$ 时，模型能够同时满足低质量天体 HESS J1731-347 与广义相对论难以自洽解释的 GW190814 次伴星质量上限约束（$M = 2.6\\,M_\\odot$）；具体参数组合如 $\\epsilon = -0.1, \\alpha = 181\\ \\mathrm{km}^2$（最大质量可达 $3.09\\,M_\\odot$）以及 $\\epsilon = -0.05, \\alpha = 166\\ \\mathrm{km}^2$ 均可与观测兼容，所有构型致密度均低于 Buchdahl 极限（$C < 0.444$），且满足有效声速因果条件 $0 \\le c_s^{2\\,\\mathrm{eff}} \\le 1$ 与各项能量条件（SEC, WEC, NEC, DEC）。",
-          "bluf_problem": "广义相对论（GR）结合标准核物质/夸克物质状态方程难以同时解释质量极低的致密星（如 HESS J1731-347，$M = 0.77_{-0.17}^{+0.20}\\,M_\\odot$）与质量间隙内的重次级天体（如 GW190814，$M = 2.50\\text{--}2.67\\,M_\\odot$）；需要探究在 $f(R^{1+\\epsilon}, T_{\\mu\\nu}T^{\\mu\\nu})$ 修正引力与 MIT Bag 物态方程框架下能否统一协调这些极端致密天体观测。",
-          "figures": [
-            {
-              "url": "/arxiv-figures/2610.31032/M-R_Iso_e-min_a-plus_2.jpg",
-              "label": "Fig. 1",
-              "caption": "Figure 1: [Left] Mass–radius relations of quark stars for $\\epsilon<0$ and $\\alpha>0$. [Right] Same with left panel, but for $\\alpha<0$. The dashed lines represent the exact model, $f=R^{1+\\epsilon}$, together with its derivatives $f_{R}, f_{RR}$ and $f_{RRR}$, while the solid lines represent the corresponding first-order Taylor expansion, $f\\approx R+\\epsilon R\\ln R$, and its derivatives. This convention applies to the right-hand panels and all Figures. The red constraints correspond to HESS J1731-347, the green constraints to PSR J0437-4715, the brown constraints to PSR J1614-2230, and the grey constraints to GW190814. The same colour coding is used in Figure 2.",
-              "category": "fitting",
-              "category_badge": "数据拟合与模型对比",
-              "physical_core": "展示理论模型与实际观测数据的拟合对比及关键参数后验约束。",
-              "is_schematic": false
-            },
-            {
-              "url": "/arxiv-figures/2610.31032/M-R_Iso_e-0_a-plus_2.jpg",
-              "label": "Fig. 2",
-              "caption": "Figure 2: [Top Left] Mass–radius relations of quark stars for $\\epsilon=0$ and $\\alpha>0$. [Top Right] Mass–radius relations of quark stars for $\\epsilon=0$ and $\\alpha<0$. [Bottom Center] Mass–radius relations of quark stars for $\\epsilon<0$ and $\\alpha=0~\\textrm{km}^{2}$.",
-              "category": "fitting",
-              "category_badge": "数据拟合与模型对比",
-              "physical_core": "展示理论模型与实际观测数据的拟合对比及关键参数后验约束。",
-              "is_schematic": false
-            }
-          ],
-          "primary_figure": {
-            "url": "/arxiv-figures/2610.31032/M-R_Iso_e-min_a-plus_2.jpg",
-            "label": "Fig. 1",
-            "caption": "Figure 1: [Left] Mass–radius relations of quark stars for $\\epsilon<0$ and $\\alpha>0$. [Right] Same with left panel, but for $\\alpha<0$. The dashed lines represent the exact model, $f=R^{1+\\epsilon}$, together with its derivatives $f_{R}, f_{RR}$ and $f_{RRR}$, while the solid lines represent the corresponding first-order Taylor expansion, $f\\approx R+\\epsilon R\\ln R$, and its derivatives. This convention applies to the right-hand panels and all Figures. The red constraints correspond to HESS J1731-347, the green constraints to PSR J0437-4715, the brown constraints to PSR J1614-2230, and the grey constraints to GW190814. The same colour coding is used in Figure 2.",
-            "category": "fitting",
-            "category_badge": "数据拟合与模型对比",
-            "physical_core": "展示理论模型与实际观测数据的拟合对比及关键参数后验约束。",
-            "is_schematic": false
-          }
-        },
-        {
-          "arxiv_id": "2609.23014",
-          "revision": 1,
-          "title": "Energy-momentum-squared gravity: charged quark star solutions with unified interacting matter",
-          "authors": [
-            "Ayan Banerjee",
-            "Bobur Turimov",
-            "Javlon Rayimbaev",
-            "Faisal Javed",
-            "Gulnoza Palvanova",
-            "Sulton Usanov"
-          ],
-          "date": "2026-09-21",
-          "priority": "worth_knowing",
-          "bluf_result": "结果表明，电荷与能量-动量平方引力耦合的共同作用可显著提高夸克星的最大质量和半径，在强负耦合及较强相互作用参数下，模型质量可接近 $3M_{\\odot}$。带电构型的最大质量中心密度降低约 $10$--$15\\%$，并可满足因果性及多项现有脉冲星、NICER观测约束。",
-          "bluf_problem": "论文旨在检验带电夸克星能否在非标准引力和统一相互作用夸克物质状态方程下支撑接近 $3M_{\\odot}$ 的致密星，从而解释 GW190814 次级成分的可能性质。核心问题是电荷、夸克物质微观相互作用与非线性物质-几何耦合如何共同改变致密星的质量、半径和稳定性。",
-          "figures": [],
-          "primary_figure": null
-        }
-      ],
-      "lead_figure": {
-        "url": "/arxiv-figures/2610.31032/M-R_Iso_e-min_a-plus_2.jpg",
-        "label": "Fig. 1",
-        "caption": "Figure 1: [Left] Mass–radius relations of quark stars for $\\epsilon<0$ and $\\alpha>0$. [Right] Same with left panel, but for $\\alpha<0$. The dashed lines represent the exact model, $f=R^{1+\\epsilon}$, together with its derivatives $f_{R}, f_{RR}$ and $f_{RRR}$, while the solid lines represent the corresponding first-order Taylor expansion, $f\\approx R+\\epsilon R\\ln R$, and its derivatives. This convention applies to the right-hand panels and all Figures. The red constraints correspond to HESS J1731-347, the green constraints to PSR J0437-4715, the brown constraints to PSR J1614-2230, and the grey constraints to GW190814. The same colour coding is used in Figure 2.",
-        "category": "fitting",
-        "category_badge": "数据拟合与模型对比",
-        "physical_core": "展示理论模型与实际观测数据的拟合对比及关键参数后验约束。",
-        "is_schematic": false
-      },
-      "lead_figure_arxiv_id": "2610.31032",
-      "canonical_t0": null,
-      "best_redshift": null,
-      "has_redshift_conflict": false,
-      "multi_messenger": [],
-      "gcn_aliases_label": null,
-      "canonical_t0_label": null,
-      "best_redshift_label": null,
-      "multi_messenger_badges": [],
-      "gcn_circular_count": 0,
-      "gcn_figure_path": null,
-      "gcn_aliases": [],
-      "gcn_slug": null,
-      "gcn_status": null
-    },
-    {
       "event_id": "AT 2023VFI",
       "event_type": "AT",
       "tags": [],
@@ -4277,6 +4287,106 @@
       ],
       "lead_figure": null,
       "lead_figure_arxiv_id": null,
+      "canonical_t0": null,
+      "best_redshift": null,
+      "has_redshift_conflict": false,
+      "multi_messenger": [],
+      "gcn_aliases_label": null,
+      "canonical_t0_label": null,
+      "best_redshift_label": null,
+      "multi_messenger_badges": [],
+      "gcn_circular_count": 0,
+      "gcn_figure_path": null,
+      "gcn_aliases": [],
+      "gcn_slug": null,
+      "gcn_status": null
+    },
+    {
+      "event_id": "GW190814",
+      "event_type": "GW",
+      "tags": [
+        "FRB"
+      ],
+      "heat_score": 4.8,
+      "paper_count": 2,
+      "headline": "论文旨在检验带电夸克星能否在非标准引力和统一相互作用夸克物质状态...",
+      "narrative": "GW190814 是近期重点瞬变天体事件，活跃跨度 2026-09-21 至 2026-10-22，共聚合 2 篇研读文献。核心突破研判：结果表明，电荷与能量-动量平方引力耦合的共同作用可显著提高夸克星的最大质量和半径，在强负耦合及较强相互作用参数下，模型质量可接近 $3M_{\\odot}$。带电构型的最大质量中心密度降低约 $10$--$15\\%$，并可满足因果性及多项现有脉冲星、NICER观测约束。",
+      "first_seen": "2026-09-21",
+      "last_updated": "2026-10-22",
+      "papers": [
+        {
+          "arxiv_id": "2610.31032",
+          "revision": 1,
+          "title": "Parameter Constraints on $f(R^{1+ε},T_{μν}T^{μν})$ Gravity from Exotic Compact Objects",
+          "authors": [
+            "S. Wilhelmina",
+            "B. N. Jayawiguna",
+            "A. Sulaksono"
+          ],
+          "date": "2026-10-22",
+          "priority": "skip",
+          "bluf_result": "当几何参数 $\\epsilon < 0$ 且能量-动量耦合常数 $\\alpha > 0$ 时，模型能够同时满足低质量天体 HESS J1731-347 与广义相对论难以自洽解释的 GW190814 次伴星质量上限约束（$M = 2.6\\,M_\\odot$）；具体参数组合如 $\\epsilon = -0.1, \\alpha = 181\\ \\mathrm{km}^2$（最大质量可达 $3.09\\,M_\\odot$）以及 $\\epsilon = -0.05, \\alpha = 166\\ \\mathrm{km}^2$ 均可与观测兼容，所有构型致密度均低于 Buchdahl 极限（$C < 0.444$），且满足有效声速因果条件 $0 \\le c_s^{2\\,\\mathrm{eff}} \\le 1$ 与各项能量条件（SEC, WEC, NEC, DEC）。",
+          "bluf_problem": "广义相对论（GR）结合标准核物质/夸克物质状态方程难以同时解释质量极低的致密星（如 HESS J1731-347，$M = 0.77_{-0.17}^{+0.20}\\,M_\\odot$）与质量间隙内的重次级天体（如 GW190814，$M = 2.50\\text{--}2.67\\,M_\\odot$）；需要探究在 $f(R^{1+\\epsilon}, T_{\\mu\\nu}T^{\\mu\\nu})$ 修正引力与 MIT Bag 物态方程框架下能否统一协调这些极端致密天体观测。",
+          "figures": [
+            {
+              "url": "/arxiv-figures/2610.31032/M-R_Iso_e-min_a-plus_2.jpg",
+              "label": "Fig. 1",
+              "caption": "Figure 1: [Left] Mass–radius relations of quark stars for $\\epsilon<0$ and $\\alpha>0$. [Right] Same with left panel, but for $\\alpha<0$. The dashed lines represent the exact model, $f=R^{1+\\epsilon}$, together with its derivatives $f_{R}, f_{RR}$ and $f_{RRR}$, while the solid lines represent the corresponding first-order Taylor expansion, $f\\approx R+\\epsilon R\\ln R$, and its derivatives. This convention applies to the right-hand panels and all Figures. The red constraints correspond to HESS J1731-347, the green constraints to PSR J0437-4715, the brown constraints to PSR J1614-2230, and the grey constraints to GW190814. The same colour coding is used in Figure 2.",
+              "category": "fitting",
+              "category_badge": "数据拟合与模型对比",
+              "physical_core": "展示理论模型与实际观测数据的拟合对比及关键参数后验约束。",
+              "is_schematic": false
+            },
+            {
+              "url": "/arxiv-figures/2610.31032/M-R_Iso_e-0_a-plus_2.jpg",
+              "label": "Fig. 2",
+              "caption": "Figure 2: [Top Left] Mass–radius relations of quark stars for $\\epsilon=0$ and $\\alpha>0$. [Top Right] Mass–radius relations of quark stars for $\\epsilon=0$ and $\\alpha<0$. [Bottom Center] Mass–radius relations of quark stars for $\\epsilon<0$ and $\\alpha=0~\\textrm{km}^{2}$.",
+              "category": "fitting",
+              "category_badge": "数据拟合与模型对比",
+              "physical_core": "展示理论模型与实际观测数据的拟合对比及关键参数后验约束。",
+              "is_schematic": false
+            }
+          ],
+          "primary_figure": {
+            "url": "/arxiv-figures/2610.31032/M-R_Iso_e-min_a-plus_2.jpg",
+            "label": "Fig. 1",
+            "caption": "Figure 1: [Left] Mass–radius relations of quark stars for $\\epsilon<0$ and $\\alpha>0$. [Right] Same with left panel, but for $\\alpha<0$. The dashed lines represent the exact model, $f=R^{1+\\epsilon}$, together with its derivatives $f_{R}, f_{RR}$ and $f_{RRR}$, while the solid lines represent the corresponding first-order Taylor expansion, $f\\approx R+\\epsilon R\\ln R$, and its derivatives. This convention applies to the right-hand panels and all Figures. The red constraints correspond to HESS J1731-347, the green constraints to PSR J0437-4715, the brown constraints to PSR J1614-2230, and the grey constraints to GW190814. The same colour coding is used in Figure 2.",
+            "category": "fitting",
+            "category_badge": "数据拟合与模型对比",
+            "physical_core": "展示理论模型与实际观测数据的拟合对比及关键参数后验约束。",
+            "is_schematic": false
+          }
+        },
+        {
+          "arxiv_id": "2609.23014",
+          "revision": 1,
+          "title": "Energy-momentum-squared gravity: charged quark star solutions with unified interacting matter",
+          "authors": [
+            "Ayan Banerjee",
+            "Bobur Turimov",
+            "Javlon Rayimbaev",
+            "Faisal Javed",
+            "Gulnoza Palvanova",
+            "Sulton Usanov"
+          ],
+          "date": "2026-09-21",
+          "priority": "worth_knowing",
+          "bluf_result": "结果表明，电荷与能量-动量平方引力耦合的共同作用可显著提高夸克星的最大质量和半径，在强负耦合及较强相互作用参数下，模型质量可接近 $3M_{\\odot}$。带电构型的最大质量中心密度降低约 $10$--$15\\%$，并可满足因果性及多项现有脉冲星、NICER观测约束。",
+          "bluf_problem": "论文旨在检验带电夸克星能否在非标准引力和统一相互作用夸克物质状态方程下支撑接近 $3M_{\\odot}$ 的致密星，从而解释 GW190814 次级成分的可能性质。核心问题是电荷、夸克物质微观相互作用与非线性物质-几何耦合如何共同改变致密星的质量、半径和稳定性。",
+          "figures": [],
+          "primary_figure": null
+        }
+      ],
+      "lead_figure": {
+        "url": "/arxiv-figures/2610.31032/M-R_Iso_e-min_a-plus_2.jpg",
+        "label": "Fig. 1",
+        "caption": "Figure 1: [Left] Mass–radius relations of quark stars for $\\epsilon<0$ and $\\alpha>0$. [Right] Same with left panel, but for $\\alpha<0$. The dashed lines represent the exact model, $f=R^{1+\\epsilon}$, together with its derivatives $f_{R}, f_{RR}$ and $f_{RRR}$, while the solid lines represent the corresponding first-order Taylor expansion, $f\\approx R+\\epsilon R\\ln R$, and its derivatives. This convention applies to the right-hand panels and all Figures. The red constraints correspond to HESS J1731-347, the green constraints to PSR J0437-4715, the brown constraints to PSR J1614-2230, and the grey constraints to GW190814. The same colour coding is used in Figure 2.",
+        "category": "fitting",
+        "category_badge": "数据拟合与模型对比",
+        "physical_core": "展示理论模型与实际观测数据的拟合对比及关键参数后验约束。",
+        "is_schematic": false
+      },
+      "lead_figure_arxiv_id": "2610.31032",
       "canonical_t0": null,
       "best_redshift": null,
       "has_redshift_conflict": false,

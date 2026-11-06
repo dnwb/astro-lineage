@@ -111,11 +111,11 @@ const DEFAULT_RUN_LIMIT = Number(process.env.AI_RUN_LIMIT) || 10;
 export const FALLBACK_BASE_URL = process.env.FALLBACK_OPENAI_BASE_URL || "";
 export const FALLBACK_API_KEY =
   process.env.FALLBACK_OPENAI_API_KEY || process.env.ZHANG_API_KEY || "";
-export const FALLBACK_MODEL = process.env.FALLBACK_AI_MODEL || "gemini-3.8-flash-high";
+export const FALLBACK_MODEL = process.env.FALLBACK_AI_MODEL || "gemini-3.8-flash-medium";
 const DEFAULT_TRIAGE_MODEL =
   process.env.AI_MODEL_TRIAGE || process.env.AI_MODEL_SKIM || "gpt-6-luna";
 const DEFAULT_BODY_MODEL =
-  process.env.AI_MODEL_BODY || process.env.AI_MODEL_READING || "gemini-3.8-flash-high";
+  process.env.AI_MODEL_BODY || process.env.AI_MODEL_READING || "gemini-3.8-flash-medium";
 const DEFAULT_TRIAGE_FALLBACKS = (
   process.env.AI_TRIAGE_FALLBACK_MODELS || "gemini-3.5-flash-lite,claude-sonnet-4-6"
 )
@@ -1784,7 +1784,7 @@ export async function runAiAnalyzer({
                 stage: "triage",
                 prompt,
                 entry: item.entry,
-                model: targetModel || triageModel || "gemini-3.8-flash-high",
+                model: targetModel || triageModel || DEFAULT_BODY_MODEL,
                 effort: "low",
                 baseUrl,
                 apiKey,
@@ -1988,7 +1988,7 @@ export async function runAiAnalyzer({
                     prompt,
                     entry: item.entry,
                     source,
-                    model: targetModel || "gemini-3.8-flash-high",
+                    model: targetModel || DEFAULT_BODY_MODEL,
                     effort: "low",
                     baseUrl,
                     apiKey,

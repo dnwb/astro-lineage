@@ -21,13 +21,13 @@ export const DEFAULT_ROUTING_CONFIG = {
     description: "极速、低时延摘要初筛与分类",
   },
   [PIPELINE_STAGES.DEEP_READ]: {
-    primary: "gemini-3.8-flash-high",
+    primary: "gemini-3.8-flash-medium",
     fallbacks: ["gpt-6.1-sol", "claude-opus-4-6-thinking"],
     description: "超长上下文、百万 Token 级正文深度研读与物理突破分析",
   },
   [PIPELINE_STAGES.QA_BOT]: {
     primary: "gpt-6.1-sol",
-    fallbacks: ["gemini-3.8-flash-high", "claude-opus-4-6-thinking", "gpt-6-astra"],
+    fallbacks: ["gemini-3.8-flash-medium", "claude-opus-4-6-thinking", "gpt-6-astra"],
     description: "学术情报交互与官方机器人即时问答",
   },
 };

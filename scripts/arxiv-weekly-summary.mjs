@@ -36,7 +36,7 @@ const DEFAULT_API_KEY = resolveDefaultApiKey();
 const FALLBACK_BASE_URL = process.env.FALLBACK_OPENAI_BASE_URL || "";
 const FALLBACK_API_KEY = process.env.FALLBACK_OPENAI_API_KEY || process.env.ZHANG_API_KEY || "";
 const DEFAULT_MODEL =
-  process.env.AI_MODEL_WEEKLY || process.env.AI_MODEL_BODY || "gemini-3.8-flash-high";
+  process.env.AI_MODEL_WEEKLY || process.env.AI_MODEL_BODY || "gemini-3.8-flash-medium";
 const DEFAULT_EFFORT = process.env.REASONING_EFFORT || "medium";
 const DEFAULT_TIMEOUT_MS = Number(process.env.WEEKLY_TIMEOUT_MS) || 180_000;
 const DEFAULT_WEEKLY_OUTPUT = resolve(
@@ -173,13 +173,15 @@ export async function executeChatCompletion({
   if (pool.length === 0)
     throw new Error("Missing API key; set IOA_API_KEY, WU_API_KEY or OPENAI_API_KEY");
 
-  const candidateModels = [
-    model,
-    "gemini-3.8-flash-high",
-    "gpt-6.1-sol",
-    "claude-sonnet-4-6",
-    "gpt-6-luna",
-  ]
+  const envFallbacks = (
+    process.env.AI_BODY_FALLBACK_MODELS ||
+    process.env.AI_FALLBACK_MODELS ||
+    "gemini-3.8-flash-medium,gpt-6.1-sol,claude-sonnet-4-6,gpt-6-luna"
+  )
+    .split(",")
+    .map((m) => m.trim())
+    .filter(Boolean);
+  const candidateModels = [model, ...envFallbacks]
     .filter(Boolean)
     .filter((m, i, arr) => arr.indexOf(m) === i);
   let lastError;

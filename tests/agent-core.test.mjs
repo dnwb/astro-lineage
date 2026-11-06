@@ -595,12 +595,50 @@ test("callChatCompletion rotates to AGY daemon when primary HTTP fails on Gemini
   assert.equal(httpCalls, 1);
 });
 
-test("callChatCompletion routes agy/ prefixed models directly to AGY without trying HTTP", async (t) => {
+test("callChatCompletion routes agy/ prefixed models directly to AGY without trying non-local HTTP", async (t) => {
   let httpCalls = 0;
   t.mock.method(globalThis, "fetch", async () => {
     httpCalls++;
     return new Response(JSON.stringify({ choices: [{ message: { content: "http response" } }] }), {
       status: 200,
+    });
+  });
+
+  let capturedAgyModel = null;
+  const mockAgyClient = {
+    async execute({ prompt, model }) {
+      capturedAgyModel = model;
+      return `AGY daemon direct answer for ${model}`;
+    },
+  };
+
+  const result = await callChatCompletion({
+    prompt: "Explain relativistic jet deceleration",
+    systemPrompt: "Astrophysics System",
+    model: "agy/gemini-3.8-flash-medium",
+    agyClient: mockAgyClient,
+    providers: [
+      {
+        name: "Remote External Gateway",
+        type: "http",
+        baseUrl: "https://api.external-gateway.com/v1",
+        apiKey: "k",
+      },
+      { name: "AGY (gemini-daemon)", type: "agy", baseUrl: "agy://local", apiKey: "agy-local" },
+    ],
+  });
+
+  assert.equal(result, "AGY daemon direct answer for gemini-3.8-flash-medium");
+  assert.equal(capturedAgyModel, "gemini-3.8-flash-medium");
+  assert.equal(httpCalls, 0); // Non-local HTTP provider was bypassed for agy/ prefix!
+});
+
+test("callChatCompletion tries local 8318 HTTP first for agy/ prefixed model, then falls back to AGY daemon", async (t) => {
+  let httpCalls = 0;
+  t.mock.method(globalThis, "fetch", async () => {
+    httpCalls++;
+    return new Response(JSON.stringify({ error: { message: "502 Bad Gateway" } }), {
+      status: 502,
     });
   });
 
@@ -630,7 +668,7 @@ test("callChatCompletion routes agy/ prefixed models directly to AGY without try
 
   assert.equal(result, "AGY daemon direct answer for gemini-3.8-flash-medium");
   assert.equal(capturedAgyModel, "gemini-3.8-flash-medium");
-  assert.equal(httpCalls, 0); // HTTP provider was bypassed for agy/ prefix!
+  assert.equal(httpCalls, 1); // Local 8318 was tried first!
 });
 
 test("callChatCompletion skips AGY provider when candidate model is not Gemini", async (t) => {

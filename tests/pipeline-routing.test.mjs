@@ -7,13 +7,13 @@ import {
   classifyModelError,
 } from "../scripts/pipeline-routing.mjs";
 
-test("resolveRoutingLadder sets gemini-3.8-flash-medium as default primary for DEEP_READ", () => {
+test("resolveRoutingLadder sets agy/gemini-3.8-flash-medium as default primary for DEEP_READ", () => {
   const ladder = resolveRoutingLadder(PIPELINE_STAGES.DEEP_READ, {});
-  assert.equal(ladder.primary, "gemini-3.8-flash-medium");
-  assert.ok(ladder.candidates.includes("gemini-3.8-flash-medium"));
+  assert.equal(ladder.primary, "agy/gemini-3.8-flash-medium");
+  assert.ok(ladder.candidates.includes("agy/gemini-3.8-flash-medium"));
   assert.ok(ladder.candidates.includes("gpt-6.1-sol"));
-  assert.ok(ladder.candidates.includes("claude-opus-4-6-thinking"));
-  assert.equal(ladder.candidates[0], "gemini-3.8-flash-medium");
+  assert.ok(ladder.candidates.includes("gpt-6-sol"));
+  assert.equal(ladder.candidates[0], "agy/gemini-3.8-flash-medium");
 });
 
 test("resolveRoutingLadder respects environment overrides for DEEP_READ and TRIAGE", () => {

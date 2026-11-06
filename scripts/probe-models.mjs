@@ -18,7 +18,7 @@ try {
   }
 } catch {}
 
-async function probeModel({ baseUrl, apiKey, model, timeoutMs = 15000 }) {
+async function probeModel({ baseUrl, apiKey, model, timeoutMs = 35000 }) {
   const start = performance.now();
   const url = `${baseUrl.replace(/\/+$/u, "")}/chat/completions`;
 

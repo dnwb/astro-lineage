@@ -17,17 +17,17 @@ export const PIPELINE_STAGES = {
 export const DEFAULT_ROUTING_CONFIG = {
   [PIPELINE_STAGES.TRIAGE]: {
     primary: "gpt-6-luna",
-    fallbacks: ["gemini-3.5-flash-lite", "claude-sonnet-4-6"],
+    fallbacks: ["agy/gemini-3.8-flash-medium", "gpt-5.6-luna"],
     description: "极速、低时延摘要初筛与分类",
   },
   [PIPELINE_STAGES.DEEP_READ]: {
-    primary: "gemini-3.8-flash-medium",
-    fallbacks: ["gpt-6.1-sol", "claude-opus-4-6-thinking"],
+    primary: "agy/gemini-3.8-flash-medium",
+    fallbacks: ["gpt-6.1-sol", "gpt-6-sol"],
     description: "超长上下文、百万 Token 级正文深度研读与物理突破分析",
   },
   [PIPELINE_STAGES.QA_BOT]: {
-    primary: "gpt-6.1-sol",
-    fallbacks: ["gemini-3.8-flash-medium", "claude-opus-4-6-thinking", "gpt-6-astra"],
+    primary: "agy/gemini-3.8-flash-medium",
+    fallbacks: ["gpt-6.1-sol", "gpt-6-astra", "gpt-6-sol"],
     description: "学术情报交互与官方机器人即时问答",
   },
 };

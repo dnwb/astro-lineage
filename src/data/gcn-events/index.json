@@ -21,8 +21,8 @@
         "circular_id": 46103,
         "note": ""
       },
-      "circular_count": 32,
-      "last_updated_utc": "2026-10-30T21:20:44.715Z",
+      "circular_count": 37,
+      "last_updated_utc": "2026-11-04T11:39:17.428Z",
       "status": "active",
       "has_photometry": true,
       "figure_path": "/gcn-figures/grb-261029a.png"
@@ -62,7 +62,11 @@
       "primary_id": "GRB 261024D",
       "aliases": [],
       "event_type": "GRB",
-      "canonical_t0": null,
+      "canonical_t0": {
+        "instrument": "EP/WXT",
+        "utc_iso": "2026-10-24T21:33:06.850Z",
+        "circular_id": 46040
+      },
       "best_redshift": null,
       "circular_count": 7,
       "last_updated_utc": "2026-10-30T13:30:23.733Z",
@@ -79,7 +83,7 @@
       "best_redshift": null,
       "circular_count": 2,
       "last_updated_utc": "2026-10-27T04:30:30.018Z",
-      "status": "active",
+      "status": "archived",
       "has_photometry": false,
       "figure_path": null
     },

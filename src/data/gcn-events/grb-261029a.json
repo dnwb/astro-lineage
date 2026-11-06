@@ -104,6 +104,34 @@
       "version_conflict": false
     },
     {
+      "circular_id": 46090,
+      "dt_hours": 0.42,
+      "band": "r",
+      "mag": 19.74,
+      "mag_err": 0.07,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "AB",
+      "telescope": "PKU 60cm",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 46090,
+      "dt_hours": 0.46,
+      "band": "i",
+      "mag": 19.74,
+      "mag_err": 0.19,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "AB",
+      "telescope": "PKU 60cm",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    },
+    {
       "circular_id": 46092,
       "dt_hours": 0.77,
       "band": "VT_B",
@@ -127,6 +155,34 @@
       "limit_sigma": null,
       "system": "AB",
       "telescope": "SVOM/VT",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 46113,
+      "dt_hours": 1.43,
+      "band": "r",
+      "mag": 22.14,
+      "mag_err": null,
+      "is_upper_limit": true,
+      "limit_sigma": 3,
+      "system": "AB",
+      "telescope": "PKU 60cm",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 46113,
+      "dt_hours": 1.5,
+      "band": "i",
+      "mag": 21.48,
+      "mag_err": null,
+      "is_upper_limit": true,
+      "limit_sigma": 3,
+      "system": "AB",
+      "telescope": "PKU 60cm",
       "discrepancy_note": null,
       "time_approximate": false,
       "version_conflict": false
@@ -468,6 +524,34 @@
       "version_conflict": false
     },
     {
+      "circular_id": 46147,
+      "dt_hours": 11.19,
+      "band": "Rc",
+      "mag": 19.6,
+      "mag_err": 0.2,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "AB",
+      "telescope": "MITSuME",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 46147,
+      "dt_hours": 11.19,
+      "band": "Ic",
+      "mag": 19.1,
+      "mag_err": null,
+      "is_upper_limit": true,
+      "limit_sigma": 3,
+      "system": "AB",
+      "telescope": "MITSuME",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    },
+    {
       "circular_id": 46104,
       "dt_hours": 12.1,
       "band": "g",
@@ -550,6 +634,20 @@
       "discrepancy_note": null,
       "time_approximate": false,
       "version_conflict": false
+    },
+    {
+      "circular_id": 46104,
+      "dt_hours": 120,
+      "band": "g",
+      "mag": 20.73,
+      "mag_err": 0.02,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "AB",
+      "telescope": "WFST",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
     }
   ],
   "xray_points": [
@@ -577,6 +675,12 @@
     "title": "Late-time plateau & rebrightening zoom",
     "callouts": [
       {
+        "dt_hours": 11.19,
+        "mag": 19.1,
+        "band": "Ic",
+        "text": "$3\\sigma$ upper limits"
+      },
+      {
         "dt_hours": 18,
         "mag": 19.6,
         "band": "i",
@@ -587,17 +691,11 @@
         "mag": 20.37,
         "band": "r",
         "text": "Liverpool r\ntime approximate"
-      },
-      {
-        "dt_hours": 34.32,
-        "mag": 22.14,
-        "band": "r",
-        "text": "$3\\sigma$ upper limits"
       }
     ]
   },
-  "circular_count": 32,
-  "last_circular_id": 46117,
-  "last_updated_utc": "2026-10-30T21:20:44.715Z",
+  "circular_count": 37,
+  "last_circular_id": 46147,
+  "last_updated_utc": "2026-11-04T11:39:17.428Z",
   "status": "active"
 }

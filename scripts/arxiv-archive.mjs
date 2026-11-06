@@ -365,22 +365,19 @@ async function syncArxivArchivesWithLockHeld({
     if (existsSync(dailyDest)) {
       try {
         const existingData = await readJsonSafe(dailyDest);
-        if (
-          existingData &&
-          existingData.counts?.analyzed === dailyArchivePayload.counts?.analyzed &&
-          existingData.counts?.pending === dailyArchivePayload.counts?.pending &&
-          existingData.counts?.must_read === dailyArchivePayload.counts?.must_read &&
-          existingData.counts?.worth_knowing === dailyArchivePayload.counts?.worth_knowing &&
-          JSON.stringify(existingData.highlights) === JSON.stringify(dailyArchivePayload.highlights)
-        ) {
-          fileChanged = false;
+        if (existingData) {
+          const { generated_at: _g1, ...eRest } = existingData;
+          const { generated_at: _g2, ...dRest } = dailyArchivePayload;
+          if (JSON.stringify(eRest) === JSON.stringify(dRest)) {
+            fileChanged = false;
+            dailyArchivePayload.generated_at = existingData.generated_at;
+          }
         }
       } catch {}
     }
 
-    await writeJsonAtomically(dailyDest, dailyArchivePayload);
-
     if (fileChanged) {
+      await writeJsonAtomically(dailyDest, dailyArchivePayload);
       await markWeekDirty(weekId, dirtyWeeksPath);
     }
 
@@ -452,6 +449,14 @@ async function syncArxivArchivesWithLockHeld({
   // Save weekly archives
   for (const [weekId, wData] of discoveredWeekly.entries()) {
     const weeklyDest = join(weeklyArchiveDir, `${weekId}.json`);
+    if (existsSync(weeklyDest)) {
+      try {
+        const existingData = await readJsonSafe(weeklyDest);
+        if (JSON.stringify(existingData) === JSON.stringify(wData)) {
+          continue;
+        }
+      } catch {}
+    }
     await writeJsonAtomically(weeklyDest, wData);
   }
 
@@ -478,7 +483,18 @@ async function syncArxivArchivesWithLockHeld({
   const latestWeekWithData = sortedWeekIds.find((id) => discoveredWeekly.has(id));
   if (latestWeekWithData && currentWeeklyPath) {
     const latestWeeklyData = discoveredWeekly.get(latestWeekWithData);
-    await writeJsonAtomically(currentWeeklyPath, latestWeeklyData);
+    let weeklyChanged = true;
+    if (existsSync(currentWeeklyPath)) {
+      try {
+        const existingWeekly = await readJsonSafe(currentWeeklyPath);
+        if (JSON.stringify(existingWeekly) === JSON.stringify(latestWeeklyData)) {
+          weeklyChanged = false;
+        }
+      } catch {}
+    }
+    if (weeklyChanged) {
+      await writeJsonAtomically(currentWeeklyPath, latestWeeklyData);
+    }
   }
 
   const weeksSummary = sortedWeekIds.map((weekId) => {
@@ -516,6 +532,19 @@ async function syncArxivArchivesWithLockHeld({
   };
 
   const manifestPath = join(archiveRoot, "manifest.json");
+  if (existsSync(manifestPath)) {
+    try {
+      const existingRaw = await readFile(manifestPath, "utf8");
+      const existing = JSON.parse(existingRaw);
+      const { updated_at: _oldDate, ...existingRest } = existing;
+      const { updated_at: _newDate, ...newRest } = manifest;
+      if (JSON.stringify(existingRest) === JSON.stringify(newRest)) {
+        manifest.updated_at = existing.updated_at;
+        return manifest;
+      }
+    } catch {}
+  }
+
   await writeJsonAtomically(manifestPath, manifest);
 
   return manifest;

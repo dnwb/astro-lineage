@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { spawn } from "node:child_process";
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -106,6 +107,13 @@ export function isMultimodalModel(model) {
   const norm = normalizeModelName(model).toLowerCase();
   const base = norm.includes("/") ? norm.split("/").pop() : norm;
   return base.startsWith("gpt-6") || base.startsWith("gemini") || base.startsWith("claude");
+}
+
+export function isAgySupportedModel(model) {
+  if (!model || typeof model !== "string") return false;
+  const norm = normalizeModelName(model).toLowerCase();
+  const base = norm.includes("/") ? norm.split("/").pop() : norm;
+  return base.startsWith("gemini");
 }
 
 // 备用模型配置 (67 网关 / zhangioakey 供应商)
@@ -268,23 +276,282 @@ export async function executeChatCompletion({
   return content.trim();
 }
 
+export class AgyDaemonClient {
+  constructor({
+    spawnImpl = spawn,
+    idleTimeoutMs = 5 * 60 * 1000,
+    defaultTimeoutMs = 60 * 1000,
+    agyBin = "agy",
+  } = {}) {
+    this.spawnImpl = spawnImpl;
+    this.idleTimeoutMs = idleTimeoutMs;
+    this.defaultTimeoutMs = defaultTimeoutMs;
+    this.agyBin = agyBin;
+    this.currentProc = null;
+    this.currentModel = null;
+    this.idleTimer = null;
+    this.queue = [];
+    this.activeTask = null;
+    this.buffer = "";
+    this.isShuttingDown = false;
+  }
+
+  execute({ prompt, systemPrompt, history, model = "gemini-3.8-flash-high", timeoutMs } = {}) {
+    if (this.isShuttingDown) {
+      return Promise.reject(new Error("AGY daemon client is shut down"));
+    }
+    return new Promise((resolve, reject) => {
+      this.queue.push({
+        prompt,
+        systemPrompt,
+        history,
+        model: normalizeModelName(model || "gemini-3.8-flash-high"),
+        timeoutMs,
+        resolve,
+        reject,
+      });
+      this.processQueue();
+    });
+  }
+
+  processQueue() {
+    if (this.activeTask || this.queue.length === 0 || this.isShuttingDown) {
+      return;
+    }
+    const task = this.queue.shift();
+    this.activeTask = task;
+    this.resetIdleTimer(false);
+
+    const targetModel = task.model;
+    if (this.currentProc && this.currentModel !== targetModel) {
+      this.killProcess();
+    }
+    if (!this.currentProc) {
+      try {
+        this.spawnProcess(targetModel);
+      } catch (err) {
+        this.activeTask = null;
+        task.reject(err);
+        this.processQueue();
+        return;
+      }
+    }
+
+    let fullPrompt = "";
+    if (task.systemPrompt && task.systemPrompt.trim()) {
+      fullPrompt += `[System Instruction]\n${task.systemPrompt.trim()}\n\n`;
+    }
+    if (Array.isArray(task.history) && task.history.length > 0) {
+      for (const msg of task.history) {
+        if (msg && msg.role && msg.content) {
+          const prefix = msg.role === "assistant" ? "[Assistant]" : "[User]";
+          const text = typeof msg.content === "string" ? msg.content : JSON.stringify(msg.content);
+          fullPrompt += `${prefix}\n${text}\n\n`;
+        }
+      }
+    }
+    fullPrompt += `[User]\n${typeof task.prompt === "string" ? task.prompt : JSON.stringify(task.prompt)}`;
+
+    const payload =
+      JSON.stringify({
+        event: "user",
+        message: { content: fullPrompt },
+      }) + "\n";
+
+    const timeout = task.timeoutMs || this.defaultTimeoutMs;
+    task.timer = setTimeout(() => {
+      if (this.activeTask === task) {
+        const err = new Error(`AGY daemon request timed out after ${timeout}ms`);
+        this.activeTask = null;
+        this.killProcess();
+        task.reject(err);
+        this.processQueue();
+      }
+    }, timeout);
+    if (task.timer?.unref) task.timer.unref();
+
+    try {
+      this.currentProc.stdin.write(payload);
+    } catch (writeErr) {
+      clearTimeout(task.timer);
+      this.activeTask = null;
+      this.killProcess();
+      task.reject(writeErr);
+      this.processQueue();
+    }
+  }
+
+  spawnProcess(model) {
+    this.currentModel = model;
+    this.buffer = "";
+    const proc = this.spawnImpl(
+      this.agyBin,
+      [
+        "--model",
+        model,
+        "--dangerously-skip-permissions",
+        "--input-format",
+        "stream-json",
+        "--output-format",
+        "stream-json",
+      ],
+      { stdio: ["pipe", "pipe", "pipe"] }
+    );
+    this.currentProc = proc;
+
+    proc.stdout.on("data", (chunk) => {
+      this.buffer += chunk.toString("utf8");
+      const lines = this.buffer.split("\n");
+      this.buffer = lines.pop();
+      for (const line of lines) {
+        const trimmed = line.trim();
+        if (!trimmed) continue;
+        let evt;
+        try {
+          evt = JSON.parse(trimmed);
+        } catch {
+          continue;
+        }
+        if (evt.event === "result" && this.activeTask) {
+          clearTimeout(this.activeTask.timer);
+          const current = this.activeTask;
+          this.activeTask = null;
+          if (evt.result?.status === "SUCCESS") {
+            const resp = evt.result.response;
+            current.resolve(typeof resp === "string" ? resp.trim() : JSON.stringify(resp));
+          } else {
+            current.reject(
+              new Error(evt.result?.error || "AGY daemon returned unsuccessful result")
+            );
+          }
+          this.resetIdleTimer(true);
+          this.processQueue();
+        }
+      }
+    });
+
+    proc.on("error", (err) => {
+      if (this.currentProc === proc && this.activeTask) {
+        clearTimeout(this.activeTask.timer);
+        const current = this.activeTask;
+        this.activeTask = null;
+        current.reject(err);
+      }
+      this.killProcess();
+      this.processQueue();
+    });
+
+    proc.on("close", (code) => {
+      if (this.currentProc === proc && this.activeTask) {
+        clearTimeout(this.activeTask.timer);
+        const current = this.activeTask;
+        this.activeTask = null;
+        current.reject(new Error(`AGY daemon process exited with code ${code}`));
+      }
+      if (this.currentProc === proc) {
+        this.currentProc = null;
+      }
+      this.processQueue();
+    });
+  }
+
+  resetIdleTimer(enable) {
+    if (this.idleTimer) {
+      clearTimeout(this.idleTimer);
+      this.idleTimer = null;
+    }
+    if (enable && this.idleTimeoutMs > 0 && !this.isShuttingDown) {
+      this.idleTimer = setTimeout(() => {
+        this.killProcess();
+      }, this.idleTimeoutMs);
+      if (this.idleTimer?.unref) this.idleTimer.unref();
+    }
+  }
+
+  killProcess() {
+    if (this.idleTimer) {
+      clearTimeout(this.idleTimer);
+      this.idleTimer = null;
+    }
+    if (this.currentProc) {
+      const proc = this.currentProc;
+      this.currentProc = null;
+      try {
+        proc.removeAllListeners?.();
+      } catch {}
+      try {
+        proc.stdin?.end();
+      } catch {}
+      try {
+        proc.kill();
+      } catch {}
+    }
+    this.currentModel = null;
+    this.buffer = "";
+  }
+
+  shutdown() {
+    this.isShuttingDown = true;
+    if (this.activeTask) {
+      clearTimeout(this.activeTask.timer);
+      const current = this.activeTask;
+      this.activeTask = null;
+      current.reject(new Error("AGY daemon client shut down"));
+    }
+    while (this.queue.length > 0) {
+      const task = this.queue.shift();
+      task.reject(new Error("AGY daemon client shut down"));
+    }
+    this.killProcess();
+  }
+}
+
+export const defaultAgyDaemonClient = new AgyDaemonClient();
+
+export async function executeAgyCompletion({
+  prompt,
+  systemPrompt,
+  history,
+  model = "gemini-3.8-flash-high",
+  client = defaultAgyDaemonClient,
+  timeoutMs,
+} = {}) {
+  return client.execute({ prompt, systemPrompt, history, model, timeoutMs });
+}
+
 export function resolveProviders({
   baseUrl,
   apiKey,
   fallbackBaseUrl,
   fallbackApiKey,
   providers,
+  enableAgy = process.env.ENABLE_AGY === "true" ||
+    process.env.BOT_ENABLE_AGY === "true" ||
+    process.env.AI_BACKEND === "agy",
 } = {}) {
   if (Array.isArray(providers) && providers.length > 0) {
     return providers;
   }
   const resolved = [];
+  const isAgyBackend =
+    process.env.AI_BACKEND === "agy" || (typeof baseUrl === "string" && baseUrl.startsWith("agy:"));
+
+  if (isAgyBackend) {
+    resolved.push({
+      name: "Primary (AGY-daemon)",
+      type: "agy",
+      baseUrl: "agy://local",
+      apiKey: "agy-local",
+    });
+  }
+
   const primaryUrl = baseUrl || DEFAULT_BASE_URL;
   const primaryKey = apiKey || DEFAULT_API_KEY;
-  if (primaryUrl && primaryKey) {
+  if (!isAgyBackend && primaryUrl && primaryKey) {
     const isLocal = primaryUrl.includes("localhost") || primaryUrl.includes("127.0.0.1");
     resolved.push({
       name: isLocal ? "Primary (local-8318)" : "Primary",
+      type: "http",
       baseUrl: primaryUrl,
       apiKey: primaryKey,
     });
@@ -297,8 +564,18 @@ export function resolveProviders({
   if (fbUrl && fbKey && (fbUrl !== primaryUrl || fbKey !== primaryKey)) {
     resolved.push({
       name: "Secondary (fallback)",
+      type: "http",
       baseUrl: fbUrl,
       apiKey: fbKey,
+    });
+  }
+
+  if (enableAgy && !resolved.some((p) => p.type === "agy")) {
+    resolved.push({
+      name: "AGY (gemini-daemon)",
+      type: "agy",
+      baseUrl: "agy://local",
+      apiKey: "agy-local",
     });
   }
   return resolved;
@@ -397,6 +674,10 @@ export const defaultModelHealthRegistry = new ModelHealthRegistry(3 * 60 * 1000)
 
 let agentProviderCycleCounter = 0;
 
+export function resetAgentProviderCycleCounter() {
+  agentProviderCycleCounter = 0;
+}
+
 export async function callChatCompletion({
   prompt,
   systemPrompt,
@@ -412,6 +693,8 @@ export async function callChatCompletion({
   providers,
   circuitBreaker = defaultGatewayCircuitBreaker,
   modelHealth = defaultModelHealthRegistry,
+  enableAgy,
+  agyClient = defaultAgyDaemonClient,
 }) {
   const hasImages =
     Array.isArray(images) && images.some((img) => typeof img === "string" && img.trim().length > 0);
@@ -429,6 +712,7 @@ export async function callChatCompletion({
     fallbackBaseUrl,
     fallbackApiKey,
     providers,
+    enableAgy,
   });
 
   if (resolvedProviders.length === 0) {
@@ -458,20 +742,37 @@ export async function callChatCompletion({
     // Inner loop: try all providers for the current candidate model
     for (let pIdx = 0; pIdx < orderedProviders.length; pIdx++) {
       const provider = orderedProviders[pIdx];
+      const providerType = provider.type || (provider.baseUrl?.startsWith("agy:") ? "agy" : "http");
+
+      // AGY only supports Gemini family models; skip unsupported models for AGY provider
+      if (providerType === "agy" && !isAgySupportedModel(candidate)) {
+        continue;
+      }
+
       const attemptTag = `${provider.name}:${candidate}`;
       attempted.push(attemptTag);
 
       try {
-        const result = await executeChatCompletion({
-          prompt,
-          systemPrompt,
-          history,
-          images,
-          model: candidate,
-          effort: candidateEffort,
-          baseUrl: provider.baseUrl,
-          apiKey: provider.apiKey,
-        });
+        let result;
+        if (providerType === "agy") {
+          result = await (agyClient || defaultAgyDaemonClient).execute({
+            prompt,
+            systemPrompt,
+            history,
+            model: candidate,
+          });
+        } else {
+          result = await executeChatCompletion({
+            prompt,
+            systemPrompt,
+            history,
+            images,
+            model: candidate,
+            effort: candidateEffort,
+            baseUrl: provider.baseUrl,
+            apiKey: provider.apiKey,
+          });
+        }
 
         circuitBreaker.recordSuccess(provider.name);
         if (modelHealth) modelHealth.recordSuccess(candidate);
@@ -518,6 +819,8 @@ export async function generateAcademicAnswer({
   fallbackModels = DEFAULT_FALLBACK_MODELS,
   channelLink = readChannelShareUrl,
   knowledgeLoader = loadAcademicKnowledge,
+  enableAgy,
+  agyClient,
 }) {
   if (
     /^\/?(?:site|url|website|web)\s*$/iu.test(String(query)) ||
@@ -583,5 +886,7 @@ ${knowledge}
     model,
     effort,
     fallbackModels,
+    enableAgy,
+    agyClient,
   });
 }

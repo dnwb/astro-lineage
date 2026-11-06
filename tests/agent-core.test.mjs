@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { test, beforeEach } from "node:test";
 import { readFile } from "node:fs/promises";
+import { EventEmitter } from "node:events";
 import {
   defaultGatewayCircuitBreaker,
   defaultModelHealthRegistry,
@@ -10,12 +11,18 @@ import {
   buildModelCandidates,
   generateAcademicAnswer,
   isMultimodalModel,
+  isAgySupportedModel,
+  resolveProviders,
+  AgyDaemonClient,
+  executeAgyCompletion,
+  resetAgentProviderCycleCounter,
 } from "../scripts/agent-core.mjs";
 import { readChannelShareUrl } from "../scripts/channel-publication.mjs";
 
 beforeEach(() => {
   defaultGatewayCircuitBreaker.reset();
   defaultModelHealthRegistry.reset();
+  resetAgentProviderCycleCounter();
 });
 
 test("shared channel address rejects unrelated hosts, credentials and non-HTTPS links", async () => {
@@ -395,4 +402,233 @@ test("callChatCompletion preserves multimodal payload across circuit breaker and
       { type: "image_url", image_url: { url: testImage } },
     ]);
   }
+});
+
+function createMockProc(options = {}) {
+  const proc = new EventEmitter();
+  proc.stdin = {
+    written: [],
+    write(data) {
+      proc.stdin.written.push(data);
+      if (options.onWrite) {
+        options.onWrite(data, proc);
+      }
+    },
+    end() {
+      proc.stdin.ended = true;
+    },
+  };
+  proc.stdout = new EventEmitter();
+  proc.stderr = new EventEmitter();
+  proc.kill = () => {
+    proc.killed = true;
+    proc.emit("close", 0);
+  };
+  return proc;
+}
+
+test("isAgySupportedModel accurately identifies Gemini vs non-Gemini models", () => {
+  assert.equal(isAgySupportedModel("gemini-3.8-flash"), true);
+  assert.equal(isAgySupportedModel("gemini-3.8-flash-high"), true);
+  assert.equal(isAgySupportedModel("gemini-3.5-flash-lite"), true);
+  assert.equal(isAgySupportedModel("gemini-2.5-flash"), true);
+  assert.equal(isAgySupportedModel("google/gemini-2.5-pro"), true);
+  assert.equal(isAgySupportedModel("gpt-6.1-sol"), false);
+  assert.equal(isAgySupportedModel("claude-opus-4-6-thinking"), false);
+  assert.equal(isAgySupportedModel(null), false);
+  assert.equal(isAgySupportedModel(""), false);
+});
+
+test("resolveProviders includes AGY provider when enableAgy is true or AI_BACKEND=agy", () => {
+  const defaultProviders = resolveProviders({
+    baseUrl: "http://localhost:8318/v1",
+    apiKey: "test-key",
+    enableAgy: false,
+  });
+  assert.equal(
+    defaultProviders.some((p) => p.type === "agy"),
+    false
+  );
+
+  const agyProviders = resolveProviders({
+    baseUrl: "http://localhost:8318/v1",
+    apiKey: "test-key",
+    enableAgy: true,
+  });
+  assert.equal(
+    agyProviders.some((p) => p.type === "agy"),
+    true
+  );
+  const agyEntry = agyProviders.find((p) => p.type === "agy");
+  assert.equal(agyEntry.name, "AGY (gemini-daemon)");
+  assert.equal(agyEntry.baseUrl, "agy://local");
+
+  const primaryAgy = resolveProviders({
+    baseUrl: "agy://local",
+    apiKey: "agy-local",
+    enableAgy: true,
+  });
+  assert.equal(primaryAgy[0].type, "agy");
+  assert.equal(primaryAgy[0].name, "Primary (AGY-daemon)");
+});
+
+test("AgyDaemonClient manages warm process, multi-turn queue, and model switching", async () => {
+  const spawnedProcs = [];
+  const spawnMock = (cmd, args) => {
+    const proc = createMockProc({
+      onWrite(data, p) {
+        const parsed = JSON.parse(data.trim());
+        setImmediate(() => {
+          p.stdout.emit(
+            "data",
+            Buffer.from(
+              JSON.stringify({
+                event: "result",
+                result: {
+                  status: "SUCCESS",
+                  response: `Echo [${args[1]}]: ${parsed.message.content.slice(-12)}`,
+                },
+              }) + "\n"
+            )
+          );
+        });
+      },
+    });
+    proc.cmd = cmd;
+    proc.args = args;
+    spawnedProcs.push(proc);
+    return proc;
+  };
+
+  const client = new AgyDaemonClient({ spawnImpl: spawnMock, idleTimeoutMs: 1000 });
+
+  // Turn 1
+  const r1 = await client.execute({ prompt: "Hello turn 1", model: "gemini-3.8-flash-high" });
+  assert.ok(r1.includes("gemini-3.8-flash-high"));
+  assert.equal(spawnedProcs.length, 1);
+
+  // Turn 2: same model - reuses warm process without spawning another
+  const r2 = await client.execute({ prompt: "Hello turn 2", model: "gemini-3.8-flash-high" });
+  assert.ok(r2.includes("gemini-3.8-flash-high"));
+  assert.equal(spawnedProcs.length, 1);
+
+  // Turn 3: different model - kills old process and spawns new
+  const r3 = await client.execute({ prompt: "Hello turn 3", model: "gemini-2.5-flash" });
+  assert.ok(r3.includes("gemini-2.5-flash"));
+  assert.equal(spawnedProcs.length, 2);
+  assert.equal(spawnedProcs[0].killed, true);
+
+  client.shutdown();
+});
+
+test("AgyDaemonClient handles error results cleanly", async () => {
+  const spawnMock = (cmd, args) => {
+    return createMockProc({
+      onWrite(data, p) {
+        setImmediate(() => {
+          p.stdout.emit(
+            "data",
+            Buffer.from(
+              JSON.stringify({
+                event: "result",
+                result: { status: "ERROR", error: "Simulated quota error" },
+              }) + "\n"
+            )
+          );
+        });
+      },
+    });
+  };
+
+  const client = new AgyDaemonClient({ spawnImpl: spawnMock });
+  await assert.rejects(
+    async () => {
+      await client.execute({ prompt: "Fail test" });
+    },
+    { message: /Simulated quota error/ }
+  );
+  client.shutdown();
+});
+
+test("callChatCompletion rotates to AGY daemon when primary HTTP fails on Gemini model", async (t) => {
+  let httpCalls = 0;
+  t.mock.method(globalThis, "fetch", async (url) => {
+    httpCalls++;
+    // HTTP call fails (simulating 8318 policy block for Gemini)
+    return new Response(
+      JSON.stringify({ error: { message: "Google policy disallowed on 8318" } }),
+      {
+        status: 403,
+      }
+    );
+  });
+
+  let agyCalled = false;
+  const mockAgyClient = {
+    async execute({ prompt, model }) {
+      agyCalled = true;
+      return `AGY daemon generated answer for ${model}`;
+    },
+  };
+
+  const result = await callChatCompletion({
+    prompt: "Analyze magnetar flare",
+    systemPrompt: "Astrophysics System",
+    model: "gemini-3.8-flash-high",
+    enableAgy: true,
+    agyClient: mockAgyClient,
+    providers: [
+      {
+        name: "Primary (local-8318)",
+        type: "http",
+        baseUrl: "http://localhost:8318/v1",
+        apiKey: "k",
+      },
+      { name: "AGY (gemini-daemon)", type: "agy", baseUrl: "agy://local", apiKey: "agy-local" },
+    ],
+  });
+
+  assert.equal(result, "AGY daemon generated answer for gemini-3.8-flash-high");
+  assert.equal(agyCalled, true);
+  assert.equal(httpCalls, 1);
+});
+
+test("callChatCompletion skips AGY provider when candidate model is not Gemini", async (t) => {
+  const httpAttempts = [];
+  t.mock.method(globalThis, "fetch", async (url, opts) => {
+    const body = JSON.parse(opts.body);
+    httpAttempts.push(body.model);
+    if (body.model === "gpt-6.1-sol") {
+      return new Response(JSON.stringify({ error: { message: "quota exceeded" } }), {
+        status: 429,
+      });
+    }
+    return new Response(JSON.stringify({ choices: [{ message: { content: "fallback ok" } }] }), {
+      status: 200,
+    });
+  });
+
+  let agyCalled = false;
+  const mockAgyClient = {
+    async execute({ model }) {
+      agyCalled = true;
+      return `agy answer ${model}`;
+    },
+  };
+
+  const result = await callChatCompletion({
+    prompt: "What is FBOT?",
+    model: "gpt-6.1-sol",
+    fallbackModels: ["claude-opus-4-6-thinking"],
+    enableAgy: true,
+    agyClient: mockAgyClient,
+    providers: [
+      { name: "Primary", type: "http", baseUrl: "http://localhost:8318/v1", apiKey: "k" },
+      { name: "AGY (gemini-daemon)", type: "agy", baseUrl: "agy://local", apiKey: "agy-local" },
+    ],
+  });
+
+  assert.equal(result, "fallback ok");
+  assert.equal(agyCalled, false);
+  assert.deepEqual(httpAttempts, ["gpt-6.1-sol", "claude-opus-4-6-thinking"]);
 });

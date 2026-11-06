@@ -32,8 +32,10 @@ export const T0_INSTRUMENT_AUTHORITY = [
   { regex: /\b(?:GW|LIGO|Virgo|KAGRA)\b/i, score: 100, label: "GW" },
   { regex: /\b(?:Fermi(?:\/GBM)?|GBM)\b/i, score: 90, label: "Fermi/GBM" },
   { regex: /\b(?:Swift(?:\/BAT)?|BAT)\b/i, score: 80, label: "Swift/BAT" },
+  { regex: /\b(?:HETE(?:-2)?)\b/i, score: 75, label: "HETE-2" },
   { regex: /\b(?:SVOM(?:\/ECLAIRs)?|ECLAIRs)\b/i, score: 70, label: "SVOM/ECLAIRs" },
-  { regex: /\b(?:EP(?:\/WXT)?|WXT|Einstein\s*Probe)\b/i, score: 60, label: "EP/WXT" },
+  { regex: /\b(?:EP(?:\/WXT)?|Einstein\s*Probe|WXT)\b/i, score: 60, label: "EP/WXT" },
+  { regex: /\b(?:Konus(?:-Wind)?)\b/i, score: 55, label: "Konus-Wind" },
   { regex: /\b(?:GECAM(?:-[A-Z])?)\b/i, score: 50, label: "GECAM" },
 ];
 

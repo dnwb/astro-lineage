@@ -1145,7 +1145,7 @@ export async function extractDataFromCircular(
     useLlm = false,
     apiKey = DEFAULT_API_KEY,
     baseUrl = DEFAULT_BASE_URL,
-    model = "gemini-3.8-flash-high",
+    model = process.env.AI_MODEL_BODY || "gemini-3.8-flash-medium",
     canonicalT0Iso = null,
     supersededIds = null,
   } = {}

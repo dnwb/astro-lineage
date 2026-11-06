@@ -42,23 +42,35 @@ loadProjectEnv();
 
 export function normalizeModelName(name) {
   if (!name) return "gpt-6.1-sol";
-  const trimmed = String(name).trim();
-  if (trimmed === "6.1-sol" || trimmed === "chatgpt-6.1-sol") return "gpt-6.1-sol";
-  if (trimmed === "6-sol" || trimmed === "chatgpt-6-sol") return "gpt-6-sol";
-  if (trimmed === "6-luna" || trimmed === "chatgpt-6-luna") return "gpt-6-luna";
-  if (trimmed === "6-astra" || trimmed === "chatgpt-6-astra") return "gpt-6-astra";
-  if (
+  let trimmed = String(name).trim();
+  let prefix = "";
+  if (trimmed.startsWith("agy/")) {
+    prefix = "agy/";
+    trimmed = trimmed.slice(4).trim();
+  }
+  let resolved = trimmed;
+  if (trimmed === "6.1-sol" || trimmed === "chatgpt-6.1-sol") resolved = "gpt-6.1-sol";
+  else if (trimmed === "6-sol" || trimmed === "chatgpt-6-sol") resolved = "gpt-6-sol";
+  else if (trimmed === "6-luna" || trimmed === "chatgpt-6-luna") resolved = "gpt-6-luna";
+  else if (trimmed === "6-astra" || trimmed === "chatgpt-6-astra") resolved = "gpt-6-astra";
+  else if (
     trimmed === "gemini-3.8-flash" ||
     trimmed === "gemini3.8flash" ||
+    trimmed === "gemini-3.8-flash-high" ||
     trimmed === "gemini-3.8-flash-medium"
   )
-    return "gemini-3.8-flash-high";
-  if (trimmed === "gemini-3.5-flash" || trimmed === "gemini3.5flash")
-    return "gemini-3.5-flash-lite";
-  if (trimmed === "claude-opus" || trimmed === "claude-opus-4.6" || trimmed === "claude-opus-4-6")
-    return "claude-opus-4-6-thinking";
-  if (trimmed === "claude-sonnet" || trimmed === "claude-sonnet-4.6") return "claude-sonnet-4-6";
-  return trimmed;
+    resolved = "gemini-3.8-flash-medium";
+  else if (trimmed === "gemini-3.5-flash" || trimmed === "gemini3.5flash")
+    resolved = "gemini-3.5-flash-lite";
+  else if (
+    trimmed === "claude-opus" ||
+    trimmed === "claude-opus-4.6" ||
+    trimmed === "claude-opus-4-6"
+  )
+    resolved = "claude-opus-4-6-thinking";
+  else if (trimmed === "claude-sonnet" || trimmed === "claude-sonnet-4.6")
+    resolved = "claude-sonnet-4-6";
+  return prefix ? `${prefix}${resolved}` : resolved;
 }
 
 export const PUBLIC_SITE_URL = getDefaultWebsiteBase();
@@ -80,20 +92,34 @@ export function resolveDefaultApiKey() {
   return "";
 }
 export const DEFAULT_API_KEY = resolveDefaultApiKey();
-export const DEFAULT_MODEL = normalizeModelName(process.env.BOT_AI_MODEL || "gpt-6.1-sol");
+export const DEFAULT_MODEL = normalizeModelName(
+  process.env.BOT_AI_MODEL || process.env.AI_MODEL || "gpt-6.1-sol"
+);
 export const DEFAULT_EFFORT = process.env.BOT_REASONING_EFFORT || "medium";
 
 export const DEFAULT_FALLBACK_MODELS = (
-  process.env.BOT_FALLBACK_MODELS || "gemini-3.8-flash-high,claude-opus-4-6-thinking,gpt-6-astra"
+  process.env.BOT_FALLBACK_MODELS ||
+  process.env.AI_FALLBACK_MODELS ||
+  "gemini-3.8-flash-medium,claude-opus-4-6-thinking,gpt-6-astra"
 )
   .split(",")
   .map((m) => normalizeModelName(m.trim()))
   .filter(Boolean);
 
-export function buildModelCandidates(primaryModel, fallbackModels = DEFAULT_FALLBACK_MODELS) {
+export function buildModelCandidates(primaryModel, fallbackModels) {
+  const envFallbackStr = process.env.BOT_FALLBACK_MODELS || process.env.AI_FALLBACK_MODELS;
+  const resolvedFallbacks =
+    fallbackModels !== undefined
+      ? fallbackModels
+      : envFallbackStr
+        ? envFallbackStr
+            .split(",")
+            .map((m) => m.trim())
+            .filter(Boolean)
+        : DEFAULT_FALLBACK_MODELS;
   const primary = normalizeModelName(primaryModel || DEFAULT_MODEL);
   const candidates = [primary];
-  for (const m of fallbackModels) {
+  for (const m of resolvedFallbacks) {
     const normalized = normalizeModelName(m);
     if (!candidates.includes(normalized)) {
       candidates.push(normalized);
@@ -112,6 +138,7 @@ export function isMultimodalModel(model) {
 export function isAgySupportedModel(model) {
   if (!model || typeof model !== "string") return false;
   const norm = normalizeModelName(model).toLowerCase();
+  if (norm.startsWith("agy/")) return true;
   const base = norm.includes("/") ? norm.split("/").pop() : norm;
   return base.startsWith("gemini");
 }
@@ -121,7 +148,7 @@ export const FALLBACK_BASE_URL = process.env.FALLBACK_OPENAI_BASE_URL || "";
 export const FALLBACK_API_KEY =
   process.env.FALLBACK_OPENAI_API_KEY || process.env.ZHANG_API_KEY || "";
 export const FALLBACK_MODEL = normalizeModelName(
-  process.env.FALLBACK_BOT_AI_MODEL || process.env.FALLBACK_AI_MODEL || "gemini-3.8-flash-high"
+  process.env.FALLBACK_BOT_AI_MODEL || process.env.FALLBACK_AI_MODEL || "gemini-3.8-flash-medium"
 );
 
 const RADAR_PATH = resolve(fileURLToPath(new URL("../src/data/daily-radar.json", import.meta.url)));
@@ -296,7 +323,13 @@ export class AgyDaemonClient {
     this.isShuttingDown = false;
   }
 
-  execute({ prompt, systemPrompt, history, model = "gemini-3.8-flash-high", timeoutMs } = {}) {
+  execute({
+    prompt,
+    systemPrompt,
+    history,
+    model = process.env.AI_MODEL_BODY || process.env.BOT_AI_MODEL || "gemini-3.8-flash-medium",
+    timeoutMs,
+  } = {}) {
     if (this.isShuttingDown) {
       return Promise.reject(new Error("AGY daemon client is shut down"));
     }
@@ -305,7 +338,12 @@ export class AgyDaemonClient {
         prompt,
         systemPrompt,
         history,
-        model: normalizeModelName(model || "gemini-3.8-flash-high"),
+        model: normalizeModelName(
+          model ||
+            process.env.AI_MODEL_BODY ||
+            process.env.BOT_AI_MODEL ||
+            "gemini-3.8-flash-medium"
+        ),
         timeoutMs,
         resolve,
         reject,
@@ -323,12 +361,13 @@ export class AgyDaemonClient {
     this.resetIdleTimer(false);
 
     const targetModel = task.model;
-    if (this.currentProc && this.currentModel !== targetModel) {
+    const actualModel = targetModel.startsWith("agy/") ? targetModel.slice(4) : targetModel;
+    if (this.currentProc && this.currentModel !== actualModel) {
       this.killProcess();
     }
     if (!this.currentProc) {
       try {
-        this.spawnProcess(targetModel);
+        this.spawnProcess(actualModel);
       } catch (err) {
         this.activeTask = null;
         task.reject(err);
@@ -512,7 +551,7 @@ export async function executeAgyCompletion({
   prompt,
   systemPrompt,
   history,
-  model = "gemini-3.8-flash-high",
+  model = process.env.AI_MODEL_BODY || process.env.BOT_AI_MODEL || "gemini-3.8-flash-medium",
   client = defaultAgyDaemonClient,
   timeoutMs,
 } = {}) {
@@ -528,6 +567,7 @@ export function resolveProviders({
   enableAgy = process.env.ENABLE_AGY === "true" ||
     process.env.BOT_ENABLE_AGY === "true" ||
     process.env.AI_BACKEND === "agy",
+  candidates = [],
 } = {}) {
   if (Array.isArray(providers) && providers.length > 0) {
     return providers;
@@ -570,7 +610,10 @@ export function resolveProviders({
     });
   }
 
-  if (enableAgy && !resolved.some((p) => p.type === "agy")) {
+  const hasAgyCandidate = candidates.some(
+    (c) => typeof c === "string" && (c.startsWith("agy/") || isAgySupportedModel(c))
+  );
+  if ((enableAgy || hasAgyCandidate) && !resolved.some((p) => p.type === "agy")) {
     resolved.push({
       name: "AGY (gemini-daemon)",
       type: "agy",
@@ -713,6 +756,7 @@ export async function callChatCompletion({
     fallbackApiKey,
     providers,
     enableAgy,
+    candidates,
   });
 
   if (resolvedProviders.length === 0) {
@@ -743,8 +787,14 @@ export async function callChatCompletion({
     for (let pIdx = 0; pIdx < orderedProviders.length; pIdx++) {
       const provider = orderedProviders[pIdx];
       const providerType = provider.type || (provider.baseUrl?.startsWith("agy:") ? "agy" : "http");
+      const isAgyPrefixed = candidate.startsWith("agy/");
 
-      // AGY only supports Gemini family models; skip unsupported models for AGY provider
+      // If candidate explicitly specified agy/ prefix, non-agy providers must skip it
+      if (isAgyPrefixed && providerType !== "agy") {
+        continue;
+      }
+
+      // AGY only supports Gemini family or agy/ prefixed models
       if (providerType === "agy" && !isAgySupportedModel(candidate)) {
         continue;
       }
@@ -755,11 +805,12 @@ export async function callChatCompletion({
       try {
         let result;
         if (providerType === "agy") {
+          const actualModel = candidate.startsWith("agy/") ? candidate.slice(4) : candidate;
           result = await (agyClient || defaultAgyDaemonClient).execute({
             prompt,
             systemPrompt,
             history,
-            model: candidate,
+            model: actualModel,
           });
         } else {
           result = await executeChatCompletion({

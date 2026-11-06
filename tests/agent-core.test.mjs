@@ -346,15 +346,15 @@ test("callChatCompletion filters candidate models to only multimodal-capable mod
     images: [testImage],
     // primary model is pure-text, fallbacks contain both pure-text and multimodal models
     model: "gpt-5.5",
-    fallbackModels: ["deepseek-r1", "gpt-6.1-sol", "llama-3", "gemini-3.8-flash-high"],
+    fallbackModels: ["deepseek-r1", "gpt-6.1-sol", "llama-3", "gemini-3.8-flash-medium"],
     baseUrl: "https://example.com/v1",
     apiKey: "fake-test-key",
   });
 
   assert.equal(res, "multimodal answer");
   // Pure text models (gpt-5.5, deepseek-r1, llama-3) must be filtered out!
-  // Only multimodal models (gpt-6.1-sol, then gemini-3.8-flash-high) should have been attempted
-  assert.deepEqual(attemptedModels, ["gpt-6.1-sol", "gemini-3.8-flash-high"]);
+  // Only multimodal models (gpt-6.1-sol, then gemini-3.8-flash-medium) should have been attempted
+  assert.deepEqual(attemptedModels, ["gpt-6.1-sol", "gemini-3.8-flash-medium"]);
 });
 
 test("callChatCompletion preserves multimodal payload across circuit breaker and provider failover", async (t) => {
@@ -430,6 +430,8 @@ function createMockProc(options = {}) {
 test("isAgySupportedModel accurately identifies Gemini vs non-Gemini models", () => {
   assert.equal(isAgySupportedModel("gemini-3.8-flash"), true);
   assert.equal(isAgySupportedModel("gemini-3.8-flash-high"), true);
+  assert.equal(isAgySupportedModel("gemini-3.8-flash-medium"), true);
+  assert.equal(isAgySupportedModel("agy/gemini-3.8-flash-medium"), true);
   assert.equal(isAgySupportedModel("gemini-3.5-flash-lite"), true);
   assert.equal(isAgySupportedModel("gemini-2.5-flash"), true);
   assert.equal(isAgySupportedModel("google/gemini-2.5-pro"), true);
@@ -503,13 +505,13 @@ test("AgyDaemonClient manages warm process, multi-turn queue, and model switchin
   const client = new AgyDaemonClient({ spawnImpl: spawnMock, idleTimeoutMs: 1000 });
 
   // Turn 1
-  const r1 = await client.execute({ prompt: "Hello turn 1", model: "gemini-3.8-flash-high" });
-  assert.ok(r1.includes("gemini-3.8-flash-high"));
+  const r1 = await client.execute({ prompt: "Hello turn 1", model: "gemini-3.8-flash-medium" });
+  assert.ok(r1.includes("gemini-3.8-flash-medium"));
   assert.equal(spawnedProcs.length, 1);
 
   // Turn 2: same model - reuses warm process without spawning another
-  const r2 = await client.execute({ prompt: "Hello turn 2", model: "gemini-3.8-flash-high" });
-  assert.ok(r2.includes("gemini-3.8-flash-high"));
+  const r2 = await client.execute({ prompt: "Hello turn 2", model: "gemini-3.8-flash-medium" });
+  assert.ok(r2.includes("gemini-3.8-flash-medium"));
   assert.equal(spawnedProcs.length, 1);
 
   // Turn 3: different model - kills old process and spawns new
@@ -574,7 +576,7 @@ test("callChatCompletion rotates to AGY daemon when primary HTTP fails on Gemini
   const result = await callChatCompletion({
     prompt: "Analyze magnetar flare",
     systemPrompt: "Astrophysics System",
-    model: "gemini-3.8-flash-high",
+    model: "gemini-3.8-flash-medium",
     enableAgy: true,
     agyClient: mockAgyClient,
     providers: [
@@ -588,9 +590,47 @@ test("callChatCompletion rotates to AGY daemon when primary HTTP fails on Gemini
     ],
   });
 
-  assert.equal(result, "AGY daemon generated answer for gemini-3.8-flash-high");
+  assert.equal(result, "AGY daemon generated answer for gemini-3.8-flash-medium");
   assert.equal(agyCalled, true);
   assert.equal(httpCalls, 1);
+});
+
+test("callChatCompletion routes agy/ prefixed models directly to AGY without trying HTTP", async (t) => {
+  let httpCalls = 0;
+  t.mock.method(globalThis, "fetch", async () => {
+    httpCalls++;
+    return new Response(JSON.stringify({ choices: [{ message: { content: "http response" } }] }), {
+      status: 200,
+    });
+  });
+
+  let capturedAgyModel = null;
+  const mockAgyClient = {
+    async execute({ prompt, model }) {
+      capturedAgyModel = model;
+      return `AGY daemon direct answer for ${model}`;
+    },
+  };
+
+  const result = await callChatCompletion({
+    prompt: "Explain relativistic jet deceleration",
+    systemPrompt: "Astrophysics System",
+    model: "agy/gemini-3.8-flash-medium",
+    agyClient: mockAgyClient,
+    providers: [
+      {
+        name: "Primary (local-8318)",
+        type: "http",
+        baseUrl: "http://localhost:8318/v1",
+        apiKey: "k",
+      },
+      { name: "AGY (gemini-daemon)", type: "agy", baseUrl: "agy://local", apiKey: "agy-local" },
+    ],
+  });
+
+  assert.equal(result, "AGY daemon direct answer for gemini-3.8-flash-medium");
+  assert.equal(capturedAgyModel, "gemini-3.8-flash-medium");
+  assert.equal(httpCalls, 0); // HTTP provider was bypassed for agy/ prefix!
 });
 
 test("callChatCompletion skips AGY provider when candidate model is not Gemini", async (t) => {

@@ -98,7 +98,12 @@ export function classifyWorkingTree(porcelainOutput) {
   const dataFiles = [];
   const nonDataFiles = [];
 
-  const isAllowedData = (p) => p.startsWith("src/data/") || p.startsWith("public/figures/");
+  const isAllowedData = (p) =>
+    p.startsWith("src/data/") ||
+    p.startsWith("public/arxiv-figures/") ||
+    p.startsWith("public/arxiv-weekly/") ||
+    p.startsWith("public/gcn-figures/") ||
+    p.startsWith("public/figures/");
 
   for (const line of lines) {
     const match = line.match(/^(?:..|[A-Z?]{1,2})\s+(.+)$/u);
@@ -127,6 +132,42 @@ export function classifyWorkingTree(porcelainOutput) {
   };
 }
 
+export function checkGitRemoteConnectivity(root, options = {}) {
+  const remote = options.remote || "origin";
+  const target = options.target || "HEAD";
+  const timeoutMs = options.timeoutMs ?? 6000;
+  const execFn = options.execFn || execSync;
+
+  try {
+    const rawOut = execFn(`git ls-remote --exit-code ${remote} ${target}`, {
+      cwd: root,
+      encoding: "utf8",
+      timeout: timeoutMs,
+      stdio: ["pipe", "pipe", "pipe"],
+    });
+    const firstLine =
+      String(rawOut || "")
+        .trim()
+        .split(/\r?\n/)[0] || "";
+    const hash = firstLine.split(/\s+/)[0] || "";
+    return {
+      ok: true,
+      hash,
+      output: firstLine,
+      error: null,
+    };
+  } catch (err) {
+    const stderr = err.stderr ? err.stderr.toString().trim() : "";
+    const errorMsg = stderr || err.message || "Connection failed";
+    return {
+      ok: false,
+      hash: null,
+      output: null,
+      error: errorMsg,
+    };
+  }
+}
+
 export function runDeployDoctor(options = {}) {
   const root = options.projectRoot || projectRoot;
   console.log("========================================================");
@@ -141,7 +182,7 @@ export function runDeployDoctor(options = {}) {
   const syncWeeks = effectiveEnv.SYNC_FIGURES_WEEKS || "7";
   const syncMaxMb = effectiveEnv.SYNC_FIGURES_MAX_MB || "300";
 
-  console.log("[1/3] 环境与站点配置:");
+  console.log("[1/4] 环境与站点配置:");
   console.log(`  - 公网 CDN (Cloudflare): ${publicUrl}`);
   console.log(`  - 本地局域网服务:         ${localUrl}`);
   console.log(
@@ -155,7 +196,7 @@ export function runDeployDoctor(options = {}) {
   }
 
   // 2. 检查 Git 仓库状态与分支隔离
-  console.log("[2/3] Git 状态与分支隔离:");
+  console.log("[2/4] Git 状态与分支隔离:");
   let currentBranch = "unknown";
   try {
     currentBranch = execSync("git symbolic-ref --short HEAD", {
@@ -206,7 +247,7 @@ export function runDeployDoctor(options = {}) {
   }
 
   // 3. 检查远程同步与待推送状态
-  console.log("\n[3/3] 远程 master 差异对比:");
+  console.log("\n[3/4] 远程 master 差异对比:");
   let unpushedCommits = [];
   let remoteCheckError = null;
   try {
@@ -234,6 +275,33 @@ export function runDeployDoctor(options = {}) {
     blockers.push(`远程 master 差异对比失败: ${remoteCheckError}`);
   }
 
+  // 4. 检查网络出网与 Git 远程写权限连通性 (轻量探测 origin HEAD)
+  console.log("\n[4/4] 远程网络出网与 Git 连通性:");
+  const connectivity = options.skipConnectivityCheck
+    ? { ok: true, hash: "skip", output: "skip HEAD", error: null }
+    : (options.connectivityResult ?? checkGitRemoteConnectivity(root, options));
+
+  if (connectivity.ok) {
+    const shortHash = connectivity.hash ? connectivity.hash.slice(0, 7) : "ok";
+    console.log(`  - 远程 Git 出网与凭据:   ✅ 连通正常 (origin HEAD: ${shortHash})`);
+  } else {
+    console.log(`  - 远程 Git 出网与凭据:   ❌ 连接失败 (无法探测 origin HEAD)`);
+    console.log(`    失败详情: ${connectivity.error}`);
+    console.log(`    💡 校园网 / Clash TUN 代理修复指引:`);
+    console.log(`       1. 确保本地 SOCKS5 代理处于监听状态 (如 127.0.0.1:7890)。`);
+    console.log(
+      `       2. 校园网封锁出网 22 端口，且 Clash TUN 嗅探 443 端口 TLS 会导致连接被重置。`
+    );
+    console.log(`       3. 在 ~/.ssh/config 中为 github.com:22 配置 SOCKS5 代理穿透:`);
+    console.log(`          Host github.com`);
+    console.log(`              HostName github.com`);
+    console.log(`              Port 22`);
+    console.log(`              User git`);
+    console.log(`              IdentityFile ~/.ssh/id_ed25519`);
+    console.log(`              ProxyCommand socat - SOCKS5-CONNECT:127.0.0.1:7890:%h:%p`);
+    blockers.push(`远程 Git 连通性探测失败: ${connectivity.error}`);
+  }
+
   console.log("\n========================================================");
   if (blockers.length === 0) {
     console.log("✅ 诊断结论: 部署链路配置完整，工作在主分支，门禁处于健康状态。");
@@ -255,6 +323,7 @@ export function runDeployDoctor(options = {}) {
     blockers,
     unpushedCommits,
     workingTree,
+    connectivity,
   };
 }
 

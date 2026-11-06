@@ -8,6 +8,7 @@ import {
   classifyEventType,
   buildScientificEventClusters,
   extractVerifiedFigures,
+  writeScientificEventsFile,
 } from "../scripts/transient-event-cluster.mjs";
 
 test("transient-event-cluster: calculateHeatScore applies 7-day half-life decay", () => {
@@ -105,4 +106,31 @@ test("transient-event-cluster: extractVerifiedFigures filters by publicDir and s
   assert.equal(verified[0].category_badge, "Observational Light Curve");
   assert.ok(verified[0].physical_core.length > 0);
   assert.equal(verified[1].url, "https://example.com/external.png");
+});
+
+test("transient-event-cluster: writeScientificEventsFile preserves existing generated_at when event data is identical", async (t) => {
+  const sandbox = await mkdtemp(join(tmpdir(), "event-cluster-idempotent-"));
+  t.after(async () => {
+    await rm(sandbox, { recursive: true, force: true });
+  });
+
+  const outPath = join(sandbox, "scientific-events.json");
+  const options = {
+    archiveDir: "src/data/arxiv-archives/daily",
+    radarPath: "src/data/daily-radar.json",
+  };
+
+  const firstResult = await writeScientificEventsFile(outPath, options);
+  const firstGeneratedAt = firstResult.generated_at;
+  assert.ok(firstGeneratedAt);
+
+  // Short delay so new Date().toISOString() would differ
+  await new Promise((r) => setTimeout(r, 20));
+
+  const secondResult = await writeScientificEventsFile(outPath, options);
+  assert.equal(
+    secondResult.generated_at,
+    firstGeneratedAt,
+    "generated_at must be preserved when event payload has not changed"
+  );
 });

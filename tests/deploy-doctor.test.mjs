@@ -2,7 +2,13 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { writeFile } from "node:fs/promises";
 import { join } from "node:path";
-import { parseEnv, classifyWorkingTree, getEffectiveRunnerEnv } from "../scripts/deploy-doctor.mjs";
+import {
+  parseEnv,
+  classifyWorkingTree,
+  getEffectiveRunnerEnv,
+  checkGitRemoteConnectivity,
+  runDeployDoctor,
+} from "../scripts/deploy-doctor.mjs";
 import { createTemporaryWorkspace } from "./helpers/temporary-workspace.mjs";
 
 test("deploy-doctor: parseEnv handles quoted values, empty values and prevents multiline bleeding", () => {
@@ -87,6 +93,20 @@ test("deploy-doctor: classifyWorkingTree preserves leading whitespace and handle
   assert.deepEqual(result.nonDataFiles, ["scripts/deploy-doctor.mjs"]);
 });
 
+test("deploy-doctor: classifyWorkingTree treats public/arxiv-figures and public/gcn-figures as allowed data", () => {
+  const porcelain = [
+    "?? public/arxiv-figures/2610.01214/soft-hard.png",
+    "?? public/gcn-figures/GRB250419A/skymap.png",
+    "?? public/arxiv-weekly/2026-W42.pdf",
+    " M src/data/scientific-events.json",
+  ].join("\n");
+
+  const result = classifyWorkingTree(porcelain);
+  assert.equal(result.clean, false);
+  assert.equal(result.nonDataFiles.length, 0);
+  assert.equal(result.dataFiles.length, 4);
+});
+
 test("deploy-doctor: classifyWorkingTree keeps code-to-data renames blocked", () => {
   // Cross-boundary rename from code to data must be treated as non-data (blocked)
   const crossPorcelain = "R  scripts/sample.json -> src/data/sample.json";
@@ -104,4 +124,53 @@ test("deploy-doctor: classifyWorkingTree keeps code-to-data renames blocked", ()
 test("deploy-doctor: classifyWorkingTree reports clean on empty output", () => {
   assert.equal(classifyWorkingTree("").clean, true);
   assert.equal(classifyWorkingTree("   \n\n").clean, true);
+});
+
+test("deploy-doctor: checkGitRemoteConnectivity parses hash on success", () => {
+  const mockExec = () => "664a0c0af22be74a9a635f2b916dc49c08cb2279\tHEAD\n";
+  const result = checkGitRemoteConnectivity("/fake/root", { execFn: mockExec });
+  assert.equal(result.ok, true);
+  assert.equal(result.hash, "664a0c0af22be74a9a635f2b916dc49c08cb2279");
+  assert.equal(result.error, null);
+});
+
+test("deploy-doctor: checkGitRemoteConnectivity captures failure and error output", () => {
+  const mockExec = () => {
+    const err = new Error("Command failed");
+    err.stderr = Buffer.from("Connection closed by 198.18.0.82 port 443");
+    throw err;
+  };
+  const result = checkGitRemoteConnectivity("/fake/root", { execFn: mockExec });
+  assert.equal(result.ok, false);
+  assert.equal(result.hash, null);
+  assert.ok(result.error.includes("Connection closed by 198.18.0.82 port 443"));
+});
+
+test("deploy-doctor: runDeployDoctor registers network blocker when remote connectivity fails", (t) => {
+  const logLines = [];
+  const originalLog = console.log;
+  console.log = (...args) => logLines.push(args.join(" "));
+  t.after(() => {
+    console.log = originalLog;
+  });
+
+  const failure = {
+    ok: false,
+    hash: null,
+    output: null,
+    error: "ssh: connect to host github.com port 22: Connection timed out",
+  };
+
+  const report = runDeployDoctor({
+    connectivityResult: failure,
+  });
+
+  assert.equal(report.ok, false);
+  const connBlocker = report.blockers.find((b) => b.includes("远程 Git 连通性探测失败"));
+  assert.ok(connBlocker);
+  assert.ok(connBlocker.includes("Connection timed out"));
+
+  const fullOutput = logLines.join("\n");
+  assert.ok(fullOutput.includes("SOCKS5-CONNECT:127.0.0.1:7890"));
+  assert.ok(fullOutput.includes("校园网 / Clash TUN 代理修复指引"));
 });

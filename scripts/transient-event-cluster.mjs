@@ -286,16 +286,21 @@ export async function buildScientificEventClusters({
   weeklyPath = DEFAULT_WEEKLY_PATH,
   gcnIndexPath = DEFAULT_GCN_INDEX_PATH,
   publicDir = "public",
-  now = new Date(),
+  now = null,
 } = {}) {
+  const currentInstant = now instanceof Date ? now : new Date();
   const metadataMap = await buildMetadataIndex({ archiveDir, dailyFeedPath, weeklyPath });
   const paperMap = new Map(); // arxiv_id -> paper details
 
   // 1. Ingest Daily Radar (latest)
+  let date = currentInstant.toISOString().slice(0, 10);
+  let rawRadar = null;
   try {
-    const rawRadar = JSON.parse(await readFile(radarPath, "utf8"));
+    rawRadar = JSON.parse(await readFile(radarPath, "utf8"));
     const analyses = Array.isArray(rawRadar.analyses) ? rawRadar.analyses : [];
-    const date = rawRadar.edition?.window?.announcement_date || now.toISOString().slice(0, 10);
+    if (rawRadar.edition?.window?.announcement_date) {
+      date = rawRadar.edition.window.announcement_date;
+    }
 
     for (const item of analyses) {
       if (!item.arxiv_id) continue;
@@ -317,6 +322,8 @@ export async function buildScientificEventClusters({
   } catch (err) {
     // If radar missing, proceed with archives
   }
+
+  const referenceDay = now instanceof Date ? now : new Date(date + "T00:00:00Z");
 
   // 2. Ingest Archives
   try {
@@ -472,13 +479,16 @@ export async function buildScientificEventClusters({
         const eventDate = (
           gcnEntry.canonical_t0?.utc_iso ||
           gcnEntry.last_updated_utc ||
-          now.toISOString()
+          currentInstant.toISOString()
         ).slice(0, 10);
-        const lastUpdated = (gcnEntry.last_updated_utc || now.toISOString()).slice(0, 10);
+        const lastUpdated = (gcnEntry.last_updated_utc || currentInstant.toISOString()).slice(
+          0,
+          10
+        );
 
         const diffDays = Math.max(
           0,
-          (now.getTime() - new Date(gcnEntry.last_updated_utc || now).getTime()) /
+          (referenceDay.getTime() - new Date(gcnEntry.last_updated_utc || referenceDay).getTime()) /
             (1000 * 60 * 60 * 24)
         );
         const baseGcnHeat = gcnEntry.status === "archived" ? 15 : 45;
@@ -531,7 +541,7 @@ export async function buildScientificEventClusters({
     const heat =
       cluster.heat_score_override !== undefined
         ? cluster.heat_score_override
-        : calculateHeatScore(cluster.papers, cluster.last_updated, now);
+        : calculateHeatScore(cluster.papers, cluster.last_updated, referenceDay);
 
     const { headline, narrative } = cluster.headline_override
       ? { headline: cluster.headline_override, narrative: cluster.narrative_override }
@@ -586,7 +596,7 @@ export async function buildScientificEventClusters({
   resultList.sort((a, b) => b.heat_score - a.heat_score || b.paper_count - a.paper_count);
 
   return {
-    generated_at: now.toISOString(),
+    generated_at: currentInstant.toISOString(),
     total_events: resultList.length,
     events: resultList,
   };
@@ -595,8 +605,24 @@ export async function buildScientificEventClusters({
 /**
  * CLI execution entrypoint to generate src/data/scientific-events.json
  */
-export async function writeScientificEventsFile(outputPath = DEFAULT_OUTPUT_PATH) {
-  const result = await buildScientificEventClusters();
+export async function writeScientificEventsFile(outputPath = DEFAULT_OUTPUT_PATH, options = {}) {
+  const result = await buildScientificEventClusters(options);
+  if (existsSync(outputPath)) {
+    try {
+      const existingRaw = await readFile(outputPath, "utf8");
+      const existing = JSON.parse(existingRaw);
+      const { generated_at: _oldDate, ...existingRest } = existing;
+      const { generated_at: _newDate, ...newRest } = result;
+      if (JSON.stringify(existingRest) === JSON.stringify(newRest)) {
+        result.generated_at = existing.generated_at;
+        console.log(
+          `[Event Cluster] ℹ 暂无新瞬变事件或数据变动，沿用原生成时间戳: ${existing.generated_at}`
+        );
+        return result;
+      }
+    } catch {}
+  }
+
   await writeFile(outputPath, JSON.stringify(result, null, 2), "utf8");
   console.log(
     `[Event Cluster] ✓ Successfully generated ${result.total_events} transient events to ${outputPath}`

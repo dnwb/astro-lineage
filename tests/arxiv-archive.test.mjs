@@ -224,3 +224,64 @@ test("syncArxivArchives updates weekly archives when weeklyCacheDir contains new
   const currentWeekly = JSON.parse(await readFile(currentWeeklyPath, "utf8"));
   assert.equal(currentWeekly.title, "New Weekly");
 });
+
+test("syncArxivArchives: preserves manifest updated_at when underlying entities remain unchanged", async (t) => {
+  const ws = await createTemporaryWorkspace("astro-lineage-archive-idempotent-", t);
+  const sandbox = ws.path;
+
+  const archiveRoot = join(sandbox, "archives");
+  const weeklyCacheDir = join(sandbox, "weekly-cache");
+  const dailyCacheDir = join(sandbox, "daily-cache");
+  const dirtyWeeksPath = join(sandbox, "dirty-weeks.json");
+  const currentWeeklyPath = join(sandbox, "arxiv-weekly.json");
+  const currentFeedPath = join(sandbox, "arxiv-daily.json");
+  const currentRadarPath = join(sandbox, "daily-radar.json");
+
+  await mkdir(join(archiveRoot, "weekly"), { recursive: true });
+  await mkdir(join(archiveRoot, "daily"), { recursive: true });
+  await mkdir(weeklyCacheDir, { recursive: true });
+  await mkdir(dailyCacheDir, { recursive: true });
+
+  const dummyWeekly = {
+    schema_version: "astrolineage-weekly-summary-v1",
+    generated_at: "2026-10-18T10:00:00.000Z",
+    week_id: "2026-W42",
+    title: "Weekly Summary",
+    top_picks: [],
+  };
+  await writeFile(join(archiveRoot, "weekly", "2026-W42.json"), JSON.stringify(dummyWeekly));
+
+  // First sync to establish manifest
+  const firstManifest = await syncArxivArchives({
+    archiveRoot,
+    weeklyCacheDir,
+    dailyCacheDir,
+    dirtyWeeksPath,
+    currentWeeklyPath,
+    currentFeedPath,
+    currentRadarPath,
+  });
+
+  const firstUpdatedAt = firstManifest.updated_at;
+  assert.ok(firstUpdatedAt);
+
+  // Delay slightly to guarantee new Date().toISOString() would differ
+  await new Promise((r) => setTimeout(r, 20));
+
+  // Second sync with no changes
+  const secondManifest = await syncArxivArchives({
+    archiveRoot,
+    weeklyCacheDir,
+    dailyCacheDir,
+    dirtyWeeksPath,
+    currentWeeklyPath,
+    currentFeedPath,
+    currentRadarPath,
+  });
+
+  assert.equal(
+    secondManifest.updated_at,
+    firstUpdatedAt,
+    "updated_at must remain unchanged when contents are identical"
+  );
+});

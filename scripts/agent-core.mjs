@@ -53,6 +53,8 @@ export function normalizeModelName(name) {
   else if (trimmed === "6-sol" || trimmed === "chatgpt-6-sol") resolved = "gpt-6-sol";
   else if (trimmed === "6-luna" || trimmed === "chatgpt-6-luna") resolved = "gpt-6-luna";
   else if (trimmed === "6-astra" || trimmed === "chatgpt-6-astra") resolved = "gpt-6-astra";
+  else if (trimmed === "6.1-terra" || trimmed === "6.1terra" || trimmed === "chatgpt-6.1-terra")
+    resolved = "gpt-6.1-terra";
   else if (
     trimmed === "gemini-3.8-flash" ||
     trimmed === "gemini3.8flash" ||

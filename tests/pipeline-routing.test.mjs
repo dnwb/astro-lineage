@@ -11,9 +11,19 @@ test("resolveRoutingLadder sets agy/gemini-3.8-flash-medium as default primary f
   const ladder = resolveRoutingLadder(PIPELINE_STAGES.DEEP_READ, {});
   assert.equal(ladder.primary, "agy/gemini-3.8-flash-medium");
   assert.ok(ladder.candidates.includes("agy/gemini-3.8-flash-medium"));
+  assert.ok(ladder.candidates.includes("terra"));
   assert.ok(ladder.candidates.includes("gpt-6.1-sol"));
   assert.ok(ladder.candidates.includes("gpt-6-sol"));
   assert.equal(ladder.candidates[0], "agy/gemini-3.8-flash-medium");
+});
+
+test("resolveRoutingLadder sets gpt-6.1-terra as default primary for TRIAGE", () => {
+  const ladder = resolveRoutingLadder(PIPELINE_STAGES.TRIAGE, {});
+  assert.equal(ladder.primary, "gpt-6.1-terra");
+  assert.ok(ladder.candidates.includes("gpt-6.1-terra"));
+  assert.ok(ladder.candidates.includes("terra"));
+  assert.ok(ladder.candidates.includes("gpt-6-luna"));
+  assert.equal(ladder.candidates[0], "gpt-6.1-terra");
 });
 
 test("resolveRoutingLadder sets terra as default primary for QA_BOT", () => {

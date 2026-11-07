@@ -93,14 +93,14 @@ export function resolveDefaultApiKey() {
 }
 export const DEFAULT_API_KEY = resolveDefaultApiKey();
 export const DEFAULT_MODEL = normalizeModelName(
-  process.env.BOT_AI_MODEL || process.env.AI_MODEL || "agy/gemini-3.8-flash-medium"
+  process.env.BOT_AI_MODEL || process.env.AI_MODEL || "terra"
 );
 export const DEFAULT_EFFORT = process.env.BOT_REASONING_EFFORT || "medium";
 
 export const DEFAULT_FALLBACK_MODELS = (
   process.env.BOT_FALLBACK_MODELS ||
   process.env.AI_FALLBACK_MODELS ||
-  "gpt-6.1-sol,gpt-6-astra,gpt-6-sol"
+  "agy/gemini-3.8-flash-medium,gpt-6.1-sol,gpt-6-astra,gpt-6-sol"
 )
   .split(",")
   .map((m) => normalizeModelName(m.trim()))
@@ -132,7 +132,12 @@ export function isMultimodalModel(model) {
   if (!model || typeof model !== "string") return false;
   const norm = normalizeModelName(model).toLowerCase();
   const base = norm.includes("/") ? norm.split("/").pop() : norm;
-  return base.startsWith("gpt-6") || base.startsWith("gemini") || base.startsWith("claude");
+  return (
+    base.startsWith("gpt-6") ||
+    base.startsWith("gemini") ||
+    base.startsWith("claude") ||
+    base.includes("terra")
+  );
 }
 
 export function isAgySupportedModel(model) {
@@ -262,7 +267,7 @@ export async function executeChatCompletion({
     temperature: 0.2,
     max_tokens: 1600,
   };
-  if (effort && resolvedModel.startsWith("gpt-6")) {
+  if (effort && (resolvedModel.startsWith("gpt-6") || resolvedModel.includes("terra"))) {
     payload.reasoning_effort = effort;
   }
 
@@ -799,7 +804,8 @@ export async function callChatCompletion({
   // Outer loop: candidate models
   for (let mIdx = 0; mIdx < candidates.length; mIdx++) {
     const candidate = candidates[mIdx];
-    const candidateEffort = candidate.startsWith("gpt-6") ? effort : null;
+    const candidateEffort =
+      candidate.startsWith("gpt-6") || candidate.includes("terra") ? effort : null;
 
     // Inner loop: try all providers for the current candidate model
     for (let pIdx = 0; pIdx < orderedProviders.length; pIdx++) {

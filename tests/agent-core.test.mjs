@@ -248,6 +248,9 @@ test("isMultimodalModel accurately identifies multimodal vs pure-text models", (
   assert.equal(isMultimodalModel("claude-opus-4-6-thinking"), true);
   assert.equal(isMultimodalModel("claude-sonnet-4-6"), true);
   assert.equal(isMultimodalModel("openai/gpt-6-sol"), true);
+  assert.equal(isMultimodalModel("terra"), true);
+  assert.equal(isMultimodalModel("gpt-6.1-terra"), true);
+  assert.equal(isMultimodalModel("laowu/terra"), true);
   assert.equal(isMultimodalModel("gpt-5.5"), false);
   assert.equal(isMultimodalModel("deepseek-r1"), false);
   assert.equal(isMultimodalModel("qwen-max"), false);

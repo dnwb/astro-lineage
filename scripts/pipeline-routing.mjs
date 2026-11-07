@@ -26,8 +26,8 @@ export const DEFAULT_ROUTING_CONFIG = {
     description: "超长上下文、百万 Token 级正文深度研读与物理突破分析",
   },
   [PIPELINE_STAGES.QA_BOT]: {
-    primary: "agy/gemini-3.8-flash-medium",
-    fallbacks: ["gpt-6.1-sol", "gpt-6-astra", "gpt-6-sol"],
+    primary: "terra",
+    fallbacks: ["agy/gemini-3.8-flash-medium", "gpt-6.1-sol", "gpt-6-astra", "gpt-6-sol"],
     description: "学术情报交互与官方机器人即时问答",
   },
 };

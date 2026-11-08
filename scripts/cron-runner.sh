@@ -123,9 +123,8 @@ case "${TASK}" in
     node scripts/arxiv-daily-scheduler.mjs
 
     # 前置短路守卫 (Early Short-circuit Guard):
-    # 针对冬令时阶梯巡检 (10:00, 12:00, 14:00, 16:00)：
     # 若本轮未拉取到新论文批次且无积压脏周：
-    # 直接短路跳过学术周报生成、GCN 暂现源聚类与全站静态构建 (~1.5 分钟)。
+    # 直接短路跳过后续步骤与全站静态构建，避免无谓消耗模型与计算资源。
     REFRESHED_COUNT=$(node -e "try { const r = JSON.parse(require('fs').readFileSync('.cache/arxiv-daily/last-run.json')); console.log(r.refreshed_dates?.length || 0); } catch { console.log(0); }")
     DIRTY_WEEKS_COUNT=$(node -e "try { const d = JSON.parse(require('fs').readFileSync('.cache/dirty-weeks.json')); console.log(Array.isArray(d) ? d.length : 0); } catch { console.log(0); }")
 
@@ -135,10 +134,16 @@ case "${TASK}" in
       exit 0
     fi
 
-    echo "[cron-runner] 步骤 1.5/4: 执行每周学术脉络总结与脏周级联更新..."
-    node scripts/arxiv-weekly-summary.mjs || true
-    echo "[cron-runner] 检查并级联更新历史脏自然周..."
-    node scripts/arxiv-weekly-summary.mjs --cascade || true
+    echo "[cron-runner] 步骤 1.5/4: 检查每周学术脉络总结与脏周级联更新..."
+    WEEKDAY="$(TZ="Asia/Shanghai" date +%u)"
+    if [ "${WEEKDAY}" -eq 5 ]; then
+      echo "[cron-runner] 周五检测：当周所有批次已就绪，执行学术脉络终稿总结..."
+      node scripts/arxiv-weekly-summary.mjs || true
+    fi
+    if [ "${DIRTY_WEEKS_COUNT:-0}" -gt 0 ]; then
+      echo "[cron-runner] 检测到 ${DIRTY_WEEKS_COUNT} 个脏周，执行级联更新..."
+      node scripts/arxiv-weekly-summary.mjs --cascade || true
+    fi
 
     echo "[cron-runner] 步骤 1.8/4: 执行 GCN 暂现源巡检与光变曲线绘制..."
     node scripts/gcn-tracker-cli.mjs --all || true

@@ -7,11 +7,12 @@ import { createTemporaryWorkspace } from "./helpers/temporary-workspace.mjs";
 
 const runner = resolve(import.meta.dirname, "../scripts/cron-runner.sh");
 const stub = `
-node() { printf 'node %s\\n' "$*" >> "$STUB_LOG"; if [[ "$*" == "scripts/notebooklm-sync.mjs --capture-build "* && "$STUB_CAPTURE_FAIL" == 1 ]]; then return 1; fi; if [[ "$*" == "scripts/notebooklm-sync.mjs --export "* && "$STUB_EXPORT_FAIL" == 1 ]]; then return 1; fi; if [[ "$*" == "scripts/notebooklm-sync.mjs --built "* && "$STUB_BUILT_FAIL" == 1 ]]; then return 1; fi; }
+node() { printf 'node %s\\n' "$*" >> "$STUB_LOG"; if [[ "$*" == "-e "* ]]; then printf '1\\n'; fi; if [[ "$*" == "scripts/notebooklm-sync.mjs --capture-build "* && "$STUB_CAPTURE_FAIL" == 1 ]]; then return 1; fi; if [[ "$*" == "scripts/notebooklm-sync.mjs --export "* && "$STUB_EXPORT_FAIL" == 1 ]]; then return 1; fi; if [[ "$*" == "scripts/notebooklm-sync.mjs --built "* && "$STUB_BUILT_FAIL" == 1 ]]; then return 1; fi; }
 npm() { printf 'npm %s\\n' "$*" >> "$STUB_LOG"; [[ "$STUB_BUILD_FAIL" != 1 ]]; }
 systemctl() { printf 'systemctl %s\\n' "$*" >> "$STUB_LOG"; }
+git() { if [[ "$*" == "status "* ]]; then printf ' M src/data/arxiv-daily.json\\n'; elif [[ "$*" == "log "* ]]; then printf 'mock-commit\\n'; else command git "$@"; fi; }
 date() { printf 'date %s weekday=%s\\n' "$*" "$STUB_WEEKDAY" >> "$STUB_LOG"; case "$*" in *+%u*) printf '%s\\n' "$STUB_WEEKDAY";; *+%s%N*) printf '1234567890123456789\\n';; *) printf '2026-10-01 00:00:00 CST\\n';; esac; }
-export -f node npm systemctl date
+export -f node npm systemctl git date
 bash "$STUB_RUNNER" "$STUB_MODE"
 `;
 

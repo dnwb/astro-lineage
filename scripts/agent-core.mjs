@@ -53,6 +53,8 @@ export function normalizeModelName(name) {
   else if (trimmed === "6-sol" || trimmed === "chatgpt-6-sol") resolved = "gpt-6-sol";
   else if (trimmed === "6-luna" || trimmed === "chatgpt-6-luna") resolved = "gpt-6-luna";
   else if (trimmed === "6-astra" || trimmed === "chatgpt-6-astra") resolved = "gpt-6-astra";
+  else if (trimmed === "6.1-terra" || trimmed === "6.1terra" || trimmed === "chatgpt-6.1-terra")
+    resolved = "gpt-6.1-terra";
   else if (
     trimmed === "gemini-3.8-flash" ||
     trimmed === "gemini3.8flash" ||
@@ -62,9 +64,14 @@ export function normalizeModelName(name) {
     resolved = "gemini-3.8-flash-medium";
   else if (trimmed === "gemini-3.5-flash" || trimmed === "gemini3.5flash")
     resolved = "gemini-3.5-flash-lite";
-  else if (trimmed === "claude-opus" || trimmed === "claude-opus-4.6" || trimmed === "claude-opus-4-6")
+  else if (
+    trimmed === "claude-opus" ||
+    trimmed === "claude-opus-4.6" ||
+    trimmed === "claude-opus-4-6"
+  )
     resolved = "claude-opus-4-6-thinking";
-  else if (trimmed === "claude-sonnet" || trimmed === "claude-sonnet-4.6") resolved = "claude-sonnet-4-6";
+  else if (trimmed === "claude-sonnet" || trimmed === "claude-sonnet-4.6")
+    resolved = "claude-sonnet-4-6";
   return prefix ? `${prefix}${resolved}` : resolved;
 }
 
@@ -88,14 +95,14 @@ export function resolveDefaultApiKey() {
 }
 export const DEFAULT_API_KEY = resolveDefaultApiKey();
 export const DEFAULT_MODEL = normalizeModelName(
-  process.env.BOT_AI_MODEL || process.env.AI_MODEL || "gpt-6.1-sol"
+  process.env.BOT_AI_MODEL || process.env.AI_MODEL || "terra"
 );
 export const DEFAULT_EFFORT = process.env.BOT_REASONING_EFFORT || "medium";
 
 export const DEFAULT_FALLBACK_MODELS = (
   process.env.BOT_FALLBACK_MODELS ||
   process.env.AI_FALLBACK_MODELS ||
-  "gemini-3.8-flash-medium,claude-opus-4-6-thinking,gpt-6-astra"
+  "agy/gemini-3.8-flash-medium,gpt-6.1-sol,gpt-6-astra,gpt-6-sol"
 )
   .split(",")
   .map((m) => normalizeModelName(m.trim()))
@@ -107,7 +114,10 @@ export function buildModelCandidates(primaryModel, fallbackModels) {
     fallbackModels !== undefined
       ? fallbackModels
       : envFallbackStr
-        ? envFallbackStr.split(",").map((m) => m.trim()).filter(Boolean)
+        ? envFallbackStr
+            .split(",")
+            .map((m) => m.trim())
+            .filter(Boolean)
         : DEFAULT_FALLBACK_MODELS;
   const primary = normalizeModelName(primaryModel || DEFAULT_MODEL);
   const candidates = [primary];
@@ -124,7 +134,12 @@ export function isMultimodalModel(model) {
   if (!model || typeof model !== "string") return false;
   const norm = normalizeModelName(model).toLowerCase();
   const base = norm.includes("/") ? norm.split("/").pop() : norm;
-  return base.startsWith("gpt-6") || base.startsWith("gemini") || base.startsWith("claude");
+  return (
+    base.startsWith("gpt-6") ||
+    base.startsWith("gemini") ||
+    base.startsWith("claude") ||
+    base.includes("terra")
+  );
 }
 
 export function isAgySupportedModel(model) {
@@ -254,7 +269,7 @@ export async function executeChatCompletion({
     temperature: 0.2,
     max_tokens: 1600,
   };
-  if (effort && resolvedModel.startsWith("gpt-6")) {
+  if (effort && (resolvedModel.startsWith("gpt-6") || resolvedModel.includes("terra"))) {
     payload.reasoning_effort = effort;
   }
 
@@ -331,7 +346,10 @@ export class AgyDaemonClient {
         systemPrompt,
         history,
         model: normalizeModelName(
-          model || process.env.AI_MODEL_BODY || process.env.BOT_AI_MODEL || "gemini-3.8-flash-medium"
+          model ||
+            process.env.AI_MODEL_BODY ||
+            process.env.BOT_AI_MODEL ||
+            "gemini-3.8-flash-medium"
         ),
         timeoutMs,
         resolve,
@@ -752,16 +770,34 @@ export async function callChatCompletion({
     throw new Error("Missing API key; set IOA_API_KEY, WU_API_KEY or OPENAI_API_KEY");
   }
 
-  // Sort providers so healthy ones come first; rotate among available providers
-  const sorted = circuitBreaker.sortProviders(resolvedProviders);
-  const availableCount = sorted.filter((p) => circuitBreaker.isAvailable(p.name)).length;
-  const rotatePool = availableCount > 0 ? sorted.slice(0, availableCount) : sorted;
-  const startIndex = agentProviderCycleCounter++ % rotatePool.length;
-  const orderedProviders = [
-    rotatePool[startIndex],
-    ...rotatePool.filter((_, idx) => idx !== startIndex),
-    ...sorted.slice(availableCount),
-  ];
+  // Sort providers so healthy ones come first; HTTP gateways take precedence over local AGY daemon fallback
+  const httpProviders = resolvedProviders.filter((p) => p.type !== "agy");
+  const agyProviders = resolvedProviders.filter((p) => p.type === "agy");
+
+  let orderedProviders;
+  if (httpProviders.length > 0 && agyProviders.length > 0) {
+    const sortedHttp = circuitBreaker.sortProviders(httpProviders);
+    const availableHttpCount = sortedHttp.filter((p) => circuitBreaker.isAvailable(p.name)).length;
+    const rotatePool =
+      availableHttpCount > 0 ? sortedHttp.slice(0, availableHttpCount) : sortedHttp;
+    const startIndex = agentProviderCycleCounter++ % rotatePool.length;
+    orderedProviders = [
+      rotatePool[startIndex],
+      ...rotatePool.filter((_, idx) => idx !== startIndex),
+      ...sortedHttp.slice(availableHttpCount),
+      ...circuitBreaker.sortProviders(agyProviders),
+    ];
+  } else {
+    const sorted = circuitBreaker.sortProviders(resolvedProviders);
+    const availableCount = sorted.filter((p) => circuitBreaker.isAvailable(p.name)).length;
+    const rotatePool = availableCount > 0 ? sorted.slice(0, availableCount) : sorted;
+    const startIndex = agentProviderCycleCounter++ % rotatePool.length;
+    orderedProviders = [
+      rotatePool[startIndex],
+      ...rotatePool.filter((_, idx) => idx !== startIndex),
+      ...sorted.slice(availableCount),
+    ];
+  }
 
   const attempted = [];
   const errors = [];
@@ -770,7 +806,8 @@ export async function callChatCompletion({
   // Outer loop: candidate models
   for (let mIdx = 0; mIdx < candidates.length; mIdx++) {
     const candidate = candidates[mIdx];
-    const candidateEffort = candidate.startsWith("gpt-6") ? effort : null;
+    const candidateEffort =
+      candidate.startsWith("gpt-6") || candidate.includes("terra") ? effort : null;
 
     // Inner loop: try all providers for the current candidate model
     for (let pIdx = 0; pIdx < orderedProviders.length; pIdx++) {
@@ -778,13 +815,16 @@ export async function callChatCompletion({
       const providerType = provider.type || (provider.baseUrl?.startsWith("agy:") ? "agy" : "http");
       const isAgyPrefixed = candidate.startsWith("agy/");
 
-      // If candidate explicitly specified agy/ prefix, non-agy providers must skip it
-      if (isAgyPrefixed && providerType !== "agy") {
+      // External non-local HTTP providers don't have local agy/* models; local 8318 gateway does
+      const isLocalGateway =
+        provider.baseUrl &&
+        (provider.baseUrl.includes("localhost") || provider.baseUrl.includes("127.0.0.1"));
+      if (isAgyPrefixed && providerType === "http" && !isLocalGateway) {
         continue;
       }
 
-      // AGY only supports Gemini family or agy/ prefixed models
-      if (providerType === "agy" && !isAgySupportedModel(candidate)) {
+      // AGY daemon only supports text-based Gemini family or agy/ prefixed models; cannot process images
+      if (providerType === "agy" && (images?.length > 0 || !isAgySupportedModel(candidate))) {
         continue;
       }
 

@@ -7,13 +7,32 @@ import {
   classifyModelError,
 } from "../scripts/pipeline-routing.mjs";
 
-test("resolveRoutingLadder sets gemini-3.8-flash-high as default primary for DEEP_READ", () => {
+test("resolveRoutingLadder sets agy/gemini-3.8-flash-medium as default primary for DEEP_READ", () => {
   const ladder = resolveRoutingLadder(PIPELINE_STAGES.DEEP_READ, {});
-  assert.equal(ladder.primary, "gemini-3.8-flash-high");
-  assert.ok(ladder.candidates.includes("gemini-3.8-flash-high"));
+  assert.equal(ladder.primary, "agy/gemini-3.8-flash-medium");
+  assert.ok(ladder.candidates.includes("agy/gemini-3.8-flash-medium"));
+  assert.ok(ladder.candidates.includes("terra"));
   assert.ok(ladder.candidates.includes("gpt-6.1-sol"));
-  assert.ok(ladder.candidates.includes("claude-opus-4-6-thinking"));
-  assert.equal(ladder.candidates[0], "gemini-3.8-flash-high");
+  assert.ok(ladder.candidates.includes("gpt-6-sol"));
+  assert.equal(ladder.candidates[0], "agy/gemini-3.8-flash-medium");
+});
+
+test("resolveRoutingLadder sets gpt-6.1-terra as default primary for TRIAGE", () => {
+  const ladder = resolveRoutingLadder(PIPELINE_STAGES.TRIAGE, {});
+  assert.equal(ladder.primary, "gpt-6.1-terra");
+  assert.ok(ladder.candidates.includes("gpt-6.1-terra"));
+  assert.ok(ladder.candidates.includes("terra"));
+  assert.ok(ladder.candidates.includes("gpt-6-luna"));
+  assert.equal(ladder.candidates[0], "gpt-6.1-terra");
+});
+
+test("resolveRoutingLadder sets terra as default primary for QA_BOT", () => {
+  const ladder = resolveRoutingLadder(PIPELINE_STAGES.QA_BOT, {});
+  assert.equal(ladder.primary, "terra");
+  assert.ok(ladder.candidates.includes("terra"));
+  assert.ok(ladder.candidates.includes("agy/gemini-3.8-flash-medium"));
+  assert.ok(ladder.candidates.includes("gpt-6.1-sol"));
+  assert.equal(ladder.candidates[0], "terra");
 });
 
 test("resolveRoutingLadder respects environment overrides for DEEP_READ and TRIAGE", () => {
@@ -26,7 +45,7 @@ test("resolveRoutingLadder respects environment overrides for DEEP_READ and TRIA
 
   const bodyLadder = resolveRoutingLadder(PIPELINE_STAGES.DEEP_READ, customEnv);
   assert.equal(bodyLadder.primary, "claude-opus-4-6-thinking");
-  assert.deepEqual(bodyLadder.fallbacks, ["gemini-3.8-flash-high", "gpt-6-sol"]);
+  assert.deepEqual(bodyLadder.fallbacks, ["gemini-3.8-flash-medium", "gpt-6-sol"]);
 
   const triageLadder = resolveRoutingLadder(PIPELINE_STAGES.TRIAGE, customEnv);
   assert.equal(triageLadder.primary, "gpt-6-luna");

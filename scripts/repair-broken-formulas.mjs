@@ -26,7 +26,10 @@ import { callChatCompletion } from "./agent-core.mjs";
  */
 export async function repairTextFormulasWithModel(
   text,
-  { chatCompletionFn = callChatCompletion, model = process.env.AI_MODEL_BODY || "gemini-3.8-flash-medium" } = {}
+  {
+    chatCompletionFn = callChatCompletion,
+    model = process.env.AI_MODEL_BODY || "gemini-3.8-flash-medium",
+  } = {}
 ) {
   if (!text || typeof text !== "string") return text;
   const invalid = findInvalidFormulas(text);

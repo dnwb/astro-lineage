@@ -18,7 +18,7 @@ try {
   }
 } catch {}
 
-async function probeModel({ baseUrl, apiKey, model, timeoutMs = 15000 }) {
+async function probeModel({ baseUrl, apiKey, model, timeoutMs = 35000 }) {
   const start = performance.now();
   const url = `${baseUrl.replace(/\/+$/u, "")}/chat/completions`;
 
@@ -27,7 +27,7 @@ async function probeModel({ baseUrl, apiKey, model, timeoutMs = 15000 }) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${apiKey}`,
+        Authorization: `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
         model: normalizeModelName(model),
@@ -68,17 +68,29 @@ async function main() {
 
   const primaryCandidates = buildModelCandidates(DEFAULT_MODEL, DEFAULT_FALLBACK_MODELS);
   console.log(`[网关服务] ${DEFAULT_BASE_URL}`);
-  console.log(`• 初筛 (Triage):      ${(process.env.AI_MODEL_TRIAGE || "gpt-6-luna")} -> ${(process.env.AI_TRIAGE_FALLBACK_MODELS || "gemini-3.5-flash-lite,claude-sonnet-4-6")}`);
-  console.log(`• 深度精读 (Reading):  ${(process.env.AI_MODEL_BODY || "gemini-3.8-flash-medium")} -> ${(process.env.AI_BODY_FALLBACK_MODELS || "gpt-6.1-sol,claude-opus-4-6-thinking")}`);
-  console.log(`• 即时问答 (QA Bot):   ${DEFAULT_MODEL} -> ${DEFAULT_FALLBACK_MODELS.join(" -> ")}\n`);
+  console.log(
+    `• 初筛 (Triage):      ${process.env.AI_MODEL_TRIAGE || "gpt-6-luna"} -> ${process.env.AI_TRIAGE_FALLBACK_MODELS || "gemini-3.5-flash-lite,claude-sonnet-4-6"}`
+  );
+  console.log(
+    `• 深度精读 (Reading):  ${process.env.AI_MODEL_BODY || "gemini-3.8-flash-medium"} -> ${process.env.AI_BODY_FALLBACK_MODELS || "gpt-6.1-sol,claude-opus-4-6-thinking"}`
+  );
+  console.log(
+    `• 即时问答 (QA Bot):   ${DEFAULT_MODEL} -> ${DEFAULT_FALLBACK_MODELS.join(" -> ")}\n`
+  );
 
   const triageCandidates = buildModelCandidates(
     process.env.AI_MODEL_TRIAGE || process.env.AI_MODEL || "gpt-6-luna",
-    (process.env.AI_TRIAGE_FALLBACK_MODELS || "gemini-3.5-flash-lite,claude-sonnet-4-6").split(",").map(m => m.trim()).filter(Boolean)
+    (process.env.AI_TRIAGE_FALLBACK_MODELS || "gemini-3.5-flash-lite,claude-sonnet-4-6")
+      .split(",")
+      .map((m) => m.trim())
+      .filter(Boolean)
   );
   const bodyCandidates = buildModelCandidates(
     process.env.AI_MODEL_BODY || "gemini-3.8-flash-medium",
-    (process.env.AI_BODY_FALLBACK_MODELS || "gpt-6.1-sol,claude-opus-4-6-thinking").split(",").map(m => m.trim()).filter(Boolean)
+    (process.env.AI_BODY_FALLBACK_MODELS || "gpt-6.1-sol,claude-opus-4-6-thinking")
+      .split(",")
+      .map((m) => m.trim())
+      .filter(Boolean)
   );
   const botCandidates = buildModelCandidates(DEFAULT_MODEL, DEFAULT_FALLBACK_MODELS);
   const allUniqueModels = [...new Set([...triageCandidates, ...bodyCandidates, ...botCandidates])];
@@ -93,7 +105,9 @@ async function main() {
     });
 
     if (result.ok) {
-      console.log(`\x1b[32m[200 OK]\x1b[0m (${result.elapsed}ms) 响应: "${result.reply.slice(0, 30)}"`);
+      console.log(
+        `\x1b[32m[200 OK]\x1b[0m (${result.elapsed}ms) 响应: "${result.reply.slice(0, 30)}"`
+      );
     } else {
       console.log(`\x1b[31m[${result.status}]\x1b[0m (${result.elapsed}ms) 原因: ${result.error}`);
     }
@@ -111,9 +125,13 @@ async function main() {
       });
 
       if (result.ok) {
-        console.log(`\x1b[32m[200 OK]\x1b[0m (${result.elapsed}ms) 响应: "${result.reply.slice(0, 30)}"`);
+        console.log(
+          `\x1b[32m[200 OK]\x1b[0m (${result.elapsed}ms) 响应: "${result.reply.slice(0, 30)}"`
+        );
       } else {
-        console.log(`\x1b[31m[${result.status}]\x1b[0m (${result.elapsed}ms) 原因: ${result.error}`);
+        console.log(
+          `\x1b[31m[${result.status}]\x1b[0m (${result.elapsed}ms) 原因: ${result.error}`
+        );
       }
     }
   }

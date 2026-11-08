@@ -178,9 +178,17 @@ case "${TASK}" in
     echo "[cron-runner] 执行次日 02:00 兜底扫描与增量对账封板..."
     node scripts/arxiv-daily-scheduler.mjs --reconcile-previous
 
-    echo "[cron-runner] 步骤 1.5/4: 执行每周学术脉络总结与脏周级联更新..."
-    node scripts/arxiv-weekly-summary.mjs || true
-    node scripts/arxiv-weekly-summary.mjs --cascade || true
+    echo "[cron-runner] 步骤 1.5/4: 检查每周学术脉络总结与脏周级联更新..."
+    WEEKDAY="$(TZ="Asia/Shanghai" date +%u)"
+    if [ "${WEEKDAY}" -eq 6 ]; then
+      echo "[cron-runner] 周六 02:00 检测：当周五日批次全量对账封板，执行学术脉络终稿总结..."
+      node scripts/arxiv-weekly-summary.mjs || true
+    fi
+    DIRTY_WEEKS_COUNT=$(node -e "try { const d = JSON.parse(require('fs').readFileSync('.cache/dirty-weeks.json')); console.log(Array.isArray(d) ? d.length : 0); } catch { console.log(0); }")
+    if [ "${DIRTY_WEEKS_COUNT:-0}" -gt 0 ]; then
+      echo "[cron-runner] 检测到 ${DIRTY_WEEKS_COUNT} 个脏周，执行级联更新..."
+      node scripts/arxiv-weekly-summary.mjs --cascade || true
+    fi
 
     echo "[cron-runner] 重新构建全站静态发布页面并热加载 Web 服务..."
     capture_current_build

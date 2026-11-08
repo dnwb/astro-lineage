@@ -1,25 +1,48 @@
 {
   "schema_version": "astrolineage-arxiv-archive-manifest-v1",
-  "updated_at": "2026-11-05T18:02:25.327Z",
+  "updated_at": "2026-11-06T04:16:57.692Z",
   "total_weeks": 9,
-  "total_daily_editions": 43,
+  "total_daily_editions": 44,
   "latest_week_id": "2026-W45",
-  "latest_daily_date": "2026-11-04",
+  "latest_daily_date": "2026-11-05",
   "weeks": [
     {
       "week_id": "2026-W45",
       "title": "Weekly Scientific Lineage · 2026-W45",
       "date_range": "2026-11-02 ~ 2026-11-08",
       "has_weekly_summary": true,
-      "executive_summary": "This week's research deepens the causal chain from central engine microphysics and dense-matter equations of state to jet dynamics, relativistic particle acceleration, and multi-messenger counterpart identification across the transient sky.\n- **Equation of State & Compact Object Structure**: arXiv:2610.41846 (Salmi et al.) achieved tight simultaneous mass-radius constraints on PSR J0437-4715 ($R_{\\rm eq} = 11.35_{-0.39}^{+0.40}\\,\\mathrm{km}$, $M = 1.377_{-0.034}^{+0.038}\\,M_{\\odot}$) via broadband NICER/XMM/NuSTAR/HST pulse profile modeling, definitively disfavoring stiff EOS models with $R_{1.4} > 12.0\\,\\mathrm{km}$ at the $68\\%$ credible level; arXiv:2610.41242 (Zha et al.) demonstrated that hadron-quark phase transitions in core-collapse supernovae induce secondary shock revivals that concentrate remnant neutron star gravitational masses into narrow high-mass peaks around $\\sim 1.70\\,M_\\odot$; arXiv:2610.41082 (Chau et al.) mapped dynamic two-fluid radial stability boundaries for dark-matter-admixed compact objects, uncovering stable super-Buchdahl surface redshifts ($z_{\\rm OM} > 2$).\n- **Relativistic Jets & Microphysical Acceleration**: arXiv:2610.41005 (Huang et al.) analyzed the joint SVOM/EP detection of GRB 241113B, proving that soft prompt emission ($E_{\\rm peak} \\approx 35\\text{--}37\\,\\mathrm{keV}$) can arise from an intrinsically relativistic on-axis jet ($\\Gamma_0 > 100$) propagating into a stellar wind ($s=2$), thus refuting baryon-loaded dirty fireball and shock breakout scenarios; arXiv:2611.02126 (Sironi et al.) identified current-filamentation/Weibel instabilities near the primary x-line as the microphysical trigger for secondary plasmoid birth in kinetic reconnection, showing that upstream loading suppresses plasmoids beyond an isotropization scale $\\ell_{\\rm iso} \\sim 10\\sigma_0 d_0$; arXiv:2611.05948 (Bao et al.) discovered that strong linearly polarized electromagnetic pulses ($a_0 = 50$) clearing pair plasma channels dissipate $\\approx 85\\%$ of their energy via longitudinal electric field acceleration, phase-locking surfing pairs to normalized energies $\\Delta\\tilde{\\varepsilon} \\approx 12$.\n- **Compact Object Mergers & Engine Dynamos**: arXiv:2611.05880 (Palenzuela et al.) resolved the kinematic Kelvin-Helmholtz dynamo in post-merger shear layers, finding that centrifugal Rayleigh-Taylor instability disrupts vortex sheets and drives Reynolds-independent growth rates $\\gamma_E t_\\Delta \\sim 0.02$ with a Kazantsev spectrum ($k^{3/2}$) amplifying mean vertical fields to $\\overline{B}_z \\sim 10^{14}\\text{--}10^{15}\\,\\mathrm{G}$; arXiv:2611.00440 (Yang et al.) presented statistical and hydrodynamic evidence ($P = 7.6\\times 10^{-5}$) connecting a temporal GW pair (S190910d/h) to Type IIb SN 2019rsq via sequential gravitational fragmentation of a collapsar accretion disk; arXiv:2610.40782 (Bhattacharya et al.) reconstructed an extremely old stellar population ($12.4\\,\\mathrm{Gyr}$) for NGC 4993, constraining binary neutron star merger minimum delay times to $t_{\\rm min} > 7.5\\,\\mathrm{Gyr}$ and challenging standard $t^{-1}$ delay-time distributions.\n- **Multi-Messenger Strategies & Cosmic Environments**: arXiv:2610.40958 (Sarin et al.) established an MDP/PPO reinforcement learning framework enabling the Deep Synoptic Array (DSA) to achieve $75\\%\\text{--}90\\%$ capture rates of prompt coherent radio bursts from BNS mergers during early-warning alerts; arXiv:2610.41119 (Sheng et al.) presented MAGIKS, an align-before-fuse multimodal deep learning model achieving a Recall@1 of $39.8\\%$ in isolating kilonovae from wide-field optical contamination conditioned on GW parameter posteriors; arXiv:2611.00205 (Ehlert et al.) confirmed that Pierre Auger UHECR spectra and composition favor a two-component BNS merger model at $\\ge 7.2\\sigma$ with $r$-process bulk outflows ($R_{\\rm max} \\approx 7.2\\,\\mathrm{EV}$) and relativistic jet proton acceleration ($E^{\\rm jet} \\approx 12\\,\\mathrm{EeV}$).",
+      "executive_summary": "This week's strongest connections follow the causal sequence progenitor structure → central-engine formation and magnetization → relativistic outflow or crustal ejection → plasma dissipation and nuclear processing → escaping radiation or particles → selection-aware physical inference.\n- **Relativistic jets and GRB environments**: arXiv:2610.41005 (authors not supplied) interprets GRB 241113B as an intrinsically soft, approximately on-axis burst: its joint prompt spectrum has $E_{\\mathrm{peak}}^{\\mathrm{obs}}\\approx35$–$37\\,\\mathrm{keV}$, while wind-afterglow modeling favors $p=2.31\\pm0.08$ and $\\Gamma_0>100$, disfavoring dirty-fireball and shock-breakout explanations within the adopted model.\n- **Magnetar flare ejecta and nucleosynthesis**: arXiv:2611.07022 (authors not supplied) finds that pressure-driven crustal shocks eject only $1.2\\times10^{-10}$–$4.8\\times10^{-8}M_\\odot$ in its spherical general-relativistic calculations, with predominantly alpha-particle ejecta and at most $3.5\\times10^{-11}M_\\odot$ in nuclei with $A\\ge90$; the study therefore challenges efficient heavy-element production by this particular crust-ejection channel rather than by all magnetar outflows.\n- **Magnetic amplification and dissipation**: arXiv:2611.05880 (authors not supplied) separates shear winding, centrifugal instability, and kinematic dynamo growth, finding $\\gamma_E t_\\Delta\\sim0.02$ at sufficiently high Reynolds number in its local merger-interface model. arXiv:2611.02126 (authors not supplied) attributes secondary plasmoid birth to current-filamentation/Weibel instability in antiparallel pair-plasma reconnection and predicts suppression beyond $\\ell_{\\mathrm{iso}}\\sim(1+\\sigma_0)d_0/\\beta_{\\mathrm{rec}}$.\n- **FRB propagation and prompt multimessenger searches**: arXiv:2611.05948 (authors not supplied) finds that evacuated channels do not guarantee weak damping: longitudinal electric fields transfer approximately 85% of an intense simulated pulse's energy to pairs. arXiv:2610.40958 (authors not supplied) obtains simulated prompt-radio capture fractions of approximately 75%–90% for immediately observable binary neutron star mergers, with a fluence threshold near $20\\,\\mathrm{mJy\\,ms}$; these are conditional scheduling efficiencies, not counterpart detection probabilities.\n- **Merger particles, nuclear signatures, and cosmic demographics**: arXiv:2611.00205 (authors not supplied) favors a two-component merger-source UHECR fit with bulk-outflow cutoff rigidity $R_{\\mathrm{max}}\\approx7.2\\,\\mathrm{EV}$ and a proton-rich jet component contributing approximately 5%–10% of the energy above $10\\,\\mathrm{EeV}$, without uniquely identifying mergers as the sources. arXiv:2610.40907 (authors not supplied) predicts that $^{250}\\mathrm{Cm}$ can dominate the modeled MeV photon budget of strong-r-process remnants at ages of approximately $2{,}000$–$20{,}000\\,\\mathrm{yr}$. arXiv:2610.40782 (authors not supplied) infers a long minimum merger delay under its efficiency-normalized population model, but its reliance on GW170817 and its host makes population-level generalization particularly sensitive to assumptions.\n- **Compact-star inference and explosion engines**: arXiv:2610.41846 (authors not supplied) obtains $R_{\\mathrm{eq}}=11.35^{+0.40}_{-0.39}\\,\\mathrm{km}$ for PSR J0437−4715 using joint far-ultraviolet-to-hard-X-ray pulse modeling, demonstrating the value of separating warm-surface and magnetospheric emission. arXiv:2610.41242 (authors not supplied) produces narrow high-mass neutron-star remnants through phase-transition-triggered secondary shocks in one-dimensional simulations, offering an engine-dependent contribution to the mass distribution rather than a complete population explanation.\n- **Association and candidate-selection reliability**: arXiv:2611.00440 (authors not supplied) reports a pairwise coincidence probability of $7.6\\times10^{-5}$ for two GW triggers separated by approximately $7.1\\,\\mathrm{hr}$ and explores a connection to SN 2019rsq, but does not thereby establish a common progenitor. arXiv:2610.41119 (authors not supplied) improves simulated kilonova ranking to Recall@1 of 39.8% in galleries of 5,000 candidates by combining GW and optical information. arXiv:2610.40787 (authors not supplied) predicts approximately order-of-magnitude changes in AGN-disk merger rates between its disk-viscosity prescriptions, illustrating how environmental priors can dominate population forecasts.",
       "statistics": {
-        "total_analyzed": 289,
-        "must_read_count": 8,
-        "worth_knowing_count": 77,
-        "skip_count": 204
+        "total_analyzed": 343,
+        "must_read_count": 9,
+        "worth_knowing_count": 89,
+        "skip_count": 245
       },
-      "top_picks_count": 18,
+      "top_picks_count": 11,
       "days": [
+        {
+          "date": "2026-11-05",
+          "weekday": "Thu",
+          "week_id": "2026-W45",
+          "batch_id": "announcement-2026-11-05",
+          "total_papers": 54,
+          "analyzed_count": 54,
+          "must_read_count": 1,
+          "worth_knowing_count": 12,
+          "skip_count": 41,
+          "pending_count": 0,
+          "brief_status": "ready",
+          "brief_intro": "Featured reading: \"General-relativistic neutrino-radiation hydrodynamics of crust ejection in magnetar giant flares\" and 12 other key developments.",
+          "highlights": [
+            {
+              "arxiv_id": "2611.07022",
+              "priority": "must_read",
+              "title": "General-relativistic neutrino-radiation hydrodynamics of crust ejection in magnetar giant flares",
+              "reason": "Directly relevant to magnetar-powered transients, this work quantifies crustal baryon ejection, neutrino effects, and nucleosynthesis in giant flares. Its limits on deep-crust escape provide useful tests of heavy-element production and flare-outflow models, even though the assumed geometry restricts direct application."
+            }
+          ],
+          "data_file": "daily/2026-11-05.json"
+        },
         {
           "date": "2026-11-04",
           "weekday": "Wed",

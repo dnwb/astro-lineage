@@ -63,7 +63,7 @@
       "aliases": [],
       "event_type": "GRB",
       "canonical_t0": {
-        "instrument": "EP/WXT",
+        "instrument": "Konus-Wind",
         "utc_iso": "2026-10-24T21:33:06.850Z",
         "circular_id": 46040
       },
@@ -742,6 +742,38 @@
       "status": "archived",
       "has_photometry": true,
       "figure_path": "/gcn-figures/grb-250920c.png"
+    },
+    "grb-261104a": {
+      "slug": "grb-261104a",
+      "primary_id": "GRB 261104A",
+      "aliases": [
+        "AT 2026aigl"
+      ],
+      "event_type": "GRB",
+      "canonical_t0": {
+        "instrument": "SVOM/ECLAIRs",
+        "utc_iso": "2026-11-04T20:36:44.000Z",
+        "circular_id": 46163
+      },
+      "best_redshift": null,
+      "circular_count": 6,
+      "last_updated_utc": "2026-11-06T03:57:29.082Z",
+      "status": "active",
+      "has_photometry": true,
+      "figure_path": "/gcn-figures/grb-261104a.png"
+    },
+    "grb-261103a": {
+      "slug": "grb-261103a",
+      "primary_id": "GRB 261103A",
+      "aliases": [],
+      "event_type": "GRB",
+      "canonical_t0": null,
+      "best_redshift": null,
+      "circular_count": 3,
+      "last_updated_utc": "2026-11-05T13:48:57.901Z",
+      "status": "active",
+      "has_photometry": false,
+      "figure_path": null
     }
   }
 }

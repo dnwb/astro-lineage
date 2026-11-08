@@ -4,19 +4,19 @@
   "week_id": "2026-W45",
   "weekday": "Thu",
   "batch_id": "announcement-2026-11-05",
-  "generated_at": "2026-11-06T04:00:26.237Z",
+  "generated_at": "2026-11-06T18:00:09.429Z",
   "counts": {
-    "total": 54,
-    "analyzed": 54,
+    "total": 66,
+    "analyzed": 66,
     "must_read": 1,
-    "worth_knowing": 12,
-    "skip": 41,
+    "worth_knowing": 14,
+    "skip": 51,
     "pending": 0
   },
   "opening_brief": {
     "status": "ready",
-    "edition_fingerprint": "bad24ac855e9cf5b693f53acd42a30ea9748266ade62f029620977de9dacc47e",
-    "intro": "Featured reading: \"General-relativistic neutrino-radiation hydrodynamics of crust ejection in magnetar giant flares\" and 12 other key developments.",
+    "edition_fingerprint": "87ae4943a6e4b3b61183a177b1d5ab138c639ba9fd245f2dd7cee9b9454c7f01",
+    "intro": "Featured reading: \"General-relativistic neutrino-radiation hydrodynamics of crust ejection in magnetar giant flares\" and 14 other key developments.",
     "focus_paper": {
       "arxiv_id": "2611.07022",
       "revision": 1,
@@ -129,6 +129,18 @@
         "revision": 1,
         "source_fingerprint": "e3356d4f04e482e8010f645e45a2ab56dfae36f8459ad5bde9473f587a23898e",
         "guide_fingerprint": "926729e6f845b3e4e40ff73f08f5a8ee9e7fbcf5d9fe4f9e1bee12698bfb873d"
+      },
+      {
+        "arxiv_id": "2611.08221",
+        "revision": 1,
+        "source_fingerprint": "9f48bb09125c54bef038a8a5100043cbfd686019a1b10f25d35328a66c5d17b9",
+        "guide_fingerprint": "e6b1a62b1ffb91a856cf3d2074cbc9ca73c009bca2277f4d012daaaa952085f5"
+      },
+      {
+        "arxiv_id": "2611.08332",
+        "revision": 1,
+        "source_fingerprint": "0c8026272c13b3579be0a6eb732856d13d12da07fad98d6fc6a8f00719997a6f",
+        "guide_fingerprint": "a9dc3ed3da059c9c2cc08cf6ec210a030fe4217fd6f187da05ea42055ee6838d"
       }
     ],
     "skim_topics": [
@@ -404,6 +416,66 @@
         "revision": 1,
         "source_fingerprint": "13538b99cd7991d42307c5292d0b1247ec3914f484cdad9de092d3936975a4f3",
         "guide_fingerprint": "8b7f6ecdbb60017ca7e0e3373224012d1bcf3fba836e9cc1b8f10f296393cafd"
+      },
+      {
+        "arxiv_id": "2611.08112",
+        "revision": 1,
+        "source_fingerprint": "b46ccc59b5c26c5b81b49acdc9dffb32bc249047df2f84f4c5cc82a0d74b7414",
+        "guide_fingerprint": "3181c0a83c8e4bf354fbf7fbfeb16ee5ec0bde1637a8976b951192f6a45c2abd"
+      },
+      {
+        "arxiv_id": "2611.08115",
+        "revision": 1,
+        "source_fingerprint": "68f86c79cdfd28c0a36a92416c8279f43726b71303b8f4d97c50b9fa8c7a90c7",
+        "guide_fingerprint": "132bec70c32408db211ef906329b7c452d138b35a07ea7708af849a29b2302d5"
+      },
+      {
+        "arxiv_id": "2611.08181",
+        "revision": 1,
+        "source_fingerprint": "1f561e4f28b71b53a266ef928deb677bf67e889bbb13549e1d5fef94d5a73c7f",
+        "guide_fingerprint": "2deda5d39e5e4e53877d158244c0fcb7bccfffbef830a80822123a635e27a20e"
+      },
+      {
+        "arxiv_id": "2611.08195",
+        "revision": 1,
+        "source_fingerprint": "fe087f62d7b9fef8c41451c46b7444462c9a49f7dcdf3f0b81778cd832c32c0e",
+        "guide_fingerprint": "d474562e50781a8de914de0de7d3a5c7ed107b071c0a92bc2a7ea04d588164e0"
+      },
+      {
+        "arxiv_id": "2611.08197",
+        "revision": 1,
+        "source_fingerprint": "7bff1bc60c599f05f418f1bc94dd1e35c51c1cc3b5334887c4a815c5901b21b4",
+        "guide_fingerprint": "e944545f7e3c4d4d51e9c17880dc48d44d46facbd5014ab733f7f7a3a95591d0"
+      },
+      {
+        "arxiv_id": "2611.08267",
+        "revision": 1,
+        "source_fingerprint": "96009f9d203b5d8712e3cfd9a50b7fdfd1d712098d71a928d3001f82d30bcd74",
+        "guide_fingerprint": "a01f312a728a4f3dd41de8cb54a4b926692d76d28cdcb6b8d1924346a2d6a9cb"
+      },
+      {
+        "arxiv_id": "2611.08282",
+        "revision": 1,
+        "source_fingerprint": "80fb2dc5967b53a011c151eb8ffb7001a8e3c35c5e69e32e7b43e194181941c7",
+        "guide_fingerprint": "aae8a604e23c137e93c001555f167562fa3f0affd01d47b8b04c7ab836585c8f"
+      },
+      {
+        "arxiv_id": "2611.08300",
+        "revision": 1,
+        "source_fingerprint": "9e997a9dcc245b2375a7576eede88eab1c8347c73c14920bb01518dcd0dbc36e",
+        "guide_fingerprint": "0d3a4358926cf14ad14734a878aba06f2b70348b3cf6b8323a2ac2cd862514af"
+      },
+      {
+        "arxiv_id": "2611.08336",
+        "revision": 1,
+        "source_fingerprint": "8cd91a5c42620120a136ea2841f163b573e12c07a281315eed3497ddef6c614e",
+        "guide_fingerprint": "6374adb8ae434251ae2064da3f111d141774a72752ef1e3b038832e16e8ad852"
+      },
+      {
+        "arxiv_id": "2611.08346",
+        "revision": 1,
+        "source_fingerprint": "a5e5b376b9a24de1dd9a99782232fe4009e44de2f0624f77876826913570586c",
+        "guide_fingerprint": "e7bdc4ac04507fe513d95444f51b6b365f0288a91e4153704e4e75f41912a3d6"
       }
     ],
     "worth_knowing_summary": "The integrated 19–64 keV polarization is $\\mathrm{PD}=5.0^{+2.7}_{-3.0}\\%$ with $\\mathrm{PA}=(-28\\pm17)^\\circ$.; The radio decline supports intrinsic fading of the central engine rather than obscuration alone, and the authors argue that the outburst beginning in 1992 has probably ended., among others.",
@@ -487,11 +559,23 @@
       "priority": "worth_knowing",
       "title": "Mass loss in AF supergiants: At the verge of the Eddington limit and still with weak line-driven winds",
       "reason": "This provides useful constraints on stellar mass loss and circumstellar-medium formation: proximity to the Eddington limit and local density inversions do not by themselves guarantee strong outflows. Its relevance is indirect rather than transient-specific, but the weak-wind predictions and their sensitivity to iron ionization are useful when evaluating progenitor mass-loss prescriptions."
+    },
+    {
+      "arxiv_id": "2611.08221",
+      "priority": "worth_knowing",
+      "title": "DIS-secting the universe with high-energy neutrinos",
+      "reason": "This work computes complete fully differential NLO QCD+EW radiative corrections for high-energy neutrino-matter deep-inelastic scattering (DIS), which is critical for precise reconstruction of incoming neutrino energy and inelasticity in neutrino telescopes."
+    },
+    {
+      "arxiv_id": "2611.08332",
+      "priority": "worth_knowing",
+      "title": "The complex periodic variability of PKS 0301-243: hints of a supermassive black hole binary candidate",
+      "reason": "The paper reports dual optical periodicities of $P_{\\rm orb} \\approx 269\\text{ days}$ and $P_{\\rm jet} \\approx 889\\text{ days}$ in the blazar PKS 0301-243, providing an observational candidate to test relativistic jet precession and binary orbital modulation in supermassive black hole binaries (SMBHBs)."
     }
   ],
   "feed": {
     "schema_version": "arxiv-daily-discovery-v1",
-    "generated_at": "2026-11-06T04:00:26.237Z",
+    "generated_at": "2026-11-06T18:00:09.429Z",
     "query": "(cat:astro-ph.HE OR cat:astro-ph.GA OR cat:astro-ph.SR) AND submittedDate:[202611041900 TO 202611051900]",
     "base_query": "cat:astro-ph.HE OR cat:astro-ph.GA OR cat:astro-ph.SR",
     "source_url": "https://export.arxiv.org/api/query?search_query=%28cat%3Aastro-ph.HE+OR+cat%3Aastro-ph.GA+OR+cat%3Aastro-ph.SR%29+AND+submittedDate%3A%5B202611041900+TO+202611051900%5D&sortBy=submittedDate&sortOrder=descending&start=0&max_results=2000",
@@ -499,7 +583,7 @@
       "https://export.arxiv.org/api/query?search_query=%28cat%3Aastro-ph.HE+OR+cat%3Aastro-ph.GA+OR+cat%3Aastro-ph.SR%29+AND+submittedDate%3A%5B202611041900+TO+202611051900%5D&sortBy=submittedDate&sortOrder=descending&start=0&max_results=2000"
     ],
     "parser_version": "2026-09-08.atom-v2",
-    "response_sha256": "11430a7b99c96830b8960a967ad9840d8495a8344ab5082dfbe434b9d8e2b3c5",
+    "response_sha256": "42f42fd11c28b8f38646c7033c2e223715307e93894930db96853ff4182aa168",
     "window": {
       "kind": "announcement_batch",
       "batch_id": "announcement-2026-11-05",
@@ -520,7 +604,7 @@
     "provenance": {
       "source_type": "api",
       "source_url": "https://export.arxiv.org/api/query?search_query=%28cat%3Aastro-ph.HE+OR+cat%3Aastro-ph.GA+OR+cat%3Aastro-ph.SR%29+AND+submittedDate%3A%5B202611041900+TO+202611051900%5D&sortBy=submittedDate&sortOrder=descending&start=0&max_results=2000",
-      "retrieved_at": "2026-11-06T04:00:26.237Z",
+      "retrieved_at": "2026-11-06T18:00:09.429Z",
       "query": "(cat:astro-ph.HE OR cat:astro-ph.GA OR cat:astro-ph.SR) AND submittedDate:[202611041900 TO 202611051900]",
       "evidence_scope": "discovery_metadata_only",
       "attempts": [
@@ -532,18 +616,18 @@
     },
     "page_size": 2000,
     "page_count": 1,
-    "total_results": 54,
+    "total_results": 66,
     "pages": [
       {
         "index": 0,
         "start": 0,
         "requested_max_results": 2000,
         "source_url": "https://export.arxiv.org/api/query?search_query=%28cat%3Aastro-ph.HE+OR+cat%3Aastro-ph.GA+OR+cat%3Aastro-ph.SR%29+AND+submittedDate%3A%5B202611041900+TO+202611051900%5D&sortBy=submittedDate&sortOrder=descending&start=0&max_results=2000",
-        "response_sha256": "e9185ed255bd6fd05c2fcd58eb5b5fff9ab6b4356cdb303dbf375e87d65b3d8e",
-        "total_results": 54,
+        "response_sha256": "8181736963cbb8c7e3ff28d34d4f67d65c309f0d938ce674010df9baf4357dba",
+        "total_results": 66,
         "items_per_page": 2000,
-        "entry_count": 54,
-        "window_entry_count": 54
+        "entry_count": 66,
+        "window_entry_count": 66
       }
     ],
     "entries": [
@@ -2440,6 +2524,269 @@
           "astro-ph.HE"
         ],
         "primary_category": "astro-ph.SR"
+      },
+      {
+        "arxiv_id": "2611.08112",
+        "revision": 1,
+        "title": "Photometric eclipse-center variations over the long cycles of Magellanic double-periodic variables",
+        "abstract": "Double-periodic variables (DPVs) are interacting binaries with an orbital modulation and a longer cycle of uncertain origin. I searched for long-cycle-dependent eclipse-center variations in Magellanic DPVs and tested whether changing disk brightness can produce analogous shifts with fixed conjunctions. I analyzed Optical Gravitational Lensing Experiment (OGLE) photometry for 109 eclipsing-DPV candidates. In separate long-phase intervals, I measured centers of eclipses by profile fitting to local flux minima ($Q$) and by shifting a fixed eclipse template ($T$). A single synthetic semidetached DPV provided a separate numerical experiment. Of 49 curated systems with sufficient timing data, 27 show at least one $Q$ or $T$ modulation under the adopted procedure. Some selections depend on the fitting choice, but ten systems retain a selected $Q$ curve with all tested local functions and windows. Three have both estimators selected in both eclipses, without establishing whether conjunction times change. Using local color interpolation, 14 of 16 systems measured in both eclipses are redder at the deeper, phase-0 eclipse. In the artificial system, fixed conjunctions coexist with large photometric shifts and quadrature-brightness changes, although the large tilted-disk cases do not reproduce the selected observed crossing phases. Long-cycle-dependent photometric eclipse-center variations occur in a substantial fraction of the evaluable, curated sample, not necessarily of all DPVs. Circumstellar brightness changes can produce such shifts, but the single artificial system neither fits an observed DPV nor establishes disk tilt as the cause. Genuine conjunction-time changes remain possible in individual objects.",
+        "published": "2026-11-05T14:47:20Z",
+        "updated": "2026-11-05T14:47:20Z",
+        "authors": [
+          "Ronald Mennickent"
+        ],
+        "url": "https://arxiv.org/abs/2611.08112v1",
+        "categories": [
+          "astro-ph.SR"
+        ],
+        "primary_category": "astro-ph.SR"
+      },
+      {
+        "arxiv_id": "2611.08115",
+        "revision": 1,
+        "title": "Octavius: A High-Performance Analysis Toolkit for Galaxy Simulations",
+        "abstract": "Increased computing power and more efficient codes have allowed cosmological simulations of galaxy formation to grow massively in scale: the analysis of their outputs has consequently become a big data computational challenge. We present Octavius, a high-performance, hybrid-parallel simulation analysis toolkit. Octavius ingests a simulation snapshot with associated halo catalogue, locates galaxies with a 6D friends-of-friends algorithm, then produces an HDF5 catalogue of properties for haloes, subhaloes, and galaxies. The analysis is fast and memory efficient: we compare the performance against the widely used predecessor toolkit, Caesar, and show Octavius delivers order-of-magnitude improvements in speed with a factor of >5 reduction in peak memory. We demonstrate near-linear strong scaling of compute and linear peak memory scaling with the number of halo-assigned particles. Compute times scale with the superlinear computational load of larger haloes; we note the pipeline is presently I/O-limited. The code is written in Python and uses a declarative, plugin-based architecture so as to be easily extensible. Octavius can currently analyse SIMBA, SWIFT-KIARA, SWIFT-EAGLE, SWIFT-COLIBRE, and TNG snapshots; AHF, HBT-HERONS, and SUBFIND halo catalogues are supported. Properties computed include masses, galaxy photometry with dust attenuation, and kinematic, radial, morphological, and virial quantities. Output catalogues are easily accessed through a provided user API. The code is open sourced at https://github.com/jp-duminy/octavius",
+        "published": "2026-11-05T14:48:46Z",
+        "updated": "2026-11-05T14:48:46Z",
+        "authors": [
+          "Jean-Paul Duminy",
+          "Jakub Szpila",
+          "Romeel Davé"
+        ],
+        "url": "https://arxiv.org/abs/2611.08115v1",
+        "categories": [
+          "astro-ph.GA",
+          "astro-ph.IM"
+        ],
+        "primary_category": "astro-ph.GA"
+      },
+      {
+        "arxiv_id": "2611.08181",
+        "revision": 1,
+        "title": "G92.4+5.0: A Perseus Arm superbubble associated with the H II region CTB 102",
+        "abstract": "Superbubbles are vast hot cavities carved out by the stellar winds and supernovae of clusters of high-mass stars. We investigate G92.4+5.0 (the CTB 102 superbubble), a Perseus Arm superbubble associated with the HII region CTB 102. We use new and archival radio observations (total intensity, rotation measure, and HI spectral line) from the Dominion Radio Astrophysical Observatory Synthesis Telescope, combined with single-antenna data from the Effelsberg Medium Latitude Survey, the Global Magneto-Ionic Medium Survey, and the HI4PI survey to provide data on large structures. The upper region of the superbubble is faint in HI. In order to detect its full extent, we supplement our observations with H-alpha data from the Wisconsin H-Alpha Mapper Survey and the Ziegenbalg Survey, and observe H-alpha emission in the upper region. We measure the CTB 102 superbubble to be at least ~170 pc wide and ~420 pc tall, with an expansion rate of ~12 km/s in the lower regions of the superbubble and ~22.5 km/s in the upper regions. The elongated structure and increasing expansion rate with height are consistent with the evolutionary properties of a superbubble described by the Kompaneets model. We fit the Kompaneets model to the CTB 102 superbubble and obtain an estimated age of 1-6 Myr. This supports a possible scenario in which the stellar cluster currently ionizing CTB 102 is the expansion energy source for the superbubble. Alternatively, if the superbubble expanded under the power of a previous generation of stars, the current CTB 102 stellar cluster may have formed in the walls of the superbubble.",
+        "published": "2026-11-05T15:35:37Z",
+        "updated": "2026-11-05T15:35:37Z",
+        "authors": [
+          "Rebecca A. Booth",
+          "Jo-Anne Brown",
+          "Tom Landecker",
+          "Roland Kothes",
+          "Tyler Foster",
+          "Anna Ordog",
+          "Alex Schwaner Hill"
+        ],
+        "url": "https://arxiv.org/abs/2611.08181v1",
+        "categories": [
+          "astro-ph.GA"
+        ],
+        "primary_category": "astro-ph.GA"
+      },
+      {
+        "arxiv_id": "2611.08195",
+        "revision": 1,
+        "title": "Source Imaging of the Multiple Type-II Solar Radio Bursts and their Multiple CME-Shock Signatures in the Corona",
+        "abstract": "This study reports the meter-wavelength radio imaging of multiple type-II bursts occurred on 01 October 2011 observed by LEARMONTH radio spectrograph in the frequency range of 180 - 25 MHz, with two coronal shocks from two coronal mass ejections (CMEs) from the nearby active regions lying adjacent to each other. The two CMEs are well observed by STEREO and LASCO FOV. The eruption is associated with the multi-peaked soft X-ray flare erupted from N16W45 (first and second C3 and C6 class flares) and from N09W04 (third one an M Class flare). The first type-II burst starts during the impulsive phase of the first flare and the second type-II burst starts during the peak time of the third flare. The drift rate of the second type-II burst is larger than that of the first type-II burst. The EUV images at AIA 211 reveal the shock-like EUV wave structure along the north-western limb around 09:06 UT, the first type-II appearing around the same time (09:06 UT) confirms the existence of the shock wave and as an outward propagating wave along the disk around 09:55 UT, the second type-II appearing around the same time (09:55 UT) confirms the existence of the shock wave. According to the simultaneous EUV and radio imaging data the radio sources appears along the nose-front of the shock like EUV wave structure for the first type-II burst and for the second type-II burst they are located along the shock flank. The study shows the possibility of two coronal shocks from two CMEs generating the multiple type-II radio bursts. The second event is strongly affected by the projection and scattering effects, the corrections are achieved by applying spherical cone model and 3D Monte Carlo ray-tracing code for turbulent solar environment at fundamental frequency.",
+        "published": "2026-11-05T15:51:24Z",
+        "updated": "2026-11-05T15:51:24Z",
+        "authors": [
+          "V. Vasanth"
+        ],
+        "url": "https://arxiv.org/abs/2611.08195v1",
+        "categories": [
+          "astro-ph.SR"
+        ],
+        "primary_category": "astro-ph.SR"
+      },
+      {
+        "arxiv_id": "2611.08197",
+        "revision": 1,
+        "title": "Rotational Excitation of HC$_5$NH$^+$ by He: Collision Dynamics and Astrophysical Applications",
+        "abstract": "Reliable collisional rate coefficients are crucial for interpreting the rotational emission spectra of molecules in interstellar clouds. In this work, we construct a two-dimensional potential energy surface (PES) for the $\\mathrm{HC}_5\\mathrm{NH}^+$--He system at the CCSD(T)-F12B/cc-pVTZ-F12 level of theory. Rotationally inelastic cross sections are calculated using the quantum close-coupling (CC) method, and the corresponding collisional rate coefficients are obtained by thermal averaging over a Maxwell--Boltzmann distribution. We use these collisional data in a non-local thermodynamic equilibrium (non-LTE) radiative transfer model to investigate the excitation of $\\mathrm{HC}_5\\mathrm{NH}^+$ in the cold dark cloud TMC-1. A global $χ^2$ minimization analysis of seven observed lines yields best-fitting values of $n(\\mathrm{H}_2)=1.63\\times10^{5}$\\,cm$^{-3}$ and $N(\\mathrm{H}_2)=5.09\\times10^{11}$\\,cm$^{-2}$, with reduced $χ^2_{\\min}=0.87$. The modelled line intensities are in good agreement with the observations. These results provide insight into the collisional excitation and radiative properties of $\\mathrm{HC}_5\\mathrm{NH}^+$ under the physical conditions prevailing in TMC-1.",
+        "published": "2026-11-05T15:51:49Z",
+        "updated": "2026-11-05T15:51:49Z",
+        "authors": [
+          "Ziyu Xiang",
+          "Liman Tian",
+          "Tong Sun",
+          "Wenli Zou",
+          "Xiaolin Chen"
+        ],
+        "url": "https://arxiv.org/abs/2611.08197v1",
+        "categories": [
+          "astro-ph.GA"
+        ],
+        "primary_category": "astro-ph.GA"
+      },
+      {
+        "arxiv_id": "2611.08221",
+        "revision": 1,
+        "title": "DIS-secting the universe with high-energy neutrinos",
+        "abstract": "We revisit the impact of electroweak (EW) radiative corrections on the kinematic distributions of charged leptons in neutrino-induced charged-current (CC) deep inelastic scattering (DIS). These corrections are particularly relevant for observables sensitive to collinear photon radiation, such as the energy spectrum of high-energy muons detected in neutrino telescopes. To study these effects, we implement full next-to-leading order (NLO) EW corrections to CC DIS in a flexible Monte Carlo framework, supplemented with higher-order logarithmically enhanced final-state QED radiation and coherent scattering contributions. We compare our results to exclusive NLO QCD plus parton shower (PS) predictions obtained with an existing $\\texttt{POWHEG-BOX}$ event generator, examining different PS models and settings. Based on this comparison, we provide recommendations for the use of the $\\texttt{POWHEG-BOX}$ event generator in experimental analyses. We further assess the impact of radiative corrections on the correlation between the observed muon energy and the incoming neutrino energy, and on the mean inelasticity averaged over a realistic neutrino flux. These corrections can exceed $10\\%$, and above about $10^4\\,{\\rm GeV}$ they receive sizeable contributions from photon-initiated and coherent $W$-boson production, which are not included in the event generator.",
+        "published": "2026-11-05T16:09:18Z",
+        "updated": "2026-11-05T16:09:18Z",
+        "authors": [
+          "Rhorry Gauld",
+          "Lorenzo Guerra",
+          "Ulrich Haisch",
+          "Alessio Vorona"
+        ],
+        "url": "https://arxiv.org/abs/2611.08221v1",
+        "categories": [
+          "hep-ph",
+          "astro-ph.HE"
+        ],
+        "primary_category": "hep-ph"
+      },
+      {
+        "arxiv_id": "2611.08267",
+        "revision": 1,
+        "title": "The slower rotation of planet-hosting stars revisited",
+        "abstract": "Previous studies combined rotation periods derived from Kepler photometry, stellar parameters from previous Gaia Data Releases, and planet hosts from the NASA Exoplanet Archive to conclude that statistically planet-hosting stars rotate slower than stars without detected planets. Here, we revisit these studies by using similar Kepler rotational period sample, but with an updated Gaia DR3-based stellar parameter catalogue and an updated exoplanet catalogue. We apply minimal sample cuts in evolutionary state, metallicity, and distance, and then model the stellar rotation period as a function of effective temperature alone. For each star, we derive the ratio of its observed period to the temperature-expected period, and compare the ratio distributions for the planet-host and non-host stars. For periods shorter than 20 d, the planet-host distribution of this ratio is shifted towards longer periods; the period-ratio median is ~15% larger for hosts than for non-hosts (p_KS = 2.4 x 10^-4). We also examine the recently published TESS All-Sky Rotation Survey (TARS) and find a similar trend. However, the strongly structured period distribution precludes a robust comparison between the host and the non-host stars. Therefore, the updated analysis, using more robust stellar and planetary parameters, recovers the previously reported association, strengthening the case for a genuine connection between stellar rotation and planet occurrence.",
+        "published": "2026-11-05T16:38:53Z",
+        "updated": "2026-11-05T16:38:53Z",
+        "authors": [
+          "Avraham Binnenfeld",
+          "Amitay Sussholz",
+          "Simchon Faigler",
+          "Tsevi Mazeh"
+        ],
+        "url": "https://arxiv.org/abs/2611.08267v1",
+        "categories": [
+          "astro-ph.SR",
+          "astro-ph.EP"
+        ],
+        "primary_category": "astro-ph.SR"
+      },
+      {
+        "arxiv_id": "2611.08282",
+        "revision": 1,
+        "title": "Mitigating scanning-induced systematics in Hipparcos and implications for Gaia astrometry",
+        "abstract": "Space-based astrometric missions such as Hipparcos and Gaia rely on one-dimensional scanning strategies that couple the measured signals with both observation times and scanning geometry. This coupling can introduce spurious periodicities and complicate their interpretation. We present a non-parametric extension of the phase-distance correlation (PDC) periodogram that quantifies and reduces dependence on scan geometry at the period-search stage. Using Hipparcos data, we identified recurrent periodicities associated with characteristic scanning-law timescales and showed that they are strongly suppressed by the scan-angle-controlled statistic. We then applied the method to Gaia Data Release 4 (DR4) prerelease epoch astrometry, where a recurrent ~54-day feature is suppressed across multiple sources while independently known orbital signals remain detectable. The method provides a diagnostic of scan-angle dependence and a way to mitigate its impact on period searches. These results are particularly relevant for Gaia DR4, where public epoch astrometry will enable large-scale searches for companions ranging from exoplanets to dormant black holes.",
+        "published": "2026-11-05T16:47:38Z",
+        "updated": "2026-11-05T16:47:38Z",
+        "authors": [
+          "Avraham Binnenfeld",
+          "Sahar Shahaf",
+          "Richard I. Anderson",
+          "Hans-Walter Rix",
+          "Shay Zucker"
+        ],
+        "url": "https://arxiv.org/abs/2611.08282v1",
+        "categories": [
+          "astro-ph.IM",
+          "astro-ph.EP",
+          "astro-ph.GA"
+        ],
+        "primary_category": "astro-ph.IM"
+      },
+      {
+        "arxiv_id": "2611.08300",
+        "revision": 1,
+        "title": "Polarization cross-talk from non-stationary sources of image jitter",
+        "abstract": "We generalize a previous formulation for the estimation of polarization cross-talk induced by atmospheric seeing to the case of image jitter that must be described as a non-stationary, and generally non-isotropic, random process. We demonstrate how the newly derived formalism converges towards the previous one in the limit of stationary random image jitter. In the case of non-stationary processes, we compare the predictions of the two formalisms, and illustrate the salient differences. For the sake of demonstration, we adopt for our analysis a specific example of power-spectral density derived from a circulant auto-correlation function, which describes a class of stationary random processes periodic over the length of the time series, and which we successively modified by the insertion of off-diagonal power spectral features at different frequencies in order to test the extended modeling framework for the estimation of polarization cross-talk.",
+        "published": "2026-11-05T17:02:15Z",
+        "updated": "2026-11-05T17:02:15Z",
+        "authors": [
+          "R. Casini",
+          "A. G. de Wijn"
+        ],
+        "url": "https://arxiv.org/abs/2611.08300v1",
+        "categories": [
+          "astro-ph.IM",
+          "astro-ph.SR"
+        ],
+        "primary_category": "astro-ph.IM"
+      },
+      {
+        "arxiv_id": "2611.08332",
+        "revision": 1,
+        "title": "The complex periodic variability of PKS 0301-243: hints of a supermassive black hole binary candidate",
+        "abstract": "In hierarchical galaxy formation, supermassive black hole binaries are a ubiquitous consequence of frequent galaxy mergers, yet subparsec binaries remain difficult to be confirmed. Periodic flux modulations may arise from the orbital motion of black holes in close binaries, while relativistic jet precession can provide an additional source of periodic variability. Such periodic signatures therefore motivate us to identify close binary candidates. Here, we report an optical periodicity of $269^{+13}_{-14}$ days in both Zwicky Transient Facility g and r bands of the blazar PKS 0301-243, with corrected global significances of $2.75σ$ and $2.18σ$, respectively. This signal persists over 7 cycles across a baseline of ~2000 days. We interpret this period as a possible modulation associated with the orbital motion of a supermassive black hole binary. A longer optical periodicity of $889^{+47}_{-46}$ days is identified in Katzman Automatic Imaging Telescope, with corrected global significance of $1.97σ$. The longer periodicity spans approximately 5 cycles over a baseline of ~4500 days, potentially associated with jet precession. Both periodicities are independently identified using multiple methods. A supermassive black hole binary incorporating a relativistic jet and a circumbinary disc could reproduce the observed light curve ensemble. For a total mass of $10^{8.95} M_\\odot$ and a mass ratio q = 0.1, the derived milli-parsec separation and a short gravitational wave driven coalescence time, $t_c = 1122^{+144}_{-144}$ years, imply that PKS 0301-243 may be a rare source of nano-hertz gravitational waves and a potential multimessenger laboratory for the terminal stages of supermassive black hole coalescence.",
+        "published": "2026-11-05T17:21:25Z",
+        "updated": "2026-11-05T17:21:25Z",
+        "authors": [
+          "Jintong Wang",
+          "Yunguo Jiang",
+          "Shifeng Huang"
+        ],
+        "url": "https://arxiv.org/abs/2611.08332v1",
+        "categories": [
+          "astro-ph.HE"
+        ],
+        "primary_category": "astro-ph.HE"
+      },
+      {
+        "arxiv_id": "2611.08336",
+        "revision": 1,
+        "title": "SDSS-V LVM: Spatial Resolution Effects on Diagnostic Diagrams in the Magellanic Clouds",
+        "abstract": "We investigate how spatial resolution affects emission-line diagnostics in the interstellar medium (ISM) of the Small and Large Magellanic Clouds (SMC and LMC) using SDSS Local Volume Mapper (LVM) data obtained at and degraded to 19, 42, 170 pc (for the SMC) and 17, 68, 272 pc (for the LMC), respectively. We compare the distributions of strong emission-line ratios through 1D and 2D Kolmogorov Smirnov tests. We deduced that diagnostics involving ionization and density sensitive ratios such as [OIII]λ5007/H\\b{eta}, [SII]λλ6717+6731/Hα and [NII]λ6584/Hα are the most strongly impacted by resolution loss in this order. The SMC shows significant deviations even from intermediate scales (42 pc), whereas for the LMC, the coarsest resolution (272 pc) remains relatively stable, indicating that the SMC is intrinsically more affected by spatial mixing. Resolution degradation produces a marked homogenization effect: extreme values present at the finest scales are progressively diluted, causing diagnostic diagrams to converge toward their mean loci. Diffuse ionized gas is particularly sensitive to this mixing, while Hα selected ionized regions exhibit more robust behavior across resolutions. The sensitivity of diagnostic diagrams involving emission-line ratios, equivalent widths, and kinematic properties varies with both spatial resolution and galaxy, with the SMC generally showing stronger changes than the LMC. Our results demonstrate that sub-50 pc resolution is required to resolve the detailed structure of low-metallicity galaxies, and they highlight at least the need for careful interpretation of line-ratio diagnostics in extragalactic studies where coarse spatial resolution is unavoidable.",
+        "published": "2026-11-05T17:23:53Z",
+        "updated": "2026-11-05T17:23:53Z",
+        "authors": [
+          "A. Z. Lugo-Aranda",
+          "Lesly C. Castañeda",
+          "H. J. Ibarra-Medel",
+          "C. Román-Zúñiga",
+          "J. E. Méndez-Delgado",
+          "Sebastián F. Sánchez",
+          "Rodolfo de J. Zermeño",
+          "Mónica A. Villa-Durango",
+          "Irene Cruz-González",
+          "Aida Wofford",
+          "Oskar Aranguré",
+          "G. A. Blanc",
+          "Priyanka Chakraborty",
+          "Evgeniya Egorova",
+          "Oleg V. Egorov",
+          "Thomas Hilder",
+          "Evelyn J. Johnston",
+          "Amy M. Jones",
+          "P. Jiménez-Hernández",
+          "K. Kreckel",
+          "Alfredo J. Mejía-Narváez",
+          "Christophe Morisset",
+          "Rogelio Orozco-Duarte",
+          "Alexandre Roman-Lopes",
+          "José G. Fernández-Trincado"
+        ],
+        "url": "https://arxiv.org/abs/2611.08336v1",
+        "categories": [
+          "astro-ph.GA"
+        ],
+        "primary_category": "astro-ph.GA"
+      },
+      {
+        "arxiv_id": "2611.08346",
+        "revision": 1,
+        "title": "The cold substellar frontier in JWST Extragalactic surveys: a robust parallax measurement yields the most distant known ultra-cold Y dwarf",
+        "abstract": "We present an analysis of JADES-GS-BD-5, an extremely cold Y dwarf identified in the JADES/GOODS-South field. Using multi-epoch JWST/NIRCam imaging spanning a $\\simeq2$-yr baseline, we calibrate the JWST astrometry and obtain the first robust parallax measurement for a brown dwarf discovered in a JWST extragalactic deep field. We measure a proper motion of $μ_{\\rm tot}=49.8^{+0.3}_{-0.3}$ mas yr$^{-1}$ and a parallax of $\\varpi=15.7^{+1.4}_{-1.3}$ mas, corresponding to a geometric distance of $d=64^{+6}_{-5}$ pc, $\\sim3\\times$ further than that of the previously known most distant Y dwarfs with parallax-measured distances. We hence determine a tangential velocity of $v_{\\rm tan}=15.0^{+1.4}_{-1.3}$ km s$^{-1}$, consistent with a Galactic thin-disk object. We find no evidence for binary acceleration, significant photometric variability, or a plausible host. The $J$-band spectral morphology of JADES-GS-BD-5 is consistent with existing Y-dwarf templates, while its extremely faint luminosity and overall near-infrared spectral profile confirm that it is one of the coldest dwarfs discovered to date. We therefore adopt a classification of $>$Y1, consistent with a NIRCam colour-based proxy of cY1.5. The robust parallax-determined distance allows us to determine its bolometric luminosity, $\\log(L_{\\rm bol}/L_{\\odot})=-7.08^{+0.09}_{-0.09}$. Evolutionary modelling places JADES-GS-BD-5 in the planetary-mass regime and makes it a rare benchmark for the study of cold giant-planet atmospheres. Current atmospheric models fail to reproduce its SED in detail, pointing to the importance of disequilibrium chemistry and vertical mixing. Finally, we also report additional proper motion measurements for eight of the other nine known JADES Y-dwarf candidates, highlighting JWST extragalactic surveys as a powerful route to building a statistically useful, parallax-calibrated sample of Y dwarfs.",
+        "published": "2026-11-05T17:31:30Z",
+        "updated": "2026-11-05T17:31:30Z",
+        "authors": [
+          "Feng-Yuan Frey Liu",
+          "Derek J. McLeod",
+          "Xueqing Chen",
+          "Ben J. Sutlieff",
+          "Ho-Hin Leung",
+          "Clémence Fontanive",
+          "James S. Dunlop",
+          "Ross J. McLure",
+          "Trent J. Dupuy",
+          "Adam C. Carnall",
+          "Thomas M. Stanton",
+          "Beth A. Biller",
+          "Isaac J. B. Holst",
+          "Callum T. Donnan",
+          "Ryan Begley"
+        ],
+        "url": "https://arxiv.org/abs/2611.08346v1",
+        "categories": [
+          "astro-ph.SR",
+          "astro-ph.EP",
+          "astro-ph.GA"
+        ],
+        "primary_category": "astro-ph.SR"
       }
     ],
     "decision_state": {
@@ -2451,12 +2798,12 @@
       ],
       "overrides": {}
     },
-    "snapshot_run_id": "20261106T040026237Z-5efe016a-24f1-4125-b64a-49de0e38d39c",
-    "snapshot_manifest": "runs/20261106T040026237Z-5efe016a-24f1-4125-b64a-49de0e38d39c/manifest.json"
+    "snapshot_run_id": "20261106T180009429Z-b5414ae0-2081-4130-8938-ef0ab5d207e2",
+    "snapshot_manifest": "runs/20261106T180009429Z-b5414ae0-2081-4130-8938-ef0ab5d207e2/manifest.json"
   },
   "radar": {
     "edition": {
-      "generated_at": "2026-11-06T04:00:26.237Z",
+      "generated_at": "2026-11-06T18:00:09.429Z",
       "query": "(cat:astro-ph.HE OR cat:astro-ph.GA OR cat:astro-ph.SR) AND submittedDate:[202611041900 TO 202611051900]",
       "source_url": "https://export.arxiv.org/api/query?search_query=%28cat%3Aastro-ph.HE+OR+cat%3Aastro-ph.GA+OR+cat%3Aastro-ph.SR%29+AND+submittedDate%3A%5B202611041900+TO+202611051900%5D&sortBy=submittedDate&sortOrder=descending&start=0&max_results=2000",
       "coverage_kind": "announcement_batch",
@@ -5724,14 +6071,788 @@
           },
           "prerequisite_works": []
         }
+      },
+      {
+        "arxiv_id": "2611.08112",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "b46ccc59b5c26c5b81b49acdc9dffb32bc249047df2f84f4c5cc82a0d74b7414",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2611.08112v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2611.08112v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "gpt-6-luna",
+          "analyzed_at": "2026-11-06T18:00:54.836Z",
+          "reason": "This paper studies eclipse-center variations in interacting Magellanic binaries, not the specified high-energy transient sources or their environments.",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "Abstract",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “Circumstellar brightness changes can produce such shifts”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        }
+      },
+      {
+        "arxiv_id": "2611.08115",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "68f86c79cdfd28c0a36a92416c8279f43726b71303b8f4d97c50b9fa8c7a90c7",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2611.08115v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2611.08115v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "gpt-6-luna",
+          "analyzed_at": "2026-11-06T18:00:54.836Z",
+          "reason": "This is a general toolkit for analyzing galaxy-simulation outputs, with no substantive connection to the specified transient-astrophysics topics.",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "Abstract",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “We present Octavius, a high-performance, hybrid-parallel simulation analysis toolkit.”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        }
+      },
+      {
+        "arxiv_id": "2611.08181",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "1f561e4f28b71b53a266ef928deb677bf67e889bbb13549e1d5fef94d5a73c7f",
+        "priority": "skip",
+        "coverage": {
+          "level": "body_partial",
+          "label": "已检查正文中支撑判断的指定章节",
+          "source_version": "arXiv:2611.08181v1",
+          "inspected_sections": [
+            "II.2 Rotation measure observations",
+            "III.3.3 The potential cap in H I",
+            "IV Analysis",
+            "V.2 Scenario 2: The stellar cluster powering CTB 102 formed in the walls of an older superbubble.",
+            "References",
+            "Introduction",
+            "G92.4+5.0: A Perseus Arm superbubble associated with the H II region CTB 102Facilities: DRAO:Synthesis Telescope",
+            "I Introduction",
+            "II Observations",
+            "II.1 DRAO-ST observations",
+            "II.3 H$alpha$ observations",
+            "III Results",
+            "III.1 Rotation measure results",
+            "III.2 H I spectral line results reveal the superbubble",
+            "III.2.1 The near and far walls of the superbubble",
+            "III.3 H$alpha$ results reveal a cap",
+            "III.3.1 A potential cap in WHAM $textrmHalpha$",
+            "III.3.2 The potential cap in the Ziegenbalg $textrmHalpha$ data",
+            "IV.1 The CTB 102 superbubble on the RM map",
+            "IV.2 The expansion rate of the CTB 102 superbubble",
+            "IV.3 Using the [25](bib.bib25) model to estimate the age of the CTB 102 superbubble",
+            "V Discussion: The origin of the CTB 102 superbubble",
+            "V.1 Scenario 1: The stellar cluster powering CTB 102 is the energy source of the superbubble.",
+            "VI The supernova remnant DA 530",
+            "VII Summary",
+            "Acknowledgments",
+            "Instructions for reporting errors"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_source_package",
+              "url": "https://export.arxiv.org/src/2611.08181v1",
+              "locator": "II.2 Rotation measure observations; III.3.3 The potential cap in H I; IV Analysis; V.2 Scenario 2: The stellar cluster powering CTB 102 formed in the walls of an older superbubble.; References; Introduction; G92.4+5.0: A Perseus Arm superbubble associated with the H II region CTB 102Facilities: DRAO:Synthesis Telescope; I Introduction; II Observations; II.1 DRAO-ST observations; II.3 H$alpha$ observations; III Results; III.1 Rotation measure results; III.2 H I spectral line results reveal the superbubble; III.2.1 The near and far walls of the superbubble; III.3 H$alpha$ results reveal a cap; III.3.1 A potential cap in WHAM $textrmHalpha$; III.3.2 The potential cap in the Ziegenbalg $textrmHalpha$ data; IV.1 The CTB 102 superbubble on the RM map; IV.2 The expansion rate of the CTB 102 superbubble; IV.3 Using the [25](bib.bib25) model to estimate the age of the CTB 102 superbubble; V Discussion: The origin of the CTB 102 superbubble; V.1 Scenario 1: The stellar cluster powering CTB 102 is the energy source of the superbubble.; VI The supernova remnant DA 530; VII Summary; Acknowledgments; Instructions for reporting errors",
+              "description": "Complete, revision-matched arXiv TeX source package",
+              "sha256": "252bf2a7bb8881f228720c2c0a4743fb0087e5aaef3ab7dfaa9f79a3c179d4f2"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "gpt-6-luna",
+          "analyzed_at": "2026-11-06T18:04:48.763Z",
+          "reason": "The paper focuses on Galactic interstellar medium morphology, characterizing a Galactic superbubble associated with H II region CTB 102 and SNR DA 530, without connection to compact object central engines, FRBs, relativistic transients, or high-energy astrophysics.",
+          "result": "G92.4+5.0 is an inclined ($15^{\\circ}$) Galactic superbubble at $d \\approx 4.3\\ \\mathrm{kpc}$ with projected dimensions of $\\sim 170\\ \\mathrm{pc} \\times 420\\ \\mathrm{pc}$, expanding from $v_{\\rm exp} \\sim 12\\ \\mathrm{km\\ s^{-1}}$ at $b < 4^{\\circ}$ up to $\\sim 22.5\\ \\mathrm{km\\ s^{-1}}$ at $b \\sim 5^{\\circ}$, capped at $b = 7.7^{\\circ}$ with an estimated dynamic age of $t \\sim 1\\text{--}6\\ \\mathrm{Myr}$ governed by $t = 6.5\\,\\rho_{0}^{1/3} H^{5/3} L_{0}^{-1/3}$.",
+          "reading_entry": "VII Summary",
+          "problem": "Investigating the 3D morphology, kinematics, multi-phase ISM structure, cap closure, and energy source of the Perseus Arm superbubble G92.4+5.0 associated with CTB 102, as well as constraining the distance of SNR DA 530.",
+          "method": "Combined DRAO-ST 1420 MHz Stokes $I, Q, U$ radio continuum and H I line observations with single-dish surveys, using Faraday rotation measure $\\Delta\\tau = \\mathrm{RM}\\,\\lambda^{2}$ with $\\mathrm{RM} = 0.812 \\int (n_e / \\mathrm{cm}^{-3})(B_{\\parallel} / \\mu\\mathrm{G})(dr / \\mathrm{pc})$, WHAM/Ziegenbalg $\\mathrm{H\\alpha}$ data, and Kompaneets shock model fitting in an exponential atmosphere $\\rho = \\rho_{0} e^{-(z-z_{0})/H}$.",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "II.2 Rotation measure observations: “Polarized emission undergoes Faraday rotation as it traverses a path containing a magnetic field and free electrons.”",
+            "III.3.3 The potential cap in H I: “Observing this, we conclude that the SB has at least a partial cap and is not a fully open chimney.”",
+            "IV Analysis: “The SB projection in Galactic coordinates appears as a tilted, elongated oval centered at $(\\ell,b)=(92.4^{\\circ},5.0^{\\circ})$. The SB tilts at $15^{\\circ}$ from the vertical latitude axis and its dimensions in the tilted frame are”",
+            "V.2 Scenario 2: The stellar cluster powering CTB 102 formed in the walls of an older superbubble.: “We consider both scenarios equally likely based on the evidence currently available. A reliable age determination would help to resolve this degeneracy.”"
+          ],
+          "research_progress": "Identified the tilted Galactic superbubble G92.4+5.0, proved it has at least a partial cap rather than an open chimney, measured differential expansion velocity with latitude, and placed SNR DA 530 at $d \\approx 4.3\\ \\mathrm{kpc}$ inside the bubble.",
+          "figures": [
+            {
+              "url": "/arxiv-figures/2611.08181/Figure6.png",
+              "caption": "Figure 6: The outline of the Kompaneets [25] model visually fit to the CTB 102 superbubble. a. The model plotted on the H I data at $v=-68$ $\\textrm{ km s}^{-1}$. b. The model plotted on the Ziegenbalg $\\textrm{H}\\alpha$ data. c. The H I and $\\textrm{H}\\alpha$ images combined.",
+              "label": "Fig. 6",
+              "category": "observational",
+              "category_badge": "Key Observational Evidence",
+              "physical_core": "The WHAM and Ziegenbalg H-alpha data show an arched filamentary structure identified as a potential superbubble cap; the velocity–latitude view places its peak at $v=-87\\,\\mathrm{km\\,s^{-1}}$, where the H I cube also shows the cap.",
+              "is_schematic": false
+            },
+            {
+              "url": "/arxiv-figures/2611.08181/Figure7.png",
+              "caption": "Figure 7: The Kompaneets [25] model outline from Figure 6 plotted on the RM map of Figure 2.",
+              "label": "Fig. 7",
+              "category": "fitting",
+              "category_badge": "Model vs Data Fitting",
+              "physical_core": "The visually fitted Kompaneets model outline is compared with the H I image at $v=-68\\,\\mathrm{km\\,s^{-1}}$ and with the Ziegenbalg H-alpha data, including a combined view.",
+              "is_schematic": false
+            }
+          ],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed.",
+            "Figures from source package have not undergone visual verification."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        }
+      },
+      {
+        "arxiv_id": "2611.08195",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "fe087f62d7b9fef8c41451c46b7444462c9a49f7dcdf3f0b81778cd832c32c0e",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2611.08195v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2611.08195v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "gpt-6-luna",
+          "analyzed_at": "2026-11-06T18:00:54.837Z",
+          "reason": "Although it studies shocks and radio bursts, these are solar CME-driven coronal shocks rather than the specified high-energy transient sources or their environments.",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "Abstract",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “The study shows the possibility of two coronal shocks from two CMEs generating the multiple type-II radio bursts.”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        }
+      },
+      {
+        "arxiv_id": "2611.08197",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "7bff1bc60c599f05f418f1bc94dd1e35c51c1cc3b5334887c4a815c5901b21b4",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2611.08197v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2611.08197v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "gpt-6-luna",
+          "analyzed_at": "2026-11-06T18:00:54.837Z",
+          "reason": "This study concerns molecular excitation and radiative transfer in a cold dark cloud, with no substantive connection to the specified high-energy transient or compact-object research areas.",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "Abstract",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “We use these collisional data in a non-local thermodynamic equilibrium (non-LTE) radiative transfer model”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        }
+      },
+      {
+        "arxiv_id": "2611.08221",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "9f48bb09125c54bef038a8a5100043cbfd686019a1b10f25d35328a66c5d17b9",
+        "priority": "worth_knowing",
+        "coverage": {
+          "level": "body_partial",
+          "label": "已检查正文中支撑判断的指定章节",
+          "source_version": "arXiv:2611.08221v1",
+          "inspected_sections": [
+            "2 Calculation of QED and EW corrections",
+            "2.3 Coherent, diffractive, and resonant scattering contributions",
+            "3.1 DIS kinematics",
+            "3.5 EW scheme dependence",
+            "4.1 Inclusive DIS cross sections",
+            "5.1 NLO QCD benchmarking and momentum reshuffling",
+            "5.4 Benchmarking of PS algorithms",
+            "5.6 Final comparison",
+            "Appendix A Hidden Glashow process",
+            "Appendix C Top-quark production",
+            "References",
+            "Introduction",
+            "DIS-secting the universe with high-energy neutrinos",
+            "1098 XG, Amsterdam, The Netherlands",
+            "1 Introduction",
+            "2.1 NLO QCD$+$EW effects",
+            "LO contributions:",
+            "Virtual corrections:",
+            "Real corrections:",
+            "Subtraction terms:",
+            "Validation of the implementation:",
+            "2.2 Lepton fragmentation",
+            "3 Prologue to MC simulations",
+            "3.2 Dressed leptons",
+            "3.3 Hadronic input",
+            "3.4 Input parameters",
+            "4 Fixed-order NC and CC DIS predictions",
+            "4.2 Other CC DIS predictions",
+            "5 Comparison to NLO$+$PS predictions",
+            "5.2 Ordering variable",
+            "5.3 Shower options",
+            "Simple shower:",
+            "Dipole shower:",
+            "Antenna shower:",
+            "5.5 Non-universal and subleading EW effects",
+            "6 Public fixed-order grids",
+            "6.1 Double-differential fixed-order cross-section predictions",
+            "7 Double-differential event-generator cross-section predictions",
+            "7.1 Implementation and implications of an astrophysical neutrino flux",
+            "Current limitations:",
+            "Future improvements:",
+            "8 Conclusions",
+            "Appendix B FSR QED corrections and lepton dressing",
+            "Instructions for reporting errors"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_source_package",
+              "url": "https://export.arxiv.org/src/2611.08221v1",
+              "locator": "2 Calculation of QED and EW corrections; 2.3 Coherent, diffractive, and resonant scattering contributions; 3.1 DIS kinematics; 3.5 EW scheme dependence; 4.1 Inclusive DIS cross sections; 5.1 NLO QCD benchmarking and momentum reshuffling; 5.4 Benchmarking of PS algorithms; 5.6 Final comparison; Appendix A Hidden Glashow process; Appendix C Top-quark production; References; Introduction; DIS-secting the universe with high-energy neutrinos; 1098 XG, Amsterdam, The Netherlands; 1 Introduction; 2.1 NLO QCD$+$EW effects; LO contributions:; Virtual corrections:; Real corrections:; Subtraction terms:; Validation of the implementation:; 2.2 Lepton fragmentation; 3 Prologue to MC simulations; 3.2 Dressed leptons; 3.3 Hadronic input; 3.4 Input parameters; 4 Fixed-order NC and CC DIS predictions; 4.2 Other CC DIS predictions; 5 Comparison to NLO$+$PS predictions; 5.2 Ordering variable; 5.3 Shower options; Simple shower:; Dipole shower:; Antenna shower:; 5.5 Non-universal and subleading EW effects; 6 Public fixed-order grids; 6.1 Double-differential fixed-order cross-section predictions; 7 Double-differential event-generator cross-section predictions; 7.1 Implementation and implications of an astrophysical neutrino flux; Current limitations:; Future improvements:; 8 Conclusions; Appendix B FSR QED corrections and lepton dressing; Instructions for reporting errors",
+              "description": "Complete, revision-matched arXiv TeX source package",
+              "sha256": "96dfcfe72f0e4dc96ae067142c56d620905ddaaa759a06b1a79fc851d08704ff"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "gpt-6-luna",
+          "analyzed_at": "2026-11-06T18:10:26.395Z",
+          "reason": "This work computes complete fully differential NLO QCD+EW radiative corrections for high-energy neutrino-matter deep-inelastic scattering (DIS), which is critical for precise reconstruction of incoming neutrino energy and inelasticity in neutrino telescopes.",
+          "result": "The authors find that collinear final-state QED radiation from charged leptons induces logarithmic enhancements proportional to $\\frac{\\alpha}{\\pi}\\ln\\left(\\frac{E_\\ell}{m_\\ell}\\right)$, modifying the inelasticity $y$ distribution by $-10\\%$ at low $y$ up to $+5\\%$ at high $y$ for $E_{\\nu_\\mu} = 10^3\\,\\mathrm{GeV}$. At $E_{\\nu_\\mu} = 10^8\\,\\mathrm{GeV}$, NLO EW corrections increase the average inelasticity $\\langle y \\rangle$ by $\\approx 10\\%$ (or $\\approx 15\\%$ when including photon-induced channels). Resonant on-shell $W$-boson production and hidden Glashow processes enhance the high-$y$ region ($y \\gtrsim 0.8$) by $> 10\\%$ for $E_\\nu \\gtrsim 10^4\\,\\mathrm{GeV}$. Evaluating QED radiation at the partonic scale $\\mu_h^2 = \\hat{s}_{12} \\sim x s$ avoids an overestimation of $\\sim 50\\%$ caused by using the hadronic scale $\\mu_h^2 = s$.",
+          "reading_entry": "5.6 Final comparison",
+          "problem": "Accurate reconstruction of astrophysical and atmospheric neutrino energy and inelasticity $y$ in neutrino observatories (such as IceCube and KM3NeT) relies on bare lepton track measurements, which suffer from $> 10\\%$ distortions due to collinear QED radiation, photon-induced processes, and resonant $W$-boson production that are missing or approximated in standard event generators.",
+          "method": "The calculations are performed within collinear factorization: $$d\\sigma = \\sum_{i} \\int dx\\, f_{i}(x, \\mu_F^2)\\, d\\hat{\\sigma}(p_1, x p; \\mu_F, \\mu_R)$$ with fully differential partonic cross sections evaluated at NLO QCD+EW precision: $$d\\hat{\\sigma} = d\\hat{\\sigma}_{\\mathrm{LO}} + \\frac{\\alpha_s}{4\\pi}\\, d\\hat{\\sigma}_{\\mathrm{NLO,QCD}} + \\frac{\\alpha}{4\\pi}\\, d\\hat{\\sigma}_{\\mathrm{NLO,EW}}$$ using dipole subtraction, complex mass scheme in the $G_F$ input scheme, lepton fragmentation functions (FFs) up to $\\mathcal{O}(\\alpha^2)$, and matched NLO+PS simulations via POWHEG-BOX DIS with Pythia 8.3 dipole shower.",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "2 Calculation of QED and EW corrections: “The dominant contribution to the scattering rate arises from DIS, while subleading effects originate from neutrino-nucleon, neutrino-nucleus, and neutrino-electron interactions”",
+            "3.5 EW scheme dependence: “A key advantage of the $G_{F}$ scheme is that the universal corrections associated with the running of the electromagnetic coupling from zero up to the EW scale are absorbed into the definition of $G_{F}$ via muon decay”",
+            "5.4 Benchmarking of PS algorithms: “Taken together, these comparisons demonstrate that the dipole shower provides a reliable description of the logarithmically enhanced QED radiation in neutrino-induced DIS processes. It reproduces the LL benchmark over the energy range”",
+            "5.6 Final comparison: “At $E_{\\nu_{\\mu}}=10^{3}\\,{\\rm GeV}$, the EW corrections induce a non-trivial modification of the $y$ distribution, ranging from about $-10\\%$ at low $y$ to approximately $+5\\%$ at high $y$.”"
+          ],
+          "research_progress": "Provides the first fully differential NLO QCD+EW cross-section grids and event generator matching for neutrino CC DIS up to $E_\\nu \\sim 10^9\\,\\mathrm{GeV}$, accurately controlling $\\mathcal{O}\\left(\\alpha^2\\ln\\left(\\frac{\\mu_h}{m_\\ell}\\right)\\right)$ QED radiation and establishing the dipole shower in Pythia 8.3 as the benchmark for DIS kinematics.",
+          "figures": [
+            {
+              "url": "/arxiv-figures/2611.08221/DIS_CC_isoscalar_nu14_d2sig_dEdy_NLO_QCD.png",
+              "caption": "Figure 16: Inelasticity distribution $d\\sigma/dy$ as a function of the incoming muon-neutrino energy and the muon inelasticity for an isoscalar target. The left panel shows the central NLO QCD prediction, while the right panel shows the NLO QCD $+$ EW prediction including the additional FSR corrections of the lepton FF normalised to the corresponding NLO QCD result. Projections are shown along the corresponding axes: onto $\\log_{10}E_{\\nu_{\\mu}}$ (top), i.e. the cross section integrated over $y$, together with the theoretical uncertainties from scale variation, and onto $y$ (right), i.e. $d\\sigma/dy$ integrated over $\\log_{10}E_{\\nu_{\\mu}}$ in the range $10^{3}\\,{\\rm GeV}\\leq E_{\\nu_{\\mu}}\\leq 10^{7}\\,{\\rm GeV}$, for which only the central prediction is shown. Each bin is coloured according to the value of the central prediction in that bin. See main text for further explanations.",
+              "label": "Fig. 16",
+              "category": "theoretical",
+              "category_badge": "Physical Evolution",
+              "physical_core": "Shows how the charged-current DIS cross section varies with incoming neutrino energy and muon inelasticity, comparing NLO QCD with NLO QCD plus electroweak and additional final-state radiation corrections.",
+              "is_schematic": true
+            },
+            {
+              "url": "/arxiv-figures/2611.08221/DIS_CC_isoscalar_nu14_NLO_discrete_comparison.png",
+              "caption": "Figure 18: Comparison of the fixed-order and POWHEG-BOX grids, shown as the ratio of the former to the latter. Left: NLO QCD predictions from the two approaches, with the missing top-quark contribution in POWHEG-BOX becoming visible at high energies. Right: Fixed-order NLO QCD $+$ EW prediction compared with the POWHEG $+$ Pythia 8.3 result obtained with the dipole shower, including the additional FSR corrections from the lepton FF.",
+              "label": "Fig. 18",
+              "category": "theoretical",
+              "category_badge": "Physical Evolution",
+              "physical_core": "Ratios compare fixed-order and POWHEG-BOX predictions for the inelasticity and energy distributions, highlighting the missing top-quark contribution at high energies and differences between the fixed-order NLO QCD plus EW result and the POWHEG plus Pythia prediction with final-state radiation corrections.",
+              "is_schematic": true
+            }
+          ],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed.",
+            "Figures from source package have not undergone visual verification."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        }
+      },
+      {
+        "arxiv_id": "2611.08267",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "96009f9d203b5d8712e3cfd9a50b7fdfd1d712098d71a928d3001f82d30bcd74",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2611.08267v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2611.08267v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "gpt-6-luna",
+          "analyzed_at": "2026-11-06T18:00:54.837Z",
+          "reason": "This paper studies stellar rotation and planet occurrence, rather than the specified high-energy transient, supernova, jet, neutrino, or compact-object research topics.",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "Abstract",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “the planet-host distribution of this ratio is shifted towards longer periods”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        }
+      },
+      {
+        "arxiv_id": "2611.08282",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "80fb2dc5967b53a011c151eb8ffb7001a8e3c35c5e69e32e7b43e194181941c7",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2611.08282v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2611.08282v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "gpt-6-luna",
+          "analyzed_at": "2026-11-06T18:00:54.837Z",
+          "reason": "The paper develops a general astrometric period-search method and mentions dormant black-hole searches as a possible application, but the abstract gives no substantive result directly related to high-energy transient or compact-object observations.",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "Abstract",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “a way to mitigate its impact on period searches”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        }
+      },
+      {
+        "arxiv_id": "2611.08300",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "9e997a9dcc245b2375a7576eede88eab1c8347c73c14920bb01518dcd0dbc36e",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2611.08300v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2611.08300v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "gpt-6-luna",
+          "analyzed_at": "2026-11-06T18:00:54.837Z",
+          "reason": "This paper develops a general method for estimating polarization cross-talk from image jitter, without a substantive connection to the specified high-energy transient topics.",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "Abstract",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “We generalize a previous formulation for the estimation of polarization cross-talk induced by atmospheric seeing”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        }
+      },
+      {
+        "arxiv_id": "2611.08332",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "0c8026272c13b3579be0a6eb732856d13d12da07fad98d6fc6a8f00719997a6f",
+        "priority": "worth_knowing",
+        "coverage": {
+          "level": "body_partial",
+          "label": "已检查正文中支撑判断的指定章节",
+          "source_version": "arXiv:2611.08332v1",
+          "inspected_sections": [
+            "The complex periodic variability of PKS 0301-243: hints of a supermassive black hole binary candidate",
+            "3.1 A jetted SMBHB interpretation of the periodic signals",
+            "4 Conclusion",
+            "S2.3 Significance estimation",
+            "S4 The schematic frame: an SMBHB system with a jet",
+            "S5.1 Instability and fluctuation of accretion disc",
+            "S6 GW emission estimation",
+            "References",
+            "Introduction",
+            "1 INTRODUCTION",
+            "2 RESULTS",
+            "3 DISCUSION",
+            "3.2 Gravitational Wave estimation",
+            "5 METHODS",
+            "DATA AVAILABILITY",
+            "CODE AVAILABILITY",
+            "SUPPLEMENTARY DATA",
+            "ACKNOWLEDGEMENTS",
+            "FUNDING",
+            "AUTHOR CONTRIBUTIONS",
+            "Conflict of interest statement",
+            "S1 Source selection and data collection",
+            "S1.1 Optical photometry observations.",
+            "S1.2 Infrared photometry observations",
+            "S1.3 $gamma$-ray observations.",
+            "S2 Search for periodicity",
+            "S2.1 GLSP",
+            "S2.2 WWZ",
+            "S2.4 Gaussian process and Bayesian inference",
+            "S3 Least-squares Fitting of the Light Curve",
+            "S3.1 Injection-recovery test for empirical uncertainty",
+            "S4.1 Jet precession",
+            "S4.2 Periodic Accretion",
+            "S4.3 Orbital Doppler Boosting",
+            "S5 Evaluation of alternative periodicity models",
+            "S5.2 Lense-Thirring precession",
+            "Instructions for reporting errors"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_source_package",
+              "url": "https://export.arxiv.org/src/2611.08332v1",
+              "locator": "The complex periodic variability of PKS 0301-243: hints of a supermassive black hole binary candidate; 3.1 A jetted SMBHB interpretation of the periodic signals; 4 Conclusion; S2.3 Significance estimation; S4 The schematic frame: an SMBHB system with a jet; S5.1 Instability and fluctuation of accretion disc; S6 GW emission estimation; References; Introduction; 1 INTRODUCTION; 2 RESULTS; 3 DISCUSION; 3.2 Gravitational Wave estimation; 5 METHODS; DATA AVAILABILITY; CODE AVAILABILITY; SUPPLEMENTARY DATA; ACKNOWLEDGEMENTS; FUNDING; AUTHOR CONTRIBUTIONS; Conflict of interest statement; S1 Source selection and data collection; S1.1 Optical photometry observations.; S1.2 Infrared photometry observations; S1.3 $gamma$-ray observations.; S2 Search for periodicity; S2.1 GLSP; S2.2 WWZ; S2.4 Gaussian process and Bayesian inference; S3 Least-squares Fitting of the Light Curve; S3.1 Injection-recovery test for empirical uncertainty; S4.1 Jet precession; S4.2 Periodic Accretion; S4.3 Orbital Doppler Boosting; S5 Evaluation of alternative periodicity models; S5.2 Lense-Thirring precession; Instructions for reporting errors",
+              "description": "Complete, revision-matched arXiv TeX source package",
+              "sha256": "b9300ab0f2acd47ca1c013a515c32d3056dd1b7736704aab4db51cfee75acbc7"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "gpt-6-luna",
+          "analyzed_at": "2026-11-06T18:08:39.918Z",
+          "reason": "The paper reports dual optical periodicities of $P_{\\rm orb} \\approx 269\\text{ days}$ and $P_{\\rm jet} \\approx 889\\text{ days}$ in the blazar PKS 0301-243, providing an observational candidate to test relativistic jet precession and binary orbital modulation in supermassive black hole binaries (SMBHBs).",
+          "result": "Two optical periodicities are identified: an orbital period $P_{\\rm orb} = 269^{+13}_{-14}\\text{ days}$ with corrected global significance of $2.75\\sigma$ ($g$ band) and $2.18\\sigma$ ($r$ band), and a longer precession period $P_{\\rm jet} = 889^{+47}_{-46}\\text{ days}$ ($1.97\\sigma$ in KAIT). For $M_{\\rm tot} = 10^{8.95}M_{\\odot}$ at $z = 0.266$, the binary separation is $r \\sim 3.26^{+0.10}_{-0.11} \\times 10^{-3}\\text{ pc}$ with rest-frame gravitational wave frequency $f_{\\rm GW} = 2/P_{\\rm int} = 1.09^{+0.06}_{-0.05} \\times 10^{-7}\\text{ Hz}$.",
+          "reading_entry": "3.1 A jetted SMBHB interpretation of the periodic signals",
+          "problem": "Distinguishing true multi-periodic signals from stochastic red-noise variability in blazar light curves and establishing whether periodic flux modulations originate from SMBHB orbital dynamics versus jet precession.",
+          "method": "Multi-band timing analysis combining Generalized Lomb-Scargle Periodograms (GLSP), Weighted Wavelet Z-transform (WWZ), and Gaussian Process (GP) regression with damped random walk (DRW) covariance $k_{\\rm DRW}(\\Delta t_{ij}) = \\sigma_{\\rm DRW}^{2} e^{-\\omega_{\\rm DRW}\\Delta t_{ij}}$, calibrated via $10^4$ Monte Carlo injection-recovery light curve simulations.",
+          "assumptions": [
+            "The $\\sim 890\\text{ days}$ optical and $\\gamma$-ray period corresponds to relativistic jet precession driven by the primary black hole.",
+            "The $\\sim 270\\text{ days}$ optical variation traces Keplerian orbital motion of the secondary SMBH with mass ratio $q \\sim 0.05-0.2$."
+          ],
+          "limits": [
+            "Global significances under DRW red-noise models remain moderate ($1.97\\sigma$ to $2.75\\sigma$), and Gaussian process model comparison does not decisively favor a simultaneous dual-periodic model over stochastic red noise.",
+            "Single-SMBH alternatives such as disk Lense-Thirring precession cannot be entirely excluded with current observational baselines."
+          ],
+          "citation_leads": [
+            "3.1 A jetted SMBHB interpretation of the periodic signals: “$P_{\\rm jet}=889^{+47}_{-46}$ days as the jet precession period”",
+            "3.1 A jetted SMBHB interpretation of the periodic signals: “$P_{\\rm orb}=269^{+13}_{-14}$ days as the binary orbital period.”",
+            "S2.3 Significance estimation: “Distinguishing a genuine periodic signal from stochastic variability in sources dominated by red noise”",
+            "4 Conclusion: “The $P_{\\rm orb}=269^{+13}_{-14}$ days periodicity may arise from orbital motion”",
+            "S4 The schematic frame: an SMBHB system with a jet: “We propose an SMBHB model incorporating a jet, a circumbinary disc, and two mini-discs around two SMBHs”",
+            "S5.1 Instability and fluctuation of accretion disc: “The resulting SMBH masses are $M_{\\rm S}\\sim 1.36\\times 10^{11}M_{\\odot}$ and $M_{\\rm K}\\sim 8.64\\times 10^{11}M_{\\odot}$”",
+            "S6 GW emission estimation: “This timescale is several orders of magnitude shorter than the typical active lifetime of a quasar”"
+          ],
+          "research_progress": "Constrains a milliparsec SMBHB candidate in the GW inspiral regime within the nanohertz band, interpreting multi-band light curves via relativistic jet precession (Doppler factor $\\delta = 1/[\\Gamma(1-\\beta\\cos\\theta)]$) and secondary mini-disc orbital Doppler boosting ($\\Delta F \\propto (3-\\alpha_\\nu)v_2\\sin i/c$).",
+          "figures": [
+            {
+              "url": "/arxiv-figures/2611.08332/WWZ_KAIT.png",
+              "caption": "Figure 1: Detection of optical periodicities in the combined KAIT and ZTF $r$ band, ZTF $g$ band, and ZTF $r$ band light curves of PKS 0301-243. The GLSP are shown in the upper row of each set of panels. The middle row of each set shows the WWZ periodograms. The subpanels show (from top left, anticlockwise): the light curve and the sinusoidal curve fitting results, the WWZ time-frequency map, and the mean WWZ power spectrum. The bottom panels show the phase-folded light curves corresponding to different identified periodic signals.",
+              "label": "Fig. 1",
+              "category": "observational",
+              "category_badge": "Observational Light Curve / SED",
+              "physical_core": "The figure compares the KAIT and ZTF optical light curves and shows GLSP and WWZ periodograms, time-frequency maps, sinusoidal fits, and phase-folded data for the identified periodic signals.",
+              "is_schematic": false
+            },
+            {
+              "url": "/arxiv-figures/2611.08332/GW_detect.png",
+              "caption": "Figure 3: The sensitivity curves of current and future GW detectors and the ranges of different GW sources. The coloured track shows the characteristic strain amplitude $h_{c}$ evolution of PKS 0301-243 assuming a fiducial mass ratio $q=0.1$, where the colour indicates the remaining time to merger. The gray shaded region represents the uncertainty range obtained by varying the mass ratio between $q=0.05$ and $q=0.2$. The characteristic strain is calculated as $h_{c}=h\\sqrt{fT_{\\rm obs}}$ with $T_{\\rm obs}=15$ yr.",
+              "label": "Fig. 3",
+              "category": "theoretical",
+              "category_badge": "Physical Evolution",
+              "physical_core": "The figure shows the characteristic strain evolution, $h_c=h\\sqrt{fT_{\\rm obs}}$ with $T_{\\rm obs}=15\\,\\mathrm{yr}$, for PKS 0301-243 assuming $q=0.1$, with a shaded range for $q=0.05$–$0.2$, alongside the sensitivity curves of current and future gravitational-wave detectors.",
+              "is_schematic": true
+            }
+          ],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed.",
+            "Figures from source package have not undergone visual verification."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        }
+      },
+      {
+        "arxiv_id": "2611.08336",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "8cd91a5c42620120a136ea2841f163b573e12c07a281315eed3497ddef6c614e",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2611.08336v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2611.08336v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "gpt-6-luna",
+          "analyzed_at": "2026-11-06T18:00:54.837Z",
+          "reason": "This paper examines how spatial resolution affects emission-line diagnostics in the Magellanic Clouds; the supplied abstract does not establish a substantive connection to the specified transient or compact-object research topics.",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "Abstract",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “We investigate how spatial resolution affects emission-line diagnostics in the interstellar medium (ISM) of the Small and Large Magellanic Clouds (SMC and LMC)”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        }
+      },
+      {
+        "arxiv_id": "2611.08346",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "a5e5b376b9a24de1dd9a99782232fe4009e44de2f0624f77876826913570586c",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2611.08346v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2611.08346v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "gpt-6-luna",
+          "analyzed_at": "2026-11-06T18:00:54.837Z",
+          "reason": "This paper studies the distance and atmospheric properties of an ultra-cold Y dwarf, outside the specified high-energy transient and compact-object research directions.",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "Abstract",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “We present an analysis of JADES-GS-BD-5, an extremely cold Y dwarf identified in the JADES/GOODS-South field.”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        }
       }
     ],
     "knowledge_points": [],
     "historical_analyses": [],
     "opening_brief": {
       "status": "ready",
-      "edition_fingerprint": "bad24ac855e9cf5b693f53acd42a30ea9748266ade62f029620977de9dacc47e",
-      "intro": "Featured reading: \"General-relativistic neutrino-radiation hydrodynamics of crust ejection in magnetar giant flares\" and 12 other key developments.",
+      "edition_fingerprint": "87ae4943a6e4b3b61183a177b1d5ab138c639ba9fd245f2dd7cee9b9454c7f01",
+      "intro": "Featured reading: \"General-relativistic neutrino-radiation hydrodynamics of crust ejection in magnetar giant flares\" and 14 other key developments.",
       "focus_paper": {
         "arxiv_id": "2611.07022",
         "revision": 1,
@@ -5844,6 +6965,18 @@
           "revision": 1,
           "source_fingerprint": "e3356d4f04e482e8010f645e45a2ab56dfae36f8459ad5bde9473f587a23898e",
           "guide_fingerprint": "926729e6f845b3e4e40ff73f08f5a8ee9e7fbcf5d9fe4f9e1bee12698bfb873d"
+        },
+        {
+          "arxiv_id": "2611.08221",
+          "revision": 1,
+          "source_fingerprint": "9f48bb09125c54bef038a8a5100043cbfd686019a1b10f25d35328a66c5d17b9",
+          "guide_fingerprint": "e6b1a62b1ffb91a856cf3d2074cbc9ca73c009bca2277f4d012daaaa952085f5"
+        },
+        {
+          "arxiv_id": "2611.08332",
+          "revision": 1,
+          "source_fingerprint": "0c8026272c13b3579be0a6eb732856d13d12da07fad98d6fc6a8f00719997a6f",
+          "guide_fingerprint": "a9dc3ed3da059c9c2cc08cf6ec210a030fe4217fd6f187da05ea42055ee6838d"
         }
       ],
       "skim_topics": [
@@ -6119,6 +7252,66 @@
           "revision": 1,
           "source_fingerprint": "13538b99cd7991d42307c5292d0b1247ec3914f484cdad9de092d3936975a4f3",
           "guide_fingerprint": "8b7f6ecdbb60017ca7e0e3373224012d1bcf3fba836e9cc1b8f10f296393cafd"
+        },
+        {
+          "arxiv_id": "2611.08112",
+          "revision": 1,
+          "source_fingerprint": "b46ccc59b5c26c5b81b49acdc9dffb32bc249047df2f84f4c5cc82a0d74b7414",
+          "guide_fingerprint": "3181c0a83c8e4bf354fbf7fbfeb16ee5ec0bde1637a8976b951192f6a45c2abd"
+        },
+        {
+          "arxiv_id": "2611.08115",
+          "revision": 1,
+          "source_fingerprint": "68f86c79cdfd28c0a36a92416c8279f43726b71303b8f4d97c50b9fa8c7a90c7",
+          "guide_fingerprint": "132bec70c32408db211ef906329b7c452d138b35a07ea7708af849a29b2302d5"
+        },
+        {
+          "arxiv_id": "2611.08181",
+          "revision": 1,
+          "source_fingerprint": "1f561e4f28b71b53a266ef928deb677bf67e889bbb13549e1d5fef94d5a73c7f",
+          "guide_fingerprint": "2deda5d39e5e4e53877d158244c0fcb7bccfffbef830a80822123a635e27a20e"
+        },
+        {
+          "arxiv_id": "2611.08195",
+          "revision": 1,
+          "source_fingerprint": "fe087f62d7b9fef8c41451c46b7444462c9a49f7dcdf3f0b81778cd832c32c0e",
+          "guide_fingerprint": "d474562e50781a8de914de0de7d3a5c7ed107b071c0a92bc2a7ea04d588164e0"
+        },
+        {
+          "arxiv_id": "2611.08197",
+          "revision": 1,
+          "source_fingerprint": "7bff1bc60c599f05f418f1bc94dd1e35c51c1cc3b5334887c4a815c5901b21b4",
+          "guide_fingerprint": "e944545f7e3c4d4d51e9c17880dc48d44d46facbd5014ab733f7f7a3a95591d0"
+        },
+        {
+          "arxiv_id": "2611.08267",
+          "revision": 1,
+          "source_fingerprint": "96009f9d203b5d8712e3cfd9a50b7fdfd1d712098d71a928d3001f82d30bcd74",
+          "guide_fingerprint": "a01f312a728a4f3dd41de8cb54a4b926692d76d28cdcb6b8d1924346a2d6a9cb"
+        },
+        {
+          "arxiv_id": "2611.08282",
+          "revision": 1,
+          "source_fingerprint": "80fb2dc5967b53a011c151eb8ffb7001a8e3c35c5e69e32e7b43e194181941c7",
+          "guide_fingerprint": "aae8a604e23c137e93c001555f167562fa3f0affd01d47b8b04c7ab836585c8f"
+        },
+        {
+          "arxiv_id": "2611.08300",
+          "revision": 1,
+          "source_fingerprint": "9e997a9dcc245b2375a7576eede88eab1c8347c73c14920bb01518dcd0dbc36e",
+          "guide_fingerprint": "0d3a4358926cf14ad14734a878aba06f2b70348b3cf6b8323a2ac2cd862514af"
+        },
+        {
+          "arxiv_id": "2611.08336",
+          "revision": 1,
+          "source_fingerprint": "8cd91a5c42620120a136ea2841f163b573e12c07a281315eed3497ddef6c614e",
+          "guide_fingerprint": "6374adb8ae434251ae2064da3f111d141774a72752ef1e3b038832e16e8ad852"
+        },
+        {
+          "arxiv_id": "2611.08346",
+          "revision": 1,
+          "source_fingerprint": "a5e5b376b9a24de1dd9a99782232fe4009e44de2f0624f77876826913570586c",
+          "guide_fingerprint": "e7bdc4ac04507fe513d95444f51b6b365f0288a91e4153704e4e75f41912a3d6"
         }
       ],
       "worth_knowing_summary": "The integrated 19–64 keV polarization is $\\mathrm{PD}=5.0^{+2.7}_{-3.0}\\%$ with $\\mathrm{PA}=(-28\\pm17)^\\circ$.; The radio decline supports intrinsic fading of the central engine rather than obscuration alone, and the authors argue that the outburst beginning in 1992 has probably ended., among others.",

@@ -1,11 +1,57 @@
 {
   "schema_version": "astrolineage-arxiv-archive-manifest-v1",
-  "updated_at": "2026-11-06T18:19:31.953Z",
-  "total_weeks": 9,
-  "total_daily_editions": 44,
-  "latest_week_id": "2026-W45",
-  "latest_daily_date": "2026-11-05",
+  "updated_at": "2026-11-09T18:42:31.321Z",
+  "total_weeks": 10,
+  "total_daily_editions": 45,
+  "latest_week_id": "2026-W46",
+  "latest_daily_date": "2026-11-08",
   "weeks": [
+    {
+      "week_id": "2026-W46",
+      "title": "高能天体物理 arXiv 每周学术脉络 (2026-W46)",
+      "date_range": "2026-11-09 ~ 2026-11-15",
+      "has_weekly_summary": false,
+      "executive_summary": "本周暂未生成宏观脉络总结。",
+      "statistics": {
+        "total_analyzed": 57,
+        "must_read_count": 2,
+        "worth_knowing_count": 12,
+        "skip_count": 43
+      },
+      "top_picks_count": 0,
+      "days": [
+        {
+          "date": "2026-11-08",
+          "weekday": "Sun",
+          "week_id": "2026-W46",
+          "batch_id": "announcement-2026-11-08",
+          "total_papers": 58,
+          "analyzed_count": 57,
+          "must_read_count": 2,
+          "worth_knowing_count": 12,
+          "skip_count": 43,
+          "pending_count": 1,
+          "brief_status": "ready",
+          "brief_intro": "Featured reading: \"Hydrodynamic Natal Kicks and Formation of Black Hole Binaries\" and 13 other key developments.",
+          "highlights": [
+            {
+              "arxiv_id": "2611.08604",
+              "priority": "must_read",
+              "title": "Hydrodynamic Natal Kicks and Formation of Black Hole Binaries",
+              "reason": "This study performs 3D SPH simulations to investigate the hydrodynamic Tug-boat mechanism and black hole natal kicks in core-collapse supernovae, providing critical physical limits on whether natal kicks can tilt binary orbits to produce negative effective inspiral spins $\\chi_{\\rm eff} < 0$."
+            },
+            {
+              "arxiv_id": "2611.08742",
+              "priority": "must_read",
+              "title": "Neutrino pair annihilation in curved spacetime: a fast moment method and the geometry of flavour conversion",
+              "reason": "This work establishes an exact angular moment framework for neutrino pair annihilation around black hole accretion discs and uncovers a fundamental general relativistic sign-reversal effect on flavour conversion, directly relevant to compact object central engines and relativistic jet launching in GRBs."
+            }
+          ],
+          "data_file": "daily/2026-11-08.json"
+        }
+      ],
+      "weekly_data_file": null
+    },
     {
       "week_id": "2026-W45",
       "title": "Weekly Scientific Lineage · 2026-W45",

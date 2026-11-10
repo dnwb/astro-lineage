@@ -1,14 +1,30 @@
 # AstroLineage — Project State
 
-> Updated: 2026-09-06
+> Updated: 2026-11-09
 
 ## Current position
 
-- **Stage:** Post-V0.1 P0 compatibility hardening
-- **Status:** V0.1 complete; Tickets 01–14 remain closed; the separately
-  authorized filesystem-safe path migration passes local verification and its
-  clean remote CI gate
-- **Implementation:** Visible Arnett and Bromberg now exercise governed Actors,
+- **Stage:** Post-V0.1 product track on master
+- **Status:** V0.1 complete; Tickets 01–14 remain closed; post-V0.1 P0 filesystem-safe path migration complete. Active production and feature evolution continues directly on `master`.
+- **Live baseline (as of 2026-11-09):**
+  - Master tip: commit `d7e9ee4` (PR #56 `feat(cron): restore 02:00 reconcile fallback task with weekend synthesis guard`).
+  - Remote CI verification: GitHub Actions run `42494481981` (clean verify pass).
+  - Production preview deployment: campus preview service `astrolineage-web.service` on port 4321 runs from `/home/long/astro-lineage-cron` (`master`).
+- **Post-V0.1 active tracks & capabilities on master:**
+  - Automated arXiv daily discovery pipeline and user systemd timers under `deploy/`.
+  - Cron scheduling: single fixed 10:00 schedule, weekly synthesis on Fridays, and 02:00 reconcile fallback task with weekend synthesis guard (PRs #55, #56).
+  - Causal graph: 41-work causal graph catalog and paper anchor CLI (`feat(causal)`).
+  - Multimodal vision reader support and official QQ bot integration.
+  - Model routing updates: `gpt-6.1-terra` primary for triage/QA with agy/gemini fallback ladders.
+  - Historical transients backfill and arXiv edition/archive sync.
+- **Open issues & planning frontier:**
+  - Issue #28: `添加更多信源` (label: `ready-for-agent`) — expands radar to Nature, Nature Astronomy, Science with domain filtering and identifier normalization.
+  - Issue #29: `如何构建知识库？` (label: `needs-triage`) — knowledge base construction inquiry.
+  - Issue #30: `agent完善` (label: `needs-triage`) — local pi scheduling and agent I/O tooling.
+- **Next execution action:**
+  - Planning continuity refreshed for live master state as of 2026-11-09.
+  - Recommended next product execution: authorize and implement Issue #28 (`ready-for-agent`), or sequence triage for Issues #29 and #30.
+- **V0.1 historical implementation baseline:** Visible Arnett and Bromberg now exercise governed Actors,
   capability-at-action-time authorization, 16 assessed Physics axes,
   controlled vocabulary, reusable Version-bound Evidence, reviewed Method
   Annotations, Work-local Scientific Statements and causal DAGs, Human-gated
@@ -26,11 +42,8 @@
   reader-visible inbound/outbound provenance. Ticket 13 closes the static
   Reader View, Provenance Detail, Validation Report, README, and real-fixture
   Stored + Validated + Rendered coverage matrix; local verification and the
-  independent clean-environment CI pass are complete
-- **Decision frontier:** closed through Q151; no open domain-model decision is
-  blocking migration
-- **Next execution action:** none for the filesystem-safe path migration; no
-  V0.1 ticket is reopened
+  independent clean-environment CI pass are complete. Decision frontier closed
+  through Q151.
 
 The repository has completed specification, governance, and authority
 migration. Ticket 01 established the independent Git boundary and bootstrap
@@ -180,8 +193,7 @@ The loader obtains identity from structured records and reports each discovered
 filesystem slug and source path separately. Validation diagnostics use those
 actual source paths, while cross-file ownership remains enforced through the
 semantic IDs in YAML envelopes and Markdown frontmatter. ADR 0081 governs this
-post-V0.1 hardening and narrows the path-coupling language in ADRs 0036 and
-0069. This work does not reopen, extend, or redo Tickets 01–14.
+post-V0.1 hardening and narrows the path-coupling language in ADRs 0036 and 0069. This work does not reopen, extend, or redo Tickets 01–14.
 
 ## Post-V0.1 architecture and product naming
 
@@ -202,40 +214,45 @@ maintainability refactor changes no canonical record, semantic ID, review
 binding, visibility approval, or content digest, and it does not reopen
 Tickets 01–14.
 
+## Post-V0.1 production evolution on master
+
+Following the closure of V0.1 and the P0 path migration, development on `master` has expanded beyond the initial five-Work fixture slice into an automated production system for high-energy transient astrophysics:
+
+1. **Daily discovery and pipeline automation:** Automated daily ingestion and sync pipelines for arXiv high-energy transients (`astro-ph.HE`), backed by systemd user service and timer definitions under `deploy/`.
+2. **Cron scheduling and reliability:** Replaced high-frequency ladder polling with a fixed 10:00 schedule, restricted weekly synthesis to Fridays, and added a 02:00 reconcile fallback task with a weekend synthesis guard (PRs #55, #56).
+3. **Causal graph catalog:** Integrated a 41-work causal graph catalog and paper anchor CLI (`feat(causal)`), scaling the scientific graph representation beyond the initial V0.1 baseline.
+4. **Model routing & multi-agent triage:** Standardized model ladders with `gpt-6.1-terra` primary for triage/QA, alongside agy/gemini fallback ladders.
+5. **Channels and reader surfaces:** Added QQ official bot integration and multimodal vision capabilities for transient paper figures.
+6. **Campus preview deployment:** Active campus preview service `astrolineage-web.service` on port 4321 running from `/home/long/astro-lineage-cron` (`master`).
+
 ## Next action
 
-V0.1 has no remaining execution action. Ticket 14 remains resolved at:
+V0.1 (Tickets 01–14) and the P0 filesystem compatibility hardening remain fully closed and preserved:
 
-```text
-.scratch/v0.1-vertical-slice/issues/14-prove-local-verification-and-clean-ci.md
-```
+- V0.1 closure: `.scratch/v0.1-vertical-slice/issues/14-prove-local-verification-and-clean-ci.md`
+- P0 filesystem compatibility: `.scratch/filesystem-safe-content-paths/issues/01-decouple-semantic-ids-from-paths.md`
 
-The separately authorized P0 filesystem compatibility issue is tracked at:
+Work on the post-V0.1 product track on `master` is active. Current planning and execution frontier focuses on open GitHub issues:
 
-```text
-.scratch/filesystem-safe-content-paths/issues/01-decouple-semantic-ids-from-paths.md
-```
+1. **Issue #28 (`添加更多信源`, label: `ready-for-agent`):** Primary candidate for next implementation. Expands reading radar beyond arXiv to Nature, Nature Astronomy, and Science with domain keyword filtering, identifier normalization (arXiv ID / DOI), and independent weekly ingestion cadence without breaking daily pipeline locks.
+2. **Issue #29 (`如何构建知识库？`, label: `needs-triage`):** Architecture and design discussion for knowledge base construction.
+3. **Issue #30 (`agent完善`, label: `needs-triage`):** Local pi task scheduling, input/output enhancement, and agent tooling.
 
-Its local `npm run verify` gate passes with 17/17 tests, zero Astro diagnostics,
-and an 11-page static build. GitHub Actions run `34007603487` passed the same
-verification contract for implementation commit `68bde92`, resolving the P0
-migration. Any V0.2 or other deferred work still requires a separately
-authorized milestone. A newly discovered semantic choice must first be
-classified under the migration rule above.
+Recommended immediate action: Authorize Issue #28 for implementation under the post-V0.1 product track on `master`, or perform triage alignment on #29 and #30.
 
 ## Blockers and constraints
 
-There is no remaining V0.1 or post-V0.1 P0 blocker. Repository
-initialization remained separate from remote creation until the user
-explicitly authorized `git@github.com:dnwb/astro-lineage.git`; GitHub Actions
-then supplied the independent clean-environment proof. A genuinely new
-semantic choice must be escalated as a new decision rather than hidden in
-`.planning` prose.
+- Tickets 01–14 are frozen and must not be reopened.
+- The 16-axis Physics Ontology, Version-bound Evidence, and Human review gates remain mandatory invariants across all new ingestion pipelines.
+- Multi-source ingestion (Issue #28) must preserve domain-filter determinism and must not destabilize existing daily arXiv cron locks.
+- Local preview service (`:4321`) requires synchronization from `/home/long/astro-lineage` to `/home/long/astro-lineage-cron` after building.
+- Clean remote CI verification contract (`npm run verify`) must remain green on `master` (latest verified run: `42494481981`).
 
 ## Session continuity
 
-V0.1 is closed at Ticket 14. The filesystem-safe path migration is a separate
-post-V0.1 P0 hardening effort, not a continuation of that ticket frontier. If
-other work resumes, read the four `.planning` documents first, preserve
-requirement IDs, and open a new authorized milestone rather than extending the
-completed V0.1 frontier implicitly.
+V0.1 is closed at Ticket 14. The P0 filesystem-safe path migration is closed. Work proceeds on the post-V0.1 product track on `master`.
+When picking up new work:
+
+- Review `.planning/STATE.md` and current open issues (#28, #29, #30).
+- Preserve architectural invariants from `ARCHITECTURE.md` and domain models in `src/domain/`.
+- Issue #28 has a prepared agent brief and `ready-for-agent` label, making it the immediate candidate for execution.

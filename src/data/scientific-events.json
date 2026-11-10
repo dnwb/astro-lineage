@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-11-09T18:48:37.263Z",
-  "total_events": 138,
+  "generated_at": "2026-11-10T02:11:58.131Z",
+  "total_events": 141,
   "events": [
     {
       "event_id": "GW170817",
@@ -555,6 +555,179 @@
       "gcn_status": "archived"
     },
     {
+      "event_id": "GRB 261103A",
+      "event_type": "GRB",
+      "tags": [
+        "Transient Surveillance",
+        "GCN Circulars",
+        "GRB"
+      ],
+      "heat_score": 45,
+      "paper_count": 0,
+      "headline": "GRB 261103A 空间与地面望远镜全波段应急协同追踪",
+      "narrative": "已汇聚 NASA GCN Circulars 快速通报 5 份。红移 待确定，触发时刻 T0: 2026-11-03 06:51:11 UTC (SVOM/ECLAIRs)。多波段光变曲线与早期测光点已完成零同质化聚合。",
+      "first_seen": "2026-11-03",
+      "last_updated": "2026-11-08",
+      "papers": [],
+      "lead_figure": null,
+      "lead_figure_arxiv_id": null,
+      "canonical_t0": {
+        "instrument": "SVOM/ECLAIRs",
+        "utc_iso": "2026-11-03T06:51:11.000Z",
+        "circular_id": 46176
+      },
+      "best_redshift": null,
+      "has_redshift_conflict": false,
+      "multi_messenger": [],
+      "gcn_aliases_label": null,
+      "canonical_t0_label": "2026-11-03 06:51:11 UTC (SVOM/ECLAIRs)",
+      "best_redshift_label": null,
+      "multi_messenger_badges": [],
+      "gcn_circular_count": 5,
+      "gcn_figure_path": null,
+      "gcn_aliases": [],
+      "gcn_slug": "grb-261103a",
+      "gcn_status": "active"
+    },
+    {
+      "event_id": "GRB 261108D",
+      "event_type": "GRB",
+      "tags": [
+        "Transient Surveillance",
+        "GCN Circulars",
+        "GRB"
+      ],
+      "heat_score": 45,
+      "paper_count": 0,
+      "headline": "GRB 261108D 空间与地面望远镜全波段应急协同追踪",
+      "narrative": "已汇聚 NASA GCN Circulars 快速通报 2 份。红移 待确定，触发时刻 T0: 待校准。多波段光变曲线与早期测光点已完成零同质化聚合。",
+      "first_seen": "2026-11-09",
+      "last_updated": "2026-11-09",
+      "papers": [],
+      "lead_figure": null,
+      "lead_figure_arxiv_id": null,
+      "canonical_t0": null,
+      "best_redshift": null,
+      "has_redshift_conflict": false,
+      "multi_messenger": [],
+      "gcn_aliases_label": null,
+      "canonical_t0_label": null,
+      "best_redshift_label": null,
+      "multi_messenger_badges": [],
+      "gcn_circular_count": 2,
+      "gcn_figure_path": null,
+      "gcn_aliases": [],
+      "gcn_slug": "grb-261108d",
+      "gcn_status": "active"
+    },
+    {
+      "event_id": "GRB 261108C",
+      "event_type": "GRB",
+      "tags": [
+        "Transient Surveillance",
+        "GCN Circulars",
+        "GRB"
+      ],
+      "heat_score": 45,
+      "paper_count": 0,
+      "headline": "GRB 261108C 空间与地面望远镜全波段应急协同追踪",
+      "narrative": "已汇聚 NASA GCN Circulars 快速通报 3 份。红移 待确定，触发时刻 T0: 2026-11-08 21:18:34 UTC (SVOM/ECLAIRs)。多波段光变曲线与早期测光点已完成零同质化聚合。",
+      "first_seen": "2026-11-08",
+      "last_updated": "2026-11-09",
+      "papers": [],
+      "lead_figure": null,
+      "lead_figure_arxiv_id": null,
+      "canonical_t0": {
+        "instrument": "SVOM/ECLAIRs",
+        "utc_iso": "2026-11-08T21:18:34.000Z",
+        "circular_id": 46198
+      },
+      "best_redshift": null,
+      "has_redshift_conflict": false,
+      "multi_messenger": [],
+      "gcn_aliases_label": null,
+      "canonical_t0_label": "2026-11-08 21:18:34 UTC (SVOM/ECLAIRs)",
+      "best_redshift_label": null,
+      "multi_messenger_badges": [],
+      "gcn_circular_count": 3,
+      "gcn_figure_path": null,
+      "gcn_aliases": [],
+      "gcn_slug": "grb-261108c",
+      "gcn_status": "active"
+    },
+    {
+      "event_id": "GRB 261108A",
+      "event_type": "GRB",
+      "tags": [
+        "Transient Surveillance",
+        "GCN Circulars",
+        "GRB"
+      ],
+      "heat_score": 45,
+      "paper_count": 0,
+      "headline": "GRB 261108A 空间与地面望远镜全波段应急协同追踪",
+      "narrative": "已汇聚 NASA GCN Circulars 快速通报 7 份。红移 待确定，触发时刻 T0: 2026-11-08 01:13:19 UTC (Fermi/GBM)。多波段光变曲线与早期测光点已完成零同质化聚合。",
+      "first_seen": "2026-11-08",
+      "last_updated": "2026-11-08",
+      "papers": [],
+      "lead_figure": null,
+      "lead_figure_arxiv_id": null,
+      "canonical_t0": {
+        "instrument": "Fermi/GBM",
+        "utc_iso": "2026-11-08T01:13:19.000Z",
+        "circular_id": 46186
+      },
+      "best_redshift": null,
+      "has_redshift_conflict": false,
+      "multi_messenger": [],
+      "gcn_aliases_label": "GRB 261108",
+      "canonical_t0_label": "2026-11-08 01:13:19 UTC (Fermi/GBM)",
+      "best_redshift_label": null,
+      "multi_messenger_badges": [],
+      "gcn_circular_count": 7,
+      "gcn_figure_path": null,
+      "gcn_aliases": [
+        "GRB 261108"
+      ],
+      "gcn_slug": "grb-261108a",
+      "gcn_status": "active"
+    },
+    {
+      "event_id": "GRB 261024D",
+      "event_type": "GRB",
+      "tags": [
+        "Transient Surveillance",
+        "GCN Circulars",
+        "GRB"
+      ],
+      "heat_score": 39.2,
+      "paper_count": 0,
+      "headline": "GRB 261024D 空间与地面望远镜全波段应急协同追踪",
+      "narrative": "已汇聚 NASA GCN Circulars 快速通报 8 份。红移 待确定，触发时刻 T0: 2026-10-24 21:33:06 UTC (Konus-Wind)。多波段光变曲线与早期测光点已完成零同质化聚合。",
+      "first_seen": "2026-10-24",
+      "last_updated": "2026-11-06",
+      "papers": [],
+      "lead_figure": null,
+      "lead_figure_arxiv_id": null,
+      "canonical_t0": {
+        "instrument": "Konus-Wind",
+        "utc_iso": "2026-10-24T21:33:06.850Z",
+        "circular_id": 46040
+      },
+      "best_redshift": null,
+      "has_redshift_conflict": false,
+      "multi_messenger": [],
+      "gcn_aliases_label": null,
+      "canonical_t0_label": "2026-10-24 21:33:06 UTC (Konus-Wind)",
+      "best_redshift_label": null,
+      "multi_messenger_badges": [],
+      "gcn_circular_count": 8,
+      "gcn_figure_path": null,
+      "gcn_aliases": [],
+      "gcn_slug": "grb-261024d",
+      "gcn_status": "active"
+    },
+    {
       "event_id": "GRB 261104A",
       "event_type": "GRB",
       "tags": [
@@ -589,37 +762,6 @@
         "AT 2026aigl"
       ],
       "gcn_slug": "grb-261104a",
-      "gcn_status": "active"
-    },
-    {
-      "event_id": "GRB 261103A",
-      "event_type": "GRB",
-      "tags": [
-        "Transient Surveillance",
-        "GCN Circulars",
-        "GRB"
-      ],
-      "heat_score": 35.4,
-      "paper_count": 0,
-      "headline": "GRB 261103A 空间与地面望远镜全波段应急协同追踪",
-      "narrative": "已汇聚 NASA GCN Circulars 快速通报 3 份。红移 待确定，触发时刻 T0: 待校准。多波段光变曲线与早期测光点已完成零同质化聚合。",
-      "first_seen": "2026-11-05",
-      "last_updated": "2026-11-05",
-      "papers": [],
-      "lead_figure": null,
-      "lead_figure_arxiv_id": null,
-      "canonical_t0": null,
-      "best_redshift": null,
-      "has_redshift_conflict": false,
-      "multi_messenger": [],
-      "gcn_aliases_label": null,
-      "canonical_t0_label": null,
-      "best_redshift_label": null,
-      "multi_messenger_badges": [],
-      "gcn_circular_count": 3,
-      "gcn_figure_path": null,
-      "gcn_aliases": [],
-      "gcn_slug": "grb-261103a",
       "gcn_status": "active"
     },
     {
@@ -900,76 +1042,6 @@
       ],
       "gcn_slug": "grb-221009a",
       "gcn_status": "archived"
-    },
-    {
-      "event_id": "GRB 261026A",
-      "event_type": "GRB",
-      "tags": [
-        "Transient Surveillance",
-        "GCN Circulars",
-        "GRB"
-      ],
-      "heat_score": 19.5,
-      "paper_count": 0,
-      "headline": "GRB 261026A 空间与地面望远镜全波段应急协同追踪",
-      "narrative": "已汇聚 NASA GCN Circulars 快速通报 17 份。红移 待确定，触发时刻 T0: 2026-10-26 06:09:37 UTC (SVOM/ECLAIRs)。多波段光变曲线与早期测光点已完成零同质化聚合。",
-      "first_seen": "2026-10-26",
-      "last_updated": "2026-10-30",
-      "papers": [],
-      "lead_figure": null,
-      "lead_figure_arxiv_id": null,
-      "canonical_t0": {
-        "instrument": "SVOM/ECLAIRs",
-        "utc_iso": "2026-10-26T06:09:37.680Z",
-        "circular_id": 46068
-      },
-      "best_redshift": null,
-      "has_redshift_conflict": false,
-      "multi_messenger": [],
-      "gcn_aliases_label": null,
-      "canonical_t0_label": "2026-10-26 06:09:37 UTC (SVOM/ECLAIRs)",
-      "best_redshift_label": null,
-      "multi_messenger_badges": [],
-      "gcn_circular_count": 17,
-      "gcn_figure_path": "/gcn-figures/grb-261026a.png",
-      "gcn_aliases": [],
-      "gcn_slug": "grb-261026a",
-      "gcn_status": "active"
-    },
-    {
-      "event_id": "GRB 261024D",
-      "event_type": "GRB",
-      "tags": [
-        "Transient Surveillance",
-        "GCN Circulars",
-        "GRB"
-      ],
-      "heat_score": 19.5,
-      "paper_count": 0,
-      "headline": "GRB 261024D 空间与地面望远镜全波段应急协同追踪",
-      "narrative": "已汇聚 NASA GCN Circulars 快速通报 7 份。红移 待确定，触发时刻 T0: 2026-10-24 21:33:06 UTC (Konus-Wind)。多波段光变曲线与早期测光点已完成零同质化聚合。",
-      "first_seen": "2026-10-24",
-      "last_updated": "2026-10-30",
-      "papers": [],
-      "lead_figure": null,
-      "lead_figure_arxiv_id": null,
-      "canonical_t0": {
-        "instrument": "Konus-Wind",
-        "utc_iso": "2026-10-24T21:33:06.850Z",
-        "circular_id": 46040
-      },
-      "best_redshift": null,
-      "has_redshift_conflict": false,
-      "multi_messenger": [],
-      "gcn_aliases_label": null,
-      "canonical_t0_label": "2026-10-24 21:33:06 UTC (Konus-Wind)",
-      "best_redshift_label": null,
-      "multi_messenger_badges": [],
-      "gcn_circular_count": 7,
-      "gcn_figure_path": null,
-      "gcn_aliases": [],
-      "gcn_slug": "grb-261024d",
-      "gcn_status": "active"
     },
     {
       "event_id": "GW230729",
@@ -2937,6 +3009,41 @@
       "gcn_aliases": [],
       "gcn_slug": null,
       "gcn_status": null
+    },
+    {
+      "event_id": "GRB 261026A",
+      "event_type": "GRB",
+      "tags": [
+        "Transient Surveillance",
+        "GCN Circulars",
+        "GRB"
+      ],
+      "heat_score": 6.5,
+      "paper_count": 0,
+      "headline": "GRB 261026A 空间与地面望远镜全波段应急协同追踪",
+      "narrative": "已汇聚 NASA GCN Circulars 快速通报 17 份。红移 待确定，触发时刻 T0: 2026-10-26 06:09:37 UTC (SVOM/ECLAIRs)。多波段光变曲线与早期测光点已完成零同质化聚合。",
+      "first_seen": "2026-10-26",
+      "last_updated": "2026-10-30",
+      "papers": [],
+      "lead_figure": null,
+      "lead_figure_arxiv_id": null,
+      "canonical_t0": {
+        "instrument": "SVOM/ECLAIRs",
+        "utc_iso": "2026-10-26T06:09:37.680Z",
+        "circular_id": 46068
+      },
+      "best_redshift": null,
+      "has_redshift_conflict": false,
+      "multi_messenger": [],
+      "gcn_aliases_label": null,
+      "canonical_t0_label": "2026-10-26 06:09:37 UTC (SVOM/ECLAIRs)",
+      "best_redshift_label": null,
+      "multi_messenger_badges": [],
+      "gcn_circular_count": 17,
+      "gcn_figure_path": "/gcn-figures/grb-261026a.png",
+      "gcn_aliases": [],
+      "gcn_slug": "grb-261026a",
+      "gcn_status": "archived"
     },
     {
       "event_id": "GRB 260924A",

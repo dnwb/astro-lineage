@@ -3,7 +3,11 @@
   "slug": "grb-261103a",
   "aliases": [],
   "event_type": "GRB",
-  "canonical_t0": null,
+  "canonical_t0": {
+    "instrument": "SVOM/ECLAIRs",
+    "utc_iso": "2026-11-03T06:51:11.000Z",
+    "circular_id": 46176
+  },
   "best_redshift": null,
   "has_redshift_conflict": false,
   "redshifts": [],
@@ -14,8 +18,8 @@
   "feature_zoom": {
     "enabled": false
   },
-  "circular_count": 3,
-  "last_circular_id": 46157,
-  "last_updated_utc": "2026-11-05T13:48:57.901Z",
+  "circular_count": 5,
+  "last_circular_id": 46187,
+  "last_updated_utc": "2026-11-08T01:56:52.466Z",
   "status": "active"
 }

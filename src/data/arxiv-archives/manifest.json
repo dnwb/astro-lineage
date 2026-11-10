@@ -1,25 +1,54 @@
 {
   "schema_version": "astrolineage-arxiv-archive-manifest-v1",
-  "updated_at": "2026-11-09T18:42:31.321Z",
+  "updated_at": "2026-11-10T18:45:48.295Z",
   "total_weeks": 10,
-  "total_daily_editions": 45,
+  "total_daily_editions": 46,
   "latest_week_id": "2026-W46",
-  "latest_daily_date": "2026-11-08",
+  "latest_daily_date": "2026-11-09",
   "weeks": [
     {
       "week_id": "2026-W46",
-      "title": "高能天体物理 arXiv 每周学术脉络 (2026-W46)",
+      "title": "Weekly Scientific Lineage · 2026-W46",
       "date_range": "2026-11-09 ~ 2026-11-15",
-      "has_weekly_summary": false,
-      "executive_summary": "本周暂未生成宏观脉络总结。",
+      "has_weekly_summary": true,
+      "executive_summary": "This week traces the causal chain from core-collapse mass loss and natal kicks, through neutrino-powered and fallback-fed jets, CSM-interaction radiation, and compact-binary gravitational-wave signatures, to FRB dispersion as a baryon probe and X-ray timing/polarization as an accretion-geometry diagnostic.\n- **Black-hole binary natal kicks**: arXiv:2611.08604 demonstrated that asymmetric fallback (the tug-boat mechanism) can raise or suppress kicks relative to the symmetric case, with $v_{\\rm Tug}\\sim 2$ at high $E_{\\rm SN}$ for $28\\,M_\\odot$ and $34\\,M_\\odot$ progenitors and $v_{\\rm Tug}\\sim 0.2$ at low energy, yet even $v_{\\rm kick}\\sim 1000\\,\\mathrm{km\\,s^{-1}}$ retro-orbital kicks do not persistently produce $\\chi_{\\rm eff}<0$; post-SN semi-major axes match instantaneous mass loss to $\\le 10\\%$ while eccentricities deviate by up to $\\sim 60\\%$, shifting merger times through $\\frac{dE}{dt}\\propto a^{-5}f(e)$.\n- **Neutrino annihilation and jet fuel**: arXiv:2611.08742 found that equipartition flavour conversion cuts $\\nu\\bar\\nu\\to e^+e^-$ deposition by $54\\%$ in flat space but raises it by $+11\\%$ in Kerr spacetime with $a=0.99$, because cross pairs between an inner ring and outer disc are amplified by $6.3\\text{--}7.4\\times$ and supply $0.77$ of the Kerr deposition, with $50\\%$ of $\\dot{E}_\\infty$ from $r<10M$. arXiv:2611.08595 argued that mean-field quantum kinetic equations emerge only for large $N$ ($N\\gtrsim 300$ for $\\nu$-$\\nu$), while magnetized wavepacket overlap can entangle $\\sim 10^{17}$ neutrinos.\n- **Hydrogen-rich SLSNe and CSM**: arXiv:2611.10140 showed that $105/106$ ZTF hydrogen-rich SLSNe are narrow-line SLSNe-IIn, with median $L_{\\mathrm{H}\\alpha}=2.6\\times 10^{41}\\,\\mathrm{erg\\,s^{-1}}$ and inferred $\\dot{M}\\sim 0.028\\text{--}0.30\\,M_\\odot\\,\\mathrm{yr^{-1}}$ at $v_{\\rm CSM}=100\\,\\mathrm{km\\,s^{-1}}$ and $\\epsilon=0.5$, and that only $\\sim 6\\%$ resemble Ia-CSM.\n- **FRB dispersion and galaxy halos**: arXiv:2611.12860 measured a mean extragalactic DM excess of $119\\pm 44\\,\\mathrm{pc\\,cm^{-3}}$ ($\\sim 2.6\\sigma$) inside one virial radius for $D_L\\le 50\\,\\mathrm{Mpc}$, with a tentative decline versus impact parameter and a CGM-like $n_e\\propto r^{-3\\beta}$ ($\\beta=0.68^{+0.15}_{-0.16}$), while large-scale structure contributes only $\\sim 14\\pm 39\\,\\mathrm{pc\\,cm^{-3}}$.\n- **BNS jets, tides, and hierarchical mergers**: arXiv:2611.09216 found that quasi-spherical fallback can feed short-GRB extended emission only if the secondary jet is not choked ($\\theta_j\\le 0.3\\,\\mathrm{rad}$ and $f_{\\rm circ}\\gtrsim 0.08$), whereas diffusion-corrected $r$-process heating yields merely $L_{\\rm EE}\\sim 10^{43}\\text{--}10^{44}\\,\\mathrm{erg\\,s^{-1}}$. arXiv:2611.08642 extracted a GR-rescaled tidal GW excess with $\\xi_{\\mathrm{N}\\to\\mathrm{GR}}\\simeq 0.200$ using $\\sim 10^4$ SPH particles. arXiv:2611.09338 reported a Bayes factor $\\mathcal{B}=110$ for a hierarchical triple interpretation of GW230729_082317 and GW231118_005626, but posterior odds only $\\mathcal{O}\\approx 0.1$ after the low prior.\n- **Accretion timing, polarization, and magnetic CVs**: arXiv:2611.08769 and arXiv:2611.09635 derived the cross-arm, hypotenuse, and harmonic bicoherence of BH X-ray binary QPOs from multiplicative or bilinear coupling, including an exact biphase reversal $\\phi_{\\rm bi}^{\\rm ridge}\\simeq -\\phi_{\\rm bi}^{\\rm hypot}$. arXiv:2611.08882 favored a wedge corona and $a>0.96$ for Cygnus X-1 from jet-parallel polarization. arXiv:2611.09556 measured $F_{\\rm bb}/F_{\\rm plasma}>500$ in AR UMa, incompatible with a steady shock soft-to-hard ratio $\\approx 0.5$.",
       "statistics": {
-        "total_analyzed": 57,
-        "must_read_count": 2,
-        "worth_knowing_count": 12,
-        "skip_count": 43
+        "total_analyzed": 134,
+        "must_read_count": 4,
+        "worth_knowing_count": 24,
+        "skip_count": 106
       },
-      "top_picks_count": 0,
+      "top_picks_count": 10,
       "days": [
+        {
+          "date": "2026-11-09",
+          "weekday": "Mon",
+          "week_id": "2026-W46",
+          "batch_id": "announcement-2026-11-09",
+          "total_papers": 77,
+          "analyzed_count": 77,
+          "must_read_count": 2,
+          "worth_knowing_count": 12,
+          "skip_count": 63,
+          "pending_count": 0,
+          "brief_status": "ready",
+          "brief_intro": "Featured reading: \"Probing circumstellar interaction with spectroscopy of ZTF hydrogen-rich superluminous supernovae\" and 13 other key developments.",
+          "highlights": [
+            {
+              "arxiv_id": "2611.10140",
+              "priority": "must_read",
+              "title": "Probing circumstellar interaction with spectroscopy of ZTF hydrogen-rich superluminous supernovae",
+              "reason": "This ZTF spectroscopic census of hydrogen-rich SLSNe directly constrains circumstellar interaction, pre-explosion mass loss, and possible Ia-CSM contamination, which are central to supernova-engine and CSM studies."
+            },
+            {
+              "arxiv_id": "2611.12860",
+              "priority": "must_read",
+              "title": "Search for a Dispersion Measure Excess Toward Nearby Galaxy Halos Using Fast Radio Bursts from the Second CHIME/FRB Baseband Catalog",
+              "reason": "This directly constrains the circumgalactic contribution to FRB dispersion measure using the second CHIME/FRB baseband catalog, including a radial and mass-dependent DM stack relevant to FRB sightline environments."
+            }
+          ],
+          "data_file": "daily/2026-11-09.json"
+        },
         {
           "date": "2026-11-08",
           "weekday": "Sun",
@@ -50,7 +79,7 @@
           "data_file": "daily/2026-11-08.json"
         }
       ],
-      "weekly_data_file": null
+      "weekly_data_file": "weekly/2026-W46.json"
     },
     {
       "week_id": "2026-W45",

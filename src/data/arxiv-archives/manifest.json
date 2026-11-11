@@ -1,25 +1,60 @@
 {
   "schema_version": "astrolineage-arxiv-archive-manifest-v1",
-  "updated_at": "2026-11-10T18:45:48.295Z",
+  "updated_at": "2026-11-11T18:50:20.535Z",
   "total_weeks": 10,
-  "total_daily_editions": 46,
+  "total_daily_editions": 47,
   "latest_week_id": "2026-W46",
-  "latest_daily_date": "2026-11-09",
+  "latest_daily_date": "2026-11-10",
   "weeks": [
     {
       "week_id": "2026-W46",
       "title": "Weekly Scientific Lineage · 2026-W46",
       "date_range": "2026-11-09 ~ 2026-11-15",
       "has_weekly_summary": true,
-      "executive_summary": "This week traces the causal chain from core-collapse mass loss and natal kicks, through neutrino-powered and fallback-fed jets, CSM-interaction radiation, and compact-binary gravitational-wave signatures, to FRB dispersion as a baryon probe and X-ray timing/polarization as an accretion-geometry diagnostic.\n- **Black-hole binary natal kicks**: arXiv:2611.08604 demonstrated that asymmetric fallback (the tug-boat mechanism) can raise or suppress kicks relative to the symmetric case, with $v_{\\rm Tug}\\sim 2$ at high $E_{\\rm SN}$ for $28\\,M_\\odot$ and $34\\,M_\\odot$ progenitors and $v_{\\rm Tug}\\sim 0.2$ at low energy, yet even $v_{\\rm kick}\\sim 1000\\,\\mathrm{km\\,s^{-1}}$ retro-orbital kicks do not persistently produce $\\chi_{\\rm eff}<0$; post-SN semi-major axes match instantaneous mass loss to $\\le 10\\%$ while eccentricities deviate by up to $\\sim 60\\%$, shifting merger times through $\\frac{dE}{dt}\\propto a^{-5}f(e)$.\n- **Neutrino annihilation and jet fuel**: arXiv:2611.08742 found that equipartition flavour conversion cuts $\\nu\\bar\\nu\\to e^+e^-$ deposition by $54\\%$ in flat space but raises it by $+11\\%$ in Kerr spacetime with $a=0.99$, because cross pairs between an inner ring and outer disc are amplified by $6.3\\text{--}7.4\\times$ and supply $0.77$ of the Kerr deposition, with $50\\%$ of $\\dot{E}_\\infty$ from $r<10M$. arXiv:2611.08595 argued that mean-field quantum kinetic equations emerge only for large $N$ ($N\\gtrsim 300$ for $\\nu$-$\\nu$), while magnetized wavepacket overlap can entangle $\\sim 10^{17}$ neutrinos.\n- **Hydrogen-rich SLSNe and CSM**: arXiv:2611.10140 showed that $105/106$ ZTF hydrogen-rich SLSNe are narrow-line SLSNe-IIn, with median $L_{\\mathrm{H}\\alpha}=2.6\\times 10^{41}\\,\\mathrm{erg\\,s^{-1}}$ and inferred $\\dot{M}\\sim 0.028\\text{--}0.30\\,M_\\odot\\,\\mathrm{yr^{-1}}$ at $v_{\\rm CSM}=100\\,\\mathrm{km\\,s^{-1}}$ and $\\epsilon=0.5$, and that only $\\sim 6\\%$ resemble Ia-CSM.\n- **FRB dispersion and galaxy halos**: arXiv:2611.12860 measured a mean extragalactic DM excess of $119\\pm 44\\,\\mathrm{pc\\,cm^{-3}}$ ($\\sim 2.6\\sigma$) inside one virial radius for $D_L\\le 50\\,\\mathrm{Mpc}$, with a tentative decline versus impact parameter and a CGM-like $n_e\\propto r^{-3\\beta}$ ($\\beta=0.68^{+0.15}_{-0.16}$), while large-scale structure contributes only $\\sim 14\\pm 39\\,\\mathrm{pc\\,cm^{-3}}$.\n- **BNS jets, tides, and hierarchical mergers**: arXiv:2611.09216 found that quasi-spherical fallback can feed short-GRB extended emission only if the secondary jet is not choked ($\\theta_j\\le 0.3\\,\\mathrm{rad}$ and $f_{\\rm circ}\\gtrsim 0.08$), whereas diffusion-corrected $r$-process heating yields merely $L_{\\rm EE}\\sim 10^{43}\\text{--}10^{44}\\,\\mathrm{erg\\,s^{-1}}$. arXiv:2611.08642 extracted a GR-rescaled tidal GW excess with $\\xi_{\\mathrm{N}\\to\\mathrm{GR}}\\simeq 0.200$ using $\\sim 10^4$ SPH particles. arXiv:2611.09338 reported a Bayes factor $\\mathcal{B}=110$ for a hierarchical triple interpretation of GW230729_082317 and GW231118_005626, but posterior odds only $\\mathcal{O}\\approx 0.1$ after the low prior.\n- **Accretion timing, polarization, and magnetic CVs**: arXiv:2611.08769 and arXiv:2611.09635 derived the cross-arm, hypotenuse, and harmonic bicoherence of BH X-ray binary QPOs from multiplicative or bilinear coupling, including an exact biphase reversal $\\phi_{\\rm bi}^{\\rm ridge}\\simeq -\\phi_{\\rm bi}^{\\rm hypot}$. arXiv:2611.08882 favored a wedge corona and $a>0.96$ for Cygnus X-1 from jet-parallel polarization. arXiv:2611.09556 measured $F_{\\rm bb}/F_{\\rm plasma}>500$ in AR UMa, incompatible with a steady shock soft-to-hard ratio $\\approx 0.5$.",
+      "executive_summary": "This week’s transient chain runs from core-collapse binary assembly and neutrino energy deposition, through jet survival and CSM shock radiation, to FRB dispersion, ultrahigh-energy neutrinos, and X-ray timing diagnostics of the accretion flow.\n- **Black-hole binary assembly**: arXiv:2611.08604 showed that asymmetric fallback (the Tug-boat) can raise or suppress natal kicks ($v_{\\rm Tug}\\sim 2$ or $\\sim 0.2$) but that even $v_{\\rm kick}\\sim 1000\\,\\mathrm{km\\,s^{-1}}$ does not persistently produce $\\chi_{\\rm eff}<0$, while eccentricities deviate from the instantaneous mass-loss approximation by up to $\\sim 60\\%$.\n- **Neutrino engines for jets**: arXiv:2611.08742 found that equipartition flavour conversion cuts $\\nu\\bar\\nu$ annihilation by $54\\%$ in flat space but raises it by $+11\\%$ in Kerr spacetime ($a=0.99$) because cross pairs are amplified by $6.3$–$7.4\\times$; arXiv:2611.08595 argued that mean-field quantum kinetic equations emerge only for large $N$ ($N\\gtrsim 300$ for $\\nu$–$\\nu$).\n- **GRB jets, flares, and the MeV line**: arXiv:2611.13350 separated early–narrow ($\\sim 80\\%$) and late–wide ($\\sim 20\\%$) X-ray flare populations with distinct $L$–$t_{\\rm pk}$ slopes; arXiv:2611.14363 ruled out single-scattering line-seed inverse-Compton models for the MeV feature of GRB 221009A, with compact line-photon budgets short by factors $\\sim 4$–$9$; arXiv:2611.09216 found that $r$-process heating supplies only $L_{\\rm EE}\\sim 10^{43}$–$10^{44}\\,\\mathrm{erg\\,s^{-1}}$ and that polar fallback chokes secondary jets unless $f_{\\rm circ}\\gtrsim 0.08$ for $\\theta_j\\le 0.3\\,\\mathrm{rad}$.\n- **Superluminous supernovae and CSM**: arXiv:2611.10140 showed that 105 of 106 hydrogen-rich SLSNe are narrow-line SLSNe-IIn, with $\\dot{M}\\sim 0.028$–$0.30\\,M_\\odot\\,\\mathrm{yr^{-1}}$ and only $\\sim 6\\%$ Ia-CSM-like, so high luminosity plus narrow Balmer lines is not a unique core-collapse tag.\n- **FRB dispersion environments**: arXiv:2611.12860 measured a foreground-halo DM excess of $119\\pm 44\\,\\mathrm{pc\\,cm^{-3}}$ ($\\sim 2.6\\sigma$) inside $D_L\\le 50\\,\\mathrm{Mpc}$ and one virial radius, with a CGM-like decline in impact parameter.\n- **Ultrahigh-energy neutrinos and cosmic rays**: arXiv:2611.14350 reported zero array-wide ARA events against $0.13\\pm 0.01$ background and the strongest $90\\%$ CL diffuse limit over $50$–$1000\\,\\mathrm{EeV}$; arXiv:2611.09343 argued that torus-stripped ejected nuclei let UFO shocks reach $E\\gtrsim 10^{19}\\,\\mathrm{eV}$.\n- **Compact-object X-ray timing (support wing)**: arXiv:2611.08882 favoured a wedge corona and $a>0.96$ for Cyg X-1 from jet-aligned polarization, while arXiv:2611.08769 and arXiv:2611.09635 tied QPO bicoherence ridges and hypotenuses to phase-locked multiplicative coupling rather than intrinsic nonlinearity.",
       "statistics": {
-        "total_analyzed": 134,
-        "must_read_count": 4,
-        "worth_knowing_count": 24,
-        "skip_count": 106
+        "total_analyzed": 202,
+        "must_read_count": 7,
+        "worth_knowing_count": 35,
+        "skip_count": 160
       },
       "top_picks_count": 10,
       "days": [
+        {
+          "date": "2026-11-10",
+          "weekday": "Tue",
+          "week_id": "2026-W46",
+          "batch_id": "announcement-2026-11-10",
+          "total_papers": 68,
+          "analyzed_count": 68,
+          "must_read_count": 3,
+          "worth_knowing_count": 11,
+          "skip_count": 54,
+          "pending_count": 0,
+          "brief_status": "ready",
+          "brief_intro": "Featured reading: \"Early--Narrow and Late--Wide Populations of GRB X-ray Flares\" and 13 other key developments.",
+          "highlights": [
+            {
+              "arxiv_id": "2611.13350",
+              "priority": "must_read",
+              "title": "Early--Narrow and Late--Wide Populations of GRB X-ray Flares",
+              "reason": "This Swift-XRT population study separates early–narrow and late–wide GRB X-ray flares and tests prolonged accretion against external-shock variability, directly constraining compact-object central engines and relativistic outflows."
+            },
+            {
+              "arxiv_id": "2611.14350",
+              "priority": "must_read",
+              "title": "New Constraints on the Ultrahigh Energy Neutrino Flux from the First Array-Wide Search with the Askaryan Radio Array",
+              "reason": "This first array-wide ARA diffuse search is directly relevant to ultrahigh-energy neutrino and UHECR-source studies: zero events set the leading flux limit at $50$–$1000\\,\\mathrm{EeV}$ and exclude some trans-GZK proton source models."
+            },
+            {
+              "arxiv_id": "2611.14363",
+              "priority": "must_read",
+              "title": "Spectral Constraints on Line-Seed Inverse-Compton Models for the MeV Feature in GRB 221009A",
+              "reason": "This paper quantitatively tests whether atomic and molecular line photons, inverse-Compton scattered in a relativistic outflow, can produce the evolving MeV feature of GRB 221009A, a direct constraint on jet radiation and dense circumstellar or molecular seed supply."
+            }
+          ],
+          "data_file": "daily/2026-11-10.json"
+        },
         {
           "date": "2026-11-09",
           "weekday": "Mon",

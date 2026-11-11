@@ -59,3 +59,8 @@ test("sync-recent-figures: collects figures with maxMb budget ceiling", async ()
   assert.ok(figuresCapped.size < figuresDefault.size, "Figures should be capped by smaller budget");
   assert.ok(figuresCapped.totalBytes <= 20 * 1024 * 1024 + 1024 * 1024);
 });
+
+test("sync-recent-figures: supports noUntrack option to prevent untracking historical figures", async () => {
+  const res = await syncRecentFiguresToGit({ weeks: 1, maxMb: 300, dryRun: true, noUntrack: true });
+  assert.equal(res.untrackedCount, 0, "noUntrack should ensure untrackedCount is 0");
+});

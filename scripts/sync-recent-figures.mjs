@@ -155,6 +155,7 @@ export async function syncRecentFiguresToGit({
   weeks = 7,
   maxMb = parseInt(process.env.SYNC_FIGURES_MAX_MB || "300", 10),
   dryRun = false,
+  noUntrack = false,
   projectRoot = fileURLToPath(new URL("..", import.meta.url)),
   ...restOptions
 } = {}) {
@@ -183,10 +184,17 @@ export async function syncRecentFiguresToGit({
   }
   const trackedSet = new Set(trackedFiles);
 
+  const allowUntrack =
+    !noUntrack &&
+    process.env.SYNC_FIGURES_NO_UNTRACK !== "true" &&
+    process.env.DISABLE_SYNC_FIGURES_UNTRACK !== "true";
+
   const toUntrack = [];
-  for (const tracked of trackedFiles) {
-    if (!allowedPaths.has(tracked)) {
-      toUntrack.push(tracked);
+  if (allowUntrack) {
+    for (const tracked of trackedFiles) {
+      if (!allowedPaths.has(tracked)) {
+        toUntrack.push(tracked);
+      }
     }
   }
 
@@ -256,6 +264,7 @@ if (process.argv[1] && process.argv[1].endsWith("sync-recent-figures.mjs")) {
   let maxMb = parseInt(process.env.SYNC_FIGURES_MAX_MB || "300", 10);
   let dryRun = false;
   let statusOnly = false;
+  let noUntrack = process.env.SYNC_FIGURES_NO_UNTRACK === "true";
 
   for (let i = 0; i < args.length; i++) {
     if (args[i] === "--weeks" && args[i + 1]) {
@@ -268,6 +277,8 @@ if (process.argv[1] && process.argv[1].endsWith("sync-recent-figures.mjs")) {
       dryRun = true;
     } else if (args[i] === "--status") {
       statusOnly = true;
+    } else if (args[i] === "--no-untrack") {
+      noUntrack = true;
     }
   }
 
@@ -276,7 +287,12 @@ if (process.argv[1] && process.argv[1].endsWith("sync-recent-figures.mjs")) {
       console.log(
         `[sync-recent-figures] 计算最近 ${weeks} 周论文图表同步窗口 (预算上限: ${maxMb} MB)...`
       );
-      const res = await syncRecentFiguresToGit({ weeks, maxMb, dryRun: dryRun || statusOnly });
+      const res = await syncRecentFiguresToGit({
+        weeks,
+        maxMb,
+        dryRun: dryRun || statusOnly,
+        noUntrack,
+      });
       console.log(
         `[sync-recent-figures] 活跃周次 (${res.recentWeeks.length} 周): ${res.recentWeeks.join(", ")}`
       );

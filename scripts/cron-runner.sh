@@ -72,8 +72,8 @@ sync_git_data() {
       return 0
     fi
 
-    # 维护最近 7 周图表滑动窗口暂存入库，解绑过期历史图片 (预算上限 300MB)
-    node scripts/sync-recent-figures.mjs --weeks "${SYNC_FIGURES_WEEKS:-7}" --max-mb "${SYNC_FIGURES_MAX_MB:-300}" || true
+    # 暂时停用滑动窗口解绑历史图片 (保留更早以前的图片，避免 git rm --cached 解绑历史图)
+    node scripts/sync-recent-figures.mjs --no-untrack --weeks "${SYNC_FIGURES_WEEKS:-7}" --max-mb "${SYNC_FIGURES_MAX_MB:-300}" || true
 
     if [ -n "$(git status --porcelain src/data/)" ]; then
       git add src/data/

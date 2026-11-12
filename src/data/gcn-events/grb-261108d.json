@@ -3,19 +3,52 @@
   "slug": "grb-261108d",
   "aliases": [],
   "event_type": "GRB",
-  "canonical_t0": null,
+  "canonical_t0": {
+    "instrument": "SVOM/ECLAIRs",
+    "utc_iso": "2026-11-10T07:52:29.000Z",
+    "circular_id": 46211
+  },
   "best_redshift": null,
   "has_redshift_conflict": false,
   "redshifts": [],
-  "photometry_points": [],
+  "photometry_points": [
+    {
+      "circular_id": 46211,
+      "dt_hours": 0.335,
+      "band": "r",
+      "mag": 22.13,
+      "mag_err": 0.09,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "AB",
+      "telescope": "Unknown",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 46211,
+      "dt_hours": 0.339,
+      "band": "i",
+      "mag": 21.56,
+      "mag_err": 0.11,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "AB",
+      "telescope": "Unknown",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    }
+  ],
   "xray_points": [],
   "radio_points": [],
   "multi_messenger": [],
   "feature_zoom": {
     "enabled": false
   },
-  "circular_count": 2,
-  "last_circular_id": 46210,
-  "last_updated_utc": "2026-11-09T19:42:59.940Z",
+  "circular_count": 3,
+  "last_circular_id": 46211,
+  "last_updated_utc": "2026-11-10T04:32:14.211Z",
   "status": "active"
 }

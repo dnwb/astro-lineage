@@ -784,13 +784,17 @@
       "primary_id": "GRB 261108D",
       "aliases": [],
       "event_type": "GRB",
-      "canonical_t0": null,
+      "canonical_t0": {
+        "instrument": "SVOM/ECLAIRs",
+        "utc_iso": "2026-11-10T07:52:29.000Z",
+        "circular_id": 46211
+      },
       "best_redshift": null,
-      "circular_count": 2,
-      "last_updated_utc": "2026-11-09T19:42:59.940Z",
+      "circular_count": 3,
+      "last_updated_utc": "2026-11-10T04:32:14.211Z",
       "status": "active",
-      "has_photometry": false,
-      "figure_path": null
+      "has_photometry": true,
+      "figure_path": "/gcn-figures/grb-261108d.png"
     },
     "grb-261108c": {
       "slug": "grb-261108c",

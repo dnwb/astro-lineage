@@ -239,3 +239,28 @@ test("architecture-hygiene: domain and lib modules must not resolve public/ via 
     );
   }
 });
+
+test("architecture-hygiene: agent egress endpoints must be dynamically served from src/pages and forbid static overrides in public/", () => {
+  const agentEndpoints = [
+    { staticPath: "public/llms.txt", dynamicPath: "src/pages/llms.txt.ts" },
+    { staticPath: "public/llms-full.txt", dynamicPath: "src/pages/llms-full.txt.ts" },
+    { staticPath: "public/openapi.yaml", dynamicPath: "src/pages/openapi.yaml.ts" },
+  ];
+
+  for (const { staticPath, dynamicPath } of agentEndpoints) {
+    const fullStaticPath = join(projectRoot, staticPath);
+    const fullDynamicPath = join(projectRoot, dynamicPath);
+
+    assert.equal(
+      existsSync(fullStaticPath),
+      false,
+      `Found static file '${staticPath}'. Agent egress endpoints must be dynamically routed via '${dynamicPath}' to resolve dynamic base URLs per environment and prevent static override regressions.`
+    );
+
+    assert.equal(
+      existsSync(fullDynamicPath),
+      true,
+      `Missing dynamic route endpoint '${dynamicPath}'. Expected dynamic endpoint for agent egress.`
+    );
+  }
+});

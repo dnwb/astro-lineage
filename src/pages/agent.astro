@@ -3,9 +3,11 @@ import SiteNav from "../components/SiteNav.astro";
 import { loadSiteConfig } from "../lib/site-config";
 import "../styles/global.css";
 import scientificEvents from "../data/scientific-events.json";
+import { getAgentEgressBaseUrl } from "../domain/agent-egress.mjs";
 
 const site = loadSiteConfig();
 const topEvents = (scientificEvents.events || []).slice(0, 5);
+const egressBaseUrl = getAgentEgressBaseUrl();
 ---
 
 <!doctype html>
@@ -118,13 +120,13 @@ const topEvents = (scientificEvents.events || []).slice(0, 5);
         <div class="agent-guide-block">
           <h3>1. Cursor / Claude Code Integration</h3>
           <p>Reference <code>/llms.txt</code> directly in prompts to provide the assistant with frontier literature context:</p>
-          <pre class="agent-code-box"><code>@http://localhost:4321/llms.txt Summarize recent magnetar model constraints from the latest Must Read papers</code></pre>
+          <pre class="agent-code-box"><code>@{egressBaseUrl}/llms.txt Summarize recent magnetar model constraints from the latest Must Read papers</code></pre>
 
           <h3>2. Python / Autonomous Agent API Call</h3>
           <pre class="agent-code-box"><code>{`import urllib.request, json
 
 # Fetch today's must-read papers and evidence chain
-with urllib.request.urlopen("http://localhost:4321/api/v1/daily.json") as resp:
+with urllib.request.urlopen("${egressBaseUrl}/api/v1/daily.json") as resp:
     data = json.loads(resp.read().decode())
     must_reads = data["groups"]["must_read"]
     for paper in must_reads:
@@ -132,8 +134,8 @@ with urllib.request.urlopen("http://localhost:4321/api/v1/daily.json") as resp:
         print(f"  Result: {paper['analysis']['analysis']['result']}")`}</code></pre>
 
           <h3>3. cURL CLI Quick Test</h3>
-          <pre class="agent-code-box"><code>curl -s http://localhost:4321/api/v1/daily.json | jq .
-curl -s http://localhost:4321/api/v1/events.json | jq .</code></pre>
+          <pre class="agent-code-box"><code>curl -s {egressBaseUrl}/api/v1/daily.json | jq .
+curl -s {egressBaseUrl}/api/v1/events.json | jq .</code></pre>
         </div>
       </section>
 

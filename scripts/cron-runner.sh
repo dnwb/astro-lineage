@@ -51,6 +51,37 @@ record_current_build() {
   node scripts/notebooklm-sync.mjs --export "${BUILD_ID}" || DELIVERY_FAILED=1
 }
 
+finish_task() {
+  local end_timestamp
+  end_timestamp="$(TZ="Asia/Shanghai" date '+%Y-%m-%d %H:%M:%S CST')"
+  if [ "${DELIVERY_FAILED}" -ne 0 ]; then
+    echo "[$end_timestamp] ✗ AstroLineage Task ${TASK}: delivery or git sync incomplete; see stderr and .cache/notebooklm/delivery.json / status.json." >&2
+    exit 1
+  fi
+  echo "[$end_timestamp] AstroLineage Task ${TASK} completed successfully (QQ proactive delivery remains waiting_permission)."
+  echo "========================================================"
+  exit 0
+}
+
+sync_with_origin_master() {
+  if ! git fetch origin master; then
+    echo "[cron-runner] ✗ 错误: git fetch origin master 失败，无法同步远程 master" >&2
+    return 1
+  fi
+
+  local behind_count
+  behind_count="$(git rev-list --count HEAD..origin/master 2>/dev/null || echo 0)"
+  if [ "${behind_count}" -gt 0 ]; then
+    echo "[cron-runner] 本地 master 落后远程 origin/master ${behind_count} 个提交，正在执行 rebase..."
+    if ! git rebase origin/master; then
+      echo "[cron-runner] ✗ 错误: git rebase origin/master 发生冲突，已执行 git rebase --abort 并保留本地提交" >&2
+      git rebase --abort || true
+      return 1
+    fi
+  fi
+  return 0
+}
+
 sync_git_data() {
   if [ "${CRON_GIT_PUSH:-false}" = "true" ]; then
     echo "[cron-runner] 检查并同步数据变更与最近 7 周图表至 Git 仓库以触发 Cloudflare 部署..."
@@ -97,12 +128,19 @@ sync_git_data() {
     # 检查是否有待推送的提交（含本次提交或历史未推送成功的提交）
     UNPUSHED="$(git log origin/master..HEAD --oneline 2>/dev/null || true)"
     if [ -n "${UNPUSHED}" ]; then
-      echo "[cron-runner] 检测到待同步提交，正在推送到远程 master 分支..."
-      if git push origin master:master; then
+      echo "[cron-runner] 检测到待同步提交，正在同步远程 master 并推送..."
+      if ! sync_with_origin_master; then
+        DELIVERY_FAILED=1
+      elif git push origin master:master; then
         echo "[cron-runner] ✓ 数据与图表已成功推送到远程 master 分支"
       else
-        echo "[cron-runner] ⚠️ 警告: 推送数据至远程 master 分支失败，请检查网络连接或 Git 凭据" >&2
-        DELIVERY_FAILED=1
+        echo "[cron-runner] ⚠️ 警告: 首次推送失败，正在重新 fetch + rebase 后重试一次..." >&2
+        if sync_with_origin_master && git push origin master:master; then
+          echo "[cron-runner] ✓ 重试成功：数据与图表已推送到远程 master 分支"
+        else
+          echo "[cron-runner] ✗ 错误: 重试推送至远程 master 分支仍失败，本地提交已保留" >&2
+          DELIVERY_FAILED=1
+        fi
       fi
     else
       echo "[cron-runner] 暂无新数据需要推送到远程 Git 仓库"
@@ -131,7 +169,7 @@ case "${TASK}" in
     if [ "${REFRESHED_COUNT}" -eq 0 ] && [ "${DIRTY_WEEKS_COUNT}" -eq 0 ]; then
       echo "[cron-runner] ✓ 本轮调度器无新论文批次且无脏周积压，短路跳过周报生成、暂现源聚类与全量构建。"
       sync_git_data
-      exit 0
+      finish_task
     fi
 
     echo "[cron-runner] 步骤 1.5/4: 检查每周学术脉络总结与脏周级联更新..."
@@ -268,10 +306,4 @@ case "${TASK}" in
     ;;
 esac
 
-END_TIMESTAMP="$(TZ="Asia/Shanghai" date '+%Y-%m-%d %H:%M:%S CST')"
-if [ "${DELIVERY_FAILED}" -ne 0 ]; then
-  echo "[$END_TIMESTAMP] AstroLineage Task ${TASK}: downstream target incomplete; see .cache/notebooklm/delivery.json and status.json."
-  exit 1
-fi
-echo "[$END_TIMESTAMP] AstroLineage Task ${TASK} completed successfully (QQ proactive delivery remains waiting_permission)."
-echo "========================================================"
+finish_task

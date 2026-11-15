@@ -122,7 +122,7 @@ journalctl --user -u astrolineage-qq-bot.service -f
 journalctl --user -u astrolineage-bot.service -f
 
 # 查看每日定时流水线日志
-tail -f /tmp/arxiv-task.log
+tail -f ~/.local/state/astrolineage/arxiv-task.log
 ```
 
 ---

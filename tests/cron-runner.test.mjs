@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { copyFile, mkdir, readFile } from "node:fs/promises";
+import { copyFile, mkdir, readFile, writeFile } from "node:fs/promises";
 import { spawnSync } from "node:child_process";
 import { resolve } from "node:path";
 import { createTemporaryWorkspace } from "./helpers/temporary-workspace.mjs";
@@ -147,5 +147,168 @@ CRON_GIT_PUSH=true bash "${resolve(path, "scripts/cron-runner.sh")}" sync-git
     gitCalls2.some((l) => l.includes("push")),
     false,
     "must not push when non-data files are modified"
+  );
+});
+
+function runGit(cwd, args) {
+  const res = spawnSync("git", args, { cwd, encoding: "utf8" });
+  assert.equal(res.status, 0, `git ${args.join(" ")} failed: ${res.stderr || res.stdout}`);
+  return res.stdout.trim();
+}
+
+async function setupBareAndTwoClones(t) {
+  const { path: root } = await createTemporaryWorkspace("astro-lineage-git-sync-", t);
+  const bare = resolve(root, "remote.git");
+  const dev = resolve(root, "other-dev");
+  const cron = resolve(root, "local-cron");
+
+  await mkdir(bare, { recursive: true });
+  runGit(bare, ["init", "--bare", "--initial-branch=master"]);
+
+  runGit(root, ["clone", bare, dev]);
+  runGit(dev, ["config", "user.name", "Dev"]);
+  runGit(dev, ["config", "user.email", "dev@example.com"]);
+  await writeFile(resolve(dev, "README.md"), "init\n", "utf8");
+  runGit(dev, ["add", "README.md"]);
+  runGit(dev, ["commit", "-m", "init"]);
+  runGit(dev, ["push", "-u", "origin", "master"]);
+
+  runGit(root, ["clone", bare, cron]);
+  runGit(cron, ["config", "user.name", "Cron"]);
+  runGit(cron, ["config", "user.email", "cron@example.com"]);
+  await mkdir(resolve(cron, "scripts"), { recursive: true });
+  await mkdir(resolve(cron, "src/data"), { recursive: true });
+  await copyFile(runner, resolve(cron, "scripts/cron-runner.sh"));
+  // Stub sync-recent-figures.mjs as a no-op so git status stays clean of code changes
+  await writeFile(resolve(cron, "scripts/sync-recent-figures.mjs"), "// noop\n", "utf8");
+  await writeFile(resolve(cron, ".gitignore"), ".cache/\n", "utf8");
+  await writeFile(resolve(cron, "src/data/.gitkeep"), "", "utf8");
+  runGit(cron, ["add", "scripts/", ".gitignore", "src/data/.gitkeep"]);
+  runGit(cron, ["commit", "-m", "add runner"]);
+  runGit(cron, ["push", "origin", "master"]);
+
+  runGit(dev, ["pull", "origin", "master"]);
+  return { root, bare, dev, cron };
+}
+
+test("sync_git_data rebases and pushes when origin/master advances with non-conflicting commits", async (t) => {
+  const { dev, cron } = await setupBareAndTwoClones(t);
+
+  // Remote advances by 2 commits (simulating PR #58, #59 merged on origin/master)
+  await writeFile(resolve(dev, "README.md"), "pr58\n", "utf8");
+  runGit(dev, ["add", "README.md"]);
+  runGit(dev, ["commit", "-m", "PR #58"]);
+  await writeFile(resolve(dev, "README.md"), "pr59\n", "utf8");
+  runGit(dev, ["add", "README.md"]);
+  runGit(dev, ["commit", "-m", "PR #59"]);
+  runGit(dev, ["push", "origin", "master"]);
+
+  // Local cron produces new data in src/data/
+  await mkdir(resolve(cron, "src/data"), { recursive: true });
+  await writeFile(resolve(cron, "src/data/edition.json"), '{"ok":true}\n', "utf8");
+
+  const res = spawnSync("bash", ["scripts/cron-runner.sh", "sync-git"], {
+    cwd: cron,
+    encoding: "utf8",
+    env: { ...process.env, CRON_GIT_PUSH: "true" },
+  });
+
+  assert.equal(res.status, 0, `expected exit 0, got ${res.status}:\n${res.stdout}\n${res.stderr}`);
+  const remoteHead = runGit(dev, ["ls-remote", "origin", "refs/heads/master"]).split(/\s+/)[0];
+  const localHead = runGit(cron, ["rev-parse", "HEAD"]);
+  assert.equal(localHead, remoteHead, "local HEAD should match origin/master after rebase+push");
+});
+
+async function setupConflictingDataChange(dev, cron) {
+  await mkdir(resolve(dev, "src/data"), { recursive: true });
+  await writeFile(resolve(dev, "src/data/shared.json"), '{"from":"remote"}\n', "utf8");
+  runGit(dev, ["add", "src/data/shared.json"]);
+  runGit(dev, ["commit", "-m", "remote data conflict"]);
+  runGit(dev, ["push", "origin", "master"]);
+
+  await writeFile(resolve(cron, "src/data/shared.json"), '{"from":"local"}\n', "utf8");
+}
+
+test("sync_git_data aborts rebase, preserves local commit, and exits 1 on conflict", async (t) => {
+  const { dev, cron } = await setupBareAndTwoClones(t);
+  await setupConflictingDataChange(dev, cron);
+
+  const res = spawnSync("bash", ["scripts/cron-runner.sh", "sync-git"], {
+    cwd: cron,
+    encoding: "utf8",
+    env: { ...process.env, CRON_GIT_PUSH: "true" },
+  });
+
+  assert.equal(res.status, 1, `expected exit 1 on rebase conflict, got ${res.status}`);
+  assert.match(res.stderr, /rebase --abort|冲突/u);
+  // Must not leave repo in mid-rebase or detached HEAD
+  assert.equal(runGit(cron, ["symbolic-ref", "--short", "HEAD"]), "master");
+  assert.equal(runGit(cron, ["status", "--porcelain"]), "");
+  const localContent = await readFile(resolve(cron, "src/data/shared.json"), "utf8");
+  assert.equal(localContent, '{"from":"local"}\n');
+});
+
+test("sync_git_data retries push once after fetch+rebase when first push fails", async (t) => {
+  const { root, dev, cron } = await setupBareAndTwoClones(t);
+
+  await writeFile(resolve(cron, "src/data/edition.json"), '{"ok":true}\n', "utf8");
+
+  const attemptFile = resolve(root, "push-attempts.txt");
+  const script = `
+git() {
+  if [[ "$1" == "push" ]]; then
+    local n=0
+    if [[ -f "${attemptFile}" ]]; then n=$(cat "${attemptFile}"); fi
+    n=$((n + 1))
+    printf '%s' "$n" > "${attemptFile}"
+    if [[ "$n" -eq 1 ]]; then
+      printf 'simulated push race\\n' >&2
+      return 1
+    fi
+  fi
+  command git "$@"
+}
+export -f git
+CRON_GIT_PUSH=true bash scripts/cron-runner.sh sync-git
+`;
+  const res = spawnSync("bash", ["-c", script], {
+    cwd: cron,
+    encoding: "utf8",
+  });
+
+  assert.equal(
+    res.status,
+    0,
+    `expected exit 0 after retry, got ${res.status}:\n${res.stdout}\n${res.stderr}`
+  );
+  assert.equal(await readFile(attemptFile, "utf8"), "2");
+  const remoteHead = runGit(dev, ["ls-remote", "origin", "refs/heads/master"]).split(/\s+/)[0];
+  const localHead = runGit(cron, ["rev-parse", "HEAD"]);
+  assert.equal(localHead, remoteHead);
+});
+
+test("auto short-circuit propagates DELIVERY_FAILED=1 from sync_git_data as exit 1", async (t) => {
+  const { dev, cron } = await setupBareAndTwoClones(t);
+  await setupConflictingDataChange(dev, cron);
+
+  const script = `
+node() {
+  if [[ "$1" == "-e" ]]; then
+    printf '0\\n'
+  fi
+  return 0
+}
+export -f node
+CRON_GIT_PUSH=true bash scripts/cron-runner.sh auto
+`;
+  const res = spawnSync("bash", ["-c", script], {
+    cwd: cron,
+    encoding: "utf8",
+  });
+
+  assert.equal(
+    res.status,
+    1,
+    `expected exit 1 when auto short-circuit hits git sync failure, got ${res.status}`
   );
 });

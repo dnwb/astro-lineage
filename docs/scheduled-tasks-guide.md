@@ -95,7 +95,7 @@ PROJECT_DIR=/home/long/astro-lineage
 CRON_TZ=Asia/Shanghai
 
 # 每日导读；周五自动追加周报。构建后独立同步频道及年度 NotebookLM。
-0 10 * * 1-5 /bin/bash /home/long/astro-lineage/scripts/cron-runner.sh auto >> /tmp/arxiv-task.log 2>&1
+0 10 * * 1-5 mkdir -p ~/.local/state/astrolineage && /bin/bash /home/long/astro-lineage/scripts/cron-runner.sh auto >> ~/.local/state/astrolineage/arxiv-task.log 2>&1
 ```
 
 #### 2. 腾讯频道发布联动
@@ -110,8 +110,7 @@ CRON_TZ=Asia/Shanghai
 
 - **查看当前生效的定时任务**：`crontab -l`
 - **编辑修改定时任务**：`crontab -e`
-- **查看每日任务执行日志**：`tail -f /tmp/arxiv-daily.log`
-- **查看每周总结执行日志**：`tail -f /tmp/arxiv-weekly.log`
+- **查看定时任务执行日志**：`tail -f ~/.local/state/astrolineage/arxiv-task.log`
 - **手动立即运行一次每日流程**：`bash scripts/cron-runner.sh daily`
 - **手动立即运行一次周报流程**：`bash scripts/cron-runner.sh weekly`
 

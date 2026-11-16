@@ -50,8 +50,8 @@ test("discovery identity keeps revisions independent and preserves all cross-lis
     revision: 2,
     title: "Versioned result",
     abstract: "An abstract.",
-    published: "2026-09-07T12:00:00Z",
-    updated: "2026-09-07T12:00:00Z",
+    published: "2026-09-14T12:00:00Z",
+    updated: "2026-09-14T12:00:00Z",
     authors: ["Author A"],
     url: "https://arxiv.org/abs/2609.00001v2",
     categories: ["astro-ph.HE", "astro-ph.GA", "hep-ph"],
@@ -90,11 +90,11 @@ test("discovery curation decisions default to unreviewed and accept only explici
 test("RSS fallback is normalized and preserves discovery-only provenance", async () => {
   const directory = await mkdtemp(join(tmpdir(), "arxiv-rss-fallback-"));
   const output = join(directory, "arxiv-daily.json");
-  const rss = `<?xml version="1.0"?><rss version="2.0"><channel><title>arXiv</title><item><title>RSS result</title><description>An abstract.</description><pubDate>Mon, 07 Sep 2026 12:00:00 GMT</pubDate><author>Author A</author><guid>https://arxiv.org/abs/2609.00001v1</guid><link>https://arxiv.org/abs/2609.00001v1</link><category>astro-ph.HE</category><category>astro-ph.GA</category><primary_category term="astro-ph.HE"/></item></channel></rss>`;
+  const rss = `<?xml version="1.0"?><rss version="2.0"><channel><title>arXiv</title><item><title>RSS result</title><description>An abstract.</description><pubDate>Mon, 14 Sep 2026 12:00:00 GMT</pubDate><author>Author A</author><guid>https://arxiv.org/abs/2609.00001v1</guid><link>https://arxiv.org/abs/2609.00001v1</link><category>astro-ph.HE</category><category>astro-ph.GA</category><primary_category term="astro-ph.HE"/></item></channel></rss>`;
   try {
     const payload = await refreshArxivFeed({
       output,
-      announcementDate: "2026-09-07",
+      announcementDate: "2026-09-14",
       minRequestIntervalMs: 0,
       maxAttempts: 1,
       rssUrl: "https://export.arxiv.org/rss/test",
@@ -126,7 +126,7 @@ test("manual snapshots are opt-in and normalize through the same publish gate", 
   try {
     const payload = await refreshArxivFeed({
       output,
-      announcementDate: "2026-09-07",
+      announcementDate: "2026-09-14",
       manualSnapshot: {
         entries: [
           {
@@ -134,8 +134,8 @@ test("manual snapshots are opt-in and normalize through the same publish gate", 
             revision: 1,
             title: "Manual",
             abstract: "Abstract",
-            published: "2026-09-07T12:00:00Z",
-            updated: "2026-09-07T12:00:00Z",
+            published: "2026-09-14T12:00:00Z",
+            updated: "2026-09-14T12:00:00Z",
             authors: ["Author"],
             url: "https://arxiv.org/abs/2609.00002v1",
           },
@@ -242,7 +242,7 @@ test("pagination advances by actual returned entries when arXiv keeps the reques
   try {
     const payload = await refreshArxivFeed({
       output,
-      announcementDate: "2026-09-07",
+      announcementDate: "2026-09-14",
       pageSize: 2000,
       minRequestIntervalMs: 0,
       maxAttempts: 1,
@@ -312,20 +312,20 @@ test("an announcement batch uses the previous announcement cutoff and DST-aware 
   assert.equal(winter.api_start, "202601091900");
   assert.equal(winter.api_end, "202601121900");
 
-  const summer = buildAnnouncementWindow({ announcementDate: "2026-09-07" });
-  assert.equal(summer.submission_start_date, "2026-09-04");
-  assert.equal(summer.local_start, "2026-09-04T14:00:00-04:00");
-  assert.equal(summer.local_end, "2026-09-07T14:00:00-04:00");
-  assert.equal(summer.api_start, "202609041800");
-  assert.equal(summer.api_end, "202609071800");
+  const summer = buildAnnouncementWindow({ announcementDate: "2026-09-14" });
+  assert.equal(summer.submission_start_date, "2026-09-11");
+  assert.equal(summer.local_start, "2026-09-11T14:00:00-04:00");
+  assert.equal(summer.local_end, "2026-09-14T14:00:00-04:00");
+  assert.equal(summer.api_start, "202609111800");
+  assert.equal(summer.api_end, "202609141800");
 
-  const sunday = buildAnnouncementWindow({ announcementDate: "2026-09-06" });
-  assert.equal(sunday.submission_start_date, "2026-09-03");
-  assert.equal(sunday.local_start, "2026-09-03T14:00:00-04:00");
-  assert.equal(sunday.submission_end_date, "2026-09-04");
-  assert.equal(sunday.local_end, "2026-09-04T14:00:00-04:00");
-  assert.equal(sunday.api_start, "202609031800");
-  assert.equal(sunday.api_end, "202609041800");
+  const sunday = buildAnnouncementWindow({ announcementDate: "2026-09-13" });
+  assert.equal(sunday.submission_start_date, "2026-09-10");
+  assert.equal(sunday.local_start, "2026-09-10T14:00:00-04:00");
+  assert.equal(sunday.submission_end_date, "2026-09-11");
+  assert.equal(sunday.local_end, "2026-09-11T14:00:00-04:00");
+  assert.equal(sunday.api_start, "202609101800");
+  assert.equal(sunday.api_end, "202609111800");
 
   const dstWeekend = buildAnnouncementWindow({ announcementDate: "2026-03-09" });
   assert.equal(dstWeekend.local_start, "2026-03-06T14:00:00-05:00");
@@ -334,11 +334,11 @@ test("an announcement batch uses the previous announcement cutoff and DST-aware 
   assert.equal(dstWeekend.utc_end, "2026-03-09T18:00:00.000Z");
 
   const expectedBatches = [
-    ["2026-09-06", "2026-09-03", "2026-09-04"],
-    ["2026-09-07", "2026-09-04", "2026-09-07"],
-    ["2026-09-08", "2026-09-07", "2026-09-08"],
-    ["2026-09-09", "2026-09-08", "2026-09-09"],
-    ["2026-09-10", "2026-09-09", "2026-09-10"],
+    ["2026-09-13", "2026-09-10", "2026-09-11"],
+    ["2026-09-14", "2026-09-11", "2026-09-14"],
+    ["2026-09-15", "2026-09-14", "2026-09-15"],
+    ["2026-09-16", "2026-09-15", "2026-09-16"],
+    ["2026-09-17", "2026-09-16", "2026-09-17"],
   ];
   const windows = expectedBatches.map(([date]) =>
     buildAnnouncementWindow({ announcementDate: date })
@@ -366,17 +366,51 @@ test("an announcement batch uses the previous announcement cutoff and DST-aware 
   assert.equal(url.searchParams.get("sortBy"), "submittedDate");
   assert.match(
     url.searchParams.get("search_query"),
-    /submittedDate:\[202609041800 TO 202609071800\]/u
+    /submittedDate:\[202609111800 TO 202609141800\]/u
   );
 
   assert.throws(
-    () => buildAnnouncementWindow({ announcementDate: "2026-09-11" }),
+    () => buildAnnouncementWindow({ announcementDate: "2026-09-18" }),
     (error) => error instanceof ArxivFeedError && error.code === "ARXIV_WINDOW_INVALID"
   );
   assert.throws(
-    () => buildAnnouncementWindow({ announcementDate: "2026-09-12" }),
+    () => buildAnnouncementWindow({ announcementDate: "2026-09-19" }),
     (error) => error instanceof ArxivFeedError && error.code === "ARXIV_WINDOW_INVALID"
   );
+});
+
+test("arXiv holidays (Veterans Day 2026-11-11 and Thanksgiving 2026-11-26) shift the next announcement window without including weekends", () => {
+  assert.throws(
+    () => buildAnnouncementWindow({ announcementDate: "2026-11-11" }),
+    (error) => error instanceof ArxivFeedError && error.code === "ARXIV_WINDOW_INVALID"
+  );
+  const nov12 = buildAnnouncementWindow({ announcementDate: "2026-11-12" });
+  assert.equal(nov12.submission_start_date, "2026-11-10");
+  assert.equal(nov12.submission_end_date, "2026-11-12");
+  assert.equal(nov12.local_start, "2026-11-10T14:00:00-05:00");
+  assert.equal(nov12.local_end, "2026-11-12T14:00:00-05:00");
+  assert.equal(nov12.api_start, "202611101900");
+  assert.equal(nov12.api_end, "202611121900");
+
+  assert.throws(
+    () => buildAnnouncementWindow({ announcementDate: "2026-11-26" }),
+    (error) => error instanceof ArxivFeedError && error.code === "ARXIV_WINDOW_INVALID"
+  );
+  assert.throws(
+    () => buildAnnouncementWindow({ announcementDate: "2026-11-27" }),
+    (error) => error instanceof ArxivFeedError && error.code === "ARXIV_WINDOW_INVALID"
+  );
+  const nov25 = buildAnnouncementWindow({ announcementDate: "2026-11-25" });
+  const nov29 = buildAnnouncementWindow({ announcementDate: "2026-11-29" });
+  const nov30 = buildAnnouncementWindow({ announcementDate: "2026-11-30" });
+  assert.equal(nov29.submission_start_date, "2026-11-25");
+  assert.equal(nov29.submission_end_date, "2026-11-27");
+  assert.equal(nov29.local_start, "2026-11-25T14:00:00-05:00");
+  assert.equal(nov29.local_end, "2026-11-27T14:00:00-05:00");
+  assert.equal(nov29.api_start, "202611251900");
+  assert.equal(nov29.api_end, "202611271900");
+  assert.equal(nov25.utc_end, nov29.utc_start);
+  assert.equal(nov29.utc_end, nov30.utc_start);
 });
 
 function atomFeed(entries = "", title = "arXiv Query") {
@@ -384,7 +418,7 @@ function atomFeed(entries = "", title = "arXiv Query") {
   return `<?xml version="1.0"?><feed xmlns="http://www.w3.org/2005/Atom" xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/"><title>${title}</title><opensearch:totalResults>${entryCount}</opensearch:totalResults><opensearch:startIndex>0</opensearch:startIndex><opensearch:itemsPerPage>${entryCount}</opensearch:itemsPerPage>${entries}</feed>`;
 }
 
-function atomEntry(id = "2609.00001v1", published = "2026-09-07T12:00:00Z") {
+function atomEntry(id = "2609.00001v1", published = "2026-09-14T12:00:00Z") {
   return `<entry><id>https://arxiv.org/abs/${id}</id><title>A title</title><summary>An abstract.</summary><published>${published}</published><updated>${published}</updated><author><name>A. Researcher</name></author><link href="https://arxiv.org/abs/${id}" rel="alternate" type="text/html"/></entry>`;
 }
 
@@ -412,7 +446,7 @@ test("a valid empty Atom feed is publishable, while invalid responses preserve t
     await assert.rejects(
       refreshArxivFeed({
         output,
-        announcementDate: "2026-09-07",
+        announcementDate: "2026-09-14",
         maxAttempts: 1,
         fetchImpl: async () => atomResponse("upstream error", 200, "text/html"),
       }),
@@ -423,7 +457,7 @@ test("a valid empty Atom feed is publishable, while invalid responses preserve t
     await assert.rejects(
       refreshArxivFeed({
         output,
-        announcementDate: "2026-09-07",
+        announcementDate: "2026-09-14",
         maxAttempts: 1,
         fetchImpl: async () => atomResponse("<feed><entry>"),
       }),
@@ -434,12 +468,12 @@ test("a valid empty Atom feed is publishable, while invalid responses preserve t
 
     const payload = await refreshArxivFeed({
       output,
-      now: new Date("2026-09-08T00:00:00Z"),
+      now: new Date("2026-09-15T00:00:00Z"),
       maxAttempts: 1,
       fetchImpl: async () => atomResponse(atomFeed()),
     });
     assert.deepEqual(payload.entries, []);
-    assert.equal(payload.generated_at, "2026-09-08T00:00:00.000Z");
+    assert.equal(payload.generated_at, "2026-09-15T00:00:00.000Z");
     assert.equal(payload.total_results, 0);
     assert.match(payload.response_sha256, /^[a-f0-9]{64}$/u);
     assert.match(await readFile(output, "utf8"), /"parser_version": "2026-09-08\.atom-v2"/u);
@@ -455,7 +489,7 @@ test("a refresh rejects a page without complete Atom pagination metadata", async
     await assert.rejects(
       refreshArxivFeed({
         output,
-        announcementDate: "2026-09-07",
+        announcementDate: "2026-09-14",
         maxAttempts: 1,
         minRequestIntervalMs: 0,
         fetchImpl: async () =>
@@ -478,7 +512,7 @@ test("refresh retries temporary API failures and honors Retry-After", async () =
   try {
     const payload = await refreshArxivFeed({
       output,
-      announcementDate: "2026-09-07",
+      announcementDate: "2026-09-14",
       maxAttempts: 3,
       minRequestIntervalMs: 0,
       sleepImpl: async (delay) => delays.push(delay),
@@ -509,7 +543,7 @@ test("every retry request passes the shared rate gate and a long Retry-After exc
     await assert.rejects(
       refreshArxivFeed({
         output,
-        announcementDate: "2026-09-07",
+        announcementDate: "2026-09-14",
         totalTimeoutMs: 10_000,
         minRequestIntervalMs: 3_000,
         maxAttempts: 2,
@@ -531,7 +565,7 @@ test("every retry request passes the shared rate gate and a long Retry-After exc
     delays.length = 0;
     const payload = await refreshArxivFeed({
       output,
-      announcementDate: "2026-09-07",
+      announcementDate: "2026-09-14",
       totalTimeoutMs: 10_000,
       minRequestIntervalMs: 3_000,
       maxAttempts: 2,
@@ -572,7 +606,7 @@ test("request timeout starts after the shared rate gate", async () => {
   try {
     const payload = await refreshArxivFeed({
       output,
-      announcementDate: "2026-09-07",
+      announcementDate: "2026-09-14",
       pageSize: 1,
       timeoutMs: 5,
       totalTimeoutMs: 1_000,
@@ -620,7 +654,7 @@ test("a daily refresh paginates the complete announcement-day window before publ
   try {
     const payload = await refreshArxivFeed({
       output,
-      announcementDate: "2026-09-07",
+      announcementDate: "2026-09-14",
       pageSize: 2,
       minRequestIntervalMs: 0,
       maxAttempts: 1,
@@ -637,9 +671,9 @@ test("a daily refresh paginates the complete announcement-day window before publ
     );
     assert.equal(payload.total_results, 3);
     assert.equal(payload.page_count, 2);
-    assert.equal(payload.window.announcement_date, "2026-09-07");
+    assert.equal(payload.window.announcement_date, "2026-09-14");
     assert.equal(payload.window.time_zone, "America/New_York");
-    assert.match(payload.query, /submittedDate:\[202609041800 TO 202609071800\]/u);
+    assert.match(payload.query, /submittedDate:\[202609111800 TO 202609141800\]/u);
     assert.equal(payload.pages.length, 2);
     assert.deepEqual(
       payload.pages.map(({ start, entry_count }) => [start, entry_count]),
@@ -663,16 +697,16 @@ test("announcement windows use an inclusive start and exclusive end at the publi
   try {
     const payload = await refreshArxivFeed({
       output,
-      announcementDate: "2026-09-07",
+      announcementDate: "2026-09-14",
       maxAttempts: 1,
       minRequestIntervalMs: 0,
       fetchImpl: async () =>
         atomResponse(
           atomFeed(
             [
-              atomEntry("2609.00015v1", "2026-09-04T18:00:00Z"),
-              atomEntry("2609.00016v1", "2026-09-07T17:59:59Z"),
-              atomEntry("2609.00017v1", "2026-09-07T18:00:00Z"),
+              atomEntry("2609.00015v1", "2026-09-11T18:00:00Z"),
+              atomEntry("2609.00016v1", "2026-09-14T17:59:59Z"),
+              atomEntry("2609.00017v1", "2026-09-14T18:00:00Z"),
             ].join("")
           )
         ),
@@ -696,7 +730,7 @@ test("a later page failure preserves the previous edition and does not publish a
     await assert.rejects(
       refreshArxivFeed({
         output,
-        announcementDate: "2026-09-07",
+        announcementDate: "2026-09-14",
         pageSize: 2,
         minRequestIntervalMs: 0,
         maxAttempts: 1,
@@ -781,7 +815,7 @@ test("an atomic publish failure leaves the previous cache intact and retains inc
     await assert.rejects(
       refreshArxivFeed({
         output,
-        announcementDate: "2026-09-07",
+        announcementDate: "2026-09-14",
         maxAttempts: 1,
         fetchImpl: async () => atomResponse(atomFeed(atomEntry())),
         renameImpl: async () => {
@@ -814,7 +848,7 @@ test("a failed install with a failed rollback never deletes the only last-good c
     await assert.rejects(
       refreshArxivFeed({
         output,
-        announcementDate: "2026-09-07",
+        announcementDate: "2026-09-14",
         maxAttempts: 1,
         fetchImpl: async () => atomResponse(atomFeed(atomEntry("2609.00028v1"))),
         renameImpl: async (from, to) => {
@@ -849,7 +883,7 @@ test("the reader follows one published generation when a legacy compatibility mi
       output,
       radarOutput,
       artifactRoot,
-      announcementDate: "2026-09-07",
+      announcementDate: "2026-09-14",
       minRequestIntervalMs: 0,
       maxAttempts: 1,
       fetchImpl: async () => atomResponse(atomFeed(atomEntry("2609.00029v1"))),
@@ -868,7 +902,7 @@ test("the reader follows one published generation when a legacy compatibility mi
     const edition = await readPublishedArxivEdition({ output, radarOutput, artifactRoot });
     assert.equal(edition.generation_id.startsWith("generation-"), true);
     assert.equal(edition.feed.entries[0].arxiv_id, "2609.00029");
-    assert.equal(edition.radar.edition.window.batch_id, "announcement-2026-09-07");
+    assert.equal(edition.radar.edition.window.batch_id, "announcement-2026-09-14");
   } finally {
     await rm(directory, { recursive: true, force: true });
   }
@@ -891,7 +925,7 @@ test("a pointer switch failure keeps the old cache and recovers the complete gen
         radarOutput,
         artifactRoot,
         runId: "run-pointer-recovery",
-        announcementDate: "2026-09-07",
+        announcementDate: "2026-09-14",
         maxAttempts: 1,
         minRequestIntervalMs: 0,
         fetchImpl: async () => atomResponse(atomFeed(atomEntry("2609.00030v1"))),
@@ -909,7 +943,7 @@ test("a pointer switch failure keeps the old cache and recovers the complete gen
 
     const recovered = await readPublishedArxivEdition({ output, radarOutput, artifactRoot });
     assert.equal(recovered.feed.entries[0].arxiv_id, "2609.00030");
-    assert.equal(recovered.radar.edition.window.batch_id, "announcement-2026-09-07");
+    assert.equal(recovered.radar.edition.window.batch_id, "announcement-2026-09-14");
     assert.equal(
       JSON.parse(await readFile(pointerPath, "utf8")).generation_id,
       recovered.generation_id
@@ -936,7 +970,7 @@ test("a reader recovers the previous complete generation when the pointed genera
       radarOutput,
       artifactRoot,
       runId: "run-recovery-old",
-      announcementDate: "2026-09-07",
+      announcementDate: "2026-09-14",
       maxAttempts: 1,
       minRequestIntervalMs: 0,
       fetchImpl: async () => atomResponse(atomFeed(atomEntry("2609.00033v1"))),
@@ -946,7 +980,7 @@ test("a reader recovers the previous complete generation when the pointed genera
       radarOutput,
       artifactRoot,
       runId: "run-recovery-new",
-      announcementDate: "2026-09-07",
+      announcementDate: "2026-09-14",
       maxAttempts: 1,
       minRequestIntervalMs: 0,
       fetchImpl: async () => atomResponse(atomFeed(atomEntry("2609.00034v1"))),
@@ -987,7 +1021,7 @@ test("readers observe either the old or the new complete generation during point
       output,
       radarOutput,
       artifactRoot,
-      announcementDate: "2026-09-07",
+      announcementDate: "2026-09-14",
       maxAttempts: 1,
       minRequestIntervalMs: 0,
       fetchImpl: async () => atomResponse(atomFeed(atomEntry("2609.00031v1"))),
@@ -1004,7 +1038,7 @@ test("readers observe either the old or the new complete generation during point
     assert.deepEqual(beforeCommit.feed, JSON.parse(oldFeed));
     assert.deepEqual(beforeCommit.radar, JSON.parse(oldRadar));
     assert.equal(afterCommit.feed.entries[0].arxiv_id, "2609.00031");
-    assert.equal(afterCommit.radar.edition.window.batch_id, "announcement-2026-09-07");
+    assert.equal(afterCommit.radar.edition.window.batch_id, "announcement-2026-09-14");
   } finally {
     await rm(directory, { recursive: true, force: true });
   }
@@ -1022,7 +1056,7 @@ test("a failed Radar compatibility mirror leaves both reader inputs in one gener
     const result = await refreshArxivFeed({
       output,
       radarOutput,
-      announcementDate: "2026-09-07",
+      announcementDate: "2026-09-14",
       maxAttempts: 1,
       minRequestIntervalMs: 0,
       fetchImpl: async () => atomResponse(atomFeed(atomEntry("2609.00025v1"))),
@@ -1037,7 +1071,7 @@ test("a failed Radar compatibility mirror leaves both reader inputs in one gener
     assert.equal(await readFile(radarOutput, "utf8"), oldRadar);
     const edition = await readPublishedArxivEdition({ output, radarOutput, artifactRoot: null });
     assert.equal(edition.feed.entries[0].arxiv_id, "2609.00025");
-    assert.equal(edition.radar.edition.window.batch_id, "announcement-2026-09-07");
+    assert.equal(edition.radar.edition.window.batch_id, "announcement-2026-09-14");
   } finally {
     await rm(directory, { recursive: true, force: true });
   }
@@ -1059,7 +1093,7 @@ test("a failed run-state compatibility mirror keeps the committed generation aut
       radarOutput,
       artifactRoot,
       runId: "run-transaction",
-      announcementDate: "2026-09-07",
+      announcementDate: "2026-09-14",
       maxAttempts: 1,
       minRequestIntervalMs: 0,
       fetchImpl: async () => atomResponse(atomFeed(atomEntry("2609.00026v1"))),
@@ -1086,7 +1120,7 @@ test("a failed run-state compatibility mirror keeps the committed generation aut
     assert.equal(manifest.status, "published");
     const edition = await readPublishedArxivEdition({ output, radarOutput, artifactRoot });
     assert.equal(edition.feed.entries[0].arxiv_id, "2609.00026");
-    assert.equal(edition.radar.edition.window.batch_id, "announcement-2026-09-07");
+    assert.equal(edition.radar.edition.window.batch_id, "announcement-2026-09-14");
   } finally {
     await rm(directory, { recursive: true, force: true });
   }
@@ -1106,7 +1140,7 @@ test("the run-state reader follows the committed generation when its legacy mirr
       radarOutput,
       artifactRoot,
       runId: "run-state-generation",
-      announcementDate: "2026-09-07",
+      announcementDate: "2026-09-14",
       maxAttempts: 1,
       minRequestIntervalMs: 0,
       fetchImpl: async () => atomResponse(atomFeed(atomEntry("2609.00032v1"))),
@@ -1128,14 +1162,14 @@ test("a refresh already in progress blocks a second publisher and preserves the 
   await writeFile(output, oldCache, "utf8");
   await writeFile(
     lockPath,
-    JSON.stringify({ pid: process.pid, started_at: "2026-09-08T00:00:00Z" }),
+    JSON.stringify({ pid: process.pid, started_at: "2026-09-15T00:00:00Z" }),
     "utf8"
   );
   try {
     await assert.rejects(
       refreshArxivFeed({
         output,
-        announcementDate: "2026-09-07",
+        announcementDate: "2026-09-14",
         maxAttempts: 1,
         fetchImpl: async () => atomResponse(atomFeed(atomEntry())),
       }),
@@ -1156,7 +1190,7 @@ test("a response body that stalls is bounded by the request timeout", async () =
     await assert.rejects(
       refreshArxivFeed({
         output,
-        announcementDate: "2026-09-07",
+        announcementDate: "2026-09-14",
         timeoutMs: 5,
         totalTimeoutMs: 100,
         maxAttempts: 1,
@@ -1193,12 +1227,12 @@ test("a dead refresh lock is recovered without waiting for its stale-age thresho
   try {
     await writeFile(
       lockPath,
-      JSON.stringify({ pid: 999_999_999, started_at: "2026-09-08T00:00:00Z" }),
+      JSON.stringify({ pid: 999_999_999, started_at: "2026-09-15T00:00:00Z" }),
       "utf8"
     );
     const payload = await refreshArxivFeed({
       output,
-      announcementDate: "2026-09-07",
+      announcementDate: "2026-09-14",
       maxAttempts: 1,
       fetchImpl: async () => atomResponse(atomFeed(atomEntry("2609.00005v1"))),
     });
@@ -1223,11 +1257,11 @@ test("a successful refresh stores an immutable raw snapshot, manifest, replay an
       output,
       artifactRoot,
       runId: "run-success",
-      announcementDate: "2026-09-07",
+      announcementDate: "2026-09-14",
       pageSize: 20,
       minRequestIntervalMs: 0,
       maxAttempts: 1,
-      now: new Date("2026-09-08T00:00:00Z"),
+      now: new Date("2026-09-15T00:00:00Z"),
       fetchImpl: async () => atomResponse(rawFeed),
     });
     assert.equal(payload.snapshot_run_id, "run-success");
@@ -1281,7 +1315,7 @@ test("a failed refresh records failure state while retaining the previous succes
       output,
       artifactRoot,
       runId: "run-good",
-      announcementDate: "2026-09-07",
+      announcementDate: "2026-09-14",
       minRequestIntervalMs: 0,
       maxAttempts: 1,
       fetchImpl: async () => atomResponse(atomFeed(atomEntry("2609.00007v1"))),
@@ -1295,7 +1329,7 @@ test("a failed refresh records failure state while retaining the previous succes
         output,
         artifactRoot,
         runId: "run-bad",
-        announcementDate: "2026-09-07",
+        announcementDate: "2026-09-14",
         pageSize: 1,
         minRequestIntervalMs: 0,
         maxAttempts: 1,
@@ -1350,7 +1384,7 @@ test("snapshot retention keeps the newest successful runs and replay detects tam
     ]) {
       await refreshArxivFeed({
         output,
-        announcementDate: "2026-09-07",
+        announcementDate: "2026-09-14",
         artifactRoot,
         runId,
         snapshotRetention: 2,
@@ -1387,7 +1421,7 @@ test("replay reads an older retained snapshot after a newer generation is publis
         artifactRoot,
         runId,
         snapshotRetention: 2,
-        announcementDate: "2026-09-07",
+        announcementDate: "2026-09-14",
         minRequestIntervalMs: 0,
         maxAttempts: 1,
         fetchImpl: async () => atomResponse(atomFeed(atomEntry(arxivId))),
@@ -1404,14 +1438,14 @@ test("snapshot retention protects the cache and last-success snapshot after a fa
   const directory = await mkdtemp(join(tmpdir(), "arxiv-daily-artifacts-"));
   const output = join(directory, "arxiv-daily.json");
   const artifactRoot = join(directory, "artifacts");
-  const now = new Date("2026-09-08T00:00:00Z");
+  const now = new Date("2026-09-15T00:00:00Z");
   try {
     await refreshArxivFeed({
       output,
       artifactRoot,
       runId: "run-good",
       snapshotRetention: 1,
-      announcementDate: "2026-09-07",
+      announcementDate: "2026-09-14",
       pageSize: 1,
       minRequestIntervalMs: 0,
       maxAttempts: 1,
@@ -1431,7 +1465,7 @@ test("snapshot retention protects the cache and last-success snapshot after a fa
         artifactRoot,
         runId: "run-bad",
         snapshotRetention: 1,
-        announcementDate: "2026-09-07",
+        announcementDate: "2026-09-14",
         pageSize: 1,
         minRequestIntervalMs: 0,
         maxAttempts: 1,
@@ -1468,7 +1502,7 @@ test("a post-publish observer failure is recorded without revoking the committed
       output,
       artifactRoot,
       runId: "run-post-publish",
-      announcementDate: "2026-09-07",
+      announcementDate: "2026-09-14",
       minRequestIntervalMs: 0,
       maxAttempts: 1,
       fetchImpl: async () => atomResponse(atomFeed(atomEntry("2609.00022v1"))),
@@ -1499,7 +1533,7 @@ test("a production refresh publishes the feed and Radar as one reconciled editio
     const payload = await refreshArxivFeed({
       output,
       radarOutput,
-      announcementDate: "2026-09-07",
+      announcementDate: "2026-09-14",
       minRequestIntervalMs: 0,
       maxAttempts: 1,
       fetchImpl: async () => atomResponse(atomFeed(atomEntry("2609.00024v1"))),
@@ -1517,13 +1551,13 @@ test("replay validates the recorded query and page URL contract", async () => {
   const directory = await mkdtemp(join(tmpdir(), "arxiv-daily-artifacts-"));
   const output = join(directory, "arxiv-daily.json");
   const artifactRoot = join(directory, "artifacts");
-  const now = new Date("2026-09-08T00:00:00Z");
+  const now = new Date("2026-09-15T00:00:00Z");
   try {
     await refreshArxivFeed({
       output,
       artifactRoot,
       runId: "run-provenance",
-      announcementDate: "2026-09-07",
+      announcementDate: "2026-09-14",
       pageSize: 10,
       minRequestIntervalMs: 0,
       maxAttempts: 1,
@@ -1556,7 +1590,7 @@ test("replay validates every recorded announcement window field", async () => {
       output,
       artifactRoot,
       runId: "run-window-provenance",
-      announcementDate: "2026-09-07",
+      announcementDate: "2026-09-14",
       minRequestIntervalMs: 0,
       maxAttempts: 1,
       fetchImpl: async () => atomResponse(atomFeed(atomEntry("2609.00027v1"))),

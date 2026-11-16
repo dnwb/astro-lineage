@@ -264,3 +264,29 @@ test("architecture-hygiene: agent egress endpoints must be dynamically served fr
     );
   }
 });
+
+test("architecture-hygiene: SSG-imported modules must not read files via new URL(..., import.meta.url)", async () => {
+  const srcFiles = await getCodeFiles(join(projectRoot, "src"));
+  const importedScripts = new Set();
+
+  for (const file of srcFiles) {
+    const content = await readFile(file, "utf8");
+    const stripped = content.replace(/\/\*[\s\S]*?\*\//g, "").replace(/\/\/.*$/gm, "");
+    for (const match of stripped.matchAll(/from\s+["']([^"']*scripts\/[^"']+\.mjs)["']/gu)) {
+      const resolved = join(file, "..", match[1]);
+      importedScripts.add(resolved);
+    }
+  }
+
+  const ssgModules = [...srcFiles, ...importedScripts];
+  for (const file of ssgModules) {
+    if (!existsSync(file)) continue;
+    const content = await readFile(file, "utf8");
+    const stripped = content.replace(/\/\*[\s\S]*?\*\//g, "").replace(/\/\/.*$/gm, "");
+    const usesMetaUrlRead = /readFile(?:Sync)?\(\s*new\s+URL\([^)]*import\.meta\.url/u.test(stripped);
+    assert.ok(
+      !usesMetaUrlRead,
+      `SSG-imported module ${file.replace(projectRoot, "")} reads a file via new URL(..., import.meta.url), which breaks when bundled into dist/.prerender/. Use a static JSON/ESM import or process.cwd()-relative resolution instead.`
+    );
+  }
+});

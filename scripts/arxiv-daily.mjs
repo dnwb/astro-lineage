@@ -1,8 +1,8 @@
 import { createHash, randomUUID } from "node:crypto";
-import { readFileSync } from "node:fs";
 import { mkdir, open, readFile, readdir, rename, rm, stat, unlink } from "node:fs/promises";
 import { basename, dirname, join, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
+import ARXIV_HOLIDAY_DATA from "../src/domain/arxiv-holidays.json" with { type: "json" };
 import { reconcileDailyRadarEdition, validateDailyRadarPayload } from "./daily-radar.mjs";
 
 export const DEFAULT_QUERY = "cat:astro-ph.HE OR cat:astro-ph.GA OR cat:astro-ph.SR";
@@ -33,9 +33,6 @@ export const ANNOUNCEMENT_BATCH_OFFSETS = Object.freeze({
   Wed: Object.freeze({ start: -1, end: 0 }),
   Thu: Object.freeze({ start: -1, end: 0 }),
 });
-const ARXIV_HOLIDAY_DATA = JSON.parse(
-  readFileSync(new URL("../src/domain/arxiv-holidays.json", import.meta.url), "utf8")
-);
 export const ARXIV_HOLIDAYS = Object.freeze(
   Object.values(ARXIV_HOLIDAY_DATA.holidays ?? {}).flat()
 );

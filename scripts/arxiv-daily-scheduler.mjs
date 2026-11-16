@@ -16,6 +16,7 @@ import {
   acquireRefreshLock,
   isArxivHoliday,
   isScheduledAnnouncementDate,
+  previousScheduledAnnouncementDate,
   releaseRefreshLock,
   readArxivRunState,
   refreshArxivFeed,
@@ -75,13 +76,6 @@ function nextScheduledDate(dateOnly, timeZone) {
   let candidate = addCalendarDay(dateOnly, 1);
   while (!isScheduledAnnouncementDate(candidate, timeZone))
     candidate = addCalendarDay(candidate, 1);
-  return candidate;
-}
-
-function previousScheduledDate(dateOnly, timeZone) {
-  let candidate = addCalendarDay(dateOnly, -1);
-  while (!isScheduledAnnouncementDate(candidate, timeZone))
-    candidate = addCalendarDay(candidate, -1);
   return candidate;
 }
 
@@ -165,10 +159,13 @@ export async function readLedger({ artifactRoot, timeZone, query }) {
         date_attempts: {},
       };
     }
-    for (const date of parsed.successful_dates) {
-      assertDateOnly(date, "scheduler ledger date");
+    const assertLedgerDate = (date, label) => {
+      assertDateOnly(date, label);
       if (!isScheduledAnnouncementDate(date, timeZone) && !isArxivHoliday(date))
         throw new Error(`ARXIV_SCHEDULER_LEDGER_INVALID: ${date} is not an announcement date`);
+    };
+    for (const date of parsed.successful_dates) {
+      assertLedgerDate(date, "scheduler ledger date");
     }
     const attemptSequence = parsed.attempt_sequence ?? 0;
     const rawDateAttempts = parsed.date_attempts ?? {};
@@ -212,33 +209,31 @@ export async function readLedger({ artifactRoot, timeZone, query }) {
       sanitizedDateAttempts[date] = attempt;
     }
     for (const date of rawFailedDates) {
-      assertDateOnly(date, "scheduler ledger failed date");
-      if (!isScheduledAnnouncementDate(date, timeZone) && !isArxivHoliday(date))
-        throw new Error(`ARXIV_SCHEDULER_LEDGER_INVALID: ${date} is not an announcement date`);
+      assertLedgerDate(date, "scheduler ledger failed date");
     }
     const failedSet = new Set(rawFailedDates.filter((d) => !isArxivHoliday(d)));
-    const keepAnnouncementDate = (d) => !isArxivHoliday(d);
+    const isNotArxivHoliday = (d) => !isArxivHoliday(d);
     return {
       schema_version: LEDGER_SCHEMA,
       scope: query,
       start_date: parsed.start_date ?? null,
       successful_dates: [...new Set(parsed.successful_dates)]
-        .filter((d) => keepAnnouncementDate(d) && !failedSet.has(d))
+        .filter((d) => isNotArxivHoliday(d) && !failedSet.has(d))
         .sort(),
       archived_dates: [
         ...new Set(Array.isArray(parsed.archived_dates) ? parsed.archived_dates : []),
       ]
-        .filter(keepAnnouncementDate)
+        .filter(isNotArxivHoliday)
         .sort(),
       provisional_dates: [
         ...new Set(Array.isArray(parsed.provisional_dates) ? parsed.provisional_dates : []),
       ]
-        .filter(keepAnnouncementDate)
+        .filter(isNotArxivHoliday)
         .sort(),
       finalized_dates: [
         ...new Set(Array.isArray(parsed.finalized_dates) ? parsed.finalized_dates : []),
       ]
-        .filter((d) => keepAnnouncementDate(d) && !failedSet.has(d))
+        .filter((d) => isNotArxivHoliday(d) && !failedSet.has(d))
         .sort(),
       failed_dates: [...failedSet].sort(),
       attempt_sequence: attemptSequence,
@@ -820,7 +815,7 @@ export async function reconcilePreviousEdition({
       };
     }
 
-    const prevDate = previousScheduledDate(targetDate, timeZone);
+    const prevDate = previousScheduledAnnouncementDate(targetDate, timeZone);
     let prevFeed = null;
     try {
       const prevArchPath = join(archiveDir, `${prevDate}.json`);

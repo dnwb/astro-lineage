@@ -360,7 +360,11 @@ export function isScheduledAnnouncementDate(
   return ANNOUNCEMENT_WEEKDAYS.includes(weekday) && !toHolidaySet(holidays).has(dateOnly);
 }
 
-function previousScheduledAnnouncementDate(dateOnly, timeZone, holidaySet) {
+export function previousScheduledAnnouncementDate(
+  dateOnly,
+  timeZone = DEFAULT_TIME_ZONE,
+  holidaySet = DEFAULT_HOLIDAY_SET
+) {
   for (let offset = 1; offset <= 30; offset += 1) {
     const candidate = addCalendarDays(dateOnly, -offset);
     if (isScheduledAnnouncementDate(candidate, timeZone, holidaySet)) {

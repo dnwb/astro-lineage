@@ -649,3 +649,45 @@ test("scheduler skips arXiv holidays without marking ARXIV_EMPTY_BATCH while pre
     await rm(directory, { recursive: true, force: true });
   }
 });
+
+test("readLedger prunes legacy arXiv holiday entries from existing scheduler ledgers", async () => {
+  const directory = await mkdtemp(join(tmpdir(), "arxiv-scheduler-legacy-holiday-"));
+  const output = join(directory, "feed.json");
+  const artifactRoot = join(directory, "artifacts");
+  await mkdir(artifactRoot, { recursive: true });
+  await writeFile(
+    join(artifactRoot, "scheduler-ledger.json"),
+    JSON.stringify({
+      schema_version: "arxiv-daily-scheduler-ledger-v1",
+      scope: DEFAULT_QUERY,
+      start_date: "2026-10-11",
+      successful_dates: ["2026-10-11", "2026-10-12", "2026-11-10"],
+      archived_dates: ["2026-10-11", "2026-10-12", "2026-11-10"],
+      failed_dates: ["2026-11-11"],
+      provisional_dates: ["2026-10-12"],
+      finalized_dates: ["2026-10-11"],
+      attempt_sequence: 1,
+      date_attempts: {
+        "2026-11-11": { attempts: 1, queue_sequence: 1, last_attempt_sequence: 1 },
+      },
+    })
+  );
+  try {
+    const result = await runScheduledArxivRefresh({
+      announcementDate: "2026-11-12",
+      output,
+      artifactRoot,
+      refreshImpl: async (options) => writeFakeEdition(options.output, options.announcementDate),
+      analyzeImpl: async () => ({ pending_count: 0 }),
+    });
+    assert.deepEqual(result.refreshed_dates, ["2026-11-12"]);
+    const updatedLedger = JSON.parse(
+      await readFile(join(artifactRoot, "scheduler-ledger.json"), "utf8")
+    );
+    assert.ok(!updatedLedger.successful_dates.includes("2026-10-12"));
+    assert.ok(!updatedLedger.failed_dates.includes("2026-11-11"));
+    assert.equal(updatedLedger.date_attempts["2026-11-11"], undefined);
+  } finally {
+    await rm(directory, { recursive: true, force: true });
+  }
+});

@@ -14,6 +14,7 @@ import {
   DEFAULT_RADAR_OUTPUT,
   DEFAULT_TIME_ZONE,
   acquireRefreshLock,
+  isArxivHoliday,
   isScheduledAnnouncementDate,
   releaseRefreshLock,
   readArxivRunState,
@@ -166,7 +167,7 @@ export async function readLedger({ artifactRoot, timeZone, query }) {
     }
     for (const date of parsed.successful_dates) {
       assertDateOnly(date, "scheduler ledger date");
-      if (!isScheduledAnnouncementDate(date, timeZone))
+      if (!isScheduledAnnouncementDate(date, timeZone) && !isArxivHoliday(date))
         throw new Error(`ARXIV_SCHEDULER_LEDGER_INVALID: ${date} is not an announcement date`);
     }
     const attemptSequence = parsed.attempt_sequence ?? 0;
@@ -184,8 +185,10 @@ export async function readLedger({ artifactRoot, timeZone, query }) {
         "ARXIV_SCHEDULER_LEDGER_INVALID: date-attempt tracking has an unsupported shape"
       );
     }
+    const sanitizedDateAttempts = {};
     for (const [date, attempt] of Object.entries(rawDateAttempts)) {
       assertDateOnly(date, "scheduler ledger attempt date");
+      if (isArxivHoliday(date)) continue;
       const validAttempts =
         attempt && Number.isSafeInteger(attempt.attempts) && attempt.attempts >= 0;
       const validQueueSequence =
@@ -206,34 +209,40 @@ export async function readLedger({ artifactRoot, timeZone, query }) {
       ) {
         throw new Error(`ARXIV_SCHEDULER_LEDGER_INVALID: attempt record for ${date} is invalid`);
       }
+      sanitizedDateAttempts[date] = attempt;
     }
     for (const date of rawFailedDates) {
       assertDateOnly(date, "scheduler ledger failed date");
-      if (!isScheduledAnnouncementDate(date, timeZone))
+      if (!isScheduledAnnouncementDate(date, timeZone) && !isArxivHoliday(date))
         throw new Error(`ARXIV_SCHEDULER_LEDGER_INVALID: ${date} is not an announcement date`);
     }
-    const failedSet = new Set(rawFailedDates);
+    const failedSet = new Set(rawFailedDates.filter((d) => !isArxivHoliday(d)));
+    const keepAnnouncementDate = (d) => !isArxivHoliday(d);
     return {
       schema_version: LEDGER_SCHEMA,
       scope: query,
       start_date: parsed.start_date ?? null,
       successful_dates: [...new Set(parsed.successful_dates)]
-        .filter((d) => !failedSet.has(d))
+        .filter((d) => keepAnnouncementDate(d) && !failedSet.has(d))
         .sort(),
       archived_dates: [
         ...new Set(Array.isArray(parsed.archived_dates) ? parsed.archived_dates : []),
-      ].sort(),
+      ]
+        .filter(keepAnnouncementDate)
+        .sort(),
       provisional_dates: [
         ...new Set(Array.isArray(parsed.provisional_dates) ? parsed.provisional_dates : []),
-      ].sort(),
+      ]
+        .filter(keepAnnouncementDate)
+        .sort(),
       finalized_dates: [
         ...new Set(Array.isArray(parsed.finalized_dates) ? parsed.finalized_dates : []),
       ]
-        .filter((d) => !failedSet.has(d))
+        .filter((d) => keepAnnouncementDate(d) && !failedSet.has(d))
         .sort(),
       failed_dates: [...failedSet].sort(),
       attempt_sequence: attemptSequence,
-      date_attempts: rawDateAttempts,
+      date_attempts: sanitizedDateAttempts,
     };
   }
   const legacy = await readArxivRunState({ artifactRoot });

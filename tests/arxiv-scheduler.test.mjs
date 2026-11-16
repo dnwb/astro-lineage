@@ -6,6 +6,7 @@ import { test } from "node:test";
 import { fileURLToPath } from "node:url";
 import { DEFAULT_QUERY } from "../scripts/arxiv-daily.mjs";
 import {
+  isAnnouncementDate,
   latestCompletedAnnouncementDate,
   runScheduledArxivRefresh,
   assertContinuousBatchIntervals,
@@ -48,8 +49,8 @@ async function writeFakeEdition(path, date) {
 test("Sunday catch-up discovers real 2609.12308 metadata through the default query", async () => {
   assert.match(DEFAULT_QUERY, /cat:astro-ph\.SR/u);
   assert.equal(
-    latestCompletedAnnouncementDate({ now: new Date("2026-09-14T01:00:00Z") }),
-    "2026-09-13"
+    latestCompletedAnnouncementDate({ now: new Date("2026-09-21T01:00:00Z") }),
+    "2026-09-20"
   );
 
   const directory = await mkdtemp(join(tmpdir(), "arxiv-scheduler-sunday-"));
@@ -59,13 +60,13 @@ test("Sunday catch-up discovers real 2609.12308 metadata through the default que
   const realMetadata = atomEntry({
     id: "2609.12308v1",
     title: "Electromagnetic Probes of the Supernova Engine",
-    published: "2026-09-11T00:23:30Z",
+    published: "2026-09-18T00:23:30Z",
   });
   try {
     const result = await runScheduledArxivRefresh({
       output,
       artifactRoot,
-      now: new Date("2026-09-14T01:00:00Z"),
+      now: new Date("2026-09-21T01:00:00Z"),
       minRequestIntervalMs: 0,
       maxAttempts: 1,
       fetchImpl: async (url) => {
@@ -80,9 +81,9 @@ test("Sunday catch-up discovers real 2609.12308 metadata through the default que
       analyzeImpl: async () => ({ pending_count: 0 }),
     });
     assert.equal(result.status, "refreshed");
-    assert.deepEqual(result.refreshed_dates, ["2026-09-13"]);
+    assert.deepEqual(result.refreshed_dates, ["2026-09-20"]);
     assert.match(calls[0], /cat:astro-ph\.HE OR cat:astro-ph\.GA OR cat:astro-ph\.SR/u);
-    assert.match(calls[0], /submittedDate:\[202609101800 TO 202609111800\]/u);
+    assert.match(calls[0], /submittedDate:\[202609171800 TO 202609181800\]/u);
     assert.deepEqual(
       result.payload.entries.map(({ arxiv_id, revision, primary_category }) => [
         arxiv_id,
@@ -105,7 +106,7 @@ test("an explicit announcement-date refresh returns an empty failed_dates list",
   const output = join(directory, "arxiv-daily.json");
   try {
     const result = await runScheduledArxivRefresh({
-      announcementDate: "2026-09-13",
+      announcementDate: "2026-09-20",
       output,
       artifactRoot: join(directory, "artifacts"),
       refreshImpl: async ({ announcementDate: date, output: target }) =>
@@ -113,7 +114,7 @@ test("an explicit announcement-date refresh returns an empty failed_dates list",
       archiveImpl: async () => {},
     });
     assert.equal(result.status, "refreshed");
-    assert.deepEqual(result.refreshed_dates, ["2026-09-13"]);
+    assert.deepEqual(result.refreshed_dates, ["2026-09-20"]);
     assert.deepEqual(result.pending_dates, []);
     assert.deepEqual(result.failed_dates, []);
   } finally {
@@ -136,7 +137,7 @@ test("catch-up continues after a failed Sunday gap and keeps it retryable", asyn
       rejectEmpty: options.rejectEmpty,
     });
     assert.equal(options.rejectEmpty, true);
-    if (options.announcementDate === "2026-09-06" && failSundayOnce) {
+    if (options.announcementDate === "2026-09-13" && failSundayOnce) {
       failSundayOnce = false;
       throw new Error("temporary API failure");
     }
@@ -145,8 +146,8 @@ test("catch-up continues after a failed Sunday gap and keeps it retryable", asyn
   const options = {
     output,
     artifactRoot,
-    now: new Date("2026-09-08T01:00:00Z"),
-    fromDate: "2026-09-06",
+    now: new Date("2026-09-15T01:00:00Z"),
+    fromDate: "2026-09-13",
     maxBatchesPerRun: 2,
     refreshImpl,
     archiveImpl: async ({ currentFeedPath }) => archivedFeeds.push(currentFeedPath),
@@ -161,39 +162,39 @@ test("catch-up continues after a failed Sunday gap and keeps it retryable", asyn
     const partial = await runScheduledArxivRefresh(options);
     assert.deepEqual(
       refreshCalls.map(({ date }) => date),
-      ["2026-09-06", "2026-09-07"]
+      ["2026-09-13", "2026-09-14"]
     );
-    assert.deepEqual(partial.refreshed_dates, ["2026-09-07"]);
-    assert.deepEqual(partial.pending_dates, ["2026-09-06"]);
-    assert.deepEqual(partial.failed_dates, ["2026-09-06"]);
+    assert.deepEqual(partial.refreshed_dates, ["2026-09-14"]);
+    assert.deepEqual(partial.pending_dates, ["2026-09-13"]);
+    assert.deepEqual(partial.failed_dates, ["2026-09-13"]);
     assert.equal(partial.status, "refreshed");
     assert.deepEqual(
       JSON.parse(await readFile(join(artifactRoot, "scheduler-ledger.json"), "utf8"))
         .successful_dates,
-      ["2026-09-07"]
+      ["2026-09-14"]
     );
 
     const recovered = await runScheduledArxivRefresh(options);
     assert.equal(recovered.status, "skipped");
     assert.deepEqual(
       refreshCalls.map(({ date }) => date),
-      ["2026-09-06", "2026-09-07", "2026-09-06"]
+      ["2026-09-13", "2026-09-14", "2026-09-13"]
     );
     assert.notEqual(refreshCalls[0].output, output);
     assert.equal(refreshCalls[1].output, output);
     assert.notEqual(refreshCalls[2].output, output);
-    assert.deepEqual(recovered.refreshed_dates, ["2026-09-06"]);
+    assert.deepEqual(recovered.refreshed_dates, ["2026-09-13"]);
     assert.deepEqual(recovered.pending_dates, []);
     assert.deepEqual(recovered.failed_dates, []);
     assert.deepEqual(
       JSON.parse(await readFile(join(artifactRoot, "scheduler-ledger.json"), "utf8"))
         .successful_dates,
-      ["2026-09-06", "2026-09-07"]
+      ["2026-09-13", "2026-09-14"]
     );
     assert.deepEqual(archivedFeeds.slice(-2), [output, refreshCalls[2].output]);
     assert.deepEqual(
       JSON.parse(await readFile(output, "utf8")).window.announcement_date,
-      "2026-09-07"
+      "2026-09-14"
     );
 
     const replay = await runScheduledArxivRefresh({
@@ -227,9 +228,9 @@ test("repeated date failures rotate fairly instead of monopolizing bounded runs"
   const options = {
     output,
     artifactRoot,
-    now: new Date("2026-09-11T02:00:00Z"),
-    fromDate: "2026-09-06",
-    throughDate: "2026-09-10",
+    now: new Date("2026-09-18T02:00:00Z"),
+    fromDate: "2026-09-13",
+    throughDate: "2026-09-17",
     maxBatchesPerRun: 1,
     refreshImpl: async ({ announcementDate }) => {
       calls.push(announcementDate);
@@ -244,17 +245,17 @@ test("repeated date failures rotate fairly instead of monopolizing bounded runs"
     const runs = [];
     for (let attempt = 0; attempt < 3; attempt += 1)
       runs.push(await runScheduledArxivRefresh(options));
-    assert.deepEqual(calls, ["2026-09-06", "2026-09-07", "2026-09-08"]);
+    assert.deepEqual(calls, ["2026-09-13", "2026-09-14", "2026-09-15"]);
     assert.deepEqual(
       runs.map(({ failed_dates }) => failed_dates),
-      [["2026-09-06"], ["2026-09-06", "2026-09-07"], ["2026-09-06", "2026-09-07", "2026-09-08"]]
+      [["2026-09-13"], ["2026-09-13", "2026-09-14"], ["2026-09-13", "2026-09-14", "2026-09-15"]]
     );
     assert.deepEqual(runs[2].pending_dates, [
-      "2026-09-06",
-      "2026-09-07",
-      "2026-09-08",
-      "2026-09-09",
-      "2026-09-10",
+      "2026-09-13",
+      "2026-09-14",
+      "2026-09-15",
+      "2026-09-16",
+      "2026-09-17",
     ]);
     assert.equal(
       analyzeCalls,
@@ -272,20 +273,20 @@ test("moving catch-up bounds interleave retries with newly arriving dates", asyn
   const artifactRoot = join(directory, "artifacts");
   const calls = [];
   const throughDates = [
-    "2026-09-06",
-    "2026-09-07",
-    "2026-09-08",
-    "2026-09-09",
-    "2026-09-10",
     "2026-09-13",
+    "2026-09-14",
+    "2026-09-15",
+    "2026-09-16",
+    "2026-09-17",
+    "2026-09-20",
   ];
   try {
     for (const throughDate of throughDates) {
       await runScheduledArxivRefresh({
         output,
         artifactRoot,
-        now: new Date("2026-09-14T01:00:00Z"),
-        fromDate: "2026-09-06",
+        now: new Date("2026-09-21T01:00:00Z"),
+        fromDate: "2026-09-13",
         throughDate,
         maxBatchesPerRun: 1,
         refreshImpl: async ({ announcementDate }) => {
@@ -296,12 +297,12 @@ test("moving catch-up bounds interleave retries with newly arriving dates", asyn
       });
     }
     assert.deepEqual(calls, [
-      "2026-09-06",
-      "2026-09-06",
-      "2026-09-07",
-      "2026-09-06",
-      "2026-09-08",
-      "2026-09-07",
+      "2026-09-13",
+      "2026-09-13",
+      "2026-09-14",
+      "2026-09-13",
+      "2026-09-15",
+      "2026-09-14",
     ]);
   } finally {
     await rm(directory, { recursive: true, force: true });
@@ -319,9 +320,9 @@ test("historical-only first catch-up preserves its archive edition without analy
       output,
       artifactRoot,
       archiveRoot: join(directory, "archives"),
-      now: new Date("2026-09-11T02:00:00Z"),
-      fromDate: "2026-09-06",
-      throughDate: "2026-09-10",
+      now: new Date("2026-09-18T02:00:00Z"),
+      fromDate: "2026-09-13",
+      throughDate: "2026-09-17",
       maxBatchesPerRun: 1,
       refreshImpl: async (options) => writeFakeEdition(options.output, options.announcementDate),
       archiveImpl: async ({ currentFeedPath }) => archivedFeeds.push(currentFeedPath),
@@ -329,21 +330,21 @@ test("historical-only first catch-up preserves its archive edition without analy
         analyzeCalls += 1;
       },
     });
-    assert.deepEqual(result.refreshed_dates, ["2026-09-06"]);
+    assert.deepEqual(result.refreshed_dates, ["2026-09-13"]);
     assert.deepEqual(result.pending_dates, [
-      "2026-09-07",
-      "2026-09-08",
-      "2026-09-09",
-      "2026-09-10",
+      "2026-09-14",
+      "2026-09-15",
+      "2026-09-16",
+      "2026-09-17",
     ]);
     assert.equal(result.payload, null);
     assert.equal(result.active_is_current, false);
     assert.equal(analyzeCalls, 0);
     assert.deepEqual(archivedFeeds, [
-      join(artifactRoot, "catch-up", "2026-09-06", "arxiv-daily.json"),
+      join(artifactRoot, "catch-up", "2026-09-13", "arxiv-daily.json"),
     ]);
     assert.equal(
-      await readFile(join(artifactRoot, "catch-up", "2026-09-06", "arxiv-daily.json"), "utf8").then(
+      await readFile(join(artifactRoot, "catch-up", "2026-09-13", "arxiv-daily.json"), "utf8").then(
         () => true
       ),
       true
@@ -358,22 +359,22 @@ test("an empty result is not recorded as success and leaves the active edition u
   const directory = await mkdtemp(join(tmpdir(), "arxiv-scheduler-empty-"));
   const output = join(directory, "arxiv-daily.json");
   const artifactRoot = join(directory, "artifacts");
-  const lastGood = `{"window":{"announcement_date":"2026-09-06"},"entries":[{"arxiv_id":"old"}]}\n`;
+  const lastGood = `{"window":{"announcement_date":"2026-09-13"},"entries":[{"arxiv_id":"old"}]}\n`;
   try {
     await writeFile(output, lastGood);
     const result = await runScheduledArxivRefresh({
       output,
       artifactRoot,
-      now: new Date("2026-09-08T01:00:00Z"),
+      now: new Date("2026-09-15T01:00:00Z"),
       refreshImpl: async ({ rejectEmpty }) => {
         assert.equal(rejectEmpty, true);
-        return { window: { announcement_date: "2026-09-07" }, entries: [] };
+        return { window: { announcement_date: "2026-09-14" }, entries: [] };
       },
       archiveImpl: async () => {},
     });
     assert.deepEqual(result.refreshed_dates, []);
-    assert.deepEqual(result.pending_dates, ["2026-09-07"]);
-    assert.deepEqual(result.failed_dates, ["2026-09-07"]);
+    assert.deepEqual(result.pending_dates, ["2026-09-14"]);
+    assert.deepEqual(result.failed_dates, ["2026-09-14"]);
     assert.equal(await readFile(output, "utf8"), lastGood);
     assert.deepEqual(
       JSON.parse(await readFile(join(artifactRoot, "scheduler-ledger.json"), "utf8"))
@@ -390,11 +391,11 @@ test("catch-up validates explicit bounds and refuses future dates", async () => 
   const options = {
     output: join(directory, "feed.json"),
     artifactRoot: join(directory, "artifacts"),
-    now: new Date("2026-09-14T01:00:00Z"),
+    now: new Date("2026-09-21T01:00:00Z"),
   };
   try {
     await assert.rejects(
-      runScheduledArxivRefresh({ ...options, fromDate: "2026-09-08", throughDate: "2026-09-07" }),
+      runScheduledArxivRefresh({ ...options, fromDate: "2026-09-15", throughDate: "2026-09-14" }),
       /on or before/u
     );
     await assert.rejects(
@@ -402,7 +403,7 @@ test("catch-up validates explicit bounds and refuses future dates", async () => 
       /valid YYYY-MM-DD/u
     );
     await assert.rejects(
-      runScheduledArxivRefresh({ ...options, throughDate: "2026-09-14" }),
+      runScheduledArxivRefresh({ ...options, throughDate: "2026-09-21" }),
       /later than the latest completed/u
     );
   } finally {
@@ -418,8 +419,8 @@ test("a query-scope change reopens dates completed under the older category set"
   const base = {
     output,
     artifactRoot,
-    now: new Date("2026-09-14T01:00:00Z"),
-    fromDate: "2026-09-13",
+    now: new Date("2026-09-21T01:00:00Z"),
+    fromDate: "2026-09-20",
     archiveImpl: async () => {},
     refreshImpl: async (options) => {
       queries.push(options.query);
@@ -438,7 +439,7 @@ test("a query-scope change reopens dates completed under the older category set"
     ]);
     const ledger = JSON.parse(await readFile(join(artifactRoot, "scheduler-ledger.json"), "utf8"));
     assert.equal(ledger.scope, "cat:astro-ph.HE OR cat:astro-ph.GA OR cat:astro-ph.SR");
-    assert.deepEqual(ledger.successful_dates, ["2026-09-13"]);
+    assert.deepEqual(ledger.successful_dates, ["2026-09-20"]);
   } finally {
     await rm(directory, { recursive: true, force: true });
   }
@@ -458,7 +459,7 @@ test("legacy run state is retried from its last successful date after query scop
         status: "success",
         last_success: {
           query: "cat:astro-ph.HE OR cat:astro-ph.GA",
-          window: { announcement_date: "2026-09-10", batch_id: "announcement-2026-09-10" },
+          window: { announcement_date: "2026-09-17", batch_id: "announcement-2026-09-17" },
         },
       })
     );
@@ -466,7 +467,7 @@ test("legacy run state is retried from its last successful date after query scop
       output,
       artifactRoot,
       query: DEFAULT_QUERY,
-      now: new Date("2026-09-14T01:00:00Z"),
+      now: new Date("2026-09-21T01:00:00Z"),
       refreshImpl: async (options) => {
         refreshCalls.push({ date: options.announcementDate, query: options.query });
         return writeFakeEdition(options.output, options.announcementDate);
@@ -475,7 +476,7 @@ test("legacy run state is retried from its last successful date after query scop
     });
     assert.deepEqual(
       refreshCalls.map(({ date }) => date),
-      ["2026-09-10", "2026-09-13"]
+      ["2026-09-17", "2026-09-20"]
     );
     assert.deepEqual(
       refreshCalls.map(({ query }) => query),
@@ -605,6 +606,45 @@ test("runScheduledArxivRefresh records provisional status before finalization", 
     assert.equal(lastRun.status, "refreshed");
     assert.deepEqual(lastRun.refreshed_dates, [date]);
     assert.equal(lastRun.announcement_date, date);
+  } finally {
+    await rm(directory, { recursive: true, force: true });
+  }
+});
+
+test("scheduler skips arXiv holidays without marking ARXIV_EMPTY_BATCH while preserving normal empty-batch retries", async () => {
+  assert.equal(isAnnouncementDate({ announcementDate: "2026-11-10" }), true);
+  assert.equal(isAnnouncementDate({ announcementDate: "2026-11-11" }), false);
+  assert.equal(isAnnouncementDate({ announcementDate: "2026-11-12" }), true);
+  assert.equal(isAnnouncementDate({ announcementDate: "2026-11-26" }), false);
+  assert.equal(isAnnouncementDate({ announcementDate: "2026-11-27" }), false);
+  assert.equal(isAnnouncementDate({ announcementDate: "2026-11-29" }), true);
+
+  const directory = await mkdtemp(join(tmpdir(), "arxiv-scheduler-holiday-"));
+  const output = join(directory, "feed.json");
+  const artifactRoot = join(directory, "artifacts");
+  const calledDates = [];
+  try {
+    const result = await runScheduledArxivRefresh({
+      fromDate: "2026-11-10",
+      throughDate: "2026-11-12",
+      now: new Date("2026-11-13T02:00:00Z"),
+      output,
+      artifactRoot,
+      refreshImpl: async (options) => {
+        calledDates.push(options.announcementDate);
+        if (options.announcementDate === "2026-11-12") {
+          return {
+            window: { announcement_date: options.announcementDate },
+            entries: [],
+          };
+        }
+        return writeFakeEdition(options.output, options.announcementDate);
+      },
+      analyzeImpl: async () => ({ pending_count: 0 }),
+    });
+    assert.deepEqual(calledDates, ["2026-11-10", "2026-11-12"]);
+    assert.deepEqual(result.refreshed_dates, ["2026-11-10"]);
+    assert.deepEqual(result.failed_dates, ["2026-11-12"]);
   } finally {
     await rm(directory, { recursive: true, force: true });
   }

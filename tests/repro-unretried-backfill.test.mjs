@@ -18,27 +18,27 @@ test("failed dates reconciled without valid data must remain retryable and not b
   const artifactRoot = join(directory, "artifacts");
   const archiveRoot = join(directory, "archives");
 
-  // 1. Day 1: 2026-09-07 fails during refresh
+  // 1. Day 1: 2026-09-14 fails during refresh
   const day1Result = await runScheduledArxivRefresh({
     output,
     artifactRoot,
     archiveRoot,
-    now: new Date("2026-09-08T01:00:00Z"), // through: 2026-09-07
-    fromDate: "2026-09-07",
+    now: new Date("2026-09-15T01:00:00Z"), // through: 2026-09-14
+    fromDate: "2026-09-14",
     maxBatchesPerRun: 1,
     refreshImpl: async () => {
       throw new Error("Temporary arXiv 429 error");
     },
   });
 
-  assert.deepEqual(day1Result.failed_dates, ["2026-09-07"]);
+  assert.deepEqual(day1Result.failed_dates, ["2026-09-14"]);
 
-  // 2. Reconcile runs for 2026-09-07, but upstream probe also fails
+  // 2. Reconcile runs for 2026-09-14, but upstream probe also fails
   await reconcilePreviousEdition({
     output,
     artifactRoot,
     archiveRoot,
-    announcementDate: "2026-09-07",
+    announcementDate: "2026-09-14",
     refreshImpl: async () => {
       throw new Error("Upstream probe failure");
     },
@@ -49,12 +49,12 @@ test("failed dates reconciled without valid data must remain retryable and not b
   );
 
   assert.equal(
-    ledgerAfterFail.successful_dates.includes("2026-09-07"),
+    ledgerAfterFail.successful_dates.includes("2026-09-14"),
     false,
     "failed date without valid feed must not be marked successful in ledger"
   );
   assert.equal(
-    ledgerAfterFail.failed_dates.includes("2026-09-07"),
+    ledgerAfterFail.failed_dates.includes("2026-09-14"),
     true,
     "failed date must remain in failed_dates"
   );
@@ -64,9 +64,9 @@ test("failed dates reconciled without valid data must remain retryable and not b
     output,
     artifactRoot,
     archiveRoot,
-    announcementDate: "2026-09-07",
+    announcementDate: "2026-09-14",
     refreshImpl: async () => ({
-      window: { announcement_date: "2026-09-07" },
+      window: { announcement_date: "2026-09-14" },
       entries: [],
     }),
   });
@@ -76,24 +76,24 @@ test("failed dates reconciled without valid data must remain retryable and not b
   );
 
   assert.equal(
-    ledgerAfterEmpty.successful_dates.includes("2026-09-07"),
+    ledgerAfterEmpty.successful_dates.includes("2026-09-14"),
     false,
     "empty feed during reconcile must not be marked successful"
   );
   assert.equal(
-    ledgerAfterEmpty.failed_dates.includes("2026-09-07"),
+    ledgerAfterEmpty.failed_dates.includes("2026-09-14"),
     true,
     "empty feed must remain in failed_dates"
   );
 
-  // 4. Day 2: Next run on 2026-09-08 must retry 2026-09-07
+  // 4. Day 2: Next run on 2026-09-15 must retry 2026-09-14
   let retriedDates = [];
   await runScheduledArxivRefresh({
     output,
     artifactRoot,
     archiveRoot,
-    now: new Date("2026-09-09T01:00:00Z"), // through: 2026-09-08
-    fromDate: "2026-09-07",
+    now: new Date("2026-09-16T01:00:00Z"), // through: 2026-09-15
+    fromDate: "2026-09-14",
     maxBatchesPerRun: 5,
     refreshImpl: async (opts) => {
       retriedDates.push(opts.announcementDate);
@@ -104,7 +104,7 @@ test("failed dates reconciled without valid data must remain retryable and not b
     },
   });
 
-  assert.ok(retriedDates.includes("2026-09-07"), "2026-09-07 must be retried on subsequent run");
+  assert.ok(retriedDates.includes("2026-09-14"), "2026-09-14 must be retried on subsequent run");
 });
 
 test("reconcilePreviousEdition must not corrupt screening-queue with invalid completed items", async (t) => {
@@ -200,14 +200,14 @@ test("readLedger sanitizes successful_dates and finalized_dates against failed_d
   const rawLedger = {
     schema_version: "arxiv-daily-scheduler-ledger-v1",
     scope: "cat:astro-ph.HE",
-    start_date: "2026-09-07",
-    successful_dates: ["2026-09-07", "2026-09-08"],
-    finalized_dates: ["2026-09-07", "2026-09-08"],
-    failed_dates: ["2026-09-07"],
+    start_date: "2026-09-14",
+    successful_dates: ["2026-09-14", "2026-09-15"],
+    finalized_dates: ["2026-09-14", "2026-09-15"],
+    failed_dates: ["2026-09-14"],
     attempt_sequence: 2,
     date_attempts: {
-      "2026-09-07": { attempts: 1, last_attempt_sequence: 1 },
-      "2026-09-08": { attempts: 1, last_attempt_sequence: 2 },
+      "2026-09-14": { attempts: 1, last_attempt_sequence: 1 },
+      "2026-09-15": { attempts: 1, last_attempt_sequence: 2 },
     },
   };
   await writeFile(join(artifactRoot, "scheduler-ledger.json"), JSON.stringify(rawLedger, null, 2));
@@ -219,18 +219,18 @@ test("readLedger sanitizes successful_dates and finalized_dates against failed_d
   });
 
   assert.equal(
-    clean.successful_dates.includes("2026-09-07"),
+    clean.successful_dates.includes("2026-09-14"),
     false,
     "failed date must be stripped from successful_dates"
   );
   assert.equal(
-    clean.finalized_dates.includes("2026-09-07"),
+    clean.finalized_dates.includes("2026-09-14"),
     false,
     "failed date must be stripped from finalized_dates"
   );
-  assert.equal(clean.successful_dates.includes("2026-09-08"), true);
-  assert.equal(clean.finalized_dates.includes("2026-09-08"), true);
-  assert.deepEqual(clean.failed_dates, ["2026-09-07"]);
+  assert.equal(clean.successful_dates.includes("2026-09-15"), true);
+  assert.equal(clean.finalized_dates.includes("2026-09-15"), true);
+  assert.deepEqual(clean.failed_dates, ["2026-09-14"]);
 });
 
 test("assertContinuousBatchIntervals detects discontinuities and rejects gaps", () => {

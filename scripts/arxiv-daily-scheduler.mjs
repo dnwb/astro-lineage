@@ -8,13 +8,13 @@ if (typeof process.loadEnvFile === "function" && existsSync(".env")) {
 }
 import {
   ANNOUNCEMENT_LOCAL_TIME,
-  ANNOUNCEMENT_WEEKDAYS,
   DEFAULT_ARTIFACT_ROOT,
   DEFAULT_OUTPUT,
   DEFAULT_QUERY,
   DEFAULT_RADAR_OUTPUT,
   DEFAULT_TIME_ZONE,
   acquireRefreshLock,
+  isScheduledAnnouncementDate,
   releaseRefreshLock,
   readArxivRunState,
   refreshArxivFeed,
@@ -70,33 +70,24 @@ function addCalendarDay(dateOnly, amount) {
   });
 }
 
-function weekdayForDate(dateOnly, timeZone) {
-  const [year, month, day] = dateOnly.split("-").map(Number);
-  return new Intl.DateTimeFormat("en-US", { timeZone, weekday: "short" }).format(
-    new Date(Date.UTC(year, month - 1, day, 12))
-  );
-}
-
-function isScheduledDate(dateOnly, timeZone) {
-  return ANNOUNCEMENT_WEEKDAYS.includes(weekdayForDate(dateOnly, timeZone));
-}
-
 function nextScheduledDate(dateOnly, timeZone) {
   let candidate = addCalendarDay(dateOnly, 1);
-  while (!isScheduledDate(candidate, timeZone)) candidate = addCalendarDay(candidate, 1);
+  while (!isScheduledAnnouncementDate(candidate, timeZone))
+    candidate = addCalendarDay(candidate, 1);
   return candidate;
 }
 
 function previousScheduledDate(dateOnly, timeZone) {
   let candidate = addCalendarDay(dateOnly, -1);
-  while (!isScheduledDate(candidate, timeZone)) candidate = addCalendarDay(candidate, -1);
+  while (!isScheduledAnnouncementDate(candidate, timeZone))
+    candidate = addCalendarDay(candidate, -1);
   return candidate;
 }
 
 function scheduledDatesBetween(startDate, throughDate, timeZone) {
   const dates = [];
   for (let date = startDate; date <= throughDate; date = addCalendarDay(date, 1)) {
-    if (isScheduledDate(date, timeZone)) dates.push(date);
+    if (isScheduledAnnouncementDate(date, timeZone)) dates.push(date);
   }
   return dates;
 }
@@ -109,15 +100,16 @@ export function latestCompletedAnnouncementDate({
     throw new Error("scheduler now must be a valid Date");
   const parts = localParts(now, timeZone);
   const date = dateText(parts);
-  if (isScheduledDate(date, timeZone) && parts.hour >= ANNOUNCEMENT_HOUR) return date;
+  if (isScheduledAnnouncementDate(date, timeZone) && parts.hour >= ANNOUNCEMENT_HOUR) return date;
   let candidate = addCalendarDay(date, -1);
-  while (!isScheduledDate(candidate, timeZone)) candidate = addCalendarDay(candidate, -1);
+  while (!isScheduledAnnouncementDate(candidate, timeZone))
+    candidate = addCalendarDay(candidate, -1);
   return candidate;
 }
 
 export function isAnnouncementDate({ announcementDate, timeZone = DEFAULT_TIME_ZONE } = {}) {
   assertDateOnly(announcementDate, "announcementDate");
-  return isScheduledDate(announcementDate, timeZone);
+  return isScheduledAnnouncementDate(announcementDate, timeZone);
 }
 
 function lastSuccessDate(state) {
@@ -174,7 +166,7 @@ export async function readLedger({ artifactRoot, timeZone, query }) {
     }
     for (const date of parsed.successful_dates) {
       assertDateOnly(date, "scheduler ledger date");
-      if (!isScheduledDate(date, timeZone))
+      if (!isScheduledAnnouncementDate(date, timeZone))
         throw new Error(`ARXIV_SCHEDULER_LEDGER_INVALID: ${date} is not an announcement date`);
     }
     const attemptSequence = parsed.attempt_sequence ?? 0;
@@ -207,7 +199,7 @@ export async function readLedger({ artifactRoot, timeZone, query }) {
         attempt.last_attempt_sequence > 0 &&
         attempt.last_attempt_sequence <= attemptSequence;
       if (
-        !isScheduledDate(date, timeZone) ||
+        !isScheduledAnnouncementDate(date, timeZone) ||
         !validAttempts ||
         (attempt.attempts === 0 ? !validQueueSequence : !validLastAttempt) ||
         (attempt.queue_sequence !== undefined && !validQueueSequence)
@@ -217,7 +209,7 @@ export async function readLedger({ artifactRoot, timeZone, query }) {
     }
     for (const date of rawFailedDates) {
       assertDateOnly(date, "scheduler ledger failed date");
-      if (!isScheduledDate(date, timeZone))
+      if (!isScheduledAnnouncementDate(date, timeZone))
         throw new Error(`ARXIV_SCHEDULER_LEDGER_INVALID: ${date} is not an announcement date`);
     }
     const failedSet = new Set(rawFailedDates);
@@ -389,7 +381,7 @@ export async function runScheduledArxivRefresh({
     if (fromDate !== undefined || throughDate !== undefined)
       throw new Error("--date cannot be combined with --from or --through");
     assertDateOnly(announcementDate, "announcementDate");
-    if (!isScheduledDate(announcementDate, timeZone))
+    if (!isScheduledAnnouncementDate(announcementDate, timeZone))
       throw new Error(`announcementDate ${announcementDate} is not an arXiv announcement date`);
     const query = refreshOptions.query ?? DEFAULT_QUERY;
     const ledger = await readLedger({ artifactRoot: root, timeZone, query });
@@ -484,7 +476,7 @@ export async function runScheduledArxivRefresh({
         artifactRoot: root,
         defaultOutput: target,
       });
-      if (archive && isScheduledDate(existingCurrentDate, timeZone)) {
+      if (archive && isScheduledAnnouncementDate(existingCurrentDate, timeZone)) {
         ledger.archived_dates = [
           ...new Set([...ledger.archived_dates, existingCurrentDate]),
         ].sort();
@@ -590,7 +582,7 @@ export async function runScheduledArxivRefresh({
     const remaining = dates.filter((date) => !ledger.successful_dates.includes(date));
     const throughAlreadyCovered =
       through >= start &&
-      isScheduledDate(through, timeZone) &&
+      isScheduledAnnouncementDate(through, timeZone) &&
       ledger.successful_dates.includes(through);
     const currentAfterRefresh = await currentFeedDate(target);
     const shouldRestoreNewest =

@@ -1,4 +1,5 @@
 import { createHash, randomUUID } from "node:crypto";
+import { readFileSync } from "node:fs";
 import { mkdir, open, readFile, readdir, rename, rm, stat, unlink } from "node:fs/promises";
 import { basename, dirname, join, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -32,6 +33,13 @@ export const ANNOUNCEMENT_BATCH_OFFSETS = Object.freeze({
   Wed: Object.freeze({ start: -1, end: 0 }),
   Thu: Object.freeze({ start: -1, end: 0 }),
 });
+const ARXIV_HOLIDAY_DATA = JSON.parse(
+  readFileSync(new URL("../src/domain/arxiv-holidays.json", import.meta.url), "utf8")
+);
+export const ARXIV_HOLIDAYS = Object.freeze(
+  Object.values(ARXIV_HOLIDAY_DATA.holidays ?? {}).flat()
+);
+const DEFAULT_HOLIDAY_SET = new Set(ARXIV_HOLIDAYS);
 export const DEFAULT_PAGE_SIZE = 2_000;
 export const DEFAULT_MIN_REQUEST_INTERVAL_MS = 3_000;
 export const DEFAULT_ARTIFACT_ROOT = fileURLToPath(
@@ -338,23 +346,56 @@ function apiDateTime(date) {
   return iso.slice(0, 16).replaceAll(/[-:T]/gu, "");
 }
 
+function toHolidaySet(holidays) {
+  return holidays instanceof Set ? holidays : new Set(holidays);
+}
+
+export function isArxivHoliday(dateOnly, holidays = DEFAULT_HOLIDAY_SET) {
+  return toHolidaySet(holidays).has(dateOnly);
+}
+
+export function isScheduledAnnouncementDate(
+  dateOnly,
+  timeZone = DEFAULT_TIME_ZONE,
+  holidays = DEFAULT_HOLIDAY_SET
+) {
+  const weekday = localWeekdayFor(dateOnly, timeZone);
+  return ANNOUNCEMENT_WEEKDAYS.includes(weekday) && !toHolidaySet(holidays).has(dateOnly);
+}
+
+function previousScheduledAnnouncementDate(dateOnly, timeZone, holidaySet) {
+  for (let offset = 1; offset <= 30; offset += 1) {
+    const candidate = addCalendarDays(dateOnly, -offset);
+    if (isScheduledAnnouncementDate(candidate, timeZone, holidaySet)) {
+      return candidate;
+    }
+  }
+  throw new ArxivFeedError("ARXIV_WINDOW_INVALID", `无法为公告日 ${dateOnly} 定位上一期公告日。`);
+}
+
 export function buildAnnouncementWindow({
   announcementDate,
   now = new Date(),
   timeZone = DEFAULT_TIME_ZONE,
+  holidays = DEFAULT_HOLIDAY_SET,
 } = {}) {
   if (!(now instanceof Date) || Number.isNaN(now.valueOf())) {
     throw new ArxivFeedError("ARXIV_WINDOW_INVALID", "窗口参考时间必须是有效 Date。");
   }
   let date = announcementDate ?? localDateFor(now, timeZone);
   assertDateOnly(date);
-  const weekday = localWeekdayFor(date, timeZone);
-  if (!ANNOUNCEMENT_WEEKDAYS.includes(weekday)) {
+  const holidaySet = toHolidaySet(holidays);
+  if (!isScheduledAnnouncementDate(date, timeZone, holidaySet)) {
     throw new ArxivFeedError("ARXIV_WINDOW_INVALID", `公告日 ${date} 没有 arXiv 公告批次。`);
   }
-  const offsets = ANNOUNCEMENT_BATCH_OFFSETS[weekday];
-  const submissionStartDate = addCalendarDays(date, offsets.start);
-  const submissionEndDate = addCalendarDays(date, offsets.end);
+  const weekday = localWeekdayFor(date, timeZone);
+  const prevAnnouncementDate = previousScheduledAnnouncementDate(date, timeZone, holidaySet);
+  const prevWeekday = localWeekdayFor(prevAnnouncementDate, timeZone);
+  const submissionStartDate = addCalendarDays(
+    prevAnnouncementDate,
+    ANNOUNCEMENT_BATCH_OFFSETS[prevWeekday].end
+  );
+  const submissionEndDate = addCalendarDays(date, ANNOUNCEMENT_BATCH_OFFSETS[weekday].end);
   const utcStartDate = localDateTimeToUtc(
     submissionStartDate,
     ANNOUNCEMENT_CUTOFF_LOCAL_TIME,

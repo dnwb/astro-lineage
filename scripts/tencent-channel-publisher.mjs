@@ -1952,7 +1952,11 @@ export async function publishWeeklyFeed({
       await withPublicationLedger(cacheRoot, guildId, async (records, save, ledger) => {
         const item = records[`weekly:${weekId}`];
         if (item?.feed_id && item?.create_time) {
-          let authorId = item.author_id || process.env.TENCENT_BOT_USER_ID || "";
+          let authorId =
+            item.author_id ||
+            ledger.pinned_weekly?.author_id ||
+            process.env.TENCENT_BOT_USER_ID ||
+            "";
           if (!authorId && !dryRun) {
             try {
               const detailRes = await (cli || runCli)([
@@ -1969,7 +1973,12 @@ export async function publishWeeklyFeed({
               const rawData =
                 typeof detailRes?.stdout === "string" ? JSON.parse(detailRes.stdout) : detailRes;
               const feedData = rawData?.data?.feed || rawData?.feed || rawData?.data || rawData;
-              authorId = feedData?.author_id ?? feedData?.author?.user_id ?? authorId;
+              authorId =
+                feedData?.author_id ??
+                feedData?.author?.user_id ??
+                feedData?.author?.id ??
+                feedData?.poster?.id ??
+                authorId;
             } catch {}
           }
           if (!authorId) authorId = process.env.TENCENT_BOT_USER_ID || "bot";

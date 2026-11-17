@@ -8,6 +8,7 @@ import { readPublishedArxivEdition } from "./arxiv-daily.mjs";
 import {
   TOPICS,
   TOPIC_LABELS,
+  TOPIC_LABEL_ALIASES,
   routePaper,
   hashBody,
   markerFor,
@@ -1436,8 +1437,9 @@ export async function provisionTopicChannels({
   const fallback = { channels };
   for (const [key, label] of TOPICS) {
     const title = TOPIC_LABELS[key];
+    const aliases = TOPIC_LABEL_ALIASES[key] ?? [];
     const matches = channels.filter((entry) =>
-      [title, `${key} ${label}`].includes(channelName(entry.channel_name ?? entry.name))
+      [title, `${key} ${label}`, ...aliases].includes(channelName(entry.channel_name ?? entry.name))
     );
     if (matches.length > 1) throw new Error("CHANNEL_SECTION_AMBIGUOUS");
     const current = matches[0];

@@ -205,6 +205,10 @@ case "${TASK}" in
 
     echo "[cron-runner] 步骤 3/4: 预运行发布（仅推送必读单篇讨论帖，不发布整期导读与周报）..."
     node scripts/notebooklm-sync.mjs --deliver preliminary "${BUILD_ID}" || DELIVERY_FAILED=1
+    if [ "${WEEKDAY}" -eq 5 ]; then
+      echo "[cron-runner] 周五检测：同步发布并置顶本周学术周报..."
+      node scripts/notebooklm-sync.mjs --deliver weekly "${BUILD_ID}" || DELIVERY_FAILED=1
+    fi
 
     echo "[cron-runner] 检查并确保 AstroLineage 智能体机器人守护进程运行正常..."
     systemctl --user is-active --quiet astrolineage-bot.service || systemctl --user start astrolineage-bot.service || true
@@ -236,7 +240,7 @@ case "${TASK}" in
 
     echo "[cron-runner] 兜底定稿发布到腾讯频道社区与年度 NotebookLM..."
     WEEKDAY="$(TZ="Asia/Shanghai" date +%u)"
-    if [ "${WEEKDAY}" -eq 6 ]; then
+    if [ "${WEEKDAY}" -eq 6 ] || [ "${DIRTY_WEEKS_COUNT:-0}" -gt 0 ]; then
       node scripts/notebooklm-sync.mjs --deliver both "${BUILD_ID}" || DELIVERY_FAILED=1
     else
       node scripts/notebooklm-sync.mjs --deliver daily "${BUILD_ID}" || DELIVERY_FAILED=1
@@ -262,7 +266,7 @@ case "${TASK}" in
     npm run build
     record_current_build
     systemctl --user restart astrolineage-web.service || true
-    node scripts/notebooklm-sync.mjs --deliver daily "${BUILD_ID}" || DELIVERY_FAILED=1
+    node scripts/notebooklm-sync.mjs --deliver both "${BUILD_ID}" || DELIVERY_FAILED=1
     sync_git_data
     ;;
 

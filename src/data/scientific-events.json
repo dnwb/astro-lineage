@@ -1,25 +1,58 @@
 {
-  "generated_at": "2026-11-16T14:53:05.669Z",
-  "total_events": 153,
+  "generated_at": "2026-11-17T18:48:43.934Z",
+  "total_events": 158,
   "events": [
     {
       "event_id": "GW170817",
       "event_type": "GW",
       "tags": [
-        "FRB",
         "SN",
-        "MULTI",
         "GW",
+        "MULTI",
         "GRB",
+        "FRB",
         "Transient Surveillance"
       ],
-      "heat_score": 320,
-      "paper_count": 22,
+      "heat_score": 325,
+      "paper_count": 23,
       "headline": "利用GW170817对应千新星AT2017gfo的晚期近红外光谱",
-      "narrative": "GW170817 是近期重点瞬变天体事件，活跃跨度 2026-09-16 至 2026-11-15，共聚合 22 篇研读文献（含 3 篇必读突破）。核心突破研判：模型将1.4、1.6和2.1微米特征分别主要归于La III、Ce III和Te III；推得Te、La、Ce质量分数约为0.04–0.08、0.025–0.05和0.05–0.1，Kr和Sb质量分数上限约为0.03和0.003。La和Ce约束仍属暂定。",
+      "narrative": "GW170817 是近期重点瞬变天体事件，活跃跨度 2026-09-16 至 2026-11-16，共聚合 23 篇研读文献（含 3 篇必读突破）。核心突破研判：模型将1.4、1.6和2.1微米特征分别主要归于La III、Ce III和Te III；推得Te、La、Ce质量分数约为0.04–0.08、0.025–0.05和0.05–0.1，Kr和Sb质量分数上限约为0.03和0.003。La和Ce约束仍属暂定。",
       "first_seen": "2026-09-16",
-      "last_updated": "2026-11-15",
+      "last_updated": "2026-11-16",
       "papers": [
+        {
+          "arxiv_id": "2611.19510",
+          "revision": 1,
+          "title": "Scalar charge of neutron stars and accreting black holes in Starobinsky gravity: quasi-universal relations, the trace anomaly and gravitational-wave sensitivity",
+          "authors": [
+            "Yashmitha Kumaran",
+            "Ilídio Lopes"
+          ],
+          "date": "2026-11-16",
+          "priority": "skip",
+          "bluf_result": "The exterior charge is matter-sourced: a neutron star carries about four-fifths of the equal-mass point-source charge, with $q_{\\rm curved}=1-6P_T/M=1-2s$ and $q_{\\rm curved}\\simeq(1-\\mathcal{C})(1-0.205\\,\\mathcal{C}-4.61\\,\\mathcal{C}^{2})$. A shell or disc gives $q=\\sinh(m_\\phi r_d)/(m_\\phi r_d)$. NICER and GW170817 fix the stellar charge to between $\\pm 0.03$ and $\\pm 0.1$, while the dipole channel probes $\\lambda$ down to a few hundred kilometres rather than $q$.",
+          "bluf_problem": "The paper asks how the trace-sourced Starobinsky scalaron charge of neutron stars and accreting black holes depends on stellar structure and disc radius, and whether dipole radiation or lensing can measure it.",
+          "figures": [
+            {
+              "url": "/arxiv-figures/2611.19510/fig_q_universal.png",
+              "label": "Fig. 4",
+              "caption": "Figure 4: The charge against the tidal deformability (left) and the moment of inertia (right) for stable stars of the six equations of state with $M\\geq 1.0\\,M_{\\odot}$, with the quadratic fits of the text (black) and residuals below. The grey band on the left is the GW170817 interval for $\\Lambda_{1.4}$.",
+              "category": "fitting",
+              "category_badge": "Model vs Data Fitting",
+              "physical_core": "展示理论模型与实际观测数据的拟合对比及关键参数后验约束。",
+              "is_schematic": false
+            }
+          ],
+          "primary_figure": {
+            "url": "/arxiv-figures/2611.19510/fig_q_universal.png",
+            "label": "Fig. 4",
+            "caption": "Figure 4: The charge against the tidal deformability (left) and the moment of inertia (right) for stable stars of the six equations of state with $M\\geq 1.0\\,M_{\\odot}$, with the quadratic fits of the text (black) and residuals below. The grey band on the left is the GW170817 interval for $\\Lambda_{1.4}$.",
+            "category": "fitting",
+            "category_badge": "Model vs Data Fitting",
+            "physical_core": "展示理论模型与实际观测数据的拟合对比及关键参数后验约束。",
+            "is_schematic": false
+          }
+        },
         {
           "arxiv_id": "2611.17920",
           "revision": 1,
@@ -709,7 +742,7 @@
         "Transient Surveillance",
         "GCN Photometry"
       ],
-      "heat_score": 115.2,
+      "heat_score": 104.3,
       "paper_count": 7,
       "headline": "Non-detection of GRB high-energy...",
       "narrative": "GRB 221009A 是近期重点瞬变天体事件，活跃跨度 2026-10-04 至 2026-11-12，共聚合 7 篇研读文献（含 5 篇必读突破）。核心突破研判：Summed time-resolved spectra change the expected muon-neutrino counts relative to time-integrated spectra. For GRB 080916C the counts are about $2.46\\times 10^{-7}$ versus $1.97\\times 10^{-7}$, with a high-$R$, high-$\\Gamma$ ratio $\\sim 1.25$ and a low-$R$, low-$\\Gamma$ ratio $\\sim 0.9$. GRB 110721A gives $\\sim 5.30\\times 10^{-4}$ versus $\\sim 5.49\\times 10^{-4}$ (everywhere $<10^{-3}$; ratios $\\sim 1.4$ and $\\sim 0.7$). GRB 090902B gives $\\sim 1.31\\times 10^{-3}$ versus $\\sim 1.01\\times 10^{-3}$ (factor $\\sim 1.3$; model-independent estimate still $<3\\times 10^{-2}$; ratios $\\sim 2.1$ and $\\sim 0.9$). For GRB 221009A, an ICMART case $R=10^{16}\\,\\mathrm{cm}$, $\\Gamma=500$, $\\varepsilon_p/\\varepsilon_e=3$ yields $\\sim 1.02\\times 10^{-1}$ versus $\\sim 3.36\\times 10^{-2}$. At fixed $R\\simeq 1.07\\times 10^{15}\\,\\mathrm{cm}$, time-resolved non-detection gives $\\Gamma>254,371,537$ for $\\varepsilon_p/\\varepsilon_e=1,3,10$, compared with $\\Gamma>188,273,395$ from the time-integrated spectrum, i.e. lower limits higher by $28\\%$–$40\\%$.",
@@ -988,12 +1021,173 @@
       "gcn_status": "archived"
     },
     {
+      "event_id": "FRB 20121102A",
+      "event_type": "FRB",
+      "tags": [
+        "FRB",
+        "GW"
+      ],
+      "heat_score": 65,
+      "paper_count": 3,
+      "headline": "Frequency-dependent FRB polariza...",
+      "narrative": "FRB 20121102A 是近期重点瞬变天体事件，活跃跨度 2026-10-27 至 2026-11-16，共聚合 3 篇研读文献（含 2 篇必读突破）。核心突破研判：For cold plasma ($\\bar{\\gamma}=kT/(mc^{2})\\ll 1$) without the $\\omega_B\\ll\\omega$ approximation, $\\rho_V=-\\omega_p^{2}\\omega_B\\eta\\cos\\theta_B/[c(\\omega^{2}-\\omega_B^{2})]$ and $\\rho_Q=-\\omega_p^{2}\\omega_B^{2}\\sin^{2}\\theta_B/[2c\\omega(\\omega^{2}-\\omega_B^{2})]$, convergent for $\\omega_B/\\omega<(4\\bar{\\gamma})^{-1}$. Weak-field $\\Delta\\mathrm{PA}=\\mathrm{RM}\\lambda^{2}$ becomes $\\Delta\\mathrm{PA}=\\mathrm{RM}\\lambda^{2}\\lambda_B^{2}/(\\lambda_B^{2}-\\lambda^{2})$ with $\\lambda_B=2\\pi c/\\omega_B$ in the strong-field regime. Fits give $\\theta_B\\sim 90^{\\circ}$ and $\\log_{10}(B/\\mathrm{G})\\approx 1.16$, $1.52$, $1.66$ for FRB 20180301A and two GPM pulses; sources with Faraday conversion require $B\\lesssim 100\\,\\mathrm{G}$. Near-perpendicular $B$ still yields a non-negligible RM. For relativistic plasma, $\\alpha=(s-1)/2$, rotation is suppressed by $(\\ln\\gamma_i)\\gamma_i^{-2(\\alpha+1)}$ and conversion scales as $\\gamma_i^{-(2\\alpha-1)}$. Razin suppression gives $n_0<3\\times 10^{4}\\,\\mathrm{cm^{-3}}$; for FRB 20121102A, $s=2.32$ and $L_\\nu=1.924\\times 10^{29}\\,\\mathrm{erg\\,s^{-1}\\,Hz^{-1}}$ imply $R<0.35\\,\\mathrm{pc}$, while a cold component $\\zeta\\gamma_c^{2}=0.01$ dominates RM and relativistic polarization is likely negligible where the FRB can propagate.",
+      "first_seen": "2026-10-27",
+      "last_updated": "2026-11-16",
+      "papers": [
+        {
+          "arxiv_id": "2611.19811",
+          "revision": 1,
+          "title": "Polarization of Fast Radio Bursts due to Propagation in Magnetized Plasma",
+          "authors": [
+            "Wei-Yang Wang",
+            "Xiaohui Liu",
+            "Nan Xu",
+            "Songyu Shen"
+          ],
+          "date": "2026-11-16",
+          "priority": "must_read",
+          "bluf_result": "For cold plasma ($\\bar{\\gamma}=kT/(mc^{2})\\ll 1$) without the $\\omega_B\\ll\\omega$ approximation, $\\rho_V=-\\omega_p^{2}\\omega_B\\eta\\cos\\theta_B/[c(\\omega^{2}-\\omega_B^{2})]$ and $\\rho_Q=-\\omega_p^{2}\\omega_B^{2}\\sin^{2}\\theta_B/[2c\\omega(\\omega^{2}-\\omega_B^{2})]$, convergent for $\\omega_B/\\omega<(4\\bar{\\gamma})^{-1}$. Weak-field $\\Delta\\mathrm{PA}=\\mathrm{RM}\\lambda^{2}$ becomes $\\Delta\\mathrm{PA}=\\mathrm{RM}\\lambda^{2}\\lambda_B^{2}/(\\lambda_B^{2}-\\lambda^{2})$ with $\\lambda_B=2\\pi c/\\omega_B$ in the strong-field regime. Fits give $\\theta_B\\sim 90^{\\circ}$ and $\\log_{10}(B/\\mathrm{G})\\approx 1.16$, $1.52$, $1.66$ for FRB 20180301A and two GPM pulses; sources with Faraday conversion require $B\\lesssim 100\\,\\mathrm{G}$. Near-perpendicular $B$ still yields a non-negligible RM. For relativistic plasma, $\\alpha=(s-1)/2$, rotation is suppressed by $(\\ln\\gamma_i)\\gamma_i^{-2(\\alpha+1)}$ and conversion scales as $\\gamma_i^{-(2\\alpha-1)}$. Razin suppression gives $n_0<3\\times 10^{4}\\,\\mathrm{cm^{-3}}$; for FRB 20121102A, $s=2.32$ and $L_\\nu=1.924\\times 10^{29}\\,\\mathrm{erg\\,s^{-1}\\,Hz^{-1}}$ imply $R<0.35\\,\\mathrm{pc}$, while a cold component $\\zeta\\gamma_c^{2}=0.01$ dominates RM and relativistic polarization is likely negligible where the FRB can propagate.",
+          "bluf_problem": "Frequency-dependent FRB polarization mixes intrinsic emission with propagation through magnetized plasma, and it is unclear when Faraday rotation versus conversion, or a relativistic persistent-source plasma, dominates.",
+          "figures": [
+            {
+              "url": "/arxiv-figures/2611.19811/Cold_180301A_tri.png",
+              "label": "Fig. 2",
+              "caption": "Figure 2: The 1D and 2D marginalized probability distributions at 68.3% and 95.4% confidence levels for the cold plasma scenario for FRB 20180301A.",
+              "category": "theoretical",
+              "category_badge": "Physical Model Schematic",
+              "physical_core": "展示核心天体物理驱动机制、几何拓扑与理论演化模型架构。",
+              "is_schematic": true
+            }
+          ],
+          "primary_figure": {
+            "url": "/arxiv-figures/2611.19811/Cold_180301A_tri.png",
+            "label": "Fig. 2",
+            "caption": "Figure 2: The 1D and 2D marginalized probability distributions at 68.3% and 95.4% confidence levels for the cold plasma scenario for FRB 20180301A.",
+            "category": "theoretical",
+            "category_badge": "Physical Model Schematic",
+            "physical_core": "展示核心天体物理驱动机制、几何拓扑与理论演化模型架构。",
+            "is_schematic": true
+          }
+        },
+        {
+          "arxiv_id": "2611.18056",
+          "revision": 1,
+          "title": "Unsupervised Machine Learning Classification of FRB 20121102A across Distinct Active Episodes: Implications for FRB Emission Physics and Source Environments",
+          "authors": [
+            "Xiao Li",
+            "En-Wei Liang"
+          ],
+          "date": "2026-11-15",
+          "priority": "must_read",
+          "bluf_result": "HDBSCAN finds four clusters plus noise. Cluster 1 contains nearly all high-energy bursts, has a mean energy about one order of magnitude higher, shows bimodal central frequency and bandwidth, and occupies a separate width–flux region. Its fractions are $26.9^{+2.3}_{-2.2}\\%$ (2019), $7.7^{+3.1}_{-2.3}\\%$ (2022), and $7.8^{+6.4}_{-3.7}\\%$ (2023). Clusters 2 and 4 have mean bandwidth ratios $\\sim 0.1$ at higher and lower central frequencies, respectively; Cluster 3 has larger bandwidth and bandwidth ratio. All clusters have bandwidth ratio $<0.4$ and similar bimodal waiting times. Relative to $T_{\\mathrm{B,cri}}\\approx 10^{33}\\,\\mathrm{K}$, Cluster 1 contains most classical bursts. In the condensed tree, $\\lambda=1/d$ and Cluster 1 separates near $\\lambda\\sim 0.3$. A curvature-radiation reading uses $\\nu_{\\rm c}\\propto\\gamma^{3}/\\rho$.",
+          "bluf_problem": "Whether repeat bursts of FRB 20121102A contain subclasses associated with different radiation mechanisms or emission-region conditions, and whether those subclass fractions change across the 2019, 2022, and 2023 active episodes.",
+          "figures": [
+            {
+              "url": "/arxiv-figures/2611.18056/Figure1re.png",
+              "label": "Fig. 1",
+              "caption": "Figure 1: The average Silhouette Scores for different hyperparameter configurations. Upper panel: UMAP hyperparameter search with min_cluster_size =200 and min_samples =10. Lower panel: HDBSCAN hyperparameter search with n_neighbors =7 and min_dist =0.0. The red star marks the final configuration adopted in this work.",
+              "category": "theoretical",
+              "category_badge": "Physical Model Schematic",
+              "physical_core": "展示核心天体物理驱动机制、几何拓扑与理论演化模型架构。",
+              "is_schematic": true
+            },
+            {
+              "url": "/arxiv-figures/2611.18056/Figure_clusternumber.png",
+              "label": "Fig. 7",
+              "caption": "Figure 7: The number of clusters identified (left) for different HDBSCAN hyperparameter combinations, with the UMAP hyperparameters n_neighbors =7 and min_dist =0.0 fixed, and the corresponding Adjusted Rand Index (ARI) (right) relative to the final adopted configuration ( n_neighbors =7, min_dist =0.0, min_cluster_size =200, and min_samples =10).",
+              "category": "theoretical",
+              "category_badge": "Physical Model Schematic",
+              "physical_core": "展示核心天体物理驱动机制、几何拓扑与理论演化模型架构。",
+              "is_schematic": true
+            }
+          ],
+          "primary_figure": {
+            "url": "/arxiv-figures/2611.18056/Figure1re.png",
+            "label": "Fig. 1",
+            "caption": "Figure 1: The average Silhouette Scores for different hyperparameter configurations. Upper panel: UMAP hyperparameter search with min_cluster_size =200 and min_samples =10. Lower panel: HDBSCAN hyperparameter search with n_neighbors =7 and min_dist =0.0. The red star marks the final configuration adopted in this work.",
+            "category": "theoretical",
+            "category_badge": "Physical Model Schematic",
+            "physical_core": "展示核心天体物理驱动机制、几何拓扑与理论演化模型架构。",
+            "is_schematic": true
+          }
+        },
+        {
+          "arxiv_id": "2610.37052",
+          "revision": 1,
+          "title": "Self lensing in BH-NS binaries as progenitors for periodically repeating Fast Radio Bursts",
+          "authors": [
+            "L. E. Rodríguez",
+            "M. Cruces",
+            "G. Voisin",
+            "J. Vera-Casanova",
+            "C. A. Braga"
+          ],
+          "date": "2026-10-27",
+          "priority": "worth_knowing",
+          "bluf_result": "Pure Keplerian self-lensing fails with a tiny activity window $\\tau_{\\mathrm{aw}}^{\\mathrm{KP}} \\sim \\mathcal{O}(0.5\\,\\mathrm{hours})$, whereas Lense-Thirring precession with period $\\tau_{\\mathrm{LT}} = \\frac{\\pi(1-e^{2})^{3/2}c^{3}a^{3}}{G^{2}M_{\\mathrm{BH}}^{2}\\chi} = 2\\tau_{\\mathrm{FRB}}$ reproduces wide activity windows $\\tau_{\\mathrm{aw}}^{\\mathrm{LT}} \\sim 0.5\\tau_{\\mathrm{FRB}}$ for small inclinations $i \\sim (5\\text{--}8) \\times 10^{-2}\\,{^\\circ}$. Splitting time delays $\\tau_{\\mathrm{lens}}^{\\mathrm{Spl}} \\approx \\frac{4GM_{\\mathrm{BH}}}{c^3}(1+z)\\lambda(r_s/a)^{1/2} \\sim 10^{-3}\\text{--}10^{-2}\\,\\mathrm{s}$ match the observed millisecond waiting-time peak in FRB 20121102A, constraining the companion mass to $M_{\\mathrm{BH}} \\sim 10^3\\text{--}10^4\\,M_\\odot$ with maximum amplification $\\mathcal{A}_{\\max} \\approx \\sqrt{8r_{s}a/R^{2}} \\sim 10^4$ and gravitational wave merger timescale $\\tau_{\\mathrm{GW}} \\sim 10^3\\,\\mathrm{yr}$.",
+          "bluf_problem": "Periodically repeating Fast Radio Bursts (prFRBs) exhibit broad periodic activity windows ($30\\%\\text{--}50\\%$ of their period) and pulse energies orders of magnitude higher than Galactic magnetars, which existing free-precession, stellar-wind eclipse, or simple orbital models struggle to simultaneously explain.",
+          "figures": [
+            {
+              "url": "/arxiv-figures/2610.37052/coordinatesystem.png",
+              "label": "Fig. 1",
+              "caption": "(a) Elliptical orbit of a NS around a BH, with inclination $i$, node precession $\\Omega$, periapsis precession $\\omega$, and true anomaly $\\nu$.",
+              "category": "theoretical",
+              "category_badge": "Physical Model Schematic",
+              "physical_core": "Shows the NS–BH binary orbital geometry, including inclination and the precession of the orbital node and periapsis.",
+              "is_schematic": true
+            },
+            {
+              "url": "/arxiv-figures/2610.37052/shapiro_delay.png",
+              "label": "Fig. 9",
+              "caption": "Figure 9: Theoretical relation between BH mass and the lensing-induced delay observed between main and echo pulses after gravitational lensing. The grey horizontal band indicates the observed waiting times for FRB 20121102A, which range approximately from $10^{-3}$ – $10^{-2}\\,{\\rm s}$. The lines represent different scenarios in which the peak of the amplified-burst distribution occurs at projected distance $b=\\lambda r_{s}$, see Eq. ( 35 ).",
+              "category": "fitting",
+              "category_badge": "Model vs Data Fitting",
+              "physical_core": "Shows the theoretical relation between BH mass and the lensing-induced delay between the primary burst and its echo, with the observed FRB 20121102A waiting-time range marked for comparison.",
+              "is_schematic": false
+            }
+          ],
+          "primary_figure": {
+            "url": "/arxiv-figures/2610.37052/coordinatesystem.png",
+            "label": "Fig. 1",
+            "caption": "(a) Elliptical orbit of a NS around a BH, with inclination $i$, node precession $\\Omega$, periapsis precession $\\omega$, and true anomaly $\\nu$.",
+            "category": "theoretical",
+            "category_badge": "Physical Model Schematic",
+            "physical_core": "Shows the NS–BH binary orbital geometry, including inclination and the precession of the orbital node and periapsis.",
+            "is_schematic": true
+          }
+        }
+      ],
+      "lead_figure": {
+        "url": "/arxiv-figures/2611.19811/Cold_180301A_tri.png",
+        "label": "Fig. 2",
+        "caption": "Figure 2: The 1D and 2D marginalized probability distributions at 68.3% and 95.4% confidence levels for the cold plasma scenario for FRB 20180301A.",
+        "category": "theoretical",
+        "category_badge": "Physical Model Schematic",
+        "physical_core": "展示核心天体物理驱动机制、几何拓扑与理论演化模型架构。",
+        "is_schematic": true
+      },
+      "lead_figure_arxiv_id": "2611.19811",
+      "canonical_t0": null,
+      "best_redshift": null,
+      "has_redshift_conflict": false,
+      "multi_messenger": [],
+      "gcn_aliases_label": null,
+      "canonical_t0_label": null,
+      "best_redshift_label": null,
+      "multi_messenger_badges": [],
+      "gcn_circular_count": 0,
+      "gcn_figure_path": null,
+      "gcn_aliases": [],
+      "gcn_slug": null,
+      "gcn_status": null
+    },
+    {
       "event_id": "FRB 20240114A",
       "event_type": "FRB",
       "tags": [
         "FRB"
       ],
-      "heat_score": 50,
+      "heat_score": 45.3,
       "paper_count": 2,
       "headline": "Whether the degree of linear pol...",
       "narrative": "FRB 20240114A 是近期重点瞬变天体事件，活跃跨度 2026-10-20 至 2026-11-15，共聚合 2 篇研读文献（含 2 篇必读突破）。核心突破研判：Daily-mean DOL periodograms peak near 120 days: phase-distance correlation reaches 0.1452 at $P=119.91\\,\\mathrm{d}$ (99% global threshold 0.1262; $3\\sigma$ interval $119.91^{+2.67}_{-2.04}\\,\\mathrm{d}$), and generalized Lomb–Scargle reaches power 0.1275 at $122.31\\,\\mathrm{d}$ (threshold 0.1108; interval $122.31^{+2.63}_{-2.82}\\,\\mathrm{d}$). Daily medians peak at $119.91\\,\\mathrm{d}$ and $123.55\\,\\mathrm{d}$, with global FAPs $5.71\\times10^{-4}$ and $2.84\\times10^{-3}$ (about $3.25\\sigma$ and $2.77\\sigma$). Folding at $119.91\\,\\mathrm{d}$ gives semi-amplitude 3.23% (peak-to-peak 6.46%). For $P_{\\rm orb}=119.91\\,\\mathrm{d}$ and $M_{\\rm tot}=10M_\\odot$, $a\\simeq1.03\\,\\mathrm{au}$. For 18 bright bursts, $\\sigma_{\\rm RM}<0.51\\,\\mathrm{rad\\,m^{-2}}$ (95%), so $p_{\\rm L}=p_{\\rm L,0}\\exp[-2\\sigma_{\\rm RM}^2\\lambda^4]$ lowers DOL by only about 0.42% and 0.083% at 1.0 and 1.5 GHz. With $I=10^{45}\\,\\mathrm{g\\,cm^2}$ and $P_{\\rm spin}=120\\,\\mathrm{d}$, $E_{\\rm rot}\\simeq1.84\\times10^{32}\\,\\mathrm{erg}$, far below $E_{\\rm iso}\\sim10^{37}$–$10^{39}\\,\\mathrm{erg}$.",
@@ -1120,7 +1314,7 @@
         "SN",
         "MULTI"
       ],
-      "heat_score": 45,
+      "heat_score": 40.8,
       "paper_count": 3,
       "headline": "Standard supernova cooling exclu...",
       "narrative": "SN1987A 是近期重点瞬变天体事件，活跃跨度 2026-10-26 至 2026-11-15，共聚合 3 篇研读文献。核心突破研判：For ${\\mathcal L}_{\\rm int}\\supset -g\\phi^{*}\\bar{\\chi}P_L\\nu+{\\rm H.c.}$, $\\nu\\bar{\\nu}\\to\\chi\\bar{\\chi}$ production is nonresonant while $\\chi\\bar{\\nu}$ scattering is resonantly enhanced near $s=m_\\phi^2$. At $m_\\phi=3m_\\chi$, the Raffelt limit $5\\times10^{52}\\,{\\rm erg\\,s^{-1}}$ leaves an SN1987A exclusion gap from about 5 MeV to 100 MeV; narrow exclusions remain near a few hundred MeV, and $m_\\phi=10\\,{\\rm GeV}$ restores the usual shape. Emission peaks near 8 km at 1 s post-bounce, and $\\lambda_{\\rm Decay}=(4.2\\,{\\rm cm})\\beta\\gamma(g/10^{-5})^{-2}(m_\\phi/{\\rm MeV})^{-1}\\ll R_\\nu\\simeq40\\,{\\rm km}$.",
@@ -1243,55 +1437,79 @@
       "gcn_status": null
     },
     {
-      "event_id": "FRB 20121102A",
-      "event_type": "FRB",
+      "event_id": "SN 2020EYJ",
+      "event_type": "SN",
       "tags": [
         "FRB",
-        "GW"
+        "SN",
+        "MULTI"
       ],
       "heat_score": 40,
       "paper_count": 2,
-      "headline": "Whether repeat bursts of FRB 201...",
-      "narrative": "FRB 20121102A 是近期重点瞬变天体事件，活跃跨度 2026-10-27 至 2026-11-15，共聚合 2 篇研读文献（含 1 篇必读突破）。核心突破研判：HDBSCAN finds four clusters plus noise. Cluster 1 contains nearly all high-energy bursts, has a mean energy about one order of magnitude higher, shows bimodal central frequency and bandwidth, and occupies a separate width–flux region. Its fractions are $26.9^{+2.3}_{-2.2}\\%$ (2019), $7.7^{+3.1}_{-2.3}\\%$ (2022), and $7.8^{+6.4}_{-3.7}\\%$ (2023). Clusters 2 and 4 have mean bandwidth ratios $\\sim 0.1$ at higher and lower central frequencies, respectively; Cluster 3 has larger bandwidth and bandwidth ratio. All clusters have bandwidth ratio $<0.4$ and similar bimodal waiting times. Relative to $T_{\\mathrm{B,cri}}\\approx 10^{33}\\,\\mathrm{K}$, Cluster 1 contains most classical bursts. In the condensed tree, $\\lambda=1/d$ and Cluster 1 separates near $\\lambda\\sim 0.3$. A curvature-radiation reading uses $\\nu_{\\rm c}\\propto\\gamma^{3}/\\rho$.",
-      "first_seen": "2026-10-27",
-      "last_updated": "2026-11-15",
+      "headline": "Radio modeling usually infers su...",
+      "narrative": "SN 2020EYJ 是近期重点瞬变天体事件，监测日期 2026-11-16，共聚合 2 篇研读文献（含 1 篇必读突破）。核心突破研判：Mock radio observations of Type II, Ibc, and Ia-CSM events require a total CSM mass that depends only weakly on covering factor, from $M_{\\mathrm{CSM}}\\propto f_{\\Omega}^{0.38}$ (Type II) to $M_{\\mathrm{CSM}}\\propto f_{\\Omega}^{0.15}$ (Ia-CSM). Even $f_{\\Omega}=0.01$ does not lower $M_{\\mathrm{CSM}}$ by an order of magnitude. For SN 2020eyj, $f_{\\Omega}=0.1$ reduces the required mass only to $\\sim 50\\%$ of the spherical value; truncated and untruncated fits scale as $M_{\\mathrm{CSM}}\\propto f_{\\Omega}^{0.33}$ and $\\propto f_{\\Omega}^{0.23}$ (0.22 in the discussion), with $\\chi^{2}=14.8$ and $20.8$ at $f_{\\Omega}=1$. The joint spectral index $\\alpha=-0.69$ gives $p=1-2\\alpha=2.38$. Analytically, fixed $L_{\\nu}$ implies $M_{\\mathrm{CSM}}\\propto f_{\\Omega}^{1-1/\\eta}$ with $\\eta=[(p+5)(n-2)-12]/[4(n-s)]$; for $p=3$, $s=2$, $n=10$, $\\eta=13/8$ and $1-1/\\eta=5/13\\approx 0.38$.",
+      "first_seen": "2026-11-16",
+      "last_updated": "2026-11-16",
       "papers": [
         {
-          "arxiv_id": "2611.18056",
+          "arxiv_id": "2611.20669",
           "revision": 1,
-          "title": "Unsupervised Machine Learning Classification of FRB 20121102A across Distinct Active Episodes: Implications for FRB Emission Physics and Source Environments",
+          "title": "Long-Term Radio Evolution of the Type Ia Supernova SN 2020eyj: Evidence for a Dense Helium-rich Circumstellar Shell",
           "authors": [
-            "Xiao Li",
-            "En-Wei Liang"
+            "Zheng-Wei Liu",
+            "Xiaolong Yang",
+            "Huanyuan Shan",
+            "Xuefei Chen",
+            "Peng Jiang",
+            "Xiangcun Meng",
+            "Friedrich K. Roepke",
+            "Ryotaro Chiba",
+            "Jun Yang",
+            "Bo Zhang",
+            "Su Yao",
+            "Jingxiao Luo",
+            "Philipp Podsiadlowski",
+            "Liang-Duan Liu",
+            "Hailiang Chen",
+            "Shuai Zha",
+            "Wu Jiang",
+            "Rurong Chen",
+            "Jin-Tao Luo",
+            "De Wu",
+            "Lang Cui",
+            "Jiao Li",
+            "Xiang-Dong Li",
+            "Ye Li",
+            "Zhanwen Han"
           ],
-          "date": "2026-11-15",
-          "priority": "must_read",
-          "bluf_result": "HDBSCAN finds four clusters plus noise. Cluster 1 contains nearly all high-energy bursts, has a mean energy about one order of magnitude higher, shows bimodal central frequency and bandwidth, and occupies a separate width–flux region. Its fractions are $26.9^{+2.3}_{-2.2}\\%$ (2019), $7.7^{+3.1}_{-2.3}\\%$ (2022), and $7.8^{+6.4}_{-3.7}\\%$ (2023). Clusters 2 and 4 have mean bandwidth ratios $\\sim 0.1$ at higher and lower central frequencies, respectively; Cluster 3 has larger bandwidth and bandwidth ratio. All clusters have bandwidth ratio $<0.4$ and similar bimodal waiting times. Relative to $T_{\\mathrm{B,cri}}\\approx 10^{33}\\,\\mathrm{K}$, Cluster 1 contains most classical bursts. In the condensed tree, $\\lambda=1/d$ and Cluster 1 separates near $\\lambda\\sim 0.3$. A curvature-radiation reading uses $\\nu_{\\rm c}\\propto\\gamma^{3}/\\rho$.",
-          "bluf_problem": "Whether repeat bursts of FRB 20121102A contain subclasses associated with different radiation mechanisms or emission-region conditions, and whether those subclass fractions change across the 2019, 2022, and 2023 active episodes.",
+          "date": "2026-11-16",
+          "priority": "worth_knowing",
+          "bluf_result": "JVLA confirms radio emission from SN Ia 2020eyj through 1301 days. The 6 GHz light curve is steady from day 623 to 841 and then declines; 2–10 GHz spectra follow $S_\\nu\\propto\\nu^{+\\alpha}$ with $\\alpha=\\alpha_{\\rm thin}=-0.84^{+0.11}_{-0.12}$ and a low-frequency turnover from absorbed synchrotron, implying $p=2.68^{+0.24}_{-0.22}$. A constant-density He shell fits 3 and 6 GHz better than an $r^{-2}$ wind: $M_{\\rm CSM}\\approx0.32$–$0.37\\,M_\\odot$, $\\rho\\sim(0.12$–$0.15)\\times10^{-18}\\,\\mathrm{g\\,cm^{-3}}$, $R_{\\rm in}\\sim1.2\\times10^{16}\\,\\mathrm{cm}$, $v_{\\rm ej}\\sim(2.4$–$2.5)\\times10^{4}\\,\\mathrm{km\\,s^{-1}}$, $f_R=\\Delta R/R_{\\rm in}\\approx7.1$–$8.1$, and $t_{\\rm end}\\sim909$–$917$ days. A $v_w=1000\\,\\mathrm{km\\,s^{-1}}$ wind would need $\\dot{M}\\approx(0.1$–$3.0)\\times10^{-2}\\,M_\\odot\\,\\mathrm{yr^{-1}}$. Under equipartition the shock radius grows from $2.79^{+0.31}_{-0.27}\\times10^{16}\\,\\mathrm{cm}$ (day 841) to $8.95^{+2.56}_{-1.69}\\times10^{16}\\,\\mathrm{cm}$ (day 1283), with mean speed $17965^{+8278}_{-5860}\\,\\mathrm{km\\,s^{-1}}$.",
+          "bluf_problem": "The first long-lived SN Ia radio counterpart must be associated with helium-rich Ia-CSM SN 2020eyj and used to test whether the declining, absorbed synchrotron comes from a dense He shell, a stellar wind, or ISM-like gas, in tension with standard Ia progenitor mass-loss channels.",
           "figures": [
             {
-              "url": "/arxiv-figures/2611.18056/Figure1re.png",
-              "label": "Fig. 1",
-              "caption": "Figure 1: The average Silhouette Scores for different hyperparameter configurations. Upper panel: UMAP hyperparameter search with min_cluster_size =200 and min_samples =10. Lower panel: HDBSCAN hyperparameter search with n_neighbors =7 and min_dist =0.0. The red star marks the final configuration adopted in this work.",
+              "url": "/arxiv-figures/2611.20669/f3.png",
+              "label": "Fig. 3",
+              "caption": "Figure 3: Schematic diagram of evolutionary channels for possible progenitor models of SN 2020eyj. There are four channels that can form helium-rich CSM, which is required for explaining radio emission observed in SN 2020eyj, corresponding to either wind-like or shell-like structures. From left to right, it corresponds to wind-like CSM structures from the optically thick wind model (the first column branch) and the common envelope wind model (the third column branch), and shell-like structures from the nova model (the second column branch), the common envelope wind model (the third column branch) and the core-degenerate model(the fourth column branch).",
               "category": "theoretical",
               "category_badge": "Physical Model Schematic",
               "physical_core": "展示核心天体物理驱动机制、几何拓扑与理论演化模型架构。",
               "is_schematic": true
             },
             {
-              "url": "/arxiv-figures/2611.18056/Figure_clusternumber.png",
-              "label": "Fig. 7",
-              "caption": "Figure 7: The number of clusters identified (left) for different HDBSCAN hyperparameter combinations, with the UMAP hyperparameters n_neighbors =7 and min_dist =0.0 fixed, and the corresponding Adjusted Rand Index (ARI) (right) relative to the final adopted configuration ( n_neighbors =7, min_dist =0.0, min_cluster_size =200, and min_samples =10).",
-              "category": "theoretical",
-              "category_badge": "Physical Model Schematic",
-              "physical_core": "展示核心天体物理驱动机制、几何拓扑与理论演化模型架构。",
-              "is_schematic": true
+              "url": "/arxiv-figures/2611.20669/f2.png",
+              "label": "Fig. 2",
+              "caption": "Figure 2: Multi-epoch radio spectra of SN 2020eyj. The peak radio flux densities are shown, where the radio flux densities extrapolate according to the flux density uncertainties and in-band spectral indexes (and their uncertainties as well). Here we only extend along half of each bandwidth. The black lines and gray belts are the best-fit spectra and the corresponding 1, 2, and 3 $\\sigma$ uncertainties.",
+              "category": "observational",
+              "category_badge": "Observational Light Curve / SED",
+              "physical_core": "展示暂现源多波段辐射光度与流量随时间演化行为。",
+              "is_schematic": false
             }
           ],
           "primary_figure": {
-            "url": "/arxiv-figures/2611.18056/Figure1re.png",
-            "label": "Fig. 1",
-            "caption": "Figure 1: The average Silhouette Scores for different hyperparameter configurations. Upper panel: UMAP hyperparameter search with min_cluster_size =200 and min_samples =10. Lower panel: HDBSCAN hyperparameter search with n_neighbors =7 and min_dist =0.0. The red star marks the final configuration adopted in this work.",
+            "url": "/arxiv-figures/2611.20669/f3.png",
+            "label": "Fig. 3",
+            "caption": "Figure 3: Schematic diagram of evolutionary channels for possible progenitor models of SN 2020eyj. There are four channels that can form helium-rich CSM, which is required for explaining radio emission observed in SN 2020eyj, corresponding to either wind-like or shell-like structures. From left to right, it corresponds to wind-like CSM structures from the optically thick wind model (the first column branch) and the common envelope wind model (the third column branch), and shell-like structures from the nova model (the second column branch), the common envelope wind model (the third column branch) and the core-degenerate model(the fourth column branch).",
             "category": "theoretical",
             "category_badge": "Physical Model Schematic",
             "physical_core": "展示核心天体物理驱动机制、几何拓扑与理论演化模型架构。",
@@ -1299,61 +1517,60 @@
           }
         },
         {
-          "arxiv_id": "2610.37052",
+          "arxiv_id": "2611.20672",
           "revision": 1,
-          "title": "Self lensing in BH-NS binaries as progenitors for periodically repeating Fast Radio Bursts",
+          "title": "The Effect of Asphericity to the Inference of Supernova Circumstellar Environment from Radio Observations",
           "authors": [
-            "L. E. Rodríguez",
-            "M. Cruces",
-            "G. Voisin",
-            "J. Vera-Casanova",
-            "C. A. Braga"
+            "Ryotaro Chiba",
+            "Zhengwei Liu",
+            "Takashi J. Moriya",
+            "Xiaolong Yang"
           ],
-          "date": "2026-10-27",
-          "priority": "worth_knowing",
-          "bluf_result": "Pure Keplerian self-lensing fails with a tiny activity window $\\tau_{\\mathrm{aw}}^{\\mathrm{KP}} \\sim \\mathcal{O}(0.5\\,\\mathrm{hours})$, whereas Lense-Thirring precession with period $\\tau_{\\mathrm{LT}} = \\frac{\\pi(1-e^{2})^{3/2}c^{3}a^{3}}{G^{2}M_{\\mathrm{BH}}^{2}\\chi} = 2\\tau_{\\mathrm{FRB}}$ reproduces wide activity windows $\\tau_{\\mathrm{aw}}^{\\mathrm{LT}} \\sim 0.5\\tau_{\\mathrm{FRB}}$ for small inclinations $i \\sim (5\\text{--}8) \\times 10^{-2}\\,{^\\circ}$. Splitting time delays $\\tau_{\\mathrm{lens}}^{\\mathrm{Spl}} \\approx \\frac{4GM_{\\mathrm{BH}}}{c^3}(1+z)\\lambda(r_s/a)^{1/2} \\sim 10^{-3}\\text{--}10^{-2}\\,\\mathrm{s}$ match the observed millisecond waiting-time peak in FRB 20121102A, constraining the companion mass to $M_{\\mathrm{BH}} \\sim 10^3\\text{--}10^4\\,M_\\odot$ with maximum amplification $\\mathcal{A}_{\\max} \\approx \\sqrt{8r_{s}a/R^{2}} \\sim 10^4$ and gravitational wave merger timescale $\\tau_{\\mathrm{GW}} \\sim 10^3\\,\\mathrm{yr}$.",
-          "bluf_problem": "Periodically repeating Fast Radio Bursts (prFRBs) exhibit broad periodic activity windows ($30\\%\\text{--}50\\%$ of their period) and pulse energies orders of magnitude higher than Galactic magnetars, which existing free-precession, stellar-wind eclipse, or simple orbital models struggle to simultaneously explain.",
+          "date": "2026-11-16",
+          "priority": "must_read",
+          "bluf_result": "Mock radio observations of Type II, Ibc, and Ia-CSM events require a total CSM mass that depends only weakly on covering factor, from $M_{\\mathrm{CSM}}\\propto f_{\\Omega}^{0.38}$ (Type II) to $M_{\\mathrm{CSM}}\\propto f_{\\Omega}^{0.15}$ (Ia-CSM). Even $f_{\\Omega}=0.01$ does not lower $M_{\\mathrm{CSM}}$ by an order of magnitude. For SN 2020eyj, $f_{\\Omega}=0.1$ reduces the required mass only to $\\sim 50\\%$ of the spherical value; truncated and untruncated fits scale as $M_{\\mathrm{CSM}}\\propto f_{\\Omega}^{0.33}$ and $\\propto f_{\\Omega}^{0.23}$ (0.22 in the discussion), with $\\chi^{2}=14.8$ and $20.8$ at $f_{\\Omega}=1$. The joint spectral index $\\alpha=-0.69$ gives $p=1-2\\alpha=2.38$. Analytically, fixed $L_{\\nu}$ implies $M_{\\mathrm{CSM}}\\propto f_{\\Omega}^{1-1/\\eta}$ with $\\eta=[(p+5)(n-2)-12]/[4(n-s)]$; for $p=3$, $s=2$, $n=10$, $\\eta=13/8$ and $1-1/\\eta=5/13\\approx 0.38$.",
+          "bluf_problem": "Radio modeling usually infers supernova CSM mass and pre-explosion mass loss under spherical symmetry, although CSM is often aspherical. The question is how a covering factor $f_{\\Omega}$ changes the total mass $M_{\\mathrm{CSM}}$ needed to match the radio emission.",
           "figures": [
             {
-              "url": "/arxiv-figures/2610.37052/coordinatesystem.png",
+              "url": "/arxiv-figures/2611.20672/fomega_visual.png",
               "label": "Fig. 1",
-              "caption": "(a) Elliptical orbit of a NS around a BH, with inclination $i$, node precession $\\Omega$, periapsis precession $\\omega$, and true anomaly $\\nu$.",
+              "caption": "Figure 1: Examples of CSM geometries (axisymmetric equatorial disks) corresponding to the values of $f_{\\Omega}=0.1$ and $0.5$, respectively. An angular section is cut out only for an illustrative purpose.",
               "category": "theoretical",
               "category_badge": "Physical Model Schematic",
-              "physical_core": "Shows the NS–BH binary orbital geometry, including inclination and the precession of the orbital node and periapsis.",
+              "physical_core": "展示核心天体物理驱动机制、几何拓扑与理论演化模型架构。",
               "is_schematic": true
             },
             {
-              "url": "/arxiv-figures/2610.37052/shapiro_delay.png",
-              "label": "Fig. 9",
-              "caption": "Figure 9: Theoretical relation between BH mass and the lensing-induced delay observed between main and echo pulses after gravitational lensing. The grey horizontal band indicates the observed waiting times for FRB 20121102A, which range approximately from $10^{-3}$ – $10^{-2}\\,{\\rm s}$. The lines represent different scenarios in which the peak of the amplified-burst distribution occurs at projected distance $b=\\lambda r_{s}$, see Eq. ( 35 ).",
-              "category": "fitting",
-              "category_badge": "Model vs Data Fitting",
-              "physical_core": "Shows the theoretical relation between BH mass and the lensing-induced delay between the primary burst and its echo, with the observed FRB 20121102A waiting-time range marked for comparison.",
+              "url": "/arxiv-figures/2611.20672/spectral_index.png",
+              "label": "Fig. 3",
+              "caption": "Figure 3: Radio spectra at 842 and 1284 days after the explosion fit with power-law spectra with a shared spectral index, $F_{\\nu}\\propto\\nu^{\\alpha}$. The fit resulted in $\\alpha=-0.69$.",
+              "category": "observational",
+              "category_badge": "Observational Light Curve / SED",
+              "physical_core": "展示天体物理观测数据与多波段暂现源探测特征。",
               "is_schematic": false
             }
           ],
           "primary_figure": {
-            "url": "/arxiv-figures/2610.37052/coordinatesystem.png",
+            "url": "/arxiv-figures/2611.20672/fomega_visual.png",
             "label": "Fig. 1",
-            "caption": "(a) Elliptical orbit of a NS around a BH, with inclination $i$, node precession $\\Omega$, periapsis precession $\\omega$, and true anomaly $\\nu$.",
+            "caption": "Figure 1: Examples of CSM geometries (axisymmetric equatorial disks) corresponding to the values of $f_{\\Omega}=0.1$ and $0.5$, respectively. An angular section is cut out only for an illustrative purpose.",
             "category": "theoretical",
             "category_badge": "Physical Model Schematic",
-            "physical_core": "Shows the NS–BH binary orbital geometry, including inclination and the precession of the orbital node and periapsis.",
+            "physical_core": "展示核心天体物理驱动机制、几何拓扑与理论演化模型架构。",
             "is_schematic": true
           }
         }
       ],
       "lead_figure": {
-        "url": "/arxiv-figures/2611.18056/Figure1re.png",
+        "url": "/arxiv-figures/2611.20672/fomega_visual.png",
         "label": "Fig. 1",
-        "caption": "Figure 1: The average Silhouette Scores for different hyperparameter configurations. Upper panel: UMAP hyperparameter search with min_cluster_size =200 and min_samples =10. Lower panel: HDBSCAN hyperparameter search with n_neighbors =7 and min_dist =0.0. The red star marks the final configuration adopted in this work.",
+        "caption": "Figure 1: Examples of CSM geometries (axisymmetric equatorial disks) corresponding to the values of $f_{\\Omega}=0.1$ and $0.5$, respectively. An angular section is cut out only for an illustrative purpose.",
         "category": "theoretical",
         "category_badge": "Physical Model Schematic",
         "physical_core": "展示核心天体物理驱动机制、几何拓扑与理论演化模型架构。",
         "is_schematic": true
       },
-      "lead_figure_arxiv_id": "2611.18056",
+      "lead_figure_arxiv_id": "2611.20672",
       "canonical_t0": null,
       "best_redshift": null,
       "has_redshift_conflict": false,
@@ -1375,7 +1592,7 @@
         "SN",
         "MULTI"
       ],
-      "heat_score": 29.7,
+      "heat_score": 26.9,
       "paper_count": 2,
       "headline": "The core problem is how X-rays f...",
       "narrative": "SN 1993J 是近期重点瞬变天体事件，活跃跨度 2026-10-26 至 2026-11-12，共聚合 2 篇研读文献（含 1 篇必读突破）。核心突破研判：Wind density follows $\\rho_w\\propto\\dot{M}/v_w$. In the Chevalier (1982) model, $\\rho_{\\mathrm{SN}}=\\rho_0(v/v_0)^{-n}(t/t_0)^{-3}$, $\\rho_{\\mathrm{CSM}}\\propto r^{-s}$ with $s=2$ for a steady wind, and $R_{\\mathrm{CD}}\\propto t^m$ where $m=(n-3)/(n-s)\\le1$. For spherical progenitors with $9\\le n\\le12$, steady-wind thermal $L_x$ falls roughly as $t^{-0.7}$–$t^{-0.8}$ and approaches $t^{-1}$ at larger $n$. The order-of-magnitude luminosity is $L_i=3\\times10^{39}g_{ff}C_n(\\dot{M}_{-5}/v_{w1})^2(t/10\\,\\mathrm{d})^{-1}\\,\\mathrm{erg\\,s^{-1}}$, with $C_n=1$ for the forward shock and $C_n=(n-3)(n-4)^2/[4(n-2)]$ for the reverse shock; observations constrain $\\dot{M}/v_w$. RSG/IIP rates are $\\dot{M}\\approx10^{-8}$–$10^{-6}\\,M_{\\odot}\\,\\mathrm{yr}^{-1}$, while WR Ib/c winds have $v_w\\approx1000$–$3000\\,\\mathrm{km\\,s^{-1}}$. Many sources show only $1$–$2\\,\\mathrm{keV}$, below $\\sim40\\,\\mathrm{keV}$ expected for a $\\sim5000\\,\\mathrm{km\\,s^{-1}}$ forward shock, favoring reverse-shock emission. SN 1993J has early $\\dot{M}>10^{-5}\\,M_{\\odot}\\,\\mathrm{yr}^{-1}$; inverse-Compton modeling with $N(E)\\propto E^{-p}$ at $p=3$ gives SN 2011ja $(1.2\\pm0.2)\\times10^{-7}\\,M_{\\odot}\\,\\mathrm{yr}^{-1}$; SN 2011dh is an adiabatic reverse shock with $\\dot{M}$ of a few $\\times10^{-6}\\,M_{\\odot}\\,\\mathrm{yr}^{-1}$. Thermal X-rays are directly proportional to circumstellar density, and a radiative reverse shock can coexist with a non-radiative forward shock.",
@@ -1568,7 +1785,7 @@
         "GCN Circulars",
         "GRB"
       ],
-      "heat_score": 27.9,
+      "heat_score": 25.3,
       "paper_count": 0,
       "headline": "GRB 261108D 空间与地面望远镜全波段应急协同追踪",
       "narrative": "已汇聚 NASA GCN Circulars 快速通报 3 份。红移 待确定，触发时刻 T0: 2026-11-10 07:52:29 UTC (SVOM/ECLAIRs)。多波段光变曲线与早期测光点已完成零同质化聚合。",
@@ -1596,6 +1813,148 @@
       "gcn_status": "active"
     },
     {
+      "event_id": "SN 2024PHV",
+      "event_type": "SN",
+      "tags": [
+        "SN"
+      ],
+      "heat_score": 25,
+      "paper_count": 1,
+      "headline": "The paper asks whether the first...",
+      "narrative": "SN 2024PHV 是近期重点瞬变天体事件，监测日期 2026-11-16，共聚合 1 篇研读文献（含 1 篇必读突破）。核心突破研判：SN 2024phv was discovered 16.8 h after the estimated explosion and then brightened by $\\sim2$ mag in one day. Weak narrow emission at 1.7 and 2.6 d indicates only moderate CSM interaction during the first few days. A shock-cooling fit after day 2 gives $R=390\\pm90\\,R_{\\odot}$ and $t_0=\\mathrm{MJD}\\,60501.16\\pm0.07$, but overpredicts the first-image flux by a factor of $\\approx4$. Blackbody temperature falls from $>24000\\,\\mathrm{K}$ to $6500\\,\\mathrm{K}$ as the photospheric radius grows from $3000$ to $18000\\,R_{\\odot}$. The reading notes give CSM density $\\sim10^{-12}\\,\\mathrm{g\\,cm^{-3}}$ near $\\sim2\\times10^{14}\\,\\mathrm{cm}$ and also $\\sim2\\times10^{-14}\\,\\mathrm{g\\,cm^{-3}}$ within a few stellar radii, followed by a sharp density drop. Broad P Cygni velocities are $\\sim9000$–$11000\\,\\mathrm{km\\,s^{-1}}$, and late photometry gives $M_{\\rm Ni}=0.0232^{+0.0018}_{-0.0015}\\,M_{\\odot}$.",
+      "first_seen": "2026-11-16",
+      "last_updated": "2026-11-16",
+      "papers": [
+        {
+          "arxiv_id": "2611.19031",
+          "revision": 1,
+          "title": "Early Spectroscopy of the Type II SN 2024phv Suggests Short-Lived Circumstellar Interaction",
+          "authors": [
+            "Lucas Aldea",
+            "Griffin Hosseinzadeh",
+            "Sergiy S. Vasylyev",
+            "Qiangang Wang",
+            "Jeniveve Pearson",
+            "Yize Dong",
+            "Jennifer E. Andrews",
+            "K. Azalee Bostroem",
+            "Brian Hsu",
+            "Saurabh W. Jha",
+            "Aravind P. Ravi",
+            "David J. Sand",
+            "Manisha Shrestha",
+            "Bhagya M. Subrayan",
+            "Moira Andrews",
+            "Joseph R. Farah",
+            "D. Andrew Howell",
+            "Curtis McCully",
+            "Megan Newsome",
+            "Yuan Qi Ni",
+            "Estefania Padilla-Gonzalez",
+            "Giacomo Terreran",
+            "Kathryn Wynn",
+            "Joshua B. Haislip",
+            "Vladimir V. Kouprianov",
+            "Daniel E. Reichart"
+          ],
+          "date": "2026-11-16",
+          "priority": "must_read",
+          "bluf_result": "SN 2024phv was discovered 16.8 h after the estimated explosion and then brightened by $\\sim2$ mag in one day. Weak narrow emission at 1.7 and 2.6 d indicates only moderate CSM interaction during the first few days. A shock-cooling fit after day 2 gives $R=390\\pm90\\,R_{\\odot}$ and $t_0=\\mathrm{MJD}\\,60501.16\\pm0.07$, but overpredicts the first-image flux by a factor of $\\approx4$. Blackbody temperature falls from $>24000\\,\\mathrm{K}$ to $6500\\,\\mathrm{K}$ as the photospheric radius grows from $3000$ to $18000\\,R_{\\odot}$. The reading notes give CSM density $\\sim10^{-12}\\,\\mathrm{g\\,cm^{-3}}$ near $\\sim2\\times10^{14}\\,\\mathrm{cm}$ and also $\\sim2\\times10^{-14}\\,\\mathrm{g\\,cm^{-3}}$ within a few stellar radii, followed by a sharp density drop. Broad P Cygni velocities are $\\sim9000$–$11000\\,\\mathrm{km\\,s^{-1}}$, and late photometry gives $M_{\\rm Ni}=0.0232^{+0.0018}_{-0.0015}\\,M_{\\odot}$.",
+          "bluf_problem": "The paper asks whether the first days after the red-supergiant explosion of SN 2024phv contain short-lived CSM interaction, and whether shock-cooling emission alone can explain the rapid early rise and constrain the progenitor radius.",
+          "figures": [],
+          "primary_figure": null
+        }
+      ],
+      "lead_figure": null,
+      "lead_figure_arxiv_id": null,
+      "canonical_t0": null,
+      "best_redshift": null,
+      "has_redshift_conflict": false,
+      "multi_messenger": [],
+      "gcn_aliases_label": null,
+      "canonical_t0_label": null,
+      "best_redshift_label": null,
+      "multi_messenger_badges": [],
+      "gcn_circular_count": 0,
+      "gcn_figure_path": null,
+      "gcn_aliases": [],
+      "gcn_slug": null,
+      "gcn_status": null
+    },
+    {
+      "event_id": "FRB 20180301A",
+      "event_type": "FRB",
+      "tags": [
+        "FRB"
+      ],
+      "heat_score": 25,
+      "paper_count": 1,
+      "headline": "Frequency-dependent FRB polariza...",
+      "narrative": "FRB 20180301A 是近期重点瞬变天体事件，监测日期 2026-11-16，共聚合 1 篇研读文献（含 1 篇必读突破）。核心突破研判：For cold plasma ($\\bar{\\gamma}=kT/(mc^{2})\\ll 1$) without the $\\omega_B\\ll\\omega$ approximation, $\\rho_V=-\\omega_p^{2}\\omega_B\\eta\\cos\\theta_B/[c(\\omega^{2}-\\omega_B^{2})]$ and $\\rho_Q=-\\omega_p^{2}\\omega_B^{2}\\sin^{2}\\theta_B/[2c\\omega(\\omega^{2}-\\omega_B^{2})]$, convergent for $\\omega_B/\\omega<(4\\bar{\\gamma})^{-1}$. Weak-field $\\Delta\\mathrm{PA}=\\mathrm{RM}\\lambda^{2}$ becomes $\\Delta\\mathrm{PA}=\\mathrm{RM}\\lambda^{2}\\lambda_B^{2}/(\\lambda_B^{2}-\\lambda^{2})$ with $\\lambda_B=2\\pi c/\\omega_B$ in the strong-field regime. Fits give $\\theta_B\\sim 90^{\\circ}$ and $\\log_{10}(B/\\mathrm{G})\\approx 1.16$, $1.52$, $1.66$ for FRB 20180301A and two GPM pulses; sources with Faraday conversion require $B\\lesssim 100\\,\\mathrm{G}$. Near-perpendicular $B$ still yields a non-negligible RM. For relativistic plasma, $\\alpha=(s-1)/2$, rotation is suppressed by $(\\ln\\gamma_i)\\gamma_i^{-2(\\alpha+1)}$ and conversion scales as $\\gamma_i^{-(2\\alpha-1)}$. Razin suppression gives $n_0<3\\times 10^{4}\\,\\mathrm{cm^{-3}}$; for FRB 20121102A, $s=2.32$ and $L_\\nu=1.924\\times 10^{29}\\,\\mathrm{erg\\,s^{-1}\\,Hz^{-1}}$ imply $R<0.35\\,\\mathrm{pc}$, while a cold component $\\zeta\\gamma_c^{2}=0.01$ dominates RM and relativistic polarization is likely negligible where the FRB can propagate.",
+      "first_seen": "2026-11-16",
+      "last_updated": "2026-11-16",
+      "papers": [
+        {
+          "arxiv_id": "2611.19811",
+          "revision": 1,
+          "title": "Polarization of Fast Radio Bursts due to Propagation in Magnetized Plasma",
+          "authors": [
+            "Wei-Yang Wang",
+            "Xiaohui Liu",
+            "Nan Xu",
+            "Songyu Shen"
+          ],
+          "date": "2026-11-16",
+          "priority": "must_read",
+          "bluf_result": "For cold plasma ($\\bar{\\gamma}=kT/(mc^{2})\\ll 1$) without the $\\omega_B\\ll\\omega$ approximation, $\\rho_V=-\\omega_p^{2}\\omega_B\\eta\\cos\\theta_B/[c(\\omega^{2}-\\omega_B^{2})]$ and $\\rho_Q=-\\omega_p^{2}\\omega_B^{2}\\sin^{2}\\theta_B/[2c\\omega(\\omega^{2}-\\omega_B^{2})]$, convergent for $\\omega_B/\\omega<(4\\bar{\\gamma})^{-1}$. Weak-field $\\Delta\\mathrm{PA}=\\mathrm{RM}\\lambda^{2}$ becomes $\\Delta\\mathrm{PA}=\\mathrm{RM}\\lambda^{2}\\lambda_B^{2}/(\\lambda_B^{2}-\\lambda^{2})$ with $\\lambda_B=2\\pi c/\\omega_B$ in the strong-field regime. Fits give $\\theta_B\\sim 90^{\\circ}$ and $\\log_{10}(B/\\mathrm{G})\\approx 1.16$, $1.52$, $1.66$ for FRB 20180301A and two GPM pulses; sources with Faraday conversion require $B\\lesssim 100\\,\\mathrm{G}$. Near-perpendicular $B$ still yields a non-negligible RM. For relativistic plasma, $\\alpha=(s-1)/2$, rotation is suppressed by $(\\ln\\gamma_i)\\gamma_i^{-2(\\alpha+1)}$ and conversion scales as $\\gamma_i^{-(2\\alpha-1)}$. Razin suppression gives $n_0<3\\times 10^{4}\\,\\mathrm{cm^{-3}}$; for FRB 20121102A, $s=2.32$ and $L_\\nu=1.924\\times 10^{29}\\,\\mathrm{erg\\,s^{-1}\\,Hz^{-1}}$ imply $R<0.35\\,\\mathrm{pc}$, while a cold component $\\zeta\\gamma_c^{2}=0.01$ dominates RM and relativistic polarization is likely negligible where the FRB can propagate.",
+          "bluf_problem": "Frequency-dependent FRB polarization mixes intrinsic emission with propagation through magnetized plasma, and it is unclear when Faraday rotation versus conversion, or a relativistic persistent-source plasma, dominates.",
+          "figures": [
+            {
+              "url": "/arxiv-figures/2611.19811/Cold_180301A_tri.png",
+              "label": "Fig. 2",
+              "caption": "Figure 2: The 1D and 2D marginalized probability distributions at 68.3% and 95.4% confidence levels for the cold plasma scenario for FRB 20180301A.",
+              "category": "theoretical",
+              "category_badge": "Physical Model Schematic",
+              "physical_core": "展示核心天体物理驱动机制、几何拓扑与理论演化模型架构。",
+              "is_schematic": true
+            }
+          ],
+          "primary_figure": {
+            "url": "/arxiv-figures/2611.19811/Cold_180301A_tri.png",
+            "label": "Fig. 2",
+            "caption": "Figure 2: The 1D and 2D marginalized probability distributions at 68.3% and 95.4% confidence levels for the cold plasma scenario for FRB 20180301A.",
+            "category": "theoretical",
+            "category_badge": "Physical Model Schematic",
+            "physical_core": "展示核心天体物理驱动机制、几何拓扑与理论演化模型架构。",
+            "is_schematic": true
+          }
+        }
+      ],
+      "lead_figure": {
+        "url": "/arxiv-figures/2611.19811/Cold_180301A_tri.png",
+        "label": "Fig. 2",
+        "caption": "Figure 2: The 1D and 2D marginalized probability distributions at 68.3% and 95.4% confidence levels for the cold plasma scenario for FRB 20180301A.",
+        "category": "theoretical",
+        "category_badge": "Physical Model Schematic",
+        "physical_core": "展示核心天体物理驱动机制、几何拓扑与理论演化模型架构。",
+        "is_schematic": true
+      },
+      "lead_figure_arxiv_id": "2611.19811",
+      "canonical_t0": null,
+      "best_redshift": null,
+      "has_redshift_conflict": false,
+      "multi_messenger": [],
+      "gcn_aliases_label": null,
+      "canonical_t0_label": null,
+      "best_redshift_label": null,
+      "multi_messenger_badges": [],
+      "gcn_circular_count": 0,
+      "gcn_figure_path": null,
+      "gcn_aliases": [],
+      "gcn_slug": null,
+      "gcn_status": null
+    },
+    {
       "event_id": "GRB 261108C",
       "event_type": "GRB",
       "tags": [
@@ -1603,7 +1962,7 @@
         "GCN Circulars",
         "GRB"
       ],
-      "heat_score": 25.1,
+      "heat_score": 22.8,
       "paper_count": 0,
       "headline": "GRB 261108C 空间与地面望远镜全波段应急协同追踪",
       "narrative": "已汇聚 NASA GCN Circulars 快速通报 3 份。红移 待确定，触发时刻 T0: 2026-11-08 21:18:34 UTC (SVOM/ECLAIRs)。多波段光变曲线与早期测光点已完成零同质化聚合。",
@@ -1636,7 +1995,7 @@
       "tags": [
         "GRB"
       ],
-      "heat_score": 25,
+      "heat_score": 22.6,
       "paper_count": 1,
       "headline": "Type I merger-related EFXTs are ...",
       "narrative": "GRB 260411A 是近期重点瞬变天体事件，监测日期 2026-11-15，共聚合 1 篇研读文献（含 1 篇必读突破）。核心突破研判：EP260411a is the only astrophysical candidate matched to short GRB 260411A, at R.A.=158.818°, decl.=22.388° (3′), inside the GBM 82% region, with Li–Ma $S=5.26$ (10 source photons, 8 background). Both pulses are FRED, with $T_{\\rm X,90}=6.1_{-1.1}^{+0.7}\\,\\mathrm{s}$ and $T_{\\gamma,90}=1.3_{-0.3}^{+0.2}\\,\\mathrm{s}$. Norris fits give $w\\propto E^{-0.24_{-0.02}^{+0.12}}$ and $t_{\\rm peak}\\propto E^{-0.56_{-0.11}^{+0.06}}$. An X-ray absorbed power law has $\\Gamma_{\\rm X}=0.60_{-0.66}^{+0.79}$ at fixed Galactic $N_{\\rm H}$; GBM CPL has $\\Gamma_\\gamma=1.61\\pm0.12$ and $E_{\\rm p}=568_{-293}^{+514}\\,\\mathrm{keV}$ (cutoff weak). Joint $\\mathrm{tbabs}*\\mathrm{csbpl}$ gives $\\Gamma_1=0.11_{-0.61}^{+0.40}$, $\\Gamma_2=1.58\\pm0.16$, $E_{\\rm b}=7_{-3}^{+6}\\,\\mathrm{keV}$, $E_{\\rm p}=386_{-178}^{+288}\\,\\mathrm{keV}$, and a $1$–$10^{4}\\,\\mathrm{keV}$ flux $6.89_{-1.52}^{+1.51}\\times10^{-7}\\,\\mathrm{erg}\\,\\mathrm{c}$ (unit truncated in the supplied text). Chance bounds are $P_{\\rm chance}<2.73\\times10^{-3}$ and $P_{\\rm chance,global}<1.62\\times10^{-2}$ after six trials. The event is placed in the Type I region of the $E_{\\rm p,z}$–$E_{\\rm iso}$ plane.",
@@ -1717,7 +2076,7 @@
       "tags": [
         "GRB"
       ],
-      "heat_score": 25,
+      "heat_score": 22.6,
       "paper_count": 1,
       "headline": "Type I merger-related EFXTs are ...",
       "narrative": "EP260411A 是近期重点瞬变天体事件，监测日期 2026-11-15，共聚合 1 篇研读文献（含 1 篇必读突破）。核心突破研判：EP260411a is the only astrophysical candidate matched to short GRB 260411A, at R.A.=158.818°, decl.=22.388° (3′), inside the GBM 82% region, with Li–Ma $S=5.26$ (10 source photons, 8 background). Both pulses are FRED, with $T_{\\rm X,90}=6.1_{-1.1}^{+0.7}\\,\\mathrm{s}$ and $T_{\\gamma,90}=1.3_{-0.3}^{+0.2}\\,\\mathrm{s}$. Norris fits give $w\\propto E^{-0.24_{-0.02}^{+0.12}}$ and $t_{\\rm peak}\\propto E^{-0.56_{-0.11}^{+0.06}}$. An X-ray absorbed power law has $\\Gamma_{\\rm X}=0.60_{-0.66}^{+0.79}$ at fixed Galactic $N_{\\rm H}$; GBM CPL has $\\Gamma_\\gamma=1.61\\pm0.12$ and $E_{\\rm p}=568_{-293}^{+514}\\,\\mathrm{keV}$ (cutoff weak). Joint $\\mathrm{tbabs}*\\mathrm{csbpl}$ gives $\\Gamma_1=0.11_{-0.61}^{+0.40}$, $\\Gamma_2=1.58\\pm0.16$, $E_{\\rm b}=7_{-3}^{+6}\\,\\mathrm{keV}$, $E_{\\rm p}=386_{-178}^{+288}\\,\\mathrm{keV}$, and a $1$–$10^{4}\\,\\mathrm{keV}$ flux $6.89_{-1.52}^{+1.51}\\times10^{-7}\\,\\mathrm{erg}\\,\\mathrm{c}$ (unit truncated in the supplied text). Chance bounds are $P_{\\rm chance}<2.73\\times10^{-3}$ and $P_{\\rm chance,global}<1.62\\times10^{-2}$ after six trials. The event is placed in the Type I region of the $E_{\\rm p,z}$–$E_{\\rm iso}$ plane.",
@@ -1800,7 +2159,7 @@
         "GCN Circulars",
         "GRB"
       ],
-      "heat_score": 24.3,
+      "heat_score": 22,
       "paper_count": 0,
       "headline": "GRB 261108A 空间与地面望远镜全波段应急协同追踪",
       "narrative": "已汇聚 NASA GCN Circulars 快速通报 7 份。红移 待确定，触发时刻 T0: 2026-11-08 01:13:19 UTC (Fermi/GBM)。多波段光变曲线与早期测光点已完成零同质化聚合。",
@@ -1837,7 +2196,7 @@
         "GCN Circulars",
         "GRB"
       ],
-      "heat_score": 22.7,
+      "heat_score": 20.5,
       "paper_count": 0,
       "headline": "GRB 261103A 空间与地面望远镜全波段应急协同追踪",
       "narrative": "已汇聚 NASA GCN Circulars 快速通报 5 份。红移 待确定，触发时刻 T0: 2026-11-03 06:51:11 UTC (SVOM/ECLAIRs)。多波段光变曲线与早期测光点已完成零同质化聚合。",
@@ -1873,7 +2232,7 @@
         "FRB",
         "SN"
       ],
-      "heat_score": 22.3,
+      "heat_score": 20.2,
       "paper_count": 2,
       "headline": "The paper asks what produces sec...",
       "narrative": "AT2019EHZ 是近期重点瞬变天体事件，活跃跨度 2026-10-20 至 2026-11-12，共聚合 2 篇研读文献。核心突破研判：AT2019ehz ($z=0.074$) rebrightens at 1545 d, and its secondary flare is attributed to a second outflow launched near $1000$ d (linear $R_{\\rm eq}$ extrapolation $1071^{+62}_{-79}$ d), with mean $\\bar{\\beta}=v/c$ rising from $0.003$ to $0.033$. AT2019eve ($z=0.081$) rebrightens at 1594 d with $L\\sim6.7\\times10^{38}$–$1\\times10^{39}\\,\\mathrm{erg\\,s^{-1}}$, about $2$–$3\\times$ the earlier $3.6\\times10^{38}\\,\\mathrm{erg\\,s^{-1}}$, while $\\nu_p$ rises from $1.6$ to $2.8\\,\\mathrm{GHz}$ at $F_{\\nu,p}\\sim1.0\\,\\mathrm{mJy}$. Its $R_{\\rm eq}$ appears to fall by ${\\sim}8\\times10^{16}\\,\\mathrm{cm}$ over ${\\sim}1000$ d; $\\beta\\lesssim0.06$ does not reach the off-axis-jet value $\\beta_{\\rm eq,N}=0.44$. Under a prompt launch, $E\\sim7\\times10^{48}\\,\\mathrm{erg}$ while $v$ declines from $0.06c$ to $0.02c$. Sample densities scale from $(R/R_s)^{-1}$ to $(R/R_s)^{-2}$; AT2019ehz is on average $\\propto R^{-2}$ and AT2019eve $\\propto R^{-1}$.",
@@ -1999,12 +2358,129 @@
       "gcn_status": null
     },
     {
+      "event_id": "SN 2026AHVU",
+      "event_type": "SN",
+      "tags": [
+        "SN"
+      ],
+      "heat_score": 20,
+      "paper_count": 2,
+      "headline": "If SN 2026ahvu is a prompt Type ...",
+      "narrative": "SN 2026AHVU 是近期重点瞬变天体事件，活跃跨度 2026-11-08 至 2026-11-16，共聚合 2 篇研读文献。核心突破研判：Pre-explosion Chandra data (2015 and 2024; 95.3 ks) yield zero 0.3–7 keV photons in a $2''$ aperture. For a $100\\,\\mathrm{eV}$ blackbody and only Galactic absorption, the 95% bolometric limits are $L<6.32\\times10^{37}\\,\\mathrm{erg\\,s^{-1}}$ at $9.1\\,\\mathrm{Mpc}$ and $L<2.73\\times10^{38}\\,\\mathrm{erg\\,s^{-1}}$ at $18.9\\,\\mathrm{Mpc}$, excluding a hot, compact, steady hydrogen-burning white dwarf. A benchmark burner with $\\dot{M}_{\\rm burn}=5\\times10^{-7}\\,M_\\odot\\,\\mathrm{yr^{-1}}$, $X=0.72$ and $\\epsilon_{\\rm H}=6\\times10^{18}\\,\\mathrm{erg\\,g^{-1}}$ has $L_{\\rm bol}\\simeq1.36\\times10^{38}\\,\\mathrm{erg\\,s^{-1}}$. Cooler ($50\\,\\mathrm{eV}$) limits weaken to $<2.04\\times10^{39}$ and $<8.8\\times10^{39}\\,\\mathrm{erg\\,s^{-1}}$ at the two distances, so cooler or more absorbed photospheres remain allowed.",
+      "first_seen": "2026-11-08",
+      "last_updated": "2026-11-16",
+      "papers": [
+        {
+          "arxiv_id": "2611.21342",
+          "revision": 1,
+          "title": "No Supersoft X-rays Before SN 2026ahvu: Constraints on a Potentially Prompt Type Ia Progenitor",
+          "authors": [
+            "Akos Bogdan",
+            "Tonima Ananna"
+          ],
+          "date": "2026-11-16",
+          "priority": "worth_knowing",
+          "bluf_result": "Pre-explosion Chandra data (2015 and 2024; 95.3 ks) yield zero 0.3–7 keV photons in a $2''$ aperture. For a $100\\,\\mathrm{eV}$ blackbody and only Galactic absorption, the 95% bolometric limits are $L<6.32\\times10^{37}\\,\\mathrm{erg\\,s^{-1}}$ at $9.1\\,\\mathrm{Mpc}$ and $L<2.73\\times10^{38}\\,\\mathrm{erg\\,s^{-1}}$ at $18.9\\,\\mathrm{Mpc}$, excluding a hot, compact, steady hydrogen-burning white dwarf. A benchmark burner with $\\dot{M}_{\\rm burn}=5\\times10^{-7}\\,M_\\odot\\,\\mathrm{yr^{-1}}$, $X=0.72$ and $\\epsilon_{\\rm H}=6\\times10^{18}\\,\\mathrm{erg\\,g^{-1}}$ has $L_{\\rm bol}\\simeq1.36\\times10^{38}\\,\\mathrm{erg\\,s^{-1}}$. Cooler ($50\\,\\mathrm{eV}$) limits weaken to $<2.04\\times10^{39}$ and $<8.8\\times10^{39}\\,\\mathrm{erg\\,s^{-1}}$ at the two distances, so cooler or more absorbed photospheres remain allowed.",
+          "bluf_problem": "If SN 2026ahvu is a prompt Type Ia with a delay $\\lesssim100\\,\\mathrm{Myr}$, did its progenitor have a luminous supersoft, nuclear-burning white-dwarf photosphere that Chandra should have detected before explosion?",
+          "figures": [
+            {
+              "url": "/arxiv-figures/2611.21342/figure2.png",
+              "label": "Fig. 2",
+              "caption": "Figure 2: 95% upper limits on the bolometric luminosity of a nuclear burning white dwarf as a function of blackbody temperature, derived from the $0.3-2$ keV Chandra observations. The red and gray bands correspond to =9.1 Mpc and 18.9 Mpc distances, respectively. The lower boundaries assume a Galactic foreground, while the upper boundaries illustrate the effect of a higher assumed column. The symbols indicate our hot, compact near-Chandrasekhar benchmark and the compact and expanded steady burning models of Nomoto et al. (2007).",
+              "category": "theoretical",
+              "category_badge": "Physical Model Schematic",
+              "physical_core": "展示核心天体物理驱动机制、几何拓扑与理论演化模型架构。",
+              "is_schematic": true
+            }
+          ],
+          "primary_figure": {
+            "url": "/arxiv-figures/2611.21342/figure2.png",
+            "label": "Fig. 2",
+            "caption": "Figure 2: 95% upper limits on the bolometric luminosity of a nuclear burning white dwarf as a function of blackbody temperature, derived from the $0.3-2$ keV Chandra observations. The red and gray bands correspond to =9.1 Mpc and 18.9 Mpc distances, respectively. The lower boundaries assume a Galactic foreground, while the upper boundaries illustrate the effect of a higher assumed column. The symbols indicate our hot, compact near-Chandrasekhar benchmark and the compact and expanded steady burning models of Nomoto et al. (2007).",
+            "category": "theoretical",
+            "category_badge": "Physical Model Schematic",
+            "physical_core": "展示核心天体物理驱动机制、几何拓扑与理论演化模型架构。",
+            "is_schematic": true
+          }
+        },
+        {
+          "arxiv_id": "2611.09875",
+          "revision": 1,
+          "title": "SN 2026ahvu in NGC 1433 May Be a Prompt Type Ia Supernova with a Delay Time Under 100 Myr",
+          "authors": [
+            "Sumit K. Sarbadhicary",
+            "Kiana Henny",
+            "Adam Leroy",
+            "Karin Sandstrom",
+            "Kirsten L. Larson",
+            "David A. Thilker",
+            "Gagandeep S. Anand",
+            "Ashley T. Barnes",
+            "Laura A. Lopez",
+            "Daniel Maschmann",
+            "Marco Troncoso",
+            "Hwihyun Kim",
+            "Janice C. Lee",
+            "Frank Bigiel",
+            "Médéric Boquien",
+            "Rupali Chandar",
+            "Ryan Chown",
+            "Daniel A. Dale",
+            "Sinan Deger",
+            "Oleg V. Egorov",
+            "Simon C. O. Glover",
+            "Oleg Y. Gnedin",
+            "Jay González Lobos",
+            "Hao He",
+            "Rebecca J. Houghton",
+            "Debosmita Pathak",
+            "M. Jimena Rodriguez",
+            "Eva Schinnerer",
+            "Michael Tucker",
+            "Tony D. Weinbeck",
+            "Thomas G. Williams",
+            "Bradley C. Whitmore",
+            "Leonardo Ubeda"
+          ],
+          "date": "2026-11-08",
+          "priority": "skip",
+          "bluf_result": "未能从已检查材料中核实论文结果。",
+          "bluf_problem": "未能从已检查材料中核实论文问题陈述。",
+          "figures": [],
+          "primary_figure": null
+        }
+      ],
+      "lead_figure": {
+        "url": "/arxiv-figures/2611.21342/figure2.png",
+        "label": "Fig. 2",
+        "caption": "Figure 2: 95% upper limits on the bolometric luminosity of a nuclear burning white dwarf as a function of blackbody temperature, derived from the $0.3-2$ keV Chandra observations. The red and gray bands correspond to =9.1 Mpc and 18.9 Mpc distances, respectively. The lower boundaries assume a Galactic foreground, while the upper boundaries illustrate the effect of a higher assumed column. The symbols indicate our hot, compact near-Chandrasekhar benchmark and the compact and expanded steady burning models of Nomoto et al. (2007).",
+        "category": "theoretical",
+        "category_badge": "Physical Model Schematic",
+        "physical_core": "展示核心天体物理驱动机制、几何拓扑与理论演化模型架构。",
+        "is_schematic": true
+      },
+      "lead_figure_arxiv_id": "2611.21342",
+      "canonical_t0": null,
+      "best_redshift": null,
+      "has_redshift_conflict": false,
+      "multi_messenger": [],
+      "gcn_aliases_label": null,
+      "canonical_t0_label": null,
+      "best_redshift_label": null,
+      "multi_messenger_badges": [],
+      "gcn_circular_count": 0,
+      "gcn_figure_path": null,
+      "gcn_aliases": [],
+      "gcn_slug": null,
+      "gcn_status": null
+    },
+    {
       "event_id": "SN 1987A",
       "event_type": "SN",
       "tags": [
         "SN"
       ],
-      "heat_score": 22.1,
+      "heat_score": 20,
       "paper_count": 2,
       "headline": "SN 2023iop 具有长达 $\\gtrsim 88$ 天的缓...",
       "narrative": "SN 1987A 是近期重点瞬变天体事件，活跃跨度 2026-10-20 至 2026-11-09，共聚合 2 篇研读文献（含 1 篇必读突破）。核心突破研判：测得该源峰值测辐射热光度为 $L_{\\rm bol} = (4.0 \\pm 1.0) \\times 10^{43}~\\mathrm{erg\\,s^{-1}}$，全波段积分总辐射能量达 $E_{\\rm rad} = (4.3 \\pm 0.3) \\times 10^{50}~\\mathrm{erg}$。由有效光球上升时标 $t_{\\rm rise} \\gtrsim 88$ 天导出抛射物质量下限 $M_{\\rm ej} > 12~M_\\odot$；峰值光度需要产生放射性镍质量 $M_{\\rm ^{56}Ni} \\approx 2.2~M_\\odot$。在静止系波长 $5800\\text{--}6200~\\text{Å}$ 与 $7400\\text{--}7800~\\text{Å}$ 测得反方差加权平均连续谱线偏振度为 $P = 0.81 \\pm 0.08\\%$，揭示显著的非球对称几何。晚期 $+326$ 天测得 $[\\mathrm{O\\;I}]\\,\\lambda\\lambda6300,6364$ 双线通量比 $F_{6300}/F_{6364} \\approx 2.3$，处于光学薄与光学厚过渡态。多波段限制给出自由-自由吸收光深遵从标度律 $\\tau_{\\rm ff} \\propto \\nu^{-2.1}\\,t^{-5}$，深埋中心引擎与 CSM 早期信号受阻碍。联合辐射模型指示其前身星符合 $190~M_\\odot$ 的富氢 PISN 模型，晚期平台期辐射由隐蔽或非球对称 CSM 相互作用主导。",
@@ -2188,7 +2664,7 @@
         "GCN Circulars",
         "GRB"
       ],
-      "heat_score": 19.6,
+      "heat_score": 17.8,
       "paper_count": 0,
       "headline": "GRB 261024D 空间与地面望远镜全波段应急协同追踪",
       "narrative": "已汇聚 NASA GCN Circulars 快速通报 8 份。红移 待确定，触发时刻 T0: 2026-10-24 21:33:06 UTC (Konus-Wind)。多波段光变曲线与早期测光点已完成零同质化聚合。",
@@ -2223,7 +2699,7 @@
         "GCN Circulars",
         "GRB"
       ],
-      "heat_score": 18.8,
+      "heat_score": 17,
       "paper_count": 0,
       "headline": "GRB 261104A 空间与地面望远镜全波段应急协同追踪",
       "narrative": "已汇聚 NASA GCN Circulars 快速通报 6 份。红移 待确定，触发时刻 T0: 2026-11-04 20:36:44 UTC (SVOM/ECLAIRs)。多波段光变曲线与早期测光点已完成零同质化聚合。",
@@ -2259,7 +2735,7 @@
         "GRB",
         "MULTI"
       ],
-      "heat_score": 18.6,
+      "heat_score": 16.8,
       "paper_count": 1,
       "headline": "Non-detection of GRB high-energy...",
       "narrative": "GRB 080916C 是近期重点瞬变天体事件，监测日期 2026-11-12，共聚合 1 篇研读文献（含 1 篇必读突破）。核心突破研判：Summed time-resolved spectra change the expected muon-neutrino counts relative to time-integrated spectra. For GRB 080916C the counts are about $2.46\\times 10^{-7}$ versus $1.97\\times 10^{-7}$, with a high-$R$, high-$\\Gamma$ ratio $\\sim 1.25$ and a low-$R$, low-$\\Gamma$ ratio $\\sim 0.9$. GRB 110721A gives $\\sim 5.30\\times 10^{-4}$ versus $\\sim 5.49\\times 10^{-4}$ (everywhere $<10^{-3}$; ratios $\\sim 1.4$ and $\\sim 0.7$). GRB 090902B gives $\\sim 1.31\\times 10^{-3}$ versus $\\sim 1.01\\times 10^{-3}$ (factor $\\sim 1.3$; model-independent estimate still $<3\\times 10^{-2}$; ratios $\\sim 2.1$ and $\\sim 0.9$). For GRB 221009A, an ICMART case $R=10^{16}\\,\\mathrm{cm}$, $\\Gamma=500$, $\\varepsilon_p/\\varepsilon_e=3$ yields $\\sim 1.02\\times 10^{-1}$ versus $\\sim 3.36\\times 10^{-2}$. At fixed $R\\simeq 1.07\\times 10^{15}\\,\\mathrm{cm}$, time-resolved non-detection gives $\\Gamma>254,371,537$ for $\\varepsilon_p/\\varepsilon_e=1,3,10$, compared with $\\Gamma>188,273,395$ from the time-integrated spectrum, i.e. lower limits higher by $28\\%$–$40\\%$.",
@@ -2346,7 +2822,7 @@
         "GRB",
         "MULTI"
       ],
-      "heat_score": 18.6,
+      "heat_score": 16.8,
       "paper_count": 1,
       "headline": "Non-detection of GRB high-energy...",
       "narrative": "GRB 110721A 是近期重点瞬变天体事件，监测日期 2026-11-12，共聚合 1 篇研读文献（含 1 篇必读突破）。核心突破研判：Summed time-resolved spectra change the expected muon-neutrino counts relative to time-integrated spectra. For GRB 080916C the counts are about $2.46\\times 10^{-7}$ versus $1.97\\times 10^{-7}$, with a high-$R$, high-$\\Gamma$ ratio $\\sim 1.25$ and a low-$R$, low-$\\Gamma$ ratio $\\sim 0.9$. GRB 110721A gives $\\sim 5.30\\times 10^{-4}$ versus $\\sim 5.49\\times 10^{-4}$ (everywhere $<10^{-3}$; ratios $\\sim 1.4$ and $\\sim 0.7$). GRB 090902B gives $\\sim 1.31\\times 10^{-3}$ versus $\\sim 1.01\\times 10^{-3}$ (factor $\\sim 1.3$; model-independent estimate still $<3\\times 10^{-2}$; ratios $\\sim 2.1$ and $\\sim 0.9$). For GRB 221009A, an ICMART case $R=10^{16}\\,\\mathrm{cm}$, $\\Gamma=500$, $\\varepsilon_p/\\varepsilon_e=3$ yields $\\sim 1.02\\times 10^{-1}$ versus $\\sim 3.36\\times 10^{-2}$. At fixed $R\\simeq 1.07\\times 10^{15}\\,\\mathrm{cm}$, time-resolved non-detection gives $\\Gamma>254,371,537$ for $\\varepsilon_p/\\varepsilon_e=1,3,10$, compared with $\\Gamma>188,273,395$ from the time-integrated spectrum, i.e. lower limits higher by $28\\%$–$40\\%$.",
@@ -2433,7 +2909,7 @@
         "GRB",
         "MULTI"
       ],
-      "heat_score": 18.6,
+      "heat_score": 16.8,
       "paper_count": 1,
       "headline": "Non-detection of GRB high-energy...",
       "narrative": "GRB 090902B 是近期重点瞬变天体事件，监测日期 2026-11-12，共聚合 1 篇研读文献（含 1 篇必读突破）。核心突破研判：Summed time-resolved spectra change the expected muon-neutrino counts relative to time-integrated spectra. For GRB 080916C the counts are about $2.46\\times 10^{-7}$ versus $1.97\\times 10^{-7}$, with a high-$R$, high-$\\Gamma$ ratio $\\sim 1.25$ and a low-$R$, low-$\\Gamma$ ratio $\\sim 0.9$. GRB 110721A gives $\\sim 5.30\\times 10^{-4}$ versus $\\sim 5.49\\times 10^{-4}$ (everywhere $<10^{-3}$; ratios $\\sim 1.4$ and $\\sim 0.7$). GRB 090902B gives $\\sim 1.31\\times 10^{-3}$ versus $\\sim 1.01\\times 10^{-3}$ (factor $\\sim 1.3$; model-independent estimate still $<3\\times 10^{-2}$; ratios $\\sim 2.1$ and $\\sim 0.9$). For GRB 221009A, an ICMART case $R=10^{16}\\,\\mathrm{cm}$, $\\Gamma=500$, $\\varepsilon_p/\\varepsilon_e=3$ yields $\\sim 1.02\\times 10^{-1}$ versus $\\sim 3.36\\times 10^{-2}$. At fixed $R\\simeq 1.07\\times 10^{15}\\,\\mathrm{cm}$, time-resolved non-detection gives $\\Gamma>254,371,537$ for $\\varepsilon_p/\\varepsilon_e=1,3,10$, compared with $\\Gamma>188,273,395$ from the time-integrated spectrum, i.e. lower limits higher by $28\\%$–$40\\%$.",
@@ -2519,7 +2995,7 @@
       "tags": [
         "SN"
       ],
-      "heat_score": 18.6,
+      "heat_score": 16.8,
       "paper_count": 1,
       "headline": "One-dimensional explosions of ev...",
       "narrative": "SN 1999EM 是近期重点瞬变天体事件，监测日期 2026-11-12，共聚合 1 篇研读文献（含 1 篇必读突破）。核心突破研判：For SN 1999em the initial broad peak is reproduced by an RSG with a hydrogen envelope steeper than evolutionary models: an outer layer of about $0.9\\,M_{\\odot}$ with $k=d\\ln\\rho/d\\ln r<-3$. MCMC optima are $R_{pSN}=680^{+46}_{-37}\\,R_{\\odot}$, $M_{ej}=21.9\\pm0.7\\,M_{\\odot}$, $E=(1.45\\pm0.07)\\times10^{51}\\,\\mathrm{erg}$, and $M_{\\mathrm{Ni}}=0.036\\,M_{\\odot}$. VELTEM gives $R_{\\mathrm{base}}=62\\,R_{\\odot}$, $R_{ip}=363\\,R_{\\odot}$, $\\alpha=0.52$, and $\\beta=5.35$. By the Sedov criterion the shock accelerates where $\\rho r^{3}$ decreases, i.e. $k<-3$, for $r>100\\,R_{\\odot}$, fitting the first $\\sim30$ days and a maximum velocity $13500\\pm500\\,\\mathrm{km\\,s^{-1}}$. A shell $\\gtrsim0.3\\,M_{\\odot}$ can supply the peak but decelerates the outer ejecta. Runs started at $M_{ej}=9\\,M_{\\odot}$ and $E=0.6\\times10^{51}\\,\\mathrm{erg}$ return to a massive, energetic solution; progenitors significantly below $\\sim21\\,M_{\\odot}$ are excluded.",
@@ -2599,7 +3075,7 @@
       "tags": [
         "SN"
       ],
-      "heat_score": 18.6,
+      "heat_score": 16.8,
       "paper_count": 1,
       "headline": "The core problem is how X-rays f...",
       "narrative": "SN 2011JA 是近期重点瞬变天体事件，监测日期 2026-11-12，共聚合 1 篇研读文献（含 1 篇必读突破）。核心突破研判：Wind density follows $\\rho_w\\propto\\dot{M}/v_w$. In the Chevalier (1982) model, $\\rho_{\\mathrm{SN}}=\\rho_0(v/v_0)^{-n}(t/t_0)^{-3}$, $\\rho_{\\mathrm{CSM}}\\propto r^{-s}$ with $s=2$ for a steady wind, and $R_{\\mathrm{CD}}\\propto t^m$ where $m=(n-3)/(n-s)\\le1$. For spherical progenitors with $9\\le n\\le12$, steady-wind thermal $L_x$ falls roughly as $t^{-0.7}$–$t^{-0.8}$ and approaches $t^{-1}$ at larger $n$. The order-of-magnitude luminosity is $L_i=3\\times10^{39}g_{ff}C_n(\\dot{M}_{-5}/v_{w1})^2(t/10\\,\\mathrm{d})^{-1}\\,\\mathrm{erg\\,s^{-1}}$, with $C_n=1$ for the forward shock and $C_n=(n-3)(n-4)^2/[4(n-2)]$ for the reverse shock; observations constrain $\\dot{M}/v_w$. RSG/IIP rates are $\\dot{M}\\approx10^{-8}$–$10^{-6}\\,M_{\\odot}\\,\\mathrm{yr}^{-1}$, while WR Ib/c winds have $v_w\\approx1000$–$3000\\,\\mathrm{km\\,s^{-1}}$. Many sources show only $1$–$2\\,\\mathrm{keV}$, below $\\sim40\\,\\mathrm{keV}$ expected for a $\\sim5000\\,\\mathrm{km\\,s^{-1}}$ forward shock, favoring reverse-shock emission. SN 1993J has early $\\dot{M}>10^{-5}\\,M_{\\odot}\\,\\mathrm{yr}^{-1}$; inverse-Compton modeling with $N(E)\\propto E^{-p}$ at $p=3$ gives SN 2011ja $(1.2\\pm0.2)\\times10^{-7}\\,M_{\\odot}\\,\\mathrm{yr}^{-1}$; SN 2011dh is an adiabatic reverse shock with $\\dot{M}$ of a few $\\times10^{-6}\\,M_{\\odot}\\,\\mathrm{yr}^{-1}$. Thermal X-rays are directly proportional to circumstellar density, and a radiative reverse shock can coexist with a non-radiative forward shock.",
@@ -2678,7 +3154,7 @@
       "tags": [
         "SN"
       ],
-      "heat_score": 18.6,
+      "heat_score": 16.8,
       "paper_count": 1,
       "headline": "The core problem is how X-rays f...",
       "narrative": "SN 2011DH 是近期重点瞬变天体事件，监测日期 2026-11-12，共聚合 1 篇研读文献（含 1 篇必读突破）。核心突破研判：Wind density follows $\\rho_w\\propto\\dot{M}/v_w$. In the Chevalier (1982) model, $\\rho_{\\mathrm{SN}}=\\rho_0(v/v_0)^{-n}(t/t_0)^{-3}$, $\\rho_{\\mathrm{CSM}}\\propto r^{-s}$ with $s=2$ for a steady wind, and $R_{\\mathrm{CD}}\\propto t^m$ where $m=(n-3)/(n-s)\\le1$. For spherical progenitors with $9\\le n\\le12$, steady-wind thermal $L_x$ falls roughly as $t^{-0.7}$–$t^{-0.8}$ and approaches $t^{-1}$ at larger $n$. The order-of-magnitude luminosity is $L_i=3\\times10^{39}g_{ff}C_n(\\dot{M}_{-5}/v_{w1})^2(t/10\\,\\mathrm{d})^{-1}\\,\\mathrm{erg\\,s^{-1}}$, with $C_n=1$ for the forward shock and $C_n=(n-3)(n-4)^2/[4(n-2)]$ for the reverse shock; observations constrain $\\dot{M}/v_w$. RSG/IIP rates are $\\dot{M}\\approx10^{-8}$–$10^{-6}\\,M_{\\odot}\\,\\mathrm{yr}^{-1}$, while WR Ib/c winds have $v_w\\approx1000$–$3000\\,\\mathrm{km\\,s^{-1}}$. Many sources show only $1$–$2\\,\\mathrm{keV}$, below $\\sim40\\,\\mathrm{keV}$ expected for a $\\sim5000\\,\\mathrm{km\\,s^{-1}}$ forward shock, favoring reverse-shock emission. SN 1993J has early $\\dot{M}>10^{-5}\\,M_{\\odot}\\,\\mathrm{yr}^{-1}$; inverse-Compton modeling with $N(E)\\propto E^{-p}$ at $p=3$ gives SN 2011ja $(1.2\\pm0.2)\\times10^{-7}\\,M_{\\odot}\\,\\mathrm{yr}^{-1}$; SN 2011dh is an adiabatic reverse shock with $\\dot{M}$ of a few $\\times10^{-6}\\,M_{\\odot}\\,\\mathrm{yr}^{-1}$. Thermal X-rays are directly proportional to circumstellar density, and a radiative reverse shock can coexist with a non-radiative forward shock.",
@@ -2752,6 +3228,114 @@
       "gcn_status": null
     },
     {
+      "event_id": "GW250114",
+      "event_type": "GW",
+      "tags": [
+        "SN",
+        "FRB"
+      ],
+      "heat_score": 15,
+      "paper_count": 3,
+      "headline": "GW250114 引力波事件物理与致密星并合动力学",
+      "narrative": "GW250114 是近期重点瞬变天体事件，活跃跨度 2026-09-24 至 2026-11-16，共聚合 3 篇研读文献。核心突破研判：主要探讨《Simultaneous tests of post-Newtonian inspiral using GW250114 and GW250207》",
+      "first_seen": "2026-09-24",
+      "last_updated": "2026-11-16",
+      "papers": [
+        {
+          "arxiv_id": "2611.20738",
+          "revision": 1,
+          "title": "Simultaneous tests of post-Newtonian inspiral using GW250114 and GW250207",
+          "authors": [
+            "Saurabh Kumar",
+            "Parthapratim Mahapatra",
+            "Ish Mohan Gupta",
+            "M. Saleem",
+            "B. S. Sathyaprakash",
+            "K. G. Arun"
+          ],
+          "date": "2026-11-16",
+          "priority": "skip",
+          "bluf_result": "未能从已检查材料中核实论文结果。",
+          "bluf_problem": "未能从已检查材料中核实论文问题陈述。",
+          "figures": [],
+          "primary_figure": null
+        },
+        {
+          "arxiv_id": "2610.12429",
+          "revision": 1,
+          "title": "Listening to the Horizon: Probing Near-Horizon Reflectivity with GW250114",
+          "authors": [
+            "R. Prasad",
+            "Subhodeep Sarkar",
+            "Sudipta Sarkar"
+          ],
+          "date": "2026-10-08",
+          "priority": "skip",
+          "bluf_result": "基于 GW250114 数据搜寻引力波回声未见显著偏离黑洞无毛定理的信号（贝叶斯因子 $\\ln\\mathcal{B} = -2.9$），在 $90\\%$ 可信度下测得视界反射率上限 $|\\mathcal{R}_s| < 0.059$（均匀先验）及 $< 0.073$（复平面均匀先验），对应反射能量比例上限 $|\\mathcal{R}_s|^2 < 3.5 \\times 10^{-3}$（$<0.4\\%$）。",
+          "bluf_problem": "常规黑洞准正则模（QNM）振铃主要反映光环处的引力势峰，对近视界处可能存在的量子微观结构或奇异天体表面反射不敏感；需要寻找由跌落波（直接波 DW）反射产生并穿透势垒的引力波回声，以直接检验视界反射率的零假设。",
+          "figures": [
+            {
+              "url": "/arxiv-figures/2610.12429/fig1_schematic.png",
+              "label": "Fig. 1",
+              "caption": "Figure 1: Schematic spacetime picture of the first echo. Radiation from the plunging source (star) reaches the observer through the barrier as the DW (blue). Radiation emitted toward the horizon, ( + ) (+) , and the part of the outgoing radiation reflected by the barrier, ( − ) (-) ( ℛ BH \\mathcal{R}^{\\rm BH} ), are reflected at the surface ( ℛ s \\mathcal{R}_{s} ) and cross the barrier outward as the echo. The barrier modulates their frequency content. The ( − ) (-) path is delayed by exactly Δ ​ t = − 2 ​ r ∗ s \\Delta t=-2r_{*}^{s} with respect to the DW.",
+              "category": "theoretical",
+              "category_badge": "物理模型示意图",
+              "physical_core": "展示核心天体物理驱动机制、几何拓扑与理论演化模型架构。",
+              "is_schematic": true
+            }
+          ],
+          "primary_figure": {
+            "url": "/arxiv-figures/2610.12429/fig1_schematic.png",
+            "label": "Fig. 1",
+            "caption": "Figure 1: Schematic spacetime picture of the first echo. Radiation from the plunging source (star) reaches the observer through the barrier as the DW (blue). Radiation emitted toward the horizon, ( + ) (+) , and the part of the outgoing radiation reflected by the barrier, ( − ) (-) ( ℛ BH \\mathcal{R}^{\\rm BH} ), are reflected at the surface ( ℛ s \\mathcal{R}_{s} ) and cross the barrier outward as the echo. The barrier modulates their frequency content. The ( − ) (-) path is delayed by exactly Δ ​ t = − 2 ​ r ∗ s \\Delta t=-2r_{*}^{s} with respect to the DW.",
+            "category": "theoretical",
+            "category_badge": "物理模型示意图",
+            "physical_core": "展示核心天体物理驱动机制、几何拓扑与理论演化模型架构。",
+            "is_schematic": true
+          }
+        },
+        {
+          "arxiv_id": "2609.28953",
+          "revision": 1,
+          "title": "Constraining the Quadratic-mode Amplitude Coupling in GW250114",
+          "authors": [
+            "Yuxin Yang",
+            "Changfu Shi",
+            "Yi-Ming Hu"
+          ],
+          "date": "2026-09-24",
+          "priority": "skip",
+          "bluf_result": "推断得到的 220×220 模振幅耦合系数与数值相对论拟合及二阶微扰理论的预测一致，所有比较的偏差均不超过 1.3 σ；当前数据无法区分这些随自旋变化的预测。",
+          "bluf_problem": "能否从 GW250114 的黑洞振铃数据中测量 220×220 二阶准正常模的振幅耦合系数，并检验相应的广义相对论预测。",
+          "figures": [],
+          "primary_figure": null
+        }
+      ],
+      "lead_figure": {
+        "url": "/arxiv-figures/2610.12429/fig1_schematic.png",
+        "label": "Fig. 1",
+        "caption": "Figure 1: Schematic spacetime picture of the first echo. Radiation from the plunging source (star) reaches the observer through the barrier as the DW (blue). Radiation emitted toward the horizon, ( + ) (+) , and the part of the outgoing radiation reflected by the barrier, ( − ) (-) ( ℛ BH \\mathcal{R}^{\\rm BH} ), are reflected at the surface ( ℛ s \\mathcal{R}_{s} ) and cross the barrier outward as the echo. The barrier modulates their frequency content. The ( − ) (-) path is delayed by exactly Δ ​ t = − 2 ​ r ∗ s \\Delta t=-2r_{*}^{s} with respect to the DW.",
+        "category": "theoretical",
+        "category_badge": "物理模型示意图",
+        "physical_core": "展示核心天体物理驱动机制、几何拓扑与理论演化模型架构。",
+        "is_schematic": true
+      },
+      "lead_figure_arxiv_id": "2610.12429",
+      "canonical_t0": null,
+      "best_redshift": null,
+      "has_redshift_conflict": false,
+      "multi_messenger": [],
+      "gcn_aliases_label": null,
+      "canonical_t0_label": null,
+      "best_redshift_label": null,
+      "multi_messenger_badges": [],
+      "gcn_circular_count": 0,
+      "gcn_figure_path": null,
+      "gcn_aliases": [],
+      "gcn_slug": null,
+      "gcn_status": null
+    },
+    {
       "event_id": "GRB 241030A",
       "event_type": "GRB",
       "tags": [
@@ -2760,7 +3344,7 @@
         "Transient Surveillance",
         "GCN Photometry"
       ],
-      "heat_score": 16.6,
+      "heat_score": 15,
       "paper_count": 2,
       "headline": "The paper asks whether the bright",
       "narrative": "GRB 241030A 是近期重点瞬变天体事件，活跃跨度 2026-09-07 至 2026-11-09，共聚合 2 篇研读文献。核心突破研判：For GRB 241030A at $z=1.411$, the descriptive fallback-magnetar candidate has $P_0\\simeq4.25\\,\\mathrm{ms}$, $B\\simeq3.04\\times10^{15}\\,\\mathrm{G}$, source-frame $t_{\\rm fb}\\simeq143\\,\\mathrm{s}$, $M_{\\rm norm}=0.0090M_\\odot$ and $\\epsilon_{\\rm eff}=81.2$. At observer time 200 s it is an ejector, with $P_*=4.816\\,\\mathrm{ms}$, $r_{\\rm m}=234.8\\,\\mathrm{km}>r_{\\rm LC}=229.8\\,\\mathrm{km}$, $N_{\\rm acc}=0$, $L_{\\rm EM}=2.973\\times10^{48}\\,\\mathrm{erg\\,s^{-1}}$ and $F_{\\rm mag}=1.902\\times10^{-8}\\,\\mathrm{erg\\,cm^{-2}\\,s^{-1}}$. The correlated-residual medians are $P_0=16.8\\,\\mathrm{ms}$ (68 per cent interval 2.76–286 ms), $B=1.56\\times10^{15}\\,\\mathrm{G}$, $t_{\\rm fb}=54.8\\,\\mathrm{s}$ and $\\epsilon_{\\rm eff}=2.34$. Only 79 of 380 fluxes lie in the central 90 per cent predictive intervals, while 301 lie above them.",
@@ -2838,6 +3422,97 @@
       "gcn_status": "archived"
     },
     {
+      "event_id": "EP241206A",
+      "event_type": "EP",
+      "tags": [
+        "FRB",
+        "GRB",
+        "SN"
+      ],
+      "heat_score": 15,
+      "paper_count": 1,
+      "headline": "The paper asks whether the sub-k...",
+      "narrative": "EP241206A 是近期重点瞬变天体事件，监测日期 2026-11-16，共聚合 1 篇研读文献。核心突破研判：EP241206a is a single-peaked soft X-ray flare lasting $\\sim 500\\,\\mathrm{s}$, with average unabsorbed flux $4.9^{+1.2}_{-1.2}\\times 10^{-10}\\,\\mathrm{erg\\,s^{-1}\\,cm^{-2}}$ and fluence $\\sim 2.5\\times 10^{-7}\\,\\mathrm{erg\\,cm^{-2}}$. If associated with the $z=0.62$ AGN, the persistent luminosity is $L_{2-10\\,\\mathrm{keV}}\\simeq 2.3\\times 10^{44}\\,\\mathrm{erg\\,s^{-1}}$ while the flare peak is $\\sim 1.4\\times 10^{48}\\,\\mathrm{erg\\,s^{-1}}$, a rise of more than three orders of magnitude. For $M_{\\mathrm{BH}}\\approx 3.8\\times 10^{7}M_{\\odot}$, the apparent Eddington ratios are $\\sim 0.8$ (persistent) and $\\sim 4.6\\times 10^{3}$ (peak). A reconnection estimate $L_{X,\\mathrm{obs}}\\sim\\delta_{\\mathrm{eff}}^{4}\\eta_{X}B^{2}cR_{\\mathrm{em}}^{2}\\beta_{\\mathrm{rec}}/4$ gives $\\sim 7\\times 10^{47}\\,\\mathrm{erg\\,s^{-1}}$ for $\\eta_{X}=0.1$, $B=10^{4}\\,\\mathrm{G}$, $R_{\\mathrm{em}}=17R_{g}$ and $\\beta_{\\mathrm{rec}}\\sim 0.1$. An AGN-disk long GRB would have $E_{\\mathrm{iso}}=1.1_{-0.3}^{+0.4}\\times 10^{51}\\,\\mathrm{erg}$ at photon index $\\sim 2$, off the Type II Amati relation. The WISE counterpart lies in the mid-infrared AGN region and is consistent with the blazar locus; lack of a gamma-ray flare does not rule out a temporarily beamed plasmoid.",
+      "first_seen": "2026-11-16",
+      "last_updated": "2026-11-16",
+      "papers": [
+        {
+          "arxiv_id": "2611.21369",
+          "revision": 1,
+          "title": "EP241206a: A Sub-kilosecond X-Ray Flare Possibly from an Active Galactic Nucleus with a Flux Increase over 3 Orders of Magnitude",
+          "authors": [
+            "Chen-Yu Wang",
+            "Tinggui Wang",
+            "Hua Feng",
+            "Wenxiong Li",
+            "Hucheng Ding",
+            "Xinwen Shu",
+            "Yi-Han Iris Yin",
+            "Roberto Soria",
+            "Bing Zhang",
+            "Arne Rau",
+            "Yongquan Xue",
+            "Mingjun Liu",
+            "Richard Saxton",
+            "JunXian Wang",
+            "D. Andrew Howell",
+            "Curtis McCully",
+            "Joseph R. Farah",
+            "Moira Andrews",
+            "Hai-Wu Pan",
+            "Donghua Zhao"
+          ],
+          "date": "2026-11-16",
+          "priority": "worth_knowing",
+          "bluf_result": "EP241206a is a single-peaked soft X-ray flare lasting $\\sim 500\\,\\mathrm{s}$, with average unabsorbed flux $4.9^{+1.2}_{-1.2}\\times 10^{-10}\\,\\mathrm{erg\\,s^{-1}\\,cm^{-2}}$ and fluence $\\sim 2.5\\times 10^{-7}\\,\\mathrm{erg\\,cm^{-2}}$. If associated with the $z=0.62$ AGN, the persistent luminosity is $L_{2-10\\,\\mathrm{keV}}\\simeq 2.3\\times 10^{44}\\,\\mathrm{erg\\,s^{-1}}$ while the flare peak is $\\sim 1.4\\times 10^{48}\\,\\mathrm{erg\\,s^{-1}}$, a rise of more than three orders of magnitude. For $M_{\\mathrm{BH}}\\approx 3.8\\times 10^{7}M_{\\odot}$, the apparent Eddington ratios are $\\sim 0.8$ (persistent) and $\\sim 4.6\\times 10^{3}$ (peak). A reconnection estimate $L_{X,\\mathrm{obs}}\\sim\\delta_{\\mathrm{eff}}^{4}\\eta_{X}B^{2}cR_{\\mathrm{em}}^{2}\\beta_{\\mathrm{rec}}/4$ gives $\\sim 7\\times 10^{47}\\,\\mathrm{erg\\,s^{-1}}$ for $\\eta_{X}=0.1$, $B=10^{4}\\,\\mathrm{G}$, $R_{\\mathrm{em}}=17R_{g}$ and $\\beta_{\\mathrm{rec}}\\sim 0.1$. An AGN-disk long GRB would have $E_{\\mathrm{iso}}=1.1_{-0.3}^{+0.4}\\times 10^{51}\\,\\mathrm{erg}$ at photon index $\\sim 2$, off the Type II Amati relation. The WISE counterpart lies in the mid-infrared AGN region and is consistent with the blazar locus; lack of a gamma-ray flare does not rule out a temporarily beamed plasmoid.",
+          "bluf_problem": "The paper asks whether the sub-kilosecond soft X-ray flare EP241206a is physically associated with a $z=0.62$ AGN and whether inner-jet magnetic reconnection, a jet-in-the-jet, or a GRB embedded in the AGN disk can explain a flux increase of more than three orders of magnitude.",
+          "figures": [
+            {
+              "url": "/arxiv-figures/2611.21369/Figure6.png",
+              "label": "Fig. 6",
+              "caption": "Figure 6: Optical emission-line fitting for EP241206a. The top panel shows the Mg ii line, and the bottom panel shows the H $\\beta$ line, together with the best-fit models.",
+              "category": "fitting",
+              "category_badge": "Model vs Data Fitting",
+              "physical_core": "展示理论模型与实际观测数据的拟合对比及关键参数后验约束。",
+              "is_schematic": false
+            }
+          ],
+          "primary_figure": {
+            "url": "/arxiv-figures/2611.21369/Figure6.png",
+            "label": "Fig. 6",
+            "caption": "Figure 6: Optical emission-line fitting for EP241206a. The top panel shows the Mg ii line, and the bottom panel shows the H $\\beta$ line, together with the best-fit models.",
+            "category": "fitting",
+            "category_badge": "Model vs Data Fitting",
+            "physical_core": "展示理论模型与实际观测数据的拟合对比及关键参数后验约束。",
+            "is_schematic": false
+          }
+        }
+      ],
+      "lead_figure": {
+        "url": "/arxiv-figures/2611.21369/Figure6.png",
+        "label": "Fig. 6",
+        "caption": "Figure 6: Optical emission-line fitting for EP241206a. The top panel shows the Mg ii line, and the bottom panel shows the H $\\beta$ line, together with the best-fit models.",
+        "category": "fitting",
+        "category_badge": "Model vs Data Fitting",
+        "physical_core": "展示理论模型与实际观测数据的拟合对比及关键参数后验约束。",
+        "is_schematic": false
+      },
+      "lead_figure_arxiv_id": "2611.21369",
+      "canonical_t0": null,
+      "best_redshift": null,
+      "has_redshift_conflict": false,
+      "multi_messenger": [],
+      "gcn_aliases_label": null,
+      "canonical_t0_label": null,
+      "best_redshift_label": null,
+      "multi_messenger_badges": [],
+      "gcn_circular_count": 0,
+      "gcn_figure_path": null,
+      "gcn_aliases": [],
+      "gcn_slug": null,
+      "gcn_status": null
+    },
+    {
       "event_id": "GRB 261029A",
       "event_type": "GRB",
       "tags": [
@@ -2845,7 +3520,7 @@
         "GCN Circulars",
         "GRB"
       ],
-      "heat_score": 15.9,
+      "heat_score": 14.4,
       "paper_count": 0,
       "headline": "GRB 261029A 空间与地面望远镜全波段应急协同追踪",
       "narrative": "已汇聚 NASA GCN Circulars 快速通报 37 份。红移 z = 3.27 (spectroscopic · Optical Spectroscopy)，触发时刻 T0: 2026-10-29 01:27:03 UTC (Fermi/GBM)。多波段光变曲线与早期测光点已完成零同质化聚合。",
@@ -2888,7 +3563,7 @@
       "tags": [
         "SN"
       ],
-      "heat_score": 13.8,
+      "heat_score": 12.5,
       "paper_count": 1,
       "headline": "Whether luminous narrow-line SLS...",
       "narrative": "SN 2022LVM 是近期重点瞬变天体事件，监测日期 2026-11-09，共聚合 1 篇研读文献（含 1 篇必读突破）。核心突破研判：Of 106 hydrogen-rich SLSNe, 105 show narrow Balmer emission and are spectroscopically SLSNe-IIn; SN 2022lvm is the sole broad-lined SLSN-II in the discussed 2021–2022 subset comparison (1/36, 2.8%). Measured $L_{\\mathrm{H}\\alpha}$ spans $2.2\\times10^{40}$ to $1.5\\times10^{42}\\,\\mathrm{erg\\,s^{-1}}$ (median $2.6\\times10^{41}\\,\\mathrm{erg\\,s^{-1}}$). The median Balmer decrement rises from 2.85 before $+100$ d to 4.40 afterward, below the Ia-CSM comparison medians 6.58 and 17.76. After excluding the SLSN-II and six Ia-CSM-like objects, median shell speed correlates with peak magnitude ($r=0.63$, $p=0.010$): brighter events tend to have lower $v_{\\rm s}$. For 13 calibrated objects at $v_{\\rm CSM}=100\\,\\mathrm{km\\,s^{-1}}$ and $\\epsilon=0.5$, $\\dot{M}\\sim0.028$–$0.30\\,M_{\\odot}\\,\\mathrm{yr^{-1}}$ from $L=\\frac{1}{2}\\epsilon\\dot{M}v_{\\rm s}^{3}/u_{\\rm w}$. Six of 105 narrow-line events ($\\sim6\\%$) are Ia-CSM-like. Narrow interaction lines can persist beyond $+200$ d, with no Balmer morphology unique to SLSNe-IIn relative to fainter SNe IIn.",
@@ -3001,7 +3676,7 @@
         "SN",
         "GW"
       ],
-      "heat_score": 13,
+      "heat_score": 11.8,
       "paper_count": 3,
       "headline": "How do source-level tidal priors...",
       "narrative": "GW190425 是近期重点瞬变天体事件，活跃跨度 2026-10-11 至 2026-11-05，共聚合 3 篇研读文献。核心突破研判：For the low-spin precessing-waveform analysis of GW170817, replacing the Uniform prior with Goldilocks shifts the secondary tidal-deformability peak from approximately $\\Lambda_2=215$ to $443$, with the 90% highest-posterior-density interval changing from $[2,1127]$ to $[111,1150]$; the upper limit on $\\Lambda_1$ decreases from $855$ to $606$. For GW190425, the $\\Lambda_1$ peak decreases from approximately $132$ to $59$, and its 90% HPD upper limit decreases from $1024$ to $397$. After removing source-level priors, GW170817 EoS constraints remain comparatively robust, whereas GW190425 retains differences attributable to insufficient event-level sampling. Joint constraints remain dominated by GW170817. For the joint low-spin XP Goldilocks analysis, the spectral EoS representation gives $\\Lambda_{1.4}=529^{+306}_{-268}$, $R_{1.4}=12.57^{+1.04}_{-1.20}\\,\\mathrm{km}$, and $m_{\\mathrm{TOV}}^{\\max}=2.23^{+0.27}_{-0.20}M_\\odot$; the semiparametric Gaussian-process representation gives $321^{+339}_{-187}$, $11.67^{+1.54}_{-1.01}\\,\\mathrm{km}$, and $2.36^{+0.40}_{-0.33}M_\\odot$, respectively. These uncertainties are 90% HPD intervals.",
@@ -3109,7 +3784,7 @@
         "TDE",
         "MULTI"
       ],
-      "heat_score": 11.1,
+      "heat_score": 10.1,
       "paper_count": 1,
       "headline": "The paper asks what produces sec...",
       "narrative": "AT2019EVE 是近期重点瞬变天体事件，监测日期 2026-11-12，共聚合 1 篇研读文献。核心突破研判：AT2019ehz ($z=0.074$) rebrightens at 1545 d, and its secondary flare is attributed to a second outflow launched near $1000$ d (linear $R_{\\rm eq}$ extrapolation $1071^{+62}_{-79}$ d), with mean $\\bar{\\beta}=v/c$ rising from $0.003$ to $0.033$. AT2019eve ($z=0.081$) rebrightens at 1594 d with $L\\sim6.7\\times10^{38}$–$1\\times10^{39}\\,\\mathrm{erg\\,s^{-1}}$, about $2$–$3\\times$ the earlier $3.6\\times10^{38}\\,\\mathrm{erg\\,s^{-1}}$, while $\\nu_p$ rises from $1.6$ to $2.8\\,\\mathrm{GHz}$ at $F_{\\nu,p}\\sim1.0\\,\\mathrm{mJy}$. Its $R_{\\rm eq}$ appears to fall by ${\\sim}8\\times10^{16}\\,\\mathrm{cm}$ over ${\\sim}1000$ d; $\\beta\\lesssim0.06$ does not reach the off-axis-jet value $\\beta_{\\rm eq,N}=0.44$. Under a prompt launch, $E\\sim7\\times10^{48}\\,\\mathrm{erg}$ while $v$ declines from $0.06c$ to $0.02c$. Sample densities scale from $(R/R_s)^{-1}$ to $(R/R_s)^{-2}$; AT2019ehz is on average $\\propto R^{-2}$ and AT2019eve $\\propto R^{-1}$.",
@@ -3196,7 +3871,7 @@
       "tags": [
         "GRB"
       ],
-      "heat_score": 11.1,
+      "heat_score": 10.1,
       "paper_count": 1,
       "headline": "The paper tests whether EP250226...",
       "narrative": "GRB 250226A 是近期重点瞬变天体事件，监测日期 2026-11-12，共聚合 1 篇研读文献。核心突破研判：EP250226a/GRB 250226A is at $z=3.314$ with $E_{\\mathrm{iso}}\\simeq 7.32\\times 10^{53}\\,\\mathrm{erg}$. The X-ray and optical afterglow is nearly achromatic, with no strong rising phase, plateau, or jet break. A uniform-ISM top-hat forward shock is preferred over a wind; the reported fit gives $E_{\\mathrm{k,iso}}\\simeq 4.07\\times 10^{55}\\,\\mathrm{erg}$, $\\eta_{\\gamma}\\simeq 1.77\\%$, and $\\log\\epsilon_{\\mathrm{B,FS}}\\simeq -6.52$, so most jet energy remains kinetic. The wind closure estimate $p(\\alpha_{\\mathrm{o}})\\simeq 1.69$ conflicts with $p>2$.",
@@ -3306,7 +3981,7 @@
       "tags": [
         "GRB"
       ],
-      "heat_score": 11.1,
+      "heat_score": 10.1,
       "paper_count": 1,
       "headline": "The paper tests whether EP250226...",
       "narrative": "EP250226A 是近期重点瞬变天体事件，监测日期 2026-11-12，共聚合 1 篇研读文献。核心突破研判：EP250226a/GRB 250226A is at $z=3.314$ with $E_{\\mathrm{iso}}\\simeq 7.32\\times 10^{53}\\,\\mathrm{erg}$. The X-ray and optical afterglow is nearly achromatic, with no strong rising phase, plateau, or jet break. A uniform-ISM top-hat forward shock is preferred over a wind; the reported fit gives $E_{\\mathrm{k,iso}}\\simeq 4.07\\times 10^{55}\\,\\mathrm{erg}$, $\\eta_{\\gamma}\\simeq 1.77\\%$, and $\\log\\epsilon_{\\mathrm{B,FS}}\\simeq -6.52$, so most jet energy remains kinetic. The wind closure estimate $p(\\alpha_{\\mathrm{o}})\\simeq 1.69$ conflicts with $p>2$.",
@@ -3416,7 +4091,7 @@
       "tags": [
         "GW"
       ],
-      "heat_score": 7.5,
+      "heat_score": 6.8,
       "paper_count": 1,
       "headline": "Whether the paired gravitational...",
       "narrative": "GW230729 是近期重点瞬变天体事件，监测日期 2026-11-08，共聚合 1 篇研读文献。核心突破研判：For candidate pair GW230729_082317 and GW231118_005626, joint Bayesian parameter estimation yields a Bayes factor $\\mathcal{B} = 110$ favoring the hierarchical triple merger hypothesis, but accounting for low prior probability reduces the posterior odds ratio to $\\mathcal{O} \\approx 0.1$. The 1G remnant mass ($M_{\\rm rem} \\approx 19.4\\,M_\\odot$) matches the 2G primary mass ($m_1 \\sim 2m_2$) with overlapping sky localization and distance ($d_L \\sim 1630\\,\\mathrm{Mpc}$). Under a Poisson process with delay distribution $P(\\Delta < T) \\propto (T/t_{\\rm max})^\\alpha$, the $90\\%$ upper limit on the local event rate density is $R_0 \\in [4.2, 75.3]\\,\\mathrm{Gpc^{-3}\\,yr^{-1}}$ for null detection, and $R_0 \\in [4.1, 95.1]\\,\\mathrm{Gpc^{-3}\\,yr^{-1}}$ ($t_{\\rm max} = 10\\,\\mathrm{yr}$) if confirmed.",
@@ -3463,7 +4138,7 @@
       "tags": [
         "GW"
       ],
-      "heat_score": 7.5,
+      "heat_score": 6.8,
       "paper_count": 1,
       "headline": "Whether the paired gravitational...",
       "narrative": "GW231118 是近期重点瞬变天体事件，监测日期 2026-11-08，共聚合 1 篇研读文献。核心突破研判：For candidate pair GW230729_082317 and GW231118_005626, joint Bayesian parameter estimation yields a Bayes factor $\\mathcal{B} = 110$ favoring the hierarchical triple merger hypothesis, but accounting for low prior probability reduces the posterior odds ratio to $\\mathcal{O} \\approx 0.1$. The 1G remnant mass ($M_{\\rm rem} \\approx 19.4\\,M_\\odot$) matches the 2G primary mass ($m_1 \\sim 2m_2$) with overlapping sky localization and distance ($d_L \\sim 1630\\,\\mathrm{Mpc}$). Under a Poisson process with delay distribution $P(\\Delta < T) \\propto (T/t_{\\rm max})^\\alpha$, the $90\\%$ upper limit on the local event rate density is $R_0 \\in [4.2, 75.3]\\,\\mathrm{Gpc^{-3}\\,yr^{-1}}$ for null detection, and $R_0 \\in [4.1, 95.1]\\,\\mathrm{Gpc^{-3}\\,yr^{-1}}$ ($t_{\\rm max} = 10\\,\\mathrm{yr}$) if confirmed.",
@@ -3512,7 +4187,7 @@
         "SN",
         "GW"
       ],
-      "heat_score": 6.9,
+      "heat_score": 6.3,
       "paper_count": 1,
       "headline": "Whether temporally clustered gra...",
       "narrative": "SN 2019RSQ 是近期重点瞬变天体事件，监测日期 2026-11-02，共聚合 1 篇研读文献（含 1 篇必读突破）。核心突破研判：The GW pair S190910d and S190910h separated by $\\Delta t \\simeq 7.1\\,\\mathrm{hr}$ has a pairwise null chance coincidence probability of $P_{\\rm 2GW} = 7.6 \\times 10^{-5}$ under 3D localization overlap tests. Parameter inference indicates S190910d is an asymmetric binary with $q \\simeq 0.086$, $m_1^{\\rm src} \\simeq 34\\,M_\\odot$, and $m_2^{\\rm src} \\simeq 2.9\\,M_\\odot$ ($\\,\\rho_{\\rm net} \\simeq 8.6$), while S190910h conditioned on the SN position has $m_1^{\\rm src} \\simeq 2.5\\,M_\\odot$ and $m_2^{\\rm src} \\simeq 1.3\\,M_\\odot$. SN 2019rsq light curve modeling yields an ejecta mass $M_{\\rm ej} \\simeq 3\\,M_\\odot$, kinetic energy $E_{\\rm K} \\simeq 10^{51}\\,\\mathrm{erg}$, and nickel mass $M_{^{56}\\mathrm{Ni}} \\approx 0.08\\text{--}0.1\\,M_\\odot$.",
@@ -3617,7 +4292,7 @@
         "GCN Circulars",
         "GRB"
       ],
-      "heat_score": 6.6,
+      "heat_score": 6,
       "paper_count": 0,
       "headline": "GRB 260730B 空间与地面望远镜全波段应急协同追踪",
       "narrative": "已汇聚 NASA GCN Circulars 快速通报 5 份。红移 待确定，触发时刻 T0: 待校准。多波段光变曲线与早期测光点已完成零同质化聚合。",
@@ -3648,7 +4323,7 @@
         "GRB",
         "GW"
       ],
-      "heat_score": 6.5,
+      "heat_score": 5.9,
       "paper_count": 4,
       "headline": "利用GW170817对应千新星AT2017gfo的晚期近红外光谱",
       "narrative": "AT2017GFO 是近期重点瞬变天体事件，活跃跨度 2026-09-21 至 2026-10-22，共聚合 4 篇研读文献（含 1 篇必读突破）。核心突破研判：模型将1.4、1.6和2.1微米特征分别主要归于La III、Ce III和Te III；推得Te、La、Ce质量分数约为0.04–0.08、0.025–0.05和0.05–0.1，Kr和Sb质量分数上限约为0.03和0.003。La和Ce约束仍属暂定。",
@@ -3826,7 +4501,7 @@
         "Transient Surveillance",
         "GCN Photometry"
       ],
-      "heat_score": 6.3,
+      "heat_score": 5.7,
       "paper_count": 1,
       "headline": "Unveiling the physical origin of...",
       "narrative": "GRB 241113B 是近期重点瞬变天体事件，监测日期 2026-11-01，共聚合 1 篇研读文献（含 1 篇必读突破）。核心突破研判：GRB 241113B is confirmed as an intrinsically soft Type II GRB (XRR/XRF) observed on-axis within a redshift range $0.5 \\lesssim z \\lesssim 3.5$. Joint prompt spectral fitting favors a cutoff power-law (CPL) model with photon index $\\alpha = -1.80^{+0.16}_{-0.10}$ and $E^{\\mathrm{obs}}_{\\mathrm{peak}} \\approx 35\\text{--}37\\text{ keV}$. The prompt duration follows an energy-dependent scaling law $\\log T_{90} = \\alpha \\log(E/50\\,\\mathrm{keV}) + \\log K_{50}$ with $\\alpha = -0.35^{+0.10}_{-0.06}$ ($K_{50} = 54.2^{+2.8}_{-4.2}$). The early multiband afterglow peaks at deceleration time $t_b = 263^{+68}_{-91}\\,\\mathrm{s}$ and decays with $\\alpha_2 = -1.40^{+0.03}_{-0.04}$ and spectral index $\\beta_{\\mathrm{OX}} = 0.66^{+0.04}_{-0.03}$. VegasAfterglow modeling confirms a relativistic top-hat jet propagating into a wind-like circumstellar medium ($s=2$) in the slow cooling regime ($\\nu_m < \\nu_{\\mathrm{opt}} < \\nu_{\\mathrm{X}} < \\nu_c$) with electron index $p = 2.31 \\pm 0.08$. The bulk Lorentz factor is constrained to $\\Gamma_0 > 100$ (posterior bounds $\\Gamma_0 \\sim 125\\text{--}263$), ruling out both shock breakout (SBO) and high baryon loading (dirty fireball) scenarios.",
@@ -3964,7 +4639,7 @@
         "SN",
         "Transient Surveillance"
       ],
-      "heat_score": 6,
+      "heat_score": 5.5,
       "paper_count": 3,
       "headline": "传统超新星星风破越模型常忽略反向激波或简并处理辐射热力学平衡",
       "narrative": "EP260321A 是近期重点瞬变天体事件，活跃跨度 2026-10-05 至 2026-10-22，共聚合 3 篇研读文献（含 2 篇必读突破）。核心突破研判：推导了双激波结构中内能比 $E_3 = \\mu E_2$ 与特征速度比 $\\bar{v}_r = \\mu v_f$（其中 $\\mu = (\\delta+2)^{-1} \\simeq 1/7$），阐明正激波 $v_{f,bo} \\sim 0.5c$ 处于非局部热平衡（non-LTE）而低速反激波 $\\bar{v}_{r,bo} \\sim 0.07c$ 满足 LTE 并主导黑体热辐射。测定破越半径 $r_{bo} \\simeq 5\\times 10^{12}\\,\\mathrm{cm} \\gg R_\\star$，确认星风需在 $r_w \\sim 10^{13}\\,\\mathrm{cm}$ 处截断且散射介质壳层质量约为 $M_m \\sim 10^{-3} \\tau_m\\,M_\\odot$。",
@@ -4099,7 +4774,7 @@
         "Transient Surveillance",
         "GCN Photometry"
       ],
-      "heat_score": 5.5,
+      "heat_score": 5,
       "paper_count": 3,
       "headline": "GRB瞬时辐射、尾段、平台与平台后光变能否由同一结构化相对论流的...",
       "narrative": "GRB 060614 是近期重点瞬变天体事件，活跃跨度 2026-09-15 至 2026-10-21，共聚合 3 篇研读文献（含 2 篇必读突破）。核心突破研判：在所采用的LAE模型中，光变只能约束核心组合参数Γcθc，不能分别确定Γc与θc。结论部分报告，除GRB 060614外六个核心的Γcθc平均约为3；包层Γ∝θ⁻g的最佳拟合g平均为2.1，通常在1.5–2.5之间，g=2对应平坦平台。平行磁场比垂直磁场产生更强光变曲率；核心未识别出平行场，七个余辉中仅三个包层取向可辨别，均偏向平行，其余无法确定。但磁场诊断受发射时刻、谱演化及参数简并影响，作者认为包层取向可能无法由余辉可靠约束。所有最佳拟合的约化χ²均大到可统计排除，平滑模型无法捕捉显著X射线波动，因此这些结果应视为特定模型下的参数趋势，而非充分验证。",
@@ -4256,7 +4931,7 @@
         "Transient Surveillance",
         "GCN Photometry"
       ],
-      "heat_score": 5.5,
+      "heat_score": 5,
       "paper_count": 3,
       "headline": "在所有壳层于两秒内发射、随后中心引擎关闭的设定下",
       "narrative": "GRB 211211A 是近期重点瞬变天体事件，活跃跨度 2026-09-15 至 2026-10-21，共聚合 3 篇研读文献（含 2 篇必读突破）。核心突破研判：仅活动2秒的中心引擎，在所构造的壳层模型中可通过高纬度辐射和喷流扩展延长接收辐射时标。给定正文摘要报告，模型与GRB 211211A、211227A及060614的Swift光变比较，可再现初始峰及随后较宽、较平滑的延展辐射，但不拟合复杂尖锐的初始脉冲结构。低洛伦兹因子发射区须经过不透明度筛选；模型产生的谱演化慢于观测。",
@@ -4410,7 +5085,7 @@
         "TDE",
         "Transient Surveillance"
       ],
-      "heat_score": 5.5,
+      "heat_score": 5,
       "paper_count": 2,
       "headline": "Accounting for the multi-epoch o...",
       "narrative": "EP241021A 是近期重点瞬变天体事件，活跃跨度 2026-10-22 至 2026-10-26，共聚合 2 篇研读文献（含 1 篇必读突破）。核心突破研判：EP241021a ($z = 0.748$, $D_L = 4.620\\ \\mathrm{Gpc}$, $E_{\\mathrm{iso}} \\lesssim 2 \\times 10^{51}\\ \\mathrm{erg}$) occurred at a projected offset of $129 \\pm 18\\ \\mathrm{mas}$ ($0.95 \\pm 0.13\\ \\mathrm{kpc}$) from the nucleus of an edge-on dwarf starburst galaxy ($M_\\star = (2.7 \\pm 1.2) \\times 10^8\\ M_\\odot$, $\\mathrm{SFR} = 4.5 \\pm 2.4\\ M_\\odot\\ \\mathrm{yr}^{-1}$, effective radius $R_e = 0.23'' \\approx 1.7\\ \\mathrm{kpc}$). The host-subtracted optical transient underwent a rapid break/drop at observer-frame $t_{\\mathrm{brk}} = 47.0^{+5.4}_{-3.7}\\ \\mathrm{d}$ (rest-frame $26.9^{+3.1}_{-2.1}\\ \\mathrm{d}$) at $\\log(L_{\\mathrm{brk}} / [\\mathrm{erg\\ s^{-1}}]) = 42.92 \\pm 0.08$, synchronized with the X-ray light-curve steep decline. The month-long accretion timescale and off-nuclear site exclude both standard core-collapse supernova engines and supermassive black holes, favoring an intermediate-mass black hole ($M_{\\mathrm{BH}} \\lesssim 10^4\\ M_\\odot$) or a stellar-mass compact object micro-TDE undergoing repeating partial disruptions.",
@@ -4517,13 +5192,62 @@
       "gcn_status": "archived"
     },
     {
+      "event_id": "GW250207",
+      "event_type": "GW",
+      "tags": [
+        "SN"
+      ],
+      "heat_score": 5,
+      "paper_count": 1,
+      "headline": "GW250207 引力波事件物理与致密星并合动力学",
+      "narrative": "GW250207 是近期重点瞬变天体事件，监测日期 2026-11-16，共聚合 1 篇研读文献。核心突破研判：主要探讨《Simultaneous tests of post-Newtonian inspiral using GW250114 and GW250207》",
+      "first_seen": "2026-11-16",
+      "last_updated": "2026-11-16",
+      "papers": [
+        {
+          "arxiv_id": "2611.20738",
+          "revision": 1,
+          "title": "Simultaneous tests of post-Newtonian inspiral using GW250114 and GW250207",
+          "authors": [
+            "Saurabh Kumar",
+            "Parthapratim Mahapatra",
+            "Ish Mohan Gupta",
+            "M. Saleem",
+            "B. S. Sathyaprakash",
+            "K. G. Arun"
+          ],
+          "date": "2026-11-16",
+          "priority": "skip",
+          "bluf_result": "未能从已检查材料中核实论文结果。",
+          "bluf_problem": "未能从已检查材料中核实论文问题陈述。",
+          "figures": [],
+          "primary_figure": null
+        }
+      ],
+      "lead_figure": null,
+      "lead_figure_arxiv_id": null,
+      "canonical_t0": null,
+      "best_redshift": null,
+      "has_redshift_conflict": false,
+      "multi_messenger": [],
+      "gcn_aliases_label": null,
+      "canonical_t0_label": null,
+      "best_redshift_label": null,
+      "multi_messenger_badges": [],
+      "gcn_circular_count": 0,
+      "gcn_figure_path": null,
+      "gcn_aliases": [],
+      "gcn_slug": null,
+      "gcn_status": null
+    },
+    {
       "event_id": "FRB20201124A",
       "event_type": "FRB",
       "tags": [
         "FRB",
         "MAG"
       ],
-      "heat_score": 5,
+      "heat_score": 4.6,
       "paper_count": 1,
       "headline": "Prior radio observations of the ...",
       "narrative": "FRB20201124A 是近期重点瞬变天体事件，监测日期 2026-11-04，共聚合 1 篇研读文献。核心突破研判：The combined VLA (6, 15, 22 GHz) and ALMA ($\\sim 100$ GHz) spectrum reveals a turnover fitted by a broken power law in the slow-cooling regime, yielding an injection break frequency $\\nu_{m} = 63^{+100}_{-33}$ GHz, a peak flux density $F_{m} = 28 \\pm 9\\ \\mu\\mathrm{Jy}$, and a corresponding spectral peak luminosity $L_{m} = 6.7 \\times 10^{27}\\ \\mathrm{erg\\ s^{-1}\\ Hz^{-1}}$. The self-absorption frequency is constrained to lie below $\\sim 0.5$ GHz, consistent with a young ($t \\lesssim 20$ yr), rotation-powered magnetar wind nebula.",
@@ -4604,7 +5328,7 @@
         "FRB",
         "MAG"
       ],
-      "heat_score": 5,
+      "heat_score": 4.6,
       "paper_count": 1,
       "headline": "Prior radio observations of the ...",
       "narrative": "FRB 20201124A 是近期重点瞬变天体事件，监测日期 2026-11-04，共聚合 1 篇研读文献。核心突破研判：The combined VLA (6, 15, 22 GHz) and ALMA ($\\sim 100$ GHz) spectrum reveals a turnover fitted by a broken power law in the slow-cooling regime, yielding an injection break frequency $\\nu_{m} = 63^{+100}_{-33}$ GHz, a peak flux density $F_{m} = 28 \\pm 9\\ \\mu\\mathrm{Jy}$, and a corresponding spectral peak luminosity $L_{m} = 6.7 \\times 10^{27}\\ \\mathrm{erg\\ s^{-1}\\ Hz^{-1}}$. The self-absorption frequency is constrained to lie below $\\sim 0.5$ GHz, consistent with a young ($t \\lesssim 20$ yr), rotation-powered magnetar wind nebula.",
@@ -4685,7 +5409,7 @@
         "SN",
         "MAG"
       ],
-      "heat_score": 4.6,
+      "heat_score": 4.2,
       "paper_count": 1,
       "headline": "Quasi-periodic modulations with ...",
       "narrative": "SN 2024AFAV 是近期重点瞬变天体事件，监测日期 2026-10-29，共聚合 1 篇研读文献（含 1 篇必读突破）。核心突破研判：The paper derives a universal linear relation in the $(D,C)$ plane between the chirp rate $C(t) \\equiv -d\\ln P/d\\ln t$ and dimming rate $D(t) \\equiv -d\\ln L_w/d\\ln t$: $$C(t)=\\frac{K\\chi u}{w-2}-\\left(\\frac{K}{w-2}+\\frac{q}{n+1}\\right)D(t)$$ For SN 2024afav, independent baseline fitting yields magnetar spin-down parameters $P_{\\rm spin} = 3.9 \\pm 0.2\\,\\mathrm{ms}$, $B = (0.51 \\pm 0.05)\\times 10^{14}\\,\\mathrm{G}$, and spin-down timescale $t_p = 87 \\pm 11\\,\\mathrm{d}$. The universal relation successfully predicted a chirp reversal (transition from period contraction to expansion) at rest-frame $t_{\\rm min} = 132 \\pm 3\\,\\mathrm{d}$ with $\\dot{P} = 0.28 \\pm 0.12$. The observed slope $dC/dD = 11.6 \\pm 1.6$ statistically excludes radiatively cooled thin disks (reduced $\\chi^2 = 9.8$, $p = 3\\times 10^{-15}$) and pinpoints a hot advective thick disk with inflow/outflow index $p \\sim 0.46$ governed by Lense-Thirring precession.",
@@ -4766,7 +5490,7 @@
       "tags": [
         "SN"
       ],
-      "heat_score": 4.6,
+      "heat_score": 4.1,
       "paper_count": 1,
       "headline": "Unraveling the extreme mass-loss...",
       "narrative": "SN 2019QEM 是近期重点瞬变天体事件，监测日期 2026-11-03，共聚合 1 篇研读文献。核心突破研判：SN 2019qem peaked at $M_I = -20.49_{-0.03}^{+0.01}\\,\\mathrm{mag}$ with $L_{\\rm peak} = (7.0 \\pm 0.4) \\times 10^{43}\\,\\mathrm{erg\\,s^{-1}}$ and radiated $E_{\\rm opt} = 6.9 \\times 10^{50}\\,\\mathrm{erg}$ over 575 d. Thin-shell modeling prefers an ejecta mass $M_{\\mathrm{ej}} = 7.0_{-0.9}^{+1.4}\\,M_{\\odot}$, kinetic energy $E_{\\mathrm{K}} = 5.2_{-1.4}^{+3.6} \\times 10^{51}\\,\\mathrm{erg}$ ($E_{\\mathrm{K}} \\epsilon = [3.5 \\pm 0.3] \\times 10^{51}\\,\\mathrm{erg}$), an eruptive CSM shell $M_{\\mathrm{er}} \\approx 9.3\\,M_{\\odot}$, and a steady wind mass-loss rate $\\dot{M}_{w} = 0.62_{-0.15}^{+0.24}\\,M_{\\odot}\\,\\mathrm{yr^{-1}}$ (for $v_w = 100\\,\\mathrm{km\\,s^{-1}}$), indicating a progenitor zero-age main-sequence mass $M_{\\rm ZAMS} \\gtrsim 40\\,M_{\\odot}$.",
@@ -4855,7 +5579,7 @@
       "tags": [
         "TDE"
       ],
-      "heat_score": 4.1,
+      "heat_score": 3.8,
       "paper_count": 1,
       "headline": "Standard thin disc-corona and sl...",
       "narrative": "AT2021EHB 是近期重点瞬变天体事件，监测日期 2026-11-02，共聚合 1 篇研读文献。核心突破研判：The model successfully accounts for the spectral and temporal evolution of TDE AT2021ehb, deriving a black hole mass $\\log(M_{\\rm BH}/M_\\odot)=6.317\\pm 0.055$. The accretion rate follows a power-law decay $\\dot{m}_{\\rm XRT}=0.44(t/120\\,{\\rm d})^{-1.60}$, while rapid hardening is driven by a $\\sim 300$-fold drop in the plasma parameter $\\beta=(p_{\\rm gas}+p_{\\rm rad})/p_{\\rm B}$. A lower limit for Comptonized photon index $\\Gamma \\sim 2$ is established due to disk reprocessing seed photons.",
@@ -4933,199 +5657,13 @@
       "gcn_status": null
     },
     {
-      "event_id": "GW241011",
-      "event_type": "GW",
-      "tags": [],
-      "heat_score": 3.8,
-      "paper_count": 1,
-      "headline": "Whether low-mass",
-      "narrative": "GW241011 是近期重点瞬变天体事件，监测日期 2026-11-01，共聚合 1 篇研读文献。核心突破研判：Hierarchical mergers (1G+2G) are classified via likelihood ratio metrics: in simulated realistic cluster (CMC) mergers, the $\\chi_{\\mathrm{p}}$ metric alone achieves a $24\\%$ ($182$ events) classification rate, whereas a joint $(\\chi_{\\mathrm{eff}}, \\chi_{\\mathrm{p}})$ metric increases identification to $35\\%$ ($265$ events) by eliminating face-on selection vulnerability. Binary mass ratio $q$ is identified as the dominant intrinsic driver of identification over primary mass $m_{1,\\mathrm{det}}$, with unequal-mass binaries ($q \\lesssim 0.4$) dramatically improving precession measurement precision.",
-      "first_seen": "2026-11-01",
-      "last_updated": "2026-11-01",
-      "papers": [
-        {
-          "arxiv_id": "2610.40774",
-          "revision": 1,
-          "title": "Surprisingly normal? GW241011 and GW241110 in the context of hierarchical merger classification",
-          "authors": [
-            "Cailin Plunkett",
-            "Michael Zevin",
-            "Salvatore Vitale"
-          ],
-          "date": "2026-11-01",
-          "priority": "worth_knowing",
-          "bluf_result": "Hierarchical mergers (1G+2G) are classified via likelihood ratio metrics: in simulated realistic cluster (CMC) mergers, the $\\chi_{\\mathrm{p}}$ metric alone achieves a $24\\%$ ($182$ events) classification rate, whereas a joint $(\\chi_{\\mathrm{eff}}, \\chi_{\\mathrm{p}})$ metric increases identification to $35\\%$ ($265$ events) by eliminating face-on selection vulnerability. Binary mass ratio $q$ is identified as the dominant intrinsic driver of identification over primary mass $m_{1,\\mathrm{det}}$, with unequal-mass binaries ($q \\lesssim 0.4$) dramatically improving precession measurement precision.",
-          "bluf_problem": "Whether low-mass, highly spinning precessing black hole merger candidates such as GW241011 and GW241110 represent an unexpected subpopulation of hierarchical mergers or naturally emerge when detector selection effects and spin measurability are taken into account.",
-          "figures": [],
-          "primary_figure": null
-        }
-      ],
-      "lead_figure": null,
-      "lead_figure_arxiv_id": null,
-      "canonical_t0": null,
-      "best_redshift": null,
-      "has_redshift_conflict": false,
-      "multi_messenger": [],
-      "gcn_aliases_label": null,
-      "canonical_t0_label": null,
-      "best_redshift_label": null,
-      "multi_messenger_badges": [],
-      "gcn_circular_count": 0,
-      "gcn_figure_path": null,
-      "gcn_aliases": [],
-      "gcn_slug": null,
-      "gcn_status": null
-    },
-    {
-      "event_id": "GW241110",
-      "event_type": "GW",
-      "tags": [],
-      "heat_score": 3.8,
-      "paper_count": 1,
-      "headline": "Whether low-mass",
-      "narrative": "GW241110 是近期重点瞬变天体事件，监测日期 2026-11-01，共聚合 1 篇研读文献。核心突破研判：Hierarchical mergers (1G+2G) are classified via likelihood ratio metrics: in simulated realistic cluster (CMC) mergers, the $\\chi_{\\mathrm{p}}$ metric alone achieves a $24\\%$ ($182$ events) classification rate, whereas a joint $(\\chi_{\\mathrm{eff}}, \\chi_{\\mathrm{p}})$ metric increases identification to $35\\%$ ($265$ events) by eliminating face-on selection vulnerability. Binary mass ratio $q$ is identified as the dominant intrinsic driver of identification over primary mass $m_{1,\\mathrm{det}}$, with unequal-mass binaries ($q \\lesssim 0.4$) dramatically improving precession measurement precision.",
-      "first_seen": "2026-11-01",
-      "last_updated": "2026-11-01",
-      "papers": [
-        {
-          "arxiv_id": "2610.40774",
-          "revision": 1,
-          "title": "Surprisingly normal? GW241011 and GW241110 in the context of hierarchical merger classification",
-          "authors": [
-            "Cailin Plunkett",
-            "Michael Zevin",
-            "Salvatore Vitale"
-          ],
-          "date": "2026-11-01",
-          "priority": "worth_knowing",
-          "bluf_result": "Hierarchical mergers (1G+2G) are classified via likelihood ratio metrics: in simulated realistic cluster (CMC) mergers, the $\\chi_{\\mathrm{p}}$ metric alone achieves a $24\\%$ ($182$ events) classification rate, whereas a joint $(\\chi_{\\mathrm{eff}}, \\chi_{\\mathrm{p}})$ metric increases identification to $35\\%$ ($265$ events) by eliminating face-on selection vulnerability. Binary mass ratio $q$ is identified as the dominant intrinsic driver of identification over primary mass $m_{1,\\mathrm{det}}$, with unequal-mass binaries ($q \\lesssim 0.4$) dramatically improving precession measurement precision.",
-          "bluf_problem": "Whether low-mass, highly spinning precessing black hole merger candidates such as GW241011 and GW241110 represent an unexpected subpopulation of hierarchical mergers or naturally emerge when detector selection effects and spin measurability are taken into account.",
-          "figures": [],
-          "primary_figure": null
-        }
-      ],
-      "lead_figure": null,
-      "lead_figure_arxiv_id": null,
-      "canonical_t0": null,
-      "best_redshift": null,
-      "has_redshift_conflict": false,
-      "multi_messenger": [],
-      "gcn_aliases_label": null,
-      "canonical_t0_label": null,
-      "best_redshift_label": null,
-      "multi_messenger_badges": [],
-      "gcn_circular_count": 0,
-      "gcn_figure_path": null,
-      "gcn_aliases": [],
-      "gcn_slug": null,
-      "gcn_status": null
-    },
-    {
-      "event_id": "SN 2025DYS",
-      "event_type": "SN",
-      "tags": [
-        "SN",
-        "MAG"
-      ],
-      "heat_score": 3.8,
-      "paper_count": 1,
-      "headline": "Unraveling whether the high peak...",
-      "narrative": "SN 2025DYS 是近期重点瞬变天体事件，监测日期 2026-11-01，共聚合 1 篇研读文献。核心突破研判：SN 2025dys reached a peak bolometric luminosity of $L = (8.57\\pm 0.41)\\times 10^{42}\\,\\mathrm{erg\\,s^{-1}}$ with early X-ray emission detected at $L_{\\rm X} \\approx 7.55\\times 10^{40}\\,\\mathrm{erg\\,s^{-1}}$. Modeling with CSI and radioactive decay requires an ejecta mass $M_{\\rm ej} \\approx 2.45\\text{--}2.69\\,\\mathrm{M_\\odot}$, kinetic energy $E_{\\rm K} \\approx 0.37\\text{--}0.46\\,\\mathrm{foe}$, circumstellar medium mass $M_{\\rm CSM} \\approx 0.54\\text{--}0.76\\,\\mathrm{M_\\odot}$, and an optical depth of $\\tau_{\\rm CSM} = 13$ from early electron-scattering wings.",
-      "first_seen": "2026-11-01",
-      "last_updated": "2026-11-01",
-      "papers": [
-        {
-          "arxiv_id": "2610.41729",
-          "revision": 1,
-          "title": "SN 2025dys: A luminous supernova explosion from a partially stripped helium star",
-          "authors": [
-            "Jiewei Zhao",
-            "Brajesh Kumar",
-            "Gitika Rameshan",
-            "Devendra K. Sahu",
-            "Bin-Bin Zhang",
-            "Kamil Nadaf",
-            "Guowang Du",
-            "Wenyu Li",
-            "Zehui Peng",
-            "Jinghua Zhang",
-            "Shiyan Zhong",
-            "Xiangkun Liu",
-            "Avinash Singh",
-            "Xinlei Chen",
-            "Yuan Fang",
-            "Yu Pan",
-            "Xingzhu Zou",
-            "Hrishav Das",
-            "Mridweeka Singh",
-            "Amrit Dutta",
-            "G. C. Anupama",
-            "Xueling Du",
-            "Yang Yang",
-            "Kaushik Chatterjee",
-            "Tao Wang",
-            "Xufeng Zhu",
-            "Yuan-Pei Yang",
-            "Xiaowei Liu"
-          ],
-          "date": "2026-11-01",
-          "priority": "worth_knowing",
-          "bluf_result": "SN 2025dys reached a peak bolometric luminosity of $L = (8.57\\pm 0.41)\\times 10^{42}\\,\\mathrm{erg\\,s^{-1}}$ with early X-ray emission detected at $L_{\\rm X} \\approx 7.55\\times 10^{40}\\,\\mathrm{erg\\,s^{-1}}$. Modeling with CSI and radioactive decay requires an ejecta mass $M_{\\rm ej} \\approx 2.45\\text{--}2.69\\,\\mathrm{M_\\odot}$, kinetic energy $E_{\\rm K} \\approx 0.37\\text{--}0.46\\,\\mathrm{foe}$, circumstellar medium mass $M_{\\rm CSM} \\approx 0.54\\text{--}0.76\\,\\mathrm{M_\\odot}$, and an optical depth of $\\tau_{\\rm CSM} = 13$ from early electron-scattering wings.",
-          "bluf_problem": "Unraveling whether the high peak luminosity and spectral evolution of the peculiar transient SN 2025dys are driven by radioactive decay, a central magnetar engine, or shock interaction with a confined, dense circumstellar medium around a stripped-envelope progenitor.",
-          "figures": [
-            {
-              "url": "/arxiv-figures/2610.41729/SN2025dys_phot_sed.png",
-              "label": "Fig. 3",
-              "caption": "Figure 3: Upper left panel: Optical pseudo-bolometric light curve of SN 2025dys compared with a reference sample. Upper right panel: colour evolution of SN 2025dys and comparison SNe. Note that we approximate the standard $g-r$ and $r-i$ colours using $g_{\\rm M}-r_{\\rm M}$ and $r_{\\rm M}-i_{\\rm M}$, respectively. For comparison targets with only $UBVRI$ photometry, the colours are converted from $B-V$ and $R-I$. Lower left panel: Early-phase UV and optical spectral energy distribution (SED) fitting of SN 2025dys, where the colour of the SED curves indicates the derived blackbody temperature. Lower right panel: Evolution of the blackbody temperature and photospheric radius of SN 2025dys. Solid points denote the values derived from the SED fitting as shown in the left panel, while open markers represent the results obtained using the superbol code with proper interpolation.",
-              "category": "observational",
-              "category_badge": "Observational Light Curve / SED",
-              "physical_core": "The figure presents SN 2025dys's optical pseudo-bolometric light curve and colour evolution alongside comparison supernovae, early-phase UV and optical SED fits with derived blackbody temperatures, and the evolution of its blackbody temperature and photospheric radius.",
-              "is_schematic": false
-            }
-          ],
-          "primary_figure": {
-            "url": "/arxiv-figures/2610.41729/SN2025dys_phot_sed.png",
-            "label": "Fig. 3",
-            "caption": "Figure 3: Upper left panel: Optical pseudo-bolometric light curve of SN 2025dys compared with a reference sample. Upper right panel: colour evolution of SN 2025dys and comparison SNe. Note that we approximate the standard $g-r$ and $r-i$ colours using $g_{\\rm M}-r_{\\rm M}$ and $r_{\\rm M}-i_{\\rm M}$, respectively. For comparison targets with only $UBVRI$ photometry, the colours are converted from $B-V$ and $R-I$. Lower left panel: Early-phase UV and optical spectral energy distribution (SED) fitting of SN 2025dys, where the colour of the SED curves indicates the derived blackbody temperature. Lower right panel: Evolution of the blackbody temperature and photospheric radius of SN 2025dys. Solid points denote the values derived from the SED fitting as shown in the left panel, while open markers represent the results obtained using the superbol code with proper interpolation.",
-            "category": "observational",
-            "category_badge": "Observational Light Curve / SED",
-            "physical_core": "The figure presents SN 2025dys's optical pseudo-bolometric light curve and colour evolution alongside comparison supernovae, early-phase UV and optical SED fits with derived blackbody temperatures, and the evolution of its blackbody temperature and photospheric radius.",
-            "is_schematic": false
-          }
-        }
-      ],
-      "lead_figure": {
-        "url": "/arxiv-figures/2610.41729/SN2025dys_phot_sed.png",
-        "label": "Fig. 3",
-        "caption": "Figure 3: Upper left panel: Optical pseudo-bolometric light curve of SN 2025dys compared with a reference sample. Upper right panel: colour evolution of SN 2025dys and comparison SNe. Note that we approximate the standard $g-r$ and $r-i$ colours using $g_{\\rm M}-r_{\\rm M}$ and $r_{\\rm M}-i_{\\rm M}$, respectively. For comparison targets with only $UBVRI$ photometry, the colours are converted from $B-V$ and $R-I$. Lower left panel: Early-phase UV and optical spectral energy distribution (SED) fitting of SN 2025dys, where the colour of the SED curves indicates the derived blackbody temperature. Lower right panel: Evolution of the blackbody temperature and photospheric radius of SN 2025dys. Solid points denote the values derived from the SED fitting as shown in the left panel, while open markers represent the results obtained using the superbol code with proper interpolation.",
-        "category": "observational",
-        "category_badge": "Observational Light Curve / SED",
-        "physical_core": "The figure presents SN 2025dys's optical pseudo-bolometric light curve and colour evolution alongside comparison supernovae, early-phase UV and optical SED fits with derived blackbody temperatures, and the evolution of its blackbody temperature and photospheric radius.",
-        "is_schematic": false
-      },
-      "lead_figure_arxiv_id": "2610.41729",
-      "canonical_t0": null,
-      "best_redshift": null,
-      "has_redshift_conflict": false,
-      "multi_messenger": [],
-      "gcn_aliases_label": null,
-      "canonical_t0_label": null,
-      "best_redshift_label": null,
-      "multi_messenger_badges": [],
-      "gcn_circular_count": 0,
-      "gcn_figure_path": null,
-      "gcn_aliases": [],
-      "gcn_slug": null,
-      "gcn_status": null
-    },
-    {
       "event_id": "GW200105",
       "event_type": "GW",
       "tags": [
         "GW",
         "TDE"
       ],
-      "heat_score": 3.7,
+      "heat_score": 3.4,
       "paper_count": 2,
       "headline": "Accurately determining whether a...",
       "narrative": "GW200105 是近期重点瞬变天体事件，活跃跨度 2026-09-14 至 2026-10-29，共聚合 2 篇研读文献。核心突破研判：The authors derive a general-relativistic tidal disruption radius $r_{\\rm TD}$ from a mass-shedding algebraic equation parameterized by $\\eta = \\rho_c/\\bar{\\rho}$, yielding an analytical remnant disk mass model $\\hat{M}^{\\rm rem}_{\\rm model} = [\\max(\\alpha \\xi_{\\rm TD} - \\beta \\hat{r}_{\\rm ISCO} \\frac{\\rho}{\\nu} + \\gamma, 0)]^\\delta$ calibrated against 70 numerical relativity simulations with best-fit coefficients $\\alpha=0.123\\pm 0.017$, $\\beta=0.162\\pm 0.008$, $\\gamma=0.635\\pm 0.064$, and $\\delta=1.830\\pm 0.254$ ($\\,\\sigma_{\\rm rms} = 0.043$). Application to events demonstrates that GW200105 and GW200115 inevitably plunged ($\\Delta r = r_{\\rm TD} - r_{\\rm ISCO} < 0$ by $-17$ to $-43\\,\\mathrm{km}$), whereas GW230529 is marginal with $\\Delta r \\sim 0$, producing remnant disk mass $\\hat{M}^{\\rm rem} \\sim 0.08\\,M_{\\rm NS}^{\\rm b}$ only in favorable low-mass, prograde-spin configurations.",
@@ -5215,7 +5753,7 @@
         "Transient Surveillance",
         "GCN Photometry"
       ],
-      "heat_score": 3.7,
+      "heat_score": 3.4,
       "paper_count": 2,
       "headline": "论文试图解释超长 GRB 为何能够在爆发后数十天仍维持中心引擎活动",
       "narrative": "GRB 220706A 是近期重点瞬变天体事件，活跃跨度 2026-09-21 至 2026-10-22，共聚合 2 篇研读文献（含 1 篇必读突破）。核心突破研判：GRB 220706A 的 X 射线耀发持续至触发后约 51 天，对应源静止系约 27 天，是目前观测到的 GRB 中最晚的中心引擎活动。该事件还伴随一个经消光修正后峰值绝对星等 $M_r \\leq -20.25$ 的高光度超新星，性质接近超长 GRB 111209A 所伴随的 SN 2011kl，并可能属于超亮超新星。",
@@ -5307,13 +5845,199 @@
       "gcn_status": "archived"
     },
     {
+      "event_id": "GW241011",
+      "event_type": "GW",
+      "tags": [],
+      "heat_score": 3.4,
+      "paper_count": 1,
+      "headline": "Whether low-mass",
+      "narrative": "GW241011 是近期重点瞬变天体事件，监测日期 2026-11-01，共聚合 1 篇研读文献。核心突破研判：Hierarchical mergers (1G+2G) are classified via likelihood ratio metrics: in simulated realistic cluster (CMC) mergers, the $\\chi_{\\mathrm{p}}$ metric alone achieves a $24\\%$ ($182$ events) classification rate, whereas a joint $(\\chi_{\\mathrm{eff}}, \\chi_{\\mathrm{p}})$ metric increases identification to $35\\%$ ($265$ events) by eliminating face-on selection vulnerability. Binary mass ratio $q$ is identified as the dominant intrinsic driver of identification over primary mass $m_{1,\\mathrm{det}}$, with unequal-mass binaries ($q \\lesssim 0.4$) dramatically improving precession measurement precision.",
+      "first_seen": "2026-11-01",
+      "last_updated": "2026-11-01",
+      "papers": [
+        {
+          "arxiv_id": "2610.40774",
+          "revision": 1,
+          "title": "Surprisingly normal? GW241011 and GW241110 in the context of hierarchical merger classification",
+          "authors": [
+            "Cailin Plunkett",
+            "Michael Zevin",
+            "Salvatore Vitale"
+          ],
+          "date": "2026-11-01",
+          "priority": "worth_knowing",
+          "bluf_result": "Hierarchical mergers (1G+2G) are classified via likelihood ratio metrics: in simulated realistic cluster (CMC) mergers, the $\\chi_{\\mathrm{p}}$ metric alone achieves a $24\\%$ ($182$ events) classification rate, whereas a joint $(\\chi_{\\mathrm{eff}}, \\chi_{\\mathrm{p}})$ metric increases identification to $35\\%$ ($265$ events) by eliminating face-on selection vulnerability. Binary mass ratio $q$ is identified as the dominant intrinsic driver of identification over primary mass $m_{1,\\mathrm{det}}$, with unequal-mass binaries ($q \\lesssim 0.4$) dramatically improving precession measurement precision.",
+          "bluf_problem": "Whether low-mass, highly spinning precessing black hole merger candidates such as GW241011 and GW241110 represent an unexpected subpopulation of hierarchical mergers or naturally emerge when detector selection effects and spin measurability are taken into account.",
+          "figures": [],
+          "primary_figure": null
+        }
+      ],
+      "lead_figure": null,
+      "lead_figure_arxiv_id": null,
+      "canonical_t0": null,
+      "best_redshift": null,
+      "has_redshift_conflict": false,
+      "multi_messenger": [],
+      "gcn_aliases_label": null,
+      "canonical_t0_label": null,
+      "best_redshift_label": null,
+      "multi_messenger_badges": [],
+      "gcn_circular_count": 0,
+      "gcn_figure_path": null,
+      "gcn_aliases": [],
+      "gcn_slug": null,
+      "gcn_status": null
+    },
+    {
+      "event_id": "GW241110",
+      "event_type": "GW",
+      "tags": [],
+      "heat_score": 3.4,
+      "paper_count": 1,
+      "headline": "Whether low-mass",
+      "narrative": "GW241110 是近期重点瞬变天体事件，监测日期 2026-11-01，共聚合 1 篇研读文献。核心突破研判：Hierarchical mergers (1G+2G) are classified via likelihood ratio metrics: in simulated realistic cluster (CMC) mergers, the $\\chi_{\\mathrm{p}}$ metric alone achieves a $24\\%$ ($182$ events) classification rate, whereas a joint $(\\chi_{\\mathrm{eff}}, \\chi_{\\mathrm{p}})$ metric increases identification to $35\\%$ ($265$ events) by eliminating face-on selection vulnerability. Binary mass ratio $q$ is identified as the dominant intrinsic driver of identification over primary mass $m_{1,\\mathrm{det}}$, with unequal-mass binaries ($q \\lesssim 0.4$) dramatically improving precession measurement precision.",
+      "first_seen": "2026-11-01",
+      "last_updated": "2026-11-01",
+      "papers": [
+        {
+          "arxiv_id": "2610.40774",
+          "revision": 1,
+          "title": "Surprisingly normal? GW241011 and GW241110 in the context of hierarchical merger classification",
+          "authors": [
+            "Cailin Plunkett",
+            "Michael Zevin",
+            "Salvatore Vitale"
+          ],
+          "date": "2026-11-01",
+          "priority": "worth_knowing",
+          "bluf_result": "Hierarchical mergers (1G+2G) are classified via likelihood ratio metrics: in simulated realistic cluster (CMC) mergers, the $\\chi_{\\mathrm{p}}$ metric alone achieves a $24\\%$ ($182$ events) classification rate, whereas a joint $(\\chi_{\\mathrm{eff}}, \\chi_{\\mathrm{p}})$ metric increases identification to $35\\%$ ($265$ events) by eliminating face-on selection vulnerability. Binary mass ratio $q$ is identified as the dominant intrinsic driver of identification over primary mass $m_{1,\\mathrm{det}}$, with unequal-mass binaries ($q \\lesssim 0.4$) dramatically improving precession measurement precision.",
+          "bluf_problem": "Whether low-mass, highly spinning precessing black hole merger candidates such as GW241011 and GW241110 represent an unexpected subpopulation of hierarchical mergers or naturally emerge when detector selection effects and spin measurability are taken into account.",
+          "figures": [],
+          "primary_figure": null
+        }
+      ],
+      "lead_figure": null,
+      "lead_figure_arxiv_id": null,
+      "canonical_t0": null,
+      "best_redshift": null,
+      "has_redshift_conflict": false,
+      "multi_messenger": [],
+      "gcn_aliases_label": null,
+      "canonical_t0_label": null,
+      "best_redshift_label": null,
+      "multi_messenger_badges": [],
+      "gcn_circular_count": 0,
+      "gcn_figure_path": null,
+      "gcn_aliases": [],
+      "gcn_slug": null,
+      "gcn_status": null
+    },
+    {
+      "event_id": "SN 2025DYS",
+      "event_type": "SN",
+      "tags": [
+        "SN",
+        "MAG"
+      ],
+      "heat_score": 3.4,
+      "paper_count": 1,
+      "headline": "Unraveling whether the high peak...",
+      "narrative": "SN 2025DYS 是近期重点瞬变天体事件，监测日期 2026-11-01，共聚合 1 篇研读文献。核心突破研判：SN 2025dys reached a peak bolometric luminosity of $L = (8.57\\pm 0.41)\\times 10^{42}\\,\\mathrm{erg\\,s^{-1}}$ with early X-ray emission detected at $L_{\\rm X} \\approx 7.55\\times 10^{40}\\,\\mathrm{erg\\,s^{-1}}$. Modeling with CSI and radioactive decay requires an ejecta mass $M_{\\rm ej} \\approx 2.45\\text{--}2.69\\,\\mathrm{M_\\odot}$, kinetic energy $E_{\\rm K} \\approx 0.37\\text{--}0.46\\,\\mathrm{foe}$, circumstellar medium mass $M_{\\rm CSM} \\approx 0.54\\text{--}0.76\\,\\mathrm{M_\\odot}$, and an optical depth of $\\tau_{\\rm CSM} = 13$ from early electron-scattering wings.",
+      "first_seen": "2026-11-01",
+      "last_updated": "2026-11-01",
+      "papers": [
+        {
+          "arxiv_id": "2610.41729",
+          "revision": 1,
+          "title": "SN 2025dys: A luminous supernova explosion from a partially stripped helium star",
+          "authors": [
+            "Jiewei Zhao",
+            "Brajesh Kumar",
+            "Gitika Rameshan",
+            "Devendra K. Sahu",
+            "Bin-Bin Zhang",
+            "Kamil Nadaf",
+            "Guowang Du",
+            "Wenyu Li",
+            "Zehui Peng",
+            "Jinghua Zhang",
+            "Shiyan Zhong",
+            "Xiangkun Liu",
+            "Avinash Singh",
+            "Xinlei Chen",
+            "Yuan Fang",
+            "Yu Pan",
+            "Xingzhu Zou",
+            "Hrishav Das",
+            "Mridweeka Singh",
+            "Amrit Dutta",
+            "G. C. Anupama",
+            "Xueling Du",
+            "Yang Yang",
+            "Kaushik Chatterjee",
+            "Tao Wang",
+            "Xufeng Zhu",
+            "Yuan-Pei Yang",
+            "Xiaowei Liu"
+          ],
+          "date": "2026-11-01",
+          "priority": "worth_knowing",
+          "bluf_result": "SN 2025dys reached a peak bolometric luminosity of $L = (8.57\\pm 0.41)\\times 10^{42}\\,\\mathrm{erg\\,s^{-1}}$ with early X-ray emission detected at $L_{\\rm X} \\approx 7.55\\times 10^{40}\\,\\mathrm{erg\\,s^{-1}}$. Modeling with CSI and radioactive decay requires an ejecta mass $M_{\\rm ej} \\approx 2.45\\text{--}2.69\\,\\mathrm{M_\\odot}$, kinetic energy $E_{\\rm K} \\approx 0.37\\text{--}0.46\\,\\mathrm{foe}$, circumstellar medium mass $M_{\\rm CSM} \\approx 0.54\\text{--}0.76\\,\\mathrm{M_\\odot}$, and an optical depth of $\\tau_{\\rm CSM} = 13$ from early electron-scattering wings.",
+          "bluf_problem": "Unraveling whether the high peak luminosity and spectral evolution of the peculiar transient SN 2025dys are driven by radioactive decay, a central magnetar engine, or shock interaction with a confined, dense circumstellar medium around a stripped-envelope progenitor.",
+          "figures": [
+            {
+              "url": "/arxiv-figures/2610.41729/SN2025dys_phot_sed.png",
+              "label": "Fig. 3",
+              "caption": "Figure 3: Upper left panel: Optical pseudo-bolometric light curve of SN 2025dys compared with a reference sample. Upper right panel: colour evolution of SN 2025dys and comparison SNe. Note that we approximate the standard $g-r$ and $r-i$ colours using $g_{\\rm M}-r_{\\rm M}$ and $r_{\\rm M}-i_{\\rm M}$, respectively. For comparison targets with only $UBVRI$ photometry, the colours are converted from $B-V$ and $R-I$. Lower left panel: Early-phase UV and optical spectral energy distribution (SED) fitting of SN 2025dys, where the colour of the SED curves indicates the derived blackbody temperature. Lower right panel: Evolution of the blackbody temperature and photospheric radius of SN 2025dys. Solid points denote the values derived from the SED fitting as shown in the left panel, while open markers represent the results obtained using the superbol code with proper interpolation.",
+              "category": "observational",
+              "category_badge": "Observational Light Curve / SED",
+              "physical_core": "The figure presents SN 2025dys's optical pseudo-bolometric light curve and colour evolution alongside comparison supernovae, early-phase UV and optical SED fits with derived blackbody temperatures, and the evolution of its blackbody temperature and photospheric radius.",
+              "is_schematic": false
+            }
+          ],
+          "primary_figure": {
+            "url": "/arxiv-figures/2610.41729/SN2025dys_phot_sed.png",
+            "label": "Fig. 3",
+            "caption": "Figure 3: Upper left panel: Optical pseudo-bolometric light curve of SN 2025dys compared with a reference sample. Upper right panel: colour evolution of SN 2025dys and comparison SNe. Note that we approximate the standard $g-r$ and $r-i$ colours using $g_{\\rm M}-r_{\\rm M}$ and $r_{\\rm M}-i_{\\rm M}$, respectively. For comparison targets with only $UBVRI$ photometry, the colours are converted from $B-V$ and $R-I$. Lower left panel: Early-phase UV and optical spectral energy distribution (SED) fitting of SN 2025dys, where the colour of the SED curves indicates the derived blackbody temperature. Lower right panel: Evolution of the blackbody temperature and photospheric radius of SN 2025dys. Solid points denote the values derived from the SED fitting as shown in the left panel, while open markers represent the results obtained using the superbol code with proper interpolation.",
+            "category": "observational",
+            "category_badge": "Observational Light Curve / SED",
+            "physical_core": "The figure presents SN 2025dys's optical pseudo-bolometric light curve and colour evolution alongside comparison supernovae, early-phase UV and optical SED fits with derived blackbody temperatures, and the evolution of its blackbody temperature and photospheric radius.",
+            "is_schematic": false
+          }
+        }
+      ],
+      "lead_figure": {
+        "url": "/arxiv-figures/2610.41729/SN2025dys_phot_sed.png",
+        "label": "Fig. 3",
+        "caption": "Figure 3: Upper left panel: Optical pseudo-bolometric light curve of SN 2025dys compared with a reference sample. Upper right panel: colour evolution of SN 2025dys and comparison SNe. Note that we approximate the standard $g-r$ and $r-i$ colours using $g_{\\rm M}-r_{\\rm M}$ and $r_{\\rm M}-i_{\\rm M}$, respectively. For comparison targets with only $UBVRI$ photometry, the colours are converted from $B-V$ and $R-I$. Lower left panel: Early-phase UV and optical spectral energy distribution (SED) fitting of SN 2025dys, where the colour of the SED curves indicates the derived blackbody temperature. Lower right panel: Evolution of the blackbody temperature and photospheric radius of SN 2025dys. Solid points denote the values derived from the SED fitting as shown in the left panel, while open markers represent the results obtained using the superbol code with proper interpolation.",
+        "category": "observational",
+        "category_badge": "Observational Light Curve / SED",
+        "physical_core": "The figure presents SN 2025dys's optical pseudo-bolometric light curve and colour evolution alongside comparison supernovae, early-phase UV and optical SED fits with derived blackbody temperatures, and the evolution of its blackbody temperature and photospheric radius.",
+        "is_schematic": false
+      },
+      "lead_figure_arxiv_id": "2610.41729",
+      "canonical_t0": null,
+      "best_redshift": null,
+      "has_redshift_conflict": false,
+      "multi_messenger": [],
+      "gcn_aliases_label": null,
+      "canonical_t0_label": null,
+      "best_redshift_label": null,
+      "multi_messenger_badges": [],
+      "gcn_circular_count": 0,
+      "gcn_figure_path": null,
+      "gcn_aliases": [],
+      "gcn_slug": null,
+      "gcn_status": null
+    },
+    {
       "event_id": "EP251129A",
       "event_type": "EP",
       "tags": [
         "GRB",
         "MAG"
       ],
-      "heat_score": 3.5,
+      "heat_score": 3.1,
       "paper_count": 1,
       "headline": "Investigating the physical origi...",
       "narrative": "EP251129A 是近期重点瞬变天体事件，监测日期 2026-10-26，共聚合 1 篇研读文献（含 1 篇必读突破）。核心突破研判：EP251129a at $z = 0.505$ exhibits an early internal X-ray plateau ($\\alpha_{\\mathrm{X},1}=0.93$) terminating at $t_{\\mathrm{X},1} = 1.27 \\times 10^4\\,\\mathrm{s}$ with a steep drop ($\\alpha_{\\mathrm{X},2} = 5.28$) and spectral softening ($\\Gamma_{\\mathrm{X}}$ softening from $\\simeq 2.1$ to $\\simeq 3.6$), followed by a second plateau ($\\alpha_{\\mathrm{X},3} = 0.42$) up to $\\sim 42\\,\\mathrm{days}$ in rest frame. Radio afterglow shows a steep rise ($F_\\nu \\propto t^{1.9-2.5}$, with $\\alpha_{5.5,1}=-2.46$, $\\alpha_{7.4,1}=-1.89$) peaking at rest-frame $\\sim 24-27\\,\\mathrm{days}$ with $\\nu L_\\nu \\simeq 3 \\times 10^{40}\\,\\mathrm{erg\\,s^{-1}}$. Modeling yields fallback accretion energy injection $E_{\\rm inj} \\simeq 6 \\times 10^{51}\\,\\mathrm{erg}$ and accreted mass $M_{\\rm acc} \\simeq 0.2\\,M_\\odot$ onto the newly formed black hole.",
@@ -5385,7 +6109,7 @@
         "GCN Circulars",
         "GRB"
       ],
-      "heat_score": 3.2,
+      "heat_score": 2.9,
       "paper_count": 0,
       "headline": "GRB 261026A 空间与地面望远镜全波段应急协同追踪",
       "narrative": "已汇聚 NASA GCN Circulars 快速通报 17 份。红移 待确定，触发时刻 T0: 2026-10-26 06:09:37 UTC (SVOM/ECLAIRs)。多波段光变曲线与早期测光点已完成零同质化聚合。",
@@ -5413,79 +6137,13 @@
       "gcn_status": "archived"
     },
     {
-      "event_id": "GRB 260924A",
-      "event_type": "GRB",
-      "tags": [
-        "GRB",
-        "Transient Surveillance",
-        "GCN Photometry"
-      ],
-      "heat_score": 3.1,
-      "paper_count": 1,
-      "headline": "解释极端高能暴 GRB 260924A 的能量学分配机制、在 $...",
-      "narrative": "GRB 260924A 是近期重点瞬变天体事件，监测日期 2026-10-25，共聚合 1 篇研读文献（含 1 篇必读突破）。核心突破研判：测定暴源红移为 $z=3.51\\pm 0.10$，$1\\text{--}10{,}000\\,\\mathrm{keV}$ 能段各向同性释放能量高达 $E_{\\gamma,\\mathrm{iso}} \\simeq 9.79\\times 10^{54}\\,\\mathrm{erg}$，初始各向同性动能 $E_{\\mathrm{K,iso}} \\simeq 7.0\\times 10^{55}\\,\\mathrm{erg}$，瞬时辐射效率 $\\eta_\\gamma \\simeq 0.12$。Fermi/LAT 探测到最高达 $43.31\\,\\mathrm{GeV}$ 的高能光子（在 $82.24\\,\\mathrm{s}$ 到达）。晚期余辉衰减指数为 $\\alpha_{\\rm opt}=1.46\\pm 0.01$ 与 $\\alpha_X=1.57\\pm 0.04$，在慢冷却闭合关系 $\\alpha^{\\rm syn}=\\frac{3(p-1)}{4}+\\frac{k}{2(4-k)}$ 下排除了常规均匀介质（$k=0$）或纯自由星风（$k=2$），测定星周介质为密度梯度介质 $n(R)\\propto R^{-k}$（$k\\simeq 1.0\\text{--}1.3$，基准 $k=1.2$），电子谱指数 $p\\simeq 2.75$。早期 $70.04\\text{--}164.9\\,\\mathrm{s}$ 处的 LAT 通量超出后续外推达 $2.25\\pm 0.59$ 倍，由厚壳层反向激波 SSC 过程主导解释；激波微观磁能分配比为 $R_B\\equiv (\\varepsilon_{B_r}/\\varepsilon_{B_f})^{1/2}\\simeq 2.6$。",
-      "first_seen": "2026-10-25",
-      "last_updated": "2026-10-25",
-      "papers": [
-        {
-          "arxiv_id": "2610.32861",
-          "revision": 1,
-          "title": "GRB 260924A: Extreme Energetics, Bright GeV Emission, and Exceptional X-ray and Optical Luminosity",
-          "authors": [
-            "Nissim Fraija",
-            "Peter Veres",
-            "Rosa L. Becerra",
-            "Antonio Galván-Gámez",
-            "Thomas Freeman",
-            "Simone Dichiara",
-            "Maria G Dainotti"
-          ],
-          "date": "2026-10-25",
-          "priority": "must_read",
-          "bluf_result": "测定暴源红移为 $z=3.51\\pm 0.10$，$1\\text{--}10{,}000\\,\\mathrm{keV}$ 能段各向同性释放能量高达 $E_{\\gamma,\\mathrm{iso}} \\simeq 9.79\\times 10^{54}\\,\\mathrm{erg}$，初始各向同性动能 $E_{\\mathrm{K,iso}} \\simeq 7.0\\times 10^{55}\\,\\mathrm{erg}$，瞬时辐射效率 $\\eta_\\gamma \\simeq 0.12$。Fermi/LAT 探测到最高达 $43.31\\,\\mathrm{GeV}$ 的高能光子（在 $82.24\\,\\mathrm{s}$ 到达）。晚期余辉衰减指数为 $\\alpha_{\\rm opt}=1.46\\pm 0.01$ 与 $\\alpha_X=1.57\\pm 0.04$，在慢冷却闭合关系 $\\alpha^{\\rm syn}=\\frac{3(p-1)}{4}+\\frac{k}{2(4-k)}$ 下排除了常规均匀介质（$k=0$）或纯自由星风（$k=2$），测定星周介质为密度梯度介质 $n(R)\\propto R^{-k}$（$k\\simeq 1.0\\text{--}1.3$，基准 $k=1.2$），电子谱指数 $p\\simeq 2.75$。早期 $70.04\\text{--}164.9\\,\\mathrm{s}$ 处的 LAT 通量超出后续外推达 $2.25\\pm 0.59$ 倍，由厚壳层反向激波 SSC 过程主导解释；激波微观磁能分配比为 $R_B\\equiv (\\varepsilon_{B_r}/\\varepsilon_{B_f})^{1/2}\\simeq 2.6$。",
-          "bluf_problem": "解释极端高能暴 GRB 260924A 的能量学分配机制、在 $t\\sim 82\\,\\mathrm{s}$ 到达的 $43.31\\,\\mathrm{GeV}$ 等光子为何超出标准前向激波同步辐射理论极限 $E^{\\rm syn}_{\\rm max}$，以及早期 LAT 辐射过剩、X 射线再增亮与成层星周介质相互作用的微观物理图景。",
-          "figures": [],
-          "primary_figure": null
-        }
-      ],
-      "lead_figure": null,
-      "lead_figure_arxiv_id": null,
-      "canonical_t0": {
-        "instrument": "Fermi/GBM",
-        "utc_iso": "2026-09-24T01:13:23.000Z",
-        "circular_id": 45721
-      },
-      "best_redshift": {
-        "z": 3.51,
-        "z_err": null,
-        "type": "spectroscopic",
-        "instrument": "Optical Spectroscopy",
-        "circular_id": 45775,
-        "note": ""
-      },
-      "has_redshift_conflict": false,
-      "multi_messenger": [],
-      "gcn_aliases_label": "GRB 221009A / AT 4000aa",
-      "canonical_t0_label": "2026-09-24 01:13:23 UTC (Fermi/GBM)",
-      "best_redshift_label": "z = 3.51 (spectroscopic · Optical Spectroscopy)",
-      "multi_messenger_badges": [],
-      "gcn_circular_count": 28,
-      "gcn_figure_path": "/gcn-figures/grb-260924a.png",
-      "gcn_aliases": [
-        "GRB 221009A",
-        "AT 4000aa"
-      ],
-      "gcn_slug": "grb-260924a",
-      "gcn_status": "archived"
-    },
-    {
       "event_id": "AT2019DSG",
       "event_type": "AT",
       "tags": [
         "TDE",
         "MULTI"
       ],
-      "heat_score": 3,
+      "heat_score": 2.8,
       "paper_count": 2,
       "headline": "研究TDE中由恒星轨道与黑洞自旋失配产生的翘曲吸积盘",
       "narrative": "AT2019DSG 是近期重点瞬变天体事件，活跃跨度 2026-09-24 至 2026-10-20，共聚合 2 篇研读文献（含 1 篇必读突破）。核心突破研判：论文建立了一个包含倾斜与扭转剖面、自照射、二维温度、内盘遮挡和耀发再处理的翘曲TDE吸积盘模型。主要预测包括：外盘再处理可使温度径向标度由r^{-3/4}趋向r^{-1/2}并导致光学/UV变红或出现谱凸起；翘曲外盘可遮挡内盘并造成延迟X射线增强；约10倍的X射线耀发可产生约2倍的光学/UV响应，延迟通常为小时量级；翘曲半径增长可加速平台演化。AT2019dsg、AT2022dsb和AT2018fyk只被作为候选观测迹象讨论，未进行单事件拟合。",
@@ -5577,13 +6235,79 @@
       "gcn_status": null
     },
     {
+      "event_id": "GRB 260924A",
+      "event_type": "GRB",
+      "tags": [
+        "GRB",
+        "Transient Surveillance",
+        "GCN Photometry"
+      ],
+      "heat_score": 2.8,
+      "paper_count": 1,
+      "headline": "解释极端高能暴 GRB 260924A 的能量学分配机制、在 $...",
+      "narrative": "GRB 260924A 是近期重点瞬变天体事件，监测日期 2026-10-25，共聚合 1 篇研读文献（含 1 篇必读突破）。核心突破研判：测定暴源红移为 $z=3.51\\pm 0.10$，$1\\text{--}10{,}000\\,\\mathrm{keV}$ 能段各向同性释放能量高达 $E_{\\gamma,\\mathrm{iso}} \\simeq 9.79\\times 10^{54}\\,\\mathrm{erg}$，初始各向同性动能 $E_{\\mathrm{K,iso}} \\simeq 7.0\\times 10^{55}\\,\\mathrm{erg}$，瞬时辐射效率 $\\eta_\\gamma \\simeq 0.12$。Fermi/LAT 探测到最高达 $43.31\\,\\mathrm{GeV}$ 的高能光子（在 $82.24\\,\\mathrm{s}$ 到达）。晚期余辉衰减指数为 $\\alpha_{\\rm opt}=1.46\\pm 0.01$ 与 $\\alpha_X=1.57\\pm 0.04$，在慢冷却闭合关系 $\\alpha^{\\rm syn}=\\frac{3(p-1)}{4}+\\frac{k}{2(4-k)}$ 下排除了常规均匀介质（$k=0$）或纯自由星风（$k=2$），测定星周介质为密度梯度介质 $n(R)\\propto R^{-k}$（$k\\simeq 1.0\\text{--}1.3$，基准 $k=1.2$），电子谱指数 $p\\simeq 2.75$。早期 $70.04\\text{--}164.9\\,\\mathrm{s}$ 处的 LAT 通量超出后续外推达 $2.25\\pm 0.59$ 倍，由厚壳层反向激波 SSC 过程主导解释；激波微观磁能分配比为 $R_B\\equiv (\\varepsilon_{B_r}/\\varepsilon_{B_f})^{1/2}\\simeq 2.6$。",
+      "first_seen": "2026-10-25",
+      "last_updated": "2026-10-25",
+      "papers": [
+        {
+          "arxiv_id": "2610.32861",
+          "revision": 1,
+          "title": "GRB 260924A: Extreme Energetics, Bright GeV Emission, and Exceptional X-ray and Optical Luminosity",
+          "authors": [
+            "Nissim Fraija",
+            "Peter Veres",
+            "Rosa L. Becerra",
+            "Antonio Galván-Gámez",
+            "Thomas Freeman",
+            "Simone Dichiara",
+            "Maria G Dainotti"
+          ],
+          "date": "2026-10-25",
+          "priority": "must_read",
+          "bluf_result": "测定暴源红移为 $z=3.51\\pm 0.10$，$1\\text{--}10{,}000\\,\\mathrm{keV}$ 能段各向同性释放能量高达 $E_{\\gamma,\\mathrm{iso}} \\simeq 9.79\\times 10^{54}\\,\\mathrm{erg}$，初始各向同性动能 $E_{\\mathrm{K,iso}} \\simeq 7.0\\times 10^{55}\\,\\mathrm{erg}$，瞬时辐射效率 $\\eta_\\gamma \\simeq 0.12$。Fermi/LAT 探测到最高达 $43.31\\,\\mathrm{GeV}$ 的高能光子（在 $82.24\\,\\mathrm{s}$ 到达）。晚期余辉衰减指数为 $\\alpha_{\\rm opt}=1.46\\pm 0.01$ 与 $\\alpha_X=1.57\\pm 0.04$，在慢冷却闭合关系 $\\alpha^{\\rm syn}=\\frac{3(p-1)}{4}+\\frac{k}{2(4-k)}$ 下排除了常规均匀介质（$k=0$）或纯自由星风（$k=2$），测定星周介质为密度梯度介质 $n(R)\\propto R^{-k}$（$k\\simeq 1.0\\text{--}1.3$，基准 $k=1.2$），电子谱指数 $p\\simeq 2.75$。早期 $70.04\\text{--}164.9\\,\\mathrm{s}$ 处的 LAT 通量超出后续外推达 $2.25\\pm 0.59$ 倍，由厚壳层反向激波 SSC 过程主导解释；激波微观磁能分配比为 $R_B\\equiv (\\varepsilon_{B_r}/\\varepsilon_{B_f})^{1/2}\\simeq 2.6$。",
+          "bluf_problem": "解释极端高能暴 GRB 260924A 的能量学分配机制、在 $t\\sim 82\\,\\mathrm{s}$ 到达的 $43.31\\,\\mathrm{GeV}$ 等光子为何超出标准前向激波同步辐射理论极限 $E^{\\rm syn}_{\\rm max}$，以及早期 LAT 辐射过剩、X 射线再增亮与成层星周介质相互作用的微观物理图景。",
+          "figures": [],
+          "primary_figure": null
+        }
+      ],
+      "lead_figure": null,
+      "lead_figure_arxiv_id": null,
+      "canonical_t0": {
+        "instrument": "Fermi/GBM",
+        "utc_iso": "2026-09-24T01:13:23.000Z",
+        "circular_id": 45721
+      },
+      "best_redshift": {
+        "z": 3.51,
+        "z_err": null,
+        "type": "spectroscopic",
+        "instrument": "Optical Spectroscopy",
+        "circular_id": 45775,
+        "note": ""
+      },
+      "has_redshift_conflict": false,
+      "multi_messenger": [],
+      "gcn_aliases_label": "GRB 221009A / AT 4000aa",
+      "canonical_t0_label": "2026-09-24 01:13:23 UTC (Fermi/GBM)",
+      "best_redshift_label": "z = 3.51 (spectroscopic · Optical Spectroscopy)",
+      "multi_messenger_badges": [],
+      "gcn_circular_count": 28,
+      "gcn_figure_path": "/gcn-figures/grb-260924a.png",
+      "gcn_aliases": [
+        "GRB 221009A",
+        "AT 4000aa"
+      ],
+      "gcn_slug": "grb-260924a",
+      "gcn_status": "archived"
+    },
+    {
       "event_id": "GRB 910711",
       "event_type": "GRB",
       "tags": [
         "GRB",
         "MAG"
       ],
-      "heat_score": 2.8,
+      "heat_score": 2.5,
       "paper_count": 1,
       "headline": "Whether candidate kHz quasi-peri...",
       "narrative": "GRB 910711 是近期重点瞬变天体事件，监测日期 2026-10-29，共聚合 1 篇研读文献。核心突破研判：Both GRB 910711 and GRB 200415A display an initial $\\approx 10\\ \\mathrm{ms}$ spike with sub-millisecond variability (narrowest features have $\\mathrm{FWHM} \\approx 90\\ \\mu\\mathrm{s}$ and $\\approx 65\\ \\mu\\mathrm{s}$). GRB 910711 exhibits an extremely hard spectrum best fitted by a blackbody ($kT = 216.27^{+43.14}_{-37.21}\\ \\mathrm{keV}$, $\\mathrm{BIC}=39.37$) or a cutoff power law with low-energy photon index $\\alpha = 0.87^{+0.68}_{-0.69}$ and peak energy $E_{\\rm p} = 957.19^{+508.35}_{-209.02}\\ \\mathrm{keV}$. Power spectrum analysis reveals that timing excesses organize into integer harmonics $n \\times f_0$ of a fundamental frequency $f_0 \\approx 360\\ \\mathrm{Hz}$ (up to $n=12$), with a shared dominant peak at $6 \\times f_0 \\approx 2160\\ \\mathrm{Hz}$ (Whittle likelihood improvement test statistics $\\mathrm{TS} = 13.4$ and $\\mathrm{TS} = 33.9$). Bispectrum tests reject pure pulse-envelope origins with $p = 1.3 \\times 10^{-4}$ (GRB 910711) and $p = 4.5 \\times 10^{-4}$ (GRB 200415A), and place GRB 910711 consistently as a magnetar giant flare at luminosity distance $D_{\\rm L} \\lesssim 55\\ \\mathrm{Mpc}$.",
@@ -5671,7 +6395,7 @@
         "MAG",
         "Transient Surveillance"
       ],
-      "heat_score": 2.8,
+      "heat_score": 2.5,
       "paper_count": 1,
       "headline": "Whether candidate kHz quasi-peri...",
       "narrative": "GRB 200415A 是近期重点瞬变天体事件，监测日期 2026-10-29，共聚合 1 篇研读文献。核心突破研判：Both GRB 910711 and GRB 200415A display an initial $\\approx 10\\ \\mathrm{ms}$ spike with sub-millisecond variability (narrowest features have $\\mathrm{FWHM} \\approx 90\\ \\mu\\mathrm{s}$ and $\\approx 65\\ \\mu\\mathrm{s}$). GRB 910711 exhibits an extremely hard spectrum best fitted by a blackbody ($kT = 216.27^{+43.14}_{-37.21}\\ \\mathrm{keV}$, $\\mathrm{BIC}=39.37$) or a cutoff power law with low-energy photon index $\\alpha = 0.87^{+0.68}_{-0.69}$ and peak energy $E_{\\rm p} = 957.19^{+508.35}_{-209.02}\\ \\mathrm{keV}$. Power spectrum analysis reveals that timing excesses organize into integer harmonics $n \\times f_0$ of a fundamental frequency $f_0 \\approx 360\\ \\mathrm{Hz}$ (up to $n=12$), with a shared dominant peak at $6 \\times f_0 \\approx 2160\\ \\mathrm{Hz}$ (Whittle likelihood improvement test statistics $\\mathrm{TS} = 13.4$ and $\\mathrm{TS} = 33.9$). Bispectrum tests reject pure pulse-envelope origins with $p = 1.3 \\times 10^{-4}$ (GRB 910711) and $p = 4.5 \\times 10^{-4}$ (GRB 200415A), and place GRB 910711 consistently as a magnetar giant flare at luminosity distance $D_{\\rm L} \\lesssim 55\\ \\mathrm{Mpc}$.",
@@ -5768,7 +6492,7 @@
         "GW",
         "TDE"
       ],
-      "heat_score": 2.8,
+      "heat_score": 2.5,
       "paper_count": 1,
       "headline": "Accurately determining whether a...",
       "narrative": "GW200115 是近期重点瞬变天体事件，监测日期 2026-10-29，共聚合 1 篇研读文献。核心突破研判：The authors derive a general-relativistic tidal disruption radius $r_{\\rm TD}$ from a mass-shedding algebraic equation parameterized by $\\eta = \\rho_c/\\bar{\\rho}$, yielding an analytical remnant disk mass model $\\hat{M}^{\\rm rem}_{\\rm model} = [\\max(\\alpha \\xi_{\\rm TD} - \\beta \\hat{r}_{\\rm ISCO} \\frac{\\rho}{\\nu} + \\gamma, 0)]^\\delta$ calibrated against 70 numerical relativity simulations with best-fit coefficients $\\alpha=0.123\\pm 0.017$, $\\beta=0.162\\pm 0.008$, $\\gamma=0.635\\pm 0.064$, and $\\delta=1.830\\pm 0.254$ ($\\,\\sigma_{\\rm rms} = 0.043$). Application to events demonstrates that GW200105 and GW200115 inevitably plunged ($\\Delta r = r_{\\rm TD} - r_{\\rm ISCO} < 0$ by $-17$ to $-43\\,\\mathrm{km}$), whereas GW230529 is marginal with $\\Delta r \\sim 0$, producing remnant disk mass $\\hat{M}^{\\rm rem} \\sim 0.08\\,M_{\\rm NS}^{\\rm b}$ only in favorable low-mass, prograde-spin configurations.",
@@ -5840,7 +6564,7 @@
         "GW",
         "TDE"
       ],
-      "heat_score": 2.8,
+      "heat_score": 2.5,
       "paper_count": 1,
       "headline": "Accurately determining whether a...",
       "narrative": "GW230529 是近期重点瞬变天体事件，监测日期 2026-10-29，共聚合 1 篇研读文献。核心突破研判：The authors derive a general-relativistic tidal disruption radius $r_{\\rm TD}$ from a mass-shedding algebraic equation parameterized by $\\eta = \\rho_c/\\bar{\\rho}$, yielding an analytical remnant disk mass model $\\hat{M}^{\\rm rem}_{\\rm model} = [\\max(\\alpha \\xi_{\\rm TD} - \\beta \\hat{r}_{\\rm ISCO} \\frac{\\rho}{\\nu} + \\gamma, 0)]^\\delta$ calibrated against 70 numerical relativity simulations with best-fit coefficients $\\alpha=0.123\\pm 0.017$, $\\beta=0.162\\pm 0.008$, $\\gamma=0.635\\pm 0.064$, and $\\delta=1.830\\pm 0.254$ ($\\,\\sigma_{\\rm rms} = 0.043$). Application to events demonstrates that GW200105 and GW200115 inevitably plunged ($\\Delta r = r_{\\rm TD} - r_{\\rm ISCO} < 0$ by $-17$ to $-43\\,\\mathrm{km}$), whereas GW230529 is marginal with $\\Delta r \\sim 0$, producing remnant disk mass $\\hat{M}^{\\rm rem} \\sim 0.08\\,M_{\\rm NS}^{\\rm b}$ only in favorable low-mass, prograde-spin configurations.",
@@ -5906,88 +6630,12 @@
       "gcn_status": null
     },
     {
-      "event_id": "SN 2026AHVU",
-      "event_type": "SN",
-      "tags": [
-        "SN"
-      ],
-      "heat_score": 2.5,
-      "paper_count": 1,
-      "headline": "SN 2026AHVU 超新星爆发物理与早期周星相互作用",
-      "narrative": "SN 2026AHVU 是近期重点瞬变天体事件，监测日期 2026-11-08，共聚合 1 篇研读文献。核心突破研判：主要探讨《SN 2026ahvu in NGC 1433 May Be a Prompt Type Ia Supernova with a Delay Time Under 100 Myr》",
-      "first_seen": "2026-11-08",
-      "last_updated": "2026-11-08",
-      "papers": [
-        {
-          "arxiv_id": "2611.09875",
-          "revision": 1,
-          "title": "SN 2026ahvu in NGC 1433 May Be a Prompt Type Ia Supernova with a Delay Time Under 100 Myr",
-          "authors": [
-            "Sumit K. Sarbadhicary",
-            "Kiana Henny",
-            "Adam Leroy",
-            "Karin Sandstrom",
-            "Kirsten L. Larson",
-            "David A. Thilker",
-            "Gagandeep S. Anand",
-            "Ashley T. Barnes",
-            "Laura A. Lopez",
-            "Daniel Maschmann",
-            "Marco Troncoso",
-            "Hwihyun Kim",
-            "Janice C. Lee",
-            "Frank Bigiel",
-            "Médéric Boquien",
-            "Rupali Chandar",
-            "Ryan Chown",
-            "Daniel A. Dale",
-            "Sinan Deger",
-            "Oleg V. Egorov",
-            "Simon C. O. Glover",
-            "Oleg Y. Gnedin",
-            "Jay González Lobos",
-            "Hao He",
-            "Rebecca J. Houghton",
-            "Debosmita Pathak",
-            "M. Jimena Rodriguez",
-            "Eva Schinnerer",
-            "Michael Tucker",
-            "Tony D. Weinbeck",
-            "Thomas G. Williams",
-            "Bradley C. Whitmore",
-            "Leonardo Ubeda"
-          ],
-          "date": "2026-11-08",
-          "priority": "skip",
-          "bluf_result": "未能从已检查材料中核实论文结果。",
-          "bluf_problem": "未能从已检查材料中核实论文问题陈述。",
-          "figures": [],
-          "primary_figure": null
-        }
-      ],
-      "lead_figure": null,
-      "lead_figure_arxiv_id": null,
-      "canonical_t0": null,
-      "best_redshift": null,
-      "has_redshift_conflict": false,
-      "multi_messenger": [],
-      "gcn_aliases_label": null,
-      "canonical_t0_label": null,
-      "best_redshift_label": null,
-      "multi_messenger_badges": [],
-      "gcn_circular_count": 0,
-      "gcn_figure_path": null,
-      "gcn_aliases": [],
-      "gcn_slug": null,
-      "gcn_status": null
-    },
-    {
       "event_id": "FRB 20210601A",
       "event_type": "FRB",
       "tags": [
         "FRB"
       ],
-      "heat_score": 2.3,
+      "heat_score": 2.1,
       "paper_count": 1,
       "headline": "快速射电暴中单次暴发源（one-offs）与重复暴发源的本质物理...",
       "narrative": "FRB 20210601A 是近期重点瞬变天体事件，监测日期 2026-10-22，共聚合 1 篇研读文献（含 1 篇必读突破）。核心突破研判：FRB 20210601A 在单次中天过境的 $\\Delta T = 106.5\\;\\mathrm{s}$ 内集中产生 9 次暴发，峰值暴发率 $\\langle\\lambda\\rangle = (N-1)/\\Delta T = 0.075\\;\\mathrm{bursts\\;s^{-1}}$，等效至主瓣增益下爆发数 $\\gtrsim 21$ 次；最亮暴各向同性峰值光度达 $L_{\\rm iso} \\sim 2.3 \\times 10^{43}\\;\\mathrm{erg\\;s^{-1}}$，9 次暴发总能量 $E_{\\rm tot} \\sim 2.2 \\times 10^{41}\\;\\mathrm{erg}$（相对于 $B=10^{15}\\;\\mathrm{G}$ 磁星储备满足 $E_{\\rm tot}/E_{\\rm mag} \\sim 10^{-6}$）；宿主环境参数测得 $\\mathrm{DM_{excess}} \\sim 360\\;\\mathrm{pc\\;cm^{-3}}$、$\\tau(600\\;\\mathrm{MHz}) \\lesssim 0.37\\;\\mathrm{ms}$，去红移旋转量 $|\\mathrm{RM_{excess}}| \\sim 150-340\\;\\mathrm{rad\\;m^{-2}}$，表明其介质与常规重复暴相当。",
@@ -6097,7 +6745,7 @@
       "tags": [
         "SN"
       ],
-      "heat_score": 2.3,
+      "heat_score": 2.1,
       "paper_count": 1,
       "headline": "Theoretical ECSN models from sup...",
       "narrative": "SN 2008S 是近期重点瞬变天体事件，监测日期 2026-10-27，共聚合 1 篇研读文献。核心突破研判：Standard ECSN models with dusty winds cannot simultaneously reproduce the light curves and colors of ILRTs: the intrinsic drop in input luminosity after the plateau causes $r_{\\rm sub} \\propto L_{\\rm input}^{1/2}$ to shrink, triggering a runaway increase in optical depth $\\tau_V$ and causing the optical luminosity to plummet by orders of magnitude; attempting to flatten the decline using dense CSM shock interaction ($L_{s,\\rm rad} \\propto t^{-0.3}$) requires $\\dot{M}_{\\rm dense} \\simeq 9.7 \\times 10^{-3}\\,M_\\odot\\,\\mathrm{yr}^{-1}$ and produces excessively red post-plateau colors ($B - V > 4$) that contradict observed ILRT colors ($B - V \\lesssim 1.2\\text{--}1.6$).",
@@ -6147,7 +6795,7 @@
         "GCN Circulars",
         "EP"
       ],
-      "heat_score": 2.3,
+      "heat_score": 2.1,
       "paper_count": 0,
       "headline": "EP 261025a 空间与地面望远镜全波段应急协同追踪",
       "narrative": "已汇聚 NASA GCN Circulars 快速通报 2 份。红移 待确定，触发时刻 T0: 待校准。多波段光变曲线与早期测光点已完成零同质化聚合。",
@@ -6176,7 +6824,7 @@
       "tags": [
         "FRB"
       ],
-      "heat_score": 2.1,
+      "heat_score": 1.9,
       "paper_count": 1,
       "headline": "Investigating whether the promin...",
       "narrative": "FRB 20210415C 是近期重点瞬变天体事件，监测日期 2026-10-26，共聚合 1 篇研读文献。核心突破研判：Across 8 sub-bands spanning $400.2\\text{--}765.6~\\mathrm{MHz}$, the scattering index is measured to be $\\alpha = -3.95 \\pm 0.07$ (free Gaussian width) and $\\alpha = -4.14 \\pm 0.08$ (fixed Gaussian width), with a 34-parameter joint MCMC yielding $\\alpha = -3.95 \\pm 0.06$ and $\\tau_{\\rm ref} = 7.97 \\pm 0.09~\\mathrm{ms}$ at $\\nu_{\\rm ref} = 583~\\mathrm{MHz}$ (corresponding to $\\tau_{\\rm s} \\simeq 7.0\\text{--}7.1~\\mathrm{ms}$ at $600~\\mathrm{MHz}$). The intrinsic pulse width exhibits frequency narrowing with $\\sigma_{\\rm int} \\propto \\nu^{\\beta}$ ($\\beta = -0.92 \\pm 0.19$ for $\\nu > 440~\\mathrm{MHz}$), with low-frequency excess width ($\\,4.8\\sigma\\,$ at $\\sim 422~\\mathrm{MHz}$) favoring a thick-screen scattering medium.",
@@ -6249,7 +6897,7 @@
       "tags": [
         "FRB"
       ],
-      "heat_score": 2.1,
+      "heat_score": 1.9,
       "paper_count": 1,
       "headline": "Investigating whether the promin...",
       "narrative": "FRB 20210219C 是近期重点瞬变天体事件，监测日期 2026-10-26，共聚合 1 篇研读文献。核心突破研判：Across 8 sub-bands spanning $400.2\\text{--}765.6~\\mathrm{MHz}$, the scattering index is measured to be $\\alpha = -3.95 \\pm 0.07$ (free Gaussian width) and $\\alpha = -4.14 \\pm 0.08$ (fixed Gaussian width), with a 34-parameter joint MCMC yielding $\\alpha = -3.95 \\pm 0.06$ and $\\tau_{\\rm ref} = 7.97 \\pm 0.09~\\mathrm{ms}$ at $\\nu_{\\rm ref} = 583~\\mathrm{MHz}$ (corresponding to $\\tau_{\\rm s} \\simeq 7.0\\text{--}7.1~\\mathrm{ms}$ at $600~\\mathrm{MHz}$). The intrinsic pulse width exhibits frequency narrowing with $\\sigma_{\\rm int} \\propto \\nu^{\\beta}$ ($\\beta = -0.92 \\pm 0.19$ for $\\nu > 440~\\mathrm{MHz}$), with low-frequency excess width ($\\,4.8\\sigma\\,$ at $\\sim 422~\\mathrm{MHz}$) favoring a thick-screen scattering medium.",
@@ -6322,7 +6970,7 @@
       "tags": [
         "FRB"
       ],
-      "heat_score": 1.9,
+      "heat_score": 1.7,
       "paper_count": 2,
       "headline": "论文旨在检验带电夸克星能否在非标准引力和统一相互作用夸克物质状态...",
       "narrative": "GW190814 是近期重点瞬变天体事件，活跃跨度 2026-09-21 至 2026-10-22，共聚合 2 篇研读文献。核心突破研判：结果表明，电荷与能量-动量平方引力耦合的共同作用可显著提高夸克星的最大质量和半径，在强负耦合及较强相互作用参数下，模型质量可接近 $3M_{\\odot}$。带电构型的最大质量中心密度降低约 $10$--$15\\%$，并可满足因果性及多项现有脉冲星、NICER观测约束。",
@@ -6422,7 +7070,7 @@
       "tags": [
         "SN"
       ],
-      "heat_score": 1.9,
+      "heat_score": 1.7,
       "paper_count": 1,
       "headline": "SN 2023iop 具有长达 $\\gtrsim 88$ 天的缓...",
       "narrative": "SN 2023IOP 是近期重点瞬变天体事件，监测日期 2026-10-20，共聚合 1 篇研读文献（含 1 篇必读突破）。核心突破研判：测得该源峰值测辐射热光度为 $L_{\\rm bol} = (4.0 \\pm 1.0) \\times 10^{43}~\\mathrm{erg\\,s^{-1}}$，全波段积分总辐射能量达 $E_{\\rm rad} = (4.3 \\pm 0.3) \\times 10^{50}~\\mathrm{erg}$。由有效光球上升时标 $t_{\\rm rise} \\gtrsim 88$ 天导出抛射物质量下限 $M_{\\rm ej} > 12~M_\\odot$；峰值光度需要产生放射性镍质量 $M_{\\rm ^{56}Ni} \\approx 2.2~M_\\odot$。在静止系波长 $5800\\text{--}6200~\\text{Å}$ 与 $7400\\text{--}7800~\\text{Å}$ 测得反方差加权平均连续谱线偏振度为 $P = 0.81 \\pm 0.08\\%$，揭示显著的非球对称几何。晚期 $+326$ 天测得 $[\\mathrm{O\\;I}]\\,\\lambda\\lambda6300,6364$ 双线通量比 $F_{6300}/F_{6364} \\approx 2.3$，处于光学薄与光学厚过渡态。多波段限制给出自由-自由吸收光深遵从标度律 $\\tau_{\\rm ff} \\propto \\nu^{-2.1}\\,t^{-5}$，深埋中心引擎与 CSM 早期信号受阻碍。联合辐射模型指示其前身星符合 $190~M_\\odot$ 的富氢 PISN 模型，晚期平台期辐射由隐蔽或非球对称 CSM 相互作用主导。",
@@ -6561,7 +7209,7 @@
       "event_id": "AT 2023VFI",
       "event_type": "AT",
       "tags": [],
-      "heat_score": 1.9,
+      "heat_score": 1.7,
       "paper_count": 1,
       "headline": "千新星晚期光变曲线中高光度份额并不等同于放射源的独特可辨识特征。",
       "narrative": "AT 2023VFI 是近期重点瞬变天体事件，监测日期 2026-10-25，共聚合 1 篇研读文献。核心突破研判：粒子的非瞬时能量沉积与多层光子扩散显著平滑了辐射波形，使长寿命 $\\alpha$ 衰变链（如 $^{223,225}\\mathrm{Ra}\\text{--}^{225}\\mathrm{Ac}$）与 $^{254}\\mathrm{Cf}$ 的光度响应高度简并。多源混合辐射衰减指数满足标度律 $\\nu_{12}[L] = -\\frac{1}{\\ell} \\ln \\left[ \\sum_j w_j e^{-\\ell \\nu_{12}[L_j]} \\right]$（其中 $\\ell = \\ln(t_2/t_1)$，$w_j$ 为 $t_1$ 处的辐射权重）；在固定 90 天裂变光度占比（约 $38\\%$）下，无 $^{254}\\mathrm{Cf}$ 的替代模型通过调整抛射物与 $\\beta$ 加热连续谱自由度，在 $5\\%$ 假阳性率下的统计探测能力上限仅为 $6.20\\%\\text{--}8.93\\%$。对于千新星 AT 2023vfi，含与不含 $^{254}\\mathrm{Cf}$ 模型的衰减指数差异仅约 $0.01$（$\\nu_{12} \\approx 2.10\\text{--}2.12$），两者均比观测重建值（$2.7\\pm0.4$）平缓约 $1.5\\sigma$。",
@@ -6631,7 +7279,7 @@
       "tags": [
         "SN"
       ],
-      "heat_score": 1.9,
+      "heat_score": 1.7,
       "paper_count": 1,
       "headline": "光学波段星云期禁线光度呈 $\\exp(-E_u/kT)$ 指数依赖",
       "narrative": "SN 2024AECX 是近期重点瞬变天体事件，监测日期 2026-10-25，共聚合 1 篇研读文献。核心突破研判：通过对 SN 2024aecx（$167\\,\\mathrm{d}$）的解谱迭代，测得 Fe/He 区温度 $T_{\\mathrm{FeHe}} = 3680^{+88}_{-95}\\,\\mathrm{K}$，关键禁线光深 $\\tau_{[\\mathrm{Ni\\,II}]\\,6.636} = 0.97^{+0.20}_{-0.18}$、$\\tau_{[\\mathrm{Co\\,II}]\\,10.52} = 5.89^{+3.88}_{-2.80}$；得出 $^{56}\\mathrm{Ni}$ 质量 $M(^{56}\\mathrm{Ni}) = 0.051^{+0.034}_{-0.022}\\,M_\\odot$、稳定镍质量 $M(^{58}\\mathrm{Ni}) = 1.8^{+0.4}_{-0.3} \\times 10^{-3}\\,M_\\odot$；Ni/Fe 质量比为 $0.036$，对应中子过剩 $\\eta = 1.2 \\times 10^{-3}$；Fe/He 区充满因子仅为 $f_{\\mathrm{FeHe}} = 0.059^{+0.013}_{-0.012}$，证实放射性加热引起的 Ni 气泡膨胀效应极弱（密度对比因子 $\\chi \\approx 1 - 3$）；测定 $M_{\\mathrm{Cl}} = 5.1^{+2.0}_{-1.6} \\times 10^{-4}\\,M_\\odot$，支持 O-C 壳层合并核合成路径。",
@@ -6678,7 +7326,7 @@
         "Transient Surveillance",
         "GCN Photometry"
       ],
-      "heat_score": 1.9,
+      "heat_score": 1.7,
       "paper_count": 1,
       "headline": "GRB 瞬时强辐射会完全光电离 $\\lesssim 100\\ \\...",
       "narrative": "GRB 090618 是近期重点瞬变天体事件，监测日期 2026-10-25，共聚合 1 篇研读文献。核心突破研判：TEPID 模型预言近邻环境产生多相窄吸收线（静系 $\\mathrm{EW} \\sim 1\\text{--}10\\ \\mathrm{eV}$，其中 Fe K 壳层线 $\\mathrm{EW} \\sim 4\\text{--}10\\ \\mathrm{eV}$）；在 GRB 090618 的 RGS 光谱中以 $\\approx 3\\sigma$ 探测到 Fe-L 吸收线系并定出 $z=0.540\\pm 0.003$；XRISM 每年可观测约 3 例余辉中的 Fe-K 线；NewAthena 每年可跟进高达 50 例 $\\mathcal{F}\\gtrsim 0.1\\times 10^{-6}\\ \\mathrm{erg\\ cm^{-2}}$ 样本，可将密度 $\\log n_0$ 精度测至 $0.05\\ \\mathrm{dex}$、红移相对误差控制在 $\\lesssim 10^{-3}$，并通过 $\\mathrm{Fe/(Si,S)} \\lesssim 0.15$ 上限有效区分 Pop III 与 Pop II 环境。",
@@ -6740,7 +7388,7 @@
       "tags": [
         "SN"
       ],
-      "heat_score": 1.4,
+      "heat_score": 1.3,
       "paper_count": 2,
       "headline": "SN 2024ggi的爆前光变中是否存在显著前兆发射",
       "narrative": "SN 2024GGI 是近期重点瞬变天体事件，活跃跨度 2026-09-28 至 2026-10-12，共聚合 2 篇研读文献（含 1 篇必读突破）。核心突破研判：ATClean在所有测试高斯核宽下均未发现显著爆前前兆。对模拟持续时间为2天和300天的事件，80%探测效率对应绝对星等阈值分别为−11.28和−8.98。基于CHIPS模型的亮度—抛质质量转换，不支持具有所比较已知前兆时标、且产生文献所估CSM质量的显著爆发，但不能排除较暗或极短事件。标准同步辐射模型推得外层CSM近似满足ρ∝r⁻²；假定风速50 km/s，失质量率约为8×10⁻⁵太阳质量/年。结合文献估计，作者提出半径≲6×10¹⁴ cm的较致密内层与更外侧延展风状结构，并倾向由延展色球层、脉动驱动超风或多种机制共同解释，而非认为某一种机制已被唯一确定。",
@@ -6862,7 +7510,7 @@
         "GRB",
         "TDE"
       ],
-      "heat_score": 1.4,
+      "heat_score": 1.3,
       "paper_count": 1,
       "headline": "海量时域巡天警报流",
       "narrative": "AT 2018COW 是近期重点瞬变天体事件，监测日期 2026-10-22，共聚合 1 篇研读文献。核心突破研判：通过结合 160 个光变曲线特征与宿主星系测光、点源背景及基于平坦 $\\Lambda\\mathrm{CDM}$ 宇宙学模型（$H_0 = 70\\,\\mathrm{km\\,s^{-1}\\,Mpc^{-1}}$, $\\Omega_m = 0.3$）下由光度红移导出的伪绝对星等 $M_{\\mathrm{pseudo}} = m_{\\mathrm{peak}} - 5\\log_{10}[d_L(z_{\\mathrm{phot}})/10\\,\\mathrm{pc}]$，模型宏 $F_1$ 达到 $0.83\\pm0.02$。在 $1\\%$ 虚警率（FPR）下，利用基于 log-sum-exp logits 的 energy 打分器及主动复核循环，仅检查 $6\\%$ 的警报流即可召回 $60\\%$ 的分类系统外异常天体，相比静态排序减少了 $45\\%$ 的人工审核工作量，并在实机回放中成功捕获 FBOT AT 2018cow 及 GRB 对应体。",
@@ -6926,7 +7574,7 @@
         "GRB",
         "MULTI"
       ],
-      "heat_score": 1.4,
+      "heat_score": 1.3,
       "paper_count": 1,
       "headline": "FXTs 的物理起源尚存争议",
       "narrative": "EP240801A 是近期重点瞬变天体事件，监测日期 2026-10-22，共聚合 1 篇研读文献。核心突破研判：在 27 个 FXT 位置均未发现具有统计显著性的高能中微子超额。最大检验统计量为 EP240801a（$\\mathrm{TS}=4.77$，局部 $p=0.04$）。计算给出的 90% 置信度微分缪子中微子通量上限处于 $\\mathcal{O}(10^{-10})\\ \\mathrm{GeV\\ cm^{-2}\\ s^{-1}}$ 量级；在假定能谱指数 $\\Gamma=2.0$ 及转折能量 $E_0=100\\ \\mathrm{TeV}$ 下，最严格的上限由 EP241021a 给出：$E^2 \\Phi(E) = 2.1 \\times 10^{-10}\\ \\mathrm{GeV\\ cm^{-2}\\ s^{-1}}$。",
@@ -6971,7 +7619,7 @@
       "tags": [
         "SN"
       ],
-      "heat_score": 1.4,
+      "heat_score": 1.3,
       "paper_count": 1,
       "headline": "EP260321a 是伴随 SN Ic-BL 2026gzf 的...",
       "narrative": "SN 2008D 是近期重点瞬变天体事件，监测日期 2026-10-22，共聚合 1 篇研读文献。核心突破研判：通过多波段联合限制发现 EP260321a 的最快激波速度显著较慢（$\\beta_{\\rm bo} \\lesssim 0.02\\text{--}0.08$），远低于 XRO 080109 的 $\\beta_{\\rm bo} \\simeq 0.25$；较慢的激波抑制了射电辐射并自然产生了热化软 X 射线谱。两者底层的超新星爆炸能量和整体抛射物速度基本一致（$v_{\\rm bulk} \\simeq 1.0\\times 10^9(M_{\\rm c}/5M_\\odot)^{-0.114}\\ {\\rm cm\\ s^{-1}}$ 与 $1.3\\times 10^9(M_{\\rm c}/5M_\\odot)^{-0.114}\\ {\\rm cm\\ s^{-1}}$），观测差异主要由星周介质质量决定：EP260321a 爆发前发生了剧烈物质抛射，形成了致密的 CSM 壳层（$M_{\\rm CSM} \\simeq 0.06\\ M_\\odot$，而 XRO 080109 仅为 $\\sim 10^{-7}\\ M_\\odot$），激波加热的大质量 CSM 壳层在亚天时标（$t_{\\nu,p} \\simeq 0.5\\text{--}0.7\\ {\\rm d}$）内释放储存的内能，产生峰值单色光度达 $\\nu L_{\\nu,p} \\sim 10^{42}\\ {\\rm erg\\ s^{-1}}$ 的明亮冷却辐射。",
@@ -7044,7 +7692,7 @@
         "GW",
         "Transient Surveillance"
       ],
-      "heat_score": 1.4,
+      "heat_score": 1.3,
       "paper_count": 1,
       "headline": "快速 X 射线暂现源（FXT）的物理本质、前身星系统以及辐射中心...",
       "narrative": "EP240414A 是近期重点瞬变天体事件，监测日期 2026-10-22，共聚合 1 篇研读文献。核心突破研判：在 EP 探测到的 64 例 FXT 中筛选出 19 个满足 LVK 运行条件的源，所有源的显著性 $p$ 值均与背景噪声涨落一致（如 EP240414a 的 $p=0.068$、EP250108a 的 $p=0.763$），未探测到显著的引力波信号。针对伴随宽线超新星 SN 2025kg 的个源 EP250108a（红移 $z = 0.17641$，光度距离 $D_L = 880.6\\,\\mathrm{Mpc}$），在 $70\\text{--}300\\,\\mathrm{Hz}$ 频段内通过 $E_{\\mathrm{GW},90\\%}=\\frac{2}{5}\\frac{\\pi^{2}c^{3}}{G}r^{2}f_{0}^{2}h_{\\mathrm{rss},90\\%}^{2}$ 导出的引力波辐射能量 90% 置信度上限为 $E_{\\mathrm{GW},90\\%} \\in [6.715\\times 10^{-2},\\, 5.506\\times 10^{-1}]\\,M_{\\odot}c^{2}$，受限于现有引力波探测视距，尚无法直接触及多数 FXT 所处的深空宿主距离。",
@@ -7136,7 +7784,7 @@
       "tags": [
         "GW"
       ],
-      "heat_score": 1.4,
+      "heat_score": 1.3,
       "paper_count": 1,
       "headline": "快速 X 射线暂现源（FXT）的物理本质、前身星系统以及辐射中心...",
       "narrative": "EP250108A 是近期重点瞬变天体事件，监测日期 2026-10-22，共聚合 1 篇研读文献。核心突破研判：在 EP 探测到的 64 例 FXT 中筛选出 19 个满足 LVK 运行条件的源，所有源的显著性 $p$ 值均与背景噪声涨落一致（如 EP240414a 的 $p=0.068$、EP250108a 的 $p=0.763$），未探测到显著的引力波信号。针对伴随宽线超新星 SN 2025kg 的个源 EP250108a（红移 $z = 0.17641$，光度距离 $D_L = 880.6\\,\\mathrm{Mpc}$），在 $70\\text{--}300\\,\\mathrm{Hz}$ 频段内通过 $E_{\\mathrm{GW},90\\%}=\\frac{2}{5}\\frac{\\pi^{2}c^{3}}{G}r^{2}f_{0}^{2}h_{\\mathrm{rss},90\\%}^{2}$ 导出的引力波辐射能量 90% 置信度上限为 $E_{\\mathrm{GW},90\\%} \\in [6.715\\times 10^{-2},\\, 5.506\\times 10^{-1}]\\,M_{\\odot}c^{2}$，受限于现有引力波探测视距，尚无法直接触及多数 FXT 所处的深空宿主距离。",
@@ -7217,7 +7865,7 @@
       "tags": [
         "GW"
       ],
-      "heat_score": 1.4,
+      "heat_score": 1.3,
       "paper_count": 1,
       "headline": "快速 X 射线暂现源（FXT）的物理本质、前身星系统以及辐射中心...",
       "narrative": "SN 2025KG 是近期重点瞬变天体事件，监测日期 2026-10-22，共聚合 1 篇研读文献。核心突破研判：在 EP 探测到的 64 例 FXT 中筛选出 19 个满足 LVK 运行条件的源，所有源的显著性 $p$ 值均与背景噪声涨落一致（如 EP240414a 的 $p=0.068$、EP250108a 的 $p=0.763$），未探测到显著的引力波信号。针对伴随宽线超新星 SN 2025kg 的个源 EP250108a（红移 $z = 0.17641$，光度距离 $D_L = 880.6\\,\\mathrm{Mpc}$），在 $70\\text{--}300\\,\\mathrm{Hz}$ 频段内通过 $E_{\\mathrm{GW},90\\%}=\\frac{2}{5}\\frac{\\pi^{2}c^{3}}{G}r^{2}f_{0}^{2}h_{\\mathrm{rss},90\\%}^{2}$ 导出的引力波辐射能量 90% 置信度上限为 $E_{\\mathrm{GW},90\\%} \\in [6.715\\times 10^{-2},\\, 5.506\\times 10^{-1}]\\,M_{\\odot}c^{2}$，受限于现有引力波探测视距，尚无法直接触及多数 FXT 所处的深空宿主距离。",
@@ -7296,7 +7944,7 @@
       "event_id": "SN 2023BEE",
       "event_type": "SN",
       "tags": [],
-      "heat_score": 1,
+      "heat_score": 0.9,
       "paper_count": 1,
       "headline": "部分 Ia 型超新星（如 SN 2023bee）在爆发初期存在微...",
       "narrative": "SN 2023BEE 是近期重点瞬变天体事件，监测日期 2026-10-19，共聚合 1 篇研读文献。核心突破研判：在爆发后 $+359$ 天的星云相光谱中未探测到伴星剥离物质的窄 H/He 特征，给出 $3\\sigma$ 积分光度上限 $L_{\\mathrm{H}\\alpha} < 1.8\\times10^{37}\\ \\mathrm{erg\\,s^{-1}}$，推导出的伴星剥离质量上限为 $M_{\\rm H}^{\\rm stripped} \\lesssim 5.0\\times10^{-3}\\,M_\\odot$ 以及 $M_{\\rm He}^{\\rm stripped} \\lesssim 1.2\\times10^{-4}\\,M_\\odot$。基于禁线发射光度比模型 $\\frac{L_{7378}}{L_{7155}} = 4.9 \\frac{n_{\\rm Ni\\,II}}{n_{\\rm Fe\\,II}} \\exp\\left(\\frac{0.28\\,\\mathrm{eV}}{kT}\\right)\\frac{dc_{\\rm Ni\\,II}}{dc_{\\rm Fe\\,II}}$ 拟合铁族混合特征，测得离子数密度比为 $n_{\\rm Ni\\,II}/n_{\\rm Fe\\,II} = 0.026\\pm0.020$，折合渐近稳定质量比 $M_{\\rm Ni}/M_{\\rm Fe} \\lesssim 0.06$，与亚钱氏质量（sub-$M_{\\rm Ch}$）双重爆轰模型高度相符。",
@@ -7367,7 +8015,7 @@
         "Transient Surveillance",
         "GCN Photometry"
       ],
-      "heat_score": 0.9,
+      "heat_score": 0.8,
       "paper_count": 1,
       "headline": "GRB 240825A 早期出现特征鲜明的软能谱平台期与随后的硬...",
       "narrative": "GRB 240825A 是近期重点瞬变天体事件，监测日期 2026-10-12，共聚合 1 篇研读文献（含 1 篇必读突破）。核心突破研判：研究表明瞬时辐射由早期软能谱平台期（$L_{\\gamma, \\mathrm{iso}} \\sim 1.50 \\times 10^{50}\\ \\mathrm{erg\\ s^{-1}}$）与后续硬能谱主暴构成。PNS 阶段磁偶极辐射 $L_k(t) = L_{k,0}(1+t/\\tau)^{-2}$ 提供前兆光度；塌缩为黑洞后，回落吸积盘通过 Blandford-Znajek（BZ）机制产生喷流：$$L_{\\mathrm{BZ}} = 9.3\\times10^{53}\\,{\\mathrm{erg\\,s^{-1}}}\\frac{a^2 F(a)}{(1+\\sqrt{1-a^2})^2}\\frac{\\dot{M}(r_{\\mathrm{in}})}{M_\\odot\\,\\mathrm{s^{-1}}}$$ 拟合得到回落质量 $M_{\\mathrm{fb}} \\simeq 0.45{-}0.96\\ M_\\odot$、初始黑洞自旋 $a_0 \\sim 0.13{-}0.53$。余辉在星风介质（$n \\propto r^{-2}$）中演化，且伴随非单调宿主消光时变（$E_{B-V}^{\\mathrm{host}} = 0.41 \\to 0.63 \\to 0.37$），符合强辐射场下的辐射力矩瓦解（RATD）大颗粒尘埃破坏机制。",
@@ -7425,7 +8073,7 @@
       "tags": [
         "SN"
       ],
-      "heat_score": 0.9,
+      "heat_score": 0.8,
       "paper_count": 1,
       "headline": "缺乏明显窄发射线、展现宽吸收/发射线特征的 SLSNe II 早...",
       "narrative": "SN 2008ES 是近期重点瞬变天体事件，监测日期 2026-10-12，共聚合 1 篇研读文献（含 1 篇必读突破）。核心突破研判：SLSNe II 的近紫外超额光度与总拟热光度维持恒定比值（$L_{\\rm ex}/L_{\\rm bol} \\approx 0.01\\text{--}0.1$）。假设紫外超额由星周相互作用（CSI）主导驱动，利用标度关系 $\\frac{dM}{dt} = \\frac{2L_{\\rm ex}}{\\epsilon} v_{\\rm CSM} v_{\\rm sh}^{-3}$（取辐射效率 $\\epsilon = 0.5$，$v_{\\rm CSM} = 100\\,\\mathrm{km\\,s^{-1}}$），推断前身星爆发前数年至数十年的质量损失率下限为 $\\dot{M} \\sim 10^{-4}\\text{--}0.03\\,\\mathrm{M_\\odot\\,yr^{-1}}$；若相互作用主导总光度，则实际 $\\dot{M} \\sim 0.2\\text{--}0.3\\,\\mathrm{M_\\odot\\,yr^{-1}}$。SN 2008es 类子样本总辐射能量达 $(1\\text{--}3)\\times 10^{51}\\,\\mathrm{erg}$，且低几何填充因子（$f \\sim 0.1$）排除了纯中微子驱动激波转换机制，必须由中心引擎驱动。",
@@ -7508,7 +8156,7 @@
       "tags": [
         "SN"
       ],
-      "heat_score": 0.9,
+      "heat_score": 0.8,
       "paper_count": 1,
       "headline": "SN 2025wiu 在首个主峰后 $+38$ 天展现出显著的光...",
       "narrative": "SN 2025WIU 是近期重点瞬变天体事件，监测日期 2026-10-18，共聚合 1 篇研读文献。核心突破研判：SN 2025wiu 首个光学峰绝对星等达 $M_r \\approx -18.2\\ \\mathrm{mag}$，在爆发后约 $+38\\ \\mathrm{d}$ 出现第二光学峰（$M_r \\approx -17.8\\ \\mathrm{mag}$），但其重建的全波段热光度 $L_{\\rm bol}$ 仅表现为单调下降中的斜率变缓（第一峰值 $L_{\\rm bol} \\approx 5.86\\times 10^{42}\\ \\mathrm{erg\\ s^{-1}}$），晚期热光度衰减率为 $0.054\\pm 0.008\\ \\mathrm{mag\\ day^{-1}}$。整个演化过程中光谱始终表现为纯净的 SN Ib 特征且无窄发射线。纯放射性衰变模型需合成镍质量 $M_{\\rm Ni} = 0.47^{+0.06}_{-0.05}\\ M_\\odot$；而结合抛射物与星周介质相互作用的 TransFit-CSM 模型给出的最佳拟合参数为 $M_{\\rm Ni} = 0.378^{+0.070}_{-0.089}\\ M_\\odot$、$M_{\\rm ej} = 4.72^{+2.07}_{-1.59}\\ M_\\odot$、动能 $E_{\\rm k} \\approx 1.9\\times 10^{51}\\ \\mathrm{erg}$ 以及有效 CSM 质量 $M_{\\rm CSM} \\approx 0.10\\ M_\\odot$（外径延展至 $\\approx 5.9\\times 10^5\\ R_\\odot$），物理图像倾向于被抛射物光球层吞没并完全热化的非球对称盘状 CSM 相互作用。",
@@ -7597,7 +8245,7 @@
         "Transient Surveillance",
         "GCN Photometry"
       ],
-      "heat_score": 0.7,
+      "heat_score": 0.6,
       "paper_count": 1,
       "headline": "GRB 251222A 展现了具有多脉冲的提示辐射、随后的早期软...",
       "narrative": "GRB 251222A 是近期重点瞬变天体事件，监测日期 2026-10-15，共聚合 1 篇研读文献。核心突破研判：通过多波段（EP/WXT, FXT, Fermi/GBM, Swift/XRT 及 Mephisto 光学/近红外）数据联合贝叶斯拟合，确定慢且宽壳层翼部与合并后核心的洛伦兹因子分别为 $\\Gamma_{1,w} = 228^{+48}_{-48}$ 和 $\\Gamma_{c} = 293^{+36}_{-45}$，第二壳层 $\\Gamma_{2} = 336^{+42}_{-52}$；介质密度 $\\log(n/\\mathrm{cm^{-3}}) = 0.19_{-0.41}^{+0.43}$。非弹性碰撞前核心区总动能为 $E_{k,1,c}+E_{k,2} = (5.5^{+5.4}_{-3.1})\\times 10^{54}\\ \\mathrm{erg}$，合并后核心动能 $E_{k,c} = (5.4^{+5.4}_{-3.1})\\times 10^{54}\\ \\mathrm{erg}$，耗散能量 $E_{\\rm diss} = (1.6^{+2.1}_{-0.9})\\times 10^{52}\\ \\mathrm{erg}$，动力学耗散效率为 $\\eta_{\\rm diss} \\equiv \\frac{E_{\\rm diss}}{E_{k,1,c}+E_{k,2}} = 0.37^{+0.07}_{-0.14}\\%$。有限能段（0.5–4 keV）X 射线效率中值约为 $\\eta_{X} = \\frac{E_{\\rm flare,iso}}{E_{\\rm flare,iso}+E_{k,c}} \\approx 0.06\\%\\text{--}0.09\\%$，X 射线耀斑辐射能量占动力学耗散能量的 $18\\%\\text{--}30\\%$。",
@@ -7715,7 +8363,7 @@
       "tags": [
         "GRB"
       ],
-      "heat_score": 0.7,
+      "heat_score": 0.6,
       "paper_count": 1,
       "headline": "GRB 251222A 展现了具有多脉冲的提示辐射、随后的早期软...",
       "narrative": "EP251222B 是近期重点瞬变天体事件，监测日期 2026-10-15，共聚合 1 篇研读文献。核心突破研判：通过多波段（EP/WXT, FXT, Fermi/GBM, Swift/XRT 及 Mephisto 光学/近红外）数据联合贝叶斯拟合，确定慢且宽壳层翼部与合并后核心的洛伦兹因子分别为 $\\Gamma_{1,w} = 228^{+48}_{-48}$ 和 $\\Gamma_{c} = 293^{+36}_{-45}$，第二壳层 $\\Gamma_{2} = 336^{+42}_{-52}$；介质密度 $\\log(n/\\mathrm{cm^{-3}}) = 0.19_{-0.41}^{+0.43}$。非弹性碰撞前核心区总动能为 $E_{k,1,c}+E_{k,2} = (5.5^{+5.4}_{-3.1})\\times 10^{54}\\ \\mathrm{erg}$，合并后核心动能 $E_{k,c} = (5.4^{+5.4}_{-3.1})\\times 10^{54}\\ \\mathrm{erg}$，耗散能量 $E_{\\rm diss} = (1.6^{+2.1}_{-0.9})\\times 10^{52}\\ \\mathrm{erg}$，动力学耗散效率为 $\\eta_{\\rm diss} \\equiv \\frac{E_{\\rm diss}}{E_{k,1,c}+E_{k,2}} = 0.37^{+0.07}_{-0.14}\\%$。有限能段（0.5–4 keV）X 射线效率中值约为 $\\eta_{X} = \\frac{E_{\\rm flare,iso}}{E_{\\rm flare,iso}+E_{k,c}} \\approx 0.06\\%\\text{--}0.09\\%$，X 射线耀斑辐射能量占动力学耗散能量的 $18\\%\\text{--}30\\%$。",
@@ -7814,116 +8462,6 @@
       "gcn_status": null
     },
     {
-      "event_id": "SN2024ABFO",
-      "event_type": "SN",
-      "tags": [
-        "SN"
-      ],
-      "heat_score": 0.5,
-      "paper_count": 1,
-      "headline": "针对 Rubin 天文台每晚产生海量暂现源警报而无法逐一进行射电...",
-      "narrative": "SN2024ABFO 是近期重点瞬变天体事件，监测日期 2026-10-11，共聚合 1 篇研读文献。核心突破研判：项目通过单次 $3\\,\\mathrm{h}$ 积分在 $943\\,\\mathrm{MHz}$ 实现了约 $\\sim 60\\,\\mu\\mathrm{Jy}$ 的灵敏度和约 $10\\,\\mathrm{d}$（实际约 $12\\,\\mathrm{d}$）的采样间隔。对超新星 SN2024abfo 的射电建模显示：有效自由-自由吸收（$\\propto \\nu^{-2.1}$）光深在约 $350\\,\\mathrm{d}$ 处达到峰值 $\\tau_{\\rm ff}(1\\,\\mathrm{GHz})\\simeq 0.9$；仅由射电数据限制的抛射物质量 90% 置信区间为 $1.4$–$9.1\\,M_{\\odot}$；最大后验解下激波跨越半径 $0.86\\times 10^{16}$ 至 $3.62\\times 10^{16}\\,\\mathrm{cm}$；在恒定风速 $v_{\\rm wind}=20\\,\\mathrm{km\\,s^{-1}}$ 假设下，对应爆炸前约 140–570 yr 的抛射物质，在 350 yr 附近质量损失率达 $\\dot{M}=4\\pi r^2\\rho v_{\\rm w}\\approx 2.5\\times 10^{-5}\\,M_{\\odot}\\,\\mathrm{yr^{-1}}$，积分 CSM 质量为 $0.0084\\,M_{\\odot}$（90% 区间 $0.0071$–$0.0113\\,M_{\\odot}$），表明前身星存在变化的暴前外流。",
-      "first_seen": "2026-10-11",
-      "last_updated": "2026-10-11",
-      "papers": [
-        {
-          "arxiv_id": "2610.13011",
-          "revision": 1,
-          "title": "ASKAP Monitoring of the Rubin Deep Drilling Fields",
-          "authors": [
-            "Dougal Dobie",
-            "James Freeburn",
-            "Iris de Ruiter",
-            "Katie Auchettl",
-            "James Coulson",
-            "Brent Miszalski",
-            "Anais Möller",
-            "Nikhil Sarin"
-          ],
-          "date": "2026-10-11",
-          "priority": "worth_knowing",
-          "bluf_result": "项目通过单次 $3\\,\\mathrm{h}$ 积分在 $943\\,\\mathrm{MHz}$ 实现了约 $\\sim 60\\,\\mu\\mathrm{Jy}$ 的灵敏度和约 $10\\,\\mathrm{d}$（实际约 $12\\,\\mathrm{d}$）的采样间隔。对超新星 SN2024abfo 的射电建模显示：有效自由-自由吸收（$\\propto \\nu^{-2.1}$）光深在约 $350\\,\\mathrm{d}$ 处达到峰值 $\\tau_{\\rm ff}(1\\,\\mathrm{GHz})\\simeq 0.9$；仅由射电数据限制的抛射物质量 90% 置信区间为 $1.4$–$9.1\\,M_{\\odot}$；最大后验解下激波跨越半径 $0.86\\times 10^{16}$ 至 $3.62\\times 10^{16}\\,\\mathrm{cm}$；在恒定风速 $v_{\\rm wind}=20\\,\\mathrm{km\\,s^{-1}}$ 假设下，对应爆炸前约 140–570 yr 的抛射物质，在 350 yr 附近质量损失率达 $\\dot{M}=4\\pi r^2\\rho v_{\\rm w}\\approx 2.5\\times 10^{-5}\\,M_{\\odot}\\,\\mathrm{yr^{-1}}$，积分 CSM 质量为 $0.0084\\,M_{\\odot}$（90% 区间 $0.0071$–$0.0113\\,M_{\\odot}$），表明前身星存在变化的暴前外流。",
-          "bluf_problem": "针对 Rubin 天文台每晚产生海量暂现源警报而无法逐一进行射电定点后随观测的难题，如何对 5 个 Rubin 深钻天区开展无偏准实时射电监测，并解决 ASKAP 默认数据产品将明亮致密源错误分解为多高斯成分从而导致虚假高幅光变的问题，同时利用监测数据约束超新星周星介质（CSM）相互作用。",
-          "figures": [],
-          "primary_figure": null
-        }
-      ],
-      "lead_figure": null,
-      "lead_figure_arxiv_id": null,
-      "canonical_t0": null,
-      "best_redshift": null,
-      "has_redshift_conflict": false,
-      "multi_messenger": [],
-      "gcn_aliases_label": null,
-      "canonical_t0_label": null,
-      "best_redshift_label": null,
-      "multi_messenger_badges": [],
-      "gcn_circular_count": 0,
-      "gcn_figure_path": null,
-      "gcn_aliases": [],
-      "gcn_slug": null,
-      "gcn_status": null
-    },
-    {
-      "event_id": "EP J062132.0+623837",
-      "event_type": "EP",
-      "tags": [],
-      "heat_score": 0.5,
-      "paper_count": 1,
-      "headline": "EP J062132.0+623837 瞬变源多信使追踪研判",
-      "narrative": "EP J062132.0+623837 是近期重点瞬变天体事件，监测日期 2026-10-22，共聚合 1 篇研读文献。核心突破研判：主要探讨《EP J062132.0+623837: A Multi-wavelength Study of a Changing-look Active Galactic Nucleus Discovered by Einstein Probe》",
-      "first_seen": "2026-10-22",
-      "last_updated": "2026-10-22",
-      "papers": [
-        {
-          "arxiv_id": "2610.30959",
-          "revision": 1,
-          "title": "EP J062132.0+623837: A Multi-wavelength Study of a Changing-look Active Galactic Nucleus Discovered by Einstein Probe",
-          "authors": [
-            "Lin-Na Xu",
-            "Ning Jiang",
-            "Tinggui Wang",
-            "Shifeng Huang",
-            "Yibo Wang",
-            "Zhenfeng Sheng",
-            "Mingxin Wu",
-            "Jiazheng Zhu",
-            "Huaqing Cheng",
-            "Chichuan Jin",
-            "Jun-Jie Jin",
-            "Dongyue Li",
-            "Yuan Liu",
-            "Jianwei Lyu",
-            "Jian-Guo Wang",
-            "Yun-Fei Xu",
-            "Yongquan Xue",
-            "Zhen Zhang"
-          ],
-          "date": "2026-10-22",
-          "priority": "skip",
-          "bluf_result": "未能从已检查材料中核实论文结果。",
-          "bluf_problem": "未能从已检查材料中核实论文问题陈述。",
-          "figures": [],
-          "primary_figure": null
-        }
-      ],
-      "lead_figure": null,
-      "lead_figure_arxiv_id": null,
-      "canonical_t0": null,
-      "best_redshift": null,
-      "has_redshift_conflict": false,
-      "multi_messenger": [],
-      "gcn_aliases_label": null,
-      "canonical_t0_label": null,
-      "best_redshift_label": null,
-      "multi_messenger_badges": [],
-      "gcn_circular_count": 0,
-      "gcn_figure_path": null,
-      "gcn_aliases": [],
-      "gcn_slug": null,
-      "gcn_status": null
-    },
-    {
       "event_id": "GRB 220627A",
       "event_type": "GRB",
       "tags": [
@@ -8003,6 +8541,116 @@
           "priority": "must_read",
           "bluf_result": "作者报告扩展 CSM 模型能够同时再现 X 射线光变的上升、下降及总体温度演化。后验中位数及 68% 区间为 $E_{\\rm ej}=6.3^{+1.2}_{-0.8}\\times10^{51}\\,{\\rm erg}$、$R_{\\rm in}=159.7^{+45.0}_{-22.5}R_\\odot$、$R_{\\rm out}=612.2^{+46.9}_{-35.2}R_\\odot$、$\\log_{10}(M_{\\rm csm}/M_\\odot)=-3.3^{+0.3}_{-0.2}$，总光深为 $\\tau=34^{+17}_{-10}$。这些后验统计量不同于作者从 200 组抽样参数中选出的最佳拟合：$E_{\\rm ej}=7.0\\times10^{51}\\,{\\rm erg}$、$R_{\\rm in}=141R_\\odot$、$R_{\\rm out}=580R_\\odot$、$\\log_{10}(M_{\\rm csm}/M_\\odot)=-3.4$，对应 $\\tau\\approx30$。破越发生于未激波层光深 $\\tau\\sim c/v_{\\rm s}$ 时；较早注入的光子扩散较慢，较晚注入的光子较快逃逸，使逃逸峰之间的间隔相对注入间隔压缩。拟合表现与可信区间仅依据正文报告，未独立检查图像或原始数据。",
           "bluf_problem": "EP260321a 与 Ic-BL SN 2026gzf 关联，具有约 $690\\,{\\rm s}$ 的上升时间和约 $0.1\\,{\\rm keV}$ 的辐射温度；裸 WR 星破越预期时标明显过短。作者进一步指出，紧致 CSM 情景中 $t_{\\rm rise}\\sim R_{\\rm out}/c$，观测上升时间对应约 $300R_\\odot$，但相应黑体温度约 $10^5\\,{\\rm K}\\sim10\\,{\\rm eV}$，低于观测温度；已有紧致 CSM 拟合所推断的光深还可能不满足其采用公式要求的 $\\tau\\gg c/v_{\\rm s}$。",
+          "figures": [],
+          "primary_figure": null
+        }
+      ],
+      "lead_figure": null,
+      "lead_figure_arxiv_id": null,
+      "canonical_t0": null,
+      "best_redshift": null,
+      "has_redshift_conflict": false,
+      "multi_messenger": [],
+      "gcn_aliases_label": null,
+      "canonical_t0_label": null,
+      "best_redshift_label": null,
+      "multi_messenger_badges": [],
+      "gcn_circular_count": 0,
+      "gcn_figure_path": null,
+      "gcn_aliases": [],
+      "gcn_slug": null,
+      "gcn_status": null
+    },
+    {
+      "event_id": "SN2024ABFO",
+      "event_type": "SN",
+      "tags": [
+        "SN"
+      ],
+      "heat_score": 0.4,
+      "paper_count": 1,
+      "headline": "针对 Rubin 天文台每晚产生海量暂现源警报而无法逐一进行射电...",
+      "narrative": "SN2024ABFO 是近期重点瞬变天体事件，监测日期 2026-10-11，共聚合 1 篇研读文献。核心突破研判：项目通过单次 $3\\,\\mathrm{h}$ 积分在 $943\\,\\mathrm{MHz}$ 实现了约 $\\sim 60\\,\\mu\\mathrm{Jy}$ 的灵敏度和约 $10\\,\\mathrm{d}$（实际约 $12\\,\\mathrm{d}$）的采样间隔。对超新星 SN2024abfo 的射电建模显示：有效自由-自由吸收（$\\propto \\nu^{-2.1}$）光深在约 $350\\,\\mathrm{d}$ 处达到峰值 $\\tau_{\\rm ff}(1\\,\\mathrm{GHz})\\simeq 0.9$；仅由射电数据限制的抛射物质量 90% 置信区间为 $1.4$–$9.1\\,M_{\\odot}$；最大后验解下激波跨越半径 $0.86\\times 10^{16}$ 至 $3.62\\times 10^{16}\\,\\mathrm{cm}$；在恒定风速 $v_{\\rm wind}=20\\,\\mathrm{km\\,s^{-1}}$ 假设下，对应爆炸前约 140–570 yr 的抛射物质，在 350 yr 附近质量损失率达 $\\dot{M}=4\\pi r^2\\rho v_{\\rm w}\\approx 2.5\\times 10^{-5}\\,M_{\\odot}\\,\\mathrm{yr^{-1}}$，积分 CSM 质量为 $0.0084\\,M_{\\odot}$（90% 区间 $0.0071$–$0.0113\\,M_{\\odot}$），表明前身星存在变化的暴前外流。",
+      "first_seen": "2026-10-11",
+      "last_updated": "2026-10-11",
+      "papers": [
+        {
+          "arxiv_id": "2610.13011",
+          "revision": 1,
+          "title": "ASKAP Monitoring of the Rubin Deep Drilling Fields",
+          "authors": [
+            "Dougal Dobie",
+            "James Freeburn",
+            "Iris de Ruiter",
+            "Katie Auchettl",
+            "James Coulson",
+            "Brent Miszalski",
+            "Anais Möller",
+            "Nikhil Sarin"
+          ],
+          "date": "2026-10-11",
+          "priority": "worth_knowing",
+          "bluf_result": "项目通过单次 $3\\,\\mathrm{h}$ 积分在 $943\\,\\mathrm{MHz}$ 实现了约 $\\sim 60\\,\\mu\\mathrm{Jy}$ 的灵敏度和约 $10\\,\\mathrm{d}$（实际约 $12\\,\\mathrm{d}$）的采样间隔。对超新星 SN2024abfo 的射电建模显示：有效自由-自由吸收（$\\propto \\nu^{-2.1}$）光深在约 $350\\,\\mathrm{d}$ 处达到峰值 $\\tau_{\\rm ff}(1\\,\\mathrm{GHz})\\simeq 0.9$；仅由射电数据限制的抛射物质量 90% 置信区间为 $1.4$–$9.1\\,M_{\\odot}$；最大后验解下激波跨越半径 $0.86\\times 10^{16}$ 至 $3.62\\times 10^{16}\\,\\mathrm{cm}$；在恒定风速 $v_{\\rm wind}=20\\,\\mathrm{km\\,s^{-1}}$ 假设下，对应爆炸前约 140–570 yr 的抛射物质，在 350 yr 附近质量损失率达 $\\dot{M}=4\\pi r^2\\rho v_{\\rm w}\\approx 2.5\\times 10^{-5}\\,M_{\\odot}\\,\\mathrm{yr^{-1}}$，积分 CSM 质量为 $0.0084\\,M_{\\odot}$（90% 区间 $0.0071$–$0.0113\\,M_{\\odot}$），表明前身星存在变化的暴前外流。",
+          "bluf_problem": "针对 Rubin 天文台每晚产生海量暂现源警报而无法逐一进行射电定点后随观测的难题，如何对 5 个 Rubin 深钻天区开展无偏准实时射电监测，并解决 ASKAP 默认数据产品将明亮致密源错误分解为多高斯成分从而导致虚假高幅光变的问题，同时利用监测数据约束超新星周星介质（CSM）相互作用。",
+          "figures": [],
+          "primary_figure": null
+        }
+      ],
+      "lead_figure": null,
+      "lead_figure_arxiv_id": null,
+      "canonical_t0": null,
+      "best_redshift": null,
+      "has_redshift_conflict": false,
+      "multi_messenger": [],
+      "gcn_aliases_label": null,
+      "canonical_t0_label": null,
+      "best_redshift_label": null,
+      "multi_messenger_badges": [],
+      "gcn_circular_count": 0,
+      "gcn_figure_path": null,
+      "gcn_aliases": [],
+      "gcn_slug": null,
+      "gcn_status": null
+    },
+    {
+      "event_id": "EP J062132.0+623837",
+      "event_type": "EP",
+      "tags": [],
+      "heat_score": 0.4,
+      "paper_count": 1,
+      "headline": "EP J062132.0+623837 瞬变源多信使追踪研判",
+      "narrative": "EP J062132.0+623837 是近期重点瞬变天体事件，监测日期 2026-10-22，共聚合 1 篇研读文献。核心突破研判：主要探讨《EP J062132.0+623837: A Multi-wavelength Study of a Changing-look Active Galactic Nucleus Discovered by Einstein Probe》",
+      "first_seen": "2026-10-22",
+      "last_updated": "2026-10-22",
+      "papers": [
+        {
+          "arxiv_id": "2610.30959",
+          "revision": 1,
+          "title": "EP J062132.0+623837: A Multi-wavelength Study of a Changing-look Active Galactic Nucleus Discovered by Einstein Probe",
+          "authors": [
+            "Lin-Na Xu",
+            "Ning Jiang",
+            "Tinggui Wang",
+            "Shifeng Huang",
+            "Yibo Wang",
+            "Zhenfeng Sheng",
+            "Mingxin Wu",
+            "Jiazheng Zhu",
+            "Huaqing Cheng",
+            "Chichuan Jin",
+            "Jun-Jie Jin",
+            "Dongyue Li",
+            "Yuan Liu",
+            "Jianwei Lyu",
+            "Jian-Guo Wang",
+            "Yun-Fei Xu",
+            "Yongquan Xue",
+            "Zhen Zhang"
+          ],
+          "date": "2026-10-22",
+          "priority": "skip",
+          "bluf_result": "未能从已检查材料中核实论文结果。",
+          "bluf_problem": "未能从已检查材料中核实论文问题陈述。",
           "figures": [],
           "primary_figure": null
         }
@@ -8265,94 +8913,6 @@
       "gcn_status": null
     },
     {
-      "event_id": "GW250114",
-      "event_type": "GW",
-      "tags": [
-        "FRB"
-      ],
-      "heat_score": 0.2,
-      "paper_count": 2,
-      "headline": "常规黑洞准正则模（QNM）振铃主要反映光环处的引力势峰",
-      "narrative": "GW250114 是近期重点瞬变天体事件，活跃跨度 2026-09-24 至 2026-10-08，共聚合 2 篇研读文献。核心突破研判：基于 GW250114 数据搜寻引力波回声未见显著偏离黑洞无毛定理的信号（贝叶斯因子 $\\ln\\mathcal{B} = -2.9$），在 $90\\%$ 可信度下测得视界反射率上限 $|\\mathcal{R}_s| < 0.059$（均匀先验）及 $< 0.073$（复平面均匀先验），对应反射能量比例上限 $|\\mathcal{R}_s|^2 < 3.5 \\times 10^{-3}$（$<0.4\\%$）。",
-      "first_seen": "2026-09-24",
-      "last_updated": "2026-10-08",
-      "papers": [
-        {
-          "arxiv_id": "2610.12429",
-          "revision": 1,
-          "title": "Listening to the Horizon: Probing Near-Horizon Reflectivity with GW250114",
-          "authors": [
-            "R. Prasad",
-            "Subhodeep Sarkar",
-            "Sudipta Sarkar"
-          ],
-          "date": "2026-10-08",
-          "priority": "skip",
-          "bluf_result": "基于 GW250114 数据搜寻引力波回声未见显著偏离黑洞无毛定理的信号（贝叶斯因子 $\\ln\\mathcal{B} = -2.9$），在 $90\\%$ 可信度下测得视界反射率上限 $|\\mathcal{R}_s| < 0.059$（均匀先验）及 $< 0.073$（复平面均匀先验），对应反射能量比例上限 $|\\mathcal{R}_s|^2 < 3.5 \\times 10^{-3}$（$<0.4\\%$）。",
-          "bluf_problem": "常规黑洞准正则模（QNM）振铃主要反映光环处的引力势峰，对近视界处可能存在的量子微观结构或奇异天体表面反射不敏感；需要寻找由跌落波（直接波 DW）反射产生并穿透势垒的引力波回声，以直接检验视界反射率的零假设。",
-          "figures": [
-            {
-              "url": "/arxiv-figures/2610.12429/fig1_schematic.png",
-              "label": "Fig. 1",
-              "caption": "Figure 1: Schematic spacetime picture of the first echo. Radiation from the plunging source (star) reaches the observer through the barrier as the DW (blue). Radiation emitted toward the horizon, ( + ) (+) , and the part of the outgoing radiation reflected by the barrier, ( − ) (-) ( ℛ BH \\mathcal{R}^{\\rm BH} ), are reflected at the surface ( ℛ s \\mathcal{R}_{s} ) and cross the barrier outward as the echo. The barrier modulates their frequency content. The ( − ) (-) path is delayed by exactly Δ ​ t = − 2 ​ r ∗ s \\Delta t=-2r_{*}^{s} with respect to the DW.",
-              "category": "theoretical",
-              "category_badge": "物理模型示意图",
-              "physical_core": "展示核心天体物理驱动机制、几何拓扑与理论演化模型架构。",
-              "is_schematic": true
-            }
-          ],
-          "primary_figure": {
-            "url": "/arxiv-figures/2610.12429/fig1_schematic.png",
-            "label": "Fig. 1",
-            "caption": "Figure 1: Schematic spacetime picture of the first echo. Radiation from the plunging source (star) reaches the observer through the barrier as the DW (blue). Radiation emitted toward the horizon, ( + ) (+) , and the part of the outgoing radiation reflected by the barrier, ( − ) (-) ( ℛ BH \\mathcal{R}^{\\rm BH} ), are reflected at the surface ( ℛ s \\mathcal{R}_{s} ) and cross the barrier outward as the echo. The barrier modulates their frequency content. The ( − ) (-) path is delayed by exactly Δ ​ t = − 2 ​ r ∗ s \\Delta t=-2r_{*}^{s} with respect to the DW.",
-            "category": "theoretical",
-            "category_badge": "物理模型示意图",
-            "physical_core": "展示核心天体物理驱动机制、几何拓扑与理论演化模型架构。",
-            "is_schematic": true
-          }
-        },
-        {
-          "arxiv_id": "2609.28953",
-          "revision": 1,
-          "title": "Constraining the Quadratic-mode Amplitude Coupling in GW250114",
-          "authors": [
-            "Yuxin Yang",
-            "Changfu Shi",
-            "Yi-Ming Hu"
-          ],
-          "date": "2026-09-24",
-          "priority": "skip",
-          "bluf_result": "推断得到的 220×220 模振幅耦合系数与数值相对论拟合及二阶微扰理论的预测一致，所有比较的偏差均不超过 1.3 σ；当前数据无法区分这些随自旋变化的预测。",
-          "bluf_problem": "能否从 GW250114 的黑洞振铃数据中测量 220×220 二阶准正常模的振幅耦合系数，并检验相应的广义相对论预测。",
-          "figures": [],
-          "primary_figure": null
-        }
-      ],
-      "lead_figure": {
-        "url": "/arxiv-figures/2610.12429/fig1_schematic.png",
-        "label": "Fig. 1",
-        "caption": "Figure 1: Schematic spacetime picture of the first echo. Radiation from the plunging source (star) reaches the observer through the barrier as the DW (blue). Radiation emitted toward the horizon, ( + ) (+) , and the part of the outgoing radiation reflected by the barrier, ( − ) (-) ( ℛ BH \\mathcal{R}^{\\rm BH} ), are reflected at the surface ( ℛ s \\mathcal{R}_{s} ) and cross the barrier outward as the echo. The barrier modulates their frequency content. The ( − ) (-) path is delayed by exactly Δ ​ t = − 2 ​ r ∗ s \\Delta t=-2r_{*}^{s} with respect to the DW.",
-        "category": "theoretical",
-        "category_badge": "物理模型示意图",
-        "physical_core": "展示核心天体物理驱动机制、几何拓扑与理论演化模型架构。",
-        "is_schematic": true
-      },
-      "lead_figure_arxiv_id": "2610.12429",
-      "canonical_t0": null,
-      "best_redshift": null,
-      "has_redshift_conflict": false,
-      "multi_messenger": [],
-      "gcn_aliases_label": null,
-      "canonical_t0_label": null,
-      "best_redshift_label": null,
-      "multi_messenger_badges": [],
-      "gcn_circular_count": 0,
-      "gcn_figure_path": null,
-      "gcn_aliases": [],
-      "gcn_slug": null,
-      "gcn_status": null
-    },
-    {
       "event_id": "GW190521",
       "event_type": "GW",
       "tags": [],
@@ -8442,58 +9002,6 @@
           "priority": "must_read",
           "bluf_result": "模型中，X射线加速极区对外流，侧向或逆向进入的约10 kHz种子波可通过相对论体运动及受激康普顿散射升至GHz。采用PIC启发的非线性饱和处方，部分散射支得到L_FRB^iso≈Θ^(1/2)L_kin^iso。保守火球对密度不足以解释FRB 20200428，需要额外对加载；在接近局部冻结密度上限、取Θ=10^-2等条件下，估计光度可达约1.1×10^45 erg/s。小角度加载区在理想几何条件下给出光度正比于相对带宽平方，三个重复源的分布仅被认为与之定性相符。上述光度能力依赖对供应、温度和加速阶段处理，不能视为自洽实现或观测确认。",
           "bluf_problem": "磁星高能爆发如何通过极区电子–正电子火球及相对论外流，产生FRB所需的相干射电辐射；受激康普顿上散射在何种密度、温度、种子波和几何条件下能够增长、饱和并达到观测光度，以及其可观测带宽和偏振性质是什么。",
-          "figures": [],
-          "primary_figure": null
-        }
-      ],
-      "lead_figure": null,
-      "lead_figure_arxiv_id": null,
-      "canonical_t0": null,
-      "best_redshift": null,
-      "has_redshift_conflict": false,
-      "multi_messenger": [],
-      "gcn_aliases_label": null,
-      "canonical_t0_label": null,
-      "best_redshift_label": null,
-      "multi_messenger_badges": [],
-      "gcn_circular_count": 0,
-      "gcn_figure_path": null,
-      "gcn_aliases": [],
-      "gcn_slug": null,
-      "gcn_status": null
-    },
-    {
-      "event_id": "AT 2026ABCK",
-      "event_type": "AT",
-      "tags": [],
-      "heat_score": 0.2,
-      "paper_count": 1,
-      "headline": "论文针对高红移超新星样本稀少、尤其少有事件在爆发后数日内被观测的问题",
-      "narrative": "AT 2026ABCK 是近期重点瞬变天体事件，监测日期 2026-09-30，共聚合 1 篇研读文献。核心突破研判：报告了非透镜场中 z=5.017 的瞬变 AT 2026abck。其黑体拟合温度约为 1.7×10^4 K、半径约 7×10^14 cm、光度约 3×10^43 erg s−1；位置和光谱能量分布支持核心塌缩超新星起源。作者估计观测时距爆发约 4–10 个静止系日，并认为冲击冷却或周星物质相互作用可能提供额外早期能量。超新星类型尚未被光度数据确定。",
-      "first_seen": "2026-09-30",
-      "last_updated": "2026-09-30",
-      "papers": [
-        {
-          "arxiv_id": "2609.38373",
-          "revision": 1,
-          "title": "NEXUS: Discovery of a Luminous Young Transient at $z=5$",
-          "authors": [
-            "Ming-Yang Zhuang",
-            "Yue Shen",
-            "Lei Hu",
-            "Justin D. R. Pierel",
-            "Zhiwei Pan",
-            "Zachary Stone",
-            "Adam J. Burgasser",
-            "Xiaohui Fan",
-            "Jenny E. Greene",
-            "Junyao Li",
-            "Feige Wang"
-          ],
-          "date": "2026-09-30",
-          "priority": "worth_knowing",
-          "bluf_result": "报告了非透镜场中 z=5.017 的瞬变 AT 2026abck。其黑体拟合温度约为 1.7×10^4 K、半径约 7×10^14 cm、光度约 3×10^43 erg s−1；位置和光谱能量分布支持核心塌缩超新星起源。作者估计观测时距爆发约 4–10 个静止系日，并认为冲击冷却或周星物质相互作用可能提供额外早期能量。超新星类型尚未被光度数据确定。",
-          "bluf_problem": "论文针对高红移超新星样本稀少、尤其少有事件在爆发后数日内被观测的问题，报告并分析一个 z≈5 的年轻瞬变，以约束其早期性质、可能起源及宿主环境。",
           "figures": [],
           "primary_figure": null
         }
@@ -10701,6 +11209,58 @@
           "priority": "must_read",
           "bluf_result": "论文建立了一个包含倾斜与扭转剖面、自照射、二维温度、内盘遮挡和耀发再处理的翘曲TDE吸积盘模型。主要预测包括：外盘再处理可使温度径向标度由r^{-3/4}趋向r^{-1/2}并导致光学/UV变红或出现谱凸起；翘曲外盘可遮挡内盘并造成延迟X射线增强；约10倍的X射线耀发可产生约2倍的光学/UV响应，延迟通常为小时量级；翘曲半径增长可加速平台演化。AT2019dsg、AT2022dsb和AT2018fyk只被作为候选观测迹象讨论，未进行单事件拟合。",
           "bluf_problem": "研究TDE中由恒星轨道与黑洞自旋失配产生的翘曲吸积盘，及其自照射、遮挡、再处理和时间演化如何形成可观测的光学/UV颜色变化、光学/UV回响、延迟X射线显露和平台期演化信号。",
+          "figures": [],
+          "primary_figure": null
+        }
+      ],
+      "lead_figure": null,
+      "lead_figure_arxiv_id": null,
+      "canonical_t0": null,
+      "best_redshift": null,
+      "has_redshift_conflict": false,
+      "multi_messenger": [],
+      "gcn_aliases_label": null,
+      "canonical_t0_label": null,
+      "best_redshift_label": null,
+      "multi_messenger_badges": [],
+      "gcn_circular_count": 0,
+      "gcn_figure_path": null,
+      "gcn_aliases": [],
+      "gcn_slug": null,
+      "gcn_status": null
+    },
+    {
+      "event_id": "AT 2026ABCK",
+      "event_type": "AT",
+      "tags": [],
+      "heat_score": 0.1,
+      "paper_count": 1,
+      "headline": "论文针对高红移超新星样本稀少、尤其少有事件在爆发后数日内被观测的问题",
+      "narrative": "AT 2026ABCK 是近期重点瞬变天体事件，监测日期 2026-09-30，共聚合 1 篇研读文献。核心突破研判：报告了非透镜场中 z=5.017 的瞬变 AT 2026abck。其黑体拟合温度约为 1.7×10^4 K、半径约 7×10^14 cm、光度约 3×10^43 erg s−1；位置和光谱能量分布支持核心塌缩超新星起源。作者估计观测时距爆发约 4–10 个静止系日，并认为冲击冷却或周星物质相互作用可能提供额外早期能量。超新星类型尚未被光度数据确定。",
+      "first_seen": "2026-09-30",
+      "last_updated": "2026-09-30",
+      "papers": [
+        {
+          "arxiv_id": "2609.38373",
+          "revision": 1,
+          "title": "NEXUS: Discovery of a Luminous Young Transient at $z=5$",
+          "authors": [
+            "Ming-Yang Zhuang",
+            "Yue Shen",
+            "Lei Hu",
+            "Justin D. R. Pierel",
+            "Zhiwei Pan",
+            "Zachary Stone",
+            "Adam J. Burgasser",
+            "Xiaohui Fan",
+            "Jenny E. Greene",
+            "Junyao Li",
+            "Feige Wang"
+          ],
+          "date": "2026-09-30",
+          "priority": "worth_knowing",
+          "bluf_result": "报告了非透镜场中 z=5.017 的瞬变 AT 2026abck。其黑体拟合温度约为 1.7×10^4 K、半径约 7×10^14 cm、光度约 3×10^43 erg s−1；位置和光谱能量分布支持核心塌缩超新星起源。作者估计观测时距爆发约 4–10 个静止系日，并认为冲击冷却或周星物质相互作用可能提供额外早期能量。超新星类型尚未被光度数据确定。",
+          "bluf_problem": "论文针对高红移超新星样本稀少、尤其少有事件在爆发后数日内被观测的问题，报告并分析一个 z≈5 的年轻瞬变，以约束其早期性质、可能起源及宿主环境。",
           "figures": [],
           "primary_figure": null
         }

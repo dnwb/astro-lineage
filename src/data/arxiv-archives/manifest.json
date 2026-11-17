@@ -1,25 +1,60 @@
 {
   "schema_version": "astrolineage-arxiv-archive-manifest-v1",
-  "updated_at": "2026-11-16T18:04:38.382Z",
+  "updated_at": "2026-11-17T18:48:40.335Z",
   "total_weeks": 11,
-  "total_daily_editions": 49,
+  "total_daily_editions": 50,
   "latest_week_id": "2026-W47",
-  "latest_daily_date": "2026-11-15",
+  "latest_daily_date": "2026-11-16",
   "weeks": [
     {
       "week_id": "2026-W47",
       "title": "Weekly Scientific Lineage · 2026-W47",
       "date_range": "2026-11-16 ~ 2026-11-22",
       "has_weekly_summary": true,
-      "executive_summary": "The week follows the causal chain from compact central engines and their magnetic or accretion loading, through jets, winds, and circumburst or binary plasma, to the clocks, spectra, damping, and multi-messenger signatures used to infer the engine.\n- **Repeating FRBs and changing environments**: arXiv:2611.17805 finds a $\\sim120\\,\\mathrm{d}$ modulation of the daily-mean linear polarization fraction of FRB 20240114A, with phase-distance correlation peaking at $P=119.91^{+2.67}_{-2.04}\\,\\mathrm{d}$ and a folded semi-amplitude of $3.23\\%$, while a $95\\%$ bound $\\sigma_{\\rm RM}<0.51\\,\\mathrm{rad\\,m^{-2}}$ lowers the degree of linear polarization by only $\\sim0.42\\%$ at $1.0\\,\\mathrm{GHz}$ and a $120\\,\\mathrm{d}$ spin stores only $E_{\\rm rot}\\simeq1.84\\times10^{32}\\,\\mathrm{erg}$.\n- **FRB activity lifetimes beyond the monitoring window**: arXiv:2611.17833 shows that strong lensing by MACS J0717.5+3745 turns image delays into a source-frame activity baseline, with $L_{95}\\simeq42.6\\,\\mathrm{yr}$ for a $T_{\\mathrm{obs}}\\doteq5\\,\\mathrm{yr}$ survey at $z_s=2$ and $\\mathrm{E}[\\ln B_{12}]>3$ when activity durations differ by about one decade.\n- **Burst subclasses across FRB active episodes**: arXiv:2611.18056 uses UMAP and HDBSCAN on FRB 20121102A to isolate a high-energy cluster whose episode fraction falls from $26.9^{+2.3}_{-2.2}\\%$ in 2019 to $7.7^{+3.1}_{-2.3}\\%$ and $7.8^{+6.4}_{-3.7}\\%$ in 2022 and 2023, while all clusters keep bandwidth ratio $<0.4$ and similar bimodal waiting times.\n- **Merger jets and seconds-long soft X-ray pulses**: arXiv:2611.18210 identifies EP260411a as the sole astrophysical match to short GRB 260411A, with $T_{\\rm X,90}=6.1_{-1.1}^{+0.7}\\,\\mathrm{s}$, $T_{\\gamma,90}=1.3_{-0.3}^{+0.2}\\,\\mathrm{s}$, $w\\propto E^{-0.24}$ and $t_{\\rm peak}\\propto E^{-0.56}$, and places the joint spectrum in the Type I region of the $E_{\\rm p,z}$–$E_{\\rm iso}$ plane.\n- **Surface fields of central compact objects**: arXiv:2611.17430 finds that the $\\sim0.7$ and $1.4\\,\\mathrm{keV}$ lines of 1E 1207.4-5209 imply a steady $B\\approx(7\\text{–}8)\\times10^{10}\\,\\mathrm{G}$ from 2001 to 2020, consistent with the spin-down value $\\approx9.8\\times10^{10}\\,\\mathrm{G}$, with only a rotational contrast $\\sim5\\times10^{9}\\,\\mathrm{G}$.\n- **Accreting neutron-star spin equilibrium**: arXiv:2611.17972 describes 39 LMXB spins as a broad slow component plus a narrow pileup at $\\mu_{\\rm G}=565.7\\,\\mathrm{Hz}$ with $\\sigma_{\\rm G}=32.4\\,\\mathrm{Hz}$, shows that ordinary torque diffusion supplies only $\\Delta\\nu_{\\rm diff}\\simeq7.9\\,\\mathrm{Hz}$, and requires $B\\propto\\dot{M}^{1/2}$ if the fast peak is not to be broadened by accretion-rate scatter.\n- **Non-ultracompact but helium-rich burst fuel**: arXiv:2611.18226 finds that a $P_{\\rm orb}\\approx3.47\\,\\mathrm{hr}$ neutron-star LMXB produces $7$–$10\\,\\mathrm{s}$ non-PRE bursts with $\\alpha=114\\pm14$ and ignition models favoring $X\\sim0.03$ and $Z_{\\rm CNO}\\approx4\\times10^{-4}$.\n- **Resonant dark-matter trapping in supernovae**: arXiv:2611.17604 argues that nonresonant $\\nu\\bar\\nu\\to\\chi\\bar\\chi$ production combined with resonant $\\chi\\bar\\nu$ scattering opens an SN1987A cooling gap from about $5\\,\\mathrm{MeV}$ to $100\\,\\mathrm{MeV}$ at $m_\\phi=3m_\\chi$, relative to the Raffelt limit $5\\times10^{52}\\,\\mathrm{erg\\,s^{-1}}$.\n- **Suprathermal damping in merger remnants**: arXiv:2611.18146 shows that $1\\,\\mathrm{kHz}$ oscillations with $\\Delta n/n\\sim0.1$ drive $|\\mu_\\Delta|/T\\geq1$ and can raise the bulk viscosity by up to five orders of magnitude above the subthermal value at $T=0.5\\,\\mathrm{MeV}$.\n- **Kink-mediated baryon loading of magnetized jets**: arXiv:2611.18268 shows that unloaded magnetic acceleration would reach $\\Gamma_j\\sim10^{4}$ near $100\\,\\mathrm{pc}$, whereas a kink at a $\\sigma=10^{3}$ jet–wind interface mixes plasma until the relaxed volume average satisfies $\\langle\\sigma\\rangle<1$.",
+      "executive_summary": "This week’s retained work traces the same causal chain the group uses—central engine and compact-object spin or magnetic energy, jet or ejecta launch, interaction with a magnetized or aspherical circum-source medium, dissipation, and the polarization, timing, or spectral features used to invert that chain—while separating propagation and geometry from the engine itself.\n- **Repeating FRB polarization clocks**: arXiv:2611.17805 reports a linear-polarization-fraction modulation of FRB 20240114A with phase-distance correlation peaking at $P=119.91^{+2.67}_{-2.04}\\,\\mathrm{d}$ (semi-amplitude $3.23\\%$), argues that Faraday depolarization from $\\sigma_{\\rm RM}<0.51\\,\\mathrm{rad\\,m^{-2}}$ lowers the degree of linear polarization by only $\\sim0.42\\%$ at $1.0\\,\\mathrm{GHz}$, and shows that a $120\\,\\mathrm{d}$ spin with $I=10^{45}\\,\\mathrm{g\\,cm^2}$ stores only $E_{\\rm rot}\\simeq1.84\\times10^{32}\\,\\mathrm{erg}$, far below $E_{\\rm iso}\\sim10^{37}$–$10^{39}\\,\\mathrm{erg}$, so the clock is geometric or orbital ($a\\simeq1.03\\,\\mathrm{au}$ for $M_{\\rm tot}=10M_\\odot$) rather than the burst engine’s rotation.\n- **Magnetized-plasma transfer of FRB polarization**: arXiv:2611.19811 derives cold-plasma Faraday coefficients without the weak-field approximation, replaces $\\Delta\\mathrm{PA}=\\mathrm{RM}\\lambda^2$ by $\\Delta\\mathrm{PA}=\\mathrm{RM}\\lambda^2\\lambda_B^2/(\\lambda_B^2-\\lambda^2)$ when $\\omega_B$ is not negligible, fits $\\theta_B\\sim90^\\circ$ and $\\log_{10}(B/\\mathrm{G})\\approx1.16$–$1.66$ for FRB 20180301A and two GPM pulses, and limits conversion-dominated sightlines to $B\\lesssim100\\,\\mathrm{G}$ while showing that a relativistic persistent-source plasma suppresses rotation by $(\\ln\\gamma_i)\\gamma_i^{-2(\\alpha+1)}$.\n- **Burst subclasses across FRB active windows**: arXiv:2611.18056 finds that HDBSCAN Cluster 1 of FRB 20121102A holds nearly all high-energy, mostly classical ($T_{\\mathrm{B,cri}}\\approx10^{33}\\,\\mathrm{K}$) bursts and drops from $26.9^{+2.3}_{-2.2}\\%$ in 2019 to $7.7^{+3.1}_{-2.3}\\%$ and $7.8^{+6.4}_{-3.7}\\%$ in 2022 and 2023, while all clusters keep bandwidth ratio $<0.4$ and similar bimodal waiting times.\n- **Pre-window FRB activity via cluster lensing**: arXiv:2611.17833 shows that MACS J0717.5+3745 image delays turn a $T_{\\mathrm{obs}}\\doteq5\\,\\mathrm{yr}$ survey at $z_s=2$ into a source-frame $95\\%$ span $L_{95}\\simeq42.6\\,\\mathrm{yr}$ for $T_{\\mathrm{act}}=100\\,\\mathrm{yr}$, with activity durations separated by about one decade giving $\\mathrm{E}[\\ln B_{12}]>3$.\n- **Seconds-long soft X-rays with short GRBs**: arXiv:2611.18210 identifies EP260411a as the sole astrophysical match to short GRB 260411A, with FRED pulses $T_{\\rm X,90}=6.1_{-1.1}^{+0.7}\\,\\mathrm{s}$ and $T_{\\gamma,90}=1.3_{-0.3}^{+0.2}\\,\\mathrm{s}$, Norris scaling $w\\propto E^{-0.24}$ and $t_{\\rm peak}\\propto E^{-0.56}$, and a joint broken power law placing the event in the Type I region of the $E_{\\rm p,z}$–$E_{\\rm iso}$ plane.\n- **Short-lived supernova CSM versus shock cooling**: arXiv:2611.19031 finds only weak narrow lines at $1.7$ and $2.6\\,\\mathrm{d}$ in SN 2024phv and a post-day-2 shock-cooling radius $R=390\\pm90\\,R_\\odot$ that overpredicts the first image by a factor $\\approx4$, implying a dense inner CSM ($\\sim10^{-12}\\,\\mathrm{g\\,cm^{-3}}$ near $\\sim2\\times10^{14}\\,\\mathrm{cm}$) that drops sharply.\n- **Aspherical CSM mass from radio**: arXiv:2611.20672 shows $M_{\\mathrm{CSM}}\\propto f_\\Omega^{0.15}$–$f_\\Omega^{0.38}$ and, analytically for $p=3$, $s=2$, $n=10$, $M_{\\mathrm{CSM}}\\propto f_\\Omega^{5/13}$, so $f_\\Omega=0.01$ does not reduce the radio-inferred mass by an order of magnitude.\n- **Jet–wind kink and baryon loading**: arXiv:2611.18268 shows that unloaded magnetic acceleration would reach $\\Gamma_j\\sim10^4$, whereas a static-column kink drives helical interpenetration and relaxes the mixture to $\\langle\\sigma\\rangle<1$ for a $\\sigma_w=0.1$ wind.\n- **Accreting neutron-star spins, fields, and QPOs**: arXiv:2611.17972 isolates a narrow pileup at $\\mu_{\\rm G}=565.7\\,\\mathrm{Hz}$ ($\\sigma_{\\rm G}=32.4\\,\\mathrm{Hz}$) that ordinary torque diffusion ($\\Delta\\nu_{\\rm diff}\\simeq7.9\\,\\mathrm{Hz}$) cannot set; arXiv:2611.19502 finds the Hartle–Thorne quadrupole lowers $\\nu_{\\rm nod}$ by up to $25\\%$ near the ISCO and saturates $2\\nu_{\\rm nod}$ near $32$–$40\\,\\mathrm{Hz}$; arXiv:2611.17430 keeps the cyclotron field of 1E 1207.4-5209 at $B\\approx(7$–$8)\\times10^{10}\\,\\mathrm{G}$ over 2001–2020; arXiv:2611.18226 requires $X\\sim0.03$ and $Z_{\\rm CNO}\\approx4\\times10^{-4}$ for a helium-rich donor at $P_{\\rm orb}\\approx3.47\\,\\mathrm{hr}$.\n- **Merger damping and binary magnetic circuits**: arXiv:2611.18146 finds suprathermal bulk viscosity at $1\\,\\mathrm{kHz}$ can exceed the subthermal value by up to five orders of magnitude for $\\Delta n/n\\sim0.1$–$1$ at $T=0.5\\,\\mathrm{MeV}$; arXiv:2611.20654 finds low-resistance magnetized binaries are quasi-cyclic, with ${\\bar L}_{\\rm mag}/L_{\\rm GW}\\sim10^{-10}$ and $|\\Delta\\Phi_{\\rm GW}|\\ll1$ even at $B_1=10^{15}\\,\\mathrm{G}$.\n- **PeVatrons and blazar SSA fields**: arXiv:2611.20542 places the all-particle knee at $3.67\\pm0.05_{\\rm stat}\\pm0.15_{\\rm sys}\\,\\mathrm{PeV}$ and limits a Crab $\\pi^0$ component to $\\lesssim5\\%$ of the spin-down power; arXiv:2611.19906 measures $\\langle\\log B_{\\rm SSA}\\rangle=-1.81\\pm0.16$ for 143 blazars, systematically below broadband-SED fields.\n- **Resonant dark-matter trapping in supernovae**: arXiv:2611.17604 shows that for ${\\mathcal L}_{\\rm int}\\supset -g\\phi^{*}\\bar\\chi P_L\\nu$ at $m_\\phi=3m_\\chi$, resonant $\\chi\\bar\\nu$ scattering opens an SN1987A cooling gap from about $5\\,\\mathrm{MeV}$ to $100\\,\\mathrm{MeV}$ relative to the Raffelt limit $5\\times10^{52}\\,\\mathrm{erg\\,s^{-1}}$.",
       "statistics": {
-        "total_analyzed": 54,
-        "must_read_count": 4,
-        "worth_knowing_count": 6,
-        "skip_count": 44
+        "total_analyzed": 145,
+        "must_read_count": 7,
+        "worth_knowing_count": 20,
+        "skip_count": 118
       },
-      "top_picks_count": 10,
+      "top_picks_count": 17,
       "days": [
+        {
+          "date": "2026-11-16",
+          "weekday": "Mon",
+          "week_id": "2026-W47",
+          "batch_id": "announcement-2026-11-16",
+          "total_papers": 91,
+          "analyzed_count": 91,
+          "must_read_count": 3,
+          "worth_knowing_count": 14,
+          "skip_count": 74,
+          "pending_count": 0,
+          "brief_status": "ready",
+          "brief_intro": "Featured reading: \"Early Spectroscopy of the Type II SN 2024phv Suggests Short-Lived Circumstellar Interaction\" and 16 other key developments.",
+          "highlights": [
+            {
+              "arxiv_id": "2611.19031",
+              "priority": "must_read",
+              "title": "Early Spectroscopy of the Type II SN 2024phv Suggests Short-Lived Circumstellar Interaction",
+              "reason": "This Type II supernova study directly tests shock-cooling emission against short-lived circumstellar interaction, a core interest of the group. The early light curve and spectra give quantitative progenitor-radius and near-star CSM constraints even though the advance is a single-object incremental result."
+            },
+            {
+              "arxiv_id": "2611.19811",
+              "priority": "must_read",
+              "title": "Polarization of Fast Radio Bursts due to Propagation in Magnetized Plasma",
+              "reason": "This work directly models how magnetized plasma around FRBs and associated persistent radio sources imprints frequency-dependent polarization, separating intrinsic emission from Faraday propagation."
+            },
+            {
+              "arxiv_id": "2611.20672",
+              "priority": "must_read",
+              "title": "The Effect of Asphericity to the Inference of Supernova Circumstellar Environment from Radio Observations",
+              "reason": "This paper directly quantifies how asphericity changes radio-inferred supernova CSM masses, a core input for shock–CSM interaction studies. The weak $M_{\\mathrm{CSM}}$–$f_{\\Omega}$ scaling is a concrete, usable constraint rather than a peripheral result."
+            }
+          ],
+          "data_file": "daily/2026-11-16.json"
+        },
         {
           "date": "2026-11-15",
           "weekday": "Sun",

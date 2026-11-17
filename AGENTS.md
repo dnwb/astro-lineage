@@ -1,14 +1,14 @@
 ## Agent skills
 
 技术文档和回复参考 `~/STE.md`
-系统核心架构与规范以 `ARCHITECTURE.md` 为唯一蓝图，`docs/adr/` 为历史归档决策（日常开发无需阅读）。
+系统核心架构与规范以 `ARCHITECTURE.md` 为唯一蓝图，领域术语与概念定义以 `GLOSSARY.md` 为准，`docs/adr/` 为历史归档决策（日常开发无需阅读）。
 
 对于页面 UI，严禁编写任何落地页风格的产品介绍段落（Hero Decks）；
 功能标题使用最简日常词汇。
 
 所有发布的时间一律以北京时间 UTC+8 为准。
 代码审查与差异检查优先使用 `git diff --stat`，严禁对 `src/data/` 等大规模数据目录运行无约束的裸 `git diff`。
-部署拓扑：校园网预览服务 (`astrolineage-web.service`, `:4321`) 运行在 `/home/long/astro-lineage-cron` (`master`)；在 `/home/long/astro-lineage` 构建后需同步至 `astro-lineage-cron` 方可在 `:4321` 预览生效。
+部署拓扑：校园网预览服务 (`astrolineage-web.service`, `:4321`) 运行在 `/home/long/astro-lineage-cron` (`master`)；数据或代码更新后需在 `cron` 工作区执行 `npm run build && systemctl --user restart astrolineage-web.service` 方可在 `:4321` 生效。
 
 ### Architecture blueprint
 

@@ -2021,6 +2021,9 @@ export async function publishWeeklyFeed({
             console.warn(
               `[publisher] Failed to pin weekly feed ${item.feed_id}: ${pinErr.message}`
             );
+            res.pin_failed = true;
+            res.success = false;
+            res.errors = [...(res.errors || []), `CHANNEL_PIN_FAILED: ${pinErr.message}`];
           }
         }
       });

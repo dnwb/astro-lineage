@@ -2,6 +2,7 @@ import { existsSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { parseArgs } from "node:util";
 
 if (typeof process.loadEnvFile === "function" && existsSync(".env")) {
   process.loadEnvFile();
@@ -942,27 +943,39 @@ export async function reconcilePreviousEdition({
   }
 }
 
-function cliValue(args, name) {
-  const prefix = `${name}=`;
-  const argument = args.find((value) => value.startsWith(prefix));
-  return argument?.slice(prefix.length);
-}
-
-function hasFlag(args, flag) {
-  return args.includes(flag);
+export function parseSchedulerCliArgs(args = process.argv.slice(2)) {
+  const { values } = parseArgs({
+    args,
+    options: {
+      output: { type: "string" },
+      date: { type: "string" },
+      from: { type: "string" },
+      through: { type: "string" },
+      limit: { type: "string" },
+      "analysis-limit": { type: "string" },
+      "reconcile-previous": { type: "boolean", default: false },
+      reconcile: { type: "boolean", default: false },
+      "no-analyze": { type: "boolean", default: false },
+      weekly: { type: "boolean", default: false },
+      "auto-weekly": { type: "boolean", default: false },
+    },
+    strict: true,
+    allowPositionals: false,
+  });
+  return values;
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === resolve(fileURLToPath(import.meta.url))) {
-  const args = process.argv.slice(2);
-  const output = cliValue(args, "--output") ?? DEFAULT_OUTPUT;
-  const announcementDate = cliValue(args, "--date");
-  const fromDate = cliValue(args, "--from");
-  const throughDate = cliValue(args, "--through");
-  const runLimitText = cliValue(args, "--limit");
+  const cliArgs = parseSchedulerCliArgs();
+  const output = cliArgs.output ?? DEFAULT_OUTPUT;
+  const announcementDate = cliArgs.date;
+  const fromDate = cliArgs.from;
+  const throughDate = cliArgs.through;
+  const runLimitText = cliArgs.limit;
   const runLimit = runLimitText === undefined ? undefined : Number(runLimitText);
   if (runLimit !== undefined && (!Number.isInteger(runLimit) || runLimit < 1))
     throw new Error("--limit must be a positive integer");
-  const analysisLimitText = cliValue(args, "--analysis-limit");
+  const analysisLimitText = cliArgs["analysis-limit"];
   const requestedAnalysisLimit =
     analysisLimitText === undefined ? runLimit : Number(analysisLimitText);
   if (
@@ -975,12 +988,12 @@ if (process.argv[1] && resolve(process.argv[1]) === resolve(fileURLToPath(import
     process.env.IOA_API_KEY || process.env.WU_API_KEY || process.env.OPENAI_API_KEY
   );
 
-  if (hasFlag(args, "--reconcile-previous") || hasFlag(args, "--reconcile")) {
+  if (cliArgs["reconcile-previous"] || cliArgs.reconcile) {
     console.log("[scheduler] 执行次日兜底清障与增量对账扫描...");
     const recResult = await reconcilePreviousEdition({
       output,
       announcementDate,
-      analyzeImpl: !hasFlag(args, "--no-analyze") && hasCredentials ? defaultAnalyzer : undefined,
+      analyzeImpl: !cliArgs["no-analyze"] && hasCredentials ? defaultAnalyzer : undefined,
       analysisLimit: requestedAnalysisLimit,
     });
     console.log(
@@ -996,7 +1009,7 @@ if (process.argv[1] && resolve(process.argv[1]) === resolve(fileURLToPath(import
     throughDate,
     ...(runLimit === undefined ? {} : { maxBatchesPerRun: runLimit }),
     ...(requestedAnalysisLimit === undefined ? {} : { analysisLimit: requestedAnalysisLimit }),
-    analyzeImpl: !hasFlag(args, "--no-analyze") && hasCredentials ? defaultAnalyzer : undefined,
+    analyzeImpl: !cliArgs["no-analyze"] && hasCredentials ? defaultAnalyzer : undefined,
   });
   if (result.refreshed_dates.length > 0) {
     console.log(`refreshed arXiv announcement dates: ${result.refreshed_dates.join(", ")}`);
@@ -1011,7 +1024,7 @@ if (process.argv[1] && resolve(process.argv[1]) === resolve(fileURLToPath(import
   const isEndOfWeekBatch = result.payload?.window?.announcement_weekday === "Thu";
   const shouldWeekly =
     result.status === "refreshed" &&
-    (hasFlag(args, "--weekly") || (hasFlag(args, "--auto-weekly") && isEndOfWeekBatch)) &&
+    (cliArgs.weekly || (cliArgs["auto-weekly"] && isEndOfWeekBatch)) &&
     hasCredentials;
   if (shouldWeekly) {
     console.log("[scheduler] 开始自动执行 AI 每周学术脉络总结...");

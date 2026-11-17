@@ -8,6 +8,7 @@ import { DEFAULT_QUERY } from "../scripts/arxiv-daily.mjs";
 import {
   isAnnouncementDate,
   latestCompletedAnnouncementDate,
+  parseSchedulerCliArgs,
   runScheduledArxivRefresh,
   assertContinuousBatchIntervals,
   reconcilePreviousEdition,
@@ -684,4 +685,10 @@ test("readLedger prunes legacy arXiv holiday entries from existing scheduler led
   assert.ok(!updatedLedger.successful_dates.includes("2026-10-12"));
   assert.ok(!updatedLedger.failed_dates.includes("2026-11-11"));
   assert.equal(updatedLedger.date_attempts["2026-11-11"], undefined);
+});
+
+test("parseSchedulerCliArgs accepts both --date= and --date space syntax and rejects unknown flags", () => {
+  assert.equal(parseSchedulerCliArgs(["--date=2026-11-12"]).date, "2026-11-12");
+  assert.equal(parseSchedulerCliArgs(["--date", "2026-11-12"]).date, "2026-11-12");
+  assert.throws(() => parseSchedulerCliArgs(["--unknown-flag"]), /Unknown option/u);
 });

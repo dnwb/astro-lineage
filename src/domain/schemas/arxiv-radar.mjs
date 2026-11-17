@@ -6,6 +6,7 @@
  */
 
 import { z } from "zod";
+import { CausalAnchorSchema } from "../causal-graph-catalog.mjs";
 
 export const RADAR_PRIORITY_VALUES = ["must_read", "worth_knowing", "skip"];
 export const RADAR_COVERAGE_VALUES = ["abstract_only", "body_partial", "full_body"];
@@ -88,6 +89,7 @@ export const RadarAnalysisSchema = z
     coverage: CoverageSchema.default({ level: "abstract_only" }),
     analysis: AnalysisBodySchema.default({}),
     figures: z.array(FigureSchema).optional(),
+    causal_anchor: CausalAnchorSchema.optional(),
   })
   .passthrough()
   .refine((data) => Boolean(data.arxiv_id || data.id || data.doi), {

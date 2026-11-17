@@ -371,6 +371,27 @@ export async function executeChatCompletion({
 
 import { ASTROPHYSICS_SYSTEM_PROMPT } from "../src/domain/academic-domain.mjs";
 import { cleanTitleZh } from "../src/domain/paper-translation.mjs";
+import {
+  loadCausalCatalog,
+  selectRelevantCausalWorks,
+  formatCausalContext,
+} from "../src/domain/causal-graph-catalog.mjs";
+
+let cachedCausalCatalog;
+function getCausalCatalog() {
+  if (cachedCausalCatalog !== undefined) return cachedCausalCatalog;
+  try {
+    cachedCausalCatalog = loadCausalCatalog();
+  } catch {
+    cachedCausalCatalog = null;
+  }
+  return cachedCausalCatalog;
+}
+
+function causalContextForEntry(entry, catalog = getCausalCatalog()) {
+  if (!catalog) return "";
+  return formatCausalContext(selectRelevantCausalWorks(entry, catalog, { maxWorks: 5 }));
+}
 
 const SYSTEM_PROMPT = ASTROPHYSICS_SYSTEM_PROMPT;
 
@@ -387,14 +408,20 @@ function scientificFieldsPrompt({ abstract = false } = {}) {
   "limits":["Explicit physical limits or scope in English; empty array if none verified"],
   "research_progress":"Physical incremental advance and scaling laws in English; write unknown if unconfirmed",
   "inspected_sections":["Actual section titles inspected from the input text"],
-  "evidence":[{"section":"${abstract ? "Abstract" : "Actual section title in source body (do not use Abstract)"}","quote":"Continuous exact English quote (12–120 characters verbatim from the input English section, never translated or paraphrased, must match source text verbatim)","supports":["reason","result","problem","method","research_progress","assumptions[0]","limits[0]"]}]
+  "evidence":[{"section":"${abstract ? "Abstract" : "Actual section title in source body (do not use Abstract)"}","quote":"Continuous exact English quote (12–120 characters verbatim from the input English section, never translated or paraphrased, must match source text verbatim)","supports":["reason","result","problem","method","research_progress","assumptions[0]","limits[0]"]}],
+  "causal_anchor":{"primary_axis":"dynamics|emission|central_object|energy_transfer|observable","anchored_stages":[{"stage_id":"stage:...","work_slug":"...","relation":"supports|constrains|challenges|extends|tests","reason":"One concise sentence (20-80 chars) on how this paper acts on the stage"}]}
 }
+Causal anchor contract: Only include causal_anchor for must_read or worth_knowing papers when the result substantially acts on a provided stage_id from the reference causal stages (never invent stage_id or work_slug); omit causal_anchor or set null for skip or unanchored papers.
 Mathematical notation and physics formulas: Prioritize explicit standard LaTeX math ($...$ or $$...$$) for key physical values, spectral indices, scaling relations, or thresholds. Symbols and units must adhere to standard LaTeX/KaTeX conventions (\\\\mathrm{...}, \\\\dot{M}, M_\\\\odot). Never use author-private macros. In JSON strings, all backslashes must be properly escaped (\\\\alpha, \\\\dot{M}).
 Source evidence citation rules: Quotes must be verbatim continuous English substrings from the input text (12-120 chars, matching input exactly); supports lists the specific fields supported.
 Verification contract: For non-unknown core fields (reason, result, problem, method, research_progress), at least one evidence quote must declare the field name in its supports array. If evidence cannot be confirmed from the text, set that field to unknown.`;
 }
 
 function buildBodyPrompt(entry, source) {
+  const causalContext = causalContextForEntry(entry);
+  const causalBlock = causalContext
+    ? `\n参考相关经典因果链条（Top 相关文献阶段；若正文结果直接 challenges/constrains/tests 核心节点，优先评为 must_read 并在 causal_anchor 中严格引用给定 stage_id 与 work_slug）：\n${causalContext}\n`
+    : "";
   return `阶段：正文文本阅读。输入包括 source package 中完整且版本匹配的 TeX 源文；Must Read 的 full_body 表示已提供全部正文文本，不表示图像、图表、附加数据或二进制文件已被视觉检查。不要声称独立核验图中数据或正文以外的材料；结论依赖未检查图表/数据时，应明确列为限制或 unresolved。证据只能引用下方实际 TeX 章节中的连续原文，不要引用上方摘要作正文证据。
 MR 必须检查所有实际章节并依据整篇正文文本判断；WK 至少检查能支撑结论的实际正文章节；也可以根据正文把初筛候选改为 skip。
 arXiv ID: ${entry.arxiv_id} (v${entry.revision})
@@ -404,7 +431,7 @@ ${entry.abstract}
 Source URL: ${source.url}
 Source SHA-256: ${source.sha256}
 实际识别到的章节标题: ${source.sections.map((section) => section.title).join(" | ")}
-
+${causalBlock}
 ${scientificFieldsPrompt()}
 
 以下是未截断的 source package 全部 TeX 文本；不要把摘要当作正文：
@@ -1063,7 +1090,12 @@ function sectionCoverage(sections) {
   };
 }
 
-export function buildAnalysisRecord(entry, parsed, checked, { modelName, source } = {}) {
+export function buildAnalysisRecord(
+  entry,
+  parsed,
+  checked,
+  { modelName, source, causalAnchor = null } = {}
+) {
   const priority = parsed.priority;
   const revision = Number(entry.revision);
   const sourceVersion = `arXiv:${normalizeArxivId(entry.arxiv_id)}v${revision}`;
@@ -1152,6 +1184,7 @@ export function buildAnalysisRecord(entry, parsed, checked, { modelName, source 
       },
       prerequisite_works: [],
     },
+    ...(priority !== "skip" && causalAnchor ? { causal_anchor: causalAnchor } : {}),
   };
 }
 
@@ -1762,6 +1795,7 @@ export async function runAiAnalyzer({
           modelCall,
           batchSize: 4,
           concurrency: Math.min(6, Math.ceil(untriaged.length / 4)),
+          causalContextFor: (entry) => causalContextForEntry(entry),
         }
       );
 
@@ -2021,9 +2055,21 @@ export async function runAiAnalyzer({
             paperAbstract: item.entry.abstract,
           }).catch(() => []);
           checked.figures = figures;
+          let causalAnchor = null;
+          const catalog = getCausalCatalog();
+          if (catalog && checked.priority !== "skip" && bodyOutput?.causal_anchor) {
+            const anchorValidation = catalog.validateAnchor(bodyOutput.causal_anchor);
+            if (anchorValidation.valid) {
+              causalAnchor = {
+                ...anchorValidation.data,
+                review_state: "unreviewed_machine_inference",
+              };
+            }
+          }
           item.analysis = buildAnalysisRecord(item.entry, bodyOutput, checked, {
             modelName: model,
             source,
+            causalAnchor,
           });
           trace.recordStage("EVIDENCE_GATE");
           const gate = evaluateEvidenceGate(item.analysis, {

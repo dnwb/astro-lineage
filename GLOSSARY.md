@@ -80,3 +80,15 @@ A canonical high-energy astrophysics theme tracked across the knowledge base and
 ### Channel Section
 
 A discussion board in the QQ Channel community corresponding to an active publication route (`R1`, `R2`, `R3`, `R4`, `R6`, `R7`). Radio/FRB works route to `R4` (`脉冲星与快速射电暴`), and X-ray magnetar burst/flare works route to `R7` (`X射线时变、磁星与致密双星`); `R5` is retired from active routing and preserved only for legacy post compatibility.
+
+---
+
+## 5. Causal Lineage
+
+### Causal Stage (`stage_id`)
+
+A discrete physical evolution node (prefixed `stage:`) defined in one of the 41 canonical works in the research group's causal graph catalog.
+
+### Causal Anchor (`causal_anchor`)
+
+A machine-inferred or reviewed link attaching a screened `PaperRecord` (`must_read` or `worth_knowing`) to 1–3 existing `Causal Stage` nodes via a typed physical relation (`supports`, `constrains`, `challenges`, `extends`, `tests`). `skip` papers are never anchored.

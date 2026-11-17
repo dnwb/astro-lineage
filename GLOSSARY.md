@@ -68,3 +68,15 @@ Non-astronomy or off-domain papers from multidisciplinary journals (such as biol
 ### Source Badge
 
 A visual UI token attached to paper cards and catalog entries indicating the origin journal or archive (e.g., `[Nature]`, `[Science]`, `[arXiv]`).
+
+---
+
+## 4. Research Lines & Community Channels
+
+### Research Line (`R1`–`R7`)
+
+A canonical high-energy astrophysics theme tracked across the knowledge base and weekly syntheses (`R1`: Central Engines, `R2`: Relativistic Jets & GRBs, `R3`: Explosive Transients & CSM, `R4`: Pulsar Winds & High-Energy Binaries, `R5`: Magnetar Bursts & FRB Environments, `R6`: Dense-Environment & Multi-Messenger Transients, `R7`: High-Energy X-Ray Timing & Compact Binaries).
+
+### Channel Section
+
+A discussion board in the QQ Channel community corresponding to an active publication route (`R1`, `R2`, `R3`, `R4`, `R6`, `R7`). Radio/FRB works route to `R4` (`脉冲星与快速射电暴`), and X-ray magnetar burst/flare works route to `R7` (`X射线时变、磁星与致密双星`); `R5` is retired from active routing and preserved only for legacy post compatibility.

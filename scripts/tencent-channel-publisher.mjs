@@ -31,6 +31,7 @@ import {
 import { resolvePaperTitleZhAsync } from "./paper-translation.mjs";
 import { resolvePaperTitleZhSync } from "../src/domain/paper-translation.mjs";
 import { isLegacyChineseDate } from "../src/domain/language-cutover.mjs";
+import { formatAuthorList } from "../src/domain/academic-domain.mjs";
 import { TencentGuildAdapter } from "./intelligence-egress.mjs";
 import {
   getDefaultWebsiteBase,
@@ -294,13 +295,9 @@ function formatWeeklyTopPicks(
     const authors = paperObj?.authors || pick.authors;
     const authorStr =
       Array.isArray(authors) && authors.length > 0
-        ? authors.length > 2
-          ? isLegacy
-            ? `${authors[0]} 等`
-            : `${authors[0]} et al.`
-          : authors.join(", ")
+        ? formatAuthorList(authors, { isLegacy, max: 2 })
         : "";
-    const authorSuffix = authorStr ? ` (${authorStr})` : "";
+    const authorSuffix = authorStr && authorStr !== "Not recorded" ? ` (${authorStr})` : "";
     out += `**${tag} · [arXiv:${pick.arxiv_id}](https://arxiv.org/abs/${pick.arxiv_id})**${authorSuffix}\n\n`;
     if (pick.title) out += `*${pick.title}*\n\n`;
     const rawReason = pick.reason || pick.recommendation_reason || pick.core_insight;

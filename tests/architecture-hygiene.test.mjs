@@ -264,3 +264,12 @@ test("architecture-hygiene: agent egress endpoints must be dynamically served fr
     );
   }
 });
+
+test("architecture-hygiene: scripts imported by Astro pages must not readFileSync src/domain JSON via relative URL", async () => {
+  const arxivDailyContent = await readFile(join(projectRoot, "scripts/arxiv-daily.mjs"), "utf8");
+  assert.doesNotMatch(
+    arxivDailyContent,
+    /readFileSync\([^)]*src\/domain\/[^)]*\.json/u,
+    "Use static JSON import with { type: 'json' } instead of readFileSync on src/domain/*.json so Astro SSR bundling does not fail with ENOENT."
+  );
+});

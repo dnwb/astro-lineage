@@ -2082,7 +2082,7 @@ export async function runAiAnalyzer({
       ? radar.historical_analyses
       : []) {
       if (typeof record?.historical_edition === "string" && record.historical_edition.trim()) {
-        const key = `${record.historical_edition}|${identityKey(record)}|${record.source_fingerprint}|${record.historical_edition_fingerprint ?? ""}`;
+        const key = `${record.historical_edition}|${identityKey(record)}`;
         historicalMap.set(key, record);
       }
     }
@@ -2094,7 +2094,7 @@ export async function runAiAnalyzer({
           historical_edition: edition.historical_edition,
           historical_edition_fingerprint: edition.historical_edition_fingerprint,
         };
-        const key = `${edition.historical_edition}|${identityKey(record)}|${record.source_fingerprint}|${edition.historical_edition_fingerprint}`;
+        const key = `${edition.historical_edition}|${identityKey(record)}`;
         historicalMap.set(key, record);
       }
     }

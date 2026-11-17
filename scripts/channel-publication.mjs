@@ -12,6 +12,7 @@ import {
   DEFAULT_RADAR_OUTPUT,
 } from "./arxiv-daily.mjs";
 import { validateDailyRadarPayload } from "./daily-radar.mjs";
+import { CHANNEL_TOPIC_LABELS } from "../src/domain/channel-document.mjs";
 
 export async function readChannelShareUrl({
   url = process.env.ASTRO_CHANNEL_URL,
@@ -47,14 +48,7 @@ const directionTitles = new Map(
 );
 if (directionTitles.size !== 7) throw new Error("CHANNEL_DIRECTIONS_INVALID");
 // Presentation labels only; the scientific definitions and routing IDs stay above.
-export const TOPIC_LABELS = {
-  R1: "中央引擎与能量注入",
-  R2: "伽马射线暴与相对论喷流",
-  R3: "超新星与星周介质作用",
-  R4: "脉冲星与快速射电暴",
-  R6: "致密环境与多信使暂现源",
-  R7: "X射线时变、磁星与致密双星",
-};
+export const TOPIC_LABELS = CHANNEL_TOPIC_LABELS;
 export const TOPIC_LABEL_ALIASES = Object.freeze({
   R4: Object.freeze(["脉冲星风与高能双星"]),
   R7: Object.freeze(["X射线时变、能谱与致密双星"]),

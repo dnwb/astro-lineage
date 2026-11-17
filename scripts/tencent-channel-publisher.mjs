@@ -271,6 +271,56 @@ export async function generateDailyMarkdown({
   return { batchDate, totalEntries, highlights, postTitle, md };
 }
 
+const MAX_WEEKLY_CHANNEL_CHARS = 9_600;
+
+function formatWeeklyTopPicks(
+  picks,
+  papers,
+  isLegacy,
+  { maxItems = Infinity, maxReasonChars = Infinity } = {}
+) {
+  if (!Array.isArray(picks) || picks.length === 0) return "";
+  const shown = Number.isFinite(maxItems) ? picks.slice(0, maxItems) : picks;
+  let out = isLegacy ? `## 建议优先阅读\n\n` : `## Top Picks\n\n`;
+  for (const pick of shown) {
+    const tag = isLegacy
+      ? pick.priority === "must_read"
+        ? "必读"
+        : "关注"
+      : pick.priority === "must_read"
+        ? "Must Read"
+        : "Follow";
+    const paperObj = (papers || []).find((p) => p.arxiv_id === pick.arxiv_id);
+    const authors = paperObj?.authors || pick.authors;
+    const authorStr =
+      Array.isArray(authors) && authors.length > 0
+        ? authors.length > 2
+          ? isLegacy
+            ? `${authors[0]} 等`
+            : `${authors[0]} et al.`
+          : authors.join(", ")
+        : "";
+    const authorSuffix = authorStr ? ` (${authorStr})` : "";
+    out += `**${tag} · [arXiv:${pick.arxiv_id}](https://arxiv.org/abs/${pick.arxiv_id})**${authorSuffix}\n\n`;
+    if (pick.title) out += `*${pick.title}*\n\n`;
+    const rawReason = pick.reason || pick.recommendation_reason || pick.core_insight;
+    if (rawReason) {
+      const chars = Array.from(rawReason);
+      const reason =
+        chars.length > maxReasonChars
+          ? `${chars.slice(0, maxReasonChars - 1).join("")}…`
+          : rawReason;
+      out += `${reason}\n\n`;
+    }
+  }
+  if (shown.length < picks.length) {
+    out += isLegacy
+      ? `*（其余 ${picks.length - shown.length} 篇见网页完整周报）*\n\n`
+      : `*Plus ${picks.length - shown.length} more picks in the full web report.*\n\n`;
+  }
+  return `${out}\n`;
+}
+
 export async function generateWeeklyMarkdown({
   titleOverride,
   weekly: weeklyInput,
@@ -287,44 +337,16 @@ export async function generateWeeklyMarkdown({
       : useSourceBoundTitleOverride("weekly", titleOverride, weekId, sourceTitle);
 
   const isLegacy = isLegacyChineseDate(weekId);
-  let md = `${dateRange}\n\n`;
+  const header = `${dateRange}\n\n`;
+  const overview = weekly.executive_summary
+    ? `${isLegacy ? `## 本周导读\n\n` : `## Weekly Overview\n\n`}${weekly.executive_summary}\n\n`
+    : "";
 
-  if (weekly.executive_summary) {
-    md += isLegacy ? `## 本周导读\n\n` : `## Weekly Overview\n\n`;
-    md += `${weekly.executive_summary}\n\n`;
-  }
+  const fullTopPicks = formatWeeklyTopPicks(weekly.top_picks, weekly.papers, isLegacy);
 
-  if (Array.isArray(weekly.top_picks) && weekly.top_picks.length > 0) {
-    md += isLegacy ? `## 建议优先阅读\n\n` : `## Top Picks\n\n`;
-    for (const pick of weekly.top_picks) {
-      const tag = isLegacy
-        ? pick.priority === "must_read"
-          ? "必读"
-          : "关注"
-        : pick.priority === "must_read"
-          ? "Must Read"
-          : "Follow";
-      const paperObj = (weekly.papers || []).find((p) => p.arxiv_id === pick.arxiv_id);
-      const authors = paperObj?.authors || pick.authors;
-      const authorStr =
-        Array.isArray(authors) && authors.length > 0
-          ? authors.length > 2
-            ? isLegacy
-              ? `${authors[0]} 等`
-              : `${authors[0]} et al.`
-            : authors.join(", ")
-          : "";
-      const authorSuffix = authorStr ? ` (${authorStr})` : "";
-      md += `**${tag} · [arXiv:${pick.arxiv_id}](https://arxiv.org/abs/${pick.arxiv_id})**${authorSuffix}\n\n`;
-      if (pick.title) md += `*${pick.title}*\n\n`;
-      const reason = pick.reason || pick.recommendation_reason || pick.core_insight;
-      if (reason) md += `${reason}\n\n`;
-    }
-    md += `\n`;
-  }
-
+  let thematic = "";
   if (Array.isArray(weekly.thematic_highlights) && weekly.thematic_highlights.length > 0) {
-    md += isLegacy ? `## 各主题进展\n\n` : `## Thematic Developments\n\n`;
+    thematic += isLegacy ? `## 各主题进展\n\n` : `## Thematic Developments\n\n`;
     for (const theme of weekly.thematic_highlights) {
       const papers = (theme.paper_ids || [])
         .map((id) => {
@@ -338,37 +360,59 @@ export async function generateWeeklyMarkdown({
           return `[arXiv:${id}${authorStr}](https://arxiv.org/abs/${id})`;
         })
         .join(", ");
-      md += `### ${theme.theme_name}\n\n`;
-      md += `${theme.summary}\n\n`;
-      if (papers) md += isLegacy ? `相关论文：${papers}\n` : `Related Papers: ${papers}\n`;
-      md += `\n`;
+      thematic += `### ${theme.theme_name}\n\n`;
+      thematic += `${theme.summary}\n\n`;
+      if (papers) thematic += isLegacy ? `相关论文：${papers}\n` : `Related Papers: ${papers}\n`;
+      thematic += `\n`;
     }
   }
 
+  let lineage = "";
   if (Array.isArray(weekly.lineage_connections) && weekly.lineage_connections.length > 0) {
-    md += isLegacy
+    lineage += isLegacy
       ? `---\n\n## 📚 经典学术脉络传承与对照\n\n`
       : `---\n\n## 📚 Academic Lineage & Comparisons\n\n`;
     for (const conn of weekly.lineage_connections) {
       const classicLabel = isLegacy ? "经典文献" : "Classic Work";
-      md += `* **[${conn.classic_work || classicLabel}]** ⟵ **[arXiv:${conn.new_arxiv_id}]**\n`;
-      md += `  ${cleanMath(conn.relationship)}\n`;
+      lineage += `* **[${conn.classic_work || classicLabel}]** ⟵ **[arXiv:${conn.new_arxiv_id}]**\n`;
+      lineage += `  ${cleanMath(conn.relationship)}\n`;
     }
-    md += `\n`;
+    lineage += `\n`;
   }
 
+  let footer = "";
   if (isLegacy) {
-    md += `---\n\n## 阅读入口\n`;
-    md += `- **公网在线阅读 (Cloudflare)**: [打开网页深度周报](${PUBLIC_SITE_URL}/arxiv-weekly/${weekId}/)\n`;
-    md += `- **校内/局域网直连**: [打开校内直连周报](${LOCAL_SITE_URL}/arxiv-weekly/${weekId}/)\n`;
-    md += `- **QQ 频道社区交流帖**: [进入频道讨论](https://pd.qq.com/s/7xr9egnly)\n`;
-    md += `- **课题组前沿脉络知识库主页**: [公网主页](${PUBLIC_SITE_URL}/) | [校内直连](${LOCAL_SITE_URL}/)\n`;
+    footer += `---\n\n## 阅读入口\n`;
+    footer += `- **公网在线阅读 (Cloudflare)**: [打开网页深度周报](${PUBLIC_SITE_URL}/arxiv-weekly/${weekId}/)\n`;
+    footer += `- **校内/局域网直连**: [打开校内直连周报](${LOCAL_SITE_URL}/arxiv-weekly/${weekId}/)\n`;
+    footer += `- **QQ 频道社区交流帖**: [进入频道讨论](https://pd.qq.com/s/7xr9egnly)\n`;
+    footer += `- **课题组前沿脉络知识库主页**: [公网主页](${PUBLIC_SITE_URL}/) | [校内直连](${LOCAL_SITE_URL}/)\n`;
   } else {
-    md += `---\n\n## Reading Access\n`;
-    md += `- **Online Reading (Cloudflare)**: [Read Full Weekly Report](${PUBLIC_SITE_URL}/arxiv-weekly/${weekId}/)\n`;
-    md += `- **Direct / Local Network**: [Read Direct Weekly Report](${LOCAL_SITE_URL}/arxiv-weekly/${weekId}/)\n`;
-    md += `- **QQ Channel Discussion**: [Join Channel Discussion](https://pd.qq.com/s/7xr9egnly)\n`;
-    md += `- **Research Lineage Knowledge Base**: [Online Home](${PUBLIC_SITE_URL}/) | [Direct Home](${LOCAL_SITE_URL}/)\n`;
+    footer += `---\n\n## Reading Access\n`;
+    footer += `- **Online Reading (Cloudflare)**: [Read Full Weekly Report](${PUBLIC_SITE_URL}/arxiv-weekly/${weekId}/)\n`;
+    footer += `- **Direct / Local Network**: [Read Direct Weekly Report](${LOCAL_SITE_URL}/arxiv-weekly/${weekId}/)\n`;
+    footer += `- **QQ Channel Discussion**: [Join Channel Discussion](https://pd.qq.com/s/7xr9egnly)\n`;
+    footer += `- **Research Lineage Knowledge Base**: [Online Home](${PUBLIC_SITE_URL}/) | [Direct Home](${LOCAL_SITE_URL}/)\n`;
+  }
+
+  const mustReads = (weekly.top_picks || []).filter((p) => p.priority === "must_read");
+  const compactPicks = formatWeeklyTopPicks(
+    mustReads.length > 0 ? mustReads : weekly.top_picks,
+    weekly.papers,
+    isLegacy,
+    { maxItems: 8, maxReasonChars: 220 }
+  );
+  const candidates = [
+    `${header}${overview}${fullTopPicks}${thematic}${lineage}${footer}`,
+    `${header}${overview}${fullTopPicks}${thematic}${footer}`,
+    `${header}${overview}${compactPicks}${thematic}${footer}`,
+    `${header}${overview}${compactPicks}${footer}`,
+  ];
+  let md = candidates.find((candidate) => Array.from(candidate).length <= MAX_WEEKLY_CHANNEL_CHARS);
+  if (!md) {
+    const bodyLimit = Math.max(0, MAX_WEEKLY_CHANNEL_CHARS - Array.from(footer).length - 10);
+    const bodyChars = Array.from(`${header}${overview}${compactPicks}`);
+    md = `${bodyChars.slice(0, bodyLimit).join("")}\n\n…\n\n${footer}`;
   }
 
   return { weekId, dateRange, postTitle, md };

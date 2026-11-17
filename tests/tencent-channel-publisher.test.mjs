@@ -4096,3 +4096,34 @@ test("formatDailyIntro handles English singular and plural forms correctly", () 
     "本期首看《伽马暴物理》等 3 篇核心进展。"
   );
 });
+
+test("generateWeeklyMarkdown stays within QQ Channel 10000-char limit while preserving overview and reading access", async () => {
+  const { md } = await generateWeeklyMarkdown({
+    weekly: {
+      week_id: "2026-W46",
+      date_range: "2026-11-09 ~ 2026-11-15",
+      executive_summary: "Weekly synthesis overview.",
+      top_picks: Array.from({ length: 18 }, (_, i) => ({
+        arxiv_id: `2611.${10000 + i}`,
+        priority: i < 8 ? "must_read" : "worth_knowing",
+        title: `Paper ${i} `.repeat(10),
+        core_insight: "GRB afterglow observations constrain relativistic jet opening angles.",
+        reason: `Detailed physical analysis reason ${i} `.repeat(20),
+      })),
+      thematic_highlights: Array.from({ length: 5 }, (_, i) => ({
+        theme_name: `Theme ${i}`,
+        summary: `Theme summary ${i} `.repeat(20),
+        paper_ids: [`2611.${10000 + i}`],
+      })),
+      lineage_connections: Array.from({ length: 5 }, (_, i) => ({
+        classic_work: `Classic ${i}`,
+        new_arxiv_id: `2611.${10000 + i}`,
+        relationship: `Lineage connection ${i} `.repeat(15),
+      })),
+      papers: [],
+    },
+  });
+  assert.ok(Array.from(md).length <= 9_600, `Expected <= 9600 chars, got ${Array.from(md).length}`);
+  assert.match(md, /## Weekly Overview/u);
+  assert.match(md, /## Reading Access/u);
+});

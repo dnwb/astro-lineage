@@ -1,10 +1,7 @@
 import { existsSync } from "node:fs";
-import { createHash } from "node:crypto";
-import { gunzipSync } from "node:zlib";
 import { readFile, readdir, rename } from "node:fs/promises";
 import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { execFile } from "node:child_process";
 
 if (typeof process.loadEnvFile === "function" && existsSync(".env")) {
   process.loadEnvFile();
@@ -41,11 +38,8 @@ import {
   sanitizeModelJsonString,
   evaluateEvidenceGate,
   safeParseJson,
-  repairMathInRawJson,
-  repairMathDelimiterEscapes,
-  rejectAmbiguousText,
 } from "./pipeline-evidence-gate.mjs";
-import { PIPELINE_STAGES, resolveRoutingLadder, classifyModelError } from "./pipeline-routing.mjs";
+import { classifyModelError } from "./pipeline-routing.mjs";
 import { startTrace, TRACE_STATUSES } from "./pipeline-telemetry.mjs";
 import { repairScientificObjectFormulasWithModel } from "./repair-broken-formulas.mjs";
 import {
@@ -53,12 +47,7 @@ import {
   defaultDeepxivBreaker,
   parseMarkdownSections,
   cleanHeading,
-  stripLatexComments,
-  parseOctal,
-  isTarArchive,
-  parseTarTexFiles,
   parseSourcePackage,
-  downloadSourcePackage,
   fetchViaDeepxiv,
   fetchViaArxivSource,
   fetchViaPdf,
@@ -66,11 +55,6 @@ import {
   acquirePaperBody,
   sourceUrlIdentity,
   readLimitedResponse,
-  MAX_SOURCE_BYTES,
-  MAX_PACKAGE_BYTES,
-  MAX_TEX_BYTES,
-  MAX_TAR_MEMBERS,
-  MAX_BODY_CHARS,
   SOURCE_TIMEOUT_MS,
 } from "./paper-acquisition.mjs";
 

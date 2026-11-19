@@ -273,3 +273,103 @@ test("architecture-hygiene: scripts imported by Astro pages must not readFileSyn
     "Use static JSON import with { type: 'json' } instead of readFileSync on src/domain/*.json so Astro SSR bundling does not fail with ENOENT."
   );
 });
+
+test("architecture-hygiene: new test files must be registered in test:fast or an explicit test suite", async () => {
+  const pkgContent = await readFile(join(projectRoot, "package.json"), "utf8");
+  const pkg = JSON.parse(pkgContent);
+  const fastTests = new Set(
+    (pkg.scripts["test:fast"] || "")
+      .replace(/^node --test\s+/, "")
+      .split(/\s+/)
+      .map((p) => p.replace(/^tests\//, ""))
+  );
+  const registeredSuites = [
+    pkg.scripts["test:fast"],
+    pkg.scripts["test:bot"],
+    pkg.scripts["test:hygiene"],
+  ].join(" ");
+
+  // Explicit slow / full-suite-only tests that are deliberately excluded from test:fast
+  const knownSlowOrFullSuiteOnly = new Set([
+    "arxiv-ai-analyzer.test.mjs",
+    "arxiv-daily.test.mjs",
+    "arxiv-figures.test.mjs",
+    "arxiv-recall.test.mjs",
+    "arxiv-triage.test.mjs",
+    "arxiv-validator-issues.test.mjs",
+    "arxiv-weekly.test.mjs",
+    "arxiv-archive.test.mjs",
+    "arxiv-analysis-publication.test.mjs",
+    "baseline-library.test.mjs",
+    "baseline-reader.test.mjs",
+    "bootstrap.test.mjs",
+    "content-validation.test.mjs",
+    "daily-radar-page.test.mjs",
+    "daily-radar.test.mjs",
+    "english-reader.test.mjs",
+    "home-navigation.test.mjs",
+    "journal-adapters.test.mjs",
+    "journal-feed-service.test.mjs",
+    "language-switch.test.mjs",
+    "learning-paths.test.mjs",
+    "methods.test.mjs",
+    "mobile-home-responsive.test.mjs",
+    "notebooklm-sync.test.mjs",
+    "ontology.test.mjs",
+    "p0-filesystem-slugs.test.mjs",
+    "paper-detail-bluf.test.mjs",
+    "paper-detail-layout.test.mjs",
+    "paper-reading.test.mjs",
+    "paper-translation.test.mjs",
+    "pipeline-evidence-gate.test.mjs",
+    "pipeline-routing.test.mjs",
+    "project-validation.test.mjs",
+    "reader-projection.test.mjs",
+    "repro-unretried-backfill.test.mjs",
+    "research-lines.test.mjs",
+    "scientific-accounts.test.mjs",
+    "scientific-connections.test.mjs",
+    "scientific-edges.test.mjs",
+    "technical-delivery.test.mjs",
+    "theme-consistency.test.mjs",
+    "validator-architecture.test.mjs",
+    "validator-fixtures.test.mjs",
+    "verification-contract.test.mjs",
+    "versions.test.mjs",
+    "visibility.test.mjs",
+    "weekly-pdf.test.mjs",
+    "weekly-synthesis.test.mjs",
+    "works.test.mjs",
+    "agent-egress.test.mjs",
+    "channel-feed-resolver.test.mjs",
+    "channel-figure-policy.test.mjs",
+    "channel-sync-posts.test.mjs",
+    "channel-title-history.test.mjs",
+    "channel-title-math-repro.test.mjs",
+    "directed-lineage-evidence.test.mjs",
+    "dynamic-models.test.mjs",
+    "edge-review-policy.test.mjs",
+    "mechanism-dag.test.mjs",
+    "qq-publication-notify.test.mjs",
+    "tencent-channel-pin.test.mjs",
+  ]);
+
+  const testFiles = (await readdir(join(projectRoot, "tests"))).filter((f) =>
+    f.endsWith(".test.mjs")
+  );
+
+  const unregistered = testFiles.filter(
+    (file) =>
+      !registeredSuites.includes(file) &&
+      !knownSlowOrFullSuiteOnly.has(file) &&
+      !fastTests.has(file)
+  );
+
+  assert.deepEqual(
+    unregistered,
+    [],
+    `Found test file(s) not registered in test:fast or knownSlowOrFullSuiteOnly: ${unregistered.join(
+      ", "
+    )}. Add new fast unit tests to 'test:fast' in package.json to ensure pre-commit coverage.`
+  );
+});

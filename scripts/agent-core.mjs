@@ -745,6 +745,7 @@ export async function callChatCompletion({
   modelHealth = defaultModelHealthRegistry,
   enableAgy,
   agyClient = defaultAgyDaemonClient,
+  onAttemptSuccess,
 }) {
   const hasImages =
     Array.isArray(images) && images.some((img) => typeof img === "string" && img.trim().length > 0);
@@ -856,6 +857,11 @@ export async function callChatCompletion({
 
         circuitBreaker.recordSuccess(provider.name);
         if (modelHealth) modelHealth.recordSuccess(candidate);
+        if (typeof onAttemptSuccess === "function") {
+          try {
+            onAttemptSuccess({ model: candidate, provider: provider.name });
+          } catch {}
+        }
         if (candidate !== candidates[0]) {
           console.log(
             `[Agent Core] ✓ 主模型 (${candidates[0]}) 不可用，已降级至备选模型 (${candidate}) [供应商: ${provider.name}] 成功生成解答`

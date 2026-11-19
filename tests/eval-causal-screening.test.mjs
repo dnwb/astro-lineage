@@ -52,6 +52,15 @@ test("evaluateArms passes only when recall improves without false-positive regre
   );
   assert.equal(errorReport.gatePassed, false);
   assert.equal(errorReport.armA.errors, 1);
+
+  const disparateModelReport = evaluateArms(items, armA, armBImproved, {
+    modelStats: {
+      armA: { dominantModel: "model-x", models: new Set(["model-x"]) },
+      armB: { dominantModel: "model-y", models: new Set(["model-y"]) },
+    },
+  });
+  assert.equal(disparateModelReport.gatePassed, false);
+  assert.equal(disparateModelReport.modelsConsistent, false);
 });
 
 test("createLooCausalContextBuilder excludes self work_slug for LOO canonical items", () => {

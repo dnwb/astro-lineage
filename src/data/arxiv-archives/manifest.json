@@ -1,10 +1,10 @@
 {
   "schema_version": "astrolineage-arxiv-archive-manifest-v1",
-  "updated_at": "2026-11-17T18:48:40.335Z",
+  "updated_at": "2026-11-19T18:02:34.559Z",
   "total_weeks": 11,
-  "total_daily_editions": 50,
+  "total_daily_editions": 51,
   "latest_week_id": "2026-W47",
-  "latest_daily_date": "2026-11-16",
+  "latest_daily_date": "2026-11-18",
   "weeks": [
     {
       "week_id": "2026-W47",
@@ -20,6 +20,22 @@
       },
       "top_picks_count": 17,
       "days": [
+        {
+          "date": "2026-11-18",
+          "weekday": "Wed",
+          "week_id": "2026-W47",
+          "batch_id": "announcement-2026-11-18",
+          "total_papers": 68,
+          "analyzed_count": 0,
+          "must_read_count": 0,
+          "worth_knowing_count": 0,
+          "skip_count": 0,
+          "pending_count": 68,
+          "brief_status": "unavailable",
+          "brief_intro": "常规高能天体物理监测批次",
+          "highlights": [],
+          "data_file": "daily/2026-11-18.json"
+        },
         {
           "date": "2026-11-16",
           "weekday": "Mon",

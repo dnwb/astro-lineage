@@ -220,7 +220,9 @@ export async function readDailyArchive(path, expectedDate, distRoot, contents) {
   const checked = validateDailyRadarPayload(archive.feed, archive.radar);
   if (!checked.valid || !checked.model.opening_brief)
     throw new Error(`CHANNEL_ARCHIVE_INVALID:${checked.diagnostics.join(",")}`);
-  await stat(join(distRoot, "arxiv-daily", expectedDate, "index.html"));
+  if (distRoot) {
+    await stat(join(distRoot, "arxiv-daily", expectedDate, "index.html"));
+  }
   return checked.model;
 }
 

@@ -81,9 +81,11 @@ export const RadarAnalysisSchema = z
     status: z.string().default("ready"),
     source_fingerprint: z.string().min(1, "source_fingerprint is required"),
     guide_fingerprint: z.string().optional(),
-    priority: z.enum(RADAR_PRIORITY_VALUES, {
-      errorMap: () => ({ message: "priority must be one of must_read, worth_knowing, skip" }),
-    }),
+    priority: z
+      .enum(RADAR_PRIORITY_VALUES, {
+        errorMap: () => ({ message: "priority must be one of must_read, worth_knowing, skip" }),
+      })
+      .optional(),
     historical_edition: z.string().optional(),
     historical_edition_fingerprint: z.string().optional(),
     coverage: CoverageSchema.default({ level: "abstract_only" }),

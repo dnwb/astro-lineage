@@ -338,6 +338,7 @@ export async function generateGroupBrief(type = "daily", options = {}) {
     let fallbackInfo = null;
     const requestedDate = options.date || date;
     if (!/^\d{4}-\d\d-\d\d$/u.test(date || "")) throw new Error("QQ_SOURCE_INVALID");
+    const effectiveDistRoot = options.interactive ? null : options.distRoot || "dist";
     if (options.date && /^\d{4}-\d\d-\d\d$/u.test(options.date)) {
       date = options.date;
       try {
@@ -345,7 +346,7 @@ export async function generateGroupBrief(type = "daily", options = {}) {
           fileURLToPath(new URL(`../src/data/arxiv-archives/daily/${date}.json`, import.meta.url))
         );
         const bytes = await readFile(archivePath);
-        model = await readDailyArchive(archivePath, date, options.distRoot || "dist", bytes);
+        model = await readDailyArchive(archivePath, date, effectiveDistRoot, bytes);
         brief = model.opening_brief;
       } catch {}
     }
@@ -359,29 +360,26 @@ export async function generateGroupBrief(type = "daily", options = {}) {
           .sort()
           .reverse();
         for (const f of files) {
-          const archivePath = resolve(archiveDir, f);
-          const bytes = await readFile(archivePath);
-          const archive = JSON.parse(bytes);
-          const b = archive?.radar?.opening_brief || archive?.opening_brief;
-          if (b?.status === "ready") {
-            const candidateDate = f.replace(/\.json$/u, "");
-            model = await readDailyArchive(
-              archivePath,
-              candidateDate,
-              options.distRoot || "dist",
-              bytes
-            );
-            brief = model.opening_brief?.status === "ready" ? model.opening_brief : b;
-            if (candidateDate !== requestedDate) {
-              fallbackInfo = {
-                requestedDate,
-                fallbackDate: candidateDate,
-                reason: "当期官方（arXiv）休刊或无新增论文公布",
-              };
+          try {
+            const archivePath = resolve(archiveDir, f);
+            const bytes = await readFile(archivePath);
+            const archive = JSON.parse(bytes);
+            const b = archive?.radar?.opening_brief || archive?.opening_brief;
+            if (b?.status === "ready") {
+              const candidateDate = f.replace(/\.json$/u, "");
+              model = await readDailyArchive(archivePath, candidateDate, effectiveDistRoot, bytes);
+              brief = model.opening_brief?.status === "ready" ? model.opening_brief : b;
+              if (candidateDate !== requestedDate) {
+                fallbackInfo = {
+                  requestedDate,
+                  fallbackDate: candidateDate,
+                  reason: "当期官方（arXiv）休刊或无新增论文公布",
+                };
+              }
+              date = candidateDate;
+              break;
             }
-            date = candidateDate;
-            break;
-          }
+          } catch {}
         }
       } catch {}
     }
@@ -438,7 +436,7 @@ export async function generateGroupBrief(type = "daily", options = {}) {
             const prevModel = await readDailyArchive(
               archivePath,
               prevDate,
-              options.distRoot || "dist",
+              effectiveDistRoot,
               bytes
             );
             const prevBrief =

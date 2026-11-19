@@ -235,6 +235,7 @@ export async function executeChatCompletion({
     throw new Error("Model endpoint requires HTTPS without URL credentials");
   if (!apiKey) throw new Error("Model API key is not configured");
   const resolvedModel = normalizeModelName(model);
+  const httpModel = resolvedModel.startsWith("agy/") ? resolvedModel.slice(4) : resolvedModel;
 
   const cleanHistory = Array.isArray(history)
     ? history
@@ -260,7 +261,7 @@ export async function executeChatCompletion({
       : prompt;
 
   const payload = {
-    model: resolvedModel,
+    model: httpModel,
     messages: [
       { role: "system", content: systemPrompt },
       ...cleanHistory,
@@ -843,12 +844,15 @@ export async function callChatCompletion({
             model: actualModel,
           });
         } else {
+          // If HTTP provider is local-8318, strip agy/ prefix because local gateway expects unadorned model name
+          const targetModel =
+            isLocalGateway && candidate.startsWith("agy/") ? candidate.slice(4) : candidate;
           result = await executeChatCompletion({
             prompt,
             systemPrompt,
             history,
             images,
-            model: candidate,
+            model: targetModel,
             effort: candidateEffort,
             baseUrl: provider.baseUrl,
             apiKey: provider.apiKey,

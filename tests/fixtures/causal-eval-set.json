@@ -1,0 +1,215 @@
+{
+  "schema_version": 1,
+  "description": "Leak-free, anti-inflation A/B benchmark set for prompt-only vs +causal screening",
+  "items": [
+    {
+      "arxiv_id": "1107.1326",
+      "title": "The propagation of relativistic jets in external media",
+      "abstract": "Relativistic jets are ubiquitous in astrophysical systems that contain compact objects. They transport large amounts of energy to large distances from the source, and their interaction with the ambient medium has a crucial effect on the evolution of the system. The propagation of the jet is characterized by the formation of a shocked \"head\" at the front of the jet which dissipates the jet's energy and a cocoon that surrounds the jet and potentially collimates it. We present here a self consistent, analytic model that follows the evolution of the jet and its cocoon, and describes their interaction. We show that the critical parameter that determines the properties of the jet-cocoon system is the dimensionless ratio between the jet's energy density and the rest-mass energy density of the ambient medium. This parameter, together with the jet's injection angle, also determines whether the jet is collimated by the cocoon or not. The model is applicable to relativistic, unmagnetized, jets on all scales and may be used to determine the conditions in AGNs jets as well as in GRBs or microquasars. It shows that AGN and microquasar jets are hydrodynamically collimated due to the interaction with the ambient medium, while GRB jets can be collimated only inside a star and become uncollimated once they breakout.",
+      "categories": [
+        "astro-ph.HE"
+      ],
+      "expected_group": "positive",
+      "source": "canonical_loo",
+      "exclude_work_slug": "bromberg-2011"
+    },
+    {
+      "arxiv_id": "2506.08105",
+      "title": "Probing the Strong Gravity Region of Black Holes with eXTP",
+      "abstract": "We present the novel capabilities of the enhanced X-ray Timing and Polarimetry (eXTP) mission to study the strong gravity region around stellar-mass black holes in X-ray binary systems and supermassive black holes in active galactic nuclei. eXTP can combine X-ray spectral, timing, and polarimetric techniques to study the accretion process near black holes, measure black hole masses and spins, and test Einstein's theory of General Relativity in the strong field regime. We show how eXTP can improve the current measurements of black holes of existing X-ray missions and we discuss the scientific questions that can be addressed.",
+      "categories": [
+        "astro-ph.HE",
+        "gr-qc"
+      ],
+      "expected_group": "positive",
+      "source": "canonical_loo",
+      "exclude_work_slug": "bu-extp-strong-gravity-2025"
+    },
+    {
+      "arxiv_id": "2601.02734",
+      "title": "Super-Orbital Variations in Magnetar Rotation Measure Arising from the Precession of Companion Star: Implications for FRB 20220529",
+      "abstract": "Recent observations of FRB 20220529 reveal significant variation and a partial reversal in its rotation measure (RM), suggesting the presence of a dynamically evolving magnetized environment, which could be caused by the orbital motion of the magnetar within the binary system. Here we develop the binary model by suggesting that the spin and magnetic axis of the companion star could undergo precession around the orbital axis. It is then investigated how the precession period and the inclination of the magnetic axis, as well as a possible disc wind, can influence the evolution behaviors of the RM and dispersion measure (DM) of FRB emission. As the foremost consequence, the RM variation can be significantly altered on timescales longer than the orbital period, producing super-orbital evolution and complex patterns. Applying this model to FRB 20220529, we find that its RM evolution could be reproduced with a precession period of 182 days and an inclination angle of approximately $19^{\\circ}$, while the other binary parameters are fixed at their typical values. Meanwhile, the absence of significant variation of the DM argues against the presence of a dense equatorial disc around the companion star, which would be constrained by future long-term observations.",
+      "categories": [
+        "astro-ph.HE"
+      ],
+      "expected_group": "positive",
+      "source": "canonical_loo",
+      "exclude_work_slug": "du-frb-2026"
+    },
+    {
+      "arxiv_id": "0911.0680",
+      "title": "Supernova Light Curves Powered by Young Magnetars",
+      "abstract": "We show that energy deposited into an expanding supernova remnant by a highly magnetic (B ~ 5 x 10^14 G) neutron star spinning at an initial period of P ~ 2-20 ms can substantially brighten the light curve. For magnetars with parameters in this range, the rotational energy is released on a timescale of days to weeks, which is comparable to the effective diffusion time through the supernova remnant. The late time energy injection can then be radiated without suffering overwhelming adiabatic expansion losses. The magnetar input also produces a central bubble which sweeps ejecta into an internal dense shell, resulting in a prolonged period of nearly constant photospheric velocity in the observed spectra. We derive analytic expressions for the light curve rise time and peak luminosity as a function of B, P and the properties of the supernova ejecta that allow for direct inferences about the underlying magnetar in bright supernovae. We perform numerical radiation hydrodynamical calculations of a few specific instances and compare the resulting light curves to observed events. Magnetar activity is likely to impact more than a few percent of all core collapse supernovae, and may naturally explain some of the brightest events ever seen (e.g., SN 2005ap and SN 2008es) at L &gt; 10^44 ergs/s.",
+      "categories": [
+        "astro-ph.HE"
+      ],
+      "expected_group": "positive",
+      "source": "canonical_loo",
+      "exclude_work_slug": "kasen-bildsten-2010"
+    },
+    {
+      "arxiv_id": "2304.03360",
+      "title": "The Landscape of Thermal Transients from Supernova Interacting with a Circumstellar Medium",
+      "abstract": "The interaction of supernova ejecta with a surrounding circumstellar medium (CSM) generates a strong shock which can convert the ejecta kinetic energy into observable radiation. Given the diversity of potential CSM structures (arising from diverse mass loss processes such as late-stage stellar outbursts, binary interaction, and winds), the resulting transients can display a wide range of light curve morphologies. We provide a framework for classifying the transients arising from interaction with a spherical CSM shell. The light curves are decomposed into five consecutive phases, starting from the onset of interaction and extending through shock breakout and subsequent shock cooling. The relative prominence of each phase in the light curve is determined by two dimensionless quantities representing the CSM-to-ejecta mass ratio $η$, and a breakout parameter $ξ$. These two parameters define four light curve morphology classes, where each class is characterized by the location of shock breakout and the degree of deceleration as the shock sweeps up the CSM. We compile analytic scaling relations connecting the luminosity and duration of each light curve phase to the physical parameters. We then run a grid of radiation hydrodynamics simulations for a wide range of ejecta and CSM parameters to numerically explore the landscape of interaction light curves, and to calibrate and confirm the analytic scalings. We connect our theoretical framework to several case studies of observed transients, highlighting the relevance in explaining slow-rising and superluminous supernovae, fast blue optical transients, and double-peaked light curves.",
+      "categories": [
+        "astro-ph.HE",
+        "astro-ph.SR"
+      ],
+      "expected_group": "positive",
+      "source": "canonical_loo",
+      "exclude_work_slug": "khatami-kasen-2024"
+    },
+    {
+      "arxiv_id": "1804.06597",
+      "title": "What Powered the Optical Transient AT2017gfo Associated with GW170817?",
+      "abstract": "The groundbreaking discovery of the optical transient AT2017gfo associated with GW170817 opens a unique opportunity to study the physics of double neutron star (NS) mergers. We argue that the standard interpretation of AT2017gfo as being powered by radioactive decays of r-process elements faces the challenge of simultaneously accounting for the peak luminosity and peak time of the event, as it is not easy to achieve the required high mass, and especially the low opacity of the ejecta required to fit the data. A plausible solution would be to invoke an additional energy source, which is probably provided by the merger product. We consider energy injection from two types of the merger products: (1) a post-merger black hole powered by fallback accretion; and (2) a long-lived NS remnant. The former case can only account for the early emission of AT2017gfo, with the late emission still powered by radioactive decay. In the latter case, both early- and late-emission components can be well interpreted as due to energy injection from a spinning-down NS, with the required mass and opacity of the ejecta components well consistent with known numerical simulation results. We suggest that there is a strong indication that the merger product of GW170817 is a long-lived (supramassive or even permanently stable), low magnetic field NS. The result provides a stringent constraint on the equations of state of NSs.",
+      "categories": [
+        "astro-ph.HE"
+      ],
+      "expected_group": "positive",
+      "source": "canonical_loo",
+      "exclude_work_slug": "li-gw170817-2018"
+    },
+    {
+      "arxiv_id": "2611.07022",
+      "title": "General-relativistic neutrino-radiation hydrodynamics of crust ejection in magnetar giant flares",
+      "abstract": "Magnetar giant flares are thought to eject $\\gtrsim 10^{-9}\\,M_\\odot$ of baryons, as inferred from the radio afterglow of the 2004 flare of SGR 1806-20. One proposed mechanism is a shock driven into the neutron-star crust by the hot, high-pressure layer that the flare creates above the surface. The unbound crust could undergo $r$-process nucleosynthesis and power a short-lived \"nova brevis\". We study this crust ejection with general-relativistic neutrino-radiation hydrodynamics simulations performed with AthenaK, using a tabulated nuclear equation of state and two-moment neutrino transport, for flare pressures corresponding to magnetic fields $B = 10^{15}$-$10^{16.5}$ G, and compute the nucleosynthesis of the ejecta with a nuclear reaction network. We find that such flares unbind $10^{-10}$ to $5\\times10^{-8}\\,M_\\odot$ of crust. The ejecta keep the electron fraction of the crust to within a few hundredths, and weak interactions affect it mainly in the most energetic flares. The fast, high-entropy ejecta freeze out mostly as $α$ particles and free neutrons. In the stronger flares nuclei up to the third $r$-process peak do form, but those with $A \\geq 90$ make up at most $\\approx 8\\times10^{-4}$ of the ejected mass, or $\\approx 3.5\\times10^{-11}\\,M_\\odot$ per flare, and less than $10^{-5}$ for $B \\leq 10^{15.5}$ G. A nova brevis from these ejecta would be powered mainly by the decay of free neutrons. Like earlier work, our models assume spherical symmetry, a flare that covers the whole star, and no magnetic field. A field tangential to the surface would hold the crust down and weaken the shock, and a flare confined to part of the surface should eject proportionally less mass. We therefore regard our ejecta masses as upper limits for a given flare pressure, and expect realistic magnetar flares to produce negligible amounts of $r$-process material.",
+      "categories": [
+        "astro-ph.HE",
+        "nucl-th"
+      ],
+      "expected_group": "positive",
+      "source": "archive_2026-11-05_must_read",
+      "exclude_work_slug": null
+    },
+    {
+      "arxiv_id": "2611.08604",
+      "title": "Hydrodynamic Natal Kicks and Formation of Black Hole Binaries",
+      "abstract": "The observation of over 300 Gravitational Wave (GW) events by the LIGO-Virgo-KAGRA collaboration, has yielded information of the merger of compact object binaries, such as their individual masses and spins. However, the effective spin parameter obtained from the GW signal provides important information that could be used to discern the binary's formation channel. Overall, binaries formed from dynamic interactions in dense stellar environments are expected to have a random distribution of effective spins between -1 and 1. Meanwhile, binaries formed from the evolution of isolated stellar binaries are expected to have positive effective spins unless there is a large enough natal kick during the compact object formation that could significantly alter the orientation of the individual spins with respect to the binary's angular momentum. We study the viability of obtaining large natal kicks during the formation of massive Black Holes by studying the asymmetric mild explosion of $13\\text{M}_{\\odot}$, $21\\text{M}_{\\odot}$, $28\\text{M}_{\\odot}$ and $34\\text{M}_{\\odot}$ pre-supernova stellar models, by means of 3D Smooth Particle Hydrodynamics simulations. Our results show that, even kicks in the order of $\\sim$ 1000 km/s, which are among the highest values observed for natal kicks, can't consistently change the orientation of the orbit. Physical setups where the orientation of the orbit changes require the kick to be directed correctly, and they would also require for the supernova explosion energy to be quite high.",
+      "categories": [
+        "astro-ph.HE"
+      ],
+      "expected_group": "positive",
+      "source": "archive_2026-11-08_must_read",
+      "exclude_work_slug": null
+    },
+    {
+      "arxiv_id": "2611.08742",
+      "title": "Neutrino pair annihilation in curved spacetime: a fast moment method and the geometry of flavour conversion",
+      "abstract": "Neutrino-antineutrino annihilation above black-hole accretion discs is shaped both by general-relativistic transport and by neutrino flavour conversion. Whether these effects can be treated independently depends on how gravity weights the different flavour populations. We investigate this interplay using backward ray tracing in Schwarzschild and Kerr spacetimes, combined with an exact angular-moment formulation of the annihilation kernel that we validate against the analytic spherical solution and published disc calculations. We first establish that flavour-conversion corrections are independent of the spacetime geometry when conversion is uniform and the initial heavy-lepton neutrino emission is negligible. For uniform conversion, this separability remains approximately valid when the flavour-dependent emitting regions overlap: compared with the same discs in flat space, moving with the same local velocities, gravity enhances the deposited energy by factors of 1.4-5, while changing the relative conversion effect by no more than 6% for most temperature profiles considered; conversion that varies across the disc raises this to 22% around a rapidly spinning hole. A qualitatively different regime emerges when heavy-lepton neutrinos originate from an inner ring separated from the electron-flavour emitting regions. Relativistic bending and energy shifts preferentially enhance annihilations involving inner-ring neutrinos, producing relativistic conversion factors up to 2.4 times the flat-space ones. In one configuration, flavour equipartition reduces the deposition by 54% in flat space but increases it by 11% in Kerr spacetime. These results identify the spatial arrangement of flavour-dependent neutrinospheres as a key determinant, in the models considered, of whether flavour conversion and relativistic transport can be treated separately.",
+      "categories": [
+        "astro-ph.HE",
+        "gr-qc",
+        "hep-ph"
+      ],
+      "expected_group": "positive",
+      "source": "archive_2026-11-08_must_read",
+      "exclude_work_slug": null
+    },
+    {
+      "arxiv_id": "2611.10140",
+      "title": "Probing circumstellar interaction with spectroscopy of ZTF hydrogen-rich superluminous supernovae",
+      "abstract": "Hydrogen-rich superluminous supernovae (H-rich SLSNe) are rare, exceptionally luminous transients. Most exhibit narrow Balmer emission and can be further classified as SLSNe-IIn, indicating interaction with dense circumstellar material (CSM). We present and analyse 304 optical spectra of 106 H-rich SLSNe observed by the Zwicky Transient Facility (ZTF). We examine their spectral evolution and Balmer-line properties, and model the H$α$ profiles using Monte Carlo electron-scattering calculations. Of the 106 objects, 105 exhibit narrow Balmer emission consistent with SLSN-IIn classifications, including six with additional Ia-CSM-like characteristics and three with possible flash-ionisation features; the remaining one object exhibits only broad Balmer emission and is classified as a SLSN-II. Post-peak Balmer profiles range from approximately symmetric, exponential profiles to asymmetric profiles with prominent blue excesses or shoulders. Objects with Balmer line blue excess favour higher fitted photon-emitting shell velocities and tend to be fainter than those with persistently symmetric profiles. The H$α$ pseudo-equivalent width (pEW) and FWHM of SLSNe-IIn overlap with those of lower-luminosity SNe IIn, while the pEW evolution is more diverse than in the broad-lined SLSN-II comparison sample. Our SLSNe-IIn sample's median Balmer decrement increases from 2.85 before $+100$ d to 4.40 afterwards, remaining consistently below that of the comparison Ia-CSM sample. We identify no Balmer-line morphology unique to SLSNe-IIn in the available comparison with lower-luminosity SNe IIn, although some SLSNe-IIn exhibit prolonged high-ionisation emission. Our results also support interaction with dense CSM formed through enhanced pre-explosion mass loss. We also highlight a possible hidden Ia-CSM population among luminous H-rich interacting SNe.",
+      "categories": [
+        "astro-ph.HE",
+        "astro-ph.GA",
+        "astro-ph.SR"
+      ],
+      "expected_group": "positive",
+      "source": "archive_2026-11-09_must_read",
+      "exclude_work_slug": null
+    },
+    {
+      "arxiv_id": "2611.12860",
+      "title": "Search for a Dispersion Measure Excess Toward Nearby Galaxy Halos Using Fast Radio Bursts from the Second CHIME/FRB Baseband Catalog",
+      "abstract": "Fast radio bursts (FRBs) probe foreground ionized baryons via their dispersion measures (DM). Using 1748 sub-arcminute-localized sources from the Second CHIME/FRB Baseband Catalog, we conduct a statistical stacking study of the circumgalactic media (CGM) of nearby galaxies by analyzing the DMs of FRBs whose sightlines intersect foreground halos. For galaxy halos within 50 Mpc, we measure a mean DM excess of $119\\pm44$ pc~cm$^{-3}$ $(p = 0.0053; \\sim 2.6σ)$ within one virial radius. Expanding to 150 Mpc (628 intersections), we find a tentative decline in the mean DM as a function of impact parameter $(p = 0.0046; \\sim 2.6σ)$, which is predominantly driven by typical Milky Way (MW)-like galaxies $(10 \\leq \\log(M_*/M_\\odot)\\leq 11)$. We use this DM profile to constrain parameters of the CGM electron density distribution, $n_e^\\mathrm{CGM}(r) \\propto r^{-3β}$, finding an extrapolated central electron density in the range of $(1.7-21.1) \\times 10^{-3}\\mathrm{\\,cm}^{-3}$, with a radial power-law index of $β= 0.68^{+0.15}_{-0.16}$, consistent with constraints from X-ray stacking studies of MW-like galaxies. At very low impact parameters, we detect a significant DM deficit likely due to cross-matching FRBs that originate from galaxies within our galaxy sample. By deriving the DM-galaxy cross-correlation function, we show that this deficit matches theoretical predictions if 20 FRBs originate from galaxies within 150 Mpc, indicating that CHIME/FRB detects a higher fraction of low-$z$ FRBs than previously thought. We forecast that $10^4$ FRBs with similar localization errors will provide a 5-$σ$ detection of the CGM, and that FRBs at intermediate redshifts ($0.4\\lesssim z_\\mathrm{FRB}\\lesssim 0.75$) are ideal for studying intervening CGMs.",
+      "categories": [
+        "astro-ph.GA",
+        "astro-ph.CO",
+        "astro-ph.HE"
+      ],
+      "expected_group": "positive",
+      "source": "archive_2026-11-09_must_read",
+      "exclude_work_slug": null
+    },
+    {
+      "arxiv_id": "2611.13350",
+      "title": "Early--Narrow and Late--Wide Populations of GRB X-ray Flares",
+      "abstract": "The physical origin of gamma-ray burst (GRB) X-ray flares remains debated, particularly whether they arise from prolonged central-engine activity or from variability in the external shock. Building on our previous analysis of 89 Swift GRBs with measured redshifts, we investigate the rest-frame temporal properties of X-ray flares detected in 61 bursts. We apply a multivariate Gaussian Mixture Model to rest-frame peak times and widths. We identify two statistically distinct populations: early-narrow flares (80%), with characteristic peak times of approximately 10^2 s and w/t_pk <= 1, and late-wide flares (20%), with characteristic peak times of ~ 10^3.5 s and w/t_pk >= 2. Of the 61 single or first flares, 55 belong to the early-narrow population and only 6 to the late-wide population. Of the 36 second flares, 23 (64%) belong to the early-narrow population, with shorter waiting times, whereas 13 (36%) belong to the late-wide population, with substantially longer waiting times. The width-peak-time correlation remains significant for early-narrow flares but not for late-wide flares. Furthermore, we find no correlation between flare width and energy. We find a decline of flare luminosity with peak time, driven primarily by the early-narrow population, but not statistically significant for late-wide flares. These results imply that a simple shift in time, potentially associated with later episodes of central-engine activity, cannot explain the distinction between the two flare populations. On the other hand, the peak times are consistent with expectations from an accretion disk formed following the collapse of a stellar-size massive star. Combined with our previous finding that flare properties are independent of the presence of an X-ray plateau, these results favor prolonged accretion-driven central-engine activity over external-shock variability as the primary origin of X-ray flares.",
+      "categories": [
+        "astro-ph.HE"
+      ],
+      "expected_group": "positive",
+      "source": "archive_2026-11-10_must_read",
+      "exclude_work_slug": null
+    },
+    {
+      "arxiv_id": "2611.07190",
+      "title": "CosmicGrain: An On-the-fly Dust Physics Module",
+      "abstract": "We present CosmicGrain, a dust physics module built on Gadget-4 that models explicit dust superparticles that experience resolved gas-dust drag and radiation pressure, undergo collisional heating and cooling with gas, and are further shaped by subgrid treatments for grain growth, thermal sputtering, coagulation, shattering, supernova shock destruction, and astration. We run an eleven-rung physics ladder (S0-S10) at 1024^3 resolution to isolate the contribution of individual processes to a Milky Way-mass halo's dust population. Because dust is evolved as active on-the-fly particles, individual grains retain distinct histories producing results inaccessible to passive dust models such as the strongly asymmetric silicate-to-carbon shattering destruction ratio driven by silicate grains' smaller birth size. Gas-dust drag is the dominant driver of ISM dust enrichment, increasing dust levels by ~100 times while every other process changes the R200 dust abundance by only 10-30%. We find reasonable agreement with the Milky Way's radial dust-to-gas and dust-to-metal ratios, with carbon dust preferentially enriching the CGM relative to silicates. The code is freely available at https://cosmicgrain.space.",
+      "categories": [
+        "astro-ph.GA"
+      ],
+      "expected_group": "negative",
+      "source": "archive_2026-11-05_hard_skip",
+      "exclude_work_slug": null
+    },
+    {
+      "arxiv_id": "2611.08181",
+      "title": "G92.4+5.0: A Perseus Arm superbubble associated with the H II region CTB 102",
+      "abstract": "Superbubbles are vast hot cavities carved out by the stellar winds and supernovae of clusters of high-mass stars. We investigate G92.4+5.0 (the CTB 102 superbubble), a Perseus Arm superbubble associated with the HII region CTB 102. We use new and archival radio observations (total intensity, rotation measure, and HI spectral line) from the Dominion Radio Astrophysical Observatory Synthesis Telescope, combined with single-antenna data from the Effelsberg Medium Latitude Survey, the Global Magneto-Ionic Medium Survey, and the HI4PI survey to provide data on large structures. The upper region of the superbubble is faint in HI. In order to detect its full extent, we supplement our observations with H-alpha data from the Wisconsin H-Alpha Mapper Survey and the Ziegenbalg Survey, and observe H-alpha emission in the upper region. We measure the CTB 102 superbubble to be at least ~170 pc wide and ~420 pc tall, with an expansion rate of ~12 km/s in the lower regions of the superbubble and ~22.5 km/s in the upper regions. The elongated structure and increasing expansion rate with height are consistent with the evolutionary properties of a superbubble described by the Kompaneets model. We fit the Kompaneets model to the CTB 102 superbubble and obtain an estimated age of 1-6 Myr. This supports a possible scenario in which the stellar cluster currently ionizing CTB 102 is the expansion energy source for the superbubble. Alternatively, if the superbubble expanded under the power of a previous generation of stars, the current CTB 102 stellar cluster may have formed in the walls of the superbubble.",
+      "categories": [
+        "astro-ph.GA"
+      ],
+      "expected_group": "negative",
+      "source": "archive_2026-11-05_hard_skip",
+      "exclude_work_slug": null
+    },
+    {
+      "arxiv_id": "2611.08599",
+      "title": "Magnetically Arrested Accretion and Black Hole Spin in a Semi-Analytic Model of Galaxy Formation",
+      "abstract": "We present {\\sc Mad Sage}, a semi-analytic model of galaxy formation that couples black hole mass and spin evolution to gas accretion and AGN feedback under magnetically arrested disk conditions. Building on the {\\sc Dark Sage} model, we incorporate GRMHD-calibrated prescriptions for spin evolution and jet power, spin-dependent radiative efficiencies, and remnant spins from BH-BH mergers. We compare accretion and feedback models, including coherent disk-fed accretion with mixed coherent and incoherent hot-halo accretion, with and without additional mechanical feedback. We find that incoherent accretion, together with Blandford-Znajek spin-down, drives massive BHs toward low spins, reducing jet efficiencies and weakening the quenching of massive galaxies. Reproducing the high-mass end of the stellar mass function requires either exclusively coherent accretion or an additional feedback component provided by ADAF outflows. Our models broadly reproduce observed BH-galaxy scaling relations, disk surface density profiles, and the AGN luminosity function at $z\\sim 2-6$, although the spin models under-predict the number density of faint AGN at low redshift. At $z\\lesssim 3$, predicted BH spins decrease with increasing BH mass, while at higher redshifts, the mass dependence weakens. Spin distributions peak at $|a_\\star|\\sim 0.5$-$0.7$, below current X-ray reflection spectroscopy measurements, and become bimodal for massive, quiescent BHs accessible with the next generation Event Horizon Telescope and the Black Hole EXplorer. We report that the predicted LISA event rates are nearly independent of the adopted accretion and spin models.",
+      "categories": [
+        "astro-ph.GA"
+      ],
+      "expected_group": "negative",
+      "source": "archive_2026-11-08_hard_skip",
+      "exclude_work_slug": null
+    },
+    {
+      "arxiv_id": "2611.09628",
+      "title": "Fundamental Noise Processes in Pulsar Timing",
+      "abstract": "The stability of spin rates and emission regions of radio-emitting neutron stars (pulsars) has enabled remarkable advances, including the detection of exoplanets, testing theories of gravity, and stimulating the vigorous exploration of a new window in gravitational wave astronomy an nanohertz frequencies. An ideal astrophysical clock would emit identical pulses at a constant rate, propagating along single geodesics through a perfect vacuum. In reality, the timing precision achievable with pulsars is limited by spin noise, variability in the beam produced in a complex magnetosphere, and multipath propagation through a turbulent interstellar medium, with additional limitations from uncertainties in the changing pulsar -- observatory vector and instrumental effects. Here we present the fundamentals of pulsar timing, its current limitations, and prospects for improvements in timing precision. We develop metrics to assess the timing quality of a pulsar and use them to evaluate sources currently included in pulsar timing arrays (PTAs) as a means for characterizing the quality of future pulsar discoveries. With increases in telescope sensitivity, pulsar timing precision will increasingly be limited by propagation effects in the interstellar medium. We identify sources of non-Gaussianity in timing residuals and separate out effects that are chromatic or achromatic, as well as effects that vary on short (seconds to minutes) and longer (days to months) timescales. Modern wide-bandwidth receivers provide simultaneous arrival times across a range of frequencies, enabling the robust mitigation of chromatic interstellar effects and the identification of non-Gaussian events superimposed on random fluctuations. We recommend changes to timing procedures that leverage instrumentation advances to improve timing precision.",
+      "categories": [
+        "astro-ph.HE"
+      ],
+      "expected_group": "negative",
+      "source": "archive_2026-11-08_hard_skip",
+      "exclude_work_slug": null
+    },
+    {
+      "arxiv_id": "2611.09875",
+      "title": "SN 2026ahvu in NGC 1433 May Be a Prompt Type Ia Supernova with a Delay Time Under 100 Myr",
+      "abstract": "SN 2026ahvu is a Type Ia supernova (SN) that occurred in the nearby galaxy NGC 1433. Using archival Hubble and JWST imaging from the PHANGS survey, we show that the SN lies within 0.19$''$ and 0.26$''$ of two UV-bright star clusters. This $0.19/0.26''$ separation corresponds to $8/11$ pc ($17/24$ pc) at the reported distances of $9.1$ and $18.9$ Mpc, respectively. The probability of finding an unrelated Type Ia SN this close to a cataloged star cluster by chance is only $\\sim$0.4 %. Thus, SN 2026ahvu is likely the first Type Ia SN that can be associated with relatively young star clusters in a nearby galaxy. From spectral energy distribution fitting using HST+JWST (or HST-only) data, we find that the clusters have age estimates of $37_{-5}^{+3}$ ($57_{-9}^{+14}$) Myr and $95_{-13}^{+15}$ ($88_{-12}^{+14}$) Myr. Association with either cluster would mean that SN 2026ahvu should be considered a prompt SN Ia and provide one of the most concrete measurements to date of a prompt Ia delay time. The median age of the younger star cluster is close to the minimum possible delay time for SN Ia progenitors. If the SN is indeed associated with the younger cluster, it would imply that Type Ia SNe can occur almost immediately after white dwarf formation. If the SN is associated with the older cluster, this discovery still presents the first example of a prompt Type Ia SN with delay time under 100 Myr.",
+      "categories": [
+        "astro-ph.GA",
+        "astro-ph.SR"
+      ],
+      "expected_group": "negative",
+      "source": "archive_2026-11-08_hard_skip",
+      "exclude_work_slug": null
+    },
+    {
+      "arxiv_id": "2611.10431",
+      "title": "Faint Thermonuclear Transients from the Double Detonations of Common White Dwarfs",
+      "abstract": "The double detonation model is a viable channel to explain many observed Type Ia supernovae (SNe Ia), with thin helium shelled white dwarf (WD) progenitors of 0.9--1.1 M$_\\odot$ reproducing normal SNe Ia observables. Recent work has also shown that all C/O WDs $\\leq$ 1.0 M$_\\odot$ can sustain a helium shell detonation that triggers a detonation of the underlying core. As WDs of lower masses (0.5--0.7 M$_\\odot$) far outnumber those at higher mass, it is important to explore their double detonation outcomes. To that end, we conducted multidimensional double detonation simulations of low mass C/O cores with very thin helium shells, finding explosion outcomes that differ non-trivially from those at higher masses. Not surprisingly, their cores are incompletely burned with low yields of radioactive elements. Though still formally unbound in isolation, some of the ejecta could remain bound to a nearby companion. In addition, the offset initiation of the core detonation wave and its failure to burn through the entire core lead to a very asymmetric distribution of $^{56}$Ni that creates dramatically viewing angle-dependent light curves and spectra. We find that the peak bolometric luminosities for the same explosion vary up to nearly 2 magnitudes over the sky, and that the spectra and light curves from these models are within the range of faint SNe Iax. In particular, our 0.50 M$_\\odot$ models agree well with the photometry of SNe Iax 2008ha and 2024vjm.",
+      "categories": [
+        "astro-ph.HE",
+        "astro-ph.SR"
+      ],
+      "expected_group": "negative",
+      "source": "archive_2026-11-09_hard_skip",
+      "exclude_work_slug": null
+    }
+  ]
+}

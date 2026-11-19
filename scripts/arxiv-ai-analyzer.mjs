@@ -388,7 +388,8 @@ function getCausalCatalog() {
   return cachedCausalCatalog;
 }
 
-function causalContextForEntry(entry, catalog = getCausalCatalog()) {
+function causalContextForEntry(entry) {
+  const catalog = getCausalCatalog();
   if (!catalog) return "";
   return formatCausalContext(selectRelevantCausalWorks(entry, catalog, { maxWorks: 5 }));
 }
@@ -411,7 +412,7 @@ function scientificFieldsPrompt({ abstract = false } = {}) {
   "evidence":[{"section":"${abstract ? "Abstract" : "Actual section title in source body (do not use Abstract)"}","quote":"Continuous exact English quote (12–120 characters verbatim from the input English section, never translated or paraphrased, must match source text verbatim)","supports":["reason","result","problem","method","research_progress","assumptions[0]","limits[0]"]}],
   "causal_anchor":{"primary_axis":"dynamics|emission|central_object|energy_transfer|observable","anchored_stages":[{"stage_id":"stage:...","work_slug":"...","relation":"supports|constrains|challenges|extends|tests","reason":"One concise sentence (20-80 chars) on how this paper acts on the stage"}]}
 }
-Causal anchor contract: Only include causal_anchor for must_read or worth_knowing papers when the result substantially acts on a provided stage_id from the reference causal stages (never invent stage_id or work_slug); omit causal_anchor or set null for skip or unanchored papers.
+Causal anchor contract: Only include causal_anchor (1–3 most essential anchored_stages) for must_read or worth_knowing papers when the result substantially acts on a provided stage_id from the reference causal stages (never invent stage_id or work_slug); omit causal_anchor or set null for skip or unanchored papers.
 Mathematical notation and physics formulas: Prioritize explicit standard LaTeX math ($...$ or $$...$$) for key physical values, spectral indices, scaling relations, or thresholds. Symbols and units must adhere to standard LaTeX/KaTeX conventions (\\\\mathrm{...}, \\\\dot{M}, M_\\\\odot). Never use author-private macros. In JSON strings, all backslashes must be properly escaped (\\\\alpha, \\\\dot{M}).
 Source evidence citation rules: Quotes must be verbatim continuous English substrings from the input text (12-120 chars, matching input exactly); supports lists the specific fields supported.
 Verification contract: For non-unknown core fields (reason, result, problem, method, research_progress), at least one evidence quote must declare the field name in its supports array. If evidence cannot be confirmed from the text, set that field to unknown.`;
@@ -420,7 +421,7 @@ Verification contract: For non-unknown core fields (reason, result, problem, met
 function buildBodyPrompt(entry, source) {
   const causalContext = causalContextForEntry(entry);
   const causalBlock = causalContext
-    ? `\n参考相关经典因果链条（Top 相关文献阶段；若正文结果直接 challenges/constrains/tests 核心节点，优先评为 must_read 并在 causal_anchor 中严格引用给定 stage_id 与 work_slug）：\n${causalContext}\n`
+    ? `\n参考相关经典因果链条（Top 相关文献阶段；仅当正文结果对核心节点作出实质性 supports/constrains/challenges/extends/tests 时优先评为 must_read 并在 causal_anchor 中严格引用给定 stage_id 与 work_slug，仅作背景引用不升格）：\n${causalContext}\n`
     : "";
   return `阶段：正文文本阅读。输入包括 source package 中完整且版本匹配的 TeX 源文；Must Read 的 full_body 表示已提供全部正文文本，不表示图像、图表、附加数据或二进制文件已被视觉检查。不要声称独立核验图中数据或正文以外的材料；结论依赖未检查图表/数据时，应明确列为限制或 unresolved。证据只能引用下方实际 TeX 章节中的连续原文，不要引用上方摘要作正文证据。
 MR 必须检查所有实际章节并依据整篇正文文本判断；WK 至少检查能支撑结论的实际正文章节；也可以根据正文把初筛候选改为 skip。

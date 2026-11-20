@@ -6,6 +6,7 @@
  */
 
 import { z } from "zod";
+import { CausalAnchorSchema } from "../causal-graph-catalog.mjs";
 
 export const RADAR_PRIORITY_VALUES = ["must_read", "worth_knowing", "skip"];
 export const RADAR_COVERAGE_VALUES = ["abstract_only", "body_partial", "full_body"];
@@ -80,14 +81,17 @@ export const RadarAnalysisSchema = z
     status: z.string().default("ready"),
     source_fingerprint: z.string().min(1, "source_fingerprint is required"),
     guide_fingerprint: z.string().optional(),
-    priority: z.enum(RADAR_PRIORITY_VALUES, {
-      errorMap: () => ({ message: "priority must be one of must_read, worth_knowing, skip" }),
-    }),
+    priority: z
+      .enum(RADAR_PRIORITY_VALUES, {
+        errorMap: () => ({ message: "priority must be one of must_read, worth_knowing, skip" }),
+      })
+      .optional(),
     historical_edition: z.string().optional(),
     historical_edition_fingerprint: z.string().optional(),
     coverage: CoverageSchema.default({ level: "abstract_only" }),
     analysis: AnalysisBodySchema.default({}),
     figures: z.array(FigureSchema).optional(),
+    causal_anchor: CausalAnchorSchema.optional(),
   })
   .passthrough()
   .refine((data) => Boolean(data.arxiv_id || data.id || data.doi), {

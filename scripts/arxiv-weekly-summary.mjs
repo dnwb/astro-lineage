@@ -114,15 +114,16 @@ export async function executeChatCompletion({
   fetchImpl = fetch,
 }) {
   const tryCall = async (targetUrl, targetKey, targetModel, targetEffort, targetTimeout) => {
+    const cleanModel = targetModel.startsWith("agy/") ? targetModel.slice(4) : targetModel;
     const payload = {
-      model: targetModel,
+      model: cleanModel,
       messages: [
         { role: "system", content: systemPrompt },
         { role: "user", content: prompt },
       ],
       temperature: 0.2,
     };
-    if (targetEffort && targetModel.startsWith("gpt-6")) {
+    if (targetEffort && cleanModel.startsWith("gpt-6")) {
       payload.reasoning_effort = targetEffort;
     }
     const response = await fetchImpl(targetUrl, {

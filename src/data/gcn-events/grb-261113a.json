@@ -1,0 +1,126 @@
+{
+  "primary_id": "GRB 261113A",
+  "slug": "grb-261113a",
+  "aliases": [
+    "AT 6250a"
+  ],
+  "event_type": "GRB",
+  "canonical_t0": {
+    "instrument": "SVOM/ECLAIRs",
+    "utc_iso": "2026-11-13T14:31:02.000Z",
+    "circular_id": 46270
+  },
+  "best_redshift": {
+    "z": 3.58,
+    "z_err": null,
+    "type": "spectroscopic",
+    "instrument": "Optical Spectroscopy",
+    "circular_id": 46309,
+    "note": ""
+  },
+  "has_redshift_conflict": false,
+  "redshifts": [
+    {
+      "circular_id": 46309,
+      "z": 3.58,
+      "z_err": null,
+      "type": "spectroscopic",
+      "instrument": "Optical Spectroscopy",
+      "note": ""
+    },
+    {
+      "circular_id": 46279,
+      "z": 3.58,
+      "z_err": null,
+      "type": "spectroscopic",
+      "instrument": "Optical Spectroscopy",
+      "note": ""
+    },
+    {
+      "circular_id": 46270,
+      "z": 3.58,
+      "z_err": null,
+      "type": "spectroscopic",
+      "instrument": "Optical Spectroscopy",
+      "note": ""
+    },
+    {
+      "circular_id": 46264,
+      "z": 3.58,
+      "z_err": null,
+      "type": "spectroscopic",
+      "instrument": "Optical Spectroscopy",
+      "note": ""
+    },
+    {
+      "circular_id": 46263,
+      "z": 3.58,
+      "z_err": null,
+      "type": "spectroscopic",
+      "instrument": "Optical Spectroscopy",
+      "note": ""
+    },
+    {
+      "circular_id": 46261,
+      "z": 3.58,
+      "z_err": null,
+      "type": "spectroscopic",
+      "instrument": "NOT/ALFOSC",
+      "note": "Absorption features Lyman series, Si II, C IV"
+    }
+  ],
+  "photometry_points": [
+    {
+      "circular_id": 46256,
+      "dt_hours": 0.74,
+      "band": "r",
+      "mag": 19.31,
+      "mag_err": 0.04,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "AB",
+      "telescope": "GIT",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 46253,
+      "dt_hours": 1.59,
+      "band": "Clear/L",
+      "mag": 20.18,
+      "mag_err": 0.13,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "AB",
+      "telescope": "Panzhihua 60cm",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    },
+    {
+      "circular_id": 46256,
+      "dt_hours": 1.81,
+      "band": "r",
+      "mag": 20,
+      "mag_err": 0.09,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "AB",
+      "telescope": "GIT",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    }
+  ],
+  "xray_points": [],
+  "radio_points": [],
+  "multi_messenger": [],
+  "feature_zoom": {
+    "enabled": false
+  },
+  "circular_count": 32,
+  "last_circular_id": 46309,
+  "last_updated_utc": "2026-11-16T22:53:39.668Z",
+  "status": "active"
+}

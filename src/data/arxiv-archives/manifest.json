@@ -1,39 +1,225 @@
 {
   "schema_version": "astrolineage-arxiv-archive-manifest-v1",
-  "updated_at": "2026-11-13T19:08:00.501Z",
-  "total_weeks": 10,
-  "total_daily_editions": 48,
-  "latest_week_id": "2026-W46",
-  "latest_daily_date": "2026-11-12",
+  "updated_at": "2026-11-20T03:04:42.022Z",
+  "total_weeks": 11,
+  "total_daily_editions": 52,
+  "latest_week_id": "2026-W47",
+  "latest_daily_date": "2026-11-18",
   "weeks": [
+    {
+      "week_id": "2026-W47",
+      "title": "Weekly Scientific Lineage · 2026-W47",
+      "date_range": "2026-11-16 ~ 2026-11-22",
+      "has_weekly_summary": true,
+      "executive_summary": "This week’s retained work traces the same causal chain the group uses—central engine and compact-object spin or magnetic energy, jet or ejecta launch, interaction with a magnetized or aspherical circum-source medium, dissipation, and the polarization, timing, or spectral features used to invert that chain—while separating propagation and geometry from the engine itself.\n- **Repeating FRB polarization clocks**: arXiv:2611.17805 reports a linear-polarization-fraction modulation of FRB 20240114A with phase-distance correlation peaking at $P=119.91^{+2.67}_{-2.04}\\,\\mathrm{d}$ (semi-amplitude $3.23\\%$), argues that Faraday depolarization from $\\sigma_{\\rm RM}<0.51\\,\\mathrm{rad\\,m^{-2}}$ lowers the degree of linear polarization by only $\\sim0.42\\%$ at $1.0\\,\\mathrm{GHz}$, and shows that a $120\\,\\mathrm{d}$ spin with $I=10^{45}\\,\\mathrm{g\\,cm^2}$ stores only $E_{\\rm rot}\\simeq1.84\\times10^{32}\\,\\mathrm{erg}$, far below $E_{\\rm iso}\\sim10^{37}$–$10^{39}\\,\\mathrm{erg}$, so the clock is geometric or orbital ($a\\simeq1.03\\,\\mathrm{au}$ for $M_{\\rm tot}=10M_\\odot$) rather than the burst engine’s rotation.\n- **Magnetized-plasma transfer of FRB polarization**: arXiv:2611.19811 derives cold-plasma Faraday coefficients without the weak-field approximation, replaces $\\Delta\\mathrm{PA}=\\mathrm{RM}\\lambda^2$ by $\\Delta\\mathrm{PA}=\\mathrm{RM}\\lambda^2\\lambda_B^2/(\\lambda_B^2-\\lambda^2)$ when $\\omega_B$ is not negligible, fits $\\theta_B\\sim90^\\circ$ and $\\log_{10}(B/\\mathrm{G})\\approx1.16$–$1.66$ for FRB 20180301A and two GPM pulses, and limits conversion-dominated sightlines to $B\\lesssim100\\,\\mathrm{G}$ while showing that a relativistic persistent-source plasma suppresses rotation by $(\\ln\\gamma_i)\\gamma_i^{-2(\\alpha+1)}$.\n- **Burst subclasses across FRB active windows**: arXiv:2611.18056 finds that HDBSCAN Cluster 1 of FRB 20121102A holds nearly all high-energy, mostly classical ($T_{\\mathrm{B,cri}}\\approx10^{33}\\,\\mathrm{K}$) bursts and drops from $26.9^{+2.3}_{-2.2}\\%$ in 2019 to $7.7^{+3.1}_{-2.3}\\%$ and $7.8^{+6.4}_{-3.7}\\%$ in 2022 and 2023, while all clusters keep bandwidth ratio $<0.4$ and similar bimodal waiting times.\n- **Pre-window FRB activity via cluster lensing**: arXiv:2611.17833 shows that MACS J0717.5+3745 image delays turn a $T_{\\mathrm{obs}}\\doteq5\\,\\mathrm{yr}$ survey at $z_s=2$ into a source-frame $95\\%$ span $L_{95}\\simeq42.6\\,\\mathrm{yr}$ for $T_{\\mathrm{act}}=100\\,\\mathrm{yr}$, with activity durations separated by about one decade giving $\\mathrm{E}[\\ln B_{12}]>3$.\n- **Seconds-long soft X-rays with short GRBs**: arXiv:2611.18210 identifies EP260411a as the sole astrophysical match to short GRB 260411A, with FRED pulses $T_{\\rm X,90}=6.1_{-1.1}^{+0.7}\\,\\mathrm{s}$ and $T_{\\gamma,90}=1.3_{-0.3}^{+0.2}\\,\\mathrm{s}$, Norris scaling $w\\propto E^{-0.24}$ and $t_{\\rm peak}\\propto E^{-0.56}$, and a joint broken power law placing the event in the Type I region of the $E_{\\rm p,z}$–$E_{\\rm iso}$ plane.\n- **Short-lived supernova CSM versus shock cooling**: arXiv:2611.19031 finds only weak narrow lines at $1.7$ and $2.6\\,\\mathrm{d}$ in SN 2024phv and a post-day-2 shock-cooling radius $R=390\\pm90\\,R_\\odot$ that overpredicts the first image by a factor $\\approx4$, implying a dense inner CSM ($\\sim10^{-12}\\,\\mathrm{g\\,cm^{-3}}$ near $\\sim2\\times10^{14}\\,\\mathrm{cm}$) that drops sharply.\n- **Aspherical CSM mass from radio**: arXiv:2611.20672 shows $M_{\\mathrm{CSM}}\\propto f_\\Omega^{0.15}$–$f_\\Omega^{0.38}$ and, analytically for $p=3$, $s=2$, $n=10$, $M_{\\mathrm{CSM}}\\propto f_\\Omega^{5/13}$, so $f_\\Omega=0.01$ does not reduce the radio-inferred mass by an order of magnitude.\n- **Jet–wind kink and baryon loading**: arXiv:2611.18268 shows that unloaded magnetic acceleration would reach $\\Gamma_j\\sim10^4$, whereas a static-column kink drives helical interpenetration and relaxes the mixture to $\\langle\\sigma\\rangle<1$ for a $\\sigma_w=0.1$ wind.\n- **Accreting neutron-star spins, fields, and QPOs**: arXiv:2611.17972 isolates a narrow pileup at $\\mu_{\\rm G}=565.7\\,\\mathrm{Hz}$ ($\\sigma_{\\rm G}=32.4\\,\\mathrm{Hz}$) that ordinary torque diffusion ($\\Delta\\nu_{\\rm diff}\\simeq7.9\\,\\mathrm{Hz}$) cannot set; arXiv:2611.19502 finds the Hartle–Thorne quadrupole lowers $\\nu_{\\rm nod}$ by up to $25\\%$ near the ISCO and saturates $2\\nu_{\\rm nod}$ near $32$–$40\\,\\mathrm{Hz}$; arXiv:2611.17430 keeps the cyclotron field of 1E 1207.4-5209 at $B\\approx(7$–$8)\\times10^{10}\\,\\mathrm{G}$ over 2001–2020; arXiv:2611.18226 requires $X\\sim0.03$ and $Z_{\\rm CNO}\\approx4\\times10^{-4}$ for a helium-rich donor at $P_{\\rm orb}\\approx3.47\\,\\mathrm{hr}$.\n- **Merger damping and binary magnetic circuits**: arXiv:2611.18146 finds suprathermal bulk viscosity at $1\\,\\mathrm{kHz}$ can exceed the subthermal value by up to five orders of magnitude for $\\Delta n/n\\sim0.1$–$1$ at $T=0.5\\,\\mathrm{MeV}$; arXiv:2611.20654 finds low-resistance magnetized binaries are quasi-cyclic, with ${\\bar L}_{\\rm mag}/L_{\\rm GW}\\sim10^{-10}$ and $|\\Delta\\Phi_{\\rm GW}|\\ll1$ even at $B_1=10^{15}\\,\\mathrm{G}$.\n- **PeVatrons and blazar SSA fields**: arXiv:2611.20542 places the all-particle knee at $3.67\\pm0.05_{\\rm stat}\\pm0.15_{\\rm sys}\\,\\mathrm{PeV}$ and limits a Crab $\\pi^0$ component to $\\lesssim5\\%$ of the spin-down power; arXiv:2611.19906 measures $\\langle\\log B_{\\rm SSA}\\rangle=-1.81\\pm0.16$ for 143 blazars, systematically below broadband-SED fields.\n- **Resonant dark-matter trapping in supernovae**: arXiv:2611.17604 shows that for ${\\mathcal L}_{\\rm int}\\supset -g\\phi^{*}\\bar\\chi P_L\\nu$ at $m_\\phi=3m_\\chi$, resonant $\\chi\\bar\\nu$ scattering opens an SN1987A cooling gap from about $5\\,\\mathrm{MeV}$ to $100\\,\\mathrm{MeV}$ relative to the Raffelt limit $5\\times10^{52}\\,\\mathrm{erg\\,s^{-1}}$.",
+      "statistics": {
+        "total_analyzed": 145,
+        "must_read_count": 7,
+        "worth_knowing_count": 20,
+        "skip_count": 118
+      },
+      "top_picks_count": 17,
+      "days": [
+        {
+          "date": "2026-11-18",
+          "weekday": "Wed",
+          "week_id": "2026-W47",
+          "batch_id": "announcement-2026-11-18",
+          "total_papers": 68,
+          "analyzed_count": 68,
+          "must_read_count": 6,
+          "worth_knowing_count": 16,
+          "skip_count": 46,
+          "pending_count": 0,
+          "brief_status": "ready",
+          "brief_intro": "Featured reading: \"An inspiral of a star inside a common envelope with its giant companion\" and 21 other key developments.",
+          "highlights": [
+            {
+              "arxiv_id": "2611.23470",
+              "priority": "must_read",
+              "title": "An inspiral of a star inside a common envelope with its giant companion",
+              "reason": "This paper presents the first direct observational identification of common-envelope evolution (CEE) orbital inspiral and merger in M31 (AT 2025abao), directly revealing ejecta-CSM shock interaction and plateau energetics relevant to high-energy transient physics."
+            },
+            {
+              "arxiv_id": "2611.23783",
+              "priority": "must_read",
+              "title": "The Population of Radio Hypernebulae from Mass-Transferring Massive Binaries",
+              "reason": "This paper presents the first binary population synthesis coupled with time-dependent synchrotron nebular models for hyper-Eddington mass-transfer systems, directly constraining persistent radio source (PRS) counterparts to repeating FRBs, relativistic jet inflation, and radio transient surveys."
+            },
+            {
+              "arxiv_id": "2611.24202",
+              "priority": "must_read",
+              "title": "A Butterfly Collector's View of Fast Radio Bursts: Repeating Sources Go Quiet within a Few Years",
+              "reason": "This paper establishes a novel unseen-species statistical framework on CHIME/FRB repeaters, ruling out steady Poisson activity at $p < 10^{-4}$ and demonstrating that repeating FRBs go quiet on a timescale of a few years."
+            },
+            {
+              "arxiv_id": "2611.24204",
+              "priority": "must_read",
+              "title": "SN 2025wiu: A Slowly Evolving Type Ib Supernova with an Extraordinary Post-maximum Bump",
+              "reason": "SN 2025wiu provides exceptional multi-band photometric and spectroscopic coverage of an extraordinary Type Ib supernova with a post-maximum bump, providing quantitative constraints on shock cooling, central engine activity, and circumstellar medium interaction."
+            },
+            {
+              "arxiv_id": "2611.24627",
+              "priority": "must_read",
+              "title": "Early spectra of AT2017gfo from scaled 3D merger ejecta: mass--velocity distribution, 3D structure, and treatment of line opacity",
+              "reason": "This work presents 3D Monte Carlo radiative transfer simulations of the kilonova AT2017gfo, demonstrating that mass scaling and velocity compression of dynamical ejecta self-consistently reproduce the bolometric light curve and early multi-epoch spectra without requiring an ad hoc separate lanthanide-poor component."
+            },
+            {
+              "arxiv_id": "2611.24635",
+              "priority": "must_read",
+              "title": "Investigating the Impact of SAX J1808.4-3658's Very Bright Thermonuclear X-ray Burst on the Accretion Disc with NICER",
+              "reason": "This paper presents the first simultaneous detection and decoupling of relativistic disc reflection and an evolving persistent accretion component during a bright thermonuclear X-ray burst in SAX J1808.4-3658, providing compelling spectroscopic evidence for burst-induced accretion disc puffing."
+            }
+          ],
+          "data_file": "daily/2026-11-18.json"
+        },
+        {
+          "date": "2026-11-17",
+          "weekday": "Tue",
+          "week_id": "2026-W47",
+          "batch_id": "announcement-2026-11-17",
+          "total_papers": 73,
+          "analyzed_count": 53,
+          "must_read_count": 0,
+          "worth_knowing_count": 0,
+          "skip_count": 53,
+          "pending_count": 20,
+          "brief_status": "ready",
+          "brief_intro": "Standard screening batch, focused primarily on abstract skimming.",
+          "highlights": [],
+          "data_file": "daily/2026-11-17.json"
+        },
+        {
+          "date": "2026-11-16",
+          "weekday": "Mon",
+          "week_id": "2026-W47",
+          "batch_id": "announcement-2026-11-16",
+          "total_papers": 91,
+          "analyzed_count": 91,
+          "must_read_count": 3,
+          "worth_knowing_count": 14,
+          "skip_count": 74,
+          "pending_count": 0,
+          "brief_status": "ready",
+          "brief_intro": "Featured reading: \"Early Spectroscopy of the Type II SN 2024phv Suggests Short-Lived Circumstellar Interaction\" and 16 other key developments.",
+          "highlights": [
+            {
+              "arxiv_id": "2611.19031",
+              "priority": "must_read",
+              "title": "Early Spectroscopy of the Type II SN 2024phv Suggests Short-Lived Circumstellar Interaction",
+              "reason": "This Type II supernova study directly tests shock-cooling emission against short-lived circumstellar interaction, a core interest of the group. The early light curve and spectra give quantitative progenitor-radius and near-star CSM constraints even though the advance is a single-object incremental result."
+            },
+            {
+              "arxiv_id": "2611.19811",
+              "priority": "must_read",
+              "title": "Polarization of Fast Radio Bursts due to Propagation in Magnetized Plasma",
+              "reason": "This work directly models how magnetized plasma around FRBs and associated persistent radio sources imprints frequency-dependent polarization, separating intrinsic emission from Faraday propagation."
+            },
+            {
+              "arxiv_id": "2611.20672",
+              "priority": "must_read",
+              "title": "The Effect of Asphericity to the Inference of Supernova Circumstellar Environment from Radio Observations",
+              "reason": "This paper directly quantifies how asphericity changes radio-inferred supernova CSM masses, a core input for shock–CSM interaction studies. The weak $M_{\\mathrm{CSM}}$–$f_{\\Omega}$ scaling is a concrete, usable constraint rather than a peripheral result."
+            }
+          ],
+          "data_file": "daily/2026-11-16.json"
+        },
+        {
+          "date": "2026-11-15",
+          "weekday": "Sun",
+          "week_id": "2026-W47",
+          "batch_id": "announcement-2026-11-15",
+          "total_papers": 54,
+          "analyzed_count": 54,
+          "must_read_count": 4,
+          "worth_knowing_count": 6,
+          "skip_count": 44,
+          "pending_count": 0,
+          "brief_status": "ready",
+          "brief_intro": "Featured reading: \"Periodic Modulation of Linear Polarization Fraction in Repeating FRB 20240114A\" and 9 other key developments.",
+          "highlights": [
+            {
+              "arxiv_id": "2611.17805",
+              "priority": "must_read",
+              "title": "Periodic Modulation of Linear Polarization Fraction in Repeating FRB 20240114A",
+              "reason": "FRB 20240114A shows a roughly 120 day modulation of its linear polarization fraction, directly constraining emission geometry versus magneto-ionic propagation for a repeating FRB."
+            },
+            {
+              "arxiv_id": "2611.17833",
+              "priority": "must_read",
+              "title": "Probing the Activity History of Repeating Fast Radio Bursts with Cluster Lensing",
+              "reason": "The paper is directly about repeating-FRB engine lifetimes, burst-history reconstruction, and DM/RM/PRS environment tests using cluster-lens time delays, which matches the group's core FRB/PRS interests."
+            },
+            {
+              "arxiv_id": "2611.18056",
+              "priority": "must_read",
+              "title": "Unsupervised Machine Learning Classification of FRB 20121102A across Distinct Active Episodes: Implications for FRB Emission Physics and Source Environments",
+              "reason": "This FAST UMAP–HDBSCAN study of FRB 20121102A directly tests whether repeating bursts form emission subclasses whose mix changes between active episodes. The drop of the high-energy Cluster 1 from about 27% to about 8% is relevant to FRB radiation conditions and source environment."
+            },
+            {
+              "arxiv_id": "2611.18210",
+              "priority": "must_read",
+              "title": "Discovery of a Short-Duration Fast X-ray Transient Associated with a Short Gamma-Ray Burst",
+              "reason": "A seconds-long EFXT coincident with a hard short GRB directly tests whether merger X-rays and gamma rays share one on-axis jet versus a longer-lived engine. The timing indices and joint spectral break are usable constraints for compact-object jet studies."
+            }
+          ],
+          "data_file": "daily/2026-11-15.json"
+        }
+      ],
+      "weekly_data_file": "weekly/2026-W47.json"
+    },
     {
       "week_id": "2026-W46",
       "title": "Weekly Scientific Lineage · 2026-W46",
       "date_range": "2026-11-09 ~ 2026-11-15",
       "has_weekly_summary": true,
-      "executive_summary": "This week’s results follow the causal chain from core collapse and compact-binary engines, through jets, winds, and baryonic environments, to photons, neutrinos, dispersion measures, and gravitational-wave observables that feed back on progenitor mass loss, spin, and central-engine power.\n- **Natal kicks and BBH spins**: arXiv:2611.08604 demonstrates that asymmetric fallback (the Tug-boat mechanism) drives $v_{\\rm Tug}\\sim 2$ for $28\\,M_\\odot$ and $34\\,M_\\odot$ models when $E_{\\rm SN}\\ge 0.6 E_{\\rm bin}$, but even $v_{\\rm kick}\\sim 1000\\,\\mathrm{km\\,s^{-1}}$ retro-orbital kicks do not persistently yield $\\chi_{\\rm eff}<0$; post-SN eccentricities deviate from the instantaneous mass-loss approximation by up to $\\sim 60\\%$.\n- **Hydrogen-rich SLSNe**: arXiv:2611.10140 finds that 105 of 106 ZTF events with $M\\le -19.9$ are narrow-line SLSNe-IIn, infers $\\dot{M}\\sim 0.028$–$0.30\\,M_\\odot\\,\\mathrm{yr^{-1}}$ at $v_{\\rm CSM}=100\\,\\mathrm{km\\,s^{-1}}$ and $\\epsilon=0.5$, and classifies only $\\sim 6\\%$ as Ia-CSM-like.\n- **Young-SN X-rays**: arXiv:2611.16216 shows that Chevalier wind-shock X-rays constrain $\\dot{M}/v_w$, with steady-wind thermal $L_x$ falling roughly as $t^{-0.7}$–$t^{-1}$ and many $1$–$2\\,\\mathrm{keV}$ spectra favoring reverse-shock rather than $\\sim 40\\,\\mathrm{keV}$ forward-shock emission.\n- **Neutrino-powered jets**: arXiv:2611.08742 finds that equipartition flavour conversion cuts $\\nu\\bar\\nu\\to e^+e^-$ deposition by $54\\%$ in flat space but raises it by $+11\\%$ in Kerr spacetime ($a=0.99$), because cross pairs are amplified by $6.3$–$7.4\\times$ and supply $0.77$ of the Kerr deposition.\n- **X-ray flares**: arXiv:2611.13350 separates early–narrow ($\\sim 80\\%$, $\\langle t_{\\rm pk}\\rangle\\simeq 10^{2}\\,\\mathrm{s}$, $L_{\\rm avg}\\propto t_{\\rm pk}^{-1.74}$) from late–wide flares ($\\sim 20\\%$, slope consistent with zero), so one $w$–$t_{\\rm pk}$ scaling does not describe all flares.\n- **GRB 221009A MeV feature**: arXiv:2611.14363 rules out single-scattering line-seed inverse-Compton models as a joint solution: host-frame Ly$\\alpha$ and H$\\alpha$ need $\\gamma_e\\simeq 531$ and $1.23\\times 10^3$, and compact line densities still fall short by factors $\\sim 4$–$9$.\n- **Short-GRB remnant fields**: arXiv:2611.16225 reports, for 15 strictly constrained bursts, median $E_{\\rm k}\\simeq 3.8\\times 10^{49}\\,\\mathrm{erg}$ and $\\eta_\\gamma\\simeq 0.35$, mapping under Blandford–Znajek to $B_{\\rm BH}\\simeq 7\\times 10^{15}\\,\\mathrm{G}$.\n- **Simultaneous jet and wind**: arXiv:2611.16641 shows resistive thin-disk GRMHD launches parabolic jets ($\\mathcal{K}\\approx 0.52$–$0.64$) together with Blandford–Payne winds at $P^{\\rm BP}/P^{\\rm BZ}\\approx 30\\%$–$35\\%$ for high spin, rising to $\\approx 99.5\\%$ at $a_*=0.5$.\n- **BNS fallback**: arXiv:2611.09216 finds jets with $\\theta_j\\le 0.3\\,\\mathrm{rad}$ avoid choking when $f_{\\rm circ}\\gtrsim 0.08$, while diffusion-corrected $r$-process heating supplies only $L_{\\rm EE}\\sim 10^{43}$–$10^{44}\\,\\mathrm{erg\\,s^{-1}}$.\n- **FRB halo baryons**: arXiv:2611.12860 measures a mean extragalactic DM excess $119\\pm 44\\,\\mathrm{pc\\,cm^{-3}}$ ($\\sim 2.6\\sigma$) inside one virial radius for $D_L\\le 50\\,\\mathrm{Mpc}$, with a declining trend in impact parameter.\n- **UHE neutrinos**: arXiv:2611.14350 records $n=0$ array-wide Askaryan events against $0.13\\pm 0.01$ background and sets the strongest Feldman–Cousins $90\\%$ limits among techniques over $50$–$1000\\,\\mathrm{EeV}$.\n- **BHXRB corona and QPOs**: arXiv:2611.08882 favors a radially extended wedge corona for the hard-state $\\sim 4\\%$–$5\\%$ polarization of Cygnus X-1 and $a>0.96$ for the soft state, while arXiv:2611.08769 and arXiv:2611.09635 derive the ridge, hypotenuse, and harmonic bicoherence from QPO–flow coupling.",
+      "executive_summary": "This week’s retained work traces one causal chain: progenitor structure and natal mass loss set the compact remnant and its large-scale field or disk; that engine launches a jet or shock; the outflow then couples to fallback, CSM, or CGM; and the resulting dissipation, neutrino losses, and radiative transfer fix the observed light curve, spectrum, DM, and multi-messenger limits.\n- **Black-hole natal kicks**: arXiv:2611.08604 showed that asymmetric fallback (the Tug-boat) can raise or suppress kicks relative to the symmetric case, with $v_{\\rm Tug}\\sim 2$ at high $E_{\\rm SN}$ for $28$–$34\\,M_\\odot$ progenitors, but even $v_{\\rm kick}\\sim 1000\\,{\\rm km\\,s^{-1}}$ does not robustly flip the orbit or sustain $\\chi_{\\rm eff}<0$, while eccentricities deviate from the instantaneous mass-loss approximation by up to $\\sim 60\\%$.\n- **Neutrino-powered jets**: arXiv:2611.08742 found that equipartition flavour conversion changes $\\nu\\bar\\nu\\to e^+e^-$ deposition by $-54\\%$ in flat space but $+11\\%$ in Kerr ($a=0.99$), because GR boosts cross pairs by $6.3$–$7.4\\times$ and concentrates $50\\%$ of $\\dot E_\\infty$ inside $r<10M$.\n- **GRB X-ray flares**: arXiv:2611.13350 separated an early–narrow population ($\\sim 80\\%$, $\\langle t_{\\rm pk}\\rangle\\simeq 10^2\\,{\\rm s}$, $L\\propto t_{\\rm pk}^{-1.74}$) from a late–wide population ($\\sim 20\\%$, $w/t_{\\rm pk}\\gtrsim 2$), arguing that one $w$–$t_{\\rm pk}$ scaling does not describe all flares.\n- **GRB 221009A MeV spectrum**: arXiv:2611.15119 recovered a $\\sim 2\\,{\\rm MeV}$ thermal bump that is only $\\sim 6\\%$ of the peak luminosity and a drifting line from $\\sim 40\\,{\\rm MeV}$ with $E_{\\rm line}\\propto (t-t_0)^{-1.05}$ at $r\\approx 2.45\\times 10^{16}(\\Gamma/500)\\,{\\rm cm}$, while arXiv:2611.14363 showed that single-scattering line-seed inverse-Compton models miss the photon budget by factors of $\\sim 4$–$9$ or more and overproduce the LAT band.\n- **Prompt neutrino bounds**: arXiv:2611.14902 showed that summing time-resolved spectra tightens the $\\Gamma$ lower limit for GRB 221009A by $28\\%$–$40\\%$ relative to a time-integrated spectrum at fixed $R\\simeq 1.07\\times 10^{15}\\,{\\rm cm}$.\n- **UHE neutrinos**: arXiv:2611.14350 reported zero array-wide ARA events against $0.13\\pm 0.01$ background and the strongest $90\\%$ CL diffuse limit among techniques over $50$–$1000\\,{\\rm EeV}$.\n- **Hydrogen-rich SLSNe and CSM**: arXiv:2611.10140 found that $105/106$ ZTF events with $M\\le -19.9$ are SLSNe-IIn, with $\\dot M\\sim 0.028$–$0.30\\,M_\\odot\\,{\\rm yr^{-1}}$ and only $\\sim 6\\%$ Ia-CSM-like, so narrow Balmer lines plus high luminosity do not uniquely select core collapse.\n- **SN IIP peaks and young X-rays**: arXiv:2611.15385 reproduced the SN 1999em pre-plateau peak with an outer $\\sim 0.9\\,M_\\odot$ layer at $k=d\\ln\\rho/d\\ln r<-3$ and $M_{\\rm ej}=21.9\\pm 0.7\\,M_\\odot$, while arXiv:2611.16216 showed that thermal X-rays scale directly with wind density and mainly constrain $\\dot M/v_w$ via the reverse shock.\n- **Short-GRB jets and fallback**: arXiv:2611.16225 inferred a strictly constrained median $E_{\\rm k}\\simeq 3.8\\times 10^{49}\\,{\\rm erg}$, $\\eta_\\gamma\\simeq 0.35$, and $B_{\\rm BH}\\simeq 7\\times 10^{15}\\,{\\rm G}$ if Blandford–Znajek supplies the jet; arXiv:2611.16641 showed resistive thin disks can launch BZ jets and BP winds together; arXiv:2611.09216 found $r$-process heating yields only $L_{\\rm EE}\\sim 10^{43}$–$10^{44}\\,{\\rm erg\\,s^{-1}}$ and that polar fallback chokes the jet unless $f_{\\rm circ}\\gtrsim 0.08$ for $\\theta_j\\le 0.3$.\n- **FRB source counts and CGM**: arXiv:2611.15099 measured near-linear source-count growth ($\\beta_s=0.98\\pm 0.02$) and $\\alpha=2.06\\pm 0.14$, with on/off duty cycle $\\lesssim 0.2$, so the apparent repeater fraction is not the true repeating fraction; arXiv:2611.12860 found a halo DM excess of $119\\pm 44\\,{\\rm pc\\,cm^{-3}}$ within $50\\,{\\rm Mpc}$ and one virial radius.\n- **X-ray binary timing and coronae**: arXiv:2611.08769 and arXiv:2611.09635 accounted for QPO–noise bicoherence ridges by bilinear or multiplicative coupling, and arXiv:2611.08882 favoured a wedge corona in the Cyg X-1 hard state and $a>0.96$ in the soft state.",
       "statistics": {
-        "total_analyzed": 287,
-        "must_read_count": 10,
-        "worth_knowing_count": 45,
-        "skip_count": 232
+        "total_analyzed": 358,
+        "must_read_count": 14,
+        "worth_knowing_count": 54,
+        "skip_count": 290
       },
-      "top_picks_count": 13,
+      "top_picks_count": 16,
       "days": [
         {
           "date": "2026-11-12",
           "weekday": "Thu",
           "week_id": "2026-W46",
           "batch_id": "announcement-2026-11-12",
-          "total_papers": 85,
-          "analyzed_count": 85,
-          "must_read_count": 3,
-          "worth_knowing_count": 10,
-          "skip_count": 72,
+          "total_papers": 156,
+          "analyzed_count": 156,
+          "must_read_count": 7,
+          "worth_knowing_count": 19,
+          "skip_count": 130,
           "pending_count": 0,
           "brief_status": "ready",
-          "brief_intro": "Featured reading: \"What the X-ray Emission from Young Supernovae Can Tell Us About Their Progenitors\" and 12 other key developments.",
+          "brief_intro": "Featured reading: \"Revisiting the Neutrino Emission and Physical Parameter Constraints from Time-Resolved Spectra of Gamma-Ray Bursts\" and 25 other key developments.",
           "highlights": [
+            {
+              "arxiv_id": "2611.14902",
+              "priority": "must_read",
+              "title": "Revisiting the Neutrino Emission and Physical Parameter Constraints from Time-Resolved Spectra of Gamma-Ray Bursts",
+              "reason": "The paper quantitatively revises IceCube neutrino yields and jet-parameter bounds for bright GRBs by replacing duration-averaged spectra with time-resolved spectra, directly relevant to relativistic jets and high-energy neutrinos."
+            },
+            {
+              "arxiv_id": "2611.15099",
+              "priority": "must_read",
+              "title": "Fast Radio Burst Population Constrained by Source-Count Growth and Burst Clustering",
+              "reason": "Paper directly constrains FRB source population via CHIME Catalog 2 source-count growth (linear β_s, β_r) and repeat clustering, yielding rate index α ≃ 2 and requiring long-term on/off activity rather than stationary clustering."
+            },
+            {
+              "arxiv_id": "2611.15119",
+              "priority": "must_read",
+              "title": "Detection of 2 MeV spectral bump and ~40 MeV emission line from GRB 221009A",
+              "reason": "Unsaturated 2–255 MeV spectroscopy of GRB 221009A directly constrains prompt jet composition, separating a sub-dominant photosphere from magnetically powered emission and an evolving MeV annihilation line."
+            },
+            {
+              "arxiv_id": "2611.15385",
+              "priority": "must_read",
+              "title": "What stands behind luminosity peak of type IIP supernovae?",
+              "reason": "The work targets the pre-plateau luminosity peak of SNe IIP, contrasting shock propagation in a steep hydrogen-envelope density gradient with a massive CSM shell, which is directly useful for shock-breakout, plateau, and progenitor-structure studies."
+            },
             {
               "arxiv_id": "2611.16216",
               "priority": "must_read",

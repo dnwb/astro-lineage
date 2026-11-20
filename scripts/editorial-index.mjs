@@ -53,7 +53,7 @@ export function buildWorkResearchLineIndex(snapshot) {
     (Array.isArray(snapshot?.works) ? snapshot.works : [])
       .filter(isVisibleWork)
       .map((work) => work.id)
-      .filter((id) => typeof id === "string"),
+      .filter((id) => typeof id === "string")
   );
   const visibleLines = (Array.isArray(snapshot?.researchLines) ? snapshot.researchLines : [])
     .filter(isVisibleResearchLine)
@@ -74,8 +74,8 @@ export function buildWorkResearchLineIndex(snapshot) {
 
         const readingRoles = Array.isArray(membership.reading_roles)
           ? [...new Set(membership.reading_roles)]
-            .filter((role) => typeof role === "string")
-            .sort(compareBytewise)
+              .filter((role) => typeof role === "string")
+              .sort(compareBytewise)
           : [];
         entries.push({
           line_id: researchLine.id,
@@ -105,10 +105,7 @@ export function buildWorkResearchLineIndex(snapshot) {
  * workflows can target an isolated output directory. It is never read by
  * canonical content discovery.
  */
-export async function writeEditorialIndexes(
-  snapshot,
-  generatedRoot = DEFAULT_GENERATED_ROOT,
-) {
+export async function writeEditorialIndexes(snapshot, generatedRoot = DEFAULT_GENERATED_ROOT) {
   const outputRoot = asPath(generatedRoot);
   const outputPath = join(outputRoot, OUTPUT_FILE);
   const index = buildWorkResearchLineIndex(snapshot);
@@ -118,9 +115,7 @@ export async function writeEditorialIndexes(
 }
 
 export async function readEditorialIndex(generatedRoot = DEFAULT_GENERATED_ROOT) {
-  return JSON.parse(
-    await readFile(join(asPath(generatedRoot), OUTPUT_FILE), "utf8"),
-  );
+  return JSON.parse(await readFile(join(asPath(generatedRoot), OUTPUT_FILE), "utf8"));
 }
 
 export { OUTPUT_FILE };
@@ -130,5 +125,8 @@ import { writeScientificEventsFile } from "./transient-event-cluster.mjs";
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const snapshot = await loadCanonicalContent(DEFAULT_CONTENT_ROOT);
   await writeEditorialIndexes(snapshot, DEFAULT_GENERATED_ROOT);
-  await writeScientificEventsFile();
+  const readonlyData = process.argv.includes("--check") || process.env.ASTRO_READONLY_DATA === "1";
+  if (!readonlyData) {
+    await writeScientificEventsFile();
+  }
 }

@@ -1,6 +1,11 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { loadCausalCatalog, CAUSAL_ANCHOR_RELATIONS } from "../src/domain/causal-graph-catalog.mjs";
+import {
+  loadCausalCatalog,
+  CAUSAL_ANCHOR_RELATIONS,
+  selectRelevantCausalWorks,
+  formatCausalContext,
+} from "../src/domain/causal-graph-catalog.mjs";
 
 test("causal-graph-catalog: loads all 41 works and exact stages", () => {
   const catalog = loadCausalCatalog();
@@ -60,4 +65,23 @@ test("causal-graph-catalog: catches hallucinated stage IDs and mismatched work_s
   });
   assert.equal(resBadWork.valid, false);
   assert.match(resBadWork.errors[0], /Mismatched work_slug/);
+});
+
+test("selectRelevantCausalWorks and formatCausalContext bound prompt size to top relevant works", () => {
+  const catalog = loadCausalCatalog();
+  const selected = selectRelevantCausalWorks(
+    {
+      title: "Fast Radio Burst Dispersion Measure and Magnetar Wind Nebula",
+      abstract: "We study repeating FRB emission and magnetar spin-down energy injection.",
+    },
+    catalog,
+    { maxWorks: 5 }
+  );
+  assert.ok(selected.length > 0 && selected.length <= 5);
+  const formatted = formatCausalContext(selected);
+  assert.ok(
+    formatted.length > 0 && formatted.length < 6000,
+    `Unexpected size: ${formatted.length}`
+  );
+  assert.match(formatted, /stage:/u);
 });

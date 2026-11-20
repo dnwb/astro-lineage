@@ -12,12 +12,15 @@ import { deterministicTriageFilter } from "./arxiv-triage-filter.mjs";
 import { safeParseJson } from "./pipeline-evidence-gate.mjs";
 import { cleanTitleZh } from "../src/domain/paper-translation.mjs";
 
-export function buildTriagePrompt(entry) {
+export function buildTriagePrompt(entry, { causalContext = "" } = {}) {
+  const causalBlock = causalContext
+    ? `\n参考相关经典因果链条（Top 相关文献阶段，用于辅助价值判别；仅当论文对其中节点作出实质性 supports/constrains/challenges/extends/tests 时优先评为 must_read，仅作背景引用不升格）：\n${causalContext}\n`
+    : "";
   return `阶段：摘要初筛（Triage）。
 目标：评估论文是否属于高能瞬变天体物理核心研究方向（FRB/PRS 及其环境、超新星中心引擎、激波破越与周星介质相互作用、平台期、光电离与色散测量、相对论喷流、中微子及致密天体高能观测）。
 根据研究效用判定 priority 为 must_read, worth_knowing, 或 skip。与上述方向无实质联系的工作应为 skip。
 这里不是最终正文推荐，非 skip 候选之后还必须通过正文阅读门槛。
-
+${causalBlock}
 arXiv ID: ${entry.arxiv_id} (v${entry.revision})
 标题: ${entry.title}
 作者: ${(entry.authors || []).join(", ")}
@@ -183,22 +186,30 @@ export function safeParseTriageJson(raw) {
   return safeParseJson(raw);
 }
 
-export function buildBatchTriagePrompt(entries) {
+export function buildBatchTriagePrompt(entries, { causalContextFor = null } = {}) {
+  let hasCausalContext = false;
   const paperBlocks = entries
     .map((entry, idx) => {
+      const causalContext = causalContextFor ? causalContextFor(entry) : "";
+      if (causalContext) hasCausalContext = true;
+      const causalBlock = causalContext ? `参考相关经典因果链条：\n${causalContext}\n` : "";
       return `--- 论文 [${idx + 1}/${entries.length}] ---
 arXiv ID: ${entry.arxiv_id} (v${entry.revision})
 标题: ${entry.title}
 分类: ${(entry.categories || []).join(", ")}
 摘要:
 ${entry.abstract}
-`;
+${causalBlock}`;
     })
     .join("\n");
 
+  const causalRule = hasCausalContext
+    ? "若附带了参考相关经典因果链条，仅当论文对其中节点作出实质性 supports/constrains/challenges/extends/tests 时优先评为 must_read，仅作背景引用不升格。"
+    : "";
+
   return `阶段：批量摘要初筛（Batch Triage）。
 目标：逐篇评估下列 ${entries.length} 篇论文是否属于高能瞬变天体物理核心研究方向（FRB/PRS 及其环境、超新星中心引擎、激波破越与周星介质相互作用、平台期、光电离与色散测量、相对论喷流、中微子及致密天体高能观测）。
-根据研究效用判定每篇论文的 priority 为 must_read, worth_knowing, 或 skip。与上述方向无实质联系的工作必须判定为 skip。
+根据研究效用判定每篇论文的 priority 为 must_read, worth_knowing, 或 skip。与上述方向无实质联系的工作必须判定为 skip。${causalRule}
 
 待评估论文列表：
 ${paperBlocks}
@@ -220,7 +231,10 @@ ${paperBlocks}
 摘录必须从对应论文的摘要中逐字复制。不得在 JSON 前后输出任何非 JSON 文本。`;
 }
 
-export async function triageBatch(entries, { modelCall, batchSize = 4, concurrency = 3 } = {}) {
+export async function triageBatch(
+  entries,
+  { modelCall, batchSize = 4, concurrency = 3, causalContextFor = null } = {}
+) {
   const results = new Map();
   const needModel = [];
 
@@ -244,28 +258,33 @@ export async function triageBatch(entries, { modelCall, batchSize = 4, concurren
     batches.push(needModel.slice(i, i + batchSize));
   }
 
+  async function triageSingleEntry(entry) {
+    try {
+      const raw = await modelCall({
+        stage: "abstract",
+        prompt: buildTriagePrompt(entry, {
+          causalContext: causalContextFor ? causalContextFor(entry) : "",
+        }),
+        entry,
+      });
+      const parsed = safeParseTriageJson(raw);
+      results.set(entry.arxiv_id, normalizeTriageOutput(parsed, entry));
+    } catch (err) {
+      results.set(entry.arxiv_id, { error: err });
+    }
+  }
+
   let batchCursor = 0;
   async function batchWorker() {
     while (batchCursor < batches.length) {
       const batch = batches[batchCursor++];
       if (batch.length === 1) {
-        const entry = batch[0];
-        try {
-          const raw = await modelCall({
-            stage: "abstract",
-            prompt: buildTriagePrompt(entry),
-            entry,
-          });
-          const parsed = safeParseTriageJson(raw);
-          results.set(entry.arxiv_id, normalizeTriageOutput(parsed, entry));
-        } catch (err) {
-          results.set(entry.arxiv_id, { error: err });
-        }
+        await triageSingleEntry(batch[0]);
         continue;
       }
 
       try {
-        const prompt = buildBatchTriagePrompt(batch);
+        const prompt = buildBatchTriagePrompt(batch, { causalContextFor });
         const raw = await modelCall({
           stage: "abstract",
           prompt,
@@ -293,17 +312,7 @@ export async function triageBatch(entries, { modelCall, batchSize = 4, concurren
             !["must_read", "worth_knowing", "skip"].includes(item?.priority) ||
             !item?.reason
           ) {
-            try {
-              const singleRaw = await modelCall({
-                stage: "abstract",
-                prompt: buildTriagePrompt(entry),
-                entry,
-              });
-              const singleParsed = safeParseTriageJson(singleRaw);
-              results.set(entry.arxiv_id, normalizeTriageOutput(singleParsed, entry));
-            } catch (singleErr) {
-              results.set(entry.arxiv_id, { error: singleErr });
-            }
+            await triageSingleEntry(entry);
           } else {
             const abstractText = String(entry.abstract || "");
             const quote = String(item.quote || "").trim();

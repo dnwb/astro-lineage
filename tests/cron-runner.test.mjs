@@ -22,12 +22,12 @@ test("runner gives each kind one channel path, blocks stale export, and sends no
   await copyFile(runner, resolve(path, "scripts/cron-runner.sh"));
   for (const [mode, weekday, flags, expectedKinds, exitCode] of [
     ["auto", "1", {}, ["preliminary"], 0],
-    ["auto", "5", {}, ["preliminary"], 0],
-    ["reconcile", "2", {}, ["daily"], 0],
+    ["auto", "5", {}, ["preliminary", "weekly"], 0],
+    ["reconcile", "2", {}, ["both"], 0],
     ["reconcile", "6", {}, ["both"], 0],
-    ["daily", "5", {}, ["daily"], 0],
+    ["daily", "5", {}, ["both"], 0],
     ["weekly", "1", {}, ["weekly"], 0],
-    ["auto", "5", { STUB_EXPORT_FAIL: "1" }, ["preliminary"], 1],
+    ["auto", "5", { STUB_EXPORT_FAIL: "1" }, ["preliminary", "weekly"], 1],
     ["auto", "1", { STUB_CAPTURE_FAIL: "1" }, [], 1],
     ["auto", "1", { STUB_BUILD_FAIL: "1" }, [], 1],
     ["auto", "1", { STUB_BUILT_FAIL: "1" }, [], 1],

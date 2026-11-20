@@ -32,24 +32,30 @@ export const BADGE_MAP = Object.freeze({
   "观测总体曲线/能谱": "Observational Light Curve / SED",
 });
 
-const TOPIC_CHINESE_LABELS = Object.freeze({
+export const ACTIVE_CHANNEL_TOPICS = Object.freeze(["R1", "R2", "R3", "R4", "R6", "R7"]);
+
+export const TOPIC_CHINESE_LABELS = Object.freeze({
   R1: "中央引擎与能量注入",
   R2: "伽马射线暴与相对论喷流",
   R3: "超新星与星周介质作用",
-  R4: "脉冲星风与高能双星",
+  R4: "脉冲星与快速射电暴",
   R5: "磁星爆发与快速射电暴",
   R6: "致密环境与多信使暂现源",
-  R7: "X射线时变、能谱与致密双星",
+  R7: "X射线时变、磁星与致密双星",
 });
+
+export const CHANNEL_TOPIC_LABELS = Object.freeze(
+  Object.fromEntries(ACTIVE_CHANNEL_TOPICS.map((key) => [key, TOPIC_CHINESE_LABELS[key]]))
+);
 
 const TOPIC_ENGLISH_LABELS = Object.freeze({
   R1: "Central Engines & Engine-powered Transients",
   R2: "Relativistic Jets & GRBs",
   R3: "Explosive Transients & CSM Interaction",
-  R4: "Pulsar Winds & High-energy Binaries",
+  R4: "Pulsars, Winds & Fast Radio Bursts",
   R5: "Magnetar Bursts & FRB Environments",
   R6: "Dense-environment & Multi-messenger Transients",
-  R7: "High-Energy X-ray Timing, Spectroscopy & Compact Binary Observations",
+  R7: "High-Energy X-ray Timing, Magnetars & Compact Binaries",
 });
 
 function claimText(value) {

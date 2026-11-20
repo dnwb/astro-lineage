@@ -2,6 +2,7 @@ import { existsSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { parseArgs } from "node:util";
 
 if (typeof process.loadEnvFile === "function" && existsSync(".env")) {
   process.loadEnvFile();
@@ -14,7 +15,9 @@ import {
   DEFAULT_RADAR_OUTPUT,
   DEFAULT_TIME_ZONE,
   acquireRefreshLock,
+  isArxivHoliday,
   isScheduledAnnouncementDate,
+  previousScheduledAnnouncementDate,
   releaseRefreshLock,
   readArxivRunState,
   refreshArxivFeed,
@@ -74,13 +77,6 @@ function nextScheduledDate(dateOnly, timeZone) {
   let candidate = addCalendarDay(dateOnly, 1);
   while (!isScheduledAnnouncementDate(candidate, timeZone))
     candidate = addCalendarDay(candidate, 1);
-  return candidate;
-}
-
-function previousScheduledDate(dateOnly, timeZone) {
-  let candidate = addCalendarDay(dateOnly, -1);
-  while (!isScheduledAnnouncementDate(candidate, timeZone))
-    candidate = addCalendarDay(candidate, -1);
   return candidate;
 }
 
@@ -164,10 +160,13 @@ export async function readLedger({ artifactRoot, timeZone, query }) {
         date_attempts: {},
       };
     }
-    for (const date of parsed.successful_dates) {
-      assertDateOnly(date, "scheduler ledger date");
-      if (!isScheduledAnnouncementDate(date, timeZone))
+    const assertLedgerDate = (date, label) => {
+      assertDateOnly(date, label);
+      if (!isScheduledAnnouncementDate(date, timeZone) && !isArxivHoliday(date))
         throw new Error(`ARXIV_SCHEDULER_LEDGER_INVALID: ${date} is not an announcement date`);
+    };
+    for (const date of parsed.successful_dates) {
+      assertLedgerDate(date, "scheduler ledger date");
     }
     const attemptSequence = parsed.attempt_sequence ?? 0;
     const rawDateAttempts = parsed.date_attempts ?? {};
@@ -184,8 +183,10 @@ export async function readLedger({ artifactRoot, timeZone, query }) {
         "ARXIV_SCHEDULER_LEDGER_INVALID: date-attempt tracking has an unsupported shape"
       );
     }
+    const sanitizedDateAttempts = {};
     for (const [date, attempt] of Object.entries(rawDateAttempts)) {
       assertDateOnly(date, "scheduler ledger attempt date");
+      if (isArxivHoliday(date)) continue;
       const validAttempts =
         attempt && Number.isSafeInteger(attempt.attempts) && attempt.attempts >= 0;
       const validQueueSequence =
@@ -206,34 +207,38 @@ export async function readLedger({ artifactRoot, timeZone, query }) {
       ) {
         throw new Error(`ARXIV_SCHEDULER_LEDGER_INVALID: attempt record for ${date} is invalid`);
       }
+      sanitizedDateAttempts[date] = attempt;
     }
     for (const date of rawFailedDates) {
-      assertDateOnly(date, "scheduler ledger failed date");
-      if (!isScheduledAnnouncementDate(date, timeZone))
-        throw new Error(`ARXIV_SCHEDULER_LEDGER_INVALID: ${date} is not an announcement date`);
+      assertLedgerDate(date, "scheduler ledger failed date");
     }
-    const failedSet = new Set(rawFailedDates);
+    const failedSet = new Set(rawFailedDates.filter((d) => !isArxivHoliday(d)));
+    const isNotArxivHoliday = (d) => !isArxivHoliday(d);
     return {
       schema_version: LEDGER_SCHEMA,
       scope: query,
       start_date: parsed.start_date ?? null,
       successful_dates: [...new Set(parsed.successful_dates)]
-        .filter((d) => !failedSet.has(d))
+        .filter((d) => isNotArxivHoliday(d) && !failedSet.has(d))
         .sort(),
       archived_dates: [
         ...new Set(Array.isArray(parsed.archived_dates) ? parsed.archived_dates : []),
-      ].sort(),
+      ]
+        .filter(isNotArxivHoliday)
+        .sort(),
       provisional_dates: [
         ...new Set(Array.isArray(parsed.provisional_dates) ? parsed.provisional_dates : []),
-      ].sort(),
+      ]
+        .filter(isNotArxivHoliday)
+        .sort(),
       finalized_dates: [
         ...new Set(Array.isArray(parsed.finalized_dates) ? parsed.finalized_dates : []),
       ]
-        .filter((d) => !failedSet.has(d))
+        .filter((d) => isNotArxivHoliday(d) && !failedSet.has(d))
         .sort(),
       failed_dates: [...failedSet].sort(),
       attempt_sequence: attemptSequence,
-      date_attempts: rawDateAttempts,
+      date_attempts: sanitizedDateAttempts,
     };
   }
   const legacy = await readArxivRunState({ artifactRoot });
@@ -811,7 +816,7 @@ export async function reconcilePreviousEdition({
       };
     }
 
-    const prevDate = previousScheduledDate(targetDate, timeZone);
+    const prevDate = previousScheduledAnnouncementDate(targetDate, timeZone);
     let prevFeed = null;
     try {
       const prevArchPath = join(archiveDir, `${prevDate}.json`);
@@ -938,27 +943,39 @@ export async function reconcilePreviousEdition({
   }
 }
 
-function cliValue(args, name) {
-  const prefix = `${name}=`;
-  const argument = args.find((value) => value.startsWith(prefix));
-  return argument?.slice(prefix.length);
-}
-
-function hasFlag(args, flag) {
-  return args.includes(flag);
+export function parseSchedulerCliArgs(args = process.argv.slice(2)) {
+  const { values } = parseArgs({
+    args,
+    options: {
+      output: { type: "string" },
+      date: { type: "string" },
+      from: { type: "string" },
+      through: { type: "string" },
+      limit: { type: "string" },
+      "analysis-limit": { type: "string" },
+      "reconcile-previous": { type: "boolean", default: false },
+      reconcile: { type: "boolean", default: false },
+      "no-analyze": { type: "boolean", default: false },
+      weekly: { type: "boolean", default: false },
+      "auto-weekly": { type: "boolean", default: false },
+    },
+    strict: true,
+    allowPositionals: false,
+  });
+  return values;
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === resolve(fileURLToPath(import.meta.url))) {
-  const args = process.argv.slice(2);
-  const output = cliValue(args, "--output") ?? DEFAULT_OUTPUT;
-  const announcementDate = cliValue(args, "--date");
-  const fromDate = cliValue(args, "--from");
-  const throughDate = cliValue(args, "--through");
-  const runLimitText = cliValue(args, "--limit");
+  const cliArgs = parseSchedulerCliArgs();
+  const output = cliArgs.output ?? DEFAULT_OUTPUT;
+  const announcementDate = cliArgs.date;
+  const fromDate = cliArgs.from;
+  const throughDate = cliArgs.through;
+  const runLimitText = cliArgs.limit;
   const runLimit = runLimitText === undefined ? undefined : Number(runLimitText);
   if (runLimit !== undefined && (!Number.isInteger(runLimit) || runLimit < 1))
     throw new Error("--limit must be a positive integer");
-  const analysisLimitText = cliValue(args, "--analysis-limit");
+  const analysisLimitText = cliArgs["analysis-limit"];
   const requestedAnalysisLimit =
     analysisLimitText === undefined ? runLimit : Number(analysisLimitText);
   if (
@@ -971,12 +988,12 @@ if (process.argv[1] && resolve(process.argv[1]) === resolve(fileURLToPath(import
     process.env.IOA_API_KEY || process.env.WU_API_KEY || process.env.OPENAI_API_KEY
   );
 
-  if (hasFlag(args, "--reconcile-previous") || hasFlag(args, "--reconcile")) {
+  if (cliArgs["reconcile-previous"] || cliArgs.reconcile) {
     console.log("[scheduler] 执行次日兜底清障与增量对账扫描...");
     const recResult = await reconcilePreviousEdition({
       output,
       announcementDate,
-      analyzeImpl: !hasFlag(args, "--no-analyze") && hasCredentials ? defaultAnalyzer : undefined,
+      analyzeImpl: !cliArgs["no-analyze"] && hasCredentials ? defaultAnalyzer : undefined,
       analysisLimit: requestedAnalysisLimit,
     });
     console.log(
@@ -992,7 +1009,7 @@ if (process.argv[1] && resolve(process.argv[1]) === resolve(fileURLToPath(import
     throughDate,
     ...(runLimit === undefined ? {} : { maxBatchesPerRun: runLimit }),
     ...(requestedAnalysisLimit === undefined ? {} : { analysisLimit: requestedAnalysisLimit }),
-    analyzeImpl: !hasFlag(args, "--no-analyze") && hasCredentials ? defaultAnalyzer : undefined,
+    analyzeImpl: !cliArgs["no-analyze"] && hasCredentials ? defaultAnalyzer : undefined,
   });
   if (result.refreshed_dates.length > 0) {
     console.log(`refreshed arXiv announcement dates: ${result.refreshed_dates.join(", ")}`);
@@ -1007,7 +1024,7 @@ if (process.argv[1] && resolve(process.argv[1]) === resolve(fileURLToPath(import
   const isEndOfWeekBatch = result.payload?.window?.announcement_weekday === "Thu";
   const shouldWeekly =
     result.status === "refreshed" &&
-    (hasFlag(args, "--weekly") || (hasFlag(args, "--auto-weekly") && isEndOfWeekBatch)) &&
+    (cliArgs.weekly || (cliArgs["auto-weekly"] && isEndOfWeekBatch)) &&
     hasCredentials;
   if (shouldWeekly) {
     console.log("[scheduler] 开始自动执行 AI 每周学术脉络总结...");

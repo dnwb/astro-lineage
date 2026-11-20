@@ -12,6 +12,7 @@ import {
   DEFAULT_RADAR_OUTPUT,
 } from "./arxiv-daily.mjs";
 import { validateDailyRadarPayload } from "./daily-radar.mjs";
+import { CHANNEL_TOPIC_LABELS } from "../src/domain/channel-document.mjs";
 
 export async function readChannelShareUrl({
   url = process.env.ASTRO_CHANNEL_URL,
@@ -47,15 +48,11 @@ const directionTitles = new Map(
 );
 if (directionTitles.size !== 7) throw new Error("CHANNEL_DIRECTIONS_INVALID");
 // Presentation labels only; the scientific definitions and routing IDs stay above.
-export const TOPIC_LABELS = {
-  R1: "中央引擎与能量注入",
-  R2: "伽马射线暴与相对论喷流",
-  R3: "超新星与星周介质作用",
-  R4: "脉冲星风与高能双星",
-  R5: "磁星爆发与快速射电暴",
-  R6: "致密环境与多信使暂现源",
-  R7: "X射线时变、能谱与致密双星",
-};
+export const TOPIC_LABELS = CHANNEL_TOPIC_LABELS;
+export const TOPIC_LABEL_ALIASES = Object.freeze({
+  R4: Object.freeze(["脉冲星风与高能双星"]),
+  R7: Object.freeze(["X射线时变、能谱与致密双星"]),
+});
 export const TOPICS = [
   [
     "R1",
@@ -71,11 +68,7 @@ export const TOPICS = [
   ],
   [
     "R4",
-    /(?:pulsar wind binar|intrabinary shock|spider pulsar|high.energy binar|companion environment|脉冲星风双星|双星内激波|蜘蛛脉冲星)/iu,
-  ],
-  [
-    "R5",
-    /(?:\bFRB\b|fast radio burst|magnetar burst|magnetar magnetospheres?|magneto.ionic|galactic magnetars?.{0,100}burst catalog|plasma lens|magnetothermal|Joule heating|Ohmic dissipation|法拉第|快速射电暴|等离子体透镜|磁星爆发|磁热演化|焦耳加热|磁场耗散)/iu,
+    /(?:\bFRB\b|fast radio burst|pulsar wind binar|intrabinary shock|spider pulsar|high.energy binar|companion environment|magneto.ionic|plasma lens|法拉第|快速射电暴|等离子体透镜|脉冲星风双星|双星内激波|蜘蛛脉冲星)/iu,
   ],
   [
     "R6",
@@ -83,7 +76,7 @@ export const TOPICS = [
   ],
   [
     "R7",
-    /(?:X.ray pulsar|accretion column|accreting neutron star|accreting magnetar|X.ray binar|X.ray spectral (?:analysis|evolution)|X.ray reverberation|X.ray corona[e]?|\bNS binary system\b|\bUCXB\b|IXPE.{0,60}magnetar|magnetar.{0,60}IXPE|\bQPO\b|\bCRSF\b|\bXRISM\b|\bNICER\b|\bNuSTAR\b|\bHXMT\b|吸积柱|X射线脉冲星|X射线双星|回旋吸收线|X射线日冕)/iu,
+    /(?:X.ray pulsar|accretion column|accreting neutron star|accreting magnetar|X.ray binar|X.ray spectral (?:analysis|evolution)|X.ray reverberation|X.ray corona[e]?|magnetar burst|magnetar flare|magnetar magnetospheres?|galactic magnetars?.{0,100}burst catalog|magnetothermal|Joule heating|Ohmic dissipation|\bNS binary system\b|\bUCXB\b|IXPE.{0,60}magnetar|magnetar.{0,60}IXPE|\bQPO\b|\bCRSF\b|\bXRISM\b|\bNICER\b|\bNuSTAR\b|\bHXMT\b|吸积柱|X射线脉冲星|X射线双星|回旋吸收线|X射线日冕|磁星爆发|磁星耀发|磁热演化|焦耳加热|磁场耗散)/iu,
   ],
 ].map(([id, pattern]) => [id, directionTitles.get(id), pattern]);
 
@@ -227,7 +220,9 @@ export async function readDailyArchive(path, expectedDate, distRoot, contents) {
   const checked = validateDailyRadarPayload(archive.feed, archive.radar);
   if (!checked.valid || !checked.model.opening_brief)
     throw new Error(`CHANNEL_ARCHIVE_INVALID:${checked.diagnostics.join(",")}`);
-  await stat(join(distRoot, "arxiv-daily", expectedDate, "index.html"));
+  if (distRoot) {
+    await stat(join(distRoot, "arxiv-daily", expectedDate, "index.html"));
+  }
   return checked.model;
 }
 

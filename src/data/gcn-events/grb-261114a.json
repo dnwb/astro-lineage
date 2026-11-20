@@ -1,0 +1,58 @@
+{
+  "primary_id": "GRB 261114A",
+  "slug": "grb-261114a",
+  "aliases": [
+    "AT 5734a"
+  ],
+  "event_type": "GRB",
+  "canonical_t0": {
+    "instrument": "SVOM/ECLAIRs",
+    "utc_iso": "2026-11-14T09:33:13.000Z",
+    "circular_id": 46306
+  },
+  "best_redshift": {
+    "z": 3.716,
+    "z_err": null,
+    "type": "spectroscopic",
+    "instrument": "NOT/ALFOSC",
+    "circular_id": 46290,
+    "note": "Absorption features Lyman series, Si II, C IV"
+  },
+  "has_redshift_conflict": false,
+  "redshifts": [
+    {
+      "circular_id": 46290,
+      "z": 3.716,
+      "z_err": null,
+      "type": "spectroscopic",
+      "instrument": "NOT/ALFOSC",
+      "note": "Absorption features Lyman series, Si II, C IV"
+    }
+  ],
+  "photometry_points": [
+    {
+      "circular_id": 46272,
+      "dt_hours": 1.94,
+      "band": "Clear/L",
+      "mag": 20.88,
+      "mag_err": 0.29,
+      "is_upper_limit": false,
+      "limit_sigma": null,
+      "system": "AB",
+      "telescope": "Panzhihua 60cm",
+      "discrepancy_note": null,
+      "time_approximate": false,
+      "version_conflict": false
+    }
+  ],
+  "xray_points": [],
+  "radio_points": [],
+  "multi_messenger": [],
+  "feature_zoom": {
+    "enabled": false
+  },
+  "circular_count": 10,
+  "last_circular_id": 46310,
+  "last_updated_utc": "2026-11-17T01:55:05.712Z",
+  "status": "active"
+}

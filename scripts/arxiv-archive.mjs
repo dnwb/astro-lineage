@@ -1,5 +1,5 @@
 import { readFile, mkdir, readdir } from "node:fs/promises";
-import { resolve, join, dirname } from "node:path";
+import { resolve, join } from "node:path";
 import { existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import {

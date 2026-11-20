@@ -1669,7 +1669,7 @@ test("move timeout retries only after target absence and unchanged old body are 
 test("validated PWN and magnetothermal papers follow physical Research Lines", async () => {
   for (const [date, id, expected] of [
     ["2026-09-09", "2609.10041", "R1"],
-    ["2026-09-21", "2609.24918", "R5"],
+    ["2026-09-21", "2609.24918", "R7"],
   ]) {
     const archive = JSON.parse(
       await readFile(
@@ -1718,11 +1718,11 @@ test("archived neutron-star spectra and observations route to R7", async () => {
   }
 });
 
-test("magnetar magnetosphere and magneto-ionic papers route to R5", async () => {
-  for (const [date, id] of [
-    ["2026-09-16", "2609.17661"],
-    ["2026-09-21", "2609.23259"],
-    ["2026-09-23", "2609.26897"],
+test("magnetar burst/magnetosphere papers route to R7 and magneto-ionic radio papers route to R4", async () => {
+  for (const [date, id, expected] of [
+    ["2026-09-16", "2609.17661", "R7"],
+    ["2026-09-21", "2609.23259", "R4"],
+    ["2026-09-23", "2609.26897", "R7"],
   ]) {
     const archive = JSON.parse(
       await readFile(
@@ -1733,7 +1733,7 @@ test("magnetar magnetosphere and magneto-ionic papers route to R5", async () => 
     const entry = archive.feed.entries.find((paper) => paper.arxiv_id === id);
     const analysis = archive.radar.analyses.find((paper) => paper.arxiv_id === id);
     assert.ok(entry && analysis, `${id} must remain available in its source archive`);
-    assert.deepEqual(routePaper({ ...entry, analysis }), { primary: "R5", related: [] }, id);
+    assert.deepEqual(routePaper({ ...entry, analysis }), { primary: expected, related: [] }, id);
   }
 });
 
@@ -1773,7 +1773,7 @@ test("IXPE mention alone does not add an R7 route to a magnetic accretion disk",
   const entry = archive.feed.entries.find((paper) => paper.arxiv_id === "2609.08895");
   const analysis = archive.radar.analyses.find((paper) => paper.arxiv_id === "2609.08895");
   assert.ok(entry && analysis);
-  assert.deepEqual(routePaper({ ...entry, analysis }), { primary: "R5", related: [] });
+  assert.deepEqual(routePaper({ ...entry, analysis }), { primary: "R4", related: [] });
 });
 
 test("explicit gravitational-wave and merger observables route to R6", async () => {
@@ -2134,12 +2134,12 @@ test("provision reuses escaped R1 and verifies an initially empty timeline befor
   const cacheRoot = join(path, "cache");
   const ids = await provisionTopicChannels({ guildId: "test", cacheRoot, cli });
   assert.equal(ids.R1, "existing-r1");
-  assert.equal(creates, 6);
+  assert.equal(creates, TOPICS.length - 1);
   assert.equal(r1Pages, 2);
   const ledger = JSON.parse(await readFile(join(cacheRoot, "guild-test.json"), "utf8"));
   assert.equal(ledger.managed_sections["existing-r1"].verified_empty, true);
   await provisionTopicChannels({ guildId: "test", cacheRoot, cli });
-  assert.equal(creates, 6);
+  assert.equal(creates, TOPICS.length - 1);
 });
 
 test("endless empty timeline pages stop after two calls per section without trusting absence", async (t) => {
@@ -2504,13 +2504,13 @@ test("Chinese labels rename existing sections in place and reject duplicate alia
     await provisionTopicChannels(options),
     Object.fromEntries(TOPICS.map(([key]) => [key, key]))
   );
-  assert.equal(renames, 7);
+  assert.equal(renames, TOPICS.length);
   assert.deepEqual(
     channels.map((c) => c.channel_name),
     Object.values(TOPIC_LABELS)
   );
   await provisionTopicChannels(options);
-  assert.equal(renames, 7);
+  assert.equal(renames, TOPICS.length);
   channels.push({ channel_id: "duplicate", channel_name: `R1 ${TOPICS[0][1]}` });
   await assert.rejects(provisionTopicChannels(options), /CHANNEL_SECTION_AMBIGUOUS/u);
 });
@@ -4095,4 +4095,35 @@ test("formatDailyIntro handles English singular and plural forms correctly", () 
     formatDailyIntro(zhDate, "伽马暴物理", 3),
     "本期首看《伽马暴物理》等 3 篇核心进展。"
   );
+});
+
+test("generateWeeklyMarkdown stays within QQ Channel 10000-char limit while preserving overview and reading access", async () => {
+  const { md } = await generateWeeklyMarkdown({
+    weekly: {
+      week_id: "2026-W46",
+      date_range: "2026-11-09 ~ 2026-11-15",
+      executive_summary: "Weekly synthesis overview.",
+      top_picks: Array.from({ length: 18 }, (_, i) => ({
+        arxiv_id: `2611.${10000 + i}`,
+        priority: i < 8 ? "must_read" : "worth_knowing",
+        title: `Paper ${i} `.repeat(10),
+        core_insight: "GRB afterglow observations constrain relativistic jet opening angles.",
+        reason: `Detailed physical analysis reason ${i} `.repeat(20),
+      })),
+      thematic_highlights: Array.from({ length: 5 }, (_, i) => ({
+        theme_name: `Theme ${i}`,
+        summary: `Theme summary ${i} `.repeat(20),
+        paper_ids: [`2611.${10000 + i}`],
+      })),
+      lineage_connections: Array.from({ length: 5 }, (_, i) => ({
+        classic_work: `Classic ${i}`,
+        new_arxiv_id: `2611.${10000 + i}`,
+        relationship: `Lineage connection ${i} `.repeat(15),
+      })),
+      papers: [],
+    },
+  });
+  assert.ok(Array.from(md).length <= 9_600, `Expected <= 9600 chars, got ${Array.from(md).length}`);
+  assert.match(md, /## Weekly Overview/u);
+  assert.match(md, /## Reading Access/u);
 });

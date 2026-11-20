@@ -128,3 +128,80 @@ export function loadCausalCatalog(contentWorksDir = resolve("content/works")) {
     },
   };
 }
+
+const STOP_WORDS = new Set([
+  "the",
+  "and",
+  "for",
+  "with",
+  "from",
+  "into",
+  "that",
+  "this",
+  "using",
+  "study",
+  "model",
+  "models",
+  "observations",
+  "observation",
+  "emission",
+  "physics",
+  "high",
+  "energy",
+  "astrophysics",
+]);
+
+function extractTerms(text) {
+  return new Set(
+    String(text || "")
+      .toLowerCase()
+      .split(/[^a-z0-9]+/u)
+      .filter((t) => t.length >= 3 && !STOP_WORDS.has(t))
+  );
+}
+
+/**
+ * Selects the top-K most relevant canonical works and their stages for a candidate paper
+ * so prompts stay compact instead of injecting all 41 works (~27k chars).
+ */
+export function selectRelevantCausalWorks(paper, catalog, { maxWorks = 5 } = {}) {
+  if (!catalog || !Array.isArray(catalog.works) || catalog.works.length === 0) return [];
+  const paperText = `${paper?.title || ""} ${paper?.abstract || ""} ${paper?.problem || ""}`;
+  const paperTerms = extractTerms(paperText);
+  if (paperTerms.size === 0) return [];
+
+  const scored = catalog.works
+    .map((work) => {
+      const stages = catalog.getStagesForWork(work.slug);
+      const workTerms = extractTerms(
+        `${work.slug} ${work.title} ${stages.map((s) => s.label).join(" ")}`
+      );
+      let overlap = 0;
+      for (const term of paperTerms) {
+        if (workTerms.has(term)) overlap += 1;
+      }
+      return { work, stages, overlap };
+    })
+    .filter((entry) => entry.overlap > 0 && entry.stages.length > 0)
+    .sort((a, b) => b.overlap - a.overlap || a.work.slug.localeCompare(b.work.slug))
+    .slice(0, maxWorks);
+
+  return scored.map(({ work, stages }) => ({
+    slug: work.slug,
+    title: work.title,
+    stages: stages.map((s) => ({ id: s.id, label: s.label })),
+  }));
+}
+
+/**
+ * Formats selected causal works into a compact prompt reference block.
+ */
+export function formatCausalContext(selectedWorks) {
+  if (!Array.isArray(selectedWorks) || selectedWorks.length === 0) return "";
+  return selectedWorks
+    .map(
+      (w) =>
+        `- ${w.slug} (${w.title}):\n${w.stages.map((s) => `  - ${s.id}: ${s.label}`).join("\n")}`
+    )
+    .join("\n");
+}

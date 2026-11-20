@@ -235,6 +235,7 @@ export async function executeChatCompletion({
     throw new Error("Model endpoint requires HTTPS without URL credentials");
   if (!apiKey) throw new Error("Model API key is not configured");
   const resolvedModel = normalizeModelName(model);
+  const httpModel = resolvedModel.startsWith("agy/") ? resolvedModel.slice(4) : resolvedModel;
 
   const cleanHistory = Array.isArray(history)
     ? history
@@ -260,7 +261,7 @@ export async function executeChatCompletion({
       : prompt;
 
   const payload = {
-    model: resolvedModel,
+    model: httpModel,
     messages: [
       { role: "system", content: systemPrompt },
       ...cleanHistory,
@@ -745,6 +746,7 @@ export async function callChatCompletion({
   modelHealth = defaultModelHealthRegistry,
   enableAgy,
   agyClient = defaultAgyDaemonClient,
+  onAttemptSuccess,
 }) {
   const hasImages =
     Array.isArray(images) && images.some((img) => typeof img === "string" && img.trim().length > 0);
@@ -842,12 +844,15 @@ export async function callChatCompletion({
             model: actualModel,
           });
         } else {
+          // If HTTP provider is local-8318, strip agy/ prefix because local gateway expects unadorned model name
+          const targetModel =
+            isLocalGateway && candidate.startsWith("agy/") ? candidate.slice(4) : candidate;
           result = await executeChatCompletion({
             prompt,
             systemPrompt,
             history,
             images,
-            model: candidate,
+            model: targetModel,
             effort: candidateEffort,
             baseUrl: provider.baseUrl,
             apiKey: provider.apiKey,
@@ -856,6 +861,11 @@ export async function callChatCompletion({
 
         circuitBreaker.recordSuccess(provider.name);
         if (modelHealth) modelHealth.recordSuccess(candidate);
+        if (typeof onAttemptSuccess === "function") {
+          try {
+            onAttemptSuccess({ model: candidate, provider: provider.name });
+          } catch {}
+        }
         if (candidate !== candidates[0]) {
           console.log(
             `[Agent Core] ✓ 主模型 (${candidates[0]}) 不可用，已降级至备选模型 (${candidate}) [供应商: ${provider.name}] 成功生成解答`

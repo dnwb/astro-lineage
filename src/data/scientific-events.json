@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-11-20T00:18:50.797Z",
-  "total_events": 161,
+  "generated_at": "2026-11-20T03:05:26.008Z",
+  "total_events": 163,
   "events": [
     {
       "event_id": "GW170817",
@@ -533,35 +533,8 @@
           "priority": "worth_knowing",
           "bluf_result": "在单流体近似下，Higgs 门户模型约束暗物质粒子质量为 $\\log_{10}(m_\\chi/\\mathrm{MeV}) = 3.38_{-0.87}^{+1.05}$（中位值约为 $2.4\\,\\mathrm{GeV}$），其有效相互作用耦合 $y = 0.104_{-0.063}^{+0.062}$；ALP 模型中核物质偏度系数被显著限制在 $Q_0 = -927.57_{-55.54}^{+69.23}\\,\\mathrm{MeV}$。各模型预言的最大质量相近（$M_{\\rm max} \\approx 2.09 - 2.13\\,M_\\odot$），但在 $1.4\\,M_\\odot$ 处 Higgs 门户模型呈现更紧致结构（$R_{1.4} = 12.24\\,\\mathrm{km}$，$\\Lambda_{1.4} \\approx 361$）及更高的 $f$ 模振荡频率（$\\nu_{f,1.4} = 1.83\\,\\mathrm{kHz}$）。贝叶斯证据量排序显示中子衰变与 ALP 方案优于 Higgs 门户模型。",
           "bluf_problem": "探索不同弱相互作用暗物质微观模型（Higgs 门户、中子衰变反常与 ALP 媒介）对中子星微观物态方程（EOS）、宏观结构与振荡模式的影响，并在多密度观测约束下比较各模型的后验合理性与简并性。",
-          "figures": [
-            {
-              "url": "/arxiv-figures/2610.15713/corner_Higgs_NMDM_EFT_Bc.png",
-              "label": "Fig. 1",
-              "caption": "Figure 1: Marginalized one- and two-dimensional posterior distributions of the nuclear-matter and dark-sector parameters for the Higgs-portal model, obtained using the combined χ \\chi EFT, nuclear-physics, NICER, and GW170817 constraints. Diagonal panels show the one-dimensional posteriors, with the median indicated by the dotted line and the 68% credible interval by the dashed lines. Off-diagonal panels show the pairwise posteriors, with inner and outer contours enclosing the 68% and 95% credible regions, respectively. The parameters are ρ 0 \\rho_{0} , E 0 E_{0} , K 0 K_{0} , Q 0 Q_{0} , M ∗ / M M^{*}/M , J 0 J_{0} , L 0 L_{0} , y y , m χ m_{\\chi} , and k F DM k_{F}^{\\rm DM} . The plotted dark-sector variables are 10 2 ​ y 10^{2}y , log 10 ⁡ ( m χ / MeV ) \\log_{10}(m_{\\chi}/{\\rm MeV}) , and k F DM k_{F}^{\\rm DM} in MeV. The quantities E 0 E_{0} , K 0 K_{0} , Q 0 Q_{0} , J 0 J_{0} , and L 0 L_{0} are given in MeV, ρ 0 \\rho_{0} in fm -3 , and M ∗ / M M^{*}/M and y y are dimensionless.",
-              "category": "fitting",
-              "category_badge": "数据拟合与模型对比",
-              "physical_core": "展示理论模型与实际观测数据的拟合对比及关键参数后验约束。",
-              "is_schematic": false
-            },
-            {
-              "url": "/arxiv-figures/2610.15713/Heatmap_Bayes6.png",
-              "label": "Fig. 6",
-              "caption": "Figure 6: Matrix showing Δ ​ ln ⁡ 𝒵 i ​ j \\Delta\\ln\\mathcal{Z}_{ij} where model along the column is i i and along the row is j j .",
-              "category": "fitting",
-              "category_badge": "数据拟合与模型对比",
-              "physical_core": "展示理论模型与实际观测数据的拟合对比及关键参数后验约束。",
-              "is_schematic": false
-            }
-          ],
-          "primary_figure": {
-            "url": "/arxiv-figures/2610.15713/corner_Higgs_NMDM_EFT_Bc.png",
-            "label": "Fig. 1",
-            "caption": "Figure 1: Marginalized one- and two-dimensional posterior distributions of the nuclear-matter and dark-sector parameters for the Higgs-portal model, obtained using the combined χ \\chi EFT, nuclear-physics, NICER, and GW170817 constraints. Diagonal panels show the one-dimensional posteriors, with the median indicated by the dotted line and the 68% credible interval by the dashed lines. Off-diagonal panels show the pairwise posteriors, with inner and outer contours enclosing the 68% and 95% credible regions, respectively. The parameters are ρ 0 \\rho_{0} , E 0 E_{0} , K 0 K_{0} , Q 0 Q_{0} , M ∗ / M M^{*}/M , J 0 J_{0} , L 0 L_{0} , y y , m χ m_{\\chi} , and k F DM k_{F}^{\\rm DM} . The plotted dark-sector variables are 10 2 ​ y 10^{2}y , log 10 ⁡ ( m χ / MeV ) \\log_{10}(m_{\\chi}/{\\rm MeV}) , and k F DM k_{F}^{\\rm DM} in MeV. The quantities E 0 E_{0} , K 0 K_{0} , Q 0 Q_{0} , J 0 J_{0} , and L 0 L_{0} are given in MeV, ρ 0 \\rho_{0} in fm -3 , and M ∗ / M M^{*}/M and y y are dimensionless.",
-            "category": "fitting",
-            "category_badge": "数据拟合与模型对比",
-            "physical_core": "展示理论模型与实际观测数据的拟合对比及关键参数后验约束。",
-            "is_schematic": false
-          }
+          "figures": [],
+          "primary_figure": null
         },
         {
           "arxiv_id": "2610.13926",
@@ -736,14 +709,14 @@
       "event_id": "AT2017GFO",
       "event_type": "AT",
       "tags": [
+        "GW",
         "FRB",
-        "GRB",
-        "GW"
+        "GRB"
       ],
       "heat_score": 95,
       "paper_count": 5,
-      "headline": "Previous 3D dynamical ejecta mod...",
-      "narrative": "AT2017GFO 是近期重点瞬变天体事件，活跃跨度 2026-09-21 至 2026-11-18，共聚合 5 篇研读文献（含 2 篇必读突破）。核心突破研判：Scaling ejecta mass to $M_{\\mathrm{ej}} \\approx 0.04\\,\\mathrm{M}_{\\odot}$ and halving velocities (median velocity $v_r \\lesssim 0.09c$) matches the bolometric light curve of AT2017gfo within $\\sim 30\\%$ at $1.5\\text{--}5\\,\\mathrm{d}$ and reproduces early spectra at $1.4$, $2.4$, and $3.4\\,\\mathrm{d}$. Velocity compression elevates density by a factor of 8 ($V \\propto v_r^3$), increasing $\\gamma$-ray thermalization efficiency from $\\sim 0.3$ to $\\sim 0.55$ at $1.4\\,\\mathrm{d}$ and trapping UVOIR radiation so that late ($6\\text{--}12\\,\\mathrm{d}$) luminosity exceeds instantaneous radioactive deposition by $50\\%\\text{--}80\\%$. The photospheric radius scales as $R_{\\mathrm{ph}} = v_{\\mathrm{ph}} t$ and effective temperature follows $T_{\\mathrm{eff}} \\propto L^{1/4} (v_{\\mathrm{ph}} t)^{-1/2}$. Distinct transitions are identified: the $\\sim 10\\,500\\,\\text{\\AA}$ peak is driven by $\\mathrm{Sr\\;II}\\,\\lambda\\lambda 10037, 10327, 10915$; the $\\sim 7300\\,\\text{\\AA}$ peak by $\\mathrm{Y\\;II}\\,\\lambda 7882$; and the $\\sim 13\\,500\\,\\text{\\AA}$ shoulder by $\\mathrm{La\\;III}\\,\\lambda\\lambda 13894, 14096$ and $\\mathrm{Gd\\;III}\\,\\lambda 14333$. In 3D geometry with $\\sim 25\\%$ mass in low-lanthanide regions ($X_{\\mathrm{lan}} < 10^{-3}$), optical flux at $4500\\text{--}5500\\,\\text{\\AA}$ is reproduced without an independent lanthanide-free component. In contrast, 2D azimuthally averaged models mix lanthanides into polar sightlines, reducing $1\\,\\mathrm{d}$ luminosity threefold and producing an excessively red spectrum. Furthermore, standard expansion opacity overestimates uncollided packet transmission $P_0 = e^{-\\tau_{\\mathrm{bin}}} \\approx e^{-1} \\approx 0.37$ for optically thick lines ($\\tau_l \\gg 1$), overestimating early spectral flux by $10\\%\\text{--}20\\%$.",
+      "headline": "First-principles numerical relat...",
+      "narrative": "AT2017GFO 是近期重点瞬变天体事件，活跃跨度 2026-09-21 至 2026-11-18，共聚合 5 篇研读文献（含 2 篇必读突破）。核心突破研判：By scaling the ejecta mass to $M = 0.04\\,\\mathrm{M}_{\\odot}$ and halving expansion velocities (with half the mass concentrated at radial velocities $v_{r} \\lesssim 0.09c$ and peak density at $0.04c$), the 3D model reproduces the bolometric luminosity and optical-to-NIR spectra of AT2017gfo at $1.4\\,\\mathrm{d}$, $2.4\\,\\mathrm{d}$, and $3.4\\,\\mathrm{d}$ across $5500\\text{--}15\\,000\\,\\mathrm{\\mathring{A}}$. The reduced velocity compresses the ejecta density, raising the $\\gamma$-ray thermalization efficiency at $1.4\\,\\mathrm{d}$ from $\\sim 0.3$ to $\\sim 0.55$ and boosting deposited power by $\\sim 30\\%$ at $1\\text{--}4\\,\\mathrm{d}$. Through the effective temperature scaling $T_{\\mathrm{eff}} \\propto L^{1/4}(v_{\\mathrm{ph}}t)^{-1/2}$, smaller photospheric radii $R_{\\mathrm{ph}} = v_{\\mathrm{ph}}t$ maintain higher photospheric temperatures and avoid premature reddening. Key spectroscopic identifications include: $\\mathrm{Sr\\ II}\\ \\lambda\\lambda 10037, 10327, 10915$ generating the $\\sim 10\\,500\\,\\mathrm{\\mathring{A}}$ NIR peak; $\\mathrm{Y\\ II}\\ \\lambda 7882$ contributing to the $\\sim 7300\\,\\mathrm{\\mathring{A}}$ peak; $\\mathrm{La\\ III}\\ \\lambda\\lambda 13894, 14096$ and $\\mathrm{Gd\\ III}\\ \\lambda 14333$ forming the $\\sim 13\\,500\\,\\mathrm{\\mathring{A}}$ shoulder; and $\\mathrm{Sr\\ II}\\ \\lambda 4216$ creating the blue flux cutoff at $\\lesssim 4500\\,\\mathrm{\\mathring{A}}$. In contrast, 2D azimuthally averaged models are dimmer by a factor of $\\sim 3$ at $\\sim 1\\,\\mathrm{d}$ because azimuthal averaging artificially mixes lanthanide-poor channels ($X_{\\mathrm{lan}} < 10^{-3}$) with high-opacity lanthanides.",
       "first_seen": "2026-09-21",
       "last_updated": "2026-11-18",
       "papers": [
@@ -765,8 +738,8 @@
           ],
           "date": "2026-11-18",
           "priority": "must_read",
-          "bluf_result": "Scaling ejecta mass to $M_{\\mathrm{ej}} \\approx 0.04\\,\\mathrm{M}_{\\odot}$ and halving velocities (median velocity $v_r \\lesssim 0.09c$) matches the bolometric light curve of AT2017gfo within $\\sim 30\\%$ at $1.5\\text{--}5\\,\\mathrm{d}$ and reproduces early spectra at $1.4$, $2.4$, and $3.4\\,\\mathrm{d}$. Velocity compression elevates density by a factor of 8 ($V \\propto v_r^3$), increasing $\\gamma$-ray thermalization efficiency from $\\sim 0.3$ to $\\sim 0.55$ at $1.4\\,\\mathrm{d}$ and trapping UVOIR radiation so that late ($6\\text{--}12\\,\\mathrm{d}$) luminosity exceeds instantaneous radioactive deposition by $50\\%\\text{--}80\\%$. The photospheric radius scales as $R_{\\mathrm{ph}} = v_{\\mathrm{ph}} t$ and effective temperature follows $T_{\\mathrm{eff}} \\propto L^{1/4} (v_{\\mathrm{ph}} t)^{-1/2}$. Distinct transitions are identified: the $\\sim 10\\,500\\,\\text{\\AA}$ peak is driven by $\\mathrm{Sr\\;II}\\,\\lambda\\lambda 10037, 10327, 10915$; the $\\sim 7300\\,\\text{\\AA}$ peak by $\\mathrm{Y\\;II}\\,\\lambda 7882$; and the $\\sim 13\\,500\\,\\text{\\AA}$ shoulder by $\\mathrm{La\\;III}\\,\\lambda\\lambda 13894, 14096$ and $\\mathrm{Gd\\;III}\\,\\lambda 14333$. In 3D geometry with $\\sim 25\\%$ mass in low-lanthanide regions ($X_{\\mathrm{lan}} < 10^{-3}$), optical flux at $4500\\text{--}5500\\,\\text{\\AA}$ is reproduced without an independent lanthanide-free component. In contrast, 2D azimuthally averaged models mix lanthanides into polar sightlines, reducing $1\\,\\mathrm{d}$ luminosity threefold and producing an excessively red spectrum. Furthermore, standard expansion opacity overestimates uncollided packet transmission $P_0 = e^{-\\tau_{\\mathrm{bin}}} \\approx e^{-1} \\approx 0.37$ for optically thick lines ($\\tau_l \\gg 1$), overestimating early spectral flux by $10\\%\\text{--}20\\%$.",
-          "bluf_problem": "Previous 3D dynamical ejecta models possessed insufficient mass ($M_{\\mathrm{ej}} \\approx 0.005\\,\\mathrm{M}_{\\odot}$) and excessively high velocities relative to empirical inferences for AT2017gfo ($M_{\\mathrm{ej}} \\approx 0.03\\text{--}0.05\\,\\mathrm{M}_{\\odot}$), leaving unresolved whether early blue and optical emissions require an independent, distinct lanthanide-poor ejecta component and whether common 2D azimuthal averaging and expansion opacity approximations distort inferred physical properties.",
+          "bluf_result": "By scaling the ejecta mass to $M = 0.04\\,\\mathrm{M}_{\\odot}$ and halving expansion velocities (with half the mass concentrated at radial velocities $v_{r} \\lesssim 0.09c$ and peak density at $0.04c$), the 3D model reproduces the bolometric luminosity and optical-to-NIR spectra of AT2017gfo at $1.4\\,\\mathrm{d}$, $2.4\\,\\mathrm{d}$, and $3.4\\,\\mathrm{d}$ across $5500\\text{--}15\\,000\\,\\mathrm{\\mathring{A}}$. The reduced velocity compresses the ejecta density, raising the $\\gamma$-ray thermalization efficiency at $1.4\\,\\mathrm{d}$ from $\\sim 0.3$ to $\\sim 0.55$ and boosting deposited power by $\\sim 30\\%$ at $1\\text{--}4\\,\\mathrm{d}$. Through the effective temperature scaling $T_{\\mathrm{eff}} \\propto L^{1/4}(v_{\\mathrm{ph}}t)^{-1/2}$, smaller photospheric radii $R_{\\mathrm{ph}} = v_{\\mathrm{ph}}t$ maintain higher photospheric temperatures and avoid premature reddening. Key spectroscopic identifications include: $\\mathrm{Sr\\ II}\\ \\lambda\\lambda 10037, 10327, 10915$ generating the $\\sim 10\\,500\\,\\mathrm{\\mathring{A}}$ NIR peak; $\\mathrm{Y\\ II}\\ \\lambda 7882$ contributing to the $\\sim 7300\\,\\mathrm{\\mathring{A}}$ peak; $\\mathrm{La\\ III}\\ \\lambda\\lambda 13894, 14096$ and $\\mathrm{Gd\\ III}\\ \\lambda 14333$ forming the $\\sim 13\\,500\\,\\mathrm{\\mathring{A}}$ shoulder; and $\\mathrm{Sr\\ II}\\ \\lambda 4216$ creating the blue flux cutoff at $\\lesssim 4500\\,\\mathrm{\\mathring{A}}$. In contrast, 2D azimuthally averaged models are dimmer by a factor of $\\sim 3$ at $\\sim 1\\,\\mathrm{d}$ because azimuthal averaging artificially mixes lanthanide-poor channels ($X_{\\mathrm{lan}} < 10^{-3}$) with high-opacity lanthanides.",
+          "bluf_problem": "First-principles numerical relativity simulations yield 3D dynamical ejecta with masses ($M \\approx 0.005\\,\\mathrm{M}_{\\odot}$) and expansion velocities ($v_{\\mathrm{max}} \\approx 0.48c$) that are too low in mass and too high in speed compared to empirical AT2017gfo inferences ($M \\approx 0.03\\text{--}0.05\\,\\mathrm{M}_{\\odot}$), causing synthesized light curves to decay prematurely and spectra to peak at overly red or Doppler-shifted wavelengths; furthermore, whether a physically distinct, unmixed lanthanide-poor component is strictly needed to explain the early blue emission remains unresolved.",
           "figures": [
             {
               "url": "/arxiv-figures/2611.24627/fig-estimators_3d_dyn_mass08x_veldiv2.png",
@@ -774,7 +747,7 @@
               "caption": "Figure 8: Temperature versus mass density for the cells of the dyn 8x mass v/2 model in 3D (top) and in 2D on the $25{\\times}50$ grid (bottom), for timesteps spanning 1.2–1.7 days. Each point represents one cell at one sampled timestep. The panels show only the cells with $\\rho>10^{-13}\\,\\mathrm{g\\,cm^{-3}}$ and $T_{e}>10\\,000$ K. The 3D model reaches about twice the maximum density of the azimuthally averaged 2D model and has a wider scatter in $T_{e}$ at a given density. Each point of the 2D model is a ring that holds more mass than a cell of the 3D model.",
               "category": "theoretical",
               "category_badge": "Physical Evolution",
-              "physical_core": "Comparison of electron temperature $T_{e}$ versus mass density $\\rho$ for ejecta cells in the 3D model versus the azimuthally averaged 2D grid at $1.2\\text{--}1.7\\,\\mathrm{days}$ (for $\\rho > 10^{-13}\\,\\mathrm{g\\,cm^{-3}}$ and $T_{e} > 10\\,000\\,\\mathrm{K}$), showing that the 3D ejecta reaches roughly twice the maximum density of the 2D model and exhibits wider thermal dispersion at a given density.",
+              "physical_core": "Electron temperature versus mass density ($T_{e}$ vs $\\rho$) state-space distribution of the scaled ejecta cells across $1.2\\text{--}1.7\\text{ days}$ for cells with $\\rho > 10^{-13}\\,\\mathrm{g\\,cm^{-3}}$ and $T_{e} > 10\\,000\\text{ K}$. It illustrates that 3D modeling captures realistic clumping with maximum densities about twice as high and a broader thermal dispersion than the azimuthally averaged 2D grid.",
               "is_schematic": true
             }
           ],
@@ -784,7 +757,7 @@
             "caption": "Figure 8: Temperature versus mass density for the cells of the dyn 8x mass v/2 model in 3D (top) and in 2D on the $25{\\times}50$ grid (bottom), for timesteps spanning 1.2–1.7 days. Each point represents one cell at one sampled timestep. The panels show only the cells with $\\rho>10^{-13}\\,\\mathrm{g\\,cm^{-3}}$ and $T_{e}>10\\,000$ K. The 3D model reaches about twice the maximum density of the azimuthally averaged 2D model and has a wider scatter in $T_{e}$ at a given density. Each point of the 2D model is a ring that holds more mass than a cell of the 3D model.",
             "category": "theoretical",
             "category_badge": "Physical Evolution",
-            "physical_core": "Comparison of electron temperature $T_{e}$ versus mass density $\\rho$ for ejecta cells in the 3D model versus the azimuthally averaged 2D grid at $1.2\\text{--}1.7\\,\\mathrm{days}$ (for $\\rho > 10^{-13}\\,\\mathrm{g\\,cm^{-3}}$ and $T_{e} > 10\\,000\\,\\mathrm{K}$), showing that the 3D ejecta reaches roughly twice the maximum density of the 2D model and exhibits wider thermal dispersion at a given density.",
+            "physical_core": "Electron temperature versus mass density ($T_{e}$ vs $\\rho$) state-space distribution of the scaled ejecta cells across $1.2\\text{--}1.7\\text{ days}$ for cells with $\\rho > 10^{-13}\\,\\mathrm{g\\,cm^{-3}}$ and $T_{e} > 10\\,000\\text{ K}$. It illustrates that 3D modeling captures realistic clumping with maximum densities about twice as high and a broader thermal dispersion than the azimuthally averaged 2D grid.",
             "is_schematic": true
           }
         },
@@ -932,7 +905,7 @@
         "caption": "Figure 8: Temperature versus mass density for the cells of the dyn 8x mass v/2 model in 3D (top) and in 2D on the $25{\\times}50$ grid (bottom), for timesteps spanning 1.2–1.7 days. Each point represents one cell at one sampled timestep. The panels show only the cells with $\\rho>10^{-13}\\,\\mathrm{g\\,cm^{-3}}$ and $T_{e}>10\\,000$ K. The 3D model reaches about twice the maximum density of the azimuthally averaged 2D model and has a wider scatter in $T_{e}$ at a given density. Each point of the 2D model is a ring that holds more mass than a cell of the 3D model.",
         "category": "theoretical",
         "category_badge": "Physical Evolution",
-        "physical_core": "Comparison of electron temperature $T_{e}$ versus mass density $\\rho$ for ejecta cells in the 3D model versus the azimuthally averaged 2D grid at $1.2\\text{--}1.7\\,\\mathrm{days}$ (for $\\rho > 10^{-13}\\,\\mathrm{g\\,cm^{-3}}$ and $T_{e} > 10\\,000\\,\\mathrm{K}$), showing that the 3D ejecta reaches roughly twice the maximum density of the 2D model and exhibits wider thermal dispersion at a given density.",
+        "physical_core": "Electron temperature versus mass density ($T_{e}$ vs $\\rho$) state-space distribution of the scaled ejecta cells across $1.2\\text{--}1.7\\text{ days}$ for cells with $\\rho > 10^{-13}\\,\\mathrm{g\\,cm^{-3}}$ and $T_{e} > 10\\,000\\text{ K}$. It illustrates that 3D modeling captures realistic clumping with maximum densities about twice as high and a broader thermal dispersion than the azimuthally averaged 2D grid.",
         "is_schematic": true
       },
       "lead_figure_arxiv_id": "2611.24627",
@@ -1400,15 +1373,261 @@
       "gcn_status": null
     },
     {
+      "event_id": "GRB 261029A",
+      "event_type": "GRB",
+      "tags": [
+        "Transient Surveillance",
+        "GCN Circulars",
+        "GRB"
+      ],
+      "heat_score": 45,
+      "paper_count": 0,
+      "headline": "GRB 261029A 空间与地面望远镜全波段应急协同追踪",
+      "narrative": "已汇聚 NASA GCN Circulars 快速通报 38 份。红移 z = 3.27 (spectroscopic · Optical Spectroscopy)，触发时刻 T0: 2026-10-29 01:27:03 UTC (Fermi/GBM)。多波段光变曲线与早期测光点已完成零同质化聚合。",
+      "first_seen": "2026-10-29",
+      "last_updated": "2026-11-18",
+      "papers": [],
+      "lead_figure": null,
+      "lead_figure_arxiv_id": null,
+      "canonical_t0": {
+        "instrument": "Fermi/GBM",
+        "utc_iso": "2026-10-29T01:27:03.000Z",
+        "circular_id": 46113
+      },
+      "best_redshift": {
+        "z": 3.27,
+        "z_err": null,
+        "type": "spectroscopic",
+        "instrument": "Optical Spectroscopy",
+        "circular_id": 46103,
+        "note": ""
+      },
+      "has_redshift_conflict": false,
+      "multi_messenger": [],
+      "gcn_aliases_label": "AT 2026ahaw / GOTO26LLT",
+      "canonical_t0_label": "2026-10-29 01:27:03 UTC (Fermi/GBM)",
+      "best_redshift_label": "z = 3.27 (spectroscopic · Optical Spectroscopy)",
+      "multi_messenger_badges": [],
+      "gcn_circular_count": 38,
+      "gcn_figure_path": "/gcn-figures/grb-261029a.png",
+      "gcn_aliases": [
+        "AT 2026ahaw",
+        "GOTO26LLT"
+      ],
+      "gcn_slug": "grb-261029a",
+      "gcn_status": "active"
+    },
+    {
+      "event_id": "GRB 261113B",
+      "event_type": "GRB",
+      "tags": [
+        "Transient Surveillance",
+        "GCN Circulars",
+        "GRB"
+      ],
+      "heat_score": 45,
+      "paper_count": 0,
+      "headline": "GRB 261113B 空间与地面望远镜全波段应急协同追踪",
+      "narrative": "已汇聚 NASA GCN Circulars 快速通报 5 份。红移 待确定，触发时刻 T0: 2026-11-13 19:45:55 UTC (Fermi/GBM)。多波段光变曲线与早期测光点已完成零同质化聚合。",
+      "first_seen": "2026-11-13",
+      "last_updated": "2026-11-18",
+      "papers": [],
+      "lead_figure": null,
+      "lead_figure_arxiv_id": null,
+      "canonical_t0": {
+        "instrument": "Fermi/GBM",
+        "utc_iso": "2026-11-13T19:45:55.100Z",
+        "circular_id": 46320
+      },
+      "best_redshift": null,
+      "has_redshift_conflict": false,
+      "multi_messenger": [],
+      "gcn_aliases_label": null,
+      "canonical_t0_label": "2026-11-13 19:45:55 UTC (Fermi/GBM)",
+      "best_redshift_label": null,
+      "multi_messenger_badges": [],
+      "gcn_circular_count": 5,
+      "gcn_figure_path": null,
+      "gcn_aliases": [],
+      "gcn_slug": "grb-261113b",
+      "gcn_status": "active"
+    },
+    {
+      "event_id": "GRB 261108C",
+      "event_type": "GRB",
+      "tags": [
+        "Transient Surveillance",
+        "GCN Circulars",
+        "GRB"
+      ],
+      "heat_score": 43.6,
+      "paper_count": 0,
+      "headline": "GRB 261108C 空间与地面望远镜全波段应急协同追踪",
+      "narrative": "已汇聚 NASA GCN Circulars 快速通报 6 份。红移 待确定，触发时刻 T0: 2026-11-08 21:18:34 UTC (SVOM/ECLAIRs)。多波段光变曲线与早期测光点已完成零同质化聚合。",
+      "first_seen": "2026-11-08",
+      "last_updated": "2026-11-17",
+      "papers": [],
+      "lead_figure": null,
+      "lead_figure_arxiv_id": null,
+      "canonical_t0": {
+        "instrument": "SVOM/ECLAIRs",
+        "utc_iso": "2026-11-08T21:18:34.000Z",
+        "circular_id": 46198
+      },
+      "best_redshift": null,
+      "has_redshift_conflict": false,
+      "multi_messenger": [],
+      "gcn_aliases_label": null,
+      "canonical_t0_label": "2026-11-08 21:18:34 UTC (SVOM/ECLAIRs)",
+      "best_redshift_label": null,
+      "multi_messenger_badges": [],
+      "gcn_circular_count": 6,
+      "gcn_figure_path": null,
+      "gcn_aliases": [],
+      "gcn_slug": "grb-261108c",
+      "gcn_status": "active"
+    },
+    {
+      "event_id": "GRB 261108D",
+      "event_type": "GRB",
+      "tags": [
+        "Transient Surveillance",
+        "GCN Circulars",
+        "GRB"
+      ],
+      "heat_score": 43.4,
+      "paper_count": 0,
+      "headline": "GRB 261108D 空间与地面望远镜全波段应急协同追踪",
+      "narrative": "已汇聚 NASA GCN Circulars 快速通报 4 份。红移 z = 0.6 (spectroscopic · Optical Spectroscopy)，触发时刻 T0: 2026-11-08 23:52:36 UTC (SVOM/ECLAIRs)。多波段光变曲线与早期测光点已完成零同质化聚合。",
+      "first_seen": "2026-11-08",
+      "last_updated": "2026-11-17",
+      "papers": [],
+      "lead_figure": null,
+      "lead_figure_arxiv_id": null,
+      "canonical_t0": {
+        "instrument": "SVOM/ECLAIRs",
+        "utc_iso": "2026-11-08T23:52:36.000Z",
+        "circular_id": 46313
+      },
+      "best_redshift": {
+        "z": 0.6,
+        "z_err": null,
+        "type": "spectroscopic",
+        "instrument": "Optical Spectroscopy",
+        "circular_id": 46313,
+        "note": ""
+      },
+      "has_redshift_conflict": false,
+      "multi_messenger": [],
+      "gcn_aliases_label": null,
+      "canonical_t0_label": "2026-11-08 23:52:36 UTC (SVOM/ECLAIRs)",
+      "best_redshift_label": "z = 0.6 (spectroscopic · Optical Spectroscopy)",
+      "multi_messenger_badges": [],
+      "gcn_circular_count": 4,
+      "gcn_figure_path": "/gcn-figures/grb-261108d.png",
+      "gcn_aliases": [],
+      "gcn_slug": "grb-261108d",
+      "gcn_status": "active"
+    },
+    {
+      "event_id": "GRB 261114A",
+      "event_type": "GRB",
+      "tags": [
+        "Transient Surveillance",
+        "GCN Circulars",
+        "GRB"
+      ],
+      "heat_score": 41.1,
+      "paper_count": 0,
+      "headline": "GRB 261114A 空间与地面望远镜全波段应急协同追踪",
+      "narrative": "已汇聚 NASA GCN Circulars 快速通报 10 份。红移 z = 3.716 (spectroscopic · NOT/ALFOSC)，触发时刻 T0: 2026-11-14 09:33:13 UTC (SVOM/ECLAIRs)。多波段光变曲线与早期测光点已完成零同质化聚合。",
+      "first_seen": "2026-11-14",
+      "last_updated": "2026-11-17",
+      "papers": [],
+      "lead_figure": null,
+      "lead_figure_arxiv_id": null,
+      "canonical_t0": {
+        "instrument": "SVOM/ECLAIRs",
+        "utc_iso": "2026-11-14T09:33:13.000Z",
+        "circular_id": 46306
+      },
+      "best_redshift": {
+        "z": 3.716,
+        "z_err": null,
+        "type": "spectroscopic",
+        "instrument": "NOT/ALFOSC",
+        "circular_id": 46290,
+        "note": "Absorption features Lyman series, Si II, C IV"
+      },
+      "has_redshift_conflict": false,
+      "multi_messenger": [],
+      "gcn_aliases_label": "AT 5734a",
+      "canonical_t0_label": "2026-11-14 09:33:13 UTC (SVOM/ECLAIRs)",
+      "best_redshift_label": "z = 3.716 (spectroscopic · NOT/ALFOSC)",
+      "multi_messenger_badges": [],
+      "gcn_circular_count": 10,
+      "gcn_figure_path": null,
+      "gcn_aliases": [
+        "AT 5734a"
+      ],
+      "gcn_slug": "grb-261114a",
+      "gcn_status": "active"
+    },
+    {
+      "event_id": "GRB 261113A",
+      "event_type": "GRB",
+      "tags": [
+        "Transient Surveillance",
+        "GCN Circulars",
+        "GRB"
+      ],
+      "heat_score": 40.6,
+      "paper_count": 0,
+      "headline": "GRB 261113A 空间与地面望远镜全波段应急协同追踪",
+      "narrative": "已汇聚 NASA GCN Circulars 快速通报 32 份。红移 z = 3.58 (spectroscopic · Optical Spectroscopy)，触发时刻 T0: 2026-11-13 14:31:02 UTC (SVOM/ECLAIRs)。多波段光变曲线与早期测光点已完成零同质化聚合。",
+      "first_seen": "2026-11-13",
+      "last_updated": "2026-11-16",
+      "papers": [],
+      "lead_figure": null,
+      "lead_figure_arxiv_id": null,
+      "canonical_t0": {
+        "instrument": "SVOM/ECLAIRs",
+        "utc_iso": "2026-11-13T14:31:02.000Z",
+        "circular_id": 46270
+      },
+      "best_redshift": {
+        "z": 3.58,
+        "z_err": null,
+        "type": "spectroscopic",
+        "instrument": "Optical Spectroscopy",
+        "circular_id": 46309,
+        "note": ""
+      },
+      "has_redshift_conflict": false,
+      "multi_messenger": [],
+      "gcn_aliases_label": "AT 6250a",
+      "canonical_t0_label": "2026-11-13 14:31:02 UTC (SVOM/ECLAIRs)",
+      "best_redshift_label": "z = 3.58 (spectroscopic · Optical Spectroscopy)",
+      "multi_messenger_badges": [],
+      "gcn_circular_count": 32,
+      "gcn_figure_path": "/gcn-figures/grb-261113a.png",
+      "gcn_aliases": [
+        "AT 6250a"
+      ],
+      "gcn_slug": "grb-261113a",
+      "gcn_status": "active"
+    },
+    {
       "event_id": "SN 2025WIU",
       "event_type": "SN",
       "tags": [
-        "SN"
+        "SN",
+        "MAG"
       ],
       "heat_score": 40,
       "paper_count": 2,
-      "headline": "The light curve of SN 2025wiu ex...",
-      "narrative": "SN 2025WIU 是近期重点瞬变天体事件，活跃跨度 2026-10-18 至 2026-11-18，共聚合 2 篇研读文献（含 1 篇必读突破）。核心突破研判：The optical peak exhibits absolute magnitudes $M_{u}=-17.5\\pm 0.1$, $M_{g}=-18.11\\pm 0.01$, and $M_{r}=-18.24\\pm 0.04\\,\\mathrm{mag}$, with an early excess consistent with shock-cooling emission from a progenitor of $R_{\\star} \\sim 4\\,R_{\\odot}$. A post-maximum bump emerges $\\sim 23\\,\\mathrm{d}$ after maximum, peaking at $L_{\\mathrm{peak}} \\sim 2.4\\times 10^{42}\\,\\mathrm{erg\\,s^{-1}}$ with a duration of $\\sim 42\\,\\mathrm{d}$. Arnett's rule yields $M_{\\mathrm{Ni}} = 0.47\\,M_\\odot$ for the main peak, whereas late-time decay indicates $M_{\\mathrm{Ni}} = 0.13^{+0.05}_{-0.02}\\,M_\\odot$, and delayed interaction with circumstellar material of mass $M_{\\mathrm{CSM}} \\sim 0.03\\,M_{\\odot}$ at $R \\sim 5\\times 10^{15}\\,\\mathrm{cm}$ (for $\\epsilon = 0.5$ and $v_{\\mathrm{ej}} \\approx 8000\\,\\mathrm{km\\,s^{-1}}$) naturally explains the feature.",
+      "headline": "Investigating whether the high p...",
+      "narrative": "SN 2025WIU 是近期重点瞬变天体事件，活跃跨度 2026-10-18 至 2026-11-18，共聚合 2 篇研读文献（含 1 篇必读突破）。核心突破研判：SN 2025wiu displays peak absolute magnitudes of $M_u = -17.5\\pm 0.1$, $M_g = -18.11\\pm 0.01$, and $M_r = -18.24\\pm 0.04\\,\\mathrm{mag}$, accompanied by early shock cooling from a compact progenitor with $R_\\star \\approx 4\\,R_\\odot$, $M_{\\mathrm{ej}} \\approx 2\\,M_\\odot$, and $E \\approx 10^{51}\\,\\mathrm{erg}$. At $\\sim 50\\,\\mathrm{days}$ post-maximum, it develops a secondary bump peaking at $L_{\\mathrm{peak}} \\sim 2.4\\times 10^{42}\\,\\mathrm{erg\\,s^{-1}}$ with total radiated energy $E_{\\mathrm{bump}} \\sim 10^{49}\\,\\mathrm{erg}$ and duration $\\Delta t \\approx 42\\,\\mathrm{days}$. Synthesized $^{56}\\mathrm{Ni}$ mass estimated from the primary peak via Arnett's rule is $M_{\\mathrm{Ni}} \\approx 0.47\\,M_\\odot$, contrasting sharply with late-time radioactive tail deposition ($f_{\\mathrm{dep}}(t) = 1 - \\exp[-(T_0/t)^2]$ with $T_0 = 173^{+44}_{-41}\\,\\mathrm{days}$) which yields $M_{\\mathrm{Ni}} = 0.13^{+0.05}_{-0.02}\\,M_\\odot$. The bump energy implies an interacting CSM mass of $M_{\\mathrm{CSM}} \\sim 0.03\\,M_\\odot$ at radius $R \\sim 5\\times 10^{15}\\,\\mathrm{cm}$.",
       "first_seen": "2026-10-18",
       "last_updated": "2026-11-18",
       "papers": [
@@ -1459,16 +1678,16 @@
           ],
           "date": "2026-11-18",
           "priority": "must_read",
-          "bluf_result": "The optical peak exhibits absolute magnitudes $M_{u}=-17.5\\pm 0.1$, $M_{g}=-18.11\\pm 0.01$, and $M_{r}=-18.24\\pm 0.04\\,\\mathrm{mag}$, with an early excess consistent with shock-cooling emission from a progenitor of $R_{\\star} \\sim 4\\,R_{\\odot}$. A post-maximum bump emerges $\\sim 23\\,\\mathrm{d}$ after maximum, peaking at $L_{\\mathrm{peak}} \\sim 2.4\\times 10^{42}\\,\\mathrm{erg\\,s^{-1}}$ with a duration of $\\sim 42\\,\\mathrm{d}$. Arnett's rule yields $M_{\\mathrm{Ni}} = 0.47\\,M_\\odot$ for the main peak, whereas late-time decay indicates $M_{\\mathrm{Ni}} = 0.13^{+0.05}_{-0.02}\\,M_\\odot$, and delayed interaction with circumstellar material of mass $M_{\\mathrm{CSM}} \\sim 0.03\\,M_{\\odot}$ at $R \\sim 5\\times 10^{15}\\,\\mathrm{cm}$ (for $\\epsilon = 0.5$ and $v_{\\mathrm{ej}} \\approx 8000\\,\\mathrm{km\\,s^{-1}}$) naturally explains the feature.",
-          "bluf_problem": "The light curve of SN 2025wiu exhibits an extraordinary post-maximum bump that deviates markedly from radioactive decay models (${}^{56}\\mathrm{Ni}\\rightarrow{}^{56}\\mathrm{Co}\\rightarrow{}^{56}\\mathrm{Fe}$), and the discrepancy between the Arnett-derived peak nickel mass ($0.47\\,M_\\odot$) and tail-derived nickel mass ($0.13\\,M_\\odot$) rules out pure radioactive powering.",
+          "bluf_result": "SN 2025wiu displays peak absolute magnitudes of $M_u = -17.5\\pm 0.1$, $M_g = -18.11\\pm 0.01$, and $M_r = -18.24\\pm 0.04\\,\\mathrm{mag}$, accompanied by early shock cooling from a compact progenitor with $R_\\star \\approx 4\\,R_\\odot$, $M_{\\mathrm{ej}} \\approx 2\\,M_\\odot$, and $E \\approx 10^{51}\\,\\mathrm{erg}$. At $\\sim 50\\,\\mathrm{days}$ post-maximum, it develops a secondary bump peaking at $L_{\\mathrm{peak}} \\sim 2.4\\times 10^{42}\\,\\mathrm{erg\\,s^{-1}}$ with total radiated energy $E_{\\mathrm{bump}} \\sim 10^{49}\\,\\mathrm{erg}$ and duration $\\Delta t \\approx 42\\,\\mathrm{days}$. Synthesized $^{56}\\mathrm{Ni}$ mass estimated from the primary peak via Arnett's rule is $M_{\\mathrm{Ni}} \\approx 0.47\\,M_\\odot$, contrasting sharply with late-time radioactive tail deposition ($f_{\\mathrm{dep}}(t) = 1 - \\exp[-(T_0/t)^2]$ with $T_0 = 173^{+44}_{-41}\\,\\mathrm{days}$) which yields $M_{\\mathrm{Ni}} = 0.13^{+0.05}_{-0.02}\\,M_\\odot$. The bump energy implies an interacting CSM mass of $M_{\\mathrm{CSM}} \\sim 0.03\\,M_\\odot$ at radius $R \\sim 5\\times 10^{15}\\,\\mathrm{cm}$.",
+          "bluf_problem": "Investigating whether the high peak luminosity and prominent post-maximum bump of the slowly evolving Type Ib supernova SN 2025wiu can be reconciled with standard radioactive decay, or whether delayed circumstellar medium (CSM) interaction, magnetar spin-down, fallback accretion, or a double-$^{56}\\mathrm{Ni}$ distribution is required.",
           "figures": [
             {
-              "url": "/arxiv-figures/2611.24204/multi-band-LC.png",
-              "label": "Fig. 2",
-              "caption": "Figure 2: Left: Multi-band light curves of SN 2025wiu (colors represent filters and symbol shapes represent telescopes), corrected for extinction. Open circles denote $3\\sigma$ upper limits. The epochs of the spectra presented in this work are also shown as vertical gray dashed lines. The black dashed line indicates the decline rate expected from ${}^{56}\\mathrm{Co}\\rightarrow{}^{56}\\mathrm{Fe}$ decay under complete trapping ($0.98$ mag per $100$ days), with an arbitrary vertical offset for comparison. Right: Results of power-law fits to the $g$ - and $r$ -band early light curves. The time window used for the fit is shown as the gray shaded region. The inset enlarges the early phase from $-30.5$ to $-28$ days and compares the observations with the shock cooling model (dotted lines) of [ 77 ]. The left and right $y$ -axes represent absolute and apparent magnitudes, respectively. The $JHK_{s}$ magnitudes are converted from the Vega to the AB system using $J_{\\rm AB}=J_{\\rm Vega}+0.938$, $H_{\\rm AB}=H_{\\rm Vega}+1.379$, and $K_{s,\\rm AB}=K_{s,\\rm Vega}+1.900$, following the UKIDSS conversion relations [ 45 ].",
+              "url": "/arxiv-figures/2611.24204/bolometric_LCs.png",
+              "label": "Fig. 5",
+              "caption": "Figure 5: Blackbody fitting results for SN 2025wiu using $ugro$ -band data. Top: The evolution of the observed luminosity and the pseudo-bolometric luminosity integrated from 1 to 25000 Å. The observed luminosity is derived from the $ugro$ bands due to monitoring completeness. Middle: The evolution of the photospheric temperature. Bottom: The evolution of the photospheric radius. The corresponding evolutions of the pseudo-bolometric luminosity, photospheric temperature, and photospheric radius of SNe 1999ex (green) and 2009jf (blue) are also shown for comparison.",
               "category": "observational",
               "category_badge": "Observational Light Curve / SED",
-              "physical_core": "Extinction-corrected multi-band light curves establishing the slow photometric evolution of SN 2025wiu, featuring an extraordinary post-maximum bump at $\\sim 50$ days, a late-time tail consistent with ${}^{56}\\mathrm{Co}\\rightarrow{}^{56}\\mathrm{Fe}$ decay ($0.98\\mathrm{\\ mag}/100\\mathrm{\\ d}$), and an early shock-cooling excess constraining a compact progenitor radius of $R \\sim 4\\,R_\\odot$.",
+              "physical_core": "Temporal evolution of the pseudo-bolometric luminosity $L_{\\mathrm{bol}}$, photospheric temperature $T_{\\mathrm{ph}}$, and photospheric radius $R_{\\mathrm{ph}}$ derived from multi-band blackbody fits, contrasted against canonical Type Ib SNe 1999ex and 2009jf to reveal the thermal and dynamical evolution of the ejecta across the primary peak and secondary bump.",
               "is_schematic": false
             },
             {
@@ -1477,17 +1696,17 @@
               "caption": "Figure 9: Light-curve fits with the 56 Ni+CSM interaction model (top) and the 56 Ni+magnetar model (middle). Grey open circles show the pseudo-bolometric observations, and black solid lines show the total model luminosities. The contributions from radioactive decay and CSM interaction or magnetar power are shown as blue and red dashed lines, respectively. The fits are restricted to the first peak and the late-time decline, excluding the luminous post-maximum bump within the shaded region. The bottom panel shows the luminosity residuals for the CSM interaction model (red circles) and the magnetar model (green squares), illustrating the excess emission associated with the bump.",
               "category": "fitting",
               "category_badge": "Model vs Data Fitting",
-              "physical_core": "Pseudo-bolometric light-curve decomposition comparing ${}^{56}\\mathrm{Ni}$ radioactive decay combined with either delayed CSM interaction or magnetar spin-down power; excluding the post-maximum bump allows isolating its symmetric excess emission with peak luminosity $L_{\\rm peak} \\sim 2.4 \\times 10^{42}\\mathrm{\\ erg\\,s^{-1}}$ and characteristic duration of $\\sim 42$ days.",
+              "physical_core": "Quantitative decomposition of the pseudo-bolometric light curve into $^{56}\\mathrm{Ni}$ radioactive decay combined with either circumstellar medium (CSM) interaction or magnetar spin-down power, isolating the residual post-maximum bump with peak luminosity $L_{\\mathrm{peak}} \\sim 2.4 \\times 10^{42}~\\mathrm{erg\\,s^{-1}}$ and duration of $\\sim 42$ days.",
               "is_schematic": false
             }
           ],
           "primary_figure": {
-            "url": "/arxiv-figures/2611.24204/multi-band-LC.png",
-            "label": "Fig. 2",
-            "caption": "Figure 2: Left: Multi-band light curves of SN 2025wiu (colors represent filters and symbol shapes represent telescopes), corrected for extinction. Open circles denote $3\\sigma$ upper limits. The epochs of the spectra presented in this work are also shown as vertical gray dashed lines. The black dashed line indicates the decline rate expected from ${}^{56}\\mathrm{Co}\\rightarrow{}^{56}\\mathrm{Fe}$ decay under complete trapping ($0.98$ mag per $100$ days), with an arbitrary vertical offset for comparison. Right: Results of power-law fits to the $g$ - and $r$ -band early light curves. The time window used for the fit is shown as the gray shaded region. The inset enlarges the early phase from $-30.5$ to $-28$ days and compares the observations with the shock cooling model (dotted lines) of [ 77 ]. The left and right $y$ -axes represent absolute and apparent magnitudes, respectively. The $JHK_{s}$ magnitudes are converted from the Vega to the AB system using $J_{\\rm AB}=J_{\\rm Vega}+0.938$, $H_{\\rm AB}=H_{\\rm Vega}+1.379$, and $K_{s,\\rm AB}=K_{s,\\rm Vega}+1.900$, following the UKIDSS conversion relations [ 45 ].",
+            "url": "/arxiv-figures/2611.24204/bolometric_LCs.png",
+            "label": "Fig. 5",
+            "caption": "Figure 5: Blackbody fitting results for SN 2025wiu using $ugro$ -band data. Top: The evolution of the observed luminosity and the pseudo-bolometric luminosity integrated from 1 to 25000 Å. The observed luminosity is derived from the $ugro$ bands due to monitoring completeness. Middle: The evolution of the photospheric temperature. Bottom: The evolution of the photospheric radius. The corresponding evolutions of the pseudo-bolometric luminosity, photospheric temperature, and photospheric radius of SNe 1999ex (green) and 2009jf (blue) are also shown for comparison.",
             "category": "observational",
             "category_badge": "Observational Light Curve / SED",
-            "physical_core": "Extinction-corrected multi-band light curves establishing the slow photometric evolution of SN 2025wiu, featuring an extraordinary post-maximum bump at $\\sim 50$ days, a late-time tail consistent with ${}^{56}\\mathrm{Co}\\rightarrow{}^{56}\\mathrm{Fe}$ decay ($0.98\\mathrm{\\ mag}/100\\mathrm{\\ d}$), and an early shock-cooling excess constraining a compact progenitor radius of $R \\sim 4\\,R_\\odot$.",
+            "physical_core": "Temporal evolution of the pseudo-bolometric luminosity $L_{\\mathrm{bol}}$, photospheric temperature $T_{\\mathrm{ph}}$, and photospheric radius $R_{\\mathrm{ph}}$ derived from multi-band blackbody fits, contrasted against canonical Type Ib SNe 1999ex and 2009jf to reveal the thermal and dynamical evolution of the ejecta across the primary peak and secondary bump.",
             "is_schematic": false
           }
         },
@@ -1542,12 +1761,12 @@
         }
       ],
       "lead_figure": {
-        "url": "/arxiv-figures/2611.24204/multi-band-LC.png",
-        "label": "Fig. 2",
-        "caption": "Figure 2: Left: Multi-band light curves of SN 2025wiu (colors represent filters and symbol shapes represent telescopes), corrected for extinction. Open circles denote $3\\sigma$ upper limits. The epochs of the spectra presented in this work are also shown as vertical gray dashed lines. The black dashed line indicates the decline rate expected from ${}^{56}\\mathrm{Co}\\rightarrow{}^{56}\\mathrm{Fe}$ decay under complete trapping ($0.98$ mag per $100$ days), with an arbitrary vertical offset for comparison. Right: Results of power-law fits to the $g$ - and $r$ -band early light curves. The time window used for the fit is shown as the gray shaded region. The inset enlarges the early phase from $-30.5$ to $-28$ days and compares the observations with the shock cooling model (dotted lines) of [ 77 ]. The left and right $y$ -axes represent absolute and apparent magnitudes, respectively. The $JHK_{s}$ magnitudes are converted from the Vega to the AB system using $J_{\\rm AB}=J_{\\rm Vega}+0.938$, $H_{\\rm AB}=H_{\\rm Vega}+1.379$, and $K_{s,\\rm AB}=K_{s,\\rm Vega}+1.900$, following the UKIDSS conversion relations [ 45 ].",
+        "url": "/arxiv-figures/2611.24204/bolometric_LCs.png",
+        "label": "Fig. 5",
+        "caption": "Figure 5: Blackbody fitting results for SN 2025wiu using $ugro$ -band data. Top: The evolution of the observed luminosity and the pseudo-bolometric luminosity integrated from 1 to 25000 Å. The observed luminosity is derived from the $ugro$ bands due to monitoring completeness. Middle: The evolution of the photospheric temperature. Bottom: The evolution of the photospheric radius. The corresponding evolutions of the pseudo-bolometric luminosity, photospheric temperature, and photospheric radius of SNe 1999ex (green) and 2009jf (blue) are also shown for comparison.",
         "category": "observational",
         "category_badge": "Observational Light Curve / SED",
-        "physical_core": "Extinction-corrected multi-band light curves establishing the slow photometric evolution of SN 2025wiu, featuring an extraordinary post-maximum bump at $\\sim 50$ days, a late-time tail consistent with ${}^{56}\\mathrm{Co}\\rightarrow{}^{56}\\mathrm{Fe}$ decay ($0.98\\mathrm{\\ mag}/100\\mathrm{\\ d}$), and an early shock-cooling excess constraining a compact progenitor radius of $R \\sim 4\\,R_\\odot$.",
+        "physical_core": "Temporal evolution of the pseudo-bolometric luminosity $L_{\\mathrm{bol}}$, photospheric temperature $T_{\\mathrm{ph}}$, and photospheric radius $R_{\\mathrm{ph}}$ derived from multi-band blackbody fits, contrasted against canonical Type Ib SNe 1999ex and 2009jf to reveal the thermal and dynamical evolution of the ejecta across the primary peak and secondary bump.",
         "is_schematic": false
       },
       "lead_figure_arxiv_id": "2611.24204",
@@ -1690,6 +1909,43 @@
       "gcn_aliases": [],
       "gcn_slug": null,
       "gcn_status": null
+    },
+    {
+      "event_id": "GRB 261108A",
+      "event_type": "GRB",
+      "tags": [
+        "Transient Surveillance",
+        "GCN Circulars",
+        "GRB"
+      ],
+      "heat_score": 35,
+      "paper_count": 0,
+      "headline": "GRB 261108A 空间与地面望远镜全波段应急协同追踪",
+      "narrative": "已汇聚 NASA GCN Circulars 快速通报 8 份。红移 待确定，触发时刻 T0: 2026-11-08 01:13:19 UTC (Fermi/GBM)。多波段光变曲线与早期测光点已完成零同质化聚合。",
+      "first_seen": "2026-11-08",
+      "last_updated": "2026-11-15",
+      "papers": [],
+      "lead_figure": null,
+      "lead_figure_arxiv_id": null,
+      "canonical_t0": {
+        "instrument": "Fermi/GBM",
+        "utc_iso": "2026-11-08T01:13:19.000Z",
+        "circular_id": 46186
+      },
+      "best_redshift": null,
+      "has_redshift_conflict": false,
+      "multi_messenger": [],
+      "gcn_aliases_label": "GRB 261108",
+      "canonical_t0_label": "2026-11-08 01:13:19 UTC (Fermi/GBM)",
+      "best_redshift_label": null,
+      "multi_messenger_badges": [],
+      "gcn_circular_count": 8,
+      "gcn_figure_path": null,
+      "gcn_aliases": [
+        "GRB 261108"
+      ],
+      "gcn_slug": "grb-261108a",
+      "gcn_status": "active"
     },
     {
       "event_id": "SN1987A",
@@ -1970,6 +2226,129 @@
       "gcn_status": null
     },
     {
+      "event_id": "AT 2025ABAO",
+      "event_type": "AT",
+      "tags": [
+        "SN"
+      ],
+      "heat_score": 25,
+      "paper_count": 1,
+      "headline": "Direct observational verificatio...",
+      "narrative": "AT 2025ABAO 是近期重点瞬变天体事件，监测日期 2026-11-18，共聚合 1 篇研读文献（含 1 篇必读突破）。核心突破研判：AT 2025abao is an AGB-star common-envelope merger ($M_1 \\approx 7\\,M_\\odot$, $M_2 \\approx 0.7\\,M_\\odot$, $q \\approx 0.10_{-0.05}^{+0.10}$) exhibiting an optical eruption with peak luminosity $L \\approx 2.5 \\times 10^{39}\\,\\mathrm{erg\\,s^{-1}}$, an $\\approx 80\\,\\mathrm{d}$ plateau, and ejecta-CSM shock interaction with $v_{\\mathrm{H}\\alpha}$ decelerating from $\\approx 900\\,\\mathrm{km\\,s^{-1}}$ to $\\approx 150\\,\\mathrm{km\\,s^{-1}}$ matching $\\rho(r) \\propto r^{-2}$. The orbital dissipation energy $\\Delta E_{\\rm orb} \\approx 10^{48}\\,\\mathrm{erg}$ predominantly drives kinetic ejection ($KE_{\\rm ej} \\sim 10^{48}\\,\\mathrm{erg}$ for $M_{\\rm ej} \\approx 0.1\\text{--}0.2\\,M_\\odot$) rather than binding energy unbinding ($E_{\\rm unbind} \\approx 10^{46}\\,\\mathrm{erg}$) or radiation ($E_{\\rm rad} \\approx 10^{46}\\,\\mathrm{erg}$), governed by $\\Delta E_{\\rm orb} = E_{\\rm unbind} + E_{\\rm rad} + KE_{\\rm ej}$.",
+      "first_seen": "2026-11-18",
+      "last_updated": "2026-11-18",
+      "papers": [
+        {
+          "arxiv_id": "2611.23470",
+          "revision": 1,
+          "title": "An inspiral of a star inside a common envelope with its giant companion",
+          "authors": [
+            "Viraj Karambelkar",
+            "Kishalay De",
+            "Karel D. Temmink",
+            "Brian D. Metzger",
+            "Nadejda Blagorodnova",
+            "G. C. Anupama",
+            "Sudhanshu Barway",
+            "Judhajeet Basu",
+            "Eric C. Bellm",
+            "Varun Bhalerao",
+            "Aleksandra Bochenek",
+            "Shatakshi Chamoli",
+            "Kaustav Das",
+            "Christoffer Fremling",
+            "Danielle Frostig",
+            "Marco A. Gomez-Munoz",
+            "Steven L. Groom",
+            "K-Ryan Hinds",
+            "Joahan Castaneda Jaimes",
+            "Jacob Jencson",
+            "David Jones",
+            "Mansi Kasliwal",
+            "Grace Katusiime",
+            "Rubina Kotak",
+            "S. R. Kulkarni",
+            "Ryan Lau",
+            "Chang Liu",
+            "Nathan P. Lourie",
+            "Morgan MacLeod",
+            "Keiichi Maeda",
+            "Zoe McGrath",
+            "Geoffrey Mo",
+            "Gerard Garcia-Moreno",
+            "Josiah Purdum",
+            "Nabeel Rehemtulla",
+            "R. Michael Rich",
+            "Reed L. Riddle",
+            "Sam Rose",
+            "Robert A. Simcoe",
+            "Jesper Sollerman",
+            "Robert Stein",
+            "Hugo Tranin",
+            "Maxime Wavasseur",
+            "Simon de Wet",
+            "Jacob Wise"
+          ],
+          "date": "2026-11-18",
+          "priority": "must_read",
+          "bluf_result": "AT 2025abao is an AGB-star common-envelope merger ($M_1 \\approx 7\\,M_\\odot$, $M_2 \\approx 0.7\\,M_\\odot$, $q \\approx 0.10_{-0.05}^{+0.10}$) exhibiting an optical eruption with peak luminosity $L \\approx 2.5 \\times 10^{39}\\,\\mathrm{erg\\,s^{-1}}$, an $\\approx 80\\,\\mathrm{d}$ plateau, and ejecta-CSM shock interaction with $v_{\\mathrm{H}\\alpha}$ decelerating from $\\approx 900\\,\\mathrm{km\\,s^{-1}}$ to $\\approx 150\\,\\mathrm{km\\,s^{-1}}$ matching $\\rho(r) \\propto r^{-2}$. The orbital dissipation energy $\\Delta E_{\\rm orb} \\approx 10^{48}\\,\\mathrm{erg}$ predominantly drives kinetic ejection ($KE_{\\rm ej} \\sim 10^{48}\\,\\mathrm{erg}$ for $M_{\\rm ej} \\approx 0.1\\text{--}0.2\\,M_\\odot$) rather than binding energy unbinding ($E_{\\rm unbind} \\approx 10^{46}\\,\\mathrm{erg}$) or radiation ($E_{\\rm rad} \\approx 10^{46}\\,\\mathrm{erg}$), governed by $\\Delta E_{\\rm orb} = E_{\\rm unbind} + E_{\\rm rad} + KE_{\\rm ej}$.",
+          "bluf_problem": "Direct observational verification of binary common envelope evolution (CEE) dynamics, specifically how orbital energy is dissipated by drag during inspiral and whether envelope unbinding or kinetic ejection dominates the energy sink.",
+          "figures": [
+            {
+              "url": "/arxiv-figures/2611.23470/combined_figure_4.png",
+              "label": "Fig. 4",
+              "caption": "Figure 4: Understanding CEE. Top Left: Peak precursor luminosity versus primary escape speed for AT 2025abao, V1309Sco [ 17 ], and M31-LRN-2015 [ 22 ], colored by precursor duration in orbital periods at the primary’s surface. Lines show the kinetic luminosity of outflows at various mass-loss rates (dashed gray, Equation 5 ) and drag luminosity from an inspiraling companion (red, Equation 7 ) for the mass ratios in the legend. Top right: Theoretical estimates of dust mass around the quiescent progenitor (black line: analytical, squares: MESA simulations) versus that ejected during the precursor (Section 1.4.3 ), colored by binary mass ratio. The shaded region spans the progenitor dust range by varying the analytical-model parameters (Section 1.4.2 ). The red star shows measured values with 1 $\\sigma$ uncertainties. Bottom left: Envelope binding energy versus radius (black) from the MESA model of the 7 M ⊙, 340 R ⊙ AGB primary star, inferred orbital energy dissipated by the companion (red), observed ejecta kinetic energy (blue), and observed radiated energy during the precursor (green). Solid lines are median values, shaded regions mark 1 $\\sigma$ uncertainties. Bottom Right: CE efficiency $\\alpha$ versus binary mass ratio. The inferred mass ratio and its 1 $\\sigma$ uncertainty is marked with the purple solid line and shaded region. Black shaded regions are ruled out by a core-merger in this system and its observed ejected mass. Black points show $\\alpha$ measurements from post-CE binary systems [ 50 ] (Section 1.4.6 ).",
+              "category": "theoretical",
+              "category_badge": "Physical Evolution",
+              "physical_core": "Quantitative energetics and physical framework of common envelope evolution (CEE), comparing precursor drag luminosity ($L_{\\rm drag}$) against outflow kinetic luminosities, contrasting primary envelope binding energy with companion dissipated orbital energy and ejecta kinetic energy, and empirically constraining the common envelope efficiency parameter to $0.01 \\lesssim \\alpha \\lesssim 0.4$.",
+              "is_schematic": true
+            },
+            {
+              "url": "/arxiv-figures/2611.23470/at2025abao_graphic.png",
+              "label": "Fig. 10",
+              "caption": "Figure 10: A graphical representation of the different phases of AT 2025abao. a) The quiescent binary system comprising a $\\approx 7$ M ⊙ AGB and a $\\approx 0.7$ M ⊙ star, surrounded by an extended dust shell from mass loss from the binary following Roche Lobe overflow of the primary. b) The precursor brightening phase that began in 2018, marking the onset of CEE, powered by frictional drag on the inspiraling companion lasting for $\\approx 7$ years. The mass outflow rate during this phase is $\\sim 10^{-2}$ M ⊙ yr -1, producing $\\sim 0.1$ M ⊙ of CBM in an equatorial disk around the binary (dark brown), c) The ballistic eruption in late 2025 from the merger of the inspiraling companion with the primary core, resulting in the ejection of $\\approx 0.1-0.2$ M ⊙ of the primary envelope, and sublimation of a large fraction of dust around the binary. d) The eventual lightcurve powered by shock-interactions between freely expanding merger ejecta (indicated by yellow arrows) and equatorially focused CBM. The surviving pre-existing dust is traced by our JWST observations. The black arrows between the panels indicate the progression of time.",
+              "category": "theoretical",
+              "category_badge": "Physical Model Schematic",
+              "physical_core": "Four-phase geometric and evolutionary model of AT 2025abao: (a) quiescent $\\approx 7\\,M_\\odot$ AGB and $\\approx 0.7\\,M_\\odot$ companion with an extended dust shell, (b) 7-year precursor brightening powered by hydrodynamic frictional drag on the inspiraling companion with equatorial mass loss, (c) companion-core merger driving ballistic ejection of $\\approx 0.1\\text{--}0.2\\,M_\\odot$ of envelope material, and (d) late-time shock interaction between expanding ejecta and equatorially focused circumstellar medium.",
+              "is_schematic": true
+            }
+          ],
+          "primary_figure": {
+            "url": "/arxiv-figures/2611.23470/combined_figure_4.png",
+            "label": "Fig. 4",
+            "caption": "Figure 4: Understanding CEE. Top Left: Peak precursor luminosity versus primary escape speed for AT 2025abao, V1309Sco [ 17 ], and M31-LRN-2015 [ 22 ], colored by precursor duration in orbital periods at the primary’s surface. Lines show the kinetic luminosity of outflows at various mass-loss rates (dashed gray, Equation 5 ) and drag luminosity from an inspiraling companion (red, Equation 7 ) for the mass ratios in the legend. Top right: Theoretical estimates of dust mass around the quiescent progenitor (black line: analytical, squares: MESA simulations) versus that ejected during the precursor (Section 1.4.3 ), colored by binary mass ratio. The shaded region spans the progenitor dust range by varying the analytical-model parameters (Section 1.4.2 ). The red star shows measured values with 1 $\\sigma$ uncertainties. Bottom left: Envelope binding energy versus radius (black) from the MESA model of the 7 M ⊙, 340 R ⊙ AGB primary star, inferred orbital energy dissipated by the companion (red), observed ejecta kinetic energy (blue), and observed radiated energy during the precursor (green). Solid lines are median values, shaded regions mark 1 $\\sigma$ uncertainties. Bottom Right: CE efficiency $\\alpha$ versus binary mass ratio. The inferred mass ratio and its 1 $\\sigma$ uncertainty is marked with the purple solid line and shaded region. Black shaded regions are ruled out by a core-merger in this system and its observed ejected mass. Black points show $\\alpha$ measurements from post-CE binary systems [ 50 ] (Section 1.4.6 ).",
+            "category": "theoretical",
+            "category_badge": "Physical Evolution",
+            "physical_core": "Quantitative energetics and physical framework of common envelope evolution (CEE), comparing precursor drag luminosity ($L_{\\rm drag}$) against outflow kinetic luminosities, contrasting primary envelope binding energy with companion dissipated orbital energy and ejecta kinetic energy, and empirically constraining the common envelope efficiency parameter to $0.01 \\lesssim \\alpha \\lesssim 0.4$.",
+            "is_schematic": true
+          }
+        }
+      ],
+      "lead_figure": {
+        "url": "/arxiv-figures/2611.23470/combined_figure_4.png",
+        "label": "Fig. 4",
+        "caption": "Figure 4: Understanding CEE. Top Left: Peak precursor luminosity versus primary escape speed for AT 2025abao, V1309Sco [ 17 ], and M31-LRN-2015 [ 22 ], colored by precursor duration in orbital periods at the primary’s surface. Lines show the kinetic luminosity of outflows at various mass-loss rates (dashed gray, Equation 5 ) and drag luminosity from an inspiraling companion (red, Equation 7 ) for the mass ratios in the legend. Top right: Theoretical estimates of dust mass around the quiescent progenitor (black line: analytical, squares: MESA simulations) versus that ejected during the precursor (Section 1.4.3 ), colored by binary mass ratio. The shaded region spans the progenitor dust range by varying the analytical-model parameters (Section 1.4.2 ). The red star shows measured values with 1 $\\sigma$ uncertainties. Bottom left: Envelope binding energy versus radius (black) from the MESA model of the 7 M ⊙, 340 R ⊙ AGB primary star, inferred orbital energy dissipated by the companion (red), observed ejecta kinetic energy (blue), and observed radiated energy during the precursor (green). Solid lines are median values, shaded regions mark 1 $\\sigma$ uncertainties. Bottom Right: CE efficiency $\\alpha$ versus binary mass ratio. The inferred mass ratio and its 1 $\\sigma$ uncertainty is marked with the purple solid line and shaded region. Black shaded regions are ruled out by a core-merger in this system and its observed ejected mass. Black points show $\\alpha$ measurements from post-CE binary systems [ 50 ] (Section 1.4.6 ).",
+        "category": "theoretical",
+        "category_badge": "Physical Evolution",
+        "physical_core": "Quantitative energetics and physical framework of common envelope evolution (CEE), comparing precursor drag luminosity ($L_{\\rm drag}$) against outflow kinetic luminosities, contrasting primary envelope binding energy with companion dissipated orbital energy and ejecta kinetic energy, and empirically constraining the common envelope efficiency parameter to $0.01 \\lesssim \\alpha \\lesssim 0.4$.",
+        "is_schematic": true
+      },
+      "lead_figure_arxiv_id": "2611.23470",
+      "canonical_t0": null,
+      "best_redshift": null,
+      "has_redshift_conflict": false,
+      "multi_messenger": [],
+      "gcn_aliases_label": null,
+      "canonical_t0_label": null,
+      "best_redshift_label": null,
+      "multi_messenger_badges": [],
+      "gcn_circular_count": 0,
+      "gcn_figure_path": null,
+      "gcn_aliases": [],
+      "gcn_slug": null,
+      "gcn_status": null
+    },
+    {
       "event_id": "SN 1993J",
       "event_type": "SN",
       "tags": [
@@ -2162,41 +2541,6 @@
       "gcn_status": null
     },
     {
-      "event_id": "GRB 261108D",
-      "event_type": "GRB",
-      "tags": [
-        "Transient Surveillance",
-        "GCN Circulars",
-        "GRB"
-      ],
-      "heat_score": 20.8,
-      "paper_count": 0,
-      "headline": "GRB 261108D 空间与地面望远镜全波段应急协同追踪",
-      "narrative": "已汇聚 NASA GCN Circulars 快速通报 3 份。红移 待确定，触发时刻 T0: 2026-11-10 07:52:29 UTC (SVOM/ECLAIRs)。多波段光变曲线与早期测光点已完成零同质化聚合。",
-      "first_seen": "2026-11-10",
-      "last_updated": "2026-11-10",
-      "papers": [],
-      "lead_figure": null,
-      "lead_figure_arxiv_id": null,
-      "canonical_t0": {
-        "instrument": "SVOM/ECLAIRs",
-        "utc_iso": "2026-11-10T07:52:29.000Z",
-        "circular_id": 46211
-      },
-      "best_redshift": null,
-      "has_redshift_conflict": false,
-      "multi_messenger": [],
-      "gcn_aliases_label": null,
-      "canonical_t0_label": "2026-11-10 07:52:29 UTC (SVOM/ECLAIRs)",
-      "best_redshift_label": null,
-      "multi_messenger_badges": [],
-      "gcn_circular_count": 3,
-      "gcn_figure_path": "/gcn-figures/grb-261108d.png",
-      "gcn_aliases": [],
-      "gcn_slug": "grb-261108d",
-      "gcn_status": "active"
-    },
-    {
       "event_id": "SN 2024PHV",
       "event_type": "SN",
       "tags": [
@@ -2337,41 +2681,6 @@
       "gcn_aliases": [],
       "gcn_slug": null,
       "gcn_status": null
-    },
-    {
-      "event_id": "GRB 261108C",
-      "event_type": "GRB",
-      "tags": [
-        "Transient Surveillance",
-        "GCN Circulars",
-        "GRB"
-      ],
-      "heat_score": 18.7,
-      "paper_count": 0,
-      "headline": "GRB 261108C 空间与地面望远镜全波段应急协同追踪",
-      "narrative": "已汇聚 NASA GCN Circulars 快速通报 3 份。红移 待确定，触发时刻 T0: 2026-11-08 21:18:34 UTC (SVOM/ECLAIRs)。多波段光变曲线与早期测光点已完成零同质化聚合。",
-      "first_seen": "2026-11-08",
-      "last_updated": "2026-11-09",
-      "papers": [],
-      "lead_figure": null,
-      "lead_figure_arxiv_id": null,
-      "canonical_t0": {
-        "instrument": "SVOM/ECLAIRs",
-        "utc_iso": "2026-11-08T21:18:34.000Z",
-        "circular_id": 46198
-      },
-      "best_redshift": null,
-      "has_redshift_conflict": false,
-      "multi_messenger": [],
-      "gcn_aliases_label": null,
-      "canonical_t0_label": "2026-11-08 21:18:34 UTC (SVOM/ECLAIRs)",
-      "best_redshift_label": null,
-      "multi_messenger_badges": [],
-      "gcn_circular_count": 3,
-      "gcn_figure_path": null,
-      "gcn_aliases": [],
-      "gcn_slug": "grb-261108c",
-      "gcn_status": "active"
     },
     {
       "event_id": "GRB 260411A",
@@ -2534,78 +2843,6 @@
       "gcn_aliases": [],
       "gcn_slug": null,
       "gcn_status": null
-    },
-    {
-      "event_id": "GRB 261108A",
-      "event_type": "GRB",
-      "tags": [
-        "Transient Surveillance",
-        "GCN Circulars",
-        "GRB"
-      ],
-      "heat_score": 18,
-      "paper_count": 0,
-      "headline": "GRB 261108A 空间与地面望远镜全波段应急协同追踪",
-      "narrative": "已汇聚 NASA GCN Circulars 快速通报 7 份。红移 待确定，触发时刻 T0: 2026-11-08 01:13:19 UTC (Fermi/GBM)。多波段光变曲线与早期测光点已完成零同质化聚合。",
-      "first_seen": "2026-11-08",
-      "last_updated": "2026-11-08",
-      "papers": [],
-      "lead_figure": null,
-      "lead_figure_arxiv_id": null,
-      "canonical_t0": {
-        "instrument": "Fermi/GBM",
-        "utc_iso": "2026-11-08T01:13:19.000Z",
-        "circular_id": 46186
-      },
-      "best_redshift": null,
-      "has_redshift_conflict": false,
-      "multi_messenger": [],
-      "gcn_aliases_label": "GRB 261108",
-      "canonical_t0_label": "2026-11-08 01:13:19 UTC (Fermi/GBM)",
-      "best_redshift_label": null,
-      "multi_messenger_badges": [],
-      "gcn_circular_count": 7,
-      "gcn_figure_path": null,
-      "gcn_aliases": [
-        "GRB 261108"
-      ],
-      "gcn_slug": "grb-261108a",
-      "gcn_status": "active"
-    },
-    {
-      "event_id": "GRB 261103A",
-      "event_type": "GRB",
-      "tags": [
-        "Transient Surveillance",
-        "GCN Circulars",
-        "GRB"
-      ],
-      "heat_score": 16.9,
-      "paper_count": 0,
-      "headline": "GRB 261103A 空间与地面望远镜全波段应急协同追踪",
-      "narrative": "已汇聚 NASA GCN Circulars 快速通报 5 份。红移 待确定，触发时刻 T0: 2026-11-03 06:51:11 UTC (SVOM/ECLAIRs)。多波段光变曲线与早期测光点已完成零同质化聚合。",
-      "first_seen": "2026-11-03",
-      "last_updated": "2026-11-08",
-      "papers": [],
-      "lead_figure": null,
-      "lead_figure_arxiv_id": null,
-      "canonical_t0": {
-        "instrument": "SVOM/ECLAIRs",
-        "utc_iso": "2026-11-03T06:51:11.000Z",
-        "circular_id": 46176
-      },
-      "best_redshift": null,
-      "has_redshift_conflict": false,
-      "multi_messenger": [],
-      "gcn_aliases_label": null,
-      "canonical_t0_label": "2026-11-03 06:51:11 UTC (SVOM/ECLAIRs)",
-      "best_redshift_label": null,
-      "multi_messenger_badges": [],
-      "gcn_circular_count": 5,
-      "gcn_figure_path": null,
-      "gcn_aliases": [],
-      "gcn_slug": "grb-261103a",
-      "gcn_status": "active"
     },
     {
       "event_id": "AT2019EHZ",
@@ -3039,394 +3276,6 @@
       "gcn_aliases": [],
       "gcn_slug": null,
       "gcn_status": null
-    },
-    {
-      "event_id": "AT 2025ABAO",
-      "event_type": "AT",
-      "tags": [
-        "SN"
-      ],
-      "heat_score": 15,
-      "paper_count": 1,
-      "headline": "How orbital energy is partitione...",
-      "narrative": "AT 2025ABAO 是近期重点瞬变天体事件，监测日期 2026-11-18，共聚合 1 篇研读文献。核心突破研判：The progenitor is identified as an early AGB star ($M_1 \\approx 7\\,M_\\odot$, $R_{\\rm eff} \\approx 350\\,R_\\odot$, $L \\approx 1.8 \\times 10^4\\,L_\\odot$, $\\dot{M} \\approx 10^{-5}\\,M_\\odot\\,{\\rm yr^{-1}}$) with a low-mass companion ($M_2 \\approx 0.7\\,M_\\odot$, mass ratio $q=0.10_{-0.08}^{+0.10}$). The 7-year precursor brightening ($L_{\\rm drag} \\approx 3 \\times 10^{38}\\,{\\rm erg\\,s^{-1}}$) was driven by frictional drag in the primary's convective envelope, transitioning to a dynamic plunge and luminous red nova eruption with ejecta kinetic energy $KE_{\\rm ej} \\sim 10^{48}\\,{\\rm erg}$ and unbound mass $\\sim 0.2\\text{--}0.4\\,M_\\odot$, whose optical plateau is powered by momentum-conserving shock interaction with equatorial CSM having $\\rho(r) \\propto r^{-2}$.",
-      "first_seen": "2026-11-18",
-      "last_updated": "2026-11-18",
-      "papers": [
-        {
-          "arxiv_id": "2611.23470",
-          "revision": 1,
-          "title": "An inspiral of a star inside a common envelope with its giant companion",
-          "authors": [
-            "Viraj Karambelkar",
-            "Kishalay De",
-            "Karel D. Temmink",
-            "Brian D. Metzger",
-            "Nadejda Blagorodnova",
-            "G. C. Anupama",
-            "Sudhanshu Barway",
-            "Judhajeet Basu",
-            "Eric C. Bellm",
-            "Varun Bhalerao",
-            "Aleksandra Bochenek",
-            "Shatakshi Chamoli",
-            "Kaustav Das",
-            "Christoffer Fremling",
-            "Danielle Frostig",
-            "Marco A. Gomez-Munoz",
-            "Steven L. Groom",
-            "K-Ryan Hinds",
-            "Joahan Castaneda Jaimes",
-            "Jacob Jencson",
-            "David Jones",
-            "Mansi Kasliwal",
-            "Grace Katusiime",
-            "Rubina Kotak",
-            "S. R. Kulkarni",
-            "Ryan Lau",
-            "Chang Liu",
-            "Nathan P. Lourie",
-            "Morgan MacLeod",
-            "Keiichi Maeda",
-            "Zoe McGrath",
-            "Geoffrey Mo",
-            "Gerard Garcia-Moreno",
-            "Josiah Purdum",
-            "Nabeel Rehemtulla",
-            "R. Michael Rich",
-            "Reed L. Riddle",
-            "Sam Rose",
-            "Robert A. Simcoe",
-            "Jesper Sollerman",
-            "Robert Stein",
-            "Hugo Tranin",
-            "Maxime Wavasseur",
-            "Simon de Wet",
-            "Jacob Wise"
-          ],
-          "date": "2026-11-18",
-          "priority": "worth_knowing",
-          "bluf_result": "The progenitor is identified as an early AGB star ($M_1 \\approx 7\\,M_\\odot$, $R_{\\rm eff} \\approx 350\\,R_\\odot$, $L \\approx 1.8 \\times 10^4\\,L_\\odot$, $\\dot{M} \\approx 10^{-5}\\,M_\\odot\\,{\\rm yr^{-1}}$) with a low-mass companion ($M_2 \\approx 0.7\\,M_\\odot$, mass ratio $q=0.10_{-0.08}^{+0.10}$). The 7-year precursor brightening ($L_{\\rm drag} \\approx 3 \\times 10^{38}\\,{\\rm erg\\,s^{-1}}$) was driven by frictional drag in the primary's convective envelope, transitioning to a dynamic plunge and luminous red nova eruption with ejecta kinetic energy $KE_{\\rm ej} \\sim 10^{48}\\,{\\rm erg}$ and unbound mass $\\sim 0.2\\text{--}0.4\\,M_\\odot$, whose optical plateau is powered by momentum-conserving shock interaction with equatorial CSM having $\\rho(r) \\propto r^{-2}$.",
-          "bluf_problem": "How orbital energy is partitioned and dissipated during common envelope evolution (CEE), and whether standard $\\alpha$-formalisms adequately describe envelope unbinding versus ejecta kinetic acceleration and shock interactions with pre-existing CSM.",
-          "figures": [
-            {
-              "url": "/arxiv-figures/2611.23470/at2025abao_graphic.png",
-              "label": "Fig. 10",
-              "caption": "Figure 10: A graphical representation of the different phases of AT 2025abao. a) The quiescent binary system comprising a $\\approx 7$ M ⊙ AGB and a $\\approx 0.7$ M ⊙ star, surrounded by an extended dust shell from mass loss from the binary following Roche Lobe overflow of the primary. b) The precursor brightening phase that began in 2018, marking the onset of CEE, powered by frictional drag on the inspiraling companion lasting for $\\approx 7$ years. The mass outflow rate during this phase is $\\sim 10^{-2}$ M ⊙ yr -1, producing $\\sim 0.1$ M ⊙ of CBM in an equatorial disk around the binary (dark brown), c) The ballistic eruption in late 2025 from the merger of the inspiraling companion with the primary core, resulting in the ejection of $\\approx 0.1-0.2$ M ⊙ of the primary envelope, and sublimation of a large fraction of dust around the binary. d) The eventual lightcurve powered by shock-interactions between freely expanding merger ejecta (indicated by yellow arrows) and equatorially focused CBM. The surviving pre-existing dust is traced by our JWST observations. The black arrows between the panels indicate the progression of time.",
-              "category": "theoretical",
-              "category_badge": "Physical Model Schematic",
-              "physical_core": "A four-stage schematic illustrating the full physical lifecycle of Common Envelope Evolution (CEE) in AT 2025abao: (a) the quiescent binary ($\\approx 7\\,M_\\odot$ AGB primary and $\\approx 0.7\\,M_\\odot$ companion) with pre-existing dust from Roche Lobe overflow; (b) a $\\approx 7$-year precursor brightening powered by frictional drag dissipation during companion inspiral through the convective envelope ($\\\\dot{M} \\sim 10^{-2}\\,M_\\odot\\,\\mathrm{yr}^{-1}$); (c) ballistic envelope ejection ($\\\\approx 0.1\\text{--}0.2\\,M_\\odot$) triggered by the core merger; and (d) subsequent shock interaction between merger ejecta and equatorial circumstellar matter.",
-              "is_schematic": true
-            },
-            {
-              "url": "/arxiv-figures/2611.23470/combined_figure_4.png",
-              "label": "Fig. 4",
-              "caption": "Figure 4: Understanding CEE. Top Left: Peak precursor luminosity versus primary escape speed for AT 2025abao, V1309Sco [ 17 ], and M31-LRN-2015 [ 22 ], colored by precursor duration in orbital periods at the primary’s surface. Lines show the kinetic luminosity of outflows at various mass-loss rates (dashed gray, Equation 5 ) and drag luminosity from an inspiraling companion (red, Equation 7 ) for the mass ratios in the legend. Top right: Theoretical estimates of dust mass around the quiescent progenitor (black line: analytical, squares: MESA simulations) versus that ejected during the precursor (Section 1.4.3 ), colored by binary mass ratio. The shaded region spans the progenitor dust range by varying the analytical-model parameters (Section 1.4.2 ). The red star shows measured values with 1 $\\sigma$ uncertainties. Bottom left: Envelope binding energy versus radius (black) from the MESA model of the 7 M ⊙, 340 R ⊙ AGB primary star, inferred orbital energy dissipated by the companion (red), observed ejecta kinetic energy (blue), and observed radiated energy during the precursor (green). Solid lines are median values, shaded regions mark 1 $\\sigma$ uncertainties. Bottom Right: CE efficiency $\\alpha$ versus binary mass ratio. The inferred mass ratio and its 1 $\\sigma$ uncertainty is marked with the purple solid line and shaded region. Black shaded regions are ruled out by a core-merger in this system and its observed ejected mass. Black points show $\\alpha$ measurements from post-CE binary systems [ 50 ] (Section 1.4.6 ).",
-              "category": "theoretical",
-              "category_badge": "Physical Evolution",
-              "physical_core": "Comprehensive theoretical and empirical diagnostic of CEE energetics and parameters: compares inspiral drag luminosity and outflow kinetic luminosity against precursor properties; contrasts the MESA primary envelope binding energy $E_{\\mathrm{bind}}(r)$ with dissipated orbital energy $\\Delta E_{\\mathrm{orb}}$, ejecta kinetic energy $E_{\\mathrm{kin}}$, and radiated energy $E_{\\mathrm{rad}}$; and establishes empirical constraints on the common envelope efficiency parameter $0.01 \\lesssim \\alpha \\lesssim 0.4$ as a function of binary mass ratio $q$.",
-              "is_schematic": true
-            }
-          ],
-          "primary_figure": {
-            "url": "/arxiv-figures/2611.23470/at2025abao_graphic.png",
-            "label": "Fig. 10",
-            "caption": "Figure 10: A graphical representation of the different phases of AT 2025abao. a) The quiescent binary system comprising a $\\approx 7$ M ⊙ AGB and a $\\approx 0.7$ M ⊙ star, surrounded by an extended dust shell from mass loss from the binary following Roche Lobe overflow of the primary. b) The precursor brightening phase that began in 2018, marking the onset of CEE, powered by frictional drag on the inspiraling companion lasting for $\\approx 7$ years. The mass outflow rate during this phase is $\\sim 10^{-2}$ M ⊙ yr -1, producing $\\sim 0.1$ M ⊙ of CBM in an equatorial disk around the binary (dark brown), c) The ballistic eruption in late 2025 from the merger of the inspiraling companion with the primary core, resulting in the ejection of $\\approx 0.1-0.2$ M ⊙ of the primary envelope, and sublimation of a large fraction of dust around the binary. d) The eventual lightcurve powered by shock-interactions between freely expanding merger ejecta (indicated by yellow arrows) and equatorially focused CBM. The surviving pre-existing dust is traced by our JWST observations. The black arrows between the panels indicate the progression of time.",
-            "category": "theoretical",
-            "category_badge": "Physical Model Schematic",
-            "physical_core": "A four-stage schematic illustrating the full physical lifecycle of Common Envelope Evolution (CEE) in AT 2025abao: (a) the quiescent binary ($\\approx 7\\,M_\\odot$ AGB primary and $\\approx 0.7\\,M_\\odot$ companion) with pre-existing dust from Roche Lobe overflow; (b) a $\\approx 7$-year precursor brightening powered by frictional drag dissipation during companion inspiral through the convective envelope ($\\\\dot{M} \\sim 10^{-2}\\,M_\\odot\\,\\mathrm{yr}^{-1}$); (c) ballistic envelope ejection ($\\\\approx 0.1\\text{--}0.2\\,M_\\odot$) triggered by the core merger; and (d) subsequent shock interaction between merger ejecta and equatorial circumstellar matter.",
-            "is_schematic": true
-          }
-        }
-      ],
-      "lead_figure": {
-        "url": "/arxiv-figures/2611.23470/at2025abao_graphic.png",
-        "label": "Fig. 10",
-        "caption": "Figure 10: A graphical representation of the different phases of AT 2025abao. a) The quiescent binary system comprising a $\\approx 7$ M ⊙ AGB and a $\\approx 0.7$ M ⊙ star, surrounded by an extended dust shell from mass loss from the binary following Roche Lobe overflow of the primary. b) The precursor brightening phase that began in 2018, marking the onset of CEE, powered by frictional drag on the inspiraling companion lasting for $\\approx 7$ years. The mass outflow rate during this phase is $\\sim 10^{-2}$ M ⊙ yr -1, producing $\\sim 0.1$ M ⊙ of CBM in an equatorial disk around the binary (dark brown), c) The ballistic eruption in late 2025 from the merger of the inspiraling companion with the primary core, resulting in the ejection of $\\approx 0.1-0.2$ M ⊙ of the primary envelope, and sublimation of a large fraction of dust around the binary. d) The eventual lightcurve powered by shock-interactions between freely expanding merger ejecta (indicated by yellow arrows) and equatorially focused CBM. The surviving pre-existing dust is traced by our JWST observations. The black arrows between the panels indicate the progression of time.",
-        "category": "theoretical",
-        "category_badge": "Physical Model Schematic",
-        "physical_core": "A four-stage schematic illustrating the full physical lifecycle of Common Envelope Evolution (CEE) in AT 2025abao: (a) the quiescent binary ($\\approx 7\\,M_\\odot$ AGB primary and $\\approx 0.7\\,M_\\odot$ companion) with pre-existing dust from Roche Lobe overflow; (b) a $\\approx 7$-year precursor brightening powered by frictional drag dissipation during companion inspiral through the convective envelope ($\\\\dot{M} \\sim 10^{-2}\\,M_\\odot\\,\\mathrm{yr}^{-1}$); (c) ballistic envelope ejection ($\\\\approx 0.1\\text{--}0.2\\,M_\\odot$) triggered by the core merger; and (d) subsequent shock interaction between merger ejecta and equatorial circumstellar matter.",
-        "is_schematic": true
-      },
-      "lead_figure_arxiv_id": "2611.23470",
-      "canonical_t0": null,
-      "best_redshift": null,
-      "has_redshift_conflict": false,
-      "multi_messenger": [],
-      "gcn_aliases_label": null,
-      "canonical_t0_label": null,
-      "best_redshift_label": null,
-      "multi_messenger_badges": [],
-      "gcn_circular_count": 0,
-      "gcn_figure_path": null,
-      "gcn_aliases": [],
-      "gcn_slug": null,
-      "gcn_status": null
-    },
-    {
-      "event_id": "AT2018COW",
-      "event_type": "AT",
-      "tags": [],
-      "heat_score": 15,
-      "paper_count": 1,
-      "headline": "Above $10\\ \\mathrm{keV",
-      "narrative": "AT2018COW 是近期重点瞬变天体事件，监测日期 2026-11-18，共聚合 1 篇研读文献。核心突破研判：Simulations demonstrate that broad-band X-ray spectroscopy diagnoses reflection from newly formed central engines in fast transients like AT2018cow, and directly measures neutron star magnetic fields via cyclotron resonant scattering features with fundamental energy $E_{\\mathrm{cyc}} \\approx 11.6 \\times (B / 10^{12}\\ \\mathrm{G})\\ \\mathrm{keV}$ across $B \\sim 10^{12}\\text{--}10^{15}\\ \\mathrm{G}$.",
-      "first_seen": "2026-11-18",
-      "last_updated": "2026-11-18",
-      "papers": [
-        {
-          "arxiv_id": "2611.23583",
-          "revision": 1,
-          "title": "The Science and Technology of Broad-Band X-ray Astrophysics",
-          "authors": [
-            "The Broad-Band X-ray Science Analysis Group",
-            ":",
-            "Chien-Ting Chen",
-            "Kristin K. Madsen",
-            "Daniel Stern",
-            "Javier A. García",
-            "Xiurui Zhao",
-            "Alaa Salah Afifi",
-            "Adrianah Appleman",
-            "Steve Bongiorno",
-            "Matteo Bachetti",
-            "Peter Boorman",
-            "Mckinley Brumback",
-            "Douglas Buisson",
-            "Filippo D'Ammando",
-            "Kirtan Dixit",
-            "Rahul Gupta",
-            "Danielle Gurgew",
-            "Gaurava K. Jaisawal",
-            "Phil Kaaret",
-            "Renee Ludlam",
-            "Peter Maksym",
-            "Labani Mallick",
-            "Eric Miller",
-            "Kaya Mori",
-            "Emanuele Nardini",
-            "Srikanth Panini Singam",
-            "Mark Reynolds",
-            "M. Lynnie Saade",
-            "Aarran Shaw",
-            "Dustin Swarm",
-            "Nicholas Thomas",
-            "Georgios Vasilopoulos",
-            "Dom Walton",
-            "Gaurav Waratkar",
-            "Dan Wilkins",
-            "Jooyun Woo",
-            "Yi-Jung Yang"
-          ],
-          "date": "2026-11-18",
-          "priority": "worth_knowing",
-          "bluf_result": "Simulations demonstrate that broad-band X-ray spectroscopy diagnoses reflection from newly formed central engines in fast transients like AT2018cow, and directly measures neutron star magnetic fields via cyclotron resonant scattering features with fundamental energy $E_{\\mathrm{cyc}} \\approx 11.6 \\times (B / 10^{12}\\ \\mathrm{G})\\ \\mathrm{keV}$ across $B \\sim 10^{12}\\text{--}10^{15}\\ \\mathrm{G}$.",
-          "bluf_problem": "Above $10\\ \\mathrm{keV}$, where the Cosmic X-ray Background energy density peaks at $20\\text{--}30\\ \\mathrm{keV}$, the fraction of resolved point sources collapses to $\\sim 10\\%$ due to the absence of high-resolution hard X-ray focusing optics, severely limiting studies of Compton-thick AGN ($N_{\\mathrm{H}} \\gtrsim 10^{24}\\ \\mathrm{cm}^{-2}$) and extreme compact objects.",
-          "figures": [],
-          "primary_figure": null
-        }
-      ],
-      "lead_figure": null,
-      "lead_figure_arxiv_id": null,
-      "canonical_t0": null,
-      "best_redshift": null,
-      "has_redshift_conflict": false,
-      "multi_messenger": [],
-      "gcn_aliases_label": null,
-      "canonical_t0_label": null,
-      "best_redshift_label": null,
-      "multi_messenger_badges": [],
-      "gcn_circular_count": 0,
-      "gcn_figure_path": null,
-      "gcn_aliases": [],
-      "gcn_slug": null,
-      "gcn_status": null
-    },
-    {
-      "event_id": "AT 2020MRF",
-      "event_type": "AT",
-      "tags": [
-        "SN"
-      ],
-      "heat_score": 15,
-      "paper_count": 1,
-      "headline": "Unveiling the physical mechanism",
-      "narrative": "AT 2020MRF 是近期重点瞬变天体事件，监测日期 2026-11-18，共聚合 1 篇研读文献。核心突破研判：The transient experienced an ultra-rapid optical rise with $u$-band brightening of $\\Delta m_u = 2.45 \\pm 0.11\\ \\mathrm{mag}$ within $\\approx 3\\ \\mathrm{days}$ ($t_{1/2,\\mathrm{rise}} = 2.20^{+0.10}_{-0.09}\\ \\mathrm{days}$, $t_{1/2} < 6\\ \\mathrm{days}$). At an adopted fiducial redshift $z=0.25$, peak absolute magnitudes reach $M_u = -20.68\\ \\mathrm{mag}$, $M_g = -20.62\\ \\mathrm{mag}$, and $M_r = -20.21\\ \\mathrm{mag}$. Blackbody fitting near peak yields $T_{\\rm BB} = (2.07 \\pm 0.04) \\times 10^4\\ \\mathrm{K}$, $R_{\\rm BB} = (1.12 \\pm 0.02) \\times 10^{15}\\ \\mathrm{cm}$, and $L_{\\rm BB} = 1.65^{+0.06}_{-0.05} \\times 10^{44}\\ \\mathrm{erg\\,s^{-1}}$ (with $L_{\\mathrm{bol}} \\sim 5.1 \\times 10^{42}\\text{--}2.5 \\times 10^{44}\\ \\mathrm{erg\\,s^{-1}}$ over $0.05 \\le z \\le 0.30$). VLA detected a faint radio counterpart at $15\\ \\mathrm{GHz}$ ($22\\ \\mu\\mathrm{Jy\\,beam^{-1}}$) and $10\\ \\mathrm{GHz}$ ($19\\ \\mu\\mathrm{Jy\\,beam^{-1}}$), while Einstein Probe yielded non-detections constraining $0.5\\text{--}10\\ \\mathrm{keV}$ X-ray emission below luminous FBOTs like AT 2020mrf.",
-      "first_seen": "2026-11-18",
-      "last_updated": "2026-11-18",
-      "papers": [
-        {
-          "arxiv_id": "2611.24203",
-          "revision": 1,
-          "title": "WFST0533buha (Bi'an): A Fast Blue Ultraluminous Transient Candidate with Unusual Blue/NUV Colors",
-          "authors": [
-            "Zelin Xu",
-            "Ji-an Jiang",
-            "Ziqing Jia",
-            "Keiichi Maeda",
-            "Dezheng Meng",
-            "Zhengyan Liu",
-            "Weiyu Wu",
-            "Junhan Zhao",
-            "Hanindyo Kuncarayakti",
-            "Lluís Galbany",
-            "Saurabh W. Jha",
-            "Željko Ivezić",
-            "Peter Yoachim",
-            "Andrew J. Connolly",
-            "Tao An",
-            "Ming Chen",
-            "Zigao Dai",
-            "Xu Kong",
-            "Tiancheng Lv",
-            "Masaomi Tanaka",
-            "Nozomu Tominaga",
-            "Ailing Wang",
-            "Ning Jiang",
-            "Yongquan Xue",
-            "Wen Zhao",
-            "Qingfeng Zhu",
-            "Lulu Fan",
-            "Feng Li",
-            "Ming Liang",
-            "Binyang Liu",
-            "Zhen Wan",
-            "Hairen Wang",
-            "Jian Wang",
-            "Ji Yang",
-            "Hongfei Zhang",
-            "Xianzhong Zheng"
-          ],
-          "date": "2026-11-18",
-          "priority": "worth_knowing",
-          "bluf_result": "The transient experienced an ultra-rapid optical rise with $u$-band brightening of $\\Delta m_u = 2.45 \\pm 0.11\\ \\mathrm{mag}$ within $\\approx 3\\ \\mathrm{days}$ ($t_{1/2,\\mathrm{rise}} = 2.20^{+0.10}_{-0.09}\\ \\mathrm{days}$, $t_{1/2} < 6\\ \\mathrm{days}$). At an adopted fiducial redshift $z=0.25$, peak absolute magnitudes reach $M_u = -20.68\\ \\mathrm{mag}$, $M_g = -20.62\\ \\mathrm{mag}$, and $M_r = -20.21\\ \\mathrm{mag}$. Blackbody fitting near peak yields $T_{\\rm BB} = (2.07 \\pm 0.04) \\times 10^4\\ \\mathrm{K}$, $R_{\\rm BB} = (1.12 \\pm 0.02) \\times 10^{15}\\ \\mathrm{cm}$, and $L_{\\rm BB} = 1.65^{+0.06}_{-0.05} \\times 10^{44}\\ \\mathrm{erg\\,s^{-1}}$ (with $L_{\\mathrm{bol}} \\sim 5.1 \\times 10^{42}\\text{--}2.5 \\times 10^{44}\\ \\mathrm{erg\\,s^{-1}}$ over $0.05 \\le z \\le 0.30$). VLA detected a faint radio counterpart at $15\\ \\mathrm{GHz}$ ($22\\ \\mu\\mathrm{Jy\\,beam^{-1}}$) and $10\\ \\mathrm{GHz}$ ($19\\ \\mu\\mathrm{Jy\\,beam^{-1}}$), while Einstein Probe yielded non-detections constraining $0.5\\text{--}10\\ \\mathrm{keV}$ X-ray emission below luminous FBOTs like AT 2020mrf.",
-          "bluf_problem": "Unveiling the physical mechanism, circumstellar interaction, and radiation physics driving fast blue ultraluminous transients (FBUTs/LFBOTs), whose extreme optical peak luminosities ($M_g \\lesssim -20\\ \\mathrm{mag}$) and rapid half-maximum timescales ($t_{1/2} < 12\\ \\mathrm{days}$) cannot be powered by standard $^{56}\\mathrm{Ni}$ radioactive decay.",
-          "figures": [
-            {
-              "url": "/arxiv-figures/2611.24203/buha_X-ray.png",
-              "label": "Fig. 4",
-              "caption": "Figure 4: X-ray luminosity upper limits of Bi’an in the rest-frame 0.5–10 keV band, assuming a fiducial redshift of z = 0.25. X-ray light curves of other FBUTs including AT 2018cow [ 40 ], AT 2020xnd [ 7 ], AT 2022tsd [ 22 ], AT 2020mrf [ 68 ] and AT 2023fhn [ 13 ] are shown for comparison.",
-              "category": "observational",
-              "category_badge": "Observational Light Curve / SED",
-              "physical_core": "Presents rest-frame 0.5–10 keV X-ray luminosity upper limits of Bi'an (assuming a fiducial redshift z = 0.25) in direct comparison with the X-ray light curves of well-studied FBUTs (AT 2018cow, AT 2020xnd, AT 2022tsd, AT 2020mrf, and AT 2023fhn), constraining high-energy central engine emission and circumstellar interaction.",
-              "is_schematic": false
-            },
-            {
-              "url": "/arxiv-figures/2611.24203/radio_hsc_comparison.png",
-              "label": "Fig. 8",
-              "caption": "Figure 8: Joint 15 GHz VLA image from the 2025 March 29 and May 1 observations (left) and archival HSC $i$ -band imaging of the same field with radio contours overlaid (right). Cyan crosses mark the optical position of Bi’an. Positive contours correspond to 2, 3, and $5\\sigma$, and dashed contours indicate $-3$ and $-2\\sigma$, where $\\sigma=4.55~\\mu$ Jy beam -1. The ellipses show the restoring beam of $4.91^{\\prime\\prime}\\times 4.06^{\\prime\\prime}$ at a position angle of $-15.9^{\\circ}$. Numbers identify the neighboring host candidates listed in Table 4. Each panel covers $24^{\\prime\\prime}\\times 24^{\\prime\\prime}$.",
-              "category": "observational",
-              "category_badge": "Key Observational Evidence",
-              "physical_core": "Displays the 15 GHz VLA radio image and contour overlay on archival optical HSC i-band imaging, establishing the spatial coincidence of the faint radio counterpart with the optical transient position of Bi'an to probe outflow and circumstellar medium interaction.",
-              "is_schematic": false
-            }
-          ],
-          "primary_figure": {
-            "url": "/arxiv-figures/2611.24203/buha_X-ray.png",
-            "label": "Fig. 4",
-            "caption": "Figure 4: X-ray luminosity upper limits of Bi’an in the rest-frame 0.5–10 keV band, assuming a fiducial redshift of z = 0.25. X-ray light curves of other FBUTs including AT 2018cow [ 40 ], AT 2020xnd [ 7 ], AT 2022tsd [ 22 ], AT 2020mrf [ 68 ] and AT 2023fhn [ 13 ] are shown for comparison.",
-            "category": "observational",
-            "category_badge": "Observational Light Curve / SED",
-            "physical_core": "Presents rest-frame 0.5–10 keV X-ray luminosity upper limits of Bi'an (assuming a fiducial redshift z = 0.25) in direct comparison with the X-ray light curves of well-studied FBUTs (AT 2018cow, AT 2020xnd, AT 2022tsd, AT 2020mrf, and AT 2023fhn), constraining high-energy central engine emission and circumstellar interaction.",
-            "is_schematic": false
-          }
-        }
-      ],
-      "lead_figure": {
-        "url": "/arxiv-figures/2611.24203/buha_X-ray.png",
-        "label": "Fig. 4",
-        "caption": "Figure 4: X-ray luminosity upper limits of Bi’an in the rest-frame 0.5–10 keV band, assuming a fiducial redshift of z = 0.25. X-ray light curves of other FBUTs including AT 2018cow [ 40 ], AT 2020xnd [ 7 ], AT 2022tsd [ 22 ], AT 2020mrf [ 68 ] and AT 2023fhn [ 13 ] are shown for comparison.",
-        "category": "observational",
-        "category_badge": "Observational Light Curve / SED",
-        "physical_core": "Presents rest-frame 0.5–10 keV X-ray luminosity upper limits of Bi'an (assuming a fiducial redshift z = 0.25) in direct comparison with the X-ray light curves of well-studied FBUTs (AT 2018cow, AT 2020xnd, AT 2022tsd, AT 2020mrf, and AT 2023fhn), constraining high-energy central engine emission and circumstellar interaction.",
-        "is_schematic": false
-      },
-      "lead_figure_arxiv_id": "2611.24203",
-      "canonical_t0": null,
-      "best_redshift": null,
-      "has_redshift_conflict": false,
-      "multi_messenger": [],
-      "gcn_aliases_label": null,
-      "canonical_t0_label": null,
-      "best_redshift_label": null,
-      "multi_messenger_badges": [],
-      "gcn_circular_count": 0,
-      "gcn_figure_path": null,
-      "gcn_aliases": [],
-      "gcn_slug": null,
-      "gcn_status": null
-    },
-    {
-      "event_id": "GRB 261024D",
-      "event_type": "GRB",
-      "tags": [
-        "Transient Surveillance",
-        "GCN Circulars",
-        "GRB"
-      ],
-      "heat_score": 14.6,
-      "paper_count": 0,
-      "headline": "GRB 261024D 空间与地面望远镜全波段应急协同追踪",
-      "narrative": "已汇聚 NASA GCN Circulars 快速通报 8 份。红移 待确定，触发时刻 T0: 2026-10-24 21:33:06 UTC (Konus-Wind)。多波段光变曲线与早期测光点已完成零同质化聚合。",
-      "first_seen": "2026-10-24",
-      "last_updated": "2026-11-06",
-      "papers": [],
-      "lead_figure": null,
-      "lead_figure_arxiv_id": null,
-      "canonical_t0": {
-        "instrument": "Konus-Wind",
-        "utc_iso": "2026-10-24T21:33:06.850Z",
-        "circular_id": 46040
-      },
-      "best_redshift": null,
-      "has_redshift_conflict": false,
-      "multi_messenger": [],
-      "gcn_aliases_label": null,
-      "canonical_t0_label": "2026-10-24 21:33:06 UTC (Konus-Wind)",
-      "best_redshift_label": null,
-      "multi_messenger_badges": [],
-      "gcn_circular_count": 8,
-      "gcn_figure_path": null,
-      "gcn_aliases": [],
-      "gcn_slug": "grb-261024d",
-      "gcn_status": "active"
-    },
-    {
-      "event_id": "GRB 261104A",
-      "event_type": "GRB",
-      "tags": [
-        "Transient Surveillance",
-        "GCN Circulars",
-        "GRB"
-      ],
-      "heat_score": 13.9,
-      "paper_count": 0,
-      "headline": "GRB 261104A 空间与地面望远镜全波段应急协同追踪",
-      "narrative": "已汇聚 NASA GCN Circulars 快速通报 6 份。红移 待确定，触发时刻 T0: 2026-11-04 20:36:44 UTC (SVOM/ECLAIRs)。多波段光变曲线与早期测光点已完成零同质化聚合。",
-      "first_seen": "2026-11-04",
-      "last_updated": "2026-11-06",
-      "papers": [],
-      "lead_figure": null,
-      "lead_figure_arxiv_id": null,
-      "canonical_t0": {
-        "instrument": "SVOM/ECLAIRs",
-        "utc_iso": "2026-11-04T20:36:44.000Z",
-        "circular_id": 46163
-      },
-      "best_redshift": null,
-      "has_redshift_conflict": false,
-      "multi_messenger": [],
-      "gcn_aliases_label": "AT 2026aigl",
-      "canonical_t0_label": "2026-11-04 20:36:44 UTC (SVOM/ECLAIRs)",
-      "best_redshift_label": null,
-      "multi_messenger_badges": [],
-      "gcn_circular_count": 6,
-      "gcn_figure_path": "/gcn-figures/grb-261104a.png",
-      "gcn_aliases": [
-        "AT 2026aigl"
-      ],
-      "gcn_slug": "grb-261104a",
-      "gcn_status": "active"
     },
     {
       "event_id": "GRB 080916C",
@@ -3973,26 +3822,8 @@
           "priority": "skip",
           "bluf_result": "基于 GW250114 数据搜寻引力波回声未见显著偏离黑洞无毛定理的信号（贝叶斯因子 $\\ln\\mathcal{B} = -2.9$），在 $90\\%$ 可信度下测得视界反射率上限 $|\\mathcal{R}_s| < 0.059$（均匀先验）及 $< 0.073$（复平面均匀先验），对应反射能量比例上限 $|\\mathcal{R}_s|^2 < 3.5 \\times 10^{-3}$（$<0.4\\%$）。",
           "bluf_problem": "常规黑洞准正则模（QNM）振铃主要反映光环处的引力势峰，对近视界处可能存在的量子微观结构或奇异天体表面反射不敏感；需要寻找由跌落波（直接波 DW）反射产生并穿透势垒的引力波回声，以直接检验视界反射率的零假设。",
-          "figures": [
-            {
-              "url": "/arxiv-figures/2610.12429/fig1_schematic.png",
-              "label": "Fig. 1",
-              "caption": "Figure 1: Schematic spacetime picture of the first echo. Radiation from the plunging source (star) reaches the observer through the barrier as the DW (blue). Radiation emitted toward the horizon, ( + ) (+) , and the part of the outgoing radiation reflected by the barrier, ( − ) (-) ( ℛ BH \\mathcal{R}^{\\rm BH} ), are reflected at the surface ( ℛ s \\mathcal{R}_{s} ) and cross the barrier outward as the echo. The barrier modulates their frequency content. The ( − ) (-) path is delayed by exactly Δ ​ t = − 2 ​ r ∗ s \\Delta t=-2r_{*}^{s} with respect to the DW.",
-              "category": "theoretical",
-              "category_badge": "物理模型示意图",
-              "physical_core": "展示核心天体物理驱动机制、几何拓扑与理论演化模型架构。",
-              "is_schematic": true
-            }
-          ],
-          "primary_figure": {
-            "url": "/arxiv-figures/2610.12429/fig1_schematic.png",
-            "label": "Fig. 1",
-            "caption": "Figure 1: Schematic spacetime picture of the first echo. Radiation from the plunging source (star) reaches the observer through the barrier as the DW (blue). Radiation emitted toward the horizon, ( + ) (+) , and the part of the outgoing radiation reflected by the barrier, ( − ) (-) ( ℛ BH \\mathcal{R}^{\\rm BH} ), are reflected at the surface ( ℛ s \\mathcal{R}_{s} ) and cross the barrier outward as the echo. The barrier modulates their frequency content. The ( − ) (-) path is delayed by exactly Δ ​ t = − 2 ​ r ∗ s \\Delta t=-2r_{*}^{s} with respect to the DW.",
-            "category": "theoretical",
-            "category_badge": "物理模型示意图",
-            "physical_core": "展示核心天体物理驱动机制、几何拓扑与理论演化模型架构。",
-            "is_schematic": true
-          }
+          "figures": [],
+          "primary_figure": null
         },
         {
           "arxiv_id": "2609.28953",
@@ -4011,16 +3842,8 @@
           "primary_figure": null
         }
       ],
-      "lead_figure": {
-        "url": "/arxiv-figures/2610.12429/fig1_schematic.png",
-        "label": "Fig. 1",
-        "caption": "Figure 1: Schematic spacetime picture of the first echo. Radiation from the plunging source (star) reaches the observer through the barrier as the DW (blue). Radiation emitted toward the horizon, ( + ) (+) , and the part of the outgoing radiation reflected by the barrier, ( − ) (-) ( ℛ BH \\mathcal{R}^{\\rm BH} ), are reflected at the surface ( ℛ s \\mathcal{R}_{s} ) and cross the barrier outward as the echo. The barrier modulates their frequency content. The ( − ) (-) path is delayed by exactly Δ ​ t = − 2 ​ r ∗ s \\Delta t=-2r_{*}^{s} with respect to the DW.",
-        "category": "theoretical",
-        "category_badge": "物理模型示意图",
-        "physical_core": "展示核心天体物理驱动机制、几何拓扑与理论演化模型架构。",
-        "is_schematic": true
-      },
-      "lead_figure_arxiv_id": "2610.12429",
+      "lead_figure": null,
+      "lead_figure_arxiv_id": null,
       "canonical_t0": null,
       "best_redshift": null,
       "has_redshift_conflict": false,
@@ -4211,51 +4034,6 @@
       "gcn_aliases": [],
       "gcn_slug": null,
       "gcn_status": null
-    },
-    {
-      "event_id": "GRB 261029A",
-      "event_type": "GRB",
-      "tags": [
-        "Transient Surveillance",
-        "GCN Circulars",
-        "GRB"
-      ],
-      "heat_score": 11.8,
-      "paper_count": 0,
-      "headline": "GRB 261029A 空间与地面望远镜全波段应急协同追踪",
-      "narrative": "已汇聚 NASA GCN Circulars 快速通报 37 份。红移 z = 3.27 (spectroscopic · Optical Spectroscopy)，触发时刻 T0: 2026-10-29 01:27:03 UTC (Fermi/GBM)。多波段光变曲线与早期测光点已完成零同质化聚合。",
-      "first_seen": "2026-10-29",
-      "last_updated": "2026-11-04",
-      "papers": [],
-      "lead_figure": null,
-      "lead_figure_arxiv_id": null,
-      "canonical_t0": {
-        "instrument": "Fermi/GBM",
-        "utc_iso": "2026-10-29T01:27:03.000Z",
-        "circular_id": 46113
-      },
-      "best_redshift": {
-        "z": 3.27,
-        "z_err": null,
-        "type": "spectroscopic",
-        "instrument": "Optical Spectroscopy",
-        "circular_id": 46103,
-        "note": ""
-      },
-      "has_redshift_conflict": false,
-      "multi_messenger": [],
-      "gcn_aliases_label": "AT 2026ahaw / GOTO26LLT",
-      "canonical_t0_label": "2026-10-29 01:27:03 UTC (Fermi/GBM)",
-      "best_redshift_label": "z = 3.27 (spectroscopic · Optical Spectroscopy)",
-      "multi_messenger_badges": [],
-      "gcn_circular_count": 37,
-      "gcn_figure_path": "/gcn-figures/grb-261029a.png",
-      "gcn_aliases": [
-        "AT 2026ahaw",
-        "GOTO26LLT"
-      ],
-      "gcn_slug": "grb-261029a",
-      "gcn_status": "active"
     },
     {
       "event_id": "SN 2022LVM",
@@ -4474,6 +4252,41 @@
       "gcn_aliases": [],
       "gcn_slug": null,
       "gcn_status": null
+    },
+    {
+      "event_id": "GRB 261110A",
+      "event_type": "GRB",
+      "tags": [
+        "Transient Surveillance",
+        "GCN Circulars",
+        "GRB"
+      ],
+      "heat_score": 8.6,
+      "paper_count": 0,
+      "headline": "GRB 261110A 空间与地面望远镜全波段应急协同追踪",
+      "narrative": "已汇聚 NASA GCN Circulars 快速通报 10 份。红移 待确定，触发时刻 T0: 2026-11-10 11:50:00 UTC (SVOM/ECLAIRs)。多波段光变曲线与早期测光点已完成零同质化聚合。",
+      "first_seen": "2026-11-10",
+      "last_updated": "2026-11-12",
+      "papers": [],
+      "lead_figure": null,
+      "lead_figure_arxiv_id": null,
+      "canonical_t0": {
+        "instrument": "SVOM/ECLAIRs",
+        "utc_iso": "2026-11-10T11:50:00.000Z",
+        "circular_id": 46234
+      },
+      "best_redshift": null,
+      "has_redshift_conflict": false,
+      "multi_messenger": [],
+      "gcn_aliases_label": null,
+      "canonical_t0_label": "2026-11-10 11:50:00 UTC (SVOM/ECLAIRs)",
+      "best_redshift_label": null,
+      "multi_messenger_badges": [],
+      "gcn_circular_count": 10,
+      "gcn_figure_path": null,
+      "gcn_aliases": [],
+      "gcn_slug": "grb-261110a",
+      "gcn_status": "archived"
     },
     {
       "event_id": "AT2019EVE",
@@ -4880,6 +4693,41 @@
       "gcn_status": null
     },
     {
+      "event_id": "GRB 261103A",
+      "event_type": "GRB",
+      "tags": [
+        "Transient Surveillance",
+        "GCN Circulars",
+        "GRB"
+      ],
+      "heat_score": 5.6,
+      "paper_count": 0,
+      "headline": "GRB 261103A 空间与地面望远镜全波段应急协同追踪",
+      "narrative": "已汇聚 NASA GCN Circulars 快速通报 5 份。红移 待确定，触发时刻 T0: 2026-11-03 06:51:11 UTC (SVOM/ECLAIRs)。多波段光变曲线与早期测光点已完成零同质化聚合。",
+      "first_seen": "2026-11-03",
+      "last_updated": "2026-11-08",
+      "papers": [],
+      "lead_figure": null,
+      "lead_figure_arxiv_id": null,
+      "canonical_t0": {
+        "instrument": "SVOM/ECLAIRs",
+        "utc_iso": "2026-11-03T06:51:11.000Z",
+        "circular_id": 46176
+      },
+      "best_redshift": null,
+      "has_redshift_conflict": false,
+      "multi_messenger": [],
+      "gcn_aliases_label": null,
+      "canonical_t0_label": "2026-11-03 06:51:11 UTC (SVOM/ECLAIRs)",
+      "best_redshift_label": null,
+      "multi_messenger_badges": [],
+      "gcn_circular_count": 5,
+      "gcn_figure_path": null,
+      "gcn_aliases": [],
+      "gcn_slug": "grb-261103a",
+      "gcn_status": "archived"
+    },
+    {
       "event_id": "SN 2019RSQ",
       "event_type": "SN",
       "tags": [
@@ -5014,6 +4862,41 @@
       "gcn_aliases": [],
       "gcn_slug": "grb-260730b",
       "gcn_status": "active"
+    },
+    {
+      "event_id": "GRB 261024D",
+      "event_type": "GRB",
+      "tags": [
+        "Transient Surveillance",
+        "GCN Circulars",
+        "GRB"
+      ],
+      "heat_score": 4.9,
+      "paper_count": 0,
+      "headline": "GRB 261024D 空间与地面望远镜全波段应急协同追踪",
+      "narrative": "已汇聚 NASA GCN Circulars 快速通报 8 份。红移 待确定，触发时刻 T0: 2026-10-24 21:33:06 UTC (Konus-Wind)。多波段光变曲线与早期测光点已完成零同质化聚合。",
+      "first_seen": "2026-10-24",
+      "last_updated": "2026-11-06",
+      "papers": [],
+      "lead_figure": null,
+      "lead_figure_arxiv_id": null,
+      "canonical_t0": {
+        "instrument": "Konus-Wind",
+        "utc_iso": "2026-10-24T21:33:06.850Z",
+        "circular_id": 46040
+      },
+      "best_redshift": null,
+      "has_redshift_conflict": false,
+      "multi_messenger": [],
+      "gcn_aliases_label": null,
+      "canonical_t0_label": "2026-10-24 21:33:06 UTC (Konus-Wind)",
+      "best_redshift_label": null,
+      "multi_messenger_badges": [],
+      "gcn_circular_count": 8,
+      "gcn_figure_path": null,
+      "gcn_aliases": [],
+      "gcn_slug": "grb-261024d",
+      "gcn_status": "archived"
     },
     {
       "event_id": "GRB 241113B",
@@ -5153,6 +5036,43 @@
         "EP 241113b"
       ],
       "gcn_slug": "grb-241113b",
+      "gcn_status": "archived"
+    },
+    {
+      "event_id": "GRB 261104A",
+      "event_type": "GRB",
+      "tags": [
+        "Transient Surveillance",
+        "GCN Circulars",
+        "GRB"
+      ],
+      "heat_score": 4.6,
+      "paper_count": 0,
+      "headline": "GRB 261104A 空间与地面望远镜全波段应急协同追踪",
+      "narrative": "已汇聚 NASA GCN Circulars 快速通报 6 份。红移 待确定，触发时刻 T0: 2026-11-04 20:36:44 UTC (SVOM/ECLAIRs)。多波段光变曲线与早期测光点已完成零同质化聚合。",
+      "first_seen": "2026-11-04",
+      "last_updated": "2026-11-06",
+      "papers": [],
+      "lead_figure": null,
+      "lead_figure_arxiv_id": null,
+      "canonical_t0": {
+        "instrument": "SVOM/ECLAIRs",
+        "utc_iso": "2026-11-04T20:36:44.000Z",
+        "circular_id": 46163
+      },
+      "best_redshift": null,
+      "has_redshift_conflict": false,
+      "multi_messenger": [],
+      "gcn_aliases_label": "AT 2026aigl",
+      "canonical_t0_label": "2026-11-04 20:36:44 UTC (SVOM/ECLAIRs)",
+      "best_redshift_label": null,
+      "multi_messenger_badges": [],
+      "gcn_circular_count": 6,
+      "gcn_figure_path": "/gcn-figures/grb-261104a.png",
+      "gcn_aliases": [
+        "AT 2026aigl"
+      ],
+      "gcn_slug": "grb-261104a",
       "gcn_status": "archived"
     },
     {
@@ -8626,15 +8546,6 @@
               "category": "observational",
               "category_badge": "核心观测结果",
               "physical_core": "展示观测样本的关键物理参量统计分布与总体特征对比。",
-              "is_schematic": false
-            },
-            {
-              "url": "/arxiv-figures/2610.16527/slsnII_excessL.png",
-              "label": "Fig. 3",
-              "caption": "Figure 3 : First panel: UV excess luminosity L ex L_{\\mathrm{ex}} as a function of epoch in each target. Second panel: L ex L_{\\mathrm{ex}} as a fraction of the total luminosity L bol L_{\\mathrm{bol}} , consistently around a few per cent. Third panel: mass-loss rate estimates based on the UV excess as a function of radius from the center of the explosion, estimated through the model-based explosion epoch and the ejecta velocity. Epochs when the excess significance is &lt; 1 ​ σ &lt;1\\sigma are omitted. Points marked in grey correspond to the early epochs of SN 2023gpw where one blackbody can reasonably fit the SED.",
-              "category": "observational",
-              "category_badge": "核心观测结果",
-              "physical_core": "展示天体物理辐射宽波段能谱 (SED) 与特征光谱结构。",
               "is_schematic": false
             }
           ],

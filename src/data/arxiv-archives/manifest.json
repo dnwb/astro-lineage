@@ -1,6 +1,6 @@
 {
   "schema_version": "astrolineage-arxiv-archive-manifest-v1",
-  "updated_at": "2026-11-20T00:15:23.799Z",
+  "updated_at": "2026-11-20T03:04:42.022Z",
   "total_weeks": 11,
   "total_daily_editions": 52,
   "latest_week_id": "2026-W47",
@@ -27,13 +27,19 @@
           "batch_id": "announcement-2026-11-18",
           "total_papers": 68,
           "analyzed_count": 68,
-          "must_read_count": 3,
-          "worth_knowing_count": 19,
+          "must_read_count": 6,
+          "worth_knowing_count": 16,
           "skip_count": 46,
           "pending_count": 0,
           "brief_status": "ready",
-          "brief_intro": "Featured reading: \"The Population of Radio Hypernebulae from Mass-Transferring Massive Binaries\" and 21 other key developments.",
+          "brief_intro": "Featured reading: \"An inspiral of a star inside a common envelope with its giant companion\" and 21 other key developments.",
           "highlights": [
+            {
+              "arxiv_id": "2611.23470",
+              "priority": "must_read",
+              "title": "An inspiral of a star inside a common envelope with its giant companion",
+              "reason": "This paper presents the first direct observational identification of common-envelope evolution (CEE) orbital inspiral and merger in M31 (AT 2025abao), directly revealing ejecta-CSM shock interaction and plateau energetics relevant to high-energy transient physics."
+            },
             {
               "arxiv_id": "2611.23783",
               "priority": "must_read",
@@ -41,16 +47,28 @@
               "reason": "This paper presents the first binary population synthesis coupled with time-dependent synchrotron nebular models for hyper-Eddington mass-transfer systems, directly constraining persistent radio source (PRS) counterparts to repeating FRBs, relativistic jet inflation, and radio transient surveys."
             },
             {
+              "arxiv_id": "2611.24202",
+              "priority": "must_read",
+              "title": "A Butterfly Collector's View of Fast Radio Bursts: Repeating Sources Go Quiet within a Few Years",
+              "reason": "This paper establishes a novel unseen-species statistical framework on CHIME/FRB repeaters, ruling out steady Poisson activity at $p < 10^{-4}$ and demonstrating that repeating FRBs go quiet on a timescale of a few years."
+            },
+            {
               "arxiv_id": "2611.24204",
               "priority": "must_read",
               "title": "SN 2025wiu: A Slowly Evolving Type Ib Supernova with an Extraordinary Post-maximum Bump",
-              "reason": "SN 2025wiu presents an extraordinarily slow light-curve evolution and a rare, prominent post-maximum bump in a Type Ib supernova, offering stringent constraints on shock cooling and circumstellar medium interaction mechanisms."
+              "reason": "SN 2025wiu provides exceptional multi-band photometric and spectroscopic coverage of an extraordinary Type Ib supernova with a post-maximum bump, providing quantitative constraints on shock cooling, central engine activity, and circumstellar medium interaction."
             },
             {
               "arxiv_id": "2611.24627",
               "priority": "must_read",
               "title": "Early spectra of AT2017gfo from scaled 3D merger ejecta: mass--velocity distribution, 3D structure, and treatment of line opacity",
-              "reason": "This paper presents the first self-consistent 3D radiative transfer simulations that successfully reproduce the early bolometric and multi-band spectral evolution of AT2017gfo, demonstrating that an ad-hoc separate lanthanide-poor component is unnecessary when realistic 3D ejecta geometry and slower post-merger outflow velocity distributions are taken into account."
+              "reason": "This work presents 3D Monte Carlo radiative transfer simulations of the kilonova AT2017gfo, demonstrating that mass scaling and velocity compression of dynamical ejecta self-consistently reproduce the bolometric light curve and early multi-epoch spectra without requiring an ad hoc separate lanthanide-poor component."
+            },
+            {
+              "arxiv_id": "2611.24635",
+              "priority": "must_read",
+              "title": "Investigating the Impact of SAX J1808.4-3658's Very Bright Thermonuclear X-ray Burst on the Accretion Disc with NICER",
+              "reason": "This paper presents the first simultaneous detection and decoupling of relativistic disc reflection and an evolving persistent accretion component during a bright thermonuclear X-ray burst in SAX J1808.4-3658, providing compelling spectroscopic evidence for burst-induced accretion disc puffing."
             }
           ],
           "data_file": "daily/2026-11-18.json"
@@ -61,11 +79,11 @@
           "week_id": "2026-W47",
           "batch_id": "announcement-2026-11-17",
           "total_papers": 73,
-          "analyzed_count": 2,
+          "analyzed_count": 53,
           "must_read_count": 0,
           "worth_knowing_count": 0,
-          "skip_count": 2,
-          "pending_count": 71,
+          "skip_count": 53,
+          "pending_count": 20,
           "brief_status": "ready",
           "brief_intro": "Standard screening batch, focused primarily on abstract skimming.",
           "highlights": [],

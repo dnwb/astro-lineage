@@ -5,12 +5,28 @@
   "event_type": "GRB",
   "canonical_t0": {
     "instrument": "SVOM/ECLAIRs",
-    "utc_iso": "2026-11-10T07:52:29.000Z",
-    "circular_id": 46211
+    "utc_iso": "2026-11-08T23:52:36.000Z",
+    "circular_id": 46313
   },
-  "best_redshift": null,
+  "best_redshift": {
+    "z": 0.6,
+    "z_err": null,
+    "type": "spectroscopic",
+    "instrument": "Optical Spectroscopy",
+    "circular_id": 46313,
+    "note": ""
+  },
   "has_redshift_conflict": false,
-  "redshifts": [],
+  "redshifts": [
+    {
+      "circular_id": 46313,
+      "z": 0.6,
+      "z_err": null,
+      "type": "spectroscopic",
+      "instrument": "Optical Spectroscopy",
+      "note": ""
+    }
+  ],
   "photometry_points": [
     {
       "circular_id": 46211,
@@ -47,8 +63,8 @@
   "feature_zoom": {
     "enabled": false
   },
-  "circular_count": 3,
-  "last_circular_id": 46211,
-  "last_updated_utc": "2026-11-10T04:32:14.211Z",
+  "circular_count": 4,
+  "last_circular_id": 46313,
+  "last_updated_utc": "2026-11-17T15:23:25.486Z",
   "status": "active"
 }

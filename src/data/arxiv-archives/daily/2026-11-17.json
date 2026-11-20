@@ -7,11 +7,11 @@
   "generated_at": "2026-11-19T22:28:05.969Z",
   "counts": {
     "total": 73,
-    "analyzed": 2,
+    "analyzed": 53,
     "must_read": 0,
     "worth_knowing": 0,
-    "skip": 2,
-    "pending": 71
+    "skip": 53,
+    "pending": 20
   },
   "opening_brief": {
     "status": "ready",
@@ -31,6 +31,21 @@
         "arxiv_id": "2611.21716",
         "revision": 1,
         "title": "A PhEW Good Simulations: I. Galaxy Properties"
+      },
+      {
+        "arxiv_id": "2611.21732",
+        "revision": 1,
+        "title": "The meaning of Milky Way mass estimates in the presence of the LMC"
+      },
+      {
+        "arxiv_id": "2611.21736",
+        "revision": 1,
+        "title": "Active Galactic Nuclei as Beyond the Standard Model Laboratories: a White Paper"
+      },
+      {
+        "arxiv_id": "2611.21738",
+        "revision": 1,
+        "title": "Shocks and Trails in the Circumgalactic Medium Driven by Runaway Supermassive Black Holes"
       }
     ],
     "skip": [
@@ -45,9 +60,315 @@
         "revision": 1,
         "source_fingerprint": "75a2b5c923b5eac89ab5df228fcab71979f57965711adee80a9da9f40a71b50d",
         "guide_fingerprint": "1ddc5e5647cc504c4592828fbe0385c8ed42a0d8c1974df0c31d536da84dba80"
+      },
+      {
+        "arxiv_id": "2611.21732",
+        "revision": 1,
+        "source_fingerprint": "5802c683e07ed47151dbfe703bcda0a1a5b21327d95383ca33bbd7129ccacc85",
+        "guide_fingerprint": "af64b95cd43172bc3308644cdc46916e43c85e060743a0575af93d1fb1d3241f"
+      },
+      {
+        "arxiv_id": "2611.21736",
+        "revision": 1,
+        "source_fingerprint": "30b2142220f43aeb9ccb8437f66f7dfcf0c6a138594c9ef939278b68886a5902",
+        "guide_fingerprint": "bf0a74838616a875c6175905c40b990e539038a9eefac13209342cd725b50b98"
+      },
+      {
+        "arxiv_id": "2611.21738",
+        "revision": 1,
+        "source_fingerprint": "b86d8d439923418e86a9b586d25f04cd4d3022470769ecb95f679c8ef2e6bd13",
+        "guide_fingerprint": "2f206aaaf5a50e3105ff1ddf8acb86e605bab734a85ec64674cd12ad22ccfc70"
+      },
+      {
+        "arxiv_id": "2611.21746",
+        "revision": 1,
+        "source_fingerprint": "0cce5e6c457f50d47978bcf3f051b325abb04a128da0372846088566600c7bb6",
+        "guide_fingerprint": "f4e46746a0baeacf9f691930cbd8f7be025c9e411d31beb10b8055f9857e9056"
+      },
+      {
+        "arxiv_id": "2611.21755",
+        "revision": 1,
+        "source_fingerprint": "2114cfc12df68dadf637c3acf78035da61e5b14daff5e0f23fe020e8b2cbb9fc",
+        "guide_fingerprint": "46ab7937f8c00975dc620896eb598295f5839ec71e5d8e868c45df3c22b8b943"
+      },
+      {
+        "arxiv_id": "2611.21756",
+        "revision": 2,
+        "source_fingerprint": "1b990570397ec75327d46e7e55eff7b845b7f1eabafb264469bb6e692b0aebab",
+        "guide_fingerprint": "7e259acad1397abafebc985f8a5546224f1a3f3b2a8c823bbacdba559a2c1c33"
+      },
+      {
+        "arxiv_id": "2611.21758",
+        "revision": 1,
+        "source_fingerprint": "ca86b961b819379e8042146029b055422952b5bf006de44f33385bdc22317458",
+        "guide_fingerprint": "e260aef408c39f7ca089685c2ca424f7a2a216f1e9e3b51db7fc3484bda6af80"
+      },
+      {
+        "arxiv_id": "2611.21760",
+        "revision": 1,
+        "source_fingerprint": "bb3c9ca65b46eb0b4baec5ace42b96fb9dde1507b77532e67649c6796f36508e",
+        "guide_fingerprint": "46f1ae34025ede4e48dedb743bda93e5d77df16d7f3b6f2723576858d003df86"
+      },
+      {
+        "arxiv_id": "2611.21761",
+        "revision": 1,
+        "source_fingerprint": "2c5d06b9595eb26e60a8339d81427a35973084d8ddcbf4ba569c899411369299",
+        "guide_fingerprint": "7f60e711b4bc3ee3bd7174d1a083a674ccc6fede28bfcbf921f0383fa1e99198"
+      },
+      {
+        "arxiv_id": "2611.21786",
+        "revision": 1,
+        "source_fingerprint": "3071081da9c6cf178a3ac92ee545088b0bf71946d5cfb89f913c9d23b2ed28e6",
+        "guide_fingerprint": "6c5fef5b593d8b035603784163e4b6e0e4b5d7566d0a21660fd0721ccecd00bd"
+      },
+      {
+        "arxiv_id": "2611.21793",
+        "revision": 1,
+        "source_fingerprint": "ce61ea923542a3da68e8001afb9b4b1dfa50f88b41215c63f8cbb85407b9d16e",
+        "guide_fingerprint": "d6d481b628f31f3e1ce9e6920732446b7b9182d15ada15837742593821859e57"
+      },
+      {
+        "arxiv_id": "2611.21800",
+        "revision": 1,
+        "source_fingerprint": "ecf73e2220cd7da12cf873fc52bcb474ef6a752535b27d43abdbc3b76cc02ab1",
+        "guide_fingerprint": "d3d1436cce90d8d6a2a510994d87621cebb2bf837687c294b023385e3673e5d9"
+      },
+      {
+        "arxiv_id": "2611.21819",
+        "revision": 1,
+        "source_fingerprint": "03962b814930baf683037bf9debd7651dc7f0ce943fdbe8603264deac9f534d0",
+        "guide_fingerprint": "796dbac37623506c84bc84f2dce452b9fc506801f7ad1ef159c1d4ce07a82117"
+      },
+      {
+        "arxiv_id": "2611.21834",
+        "revision": 1,
+        "source_fingerprint": "b61d2cd5a0a9ed7b8586f2ceae92799c8f7b6bff24e09d0cf134e8d6b4184748",
+        "guide_fingerprint": "6a5a4f96dd1cb3de30f09e296fa0de580dc0cc7ffe33968cc2da947d63c3d357"
+      },
+      {
+        "arxiv_id": "2611.21884",
+        "revision": 1,
+        "source_fingerprint": "71683ce6fa46a422cce913d6e821b3e33bb904e1d3dae3c8b231bd6d5098ef43",
+        "guide_fingerprint": "cc0489943052e798bed99ba5b60aa8aa8ce5e011a2aed50fe175a0b84d4dd4ef"
+      },
+      {
+        "arxiv_id": "2611.21896",
+        "revision": 1,
+        "source_fingerprint": "ac7286eedb58217fba1b2857a57f56f75753151418b56bbb70eacb2213615016",
+        "guide_fingerprint": "1e9b43c6c3618343f426bbe85d05da21ea2b70003943d7e9a810596b665e56c3"
+      },
+      {
+        "arxiv_id": "2611.21962",
+        "revision": 1,
+        "source_fingerprint": "6fc6e571179906e67478d06499508b7662983855f94aca752a51f906cd6bd63d",
+        "guide_fingerprint": "450990ebdf1aa05ac89c18ba170d7e24e3f88c1a97d9cd462024ab3676d502f4"
+      },
+      {
+        "arxiv_id": "2611.21986",
+        "revision": 1,
+        "source_fingerprint": "893cf69cfc975cb730d9787c8711cd2b8ae6ba79234d3c6b5f93697a1970e1bd",
+        "guide_fingerprint": "162095626d9ad5e5ae993000d33e6b735e53db295741e070b59ead4f230bd9ff"
+      },
+      {
+        "arxiv_id": "2611.22004",
+        "revision": 1,
+        "source_fingerprint": "429efbc1098c49d80d6584376183b28ee5a0049eca85fd44abaf727072901218",
+        "guide_fingerprint": "f4bd93f1e9f9b19effda90e5a9e4e43541ab9224990e9d06181e9fe44baf17c2"
+      },
+      {
+        "arxiv_id": "2611.22007",
+        "revision": 1,
+        "source_fingerprint": "a7ff430e14111a185eb54f1b9de017c27759cfaff4a012bba6b931f381fb78f2",
+        "guide_fingerprint": "7737de275eef2aaf4a1d707ac2dc9fced0e324e7a5ba97a4263ff909ad33ada9"
+      },
+      {
+        "arxiv_id": "2611.22044",
+        "revision": 1,
+        "source_fingerprint": "b88f3696cfb89d510b928c145ee921edbb5444d38aa462ce9cf5a7cf9652f7f3",
+        "guide_fingerprint": "b77944b0d0529faebdd1935f0974855f942f98745033122e2976093e2e454806"
+      },
+      {
+        "arxiv_id": "2611.22051",
+        "revision": 1,
+        "source_fingerprint": "b44887d0714555d49c3d57b12327cfc55347323ea0d0e4f314641c16bf34c72b",
+        "guide_fingerprint": "3389c039be21785060896739ac3622952596c7c0cba36e48f32d4dde1975d43c"
+      },
+      {
+        "arxiv_id": "2611.22091",
+        "revision": 1,
+        "source_fingerprint": "d24992eb174b6cbe24e759e90b8983a4cbe783af02839f95029413ddc0b64c20",
+        "guide_fingerprint": "df2e813a850466588325e9735063abea5ea6ef33dbad3466e3dfe32be9faedbd"
+      },
+      {
+        "arxiv_id": "2611.22300",
+        "revision": 1,
+        "source_fingerprint": "e1c8601323239e774130879beb20724f3fe16ead50ef388fa84b0f0228461338",
+        "guide_fingerprint": "e3fe890e902fd6cac244df9b11bd0d5da99f34953c17807496d7b2d77c1b4aad"
+      },
+      {
+        "arxiv_id": "2611.22316",
+        "revision": 1,
+        "source_fingerprint": "f3815df80b137bf7472487f74b9e4ab08e2a5405415989d2edcba7b2266195b2",
+        "guide_fingerprint": "64412f0917c51150625a7225836f5458808cc3aef6c8470ff6928dac7109905f"
+      },
+      {
+        "arxiv_id": "2611.22375",
+        "revision": 1,
+        "source_fingerprint": "81cce01d31c16107e31a063ccfcd7b298ec26439661ebd780dba0f54dc342067",
+        "guide_fingerprint": "5f0be4b82df40086554b1b2243b9de829fde3266c08a3c672465808ea19e6248"
+      },
+      {
+        "arxiv_id": "2611.22377",
+        "revision": 1,
+        "source_fingerprint": "5aac40037762a2a2684ec0836cd54cf7823e87e7cd592f13dc0b2c4134b14f4f",
+        "guide_fingerprint": "a8bc06b7615061045df7c37be490e37e744fd4a40ce02db8dd478e17c94cbc1a"
+      },
+      {
+        "arxiv_id": "2611.22378",
+        "revision": 1,
+        "source_fingerprint": "24ed9008ca9613de9a107307f012ed9f31d603141ea29dd5a944fbc67793f2b9",
+        "guide_fingerprint": "8c5d9eb0da1e1ef8e513205f0e0fd74424aa6bd1d1805f557b2a8bd44b3aeb78"
+      },
+      {
+        "arxiv_id": "2611.22387",
+        "revision": 1,
+        "source_fingerprint": "9d78e0b533f5cfda3f43171e10305a1ce1b8064e66fa1b1f4cb432e90c4711f8",
+        "guide_fingerprint": "e6febda84c00b161e71c869b0243005f12abe69e4ea2c6472a36ac52e452ef05"
+      },
+      {
+        "arxiv_id": "2611.22471",
+        "revision": 1,
+        "source_fingerprint": "b01fc70997e76d3164d9249145be7d4c17a4eaafcdbcd56e9426a12f2ac49d7c",
+        "guide_fingerprint": "7c9a7c45899f5ad3c219dbff5b6fd1d345793798596fcb24c4fcccbb774762b4"
+      },
+      {
+        "arxiv_id": "2611.22473",
+        "revision": 1,
+        "source_fingerprint": "0c8b24f9233ae2aa2cb7a87e1187e06718e181ab10f6583040d44d74f227330e",
+        "guide_fingerprint": "9dea8e1c551290ddfd5670dae6e1ac801dbfe6665d593887c2dd20214863bc1d"
+      },
+      {
+        "arxiv_id": "2611.22475",
+        "revision": 1,
+        "source_fingerprint": "8c5e11cfc367c42e3549e4b7c312dc0f2fa998ae1ce5a51059589ac33b67a3f6",
+        "guide_fingerprint": "4d1539f0ad4d9739b6373d6efe372aee21ce1fcf96cae2f4f1b6d517aed1c561"
+      },
+      {
+        "arxiv_id": "2611.22487",
+        "revision": 1,
+        "source_fingerprint": "14c72db2f0d8c81520cd0888b3b4bb2cd8bcea0d55ca145c9e03bc6e74814073",
+        "guide_fingerprint": "65b7765fef85f2608995e018586ac069f79ffb4517d93f1e33670e35a3b98c8e"
+      },
+      {
+        "arxiv_id": "2611.22602",
+        "revision": 1,
+        "source_fingerprint": "e5192e5367491bae96ef9f4d0d99f951acd94f81f4b40b56df2d894fe8ef963c",
+        "guide_fingerprint": "20537f8ca18cafe5bf8af4a0b6dab18f0ad2881e851ffd1882f70b10b7b45956"
+      },
+      {
+        "arxiv_id": "2611.22606",
+        "revision": 1,
+        "source_fingerprint": "0aaaa4a9d4d4de81290f9f98b15e60ce47dc592f2ad47637179c6e3f50abf70b",
+        "guide_fingerprint": "66ae2200dab1979b880faa5c82df4ad081f74229b9ab59cd3de6f912e60b405f"
+      },
+      {
+        "arxiv_id": "2611.22660",
+        "revision": 1,
+        "source_fingerprint": "8dd79ac628b52f629459ace11d60e01835dbd3e688349a5b50d536cb9722c159",
+        "guide_fingerprint": "e1496c260fd16c484bd3442a29c3aa36bb902648c134cb1b7fccdc159870c151"
+      },
+      {
+        "arxiv_id": "2611.22707",
+        "revision": 1,
+        "source_fingerprint": "69cc5912afe7fad830530b552d19aaa7f9cd71a69713ad93d971066fccfe9474",
+        "guide_fingerprint": "df245fa3fe34556c7c1e9a0842b939b74fadbf05c84a538bad74289aa43612be"
+      },
+      {
+        "arxiv_id": "2611.22739",
+        "revision": 1,
+        "source_fingerprint": "cc9771ca094adea39f3750eac47297be519a7839fb3ccdcd9f4d34593fcce47a",
+        "guide_fingerprint": "646d912d8ba9474f5f336fe4cf030cd28c31d8635ccc7f1cdc86a3b1f6854418"
+      },
+      {
+        "arxiv_id": "2611.22751",
+        "revision": 1,
+        "source_fingerprint": "c33be5fe24754abb89ccf7c0950300081fe938767e67c4990da2e746ba99b63e",
+        "guide_fingerprint": "603cb004146c0116dbfb19088b39a211ffea0c195cec2f1553654e225f6f71f7"
+      },
+      {
+        "arxiv_id": "2611.22771",
+        "revision": 1,
+        "source_fingerprint": "1c78045c3919b26ca857082256f738f490f1ebd3ae238c7d76a493e08df495d5",
+        "guide_fingerprint": "bfc911f13dfd6a1cd05c313fd338ea91a444048622ac5928d58061d16507484d"
+      },
+      {
+        "arxiv_id": "2611.22800",
+        "revision": 1,
+        "source_fingerprint": "edff1fcd7070d5ce15cd8275673a3ca3e7bffc115d8c4d9e21ef20bd2665bbec",
+        "guide_fingerprint": "7a76ce7ad3d4279689ad3c6e027b30902e12403bb77521e879f47c39c1461a5d"
+      },
+      {
+        "arxiv_id": "2611.22887",
+        "revision": 1,
+        "source_fingerprint": "d9fc7d54ac9a41c81b8bf89f0b01c39c614ce68d895779706ac14445ce912279",
+        "guide_fingerprint": "44d0d3f3428481b3483bc1f6e4aeed03e4dc08ad1f179663b4411c7a6fd78364"
+      },
+      {
+        "arxiv_id": "2611.22913",
+        "revision": 1,
+        "source_fingerprint": "4b6b33332d32f07a8c35a6917630421d2f599fdcf664aa84052806c27f9359e2",
+        "guide_fingerprint": "10560a100a9fce312eb9876dd16714f44d386d8ea5431c4d1790d6bf102590cb"
+      },
+      {
+        "arxiv_id": "2611.22914",
+        "revision": 1,
+        "source_fingerprint": "815d10c8480727b0ce358adede7e5d18d4412b2367c9e9bbff9a5093f7c8ca5a",
+        "guide_fingerprint": "49ab61db1826f5b34e9bbbcf0ea9bac3bf219ef2db532802f4a829862ba307bf"
+      },
+      {
+        "arxiv_id": "2611.22952",
+        "revision": 1,
+        "source_fingerprint": "ef25a17631b9f7fc2e88da2cec9dd573ecb85e148d413ba19458364e0893ce90",
+        "guide_fingerprint": "63ef07f27c5ceedb69fbd4fa7dd6c0b8fa9ad5e58699617aa91ab08189cef9e5"
+      },
+      {
+        "arxiv_id": "2611.22999",
+        "revision": 1,
+        "source_fingerprint": "1c0c4d47b64bf5c8c0293459ffdc4ae44e1b094c93b4004630efe9eb3117c6bb",
+        "guide_fingerprint": "ba01064202cdfa6f3883e37b1e8715c33b364d62533c3d00f79e5d8fc2c3ef73"
+      },
+      {
+        "arxiv_id": "2611.23019",
+        "revision": 1,
+        "source_fingerprint": "c75432f9e8763050855553cab24f207f1314a265aaf9349bbe5eecca903a748b",
+        "guide_fingerprint": "1e517e44a3b67568540120fdd2a9dec20c10f59bc94c2b30df4f23fc721e30be"
+      },
+      {
+        "arxiv_id": "2611.23071",
+        "revision": 1,
+        "source_fingerprint": "8050d6ed4544060b324495c3edaff318611590dac8ef365feeb49c680aa7912a",
+        "guide_fingerprint": "3089ea20f9b20d19145608ad8772958569b3859165c7eb1145e3e2789503522e"
+      },
+      {
+        "arxiv_id": "2611.23084",
+        "revision": 1,
+        "source_fingerprint": "2435157e982b919584fd5999b9e5cd2556c9ddc94ecb65a2ba225f5103187e03",
+        "guide_fingerprint": "8a773175d642121c21f504cc36f374266bbbc3ea521ca9259b064308d4e8af71"
+      },
+      {
+        "arxiv_id": "2611.23110",
+        "revision": 1,
+        "source_fingerprint": "dd2399b75ecd76651529036d5ffe221ffed0dad25348b730316ad3e462810d91",
+        "guide_fingerprint": "320359644f73a079330ade3aefeecc4e5ec2c6e0d3a407569f69d40de9ea0648"
+      },
+      {
+        "arxiv_id": "2611.23150",
+        "revision": 1,
+        "source_fingerprint": "87953c6ea98dc24721e2d7a037a98bfb38818fd6fbfd58612f60a5046663c499",
+        "guide_fingerprint": "b7770cf40ea1db02f031aedb8609f6ed8b1ef95f78604e513a48824e962c96e2"
       }
     ],
-    "skim_summary": "Topics include 21 cm Cosmology of Boosted Dark Matter, A PhEW Good Simulations: I. Galaxy Properties."
+    "skim_summary": "Topics include 21 cm Cosmology of Boosted Dark Matter, A PhEW Good Simulations: I. Galaxy Properties, among others."
   },
   "highlights": [],
   "feed": {
@@ -2152,6 +2473,2607 @@
         },
         "historical_edition": "announcement-2026-11-17",
         "historical_edition_fingerprint": "ef5cdebca61990612f9df26b4ddb74119629e935379fe559903dc03fa2cf9cbc"
+      },
+      {
+        "arxiv_id": "2611.21732",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "5802c683e07ed47151dbfe703bcda0a1a5b21327d95383ca33bbd7129ccacc85",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2611.21732v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2611.21732v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "agy/gemini-3.8-flash-medium",
+          "analyzed_at": "2026-11-20T02:10:03.778Z",
+          "reason": "Focuses on Galactic kinematics and mass profile estimation of the Milky Way and LMC dark matter halos, which is galactic dynamics and outside the scope of high-energy transients and compact objects.",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "Abstract",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “The LMC's recent arrival perturbs the observed kinematics of the Milky Way's (MW) stellar halo, complicating equilibrium-based MW mass estimates at Galactocentric distances $r\\gtrsim 30$ kpc.”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        },
+        "historical_edition": "announcement-2026-11-17",
+        "historical_edition_fingerprint": "ef5cdebca61990612f9df26b4ddb74119629e935379fe559903dc03fa2cf9cbc"
+      },
+      {
+        "arxiv_id": "2611.21736",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "30b2142220f43aeb9ccb8437f66f7dfcf0c6a138594c9ef939278b68886a5902",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2611.21736v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2611.21736v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "agy/gemini-3.8-flash-medium",
+          "analyzed_at": "2026-11-20T02:10:03.778Z",
+          "reason": "This is a broad community white paper discussing prospects for probing Beyond the Standard Model particle physics using AGN, lacking specific modeling or observational analysis of high-energy transient mechanisms, relativistic jets, or neutrino production.",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "Abstract",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “This white paper offers a new perspective on this interdisciplinary endeavor.”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        },
+        "historical_edition": "announcement-2026-11-17",
+        "historical_edition_fingerprint": "ef5cdebca61990612f9df26b4ddb74119629e935379fe559903dc03fa2cf9cbc"
+      },
+      {
+        "arxiv_id": "2611.21738",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "b86d8d439923418e86a9b586d25f04cd4d3022470769ecb95f679c8ef2e6bd13",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2611.21738v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2611.21738v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "agy/gemini-3.8-flash-medium",
+          "analyzed_at": "2026-11-20T02:10:03.778Z",
+          "reason": "The study models circumgalactic medium shocks and trails driven by a runaway supermassive black hole on megayear timescales, which is off-domain for high-energy transient astrophysics.",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "Abstract",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “Runaway supermassive black holes (SMBHs) have long been predicted.”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        },
+        "historical_edition": "announcement-2026-11-17",
+        "historical_edition_fingerprint": "ef5cdebca61990612f9df26b4ddb74119629e935379fe559903dc03fa2cf9cbc"
+      },
+      {
+        "arxiv_id": "2611.21746",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "0cce5e6c457f50d47978bcf3f051b325abb04a128da0372846088566600c7bb6",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2611.21746v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2611.21746v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "agy/gemini-3.8-flash-medium",
+          "analyzed_at": "2026-11-20T02:10:03.779Z",
+          "reason": "This work investigates solar active nests, coronal holes, and solar wind driving space weather, which belongs entirely to solar and heliospheric physics rather than high-energy transient astrophysics.",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "Abstract",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “The fast solar wind emerging from coronal holes drives space weather across the heliosphere.”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        },
+        "historical_edition": "announcement-2026-11-17",
+        "historical_edition_fingerprint": "ef5cdebca61990612f9df26b4ddb74119629e935379fe559903dc03fa2cf9cbc"
+      },
+      {
+        "arxiv_id": "2611.21755",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "2114cfc12df68dadf637c3acf78035da61e5b14daff5e0f23fe020e8b2cbb9fc",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2611.21755v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2611.21755v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "agy/gemini-3.8-flash-medium",
+          "analyzed_at": "2026-11-20T02:10:03.779Z",
+          "reason": "This paper investigates cold gas structure and kinematics in z~6 quasar host galaxies using ALMA [CII] observations. It focuses on high-redshift galaxy evolution rather than high-energy transient phenomena or compact object engines.",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "Abstract",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “ALMA observations of the [CII] and dust continuum emission from the host galaxies of 24 luminous z~6 quasars”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        },
+        "historical_edition": "announcement-2026-11-17",
+        "historical_edition_fingerprint": "ef5cdebca61990612f9df26b4ddb74119629e935379fe559903dc03fa2cf9cbc"
+      },
+      {
+        "arxiv_id": "2611.21756",
+        "revision": 2,
+        "status": "ready",
+        "source_fingerprint": "1b990570397ec75327d46e7e55eff7b845b7f1eabafb264469bb6e692b0aebab",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2611.21756v2",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2611.21756v2",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "agy/gemini-3.8-flash-medium",
+          "analyzed_at": "2026-11-20T02:10:03.779Z",
+          "reason": "This work explores wandering massive black hole populations and merger rates across halo seeding thresholds in cosmological zoom-in simulations. It pertains to large-scale galaxy evolution rather than compact object high-energy transients or relativistic explosions.",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "Abstract",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “Cosmological simulations following massive black holes (MBHs) with dynamical friction subgrid models predict hundreds to thousands of off-centre, wandering MBHs in massive galaxies.”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        },
+        "historical_edition": "announcement-2026-11-17",
+        "historical_edition_fingerprint": "ef5cdebca61990612f9df26b4ddb74119629e935379fe559903dc03fa2cf9cbc"
+      },
+      {
+        "arxiv_id": "2611.21758",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "ca86b961b819379e8042146029b055422952b5bf006de44f33385bdc22317458",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2611.21758v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2611.21758v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "agy/gemini-3.8-flash-medium",
+          "analyzed_at": "2026-11-20T02:10:03.780Z",
+          "reason": "This study presents an exoplanet transit survey around nearby M-dwarf stars using TESS Primary Mission full-frame images. The topic falls under exoplanet discovery and is completely unrelated to high-energy astrophysics.",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "Abstract",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “a blind transit search of nearby M-dwarfs in TESS Primary Mission full-frame images”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        },
+        "historical_edition": "announcement-2026-11-17",
+        "historical_edition_fingerprint": "ef5cdebca61990612f9df26b4ddb74119629e935379fe559903dc03fa2cf9cbc"
+      },
+      {
+        "arxiv_id": "2611.21760",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "bb3c9ca65b46eb0b4baec5ace42b96fb9dde1507b77532e67649c6796f36508e",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2611.21760v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2611.21760v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "agy/gemini-3.8-flash-medium",
+          "analyzed_at": "2026-11-20T02:10:03.780Z",
+          "reason": "This paper develops the phase gradient spectrum to measure the non-Gaussian 21-cm signal during the Epoch of Reionization for SKA-Low. It addresses observational cosmology rather than explosive or relativistic transient astrophysics.",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "Abstract",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “The 21-cm signal from the epoch of reionization is highly non-Gaussian.”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        },
+        "historical_edition": "announcement-2026-11-17",
+        "historical_edition_fingerprint": "ef5cdebca61990612f9df26b4ddb74119629e935379fe559903dc03fa2cf9cbc"
+      },
+      {
+        "arxiv_id": "2611.21761",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "2c5d06b9595eb26e60a8339d81427a35973084d8ddcbf4ba569c899411369299",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2611.21761v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2611.21761v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "agy/gemini-3.8-flash-medium",
+          "analyzed_at": "2026-11-20T02:10:03.780Z",
+          "reason": "The paper focuses on resolved stellar mass and star-formation rates in a $z=6.9$ protocluster galaxy, bearing no relation to high-energy transients or compact object astrophysics.",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "Abstract",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “SPT0311$-$58 is comprised of two clumpy dusty star-forming galaxies inhabiting a $z=6.9$ protocluster core.”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        },
+        "historical_edition": "announcement-2026-11-17",
+        "historical_edition_fingerprint": "ef5cdebca61990612f9df26b4ddb74119629e935379fe559903dc03fa2cf9cbc"
+      },
+      {
+        "arxiv_id": "2611.21786",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "3071081da9c6cf178a3ac92ee545088b0bf71946d5cfb89f913c9d23b2ed28e6",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2611.21786v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2611.21786v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "agy/gemini-3.8-flash-medium",
+          "analyzed_at": "2026-11-20T02:10:03.781Z",
+          "reason": "Focuses on calcium depletion, dust evolution, and planet formation in a protoplanetary disk around a young stellar object, which falls outside the scope of high-energy transient physics.",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "Abstract",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “We present a multi-wavelength case study of the star T28 in the Chamaeleon I star-forming region and investigate the dust evolution of its highly Ca-depleted protoplanetary disk.”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        },
+        "historical_edition": "announcement-2026-11-17",
+        "historical_edition_fingerprint": "ef5cdebca61990612f9df26b4ddb74119629e935379fe559903dc03fa2cf9cbc"
+      },
+      {
+        "arxiv_id": "2611.21793",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "ce61ea923542a3da68e8001afb9b4b1dfa50f88b41215c63f8cbb85407b9d16e",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2611.21793v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2611.21793v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "agy/gemini-3.8-flash-medium",
+          "analyzed_at": "2026-11-20T02:10:03.781Z",
+          "reason": "The paper focuses on long-period variable AGB stars and stellar population history in M33, which is unrelated to high-energy transients, relativistic jets, or compact objects.",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "Abstract",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “Long-period variables (LPVs) on the asymptotic giant branch (AGB) trace the late stages of stellar evolution”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        },
+        "historical_edition": "announcement-2026-11-17",
+        "historical_edition_fingerprint": "ef5cdebca61990612f9df26b4ddb74119629e935379fe559903dc03fa2cf9cbc"
+      },
+      {
+        "arxiv_id": "2611.21800",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "ecf73e2220cd7da12cf873fc52bcb474ef6a752535b27d43abdbc3b76cc02ab1",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2611.21800v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2611.21800v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "agy/gemini-3.8-flash-medium",
+          "analyzed_at": "2026-11-20T02:10:03.781Z",
+          "reason": "The study investigates orbital eccentricities and formation mechanisms of brown dwarf companions to main-sequence stars, falling outside high-energy transient astrophysics.",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "Abstract",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “Brown dwarfs occupy the mass range between stars and planets”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        },
+        "historical_edition": "announcement-2026-11-17",
+        "historical_edition_fingerprint": "ef5cdebca61990612f9df26b4ddb74119629e935379fe559903dc03fa2cf9cbc"
+      },
+      {
+        "arxiv_id": "2611.21819",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "03962b814930baf683037bf9debd7651dc7f0ce943fdbe8603264deac9f534d0",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2611.21819v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2611.21819v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "agy/gemini-3.8-flash-medium",
+          "analyzed_at": "2026-11-20T02:10:03.782Z",
+          "reason": "The work presents an asteroseismic analysis of main-sequence delta Scuti stars, which has no direct connection to high-energy transient phenomena or compact objects.",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "Abstract",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “Based on the first 35 extracted frequencies from short-cadence photometric data from the TESS mission”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        },
+        "historical_edition": "announcement-2026-11-17",
+        "historical_edition_fingerprint": "ef5cdebca61990612f9df26b4ddb74119629e935379fe559903dc03fa2cf9cbc"
+      },
+      {
+        "arxiv_id": "2611.21834",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "b61d2cd5a0a9ed7b8586f2ceae92799c8f7b6bff24e09d0cf134e8d6b4184748",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2611.21834v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2611.21834v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "agy/gemini-3.8-flash-medium",
+          "analyzed_at": "2026-11-20T02:10:03.782Z",
+          "reason": "This paper investigates PAH formation pathways and isotopic chemistry in the cold molecular cloud TMC-1, which is outside the scope of high-energy transients and compact objects.",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "Abstract",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “Polycyclic aromatic hydrocarbons (PAHs) have recently been detected in cold dark clouds through their rotational spectra”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        },
+        "historical_edition": "announcement-2026-11-17",
+        "historical_edition_fingerprint": "ef5cdebca61990612f9df26b4ddb74119629e935379fe559903dc03fa2cf9cbc"
+      },
+      {
+        "arxiv_id": "2611.21884",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "71683ce6fa46a422cce913d6e821b3e33bb904e1d3dae3c8b231bd6d5098ef43",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2611.21884v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2611.21884v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "agy/gemini-3.8-flash-medium",
+          "analyzed_at": "2026-11-20T02:10:03.782Z",
+          "reason": "The paper studies protoplanetary disk dissipation and debris disk formation around young stellar objects in Taurus-Auriga, bearing no connection to high-energy transient phenomena.",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "Abstract",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “We present a Submillimeter Array (SMA) 1.3mm (225GHz) continuum emission survey of Young Stellar Objects (YSOs) in the Taurus-Auriga star-forming region”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        },
+        "historical_edition": "announcement-2026-11-17",
+        "historical_edition_fingerprint": "ef5cdebca61990612f9df26b4ddb74119629e935379fe559903dc03fa2cf9cbc"
+      },
+      {
+        "arxiv_id": "2611.21896",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "ac7286eedb58217fba1b2857a57f56f75753151418b56bbb70eacb2213615016",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2611.21896v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2611.21896v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "agy/gemini-3.8-flash-medium",
+          "analyzed_at": "2026-11-20T02:10:03.783Z",
+          "reason": "This paper investigates stellar chromospheric activity, kinematics, and rotation in late-M and L dwarfs, which is off-domain for high-energy transients and compact objects.",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "Abstract",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “The fraction of late-M dwarfs with detectable Halpha rises toward the stellar-substellar boundary while their emission weakens relative to the bolometric luminosity”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        },
+        "historical_edition": "announcement-2026-11-17",
+        "historical_edition_fingerprint": "ef5cdebca61990612f9df26b4ddb74119629e935379fe559903dc03fa2cf9cbc"
+      },
+      {
+        "arxiv_id": "2611.21962",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "6fc6e571179906e67478d06499508b7662983855f94aca752a51f906cd6bd63d",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2611.21962v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2611.21962v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "agy/gemini-3.8-flash-medium",
+          "analyzed_at": "2026-11-20T02:10:03.783Z",
+          "reason": "This study compiles a multi-wavelength catalog of young stellar objects in the Lagoon Nebula, which belongs to star formation and has no connection to high-energy transients.",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "Abstract",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “M8, the Lagoon Nebula, has been known for more than 100 years as a region forming stars.”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        },
+        "historical_edition": "announcement-2026-11-17",
+        "historical_edition_fingerprint": "ef5cdebca61990612f9df26b4ddb74119629e935379fe559903dc03fa2cf9cbc"
+      },
+      {
+        "arxiv_id": "2611.21986",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "893cf69cfc975cb730d9787c8711cd2b8ae6ba79234d3c6b5f93697a1970e1bd",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2611.21986v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2611.21986v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "agy/gemini-3.8-flash-medium",
+          "analyzed_at": "2026-11-20T02:10:03.783Z",
+          "reason": "The paper focuses on spectral decomposition of an unresolved ultracool/brown dwarf binary system, falling outside the core research scope of high-energy transient astrophysics.",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "Abstract",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “SIPS J2045-6332 is an unusual low-mass object previously identified by its infrared excess and possible signatures of youth and unresolved multiplicity.”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        },
+        "historical_edition": "announcement-2026-11-17",
+        "historical_edition_fingerprint": "ef5cdebca61990612f9df26b4ddb74119629e935379fe559903dc03fa2cf9cbc"
+      },
+      {
+        "arxiv_id": "2611.22004",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "429efbc1098c49d80d6584376183b28ee5a0049eca85fd44abaf727072901218",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2611.22004v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2611.22004v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "agy/gemini-3.8-flash-medium",
+          "analyzed_at": "2026-11-20T02:10:03.783Z",
+          "reason": "The paper investigates an ionized protostellar jet driven by a high-mass young stellar object rather than a relativistic jet from a compact object or high-energy transient.",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "Abstract",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “high-mass protostellar jet system IRAS 16562-3959 at 3.1 and 6.1 GHz”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        },
+        "historical_edition": "announcement-2026-11-17",
+        "historical_edition_fingerprint": "ef5cdebca61990612f9df26b4ddb74119629e935379fe559903dc03fa2cf9cbc"
+      },
+      {
+        "arxiv_id": "2611.22007",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "a7ff430e14111a185eb54f1b9de017c27759cfaff4a012bba6b931f381fb78f2",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2611.22007v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2611.22007v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "agy/gemini-3.8-flash-medium",
+          "analyzed_at": "2026-11-20T02:10:03.784Z",
+          "reason": "The paper investigates multi-phase intergalactic gas and low-velocity shock heating in the intragroup medium of Stephan's Quintet, which has no substantive connection to high-energy transients or compact objects.",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "Abstract",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “Using JWST MIRI spectroscopy, we explore the multi-phase intergalactic gas in the hot halo of the Stephan's Quintet compact group.”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        },
+        "historical_edition": "announcement-2026-11-17",
+        "historical_edition_fingerprint": "ef5cdebca61990612f9df26b4ddb74119629e935379fe559903dc03fa2cf9cbc"
+      },
+      {
+        "arxiv_id": "2611.22044",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "b88f3696cfb89d510b928c145ee921edbb5444d38aa462ce9cf5a7cf9652f7f3",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2611.22044v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2611.22044v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "agy/gemini-3.8-flash-medium",
+          "analyzed_at": "2026-11-20T02:10:03.784Z",
+          "reason": "The work investigates statistical correlations between SMBH accretion states and multiphase circumgalactic gas in cosmological galaxy formation simulations (IllustrisTNG), which is outside the scope of high-energy transient astrophysics.",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "Abstract",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “The coupling between AGN feedback and the multiphase circumgalactic medium (CGM) is central to understanding galaxy evolution.”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        },
+        "historical_edition": "announcement-2026-11-17",
+        "historical_edition_fingerprint": "ef5cdebca61990612f9df26b4ddb74119629e935379fe559903dc03fa2cf9cbc"
+      },
+      {
+        "arxiv_id": "2611.22051",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "b44887d0714555d49c3d57b12327cfc55347323ea0d0e4f314641c16bf34c72b",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2611.22051v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2611.22051v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "agy/gemini-3.8-flash-medium",
+          "analyzed_at": "2026-11-20T02:10:03.784Z",
+          "reason": "Focuses on reconstructing far-side solar active-region magnetic flux evolution using 304 Å emission for space-weather forecasting, which is unrelated to high-energy transient astrophysics.",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "Abstract",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “The evolution of magnetic flux in solar active regions is central to space-weather forecasting and solar-cycle studies.”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        },
+        "historical_edition": "announcement-2026-11-17",
+        "historical_edition_fingerprint": "ef5cdebca61990612f9df26b4ddb74119629e935379fe559903dc03fa2cf9cbc"
+      },
+      {
+        "arxiv_id": "2611.22091",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "d24992eb174b6cbe24e759e90b8983a4cbe783af02839f95029413ddc0b64c20",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2611.22091v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2611.22091v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "agy/gemini-3.8-flash-medium",
+          "analyzed_at": "2026-11-20T02:10:03.784Z",
+          "reason": "Investigates the Galactic disk age-metallicity relation and chemical evolution via APOGEE red clump stars, which lies outside the scope of high-energy transient astrophysics.",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "Abstract",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “we investigate the age--metallicity relation (AMR) across the Galactic disk as a function of Galactocentric radius $R$ and vertical height $|Z|$.”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        },
+        "historical_edition": "announcement-2026-11-17",
+        "historical_edition_fingerprint": "ef5cdebca61990612f9df26b4ddb74119629e935379fe559903dc03fa2cf9cbc"
+      },
+      {
+        "arxiv_id": "2611.22300",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "e1c8601323239e774130879beb20724f3fe16ead50ef388fa84b0f0228461338",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2611.22300v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2611.22300v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "agy/gemini-3.8-flash-medium",
+          "analyzed_at": "2026-11-20T02:10:03.785Z",
+          "reason": "Examines local star formation efficiency and galactic shear using MaNGA and ALMaQUEST surveys, which is off-domain for high-energy transient astrophysics.",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "Abstract",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “We study the local regulation of star formation efficiency (SFE) in star-forming regions of nearby galaxies using spatially resolved data”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        },
+        "historical_edition": "announcement-2026-11-17",
+        "historical_edition_fingerprint": "ef5cdebca61990612f9df26b4ddb74119629e935379fe559903dc03fa2cf9cbc"
+      },
+      {
+        "arxiv_id": "2611.22316",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "f3815df80b137bf7472487f74b9e4ab08e2a5405415989d2edcba7b2266195b2",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2611.22316v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2611.22316v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "agy/gemini-3.8-flash-medium",
+          "analyzed_at": "2026-11-20T02:10:03.785Z",
+          "reason": "The study focuses on SED fitting and BLR geometry modeling of a local Little Red Dot AGN analog, which has no direct connection to high-energy transient astrophysics.",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "Abstract",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “We test one active galactic nucleus (AGN) geometry by fitting its ultraviolet-to-infrared continuum with an inclination-dependent accretion-disk spectral energy distribution (SED)”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        },
+        "historical_edition": "announcement-2026-11-17",
+        "historical_edition_fingerprint": "ef5cdebca61990612f9df26b4ddb74119629e935379fe559903dc03fa2cf9cbc"
+      },
+      {
+        "arxiv_id": "2611.22375",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "81cce01d31c16107e31a063ccfcd7b298ec26439661ebd780dba0f54dc342067",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2611.22375v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2611.22375v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "agy/gemini-3.8-flash-medium",
+          "analyzed_at": "2026-11-20T02:10:03.785Z",
+          "reason": "The paper investigates the resolved stellar census and Wolf-Rayet subtype ratios in an M31 star cluster, falling within stellar populations and galactic astronomy rather than transient phenomena.",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "Abstract",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “The observed ratio of Wolf-Rayet (WR) star subtypes (e.g., WC/WN) in M31 is significantly higher than the predictions of standard stellar evolution models”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        },
+        "historical_edition": "announcement-2026-11-17",
+        "historical_edition_fingerprint": "ef5cdebca61990612f9df26b4ddb74119629e935379fe559903dc03fa2cf9cbc"
+      },
+      {
+        "arxiv_id": "2611.22377",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "5aac40037762a2a2684ec0836cd54cf7823e87e7cd592f13dc0b2c4134b14f4f",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2611.22377v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2611.22377v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "agy/gemini-3.8-flash-medium",
+          "analyzed_at": "2026-11-20T02:10:03.785Z",
+          "reason": "This is a review of spectropolarimetric inversion methods applied to the lower solar atmosphere, completely outside the scope of compact objects and high-energy transients.",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "Abstract",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “Spectropolarimetric inversions are the techniques devised for the inference of the physical parameters in the solar atmosphere”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        },
+        "historical_edition": "announcement-2026-11-17",
+        "historical_edition_fingerprint": "ef5cdebca61990612f9df26b4ddb74119629e935379fe559903dc03fa2cf9cbc"
+      },
+      {
+        "arxiv_id": "2611.22378",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "24ed9008ca9613de9a107307f012ed9f31d603141ea29dd5a944fbc67793f2b9",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2611.22378v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2611.22378v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "agy/gemini-3.8-flash-medium",
+          "analyzed_at": "2026-11-20T02:10:03.786Z",
+          "reason": "The work utilizes bent-tailed radio galaxies as environmental probes of the intrafilament medium in cosmic large-scale structure, lacking relevance to high-energy transient physical mechanisms.",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "Abstract",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “Bent-tailed radio galaxies have traditionally been associated with, and used as tracers of, the dense intracluster medium.”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        },
+        "historical_edition": "announcement-2026-11-17",
+        "historical_edition_fingerprint": "ef5cdebca61990612f9df26b4ddb74119629e935379fe559903dc03fa2cf9cbc"
+      },
+      {
+        "arxiv_id": "2611.22387",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "9d78e0b533f5cfda3f43171e10305a1ce1b8064e66fa1b1f4cb432e90c4711f8",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2611.22387v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2611.22387v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "agy/gemini-3.8-flash-medium",
+          "analyzed_at": "2026-11-20T02:10:03.786Z",
+          "reason": "Investigates cosmological velocity-dependent WIMP dark matter annihilation cross-correlated with large-scale structure, which falls outside core transient astrophysics and compact object research directions.",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "Abstract",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “In this work, we develop a generalized halo-model framework to investigate the cosmological signatures of velocity-dependent WIMP annihilation.”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        },
+        "historical_edition": "announcement-2026-11-17",
+        "historical_edition_fingerprint": "ef5cdebca61990612f9df26b4ddb74119629e935379fe559903dc03fa2cf9cbc"
+      },
+      {
+        "arxiv_id": "2611.22471",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "b01fc70997e76d3164d9249145be7d4c17a4eaafcdbcd56e9426a12f2ac49d7c",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2611.22471v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2611.22471v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "agy/gemini-3.8-flash-medium",
+          "analyzed_at": "2026-11-20T02:10:03.786Z",
+          "reason": "Focuses on nucleosynthetic yields and progenitor metallicity in the Type Ia supernova remnant Tycho using XRISM/Resolve X-ray spectroscopy, which lacks a compact central engine and falls outside the scope of high-energy transients.",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "Abstract",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “The objective of this paper is to provide constraints on the supernova progenitor and explosion mechanism of Tycho's type Ia supernova remnant by studying the properties of Cr and Mn.”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        },
+        "historical_edition": "announcement-2026-11-17",
+        "historical_edition_fingerprint": "ef5cdebca61990612f9df26b4ddb74119629e935379fe559903dc03fa2cf9cbc"
+      },
+      {
+        "arxiv_id": "2611.22473",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "0c8b24f9233ae2aa2cb7a87e1187e06718e181ab10f6583040d44d74f227330e",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2611.22473v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2611.22473v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "agy/gemini-3.8-flash-medium",
+          "analyzed_at": "2026-11-20T02:10:03.787Z",
+          "reason": "Presents a branchless numerical approximation algorithm for the Voigt profile in stellar spectral synthesis, which is a computational stellar astrophysics tool unrelated to high-energy transients.",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "Abstract",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “The Voigt function is evaluated repeatedly in spectral synthesis, and several widely used implementations carry an absolute error floor.”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        },
+        "historical_edition": "announcement-2026-11-17",
+        "historical_edition_fingerprint": "ef5cdebca61990612f9df26b4ddb74119629e935379fe559903dc03fa2cf9cbc"
+      },
+      {
+        "arxiv_id": "2611.22475",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "8c5e11cfc367c42e3549e4b7c312dc0f2fa998ae1ce5a51059589ac33b67a3f6",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2611.22475v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2611.22475v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "agy/gemini-3.8-flash-medium",
+          "analyzed_at": "2026-11-20T02:10:03.787Z",
+          "reason": "Studies the spectral bandwidth of solar Type III radio bursts in the interplanetary medium via Parker Solar Probe, which falls under solar heliospheric physics rather than cosmic high-energy transients or FRBs.",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "Abstract",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “Magnetic reconnection during solar flares accelerates electron beams that generate type III radio bursts through the plasma emission process.”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        },
+        "historical_edition": "announcement-2026-11-17",
+        "historical_edition_fingerprint": "ef5cdebca61990612f9df26b4ddb74119629e935379fe559903dc03fa2cf9cbc"
+      },
+      {
+        "arxiv_id": "2611.22487",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "14c72db2f0d8c81520cd0888b3b4bb2cd8bcea0d55ca145c9e03bc6e74814073",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2611.22487v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2611.22487v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "agy/gemini-3.8-flash-medium",
+          "analyzed_at": "2026-11-20T02:10:03.787Z",
+          "reason": "Proposes a JWST survey program to detect and characterize dual and binary AGN at high redshift for galaxy merger and supermassive black hole growth studies, which lies outside the high-energy transient focus.",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "Abstract",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “Within the Genesis initiative We propose a uniformly selected census of dual AGN and their hosts from cosmic noon to cosmic dawn, as a science case for the Genesis initiative.”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        },
+        "historical_edition": "announcement-2026-11-17",
+        "historical_edition_fingerprint": "ef5cdebca61990612f9df26b4ddb74119629e935379fe559903dc03fa2cf9cbc"
+      },
+      {
+        "arxiv_id": "2611.22602",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "e5192e5367491bae96ef9f4d0d99f951acd94f81f4b40b56df2d894fe8ef963c",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2611.22602v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2611.22602v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "agy/gemini-3.8-flash-medium",
+          "analyzed_at": "2026-11-20T02:10:03.787Z",
+          "reason": "The paper presents a numerical simulator for solar filament oscillations and synthetic H-alpha imaging, which belongs strictly to solar physics and has no relevance to high-energy transients or compact objects.",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "Abstract",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “We introduce FILOS, a solar Filament Oscillation Simulator designed to validate methods for inferring filament dynamics from H-alpha observations.”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        },
+        "historical_edition": "announcement-2026-11-17",
+        "historical_edition_fingerprint": "ef5cdebca61990612f9df26b4ddb74119629e935379fe559903dc03fa2cf9cbc"
+      },
+      {
+        "arxiv_id": "2611.22606",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "0aaaa4a9d4d4de81290f9f98b15e60ce47dc592f2ad47637179c6e3f50abf70b",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2611.22606v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2611.22606v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "agy/gemini-3.8-flash-medium",
+          "analyzed_at": "2026-11-20T02:10:03.787Z",
+          "reason": "The study compiles a catalog of solar and interplanetary type-III radio bursts for space weather forecasting, which falls outside the scope of relativistic transients, compact object engines, and high-energy astrophysics.",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "Abstract",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “We present a catalog of DH type-III bursts associated with 538 out of 734 $\\geq$C5-class flares observed by Wind and STEREO spacecraft during 2006-2025.”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        },
+        "historical_edition": "announcement-2026-11-17",
+        "historical_edition_fingerprint": "ef5cdebca61990612f9df26b4ddb74119629e935379fe559903dc03fa2cf9cbc"
+      },
+      {
+        "arxiv_id": "2611.22660",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "8dd79ac628b52f629459ace11d60e01835dbd3e688349a5b50d536cb9722c159",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2611.22660v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2611.22660v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "agy/gemini-3.8-flash-medium",
+          "analyzed_at": "2026-11-20T02:10:03.788Z",
+          "reason": "The paper derives analytical prescriptions for dynamical tides and resonance locking in main-sequence stellar binaries (such as $\\gamma$-Doradus stars), which does not address compact objects, supernovae, or relativistic transient mechanisms.",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "Abstract",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “We aim to develop a simple prescription for describing the orbital and rotational evolution of binary systems undergoing resonance locking”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        },
+        "historical_edition": "announcement-2026-11-17",
+        "historical_edition_fingerprint": "ef5cdebca61990612f9df26b4ddb74119629e935379fe559903dc03fa2cf9cbc"
+      },
+      {
+        "arxiv_id": "2611.22707",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "69cc5912afe7fad830530b552d19aaa7f9cd71a69713ad93d971066fccfe9474",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2611.22707v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2611.22707v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "agy/gemini-3.8-flash-medium",
+          "analyzed_at": "2026-11-20T02:10:03.788Z",
+          "reason": "The paper investigates horizon-scale submillimeter polarization and accretion flow magnetization states (MAD/SANE/INSANE) in SMBHs, lacking substantive connection to core high-energy transient phenomena or relativistic jet dynamics.",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "Abstract",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “We investigate the temporal polarization properties of horizon-scale emission using general relativistic magnetohydrodynamic (GRMHD) simulations”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        },
+        "historical_edition": "announcement-2026-11-17",
+        "historical_edition_fingerprint": "ef5cdebca61990612f9df26b4ddb74119629e935379fe559903dc03fa2cf9cbc"
+      },
+      {
+        "arxiv_id": "2611.22739",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "cc9771ca094adea39f3750eac47297be519a7839fb3ccdcd9f4d34593fcce47a",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2611.22739v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2611.22739v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "agy/gemini-3.8-flash-medium",
+          "analyzed_at": "2026-11-20T02:10:03.788Z",
+          "reason": "This work focuses on the demographics and X-ray properties of cataclysmic variables (accreting white dwarf binaries), which is outside the scope of high-energy transient astrophysics.",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "Abstract",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “Cataclysmic variables (CVs) are interacting binaries where a white dwarf accretes material from a late-type donor.”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        },
+        "historical_edition": "announcement-2026-11-17",
+        "historical_edition_fingerprint": "ef5cdebca61990612f9df26b4ddb74119629e935379fe559903dc03fa2cf9cbc"
+      },
+      {
+        "arxiv_id": "2611.22751",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "c33be5fe24754abb89ccf7c0950300081fe938767e67c4990da2e746ba99b63e",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2611.22751v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2611.22751v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "agy/gemini-3.8-flash-medium",
+          "analyzed_at": "2026-11-20T02:10:03.788Z",
+          "reason": "This study analyzes gravity wave diagnostics in the solar atmosphere, which has no connection to high-energy transient astrophysics.",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "Abstract",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “Phase-difference and coherence diagnostics are widely used to identify gravity waves in the solar atmosphere”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        },
+        "historical_edition": "announcement-2026-11-17",
+        "historical_edition_fingerprint": "ef5cdebca61990612f9df26b4ddb74119629e935379fe559903dc03fa2cf9cbc"
+      },
+      {
+        "arxiv_id": "2611.22771",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "1c78045c3919b26ca857082256f738f490f1ebd3ae238c7d76a493e08df495d5",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2611.22771v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2611.22771v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "agy/gemini-3.8-flash-medium",
+          "analyzed_at": "2026-11-20T02:10:03.788Z",
+          "reason": "The paper develops a statistical timing framework for estimating supermassive black hole masses in AGNs, which does not address high-energy transient phenomena or compact object transient processes.",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "Abstract",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “Active galactic nucleus (AGN) variability is widely recognized as a promising avenue for constraining black hole mass”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        },
+        "historical_edition": "announcement-2026-11-17",
+        "historical_edition_fingerprint": "ef5cdebca61990612f9df26b4ddb74119629e935379fe559903dc03fa2cf9cbc"
+      },
+      {
+        "arxiv_id": "2611.22800",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "edff1fcd7070d5ce15cd8275673a3ca3e7bffc115d8c4d9e21ef20bd2665bbec",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2611.22800v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2611.22800v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "agy/gemini-3.8-flash-medium",
+          "analyzed_at": "2026-11-20T02:10:03.789Z",
+          "reason": "The study focuses on astronomical history and planetary ephemerides by reassessing ancient Chinese records of lunar occultation errors, lacking substantive relevance to core physical processes or high-energy observations of transients.",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "Abstract",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “The catalog supplies candidate positions rather than identifications, enabling remnant and compact-object searches to test the guest-star hypothesis directly.”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        },
+        "historical_edition": "announcement-2026-11-17",
+        "historical_edition_fingerprint": "ef5cdebca61990612f9df26b4ddb74119629e935379fe559903dc03fa2cf9cbc"
+      },
+      {
+        "arxiv_id": "2611.22887",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "d9fc7d54ac9a41c81b8bf89f0b01c39c614ce68d895779706ac14445ce912279",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2611.22887v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2611.22887v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "agy/gemini-3.8-flash-medium",
+          "analyzed_at": "2026-11-20T02:10:03.789Z",
+          "reason": "The paper investigates the cosmological evolution of the radio-loud AGN fraction and stellar mass relations up to $z=3.0$ in the context of galaxy evolution and feedback, which is off-domain from core high-energy transient astrophysics.",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "Abstract",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “we present the first study of the RLAGN incidence--stellar mass relation to $z=3.0$.”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        },
+        "historical_edition": "announcement-2026-11-17",
+        "historical_edition_fingerprint": "ef5cdebca61990612f9df26b4ddb74119629e935379fe559903dc03fa2cf9cbc"
+      },
+      {
+        "arxiv_id": "2611.22913",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "4b6b33332d32f07a8c35a6917630421d2f599fdcf664aa84052806c27f9359e2",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2611.22913v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2611.22913v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "agy/gemini-3.8-flash-medium",
+          "analyzed_at": "2026-11-20T02:10:03.789Z",
+          "reason": "This study develops a particle-tracking method for dust evolution and gap opening in protoplanetary disks, which is off-domain for high-energy transients and compact objects.",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "Abstract",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “We present the Grain Residence-Time Method (GRTM), a computationally efficient particle-tracking approach for studying dust evolution and trapping in protoplanetary disks.”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        },
+        "historical_edition": "announcement-2026-11-17",
+        "historical_edition_fingerprint": "ef5cdebca61990612f9df26b4ddb74119629e935379fe559903dc03fa2cf9cbc"
+      },
+      {
+        "arxiv_id": "2611.22914",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "815d10c8480727b0ce358adede7e5d18d4412b2367c9e9bbff9a5093f7c8ca5a",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2611.22914v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2611.22914v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "agy/gemini-3.8-flash-medium",
+          "analyzed_at": "2026-11-20T02:10:03.789Z",
+          "reason": "This paper presents a spectrophotometric fitting pipeline and value-added catalog for extragalactic galaxies and quasars in DESI DR2, which belongs to large-scale galaxy surveys rather than high-energy transient astrophysics.",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "Abstract",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “FastSpecFit is an open-source Python software package that forward-models each Dark Energy Spectroscopic Instrument (DESI) spectrum jointly with its broadband photometry”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        },
+        "historical_edition": "announcement-2026-11-17",
+        "historical_edition_fingerprint": "ef5cdebca61990612f9df26b4ddb74119629e935379fe559903dc03fa2cf9cbc"
+      },
+      {
+        "arxiv_id": "2611.22952",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "ef25a17631b9f7fc2e88da2cec9dd573ecb85e148d413ba19458364e0893ce90",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2611.22952v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2611.22952v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "agy/gemini-3.8-flash-medium",
+          "analyzed_at": "2026-11-20T02:10:03.789Z",
+          "reason": "The paper investigates sub-millimeter molecular line diagnostics of external photoevaporation in protoplanetary disks with ALMA, which has no connection to high-energy transient phenomena or compact objects.",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "Abstract",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “External photoevaporation is increasingly recognised as an important influence on protoplanetary disk evolution.”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        },
+        "historical_edition": "announcement-2026-11-17",
+        "historical_edition_fingerprint": "ef5cdebca61990612f9df26b4ddb74119629e935379fe559903dc03fa2cf9cbc"
+      },
+      {
+        "arxiv_id": "2611.22999",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "1c0c4d47b64bf5c8c0293459ffdc4ae44e1b094c93b4004630efe9eb3117c6bb",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2611.22999v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2611.22999v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "agy/gemini-3.8-flash-medium",
+          "analyzed_at": "2026-11-20T02:10:03.790Z",
+          "reason": "The paper focuses on a computational JAX-accelerated framework for calculating the stochastic gravitational-wave background spectrum from compact binary populations, which has no direct connection to high-energy transient phenomena or electromagnetic/neutrino observations.",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "Abstract",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “We present \\texttt{StochAXtic}, a package for computing the dimensionless energy density spectrum $Ω_{\\mathrm{GW}}(f)$ of the stochastic gravitational-wave background generated by compact binary coalescences.”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        },
+        "historical_edition": "announcement-2026-11-17",
+        "historical_edition_fingerprint": "ef5cdebca61990612f9df26b4ddb74119629e935379fe559903dc03fa2cf9cbc"
+      },
+      {
+        "arxiv_id": "2611.23019",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "c75432f9e8763050855553cab24f207f1314a265aaf9349bbe5eecca903a748b",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2611.23019v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2611.23019v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "agy/gemini-3.8-flash-medium",
+          "analyzed_at": "2026-11-20T02:10:03.790Z",
+          "reason": "The study analyzes the orbital properties, radial velocities, and chemical abundances of a long-period central binary in a planetary nebula, which is outside the scope of high-energy transient astrophysics.",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "Abstract",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “We find that the central binary of MPAJ1508-6455 has an orbital period of more than five years with a large eccentricity.”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        },
+        "historical_edition": "announcement-2026-11-17",
+        "historical_edition_fingerprint": "ef5cdebca61990612f9df26b4ddb74119629e935379fe559903dc03fa2cf9cbc"
+      },
+      {
+        "arxiv_id": "2611.23071",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "8050d6ed4544060b324495c3edaff318611590dac8ef365feeb49c680aa7912a",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2611.23071v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2611.23071v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "agy/gemini-3.8-flash-medium",
+          "analyzed_at": "2026-11-20T02:10:03.790Z",
+          "reason": "The paper investigates the zero-pressure parameter space and strange-matter window in the flavor-dependent QMDD nuclear model for quark stars, lacking substantive connection to transient emission mechanisms, central engine dynamics, or high-energy observations.",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "Abstract",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “In the flavor-dependent QMDD model, self-bound $ud$ quark matter can be the ground state at vanishing pressure and convert into $uds$ matter through a first-order transition.”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        },
+        "historical_edition": "announcement-2026-11-17",
+        "historical_edition_fingerprint": "ef5cdebca61990612f9df26b4ddb74119629e935379fe559903dc03fa2cf9cbc"
+      },
+      {
+        "arxiv_id": "2611.23084",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "2435157e982b919584fd5999b9e5cd2556c9ddc94ecb65a2ba225f5103187e03",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2611.23084v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2611.23084v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "agy/gemini-3.8-flash-medium",
+          "analyzed_at": "2026-11-20T02:10:03.790Z",
+          "reason": "This paper presents a general numerical algorithm for integrating the Vlasov/Boltzmann equation in GIZMO without direct application to high-energy transient phenomena such as FRBs, SNe, or relativistic jets.",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "Abstract",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “We describe and test a new numerical method to solve the Vlasov/Boltzmann equation in systems with arbitrary levels of collisionality.”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        },
+        "historical_edition": "announcement-2026-11-17",
+        "historical_edition_fingerprint": "ef5cdebca61990612f9df26b4ddb74119629e935379fe559903dc03fa2cf9cbc"
+      },
+      {
+        "arxiv_id": "2611.23110",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "dd2399b75ecd76651529036d5ffe221ffed0dad25348b730316ad3e462810d91",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2611.23110v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2611.23110v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "agy/gemini-3.8-flash-medium",
+          "analyzed_at": "2026-11-20T02:10:03.790Z",
+          "reason": "This work investigates theoretical quasinormal-mode convergence in Kerr spacetime for gravitational-wave ringdowns, lacking substantive connection to high-energy electromagnetic or neutrino transient observations.",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "Abstract",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “Black-hole ringdown is usually modeled as a linear superposition of quasinormal modes, and fits to gravitational-wave observations increasingly include high overtones.”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        },
+        "historical_edition": "announcement-2026-11-17",
+        "historical_edition_fingerprint": "ef5cdebca61990612f9df26b4ddb74119629e935379fe559903dc03fa2cf9cbc"
+      },
+      {
+        "arxiv_id": "2611.23150",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "87953c6ea98dc24721e2d7a037a98bfb38818fd6fbfd58612f60a5046663c499",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2611.23150v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2611.23150v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "agy/gemini-3.8-flash-medium",
+          "analyzed_at": "2026-11-20T02:10:03.791Z",
+          "reason": "This paper presents a near-infrared photometric and astrometric stellar catalog of the globular cluster Omega Centauri, which is outside the group's core high-energy transient astrophysics focus.",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "Abstract",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “Our catalog is based on a custom reduction of NIRCam and NIRISS imaging across three JWST programs extending out to two half-light radii (10').”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        },
+        "historical_edition": "announcement-2026-11-17",
+        "historical_edition_fingerprint": "ef5cdebca61990612f9df26b4ddb74119629e935379fe559903dc03fa2cf9cbc"
       }
     ],
     "knowledge_points": [],
@@ -2197,6 +5119,21 @@
           "arxiv_id": "2611.21716",
           "revision": 1,
           "title": "A PhEW Good Simulations: I. Galaxy Properties"
+        },
+        {
+          "arxiv_id": "2611.21732",
+          "revision": 1,
+          "title": "The meaning of Milky Way mass estimates in the presence of the LMC"
+        },
+        {
+          "arxiv_id": "2611.21736",
+          "revision": 1,
+          "title": "Active Galactic Nuclei as Beyond the Standard Model Laboratories: a White Paper"
+        },
+        {
+          "arxiv_id": "2611.21738",
+          "revision": 1,
+          "title": "Shocks and Trails in the Circumgalactic Medium Driven by Runaway Supermassive Black Holes"
         }
       ],
       "skip": [
@@ -2211,9 +5148,315 @@
           "revision": 1,
           "source_fingerprint": "75a2b5c923b5eac89ab5df228fcab71979f57965711adee80a9da9f40a71b50d",
           "guide_fingerprint": "1ddc5e5647cc504c4592828fbe0385c8ed42a0d8c1974df0c31d536da84dba80"
+        },
+        {
+          "arxiv_id": "2611.21732",
+          "revision": 1,
+          "source_fingerprint": "5802c683e07ed47151dbfe703bcda0a1a5b21327d95383ca33bbd7129ccacc85",
+          "guide_fingerprint": "af64b95cd43172bc3308644cdc46916e43c85e060743a0575af93d1fb1d3241f"
+        },
+        {
+          "arxiv_id": "2611.21736",
+          "revision": 1,
+          "source_fingerprint": "30b2142220f43aeb9ccb8437f66f7dfcf0c6a138594c9ef939278b68886a5902",
+          "guide_fingerprint": "bf0a74838616a875c6175905c40b990e539038a9eefac13209342cd725b50b98"
+        },
+        {
+          "arxiv_id": "2611.21738",
+          "revision": 1,
+          "source_fingerprint": "b86d8d439923418e86a9b586d25f04cd4d3022470769ecb95f679c8ef2e6bd13",
+          "guide_fingerprint": "2f206aaaf5a50e3105ff1ddf8acb86e605bab734a85ec64674cd12ad22ccfc70"
+        },
+        {
+          "arxiv_id": "2611.21746",
+          "revision": 1,
+          "source_fingerprint": "0cce5e6c457f50d47978bcf3f051b325abb04a128da0372846088566600c7bb6",
+          "guide_fingerprint": "f4e46746a0baeacf9f691930cbd8f7be025c9e411d31beb10b8055f9857e9056"
+        },
+        {
+          "arxiv_id": "2611.21755",
+          "revision": 1,
+          "source_fingerprint": "2114cfc12df68dadf637c3acf78035da61e5b14daff5e0f23fe020e8b2cbb9fc",
+          "guide_fingerprint": "46ab7937f8c00975dc620896eb598295f5839ec71e5d8e868c45df3c22b8b943"
+        },
+        {
+          "arxiv_id": "2611.21756",
+          "revision": 2,
+          "source_fingerprint": "1b990570397ec75327d46e7e55eff7b845b7f1eabafb264469bb6e692b0aebab",
+          "guide_fingerprint": "7e259acad1397abafebc985f8a5546224f1a3f3b2a8c823bbacdba559a2c1c33"
+        },
+        {
+          "arxiv_id": "2611.21758",
+          "revision": 1,
+          "source_fingerprint": "ca86b961b819379e8042146029b055422952b5bf006de44f33385bdc22317458",
+          "guide_fingerprint": "e260aef408c39f7ca089685c2ca424f7a2a216f1e9e3b51db7fc3484bda6af80"
+        },
+        {
+          "arxiv_id": "2611.21760",
+          "revision": 1,
+          "source_fingerprint": "bb3c9ca65b46eb0b4baec5ace42b96fb9dde1507b77532e67649c6796f36508e",
+          "guide_fingerprint": "46f1ae34025ede4e48dedb743bda93e5d77df16d7f3b6f2723576858d003df86"
+        },
+        {
+          "arxiv_id": "2611.21761",
+          "revision": 1,
+          "source_fingerprint": "2c5d06b9595eb26e60a8339d81427a35973084d8ddcbf4ba569c899411369299",
+          "guide_fingerprint": "7f60e711b4bc3ee3bd7174d1a083a674ccc6fede28bfcbf921f0383fa1e99198"
+        },
+        {
+          "arxiv_id": "2611.21786",
+          "revision": 1,
+          "source_fingerprint": "3071081da9c6cf178a3ac92ee545088b0bf71946d5cfb89f913c9d23b2ed28e6",
+          "guide_fingerprint": "6c5fef5b593d8b035603784163e4b6e0e4b5d7566d0a21660fd0721ccecd00bd"
+        },
+        {
+          "arxiv_id": "2611.21793",
+          "revision": 1,
+          "source_fingerprint": "ce61ea923542a3da68e8001afb9b4b1dfa50f88b41215c63f8cbb85407b9d16e",
+          "guide_fingerprint": "d6d481b628f31f3e1ce9e6920732446b7b9182d15ada15837742593821859e57"
+        },
+        {
+          "arxiv_id": "2611.21800",
+          "revision": 1,
+          "source_fingerprint": "ecf73e2220cd7da12cf873fc52bcb474ef6a752535b27d43abdbc3b76cc02ab1",
+          "guide_fingerprint": "d3d1436cce90d8d6a2a510994d87621cebb2bf837687c294b023385e3673e5d9"
+        },
+        {
+          "arxiv_id": "2611.21819",
+          "revision": 1,
+          "source_fingerprint": "03962b814930baf683037bf9debd7651dc7f0ce943fdbe8603264deac9f534d0",
+          "guide_fingerprint": "796dbac37623506c84bc84f2dce452b9fc506801f7ad1ef159c1d4ce07a82117"
+        },
+        {
+          "arxiv_id": "2611.21834",
+          "revision": 1,
+          "source_fingerprint": "b61d2cd5a0a9ed7b8586f2ceae92799c8f7b6bff24e09d0cf134e8d6b4184748",
+          "guide_fingerprint": "6a5a4f96dd1cb3de30f09e296fa0de580dc0cc7ffe33968cc2da947d63c3d357"
+        },
+        {
+          "arxiv_id": "2611.21884",
+          "revision": 1,
+          "source_fingerprint": "71683ce6fa46a422cce913d6e821b3e33bb904e1d3dae3c8b231bd6d5098ef43",
+          "guide_fingerprint": "cc0489943052e798bed99ba5b60aa8aa8ce5e011a2aed50fe175a0b84d4dd4ef"
+        },
+        {
+          "arxiv_id": "2611.21896",
+          "revision": 1,
+          "source_fingerprint": "ac7286eedb58217fba1b2857a57f56f75753151418b56bbb70eacb2213615016",
+          "guide_fingerprint": "1e9b43c6c3618343f426bbe85d05da21ea2b70003943d7e9a810596b665e56c3"
+        },
+        {
+          "arxiv_id": "2611.21962",
+          "revision": 1,
+          "source_fingerprint": "6fc6e571179906e67478d06499508b7662983855f94aca752a51f906cd6bd63d",
+          "guide_fingerprint": "450990ebdf1aa05ac89c18ba170d7e24e3f88c1a97d9cd462024ab3676d502f4"
+        },
+        {
+          "arxiv_id": "2611.21986",
+          "revision": 1,
+          "source_fingerprint": "893cf69cfc975cb730d9787c8711cd2b8ae6ba79234d3c6b5f93697a1970e1bd",
+          "guide_fingerprint": "162095626d9ad5e5ae993000d33e6b735e53db295741e070b59ead4f230bd9ff"
+        },
+        {
+          "arxiv_id": "2611.22004",
+          "revision": 1,
+          "source_fingerprint": "429efbc1098c49d80d6584376183b28ee5a0049eca85fd44abaf727072901218",
+          "guide_fingerprint": "f4bd93f1e9f9b19effda90e5a9e4e43541ab9224990e9d06181e9fe44baf17c2"
+        },
+        {
+          "arxiv_id": "2611.22007",
+          "revision": 1,
+          "source_fingerprint": "a7ff430e14111a185eb54f1b9de017c27759cfaff4a012bba6b931f381fb78f2",
+          "guide_fingerprint": "7737de275eef2aaf4a1d707ac2dc9fced0e324e7a5ba97a4263ff909ad33ada9"
+        },
+        {
+          "arxiv_id": "2611.22044",
+          "revision": 1,
+          "source_fingerprint": "b88f3696cfb89d510b928c145ee921edbb5444d38aa462ce9cf5a7cf9652f7f3",
+          "guide_fingerprint": "b77944b0d0529faebdd1935f0974855f942f98745033122e2976093e2e454806"
+        },
+        {
+          "arxiv_id": "2611.22051",
+          "revision": 1,
+          "source_fingerprint": "b44887d0714555d49c3d57b12327cfc55347323ea0d0e4f314641c16bf34c72b",
+          "guide_fingerprint": "3389c039be21785060896739ac3622952596c7c0cba36e48f32d4dde1975d43c"
+        },
+        {
+          "arxiv_id": "2611.22091",
+          "revision": 1,
+          "source_fingerprint": "d24992eb174b6cbe24e759e90b8983a4cbe783af02839f95029413ddc0b64c20",
+          "guide_fingerprint": "df2e813a850466588325e9735063abea5ea6ef33dbad3466e3dfe32be9faedbd"
+        },
+        {
+          "arxiv_id": "2611.22300",
+          "revision": 1,
+          "source_fingerprint": "e1c8601323239e774130879beb20724f3fe16ead50ef388fa84b0f0228461338",
+          "guide_fingerprint": "e3fe890e902fd6cac244df9b11bd0d5da99f34953c17807496d7b2d77c1b4aad"
+        },
+        {
+          "arxiv_id": "2611.22316",
+          "revision": 1,
+          "source_fingerprint": "f3815df80b137bf7472487f74b9e4ab08e2a5405415989d2edcba7b2266195b2",
+          "guide_fingerprint": "64412f0917c51150625a7225836f5458808cc3aef6c8470ff6928dac7109905f"
+        },
+        {
+          "arxiv_id": "2611.22375",
+          "revision": 1,
+          "source_fingerprint": "81cce01d31c16107e31a063ccfcd7b298ec26439661ebd780dba0f54dc342067",
+          "guide_fingerprint": "5f0be4b82df40086554b1b2243b9de829fde3266c08a3c672465808ea19e6248"
+        },
+        {
+          "arxiv_id": "2611.22377",
+          "revision": 1,
+          "source_fingerprint": "5aac40037762a2a2684ec0836cd54cf7823e87e7cd592f13dc0b2c4134b14f4f",
+          "guide_fingerprint": "a8bc06b7615061045df7c37be490e37e744fd4a40ce02db8dd478e17c94cbc1a"
+        },
+        {
+          "arxiv_id": "2611.22378",
+          "revision": 1,
+          "source_fingerprint": "24ed9008ca9613de9a107307f012ed9f31d603141ea29dd5a944fbc67793f2b9",
+          "guide_fingerprint": "8c5d9eb0da1e1ef8e513205f0e0fd74424aa6bd1d1805f557b2a8bd44b3aeb78"
+        },
+        {
+          "arxiv_id": "2611.22387",
+          "revision": 1,
+          "source_fingerprint": "9d78e0b533f5cfda3f43171e10305a1ce1b8064e66fa1b1f4cb432e90c4711f8",
+          "guide_fingerprint": "e6febda84c00b161e71c869b0243005f12abe69e4ea2c6472a36ac52e452ef05"
+        },
+        {
+          "arxiv_id": "2611.22471",
+          "revision": 1,
+          "source_fingerprint": "b01fc70997e76d3164d9249145be7d4c17a4eaafcdbcd56e9426a12f2ac49d7c",
+          "guide_fingerprint": "7c9a7c45899f5ad3c219dbff5b6fd1d345793798596fcb24c4fcccbb774762b4"
+        },
+        {
+          "arxiv_id": "2611.22473",
+          "revision": 1,
+          "source_fingerprint": "0c8b24f9233ae2aa2cb7a87e1187e06718e181ab10f6583040d44d74f227330e",
+          "guide_fingerprint": "9dea8e1c551290ddfd5670dae6e1ac801dbfe6665d593887c2dd20214863bc1d"
+        },
+        {
+          "arxiv_id": "2611.22475",
+          "revision": 1,
+          "source_fingerprint": "8c5e11cfc367c42e3549e4b7c312dc0f2fa998ae1ce5a51059589ac33b67a3f6",
+          "guide_fingerprint": "4d1539f0ad4d9739b6373d6efe372aee21ce1fcf96cae2f4f1b6d517aed1c561"
+        },
+        {
+          "arxiv_id": "2611.22487",
+          "revision": 1,
+          "source_fingerprint": "14c72db2f0d8c81520cd0888b3b4bb2cd8bcea0d55ca145c9e03bc6e74814073",
+          "guide_fingerprint": "65b7765fef85f2608995e018586ac069f79ffb4517d93f1e33670e35a3b98c8e"
+        },
+        {
+          "arxiv_id": "2611.22602",
+          "revision": 1,
+          "source_fingerprint": "e5192e5367491bae96ef9f4d0d99f951acd94f81f4b40b56df2d894fe8ef963c",
+          "guide_fingerprint": "20537f8ca18cafe5bf8af4a0b6dab18f0ad2881e851ffd1882f70b10b7b45956"
+        },
+        {
+          "arxiv_id": "2611.22606",
+          "revision": 1,
+          "source_fingerprint": "0aaaa4a9d4d4de81290f9f98b15e60ce47dc592f2ad47637179c6e3f50abf70b",
+          "guide_fingerprint": "66ae2200dab1979b880faa5c82df4ad081f74229b9ab59cd3de6f912e60b405f"
+        },
+        {
+          "arxiv_id": "2611.22660",
+          "revision": 1,
+          "source_fingerprint": "8dd79ac628b52f629459ace11d60e01835dbd3e688349a5b50d536cb9722c159",
+          "guide_fingerprint": "e1496c260fd16c484bd3442a29c3aa36bb902648c134cb1b7fccdc159870c151"
+        },
+        {
+          "arxiv_id": "2611.22707",
+          "revision": 1,
+          "source_fingerprint": "69cc5912afe7fad830530b552d19aaa7f9cd71a69713ad93d971066fccfe9474",
+          "guide_fingerprint": "df245fa3fe34556c7c1e9a0842b939b74fadbf05c84a538bad74289aa43612be"
+        },
+        {
+          "arxiv_id": "2611.22739",
+          "revision": 1,
+          "source_fingerprint": "cc9771ca094adea39f3750eac47297be519a7839fb3ccdcd9f4d34593fcce47a",
+          "guide_fingerprint": "646d912d8ba9474f5f336fe4cf030cd28c31d8635ccc7f1cdc86a3b1f6854418"
+        },
+        {
+          "arxiv_id": "2611.22751",
+          "revision": 1,
+          "source_fingerprint": "c33be5fe24754abb89ccf7c0950300081fe938767e67c4990da2e746ba99b63e",
+          "guide_fingerprint": "603cb004146c0116dbfb19088b39a211ffea0c195cec2f1553654e225f6f71f7"
+        },
+        {
+          "arxiv_id": "2611.22771",
+          "revision": 1,
+          "source_fingerprint": "1c78045c3919b26ca857082256f738f490f1ebd3ae238c7d76a493e08df495d5",
+          "guide_fingerprint": "bfc911f13dfd6a1cd05c313fd338ea91a444048622ac5928d58061d16507484d"
+        },
+        {
+          "arxiv_id": "2611.22800",
+          "revision": 1,
+          "source_fingerprint": "edff1fcd7070d5ce15cd8275673a3ca3e7bffc115d8c4d9e21ef20bd2665bbec",
+          "guide_fingerprint": "7a76ce7ad3d4279689ad3c6e027b30902e12403bb77521e879f47c39c1461a5d"
+        },
+        {
+          "arxiv_id": "2611.22887",
+          "revision": 1,
+          "source_fingerprint": "d9fc7d54ac9a41c81b8bf89f0b01c39c614ce68d895779706ac14445ce912279",
+          "guide_fingerprint": "44d0d3f3428481b3483bc1f6e4aeed03e4dc08ad1f179663b4411c7a6fd78364"
+        },
+        {
+          "arxiv_id": "2611.22913",
+          "revision": 1,
+          "source_fingerprint": "4b6b33332d32f07a8c35a6917630421d2f599fdcf664aa84052806c27f9359e2",
+          "guide_fingerprint": "10560a100a9fce312eb9876dd16714f44d386d8ea5431c4d1790d6bf102590cb"
+        },
+        {
+          "arxiv_id": "2611.22914",
+          "revision": 1,
+          "source_fingerprint": "815d10c8480727b0ce358adede7e5d18d4412b2367c9e9bbff9a5093f7c8ca5a",
+          "guide_fingerprint": "49ab61db1826f5b34e9bbbcf0ea9bac3bf219ef2db532802f4a829862ba307bf"
+        },
+        {
+          "arxiv_id": "2611.22952",
+          "revision": 1,
+          "source_fingerprint": "ef25a17631b9f7fc2e88da2cec9dd573ecb85e148d413ba19458364e0893ce90",
+          "guide_fingerprint": "63ef07f27c5ceedb69fbd4fa7dd6c0b8fa9ad5e58699617aa91ab08189cef9e5"
+        },
+        {
+          "arxiv_id": "2611.22999",
+          "revision": 1,
+          "source_fingerprint": "1c0c4d47b64bf5c8c0293459ffdc4ae44e1b094c93b4004630efe9eb3117c6bb",
+          "guide_fingerprint": "ba01064202cdfa6f3883e37b1e8715c33b364d62533c3d00f79e5d8fc2c3ef73"
+        },
+        {
+          "arxiv_id": "2611.23019",
+          "revision": 1,
+          "source_fingerprint": "c75432f9e8763050855553cab24f207f1314a265aaf9349bbe5eecca903a748b",
+          "guide_fingerprint": "1e517e44a3b67568540120fdd2a9dec20c10f59bc94c2b30df4f23fc721e30be"
+        },
+        {
+          "arxiv_id": "2611.23071",
+          "revision": 1,
+          "source_fingerprint": "8050d6ed4544060b324495c3edaff318611590dac8ef365feeb49c680aa7912a",
+          "guide_fingerprint": "3089ea20f9b20d19145608ad8772958569b3859165c7eb1145e3e2789503522e"
+        },
+        {
+          "arxiv_id": "2611.23084",
+          "revision": 1,
+          "source_fingerprint": "2435157e982b919584fd5999b9e5cd2556c9ddc94ecb65a2ba225f5103187e03",
+          "guide_fingerprint": "8a773175d642121c21f504cc36f374266bbbc3ea521ca9259b064308d4e8af71"
+        },
+        {
+          "arxiv_id": "2611.23110",
+          "revision": 1,
+          "source_fingerprint": "dd2399b75ecd76651529036d5ffe221ffed0dad25348b730316ad3e462810d91",
+          "guide_fingerprint": "320359644f73a079330ade3aefeecc4e5ec2c6e0d3a407569f69d40de9ea0648"
+        },
+        {
+          "arxiv_id": "2611.23150",
+          "revision": 1,
+          "source_fingerprint": "87953c6ea98dc24721e2d7a037a98bfb38818fd6fbfd58612f60a5046663c499",
+          "guide_fingerprint": "b7770cf40ea1db02f031aedb8609f6ed8b1ef95f78604e513a48824e962c96e2"
         }
       ],
-      "skim_summary": "Topics include 21 cm Cosmology of Boosted Dark Matter, A PhEW Good Simulations: I. Galaxy Properties."
+      "skim_summary": "Topics include 21 cm Cosmology of Boosted Dark Matter, A PhEW Good Simulations: I. Galaxy Properties, among others."
     },
     "historical_analyses": []
   }

@@ -7,15 +7,47 @@
   "generated_at": "2026-11-19T22:28:05.969Z",
   "counts": {
     "total": 73,
-    "analyzed": 0,
+    "analyzed": 2,
     "must_read": 0,
     "worth_knowing": 0,
-    "skip": 0,
-    "pending": 73
+    "skip": 2,
+    "pending": 71
   },
   "opening_brief": {
-    "status": "unavailable",
-    "reason": "No verified scientific reading guides available for this edition."
+    "status": "ready",
+    "edition_fingerprint": "ef5cdebca61990612f9df26b4ddb74119629e935379fe559903dc03fa2cf9cbc",
+    "intro": "Standard screening batch, focused primarily on abstract skimming.",
+    "focus_paper": null,
+    "must_read": [],
+    "key_highlights": [],
+    "worth_knowing": [],
+    "skim_topics": [
+      {
+        "arxiv_id": "2611.21714",
+        "revision": 1,
+        "title": "21 cm Cosmology of Boosted Dark Matter"
+      },
+      {
+        "arxiv_id": "2611.21716",
+        "revision": 1,
+        "title": "A PhEW Good Simulations: I. Galaxy Properties"
+      }
+    ],
+    "skip": [
+      {
+        "arxiv_id": "2611.21714",
+        "revision": 1,
+        "source_fingerprint": "8a952543b2c6739ae8541da40ed9c6fd2c448d17a793d99b6742dd9ad5144ee4",
+        "guide_fingerprint": "c5976817e10af92f1e0e578c0e530e36f5558df1102ae3ec1cc1eff15caf7039"
+      },
+      {
+        "arxiv_id": "2611.21716",
+        "revision": 1,
+        "source_fingerprint": "75a2b5c923b5eac89ab5df228fcab71979f57965711adee80a9da9f40a71b50d",
+        "guide_fingerprint": "1ddc5e5647cc504c4592828fbe0385c8ed42a0d8c1974df0c31d536da84dba80"
+      }
+    ],
+    "skim_summary": "Topics include 21 cm Cosmology of Boosted Dark Matter, A PhEW Good Simulations: I. Galaxy Properties."
   },
   "highlights": [],
   "feed": {
@@ -2018,7 +2050,110 @@
     "snapshot_manifest": "runs/20261119T222805969Z-32bc7123-9e25-4577-88e4-93b0ccc4e99f/manifest.json"
   },
   "radar": {
-    "analyses": [],
+    "analyses": [
+      {
+        "arxiv_id": "2611.21714",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "8a952543b2c6739ae8541da40ed9c6fd2c448d17a793d99b6742dd9ad5144ee4",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2611.21714v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2611.21714v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "agy/gemini-3.8-flash-medium",
+          "analyzed_at": "2026-11-19T23:16:46.909Z",
+          "reason": "The study focuses on the cosmological 21 cm signal and structure formation constraints on boosted dark matter models, which falls outside the scope of high-energy transient astrophysics.",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "Abstract",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “We calculate the global 21 cm brightness temperature and its power spectrum in BDM cosmology.”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        },
+        "historical_edition": "announcement-2026-11-17",
+        "historical_edition_fingerprint": "ef5cdebca61990612f9df26b4ddb74119629e935379fe559903dc03fa2cf9cbc"
+      },
+      {
+        "arxiv_id": "2611.21716",
+        "revision": 1,
+        "status": "ready",
+        "source_fingerprint": "75a2b5c923b5eac89ab5df228fcab71979f57965711adee80a9da9f40a71b50d",
+        "priority": "skip",
+        "coverage": {
+          "level": "abstract_only",
+          "label": "仅依据 arXiv 摘要筛选，未检查正文",
+          "source_version": "arXiv:2611.21716v1",
+          "inspected_sections": [
+            "Abstract"
+          ],
+          "source_references": [
+            {
+              "kind": "arxiv_abstract",
+              "url": "https://arxiv.org/abs/2611.21716v1",
+              "locator": "Abstract",
+              "description": "arXiv abstract in the discovery record"
+            }
+          ]
+        },
+        "analysis": {
+          "origin": "ai",
+          "model": "agy/gemini-3.8-flash-medium",
+          "analyzed_at": "2026-11-19T23:16:46.909Z",
+          "reason": "The work investigates cosmological galaxy evolution and stellar mass scaling relations using a subgrid galactic wind model, without direct relevance to high-energy transient phenomena or compact object engines.",
+          "result": "未能从已检查材料中核实论文结果。",
+          "reading_entry": "Abstract",
+          "problem": "未能从已检查材料中核实论文问题陈述。",
+          "method": "未能从已检查摘要中核实方法说明。",
+          "assumptions": [],
+          "limits": [],
+          "citation_leads": [
+            "Abstract: “To overcome this limitation, we conduct a suite of cosmological simulations that use the PhEW (Physically Evolved Winds) subgrid model”"
+          ],
+          "research_progress": "已检查材料不足以判断相对既有工作的增量。",
+          "figures": [],
+          "unresolved_checks": [
+            "No independent peer review or line-by-line recalculation performed."
+          ],
+          "potential_lineage": {
+            "status": "no_match",
+            "reason": "No candidate scientific lineage identified from current evidence.",
+            "candidates": []
+          },
+          "prerequisite_works": []
+        },
+        "historical_edition": "announcement-2026-11-17",
+        "historical_edition_fingerprint": "ef5cdebca61990612f9df26b4ddb74119629e935379fe559903dc03fa2cf9cbc"
+      }
+    ],
     "knowledge_points": [],
     "edition": {
       "generated_at": "2026-11-19T22:28:05.969Z",
@@ -2045,8 +2180,40 @@
       "page_count": 1
     },
     "opening_brief": {
-      "status": "unavailable",
-      "reason": "No verified scientific reading guides available for this edition."
+      "status": "ready",
+      "edition_fingerprint": "ef5cdebca61990612f9df26b4ddb74119629e935379fe559903dc03fa2cf9cbc",
+      "intro": "Standard screening batch, focused primarily on abstract skimming.",
+      "focus_paper": null,
+      "must_read": [],
+      "key_highlights": [],
+      "worth_knowing": [],
+      "skim_topics": [
+        {
+          "arxiv_id": "2611.21714",
+          "revision": 1,
+          "title": "21 cm Cosmology of Boosted Dark Matter"
+        },
+        {
+          "arxiv_id": "2611.21716",
+          "revision": 1,
+          "title": "A PhEW Good Simulations: I. Galaxy Properties"
+        }
+      ],
+      "skip": [
+        {
+          "arxiv_id": "2611.21714",
+          "revision": 1,
+          "source_fingerprint": "8a952543b2c6739ae8541da40ed9c6fd2c448d17a793d99b6742dd9ad5144ee4",
+          "guide_fingerprint": "c5976817e10af92f1e0e578c0e530e36f5558df1102ae3ec1cc1eff15caf7039"
+        },
+        {
+          "arxiv_id": "2611.21716",
+          "revision": 1,
+          "source_fingerprint": "75a2b5c923b5eac89ab5df228fcab71979f57965711adee80a9da9f40a71b50d",
+          "guide_fingerprint": "1ddc5e5647cc504c4592828fbe0385c8ed42a0d8c1974df0c31d536da84dba80"
+        }
+      ],
+      "skim_summary": "Topics include 21 cm Cosmology of Boosted Dark Matter, A PhEW Good Simulations: I. Galaxy Properties."
     },
     "historical_analyses": []
   }

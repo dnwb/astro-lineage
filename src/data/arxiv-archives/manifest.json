@@ -1,8 +1,8 @@
 {
   "schema_version": "astrolineage-arxiv-archive-manifest-v1",
-  "updated_at": "2026-11-19T18:02:34.559Z",
+  "updated_at": "2026-11-20T00:15:23.799Z",
   "total_weeks": 11,
-  "total_daily_editions": 51,
+  "total_daily_editions": 52,
   "latest_week_id": "2026-W47",
   "latest_daily_date": "2026-11-18",
   "weeks": [
@@ -26,15 +26,50 @@
           "week_id": "2026-W47",
           "batch_id": "announcement-2026-11-18",
           "total_papers": 68,
-          "analyzed_count": 0,
+          "analyzed_count": 68,
+          "must_read_count": 3,
+          "worth_knowing_count": 19,
+          "skip_count": 46,
+          "pending_count": 0,
+          "brief_status": "ready",
+          "brief_intro": "Featured reading: \"The Population of Radio Hypernebulae from Mass-Transferring Massive Binaries\" and 21 other key developments.",
+          "highlights": [
+            {
+              "arxiv_id": "2611.23783",
+              "priority": "must_read",
+              "title": "The Population of Radio Hypernebulae from Mass-Transferring Massive Binaries",
+              "reason": "This paper presents the first binary population synthesis coupled with time-dependent synchrotron nebular models for hyper-Eddington mass-transfer systems, directly constraining persistent radio source (PRS) counterparts to repeating FRBs, relativistic jet inflation, and radio transient surveys."
+            },
+            {
+              "arxiv_id": "2611.24204",
+              "priority": "must_read",
+              "title": "SN 2025wiu: A Slowly Evolving Type Ib Supernova with an Extraordinary Post-maximum Bump",
+              "reason": "SN 2025wiu presents an extraordinarily slow light-curve evolution and a rare, prominent post-maximum bump in a Type Ib supernova, offering stringent constraints on shock cooling and circumstellar medium interaction mechanisms."
+            },
+            {
+              "arxiv_id": "2611.24627",
+              "priority": "must_read",
+              "title": "Early spectra of AT2017gfo from scaled 3D merger ejecta: mass--velocity distribution, 3D structure, and treatment of line opacity",
+              "reason": "This paper presents the first self-consistent 3D radiative transfer simulations that successfully reproduce the early bolometric and multi-band spectral evolution of AT2017gfo, demonstrating that an ad-hoc separate lanthanide-poor component is unnecessary when realistic 3D ejecta geometry and slower post-merger outflow velocity distributions are taken into account."
+            }
+          ],
+          "data_file": "daily/2026-11-18.json"
+        },
+        {
+          "date": "2026-11-17",
+          "weekday": "Tue",
+          "week_id": "2026-W47",
+          "batch_id": "announcement-2026-11-17",
+          "total_papers": 73,
+          "analyzed_count": 2,
           "must_read_count": 0,
           "worth_knowing_count": 0,
-          "skip_count": 0,
-          "pending_count": 68,
-          "brief_status": "unavailable",
-          "brief_intro": "常规高能天体物理监测批次",
+          "skip_count": 2,
+          "pending_count": 71,
+          "brief_status": "ready",
+          "brief_intro": "Standard screening batch, focused primarily on abstract skimming.",
           "highlights": [],
-          "data_file": "daily/2026-11-18.json"
+          "data_file": "daily/2026-11-17.json"
         },
         {
           "date": "2026-11-16",

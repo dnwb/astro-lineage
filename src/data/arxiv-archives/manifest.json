@@ -1,10 +1,10 @@
 {
   "schema_version": "astrolineage-arxiv-archive-manifest-v1",
-  "updated_at": "2026-11-20T03:04:42.022Z",
+  "updated_at": "2026-11-20T18:08:54.665Z",
   "total_weeks": 11,
-  "total_daily_editions": 52,
+  "total_daily_editions": 53,
   "latest_week_id": "2026-W47",
-  "latest_daily_date": "2026-11-18",
+  "latest_daily_date": "2026-11-19",
   "weeks": [
     {
       "week_id": "2026-W47",
@@ -20,6 +20,22 @@
       },
       "top_picks_count": 17,
       "days": [
+        {
+          "date": "2026-11-19",
+          "weekday": "Thu",
+          "week_id": "2026-W47",
+          "batch_id": "announcement-2026-11-19",
+          "total_papers": 65,
+          "analyzed_count": 44,
+          "must_read_count": 0,
+          "worth_knowing_count": 0,
+          "skip_count": 44,
+          "pending_count": 21,
+          "brief_status": "ready",
+          "brief_intro": "Standard screening batch, focused primarily on abstract skimming.",
+          "highlights": [],
+          "data_file": "daily/2026-11-19.json"
+        },
         {
           "date": "2026-11-18",
           "weekday": "Wed",

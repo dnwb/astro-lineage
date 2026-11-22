@@ -18,7 +18,7 @@ try {
   }
 } catch {}
 
-async function probeModel({ baseUrl, apiKey, model, timeoutMs = 35000 }) {
+async function probeModel({ baseUrl, apiKey, model, timeoutMs = 60000 }) {
   const start = performance.now();
   const url = `${baseUrl.replace(/\/+$/u, "")}/chat/completions`;
 
@@ -30,7 +30,7 @@ async function probeModel({ baseUrl, apiKey, model, timeoutMs = 35000 }) {
         Authorization: `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        model: normalizeModelName(model),
+        model: normalizeModelName(model).replace(/^agy\//, ""),
         messages: [{ role: "user", content: "hi" }],
         max_tokens: 5,
         temperature: 0.1,

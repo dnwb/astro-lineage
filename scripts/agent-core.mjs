@@ -55,13 +55,10 @@ export function normalizeModelName(name) {
   else if (trimmed === "6-astra" || trimmed === "chatgpt-6-astra") resolved = "gpt-6-astra";
   else if (trimmed === "6.1-terra" || trimmed === "6.1terra" || trimmed === "chatgpt-6.1-terra")
     resolved = "gpt-6.1-terra";
-  else if (
-    trimmed === "gemini-3.8-flash" ||
-    trimmed === "gemini3.8flash" ||
-    trimmed === "gemini-3.8-flash-high" ||
-    trimmed === "gemini-3.8-flash-medium"
-  )
-    resolved = "gemini-3.8-flash-medium";
+  else if (trimmed === "gemini-3.8-flash" || trimmed === "gemini3.8flash")
+    resolved = "gemini-3.8-flash";
+  else if (trimmed === "gemini-3.8-flash-high") resolved = "gemini-3.8-flash-high";
+  else if (trimmed === "gemini-3.8-flash-medium") resolved = "gemini-3.8-flash-medium";
   else if (trimmed === "gemini-3.5-flash" || trimmed === "gemini3.5flash")
     resolved = "gemini-3.5-flash-lite";
   else if (

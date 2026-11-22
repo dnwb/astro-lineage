@@ -1,6 +1,6 @@
 {
   "schema_version": "astrolineage-arxiv-archive-manifest-v1",
-  "updated_at": "2026-11-20T18:08:54.665Z",
+  "updated_at": "2026-11-22T11:14:48.282Z",
   "total_weeks": 11,
   "total_daily_editions": 53,
   "latest_week_id": "2026-W47",
@@ -26,14 +26,33 @@
           "week_id": "2026-W47",
           "batch_id": "announcement-2026-11-19",
           "total_papers": 65,
-          "analyzed_count": 44,
-          "must_read_count": 0,
-          "worth_knowing_count": 0,
-          "skip_count": 44,
-          "pending_count": 21,
+          "analyzed_count": 65,
+          "must_read_count": 3,
+          "worth_knowing_count": 12,
+          "skip_count": 50,
+          "pending_count": 0,
           "brief_status": "ready",
-          "brief_intro": "Standard screening batch, focused primarily on abstract skimming.",
-          "highlights": [],
+          "brief_intro": "Featured reading: \"FAST Burst-Cluster Catalog of FRB 20240114A\" and 14 other key developments.",
+          "highlights": [
+            {
+              "arxiv_id": "2611.25348",
+              "priority": "must_read",
+              "title": "FAST Burst-Cluster Catalog of FRB 20240114A",
+              "reason": "This paper establishes the largest FAST burst-cluster catalog for the active repeating FRB 20240114A, providing vital empirical constraints on local magneto-ionic environment evolution (secular $\\dot{\\mathrm{DM}}$) and multi-timescale burst clustering directly relevant to repeating FRB central engines and PRS interactions."
+            },
+            {
+              "arxiv_id": "2611.26008",
+              "priority": "must_read",
+              "title": "Fast X-Ray Transients from Dense Circumstellar Material Shock Breakout and Cooling Emission",
+              "reason": "Directly investigates supernova shock breakout and cooling emission in dense circumstellar material shells to model extragalactic fast X-ray transients such as EP260321a, aligning directly with the group's core focus on shock breakout and CSM interaction."
+            },
+            {
+              "arxiv_id": "2611.26468",
+              "priority": "must_read",
+              "title": "Multimessenger constraints on the origin of long gamma-ray bursts with plateaus: three cases",
+              "reason": "This work directly investigates the central engine nature of long GRBs with X-ray plateaus by distinguishing collapsar black holes from magnetars using multimessenger gravitational wave signatures and accretion evolution."
+            }
+          ],
           "data_file": "daily/2026-11-19.json"
         },
         {

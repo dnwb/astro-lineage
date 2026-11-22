@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-20T18:09:03.582Z",
+  "generated_at": "2026-11-22T09:12:28.490Z",
   "total_events": 165,
   "events": [
     {
@@ -533,8 +533,35 @@
           "priority": "worth_knowing",
           "bluf_result": "在单流体近似下，Higgs 门户模型约束暗物质粒子质量为 $\\log_{10}(m_\\chi/\\mathrm{MeV}) = 3.38_{-0.87}^{+1.05}$（中位值约为 $2.4\\,\\mathrm{GeV}$），其有效相互作用耦合 $y = 0.104_{-0.063}^{+0.062}$；ALP 模型中核物质偏度系数被显著限制在 $Q_0 = -927.57_{-55.54}^{+69.23}\\,\\mathrm{MeV}$。各模型预言的最大质量相近（$M_{\\rm max} \\approx 2.09 - 2.13\\,M_\\odot$），但在 $1.4\\,M_\\odot$ 处 Higgs 门户模型呈现更紧致结构（$R_{1.4} = 12.24\\,\\mathrm{km}$，$\\Lambda_{1.4} \\approx 361$）及更高的 $f$ 模振荡频率（$\\nu_{f,1.4} = 1.83\\,\\mathrm{kHz}$）。贝叶斯证据量排序显示中子衰变与 ALP 方案优于 Higgs 门户模型。",
           "bluf_problem": "探索不同弱相互作用暗物质微观模型（Higgs 门户、中子衰变反常与 ALP 媒介）对中子星微观物态方程（EOS）、宏观结构与振荡模式的影响，并在多密度观测约束下比较各模型的后验合理性与简并性。",
-          "figures": [],
-          "primary_figure": null
+          "figures": [
+            {
+              "url": "/arxiv-figures/2610.15713/corner_Higgs_NMDM_EFT_Bc.png",
+              "label": "Fig. 1",
+              "caption": "Figure 1: Marginalized one- and two-dimensional posterior distributions of the nuclear-matter and dark-sector parameters for the Higgs-portal model, obtained using the combined χ \\chi EFT, nuclear-physics, NICER, and GW170817 constraints. Diagonal panels show the one-dimensional posteriors, with the median indicated by the dotted line and the 68% credible interval by the dashed lines. Off-diagonal panels show the pairwise posteriors, with inner and outer contours enclosing the 68% and 95% credible regions, respectively. The parameters are ρ 0 \\rho_{0} , E 0 E_{0} , K 0 K_{0} , Q 0 Q_{0} , M ∗ / M M^{*}/M , J 0 J_{0} , L 0 L_{0} , y y , m χ m_{\\chi} , and k F DM k_{F}^{\\rm DM} . The plotted dark-sector variables are 10 2 ​ y 10^{2}y , log 10 ⁡ ( m χ / MeV ) \\log_{10}(m_{\\chi}/{\\rm MeV}) , and k F DM k_{F}^{\\rm DM} in MeV. The quantities E 0 E_{0} , K 0 K_{0} , Q 0 Q_{0} , J 0 J_{0} , and L 0 L_{0} are given in MeV, ρ 0 \\rho_{0} in fm -3 , and M ∗ / M M^{*}/M and y y are dimensionless.",
+              "category": "fitting",
+              "category_badge": "数据拟合与模型对比",
+              "physical_core": "展示理论模型与实际观测数据的拟合对比及关键参数后验约束。",
+              "is_schematic": false
+            },
+            {
+              "url": "/arxiv-figures/2610.15713/Heatmap_Bayes6.png",
+              "label": "Fig. 6",
+              "caption": "Figure 6: Matrix showing Δ ​ ln ⁡ 𝒵 i ​ j \\Delta\\ln\\mathcal{Z}_{ij} where model along the column is i i and along the row is j j .",
+              "category": "fitting",
+              "category_badge": "数据拟合与模型对比",
+              "physical_core": "展示理论模型与实际观测数据的拟合对比及关键参数后验约束。",
+              "is_schematic": false
+            }
+          ],
+          "primary_figure": {
+            "url": "/arxiv-figures/2610.15713/corner_Higgs_NMDM_EFT_Bc.png",
+            "label": "Fig. 1",
+            "caption": "Figure 1: Marginalized one- and two-dimensional posterior distributions of the nuclear-matter and dark-sector parameters for the Higgs-portal model, obtained using the combined χ \\chi EFT, nuclear-physics, NICER, and GW170817 constraints. Diagonal panels show the one-dimensional posteriors, with the median indicated by the dotted line and the 68% credible interval by the dashed lines. Off-diagonal panels show the pairwise posteriors, with inner and outer contours enclosing the 68% and 95% credible regions, respectively. The parameters are ρ 0 \\rho_{0} , E 0 E_{0} , K 0 K_{0} , Q 0 Q_{0} , M ∗ / M M^{*}/M , J 0 J_{0} , L 0 L_{0} , y y , m χ m_{\\chi} , and k F DM k_{F}^{\\rm DM} . The plotted dark-sector variables are 10 2 ​ y 10^{2}y , log 10 ⁡ ( m χ / MeV ) \\log_{10}(m_{\\chi}/{\\rm MeV}) , and k F DM k_{F}^{\\rm DM} in MeV. The quantities E 0 E_{0} , K 0 K_{0} , Q 0 Q_{0} , J 0 J_{0} , and L 0 L_{0} are given in MeV, ρ 0 \\rho_{0} in fm -3 , and M ∗ / M M^{*}/M and y y are dimensionless.",
+            "category": "fitting",
+            "category_badge": "数据拟合与模型对比",
+            "physical_core": "展示理论模型与实际观测数据的拟合对比及关键参数后验约束。",
+            "is_schematic": false
+          }
         },
         {
           "arxiv_id": "2610.13926",
@@ -2217,8 +2244,26 @@
           "priority": "skip",
           "bluf_result": "基于 GW250114 数据搜寻引力波回声未见显著偏离黑洞无毛定理的信号（贝叶斯因子 $\\ln\\mathcal{B} = -2.9$），在 $90\\%$ 可信度下测得视界反射率上限 $|\\mathcal{R}_s| < 0.059$（均匀先验）及 $< 0.073$（复平面均匀先验），对应反射能量比例上限 $|\\mathcal{R}_s|^2 < 3.5 \\times 10^{-3}$（$<0.4\\%$）。",
           "bluf_problem": "常规黑洞准正则模（QNM）振铃主要反映光环处的引力势峰，对近视界处可能存在的量子微观结构或奇异天体表面反射不敏感；需要寻找由跌落波（直接波 DW）反射产生并穿透势垒的引力波回声，以直接检验视界反射率的零假设。",
-          "figures": [],
-          "primary_figure": null
+          "figures": [
+            {
+              "url": "/arxiv-figures/2610.12429/fig1_schematic.png",
+              "label": "Fig. 1",
+              "caption": "Figure 1: Schematic spacetime picture of the first echo. Radiation from the plunging source (star) reaches the observer through the barrier as the DW (blue). Radiation emitted toward the horizon, ( + ) (+) , and the part of the outgoing radiation reflected by the barrier, ( − ) (-) ( ℛ BH \\mathcal{R}^{\\rm BH} ), are reflected at the surface ( ℛ s \\mathcal{R}_{s} ) and cross the barrier outward as the echo. The barrier modulates their frequency content. The ( − ) (-) path is delayed by exactly Δ ​ t = − 2 ​ r ∗ s \\Delta t=-2r_{*}^{s} with respect to the DW.",
+              "category": "theoretical",
+              "category_badge": "物理模型示意图",
+              "physical_core": "展示核心天体物理驱动机制、几何拓扑与理论演化模型架构。",
+              "is_schematic": true
+            }
+          ],
+          "primary_figure": {
+            "url": "/arxiv-figures/2610.12429/fig1_schematic.png",
+            "label": "Fig. 1",
+            "caption": "Figure 1: Schematic spacetime picture of the first echo. Radiation from the plunging source (star) reaches the observer through the barrier as the DW (blue). Radiation emitted toward the horizon, ( + ) (+) , and the part of the outgoing radiation reflected by the barrier, ( − ) (-) ( ℛ BH \\mathcal{R}^{\\rm BH} ), are reflected at the surface ( ℛ s \\mathcal{R}_{s} ) and cross the barrier outward as the echo. The barrier modulates their frequency content. The ( − ) (-) path is delayed by exactly Δ ​ t = − 2 ​ r ∗ s \\Delta t=-2r_{*}^{s} with respect to the DW.",
+            "category": "theoretical",
+            "category_badge": "物理模型示意图",
+            "physical_core": "展示核心天体物理驱动机制、几何拓扑与理论演化模型架构。",
+            "is_schematic": true
+          }
         },
         {
           "arxiv_id": "2609.28953",
@@ -2237,8 +2282,16 @@
           "primary_figure": null
         }
       ],
-      "lead_figure": null,
-      "lead_figure_arxiv_id": null,
+      "lead_figure": {
+        "url": "/arxiv-figures/2610.12429/fig1_schematic.png",
+        "label": "Fig. 1",
+        "caption": "Figure 1: Schematic spacetime picture of the first echo. Radiation from the plunging source (star) reaches the observer through the barrier as the DW (blue). Radiation emitted toward the horizon, ( + ) (+) , and the part of the outgoing radiation reflected by the barrier, ( − ) (-) ( ℛ BH \\mathcal{R}^{\\rm BH} ), are reflected at the surface ( ℛ s \\mathcal{R}_{s} ) and cross the barrier outward as the echo. The barrier modulates their frequency content. The ( − ) (-) path is delayed by exactly Δ ​ t = − 2 ​ r ∗ s \\Delta t=-2r_{*}^{s} with respect to the DW.",
+        "category": "theoretical",
+        "category_badge": "物理模型示意图",
+        "physical_core": "展示核心天体物理驱动机制、几何拓扑与理论演化模型架构。",
+        "is_schematic": true
+      },
+      "lead_figure_arxiv_id": "2610.12429",
       "canonical_t0": null,
       "best_redshift": null,
       "has_redshift_conflict": false,
@@ -8086,35 +8139,8 @@
           "priority": "worth_knowing",
           "bluf_result": "多波段测光显示光变曲线在 $600\\sim 650\\ \\mathrm{d}$ 发生变平（flattening），脱离了 $^{56}\\mathrm{Co} \\to {}^{56}\\mathrm{Fe}$ 的放射性衰变率；光谱在 $706\\ \\mathrm{d}$ 与 $811\\ \\mathrm{d}$ 展现出延伸至 $v \\approx \\pm 8000\\ \\mathrm{km\\ s^{-1}}$ 的盒状（boxy）H$\\alpha$ 轮廓，红翼明显受抑；辐射转移模拟测得冷致密壳层（CDS）几何厚度比为 $R_{\\rm in}/R_{\\rm out} \\simeq 0.7$，形成的新生尘埃质量为 $M_{\\rm dust} \\sim 5\\times 10^{-6}\\text{--}5\\times 10^{-5}\\ M_\\odot$（碳质或碳-硅酸盐混合）或 $\\sim 10^{-3}\\ M_\\odot$（纯硅酸盐），扫过的 CSM 位于 $r \\sim (4\\text{--}7)\\times 10^{16}\\ \\mathrm{cm}$，对应爆发前 $\\sim 10^3\\ \\mathrm{yr}$ 的恒星风物质。",
           "bluf_problem": "红超巨星在核塌缩爆发前数百年至数千年的超晚期质量损失历史，以及超新星演化至超晚期阶段辐射能源机制向抛射物-星周介质相互作用的转变与激波区早期尘埃形成过程。",
-          "figures": [
-            {
-              "url": "/arxiv-figures/2610.17140/24ggi_damocles.png",
-              "label": "Fig. 8",
-              "caption": "Figure 8: Best-fitting models that reproduce the H α \\alpha line compared with the observed profiles at 706 and 811 d. Grey lines indicate the rest wavelength and ± 8000 \\pm 8000 km s -1 . Panel (a): best-fitting model among all parameters specified in Table 1 . Panel (b): second best-fitting model, which happens to differ in the dust composition from pure amorphous carbonaceous to a 50:50 mixture with silicates. Panel (c): Best-fitting model among those with silicate dust only (see text for discussion).",
-              "category": "fitting",
-              "category_badge": "数据拟合与模型对比",
-              "physical_core": "展示理论模型与实际观测数据的拟合对比及关键参数后验约束。",
-              "is_schematic": false
-            },
-            {
-              "url": "/arxiv-figures/2610.17140/24ggi_Dessart.png",
-              "label": "Fig. 4",
-              "caption": "Figure 4: Left panel: Nebular spectra of SN 2024ggi at 581, 639, 706 and 811 d (black) compared with the interaction-powered SN II models of Dessart et al. (2023) computed for shock powers of 1 × 10 40 1\\times 10^{40} erg s -1 (coloured lines, as labelled). Model phases do not necessarily correspond to the observed ones, since the shock power is injected at an arbitrary epoch. The pink region is zoomed in the right panel. Right panel: Zoom around the H α \\alpha profile in velocity space. Vertical dashed lines mark the velocity at ± 8000 \\pm 8000 km s -1 .",
-              "category": "fitting",
-              "category_badge": "数据拟合与模型对比",
-              "physical_core": "展示理论模型与实际观测数据的拟合对比及关键参数后验约束。",
-              "is_schematic": false
-            }
-          ],
-          "primary_figure": {
-            "url": "/arxiv-figures/2610.17140/24ggi_damocles.png",
-            "label": "Fig. 8",
-            "caption": "Figure 8: Best-fitting models that reproduce the H α \\alpha line compared with the observed profiles at 706 and 811 d. Grey lines indicate the rest wavelength and ± 8000 \\pm 8000 km s -1 . Panel (a): best-fitting model among all parameters specified in Table 1 . Panel (b): second best-fitting model, which happens to differ in the dust composition from pure amorphous carbonaceous to a 50:50 mixture with silicates. Panel (c): Best-fitting model among those with silicate dust only (see text for discussion).",
-            "category": "fitting",
-            "category_badge": "数据拟合与模型对比",
-            "physical_core": "展示理论模型与实际观测数据的拟合对比及关键参数后验约束。",
-            "is_schematic": false
-          }
+          "figures": [],
+          "primary_figure": null
         },
         {
           "arxiv_id": "2609.31844",
@@ -8141,16 +8167,8 @@
           "primary_figure": null
         }
       ],
-      "lead_figure": {
-        "url": "/arxiv-figures/2610.17140/24ggi_damocles.png",
-        "label": "Fig. 8",
-        "caption": "Figure 8: Best-fitting models that reproduce the H α \\alpha line compared with the observed profiles at 706 and 811 d. Grey lines indicate the rest wavelength and ± 8000 \\pm 8000 km s -1 . Panel (a): best-fitting model among all parameters specified in Table 1 . Panel (b): second best-fitting model, which happens to differ in the dust composition from pure amorphous carbonaceous to a 50:50 mixture with silicates. Panel (c): Best-fitting model among those with silicate dust only (see text for discussion).",
-        "category": "fitting",
-        "category_badge": "数据拟合与模型对比",
-        "physical_core": "展示理论模型与实际观测数据的拟合对比及关键参数后验约束。",
-        "is_schematic": false
-      },
-      "lead_figure_arxiv_id": "2610.17140",
+      "lead_figure": null,
+      "lead_figure_arxiv_id": null,
       "canonical_t0": null,
       "best_redshift": null,
       "has_redshift_conflict": false,
@@ -8765,6 +8783,15 @@
               "category": "observational",
               "category_badge": "核心观测结果",
               "physical_core": "展示观测样本的关键物理参量统计分布与总体特征对比。",
+              "is_schematic": false
+            },
+            {
+              "url": "/arxiv-figures/2610.16527/slsnII_excessL.png",
+              "label": "Fig. 3",
+              "caption": "Figure 3 : First panel: UV excess luminosity L ex L_{\\mathrm{ex}} as a function of epoch in each target. Second panel: L ex L_{\\mathrm{ex}} as a fraction of the total luminosity L bol L_{\\mathrm{bol}} , consistently around a few per cent. Third panel: mass-loss rate estimates based on the UV excess as a function of radius from the center of the explosion, estimated through the model-based explosion epoch and the ejecta velocity. Epochs when the excess significance is &lt; 1 ​ σ &lt;1\\sigma are omitted. Points marked in grey correspond to the early epochs of SN 2023gpw where one blackbody can reasonably fit the SED.",
+              "category": "observational",
+              "category_badge": "核心观测结果",
+              "physical_core": "展示天体物理辐射宽波段能谱 (SED) 与特征光谱结构。",
               "is_schematic": false
             }
           ],

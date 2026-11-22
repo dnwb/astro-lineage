@@ -588,7 +588,7 @@ const bjtDailyInfo = formatAnnouncementInBeijing(latestDate, radarWeekday);
         letter-spacing: 0.02em;
         color: #2563eb;
       }
-      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .intel-meta-kicker {
+      :is([data-theme="dark"], :root[data-theme="dark"], body:has(#site-theme-toggle:checked)) .intel-meta-kicker {
         color: #60a5fa;
       }
       .intel-meta-date,
@@ -597,8 +597,8 @@ const bjtDailyInfo = formatAnnouncementInBeijing(latestDate, radarWeekday);
         color: #64748b;
         font-family: ui-monospace, monospace;
       }
-      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .intel-meta-date,
-      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .intel-meta-batch {
+      :is([data-theme="dark"], :root[data-theme="dark"], body:has(#site-theme-toggle:checked)) .intel-meta-date,
+      :is([data-theme="dark"], :root[data-theme="dark"], body:has(#site-theme-toggle:checked)) .intel-meta-batch {
         color: #94a3b8;
       }
       .hl-topic-lead {
@@ -607,7 +607,7 @@ const bjtDailyInfo = formatAnnouncementInBeijing(latestDate, radarWeekday);
         color: #1e3a8a;
         word-break: break-word;
       }
-      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .hl-topic-lead {
+      :is([data-theme="dark"], :root[data-theme="dark"], body:has(#site-theme-toggle:checked)) .hl-topic-lead {
         color: #93c5fd;
       }
       .intel-pick-links {
@@ -625,7 +625,7 @@ const bjtDailyInfo = formatAnnouncementInBeijing(latestDate, radarWeekday);
       .intel-pick-daily-link:hover {
         text-decoration: underline;
       }
-      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .intel-pick-daily-link {
+      :is([data-theme="dark"], :root[data-theme="dark"], body:has(#site-theme-toggle:checked)) .intel-pick-daily-link {
         color: #86efac;
       }
       .intel-pick-id {
@@ -637,7 +637,7 @@ const bjtDailyInfo = formatAnnouncementInBeijing(latestDate, radarWeekday);
       .intel-pick-id:hover {
         text-decoration: underline;
       }
-      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .intel-pick-id {
+      :is([data-theme="dark"], :root[data-theme="dark"], body:has(#site-theme-toggle:checked)) .intel-pick-id {
         color: #60a5fa;
       }
       .intel-pick-pdf {
@@ -649,7 +649,7 @@ const bjtDailyInfo = formatAnnouncementInBeijing(latestDate, radarWeekday);
       .intel-pick-pdf:hover {
         text-decoration: underline;
       }
-      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .intel-pick-pdf {
+      :is([data-theme="dark"], :root[data-theme="dark"], body:has(#site-theme-toggle:checked)) .intel-pick-pdf {
         color: #fca5a5;
       }
       .home-paper-title-bilingual {
@@ -676,7 +676,7 @@ const bjtDailyInfo = formatAnnouncementInBeijing(latestDate, radarWeekday);
         word-break: break-word;
         overflow-wrap: break-word;
       }
-      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .home-paper-title-zh {
+      :is([data-theme="dark"], :root[data-theme="dark"], body:has(#site-theme-toggle:checked)) .home-paper-title-zh {
         color: #94a3b8;
       }
       .intel-bluf-stream,
@@ -728,14 +728,14 @@ const bjtDailyInfo = formatAnnouncementInBeijing(latestDate, radarWeekday);
       .quick-res-lead {
         color: #1d4ed8;
       }
-      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .result-lead,
-      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .quick-res-lead {
+      :is([data-theme="dark"], :root[data-theme="dark"], body:has(#site-theme-toggle:checked)) .result-lead,
+      :is([data-theme="dark"], :root[data-theme="dark"], body:has(#site-theme-toggle:checked)) .quick-res-lead {
         color: #93c5fd;
       }
       .reason-lead {
         color: #b45309;
       }
-      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .reason-lead {
+      :is([data-theme="dark"], :root[data-theme="dark"], body:has(#site-theme-toggle:checked)) .reason-lead {
         color: #fde68a;
       }
       .candidate-tag {
@@ -747,7 +747,7 @@ const bjtDailyInfo = formatAnnouncementInBeijing(latestDate, radarWeekday);
         border: 1px solid rgba(245, 158, 11, 0.3);
         border-radius: 4px;
       }
-      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .candidate-tag {
+      :is([data-theme="dark"], :root[data-theme="dark"], body:has(#site-theme-toggle:checked)) .candidate-tag {
         color: #fde68a;
       }
       .portal-kicker {
@@ -757,7 +757,7 @@ const bjtDailyInfo = formatAnnouncementInBeijing(latestDate, radarWeekday);
         margin-bottom: 0.35rem;
         display: inline-block;
       }
-      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .portal-kicker {
+      :is([data-theme="dark"], :root[data-theme="dark"], body:has(#site-theme-toggle:checked)) .portal-kicker {
         color: #60a5fa;
       }
       .intel-daily-date-pills {
@@ -772,7 +772,7 @@ const bjtDailyInfo = formatAnnouncementInBeijing(latestDate, radarWeekday);
         min-width: 0;
         max-width: 100%;
       }
-      :global([data-theme="dark"]) .intel-daily-date-pills {
+      :is([data-theme="dark"], :root[data-theme="dark"], body:has(#site-theme-toggle:checked)) .intel-daily-date-pills {
         background: #0f172a;
         border-color: #334155;
       }
@@ -782,7 +782,7 @@ const bjtDailyInfo = formatAnnouncementInBeijing(latestDate, radarWeekday);
         color: #64748b;
         white-space: nowrap;
       }
-      :global([data-theme="dark"]) .pills-label {
+      :is([data-theme="dark"], :root[data-theme="dark"], body:has(#site-theme-toggle:checked)) .pills-label {
         color: #94a3b8;
       }
       .pills-scroll {
@@ -810,12 +810,12 @@ const bjtDailyInfo = formatAnnouncementInBeijing(latestDate, radarWeekday);
         border-color: #3b82f6;
         color: #1d4ed8;
       }
-      :global([data-theme="dark"]) .daily-date-chip {
+      :is([data-theme="dark"], :root[data-theme="dark"], body:has(#site-theme-toggle:checked)) .daily-date-chip {
         background: #1e293b;
         border-color: #475569;
         color: #cbd5e1;
       }
-      :global([data-theme="dark"]) .daily-date-chip:hover {
+      :is([data-theme="dark"], :root[data-theme="dark"], body:has(#site-theme-toggle:checked)) .daily-date-chip:hover {
         background: #1e3a8a33;
         border-color: #60a5fa;
         color: #93c5fd;
@@ -886,25 +886,25 @@ const bjtDailyInfo = formatAnnouncementInBeijing(latestDate, radarWeekday);
         font-weight: 600;
         color: #2563eb;
       }
-      :global([data-theme="dark"]) .knowledge-portal-card {
+      :is([data-theme="dark"], :root[data-theme="dark"], body:has(#site-theme-toggle:checked)) .knowledge-portal-card {
         background: #1e293b;
         border-color: #334155;
         color: #f8fafc;
       }
-      :global([data-theme="dark"]) .knowledge-portal-card:hover {
+      :is([data-theme="dark"], :root[data-theme="dark"], body:has(#site-theme-toggle:checked)) .knowledge-portal-card:hover {
         border-color: #475569;
       }
-      :global([data-theme="dark"]) .portal-card-title {
+      :is([data-theme="dark"], :root[data-theme="dark"], body:has(#site-theme-toggle:checked)) .portal-card-title {
         color: #f8fafc;
       }
-      :global([data-theme="dark"]) .portal-card-badge {
+      :is([data-theme="dark"], :root[data-theme="dark"], body:has(#site-theme-toggle:checked)) .portal-card-badge {
         background: #0f172a;
         color: #94a3b8;
       }
-      :global([data-theme="dark"]) .portal-card-desc {
+      :is([data-theme="dark"], :root[data-theme="dark"], body:has(#site-theme-toggle:checked)) .portal-card-desc {
         color: #94a3b8;
       }
-      :global([data-theme="dark"]) .portal-card-action {
+      :is([data-theme="dark"], :root[data-theme="dark"], body:has(#site-theme-toggle:checked)) .portal-card-action {
         color: #60a5fa;
       }
       .baseline-col-more {
@@ -917,7 +917,7 @@ const bjtDailyInfo = formatAnnouncementInBeijing(latestDate, radarWeekday);
       .baseline-col-more:hover {
         text-decoration: underline;
       }
-      :global([data-theme="dark"]) .baseline-col-more {
+      :is([data-theme="dark"], :root[data-theme="dark"], body:has(#site-theme-toggle:checked)) .baseline-col-more {
         color: #60a5fa;
       }
 
@@ -927,7 +927,7 @@ const bjtDailyInfo = formatAnnouncementInBeijing(latestDate, radarWeekday);
         border-top: 1px dashed #cbd5e1;
         padding-top: 0.45rem;
       }
-      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .intel-summary-details {
+      :is([data-theme="dark"], :root[data-theme="dark"], body:has(#site-theme-toggle:checked)) .intel-summary-details {
         border-top-color: #334155;
       }
       .intel-summary-toggle {
@@ -943,7 +943,7 @@ const bjtDailyInfo = formatAnnouncementInBeijing(latestDate, radarWeekday);
       .intel-summary-toggle:hover {
         text-decoration: underline;
       }
-      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .intel-summary-toggle {
+      :is([data-theme="dark"], :root[data-theme="dark"], body:has(#site-theme-toggle:checked)) .intel-summary-toggle {
         color: #60a5fa;
       }
       .intel-picks-head-row {
@@ -966,7 +966,7 @@ const bjtDailyInfo = formatAnnouncementInBeijing(latestDate, radarWeekday);
       .intel-picks-view-all:hover {
         text-decoration: underline;
       }
-      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .intel-picks-view-all {
+      :is([data-theme="dark"], :root[data-theme="dark"], body:has(#site-theme-toggle:checked)) .intel-picks-view-all {
         color: #60a5fa;
       }
       .intel-item-split {
@@ -1001,7 +1001,7 @@ const bjtDailyInfo = formatAnnouncementInBeijing(latestDate, radarWeekday);
         border-color: #93c5fd;
         box-shadow: 0 2px 8px rgba(37, 99, 235, 0.08);
       }
-      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .intel-inline-figure {
+      :is([data-theme="dark"], :root[data-theme="dark"], body:has(#site-theme-toggle:checked)) .intel-inline-figure {
         background: #0f172a;
         border-color: #334155;
       }
@@ -1027,7 +1027,7 @@ const bjtDailyInfo = formatAnnouncementInBeijing(latestDate, radarWeekday);
         padding: 0.08rem 0.38rem;
         border-radius: 0.25rem;
       }
-      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .intel-figure-badge {
+      :is([data-theme="dark"], :root[data-theme="dark"], body:has(#site-theme-toggle:checked)) .intel-figure-badge {
         color: #93c5fd;
         background: rgba(30, 58, 138, 0.45);
       }
@@ -1036,7 +1036,7 @@ const bjtDailyInfo = formatAnnouncementInBeijing(latestDate, radarWeekday);
         font-weight: 600;
         color: #475569;
       }
-      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .intel-figure-id {
+      :is([data-theme="dark"], :root[data-theme="dark"], body:has(#site-theme-toggle:checked)) .intel-figure-id {
         color: #94a3b8;
       }
       .intel-figure-more {
@@ -1045,7 +1045,7 @@ const bjtDailyInfo = formatAnnouncementInBeijing(latestDate, radarWeekday);
         font-weight: 600;
         color: #2563eb;
       }
-      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .intel-figure-more {
+      :is([data-theme="dark"], :root[data-theme="dark"], body:has(#site-theme-toggle:checked)) .intel-figure-more {
         color: #60a5fa;
       }
       .intel-figure-img-wrap {
@@ -1060,7 +1060,7 @@ const bjtDailyInfo = formatAnnouncementInBeijing(latestDate, radarWeekday);
         overflow: hidden;
         padding: 0.2rem;
       }
-      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .intel-figure-img-wrap {
+      :is([data-theme="dark"], :root[data-theme="dark"], body:has(#site-theme-toggle:checked)) .intel-figure-img-wrap {
         background: #020617;
         border-color: #1e293b;
       }
@@ -1083,8 +1083,118 @@ const bjtDailyInfo = formatAnnouncementInBeijing(latestDate, radarWeekday);
         overflow: hidden;
         word-break: break-word;
       }
-      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .intel-figure-core {
+      :is([data-theme="dark"], :root[data-theme="dark"], body:has(#site-theme-toggle:checked)) .intel-figure-core {
         color: #94a3b8;
+      }
+
+      /* System dark mode preference fallback */
+      @media (prefers-color-scheme: dark) {
+        body:not([data-theme="light"]):not(:has(#site-theme-toggle:checked)) .intel-meta-kicker {
+          color: #60a5fa;
+        }
+        body:not([data-theme="light"]):not(:has(#site-theme-toggle:checked)) .intel-meta-date,
+        body:not([data-theme="light"]):not(:has(#site-theme-toggle:checked)) .intel-meta-batch {
+          color: #94a3b8;
+        }
+        body:not([data-theme="light"]):not(:has(#site-theme-toggle:checked)) .hl-topic-lead {
+          color: #93c5fd;
+        }
+        body:not([data-theme="light"]):not(:has(#site-theme-toggle:checked)) .intel-pick-daily-link {
+          color: #86efac;
+        }
+        body:not([data-theme="light"]):not(:has(#site-theme-toggle:checked)) .intel-pick-id {
+          color: #60a5fa;
+        }
+        body:not([data-theme="light"]):not(:has(#site-theme-toggle:checked)) .intel-pick-pdf {
+          color: #fca5a5;
+        }
+        body:not([data-theme="light"]):not(:has(#site-theme-toggle:checked)) .home-paper-title-zh {
+          color: #94a3b8;
+        }
+        body:not([data-theme="light"]):not(:has(#site-theme-toggle:checked)) .result-lead,
+        body:not([data-theme="light"]):not(:has(#site-theme-toggle:checked)) .quick-res-lead {
+          color: #93c5fd;
+        }
+        body:not([data-theme="light"]):not(:has(#site-theme-toggle:checked)) .reason-lead {
+          color: #fde68a;
+        }
+        body:not([data-theme="light"]):not(:has(#site-theme-toggle:checked)) .candidate-tag {
+          color: #fde68a;
+        }
+        body:not([data-theme="light"]):not(:has(#site-theme-toggle:checked)) .portal-kicker {
+          color: #60a5fa;
+        }
+        body:not([data-theme="light"]):not(:has(#site-theme-toggle:checked)) .intel-daily-date-pills {
+          background: #0f172a;
+          border-color: #334155;
+        }
+        body:not([data-theme="light"]):not(:has(#site-theme-toggle:checked)) .pills-label {
+          color: #94a3b8;
+        }
+        body:not([data-theme="light"]):not(:has(#site-theme-toggle:checked)) .daily-date-chip {
+          background: #1e293b;
+          border-color: #475569;
+          color: #cbd5e1;
+        }
+        body:not([data-theme="light"]):not(:has(#site-theme-toggle:checked)) .daily-date-chip:hover {
+          background: rgba(30, 58, 138, 0.25);
+          border-color: #60a5fa;
+          color: #93c5fd;
+        }
+        body:not([data-theme="light"]):not(:has(#site-theme-toggle:checked)) .knowledge-portal-card {
+          background: #1e293b;
+          border-color: #334155;
+          color: #f8fafc;
+        }
+        body:not([data-theme="light"]):not(:has(#site-theme-toggle:checked)) .knowledge-portal-card:hover {
+          border-color: #475569;
+        }
+        body:not([data-theme="light"]):not(:has(#site-theme-toggle:checked)) .portal-card-title {
+          color: #f8fafc;
+        }
+        body:not([data-theme="light"]):not(:has(#site-theme-toggle:checked)) .portal-card-badge {
+          background: #0f172a;
+          color: #94a3b8;
+        }
+        body:not([data-theme="light"]):not(:has(#site-theme-toggle:checked)) .portal-card-desc {
+          color: #94a3b8;
+        }
+        body:not([data-theme="light"]):not(:has(#site-theme-toggle:checked)) .portal-card-action {
+          color: #60a5fa;
+        }
+        body:not([data-theme="light"]):not(:has(#site-theme-toggle:checked)) .baseline-col-more {
+          color: #60a5fa;
+        }
+        body:not([data-theme="light"]):not(:has(#site-theme-toggle:checked)) .intel-summary-details {
+          border-top-color: #334155;
+        }
+        body:not([data-theme="light"]):not(:has(#site-theme-toggle:checked)) .intel-summary-toggle {
+          color: #60a5fa;
+        }
+        body:not([data-theme="light"]):not(:has(#site-theme-toggle:checked)) .intel-picks-view-all {
+          color: #60a5fa;
+        }
+        body:not([data-theme="light"]):not(:has(#site-theme-toggle:checked)) .intel-inline-figure {
+          background: #0f172a;
+          border-color: #334155;
+        }
+        body:not([data-theme="light"]):not(:has(#site-theme-toggle:checked)) .intel-figure-badge {
+          color: #93c5fd;
+          background: rgba(30, 58, 138, 0.45);
+        }
+        body:not([data-theme="light"]):not(:has(#site-theme-toggle:checked)) .intel-figure-id {
+          color: #94a3b8;
+        }
+        body:not([data-theme="light"]):not(:has(#site-theme-toggle:checked)) .intel-figure-more {
+          color: #60a5fa;
+        }
+        body:not([data-theme="light"]):not(:has(#site-theme-toggle:checked)) .intel-figure-img-wrap {
+          background: #020617;
+          border-color: #1e293b;
+        }
+        body:not([data-theme="light"]):not(:has(#site-theme-toggle:checked)) .intel-figure-core {
+          color: #94a3b8;
+        }
       }
     </style>
   </body>

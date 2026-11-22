@@ -562,7 +562,7 @@ const bjtDailyInfo = formatAnnouncementInBeijing(latestDate, radarWeekday);
       </footer>
     </main>
 
-    <style is:global>
+    <style>
       .home-header {
         margin-top: 1rem;
         margin-bottom: 1.25rem;
@@ -771,8 +771,9 @@ const bjtDailyInfo = formatAnnouncementInBeijing(latestDate, radarWeekday);
         border: 1px solid #e2e8f0;
         min-width: 0;
         max-width: 100%;
+        transition: background-color 0.15s ease, border-color 0.15s ease;
       }
-      :global([data-theme="dark"]) .intel-daily-date-pills {
+      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .intel-daily-date-pills {
         background: #0f172a;
         border-color: #334155;
       }
@@ -782,7 +783,7 @@ const bjtDailyInfo = formatAnnouncementInBeijing(latestDate, radarWeekday);
         color: #64748b;
         white-space: nowrap;
       }
-      :global([data-theme="dark"]) .pills-label {
+      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .pills-label {
         color: #94a3b8;
       }
       .pills-scroll {
@@ -810,21 +811,81 @@ const bjtDailyInfo = formatAnnouncementInBeijing(latestDate, radarWeekday);
         border-color: #3b82f6;
         color: #1d4ed8;
       }
-      :global([data-theme="dark"]) .daily-date-chip {
+      .daily-date-chip:focus-visible {
+        outline: 2px solid #2563eb;
+        outline-offset: 1px;
+      }
+      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .daily-date-chip {
         background: #1e293b;
         border-color: #475569;
         color: #cbd5e1;
       }
-      :global([data-theme="dark"]) .daily-date-chip:hover {
-        background: #1e3a8a33;
+      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .daily-date-chip:hover {
+        background: rgba(30, 58, 138, 0.25);
         border-color: #60a5fa;
         color: #93c5fd;
+      }
+      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .daily-date-chip:focus-visible {
+        outline-color: #38bdf8;
       }
       .daily-date-chip.active {
         background: #2563eb;
         border-color: #2563eb;
         color: #ffffff;
         font-weight: 600;
+      }
+      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .daily-date-chip.active {
+        background: #2563eb;
+        border-color: #3b82f6;
+        color: #ffffff;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :global(:root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked))) .intel-daily-date-pills {
+          background: #0f172a;
+          border-color: #334155;
+        }
+        :global(:root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked))) .pills-label {
+          color: #94a3b8;
+        }
+        :global(:root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked))) .daily-date-chip {
+          background: #1e293b;
+          border-color: #475569;
+          color: #cbd5e1;
+        }
+        :global(:root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked))) .daily-date-chip:hover {
+          background: rgba(30, 58, 138, 0.25);
+          border-color: #60a5fa;
+          color: #93c5fd;
+        }
+        :global(:root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked))) .daily-date-chip.active {
+          background: #2563eb;
+          border-color: #3b82f6;
+          color: #ffffff;
+        }
+      }
+
+      :global(:root[data-theme="light"]) .intel-daily-date-pills {
+        background: #f8fafc;
+        border-color: #e2e8f0;
+      }
+      :global(:root[data-theme="light"]) .pills-label {
+        color: #64748b;
+      }
+      :global(:root[data-theme="light"]) .daily-date-chip {
+        background: #ffffff;
+        border-color: #cbd5e1;
+        color: #475569;
+      }
+      :global(:root[data-theme="light"]) .daily-date-chip:hover {
+        background: #eff6ff;
+        border-color: #3b82f6;
+        color: #1d4ed8;
+      }
+      :global(:root[data-theme="light"]) .daily-date-chip.active {
+        background: #2563eb;
+        border-color: #2563eb;
+        color: #ffffff;
       }
       .knowledge-portal-strip {
         margin: 2rem 0 1.25rem;
@@ -886,25 +947,25 @@ const bjtDailyInfo = formatAnnouncementInBeijing(latestDate, radarWeekday);
         font-weight: 600;
         color: #2563eb;
       }
-      :global([data-theme="dark"]) .knowledge-portal-card {
+      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .knowledge-portal-card {
         background: #1e293b;
         border-color: #334155;
         color: #f8fafc;
       }
-      :global([data-theme="dark"]) .knowledge-portal-card:hover {
+      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .knowledge-portal-card:hover {
         border-color: #475569;
       }
-      :global([data-theme="dark"]) .portal-card-title {
+      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .portal-card-title {
         color: #f8fafc;
       }
-      :global([data-theme="dark"]) .portal-card-badge {
+      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .portal-card-badge {
         background: #0f172a;
         color: #94a3b8;
       }
-      :global([data-theme="dark"]) .portal-card-desc {
+      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .portal-card-desc {
         color: #94a3b8;
       }
-      :global([data-theme="dark"]) .portal-card-action {
+      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .portal-card-action {
         color: #60a5fa;
       }
       .baseline-col-more {
@@ -995,7 +1056,7 @@ const bjtDailyInfo = formatAnnouncementInBeijing(latestDate, radarWeekday);
         border: 1px solid #e2e8f0;
         border-radius: 0.5rem;
         overflow: hidden;
-        transition: border-color 0.15s ease, box-shadow 0.15s ease;
+        transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
       }
       .intel-inline-figure:hover {
         border-color: #93c5fd;
@@ -1005,6 +1066,10 @@ const bjtDailyInfo = formatAnnouncementInBeijing(latestDate, radarWeekday);
         background: #0f172a;
         border-color: #334155;
       }
+      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .intel-inline-figure:hover {
+        border-color: #60a5fa;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      }
       .intel-figure-link {
         display: flex;
         flex-direction: column;
@@ -1012,6 +1077,14 @@ const bjtDailyInfo = formatAnnouncementInBeijing(latestDate, radarWeekday);
         text-decoration: none;
         color: inherit;
         gap: 0.35rem;
+      }
+      .intel-figure-link:focus-visible {
+        outline: 2px solid #2563eb;
+        outline-offset: 2px;
+        border-radius: 0.35rem;
+      }
+      :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .intel-figure-link:focus-visible {
+        outline-color: #38bdf8;
       }
       .intel-figure-head {
         display: flex;
@@ -1071,6 +1144,7 @@ const bjtDailyInfo = formatAnnouncementInBeijing(latestDate, radarWeekday);
         height: auto;
         object-fit: contain;
         display: block;
+        filter: none !important;
       }
       .intel-figure-core {
         margin: 0;
@@ -1084,7 +1158,60 @@ const bjtDailyInfo = formatAnnouncementInBeijing(latestDate, radarWeekday);
         word-break: break-word;
       }
       :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .intel-figure-core {
-        color: #94a3b8;
+        color: #cbd5e1;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :global(:root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked))) .intel-inline-figure {
+          background: #0f172a;
+          border-color: #334155;
+        }
+        :global(:root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked))) .intel-inline-figure:hover {
+          border-color: #60a5fa;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+        :global(:root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked))) .intel-figure-link:focus-visible {
+          outline-color: #38bdf8;
+        }
+        :global(:root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked))) .intel-figure-badge {
+          color: #93c5fd;
+          background: rgba(30, 58, 138, 0.45);
+        }
+        :global(:root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked))) .intel-figure-id {
+          color: #94a3b8;
+        }
+        :global(:root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked))) .intel-figure-more {
+          color: #60a5fa;
+        }
+        :global(:root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked))) .intel-figure-img-wrap {
+          background: #020617;
+          border-color: #1e293b;
+        }
+        :global(:root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked))) .intel-figure-core {
+          color: #cbd5e1;
+        }
+      }
+
+      :global(:root[data-theme="light"]) .intel-inline-figure {
+        background: #f8fafc;
+        border-color: #e2e8f0;
+      }
+      :global(:root[data-theme="light"]) .intel-figure-badge {
+        color: #1e40af;
+        background: #dbeafe;
+      }
+      :global(:root[data-theme="light"]) .intel-figure-id {
+        color: #475569;
+      }
+      :global(:root[data-theme="light"]) .intel-figure-more {
+        color: #2563eb;
+      }
+      :global(:root[data-theme="light"]) .intel-figure-img-wrap {
+        background: #ffffff;
+        border-color: #f1f5f9;
+      }
+      :global(:root[data-theme="light"]) .intel-figure-core {
+        color: #475569;
       }
     </style>
   </body>

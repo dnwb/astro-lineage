@@ -3028,6 +3028,70 @@ article p {
   border-color: #262626;
 }
 
+:is([data-theme="dark"], body:has(#site-theme-toggle:checked)) .intel-daily-date-pills {
+  background: #0f172a;
+  border-color: #334155;
+}
+
+:is([data-theme="dark"], body:has(#site-theme-toggle:checked)) .intel-daily-date-pills .pills-label {
+  color: #94a3b8;
+}
+
+:is([data-theme="dark"], body:has(#site-theme-toggle:checked)) .daily-date-chip {
+  background: #1e293b;
+  border-color: #475569;
+  color: #cbd5e1;
+}
+
+:is([data-theme="dark"], body:has(#site-theme-toggle:checked)) .daily-date-chip:hover {
+  background: rgba(30, 58, 138, 0.25);
+  border-color: #60a5fa;
+  color: #93c5fd;
+}
+
+:is([data-theme="dark"], body:has(#site-theme-toggle:checked)) .daily-date-chip.active {
+  background: #2563eb;
+  border-color: #3b82f6;
+  color: #ffffff;
+}
+
+:is([data-theme="dark"], body:has(#site-theme-toggle:checked)) .intel-inline-figure {
+  background: #0f172a;
+  border-color: #334155;
+}
+
+:is([data-theme="dark"], body:has(#site-theme-toggle:checked)) .intel-inline-figure:hover {
+  border-color: #60a5fa;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+:is([data-theme="dark"], body:has(#site-theme-toggle:checked)) .intel-figure-badge {
+  color: #93c5fd;
+  background: rgba(30, 58, 138, 0.45);
+}
+
+:is([data-theme="dark"], body:has(#site-theme-toggle:checked)) .intel-figure-id {
+  color: #94a3b8;
+}
+
+:is([data-theme="dark"], body:has(#site-theme-toggle:checked)) .intel-figure-more {
+  color: #60a5fa;
+}
+
+:is([data-theme="dark"], body:has(#site-theme-toggle:checked)) .intel-figure-img-wrap {
+  background: #020617;
+  border-color: #1e293b;
+}
+
+:is([data-theme="dark"], body:has(#site-theme-toggle:checked)) .intel-figure-core {
+  color: #cbd5e1;
+}
+
+.intel-figure-img,
+.radar-figure-frame img {
+  filter: none !important;
+}
+
 .intel-daily-quick-item:hover {
   border-color: #0284c7;
   background: #ffffff;
@@ -3500,6 +3564,53 @@ article p {
   :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .portal-desc { color: #94a3b8; }
   :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .secondary-divider-content { background: var(--bg-primary, #0b0f19); }
   :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .secondary-section-divider::before { background: #334155; }
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .intel-daily-date-pills {
+    background: #0f172a !important;
+    border-color: #334155 !important;
+  }
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .intel-daily-date-pills .pills-label {
+    color: #94a3b8 !important;
+  }
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .daily-date-chip {
+    background: #1e293b !important;
+    border-color: #475569 !important;
+    color: #cbd5e1 !important;
+  }
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .daily-date-chip:hover {
+    background: rgba(30, 58, 138, 0.25) !important;
+    border-color: #60a5fa !important;
+    color: #93c5fd !important;
+  }
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .daily-date-chip.active {
+    background: #2563eb !important;
+    border-color: #3b82f6 !important;
+    color: #ffffff !important;
+  }
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .intel-inline-figure {
+    background: #0f172a !important;
+    border-color: #334155 !important;
+  }
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .intel-inline-figure:hover {
+    border-color: #60a5fa !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+  }
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .intel-figure-badge {
+    color: #93c5fd !important;
+    background: rgba(30, 58, 138, 0.45) !important;
+  }
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .intel-figure-id {
+    color: #94a3b8 !important;
+  }
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .intel-figure-more {
+    color: #60a5fa !important;
+  }
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .intel-figure-img-wrap {
+    background: #020617 !important;
+    border-color: #1e293b !important;
+  }
+  :root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked)) .intel-figure-core {
+    color: #cbd5e1 !important;
+  }
 }
 
 /* Explicit Light Mode Protection for Intelligence & Paper Cards */
@@ -3507,6 +3618,60 @@ article p {
   background: #ffffff !important;
   border-color: #e2ded4 !important;
   color: #172033 !important;
+}
+
+:root[data-theme="light"] .intel-daily-date-pills {
+  background: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+}
+
+:root[data-theme="light"] .intel-daily-date-pills .pills-label {
+  color: #64748b !important;
+}
+
+:root[data-theme="light"] .daily-date-chip {
+  background: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  color: #475569 !important;
+}
+
+:root[data-theme="light"] .daily-date-chip:hover {
+  background: #eff6ff !important;
+  border-color: #3b82f6 !important;
+  color: #1d4ed8 !important;
+}
+
+:root[data-theme="light"] .daily-date-chip.active {
+  background: #2563eb !important;
+  border-color: #2563eb !important;
+  color: #ffffff !important;
+}
+
+:root[data-theme="light"] .intel-inline-figure {
+  background: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+}
+
+:root[data-theme="light"] .intel-figure-badge {
+  color: #1e40af !important;
+  background: #dbeafe !important;
+}
+
+:root[data-theme="light"] .intel-figure-id {
+  color: #475569 !important;
+}
+
+:root[data-theme="light"] .intel-figure-more {
+  color: #2563eb !important;
+}
+
+:root[data-theme="light"] .intel-figure-img-wrap {
+  background: #ffffff !important;
+  border-color: #f1f5f9 !important;
+}
+
+:root[data-theme="light"] .intel-figure-core {
+  color: #475569 !important;
 }
 
 :root[data-theme="light"] .intel-pick-item,

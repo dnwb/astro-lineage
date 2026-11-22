@@ -927,6 +927,7 @@ function priorityLabel(priority: string) {
     display: flex;
     flex-direction: column;
     gap: 0.48rem;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
   }
   :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .radar-inline-figure {
     background: #0b1120;
@@ -938,14 +939,44 @@ function priorityLabel(priority: string) {
     overflow: hidden;
     background: #ffffff;
     border: 1px solid #e2e8f0;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
   }
   :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .radar-figure-frame {
     background: #0f172a;
     border-color: #334155;
   }
+
+  @media (prefers-color-scheme: dark) {
+    :global(:root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked))) .radar-inline-figure {
+      background: #0b1120;
+      border-color: #1e293b;
+    }
+    :global(:root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked))) .radar-figure-frame {
+      background: #0f172a;
+      border-color: #334155;
+    }
+  }
+
+  :global(:root[data-theme="light"]) .radar-inline-figure {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+  }
+  :global(:root[data-theme="light"]) .radar-figure-frame {
+    background: #ffffff;
+    border-color: #e2e8f0;
+  }
+
   .radar-figure-link {
     display: block;
     line-height: 0;
+  }
+  .radar-figure-link:focus-visible {
+    outline: 2px solid #2563eb;
+    outline-offset: 2px;
+    border-radius: 7px;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .radar-figure-link:focus-visible {
+    outline-color: #38bdf8;
   }
   .radar-figure-frame img {
     width: 100%;
@@ -953,6 +984,7 @@ function priorityLabel(priority: string) {
     object-fit: contain;
     display: block;
     margin: 0 auto;
+    filter: none !important;
     transition: transform 0.2s ease;
   }
   .radar-figure-link:hover img {

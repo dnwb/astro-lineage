@@ -120,6 +120,37 @@ test("theme consistency contract: ThemeToggle and global.css guards", async () =
     /Click the button above to view full quantitative analysis/,
     "DailyRadarCard.astro must not contain repetitive modal guide text"
   );
+
+  // 7. Daily Radar Dark Mode contrast & hygiene contract
+  const indexAstro = await readFile(
+    join(projectRoot, "src/pages/index.astro"),
+    "utf-8"
+  );
+  assert.doesNotMatch(
+    indexAstro,
+    /<style is:global>/,
+    "src/pages/index.astro must not use <style is:global> which corrupts :global() pseudo-classes"
+  );
+  assert.match(
+    indexAstro,
+    /:global\(:is\(\[data-theme="dark"\],\s*body:has\(#site-theme-toggle:checked\)\)\)\s*\.intel-daily-date-pills/,
+    "index.astro must bind dark theme to .intel-daily-date-pills with toggle and data-theme guards"
+  );
+  assert.match(
+    indexAstro,
+    /:global\(:is\(\[data-theme="dark"\],\s*body:has\(#site-theme-toggle:checked\)\)\)\s*\.intel-inline-figure/,
+    "index.astro must bind dark theme to .intel-inline-figure with toggle and data-theme guards"
+  );
+
+  const switcherContent = await readFile(
+    join(projectRoot, "src/components/DailyDateSwitcher.astro"),
+    "utf-8"
+  );
+  assert.match(
+    switcherContent,
+    /:global\(:root:not\(\[data-theme="light"\]\)\s*body:not\(:has\(#site-theme-toggle:checked\)\)\)\s*\.aihot-date-ribbon/,
+    "DailyDateSwitcher.astro must guard dark OS media query with :root:not([data-theme='light'])"
+  );
 });
 
 function hasPlaywright() {
@@ -159,7 +190,7 @@ class QuietHandler(http.server.SimpleHTTPRequestHandler):
         except (BrokenPipeError, ConnectionResetError):
             pass
 
-class ReusableTCPServer(socketserver.TCPServer):
+class ReusableThreadingServer(socketserver.ThreadingTCPServer):
     allow_reuse_address = True
     def handle_error(self, request, client_address):
         pass
@@ -169,7 +200,7 @@ server_port = 0
 httpd_holder = []
 def run_server():
     global server_port
-    httpd = ReusableTCPServer(('127.0.0.1', 0), QuietHandler)
+    httpd = ReusableThreadingServer(('127.0.0.1', 0), QuietHandler)
     httpd_holder.append(httpd)
     server_port = httpd.server_address[1]
     server_ready.set()
@@ -183,75 +214,101 @@ try:
     with sync_playwright() as p:
         b = p.chromium.launch(headless=True, executable_path='/usr/bin/chromium')
         
-        # 1. Dark OS -> Light Mode
+        # 1. Dark OS -> Light Mode (user explicitly toggled light)
         ctx1 = b.new_context(color_scheme='dark')
         page1 = ctx1.new_page()
-        page1.goto(f'http://127.0.0.1:{server_port}/')
-        page1.wait_for_load_state('networkidle')
+        page1.goto(f'http://127.0.0.1:{server_port}/', wait_until='domcontentloaded')
         page1.wait_for_selector('label[for="site-theme-toggle"]')
         page1.click('label[for="site-theme-toggle"]')
         page1.wait_for_timeout(250)
         q1 = page1.evaluate("window.getComputedStyle(document.querySelector('.intel-daily-quick-item')).backgroundColor")
         p1 = page1.evaluate("window.getComputedStyle(document.querySelector('.intel-pick-item')).backgroundColor")
-        m1 = page1.evaluate("window.getComputedStyle(document.querySelector('.intel-metrics-strip')).backgroundColor")
         c1 = page1.evaluate("window.getComputedStyle(document.querySelector('.intel-card')).backgroundColor")
+        pills1 = page1.evaluate("window.getComputedStyle(document.querySelector('.intel-daily-date-pills')).backgroundColor")
+        fig1 = page1.evaluate("window.getComputedStyle(document.querySelector('.intel-inline-figure')).backgroundColor")
+        chip1 = page1.evaluate("window.getComputedStyle(document.querySelector('.daily-date-chip:not(.active)')).backgroundColor")
+        img_flt1 = page1.evaluate("window.getComputedStyle(document.querySelector('.intel-figure-img')).filter")
         assert q1 == 'rgb(250, 248, 245)', f'Expected #faf8f5, got {q1}'
         assert p1 == 'rgb(250, 248, 245)', f'Expected #faf8f5, got {p1}'
-        assert m1 == 'rgb(250, 248, 245)', f'Expected #faf8f5, got {m1}'
         assert c1 == 'rgb(255, 255, 255)', f'Expected #ffffff, got {c1}'
+        assert pills1 == 'rgb(248, 250, 252)', f'Expected light pills #f8fafc, got {pills1}'
+        assert fig1 == 'rgb(248, 250, 252)', f'Expected light figure card #f8fafc, got {fig1}'
+        assert chip1 == 'rgb(255, 255, 255)', f'Expected light chip #ffffff, got {chip1}'
+        assert img_flt1 == 'none', f'Scientific image must not be filtered, got {img_flt1}'
         ctx1.close()
 
-        # 2. Dark OS -> Dark Mode (default)
+        # 2. Dark OS -> Dark Mode (default, un-toggled)
         ctx2 = b.new_context(color_scheme='dark')
         page2 = ctx2.new_page()
-        page2.goto(f'http://127.0.0.1:{server_port}/')
-        page2.wait_for_load_state('networkidle')
+        page2.goto(f'http://127.0.0.1:{server_port}/', wait_until='domcontentloaded')
         page2.wait_for_selector('.intel-card')
         page2.wait_for_timeout(250)
         q2 = page2.evaluate("window.getComputedStyle(document.querySelector('.intel-daily-quick-item')).backgroundColor")
         p2 = page2.evaluate("window.getComputedStyle(document.querySelector('.intel-pick-item')).backgroundColor")
-        m2 = page2.evaluate("window.getComputedStyle(document.querySelector('.intel-metrics-strip')).backgroundColor")
         c2 = page2.evaluate("window.getComputedStyle(document.querySelector('.intel-card')).backgroundColor")
+        pills2 = page2.evaluate("window.getComputedStyle(document.querySelector('.intel-daily-date-pills')).backgroundColor")
+        fig2 = page2.evaluate("window.getComputedStyle(document.querySelector('.intel-inline-figure')).backgroundColor")
+        chip2 = page2.evaluate("window.getComputedStyle(document.querySelector('.daily-date-chip:not(.active)')).backgroundColor")
+        badge2 = page2.evaluate("window.getComputedStyle(document.querySelector('.intel-figure-badge')).color")
+        core2 = page2.evaluate("window.getComputedStyle(document.querySelector('.intel-figure-core')).color")
+        img_flt2 = page2.evaluate("window.getComputedStyle(document.querySelector('.intel-figure-img')).filter")
         assert q2 == 'rgb(23, 23, 23)', f'Expected #171717, got {q2}'
         assert p2 == 'rgb(15, 23, 42)', f'Expected #0f172a, got {p2}'
-        assert m2 == 'rgb(15, 23, 42)', f'Expected #0f172a, got {m2}'
         assert c2 == 'rgb(30, 41, 59)', f'Expected #1e293b, got {c2}'
+        assert pills2 == 'rgb(15, 23, 42)', f'Expected dark pills #0f172a, got {pills2}'
+        assert fig2 == 'rgb(15, 23, 42)', f'Expected dark figure card #0f172a, got {fig2}'
+        assert chip2 == 'rgb(30, 41, 59)', f'Expected dark chip #1e293b, got {chip2}'
+        assert badge2 == 'rgb(147, 197, 253)', f'Expected dark badge text #93c5fd, got {badge2}'
+        assert core2 == 'rgb(203, 213, 225)', f'Expected dark core text #cbd5e1, got {core2}'
+        assert img_flt2 == 'none', f'Scientific image must not be filtered/inverted in dark mode, got {img_flt2}'
         ctx2.close()
 
         # 3. Light OS -> Light Mode (default)
         ctx3 = b.new_context(color_scheme='light')
         page3 = ctx3.new_page()
-        page3.goto(f'http://127.0.0.1:{server_port}/')
-        page3.wait_for_load_state('networkidle')
+        page3.goto(f'http://127.0.0.1:{server_port}/', wait_until='domcontentloaded')
         page3.wait_for_selector('.intel-card')
         page3.wait_for_timeout(250)
         q3 = page3.evaluate("window.getComputedStyle(document.querySelector('.intel-daily-quick-item')).backgroundColor")
         p3 = page3.evaluate("window.getComputedStyle(document.querySelector('.intel-pick-item')).backgroundColor")
-        m3 = page3.evaluate("window.getComputedStyle(document.querySelector('.intel-metrics-strip')).backgroundColor")
         c3 = page3.evaluate("window.getComputedStyle(document.querySelector('.intel-card')).backgroundColor")
+        pills3 = page3.evaluate("window.getComputedStyle(document.querySelector('.intel-daily-date-pills')).backgroundColor")
+        fig3 = page3.evaluate("window.getComputedStyle(document.querySelector('.intel-inline-figure')).backgroundColor")
         assert q3 == 'rgb(250, 248, 245)', f'Expected #faf8f5, got {q3}'
         assert p3 == 'rgb(250, 248, 245)', f'Expected #faf8f5, got {p3}'
-        assert m3 == 'rgb(250, 248, 245)', f'Expected #faf8f5, got {m3}'
         assert c3 == 'rgb(255, 255, 255)', f'Expected #ffffff, got {c3}'
+        assert pills3 == 'rgb(248, 250, 252)', f'Expected light pills #f8fafc, got {pills3}'
+        assert fig3 == 'rgb(248, 250, 252)', f'Expected light figure card #f8fafc, got {fig3}'
         ctx3.close()
 
         # 4. Light OS -> Dark Mode (toggled)
         ctx4 = b.new_context(color_scheme='light')
         page4 = ctx4.new_page()
-        page4.goto(f'http://127.0.0.1:{server_port}/')
-        page4.wait_for_load_state('networkidle')
+        page4.goto(f'http://127.0.0.1:{server_port}/', wait_until='domcontentloaded')
         page4.wait_for_selector('label[for="site-theme-toggle"]')
         page4.click('label[for="site-theme-toggle"]')
         page4.wait_for_timeout(250)
         q4 = page4.evaluate("window.getComputedStyle(document.querySelector('.intel-daily-quick-item')).backgroundColor")
         p4 = page4.evaluate("window.getComputedStyle(document.querySelector('.intel-pick-item')).backgroundColor")
-        m4 = page4.evaluate("window.getComputedStyle(document.querySelector('.intel-metrics-strip')).backgroundColor")
         c4 = page4.evaluate("window.getComputedStyle(document.querySelector('.intel-card')).backgroundColor")
+        pills4 = page4.evaluate("window.getComputedStyle(document.querySelector('.intel-daily-date-pills')).backgroundColor")
+        fig4 = page4.evaluate("window.getComputedStyle(document.querySelector('.intel-inline-figure')).backgroundColor")
         assert q4 == 'rgb(23, 23, 23)', f'Expected #171717, got {q4}'
         assert p4 == 'rgb(15, 23, 42)', f'Expected #0f172a, got {p4}'
-        assert m4 == 'rgb(15, 23, 42)', f'Expected #0f172a, got {m4}'
         assert c4 == 'rgb(30, 41, 59)', f'Expected #1e293b, got {c4}'
+        assert pills4 == 'rgb(15, 23, 42)', f'Expected dark pills #0f172a, got {pills4}'
+        assert fig4 == 'rgb(15, 23, 42)', f'Expected dark figure card #0f172a, got {fig4}'
         ctx4.close()
+
+        # 5. Mobile Narrow Screen Responsiveness (viewport width: 375px)
+        ctx5 = b.new_context(viewport={'width': 375, 'height': 667}, color_scheme='dark')
+        page5 = ctx5.new_page()
+        page5.goto(f'http://127.0.0.1:{server_port}/', wait_until='domcontentloaded')
+        page5.wait_for_selector('.intel-card')
+        page5.wait_for_timeout(250)
+        pills_w = page5.evaluate("document.querySelector('.intel-daily-date-pills').getBoundingClientRect().width")
+        assert pills_w <= 375, f'Pills container width {pills_w} must fit within 375px viewport'
+        ctx5.close()
 
         b.close()
 finally:

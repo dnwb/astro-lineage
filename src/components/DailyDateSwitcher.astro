@@ -594,28 +594,67 @@ const recentDays = allDays.slice(0, 8);
     }
   }
 
+  .date-pill:focus-visible,
+  .ribbon-step-btn:focus-visible {
+    outline: 2px solid #2563eb;
+    outline-offset: 1px;
+  }
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .date-pill:focus-visible,
+  :global(:is([data-theme="dark"], body:has(#site-theme-toggle:checked))) .ribbon-step-btn:focus-visible {
+    outline-color: #38bdf8;
+  }
+
   @media (prefers-color-scheme: dark) {
-    :global(body:not(:has(#site-theme-toggle:checked))) .aihot-date-ribbon { background: var(--bg-surface, #0f172a); border-bottom-color: #334155; }
-    :global(body:not(:has(#site-theme-toggle:checked))) .ribbon-brand-tag { color: #94a3b8; border-right-color: #334155; }
-    :global(body:not(:has(#site-theme-toggle:checked))) .ribbon-step-btn { background: #1e293b; border-color: #334155; color: #cbd5e1; }
-    :global(body:not(:has(#site-theme-toggle:checked))) .ribbon-step-btn:hover:not(.disabled) { background: #334155; color: #f8fafc; }
-    :global(body:not(:has(#site-theme-toggle:checked))) .ribbon-track-wrap::-webkit-scrollbar-thumb { background: #475569; }
-    :global(body:not(:has(#site-theme-toggle:checked))) .date-pill { background: #1e293b; border-color: #334155; color: #e2e8f0; }
-    :global(body:not(:has(#site-theme-toggle:checked))) .date-pill:hover { background: #334155; border-color: #64748b; color: #f8fafc; }
-    :global(body:not(:has(#site-theme-toggle:checked))) .date-pill.active { background: #3b82f6; border-color: #2563eb; color: #ffffff; }
-    :global(body:not(:has(#site-theme-toggle:checked))) .pill-count { background: rgba(255, 255, 255, 0.1); }
-    :global(body:not(:has(#site-theme-toggle:checked))) .ribbon-archive-summary { background: #1e293b; border-color: #334155; color: #cbd5e1; }
-    :global(body:not(:has(#site-theme-toggle:checked))) .ribbon-archive-summary:hover { background: #334155; color: #f8fafc; }
-    :global(body:not(:has(#site-theme-toggle:checked))) .ribbon-archive-dropdown-menu { background: #1e293b; border-color: #334155; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5); }
-    :global(body:not(:has(#site-theme-toggle:checked))) .dropdown-header { color: #94a3b8; border-bottom-color: #334155; }
-    :global(body:not(:has(#site-theme-toggle:checked))) .dropdown-all-link { color: #60a5fa; }
-    :global(body:not(:has(#site-theme-toggle:checked))) .dropdown-day-item { color: #e2e8f0; }
-    :global(body:not(:has(#site-theme-toggle:checked))) .dropdown-day-item:hover { background: #334155; }
-    :global(body:not(:has(#site-theme-toggle:checked))) .dropdown-day-item.active { background: #1e3a8a33; color: #93c5fd; }
-    :global(body:not(:has(#site-theme-toggle:checked))) .day-item-weekday { color: #94a3b8; }
-    :global(body:not(:has(#site-theme-toggle:checked))) .badge-must { background: #450a0a; color: #f87171; }
-    :global(body:not(:has(#site-theme-toggle:checked))) .badge-total { color: #94a3b8; }
-    :global(body:not(:has(#site-theme-toggle:checked))) .section-nav-pill.pill-must { color: #f87171; }
-    :global(body:not(:has(#site-theme-toggle:checked))) .section-nav-pill.pill-worth { color: #60a5fa; }
+    :global(:root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked))) .aihot-date-ribbon { background: var(--bg-surface, #0f172a); border-bottom-color: #334155; }
+    :global(:root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked))) .ribbon-brand-tag { color: #94a3b8; border-right-color: #334155; }
+    :global(:root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked))) .ribbon-step-btn { background: #1e293b; border-color: #334155; color: #cbd5e1; }
+    :global(:root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked))) .ribbon-step-btn:hover:not(.disabled) { background: #334155; color: #f8fafc; }
+    :global(:root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked))) .ribbon-track-wrap::-webkit-scrollbar-thumb { background: #475569; }
+    :global(:root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked))) .date-pill { background: #1e293b; border-color: #334155; color: #e2e8f0; }
+    :global(:root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked))) .date-pill:hover { background: #334155; border-color: #64748b; color: #f8fafc; }
+    :global(:root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked))) .date-pill.active { background: #3b82f6; border-color: #2563eb; color: #ffffff; }
+    :global(:root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked))) .pill-count { background: rgba(255, 255, 255, 0.1); }
+    :global(:root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked))) .ribbon-archive-summary { background: #1e293b; border-color: #334155; color: #cbd5e1; }
+    :global(:root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked))) .ribbon-archive-summary:hover { background: #334155; color: #f8fafc; }
+    :global(:root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked))) .ribbon-archive-dropdown-menu { background: #1e293b; border-color: #334155; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5); }
+    :global(:root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked))) .dropdown-header { color: #94a3b8; border-bottom-color: #334155; }
+    :global(:root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked))) .dropdown-all-link { color: #60a5fa; }
+    :global(:root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked))) .dropdown-day-item { color: #e2e8f0; }
+    :global(:root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked))) .dropdown-day-item:hover { background: #334155; }
+    :global(:root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked))) .dropdown-day-item.active { background: #1e3a8a33; color: #93c5fd; }
+    :global(:root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked))) .day-item-weekday { color: #94a3b8; }
+    :global(:root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked))) .badge-must { background: #450a0a; color: #f87171; }
+    :global(:root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked))) .badge-total { color: #94a3b8; }
+    :global(:root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked))) .section-nav-pill.pill-must { color: #f87171; }
+    :global(:root:not([data-theme="light"]) body:not(:has(#site-theme-toggle:checked))) .section-nav-pill.pill-worth { color: #60a5fa; }
+  }
+
+  :global(:root[data-theme="light"]) .aihot-date-ribbon {
+    background: var(--bg-surface, #ffffff);
+    border-bottom-color: var(--border-color, #e2e8f0);
+  }
+  :global(:root[data-theme="light"]) .ribbon-brand-tag {
+    color: var(--text-secondary, #64748b);
+    border-right-color: var(--border-color, #e2e8f0);
+  }
+  :global(:root[data-theme="light"]) .ribbon-step-btn {
+    background: var(--card-bg, #ffffff);
+    border-color: var(--border-color, #cbd5e1);
+    color: var(--text-secondary, #475569);
+  }
+  :global(:root[data-theme="light"]) .date-pill {
+    background: var(--card-bg, #ffffff);
+    border-color: var(--border-color, #cbd5e1);
+    color: var(--text-primary, #334155);
+  }
+  :global(:root[data-theme="light"]) .date-pill:hover {
+    background: #f8fafc;
+    border-color: #94a3b8;
+    color: #0f172a;
+  }
+  :global(:root[data-theme="light"]) .date-pill.active {
+    background: #2563eb;
+    border-color: #1d4ed8;
+    color: #ffffff;
   }
 </style>

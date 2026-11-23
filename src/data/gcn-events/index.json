@@ -835,7 +835,7 @@
       "best_redshift": null,
       "circular_count": 8,
       "last_updated_utc": "2026-11-15T10:59:08.896Z",
-      "status": "active",
+      "status": "archived",
       "has_photometry": false,
       "figure_path": null
     },
@@ -922,6 +922,23 @@
       "circular_count": 10,
       "last_updated_utc": "2026-11-12T08:18:22.494Z",
       "status": "archived",
+      "has_photometry": false,
+      "figure_path": null
+    },
+    "grb-261122b": {
+      "slug": "grb-261122b",
+      "primary_id": "GRB 261122B",
+      "aliases": [],
+      "event_type": "GRB",
+      "canonical_t0": {
+        "instrument": "SVOM/ECLAIRs",
+        "utc_iso": "2026-11-22T23:08:10.000Z",
+        "circular_id": 46340
+      },
+      "best_redshift": null,
+      "circular_count": 5,
+      "last_updated_utc": "2026-11-23T02:58:24.682Z",
+      "status": "active",
       "has_photometry": false,
       "figure_path": null
     }

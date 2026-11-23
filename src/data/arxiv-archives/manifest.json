@@ -1,11 +1,51 @@
 {
   "schema_version": "astrolineage-arxiv-archive-manifest-v1",
-  "updated_at": "2026-11-23T03:31:47.179Z",
-  "total_weeks": 11,
-  "total_daily_editions": 53,
-  "latest_week_id": "2026-W47",
-  "latest_daily_date": "2026-11-19",
+  "updated_at": "2026-11-23T18:48:33.652Z",
+  "total_weeks": 12,
+  "total_daily_editions": 54,
+  "latest_week_id": "2026-W48",
+  "latest_daily_date": "2026-11-22",
   "weeks": [
+    {
+      "week_id": "2026-W48",
+      "title": "Weekly Scientific Lineage · 2026-W48",
+      "date_range": "2026-11-23 ~ 2026-11-29",
+      "has_weekly_summary": true,
+      "executive_summary": "High-energy transient astrophysics this week converges on the end-to-end causal chain linking compact object engines, relativistic outflows, and complex circum-source environments across diverse energetic regimes.\n- **FRB Circumstellar Environments**: Author et al. (arXiv:2611.26696) demonstrated that shock breakout of accretion-induced collapse (AIC) ejecta into pre-shaped binary wind bubbles drives non-monotonic dispersion measure evolution, producing a secular sign reversal in $d{\\mathrm{DM}_{\\mathrm{loc}}}/dt$ from negative to positive ($+3\\text{--}5\\ \\mathrm{pc\\,cm^{-3}\\,yr^{-1}}$) at $t \\simeq 9\\text{--}22\\ \\mathrm{yr}$ via collisional ionization of upstream neutral clouds.\n- **FRB Scintillation Modeling**: Author et al. (arXiv:2611.27527) revealed that small scintle counts ($N_{\\mathrm{scint}} \\lesssim 60$) induce spurious oscillations in the burst autocorrelation function (ACF), showing that conventional finite-scintle error formulas underestimate uncertainties unless adopting an updated filling factor $\\eta = 0.055$, and resolved two distinct scattering screens in FRB 20240114A.\n- **Relativistic Jets and Polarimetry**: Author et al. (arXiv:2611.26682) constrained high-energy blazar radiation mechanisms by predicting that soft X-ray polarimetry ($0.2\\text{--}0.4\\ \\mathrm{keV}$) by REDSoX/GOSoX delivers polarization degrees of $\\mathrm{PD} \\approx 6.57\\%\\text{--}8.38\\%$ in HSP blazars, effectively lifting leptonic versus hadronic spectral degeneracies.\n- **Radiative Shocks and Precursors**: Author et al. (arXiv:2611.26708) mapped the non-equilibrium photoionization structure of radiative shock precursors, proving that precursor line ratios $[\\mathrm{O\\ I}]/\\mathrm{H}\\alpha$ flatten at $v_{\\mathrm{shock}} > 400\\ \\mathrm{km\\,s^{-1}}$ and scale with the ionization parameter $\\Psi = Q/v_{\\mathrm{s}} \\propto v_{\\mathrm{s}}^{\\alpha}$.\n- **Super-Eddington Accretion and Outflows**: Author et al. (arXiv:2611.27693) identified a relativistic ultrafast outflow ($v_{\\mathrm{LOS}} \\approx -0.1c$) launching from the pulsating ultraluminous X-ray source RX J0209.6-7427 during its super-Eddington outburst at $L_{\\mathrm{bol}} = (9.5 \\pm 0.2) \\times 10^{38}\\ \\mathrm{erg\\,s^{-1}}$.\n- **Extragalactic ULX Populations**: Author et al. (arXiv:2611.26733) uncovered 6 confirmed off-nuclear ULXs and a highly variable transient ULX X32 exhibiting an extreme dynamic range $L_{\\mathrm{X,max}}/L_{\\mathrm{X,UL}} > 715$ in the barred spiral NGC 1300.\n- **Accretion Column Shock Thermodynamics**: Author et al. (arXiv:2611.27508) established that despite a factor of $\\sim 4.5$ modulation in the mass accretion rate, the post-shock temperature in the asynchronous polar IGR J19552+0044 remains remarkably constant at $k T_{\\mathrm{max}} \\approx 44\\text{--}47\\ \\mathrm{keV}$, tightly constraining the white dwarf mass to $M_{\\mathrm{WD}} \\ge 0.85\\ M_\\odot$.\n- **Magnetar Crustal Thermodynamics**: Author et al. (arXiv:2611.27628) solved the persistent anomaly of hot magnetar surfaces by demonstrating that quantizing magnetic fields at $B \\gtrsim 2 \\times 10^{16}\\ \\mathrm{G}$ freeze crustal electrons into the lowest Landau level, quenching nuclear Urca neutrino cooling and maintaining $k_B T \\sim 0.28\\text{--}0.72\\ \\mathrm{keV}$.\n- **Dense Matter and Multimessenger Constraints**: Author et al. (arXiv:2611.27669) formulated a variance decomposition framework proving that core equation-of-state freedom limits low-density nuclear precision propagation to macroscopic neutron-star observables, explaining why extreme logarithmic radius-Love number anti-correlation ($\\rho = -0.952$) suppresses nuclear constraints on tidal deformability.",
+      "statistics": {
+        "total_analyzed": 51,
+        "must_read_count": 1,
+        "worth_knowing_count": 8,
+        "skip_count": 42
+      },
+      "top_picks_count": 9,
+      "days": [
+        {
+          "date": "2026-11-22",
+          "weekday": "Sun",
+          "week_id": "2026-W48",
+          "batch_id": "announcement-2026-11-22",
+          "total_papers": 51,
+          "analyzed_count": 51,
+          "must_read_count": 1,
+          "worth_knowing_count": 8,
+          "skip_count": 42,
+          "pending_count": 0,
+          "brief_status": "ready",
+          "brief_intro": "Featured reading: \"From Binary Wind to Radio Burst: Dispersion-Measure Evolution after Accretion-induced Collapse\" and 8 other key developments.",
+          "highlights": [
+            {
+              "arxiv_id": "2611.26696",
+              "priority": "must_read",
+              "title": "From Binary Wind to Radio Burst: Dispersion-Measure Evolution after Accretion-induced Collapse",
+              "reason": "Accretion-induced collapse (AIC) of massive white dwarfs in sculpted binary wind environments provides an attractive delayed formation channel for repeating FRBs in old stellar populations. The paper constructs an angle-dependent hydrodynamic toy model that naturally accounts for secular DM evolution, slope breaks, and sign reversals without relying on burst-associated photoionization."
+            }
+          ],
+          "data_file": "daily/2026-11-22.json"
+        }
+      ],
+      "weekly_data_file": "weekly/2026-W48.json"
+    },
     {
       "week_id": "2026-W47",
       "title": "Weekly Scientific Lineage · 2026-W47",

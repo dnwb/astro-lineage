@@ -1,17 +1,44 @@
 # AstroLineage
 
-AstroLineage is the V0.1 static reader slice for an internal high-energy
-transient astrophysics group. It organizes five curated Works by physical
-structure, research context, and a reviewed Learning Path. The reader presents
-scientific content first and keeps Version Evidence, typed locators,
-publication correspondence, and review context in an on-demand Provenance
-Detail layer.
+- **公网入口**：https://astro-lineage.pages.dev
+- **内网预览**：http://10.131.43.83:4321
+- **更新机制**：工作日由本机定时任务生成数据，推送 `master` 后 Cloudflare Pages 自动构建（架构与数据流详见 [系统架构总览](docs/architecture-overview.md)）。
+
+AstroLineage is a static reader and research-tracking site for a high-energy
+transient astrophysics group. It combines curated foundational Works, Research
+Lines, and Learning Paths with automated daily arXiv radars, weekly syntheses,
+and transient event timelines. The reader presents scientific content first and
+keeps Version Evidence, typed locators, publication correspondence, and review
+context in an on-demand Provenance Detail layer.
 
 It is not an arXiv mirror, ADS or Zotero replacement, publication list, news
-site, AI-summary site, or generic paper search engine. V0.1 has no standalone
-Research Map page and no public Validation Report route. The home page is the
-static navigation/map view; `validation/report.json` and `validation/report.md`
-are local governance artifacts.
+site, or generic paper search engine. `validation/report.json` and
+`validation/report.md` are local governance artifacts without a public route.
+
+## 公网页面
+
+以下页面与接口均基于 `src/pages/` 静态构建并托管于 https://astro-lineage.pages.dev：
+
+### 主要页面
+
+- `/`：站点首页，聚合最新 arXiv 每日雷达、本周学术周报、瞬变源事件动态以及奠基文献、研究脉络与学习路径入口。
+- `/arxiv-daily/`（及 `/arxiv-daily/<date>/`）：arXiv 每日雷达，按优先级分级展示高能天体物理每日预印本、AI 中文导读与知识点补充。
+- `/arxiv-weekly/`（及 `/arxiv-weekly/<week>/`）：每周学术综述，汇总当周领域趋势矩阵、每日论文表与重点推荐论文。
+- `/arxiv-archives/`：历史归档索引，按周与按日汇总往期周报及每日雷达归档。
+- `/events/`：瞬变源事件与时间线，按日历与爆发时序聚合追踪 GRB/FRB/TDE 等高能瞬变源事件及 NASA GCN 联测进展。
+- `/papers/`（及 `/papers/<workId>/`）：奠基文献库与单篇详情页，展示经人工策展的核心论文、上下游学术因果图谱、物理结构与版本证据链。
+- `/research-lines/`（及 `/research-lines/<id>/`）：研究脉络，按物理机制与研究方向组织核心论文及其演进关系。
+- `/learning-paths/`（及 `/learning-paths/<id>/`）：学习路径，提供循序渐进的经典文献阅读序列与过渡导引。
+- `/agent/`：Agent 接入与渠道页，提供机器可读接口说明、外部 Agent 集成指引及 QQ 频道/机器人入口。
+
+### Agent 与机器可读入口
+
+- `/llms.txt`：面向 LLM/Agent 的站点摘要索引。
+- `/llms-full.txt`：面向 LLM/Agent 的完整站点内容与接口说明。
+- `/openapi.yaml`：OpenAPI 规范文件。
+- `/api/v1/daily.json`：最新一期 arXiv 每日雷达静态 JSON 数据。
+- `/api/v1/weekly.json`：最新一期每周学术综述静态 JSON 数据。
+- `/api/v1/events.json`：瞬变源事件聚类静态 JSON 数据。
 
 ## Setup and local development
 
@@ -138,9 +165,11 @@ npm exec -- astro preview --host 0.0.0.0 --port 3000
 # http://<server-ip>:3000/
 ```
 
-This project does not modify firewall rules, create a public tunnel, or deploy
-to an external host. A localhost response proves only the local service; a
-second physical device is required for LAN acceptance.
+Local dev/preview commands do not modify firewall rules or create a public tunnel
+(production static builds are deployed to Cloudflare Pages on push to `master`,
+and the LAN preview runs at `http://10.131.43.83:4321`). A localhost response
+proves only the local service; a second physical device is required for LAN
+acceptance.
 
 ## Frozen verification commands
 
@@ -247,7 +276,8 @@ the reader-projection tests.
 
 ## Delivery boundary
 
-V0.1 verification is offline and does not deploy a site. The verification
+V0.1 verification is offline and does not deploy a site from CI (public static
+deployment is handled separately by Cloudflare Pages on push to `master`). The verification
 contract includes an independent clean-environment remote CI gate. Post-V0.1 compatibility
 hardening uses the same local and clean-CI verification contract without
 reopening Tickets 01–14.

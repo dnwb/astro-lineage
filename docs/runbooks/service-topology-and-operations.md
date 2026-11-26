@@ -1,6 +1,6 @@
 # AstroLineage 服务拓扑与系统运维手册 (Service Topology & Operations Runbook)
 
-本文档汇总 AstroLineage 系统的常驻后台守护进程、定时流水线、自检诊断工具及常见故障排查指南。
+本文档汇总 AstroLineage 系统的常驻后台守护进程、定时流水线、自检诊断工具及常见故障排查指南。关于前后端边界与纯静态架构核对，参见 [系统架构总览](../architecture-overview.md)。
 
 ---
 

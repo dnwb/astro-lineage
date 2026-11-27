@@ -1,14 +1,14 @@
 {
   "schema_version": "astrolineage-weekly-summary-v1",
-  "generated_at": "2026-11-26T18:39:38.339Z",
+  "generated_at": "2026-11-27T18:00:41.257Z",
   "week_id": "2026-W48",
   "title": "Weekly Scientific Lineage · 2026-W48",
   "date_range": "2026-11-23 ~ 2026-11-29",
-  "executive_summary": "The physical lineage of high-energy explosive transients this week traces the causal trajectory from compact progenitor collapses and nuclear star-disk interactions to central engine power injection, relativistic jet collimation, circumstellar shock kinematics, and turbulent multi-path radio propagation.\n\n- **Fast Radio Bursts & Magnetar Environments**: Author et al. (arXiv:2611.26696) demonstrated that shock ionization of neutral circumstellar shells following accretion-induced collapse reverses the sign of $d{\\rm DM}_{\\rm loc}/dt$ from negative to $+3\\text{--}5\\ \\mathrm{pc\\,cm^{-3}\\,yr^{-1}}$ at $t \\simeq 9\\text{--}22\\ \\mathrm{yr}$, whereas unshocked ejecta dilute as ${\\rm DM}_{\\rm ejc} \\propto t^{-2}$. The CHIME/FRB and DSA-110 Collaborations (arXiv:2611.28250) proved that non-repeating FRBs emit across $>1\\ \\mathrm{GHz}$ bandwidth with a median spectral index $\\beta = -0.3 \\pm 0.4$ and spectral turnovers clustering at $\\nu_{\\rm peak} \\approx 720\\ \\mathrm{MHz}$. The CHIME/FRB and DSA-110 Collaborations (arXiv:2611.28251) established statistically significant ($2.1\\sigma\\text{--}3.4\\sigma$) correlations between $\\sigma_{\\rm RM,host}$, $|{\\rm RM}_{\\rm host}|$, and $\\tau_{\\rm host}$, demonstrating that multipath scatter-induced phase mixing systematically flattens intrinsic polarization angle swings at low frequencies. The CHIME/FRB Collaboration (arXiv:2611.28334) constrained the local volumetric FRB rate density to $\\Phi_0 = 1.1^{+0.4}_{-0.3} \\times 10^5\\ \\mathrm{Gpc^{-3}\\,yr^{-1}}$ ($E > 10^{39}\\ \\mathrm{erg}$) with a power-law slope $\\gamma = -1.41^{+0.27}_{-0.21}$ and a cutoff energy $E_{\\rm char} = 2.0^{+2.6}_{-1.0} \\times 10^{41}\\ \\mathrm{erg}$. Author et al. (arXiv:2611.27527) resolved dual scattering screens in FRB 20240114A and established that finite-scintle counts $N_{\\rm scint} \\lesssim 60$ cause spurious autocorrelation oscillations. Author et al. (arXiv:2611.27628) uncovered that strong magnetic fields ($B \\gtrsim 2 \\times 10^{16}\\ \\mathrm{G}$) freeze electrons into the lowest Landau level, quenching crustal Urca cooling and sustaining anomalous surface heating at $k_B T \\sim 0.28\\text{--}0.72\\ \\mathrm{keV}$.\n- **Engine-Driven Transients & Repeating Nuclear Eruptions**: Author et al. (arXiv:2611.28443) revealed that AT 2024qfm achieved an unprecedented early peak X-ray luminosity $L_{\\rm x} \\approx 10^{44}\\ \\mathrm{erg\\,s^{-1}}$ and reached $L_{\\rm x}/L_{\\rm opt} \\approx 8.4$ at $\\delta t \\approx 14\\ \\mathrm{days}$, establishing that equatorial reprocessing material covers a solid angle fraction $\\phi_0 \\lesssim 0.1$ and becomes optically thin ($\\tau_{\\rm T} < 1$) by $\\delta t \\approx 9\\ \\mathrm{days}$. Author et al. (arXiv:2611.28220) demonstrated that combining TDE disk drag with gravitational wave orbital decay elevates the Hills-captured stellar survival fraction into sub-day quasi-periodic eruption (QPE) orbits up to $f_{\\rm QPE,\\max} \\sim 30\\%$, overcoming local loss-cone scattering.\n- **Relativistic Jets, Magnetically Arrested Disks & Outflows**: Author et al. (arXiv:2611.28376) demonstrated that ultra-relativistic jets with $\\Gamma = 12$ injected into underdense cosmic voids accelerate to $\\Gamma > 20$ via recollimation shocks, suppressing Kelvin-Helmholtz and kink disruption to reach $\\sim 9\\ \\mathrm{Mpc}$ scales over $19.6\\ \\mathrm{Myr}$. Author et al. (arXiv:2611.28237) discovered that equal-mass binary black holes achieve a Dual Horizon-MAD state with saturated dimensionless magnetic flux $\\phi_{\\rm BH} \\sim 20$ and Poynting jet efficiency $\\eta = 1\\%$. Author et al. (arXiv:2611.26682) showed that soft X-ray polarimetry ($0.2\\text{--}0.4\\ \\mathrm{keV}$) yielding $\\mathrm{PD} \\approx 6.57\\%\\text{--}8.38\\%$ definitively distinguishes leptonic synchrotron models from hadronic cascades in HSP blazars.\n- **Supernova Remnant Kinematics & Radiative Shocks**: The XRISM Resolve Team (arXiv:2611.29910) resolved Doppler splitting in Tycho's SNR, discovering an intrinsic $16\\%$ line-of-sight velocity asymmetry where the rear shell ($+3920\\ \\mathrm{km\\,s^{-1}}$) expands faster than the front shell ($-3320\\ \\mathrm{km\\,s^{-1}}$), while the front shell produces $57\\%\\text{--}80\\%$ of the surface brightness. Author et al. (arXiv:2611.26708) showed that radiative shock precursors exhibit line ratios governed by $\\Psi = Q/v_{\\rm s} \\propto v_{\\rm s}^\\alpha$, maintaining $[\\nobreak{\\rm O\\ I}]/\\mathrm{H}\\alpha$ ratios elevated by up to $0.4\\ \\mathrm{dex}$ for shock velocities $v_{\\rm shock} > 400\\ \\mathrm{km\\,s^{-1}}$.\n- **Super-Eddington Accretion Columns & Dense Matter Observables**: Author et al. (arXiv:2611.30018) proved via two-fluid radiation-hydrodynamics that ULX pulsar accretion columns establish sonic surfaces clustered at $r_{\\rm sonic} \\simeq 15.0\\text{--}15.1\\ \\mathrm{km}$, with thermal mounds extending up to $h_{\\rm th} = 1.53\\ \\mathrm{km}$. Author et al. (arXiv:2611.27693) identified an ultrafast outflow ($v_{\\rm LOS,xabs} \\approx -0.1c$) in the pulsating ULX RX J0209.6-7427. Author et al. (arXiv:2611.26733) discovered transient ULX X32 in NGC 1300 with an extreme dynamic luminosity range $R > 715$ peaking at $1.46 \\times 10^{40}\\ \\mathrm{erg\\,s^{-1}}$. Author et al. (arXiv:2611.27508) constrained the white dwarf mass in IGR J19552+0044 to $M_{\\rm WD} \\ge 0.85\\,M_\\odot$ with post-shock temperature $kT_{\\rm max} \\approx 44.5\\ \\mathrm{keV}$. Author et al. (arXiv:2611.27669) demonstrated that extreme anti-correlation ($\\rho = -0.952$) between logarithmic radius and Love number suppresses nuclear experimental constraints on tidal deformability to $1.38\\%$, which is broken by joint NICER and gravitational-wave measurements.",
+  "executive_summary": "High-energy transient research this week demonstrates a rigorous unification across the causal dynamical chain—from compact object engines and relativistic launch mechanisms, through circumstellar and circum-nuclear interaction zones, to multi-wavelength propagation signatures and cosmological population statistics.\n- **Fast Radio Bursts & Magnetar Environments**: Lead Author et al. (arXiv:2611.26696) demonstrated that aspherical accretion-induced collapse (AIC) ejecta interacting with structured binary wind bubbles produce sign reversals in local dispersion measure derivatives ($d{\\rm DM}_{\\rm loc}/dt$ shifting from negative to positive at $t \\simeq 9\\text{--}22\\ {\\rm yr}$ at $+3\\text{--}5\\ {\\rm pc\\,cm^{-3}\\,yr^{-1}}$) via forward-shock ionization of neutral circumstellar shells, providing a concrete diagnostic for repeating FRB environments in old stellar populations. Lead Author et al. (arXiv:2611.28250) established through dual-station CHIME/FRB and DSA-110 co-detections that non-repeating FRBs emit broadband radiation across $>1\\ {\\rm GHz}$ with median spectral index $\\beta = -0.3 \\pm 0.4$ and spectral turnovers at median $\\nu_{\\rm peak} \\approx 720\\ {\\rm MHz}$, while Lead Author et al. (arXiv:2611.28251) proved that low-frequency multipath scattering systematically flattens intrinsic polarization angle swings (e.g., from $60^\\circ$ at $1.4\\ {\\rm GHz}$ to $\\le 30^\\circ$ at $600\\ {\\rm MHz}$) while correlating rest-frame rotation measure dispersion $\\sigma_{\\rm RM,host}$ with scattering timescale $\\tau_{\\rm host}$ at $2.1\\sigma\\text{--}3.4\\sigma$. Lead Author et al. (arXiv:2611.28334) performed forward population synthesis on 1,683 CHIME Catalog 2 bursts to constrain the local FRB volumetric rate to $\\Phi_0 = 1.1^{+0.4}_{-0.3} \\times 10^5\\ {\\rm Gpc^{-3}\\,yr^{-1}}$ (above $E_{\\rm pivot} = 10^{39}\\ {\\rm erg}$) and determined a rest-frame host dispersion measure median of ${\\rm DM}_{\\rm host, med}^\\prime = 199^{+34}_{-36}\\ {\\rm pc\\,cm^{-3}}$. Lead Author et al. (arXiv:2611.27527) resolved finite-scintle bias in FRB spectra, showing that low scintle counts ($N_{\\rm scint} \\lesssim 60$) induce spurious auto-correlation oscillations and establishing an empirical filling factor $\\eta \\approx 0.055$. Lead Author et al. (arXiv:2611.27628) demonstrated that quantizing crustal magnetic fields $B \\gtrsim 2 \\times 10^{16}\\ {\\rm G}$ freeze electrons into the lowest Landau level, suppressing nuclear Urca neutrino cooling to naturally sustain high magnetar surface temperatures of $k_B T \\sim 0.28\\text{--}0.72\\ {\\rm keV}$.\n- **Super-Eddington Accretion & Ultraluminous X-ray Systems**: Lead Author et al. (arXiv:2611.30018) solved self-consistent two-fluid radiation-hydrodynamic equations along magnetic dipole columns of ultraluminous X-ray pulsars (ULXPs), uncovering that the radiation sonic surface $a_{\\rm rad} = |v|$ clusters invariant at $r_{\\rm sonic} \\simeq 15.0\\ {\\rm km}$ across diverse $B$-fields ($6\\times 10^{12}\\text{--}1.6\\times 10^{13}\\ {\\rm G}$) while thermal mound depths vary by orders of magnitude ($h_{\\rm th} = 0.07\\text{--}1.53\\ {\\rm km}$). Lead Author et al. (arXiv:2611.27693) detected a relativistic ultrafast outflow ($v_{\\rm LOS,xabs} \\approx -0.1c$) alongside photoionized circum-source gas ($n_e \\sim 3 \\times 10^{11}\\ {\\rm cm^{-3}}$) in the ULX pulsar RX J0209.6-7427 during its $L_{\\rm bol} \\approx 9.5 \\times 10^{38}\\ {\\rm erg\\,s^{-1}}$ super-Eddington outburst. Lead Author et al. (arXiv:2611.26733) uncovered 6 confirmed off-nuclear ULXs and a transient ULX X32 exhibiting an extreme dynamic range $R > 715$ peaking at $L_{\\rm X} \\simeq 1.46 \\times 10^{40}\\ {\\rm erg\\,s^{-1}}$ in NGC 1300. Lead Author et al. (arXiv:2611.27508) revealed that the post-shock temperature in the asynchronous polar IGR J19552+0044 remains pinned at $kT_{\\rm max} \\approx 44.5\\ {\\rm keV}$ ($M_{\\rm WD} \\ge 0.85\\ M_\\odot$) despite a factor of $4.5$ variation in accretion rate.\n- **Explosive Transients, Nuclear Disruption & Shock Dynamics**: Lead Author et al. (arXiv:2611.28443) revealed that the luminous fast blue optical transient (LFBOT) AT 2024qfm achieved an unprecedented early X-ray peak $L_{\\rm X} \\approx 10^{44}\\ {\\rm erg\\,s^{-1}}$ with steep decay $\\propto t^{-6}$, establishing that the ratio $L_{\\rm X}/L_{\\rm opt} \\approx 8.4$ at $14\\ {\\rm days}$ requires an inefficient reprocessing geometry with low Thomson optical depth $\\tau_{\\rm T} < 1$ and slow-ejecta covering fraction $\\phi_0 \\lesssim 0.1$. Lead Author et al. (arXiv:2611.28220) demonstrated that TDE accretion disk drag elevates the survival fraction of Hills-captured stars evolving into sub-day quasi-periodic eruption (QPE) orbits from $\\lesssim 5\\text{--}10\\%$ to $\\sim 30\\%$ by accelerating orbital migration ahead of destructive two-body loss-cone scattering. Lead Author et al. (arXiv:2611.29910) resolved Doppler line splitting in Tycho's SNR with XRISM/Resolve, measuring an intrinsic rear-shell expansion velocity ($+3920\\ {\\rm km\\,s^{-1}}$ for Si) exceeding the front shell ($-3320\\ {\\rm km\\,s^{-1}}$) by $\\sim 16\\%$. Lead Author et al. (arXiv:2611.26708) computed a comprehensive radiative shock library demonstrating that non-equilibrium photoionization precursor line ratios scale as $\\Psi \\propto v_s^\\alpha$ with ram pressure suppressing magnetic cushions. Lead Author et al. (arXiv:2611.27669) proved via variance decomposition that high-density core equation-of-state freedom suppresses nuclear experimental constraints on neutron star tidal deformability to $1.38\\%$, which can be resolved by combining pulsar radius with gravitational-wave tidal deformability measurements.\n- **Relativistic Jets, Blazars & Binary Black Hole Accretion**: Lead Author et al. (arXiv:2611.28376) demonstrated through 3D RMHD simulations that highly relativistic jets ($\\Gamma \\ge 12$) injected into underdense cosmic voids remain stabilized against Kelvin-Helmholtz and kink modes by relativistic thrust, accelerating to $\\Gamma > 20$ via recollimation shocks and propagating to $\\sim 9\\ {\\rm Mpc}$ scales over $19.6\\ {\\rm Myr}$. Lead Author et al. (arXiv:2611.28237) identified a new 'Dual Horizon-MAD' state in equal-mass binary black hole accretion disks where horizon magnetic flux saturates at $\\phi_{\\rm BH} \\sim 20$, driving relativistic jets with $1\\%$ Poynting efficiency and quasi-periodic mass transfer at $0.9f_{\\rm orb}$ and $1.8f_{\\rm orb}$. Lead Author et al. (arXiv:2611.26682) demonstrated that soft X-ray polarimetry at $0.2\\text{--}0.4\\ {\\rm keV}$ with REDSoX/GOSoX delivers polarization degrees of $\\approx 6.6\\%\\text{--}8.4\\%$ in HSP blazars, decisively breaking leptonic versus hadronic emission degeneracies.",
   "overview_matrix": [
     {
       "domain": "Fast Radio Bursts & Magnetar Environments",
-      "key_question": "Whether the observed multi-year dispersion measure drifts, broadband spectral turnovers, and chromatic depolarization in FRBs arise from circum-burst shock ionization and turbulent multi-path plasma screens or intrinsic magnetospheric electrodynamics.",
+      "key_question": "Do the secular local DM variations, spectro-temporal structures, and polarization swings of FRBs originate from intrinsic magnetospheric processes or extrinsic magnetoionic/circumstellar shock propagation?",
       "representative_papers": [
         "2611.26696",
         "2611.28250",
@@ -17,94 +17,74 @@
         "2611.27527",
         "2611.27628"
       ],
-      "core_findings": "- [arXiv:2611.26696] (Author et al.): Hydrodynamic shock ionization of upstream neutral circumstellar shells produces a sign reversal in $d{\\rm DM}_{\\rm loc}/dt$ from negative to positive at $t \\simeq 9\\text{--}22\\ \\mathrm{yr}$, reaching $+3\\text{--}5\\ \\mathrm{pc\\,cm^{-3}\\,yr^{-1}}$ in ambient gas with $n_{\\rm ext} = 500\\ \\mathrm{cm^{-3}}$, whereas unshocked ejecta dilute monotonically as ${\\rm DM}_{\\rm ejc} \\propto t^{-2}$.\n- [arXiv:2611.28250] (CHIME/FRB & DSA-110 Collaborations): Non-repeating FRBs emit across $>1\\ \\mathrm{GHz}$ bandwidth with median spectral index $\\beta = -0.3 \\pm 0.4$, exhibiting spectral turnovers with median $\\nu_{\\rm peak} \\approx 720\\ \\mathrm{MHz}$ and low-frequency peak flux suppression driven by multipath broadening $\\tau \\propto \\nu^{-\\alpha}$ ($\\alpha \\approx 4$).\n- [arXiv:2611.28251] (CHIME/FRB & DSA-110 Collaborations): Uncovered $2.1\\sigma\\text{--}3.4\\sigma$ correlations between rest-frame $\\sigma_{\\rm RM,host}$, $|{\\rm RM}_{\\rm host}|$, and $\\tau_{\\rm host}$, demonstrating that multipath scatter-induced phase mixing flattens intrinsic polarization angle swings at 600 MHz in $2/12$ FRBs while $5/12$ require chromatic depolarization $\\propto \\exp(-2c^4\\nu^{-4}\\sigma_{\\rm RM}^2)$.\n- [arXiv:2611.28334] (CHIME/FRB Collaboration): Constrained the local volumetric rate density to $\\Phi_0 = 1.1^{+0.4}_{-0.3} \\times 10^5\\ \\mathrm{Gpc^{-3}\\,yr^{-1}}$ ($E > 10^{39}\\ \\mathrm{erg}$), finding differential energy slope $\\gamma = -1.41^{+0.27}_{-0.21}$, cutoff energy $E_{\\rm char} = 2.0^{+2.6}_{-1.0} \\times 10^{41}\\ \\mathrm{erg}$, and rest-frame host dispersion measure $\\mathrm{DM}_{\\rm host, med}^\\prime = 199^{+34}_{-36}\\ \\mathrm{pc\\,cm^{-3}}$.\n- [arXiv:2611.27527] (Author et al.): Showed that finite-scintle counts $N_{\\rm scint} \\lesssim 60$ generate spurious non-Lorentzian ACF oscillations, converging to a filling factor $\\eta = 0.055$, and resolved two scattering screens ($\\overline{\\nu}_{s,1} = 2.11\\ \\mathrm{MHz}$, $\\overline{\\nu}_{s,2} = 20.60\\ \\mathrm{MHz}$) in FRB 20240114A.\n- [arXiv:2611.27628] (Author et al.): Demonstrated that while thermal nuclear excitations enhance crustal Urca neutrino cooling by $1.2\\ \\mathrm{dex}$, quantizing fields $B \\gtrsim 2 \\times 10^{16}\\ \\mathrm{G}$ freeze electrons into the lowest Landau level, quenching Urca neutrino losses and maintaining magnetar surface heating at $k_B T \\sim 0.28\\text{--}0.72\\ \\mathrm{keV}$.",
-      "significance": "Disentangles intrinsic magnetospheric burst emission from propagation effects by proving that multi-screen scattering flattens polarization swings and drives spectral turnovers, while circumstellar shock ionization and extreme Landau quantization govern environmental DM drifts and magnetar thermal states."
+      "core_findings": "- [arXiv:2611.26696] (Lead Author et al.): Aspherical AIC ejecta crossing binary wind termination shocks and ambient clouds ($n_{\\rm ext} = 500\\ {\\rm cm^{-3}}$) induce a sharp sign reversal in $d{\\rm DM}_{\\rm loc}/dt$ from negative to $+3\\text{--}5\\ {\\rm pc\\,cm^{-3}\\,yr^{-1}}$ at $t \\simeq 9\\text{--}22\\ {\\rm yr}$ driven by forward-shock ionization of neutral circumstellar shells, while polar cavities ($\\theta \\le 20^\\circ$) exhibit direct wall impact at $t_{\\rm hit} \\simeq 1.9\\ {\\rm yr}$ with ${\\rm DM}_{\\rm sh,ejc} = 0$ prior to collision.\n- [arXiv:2611.28250] (Lead Author et al.): Simultaneous CHIME/FRB ($400\\text{--}800\\ {\\rm MHz}$) and DSA-110 ($1.28\\text{--}1.53\\ {\\rm GHz}$) co-detections prove non-repeating FRBs possess intrinsically broad spectra across $>1\\ {\\rm GHz}$ with median index $\\beta = -0.3 \\pm 0.4$, characteristic spectral turnovers at $\\nu_{\\rm peak} \\approx 720\\ {\\rm MHz}$, and pulse broadening $\\tau \\propto \\nu^{-4}$ that heavily depresses low-frequency peak flux density.\n- [arXiv:2611.28251] (Lead Author et al.): Rest-frame RM dispersion $\\sigma_{\\rm RM,host}$ positively correlates with host scattering time $\\tau_{\\rm host}$ at $2.1\\sigma\\text{--}3.4\\sigma$, while multi-path scattering phase mixing systematically flattens intrinsic polarization angle swings (e.g. from $60^\\circ$ at $1.4\\ {\\rm GHz}$ down to $\\le 30^\\circ$ at $600\\ {\\rm MHz}$ in FRB 20220310A/F).\n- [arXiv:2611.28334] (Lead Author et al.): Global population synthesis of 1,683 CHIME Catalog 2 bursts yields a local volumetric rate $\\Phi_0 = 1.1^{+0.4}_{-0.3} \\times 10^5\\ {\\rm Gpc^{-3}\\,yr^{-1}}$ above $10^{39}\\ {\\rm erg}$, a Schechter slope $\\gamma = -1.41^{+0.27}_{-0.21}$, and a log-normal host DM distribution with median ${\\rm DM}_{\\rm host,med}^\\prime = 199^{+34}_{-36}\\ {\\rm pc\\,cm^{-3}}$.\n- [arXiv:2611.27527] (Lead Author et al.): Dynamic spectrum simulations reveal that finite scintle counts ($N_{\\rm scint} \\lesssim 60$) produce spurious ACF oscillations and that the empirical filling factor converges to $\\eta \\approx 0.055$, decomposing FRB 20240114A into two screens with $\\overline{\\nu}_{s,1} = 2.11\\ {\\rm MHz}$ and $\\overline{\\nu}_{s,2} = 20.60\\ {\\rm MHz}$.\n- [arXiv:2611.27628] (Lead Author et al.): Quantizing crustal magnetic fields $B \\gtrsim 2 \\times 10^{16}\\ {\\rm G}$ force electrons into the lowest Landau level and suppress nuclear Urca neutrino cooling, resolving the origin of high persistent magnetar surface temperatures ($k_B T \\sim 0.28\\text{--}0.72\\ {\\rm keV}$).",
+      "significance": "Disentangles intrinsic magnetospheric burst physics from dense circum-burst plasma effects, demonstrating that RM dispersion and PA depolarization trace turbulent local shock interfaces while crustal quantum physics governs magnetar thermal baselines."
     },
     {
-      "domain": "Central Engines & Engine-Driven Transients",
-      "key_question": "How central engines in LFBOTs evade photoelectric absorption and thermal reprocessing to produce luminous early X-rays, and how Hills-captured stars survive hydrodynamical drag and loss-cone scattering to settle into sub-day repeating nuclear transient orbits.",
-      "representative_papers": [
-        "2611.28443",
-        "2611.28220"
-      ],
-      "core_findings": "- [arXiv:2611.28443] (Author et al.): AT 2024qfm achieved an unprecedented early peak X-ray luminosity $L_{\\rm x} \\approx 10^{44}\\ \\mathrm{erg\\,s^{-1}}$ and reached $L_{\\rm x}/L_{\\rm opt} \\approx 8.4$ by $\\delta t \\approx 14\\ \\mathrm{days}$, requiring an equatorial slow ejecta fraction $\\phi_0 \\lesssim 0.1$ with Thomson optical depth $\\tau_{\\rm T} < 1$ at $\\delta t \\approx 9\\ \\mathrm{days}$ to prevent complete reprocessing into optical bands.\n- [arXiv:2611.28220] (Author et al.): Proved that while pure disk drag destroys stars via hydrodynamic stripping ($f_{\\rm ml} \\approx 6 \\times 10^{-4}$), coupling TDE disk gas drag with gravitational wave orbital decay elevates the survival fraction of Hills-captured stars into sub-day QPE orbits up to $f_{\\rm QPE,\\max} \\sim 30\\%$, overcoming local two-body scattering into the loss cone.",
-      "significance": "Confirms aspherical, low-opacity viewing geometries as the essential requirement for escaping high-energy radiation in LFBOTs and demonstrates that synergized gas drag and gravitational radiation provide the dominant channel for forming repeating nuclear transients."
-    },
-    {
-      "domain": "Relativistic Jets & Binary Accretion Dynamics",
-      "key_question": "What mechanisms prevent the lateral disruption of relativistic jets over megaparsec cosmological scales, and how magnetic flux saturation and polarization discriminate between leptonic and hadronic blazar emission and govern merging binary black hole jets.",
-      "representative_papers": [
-        "2611.28376",
-        "2611.26682",
-        "2611.28237"
-      ],
-      "core_findings": "- [arXiv:2611.28376] (Author et al.): Relativistic magnetohydrodynamic simulations show that $\\Gamma = 12$ jets in cosmic void environments accelerate to $\\Gamma > 20$ via recollimation shocks, suppressing Kelvin-Helmholtz and kink instability power to $\\sum |F(k)|^2/N \\lesssim 10^{-2}$ and advancing at $v_{\\rm head} \\sim 0.72c$ to reach $\\sim 9\\ \\mathrm{Mpc}$ in $19.6\\ \\mathrm{Myr}$ with injected energy $E_{\\rm inj} \\approx 0.9 \\times 10^{62}\\ \\mathrm{erg}$.\n- [arXiv:2611.26682] (Author et al.): Showed that soft X-ray ($0.2\\text{--}0.4\\ \\mathrm{keV}$) polarimetry with REDSoX/GOSoX delivers predicted polarization degrees $\\mathrm{PD} \\approx 6.57\\%\\text{--}8.38\\%$ for HSP blazars (well above $\\mathrm{MDP}_{99} = 1.19\\%$), robustly distinguishing leptonic synchrotron models from hadronic cascades which predict $\\mathrm{PD} \\approx 11\\%$ in the MeV band.\n- [arXiv:2611.28237] (Author et al.): 3D full GRMHD simulations showed that equal-mass binary black hole accretion establishes a Dual Horizon-MAD state with saturated dimensionless magnetic flux $\\phi_{\\rm BH} \\sim 20$ after $\\sim 23$ orbits, launching relativistic jets with Poynting efficiency $\\eta = 1\\%$ and displaying orbital modulation at $f \\sim 0.9f_{\\rm orb}$ and $1.8f_{\\rm orb}$.",
-      "significance": "Demonstrates that high bulk Lorentz factor thrust and underdense cosmic voids preserve jet coherence across multi-Mpc scales, while horizon-scale magnetic flux saturation dictates the electromagnetic multi-messenger signatures of accreting binary black holes."
-    },
-    {
-      "domain": "Circumstellar Shocks & Supernova Remnant Kinematics",
-      "key_question": "How to decouple intrinsic 3D ejecta kinematic asymmetries from line-of-sight surface brightness variations in young supernova remnants, and how pre-ionization modifies radiative shock precursors.",
-      "representative_papers": [
-        "2611.29910",
-        "2611.26708"
-      ],
-      "core_findings": "- [arXiv:2611.29910] (XRISM Resolve Team): Resolved Doppler-split K-shell lines in Tycho's SNR into front and rear shells, discovering an intrinsic $16\\%$ kinematic expansion asymmetry ($v_{\\mathrm{front}}(\\mathrm{Si}) = -3320 \\pm 60\\ \\mathrm{km\\ s^{-1}}$ versus $v_{\\mathrm{back}}(\\mathrm{Si}) = +3920 \\pm 100\\ \\mathrm{km\\ s^{-1}}$) that was previously masked by a $57\\%\\text{--}80\\%$ front-shell surface brightness dominance.\n- [arXiv:2611.26708] (Author et al.): Established a full spectral grid of radiative shock models showing that precursor line ratios obey $\\Psi = Q/v_{\\rm s} \\propto v_{\\rm s}^\\alpha$, with $[\\nobreak{\\rm O\\ I}]/\\mathrm{H}\\alpha$ line ratios remaining flat and elevated by up to $0.4\\ \\mathrm{dex}$ above previous models for shock velocities $v_{\\rm shock} > 400\\ \\mathrm{km\\ s^{-1}}$ where ram pressure dominates magnetic pressure.",
-      "significance": "Provides the first unambiguous 3D kinematic dissection of Type Ia supernova ejecta free from surface-brightness weighting biases and establishes self-consistent atomic diagnostics for non-equilibrium radiative shock precursors."
-    },
-    {
-      "domain": "Super-Eddington Accretion & Compact Object Structure",
-      "key_question": "How radiation drag, column stagnation, and relativistic ultrafast outflows regulate super-Eddington accretion onto magnetized neutron stars, and how core equation-of-state uncertainties limit nuclear physics constraints on neutron star compactness.",
+      "domain": "Super-Eddington Accretion & Ultraluminous X-ray Sources",
+      "key_question": "What physics governs the dynamical vertical structure of super-Eddington accretion columns in magnetized neutron stars and the launching of accompanying relativistic outflows?",
       "representative_papers": [
         "2611.30018",
         "2611.27693",
         "2611.26733",
-        "2611.27508",
+        "2611.27508"
+      ],
+      "core_findings": "- [arXiv:2611.30018] (Lead Author et al.): 1D two-fluid radiation-hydrodynamic modeling across diverse ULXP parameters ($B_* \\sim 6\\times 10^{12}\\text{--}1.6\\times 10^{13}\\ {\\rm G}$, $L_{\\rm X} \\sim 2.0\\text{--}4.7\\times 10^{39}\\ {\\rm erg\\,s^{-1}}$) reveals that the radiation sonic surface is universally locked at $r_{\\rm sonic} \\simeq 15.0\\ {\\rm km}$ while thermal mound heights vary from $h_{\\rm th} = 0.07\\ {\\rm km}$ to $1.53\\ {\\rm km}$ with surface stagnation $|v| \\sim 0.01c$.\n- [arXiv:2611.27693] (Lead Author et al.): High-resolution XMM-Newton spectroscopy of the pulsating ULX RX J0209.6-7427 ($L_{\\rm bol} \\approx 9.5 \\times 10^{38}\\ {\\rm erg\\,s^{-1}}$) isolates a relativistically blueshifted ultrafast outflow with velocity $v_{\\rm LOS,xabs} = -30000 \\pm 300\\ {\\rm km\\,s^{-1}} \\approx -0.1c$ embedded in slow photoionized gas ($n_e \\sim 3 \\times 10^{11}\\ {\\rm cm^{-3}}$).\n- [arXiv:2611.26733] (Lead Author et al.): Multi-epoch Chandra survey of NGC 1300 establishes a population of 6 off-nuclear ULXs and identifies transient ULX X32 with an extreme variability amplitude $R > 715$ reaching $L_{\\rm X} \\simeq 1.46 \\times 10^{40}\\ {\\rm erg\\,s^{-1}}$ with a broadened disk spectrum ($kT_{\\rm in} = 1.37\\ {\\rm keV}$).\n- [arXiv:2611.27508] (Lead Author et al.): Broadband NuSTAR spectroscopy of asynchronous polar IGR J19552+0044 shows the post-shock temperature remains invariant at $kT_{\\rm max} \\approx 44.5\\ {\\rm keV}$ ($M_{\\rm WD} \\ge 0.85\\ M_\\odot$) despite mass accretion rate fluctuations of a factor of $\\sim 4.5$.",
+      "significance": "Demonstrates that super-critical magnetized accretion flows maintain stable sonic transitions near the stellar boundary while driving powerful $\\sim 0.1c$ radiation-driven disk outflows."
+    },
+    {
+      "domain": "Explosive Transients, Nuclear Disruption & Shock Dynamics",
+      "key_question": "What mechanisms dictate energy dissipation, optical-depth evolution, and kinematic asymmetries in fast optical transients, tidal interactions, and supernova remnants?",
+      "representative_papers": [
+        "2611.28443",
+        "2611.28220",
+        "2611.29910",
+        "2611.26708",
         "2611.27669"
       ],
-      "core_findings": "- [arXiv:2611.30018] (Author et al.): Solved two-fluid radiation-hydrodynamic equations along dipole columns, demonstrating that ULX pulsars develop an extended sinking region with sonic surfaces tightly clustered at $r_{\\rm sonic} \\simeq 15.0\\text{--}15.1\\ \\mathrm{km}$ and thermal mounds scaling up to $h_{\\rm th} = 1.53\\ \\mathrm{km}$, decelerating to $|v| \\sim 0.01c$ at the surface.\n- [arXiv:2611.27693] (Author et al.): High-resolution XMM-Newton spectroscopy of the pulsating ULX RX J0209.6-7427 revealed an ultrafast outflow with $v_{\\rm LOS,xabs} = -30000 \\pm 300\\ \\mathrm{km\\ s^{-1}} \\approx -0.1c$ coexisting with a slow ($v_{\\rm LOS} = 10 \\pm 200\\ \\mathrm{km\\ s^{-1}}$) photoionized plasma ($n_e \\sim 3 \\times 10^{11}\\ \\mathrm{cm^{-3}}$).\n- [arXiv:2611.26733] (Author et al.): Identified 6 off-nuclear ULXs and discovered transient ULX X32 in NGC 1300, which exhibits an extreme dynamic range $R > 715$ peaking at $L_{\\rm X,max} \\simeq 1.46 \\times 10^{40}\\ \\mathrm{erg\\ s^{-1}}$ with a broadened accretion disk spectrum ($kT_{\\rm in} = 1.37\\ \\mathrm{keV}$).\n- [arXiv:2611.27508] (Author et al.): NuSTAR spectroscopy of asynchronous polar IGR J19552+0044 measured a post-shock temperature $kT_{\\rm max} = 44.50^{+3.60}_{-3.29}\\ \\mathrm{keV}$ and reflection fraction $R = 0.37$, constraining $M_{\\rm WD} \\ge 0.85\\,M_\\odot$ and demonstrating temperature stability despite a 4.5-fold accretion rate modulation.\n- [arXiv:2611.27669] (Author et al.): Formulated an observable variance decomposition proving an intrinsic anti-correlation ($\\rho = -0.952$) between logarithmic radius and Love number in tidal deformability $\\Lambda = \\frac{2}{3}k_2 C^{-5}$, showing nuclear data alone constrain tides to $1.38\\%$, whereas combining NICER radius ($\\sigma_R = 0.3\\ \\mathrm{km}$) with gravitational wave tides removes $44\\text{--}68\\%$ of Love-number variance.",
-      "significance": "Synthesizes the physical structure of radiation-decelerated accretion columns and ultrafast winds in super-critical pulsars while quantifying the formal boundaries of nuclear EOS translation into neutron star compactness."
+      "core_findings": "- [arXiv:2611.28443] (Lead Author et al.): AT 2024qfm sets an early peak record for LFBOTs with $L_{\\rm X} \\approx 10^{44}\\ {\\rm erg\\,s^{-1}}$ and $L_{\\rm X}/L_{\\rm opt} \\approx 8.4$ at $14\\ {\\rm days}$, requiring an equatorial slow-outflow covering fraction $\\phi_0 \\lesssim 0.1$ and Thomson depth $\\tau_{\\rm T} < 1$ that permits direct escape of hard engine X-rays ($F_\\nu \\propto \\nu^{-0.5}$) before shock-interacting at $v \\approx 0.1c$.\n- [arXiv:2611.28220] (Lead Author et al.): Hills-captured stars undergoing repeated collisions with a spreading TDE disk experience enhanced dissipation that boosts survival into sub-day repeating nuclear transient/QPE orbits from $f_{\\rm QPE} \\lesssim 5\\text{--}10\\%$ to $\\sim 30\\%$, overcoming two-body scattering into the disruptive loss cone.\n- [arXiv:2611.29910] (Lead Author et al.): XRISM/Resolve microcalorimeter observations of Tycho's SNR resolve Doppler splitting of ejecta K-shell lines into blueshifted front ($-3320\\ {\\rm km\\,s^{-1}}$) and redshifted rear ($+3920\\ {\\rm km\\,s^{-1}}$) shells, proving a $\\sim 16\\%$ kinematic expansion asymmetry and chemically stratified velocity ratios ($v_{\\rm Fe}/v_{\\rm Si} \\approx 0.75$).\n- [arXiv:2611.26708] (Lead Author et al.): Self-consistent radiative shock grids demonstrate that time-dependent precursor photoionization ratios scale as $\\Psi = Q/v_s \\propto v_s^\\alpha$, with $[\\nobreak{\\rm O\\ I}]/{\\rm H}\\alpha$ ratios flattening at $v_s > 400\\ {\\rm km\\,s^{-1}}$ up to $0.4\\ {\\rm dex}$ above legacy models as ram pressure dominates magnetic cushions.\n- [arXiv:2611.27669] (Lead Author et al.): Variance decomposition demonstrates that nuclear experimental constraints on neutron star tidal deformability $\\Lambda$ are capped at $1.38\\%$ due to dense core EOS variance, requiring combined measurements of pulsar radius ($\\sigma_R = 0.3\\ {\\rm km}$) and binary tidal deformability ($\\sigma_{\\ln\\widetilde{\\Lambda}} = 0.1$) to remove $44\\text{--}68\\%$ of core Love-number variance.",
+      "significance": "Establishes that geometric anisotropy and inefficient radiative reprocessing govern early LFBOT emission, while hydrodynamic drag in circum-nuclear disks opens an efficient evolutionary channel for periodic nuclear transients."
+    },
+    {
+      "domain": "Relativistic Jets, Blazars & Binary Black Hole Accretion",
+      "key_question": "How do magnetic fields, hydrodynamic stability, and ambient medium gradients control jet propagation across mega-parsec scales and binary accretion modes?",
+      "representative_papers": [
+        "2611.28376",
+        "2611.28237",
+        "2611.26682"
+      ],
+      "core_findings": "- [arXiv:2611.28376] (Lead Author et al.): 3D RMHD simulations show that relativistic jets with $\\Gamma = 12$ injected into underdense void profiles accelerate to $\\Gamma > 20$ via recollimation shocks and survive KH/kink instabilities to propagate across $\\sim 9\\ {\\rm Mpc}$ in $19.6\\ {\\rm Myr}$ at $v_{\\rm head} \\sim 0.72c$, whereas cluster environments stall jets at $1.5\\text{--}2\\ {\\rm Mpc}$.\n- [arXiv:2611.28237] (Lead Author et al.): Long-term 3D GRMHD simulations of equal-mass binary black holes discover the 'Dual Horizon-MAD' state where horizon flux saturates at $\\phi_{\\rm BH} \\sim 20$, driving dual relativistic jets with $1\\%$ Poynting efficiency and distinct accretion rate periodicities at $0.9f_{\\rm orb}$ and $1.8f_{\\rm orb}$.\n- [arXiv:2611.26682] (Lead Author et al.): Soft X-ray polarimetry modeling at $0.2\\text{--}0.4\\ {\\rm keV}$ predicts polarization degrees of $\\approx 6.6\\%\\text{--}8.4\\%$ in HSP blazars (Mrk 421) and $\\approx 7.2\\%$ in LSP blazars (BL Lac), providing decisive discrimination against hadronic models that predict up to $\\approx 11\\%$ in MeV bands.",
+      "significance": "Shows that ultra-relativistic bulk inertia protects cosmic-scale jets from destructive MHD disruption in voids, while horizon-scale magnetic saturation in binary SMBHs drives modulated multi-messenger jet signatures."
     }
   ],
   "thematic_highlights": [
     {
-      "theme_name": "Multi-Scale Dispersion, Scintillation, and Depolarization in Fast Radio Bursts",
-      "summary": "This week marks a major transition in resolving the environment and emission physics of fast radio bursts across observational and theoretical fronts. Theoretical modeling of accretion-induced collapse ejecta interacting with structured binary wind bubbles demonstrates that shock ionization of neutral circumstellar shells naturally generates multi-year sign reversals in $d{\\rm DM}_{\\rm loc}/dt$ ($+3\\text{--}5\\ \\mathrm{pc\\,cm^{-3}\\,yr^{-1}}$), explaining observed local DM drifts without invoking ad-hoc plasma variations. Concurrently, baseband co-detections between CHIME/FRB ($400\\text{--}800\\ \\mathrm{MHz}$) and DSA-110 ($1.28\\text{--}1.53\\ \\mathrm{GHz}$) prove that non-repeating FRBs emit broadband radiation across $>1\\ \\mathrm{GHz}$ with median spectral index $\\beta = -0.3 \\pm 0.4$ and spectral turnovers at $\\nu_{\\rm peak} \\approx 720\\ \\mathrm{MHz}$. Crucially, joint spectropolarimetry uncovers statistically significant correlations between host RM dispersion, Faraday rotation, and scattering timescales, showing that multipath scatter-induced phase mixing systematically flattens intrinsic polarization angle swings at low frequencies. Supported by rigorous autocorrelation calibrations of finite-scintle errors and the CHIME Catalog 2 cosmological population synthesis ($\\Phi_0 = 1.1 \\times 10^5\\ \\mathrm{Gpc^{-3}\\,yr^{-1}}$), these results establish that propagation screens play a central role in shaping observed FRB spectra, polarization, and temporal evolution.",
+      "theme_name": "Circumstellar Environments and Propagation Diagnostics of Repeating Fast Radio Bursts",
+      "summary": "Recent observational and theoretical breakthroughs are converging on the physical nature of FRB local environments. Hydrodynamic modeling of accretion-induced collapse (AIC) ejecta in pre-existing binary wind bubbles demonstrates that forward-shock ionization of neutral circumstellar shells drives dramatic sign reversals in local dispersion measure drift rates ($d{\\rm DM}_{\\rm loc}/dt$ reaching $+3\\text{--}5\\ {\\rm pc\\,cm^{-3}\\,yr^{-1}}$ at $t \\approx 9\\text{--}22\\ {\\rm yr}$), providing an exact physical framework for multi-year DM trends seen in repeaters residing in old stellar hosts. Simultaneously, dual-station CHIME/FRB and DSA-110 observations prove that rest-frame RM dispersion $\\sigma_{\\rm RM,host}$ correlates with host scattering timescale $\\tau_{\\rm host}$, and demonstrate that multipath scattering geometrically mixes polarization phases, systematically washing out intrinsic polarization angle swings at low frequencies. Concurrently, rigorous dynamic spectrum modeling resolves finite-scintle sampling biases, revealing that low scintle counts mimic spurious plasma lensing oscillations and establishing that two discrete scattering screens govern burst paths.",
       "paper_ids": [
         "2611.26696",
         "2611.28250",
         "2611.28251",
-        "2611.28334",
         "2611.27527"
       ]
     },
     {
-      "theme_name": "Central Engines, Viewing Geometries, and Orbital Capture in Extreme Transients",
-      "summary": "Studies of luminous fast blue optical transients and repeating nuclear flares converge on the critical role of asymmetric circumstellar geometries and orbital dissipation. Comprehensive multi-wavelength modeling of the record-breaking LFBOT AT 2024qfm ($L_{\\rm x} \\approx 10^{44}\\ \\mathrm{erg\\,s^{-1}}$) reveals an extremely early emergence of hard X-rays with $L_{\\rm x}/L_{\\rm opt} \\approx 8.4$, requiring an equatorial slow outflow covering $\\phi_0 \\lesssim 0.1$ that becomes Thomson optically thin ($\\tau_{\\rm T} < 1$) within 9 days, thereby demonstrating that viewing angle through evacuated polar funnels dictates whether engine power is reprocessed into optical light. In parallel, orbital dynamics of Hills-captured stars interacting with viscously spreading TDE disks demonstrate that pure hydrodynamic drag inevitably disrupts stars via mass loss ($f_{\\rm ml} \\approx 6 \\times 10^{-4}$), whereas coupling gas drag with gravitational radiation allows stars to shrink their orbits by 2–3 orders of magnitude without two-body scattering into the loss cone, boosting the formation efficiency of sub-day repeating QPE systems to $\\sim 30\\%$.",
+      "theme_name": "Super-Eddington Accretion Columns, Outflows, and Compact Binary Physics",
+      "summary": "The physics of supercritical accretion onto magnetized compact stars has advanced from idealized kinematic prescriptions to self-consistent multi-fluid radiation hydrodynamics. Full two-fluid modeling along magnetic dipolar columns reveals that the radiation sonic surface $a_{\\rm rad} = |v|$ is rigidly locked at $r_{\\rm sonic} \\simeq 15.0\\ {\\rm km}$ across diverse magnetic fields ($B_* \\sim 6\\times 10^{12}\\text{--}1.6\\times 10^{13}\\ {\\rm G}$) and super-Eddington accretion rates, while thermal mound depths vary by over an order of magnitude. This theoretical baseline is directly supported by high-resolution XMM-Newton spectroscopy of the pulsating ULX RX J0209.6-7427, which isolates a relativistically blueshifted ultrafast outflow with velocity $v_{\\rm LOS,xabs} \\approx -0.1c$ launching from the super-critical flow. In parallel, long-term monitoring of NGC 1300 identifies a rich population of off-nuclear ULXs including a transient source with an extreme dynamic range of $R > 715$, demonstrating the ubiquity of transient supercritical accretion across galactic discs.",
+      "paper_ids": [
+        "2611.30018",
+        "2611.27693",
+        "2611.26733",
+        "2611.27508"
+      ]
+    },
+    {
+      "theme_name": "Extreme Shock Interaction, Circum-Nuclear Dynamics, and Relativistic Transients",
+      "summary": "High-cadence multi-wavelength monitoring and 3D hydrodynamic simulations have shed new light on extreme transient dissipation regimes. The luminous fast blue optical transient AT 2024qfm achieved a record early X-ray peak luminosity of $L_{\\rm X} \\approx 10^{44}\\ {\\rm erg\\,s^{-1}}$ and an extreme ratio $L_{\\rm X}/L_{\\rm opt} \\approx 8.4$ at $14\\ {\\rm days}$, proving that high-energy emission escapes un-reprocessed through an optically thin geometry with slow-ejecta covering fraction $\\phi_0 \\lesssim 0.1$. In galactic nuclei, Hills-captured stars interacting with expanding TDE accretion disks undergo accelerated orbital drag, increasing the orbital capture efficiency into sub-day repeating quasi-periodic eruption (QPE) paths to $\\sim 30\\%$. On remnant scales, XRISM/Resolve microcalorimeter spectroscopy unambiguously decouples front and rear shell kinematics in Tycho's SNR, revealing an intrinsic $16\\%$ rear-side velocity excess ($+3920\\ {\\rm km\\,s^{-1}}$ vs $-3320\\ {\\rm km\\,s^{-1}}$) and stratified heavy-element velocity distributions.",
       "paper_ids": [
         "2611.28443",
-        "2611.28220"
-      ]
-    },
-    {
-      "theme_name": "Relativistic Outflows, Magnetically Arrested Disks, and Multi-Mpc Jet Collimation",
-      "summary": "The propagation and stability of relativistic outflows across vastly different astrophysical scales received fundamental clarification this week. Large-scale 3D RMHD simulations demonstrate that relativistic jets with initial $\\Gamma = 12$ injected into underdense cosmic voids accelerate via recollimation shocks to $\\Gamma > 20$, where high relativistic momentum density strongly suppresses Kelvin-Helmholtz and kink modes to propagate across $\\sim 9\\ \\mathrm{Mpc}$ over $19.6\\ \\mathrm{Myr}$ with injected energy $E_{\\rm inj} \\approx 0.9 \\times 10^{62}\\ \\mathrm{erg}$, explaining the physical survival of giant radio galaxies like Porphyrion. On binary black hole scales, full GRMHD simulations reveal that circumbinary accretion drives merging black holes into a Dual Horizon-MAD state with saturated dimensionless horizon fluxes $\\phi_{\\rm BH} \\sim 20$ and Poynting jet efficiency $\\eta = 1\\%$. In blazar jets, soft X-ray polarimetry ($0.2\\text{--}0.4\\ \\mathrm{keV}$) with upcoming missions is shown to provide a clean discriminant between leptonic synchrotron and hadronic cascade models.",
-      "paper_ids": [
-        "2611.28376",
-        "2611.28237",
-        "2611.26682",
-        "2611.27693"
-      ]
-    },
-    {
-      "theme_name": "High-Resolution Dynamics of Supernova Remnants and Super-Eddington Accretion Columns",
-      "summary": "Breakthrough high-resolution spectroscopy and self-consistent radiation hydrodynamics have transformed our understanding of shock kinematics and super-critical accretion. XRISM Resolve microcalorimeter observations of Tycho's SNR achieved the first clean separation of Doppler-split K-shell lines, proving that the rear shell expands $\\sim 600\\text{--}700\\ \\mathrm{km\\,s^{-1}}$ faster than the front shell (a $16\\%$ intrinsic kinematic asymmetry) despite the front shell dominating observed surface brightness. In compact binaries, self-consistent two-fluid radiation-hydrodynamic modeling of ULX pulsar accretion columns shows that radiation sonic surfaces cluster tightly at $r_{\\rm sonic} \\simeq 15.0\\text{--}15.1\\ \\mathrm{km}$ above the stellar surface, with thermal mound heights scaling with mass transfer rates. These column models are corroborated by the detection of a $v \\approx -0.1c$ ultrafast outflow in the pulsating ULX RX J0209.6-7427 and the discovery of transient ULX X32 in NGC 1300 displaying a dynamic range exceeding 715.",
-      "paper_ids": [
+        "2611.28220",
         "2611.29910",
-        "2611.30018",
-        "2611.26733",
-        "2611.27508",
-        "2611.27628",
-        "2611.27669",
         "2611.26708"
       ]
     }
@@ -117,9 +97,9 @@
       "source_fingerprint": "e981e796d252569fd2488126c55fc8f007be176fbae276ee9ab728d09a6e62e1",
       "title": "From Binary Wind to Radio Burst: Dispersion-Measure Evolution after Accretion-induced Collapse",
       "priority": "must_read",
-      "recommendation_reason": "Provides the first hydrodynamic mechanism explaining multi-year sign reversals in local FRB dispersion measure via shock ionization of pre-shaped circumstellar wind bubbles.",
-      "core_insight": "Shock ionization of neutral circumstellar shells drives a sign reversal in $d{\\rm DM}_{\\rm loc}/dt$ from negative to positive at $t \\simeq 9\\text{--}22\\ \\mathrm{yr}$ (reaching $+3\\text{--}5\\ \\mathrm{pc\\,cm^{-3}\\,yr^{-1}}$), while unshocked ejecta dilute as ${\\rm DM}_{\\rm ejc} \\propto t^{-2}$.",
-      "reading_guide": "Focus on Section 2 for the thin-shell momentum equations and Section 3 for the angle-dependent DM evolution curves.",
+      "recommendation_reason": "Provides a crucial hydrodynamic mechanism linking repeating FRBs in globular clusters/early-type galaxies to accretion-induced collapse within structured binary wind bubbles.",
+      "core_insight": "Forward-shock ionization of neutral circumstellar wind-bubble shells produces multi-year sign reversals in $d{\\rm DM}_{\\rm loc}/dt$ from negative to $+3\\text{--}5\\ {\\rm pc\\,cm^{-3}\\,yr^{-1}}$ at $t \\simeq 9\\text{--}22\\ {\\rm yr}$, distinguishing neutral CSM interaction from monotonic dilute expansions.",
+      "reading_guide": "Focus on Section 2 for the aspherical thin-shell momentum equations and Section 3 for the resulting angle-dependent DM time evolution curves.",
       "authors": [
         "Smadar Naoz",
         "Victoria M. Kaspi"
@@ -132,9 +112,9 @@
       "source_fingerprint": "947d1b26cd64b4ffc78e22407aec3f696444e7fc1537c2e7fcbc9ab414d81db1",
       "title": "Long-Term Evolution of Hills-Captured Stars with TDE Disk Collisions: Links to Repeating Nuclear Transients",
       "priority": "must_read",
-      "recommendation_reason": "Solves the formation puzzle of sub-day repeating nuclear transients by showing that coupled gas drag and gravitational wave radiation rescue captured stars from tidal disruption.",
-      "core_insight": "Coupling TDE disk gas drag with gravitational wave orbital decay elevates the survival fraction of Hills-captured stars into sub-day QPE orbits up to $\\sim 30\\%$, overcoming severe local loss-cone scattering.",
-      "reading_guide": "Examine the orbital evolution equations coupling disk drag and GW emission alongside the MESA-calibrated stellar stripping response.",
+      "recommendation_reason": "Solves the long-standing dilemma of how stars dissipate binding energy into ultra-compact QPE orbits without being disrupted by ram pressure or two-body loss-cone scattering.",
+      "core_insight": "Gas drag from viscously spreading TDE disks accelerates orbital circularization ahead of loss-cone scattering, elevating the survival rate of sub-day repeating nuclear transients to $\\sim 30\\%$ for $10^6\\ M_\\odot$ black holes.",
+      "reading_guide": "Examine the coupled differential equations for semi-major axis and pericenter evolution combining hydrodynamic drag with gravitational wave emission.",
       "authors": [
         "Howard Hao-Tse Huang",
         "Philippe Z. Yao",
@@ -149,9 +129,9 @@
       "source_fingerprint": "441e9bbfc81a545a5e86767f69750da29f1452e43c8024c9614640de3ed12fa1",
       "title": "Fast Radio Bursts Co-detected by CHIME/FRB and DSA-110 from 400 to 1530 MHz",
       "priority": "must_read",
-      "recommendation_reason": "Delivers the definitive dual-facility broadband census of non-repeating FRBs, resolving spectral turnovers and separating intrinsic spectra from multipath broadening.",
-      "core_insight": "Non-repeating FRBs exhibit broadband emission across $>1\\ \\mathrm{GHz}$ with median spectral index $\\beta = -0.3 \\pm 0.4$ and spectral turnovers clustering at $\\nu_{\\rm peak} \\approx 720\\ \\mathrm{MHz}$.",
-      "reading_guide": "Inspect the co-detection dynamic spectra and the multi-screen sightline deconstruction modeling.",
+      "recommendation_reason": "Delivers the first definitive ultra-broadband joint census of non-repeating FRBs from 400 MHz to 1.5 GHz, breaking narrow-band degeneracies.",
+      "core_insight": "Non-repeating FRBs emit across bandwidths exceeding $1\\ {\\rm GHz}$ with median spectral index $\\beta = -0.3 \\pm 0.4$ and spectral turnovers at $\\nu_{\\rm peak} \\approx 720\\ {\\rm MHz}$, with low-frequency peak flux heavily suppressed by $\\tau \\propto \\nu^{-4}$ scattering.",
+      "reading_guide": "Review Section 3 for the dual-instrument co-detection matching filter and the multi-screen sightline deconstruction methodology.",
       "authors": [
         "S. K. Ocker",
         "K. Nimmo",
@@ -191,9 +171,9 @@
       "source_fingerprint": "5184eb785bdd9b0b37af3d9385245adc6d1d3ca711deaf909dfc54a53589f05c",
       "title": "Spectropolarimetric properties of fast radio bursts co-detected by CHIME/FRB and DSA-110",
       "priority": "must_read",
-      "recommendation_reason": "Resolves the long-standing debate over whether polarization angle variations in FRBs reflect magnetospheric geometry or extrinsic propagation effects.",
-      "core_insight": "Statistically significant ($2.1\\sigma\\text{--}3.4\\sigma$) correlations between $\\sigma_{\\rm RM,host}$, $|{\\rm RM}_{\\rm host}|$, and $\\tau_{\\rm host}$ reveal that multipath scatter-induced phase mixing systematically flattens intrinsic polarization angle swings at low frequencies.",
-      "reading_guide": "Read the MCMC model comparison between constant polarization, chromatic depolarization, and magnetospheric birefringence.",
+      "recommendation_reason": "Provides direct observational proof that multipath scattering systematically flattens intrinsic polarization angle swings in fast radio bursts.",
+      "core_insight": "Rest-frame RM dispersion $\\sigma_{\\rm RM,host}$ correlates positively with scattering time $\\tau_{\\rm host}$ at $2.1\\sigma\\text{--}3.4\\sigma$, while scatter-induced phase mixing suppresses low-frequency polarization angle swings from $60^\\circ$ at $1.4\\ {\\rm GHz}$ to $\\le 30^\\circ$ at $600\\ {\\rm MHz}$.",
+      "reading_guide": "Inspect the MCMC model comparison between pure RM dispersion depolarization and magnetospheric birefringence.",
       "authors": [
         "Ayush Pandhi",
         "Myles Sherman",
@@ -229,9 +209,9 @@
       "source_fingerprint": "d8f7e5a11b5656a525ab1b3e48f955c52abd2f4fc2e25c8eae2c0a31fd90f252",
       "title": "The FRB Population Revisited: Rate, Energy, Evolution, and Host-DM Constraints from the Second CHIME/FRB Catalog",
       "priority": "must_read",
-      "recommendation_reason": "Establishes the state-of-the-art cosmological rate density, energy distribution, and host DM properties using 1,683 bursts from CHIME/FRB Catalog 2.",
-      "core_insight": "Constrains the local volumetric rate density to $\\Phi_0 = 1.1^{+0.4}_{-0.3} \\times 10^5\\ \\mathrm{Gpc^{-3}\\,yr^{-1}}$ ($E > 10^{39}\\ \\mathrm{erg}$) with differential slope $\\gamma = -1.41^{+0.27}_{-0.21}$ and cutoff energy $E_{\\rm char} = 2.0^{+2.6}_{-1.0} \\times 10^{41}\\ \\mathrm{erg}$.",
-      "reading_guide": "Review the empirical selection effect calibration and forward population synthesis MCMC posteriors.",
+      "recommendation_reason": "Presents the most rigorous forward population synthesis of FRBs to date, correcting for multi-dimensional telescope selection effects using 1,683 bursts.",
+      "core_insight": "Constrains the local FRB rate density to $\\Phi_0 = 1.1^{+0.4}_{-0.3} \\times 10^5\\ {\\rm Gpc^{-3}\\,yr^{-1}}$ above $10^{39}\\ {\\rm erg}$ with Schechter slope $\\gamma = -1.41^{+0.27}_{-0.21}$ and median host dispersion measure ${\\rm DM}_{\\rm host, med}^\\prime = 199^{+34}_{-36}\\ {\\rm pc\\,cm^{-3}}$.",
+      "reading_guide": "Read the forward modeling methodology in Section 3 and the joint $(\\mathrm{S/N}, \\mathrm{DM})$ selection function calibration.",
       "authors": [
         "Naman Jain",
         "Kaitlyn Shin",
@@ -271,9 +251,9 @@
       "source_fingerprint": "9675ebddb3e1f95e2cd86539619a187a5b35a797593ab9dbc6d99c011bc56cc4",
       "title": "The Most X-ray Luminous Fast Blue Optical Transient at Early Times: AT 2024qfm and Inefficient Reprocessing of Its High-Energy Emission",
       "priority": "must_read",
-      "recommendation_reason": "Reports the most X-ray luminous early LFBOT to date, providing definitive geometric proof of low-reprocessing polar sightlines into the central engine.",
-      "core_insight": "AT 2024qfm peaked at $L_{\\rm x} \\approx 10^{44}\\ \\mathrm{erg\\,s^{-1}}$ with $L_{\\rm x}/L_{\\rm opt} \\approx 8.4$ at 14 days, demonstrating an equatorial slow outflow fraction $\\phi_0 \\lesssim 0.1$ and early optical thinness ($\\tau_{\\rm T} < 1$).",
-      "reading_guide": "Examine the multi-band light curves comparing X-ray and optical luminosities and the fast-cooling synchrotron radio modeling.",
+      "recommendation_reason": "Documents the earliest and most X-ray luminous LFBOT observed, establishing fundamental geometric constraints on high-energy engine reprocessing.",
+      "core_insight": "AT 2024qfm reaches an early peak $L_{\\rm X} \\approx 10^{44}\\ {\\rm erg\\,s^{-1}}$ and transitions to $L_{\\rm X}/L_{\\rm opt} \\approx 8.4$ at $14\\ {\\rm days}$, requiring an equatorial slow ejecta fraction $\\phi_0 \\lesssim 0.1$ and Thomson depth $\\tau_{\\rm T} < 1$ that permits direct high-energy escape.",
+      "reading_guide": "Examine Section 4 on the multi-wavelength SED modeling and the synchrotron self-absorption radius and magnetic field derivations.",
       "authors": [
         "A. J. Nayana",
         "Raffaella Margutti",
@@ -308,9 +288,9 @@
       "source_fingerprint": "a92426ba504426cf2efa2176a00a844e5e5f50e3f53e9434f443370868dc5f42",
       "title": "The XRISM view of the front and rear ejecta dynamics in Tycho's SNR",
       "priority": "must_read",
-      "recommendation_reason": "Achieves microcalorimeter Doppler resolution of Tycho's SNR ejecta, discovering an intrinsic expansion asymmetry previously hidden by surface brightness weighting.",
-      "core_insight": "XRISM Resolve separates Doppler-split K-shell lines, revealing an intrinsic $16\\%$ rear-shell velocity excess ($+3920\\ \\mathrm{km\\,s^{-1}}$ vs $-3320\\ \\mathrm{km\\,s^{-1}}$) in Tycho's SNR.",
-      "reading_guide": "Study the multi-component Doppler line profile fits across the 5 XRISM pointings and the 3D velocity reconstruction.",
+      "recommendation_reason": "Demonstrates the unprecedented power of XRISM microcalorimeters to resolve 3D kinematic line-of-sight splitting in historical supernova remnants.",
+      "core_insight": "Unambiguously resolves Doppler splitting in Si/S K-shell lines, revealing a $\\sim 16\\%$ expansion asymmetry where the rear shell ($+3920\\ {\\rm km\\,s^{-1}}$) expands faster than the front shell ($-3320\\ {\\rm km\\,s^{-1}}$) with chemical stratification $v_{\\rm Fe}/v_{\\rm Si} \\approx 0.75$.",
+      "reading_guide": "Inspect the multi-pointing Bayesian spectral fits in Section 3 and the synthesized 3D velocity reconstruction maps.",
       "authors": [
         "L. Godinaud",
         "A. Decourchelle",
@@ -334,9 +314,9 @@
       "source_fingerprint": "463093e1666865f0b62e6c91c08eba45a3620f136772bf68c1207831890181e2",
       "title": "Radiation-Hydrodynamical Modeling of Accretion Columns in Ultraluminous X-ray Pulsars",
       "priority": "must_read",
-      "recommendation_reason": "Presents the first self-consistent two-fluid radiation-hydrodynamic accretion column models for ULX pulsars, pinning down sonic surfaces and thermal mound depths.",
-      "core_insight": "Accretion columns develop radiation-dominated sinking zones with sonic surfaces tightly clustered at $r_{\\rm sonic} \\simeq 15.0\\text{--}15.1\\ \\mathrm{km}$ and thermal mounds scaling up to $h_{\\rm th} = 1.53\\ \\mathrm{km}$.",
-      "reading_guide": "Focus on the two-fluid RHD conservation equations and boundary condition formulations in Section 2.",
+      "recommendation_reason": "Establishes the first self-consistent two-fluid radiation-hydrodynamical framework for magnetized super-Eddington accretion columns in ULXPs.",
+      "core_insight": "The radiation sonic surface is universally locked at $r_{\\rm sonic} \\simeq 15.0\\ {\\rm km}$ across diverse magnetic fields and accretion rates, while thermal mound heights vary from $0.07\\ {\\rm km}$ to $1.53\\ {\\rm km}$ with flow settling at $|v| \\sim 0.01c$.",
+      "reading_guide": "Study the coupled two-fluid sound speed gradient equations and the free-streaming top boundary condition formulation.",
       "authors": [
         "Hong-Bo Li",
         "Ziming Wang",
@@ -352,9 +332,9 @@
       "source_fingerprint": "35640bf6b5e5029c0f6e3101b93ca49cbc0975a8773ef5bdb6993696c4c76d9a",
       "title": "Blazars through the eyes of REDSoX and GOSoX",
       "priority": "worth_knowing",
-      "recommendation_reason": "Demonstrates the power of sub-keV soft X-ray polarimetry to break degeneracies between leptonic and hadronic blazar emission models.",
-      "core_insight": "Soft X-ray polarimetry at $0.2\\text{--}0.4\\ \\mathrm{keV}$ yields predicted polarization degrees of $6.57\\%\\text{--}8.38\\%$ in HSP blazars, decisively testing leptonic synchrotron versus hadronic cascades.",
-      "reading_guide": "Check the simulated REDSoX/GOSoX minimum detectable polarization calculations for HSP and LSP templates.",
+      "recommendation_reason": "Evaluates the diagnostic capabilities of sub-keV soft X-ray polarimetry for breaking leptonic versus hadronic emission models in blazars.",
+      "core_insight": "Soft X-ray polarimetry at $0.2\\text{--}0.4\\ {\\rm keV}$ predicts polarization degrees of $\\approx 6.6\\%\\text{--}8.4\\%$ in HSP blazars, decisively distinguishing synchrotron from inverse-Compton components.",
+      "reading_guide": "Review the multi-wavelength SED modeling and the MDP calculations in Section 3.",
       "authors": [
         "Sara Capecchiacci",
         "Ioannis Liodakis",
@@ -370,9 +350,9 @@
       "source_fingerprint": "394ee7ccf9dc1f2229b7ca3e625cc5706172ee7e574fc639b0df93854a65655c",
       "title": "Effects of Preionisation in Radiative Shocks IV. A Spectral Grid Library of fully Radiative Shock Models with Time--Dependent Precursor",
       "priority": "worth_knowing",
-      "recommendation_reason": "Releases an updated atomic spectral grid library for radiative shocks incorporating time-dependent precursor ionization.",
-      "core_insight": "Precursor emission line ratios scale with shock velocity as $\\Psi = Q/v_{\\rm s} \\propto v_{\\rm s}^\\alpha$, keeping $[\\nobreak{\\rm O\\ I}]/\\mathrm{H}\\alpha$ line ratios elevated by up to $0.4\\ \\mathrm{dex}$ above standard models for $v_{\\rm shock} > 400\\ \\mathrm{km\\,s^{-1}}$.",
-      "reading_guide": "Examine the parameter grid spanning $v_{\\rm s} = 100\\text{--}1000\\ \\mathrm{km\\,s^{-1}}$ and the resulting optical diagnostic ratios.",
+      "recommendation_reason": "Provides an upgraded atomic spectral library for non-equilibrium radiative shocks and time-dependent photoionization precursors.",
+      "core_insight": "Precursor line ratios scale as $\\Psi = Q/v_s \\propto v_s^\\alpha$, with $[\\nobreak{\\rm O\\ I}]/{\\rm H}\\alpha$ ratios flattening at high shock velocities ($v_s > 400\\ {\\rm km\\,s^{-1}}$) up to $0.4\\ {\\rm dex}$ above legacy models.",
+      "reading_guide": "Examine the diagnostic line ratio grids comparing MAPPINGS III and the new CHIANTI 10 atomic data implementations.",
       "authors": [
         "Yifei Jin",
         "Knox Long",
@@ -387,9 +367,9 @@
       "source_fingerprint": "015a1b713c395f764c08a700ca1d24542f7c5aec210d887f7e968a75b325524b",
       "title": "NGC 1300: A rich reservoir of ultraluminous X-ray sources",
       "priority": "worth_knowing",
-      "recommendation_reason": "Reports a 15-year census of ULXs in NGC 1300, discovering a dramatic transient ULX with a flux dynamic range exceeding 715.",
-      "core_insight": "Discovered transient ULX X32 in NGC 1300 peaking at $L_{\\rm X,max} \\simeq 1.46 \\times 10^{40}\\ \\mathrm{erg\\,s^{-1}}$ with dynamic range $R > 715$ and a broadened-disk multi-color accretion spectrum.",
-      "reading_guide": "Inspect the cumulative X-ray luminosity functions and the multi-epoch light curve of transient X32.",
+      "recommendation_reason": "Presents a comprehensive multi-epoch Chandra census of off-nuclear ULXs and transient super-Eddington accretors in a barred spiral galaxy.",
+      "core_insight": "Discovers a new transient ULX X32 with an extreme dynamic range $R > 715$ reaching $L_{\\rm X} \\simeq 1.46 \\times 10^{40}\\ {\\rm erg\\,s^{-1}}$ and a broadened disk temperature $kT_{\\rm in} = 1.37\\ {\\rm keV}$.",
+      "reading_guide": "Focus on the long-term variability analysis and the cumulative X-ray luminosity function fits across 12 observation epochs.",
       "authors": [
         "Sinan Allak",
         "Faruk Soydugan",
@@ -406,9 +386,9 @@
       "source_fingerprint": "9b99118595171469a94d0685b0f6eb3aa07a2d65e0611c71916576825f8e838f",
       "title": "Hard X-ray spectroscopy of a short-period asynchronous polar: IGR J19552+0044",
       "priority": "worth_knowing",
-      "recommendation_reason": "Delivers broadband NuSTAR spectroscopy of an asynchronous polar, constraining post-shock plasma structure and white dwarf mass.",
-      "core_insight": "Broadband 3–79 keV spectroscopy establishes $kT_{\\rm max} = 44.50^{+3.60}_{-3.29}\\ \\mathrm{keV}$ and reflection fraction $R = 0.37$, tightly constraining white dwarf mass to $M_{\\rm WD} \\ge 0.85\\,M_\\odot$.",
-      "reading_guide": "Focus on the time-resolved hardness ratios and the mkcflow post-shock cooling model fits.",
+      "recommendation_reason": "Provides robust NuSTAR broadband constraints on white dwarf post-shock accretion column temperatures and Compton reflection in an asynchronous polar.",
+      "core_insight": "Demonstrates that the maximum post-shock temperature remains invariant at $kT_{\\rm max} \\approx 44.5\\ {\\rm keV}$ ($M_{\\rm WD} \\ge 0.85\\ M_\\odot$) despite mass accretion rate variations by a factor of $\\sim 4.5$.",
+      "reading_guide": "Review the multi-temperature isobaric cooling flow fits with Compton reflection in Section 3.",
       "authors": [
         "Akash Agarwal",
         "Vikram Rana"
@@ -421,9 +401,9 @@
       "source_fingerprint": "54ff82e0389b9765980adb4997cecccfacc6c23fa2a6fc319dc8f1ea0469925c",
       "title": "Modelling scintillation in Fast Radio Bursts",
       "priority": "worth_knowing",
-      "recommendation_reason": "Establishes quantitative bounds on finite-scintle errors in FRB spectra, resolving spurious oscillations from physical plasma lensing.",
-      "core_insight": "Simulations reveal that $N_{\\rm scint} \\lesssim 60$ causes spurious ACF oscillations, calibrating the empirical filling factor to $\\eta = 0.055$ and resolving dual screens in FRB 20240114A.",
-      "reading_guide": "Review the ACF simulation methods using thin Gaussian screens and the bootstrap error recovery distribution.",
+      "recommendation_reason": "Clarifies finite-scintle errors and spurious auto-correlation oscillations in single-burst FRB dynamic spectra.",
+      "core_insight": "Simulations establish that finite scintle counts ($N_{\\rm scint} \\lesssim 60$) generate artificial ACF oscillations mimicking plasma lensing, with the empirical filling factor converging to $\\eta \\approx 0.055$.",
+      "reading_guide": "Examine the dynamic spectrum simulation methodology and the double-Lorentzian ACF fits for FRB 20240114A.",
       "authors": [
         "L. Nicotera",
         "T. Sprenger",
@@ -440,9 +420,9 @@
       "source_fingerprint": "2abfd4690a2a3ac41be8cf548060d53f78d2469a5848b127d6dd68753d632ae7",
       "title": "Nuclear Urca cooling in magnetar crust and anomalous heating",
       "priority": "worth_knowing",
-      "recommendation_reason": "Discloses how quantizing magnetic fields modulate crustal nuclear Urca cooling, resolving the origin of anomalous magnetar surface temperatures.",
-      "core_insight": "Magnetic fields $B \\gtrsim 2 \\times 10^{16}\\ \\mathrm{G}$ freeze crustal electrons into the lowest Landau level, quenching Urca neutrino cooling and maintaining surface temperatures of $k_B T \\sim 0.28\\text{--}0.72\\ \\mathrm{keV}$.",
-      "reading_guide": "Follow the radial depth-integration formulation of crustal Urca luminosity under strong Landau quantization.",
+      "recommendation_reason": "Explains why magnetars maintain anomalously high surface temperatures using Landau quantization of crustal electron Urca reactions.",
+      "core_insight": "Quantizing fields $B \\gtrsim 2 \\times 10^{16}\\ {\\rm G}$ freeze crustal electrons into the lowest Landau level, strongly suppressing Urca neutrino cooling and sustaining surface temperatures of $k_B T \\sim 0.28\\text{--}0.72\\ {\\rm keV}$.",
+      "reading_guide": "Focus on the depth-integrated crustal neutrino luminosity equations and the Projected Shell Model transitions for $^{29}\\mathrm{Na}\\text{--}^{29}\\mathrm{Mg}$.",
       "authors": [
         "LInjing Qi",
         "Qiye Hu",
@@ -462,9 +442,9 @@
       "source_fingerprint": "4978f54e280184f60c03e81811ba546f4693ee935bb67a012b9199a0623d3633",
       "title": "Nuclear Precision and Multimessenger Constraints on Neutron-Star Structure",
       "priority": "worth_knowing",
-      "recommendation_reason": "Formulates an observable variance decomposition bounding nuclear physics constraints on neutron star compactness and tidal deformability.",
-      "core_insight": "An extreme anti-correlation ($\\rho = -0.952$) between logarithmic radius and Love number suppresses nuclear constraints on tides to $1.38\\%$, which is broken by combining NICER radius with gravitational wave measurements.",
-      "reading_guide": "Study the mathematical variance decomposition theorem partitioning core EOS freedom from low-density parameters.",
+      "recommendation_reason": "Formulates a mathematical variance decomposition bounding how much nuclear experiments can constrain macroscopic neutron star parameters.",
+      "core_insight": "Core EOS freedom limits nuclear constraint efficiency on tidal deformability $\\Lambda$ to $1.38\\%$, but combining pulsar radius measurements with binary tidal deformability eliminates $44\\text{--}68\\%$ of Love-number variance.",
+      "reading_guide": "Review the variance decomposition framework and the Bayesian likelihood updates combining GW170817 with NICER pulse profiles.",
       "authors": [
         "Hisham Anwer",
         "A. Adel",
@@ -478,9 +458,9 @@
       "source_fingerprint": "d6f9ca7146a05686f7a54acb88950838d933022b99953599e4ae695f4d083c42",
       "title": "Probing for relativistic outflows in the Ultraluminous X-ray pulsar RX J0209.6-7427",
       "priority": "worth_knowing",
-      "recommendation_reason": "Finds spectroscopic evidence for a relativistic ultrafast outflow in a super-Eddington accreting pulsar.",
-      "core_insight": "High-resolution XMM-Newton spectroscopy detects an ultrafast outflow with $v_{\\rm LOS,xabs} \\approx -0.1c$ alongside a slow photoionized circum-source plasma in the ULX pulsar RX J0209.6-7427.",
-      "reading_guide": "Check the high-resolution RGS emission line triplets and the xabs absorption line velocity determinations.",
+      "recommendation_reason": "Presents direct spectroscopic evidence for relativistic ultrafast outflows in a pulsating ultraluminous X-ray source.",
+      "core_insight": "High-resolution XMM-Newton spectroscopy reveals a relativistic outflow with line-of-sight velocity $v_{\\rm LOS,xabs} \\approx -0.1c$ launching from the super-Eddington accretion flow of RX J0209.6-7427.",
+      "reading_guide": "Check the high-resolution RGS and EPIC-pn spectral fits using photoionized emission and absorption models in SPEX.",
       "authors": [
         "F. Barra",
         "C. Pinto",
@@ -496,9 +476,9 @@
       "source_fingerprint": "516dfa8c633eb8a3668a00c48607758ba38475d34fe5df5b4952fab70de8d27b",
       "title": "Dual Horizon-MAD: A New Mode of Binary Black Hole Magnetically Arrested Accretion with Saturated Horizon Magnetic Fluxes and Intermittent Minidisks",
       "priority": "worth_knowing",
-      "recommendation_reason": "Uncovers the Dual Horizon-MAD state in binary black hole circumbinary accretion, defining electromagnetic signatures for LISA sources.",
-      "core_insight": "Equal-mass binary black holes reach a Dual Horizon-MAD state with saturated horizon magnetic flux $\\phi_{\\rm BH} \\sim 20$ after $\\sim 23$ orbits, launching jets with $\\eta = 1\\%$ Poynting efficiency.",
-      "reading_guide": "Inspect the 3D GRMHD horizon flux evolution curves and power spectra of accretion rate periodicities.",
+      "recommendation_reason": "Identifies an unprecedented magnetically arrested accretion regime in equal-mass binary black hole circumbinary disks.",
+      "core_insight": "Circumbinary disks transition to a Dual Horizon-MAD state where horizon flux saturates at $\\phi_{\\rm BH} \\sim 20$, driving relativistic jets with $1\\%$ Poynting efficiency and accretion modulations at $0.9f_{\\rm orb}$ and $1.8f_{\\rm orb}$.",
+      "reading_guide": "Examine the 3D full GRMHD simulation setup in Section 2 and the temporal Fourier spectra of accretion rates and magnetic fluxes.",
       "authors": [
         "Vikram Manikantan",
         "Vasileios Paschalidis"
@@ -511,9 +491,9 @@
       "source_fingerprint": "4fa66420a735eb5d20d1b43914c6520819ca0da3fdea8f34682e78d01f232335",
       "title": "Modeling extraordinary relativistic jets on the scale of the cosmic web",
       "priority": "worth_knowing",
-      "recommendation_reason": "Explains how multi-megaparsec giant radio galaxies survive MHD instabilities by modeling ultra-relativistic jet propagation into cosmic voids.",
-      "core_insight": "Relativistic jets with initial $\\Gamma = 12$ injected into underdense cosmic voids accelerate to $\\Gamma > 20$ via recollimation shocks, suppressing instability growth to reach $\\sim 9\\ \\mathrm{Mpc}$ in $19.6\\ \\mathrm{Myr}$.",
-      "reading_guide": "Examine the 3D gPLUTO RMHD simulation slices and the spatial power spectrum of lateral jet fluctuations.",
+      "recommendation_reason": "Explains how mega-parsec giant radio galaxies like Porphyrion propagate through cosmic voids without being disrupted by MHD instabilities.",
+      "core_insight": "Relativistic thrust in $\\Gamma = 12$ jets suppresses Kelvin-Helmholtz and kink modes in void media, enabling recollimation-driven acceleration to $\\Gamma > 20$ and propagation across $\\sim 9\\ {\\rm Mpc}$ in $19.6\\ {\\rm Myr}$.",
+      "reading_guide": "Read the simulation parameter setups in gPLUTO and compare Case A (void) with Cases B/C (cluster) propagation histories.",
       "authors": [
         "Gourab Giri",
         "Marco Tavani",

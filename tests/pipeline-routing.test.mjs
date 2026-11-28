@@ -7,14 +7,14 @@ import {
   classifyModelError,
 } from "../scripts/pipeline-routing.mjs";
 
-test("resolveRoutingLadder sets agy/gemini-3.8-flash-medium as default primary for DEEP_READ", () => {
+test("resolveRoutingLadder sets agy/gemini-4-hydrogen-medium as default primary for DEEP_READ", () => {
   const ladder = resolveRoutingLadder(PIPELINE_STAGES.DEEP_READ, {});
-  assert.equal(ladder.primary, "agy/gemini-3.8-flash-medium");
-  assert.ok(ladder.candidates.includes("agy/gemini-3.8-flash-medium"));
+  assert.equal(ladder.primary, "agy/gemini-4-hydrogen-medium");
+  assert.ok(ladder.candidates.includes("agy/gemini-4-hydrogen-medium"));
   assert.ok(ladder.candidates.includes("terra"));
   assert.ok(ladder.candidates.includes("gpt-6.1-sol"));
   assert.ok(ladder.candidates.includes("gpt-6-sol"));
-  assert.equal(ladder.candidates[0], "agy/gemini-3.8-flash-medium");
+  assert.equal(ladder.candidates[0], "agy/gemini-4-hydrogen-medium");
 });
 
 test("resolveRoutingLadder sets gpt-6.1-terra as default primary for TRIAGE", () => {
@@ -23,6 +23,7 @@ test("resolveRoutingLadder sets gpt-6.1-terra as default primary for TRIAGE", ()
   assert.ok(ladder.candidates.includes("gpt-6.1-terra"));
   assert.ok(ladder.candidates.includes("terra"));
   assert.ok(ladder.candidates.includes("gpt-6-luna"));
+  assert.ok(ladder.candidates.includes("agy/gemini-4-hydrogen-medium"));
   assert.equal(ladder.candidates[0], "gpt-6.1-terra");
 });
 
@@ -30,7 +31,7 @@ test("resolveRoutingLadder sets terra as default primary for QA_BOT", () => {
   const ladder = resolveRoutingLadder(PIPELINE_STAGES.QA_BOT, {});
   assert.equal(ladder.primary, "terra");
   assert.ok(ladder.candidates.includes("terra"));
-  assert.ok(ladder.candidates.includes("agy/gemini-3.8-flash-medium"));
+  assert.ok(ladder.candidates.includes("agy/gemini-4-hydrogen-medium"));
   assert.ok(ladder.candidates.includes("gpt-6.1-sol"));
   assert.equal(ladder.candidates[0], "terra");
 });
@@ -38,14 +39,14 @@ test("resolveRoutingLadder sets terra as default primary for QA_BOT", () => {
 test("resolveRoutingLadder respects environment overrides for DEEP_READ and TRIAGE", () => {
   const customEnv = {
     AI_MODEL_BODY: "claude-opus-4.6",
-    AI_BODY_FALLBACK_MODELS: "gemini-3.8-flash,gpt-6-sol",
+    AI_BODY_FALLBACK_MODELS: "gemini-4-hydrogen,gpt-6-sol",
     AI_MODEL_TRIAGE: "gpt-6-luna",
     AI_TRIAGE_FALLBACK_MODELS: "gemini-3.5-flash-lite",
   };
 
   const bodyLadder = resolveRoutingLadder(PIPELINE_STAGES.DEEP_READ, customEnv);
   assert.equal(bodyLadder.primary, "claude-opus-4-6-thinking");
-  assert.deepEqual(bodyLadder.fallbacks, ["gemini-3.8-flash-medium", "gpt-6-sol"]);
+  assert.deepEqual(bodyLadder.fallbacks, ["gemini-4-hydrogen-medium", "gpt-6-sol"]);
 
   const triageLadder = resolveRoutingLadder(PIPELINE_STAGES.TRIAGE, customEnv);
   assert.equal(triageLadder.primary, "gpt-6-luna");

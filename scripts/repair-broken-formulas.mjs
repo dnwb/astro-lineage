@@ -28,7 +28,7 @@ export async function repairTextFormulasWithModel(
   text,
   {
     chatCompletionFn = callChatCompletion,
-    model = process.env.AI_MODEL_BODY || "gemini-3.8-flash-medium",
+    model = process.env.AI_MODEL_BODY || "gemini-4-hydrogen-medium",
   } = {}
 ) {
   if (!text || typeof text !== "string") return text;

@@ -60,7 +60,7 @@ ${worksSummary}
   const raw = await callChatCompletion({
     prompt: userPrompt,
     systemPrompt: ANCHOR_SYSTEM_PROMPT,
-    model: process.env.AI_MODEL_BODY || process.env.AI_MODEL || "agy/gemini-3.8-flash-medium",
+    model: process.env.AI_MODEL_BODY || process.env.AI_MODEL || "agy/gemini-4-hydrogen-medium",
   });
 
   // Extract JSON from output

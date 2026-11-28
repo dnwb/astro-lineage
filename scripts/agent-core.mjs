@@ -55,10 +55,12 @@ export function normalizeModelName(name) {
   else if (trimmed === "6-astra" || trimmed === "chatgpt-6-astra") resolved = "gpt-6-astra";
   else if (trimmed === "6.1-terra" || trimmed === "6.1terra" || trimmed === "chatgpt-6.1-terra")
     resolved = "gpt-6.1-terra";
-  else if (trimmed === "gemini-3.8-flash" || trimmed === "gemini3.8flash")
-    resolved = "gemini-3.8-flash";
-  else if (trimmed === "gemini-3.8-flash-high") resolved = "gemini-3.8-flash-high";
-  else if (trimmed === "gemini-3.8-flash-medium") resolved = "gemini-3.8-flash-medium";
+  else if (
+    trimmed === "gemini-4-hydrogen" ||
+    trimmed === "gemini4hydrogen" ||
+    trimmed === "gemini-4-hydrogen-medium"
+  )
+    resolved = "gemini-4-hydrogen-medium";
   else if (trimmed === "gemini-3.5-flash" || trimmed === "gemini3.5flash")
     resolved = "gemini-3.5-flash-lite";
   else if (
@@ -99,7 +101,7 @@ export const DEFAULT_EFFORT = process.env.BOT_REASONING_EFFORT || "medium";
 export const DEFAULT_FALLBACK_MODELS = (
   process.env.BOT_FALLBACK_MODELS ||
   process.env.AI_FALLBACK_MODELS ||
-  "agy/gemini-3.8-flash-medium,gpt-6.1-sol,gpt-6-astra,gpt-6-sol"
+  "agy/gemini-4-hydrogen-medium,gpt-6.1-sol,gpt-6-astra,gpt-6-sol"
 )
   .split(",")
   .map((m) => normalizeModelName(m.trim()))
@@ -152,7 +154,7 @@ export const FALLBACK_BASE_URL = process.env.FALLBACK_OPENAI_BASE_URL || "";
 export const FALLBACK_API_KEY =
   process.env.FALLBACK_OPENAI_API_KEY || process.env.ZHANG_API_KEY || "";
 export const FALLBACK_MODEL = normalizeModelName(
-  process.env.FALLBACK_BOT_AI_MODEL || process.env.FALLBACK_AI_MODEL || "gemini-3.8-flash-medium"
+  process.env.FALLBACK_BOT_AI_MODEL || process.env.FALLBACK_AI_MODEL || "gemini-4-hydrogen-medium"
 );
 
 const RADAR_PATH = resolve(fileURLToPath(new URL("../src/data/daily-radar.json", import.meta.url)));
@@ -332,7 +334,7 @@ export class AgyDaemonClient {
     prompt,
     systemPrompt,
     history,
-    model = process.env.AI_MODEL_BODY || process.env.BOT_AI_MODEL || "gemini-3.8-flash-medium",
+    model = process.env.AI_MODEL_BODY || process.env.BOT_AI_MODEL || "gemini-4-hydrogen-medium",
     timeoutMs,
   } = {}) {
     if (this.isShuttingDown) {
@@ -347,7 +349,7 @@ export class AgyDaemonClient {
           model ||
             process.env.AI_MODEL_BODY ||
             process.env.BOT_AI_MODEL ||
-            "gemini-3.8-flash-medium"
+            "gemini-4-hydrogen-medium"
         ),
         timeoutMs,
         resolve,
@@ -556,7 +558,7 @@ export async function executeAgyCompletion({
   prompt,
   systemPrompt,
   history,
-  model = process.env.AI_MODEL_BODY || process.env.BOT_AI_MODEL || "gemini-3.8-flash-medium",
+  model = process.env.AI_MODEL_BODY || process.env.BOT_AI_MODEL || "gemini-4-hydrogen-medium",
   client = defaultAgyDaemonClient,
   timeoutMs,
 } = {}) {

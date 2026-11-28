@@ -33,7 +33,7 @@ test("startTrace records lifecycle events conforming to PipelineTraceEvent schem
     details: { priority: "must_read" },
   });
 
-  trace.recordFallback("gemini-3.8-flash-high", "gpt-6.1-sol", "HTTP 429 quota exhausted");
+  trace.recordFallback("gemini-4-hydrogen-medium", "gpt-6.1-sol", "HTTP 429 quota exhausted");
 
   trace.recordEvidence({
     verdict: "ACCEPTED",
@@ -52,7 +52,7 @@ test("startTrace records lifecycle events conforming to PipelineTraceEvent schem
 
   const fallbackEvent = events.find((e) => e.status === TRACE_STATUSES.FALLBACK);
   assert.ok(fallbackEvent);
-  assert.equal(fallbackEvent.details.from_model, "gemini-3.8-flash-high");
+  assert.equal(fallbackEvent.details.from_model, "gemini-4-hydrogen-medium");
   assert.equal(fallbackEvent.details.to_model, "gpt-6.1-sol");
   assert.equal(fallbackEvent.details.reason, "HTTP 429 quota exhausted");
 

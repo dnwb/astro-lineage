@@ -72,7 +72,7 @@ async function main() {
     `• 初筛 (Triage):      ${process.env.AI_MODEL_TRIAGE || "gpt-6-luna"} -> ${process.env.AI_TRIAGE_FALLBACK_MODELS || "gemini-3.5-flash-lite,claude-sonnet-4-6"}`
   );
   console.log(
-    `• 深度精读 (Reading):  ${process.env.AI_MODEL_BODY || "gemini-3.8-flash-medium"} -> ${process.env.AI_BODY_FALLBACK_MODELS || "gpt-6.1-sol,claude-opus-4-6-thinking"}`
+    `• 深度精读 (Reading):  ${process.env.AI_MODEL_BODY || "gemini-4-hydrogen-medium"} -> ${process.env.AI_BODY_FALLBACK_MODELS || "gpt-6.1-sol,claude-opus-4-6-thinking"}`
   );
   console.log(
     `• 即时问答 (QA Bot):   ${DEFAULT_MODEL} -> ${DEFAULT_FALLBACK_MODELS.join(" -> ")}\n`
@@ -86,7 +86,7 @@ async function main() {
       .filter(Boolean)
   );
   const bodyCandidates = buildModelCandidates(
-    process.env.AI_MODEL_BODY || "gemini-3.8-flash-medium",
+    process.env.AI_MODEL_BODY || "gemini-4-hydrogen-medium",
     (process.env.AI_BODY_FALLBACK_MODELS || "gpt-6.1-sol,claude-opus-4-6-thinking")
       .split(",")
       .map((m) => m.trim())

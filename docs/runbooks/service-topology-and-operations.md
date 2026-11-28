@@ -17,7 +17,7 @@ flowchart TD
     subgraph BotServices ["2. 实时交互智能体 (Agent Bots)"]
         QQBot[astrolineage-qq-bot.service<br/>官方 QQ 开放平台网关 Bot<br/>群聊 / 频道 / 私聊即时应答]
         GuildBot[astrolineage-bot.service<br/>腾讯频道帖子/评论巡检 Bot<br/>论坛型长文互动]
-        AgentCore[(scripts/agent-core.mjs<br/>双轨模型 RAG 大脑<br/>gpt-6-sol + gemini-3.8-flash)]
+        AgentCore[(scripts/agent-core.mjs<br/>双轨模型 RAG 大脑<br/>gpt-6-sol + gemini-4-hydrogen-medium)]
         QQBot --> AgentCore
         GuildBot --> AgentCore
     end
@@ -76,7 +76,7 @@ node scripts/qq-official-bot.mjs --doctor
 1. **环境变量**：核验 `QQ_APP_ID`（纯数字格式）与 `QQ_APP_SECRET`（纯 32 位 Hex，且无非法前缀）；
 2. **官方 OAuth 凭据交换**：通过 `getAppAccessToken` 向腾讯开放平台换取动态 AccessToken；
 3. **官方 Gateway 路由**：向 `api.sgroup.qq.com/gateway` 确认 WebSocket 网关地址可达；
-4. **AI 模型连通性**：向 `gpt-6-sol`（或备用 `gemini-3.8-flash-high`）发起微量连通性测试探针；
+4. **AI 模型连通性**：向 `gpt-6-sol`（或备用 `gemini-4-hydrogen-medium`）发起微量连通性测试探针；
 5. **本地数据缓存完整性**：检查 `arxiv-daily.json`、`daily-radar.json`、`arxiv-weekly.json` 的有效性。
 
 **退出码约定**：

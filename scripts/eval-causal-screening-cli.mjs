@@ -167,7 +167,7 @@ async function runCli(argv = process.argv.slice(2)) {
       return await callChatCompletion({
         prompt,
         systemPrompt,
-        model: process.env.AI_MODEL_TRIAGE || process.env.AI_MODEL || "agy/gemini-3.8-flash-medium",
+        model: process.env.AI_MODEL_TRIAGE || process.env.AI_MODEL || "agy/gemini-4-hydrogen-medium",
         fallbackModels: strictModel ? [] : undefined,
         onAttemptSuccess: ({ model, provider }) => {
           const key = `${model} (${provider})`;

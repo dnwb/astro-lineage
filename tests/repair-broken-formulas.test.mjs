@@ -132,3 +132,20 @@ test("repairScientificObjectFormulasWithModel repairs all target fields in an AI
   assert.equal(repaired.assumptions[0], String.raw`模型假设 $A \ge 0$。`);
   assert.equal(repaired.limits[0], String.raw`适用限制 $B \le 1$。`);
 });
+
+test("repairTextFormulasWithModel defaults to gemini-4-hydrogen-medium when AI_MODEL_BODY is unset", async () => {
+  const prevBody = process.env.AI_MODEL_BODY;
+  delete process.env.AI_MODEL_BODY;
+  try {
+    let capturedModel = null;
+    await repairTextFormulasWithModel("受损公式 $\\badDefaultModel{1}$。", {
+      chatCompletionFn: async ({ model }) => {
+        capturedModel = model;
+        return "1";
+      },
+    });
+    assert.equal(capturedModel, "gemini-4-hydrogen-medium");
+  } finally {
+    if (prevBody !== undefined) process.env.AI_MODEL_BODY = prevBody;
+  }
+});
